@@ -230,7 +230,7 @@ class MapScroller {
 			vp.setViewPosition(viewPosition);
 		}
 
-		if(scrolledNode != null)
+		if(scrolledNode != null && scrollingDirective != ScrollingDirective.ANCHOR)
 			scrollNodeToVisible(scrolledNode, extraWidth);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;

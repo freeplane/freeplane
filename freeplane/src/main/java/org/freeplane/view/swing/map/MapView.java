@@ -2135,12 +2135,31 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		siblingMaxLevel = level;
 	}
 
-	public void setZoom(final float zoom) {
-		this.zoom = zoom;
-		mapScroller.anchorToNode(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
-		getRoot().updateAll();
-		adjustBackgroundComponentScale();
-	}
+    public void setZoom(final float zoom) {
+        if(this.zoom != zoom) {
+            this.zoom = zoom;
+            mapScroller.anchorToNode(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
+            getRoot().updateAll();
+            adjustBackgroundComponentScale();
+        }
+    }
+
+    public void setZoom(final float zoom, Point keptPoint) {
+        if(this.zoom != zoom) {
+            this.zoom = zoom;
+            NodeView selected = getSelected();
+            MainView mainView = selected.getMainView();
+            float referenceWidth = mainView.getWidth();
+            float referenceHeight = mainView.getHeight();
+            Point mainViewLocation = new Point();
+            UITools.convertPointToAncestor(mainView, mainViewLocation, this);
+            float x = referenceWidth > 0 ? (keptPoint.x - mainViewLocation.x) / referenceWidth : 0;
+            float y = referenceHeight > 0 ? (keptPoint.y - mainViewLocation.y) / referenceHeight : 0;
+            mapScroller.anchorToNode(selected, x, y);
+            getRoot().updateAll();
+            adjustBackgroundComponentScale();
+        }
+    }
 
 	private void adjustBackgroundComponentScale() {
 		if (backgroundComponent != null) {

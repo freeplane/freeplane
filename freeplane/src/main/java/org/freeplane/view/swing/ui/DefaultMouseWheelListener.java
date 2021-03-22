@@ -70,6 +70,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			newZoom = Math.max(1f / 32f, newZoom);
 			newZoom = Math.min(32f, newZoom);
 			if (newZoom != oldZoom) {
+			    mapView.setZoom(newZoom, e.getPoint());
 				Controller.getCurrentController().getMapViewManager().setZoom(newZoom);
 			}
 		}
