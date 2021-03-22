@@ -84,7 +84,6 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.icons.NodeViewDecorator;
@@ -422,15 +421,11 @@ public class LinkController extends SelectionController implements IExtension {
         return getProperty(connector, ConnectorModel::getShape, this::getStandardConnectorShape);
     }
 
-    public ArrowType getStartArrow(ConnectorModel connector) {
-        return getProperty(connector, ConnectorModel::getStartArrow, this::getStandardStartArrow);
+    public ConnectorArrows getArrows(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getArrows, this::getStandardConnectorArrows);
     }
 
-    public ArrowType getEndArrow(ConnectorModel connector) {
-        return getProperty(connector, ConnectorModel::getEndArrow, this::getStandardEndArrow);
-    }
-
-	public String getLinkShortText(final NodeModel node) {
+ 	public String getLinkShortText(final NodeModel node) {
 		final URI uri = NodeLinks.getLink(node);
 		if (uri == null) {
 			return null;
@@ -882,14 +877,6 @@ public class LinkController extends SelectionController implements IExtension {
 		return arrows;
 	}
 	
-    public ArrowType getStandardStartArrow() {
-        return getStandardConnectorArrows().start;
-    }
-
-    public ArrowType getStandardEndArrow() {
-        return getStandardConnectorArrows().end;
-    }
-
 	public DashVariant getStandardDashVariant() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
 		final DashVariant variant = DashVariant.valueOf(standard);

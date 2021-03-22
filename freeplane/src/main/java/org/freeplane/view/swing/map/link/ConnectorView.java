@@ -376,13 +376,13 @@ public class ConnectorView extends AConnectorView{
 		        g.draw(arrowLinkCurve);
 		    }
 		} 
-		if (isSourceVisible() && !(showsConnectors && linkController.getStartArrow(connectorModel).equals(ArrowType.NONE))) {
+		if (isSourceVisible() && !(showsConnectors && linkController.getArrows(connectorModel).start.equals(ArrowType.NONE))) {
 			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 				paintArrow(g, startPoint2, startPoint);
 		}
-		if (isTargetVisible() && !(showsConnectors && linkController.getEndArrow(connectorModel).equals(ArrowType.NONE))) {
+		if (isTargetVisible() && !(showsConnectors && linkController.getArrows(connectorModel).end.equals(ArrowType.NONE))) {
 			if(isLine && startPoint != null) {
                             if (selfLink)
 				paintArrow(g, startPoint, startPoint2);

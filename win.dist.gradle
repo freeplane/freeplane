@@ -67,7 +67,6 @@ task copyWindowsPortableInstallerFiles(type: Copy) {
     // copy all other files
     from (globalBin) {
         exclude('*.bat', '*.ini', '*.sh')
-        exclude('**/vaqua-*.jar')
         exclude('doc/api/**')
     }
     into(portableInstallerDir + '/App/Freeplane/')

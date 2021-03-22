@@ -76,7 +76,7 @@ public class MEdgeController extends EdgeController {
 			if(style != null)
 			    toStyle.setStyle(style);
 			final int width = fromStyle.getWidth();
-			if(width  != EdgeModel.DEFAULT_WIDTH)
+			if(width  != EdgeModel.AUTO_WIDTH)
 			    toStyle.setWidth(width);
 		}
 
@@ -115,7 +115,7 @@ public class MEdgeController extends EdgeController {
 				deltaFound = true;
 			}
 			final int width = fromStyle.getWidth();
-			if(width  != EdgeModel.DEFAULT_WIDTH && whichStyle.getWidth() == EdgeModel.DEFAULT_WIDTH){
+			if(width  != EdgeModel.AUTO_WIDTH && whichStyle.getWidth() == EdgeModel.AUTO_WIDTH){
 				delta.setWidth(width);
 				deltaFound = true;
 			}
@@ -203,8 +203,8 @@ public class MEdgeController extends EdgeController {
 		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier(modeController));
 		modeController.addAction(new EdgeColorAction());
-		modeController.addAction(new EdgeWidthAction(EdgeModel.WIDTH_PARENT));
-		modeController.addAction(new EdgeWidthAction(EdgeModel.WIDTH_THIN));
+		modeController.addAction(new EdgeWidthAction(EdgeModel.PARENT_WIDTH));
+		modeController.addAction(new EdgeWidthAction(EdgeModel.THIN_WIDTH));
 		modeController.addAction(new EdgeWidthAction(1));
 		modeController.addAction(new EdgeWidthAction(2));
 		modeController.addAction(new EdgeWidthAction(4));
@@ -314,7 +314,7 @@ public class MEdgeController extends EdgeController {
 					if(child.getViewers().isEmpty())
 						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);
-					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
+					if (edge == null || edge.getWidth() == EdgeModel.PARENT_WIDTH) {
 						modeController.getMapController().nodeRefresh(child);
 						edgeWidthRefresh(child);
 					}
@@ -355,7 +355,7 @@ public class MEdgeController extends EdgeController {
 					if(child.getViewers().isEmpty())
 						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);
-					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
+					if (edge == null || edge.getWidth() == EdgeModel.PARENT_WIDTH) {
 						modeController.getMapController().nodeRefresh(child);
 						edgeWidthRefresh(child);
 					}

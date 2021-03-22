@@ -31,6 +31,7 @@ import org.freeplane.view.swing.map.NodeView;
 public class DefaultNodeMouseMotionListener implements IMouseListener {
 	protected final NodeSelector nodeSelector;
 	private static final String FOLD_ON_CLICK_INSIDE = "fold_on_click_inside";
+	static final String OPEN_LINKS_ON_PLAIN_CLICKS = "openLinksOnPlainClicks";
 	/**
 	 * The mouse has to stay in this region to enable the selection after a
 	 * given time.
@@ -67,11 +68,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 
 		final NodeModel node = nodeView.getModel();
-		final boolean plainEvent = Compat.isPlainEvent(e);
 		final boolean inside = nodeSelector.isInside(e);
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
-			if(plainEvent){
+			if(Compat.isCtrlEvent(e) || Compat.isPlainEvent(e) && ResourceController.getResourceController().getBooleanProperty(OPEN_LINKS_ON_PLAIN_CLICKS)){
 				NamedIcon uiIcon = component.getUIIconAt(e.getPoint());
 				if(uiIcon != null){
 					final IconController iconController = mc.getExtension(IconController.class);
@@ -96,7 +96,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					e.consume();
 					return;
 				}
-
+			}
+			if(Compat.isPlainEvent(e)){
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {

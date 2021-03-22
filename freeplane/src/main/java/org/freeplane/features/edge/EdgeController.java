@@ -137,7 +137,7 @@ public class EdgeController implements IExtension {
 				if(node.getParentNode() != null){
 					return null;
 				}
-				return new Integer(EdgeModel.WIDTH_THIN);
+				return new Integer(EdgeModel.STANDARD_WIDTH);
 			}
 		});
 		
@@ -272,7 +272,7 @@ public class EdgeController implements IExtension {
 				continue;
 			}
 			final int width = styleModel.getWidth();
-			if (width == EdgeModel.DEFAULT_WIDTH ) {
+			if (width == EdgeModel.AUTO_WIDTH ) {
 				continue;
 			}
 			return width;

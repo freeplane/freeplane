@@ -25,7 +25,6 @@ import java.util.Optional;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
@@ -52,21 +51,17 @@ public class ConnectorArrowsControlGroup implements ControlGroup {
             = (MLinkController) LinkController.getController();
             ConnectorArrows arrows = ConnectorArrows.valueOf(mConnectorArrows.getValue());
             linkController.changeArrowsOfArrowLink(connector, 
-                    enabled ? Optional.of(arrows.start) : Optional.empty(),
-                    enabled ? Optional.of(arrows.end) : Optional.empty());
+                    enabled ? Optional.of(arrows) : Optional.empty());
 
 		}
 
 		@Override
 		void updateValue() {
 		    final LinkController linkController = LinkController.getController();
-		    final Optional<ArrowType> ownStart = connector.getStartArrow();
-		    final Optional<ArrowType> ownEnd = connector.getEndArrow();
-		    final Optional<ConnectorArrows> viewArrows = ConnectorArrows.of(
-		            linkController.getStartArrow(connector),
-		            linkController.getEndArrow(connector));
-		    mSetConnectorArrows.setValue(ownStart.isPresent() || ownEnd.isPresent());
-		    viewArrows.map(ConnectorArrows::name).ifPresent(mConnectorArrows::setValue);
+		    final Optional<ConnectorArrows> ownArrows = connector.getArrows();
+		    final ConnectorArrows viewArrows = linkController.getArrows(connector);
+		    mSetConnectorArrows.setValue(ownArrows.isPresent());
+		    mConnectorArrows.setValue(viewArrows.name());
 		}
 	}
 

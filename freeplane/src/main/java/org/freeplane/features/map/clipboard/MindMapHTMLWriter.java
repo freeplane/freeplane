@@ -39,7 +39,8 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.cloud.CloudController;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
@@ -47,6 +48,7 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.MapStyleModel;
@@ -55,8 +57,9 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 
 class MindMapHTMLWriter {
-    private static String lf = System.getProperty("line.separator");
-
+    private static final String CLOUD_PADDING = "padding: 0.5em;";
+	private static String lf = System.getProperty("line.separator");
+	private static final Pattern PARAGRAPH_PATTERN = Pattern.compile("^\\s*<(?:p|h\\d|table)\\b");
 	private static String convertSpecialChar(final char c) {
 		String cvt;
 		switch (c) {
@@ -134,20 +137,30 @@ class MindMapHTMLWriter {
 		return result.toString();
 	}
 
-	final private boolean basedOnHeadings;
-	final private Writer fileout;
-	final private MapController mapController;
-	private boolean writeFoldingCode;
+	private final boolean basedOnHeadings;
+	private final boolean writesColors;
+	private final Writer writer;
+	private final MapController mapController;
 	private final NodeStyleController nodeStyleController;
+	private final TextController textController;
+	private final CloudController clouds;
+	private final Filter filter;
+
+	private boolean writeFoldingCode;
 	private Font defaultFont;
 	private Color defaultColor;
 
 	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
-		nodeStyleController = NodeStyleController.getController();
-		this.fileout = fileout;
+		ModeController modeController = mapController.getModeController();
+		nodeStyleController = NodeStyleController.getController(modeController);
+		clouds = CloudController.getController(modeController);
+		textController = TextController.getController(modeController);
+		this.writer = fileout;
 		writeFoldingCode = false;
-		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));
+		basedOnHeadings = getProperty("html_export_folding").equals("html_export_based_on_headings");
+		writesColors = ResourceController.getResourceController().getBooleanProperty("html_export_includes_colors");
+		filter = modeController.getController().getSelection().getFilter();
 	}
 
 	private String fontStyle(Color color, Font font) throws IOException {
@@ -178,38 +191,42 @@ class MindMapHTMLWriter {
 		return ResourceController.getResourceController().getProperty(key);
 	}
 
-	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch) throws IOException {
+	private void writeHTMLWithFoldingJavaScript(final NodeModel rootNodeOfBranch) throws IOException {
 		writeJavaScript();
-		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All +</SPAN>" + lf);
-		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All -</SPAN>" + lf);
-		writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
-		    1);
-		fileout.write("<SCRIPT type=\"text/javascript\">" + lf);
-		fileout.write("fold_document();" + lf);
-		fileout.write("</SCRIPT>" + lf);
+		writer.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All +</SPAN>" + lf);
+		writer.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All -</SPAN>" + lf);
+		writeHTML(rootNodeOfBranch, "1", 0, getCloudColor(rootNodeOfBranch.getParentNode(), true), false, 1);
+		writer.write("<SCRIPT type=\"text/javascript\">" + lf);
+		writer.write("fold_document();" + lf);
+		writer.write("</SCRIPT>" + lf);
 	}
-
+	
 	private void writeFoldingButtons(final String localParentID) throws IOException {
-		fileout.write("<span id=\"show" + localParentID + "\" class=\"foldclosed\" onClick=\"show_folder('"
+		writer.write("<span id=\"show" + localParentID + "\" class=\"foldclosed\" onClick=\"show_folder('"
 		        + localParentID + "')\" style=\"POSITION: absolute\">+</span> " + "<span id=\"hide" + localParentID
 		        + "\" class=\"foldopened\" onClick=\"hide_folder('" + localParentID + "')\">-</span>");
-		fileout.write("\n");
+		writer.write("\n");
 	}
 
 	void writeHTML(final Collection<NodeModel> selectedNodes) throws IOException {
-		fileout.write("<html>" + lf + "<head>" + lf);
+		writer.write("<html>" + lf );
 		if (!selectedNodes.isEmpty()) {
 			final MapModel map = selectedNodes.iterator().next().getMap();
 			setDefaultsFrom(map);
+			writer.write("<head>" + lf);
 			writeStyle();
+			writer.write(lf + "</head>" + lf);
+			startBodyWithBackgroundColor(map);
 		}
-		fileout.write(lf + "</head>" + lf + "<body>" + lf);
+		else {
+			writer.write("<body>" + lf);
+		}
 		for (NodeModel node : selectedNodes) {
-			writeHTML(node, "1", 0, /* isRoot */true, true, /* depth */1);
+			writeHTML(node, "1", 0, getCloudColor(node.getParentNode(), true), false, 1);
 		}
-		fileout.write("</body>" + lf);
-		fileout.write("</html>" + lf);
-		fileout.close();
+		writer.write("</body>" + lf);
+		writer.write("</html>" + lf);
+		writer.close();
 		resetDefaults();
 	}
 
@@ -222,7 +239,7 @@ class MindMapHTMLWriter {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getDefaultStyleNode();
 		defaultFont = nodeStyleController.getFont(styleNode);
-		defaultColor = nodeStyleController.getColor(styleNode);
+		defaultColor = writesColors ? nodeStyleController.getColor(styleNode) : null;
 	}
 
 	void writeHTML(final List<NodeModel> branchRootNodes) throws IOException {
@@ -236,34 +253,85 @@ class MindMapHTMLWriter {
 				|| (htmlExportFoldingOption.equals("html_export_fold_currently_folded")
 				&& hasFoldedStrictDescendant(branchRootNodes));
 		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
-		fileout
+		writer
 		    .write(
 		        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
 		                + lf + "<html>" + lf + "<head>" + lf);
-		fileout.write("<title>"
+		writer.write("<title>"
 		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(
-		            TextController.getController().getPlainTransformedTextWithoutNodeNumber(branchRootNodes.size() == 1 ?  firstNode : map.getRootNode())
+		        		textController.getPlainTransformedTextWithoutNodeNumber(branchRootNodes.size() == 1 ?  firstNode : map.getRootNode())
 		                .replace('\n', ' '))
 		        + "</title>" + lf);
 		writeStyle();
-		fileout.write(lf + "</head>" + lf + "<body");
-		final MapStyleModel style = MapStyleModel.getExtension(map);
-		final Color background = style != null ? style.getBackgroundColor() : null;
-		if (background != null) {
-			fileout.write(" bgcolor=" + ColorUtils.colorToString(background));
-		}
-		fileout.write(">" + lf);
+		writer.write(lf + "</head>" + lf);
+		startBodyWithBackgroundColor(map);
 		for(NodeModel node : branchRootNodes) {
 			if (writeFoldingCode) {
-				writeBodyWithFolding(node);
+				writeHTMLWithFoldingJavaScript(node);
 			} else {
-				writeHTML(node, "1", 0, /* isRoot */true, true, /* depth */ 1);
+				writeHTML(node, "1", 0, getCloudColor(node.getParentNode(), true),  false, 1);
 			}
 		}
-		fileout.write("</body>" + lf);
-		fileout.write("</html>" + lf);
-		fileout.close();
+		writer.write("</body>" + lf);
+		writer.write("</html>" + lf);
+		writer.close();
 		resetDefaults();
+	}
+
+	private void startBodyWithBackgroundColor(MapModel map) throws IOException {
+		if(writesColors) {
+			final MapStyleModel style = MapStyleModel.getExtension(map);
+			final Color backgroundColor = style != null ? style.getBackgroundColor() : null;
+			writeElementWithBackgroundColorAndPadding("body", backgroundColor, "");
+		}
+		else
+			writeElementWithBackgroundColorAndPadding("body", null, "");
+	}
+
+	private void writeDivWithBackgroundColorAndCloudPadding(final Color backgroundColor) throws IOException {
+		writeElementWithBackgroundColorAndPadding("div", backgroundColor, CLOUD_PADDING);
+	}
+
+	private void writeDivWithBackgroundColor(final Color backgroundColor) throws IOException {
+		writeElementWithBackgroundColorAndPadding("div", backgroundColor, "");
+	}
+	
+	private void writeElementWithBackgroundColorAndPadding(String element, final Color backgroundColor, final String otherStyleAttributes) throws IOException {
+			writer.write("<" + element);
+			if(backgroundColor != null)
+				writer.write(" style=\""
+					+ "background-color:" + ColorUtils.colorToString(backgroundColor) + ";"
+					+ otherStyleAttributes + "\"");
+			writer.write(">" + lf );
+	}
+	
+	private Color getCloudColor(NodeModel node, boolean considerAncestors) {
+		if(node == null)
+			return null;
+		Color color = clouds.getColor(node);
+		if(color != null)
+			return color;
+		if(considerAncestors)
+			return getCloudColor(node.getParentNode(), true);
+		return null;
+	}
+	
+	private Color getWrittenCloudColor(NodeModel node, Color ancestorCloudColor) {
+		if(! writesColors)
+			return null;
+		if (node == null)
+			return null;
+		Color color = clouds.getColor(node);
+		if(color != null)
+			return color;
+		return ancestorCloudColor;
+	}
+	
+	private Color getWrittenBackgroundColor(NodeModel node) {
+		if(! writesColors)
+			return null;
+		Color color = nodeStyleController.getBackgroundColor(node);
+		return color;
 	}
 
 	private boolean hasFoldedStrictDescendant(List<NodeModel> branchRootNodes) {
@@ -274,125 +342,133 @@ class MindMapHTMLWriter {
 		return  false;
 	}
 
-	private int writeHTML(final NodeModel node, final String parentID, int lastChildNumber, final boolean isRoot,
-	                      final boolean treatAsParagraph, final int depth)
-	        throws IOException {
-		if (!node.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
+	private int writeHTML(final NodeModel node, final String parentID, int lastChildNumber, Color ancestorCloudColor, final boolean isListElement, final int depth)
+					throws IOException {
+
+		Color cloudColor = getWrittenCloudColor(node, ancestorCloudColor);
+		if (!node.hasVisibleContent(filter)) {
 			for (final NodeModel child : node.getChildren()) {
-				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
+				lastChildNumber = writeHTML(child, parentID, lastChildNumber, cloudColor, isListElement, depth);
 			}
 			return lastChildNumber;
-		}
-		boolean createFolding = false;
-		if (writeFoldingCode) {
-			createFolding = mapController.isFolded(node);
-			if (getProperty("html_export_folding").equals("html_export_fold_all")) {
-				createFolding = node.hasChildren();
-			}
-			if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
-				createFolding = false;
-			}
-		}
-		final TextController textController = TextController.getController();
-		final Object userObject = node.getUserObject();
-		Object transformed = textController.getTransformedObjectNoFormattingNoThrow(node, node, userObject);
-		boolean containsIcon = transformed instanceof Icon;
-		final String text =  containsIcon ? HtmlUtils.iconToHtml((Icon) transformed) :  transformed.toString();
-		final boolean containsHtml = ! containsIcon && text.startsWith("<html>");
-		final boolean heading = basedOnHeadings && !containsHtml && node.hasChildren() && depth <= 6;
-		if (!treatAsParagraph && !basedOnHeadings) {
-			fileout.write("<li>");
 		}
 		else {
+			final Object userObject = node.getUserObject();
+			Object transformed = textController.getTransformedObjectNoFormattingNoThrow(node, node, userObject);
+			boolean containsIcon = transformed instanceof Icon;
+			final String text =  containsIcon ? HtmlUtils.iconToHtml((Icon) transformed) :  transformed.toString();
+			final boolean containsHtml = ! containsIcon && text.startsWith("<html>");
+			boolean childSubtreesHaveVisibleContent = node.childSubtreesHaveVisibleContent(filter);
+			final boolean heading = basedOnHeadings && !containsHtml && childSubtreesHaveVisibleContent && depth <= 6;
+			final boolean writesCloudColor = cloudColor != null;
+			if(isListElement)
+				writer.write("<li>");
+			if(writesCloudColor)
+				writeDivWithBackgroundColorAndCloudPadding(cloudColor);
+			Color backgroundColor = getWrittenBackgroundColor(node);
+			final boolean writesBackgroundColor = backgroundColor != null;
+			if(writesBackgroundColor)
+				writeDivWithBackgroundColor(backgroundColor);
 			if (heading) {
-				fileout.write(lf + "<h" + depth + ">");
+				writer.write(lf + "<h" + depth + ">");
 			}
-			else if (!containsHtml) {
-				fileout.write("<p>");
+			else if (!containsHtml && ! isListElement) {
+				writer.write("<p>");
 			}
-		}
-		String localParentID = parentID;
-		if (createFolding) {
-			lastChildNumber++;
-			localParentID = parentID + "_" + lastChildNumber;
-			writeFoldingButtons(localParentID);
-		}
-		final String fontStyle = fontStyle(nodeStyleController.getColor(node), nodeStyleController.getFont(node));
-		boolean shouldOutputFontStyle = !fontStyle.equals("");
-		if (shouldOutputFontStyle) {
-			fileout.write("<span style=\"" + fontStyle + "\">");
-		}
-		String link = NodeLinks.getLinkAsString(node);
-		if (link != null && ! text.contains(link)) {
-			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
-				link += ".html";
+			boolean createFolding =  childSubtreesHaveVisibleContent && shouldCreateFoldingCode(node);
+			
+			String localParentID = parentID;
+			if (createFolding) {
+				lastChildNumber++;
+				localParentID = parentID + "_" + lastChildNumber;
+				writeFoldingButtons(localParentID);
 			}
-			fileout.write("<a href=\"" + link + "\" target=\"_blank\">");
-		}
-		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
-			writeIcons(node);
-		}
-		if(containsIcon)
-			fileout.write(text);
-		else
-			writeModelContent(text);
-		if (link != null) {
-			fileout.write("</a>" + lf);
-		}
-		if (shouldOutputFontStyle) {
-			fileout.write("</span>");
-		}
-		final String detailText = DetailModel.getDetailText(node);
-		if (detailText != null) {
-			writeModelContent(node, DetailModel.getDetail(node), detailText);
-		}
-		final String noteContent = NoteModel.getNoteText(node);
-		if (noteContent != null) {
-			writeModelContent(node, NoteModel.getNote(node), noteContent);
-		}
-		if (heading) {
-			fileout.write("</h" + depth + ">" + lf);
-		}
-		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-			for (final NodeModel child : node.getChildren()) {
-				lastChildNumber = writeHTML(child, parentID, lastChildNumber, /*isRoot=*/false,
-				    false, depth + 1);
+			final String fontStyle = fontStyle(writesColors ? nodeStyleController.getColor(node) : null, nodeStyleController.getFont(node));
+			boolean shouldOutputFontStyle = !fontStyle.equals("");
+			if (shouldOutputFontStyle) {
+				writer.write("<span style=\"" + fontStyle + "\">");
 			}
-			return lastChildNumber;
-		}
-		if (node.hasChildren()) {
+			String link = NodeLinks.getLinkAsString(node);
+			if (link != null && ! text.contains(link)) {
+				if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
+					link += ".html";
+				}
+				writer.write("<a href=\"" + link + "\" target=\"_blank\">");
+			}
+			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
+				writeIcons(node);
+			}
+			if(containsIcon)
+				writer.write(text);
+			else
+				writeModelContent(text);
+			if (link != null) {
+				writer.write("</a>" + lf);
+			}
+			if (shouldOutputFontStyle) {
+				writer.write("</span>");
+			}
+			final String detailText = DetailModel.getDetailText(node);
+			if (detailText != null) {
+				writeModelContent(node, DetailModel.getDetail(node), detailText);
+			}
+			final String noteContent = NoteModel.getNoteText(node);
+			if (noteContent != null) {
+				writeModelContent(node, NoteModel.getNote(node), noteContent);
+			}
+			if (heading) {
+				writer.write("</h" + depth + ">" + lf);
+			}
+			if(writesBackgroundColor)
+				writer.write("</div>" + lf);
+
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
 				for (final NodeModel child : node.getChildren()) {
-					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
-					    /*isRoot=*/false, false, depth + 1);
+					lastChildNumber = writeHTML(child, localParentID, lastChildNumber, null, false, depth + 1);
 				}
 			}
-			else if (createFolding) {
-				fileout.write(lf + "<ul id=\"fold" + localParentID
-				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">" + lf);
-				int localLastChildNumber = 0;
-				for (final NodeModel child : node.getChildren()) {
-					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
-					    /* isRoot=*/false, false, depth + 1);
+			else if (childSubtreesHaveVisibleContent) {
+				if (createFolding) {
+					writer.write("<ul id=\"fold" + localParentID
+							+ "\" style=\"POSITION: relative; VISIBILITY: visible;\">" + lf);
+					int localLastChildNumber = 0;
+					for (final NodeModel child : node.getChildren()) {
+						localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber, null, true, depth + 1);
+					}
 				}
-			}
-			else {
-				fileout.write(lf + "<ul>" + lf);
-				for (final NodeModel child : node.getChildren()) {
-					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
-					    /* isRoot= */false, false, depth + 1);
+				else {
+					writer.write("<ul>" + lf);
+					for (final NodeModel child : node.getChildren()) {
+						lastChildNumber = writeHTML(child, localParentID, lastChildNumber, null, true, depth + 1);
+					}
 				}
+				writer.write("</ul>" + lf);
 			}
-			fileout.write("</ul>" + lf);
+			if(writesCloudColor)
+				writer.write("</div>" + lf);
+			if(isListElement)
+				writer.write("</li>");
+			return lastChildNumber;
 		}
-		if (!treatAsParagraph) {
-			fileout.write("</li>" + lf);
+	}
+
+	private boolean shouldCreateFoldingCode(final NodeModel node) {
+		boolean createFolding = false;
+		if (writeFoldingCode) {
+			if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings) {
+				createFolding = false;
+			}
+			else if (getProperty("html_export_folding").equals("html_export_fold_all")) {
+				createFolding = node.hasChildren();
+			}
+			else
+				createFolding = mapController.isFolded(node);
 		}
-		return lastChildNumber;
+		return createFolding;
 	}
 
 	private void writeModelContent(NodeModel node, Object nodeProperty, String data)  throws IOException{
-		final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data);
+		final Object transformed = textController.getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data);
 		String text = HtmlUtils.objectToHtml(transformed);
 		writeModelContent(text);
 	}
@@ -405,10 +481,10 @@ class MindMapHTMLWriter {
 				MindIcon mindIcon = (MindIcon) icon;
 				try {
                     final String iconFile =  new URI(null, mindIcon.getFile(), null).toString();
-                    fileout.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
+                    writer.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
                     final Quantity<LengthUnit> iconSize = iconController.getIconSize(model);
-                    fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
-                    fileout.write(">");
+                    writer.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+                    writer.write(">");
                 } catch (Exception e) {
                     LogUtils.severe(e);
                 }
@@ -417,15 +493,14 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeJavaScript() throws IOException {
-		fileout.write("<script type=\"text/javascript\">" + lf);
-		fileout.write(FileUtils.slurpResource("/html/folding.js"));
-		fileout.write(lf + "</script>" + lf);
+		writer.write("<script type=\"text/javascript\">" + lf);
+		writer.write(FileUtils.slurpResource("/html/folding.js"));
+		writer.write(lf + "</script>" + lf);
 	}
 
-    private static final Pattern PARAGRAPH_PATTERN = Pattern.compile("^\\s*<(?:p|h\\d|table)\\b");
 	private void writeModelContent(final String string) throws IOException {
 		if (string.matches(" +")) {
-			fileout.write("&nbsp;");
+			writer.write("&nbsp;");
 		}
 		else if (string.startsWith("<html")) {
 			String output = string.substring(6);
@@ -446,23 +521,23 @@ class MindMapHTMLWriter {
 			output = output.substring(start, end);
 			boolean startsWithParagraph = PARAGRAPH_PATTERN.matcher(output).find();
             if(! startsWithParagraph)
-		         fileout.write("<p>");
-			fileout.write(output);
+		         writer.write("<p>");
+			writer.write(output);
 		}
 		else {
-			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(string));
+			writer.write(HtmlUtils.unicodeToHTMLUnicodeEntity(string));
 		}
 	}
 
 	private void writeStyle() throws IOException {
-		fileout.write("<style type=\"text/css\">" + lf);
-		fileout.write("    body {");
+		writer.write("<style type=\"text/css\">" + lf);
+		writer.write("    body {");
 		writeDefaultFontStyle();
-		fileout.write("}" + lf);
-		fileout.write(FileUtils.slurpResource("/html/freeplane.css"));
+		writer.write("}" + lf);
+		writer.write(FileUtils.slurpResource("/html/freeplane.css"));
 		if (writeFoldingCode)
-			fileout.write(FileUtils.slurpResource("/html/folding.css"));
-		fileout.write(lf + "</style>");
+			writer.write(FileUtils.slurpResource("/html/folding.css"));
+		writer.write(lf + "</style>");
 	}
 
 	private void writeDefaultFontStyle() throws IOException {
@@ -470,7 +545,7 @@ class MindMapHTMLWriter {
 		defaultFont = null;
 		Color color = defaultColor;
 		defaultColor = null;
-		fileout.write(fontStyle(color, font));
+		writer.write(fontStyle(color, font));
 		defaultFont = font;
 		defaultColor = color;
 	}

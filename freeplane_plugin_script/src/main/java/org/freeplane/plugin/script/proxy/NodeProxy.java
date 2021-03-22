@@ -11,7 +11,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
@@ -258,6 +260,22 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return DetailModel.getDetailText(getDelegate());
 	}
 
+	public String getDetailsContentType() {
+		final NodeModel nodeModel = getDelegate();
+		final String contentType = TextController.getController().getDetailsContentType(nodeModel);
+		return contentType;
+	}
+
+	public void setDetailsContentType(String contentType) {
+		MTextController textController = MTextController.getController();
+		if(contentType != null 
+				&& ! Stream.of(textController.getDetailContentTypes()).anyMatch(contentType::equals)) {
+			throw new IllegalArgumentException("Unknown content type " + contentType);
+		}
+		final NodeModel nodeModel = getDelegate();
+		textController.setDetailsContentType(nodeModel, contentType);
+	}
+	
 	// NodeRO: R
 	@Override
 	public boolean getHideDetails() {
@@ -326,6 +344,22 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public Convertible getNote() {
 		final String noteText = getNoteText();
 		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext(), noteText);
+	}
+	
+	public String getNoteContentType() {
+		final NodeModel nodeModel = getDelegate();
+		final String contentType = NoteController.getController().getNoteContentType(nodeModel);
+		return contentType;
+	}
+
+	public void setNoteContentType(String contentType) {
+		MNoteController noteController = MNoteController.getController();
+		if(contentType != null 
+				&& ! Stream.of(noteController.getNoteContentTypes()).anyMatch(contentType::equals)) {
+			throw new IllegalArgumentException("Unknown content type " + contentType);
+		}
+		final NodeModel nodeModel = getDelegate();
+		noteController.setNoteContentType(nodeModel, contentType);
 	}
 
 	// NodeRO: R

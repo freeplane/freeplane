@@ -53,7 +53,7 @@ public class EdgeWidthControlGroup implements ControlGroup {
 			final MEdgeController styleController = (MEdgeController) Controller
 			.getCurrentModeController().getExtension(
 					EdgeController.class);
-			styleController.setWidth(node, enabled ? Integer.parseInt(mEdgeWidth.getValue()): EdgeModel.DEFAULT_WIDTH);
+			styleController.setWidth(node, enabled ? Integer.parseInt(mEdgeWidth.getValue()): EdgeModel.AUTO_WIDTH);
 		}
 
 		@Override
@@ -61,9 +61,9 @@ public class EdgeWidthControlGroup implements ControlGroup {
 			final EdgeController edgeController = EdgeController.getController();
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{
-				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.DEFAULT_WIDTH;
+				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.AUTO_WIDTH;
 				final int viewWidth = edgeController.getWidth(node);
-				mSetEdgeWidth.setValue(width != EdgeModel.DEFAULT_WIDTH);
+				mSetEdgeWidth.setValue(width != EdgeModel.AUTO_WIDTH);
 				mEdgeWidth.setValue(Integer.toString(viewWidth));
 			}
 		}

@@ -13,8 +13,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.FrameController;
 
 /**
  * Provides methods and constants which are dependent on the underlying java version
@@ -126,6 +129,16 @@ public class Compat {
 			return;
 		}
 		try {
+			final String lookandfeel = System.getProperty("lookandfeel", 
+					ResourceController.getResourceController().getProperty("lookandfeel"));
+			if (lookandfeel.equals(FrameController.AQUA_LAF_NAME)
+					|| lookandfeel.equals(FrameController.AQUA_LAF_CLASS_NAME)) {
+				try {
+					FrameController.class.getClassLoader().loadClass(FrameController.AQUA_LAF_CLASS_NAME);
+					System.setProperty("apple.awt.application.appearance", "system");
+				} catch (Exception e) {
+				}
+			}
 			final Class<?> macChanges = Controller.class.getClassLoader().loadClass(
 			    "org.freeplane.plugin.macos.MacChanges");
 			final Method method = macChanges.getMethod("apply", Controller.class);

@@ -96,8 +96,8 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
-	private static final String AQUA_LAF_NAME = "VAqua";
-    private static final String AQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
+	public static final String AQUA_LAF_NAME = "VAqua";
+	public static final String AQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
     private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
     private static final String MOTIF_LAF__CLASS_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
@@ -577,11 +577,6 @@ abstract public class FrameController implements ViewController {
             }
 			if (lookAndFeel.equals("default")) {
 			    boolean lookAndFeelSet = false;
-			    boolean useAquaLafForMacosAsDefault = false;
-                if (useAquaLafForMacosAsDefault && Compat.isMacOsX()) {
-			        String lafClassName = AQUA_LAF_CLASS_NAME;
-			        lookAndFeelSet = tryToSetLookAndFeel(lafClassName);
-			    }
 			    if(! lookAndFeelSet) {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			        fixDarculaNPE(lookAndFeelClassName);
@@ -605,7 +600,7 @@ abstract public class FrameController implements ViewController {
 					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
 					try {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
-						fixDarculaNPE(lookAndFeelClass.getName());
+						fixDarculaNPE(lookAndFeel);
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						fixLookAndFeelUI();
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();

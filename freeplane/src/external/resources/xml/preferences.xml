@@ -94,6 +94,7 @@
 				<number name="max_menu_item_count" min="10" />
 				<number name="menuItemFontSize" min="3" />
 				<length name="toolbar_icon_height" defaultUnit = "pt" min="0" max = "1000" step = "0.1"/>
+				<boolean name="file_chooser_shows_special_folders"/>
 			</separator>
 			<separator name="status">
 				<boolean name="display_node_id" />
@@ -169,9 +170,12 @@
 			</separator>
 			<separator name="icon_properties">
 				<boolean name="structured_icon_toolbar" />
-				<boolean name="use_emoji_icons" />
-                <boolean name="show_icons" />
-                <number name="fast_access_icon_number" min="0" max="100"/>
+				<boolean name="add_emojis_to_menu" />
+				<boolean name="add_emojis_to_icon_toolbar" />
+				<boolean name="add_emojis_to_icon_selector" />
+				<boolean name="show_icons" />
+				<boolean name="showLinkSpecificIcons" />
+				<number name="fast_access_icon_number" min="0" max="100"/>
 			</separator>
 		</tab>
 		<tab name="Defaults">
@@ -195,6 +199,7 @@
                 <boolean name="unfold_on_paste" />
 				<boolean name="fold_on_click_inside" />
 				<boolean name="edit_on_double_click" />
+				<boolean name="openLinksOnPlainClicks"/>
 				<length name="grid_size" defaultUnit = "px" min="0" max = "1000" step = "0.01"/>
 				<number name="scrolling_speed" min="1" max="30" />
 				<boolean name="goto_note_end_on_edit" />
@@ -308,6 +313,7 @@
 					<choice value="html_export_fold_currently_folded" />
 					<choice value="html_export_fold_all" />
 					<choice value="html_export_based_on_headings" />
+					<boolean name="html_export_includes_colors" />
 				</combo>
 				<boolean name="export_icons_in_html" />
 			</separator>

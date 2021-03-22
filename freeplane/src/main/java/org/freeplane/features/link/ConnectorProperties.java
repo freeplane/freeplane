@@ -36,9 +36,8 @@ class ConnectorProperties{
     private IStyle style;
 	private Optional<Color> color;
 	private Optional<Integer> alpha;
-	private Optional<ArrowType> endArrow;
 	private Optional<int[]> dash;
-	private Optional<ArrowType> startArrow;
+	private Optional<ConnectorArrows> arrows;
 	private Optional<Integer> width;
 	private Optional<Shape> shape;
 	private Optional<String> labelFontFamily;
@@ -53,8 +52,7 @@ class ConnectorProperties{
 
     public ConnectorProperties() {
         style = MapStyleModel.DEFAULT_STYLE;
-        this.startArrow = Optional.empty();
-        this.endArrow = Optional.empty();
+        this.arrows = Optional.empty();
         this.dash = Optional.empty();
         this.color = Optional.empty();
         this.alpha = Optional.empty();
@@ -72,8 +70,7 @@ class ConnectorProperties{
 		assert color != null;
 		assert shape != null;
 		assert connectorEnds!=null;
-		this.startArrow = Optional.of(connectorEnds.start);
-		this.endArrow = Optional.of(connectorEnds.end);
+		this.arrows = Optional.of(connectorEnds);
 		this.dash = Optional.of(dash);
 		this.color = Optional.of(color);
 		this.alpha = Optional.of(alpha);
@@ -94,8 +91,13 @@ class ConnectorProperties{
     public void setStyle(final IStyle style) {
         this.style = style;
     }
-
-
+    
+	public Optional<ConnectorArrows> getArrows() {
+		return arrows;
+	}
+	public void setArrows(Optional<ConnectorArrows> arrows) {
+		this.arrows = arrows;
+	}
 	public Optional<Shape> getShape() {
 		return shape;
 	}
@@ -117,10 +119,6 @@ class ConnectorProperties{
 		return color;
 	}
 
-	public Optional<ArrowType> getEndArrow() {
-		return endArrow;
-	}
-
 	public Point getEndInclination() {
 		if (endInclination == null) {
 			return null;
@@ -140,10 +138,6 @@ class ConnectorProperties{
         return targetLabel;
     }
 
-	public Optional<ArrowType> getStartArrow() {
-		return startArrow;
-	}
-
 	public Point getStartInclination() {
 		if (startInclination == null) {
 			return null;
@@ -159,10 +153,6 @@ class ConnectorProperties{
 		this.color = color;
 	}
 
-	public void setEndArrow(final Optional<ArrowType> endArrow) {
-		this.endArrow = endArrow;
-	}
-
 	public void setEndInclination(final Point endInclination) {
 		assert endInclination != null;
 		this.endInclination = endInclination;
@@ -174,10 +164,6 @@ class ConnectorProperties{
 
 	public void setSourceLabel(final String label) {
 		sourceLabel = emptyString2emptyOptional(label);
-	}
-
-	public void setStartArrow(final Optional<ArrowType> startArrow) {
-		this.startArrow = startArrow;
 	}
 
 	public void setStartInclination(final Point startInclination) {

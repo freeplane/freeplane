@@ -102,7 +102,9 @@ subprojects {
 
     configurations {
         lib
+        maclib
         api.extendsFrom(lib)
+        api.extendsFrom(maclib)
     }
     
     dependencies {

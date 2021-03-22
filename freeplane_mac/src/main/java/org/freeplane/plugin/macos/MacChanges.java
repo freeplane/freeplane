@@ -64,11 +64,11 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	private static Predicate<Window> getToggleFullScreenMethod(){
 		try {
 			Class<? extends Object> app = Class.forName("com.apple.eawt.Application");
-			Object geta = app.getMethod("getApplication").invoke(null);
-			Method toggleFullScreenMethod = geta.getClass().getMethod("requestToggleFullScreen", Window.class);
+			Object application = app.getMethod("getApplication").invoke(null);
+			Method toggleFullScreenMethod = application.getClass().getMethod("requestToggleFullScreen", Window.class);
 			return window -> {
 				try {
-					toggleFullScreenMethod.invoke(geta, window);
+					toggleFullScreenMethod.invoke(application, window);
 					return true;
 				}
 				catch (Exception e) {
@@ -98,10 +98,10 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		if(fmMacApplication==null){
 		    String helpMenuTitle = TextUtils.getRawText("menu_help");
 		    ResourceController resourceController = ResourceController.getResourceController();
-		    if(resourceController.getBooleanProperty("use_emoji_icons"))
-		    	resourceController.putResourceString("menu_help", helpMenuTitle + " ");
 		    final URL macProperties = this.getClass().getResource("freeplane_mac.properties");
 		    Controller.getCurrentController().getResourceController().addDefaults(macProperties);
+		    if(resourceController.getBooleanProperty("add_emojis_to_menu"))
+		    	resourceController.putResourceString("menu_help", helpMenuTitle + " ");
 
 		    // if a handleOpen comes here, directly, we know that FM is currently starting.
 		    fmMacApplication = Desktop.getDesktop();

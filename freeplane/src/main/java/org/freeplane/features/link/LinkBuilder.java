@@ -190,15 +190,19 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
+				ArrowType start = ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH));
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setStartArrow(Optional.of(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH))));
+				ArrowType end = arrowLink.getArrows().orElse(ConnectorArrows.NONE).end;
+				arrowLink.setArrows(ConnectorArrows.of(start, end));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
+				ArrowType end = ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH));
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setEndArrow(Optional.of(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH))));
+				ArrowType start = arrowLink.getArrows().orElse(ConnectorArrows.NONE).start;
+				arrowLink.setArrows(ConnectorArrows.of(start, end));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
@@ -335,10 +339,11 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		if (endInclination != null) {
 			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.pointToXml(endInclination));
 		}
-        model.getStartArrow().ifPresent( startArrow -> 
-        arrowLink.setAttribute("STARTARROW", startArrow.name()));
-        model.getEndArrow().ifPresent( endArrow -> 
-        arrowLink.setAttribute("STARTARROW", endArrow.name()));
+        model.getArrows().ifPresent( arrows -> 
+        {
+			arrowLink.setAttribute("STARTARROW", arrows.start.name());
+			arrowLink.setAttribute("ENDARROW", arrows.end.name());
+		});
 		writer.addElement(model, arrowLink);
 	}
 

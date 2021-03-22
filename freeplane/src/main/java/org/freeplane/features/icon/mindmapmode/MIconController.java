@@ -31,9 +31,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -67,6 +67,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconDescription;
@@ -91,7 +92,8 @@ import org.freeplane.features.styles.LogicalStyleController;
  */
 public class MIconController extends IconController {
     private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
-    private static final String USE_EMOJI_ICONS_PROPERTY = "use_emoji_icons";
+    private static final String ADD_EMOJIS_TO_MENU = "add_emojis_to_menu";
+    private static final String ADD_EMOJIS_TO_ICON_TOOLBAR = "add_emojis_to_icon_toolbar";
     private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
@@ -102,10 +104,10 @@ public class MIconController extends IconController {
 		}
 	};
 
-	private final class IconActionBuilder implements EntryVisitor {
+	private final class IconMenuBuilder implements EntryVisitor {
 		final private ModeController modeController;
 
-		public IconActionBuilder(ModeController modeController) {
+		public IconMenuBuilder(ModeController modeController) {
 			this.modeController = modeController;
 		}
 
@@ -125,7 +127,7 @@ public class MIconController extends IconController {
 		    if (group.getIcons().size() < 1)
 		        return;
 			isEmoji = isEmoji || group.getName().equals(IconStore.EMOJI_GROUP);
-			if (isEmoji && ! areEmojiActionsEnabled())
+			if (isEmoji && ! areEmojisAvailbleFromMenu())
 				return;
 		    final Entry item = new Entry();
 		    EntryAccessor entryAccessor = new EntryAccessor();
@@ -225,7 +227,7 @@ public class MIconController extends IconController {
 		iconBox = new CollapseableBoxBuilder().setPropertyNameBase("leftToolbarVisible").setResizeable(true).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
-		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder(modeController));
+		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
 	}
 
@@ -337,7 +339,7 @@ public class MIconController extends IconController {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		final List<AFreeplaneAction> actions = new ArrayList<AFreeplaneAction>();
-		actions.addAll(getShownIconActions());
+		actions.addAll(areEmojisAvailbleFromMenu() ? getIconActions() : getIconActions(icon -> ! (icon instanceof EmojiIcon)));
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
@@ -356,13 +358,14 @@ public class MIconController extends IconController {
 		}
 	}
 
-	public Collection<AFreeplaneAction> getShownIconActions() {
-	    if(areEmojiActionsEnabled())
-	        return Collections.unmodifiableCollection(iconActions.values());
-	    else
-	        return iconActions.values().stream()
-	                .filter(action -> ((IconAction) action).getMindIcon().isShownOnToolbar())
-                    .collect(Collectors.toList());
+	public Collection<AFreeplaneAction> getIconActions() {
+		return Collections.unmodifiableCollection(iconActions.values());
+	}
+
+	public Collection<AFreeplaneAction> getIconActions(Predicate<MindIcon> filter) {
+		return iconActions.values().stream()
+				.filter(action -> filter.test(((IconAction) action).getMindIcon()))
+				.collect(Collectors.toList());
 	}
 
     public Map<String, AFreeplaneAction> getAllIconActions() {
@@ -376,15 +379,6 @@ public class MIconController extends IconController {
 		return iconBox;
 	}
 
-	public Collection<MindIcon> getMindIcons() {
-		final List<MindIcon> iconInfoList = new ArrayList<MindIcon>();
-		final Collection<AFreeplaneAction> iconActions = getShownIconActions();
-		for (final Action action : iconActions) {
-			final MindIcon info = ((IconAction) action).getMindIcon();
-			iconInfoList.add(info);
-		}
-		return iconInfoList;
-	}
 	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
 	private JMenu getSubmenu( final IconGroup group) {
 		final JMenu menu = createToolbarSubmenu(group);
@@ -466,7 +460,7 @@ public class MIconController extends IconController {
 			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
 	}
 
-	private void insertSubmenus(final JToolBar iconToolBar, boolean isStructured) {
+	private void insertToolbarSubmenus(final JToolBar iconToolBar, boolean isStructured) {
 		final JMenuBar iconMenuBar = new JMenuBar() {
 			private static final long serialVersionUID = 1L;
 
@@ -479,15 +473,19 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
-		    if(isStructured && (! iconGroup.getName().equals(IconStore.EMOJI_GROUP) || areEmojiActionsEnabled())
-		            || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojiActionsEnabled())
+		    if(isStructured && (! iconGroup.getName().equals(IconStore.EMOJI_GROUP) || areEmojisAvailbleOnIconToolbar())
+		            || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojisAvailbleOnIconToolbar())
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
 	}
 
-	boolean areEmojiActionsEnabled() {
-	    return ResourceController.getResourceController().getBooleanProperty(USE_EMOJI_ICONS_PROPERTY);
+	boolean areEmojisAvailbleFromMenu() {
+	    return ResourceController.getResourceController().getBooleanProperty(ADD_EMOJIS_TO_MENU);
+    }
+
+	boolean areEmojisAvailbleOnIconToolbar() {
+	    return ResourceController.getResourceController().getBooleanProperty(ADD_EMOJIS_TO_ICON_TOOLBAR);
     }
 
     public void removeAllIcons(final NodeModel node) {
@@ -543,28 +541,18 @@ public class MIconController extends IconController {
         recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
         recentlyUsedIcons.addPanelTo(iconToolBar);
         boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
-		if (! isStructured)
+		if (! isStructured && areEmojisAvailbleOnIconToolbar())
 		    iconToolBar.addSeparator();
-		insertSubmenus(iconToolBar, isStructured);
+		insertToolbarSubmenus(iconToolBar, isStructured);
 		if (! isStructured) {
 		    iconToolBar.addSeparator();
 		    for (final MindIcon mindIcon : STORE.getMindIcons()) {
-		        if(mindIcon.isShownOnToolbar()) {
+		        if(!(mindIcon instanceof EmojiIcon)) {
 		            final AFreeplaneAction iconAction = iconActions.get(mindIcon.getName());
 		            iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		        }
 		    }
 		}
-	}
-
-	/** lists all icons that are available in the icon selection dialog. This may include user icons
-	 * if there are some installed. */
-	public static List<String> listStandardIconKeys() {
-		ArrayList<String> result = new ArrayList<String>();
-		final MIconController mIconController = (MIconController) IconController.getController();
-		for (MindIcon mindIcon : mIconController.getMindIcons())
-			result.add(mindIcon.getName());
-		return result;
 	}
 
     public void saveRecentlyUsedActions() {

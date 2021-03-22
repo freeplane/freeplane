@@ -43,6 +43,7 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
  */
 public class EdgeLinkView extends AConnectorView {
 	private final EdgeView edgeView;
+	private LinkController linkController;
 
 	public EdgeLinkView(final ConnectorModel model, final ModeController modeController, final NodeView source,
 	                    final NodeView target) {
@@ -55,7 +56,7 @@ public class EdgeLinkView extends AConnectorView {
 			edgeView = EdgeViewFactory.getInstance().getEdge(source, target, map);
 		}
 		Color color;
-		final LinkController linkController = LinkController.getController(modeController);
+		linkController = LinkController.getController(modeController);
 		if (Shape.EDGE_LIKE.equals(linkController.getShape(model))) {
 			color = edgeView.getColor().darker();
 		}
@@ -94,16 +95,16 @@ public class EdgeLinkView extends AConnectorView {
 
 	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
-		if(Shape.EDGE_LIKE.equals(connectorModel.getShape())){
+		if(Shape.EDGE_LIKE.equals(linkController.getShape(connectorModel))){
 			return;
 		}
-		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
+		if (isSourceVisible() && !linkController.getArrows(connectorModel).start.equals(ArrowType.NONE)) {
 			Point p1 = edgeView.getStart();
 			Point p2 = new Point(p1);
 			p2.translate(5, 0);
 			paintArrow(graphics, p2, p1);
 		}
-		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
+		if (isTargetVisible() && !linkController.getArrows(connectorModel).end.equals(ArrowType.NONE)) {
 			Point p1 = edgeView.getEnd();
 			Point p2 = new Point(p1);
 			p2.translate(5, 0);
