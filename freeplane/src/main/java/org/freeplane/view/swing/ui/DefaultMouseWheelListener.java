@@ -16,7 +16,8 @@ import org.freeplane.view.swing.map.MapView;
  * @author foltin
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
-	private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK | InputEvent.BUTTON1_MASK
+	private static final String ZOOM_AROUND_SELECTED_NODE_PROPERTY = "zoomAroundSelectedNode";
+    private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK | InputEvent.BUTTON1_MASK
 	        | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	private static int SCROLL_SKIPS = 8;
@@ -70,6 +71,8 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			newZoom = Math.max(1f / 32f, newZoom);
 			newZoom = Math.min(32f, newZoom);
 			if (newZoom != oldZoom) {
+			    if(! ResourceController.getResourceController().getBooleanProperty(ZOOM_AROUND_SELECTED_NODE_PROPERTY))
+			        mapView.setZoom(newZoom, e.getPoint());
 				Controller.getCurrentController().getMapViewManager().setZoom(newZoom);
 			}
 		}
