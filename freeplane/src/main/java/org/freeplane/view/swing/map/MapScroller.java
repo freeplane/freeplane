@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JViewport;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.NodeModel;
@@ -15,7 +16,8 @@ import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
 
-	private NodeView anchor;
+	private static final String KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY = "keepSelectedNodeVisibleAfterZoom";
+    private NodeView anchor;
 	private Point anchorContentLocation;
 	private float anchorHorizontalPoint;
 	private float anchorVerticalPoint;
@@ -230,7 +232,9 @@ class MapScroller {
 			vp.setViewPosition(viewPosition);
 		}
 
-		if(scrolledNode != null && scrollingDirective != ScrollingDirective.ANCHOR)
+		if(scrolledNode != null && 
+		        (scrollingDirective != ScrollingDirective.ANCHOR 
+		        || ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)))
 			scrollNodeToVisible(scrolledNode, extraWidth);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
