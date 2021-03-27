@@ -28,24 +28,32 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
 	private static final long serialVersionUID = 1;
 
-    private final List<JComponent> optionComponents = new ArrayList<>();
+	private final List<JComponent> optionComponents = new ArrayList<>();
+
+    private boolean areSpecialFoldersShown;
 
     public JFreeplaneCustomizableFileChooser() {
         super();
+        initializeSpecialFolderShownFlag();
     }
+
+	private void initializeSpecialFolderShownFlag() {
+		boolean areSpecialFoldersShown = ResourceController.getResourceController().getBooleanProperty(FILE_CHOOSER_SPECIAL_FOLDERS_PROPERTY);
+		if(this.areSpecialFoldersShown != areSpecialFoldersShown)
+			this.areSpecialFoldersShown = areSpecialFoldersShown;
+	}
 
     public JFreeplaneCustomizableFileChooser(File currentDirectory) {
         super(currentDirectory);
+        initializeSpecialFolderShownFlag();
     }
 
     @Override
 	protected void setup(FileSystemView view) {
-        putClientProperty(USE_SHELL_FOLDER_JAVA_PROPERTY, 
-        		ResourceController.getResourceController().getBooleanProperty(FILE_CHOOSER_SPECIAL_FOLDERS_PROPERTY));
+    	initializeSpecialFolderShownFlag();
+        putClientProperty(USE_SHELL_FOLDER_JAVA_PROPERTY, areSpecialFoldersShown);
     	super.setup(view);
 	}
-
-
 
 	@Override
 	public Dimension getPreferredSize() {
@@ -65,11 +73,9 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 		return new Dimension(width, height);
 	}
 
-	@SuppressWarnings("serial")
 	@Override
 	public void setCurrentDirectory(File dir) {
-		if(dir != null && Compat.isWindowsOS() && dir.getClass().equals(File.class)
-				&& Boolean.FALSE.equals(getClientProperty(USE_SHELL_FOLDER_JAVA_PROPERTY))) {
+		if(dir != null && ! areSpecialFoldersShown && Compat.isWindowsOS() && dir.getClass().equals(File.class)) {
 			try {
 				setDirectoryBehavingLikeShellFolder(dir);
 			return;
@@ -81,6 +87,7 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 	}
 
 	private void setDirectoryBehavingLikeShellFolder(File dir) throws IOException {
+			@SuppressWarnings("serial")
 			File shellFile = new File(dir.getCanonicalPath()) {
 				@Override
 				public File getParentFile() {
@@ -98,6 +105,16 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 				}
 			};
 			super.setCurrentDirectory(shellFile);
+	}
+
+
+
+	@Override
+	public boolean accept(File f) {
+		if(! areSpecialFoldersShown && Compat.isWindowsOS() && f.getName().endsWith(".lnk")) {
+			return false;
+		}
+		return super.accept(f);
 	}
 
 
