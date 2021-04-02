@@ -26,7 +26,9 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -89,6 +91,11 @@ public class OptionPanelBuilder {
 		public ComboPropertyCreator withEnum(Class<?> enumClass) {
 			this.enumClass = enumClass;
 			return this;
+		}
+		
+		@Override
+		public String getPropertyName() {
+			return name;
 		}
 	}
 
@@ -220,6 +227,11 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new NumberProperty(name, min, max, step);
 				}
+				
+				@Override
+				public String getPropertyName() {
+					return name;
+				}
 			};
 		}
 
@@ -229,6 +241,11 @@ public class OptionPanelBuilder {
 				@Override
 				public IPropertyControl createControl() {
 					return new NumberProperty(name, min, max, step);
+				}
+				
+				@Override
+				public String getPropertyName() {
+					return name;
 				}
 			};
 		}
@@ -263,6 +280,11 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new QuantityProperty<LengthUnit>(name, min, max, step, LengthUnit.valueOf(defaultUnit));
 				}
+				
+				@Override
+				public String getPropertyName() {
+					return name;
+				}
 			};
 		}
 
@@ -288,6 +310,11 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new QuantityProperty<TimePeriodUnits>(name, min, max, step, TimePeriodUnits.valueOf(defaultUnit));
 				}
+				
+				@Override
+				public String getPropertyName() {
+					return name;
+				}
 			};
 		}
 
@@ -311,6 +338,11 @@ public class OptionPanelBuilder {
 				@Override
 				public IPropertyControl createControl() {
 					return new PathProperty(name, isDir, suffixes);
+				}
+				
+				@Override
+				public String getPropertyName() {
+					return name;
 				}
 			};
 		}
@@ -399,7 +431,20 @@ public class OptionPanelBuilder {
 								control2.setLabel(text);
 							}
 							return control;
-                        }});
+                        }
+						
+						@Override
+						public String getPropertyName() {
+							return name;
+						}
+
+						@Override
+						public String getTranslatedText() {
+							return TextUtils.getRawText(text);
+						}
+						
+						
+					});
 				}
 
 			}
@@ -470,14 +515,21 @@ public class OptionPanelBuilder {
 	final private IPropertyControlCreator nextLineCreator;
 	final private ReadManager readManager;
 	final private IndexedTree tree;
+	private final List<URL> preferencesSources;
 
 	public OptionPanelBuilder() {
+		preferencesSources = new ArrayList<>();
 		readManager = new ReadManager();
 		tree = new IndexedTree(null);
 		nextLineCreator = new IPropertyControlCreator() {
 			@Override
 			public IPropertyControl createControl() {
 				return new NextLineProperty();
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return "";
 			}
 		};
 		initReadManager();
@@ -554,6 +606,11 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new BooleanProperty(name);
 			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
+			}
 		};
 	}
 
@@ -562,6 +619,11 @@ public class OptionPanelBuilder {
 			@Override
 			public IPropertyControl createControl() {
 				return new ColorProperty(name, ResourceController.getResourceController().getDefaultProperty(name));
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
 			}
 		};
 	}
@@ -585,6 +647,11 @@ public class OptionPanelBuilder {
 				comboProperty.setEditable(true);
 				return comboProperty;
 			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
+			}
 		};
 	}
 
@@ -593,6 +660,11 @@ public class OptionPanelBuilder {
 			@Override
 			public IPropertyControl createControl() {
 				return new FontProperty(name);
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
 			}
 		};
 	}
@@ -603,6 +675,11 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new KeyProperty(name);
 			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
+			}
 		};
 	}
 
@@ -611,6 +688,11 @@ public class OptionPanelBuilder {
 			@Override
 			public IPropertyControl createControl() {
 				return new NumberProperty(name, min, max, step);
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
 			}
 		};
 	}
@@ -621,6 +703,11 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new MaybeBooleanProperty(name);
 			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
+			}
 		};
 	}
 
@@ -629,6 +716,16 @@ public class OptionPanelBuilder {
 			@Override
 			public IPropertyControl createControl() {
 				return new SeparatorProperty(label);
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return "";
+			}
+
+			@Override
+			public String getTranslatedText() {
+				return TextUtils.getOptionalText(label, "");
 			}
 		};
 	}
@@ -639,6 +736,11 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new StringProperty(name);
 			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
+			}
 		};
 	}
 
@@ -647,6 +749,11 @@ public class OptionPanelBuilder {
 			@Override
 			public IPropertyControl createControl() {
 				return new TextBoxProperty(name, lines);
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return name;
 			}
 		};
 	}
@@ -660,6 +767,17 @@ public class OptionPanelBuilder {
 				}
 				return new TabProperty(label);
 			}
+			
+			@Override
+			public String getPropertyName() {
+				return "";
+			}
+			
+			@Override
+			public String getTranslatedText() {
+				return TextUtils.getOptionalText(label, "");
+			}
+
 		};
 	}
 
@@ -668,6 +786,11 @@ public class OptionPanelBuilder {
 			@Override
 			public IPropertyControl createControl() {
 				return new TextLine(label);
+			}
+			
+			@Override
+			public String getPropertyName() {
+				return "";
 			}
 		};
 	}
@@ -706,9 +829,10 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("maybe_boolean", new MaybeBooleanCreator());
 	}
 
-	public void load(final URL menu) {
-		try (InputStreamReader reader = new InputStreamReader(new BufferedInputStream(menu.openStream()), StandardCharsets.UTF_8)){
+	public void load(final URL preferencesSource) {
+		try (InputStreamReader reader = new InputStreamReader(new BufferedInputStream(preferencesSource.openStream()), StandardCharsets.UTF_8)){
 			load(reader);
+			preferencesSources.add(preferencesSource);
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
@@ -723,5 +847,9 @@ public class OptionPanelBuilder {
 		catch (final XMLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public List<URL> getLoadedPreferences() {
+		return preferencesSources;
 	}
 }

@@ -305,16 +305,26 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				charsetList.addFirst("JVMdefault");
 				final LinkedList<String> charsetTranslationList = new LinkedList<String>(charsets);
 				charsetTranslationList.addFirst(TextUtils.getText("OptionPanel.default"));
-				return new ComboProperty("default_charset", charsetList, charsetTranslationList);
+				return new ComboProperty(getPropertyName(), charsetList, charsetTranslationList);
+			}
+
+			@Override
+			public String getPropertyName() {
+				return "default_charset";
 			}
 		}, IndexedTree.AS_CHILD);
 		optionPanelBuilder.addCreator("Environment/files/skip_template_selection", new IPropertyControlCreator() {
 			@Override
 			public IPropertyControl createControl() {
 				final Collection<String> templates = collectAvailableMapTemplates();
-				ComboProperty comboProperty = new ComboProperty(STANDARD_TEMPLATE, templates, templates);
+				ComboProperty comboProperty = new ComboProperty(getPropertyName(), templates, templates);
 				comboProperty.setEditable(true);
 				return comboProperty;
+			}
+
+			@Override
+			public String getPropertyName() {
+				return STANDARD_TEMPLATE;
 			}
 		}, IndexedTree.BEFORE);
 	}

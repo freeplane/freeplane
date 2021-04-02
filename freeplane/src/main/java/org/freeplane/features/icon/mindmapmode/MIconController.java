@@ -349,10 +349,20 @@ public class MIconController extends IconController {
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
 				@Override
 				public IPropertyControl createControl() {
-					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslatedDescription());
+					final KeyProperty keyProperty = new KeyProperty(getPropertyName(), getTranslatedText());
 					keyProperty.setIcon(info.getActionIcon());
 					keyProperty.disableModifiers();
 					return keyProperty;
+				}
+
+				@Override
+				public String getPropertyName() {
+					return info.getShortcutKey();
+				}
+
+				@Override
+				public String getTranslatedText() {
+					return info.getTranslatedDescription();
 				}
 			}, IndexedTree.AS_CHILD);
 		}

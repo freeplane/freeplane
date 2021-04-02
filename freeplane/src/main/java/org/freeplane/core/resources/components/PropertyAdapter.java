@@ -41,6 +41,10 @@ public class PropertyAdapter {
 	public JLabel getLabelComponent() {
 		return labelComponent;
 	}
+	
+	protected void setLabelComponent(JLabel labelComponent) {
+		this.labelComponent = labelComponent;
+	}
 
 	public PropertyAdapter(final String name) {
 		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");

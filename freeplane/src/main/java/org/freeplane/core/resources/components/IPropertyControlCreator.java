@@ -19,10 +19,20 @@
  */
 package org.freeplane.core.resources.components;
 
+import org.freeplane.core.util.TextUtils;
+
 /**
  * @author Dimitry Polivaev
  * 26.12.2008
  */
 public interface IPropertyControlCreator {
 	IPropertyControl createControl();
+	String getPropertyName();
+	default String getTranslatedText() {
+		final String propertyName = getPropertyName();
+		return propertyName.isEmpty() ? "" : TextUtils.getRawText("OptionPanel." + propertyName);
+	}
+	default String getTranslatedTooltipText() {
+		return TextUtils.getOptionalText("OptionPanel." + getPropertyName() + ".tooltip", "");
+	}
 }

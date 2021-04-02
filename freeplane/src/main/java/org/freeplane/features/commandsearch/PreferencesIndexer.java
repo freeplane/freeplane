@@ -19,38 +19,30 @@ package org.freeplane.features.commandsearch;
 
 import static org.freeplane.features.commandsearch.SearchItem.ITEM_PATH_SEPARATOR;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.OptionPanel;
+import org.freeplane.core.resources.components.IPropertyControlCreator;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class PreferencesIndexer
 {
-    private final ResourceController resourceController = ResourceController.getResourceController();
-    private final String OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX = "OptionPanel.separator.";
-    private String currentTab;
-    private String currentSeparator;
-    private int tagsOpenendForCurrentPrefDeclaration = 0;
+    private final List<String> path;
 
-    private List<PreferencesItem> prefs;
+    private final List<PreferencesItem> prefs;
 
     PreferencesIndexer()
     {
+    	prefs = new LinkedList<>();
+    	path = new ArrayList<>(2);
         load();
     }
 
@@ -60,90 +52,52 @@ class PreferencesIndexer
     }
 
     private void load() {
-        prefs = new LinkedList<>();
-        URL preferences = resourceController.getResource("/xml/preferences.xml");
-        try(InputStreamReader reader = new InputStreamReader(preferences.openStream(), StandardCharsets.UTF_8))
-        {
-            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            XMLEventReader eventReader = inputFactory.createXMLEventReader(reader);
-            while (eventReader.hasNext()) {
-                XMLEvent event = eventReader.nextEvent();
-                if (event.isStartElement())
-                {
-                    startElement(event.asStartElement());
-                }
-                else if (event.isEndElement())
-                {
-                    endElement(event.asEndElement());
-                }
-            }
-
-        }
-        catch (final javax.xml.stream.XMLStreamException|IOException e)
-        {
-            throw new RuntimeException(e);
-        }
+    	final Controller controller = Controller.getCurrentController();
+		MModeController modeController = (MModeController) controller.getModeController(MModeController.MODENAME);
+		OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
+		final DefaultMutableTreeNode node = optionPanelBuilder.getRoot();
+		load(node, 0);
     }
 
-    private void startElement(final StartElement startElement)
-    {
-        final String localPart = startElement.getName().getLocalPart();
-        if (localPart.equals("tab"))
-        {
-            currentTab = startElement.getAttributeByName(new QName("name")).getValue();
-        }
-        else if (localPart.equals("separator"))
-        {
-            currentSeparator = startElement.getAttributeByName(new QName("name")).getValue();
-        }
-        else if (currentTab != null && currentSeparator != null && tagsOpenendForCurrentPrefDeclaration == 0)
-        {
-            // preference item of any type
-            Attribute name = startElement.getAttributeByName(new QName("name"));
-            String prefKey = name.getValue();
-            String textKey;
-            Attribute textAttribute = startElement.getAttributeByName(new QName("text"));
-            if (textAttribute != null)
-            {
-                textKey = textAttribute.getValue();
-            }
-            else
-            {
-                textKey = OptionPanel.OPTION_PANEL_RESOURCE_PREFIX  + prefKey;
-            }
-            String prefText = TextUtils.getRawText(textKey,"[" + textKey + "]");
-            if (prefText != null)
-            {
-                prefText = HtmlUtils.htmlToPlain(prefText);
-            }
-            String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
-            String currentTabTranslated = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + currentTab, null);
-            String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
-            String prefPath = currentSeparatorTranslated + ITEM_PATH_SEPARATOR + prefText;
-
-			prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, prefPath, tooltipText));
-            tagsOpenendForCurrentPrefDeclaration = 1;
-        }
-        else if (tagsOpenendForCurrentPrefDeclaration > 0)
-        {
-            tagsOpenendForCurrentPrefDeclaration++;
-        }
-    }
-
-    private void endElement(final EndElement endElement)
-    {
-        final String localPart = endElement.getName().getLocalPart();
-        if (localPart.equals("tab"))
-        {
-            currentTab = null;
-        }
-        else if (localPart.equals("separator"))
-        {
-            currentSeparator = null;
-        }
-        else if (tagsOpenendForCurrentPrefDeclaration >= 1)
-        {
-            tagsOpenendForCurrentPrefDeclaration--;
-        }
-    }
+	public void load(final TreeNode parent, int level) {
+		@SuppressWarnings("unchecked")
+		Enumeration<DefaultMutableTreeNode> children = (Enumeration<DefaultMutableTreeNode>) parent.children();
+		while(children.hasMoreElements()) {
+			final DefaultMutableTreeNode child = children.nextElement();
+			final IPropertyControlCreator userObject = (IPropertyControlCreator)child.getUserObject();
+			if(userObject != null) {
+				final String propertyName = userObject.getPropertyName();
+				final String translatedText = HtmlUtils.htmlToPlain(userObject.getTranslatedText());
+				if(! propertyName.isEmpty()){
+				    String tooltipText = HtmlUtils.htmlToPlain(userObject.getTranslatedTooltipText());
+				    String currentTabTranslated = path.get(0);
+				    if(path.size() > 1) {
+				    	String currentSeparatorTranslated = path.get(1);
+				    	if(parent.getChildCount() < 20) {
+				    		String prefPath = currentSeparatorTranslated + ITEM_PATH_SEPARATOR + translatedText;
+				    		prefs.add(new PreferencesItem(currentTabTranslated, propertyName, prefPath, tooltipText));
+				    	}
+				    	else {
+				    		prefs.add(new PreferencesItem(currentTabTranslated, propertyName, translatedText, tooltipText));
+				    	}
+				    }
+				    else {
+				    	prefs.add(new PreferencesItem(currentTabTranslated, propertyName, translatedText, tooltipText));
+				    }
+				}
+				else {
+					path.add(translatedText);
+				}
+				if(level < 2) {
+					load(child, level + 1);
+				}
+				if(propertyName.isEmpty()){
+					path.remove(path.size() - 1);
+				}
+			}
+			else {
+				load(child, level);
+			}
+		}
+	}
 }

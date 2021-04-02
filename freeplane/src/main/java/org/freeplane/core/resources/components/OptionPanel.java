@@ -351,8 +351,7 @@ public class OptionPanel {
 		addChildControls(null, controlsTree);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void addChildControls(BooleanProperty parentControl, final DefaultMutableTreeNode controlsTree) {
+	private void addChildControls(BooleanProperty parentControl, final DefaultMutableTreeNode controlsTree) {
 		for (final Enumeration<TreeNode> i = controlsTree.children(); i.hasMoreElements();) {
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) i.nextElement();
 			final IPropertyControlCreator creator = (IPropertyControlCreator) node.getUserObject();

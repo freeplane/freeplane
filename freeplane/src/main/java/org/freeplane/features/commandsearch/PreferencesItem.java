@@ -34,7 +34,7 @@ class PreferencesItem extends SearchItem {
     private final String searchedText;
     private final String tooltip;
 
-    PreferencesItem(final String tab, final String separator, final String key, final String path, final String tooltip)
+    PreferencesItem(final String tab, final String key, final String path, final String tooltip)
     {
         this.tab = tab;
         this.key = key;
