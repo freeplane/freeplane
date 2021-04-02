@@ -38,6 +38,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Objects;
+
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
@@ -104,6 +106,7 @@ public class MainView extends ZoomableLabel {
 	private Boolean borderColorMatchesEdgeColor = true;
 
 	private MainViewPainter painter;
+	private Color unselectedForeground = null;
 
 	boolean isShortened() {
     	return isShortened;
@@ -336,13 +339,17 @@ public class MainView extends ZoomableLabel {
 		g.setColor(color);
     }
 
-	protected void paintBackgound(final Graphics2D g) {
-		final Color color = getPaintedBackground();
-		painter.paintBackground(g, color);
-	}
+    protected void paintBackgound(final Graphics2D g) {
+    	final Color color = getPaintedBackground();
+    	painter.paintBackground(g, color);
+    }
 
-	public Color getPaintedBackground() {
-		return getNodeView().getPaintedBackground();
+    public Color getUnselectedForeground() {
+    	return unselectedForeground;
+    }
+
+    public Color getPaintedBackground() {
+    	return getNodeView().getPaintedBackground();
 	}
 
 	@Override
@@ -409,10 +416,21 @@ public class MainView extends ZoomableLabel {
 	}
 
 	void updateTextColor(final NodeView node) {
-		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(
-		    node.getModel());
-		setForeground(color);
+		Color newForeground = unselectedForeground = NodeStyleController.getController(node.getMap().getModeController()).getColor(
+				node.getModel());
+		if(node.useSelectionColors()) {
+			Color selectionTextColor = node.getSelectionTextColor();
+			if(selectionTextColor != null) {
+				newForeground = selectionTextColor;
+			}
+		}
+		if(! Objects.equals(getForeground(), newForeground)) {
+			setForeground(newForeground);
+			revalidate();
+		}
+	
 	}
+
 
 	void updateHorizontalTextAlignment(NodeView node) {
 		final HorizontalTextAlignment textAlignment = NodeStyleController.getController(node.getMap().getModeController()).getHorizontalTextAlignment(node.getModel());
@@ -730,21 +748,6 @@ public class MainView extends ZoomableLabel {
 	    super.paintComponent(graphics);
 	}
 	
-	
-
-	@Override
-	public Color getForeground() {
-	    NodeView nodeView = getNodeView();
-	    if(nodeView != null && nodeView.useSelectionColors()) {
-	        Color selectionTextColor = nodeView.getSelectionTextColor();
-	        if(selectionTextColor != null) {
-	            return selectionTextColor;
-	        }
-	    }
-	    return getUnselectedForeground();
-	}
-	
-
     public Insets getDefaultZoomedInsets() {
 		return super.getZoomedInsets();
 	}

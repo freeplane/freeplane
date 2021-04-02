@@ -386,6 +386,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private void select(final NodeView node) {
+			final NodeView[] oldSelecteds = selection.toArray();
 			clear();
 			selectedSet.add(node);
 			selectedList.add(node);
@@ -393,6 +394,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectionEnd = selectionStart = node;
 			addSelectionForHooks(node);
 			onSelectionChange(node);
+			for (final NodeView oldSelected : oldSelecteds) {
+				if (oldSelected != null && oldSelected != node) {
+					onSelectionChange(oldSelected);
+				}
+			}
 		}
 
 		private boolean add(final NodeView node) {
@@ -817,6 +823,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void onSelectionChange(final NodeView node) {
+		node.getMainView().updateTextColor(node);
 		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors)
 			repaint(getVisibleRect());
 		else
@@ -2053,16 +2060,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(selection.size() == 1 && getSelected().equals(newSelected)){
 			return;
 		}
-		final NodeView[] oldSelecteds = selection.toArray();
 		selection.select(newSelected);
 		if (newSelected.getModel().getParentNode() != null) {
 			((NodeView) newSelected.getParent()).setPreferredChild(newSelected);
-		}
-		onSelectionChange(newSelected);
-		for (final NodeView oldSelected : oldSelecteds) {
-			if (oldSelected != null) {
-				onSelectionChange(oldSelected);
-			}
 		}
 	}
 
