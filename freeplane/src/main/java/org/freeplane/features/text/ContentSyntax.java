@@ -3,7 +3,8 @@ package org.freeplane.features.text;
 public enum ContentSyntax {
     XML, PLAIN;
     static public String specificType(String contentType) {
-        return contentType.substring(contentType.indexOf('/') + 1);
+        final String specificType = contentType.substring(contentType.indexOf('/') + 1);
+		return specificType.isEmpty() ? null : specificType;
     }
     
     public final String prefix;
