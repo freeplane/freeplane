@@ -231,18 +231,18 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		return null;
     }
 
-	private Rectangle calculateImageCoordinates(int requiredImageWidth, int requiredImageHeight, final int cachedImageWidth,
-			final int cachedImageHeight) {
+	private Rectangle calculateImageCoordinates(int requiredImageWidth, int requiredImageHeight, final int imageWidth,
+			final int imageHeight) {
 		final Rectangle imageCoordinates = new Rectangle(0, 0, requiredImageWidth, requiredImageHeight);
-		final long k = ((long)requiredImageWidth) * cachedImageHeight - ((long)cachedImageWidth) * requiredImageHeight;
+		final long k = ((long)requiredImageWidth) * imageHeight - ((long)imageWidth) * requiredImageHeight;
 		if(k > 0) {
-			final int scaledImageWidth = requiredImageHeight * cachedImageWidth / cachedImageHeight;
+			final int scaledImageWidth = requiredImageHeight * imageWidth / imageHeight;
 			imageCoordinates.width = scaledImageWidth;
 			imageCoordinates.x = (requiredImageWidth - scaledImageWidth) / 2;
 			
 		}
 		else if(k < 0){
-			final int scaledImageHeight = requiredImageWidth * cachedImageHeight / cachedImageWidth;
+			final int scaledImageHeight = requiredImageWidth * imageHeight / imageWidth;
 			imageCoordinates.height = scaledImageHeight;
 			imageCoordinates.y = (requiredImageHeight - scaledImageHeight) / 2;
 		}
