@@ -160,13 +160,13 @@ public class SvgViewerFactory implements IViewerFactory {
 
     @Override
     public ViewerComponent createViewer(URI uri, Dimension preferredSize,
-            Consumer<ScalableComponent> callback) throws MalformedURLException, IOException {
+            Runnable callback) throws MalformedURLException, IOException {
         ViewerComponent viewer = createViewer(uri, preferredSize);
         viewer.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 
             @Override
             public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
-                callback.accept(viewer);
+                callback.run();
             }
             
         });
@@ -174,14 +174,14 @@ public class SvgViewerFactory implements IViewerFactory {
     }
 
     @Override
-    public ViewerComponent createViewer(URI uri, float zoom, Consumer<ScalableComponent> callback)
+    public ViewerComponent createViewer(URI uri, float zoom, Runnable callback)
             throws MalformedURLException, IOException {
         ViewerComponent viewer = createViewer(uri, zoom);
         viewer.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 
             @Override
             public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
-                callback.accept(viewer);
+            	callback.run();
             }
             
         });

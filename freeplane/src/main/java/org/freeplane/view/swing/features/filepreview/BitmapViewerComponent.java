@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -97,10 +98,9 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private WeakReference<BufferedImage> cachedImageWeakRef;
 	private final URL url;
 	private final Dimension originalSize;
-	private int imageX;
-	private int imageY;
 	private boolean scaleEnabled;
 	private Dimension maximumSize = null;
+	private Runnable rendererListener = null;
 	private static boolean disabledDueToJavaBug = false;
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
@@ -193,16 +193,14 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 						image.flush();
 					}
 					setCachedImage(scaledImage);
-					final int scaledImageHeight = scaledImage.getHeight();
-					final int scaledImageWidth = scaledImage.getWidth();
-					imageX = (requiredImageWidth - scaledImageWidth) / 2;
-					imageY = (requiredImageHeight - scaledImageHeight) / 2;
 					if (getCacheType().equals(CacheType.IC_FILE)) {
 						writeCacheFile();
 					}
 					SwingUtilities.invokeLater(() -> {
+						this.targetWidth.set(0);
+						if(rendererListener != null)
+							rendererListener.run();
 						if(isVisible())
-							this.targetWidth.set(0);
 							repaint();
 					});
 				});
@@ -211,14 +209,19 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			if (cachedImage == null || hasNoArea(cachedImage)) {
 				return null;
 			}
+			final int cachedImageWidth = cachedImage.getWidth();
+			final int cachedImageHeight = cachedImage.getHeight();
+			final Rectangle imageCoordinates = calculateImageCoordinates(requiredImageWidth, requiredImageHeight,
+					cachedImageWidth, cachedImageHeight);
+
 			if(scaleX != 1 || scaleY != 1) {
 				Graphics2D gg = (Graphics2D)g.create();
-				gg.setTransform(AffineTransform.getTranslateInstance(imageX + transform.getTranslateX(), imageY  + transform.getTranslateY()));
-				gg.drawImage(cachedImage, 0, 0, requiredImageWidth, requiredImageHeight, null);
+				gg.setTransform(AffineTransform.getTranslateInstance(imageCoordinates.x + transform.getTranslateX(), imageCoordinates.y  + transform.getTranslateY()));
+				gg.drawImage(cachedImage, 0, 0, imageCoordinates.width, imageCoordinates.height, null);
 				gg.dispose();
 			}
 			else
-				g.drawImage(cachedImage, imageX, imageY, requiredImageWidth, requiredImageHeight, null);
+				g.drawImage(cachedImage, imageCoordinates.x, imageCoordinates.y, imageCoordinates.width, imageCoordinates.height, null);
 		}
 		catch (ClassCastException e) {
 			LogUtils.severe("Disabled bitmap image painting due to java bug https://bugs.openjdk.java.net/browse/JDK-8160328. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
@@ -228,11 +231,31 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		return null;
     }
 
+	private Rectangle calculateImageCoordinates(int requiredImageWidth, int requiredImageHeight, final int cachedImageWidth,
+			final int cachedImageHeight) {
+		final Rectangle imageCoordinates = new Rectangle(0, 0, requiredImageWidth, requiredImageHeight);
+		final long k = ((long)requiredImageWidth) * cachedImageHeight - ((long)cachedImageWidth) * requiredImageHeight;
+		if(k > 0) {
+			final int scaledImageWidth = requiredImageHeight * cachedImageWidth / cachedImageHeight;
+			imageCoordinates.width = scaledImageWidth;
+			imageCoordinates.x = (requiredImageWidth - scaledImageWidth) / 2;
+			
+		}
+		else if(k < 0){
+			final int scaledImageHeight = requiredImageWidth * cachedImageHeight / cachedImageWidth;
+			imageCoordinates.height = scaledImageHeight;
+			imageCoordinates.y = (requiredImageHeight - scaledImageHeight) / 2;
+		}
+		return imageCoordinates;
+	}
+
 	private void paintOriginalImage(Graphics g) {
         final BufferedImage image = loadImageFromURL();
         if (image != null && !hasNoArea(image)) {
             try {
-                g.drawImage(image, imageX, imageY, getWidth(), getHeight(), null);
+            	final Rectangle imageCoordinates = calculateImageCoordinates(getWidth(), getHeight(),
+            			image.getWidth(), image.getHeight());
+                g.drawImage(image, imageCoordinates.x, imageCoordinates.y, imageCoordinates.width, imageCoordinates.height, null);
             }
             catch (ClassCastException e) {
                 LogUtils.severe("Disabled bitmap image painting due to java bug https://bugs.openjdk.java.net/browse/JDK-8160328. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
@@ -417,5 +440,10 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	private void setCachedImage(BufferedImage cachedImage) {
 		this.cachedImage.set(cachedImage);
+	}
+
+	public void setRendererListener(Runnable callback) {
+		this.rendererListener  = callback;
+		
 	}
 }

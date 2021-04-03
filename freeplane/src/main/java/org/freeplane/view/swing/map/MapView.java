@@ -1344,12 +1344,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if (fitToViewport) {
 			    final JViewport vp = (JViewport) getParent();
 			    final Dimension viewPortSize = vp.getVisibleRect().getSize();
-			    JComponent viewer = (JComponent) factory.createViewer(uri, viewPortSize, c -> getParent().repaint());
+			    JComponent viewer = (JComponent) factory.createViewer(uri, viewPortSize, () -> getParent().repaint());
 			    setBackgroundComponent(viewer);
 			    
 			}
             else {
-                JComponent viewer = (JComponent) factory.createViewer(uri, zoom, c -> getParent().repaint());
+                JComponent viewer = (JComponent) factory.createViewer(uri, zoom, () -> getParent().repaint());
                 setBackgroundComponent(viewer);
             }
 			if(backgroundComponent == null) {
