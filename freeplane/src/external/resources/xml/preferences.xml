@@ -296,6 +296,7 @@
 				<number name="undo_levels" />
 			</separator>
 			<separator name="RichTextEditor">
+				<combo name="simplyhtml.images_copied_by_editor" enum="com.lightdev.app.shtm.CopiedImageSources"/>
 				<combo name="simplyhtml.default_paste_mode">
 					<choice value="PASTE_HTML" />
 					<choice value="PASTE_PLAIN_TEXT" />
