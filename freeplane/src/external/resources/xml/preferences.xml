@@ -138,7 +138,7 @@
 				<color name="connector_color" />
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
-				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorModel$Shape"/>
+				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorShape"/>
 				<number name="connector_width" text="edit_width_label" min="1"
 					max="32" />
 				<font name="label_font_family" />
@@ -181,7 +181,7 @@
 		<tab name="Defaults">
 			<separator name="cloud">
 				<color name="standardcloudcolor" />
-				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudModel$Shape"/>
+				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudShape"/>
 			</separator>
 			<separator name="cmdsearch">
                 <number name="cmdsearch_item_limit" min="10"/>

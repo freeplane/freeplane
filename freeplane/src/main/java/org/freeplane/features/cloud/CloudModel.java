@@ -25,9 +25,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
 public class CloudModel implements IExtension {
-	public enum Shape{
-		ARC, STAR, RECT, ROUND_RECT
-	};
 	public static CloudModel getModel(final NodeModel node) {
 		return (CloudModel) node.getExtension(CloudModel.class);
 	}
@@ -54,19 +51,19 @@ public class CloudModel implements IExtension {
 
 	private Color color;
 	
-	private Shape shape;
+	private CloudShape shape;
 
-	public Shape getShape() {
+	public CloudShape getShape() {
     	return shape;
     }
 
-	public void setShape(Shape shape) {
+	public void setShape(CloudShape shape) {
     	this.shape = shape;
     }
 
 	public CloudModel() {
 		color = CloudController.getStandardColor();
-		shape = Shape.ARC;
+		shape = CloudShape.ARC;
 	}
 
 	public Color getColor() {

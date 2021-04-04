@@ -82,7 +82,7 @@ import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
@@ -1744,7 +1744,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 						LinkController linkController = LinkController.getController(getModeController());
                         if (areBothNodesVisible 
                                 && (
-                                Shape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
+                                ConnectorShape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
                                 || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
 							arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 						else if(areBothNodesVisible || ! hideSingleEndConnectors)

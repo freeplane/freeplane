@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.NodeView;
@@ -34,7 +35,7 @@ public class InclinationRecommender {
      */
     public Point calcStartInclination() {
         if(MapStyleModel.isStyleNode(connector.getSource())) {
-            boolean hasLineShape = linkController.getShape(connector) == ConnectorModel.Shape.LINE;
+            boolean hasLineShape = linkController.getShape(connector) == ConnectorShape.LINE;
             int y = hasLineShape ? 0 : -recommendedHeight / 2;
             return new Point(recommendedLength, y);
         } else {

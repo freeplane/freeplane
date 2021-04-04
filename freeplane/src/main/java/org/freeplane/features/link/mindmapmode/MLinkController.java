@@ -61,7 +61,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.HyperTextLinkModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.MapLinks;
@@ -818,8 +818,8 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setShape(final ConnectorModel connector, final Optional<Shape> shape) {
-		final Optional<Shape> oldShape = connector.getShape();
+	public void setShape(final ConnectorModel connector, final Optional<ConnectorShape> shape) {
+		final Optional<ConnectorShape> oldShape = connector.getShape();
 		if (oldShape.equals(shape)) {
 			return;
 		}

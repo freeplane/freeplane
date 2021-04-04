@@ -13,7 +13,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.plugin.script.ScriptContext;
@@ -29,11 +29,11 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 	
 	public void setShape(String shapeName) {
-	    Shape shape = Shape.valueOf(shapeName);
+	    ConnectorShape shape = ConnectorShape.valueOf(shapeName);
         setShape(shape);
 	}
 
-    public void setShape(Shape shape) {
+    public void setShape(ConnectorShape shape) {
         getLinkController().setShape(getConnector(), Optional.of(shape));
     }
 
@@ -160,7 +160,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	@Deprecated
 	public void setSimulatesEdge(final boolean simulatesEdge) {
-			setShape(simulatesEdge ? Shape.EDGE_LIKE : Shape.CUBIC_CURVE);
+			setShape(simulatesEdge ? ConnectorShape.EDGE_LIKE : ConnectorShape.CUBIC_CURVE);
 	}
 
 	public void setSourceLabel(final String label) {
@@ -187,7 +187,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public boolean simulatesEdge() {
-		return Shape.EDGE_LIKE.equals(getConnector().getShape());
+		return ConnectorShape.EDGE_LIKE.equals(getConnector().getShape());
 	}
 
     public List<Integer> getStartInclination() {

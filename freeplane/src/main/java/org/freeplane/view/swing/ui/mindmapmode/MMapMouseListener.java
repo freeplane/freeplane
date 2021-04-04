@@ -26,9 +26,9 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.NodeModel;
@@ -117,8 +117,8 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			ConnectorModel connector = connectorView.getModel();
 			if(MapStyleModel.isDefaultStyleNode(connector.getSource()))
 			    return;
-			final Shape shape = linkController().getShape(connector);
-			if (Shape.EDGE_LIKE.equals(shape)) {
+			final ConnectorShape shape = linkController().getShape(connector);
+			if (ConnectorShape.EDGE_LIKE.equals(shape)) {
 				return;
 			}
 			connectorOldStartPoint = connector.getStartInclination();

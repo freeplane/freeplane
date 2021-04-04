@@ -35,7 +35,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailModel;
@@ -121,15 +121,15 @@ class NodeViewFactory {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
 		NodeGeometryModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
-		if (shapeConfiguration.getShape().equals(NodeStyleModel.Shape.combined)) {
+		if (shapeConfiguration.getShape().equals(NodeStyleShape.combined)) {
 			if (node.isFolded()) {
-				shapeConfiguration= shapeConfiguration.withShape(NodeStyleModel.Shape.bubble);
+				shapeConfiguration= shapeConfiguration.withShape(NodeStyleShape.bubble);
 			}
 			else {
 				shapeConfiguration = NodeGeometryModel.FORK;
 			}
 		}
-		else while(shapeConfiguration.getShape().equals(NodeStyleModel.Shape.as_parent)){
+		else while(shapeConfiguration.getShape().equals(NodeStyleShape.as_parent)){
 			NodeView parent = node.getParentView();
 			if (parent == null)
 				shapeConfiguration = NodeGeometryModel.DEFAULT_ROOT_OVAL;

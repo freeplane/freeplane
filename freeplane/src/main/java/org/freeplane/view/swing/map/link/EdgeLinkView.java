@@ -28,8 +28,8 @@ import java.awt.Rectangle;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView;
@@ -57,7 +57,7 @@ public class EdgeLinkView extends AConnectorView {
 		}
 		Color color;
 		linkController = LinkController.getController(modeController);
-		if (Shape.EDGE_LIKE.equals(linkController.getShape(model))) {
+		if (ConnectorShape.EDGE_LIKE.equals(linkController.getShape(model))) {
 			color = edgeView.getColor().darker();
 		}
 		else {
@@ -95,7 +95,7 @@ public class EdgeLinkView extends AConnectorView {
 
 	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
-		if(Shape.EDGE_LIKE.equals(linkController.getShape(connectorModel))){
+		if(ConnectorShape.EDGE_LIKE.equals(linkController.getShape(connectorModel))){
 			return;
 		}
 		if (isSourceVisible() && !linkController.getArrows(connectorModel).start.equals(ArrowType.NONE)) {

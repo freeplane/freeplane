@@ -24,7 +24,7 @@ import java.awt.Color;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
-import org.freeplane.features.cloud.CloudModel.Shape;
+import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -53,7 +53,7 @@ public class MCloudController extends CloudController {
 			final Color color = fromStyle.getColor();
 			if(color != null)
 			    toStyle.setColor(color);
-			final Shape shape = fromStyle.getShape();
+			final CloudShape shape = fromStyle.getShape();
 			if(shape != null)
 			    toStyle.setShape(shape);
 		}
@@ -90,7 +90,7 @@ public class MCloudController extends CloudController {
         modeController.addAction(new CloudAction());
         modeController.addAction(new RemoveCloudAction());
 		modeController.addAction(new CloudColorAction());
-		for(Shape shape : Shape.values()){
+		for(CloudShape shape : CloudShape.values()){
 				modeController.addAction(new CloudShapeAction(shape));
 		}
 	}
@@ -101,7 +101,7 @@ public class MCloudController extends CloudController {
 			return;
 		}
 		final Color color = cloud != null ? cloud.getColor() : CloudController.getStandardColor();
-		final Shape shape = cloud != null ? cloud.getShape() : CloudController.getStandardShape();
+		final CloudShape shape = cloud != null ? cloud.getShape() : CloudController.getStandardShape();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final IActor actor = new IActor() {
 			public void act() {
@@ -169,10 +169,10 @@ public class MCloudController extends CloudController {
 		modeController.execute(actor, node.getMap());
 	}
 
-	public void setShape(final NodeModel node, final CloudModel.Shape shape) {
+	public void setShape(final NodeModel node, final CloudShape shape) {
 		setCloud(node, true);
 		final ModeController modeController = Controller.getCurrentModeController();
-		final CloudModel.Shape oldShape = CloudModel.getModel(node).getShape();
+		final CloudShape oldShape = CloudModel.getModel(node).getShape();
 		if (shape == oldShape || shape != null && shape.equals(oldShape)) {
 			return;
 		}

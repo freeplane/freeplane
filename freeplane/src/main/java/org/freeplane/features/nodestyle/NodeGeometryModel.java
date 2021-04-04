@@ -2,15 +2,14 @@ package org.freeplane.features.nodestyle;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 public class NodeGeometryModel {
-	final private NodeStyleModel.Shape shape;
+	final private NodeStyleShape shape;
 	final private Quantity<LengthUnit> horizontalMargin;
 	final private Quantity<LengthUnit> verticalMargin;
 	final private  boolean isUniform;
 	
-	private NodeGeometryModel(final Shape shape, final Quantity<LengthUnit> horizontalMargin, final Quantity<LengthUnit> verticalMargin, final boolean isUniform) {
+	private NodeGeometryModel(final NodeStyleShape shape, final Quantity<LengthUnit> horizontalMargin, final Quantity<LengthUnit> verticalMargin, final boolean isUniform) {
 		super();
 		this.shape = shape;
 		this.horizontalMargin = horizontalMargin;
@@ -54,13 +53,13 @@ public class NodeGeometryModel {
 
 	final static public Quantity<LengthUnit> DEFAULT_MARGIN = new Quantity<LengthUnit>(2, LengthUnit.pt);
 	public static NodeGeometryModel NULL_SHAPE = new NodeGeometryModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
-	public static final NodeGeometryModel AS_PARENT = NULL_SHAPE.withShape(Shape.as_parent);
-	public static final NodeGeometryModel FORK = NULL_SHAPE.withShape(Shape.fork);
+	public static final NodeGeometryModel AS_PARENT = NULL_SHAPE.withShape(NodeStyleShape.as_parent);
+	public static final NodeGeometryModel FORK = NULL_SHAPE.withShape(NodeStyleShape.fork);
 	private static final Quantity<LengthUnit> DEFAULT_HORIZONTAL_OVAL_MARGIN = new Quantity<LengthUnit>(6, LengthUnit.pt);
 	private static final Quantity<LengthUnit> DEFAULT_VERTICAL_OVAL_MARGIN = new Quantity<LengthUnit>(12, LengthUnit.pt);
-	public static final NodeGeometryModel DEFAULT_ROOT_OVAL = NULL_SHAPE.withShape(Shape.oval)
+	public static final NodeGeometryModel DEFAULT_ROOT_OVAL = NULL_SHAPE.withShape(NodeStyleShape.oval)
 			.withHorizontalMargin(DEFAULT_HORIZONTAL_OVAL_MARGIN).withVerticalMargin(DEFAULT_VERTICAL_OVAL_MARGIN);
-	public NodeStyleModel.Shape getShape() {
+	public NodeStyleShape getShape() {
 		return shape;
 	}
 	public Quantity<LengthUnit> getHorizontalMargin() {
@@ -72,7 +71,7 @@ public class NodeGeometryModel {
 	public boolean isUniform() {
 		return isUniform;
 	}
-	public NodeGeometryModel withShape(NodeStyleModel.Shape shape) {
+	public NodeGeometryModel withShape(NodeStyleShape shape) {
 		return new NodeGeometryModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
 	public NodeGeometryModel withHorizontalMargin(Quantity<LengthUnit> horizontalMargin) {
