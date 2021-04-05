@@ -343,29 +343,6 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
-
-		for (final AFreeplaneAction iconAction : actions) {
-			final IconDescription info = (IconDescription) iconAction;
-			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
-				@Override
-				public IPropertyControl createControl() {
-					final KeyProperty keyProperty = new KeyProperty(getPropertyName(), getTranslatedText());
-					keyProperty.setIcon(info.getActionIcon());
-					keyProperty.disableModifiers();
-					return keyProperty;
-				}
-
-				@Override
-				public String getPropertyName() {
-					return info.getShortcutKey();
-				}
-
-				@Override
-				public String getTranslatedText() {
-					return info.getTranslatedDescription();
-				}
-			}, IndexedTree.AS_CHILD);
-		}
 	}
 
 	public Collection<AFreeplaneAction> getIconActions() {

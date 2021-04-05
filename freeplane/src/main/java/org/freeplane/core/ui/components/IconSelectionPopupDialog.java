@@ -58,6 +58,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
@@ -409,9 +410,25 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
-	@Override
+    @Override
     public void mouseClicked(final MouseEvent mouseEvent) {
-		addIcon(mouseEvent.getModifiers());
+    	if(mouseEvent.isControlDown()) {
+    		changeKeystroke();
+    	}
+    	else
+			addIcon(mouseEvent.getModifiers());
+	}
+
+	private void changeKeystroke() {
+		final int selectedIndex = iconLabels.indexOf(selected);
+		final String keystrokeResourceName = icons.get(selectedIndex).getShortcutKey();
+		final String keyStrokeDescription = ResourceController.getResourceController().getProperty(keystrokeResourceName);
+		final GrabKeyDialog keyDialog = new GrabKeyDialog(keyStrokeDescription, KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK | KeyEvent.META_MASK);
+		keyDialog.setVisible(true);
+		if (keyDialog.isOK()) {
+			 ResourceController.getResourceController().setProperty(keystrokeResourceName, keyDialog.getShortcut());
+			 select(selectedIndex);
+		}
 	}
 
 	/*
