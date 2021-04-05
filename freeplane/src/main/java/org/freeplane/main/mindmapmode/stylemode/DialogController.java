@@ -23,7 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JComponent;
@@ -31,6 +30,7 @@ import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.main.application.Browser;
@@ -81,8 +81,8 @@ class DialogController extends FrameController {
 	}
 
 	@Override
-	public void openDocument(final URI uri) throws IOException {
-		new Browser().openDocument(uri);
+	public void openDocument(final Hyperlink link) throws IOException {
+		new Browser().openDocument(link);
 	}
 
 	/**

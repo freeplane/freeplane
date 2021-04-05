@@ -7,11 +7,12 @@ import java.text.MessageFormat;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.mode.Controller;
 
 public class Browser {
-	public void openDocument(final URI uri) {
-		String uriString = uri.toString();
+	public void openDocument(final Hyperlink link) {
+		String uriString = link.toString();
 		final String UNC_PREFIX = "file:////";
 		if (uriString.startsWith(UNC_PREFIX)) {
 			uriString = "file://" + uriString.substring(UNC_PREFIX.length());
@@ -31,10 +32,10 @@ public class Browser {
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty(propertyString));
 				final String browserCommand = formatter.format(messageArguments);
-				final String scheme = uri.getScheme();
+				final String scheme = link.getScheme();
                 if (scheme.equals("file") || scheme.equals("smb")) {
                     if(scheme.equals("smb")){
-                        uriString = Compat.smbUri2unc(uri);
+                        uriString = Compat.smbUri2unc(link.getUri());
                     }
 					if (System.getProperty("os.name").startsWith("Windows 2000"))
 						command = new String[] { "rundll32", "shell32.dll,ShellExec_RunDLL", uriString };
@@ -63,8 +64,8 @@ public class Browser {
 		else if (osName.startsWith("Mac OS")) {
 			String browserCommand = null;
 			try {
-				if(uri.getScheme().equals("file"))
-					uriString = decodedString(uri);
+				if(link.getScheme().equals("file"))
+					uriString = link.decodedString();
 				browserCommand = ResourceController.getResourceController().getProperty("default_browser_command_mac");
 				Controller.exec(new String[]{browserCommand, uriString});
 			}
@@ -92,50 +93,4 @@ public class Browser {
 		}
 	}
 	
-    private String decodedString(URI uri) {
-
-        StringBuffer sb = new StringBuffer();
-        String scheme = uri.getScheme();
-		if (scheme != null) {
-            sb.append(scheme);
-            sb.append(':');
-        }
-        if (uri.isOpaque()) {
-            sb.append(uri.getSchemeSpecificPart());
-        } else {
-        	String host = uri.getHost();
-            if (host != null) {
-                sb.append("//");
-                if (uri.getUserInfo() != null) {
-                    sb.append(uri.getUserInfo());
-                    sb.append('@');
-                }
-                boolean needBrackets = ((host.indexOf(':') >= 0)
-                                    && !host.startsWith("[")
-                                    && !host.endsWith("]"));
-                if (needBrackets) sb.append('[');
-                sb.append(host);
-                if (needBrackets) sb.append(']');
-                if (uri.getPort() != -1) {
-                    sb.append(':');
-                    sb.append(uri.getPort());
-                }
-            } else if (uri.getAuthority() != null) {
-                sb.append("//");
-                sb.append(uri.getAuthority());
-            }
-            if (uri.getPath() != null)
-                sb.append(uri.getPath());
-            if (uri.getQuery() != null) {
-                sb.append('?');
-                sb.append(uri.getQuery());
-            }
-        }
-        if (uri.getFragment() != null) {
-            sb.append('#');
-            sb.append(uri.getFragment());
-        }
-        return sb.toString();
-    }
-
-}
+ }

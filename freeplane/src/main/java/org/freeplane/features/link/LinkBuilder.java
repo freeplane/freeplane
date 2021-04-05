@@ -38,6 +38,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.IStyle;
@@ -352,7 +353,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 	public void writeAttributes(final ITreeWriter writer, final NodeModel node) {
 		final NodeLinks links = node.getExtension(NodeLinks.class);
 		if(links != null) {
-			final URI link = links.getHyperLink(node);
+			final Hyperlink link = links.getHyperLink(node);
 			if (link != null) {
 				final String string = link.toString();
 				if (string.startsWith("#ID")) {

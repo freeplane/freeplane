@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -81,7 +82,7 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			final MLinkController linkController_selected = (MLinkController) MLinkController.getController();
 			try {
 				final URI linkToAnchorNode = LinkController.createURI(sourceID.trim());
-				linkController_selected.loadURI(linkToAnchorNode);
+				linkController_selected.loadHyperlink(new Hyperlink(linkToAnchorNode));
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
@@ -102,7 +103,7 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 
 			try {
 				final URI linkBackToSelectedNode = LinkController.createURI(targetID.trim());
-				linkController_anchored.loadURI(linkBackToSelectedNode);
+				linkController_anchored.loadHyperlink(new Hyperlink(linkBackToSelectedNode));
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);

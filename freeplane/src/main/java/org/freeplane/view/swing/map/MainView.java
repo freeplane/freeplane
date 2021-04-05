@@ -56,6 +56,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
@@ -477,7 +478,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	private String convertTextToHtmlLink(String text, NodeModel node) {
-		URI link = NodeLinks.getLink(node);
+		Hyperlink link = NodeLinks.getLink(node);
 		if(link == null || "menuitem".equals(link.getScheme()) || ! LinkController.getController().formatNodeAsHyperlink(node))
 			return text;
 		if (HtmlUtils.isHtml(text))

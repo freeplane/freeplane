@@ -31,6 +31,7 @@ import java.util.ListIterator;
 import java.util.Optional;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -55,7 +56,7 @@ public class NodeLinks implements IExtension {
 		return nodeLinks;
 	}
 
-	public static URI getLink(final NodeModel node) {
+	public static Hyperlink getLink(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
 		return links != null ? links.getHyperLink(node) : null;
 	}
@@ -66,7 +67,7 @@ public class NodeLinks implements IExtension {
 	}
 
 	public static String getLinkAsString(final NodeModel selectedNode) {
-		final URI link = NodeLinks.getValidLink(selectedNode);
+		final Hyperlink link = NodeLinks.getValidLink(selectedNode);
 		return link != null ? link.toString() : null;
 	}
 
@@ -94,7 +95,7 @@ public class NodeLinks implements IExtension {
 			return Collections.<NodeLinkModel> emptyList();
 	}
 
-	private URI nonLocalHyperlink;
+	private Hyperlink nonLocalHyperlink;
 	private Boolean formatNodeAsHyperlink;
 	final private LinkedList<NodeLinkModel> links;
 	//DOCEAR - fixed: new property type for node link changes
@@ -122,7 +123,7 @@ public class NodeLinks implements IExtension {
 	/**
 	 * @return
 	 */
-	public URI getHyperLink(NodeModel clone) {
+	public Hyperlink getHyperLink(NodeModel clone) {
 		if(nonLocalHyperlink != null)
 			return nonLocalHyperlink;
 		final Iterator<NodeLinkModel> iterator = links.iterator();
@@ -130,7 +131,7 @@ public class NodeLinks implements IExtension {
 			final NodeLinkModel link = iterator.next();
 			if (link instanceof HyperTextLinkModel) {
 				try {
-	                return new URI("#" + link.getTargetID());
+	                return new Hyperlink(new URI("#" + link.getTargetID()));
                 }
                 catch (URISyntaxException e) {
 	                LogUtils.severe(e);
@@ -181,7 +182,7 @@ public class NodeLinks implements IExtension {
 		return null;
 	}
 
-	public void setHyperLink(final URI hyperlink) {
+	public void setHyperLink(final Hyperlink hyperlink) {
 		this.nonLocalHyperlink = hyperlink;
 	}
 
@@ -195,8 +196,8 @@ public class NodeLinks implements IExtension {
 		}
 	}
 
-	public static URI getValidLink(final NodeModel model) {
-		final URI link = NodeLinks.getLink(model);
+	public static Hyperlink getValidLink(final NodeModel model) {
+		final Hyperlink link = NodeLinks.getLink(model);
 		if (link == null) {
 			return null;
 		}

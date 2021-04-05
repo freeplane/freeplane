@@ -52,6 +52,7 @@ import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Custom
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.explorer.MapExplorerController;
@@ -265,8 +266,8 @@ public class UrlManager implements IExtension {
 
     /**@deprecated -- use LinkController*/
 	@Deprecated
-	public void loadURL(URI uri) {
-		final String uriString = uri.toString();
+	public void loadHyperlink(Hyperlink link) {
+		final String uriString = link.toString();
 		if (uriString.startsWith("#")) {
 			loadLocalLinkURI(uriString);
 		}
@@ -276,7 +277,7 @@ public class UrlManager implements IExtension {
 				loadNodeReferenceURI(nodeAndMapReference);
 			}
 			else {
-				loadOtherURI(uri, nodeAndMapReference.hasFreeplaneFileExtension());
+				loadOtherHyperlink(link, nodeAndMapReference.hasFreeplaneFileExtension());
 			}
 		}
 	}
@@ -305,7 +306,7 @@ public class UrlManager implements IExtension {
 
 	private void loadNodeReferenceURI(final NodeAndMapReference nodeAndMapReference) {
 		try {
-			loadURL(new URI(nodeAndMapReference.getMapReference()));
+			loadHyperlink(new Hyperlink(new URI(nodeAndMapReference.getMapReference())));
 			final MapModel map = Controller.getCurrentController().getMap();
 			selectNode(map.getRootNode(), nodeAndMapReference.getNodeReference());
 		} catch (URISyntaxException e) {
@@ -313,7 +314,8 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	private void loadOtherURI(URI uri, final boolean hasFreeplaneFileExtension) {
+	private void loadOtherHyperlink(Hyperlink link, final boolean hasFreeplaneFileExtension) {
+		URI uri = link.getUri();
 		try {
 			if(! uri.isAbsolute()){
 				URI absoluteUri = getAbsoluteUri(uri);
@@ -344,7 +346,7 @@ public class UrlManager implements IExtension {
 					modeController.getMapController().openMap(url);
 					return;
 				}
-				Controller.getCurrentController().getViewController().openDocument(uri);
+				Controller.getCurrentController().getViewController().openDocument(link);
 			}
 			catch (final Exception e) {
 				LogUtils.warn("link " + uri + " not found", e);
@@ -369,12 +371,12 @@ public class UrlManager implements IExtension {
 
 		if (map.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
 			String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(map);
-			loadURL(new URI(fixedUri));
+			loadHyperlink(new Hyperlink(new URI(fixedUri)));
 			return;
 		}
 
 		if(map.startsWith("http://") || map.startsWith("https://")|| map.startsWith("file:")) {
-			loadURL(new URI(map));
+			loadHyperlink(new Hyperlink(new URI(map)));
 		}
 		else {
 			if (!FileUtils.isAbsolutePath(map)) {
@@ -384,7 +386,7 @@ public class UrlManager implements IExtension {
 			if(nodeAndMapReference.hasFreeplaneFileExtension()) {
 			    final URI uri = new File(nodeAndMapReference.getMapReference()).toURI();
 			    final URI uriWithNodeReference = new URI(uri.getScheme(), null, uri.getPath(), nodeAndMapReference.getNodeReference());
-			    loadURL(uriWithNodeReference);
+			    loadHyperlink(new Hyperlink(uriWithNodeReference));
 			}
 			else {
 			    LogUtils.warn("Invalid mind map file extension, not opened: " + map);

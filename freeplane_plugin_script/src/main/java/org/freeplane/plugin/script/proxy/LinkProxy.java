@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.freeplane.api.Node;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.link.LinkController;
@@ -31,7 +32,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	// LinkRO
 	@Override
 	public URI getUri() {
-		return NodeLinks.getLink(getDelegate());
+		return NodeLinks.getLink(getDelegate()).getUri();
 	}
 
 	// LinkRO
@@ -85,7 +86,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	@Deprecated
 	public String get() {
 		// uses getValidLink() instead of getLink() as in getText()
-		final URI link = NodeLinks.getValidLink(getDelegate());
+		final Hyperlink link = NodeLinks.getValidLink(getDelegate());
         return link == null ? null : link.toString();
 	}
 

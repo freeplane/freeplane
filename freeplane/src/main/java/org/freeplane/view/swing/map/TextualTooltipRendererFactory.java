@@ -27,6 +27,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
@@ -58,7 +59,7 @@ class TextualTooltipRendererFactory {
 	    		if (linkURL != null) {
 	    			try {
 	    				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
-	    				LinkController.getController().loadURI(nodeView.getModel(), new URI(linkURL));
+	    				LinkController.getController().loadURI(nodeView.getModel(), new Hyperlink(new URI(linkURL)));
 	    			} catch (Exception e) {
 	    				LogUtils.warn(e);
 	    			}

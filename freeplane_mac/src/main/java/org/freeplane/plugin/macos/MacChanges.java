@@ -44,6 +44,7 @@ import javax.swing.JFrame;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -151,7 +152,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 			    MacOptions.macFilesToOpen.add(uri.toString());
 			} else {
 				// Direct loading
-				LinkController.getController().loadURI(uri);
+				LinkController.getController().loadHyperlink(new Hyperlink(uri));
 			}
 		} catch (Exception e) {
 			LogUtils.warn(e);

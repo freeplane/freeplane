@@ -22,7 +22,6 @@ package org.freeplane.features.ui;
 import java.awt.Component;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -31,6 +30,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -66,7 +66,7 @@ public interface ViewController {
 
 	public boolean isMenubarVisible();
 
-	public void openDocument(URI uri) throws IOException;
+	public void openDocument(Hyperlink link) throws IOException;
 
 	public void openDocument(URL url) throws Exception;
 

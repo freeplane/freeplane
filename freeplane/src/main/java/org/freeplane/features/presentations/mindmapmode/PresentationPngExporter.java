@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.export.mindmapmode.ExportToImage;
 import org.freeplane.features.map.IMapSelection;
@@ -140,7 +141,7 @@ class PresentationPngExporter {
 		for(int i = 0; i < presentations.getSize(); i++)
 	    	exportPresentation(presentations.getElement(i));
 		restorePreviousPresentation();
-		UrlManager.getController().loadURL(exportDirectory.toURI());
+		UrlManager.getController().loadHyperlink(new Hyperlink(exportDirectory.toURI()));
 	}
 
 	private void prepareExport() {
@@ -166,7 +167,7 @@ class PresentationPngExporter {
 		NamedElementCollection<Presentation> presentations = presentationState.getPresentations();
 		exportPresentation(presentations.getCurrentElement());
 		restorePreviousPresentation();
-		UrlManager.getController().loadURL(exportDirectory.toURI());
+		UrlManager.getController().loadHyperlink(new Hyperlink(exportDirectory.toURI()));
 	}
 
 	private void restorePreviousPresentation() {

@@ -83,6 +83,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageTyp
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -607,10 +608,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	/**@deprecated -- use LinkController*/
 	@Deprecated
 	@Override
-	public void loadURL(final URI relative) {
+	public void loadHyperlink(final Hyperlink relative) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		if (map == null || map.getURL() == null) {
-			if (!relative.toString().startsWith("#") && !relative.isAbsolute() || relative.isOpaque()) {
+			if (!relative.toString().startsWith("#") && !relative.getUri().isAbsolute() || relative.getUri().isOpaque()) {
 				Controller.getCurrentController().getViewController().out("You must save the current map first!");
 				final boolean result = ((MFileManager) UrlManager.getController()).save(map);
 				if (!result) {
@@ -618,7 +619,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				}
 			}
 		}
-		super.loadURL(relative);
+		super.loadHyperlink(relative);
 	}
 
 	public void open() {

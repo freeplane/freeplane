@@ -71,6 +71,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -636,7 +637,7 @@ public class UITools {
 			public void actionPerformed(ActionEvent e) {
     			final ModeController modeController = Controller.getCurrentModeController();
     			final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-    			urlManager.loadURL(uri);
+    			urlManager.loadHyperlink(new Hyperlink(uri));
     		}
     	});
     	return button;

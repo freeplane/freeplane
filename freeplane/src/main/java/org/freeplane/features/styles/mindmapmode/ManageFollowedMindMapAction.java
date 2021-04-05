@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -51,7 +52,7 @@ class ManageFollowedMindMapAction extends AFreeplaneAction{
 
 				switch(choice) {
 				case 0:
-					UrlManager.getController().loadURL(uri);
+					UrlManager.getController().loadHyperlink(new Hyperlink(uri));
 					break;
 				case 1:
 					try {
