@@ -100,7 +100,6 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 				LogUtils.warn(e.getMessage());
 				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()));
 			}
-			notePanel.updateBaseUrl(node.getMap().getURL());
 		} else {
 			String noteContentType = noteController.getNoteContentType(node);
 			if (TextController.CONTENT_TYPE_AUTO.equals(noteContentType)
@@ -109,6 +108,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			else
 				notePanel.setViewedContent("");
 		}
+		noteController.setDefaultStyle(node);
 		notePanel.updateBaseUrl(node.getMap().getURL());
 	}
 
