@@ -38,7 +38,6 @@ import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.EncodingGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import groovy.lang.Binding;

@@ -15,7 +15,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.openmaps.mapelements.OpenMapsDialog;
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
-import org.freeplane.plugin.openmaps.LocationChoosenListener;
 
 /**
  * @author Blair Archibald

@@ -5,9 +5,6 @@ import java.awt.Window;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
-import javax.swing.SwingUtilities;
-import javax.swing.text.JTextComponent;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 

@@ -19,11 +19,8 @@
 package org.freeplane.features.commandsearch;
 
 import java.awt.event.ActionEvent;
-import java.net.URL;
-
 import javax.swing.AbstractAction;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanel;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.resources.components.ShowPreferencesAction;

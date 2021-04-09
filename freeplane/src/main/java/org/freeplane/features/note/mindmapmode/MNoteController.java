@@ -21,7 +21,6 @@ package org.freeplane.features.note.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
 import java.util.LinkedHashSet;
 import java.util.Set;

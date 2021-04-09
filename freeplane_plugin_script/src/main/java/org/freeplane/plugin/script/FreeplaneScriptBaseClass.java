@@ -19,7 +19,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
-import org.freeplane.plugin.script.proxy.Proxy;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 import groovy.lang.Binding;

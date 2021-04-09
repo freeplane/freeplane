@@ -22,10 +22,6 @@ package org.freeplane.features.styles.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;

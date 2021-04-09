@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import java.awt.GraphicsEnvironment;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -26,7 +26,6 @@ import java.net.URL;
 
 import javax.swing.Timer;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;

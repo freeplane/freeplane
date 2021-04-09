@@ -19,7 +19,6 @@
  */
 package org.freeplane.plugin.script;
 
-import java.awt.AWTPermission;
 import java.io.File;
 import java.io.FilePermission;
 import java.net.URL;
@@ -31,11 +30,8 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.security.cert.Certificate;
 import java.util.PropertyPermission;
-import java.util.logging.LoggingPermission;
-
 import org.freeplane.core.util.Compat;
 import org.freeplane.main.application.ApplicationResourceController;
-import org.osgi.framework.AdminPermission;
 
 /**
  * @author Dimitry Polivaev

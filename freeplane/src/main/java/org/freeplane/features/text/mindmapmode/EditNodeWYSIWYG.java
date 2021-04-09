@@ -53,7 +53,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
-import com.lightdev.app.shtm.CopiedImageSources;
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 

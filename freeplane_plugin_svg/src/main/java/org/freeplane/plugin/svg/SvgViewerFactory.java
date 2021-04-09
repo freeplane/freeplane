@@ -7,7 +7,6 @@ import java.net.URI;
 import java.util.function.Consumer;
 
 import org.apache.batik.bridge.ViewBox;
-import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.apache.batik.swing.svg.GVTTreeBuilderAdapter;
