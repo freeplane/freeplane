@@ -786,7 +786,7 @@ public class UITools {
 	}
 
     public static JFileChooser newFileChooser() {
-       return new JFreeplaneCustomizableFileChooser();
+       return Controller.getCurrentModeController().getExtension(UrlManager.class).getFileChooser();
     }
 
     public static JFileChooser newFileChooser(File directory) {

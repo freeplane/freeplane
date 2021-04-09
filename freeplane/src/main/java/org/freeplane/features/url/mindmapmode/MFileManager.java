@@ -424,7 +424,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public URI getLinkByFileChooser(final MapModel map) {
-		JFileChooser chooser = null;
 		final File file = map.getFile();
 		if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(
@@ -432,12 +431,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-		if (getLastCurrentDir() != null) {
-			chooser = UITools.newFileChooser(getLastCurrentDir());
-		}
-		else {
-			chooser = UITools.newFileChooser();
-		}
+		JFileChooser chooser = getFileChooser();
 		chooser.setAcceptAllFileFilterUsed(true);
 		chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);

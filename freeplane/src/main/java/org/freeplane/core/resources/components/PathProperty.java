@@ -76,7 +76,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	private JFileChooser createFileChooser() {
-		final JFileChooser fileChooser = UITools.newFileChooser();
+		final JFileChooser fileChooser = UITools.newFileChooser(null);
 		if (value != null) {
 			fileChooser.setSelectedFile(new File(path()));
 		}
