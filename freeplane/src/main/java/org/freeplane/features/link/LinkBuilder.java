@@ -38,7 +38,6 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.IStyle;
@@ -121,14 +120,14 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setShape(Optional.of(Shape.EDGE_LIKE));
+				arrowLink.setShape(Optional.of(ConnectorShape.EDGE_LIKE));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "SHAPE", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setShape(Optional.of(Shape.valueOf(value)));
+				arrowLink.setShape(Optional.of(ConnectorShape.valueOf(value)));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DASH", new IAttributeHandler() {
@@ -264,9 +263,9 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 
 	private void fixSelfLoopedConnectorShape(ConnectorModel connector) {
 		if (connector.isSelfLink()
-				&& Shape.CUBIC_CURVE.equals(connector.getShape())
+				&& ConnectorShape.CUBIC_CURVE.equals(connector.getShape())
 				&& MapVersionInterpreter.isOlderThan(connector.getSource().getMap(), FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS))
-			connector.setShape(Optional.of(Shape.LINE));
+			connector.setShape(Optional.of(ConnectorShape.LINE));
 	}
 
 	void registerBy(final ReadManager reader) {

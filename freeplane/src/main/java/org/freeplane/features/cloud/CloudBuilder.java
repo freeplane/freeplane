@@ -86,7 +86,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 		reader.addAttributeHandler("cloud", "SHAPE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final CloudModel cloud = (CloudModel) userObject;
-				cloud.setShape(CloudModel.Shape.valueOf(value));
+				cloud.setShape(CloudShape.valueOf(value));
 			}
 		});
 		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
@@ -143,7 +143,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 		if (color != null) {
 			ColorUtils.setColorAttributes(cloud, "COLOR", "ALPHA", color);
 		}
-		final CloudModel.Shape shape = model.getShape();
+		final CloudShape shape = model.getShape();
 		if (shape != null) {
 			cloud.setAttribute("SHAPE", shape.toString());
 		}

@@ -32,6 +32,7 @@ import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -57,7 +58,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
-		mCloudShape = ComboProperty.of(CLOUD_SHAPE, CloudModel.Shape.class);
+		mCloudShape = ComboProperty.of(CLOUD_SHAPE, CloudShape.class);
 		mPropertyListener = new CloudColorChangeListener(mSetCloud, mCloudColor, mCloudShape);
 		mSetCloud.addPropertyChangeListener(mPropertyListener);
 		mCloudColor.addPropertyChangeListener(mPropertyListener);
@@ -88,7 +89,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 							CloudController.class);
 			if (enabled) {
 				styleController.setColor(node, mCloudColor.getColorValue());
-				styleController.setShape(node, CloudModel.Shape.valueOf(mCloudShape.getValue()));
+				styleController.setShape(node, CloudShape.valueOf(mCloudShape.getValue()));
 			}
 			else {
 				styleController.setCloud(node, false);
@@ -102,7 +103,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 			final Color viewCloudColor = cloudController.getColor(node);
 			mSetCloud.setValue(cloudModel != null);
 			mCloudColor.setColorValue(viewCloudColor);
-			final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
+			final CloudShape viewCloudShape = cloudController.getShape(node);
 			mCloudShape.setValue(viewCloudShape.name());
 		}
 	}

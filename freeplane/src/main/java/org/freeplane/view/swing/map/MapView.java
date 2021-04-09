@@ -82,7 +82,7 @@ import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
@@ -386,6 +386,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private void select(final NodeView node) {
+			final NodeView[] oldSelecteds = selection.toArray();
 			clear();
 			selectedSet.add(node);
 			selectedList.add(node);
@@ -393,6 +394,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectionEnd = selectionStart = node;
 			addSelectionForHooks(node);
 			onSelectionChange(node);
+			for (final NodeView oldSelected : oldSelecteds) {
+				if (oldSelected != null && oldSelected != node) {
+					onSelectionChange(oldSelected);
+				}
+			}
 		}
 
 		private boolean add(final NodeView node) {
@@ -817,6 +823,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void onSelectionChange(final NodeView node) {
+		node.getMainView().updateTextColor(node);
 		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors)
 			repaint(getVisibleRect());
 		else
@@ -1337,12 +1344,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if (fitToViewport) {
 			    final JViewport vp = (JViewport) getParent();
 			    final Dimension viewPortSize = vp.getVisibleRect().getSize();
-			    JComponent viewer = (JComponent) factory.createViewer(uri, viewPortSize, c -> getParent().repaint());
+			    JComponent viewer = (JComponent) factory.createViewer(uri, viewPortSize, () -> getParent().repaint());
 			    setBackgroundComponent(viewer);
 			    
 			}
             else {
-                JComponent viewer = (JComponent) factory.createViewer(uri, zoom, c -> getParent().repaint());
+                JComponent viewer = (JComponent) factory.createViewer(uri, zoom, () -> getParent().repaint());
                 setBackgroundComponent(viewer);
             }
 			if(backgroundComponent == null) {
@@ -1737,7 +1744,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 						LinkController linkController = LinkController.getController(getModeController());
                         if (areBothNodesVisible 
                                 && (
-                                Shape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
+                                ConnectorShape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
                                 || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
 							arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 						else if(areBothNodesVisible || ! hideSingleEndConnectors)
@@ -2053,16 +2060,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(selection.size() == 1 && getSelected().equals(newSelected)){
 			return;
 		}
-		final NodeView[] oldSelecteds = selection.toArray();
 		selection.select(newSelected);
 		if (newSelected.getModel().getParentNode() != null) {
 			((NodeView) newSelected.getParent()).setPreferredChild(newSelected);
-		}
-		onSelectionChange(newSelected);
-		for (final NodeView oldSelected : oldSelecteds) {
-			if (oldSelected != null) {
-				onSelectionChange(oldSelected);
-			}
 		}
 	}
 

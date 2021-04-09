@@ -114,16 +114,6 @@ public class MModeController extends ModeController {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		URL preferences = resourceController.getResource("/xml/preferences.xml");
 		optionPanelBuilder.load(preferences);
-		getController().addAction(createShowPreferencesAction(optionPanelBuilder));
-	}
-
-	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder)
-	{
-		return createShowPreferencesAction(optionPanelBuilder, null);
-	}
-
-	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder,
-																	String selectedProperty) {
 	    final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 2);
 		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 2);
@@ -140,6 +130,16 @@ public class MModeController extends ModeController {
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
+		getController().addAction(createShowPreferencesAction(optionPanelBuilder));
+	}
+
+	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder)
+	{
+		return createShowPreferencesAction(optionPanelBuilder, null);
+	}
+
+	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder,
+																	String selectedProperty) {
 		return new ShowPreferencesAction(optionPanelBuilder.getRoot(), selectedProperty);
     }
 

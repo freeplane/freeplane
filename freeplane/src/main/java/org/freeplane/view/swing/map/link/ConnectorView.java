@@ -41,6 +41,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.mode.ModeController;
@@ -355,7 +356,7 @@ public class ConnectorView extends AConnectorView{
 
 	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean showsConnectors) {
 		final boolean selfLink = getSource() == getTarget();
-		final boolean isLine = ConnectorModel.Shape.LINE.equals(linkController.getShape(connectorModel));
+		final boolean isLine = ConnectorShape.LINE.equals(linkController.getShape(connectorModel));
 		arrowLinkCurve = null;
 		if (showsConnectors) {
 		    if (startPoint != null && endPoint != null) {
@@ -367,7 +368,7 @@ public class ConnectorView extends AConnectorView{
 		                arrowLinkCurve = createLine(startPoint, endPoint);
 		            }
 		        }
-		        else if (ConnectorModel.Shape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
+		        else if (ConnectorShape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
 		            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
 		        else
 		            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);

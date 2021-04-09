@@ -55,6 +55,7 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
  * @author foltin
  */
 abstract public class EditNodeBase {
+	public static final String COPIED_IMAGE_SOURCES = "images_copied_by_editor";
     private static final String EDIT_NODE_DIALOG_HEIGHT_PROPERTY = "editNodeDialog.height";
     private static final String EDIT_NODE_DIALOG_WIDTH_PROPERTY = "editNodeDialog.width";
 

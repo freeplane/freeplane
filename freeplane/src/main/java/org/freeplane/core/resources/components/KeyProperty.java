@@ -81,6 +81,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		final JLabel label = new JLabel(labelText, icon, JLabel.RIGHT);
 		String tooltip = TextUtils.getOptionalText(getTooltip());
 		label.setToolTipText(tooltip);
+		setLabelComponent(label);
 		if (KeyProperty.rowSpec == null) {
 			KeyProperty.rowSpec = new RowSpec(RowSpec.FILL, Sizes.dluX(20), 0.0);
 		}

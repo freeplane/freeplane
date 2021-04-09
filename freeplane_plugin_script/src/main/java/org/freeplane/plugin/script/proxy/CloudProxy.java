@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.Proxy.Cloud;
@@ -35,7 +36,7 @@ public class CloudProxy implements Cloud {
     @Override
     public void setShape(String shape) {
         if (!handleArgumentIfNull(shape)) {
-            getCloudController().setShape(node, CloudModel.Shape.valueOf(shape));
+            getCloudController().setShape(node, CloudShape.valueOf(shape));
         }
     }
 

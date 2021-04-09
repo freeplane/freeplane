@@ -365,8 +365,11 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7126361
 	private void superPaintSafe(final Graphics g, final ZoomableLabel label) {
 		try {
+			final boolean isTextTransparent = label.getForeground().getAlpha() == 0;
 			Icon textRenderingIcon = label.getTextRenderingIcon();
-			if(textRenderingIcon  != null)
+			if(isTextTransparent)
+				paintIcon(g, label);
+			else if (textRenderingIcon  != null)
 				paintIcons(g, label, textRenderingIcon);
 			else
 				super.paint(g, label);
@@ -378,6 +381,24 @@ public class ZoomableLabelUI extends BasicLabelUI {
 				}
 			});
 		}
+	}
+
+	private void paintIcon(Graphics g, ZoomableLabel label) {
+        Icon icon = (label.isEnabled()) ? label.getIcon() : label.getDisabledIcon();
+
+        if ((icon == null)) {
+            return;
+        }
+        FontMetrics fm = label.getFontMetrics(g.getFont());
+        String text = label.getText();
+        Rectangle paintViewR = new Rectangle();
+        Rectangle paintIconR = new Rectangle();
+		Rectangle paintTextR = new Rectangle();
+		layoutCL(label, fm, text, icon, paintViewR, paintIconR, paintTextR);
+
+        if (icon != null) {
+            icon.paintIcon(label, g, paintIconR.x, paintIconR.y);
+        }
 	}
 
 	private void paintIcons(Graphics g, ZoomableLabel label, Icon textRenderingIcon) {

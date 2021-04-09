@@ -53,6 +53,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
+import com.lightdev.app.shtm.CopiedImageSources;
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -189,8 +190,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	        splitButton.setVisible(enableSplit);
         }
 	}
-
 	private static final Dimension PREFERRED_CONTENT_SIZE = new Dimension(600, 400);
+
 
 	private String title;
 

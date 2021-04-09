@@ -42,7 +42,6 @@ import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -405,7 +404,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			ColorUtils.addColorAttributes(writer, "BACKGROUND_COLOR", "BACKGROUND_ALPHA", backgroundColor);
 		}
 		final NodeGeometryModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
-		final Shape shape = shapeConfiguration.getShape();
+		final NodeStyleShape shape = shapeConfiguration.getShape();
 		if (shape != null) {
 			writer.addAttribute("STYLE", shape.toString());
 		}

@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.function.Consumer;
 
 public interface IViewerFactory {
 	/**
@@ -18,14 +17,14 @@ public interface IViewerFactory {
 	ScalableComponent createViewer(URI uri, final Dimension preferredSize)
 			throws MalformedURLException, IOException;
 
-    ScalableComponent createViewer(URI uri, final Dimension preferredSize, Consumer<ScalableComponent> callback)
+    ScalableComponent createViewer(URI uri, final Dimension preferredSize, Runnable callback)
             throws MalformedURLException, IOException;
 	/**
 	 * Creates viewer component for given URI with given zoom
 	 */
     ScalableComponent createViewer(URI uri, float zoom) 
             throws MalformedURLException, IOException;
-    ScalableComponent createViewer(URI uri, float zoom, Consumer<ScalableComponent> callback) 
+    ScalableComponent createViewer(URI uri, float zoom, Runnable callback) 
             throws MalformedURLException, IOException;
 
 	/**

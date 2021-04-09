@@ -26,7 +26,7 @@ import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -49,15 +49,15 @@ public class ConnectorShapeControlGroup implements ControlGroup {
             final MLinkController linkController 
             = (MLinkController) LinkController.getController();
             linkController.setShape(connector, enabled ? 
-                    Optional.of(Shape.valueOf(mConnectorShape.getValue())) : Optional.empty());
+                    Optional.of(ConnectorShape.valueOf(mConnectorShape.getValue())) : Optional.empty());
 
 		}
 		
 		@Override
 		void updateValue() {
             final LinkController linkController = LinkController.getController();
-				final Optional<Shape> ownShape = connector.getShape();
-				final Shape viewShape = linkController.getShape(connector);
+				final Optional<ConnectorShape> ownShape = connector.getShape();
+				final ConnectorShape viewShape = linkController.getShape(connector);
 				mSetConnectorShape.setValue(ownShape.isPresent());
 				mConnectorShape.setValue(viewShape.name());
 		}
@@ -72,7 +72,7 @@ public class ConnectorShapeControlGroup implements ControlGroup {
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetConnectorShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mConnectorShape = ComboProperty.of("connector_shapes", Shape.class);
+		mConnectorShape = ComboProperty.of("connector_shapes", ConnectorShape.class);
 		mConnectorShape.setNameAsLabelAndToolTip();
 		propertyChangeListener = new ConnectorShapeChangeListener(mSetConnectorShape, mConnectorShape);
 		mSetConnectorShape.addPropertyChangeListener(propertyChangeListener);

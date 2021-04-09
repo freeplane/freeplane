@@ -85,7 +85,6 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.icons.NodeViewDecorator;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -417,7 +416,7 @@ public class LinkController extends SelectionController implements IExtension {
         return getProperty(connector, ConnectorModel::getLabelFontSize, this::getStandardLabelFontSize);
     }
 
-    public Shape getShape(ConnectorModel connector) {
+    public ConnectorShape getShape(ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getShape, this::getStandardConnectorShape);
     }
 
@@ -888,9 +887,9 @@ public class LinkController extends SelectionController implements IExtension {
 	   }
 
 
-	public Shape getStandardConnectorShape() {
+	public ConnectorShape getStandardConnectorShape() {
 		final String standardShape = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_SHAPE);
-		final Shape shape = Shape.valueOf(standardShape);
+		final ConnectorShape shape = ConnectorShape.valueOf(standardShape);
 		return shape;
 	}
 

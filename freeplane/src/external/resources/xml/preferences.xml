@@ -138,7 +138,7 @@
 				<color name="connector_color" />
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
-				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorModel$Shape"/>
+				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorShape"/>
 				<number name="connector_width" text="edit_width_label" min="1"
 					max="32" />
 				<font name="label_font_family" />
@@ -181,7 +181,7 @@
 		<tab name="Defaults">
 			<separator name="cloud">
 				<color name="standardcloudcolor" />
-				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudModel$Shape"/>
+				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudShape"/>
 			</separator>
 			<separator name="cmdsearch">
                 <number name="cmdsearch_item_limit" min="10"/>
@@ -296,6 +296,7 @@
 				<number name="undo_levels" />
 			</separator>
 			<separator name="RichTextEditor">
+				<combo name="simplyhtml.images_copied_by_editor" enum="com.lightdev.app.shtm.CopiedImageSources"/>
 				<combo name="simplyhtml.default_paste_mode">
 					<choice value="PASTE_HTML" />
 					<choice value="PASTE_PLAIN_TEXT" />
@@ -340,12 +341,13 @@
 			</separator>
 			
 		</tab>
-		<tab name="Keystrokes"
-			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
-			<separator name="commands_for_the_program" />
-			<boolean name="ignore_unassigned_f_keys" />
-			<text name="use_ctrl_key" />
-			<separator name="icons" />
+		<tab name="Keystrokes">
+			<separator name="commands_for_the_program">
+				<boolean name="ignore_unassigned_f_keys" />
+				<text name="use_assign_short_cut" />
+				<text name="use_control_click_on_icon" />
+				<text name="use_control_click_on_menu_item" />
+			</separator>
 		</tab>
 		<tab name="plugins" />
 	</tabbed_pane>

@@ -44,6 +44,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.link.ConnectorModel;
@@ -62,6 +63,7 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -170,7 +172,7 @@ public class MapStyleModel implements IExtension {
 			hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			NodeStyleModel.setShapeConfiguration(root,
-			    NodeGeometryModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
+			    NodeGeometryModel.NULL_SHAPE.withShape(NodeStyleShape.oval).withUniform(true));
 			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
 			final Quantity<LengthUnit> styleBlockGap = ResourceController.getResourceController()
@@ -228,7 +230,7 @@ public class MapStyleModel implements IExtension {
 			if (styleNodes.get(FLOATING_STYLE) == null) {
 				final NodeModel newNode = new NodeModel(FLOATING_STYLE, styleMap);
 				EdgeModel.createEdgeModel(newNode).setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
-				CloudModel.createModel(newNode).setShape(CloudModel.Shape.ROUND_RECT);
+				CloudModel.createModel(newNode).setShape(CloudShape.ROUND_RECT);
 				predefinedStyleParentNode.insert(newNode, 4);
 				addStyleNode(newNode);
 			}
@@ -239,7 +241,7 @@ public class MapStyleModel implements IExtension {
                         MapView.RESOURCES_SELECTED_NODE_COLOR));
                 Color standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
                         MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
-                NodeStyleModel.setShape(selectionStyleNode, NodeStyleModel.Shape.bubble);
+                NodeStyleModel.setShape(selectionStyleNode, NodeStyleShape.bubble);
                 NodeStyleModel.setBackgroundColor(selectionStyleNode, standardSelectionBackgroundColor);
                 NodeBorderModel.setBorderColor(selectionStyleNode, standardSelectionRectangleColor);
                 NodeBorderModel.setBorderColorMatchesEdgeColor(selectionStyleNode, false);
@@ -260,7 +262,7 @@ public class MapStyleModel implements IExtension {
 			predefinedStyleParentNode.setUserObject(new StyleTranslatedObject(groupName));
 			root.insert(predefinedStyleParentNode);
 		}
-		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.bubble);
+		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleShape.bubble);
 		return predefinedStyleParentNode;
 	}
 

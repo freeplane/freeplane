@@ -24,8 +24,8 @@ import java.util.Optional;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.ConnectorModel.Shape;
 
 class ChangeConnectorShapeAction extends AFreeplaneAction {
 	/**
@@ -33,9 +33,9 @@ class ChangeConnectorShapeAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	ConnectorModel arrowLink;
-	final private Shape shape;
+	final private ConnectorShape shape;
 
-	public ChangeConnectorShapeAction(final MLinkController linkController, final ConnectorModel arrowLink, final Shape shape) {
+	public ChangeConnectorShapeAction(final MLinkController linkController, final ConnectorModel arrowLink, final ConnectorShape shape) {
 		super("ChangeConnectorShapeAction." + shape.toString());
 		this.arrowLink = arrowLink;
 		this.shape = shape;

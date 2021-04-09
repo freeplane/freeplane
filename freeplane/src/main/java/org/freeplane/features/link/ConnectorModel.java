@@ -23,39 +23,20 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Optional;
 
-import org.freeplane.core.ui.components.RenderedContent;
-import org.freeplane.core.ui.components.RenderedContentSupplier;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.styles.IStyle;
 
 public class ConnectorModel extends NodeLinkModel {
 
-    public static enum Shape implements RenderedContentSupplier<Shape>{
-		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE;
-
-        private final RenderedContent<Shape> renderedContent;
-        
-        private Shape() {
-            String text = TextUtils.getText("ChangeConnectorShapeAction." + name() + ".text");
-            this.renderedContent = new RenderedContent<ConnectorModel.Shape>(this, text, null);
-        }
-
-        @Override
-        public RenderedContent<Shape> createRenderedContent() {
-            return renderedContent;
-        }
-	};
-	
-	final private ConnectorProperties connectorProperties;
+    final private ConnectorProperties connectorProperties;
 	
 	public ConnectorModel(NodeModel source, String targetID) {
 	    this(source, targetID, new ConnectorProperties());
 	}
 	public ConnectorModel(final NodeModel source, final String targetID,
 			final ConnectorArrows connectorEnds, int[] dash, 
-			final Color color,final int alpha, final Shape shape, final int width,
+			final Color color,final int alpha, final ConnectorShape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
 		this(source, targetID, new ConnectorProperties(connectorEnds, dash, color, alpha, shape, width, labelFontFamily, labelFontSize));
 	}
@@ -67,11 +48,11 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 
-    public Optional<Shape> getShape() {
+    public Optional<ConnectorShape> getShape() {
 	    return connectorProperties.getShape();
     }
 
-	public void setShape( Optional<Shape> shape) {
+	public void setShape( Optional<ConnectorShape> shape) {
 	    connectorProperties.setShape(shape);
     }
 

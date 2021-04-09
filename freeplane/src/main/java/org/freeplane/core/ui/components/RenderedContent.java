@@ -57,7 +57,7 @@ public class RenderedContent<T> {
 	}
 
 	public static <T extends Enum<T>> RenderedContent<T> of(final T enumValue) {
-		final String name = enumValue.name();
+		final String name = enumValue.getClass().getSimpleName() + "." + enumValue.name();
 		String text = TextUtils.getText("OptionPanel." + name);
 		final Icon icon = ResourceController.getResourceController().getIcon("OptionPanel." + name + ".icon");
 		return new RenderedContent<T>(enumValue, text, icon);

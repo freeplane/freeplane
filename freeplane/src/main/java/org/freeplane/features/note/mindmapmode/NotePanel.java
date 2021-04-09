@@ -46,9 +46,13 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
 import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
+import com.lightdev.app.shtm.CopiedImageSources;
+import com.lightdev.app.shtm.SHTMLDocument;
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -326,11 +330,12 @@ class NotePanel extends JPanel {
 
 	void updateBaseUrl(URL url) {
 		try {
+			final HTMLDocument document = getDocument();
 			if (url != null) {
-				getDocument().setBase(url);
+				document.setBase(url);
 			}
 			else {
-				getDocument().setBase(new URL("file: "));
+				document.setBase(new URL("file: "));
 			}
 		}
 		catch (final Exception e) {

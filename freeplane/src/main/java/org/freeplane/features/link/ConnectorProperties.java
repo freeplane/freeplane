@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Optional;
 
-import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -39,7 +38,7 @@ class ConnectorProperties{
 	private Optional<int[]> dash;
 	private Optional<ConnectorArrows> arrows;
 	private Optional<Integer> width;
-	private Optional<Shape> shape;
+	private Optional<ConnectorShape> shape;
 	private Optional<String> labelFontFamily;
 	private Optional<Integer> labelFontSize;
 
@@ -65,7 +64,7 @@ class ConnectorProperties{
         targetLabel = Optional.empty();
     }
 	public ConnectorProperties(ConnectorArrows connectorEnds, int[] dash, final Color color,
-	                      final int alpha, final Shape shape, final int width,
+	                      final int alpha, final ConnectorShape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
 		assert color != null;
 		assert shape != null;
@@ -98,11 +97,11 @@ class ConnectorProperties{
 	public void setArrows(Optional<ConnectorArrows> arrows) {
 		this.arrows = arrows;
 	}
-	public Optional<Shape> getShape() {
+	public Optional<ConnectorShape> getShape() {
 		return shape;
 	}
 
-	public void setShape(final Optional<Shape> shape) {
+	public void setShape(final Optional<ConnectorShape> shape) {
 		this.shape = shape;
 	}
 

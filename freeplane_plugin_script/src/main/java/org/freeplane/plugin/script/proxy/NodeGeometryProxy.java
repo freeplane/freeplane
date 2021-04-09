@@ -8,12 +8,12 @@ import org.freeplane.api.NodeShape;
 import org.freeplane.api.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.plugin.script.ScriptContext;
 
 class NodeGeometryProxy extends AbstractProxy<NodeModel> implements Proxy.NodeGeometry {
-	private static final Shape[] SHAPES = Shape.values();
+	private static final NodeStyleShape[] SHAPES = NodeStyleShape.values();
     private static final NodeShape[] NODE_SHAPES = NodeShape.values();
 
     NodeGeometryProxy(final NodeModel delegate, final ScriptContext scriptContext) {

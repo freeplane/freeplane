@@ -25,7 +25,7 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
-import org.freeplane.features.cloud.CloudModel.Shape;
+import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -36,9 +36,9 @@ class CloudShapeAction extends AMultipleNodeAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private Shape actionShape;
+	final private CloudShape actionShape;
 
-	public CloudShapeAction(Shape actionShape) {
+	public CloudShapeAction(CloudShape actionShape) {
 		super("CloudShapeAction." + actionShape.toString());
 		this.actionShape = actionShape;
 	}

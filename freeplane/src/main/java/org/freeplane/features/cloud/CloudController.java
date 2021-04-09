@@ -28,7 +28,6 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.cloud.CloudModel.Shape;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -56,9 +55,9 @@ public class CloudController implements IExtension {
 		return ColorUtils.stringToColor(colorCode);
 	}
 
-	public static Shape getStandardShape() {
+	public static CloudShape getStandardShape() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		return resourceController.getEnumProperty(CloudController.RESOURCES_CLOUD_SHAPE, Shape.ARC);
+		return resourceController.getEnumProperty(CloudController.RESOURCES_CLOUD_SHAPE, CloudShape.ARC);
 	}
 
 	public static CloudController getController() {
@@ -127,7 +126,7 @@ public class CloudController implements IExtension {
 		return cloudHandlers.getProperty(model);
 	}
 
-	public Shape getShape(NodeModel node) {
+	public CloudShape getShape(NodeModel node) {
 		final CloudModel cloud = getCloud(node);
 		return cloud != null ? cloud.getShape() : getStandardShape();
     }

@@ -27,7 +27,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
+import org.freeplane.features.nodestyle.NodeStyleShape;
 
 @SelectableAction(checkOnNodeChange = true)
 class NodeShapeAction extends AMultipleNodeAction {
@@ -35,9 +35,9 @@ class NodeShapeAction extends AMultipleNodeAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private Shape actionShape;
+	final private NodeStyleShape actionShape;
 
-	public NodeShapeAction( final Shape shape) {
+	public NodeShapeAction( final NodeStyleShape shape) {
 		super("NodeShapeAction." + shape.toString());
 		actionShape = shape;
 	}
