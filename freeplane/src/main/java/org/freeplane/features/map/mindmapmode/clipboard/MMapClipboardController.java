@@ -575,6 +575,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 		if (supportedHtmlFlavor != null) {
 			try {
 				final String textFromClipboard = t.getTransferData(supportedHtmlFlavor).toString();
+				if(textFromClipboard.isEmpty())
+				    return null;
 				if (textFromClipboard.charAt(0) != 65533) {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						final MTextController textController = (MTextController) TextController
