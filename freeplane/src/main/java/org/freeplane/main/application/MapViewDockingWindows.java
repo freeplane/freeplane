@@ -57,6 +57,7 @@ import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.DroppedMindMapOpener;
 import org.freeplane.view.swing.map.MapView;
@@ -75,12 +76,15 @@ import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
+import net.infonode.gui.icon.button.DropDownIcon;
 import net.infonode.properties.gui.util.ComponentProperties;
+import net.infonode.tabbedpanel.TabAreaComponentsProperties;
 import net.infonode.tabbedpanel.TabAreaProperties;
 import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
 import net.infonode.tabbedpanel.TabLayoutPolicy;
 import net.infonode.tabbedpanel.TabbedPanelProperties;
+import net.infonode.tabbedpanel.TabbedUIDefaults;
 import net.infonode.tabbedpanel.titledtab.TitledTabProperties;
 import net.infonode.util.Direction;
 
@@ -218,6 +222,16 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
 		tabbedPanelProperties.setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
 		tabbedPanelProperties.setShadowEnabled(false);
+		tabbedPanelProperties.getButtonProperties().getTabDropDownListButtonProperties()
+			.setIcon(new DropDownIcon(TabbedUIDefaults.getButtonIconSize(), Direction.DOWN));
+
+		if(FrameController.AQUA_LAF_NAME.equals(UIManager.getLookAndFeel().getName())) {
+			windowAreaProperties.setBackgroundColor(null);
+			windowAreaProperties.setForegroundColor(null);
+			TabAreaComponentsProperties tabAreaComponentsProperties = tabbedPanelProperties.getTabAreaComponentsProperties();
+			tabAreaComponentsProperties.getComponentProperties().setBackgroundColor(null);
+			tabAreaComponentsProperties.getComponentProperties().setForegroundColor(null);
+		}
 
 		final ComponentProperties contentPaneComponentProperties = tabbedPanelProperties.getContentPanelProperties().getComponentProperties();
 		contentPaneComponentProperties.setInsets(null);
