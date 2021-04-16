@@ -5,16 +5,24 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.Box;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileSystemView;
 
 import org.freeplane.core.resources.ResourceController;
@@ -149,6 +157,23 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
         }
         if(!dialog.getContentPane().isValid())
             dialog.pack();
+        
+        if(Compat.isMacOsX()) {
+            ActionMap am = getActionMap();
+            InputMap globalInputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            KeyStroke ks  = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.META_MASK | InputEvent.SHIFT_MASK);
+                    globalInputMap.put(ks, ks);
+			am.put(ks, new AbstractAction() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					boolean isHiding = isFileHidingEnabled();
+                    setFileHidingEnabled(!isHiding);
+				}
+			});
+        }
+        
         return dialog;
     }
 
