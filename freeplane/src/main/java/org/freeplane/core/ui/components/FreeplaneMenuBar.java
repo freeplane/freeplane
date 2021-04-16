@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.ui.IKeyStrokeProcessor;
+import org.freeplane.core.util.Compat;
 
 /**
  * This is the menu bar for Freeplane. Actions are defined in MenuListener.
@@ -50,6 +51,21 @@ public class FreeplaneMenuBar extends JMenuBar {
 		this.keyEventProcessor = keyEventProcessor;
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0), "none");
 	}
+	
+	
+
+	@Override
+	public void updateUI() {
+		if(Compat.isMacOsX()) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			super.updateUI();
+			System.setProperty("apple.laf.useScreenMenuBar", "false");
+		}
+		else
+			super.updateUI();
+	}
+
+
 
 	static final int KEY_MODIFIERS = KeyEvent.SHIFT_DOWN_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_GRAPH_DOWN_MASK
 	        | KeyEvent.ALT_GRAPH_MASK;
@@ -89,6 +105,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 		return ks;
 	}
 
+	
 	@Override
 	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		// ignore key events without modifiers if text component is a source

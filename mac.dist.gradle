@@ -69,7 +69,7 @@ def defineMacBuildTasks =  { architecture ->
      '--icon', 'freeplane_framework/mac-appbundler/freeplane.icns',
      '--app-version', majorVersion,
      '--java-options', '-Xmx512m',
-     '--java-options', '-Dapple.laf.useScreenMenuBar=true',
+     '--java-options', '-Dapple.laf.useScreenMenuBar=false',
      '--java-options', '-Xdock:name=Freeplane',
      '--java-options', '--add-exports', 
      '--java-options', 'java.desktop/com.apple.eawt=ALL-UNNAMED',
