@@ -2,7 +2,7 @@ task freeplaneDeb(type: Deb) {
     destinationDirectory = new File(globalDist)
 
     packageName = 'freeplane'
-    archiveVersion = distVersion + "~upstream"
+    version = distVersion + "~upstream"
     release = 1
     
     requires('default-jre | java7-runtime')
