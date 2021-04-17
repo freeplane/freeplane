@@ -1,4 +1,5 @@
 import groovy.io.FileType
+import org.gradle.util.GradleVersion
 
 configurations{
 	mergedViewerDependencies
@@ -34,14 +35,15 @@ dependencies {
 		exclude module: 'mnemonicsetter'
 	}
     
-    // from flatDir "localGitDepsRepository":
+    lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
     
     maclib 'org.violetlib:vaqua:9'
 
-    runtimeOnly sourceSets.emojiGraphics.output.dirs
- 	runtimeOnly sourceSets.emojiList.output.dirs
-    
+    if(GradleVersion.current() < GradleVersion.version('6.8')) {
+        runtimeOnly sourceSets.emojiGraphics.output.dirs
+        runtimeOnly sourceSets.emojiList.output.dirs
+    }
 }
 
 test {
@@ -55,11 +57,10 @@ test {
 eclipse {
   project {
     name = 'freeplane'
-	}
+  }
 }
 
 processTestResources.dependsOn createEmojiList
-tasks.getByPath('eclipse').dependsOn createEmojiList
 
 
 ext.bundleDeps = configurations.lib.files.collect {
@@ -230,10 +231,6 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  
      }
-     from ('lib') {
-          include("*.jar")
-          exclude('*-sources.jar')
-     }
 	 from (project(':freeplane_mac').jar.outputs.files)
 	 from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
      into(globalBin + '/core/' + pluginid + '/lib/')
@@ -250,7 +247,7 @@ task copyOSGiManifest(type: Copy) {
 }
 
 class PartialJar extends Jar {
-	String[] includedClasses
+	@Internal String[] includedClasses
 }
 
 task editorJar(type: PartialJar) {
