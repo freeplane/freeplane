@@ -40,10 +40,8 @@ dependencies {
     
     maclib 'org.violetlib:vaqua:9'
 
-    if(GradleVersion.current() < GradleVersion.version('6.8')) {
-        runtimeOnly sourceSets.emojiGraphics.output.dirs
-        runtimeOnly sourceSets.emojiList.output.dirs
-    }
+    runtimeOnly files("${project.buildDir}/emoji/xml")
+    runtimeOnly files("${project.buildDir}/emoji/resources")
 }
 
 test {
@@ -304,12 +302,13 @@ task viewerJar(type: Jar) {
     // this must be unversioned because the applet export code relies on this
     archiveFileName = 'freeplaneviewer.jar'
     dependsOn classes
+    dependsOn createEmojiList
     from (sourceSets.main.output) {
         exclude (editorJar.includedClasses)
         exclude (osgiJar.includedClasses )
     }
     from (sourceSets.viewer.output)
-    from (sourceSets.emojiList.output)
+    from (files("${project.buildDir}/emoji/xml"))
     
     
     configurations.mergedViewerDependencies.files.each {

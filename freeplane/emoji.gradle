@@ -1,18 +1,6 @@
 import java.util.concurrent.*
 import java.util.zip.ZipFile
 
-sourceSets {
-	emojiGraphics {
-		output.dir("${project.buildDir}/emoji/resources", 
-			builtBy: 'downloadEmoji')
-	}
-	
-	emojiList {
-		output.dir("${project.buildDir}/emoji/xml", 
-			builtBy: 'createEmojiList')
-	}
-}
-
 interface EmojiConstants {
 	def emojiVersion = '12.1'
 	def TWEMOJI_VERSION = '12.1.4'
@@ -187,7 +175,7 @@ task emojiJar(type: Jar) {
 	}
 	archiveBaseName = 'emoji'
 	archiveVersion = EmojiDownloader.TWEMOJI_VERSION
-    from (sourceSets.emojiGraphics.output)
+    from (files("${project.buildDir}/emoji/resources"))
 }
 
 task createEmojiList {

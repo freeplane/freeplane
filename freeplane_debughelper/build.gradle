@@ -17,8 +17,8 @@ dependencies {
 	runtimeOnly project(':freeplane').sourceSets.viewer.resources.sourceDirectories
 	runtimeOnly project(':freeplane').sourceSets.editor.resources.sourceDirectories
 	runtimeOnly project(':freeplane').sourceSets.external.resources.sourceDirectories
-	runtimeOnly project(':freeplane').sourceSets.emojiGraphics.output.dirs
-	runtimeOnly project(':freeplane').sourceSets.emojiList.output.dirs
+	runtimeOnly files("${project(':freeplane').buildDir}/emoji/xml")
+	runtimeOnly files("${project(':freeplane').buildDir}/emoji/resources")
 }
 
 java {
