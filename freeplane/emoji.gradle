@@ -47,7 +47,12 @@ class EmojiDownloader implements EmojiConstants{
 							def getRC = get.getResponseCode();
 							if(getRC.equals(200)) {
 								emojiFile.withOutputStream{
-									new BufferedOutputStream(it) << new BufferedInputStream(get.getInputStream())
+									try {
+										new BufferedOutputStream(it) << new BufferedInputStream(get.getInputStream())
+									}
+									catch(Exception e){
+										new BufferedOutputStream(it) << new BufferedInputStream(new URL(emojiUrl).openConnection().getInputStream())
+									}
 								}
 							}
 						} as Runnable)
