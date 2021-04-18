@@ -57,7 +57,7 @@ public class UserPropertiesUpdater {
                     value = "{freeplaneuserdir}" + value.substring(previousPropertyDirectoryPath.length());
                     userProp.setProperty("single_backup_directory_path", value);
                 }
-            
+
             	saveProperties(userProp, userPreferencesFile);
             }
             catch (IOException e) {
@@ -80,7 +80,7 @@ public class UserPropertiesUpdater {
 	            parentDirectory.mkdirs();
 	            org.apache.commons.io.FileUtils.copyDirectory(previousPropertyDirectory,
 	                    canonicalTargetDirectory,
-	                    file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts")
+	                    file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts", "compiledscripts2")
 	                    .map(name -> new File(previousPropertyDirectory, name))
 	                    .anyMatch(file::equals),
 	                    true);
