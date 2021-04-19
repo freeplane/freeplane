@@ -225,7 +225,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabbedPanelProperties.getButtonProperties().getTabDropDownListButtonProperties()
 			.setIcon(new DropDownIcon(TabbedUIDefaults.getButtonIconSize(), Direction.DOWN));
 
-		if(FrameController.AQUA_LAF_NAME.equals(UIManager.getLookAndFeel().getName())) {
+		if(FrameController.VAQUA_LAF_NAME.equals(UIManager.getLookAndFeel().getName())) {
 			windowAreaProperties.setBackgroundColor(null);
 			windowAreaProperties.setForegroundColor(null);
 			TabAreaComponentsProperties tabAreaComponentsProperties = tabbedPanelProperties.getTabAreaComponentsProperties();

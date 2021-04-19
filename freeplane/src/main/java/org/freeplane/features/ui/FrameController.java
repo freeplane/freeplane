@@ -96,8 +96,8 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
-	public static final String AQUA_LAF_NAME = "VAqua";
-	public static final String AQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
+	public static final String VAQUA_LAF_NAME = "VAqua";
+	public static final String VAQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
     private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
     private static final String MOTIF_LAF__CLASS_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
@@ -570,8 +570,8 @@ abstract public class FrameController implements ViewController {
 		try {
             if (Compat.isMacOsX()) {
                 try {
-                    FrameController.class.getClassLoader().loadClass(AQUA_LAF_CLASS_NAME);
-                    UIManager.installLookAndFeel(AQUA_LAF_NAME, AQUA_LAF_CLASS_NAME);
+                    FrameController.class.getClassLoader().loadClass(VAQUA_LAF_CLASS_NAME);
+                    UIManager.installLookAndFeel(VAQUA_LAF_NAME, VAQUA_LAF_CLASS_NAME);
                 } catch (Exception e) {
                 }
             }

@@ -129,10 +129,10 @@ public class Compat {
 		try {
 			final String lookandfeel = System.getProperty("lookandfeel", 
 					ResourceController.getResourceController().getProperty("lookandfeel"));
-			if (lookandfeel.equals(FrameController.AQUA_LAF_NAME)
-					|| lookandfeel.equals(FrameController.AQUA_LAF_CLASS_NAME)) {
+			if (lookandfeel.equals(FrameController.VAQUA_LAF_NAME)
+					|| lookandfeel.equals(FrameController.VAQUA_LAF_CLASS_NAME)) {
 				try {
-					FrameController.class.getClassLoader().loadClass(FrameController.AQUA_LAF_CLASS_NAME);
+					FrameController.class.getClassLoader().loadClass(FrameController.VAQUA_LAF_CLASS_NAME);
 					System.setProperty("apple.awt.application.appearance", "system");
 				} catch (Exception e) {
 				}
