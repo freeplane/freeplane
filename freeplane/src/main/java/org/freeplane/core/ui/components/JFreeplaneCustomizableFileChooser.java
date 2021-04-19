@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Box;
 import javax.swing.InputMap;
@@ -23,10 +22,13 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.ui.FrameController;
 
 public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
@@ -39,6 +41,8 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 	private final List<JComponent> optionComponents = new ArrayList<>();
 
     private boolean areSpecialFoldersShown;
+
+	private boolean isFileHidingDisabledForCurrentDirectory = false;
 
     public JFreeplaneCustomizableFileChooser() {
         super();
@@ -67,6 +71,15 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 	public Dimension getPreferredSize() {
 		return fixAquaFileChooserUIPreferredSize();
 	}
+	
+	
+
+	@Override
+	public boolean isFileHidingEnabled() {
+		if(isFileHidingDisabledForCurrentDirectory)
+			return false;
+		return super.isFileHidingEnabled();
+	}
 
 	private Dimension fixAquaFileChooserUIPreferredSize() {
 		Dimension preferredSize = super.getPreferredSize();
@@ -91,7 +104,24 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 			catch (IOException e) {
 			}
 		}
+		if(UIManager.getLookAndFeel().getName().equals(FrameController.VAQUA_LAF_NAME)) {
+			final boolean wasFileHidingEnabled = isFileHidingEnabled();
+			isFileHidingDisabledForCurrentDirectory = isDirectoryHiddenInVAqua(dir);
+			final boolean isFileHidingEnabled = isFileHidingEnabled();
+			if(wasFileHidingEnabled != isFileHidingEnabled) {
+				SwingUtilities.invokeLater(() ->
+					firePropertyChange(FILE_HIDING_CHANGED_PROPERTY, wasFileHidingEnabled, isFileHidingEnabled));
+			}
+		}
 		super.setCurrentDirectory(dir);
+	}
+
+	private boolean isDirectoryHiddenInVAqua(File directory) {
+		for (; directory != null; directory = directory.getParentFile()) {
+			if (getFileSystemView().isHiddenFile(directory))
+				return true;
+		}
+		return false;
 	}
 
 	private void setDirectoryBehavingLikeShellFolder(File dir) throws IOException {
