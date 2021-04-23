@@ -182,7 +182,7 @@ abstract public class FrameController implements ViewController {
 		this.mapViewManager = mapViewManager;
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		UIComponentVisibilityDispatcher.install(statusPanel, propertyKeyPrefix + "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(statusPanel, propertyKeyPrefix + "statusVisible");
 		status = new JLabel();
 		status.setBorder(BorderFactory.createEtchedBorder());
 		statusPanel.add(status);
@@ -478,7 +478,7 @@ abstract public class FrameController implements ViewController {
 		final JFrame frame = (JFrame) getCurrentRootComponent();
 		if(Compat.isMacOsX())
 			setFullScreenOnMac(fullScreen, frame);
-		else			
+		else
 			setFullScreenOnNonMac(frame, fullScreen);
 		ToolTipManager.sharedInstance().setEnabled(true);
 	}
@@ -672,14 +672,14 @@ abstract public class FrameController implements ViewController {
         fixDarculaButtonUI(lookAndFeel);
         addHotKeysToMotifInputMaps(lookAndFeel);
     }
-    
+
 	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
         if(lookAndFeel.getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
             UIDefaults uiDefaults = UIManager.getLookAndFeelDefaults();
             uiDefaults.replaceAll((k, v) -> replaceMotifLazyInputMaps(k, v));
          }
     }
-	
+
 	private static Map<String, KeyStroke> keystrokes = new HashMap<>();
 
     private static Object replaceMotifLazyInputMaps(Object k, Object v) {
