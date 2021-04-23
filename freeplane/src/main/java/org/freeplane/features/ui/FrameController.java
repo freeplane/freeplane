@@ -500,6 +500,7 @@ abstract public class FrameController implements ViewController {
 	}
 
 	private void setFullScreenOnNonMac(JFrame frame, final boolean fullScreen) {
+		frame.getRootPane().putClientProperty(FULLSCREEN_ENABLED_PROPERTY, fullScreen);
 		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
 			    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
@@ -517,7 +518,6 @@ abstract public class FrameController implements ViewController {
 			frame.setBounds(bounds);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
-			frame.getRootPane().putClientProperty(FULLSCREEN_ENABLED_PROPERTY, fullScreen);
 			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
