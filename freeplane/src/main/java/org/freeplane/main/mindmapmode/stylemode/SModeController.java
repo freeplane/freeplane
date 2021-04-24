@@ -47,20 +47,20 @@ public class SModeController extends MModeController {
 		final Window dialog = ((DialogController) controller.getViewController()).getDialog();
 		dialog.addComponentListener(new ComponentAdapter() {
 			public void componentShown(final ComponentEvent e) {
-				status = JOptionPane.DEFAULT_OPTION;
+				setStatus(JOptionPane.DEFAULT_OPTION);
 			}
 		});
 		final String key = "styledialog";
 		AFreeplaneAction okAction = new AFreeplaneAction(key + ".ok") {
 			public void actionPerformed(final ActionEvent e) {
-				status = JOptionPane.OK_OPTION;
+				setStatus(JOptionPane.OK_OPTION);
 				closeDialog();
 			}
 		};
 		controller.addAction(okAction);
 		AFreeplaneAction cancelAction = new AFreeplaneAction(key + ".cancel") {
 			public void actionPerformed(final ActionEvent e) {
-				status = JOptionPane.CANCEL_OPTION;
+				setStatus(JOptionPane.CANCEL_OPTION);
 				closeDialog();
 			}
 		};

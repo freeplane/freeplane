@@ -28,10 +28,12 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -52,6 +54,7 @@ public class EditStylesAction extends AFreeplaneAction {
 	private SModeController modeController;
 	protected JDialog dialog;
 	private Component currentMapView;
+	private MapModel currentMap;
 
 	public EditStylesAction() {
 		super("EditStylesAction");
@@ -60,8 +63,8 @@ public class EditStylesAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final Controller currentController = Controller.getCurrentController();
-		final MapModel map = currentController.getMap();
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
+		currentMap = currentController.getMap();
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(currentMap);
 		final MapModel styleMap = mapStyleModel.getStyleMap();
 		if(styleMap == null){
 			UITools.errorMessage(TextUtils.getText("no_styles_found_in_map"));
@@ -72,7 +75,7 @@ public class EditStylesAction extends AFreeplaneAction {
 		currentMapView = mapViewManager.getMapViewComponent();
 		mapViewManager.changeToMapView((Component)null);
 
-		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = currentMap.getExtension(IUndoHandler.class);
 		styleMap.putExtension(IUndoHandler.class, undoHandler);
 		undoHandler.startTransaction();
 		init();
@@ -86,14 +89,12 @@ public class EditStylesAction extends AFreeplaneAction {
 	}
 
 	void commit() {
-	    final Controller currentController = Controller.getCurrentController();
-		final MapModel currentMap = currentController.getMap();
 	    LogicalStyleController.getController().refreshMap(currentMap);
 	    final ModeController currentModeController = Controller.getCurrentModeController();
 		currentModeController.commit();
     }
 
-	void rollback() {
+	private void rollback() {
 	    Controller.getCurrentModeController().rollback();
     }
 
@@ -130,23 +131,20 @@ public class EditStylesAction extends AFreeplaneAction {
 				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 				final MapModel map = mapViewManager.getModel();
 				final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
+				final boolean stylesChanged = modeController.getStatus() == JOptionPane.OK_OPTION && undoHandler.canUndo();
+				if(stylesChanged) {
+					commit();
+				}
+				else {
+					rollback();
+				}
+				super.componentHidden(e);
 				modeController.getMapController().closeWithoutSaving(map);
 				Controller.setCurrentController(mainController);
-				super.componentHidden(e);
 				mainController.getMapViewManager().changeToMapView(currentMapView);
 				currentMapView = null;
-				switch (modeController.getStatus()) {
-					case JOptionPane.OK_OPTION:
-						if (undoHandler.canUndo()) {
-							commit();
-							break;
-						}
-						//$FALL-THROUGH$
-					case JOptionPane.CANCEL_OPTION:
-						rollback();
-				}
+				currentMap = null;
 			}
-
 		});
 	}
 }
