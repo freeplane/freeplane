@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.icon;
 
+import java.io.File;
+import java.net.MalformedURLException;
+
+import org.freeplane.core.util.LogUtils;
+
 /**
  * MindIcon class is used in the nodes of MindMaps.
  *
@@ -27,6 +32,7 @@ package org.freeplane.features.icon;
  */
 public class MindIcon extends UIIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images/icons";
+
 	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
 	public MindIcon(final String name, int order) {
 		this(name, name + ".svg", "", order);
@@ -38,6 +44,14 @@ public class MindIcon extends UIIcon {
 
 	public MindIcon(final String name, final String file, final String description, int order) {
 		super(name, file, description, String.format(SHORTCUT_KEY, name), order);
+	}
+
+	public void useUserIcon(final File userIconFile) {
+		try {
+			setUrl(userIconFile.toURI().toURL());
+		} catch (MalformedURLException e) {
+			LogUtils.severe(e);
+		}
 	}
 
 	@Override

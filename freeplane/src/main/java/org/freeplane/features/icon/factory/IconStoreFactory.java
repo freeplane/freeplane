@@ -261,18 +261,21 @@ public class IconStoreFactory {
 			}
 		}
 		for (final String fileName : userIconArray) {
-			final File childDir = new File(iconDir, fileName);
+			final File userIconFile = new File(iconDir, fileName);
 			final String fullName = dir + fileName;
-			if (childDir.isDirectory()) {
+			if (userIconFile.isDirectory()) {
 				continue;
 			}
 			final String iconName = fullName.substring(0, fullName.length() - 4);
 			final String iconDescription = fileName.substring(0, fileName.length() - 4);
-			if (iconName.equals("") || iconStore.containsMindIcon(iconName)) {
-				continue;
+			if (!iconName.equals("")) {
+				if (iconStore.containsMindIcon(iconName)) {
+					iconStore.getMindIcon(iconName).useUserIcon(userIconFile);
+				} else {
+					final UserIcon icon = new UserIcon(iconName, fullName, iconDescription, order++);
+					icons.add(new IconGroup(icon));
+				}
 			}
-			final UserIcon icon = new UserIcon(iconName, fullName, iconDescription, order++);
-			icons.add(new IconGroup(icon));
 		}
 		return icons;
 	}

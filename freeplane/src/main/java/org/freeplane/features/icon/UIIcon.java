@@ -114,6 +114,10 @@ public class UIIcon implements IconDescription, NamedIcon {
 		resourceURL = RESOURCE_CONTROLLER.getResource(path);
 		return resourceURL;
 	}
+	
+	protected void setUrl(URL url) {
+		this.resourceURL = url;
+	}
 
 	public String getPath() {
 		return this.getImagePath() + '/' + file;
