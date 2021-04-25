@@ -11,7 +11,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-DBUILDING_DLL=1_@@_
 CppCompiler=-DBUILDING_DLL=1_@@_
-Linker=--no-export-all-symbols --add-stdcall-alias_@@_
+Linker=_@@_
 IsCpp=1
 Icon=
 ExeOutput=
