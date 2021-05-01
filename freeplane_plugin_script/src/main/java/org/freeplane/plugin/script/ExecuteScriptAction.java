@@ -52,16 +52,16 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	private final File scriptFile;
 	private final ExecutionMode mode;
-	private final ScriptRunner scriptRunner;
+	private final ScriptingPermissions permissions;
+	private ScriptRunner scriptRunner = null;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String scriptFile,
 	                           final ExecutionMode mode, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
+		this.permissions = permissions;
 		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
 		this.setIcon(getIconKey());
-		final IScript script = ScriptingEngine.createScript(this.scriptFile, permissions, true);
-		scriptRunner = new ScriptRunner(script);
 	}
 
 	public static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
@@ -72,6 +72,11 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
+			if(scriptRunner == null) {
+				final IScript script = ScriptingEngine.createScript(this.scriptFile, permissions, true);
+				scriptRunner = new ScriptRunner(script);
+			}
+
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			MapModel map = selection.getMap();
