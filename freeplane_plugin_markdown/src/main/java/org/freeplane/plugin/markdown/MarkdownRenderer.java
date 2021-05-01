@@ -61,7 +61,14 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         	return content;
 
         String markdown = text;
-        String html = "<html><body>" + Marked.marked(markdown, options) + "</body></html>";
+        String html = "<html>"
+        		+ "<style>"
+        		+ "table {border: 0; border-spacing: 0;}"
+        		+ "th, td {border: 1px solid;}"
+        		+ "</style>"
+        		+ "<body>" 
+        		+ Marked.marked(markdown, options) 
+        		+ "</body></html>";
         return html;
 	}
 

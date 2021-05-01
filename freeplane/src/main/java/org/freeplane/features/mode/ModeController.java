@@ -417,9 +417,12 @@ public class ModeController extends AController implements FreeplaneActions{
 		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
 		final Color background = getExtension(MapStyle.class).getBackground(map);
 		final StringBuilder style = new StringBuilder( "<style type='text/css'>")
-		        .append(" body { font-size: 10pt;") // FIXME: copy from NoteController.setNoteTooltip() ?
+		        .append(" body { font-size: 10pt;}")
+		        .append(" table {border: 0; border-spacing: 0;}")
+		        .append(" th, td {border: 1px solid;}")
+		        // FIXME: copy from NoteController.setNoteTooltip() ?
 		        .append(new CssRuleBuilder().withBackground(background))
-		        .append(" }</style>");
+		        .append("</style>");
 		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;
 		for (final ITooltipProvider provider : toolTip.values()) {
@@ -428,7 +431,7 @@ public class ModeController extends AController implements FreeplaneActions{
 				continue;
 			}
 			value = value.replace("<html>", "<div>");
-			value = value.replaceAll("\\s*</?(body|head)>", "");
+			value = value.replaceAll("\\s*<(?:style>.*?</style|/?(?:body|head))>", "");
 			value = value.replace("</html>", "</div>");
 			if (tooltipSet) {
 				text.append("<hr>");
