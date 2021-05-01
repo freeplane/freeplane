@@ -29,6 +29,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -36,28 +37,6 @@ public class IconContainedCondition extends ASelectableCondition {
 	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
-
-	static private int iconFirstIndex(final NodeModel node, final String iconName) {
-		final Collection<NamedIcon> icons = IconController.getController().getIcons(node);
-		int i = 0;
-		for (NamedIcon nextIcon : icons) {
-			if (iconName.equals(nextIcon.getName())) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
-	private static boolean isStateIconContained(final NodeModel node, final String iconName) {
-		final Collection<UIIcon> stateIcons = IconController.getController().getStateIcons(node);
-		for (final UIIcon stateIcon : stateIcons) {
-			if (iconName.equals(stateIcon.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new IconContainedCondition(element.getAttribute(IconContainedCondition.ICON, null));
@@ -70,10 +49,31 @@ public class IconContainedCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return IconContainedCondition.iconFirstIndex(node, iconName) != -1
-		        || IconContainedCondition.isStateIconContained(node, iconName);
+		return iconFirstIndex(node) != -1
+		        || isStateIconContained(node)
+		        || isLinkIconContained(node);
 	}
 
+	private boolean isLinkIconContained(NodeModel node) {
+		return LinkController.getController().containsLinkDecorationIcon(node, iconName);
+	}
+
+	private int iconFirstIndex(final NodeModel node) {
+		final Collection<NamedIcon> icons = IconController.getController().getIcons(node);
+		int i = 0;
+		for (NamedIcon nextIcon : icons) {
+			if (iconName.equals(nextIcon.getName())) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
+	private boolean isStateIconContained(final NodeModel node) {
+		final Collection<UIIcon> stateIcons = IconController.getController().getStateIcons(node);
+		return stateIcons.stream().map(UIIcon::getName).anyMatch(iconName::equals);
+	}
 	private String getIconName() {
 		return iconName;
 	}

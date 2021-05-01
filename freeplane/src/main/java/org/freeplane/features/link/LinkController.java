@@ -84,6 +84,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.icons.NodeViewDecorator;
 import org.freeplane.features.map.IMapSelection;
@@ -961,6 +962,20 @@ public class LinkController extends SelectionController implements IExtension {
 	    }
 	}
 
+
+	public boolean containsLinkDecorationIcon(NodeModel node, String iconName) {
+	    final URI link = NodeLinks.getLink(node);
+	    if (link == null) {
+	        return false;
+	    }
+        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
+        List<String> iconsForLink = decorator.getIconsForLink(link);
+        if(iconsForLink.isEmpty()){
+	        return false;
+	    }
+        return iconsForLink.stream().map(name -> "links/" + name).anyMatch(iconName::equals);
+	    
+	}
 	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel node)
 	{
 	    try {
