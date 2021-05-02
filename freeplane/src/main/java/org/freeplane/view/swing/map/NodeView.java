@@ -381,6 +381,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {
 		final Component[] components = getComponents();
+		NodeView candidate = null;
 		for (int i = components.length - 1; i >= 0; i--) {
 			if (startBefore != null) {
 				if (components[i] == startBefore) {
@@ -400,10 +401,15 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			final NodeView child = view.getLast(null, leftOnly, rightOnly);
 			if (child != null) {
-				return child;
+				if(view.isSummary()) {
+					if(candidate == null)
+						candidate = child;
+				}
+				else
+					return child;
 			}
 		}
-		return null;
+		return candidate;
 	}
 
 	LinkedList<NodeView> getLeft(final boolean onlyVisible) {
@@ -508,7 +514,7 @@ public class NodeView extends JComponent implements INodeView {
 		return model;
 	}
 
-	protected NodeView getNextSiblingSingle() {
+	private NodeView getNextSiblingSingle() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
 		for (int i = index + 1; i < v.size(); i++) {
@@ -527,7 +533,7 @@ public class NodeView extends JComponent implements INodeView {
 		return this;
 	}
 
-	protected NodeView getNextVisibleSibling() {
+	NodeView getNextVisibleSibling() {
 		NodeView sibling;
 		NodeView lastSibling = this;
 		for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
@@ -626,7 +632,7 @@ public class NodeView extends JComponent implements INodeView {
 		return newSelected;
 	}
 
-	protected NodeView getPreviousSiblingSingle() {
+	private NodeView getPreviousSiblingSingle() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
 		for (int i = index - 1; i >= 0; i--) {
@@ -665,7 +671,7 @@ public class NodeView extends JComponent implements INodeView {
 		return v;
 	}
 
-	protected NodeView getPreviousVisibleSibling() {
+	NodeView getPreviousVisibleSibling() {
 		NodeView sibling;
 		NodeView previousSibling = this;
 		for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
@@ -735,7 +741,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		return color;
 	}
-	
+
 	public Color getTextColor() {
 		final Color color = NodeStyleController.getController(getMap().getModeController()).getColor(model);
 		return color;
@@ -834,7 +840,7 @@ public class NodeView extends JComponent implements INodeView {
 		else
 			return getModel().hasVisibleContent(map.getFilter());
 	}
-	
+
 	public boolean isLeft() {
 		if (getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return false;
@@ -1734,12 +1740,12 @@ public class NodeView extends JComponent implements INodeView {
         if (isContentVisible())
             return new Rectangle(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
         else {
-            Rectangle innerBounds = new Rectangle(spaceAround, spaceAround, -1, -1); 
+            Rectangle innerBounds = new Rectangle(spaceAround, spaceAround, -1, -1);
             getChildrenViews().stream()
             .map(v -> {
                 Rectangle r = v.getInnerBounds();
-                r.x += v.getX(); 
-                r.y += v.getY(); 
+                r.x += v.getX();
+                r.y += v.getY();
                 return r;
             })
             .forEach(innerBounds::add);

@@ -848,7 +848,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         }
         return null;
     }
-    
+
     public Object detectObject(final Point p) {
         Object view = detectView(p);
         if(view instanceof ILinkView)
@@ -1346,7 +1346,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			    final Dimension viewPortSize = vp.getVisibleRect().getSize();
 			    JComponent viewer = (JComponent) factory.createViewer(uri, viewPortSize, () -> getParent().repaint());
 			    setBackgroundComponent(viewer);
-			    
+
 			}
             else {
                 JComponent viewer = (JComponent) factory.createViewer(uri, zoom, () -> getParent().repaint());
@@ -1386,8 +1386,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         }
         setOpaque(! (fitToViewport && backgroundComponent != null));
     }
-   
-   
+
+
 
    @Override
    public void setBackground(Color background) {
@@ -1493,7 +1493,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if(selectsDown != null){
 				NodeView node = selectionStart;
 				do{
-					node = getNextVisibleSibling(node, selectsDown);
+					NodeView nextVisibleSibling = getNextVisibleSibling(node, selectsDown);
+					if(node == nextVisibleSibling) {
+						selectAsTheOnlyOneSelected(nextSelected);
+						LogUtils.severe("Can not select next visible sibling in continious selection, endless loop");
+						break;
+					}
+					node = nextVisibleSibling;
 					addSelected(node, false);
 				}while(node != nextSelected);
 				selection.setSelectionEnd(nextSelected);
@@ -1742,7 +1748,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 							|| targetView != null && targetView.isSelected());
 					if(showConnector) {
 						LinkController linkController = LinkController.getController(getModeController());
-                        if (areBothNodesVisible 
+                        if (areBothNodesVisible
                                 && (
                                 ConnectorShape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
                                 || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
@@ -2400,7 +2406,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     Color getStandardSelectionBackgroundColor() {
         return standardSelectionBackgroundColor;
     }
-    
+
     Color getStandardSelectionTextColor() {
         return standardSelectionTextColor;
     }
