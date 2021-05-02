@@ -348,7 +348,7 @@ public class NodeView extends JComponent implements INodeView {
 		return mainView.getDeltaY();
 	}
 
-	NodeView getFirst(Component startAfter, final boolean leftOnly, final boolean rightOnly) {
+	private NodeView getFirst(Component startAfter, final boolean leftOnly, final boolean rightOnly) {
 		final Component[] components = getComponents();
 		for (int i = 0; i < components.length; i++) {
 			if (startAfter != null) {
@@ -367,9 +367,11 @@ public class NodeView extends JComponent implements INodeView {
 			if (view.isContentVisible()) {
 				return view;
 			}
-			final NodeView child = view.getFirst(null, leftOnly, rightOnly);
-			if (child != null) {
-				return child;
+			if(! view.isSummary()) {
+				final NodeView child = view.getFirst(null, leftOnly, rightOnly);
+				if (child != null) {
+					return child;
+				}
 			}
 		}
 		return null;
@@ -381,7 +383,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {
 		final Component[] components = getComponents();
-		NodeView candidate = null;
 		for (int i = components.length - 1; i >= 0; i--) {
 			if (startBefore != null) {
 				if (components[i] == startBefore) {
@@ -399,17 +400,14 @@ public class NodeView extends JComponent implements INodeView {
 			if (view.isContentVisible()) {
 				return view;
 			}
-			final NodeView child = view.getLast(null, leftOnly, rightOnly);
-			if (child != null) {
-				if(view.isSummary()) {
-					if(candidate == null)
-						candidate = child;
-				}
-				else
+			if(! view.isSummary()) {
+				final NodeView child = view.getLast(null, leftOnly, rightOnly);
+				if (child != null) {
 					return child;
+				}
 			}
 		}
-		return candidate;
+		return null;
 	}
 
 	LinkedList<NodeView> getLeft(final boolean onlyVisible) {
