@@ -730,7 +730,7 @@ public class NodeModel{
     }
 
 	public boolean childSubtreesHaveVisibleContent(Filter filter) {
-		return ! children.isEmpty() && children.stream().allMatch(child -> child.subtreeHasVisibleContent(filter));
+		return children.stream().anyMatch(child -> child.subtreeHasVisibleContent(filter));
 	}
 
     public NodeModel duplicate(boolean withChildren) {
