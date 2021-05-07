@@ -19,7 +19,7 @@
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>1.8.0</minVersion>
-    <maxVersion></maxVersion>
+    <maxVersion>15</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
