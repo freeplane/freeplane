@@ -22,13 +22,13 @@ class CompiledScriptCleaner {
             .reduce(0, Long::max);
         return lastModificationTime;
     }
-    
+
     private long calculateLastDependencyModificationTime(File f) {
         final long lastModificationTime;
         if(f.isDirectory()) {
             try {
                 lastModificationTime = Files.walk(Paths.get(f.toURI()), FileVisitOption.FOLLOW_LINKS)
-                .filter(path -> 
+                .filter(path ->
                     path.getFileName().toString().endsWith(".class"))
                 .map(Path::toFile)
                 .mapToLong(File::lastModified)
@@ -43,7 +43,7 @@ class CompiledScriptCleaner {
             lastModificationTime = 0;
         return lastModificationTime;
     }
-    
+
     void removeOutdatedCompiledScripts(boolean compileOnlyChangedScriptFiles) {
         File compiledScriptsDir = ScriptResources.getCompiledScriptsDir();
         if(compileOnlyChangedScriptFiles) {
@@ -61,27 +61,34 @@ class CompiledScriptCleaner {
             }
         }
     }
-    
+
     private void removeOutdated(File cache, long lastDependencyModificationTime) {
         File propertyFile = new File(cache, "compiled.properties");
         if (propertyFile.exists()) {
             Properties properties = new Properties();
             try (InputStream in = new FileInputStream(propertyFile)) {
                 properties.load(in);
-                long compileTime = Long.parseLong(properties.getProperty("time"));
-                String source = properties.getProperty("source");
-                File sourceFile = new File(source);
-                if(! sourceFile.canRead() 
-                        || lastDependencyModificationTime >= compileTime
-                        || sourceFile.lastModified() >= compileTime) {
-                    FileUtils.deleteDirectory(cache);
-                }
-            } catch (IOException|NumberFormatException e) {
+            } catch (IOException e) {
                 LogUtils.warn(e);
+                return;
             }
+            try {
+				long compileTime = Long.parseLong(properties.getProperty("time"));
+				String source = properties.getProperty("source");
+				File sourceFile = new File(source);
+				if(! sourceFile.canRead()
+				        || lastDependencyModificationTime >= compileTime
+				        || sourceFile.lastModified() >= compileTime) {
+				    FileUtils.deleteDirectory(cache);
+				}
+			}
+			catch (IOException|NumberFormatException e) {
+                LogUtils.warn(e);
+                return;
+			}
         }
 
     }
- 
+
 
 }
