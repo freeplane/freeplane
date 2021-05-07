@@ -10,10 +10,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -32,36 +28,9 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.ui.FrameController;
 
 public class JFreeplaneCustomizableFileChooser extends JFileChooser{
-	private static class ShellFolderAccessor {
-		static final Method SHELL_FOLDER_METHOD = shellFolderMethod();
-		static Method shellFolderMethod (){
-			try {
-				Class<?> shellFolderClass = ShellFolderAccessor.class.getClassLoader().loadClass("sun.awt.shell.ShellFolder");
-				Method shellFolderMethod = shellFolderClass.getMethod("getShellFolder", File.class);
-				return shellFolderMethod;
-			}
-			catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-				LogUtils.severe(e);
-				return null;
-			}
-		}
-
-		static File getShellFolder(File dir) {
-			try {
-				File shellFolder = (File) SHELL_FOLDER_METHOD.invoke(null, dir);
-				return shellFolder;
-			}
-			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				LogUtils.severe(e);
-				return dir;
-			}
-		}
-	}
-
     private static final String FILE_CHOOSER_SPECIAL_FOLDERS_PROPERTY = "file_chooser_shows_special_folders";
 
 	private static final String USE_SHELL_FOLDER_JAVA_PROPERTY = "FileChooser.useShellFolder";
@@ -155,12 +124,7 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 	}
 
 	private void setDirectoryBehavingLikeShellFolder(File dir) throws IOException {
-		File shellFolder = AccessController.doPrivileged(new PrivilegedAction<File>() {
-			@Override
-			public File run() {
-				return ShellFolderAccessor.getShellFolder(dir);
-			}
-		});
+		File shellFolder = sun.awt.shell.ShellFolder.getShellFolder(dir);
 		super.setCurrentDirectory(shellFolder);
 	}
 

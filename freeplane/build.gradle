@@ -1,5 +1,6 @@
 import groovy.io.FileType
 import org.gradle.util.GradleVersion
+import org.gradle.plugins.ide.eclipse.model.AccessRule
 
 configurations{
 	mergedViewerDependencies
@@ -50,12 +51,25 @@ test {
  		sourceSets.editor.resources.sourceDirectories +
  		sourceSets.external.resources.sourceDirectories
 }
-
-// work around for new gradle bug if subproject name equals to root dir name
+/*
+compileJava {
+    options.compilerArgs << '--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED'
+}
+*/
 eclipse {
-  project {
-    name = 'freeplane'
-  }
+	project {
+		// work around for new gradle bug if subproject name equals to root dir name
+		name = 'freeplane'
+	}
+	//configure access restriction exceptions
+	classpath {
+	    file {
+	        whenMerged {
+	            def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
+	            jre.accessRules.add(new AccessRule('accessible', 'sun/awt/shell/ShellFolder'))
+	        }
+	    }
+	}
 }
 
 processTestResources.dependsOn createEmojiList
