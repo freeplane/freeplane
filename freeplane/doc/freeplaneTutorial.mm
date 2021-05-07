@@ -1,5 +1,5 @@
-<map version="freeplane 1.7.0">
-<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
+<map version="freeplane 1.9.0">
+<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
@@ -31,16 +31,17 @@
             </conjunct_condition>
         </conditional_style>
     </conditional_styles>
-    <properties show_icon_for_attributes="false" fit_to_viewport="false;" show_note_icons="true" show_notes_in_map="false"/>
+    <properties show_icon_for_attributes="false" show_notes_in_map="false" show_note_icons="true" fit_to_viewport="false;"/>
 
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="defaultstyle.details">
 <font SIZE="8"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="default" FORMAT_AS_HYPERLINK="true">
+<stylenode LOCALIZED_TEXT="default" ID="ID_1913414962" FORMAT_AS_HYPERLINK="true">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1913414962" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <edge COLOR="#808080" WIDTH="thin"/>
 <font SIZE="8"/>
 </stylenode>
@@ -52,6 +53,7 @@
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#ccffff" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#002080"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -71,19 +73,19 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode TEXT="Introduction" BACKGROUND_COLOR="#00cc33" MIN_WIDTH="5.0 cm">
+<stylenode TEXT="Introduction" BACKGROUND_COLOR="#00cc33" MIN_WIDTH="5 cm">
 <font BOLD="true"/>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
 </stylenode>
-<stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble" MIN_WIDTH="5.0 cm">
+<stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble" MIN_WIDTH="5 cm">
 <font BOLD="true"/>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
 </stylenode>
-<stylenode TEXT="Advanced" COLOR="#000000" BACKGROUND_COLOR="#ffff00" STYLE="bubble" MIN_WIDTH="5.0 cm">
+<stylenode TEXT="Advanced" COLOR="#000000" BACKGROUND_COLOR="#ffff00" STYLE="bubble" MIN_WIDTH="5 cm">
 <font BOLD="true"/>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
 </stylenode>
-<stylenode TEXT="Professional" BACKGROUND_COLOR="#ff9900" STYLE="bubble" MIN_WIDTH="5.0 cm">
+<stylenode TEXT="Professional" BACKGROUND_COLOR="#ff9900" STYLE="bubble" MIN_WIDTH="5 cm">
 <font BOLD="true"/>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
 </stylenode>
@@ -97,30 +99,29 @@
 <stylenode TEXT="Revision">
 <icon BUILTIN="revision"/>
 </stylenode>
-<stylenode TEXT="Purpose" BACKGROUND_COLOR="#ffcccc" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<stylenode TEXT="Purpose" BACKGROUND_COLOR="#ffcccc" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
 <font BOLD="true"/>
 <edge COLOR="#ff3333"/>
 </stylenode>
-<stylenode TEXT="Actions" BACKGROUND_COLOR="#99ff99" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<stylenode TEXT="Actions" BACKGROUND_COLOR="#99ff99" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
 <font BOLD="true"/>
 <edge COLOR="#009900"/>
 </stylenode>
-<stylenode TEXT="Notes and explanations" BACKGROUND_COLOR="#ccffff" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<stylenode TEXT="Notes and explanations" BACKGROUND_COLOR="#ccffff" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
 <font BOLD="true"/>
 <edge COLOR="#0066ff"/>
 </stylenode>
-<stylenode TEXT="Tips and tricks" BACKGROUND_COLOR="#ffcc99" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<stylenode TEXT="Tips and tricks" BACKGROUND_COLOR="#ffcc99" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
 <font BOLD="true"/>
 <edge COLOR="#ff9900"/>
 </stylenode>
-<stylenode TEXT="Old documentation" BACKGROUND_COLOR="#eaeaea" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<stylenode TEXT="Old documentation" BACKGROUND_COLOR="#eaeaea" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
 <font BOLD="true"/>
 <edge COLOR="#666666"/>
 </stylenode>
 <stylenode TEXT="MyTemplate">
 <icon BUILTIN="females"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -138,13 +139,12 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
 </stylenode>
-<stylenode TEXT="MainWidth" MIN_WIDTH="600.0 px"/>
-<stylenode TEXT="SubWidth" MAX_WIDTH="550.0 px" MIN_WIDTH="550.0 px"/>
+<stylenode TEXT="MainWidth" MIN_WIDTH="600 px"/>
+<stylenode TEXT="SubWidth" MAX_WIDTH="550 px" MIN_WIDTH="550 px"/>
 <stylenode TEXT="Method" STYLE="as_parent">
 <edge STYLE="horizontal"/>
 </stylenode>
@@ -220,7 +220,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1704300991" CREATED="1323439375808" MODIFIED="1335090069692" HGAP_QUANTITY="-13.0 px" VSHIFT_QUANTITY="89.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node ID="ID_1704300991" CREATED="1323439375808" MODIFIED="1335090069692" HGAP_QUANTITY="-13 px" VSHIFT_QUANTITY="89 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -244,8 +244,8 @@
 </hook>
 </node>
 </node>
-<node TEXT="Reading guide" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1335300198085" MIN_WIDTH="1.0 px">
-<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1341133410954" STYLE="fork" HGAP_QUANTITY="-81.0 px" VSHIFT_QUANTITY="207.0 px"><richcontent TYPE="NODE">
+<node TEXT="Reading guide" STYLE_REF="Beginner" FOLDED="true" ID="ID_195004053" CREATED="1316097186850" MODIFIED="1335300198085" MIN_WIDTH="1 px">
+<node ID="ID_525900700" CREATED="1323439682466" MODIFIED="1341133410954" STYLE="fork" HGAP_QUANTITY="-81 px" VSHIFT_QUANTITY="207 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -290,42 +290,41 @@
 </node>
 </node>
 <node TEXT="Main menu&apos;s" STYLE_REF="Beginner" FOLDED="true" ID="ID_767122736" CREATED="1333268936129" MODIFIED="1335300198085">
-<node TEXT="" FOLDED="true" ID="ID_1720964325" CREATED="1333220288493" MODIFIED="1341130811645" HGAP_QUANTITY="64.0 px" VSHIFT_QUANTITY="30.0 px" STYLE="fork">
+<node TEXT="" FOLDED="true" ID="ID_1720964325" CREATED="1333220288493" MODIFIED="1341130811645" HGAP_QUANTITY="64 px" VSHIFT_QUANTITY="30 px" STYLE="fork">
 <edge STYLE="hide_edge"/>
 <hook URI="Images/doc/MenusPropertiesPanel.png" SIZE="0.43956044" NAME="ExternalObject"/>
-<node TEXT="Menu bar" ID="ID_745779360" CREATED="1333220342855" MODIFIED="1333266989761" HGAP_QUANTITY="-712.0 px" VSHIFT_QUANTITY="17.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_745779360" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="Menu bar" ID="ID_745779360" CREATED="1333220342855" MODIFIED="1333266989761" HGAP_QUANTITY="-712 px" VSHIFT_QUANTITY="17 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_745779360" STARTINCLINATION="29.38775 pt;0 pt;" ENDINCLINATION="29.38775 pt;0 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Tool bar" ID="ID_1924639373" CREATED="1333220356591" MODIFIED="1333266997202" HGAP_QUANTITY="-703.0 px" VSHIFT_QUANTITY="-1.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1924639373" STARTINCLINATION="40;-5;" ENDINCLINATION="40;-5;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="Tool bar" ID="ID_1924639373" CREATED="1333220356591" MODIFIED="1333266997202" HGAP_QUANTITY="-703 px" VSHIFT_QUANTITY="-1 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1924639373" STARTINCLINATION="29.38775 pt;-2.93878 pt;" ENDINCLINATION="29.38775 pt;-2.93878 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Filter bar" ID="ID_1939718780" CREATED="1333220363978" MODIFIED="1333267003426" HGAP_QUANTITY="-711.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1939718780" STARTINCLINATION="43;-13;" ENDINCLINATION="43;-13;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="Filter bar" ID="ID_1939718780" CREATED="1333220363978" MODIFIED="1333267003426" HGAP_QUANTITY="-711 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1939718780" STARTINCLINATION="31.59184 pt;-8.81633 pt;" ENDINCLINATION="31.59184 pt;-8.81633 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="F-bar" ID="ID_1406478692" CREATED="1333220384297" MODIFIED="1333267009853" HGAP_QUANTITY="-688.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1406478692" STARTINCLINATION="46;-24;" ENDINCLINATION="46;-24;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="F-bar" ID="ID_1406478692" CREATED="1333220384297" MODIFIED="1333267009853" HGAP_QUANTITY="-688 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1406478692" STARTINCLINATION="33.79592 pt;-16.89796 pt;" ENDINCLINATION="33.79592 pt;-16.89796 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Icon bar" ID="ID_1865250955" CREATED="1333220561873" MODIFIED="1333267016218" HGAP_QUANTITY="-706.0 px" VSHIFT_QUANTITY="-2.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1865250955" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="Icon bar" ID="ID_1865250955" CREATED="1333220561873" MODIFIED="1333267016218" HGAP_QUANTITY="-706 px" VSHIFT_QUANTITY="-2 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1865250955" STARTINCLINATION="29.38775 pt;0 pt;" ENDINCLINATION="29.38775 pt;0 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Properties Panel" ID="ID_303482588" CREATED="1333220390249" MODIFIED="1333280327138" HGAP_QUANTITY="-146.0 px" VSHIFT_QUANTITY="30.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_303482588" STARTINCLINATION="20;-28;" ENDINCLINATION="20;-28;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="Properties Panel" ID="ID_303482588" CREATED="1333220390249" MODIFIED="1333280327138" HGAP_QUANTITY="-146 px" VSHIFT_QUANTITY="30 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_303482588" STARTINCLINATION="14.69388 pt;-19.83673 pt;" ENDINCLINATION="14.69388 pt;-19.83673 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" BOLD="true" ITALIC="true"/>
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Background&#xa;context menu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336131961095" HGAP_QUANTITY="34.0 px" VSHIFT_QUANTITY="-6.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Background&#xa;context menu" FOLDED="true" ID="ID_1471702513" CREATED="1333177207314" MODIFIED="1336131961095" HGAP_QUANTITY="34 px" VSHIFT_QUANTITY="-6 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -335,22 +334,20 @@
       Right-click in free place of background
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook URI="Images/mouse/mouse_RB.png" SIZE="1.0" NAME="ExternalObject"/>
-<node TEXT="Background Context Menu" FOLDED="true" ID="ID_1485150857" CREATED="1333223496821" MODIFIED="1336131984089" VSHIFT_QUANTITY="180.0 px" STYLE="fork">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<node TEXT="Background Context Menu" FOLDED="true" ID="ID_1485150857" CREATED="1333223496821" MODIFIED="1336131984089" VSHIFT_QUANTITY="180 px" STYLE="fork">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="29.38775 pt;0 pt;" ENDINCLINATION="29.38775 pt;0 pt;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <font BOLD="true" ITALIC="true"/>
 <hook URI="Images/doc/BackgroundContextMenu.png" SIZE="1.0" NAME="ExternalObject"/>
-<node TEXT="Open/close&#xa;Tool panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1341130818119" HGAP_QUANTITY="56.0 px">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="97;-188;" ENDINCLINATION="97;-188;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
+<node TEXT="Open/close&#xa;Tool panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1341130818119" HGAP_QUANTITY="56 px">
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="71.2653 pt;-137.38775 pt;" ENDINCLINATION="71.2653 pt;-137.38775 pt;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
 </node>
 </node>
 </node>
-<node TEXT="Help &gt; Key reference" FOLDED="true" ID="ID_291675950" CREATED="1333224017380" MODIFIED="1333278200067" HGAP_QUANTITY="39.0 px" VSHIFT_QUANTITY="-217.0 px" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
-
+<node TEXT="Help &gt; Key reference" FOLDED="true" ID="ID_291675950" CREATED="1333224017380" MODIFIED="1333278200067" HGAP_QUANTITY="39 px" VSHIFT_QUANTITY="-217 px" TEXT_SHORTENED="true"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -360,18 +357,17 @@
       <i>Shot cuts</i>&#160;or <i>hot keys </i>for most functions.
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="Hot keys table" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1341130885855" HGAP_QUANTITY="-76.0 px" VSHIFT_QUANTITY="190.0 px">
+</html></richcontent>
+<node TEXT="Hot keys table" ID="ID_1337797684" CREATED="1333278113064" MODIFIED="1341130885855" HGAP_QUANTITY="-76 px" VSHIFT_QUANTITY="190 px">
 <hook URI="Images/doc/HotKeysTable.png" SIZE="0.8633093" NAME="ExternalObject"/>
 </node>
 </node>
 </node>
-<node TEXT="Nodes" STYLE_REF="Beginner" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1335300198085" MIN_WIDTH="1.0 px">
+<node TEXT="Nodes" STYLE_REF="Beginner" FOLDED="true" ID="ID_1368882439" CREATED="1316154547031" MODIFIED="1335300198085" MIN_WIDTH="1 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_859940648" CREATED="1323460494762" MODIFIED="1335091084815" HGAP_QUANTITY="-24.0 px" VSHIFT_QUANTITY="88.0 px"><richcontent TYPE="NODE">
+<node ID="ID_859940648" CREATED="1323460494762" MODIFIED="1335091084815" HGAP_QUANTITY="-24 px" VSHIFT_QUANTITY="88 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -399,7 +395,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1335091096343" HGAP_QUANTITY="-86.0 px" VSHIFT_QUANTITY="97.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1269567767" CREATED="1323465595335" MODIFIED="1335091096343" HGAP_QUANTITY="-86 px" VSHIFT_QUANTITY="97 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -439,8 +435,8 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="(relative) parent" STYLE_REF="ConsumerTopic" FOLDED="true" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1323465789150" VSHIFT_QUANTITY="20.0 px">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1105307139" MIDDLE_LABEL="descendancy" STARTINCLINATION="25;-45;" ENDINCLINATION="-36;-44;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="(relative) parent" STYLE_REF="ConsumerTopic" FOLDED="true" ID="ID_687495618" CREATED="1314131160308" MODIFIED="1323465789150" VSHIFT_QUANTITY="20 px">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1105307139" MIDDLE_LABEL="descendancy" STARTINCLINATION="18.36735 pt;-32.32653 pt;" ENDINCLINATION="-25.71428 pt;-31.59184 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <node TEXT="child" STYLE_REF="ConsumerTopic" ID="ID_1105307139" CREATED="1314131174886" MODIFIED="1323682830658">
 <edge STYLE="bezier"/>
 </node>
@@ -451,7 +447,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1541844433714" HGAP_QUANTITY="-77.0 px" VSHIFT_QUANTITY="206.0 px"><richcontent TYPE="NODE">
+<node ID="ID_434382705" CREATED="1323465258749" MODIFIED="1541844433714" HGAP_QUANTITY="-77 px" VSHIFT_QUANTITY="206 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -495,8 +491,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Unfold one level" STYLE_REF="ConsumerTopic" ID="ID_321295556" CREATED="1310134532663" MODIFIED="1323465426246" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../unfold_one_level"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -506,8 +501,7 @@
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Progressively unfolds the descendants of the selected node. Clicking once unfolds the children, clicking again unfolds the grandchildren, etc.</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -515,8 +509,7 @@
 </node>
 <node TEXT="Fold one level" STYLE_REF="ConsumerTopic" ID="ID_831251421" CREATED="1310134532679" MODIFIED="1323465426246" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../fold_one_level"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -526,8 +519,7 @@
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Progressively folds the descendants of the selected node, starting at the deepest level in the hierarchy. If four levels exist, clicking once folds the great grandchildren, clicking again folds the grandchildren, clicking again folds the children, etc.</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -535,8 +527,7 @@
 </node>
 <node TEXT="Unfold all" STYLE_REF="ConsumerTopic" ID="ID_933325044" CREATED="1310134532679" MODIFIED="1323465426246" LINK="#ID_86446891" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../unfold_all"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -563,8 +554,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -572,8 +562,7 @@
 </node>
 <node TEXT="Fold all" STYLE_REF="ConsumerTopic" ID="ID_657829947" CREATED="1310134532679" MODIFIED="1323465426246" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../fold_all"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -600,8 +589,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -613,8 +601,7 @@
 <node TEXT="Freeplane workspace" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1489244376074">
 <node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1359525886" CREATED="1483416459506" MODIFIED="1486862695287">
 <node TEXT="The Freeplane workspace is the area in which your map and program controls appear." FOLDED="true" ID="ID_516511911" CREATED="1489245157723" MODIFIED="1500212664713">
-<node TEXT="Workspace elements help you create, format, navigate, and manipulate your map." FOLDED="true" ID="ID_1338861606" CREATED="1489244487039" MODIFIED="1500801089971"><richcontent TYPE="DETAILS">
-
+<node TEXT="Workspace elements help you create, format, navigate, and manipulate your map." FOLDED="true" ID="ID_1338861606" CREATED="1489244487039" MODIFIED="1500801089971"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -624,13 +611,11 @@
       to display / hide details (such as this and following nodes) select node then press Alt+F2
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node TEXT="" ID="ID_748597006" CREATED="1500213151013" MODIFIED="1500213151015">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="screenshot (without annotations)" STYLE_REF="image in details" ID="ID_1712284942" CREATED="1489245806679" MODIFIED="1500213083783"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot (without annotations)" STYLE_REF="image in details" ID="ID_1712284942" CREATED="1489245806679" MODIFIED="1500213083783"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -640,11 +625,9 @@
       <img src="Images/other/workspace/Freeplane%20workspace.png" width="1000" height="544"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="screenshot (annotated)" STYLE_REF="image in details" ID="ID_1360309384" CREATED="1489246977880" MODIFIED="1500213185847"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot (annotated)" STYLE_REF="image in details" ID="ID_1360309384" CREATED="1489246977880" MODIFIED="1500213185847"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -654,8 +637,7 @@
       <img src="Images/other/workspace/Freeplane%20workspace%20(annotated).png" width="1000" height="544"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="" ID="ID_907526987" CREATED="1500213151006" MODIFIED="1500213151013">
 <hook NAME="SummaryNode"/>
@@ -663,38 +645,37 @@
 <node TEXT="nodes contain details.  To view, select node then press Alt+f2" ID="ID_1450367192" CREATED="1500213151016" MODIFIED="1500213202879"/>
 </node>
 </node>
-<node TEXT="Elements of the workspace (e.g. toolbars, status line) appear around the edges of the workspace." FOLDED="true" ID="ID_429878063" CREATED="1489245179124" MODIFIED="1489599615535" VGAP_QUANTITY="20.999999374151248 pt">
-<node TEXT="top" FOLDED="true" ID="ID_1523745182" CREATED="1489245254483" MODIFIED="1489324983054" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
-<node TEXT="Menubar" ID="ID_83343843" CREATED="1489245078100" MODIFIED="1489333883429" LINK="#ID_179323467" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
-<node TEXT="Toolbar" ID="ID_1377496715" CREATED="1489245083635" MODIFIED="1489333883434" LINK="#ID_833229080" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
-<node TEXT="Filter toolbar" ID="ID_1007394435" CREATED="1489245087252" MODIFIED="1489333883436" LINK="#ID_1735660338" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
-<node TEXT="F-Bar" ID="ID_343234837" CREATED="1489245094715" MODIFIED="1489333883438" LINK="#ID_1658271207" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="Elements of the workspace (e.g. toolbars, status line) appear around the edges of the workspace." FOLDED="true" ID="ID_429878063" CREATED="1489245179124" MODIFIED="1489599615535" VGAP_QUANTITY="21 pt">
+<node TEXT="top" FOLDED="true" ID="ID_1523745182" CREATED="1489245254483" MODIFIED="1489324983054" MAX_WIDTH="57.75 pt" MIN_WIDTH="57.75 pt">
+<node TEXT="Menubar" ID="ID_83343843" CREATED="1489245078100" MODIFIED="1489333883429" LINK="#ID_179323467" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
+<node TEXT="Toolbar" ID="ID_1377496715" CREATED="1489245083635" MODIFIED="1489333883434" LINK="#ID_833229080" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
+<node TEXT="Filter toolbar" ID="ID_1007394435" CREATED="1489245087252" MODIFIED="1489333883436" LINK="#ID_1735660338" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
+<node TEXT="F-Bar" ID="ID_343234837" CREATED="1489245094715" MODIFIED="1489333883438" LINK="#ID_1658271207" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
 </node>
-<node TEXT="bottom" FOLDED="true" ID="ID_50275597" CREATED="1489245257218" MODIFIED="1489324983054" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
-<node TEXT="Status line" ID="ID_917851633" CREATED="1489245285530" MODIFIED="1489333883440" LINK="#ID_741945176" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
-<node TEXT="Scroll bar (horizontal)" ID="ID_1274826999" CREATED="1489333851241" MODIFIED="1489333883441" LINK="#ID_1432333445" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="bottom" FOLDED="true" ID="ID_50275597" CREATED="1489245257218" MODIFIED="1489324983054" MAX_WIDTH="57.75 pt" MIN_WIDTH="57.75 pt">
+<node TEXT="Status line" ID="ID_917851633" CREATED="1489245285530" MODIFIED="1489333883440" LINK="#ID_741945176" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
+<node TEXT="Scroll bar (horizontal)" ID="ID_1274826999" CREATED="1489333851241" MODIFIED="1489333883441" LINK="#ID_1432333445" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
 </node>
-<node TEXT="left side" FOLDED="true" ID="ID_90269899" CREATED="1489245259450" MODIFIED="1489324983055" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
-<node TEXT="Icons toolbar" ID="ID_1594635729" CREATED="1489245280019" MODIFIED="1489333883443" LINK="#ID_655489570" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="left side" FOLDED="true" ID="ID_90269899" CREATED="1489245259450" MODIFIED="1489324983055" MAX_WIDTH="57.75 pt" MIN_WIDTH="57.75 pt">
+<node TEXT="Icons toolbar" ID="ID_1594635729" CREATED="1489245280019" MODIFIED="1489333883443" LINK="#ID_655489570" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
 </node>
-<node TEXT="right side" FOLDED="true" ID="ID_1513022284" CREATED="1489245265250" MODIFIED="1489324983056" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
-<node TEXT="Properties panel" FOLDED="true" ID="ID_1902351042" CREATED="1489245271210" MODIFIED="1489333883446" LINK="#ID_236707457" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt">
+<node TEXT="right side" FOLDED="true" ID="ID_1513022284" CREATED="1489245265250" MODIFIED="1489324983056" MAX_WIDTH="57.75 pt" MIN_WIDTH="57.75 pt">
+<node TEXT="Properties panel" FOLDED="true" ID="ID_1902351042" CREATED="1489245271210" MODIFIED="1489333883446" LINK="#ID_236707457" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt">
 <node TEXT="Note: in Freeplane 1.6.x, Properties Panel was renamed &quot;Tool Panel&quot;" ID="ID_869088340" CREATED="1493475551404" MODIFIED="1493475588261"/>
 </node>
-<node TEXT="Scroll bar (vertical)" ID="ID_1894634754" CREATED="1489333893416" MODIFIED="1489333917179" LINK="#ID_1432333445" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="Scroll bar (vertical)" ID="ID_1894634754" CREATED="1489333893416" MODIFIED="1489333917179" LINK="#ID_1432333445" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt"/>
 </node>
-<node TEXT="dockable" FOLDED="true" ID="ID_560007157" CREATED="1489333935432" MODIFIED="1489599615534" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
-<node TEXT="Note panel" FOLDED="true" ID="ID_1931415683" CREATED="1489333945224" MODIFIED="1489333975631" LINK="#ID_1377583638" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt">
+<node TEXT="dockable" FOLDED="true" ID="ID_560007157" CREATED="1489333935432" MODIFIED="1489599615534" MAX_WIDTH="57.75 pt" MIN_WIDTH="57.75 pt">
+<node TEXT="Note panel" FOLDED="true" ID="ID_1931415683" CREATED="1489333945224" MODIFIED="1489333975631" LINK="#ID_1377583638" MAX_WIDTH="117.75 pt" MIN_WIDTH="117.75 pt">
 <node TEXT="Can be positioned to any of the above locations." ID="ID_191769421" CREATED="1493475439126" MODIFIED="1493475469478"/>
 </node>
 </node>
 </node>
-<node TEXT="Please note: this is meant to be an overview of the workspace.  While it includes some &quot;how to&quot; information, more complete details can be found in other branches of the map." FOLDED="true" ID="ID_627094326" CREATED="1493477160817" MODIFIED="1493477281337" VGAP_QUANTITY="20.999999374151248 pt">
+<node TEXT="Please note: this is meant to be an overview of the workspace.  While it includes some &quot;how to&quot; information, more complete details can be found in other branches of the map." FOLDED="true" ID="ID_627094326" CREATED="1493477160817" MODIFIED="1493477281337" VGAP_QUANTITY="21 pt">
 <node TEXT="Links are provided here to those more detailed branches." ID="ID_1288068090" CREATED="1493477250712" MODIFIED="1493477272648"/>
 </node>
 </node>
-<node TEXT="workspace elements (purpose overview)" FOLDED="true" ID="ID_497653862" CREATED="1489245793739" MODIFIED="1500800927042"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="workspace elements (purpose overview)" FOLDED="true" ID="ID_497653862" CREATED="1489245793739" MODIFIED="1500800927042"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -712,14 +693,12 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<node TEXT="Menubar" FOLDED="true" ID="ID_179323467" CREATED="1489245078100" MODIFIED="1493490654353" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+</html></richcontent>
+<node TEXT="Menubar" FOLDED="true" ID="ID_179323467" CREATED="1489245078100" MODIFIED="1493490654353" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Access to most Freeplane functionality." FOLDED="true" ID="ID_660314093" CREATED="1489589994670" MODIFIED="1489590040456">
 <node TEXT="Appears to top of workspace" ID="ID_863511295" CREATED="1489592384061" MODIFIED="1489592397446"/>
 </node>
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1879801720" CREATED="1489246271412" MODIFIED="1490650502462"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1879801720" CREATED="1489246271412" MODIFIED="1490650502462"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -729,14 +708,12 @@
       <img src="Images/other/workspace/menubar.png" width="450" height="50"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Toolbar" FOLDED="true" ID="ID_833229080" CREATED="1489245083635" MODIFIED="1493490654359" LINK="#ID_1768620172" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Toolbar" FOLDED="true" ID="ID_833229080" CREATED="1489245083635" MODIFIED="1493490654359" LINK="#ID_1768620172" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The toolbar allows easy, one-click access to common Freeplane functionality" ID="ID_401265028" CREATED="1489599647567" MODIFIED="1489599672248"/>
-<node TEXT="screenshot (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_213137953" CREATED="1490650843311" MODIFIED="1490651389937" MAX_WIDTH="405.4999877959493 pt" MIN_WIDTH="405.4999877959493 pt"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_213137953" CREATED="1490650843311" MODIFIED="1490651389937" MAX_WIDTH="405.49999 pt" MIN_WIDTH="405.49999 pt"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -744,17 +721,15 @@
   <body>
     <img src="Images/other/workspace/toolbar%20-%20split.png" width="529" height="96"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Filter toolbar" FOLDED="true" ID="ID_1735660338" CREATED="1489245087252" MODIFIED="1493490654363" LINK="#ID_1577175787" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Filter toolbar" FOLDED="true" ID="ID_1735660338" CREATED="1489245087252" MODIFIED="1493490654363" LINK="#ID_1577175787" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The filter toolbar lets you create, save, and use criteria to limit the map content displayed." ID="ID_1329804604" CREATED="1489599819325" MODIFIED="1489599943552">
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="This lets you manage large maps by restricting, based on your current activity, what is seen." ID="ID_1048144443" CREATED="1489599883612" MODIFIED="1489599933580"/>
 </node>
-<node TEXT="screenshot  (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_1062055828" CREATED="1489328236617" MODIFIED="1490651377209" MAX_WIDTH="657.9999805092817 pt" MIN_WIDTH="657.9999805092817 pt"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot  (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_1062055828" CREATED="1489328236617" MODIFIED="1490651377209" MAX_WIDTH="657.99998 pt" MIN_WIDTH="657.99998 pt"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -762,19 +737,17 @@
   <body>
     <img src="Images/other/workspace/filter%20toolbar%20-%20split.png" width="852" height="54"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="F-Bar" FOLDED="true" ID="ID_1658271207" CREATED="1489245094715" MODIFIED="1493490654366" LINK="#ID_1364416620" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="F-Bar" FOLDED="true" ID="ID_1658271207" CREATED="1489245094715" MODIFIED="1493490654366" LINK="#ID_1364416620" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The F-bar show how the function keys are currently assigned." FOLDED="true" ID="ID_839712673" CREATED="1489600099562" MODIFIED="1489600131922">
 <node TEXT="Located on top of workspace" ID="ID_558516299" CREATED="1490651725412" MODIFIED="1490651739398"/>
 <node TEXT="The F-bar shows keyboard assignments for functions and also for function keys used with Ctrl, Alt, Shift or any combination." FOLDED="true" ID="ID_1848158425" CREATED="1489600137985" MODIFIED="1489600342289">
 <node TEXT="Examples: Ctrl+Alt+F1 , Shift+Alt+F5" ID="ID_1663207491" CREATED="1489600303456" MODIFIED="1489600337920"/>
 </node>
 </node>
-<node TEXT="screenshot    (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_224100440" CREATED="1489328931158" MODIFIED="1490651671452" MAX_WIDTH="777.9999769330032 pt" MIN_WIDTH="777.9999769330032 pt"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot    (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_224100440" CREATED="1489328931158" MODIFIED="1490651671452" MAX_WIDTH="777.99998 pt" MIN_WIDTH="777.99998 pt"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -782,18 +755,16 @@
   <body>
     <img src="Images/other/workspace/f%20bar%20-%20split.png" width="1018" height="62"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Note" LOCALIZED_STYLE_REF="defaultstyle.note" FOLDED="true" ID="ID_55257225" CREATED="1489600163720" MODIFIED="1489600238818">
 <node TEXT="Keyboard shortcuts can be assigned to other keys or key combinations besides function keys.  The F-bar does not reflect shortcut assignments to those non-function keys." ID="ID_359682769" CREATED="1489600166327" MODIFIED="1493481415815"/>
 </node>
 </node>
-<node TEXT="Icons toolbar" FOLDED="true" ID="ID_655489570" CREATED="1489245098507" MODIFIED="1493490654372" LINK="#ID_970426412" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Icons toolbar" FOLDED="true" ID="ID_655489570" CREATED="1489245098507" MODIFIED="1493490654372" LINK="#ID_970426412" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The icons toolbar is a convenient respository of icons you can use to enhance nodes." ID="ID_1205606813" CREATED="1493476613111" MODIFIED="1493476968597"/>
 <node TEXT="located on left of workspace" FOLDED="true" ID="ID_1946428755" CREATED="1489330348938" MODIFIED="1489330361678">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_264999644" CREATED="1489329098141" MODIFIED="1493482067294"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_264999644" CREATED="1489329098141" MODIFIED="1493482067294"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -801,16 +772,14 @@
   <body>
     <img src="Images/other/workspace/icons%20toolbar.png" width="50" height="409"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Status line" FOLDED="true" ID="ID_741945176" CREATED="1489245104475" MODIFIED="1493490654377" LINK="#ID_1438513260" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Status line" FOLDED="true" ID="ID_741945176" CREATED="1489245104475" MODIFIED="1493490654377" LINK="#ID_1438513260" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The Status line shows, at a glance, some aspects of the node on which you hover." ID="ID_1904459435" CREATED="1493477958950" MODIFIED="1493482568666"/>
 <node TEXT="Located on bottom-left of workspace" FOLDED="true" ID="ID_1359468735" CREATED="1489330328701" MODIFIED="1493475739134">
-<node TEXT="Screenshot" STYLE_REF="image in details" ID="ID_862325455" CREATED="1489329729489" MODIFIED="1493475739139"><richcontent TYPE="DETAILS">
-
+<node TEXT="Screenshot" STYLE_REF="image in details" ID="ID_862325455" CREATED="1489329729489" MODIFIED="1493475739139"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -820,12 +789,10 @@
       <img src="Images/other/workspace/status%20line.png" width="324" height="24"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Information shown on status line" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1080188187" CREATED="1489420302695" MODIFIED="1500800978247"><richcontent TYPE="DETAILS">
-
+<node TEXT="Information shown on status line" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1080188187" CREATED="1489420302695" MODIFIED="1500800978247"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -835,15 +802,14 @@
       see <a href="freeplane:/%20/D:/GoogleDrive/Freeplane%20documentation%20project/mind%20maps/Freeplane%20workspace.mm#ID_862325455">screenshot</a>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node TEXT="" ID="ID_1915295181" CREATED="1493482391645" MODIFIED="1493482391647">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Node ID" ID="ID_799017331" CREATED="1489420306602" MODIFIED="1489591903629" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
-<node TEXT="Node content type" ID="ID_46925450" CREATED="1489420397998" MODIFIED="1489591903632" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
-<node TEXT="Filtering" ID="ID_785722919" CREATED="1489420423406" MODIFIED="1489591903633" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
-<node TEXT="Link destination" ID="ID_1937438334" CREATED="1489420528982" MODIFIED="1489591903633" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
+<node TEXT="Node ID" ID="ID_799017331" CREATED="1489420306602" MODIFIED="1489591903629" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt"/>
+<node TEXT="Node content type" ID="ID_46925450" CREATED="1489420397998" MODIFIED="1489591903632" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt"/>
+<node TEXT="Filtering" ID="ID_785722919" CREATED="1489420423406" MODIFIED="1489591903633" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt"/>
+<node TEXT="Link destination" ID="ID_1937438334" CREATED="1489420528982" MODIFIED="1489591903633" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt"/>
 <node TEXT="" ID="ID_1897522544" CREATED="1493482391642" MODIFIED="1493482391645">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
@@ -851,11 +817,10 @@
 </node>
 </node>
 </node>
-<node TEXT="Scrollbars" FOLDED="true" ID="ID_1432333445" CREATED="1489245111763" MODIFIED="1493490654381" LINK="#ID_511421073" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Scrollbars" FOLDED="true" ID="ID_1432333445" CREATED="1489245111763" MODIFIED="1493490654381" LINK="#ID_511421073" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Scrollbars allow you to pan the map within the workspace, allowing you to bring into view map areas that are initially outside the workspace view." ID="ID_1402428214" CREATED="1493478635766" MODIFIED="1493478702183"/>
 <node TEXT="located on right &amp; bottom of workspace" FOLDED="true" ID="ID_1725497930" CREATED="1489330308382" MODIFIED="1489330319550">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_645673562" CREATED="1489329729489" MODIFIED="1489591127077"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_645673562" CREATED="1489329729489" MODIFIED="1489591127077"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -863,12 +828,11 @@
   <body>
     <img src="Images/other/workspace/scroll%20bars.png" width="550" height="294"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Properties panel" FOLDED="true" ID="ID_236707457" CREATED="1489245117491" MODIFIED="1493490654383" LINK="#ID_342720357" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Properties panel" FOLDED="true" ID="ID_236707457" CREATED="1489245117491" MODIFIED="1493490654383" LINK="#ID_342720357" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The Properties Panel allows you to change properties of a node or multiple selected nodes, Calendar reminders, and &quot;attributes&quot; which you can optionally apply to nodes." FOLDED="true" ID="ID_18662208" CREATED="1493482914372" MODIFIED="1493483107428">
 <node TEXT="" ID="ID_885342025" CREATED="1493483443361" MODIFIED="1493483443365">
 <hook NAME="FirstGroupNode"/>
@@ -882,8 +846,7 @@
 </node>
 </node>
 <node TEXT="located on right side of workspace" FOLDED="true" ID="ID_1060385352" CREATED="1489330284126" MODIFIED="1489330294381">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_106953503" CREATED="1489329729489" MODIFIED="1493475783761"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_106953503" CREATED="1489329729489" MODIFIED="1493475783761"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -891,8 +854,7 @@
   <body>
     <img src="Images/other/workspace/properties%20panel.png" width="400" height="549"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="Note" FOLDED="true" ID="ID_1956511390" CREATED="1489336765335" MODIFIED="1489336769432">
@@ -902,25 +864,24 @@
 </node>
 </node>
 </node>
-<node TEXT="Note panel" LOCALIZED_STYLE_REF="styles.important" FOLDED="true" ID="ID_1377583638" CREATED="1489330633219" MODIFIED="1493490654385" LINK="#ID_68046350" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Note panel" LOCALIZED_STYLE_REF="styles.important" FOLDED="true" ID="ID_1377583638" CREATED="1489330633219" MODIFIED="1493490654385" LINK="#ID_68046350" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Notes let you include larger, more detailed, more document-like information in your maps." FOLDED="true" ID="ID_309204504" CREATED="1493479713050" MODIFIED="1493480164503">
 <node TEXT="Nodes typically contain a few keywords only." ID="ID_500263262" CREATED="1493480179861" MODIFIED="1493480210790"/>
 </node>
 </node>
-<node TEXT="background color" FOLDED="true" ID="ID_1291906898" CREATED="1489245147739" MODIFIED="1493490654386" LINK="#ID_217694395" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="background color" FOLDED="true" ID="ID_1291906898" CREATED="1489245147739" MODIFIED="1493490654386" LINK="#ID_217694395" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Background color lets you pick the color of the workspace.  The default is white, but you have the full range of colors to choose from." FOLDED="true" ID="ID_177717705" CREATED="1493485210416" MODIFIED="1493485257168">
 <node TEXT="Some users like to stick with the white background and default black text.  While others prefer a darker background or even an image." ID="ID_614916239" CREATED="1493485673131" MODIFIED="1493485728883"/>
 </node>
 </node>
-<node TEXT="Outline view" FOLDED="true" ID="ID_366861344" CREATED="1493485781625" MODIFIED="1493490654387" LINK="#ID_66647782" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Outline view" FOLDED="true" ID="ID_366861344" CREATED="1493485781625" MODIFIED="1493490654387" LINK="#ID_66647782" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Freeplane defaults to a map, where branches radiate outward from the root node.  Outline view lets you see the information in your map in a more traditional outline, with the root node at the top with branches below." FOLDED="true" ID="ID_1317531430" CREATED="1493485817609" MODIFIED="1493485920936">
 <node TEXT="Think of Outline view as a Roman numeral outline -- without the letters and numerals." ID="ID_150391611" CREATED="1493485921584" MODIFIED="1493487211625"/>
 <node TEXT="Map view, generally, tends to spread out horizontally, particularly for small maps and maps with branches only on one side of the root node." ID="ID_1582763577" CREATED="1493486152453" MODIFIED="1493486198389"/>
 <node TEXT="Outline view always is vertical." ID="ID_1110557104" CREATED="1493486198868" MODIFIED="1493486227493"/>
 </node>
 <node TEXT="Here is a sample" FOLDED="true" ID="ID_1500210077" CREATED="1493486633647" MODIFIED="1493486644464">
-<node TEXT="image: map view vs outline view" ID="ID_58869847" CREATED="1493486645247" MODIFIED="1493487169871"><richcontent TYPE="DETAILS">
-
+<node TEXT="image: map view vs outline view" ID="ID_58869847" CREATED="1493486645247" MODIFIED="1493487169871"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -928,12 +889,11 @@
   <body>
     <img src="Images/doc/mapView%20v%20outlineView.png" width="991" height="448"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Miscellaneous" FOLDED="true" ID="ID_1903666170" CREATED="1493487284831" MODIFIED="1493490654388" LINK="#ID_1649950531" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Miscellaneous" FOLDED="true" ID="ID_1903666170" CREATED="1493487284831" MODIFIED="1493490654388" LINK="#ID_1649950531" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="The remaining options on the right-click menu can be helpful for display and navigation.  These options also have related menu items and, in some cases, default keyboard shortcuts." FOLDED="true" ID="ID_892532777" CREATED="1493487324958" MODIFIED="1493488219182">
 <node TEXT="Full screen mode" FOLDED="true" ID="ID_789115752" CREATED="1493490773869" MODIFIED="1493490779222">
 <node TEXT="Lets you maximize your workspace, with no toolbars and other workspace elements visible.  This gives you the maximum room to work on your map.  It also is useful for sharing your map with others as a presentation." ID="ID_143144089" CREATED="1493490936700" MODIFIED="1493491041971"/>
@@ -990,8 +950,7 @@
   </body>
 </html>
 </richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -999,8 +958,7 @@
   <body>
     <img src="Images/other/workspace/view%20-%20toolbars.png" width="790" height="440"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node STYLE_REF="image in details" ID="ID_1666879143" CREATED="1489325637704" MODIFIED="1493490626895"><richcontent TYPE="NODE">
 
@@ -1015,8 +973,7 @@
   </body>
 </html>
 </richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1024,11 +981,9 @@
   <body>
     <img src="Images/other/workspace/view%20-%20view%20settings.png" width="760" height="458"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="or right-click on any non-node spot on the map and select/deselect the toolbars in the context menu" STYLE_REF="image in details" ID="ID_223680460" CREATED="1489244915821" MODIFIED="1493490629703"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="or right-click on any non-node spot on the map and select/deselect the toolbars in the context menu" STYLE_REF="image in details" ID="ID_223680460" CREATED="1489244915821" MODIFIED="1493490629703"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1036,12 +991,10 @@
   <body>
     <img src="Images/other/workspace/right-click%20menu.png" width="257" height="377"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="workspace elements (how to access)" STYLE_REF="Bible" FOLDED="true" ID="ID_1889681567" CREATED="1489245793739" MODIFIED="1500800930214"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="workspace elements (how to access)" STYLE_REF="Bible" FOLDED="true" ID="ID_1889681567" CREATED="1489245793739" MODIFIED="1500800930214"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1059,17 +1012,15 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<node TEXT="Menubar" FOLDED="true" ID="ID_1228783654" CREATED="1489245078100" MODIFIED="1493490669669" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+</html></richcontent>
+<node TEXT="Menubar" FOLDED="true" ID="ID_1228783654" CREATED="1489245078100" MODIFIED="1493490669669" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="can be accessed by" FOLDED="true" ID="ID_49694405" CREATED="1489590055173" MODIFIED="1489590065175">
-<node TEXT="Keyboard" FOLDED="true" ID="ID_143635411" CREATED="1489590065181" MODIFIED="1489592410187" MAX_WIDTH="49.49999834597116 pt" MIN_WIDTH="49.49999834597116 pt">
+<node TEXT="Keyboard" FOLDED="true" ID="ID_143635411" CREATED="1489590065181" MODIFIED="1489592410187" MAX_WIDTH="49.5 pt" MIN_WIDTH="49.5 pt">
 <node TEXT="Press (and continue to hold down) Alt key" FOLDED="true" ID="ID_860037740" CREATED="1489590071158" MODIFIED="1489592445606">
 <node TEXT="(menubar hotkey options will be underlined)" ID="ID_676530459" CREATED="1489590102470" MODIFIED="1489590119319"/>
 </node>
 <node TEXT="press letter corresponding to underlined option on menubar" FOLDED="true" ID="ID_1175847331" CREATED="1489590158788" MODIFIED="1489590180534">
-<node TEXT="(a submenu will open)" STYLE_REF="image in details" ID="ID_1215685226" CREATED="1489590276147" MODIFIED="1489592539570"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="(a submenu will open)" STYLE_REF="image in details" ID="ID_1215685226" CREATED="1489590276147" MODIFIED="1489592539570"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1077,17 +1028,15 @@
   <body>
     <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="600" height="367"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="release Alt key" ID="ID_1332496300" CREATED="1489590181324" MODIFIED="1489590195685"/>
 <node TEXT="navigate through menubar submenu using arrow keys" ID="ID_764038443" CREATED="1489590197204" MODIFIED="1489590227694"/>
 </node>
-<node TEXT="Mouse" FOLDED="true" ID="ID_1149117372" CREATED="1489590067589" MODIFIED="1489592410190" MAX_WIDTH="49.49999834597116 pt" MIN_WIDTH="49.49999834597116 pt">
+<node TEXT="Mouse" FOLDED="true" ID="ID_1149117372" CREATED="1489590067589" MODIFIED="1489592410190" MAX_WIDTH="49.5 pt" MIN_WIDTH="49.5 pt">
 <node TEXT="Click on menubar option you want" FOLDED="true" ID="ID_1347337331" CREATED="1489590231092" MODIFIED="1489590252885">
-<node TEXT="(a submenu will open)" STYLE_REF="image in details" ID="ID_66834632" CREATED="1489590276147" MODIFIED="1489592541788"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="(a submenu will open)" STYLE_REF="image in details" ID="ID_66834632" CREATED="1489590276147" MODIFIED="1489592541788"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1095,16 +1044,14 @@
   <body>
     <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="600" height="367"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="click your way through the submenu that opens" ID="ID_1551122663" CREATED="1489590253147" MODIFIED="1489590274661"/>
 </node>
 <node TEXT="Note" FOLDED="true" ID="ID_200488388" CREATED="1489590297859" MODIFIED="1489590304588">
 <node TEXT="Submenus can have flyout menus" FOLDED="true" ID="ID_516052282" CREATED="1489590316571" MODIFIED="1489590343509">
-<node TEXT="indicated by right-pointing arrow head" STYLE_REF="image in details" ID="ID_1092315070" CREATED="1489590343514" MODIFIED="1489592566179"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="indicated by right-pointing arrow head" STYLE_REF="image in details" ID="ID_1092315070" CREATED="1489590343514" MODIFIED="1489592566179"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1112,15 +1059,13 @@
   <body>
     <img src="Images/other/workspace/submenu%20flyouts.png" width="600" height="367"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Flyout menus offer more specific options" ID="ID_620129270" CREATED="1489591465527" MODIFIED="1489591480448"/>
 </node>
 </node>
 </node>
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1678107159" CREATED="1489246271412" MODIFIED="1489591842971"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1678107159" CREATED="1489246271412" MODIFIED="1489591842971"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1130,8 +1075,7 @@
       <img src="Images/other/workspace/menubar.png" width="450" height="50"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Note" FOLDED="true" ID="ID_499168836" CREATED="1489592583963" MODIFIED="1489592588740">
 <node TEXT="The menubar can be hidden" FOLDED="true" ID="ID_1173743642" CREATED="1489592588745" MODIFIED="1489592626410">
@@ -1156,7 +1100,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Toolbar" FOLDED="true" ID="ID_1768620172" CREATED="1489245083635" MODIFIED="1493490669672" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Toolbar" FOLDED="true" ID="ID_1768620172" CREATED="1489245083635" MODIFIED="1493490669672" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="To display/hide the Toolbar" FOLDED="true" ID="ID_255873740" CREATED="1489599647567" MODIFIED="1493480516529">
 <node ID="ID_1685604225" CREATED="1493480392754" MODIFIED="1493480496235"><richcontent TYPE="NODE">
 
@@ -1177,8 +1121,7 @@
 </node>
 </node>
 <node TEXT="Screenshots" FOLDED="true" ID="ID_1107591673" CREATED="1493480287011" MODIFIED="1493480294037">
-<node TEXT="screenshot (as it appears in the Freeplane workspace" STYLE_REF="image in details" ID="ID_1327701405" CREATED="1489246472851" MODIFIED="1493480338530" MAX_WIDTH="405.4999877959493 pt" MIN_WIDTH="411.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot (as it appears in the Freeplane workspace" STYLE_REF="image in details" ID="ID_1327701405" CREATED="1489246472851" MODIFIED="1493480338530" MAX_WIDTH="405.49999 pt" MIN_WIDTH="411 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1188,11 +1131,9 @@
       <img src="Images/other/workspace/toolbar.png" width="1455" height="36"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="screenshot (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_1693966464" CREATED="1490650843311" MODIFIED="1493480338533" MAX_WIDTH="405.4999877959493 pt" MIN_WIDTH="411.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_1693966464" CREATED="1490650843311" MODIFIED="1493480338533" MAX_WIDTH="405.49999 pt" MIN_WIDTH="411 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1200,12 +1141,11 @@
   <body>
     <img src="Images/other/workspace/toolbar%20-%20split.png" width="529" height="96"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Filter toolbar" FOLDED="true" ID="ID_1577175787" CREATED="1489245087252" MODIFIED="1493490669674" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Filter toolbar" FOLDED="true" ID="ID_1577175787" CREATED="1489245087252" MODIFIED="1493490669674" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="To display/hide the Filters toolbar" FOLDED="true" ID="ID_60226794" CREATED="1493480857973" MODIFIED="1493480959460">
 <node TEXT="menubar" FOLDED="true" ID="ID_180616353" CREATED="1493480961012" MODIFIED="1493480964724">
 <node ID="ID_989668794" CREATED="1493480964729" MODIFIED="1493481001597"><richcontent TYPE="NODE">
@@ -1230,8 +1170,7 @@
 <node TEXT="Ctrl-F (default)" ID="ID_963944294" CREATED="1493481077439" MODIFIED="1493481088451"/>
 </node>
 </node>
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1662182563" CREATED="1489328236617" MODIFIED="1489591127081"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1662182563" CREATED="1489328236617" MODIFIED="1489591127081"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1241,11 +1180,10 @@
       <img src="Images/other/workspace/filter%20toolbar.png" width="1679" height="30"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="F-Bar" FOLDED="true" ID="ID_1364416620" CREATED="1489245094715" MODIFIED="1493490669676" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="F-Bar" FOLDED="true" ID="ID_1364416620" CREATED="1489245094715" MODIFIED="1493490669676" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="To display/hide the F-Bar" FOLDED="true" ID="ID_1491222891" CREATED="1493481365934" MODIFIED="1493481590877">
 <node TEXT="menubar" FOLDED="true" ID="ID_1516423165" CREATED="1493481592900" MODIFIED="1493481595221">
 <node ID="ID_1107665202" CREATED="1493481595987" MODIFIED="1493481620077"><richcontent TYPE="NODE">
@@ -1268,8 +1206,7 @@
 <node TEXT="right-click &gt; F-Bar" ID="ID_175427773" CREATED="1493481800979" MODIFIED="1493481812650"/>
 </node>
 </node>
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1440130977" CREATED="1489328931158" MODIFIED="1489591127082"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1440130977" CREATED="1489328931158" MODIFIED="1489591127082"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1277,14 +1214,12 @@
   <body>
     <img src="Images/other/workspace/f%20bar.png" width="1679" height="22"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Icons toolbar" FOLDED="true" ID="ID_970426412" CREATED="1489245098507" MODIFIED="1493490669677" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Icons toolbar" FOLDED="true" ID="ID_970426412" CREATED="1489245098507" MODIFIED="1493490669677" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="located on left of workspace" FOLDED="true" ID="ID_1872991750" CREATED="1489330348938" MODIFIED="1489330361678">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1436907444" CREATED="1489329098141" MODIFIED="1493482173356"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1436907444" CREATED="1489329098141" MODIFIED="1493482173356"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1292,8 +1227,7 @@
   <body>
     <img src="Images/other/workspace/icons%20toolbar.png" width="50" height="409"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="To display/hide the Icons toolbar" FOLDED="true" ID="ID_781993089" CREATED="1493481365934" MODIFIED="1493482146822">
@@ -1319,8 +1253,7 @@
 <node TEXT="right-click &gt; Icons toolbar" ID="ID_1214757225" CREATED="1493481800979" MODIFIED="1493482155429"/>
 </node>
 <node TEXT="Clicking arrow on left of workspace minimizes/maximizes icons toolbar" FOLDED="true" ID="ID_1119106796" CREATED="1489329327421" MODIFIED="1493477681595">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1057914695" CREATED="1493482177479" MODIFIED="1493482249600"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1057914695" CREATED="1493482177479" MODIFIED="1493482249600"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1328,8 +1261,7 @@
   <body>
     <img src="Images/icons%20toolbar%20-%20collapsed.png" width="13" height="96"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -1350,10 +1282,9 @@
 </node>
 </node>
 </node>
-<node TEXT="Status line" FOLDED="true" ID="ID_1438513260" CREATED="1489245104475" MODIFIED="1493490669679" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Status line" FOLDED="true" ID="ID_1438513260" CREATED="1489245104475" MODIFIED="1493490669679" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="located on bottom-left of workspace" FOLDED="true" ID="ID_325023698" CREATED="1489330328701" MODIFIED="1489330345318">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_869545538" CREATED="1489329729489" MODIFIED="1489591870811"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_869545538" CREATED="1489329729489" MODIFIED="1489591870811"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1363,12 +1294,10 @@
       <img src="Images/other/workspace/status%20line.png" width="324" height="24"/>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Information shown on Status line" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1783124829" CREATED="1489420302695" MODIFIED="1493482470587"><richcontent TYPE="DETAILS">
-
+<node TEXT="Information shown on Status line" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1783124829" CREATED="1489420302695" MODIFIED="1493482470587"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1378,18 +1307,17 @@
       see <a href="freeplane:/%20/D:/GoogleDrive/Freeplane%20documentation%20project/mind%20maps/Freeplane%20workspace.mm#ID_862325455">screenshot</a>
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="Node ID" FOLDED="true" ID="ID_1830722611" CREATED="1489420306602" MODIFIED="1489591903629" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+</html></richcontent>
+<node TEXT="Node ID" FOLDED="true" ID="ID_1830722611" CREATED="1489420306602" MODIFIED="1489591903629" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt">
 <node TEXT="Whether Node ID displays in the Status line is controlled in Preferences &gt; Appearance (tab) &gt; Status line (section)" ID="ID_703964671" CREATED="1489420311921" MODIFIED="1493477821218"/>
 </node>
-<node TEXT="Node content type" FOLDED="true" ID="ID_1313541678" CREATED="1489420397998" MODIFIED="1489591903632" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
-<node TEXT="text" ID="ID_1437484626" CREATED="1489420412161" MODIFIED="1489591912953" MAX_WIDTH="40.49999861419205 pt" MIN_WIDTH="40.49999861419205 pt"/>
+<node TEXT="Node content type" FOLDED="true" ID="ID_1313541678" CREATED="1489420397998" MODIFIED="1489591903632" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt">
+<node TEXT="text" ID="ID_1437484626" CREATED="1489420412161" MODIFIED="1489591912953" MAX_WIDTH="40.5 pt" MIN_WIDTH="40.5 pt"/>
 <node TEXT="" ID="ID_376277404" CREATED="1489421415262" MODIFIED="1489421415264">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="number" ID="ID_1793403716" CREATED="1489420415870" MODIFIED="1489591912956" MAX_WIDTH="40.49999861419205 pt" MIN_WIDTH="40.49999861419205 pt"/>
-<node TEXT="date" ID="ID_271331474" CREATED="1489420417950" MODIFIED="1489591912956" MAX_WIDTH="40.49999861419205 pt" MIN_WIDTH="40.49999861419205 pt"/>
+<node TEXT="number" ID="ID_1793403716" CREATED="1489420415870" MODIFIED="1489591912956" MAX_WIDTH="40.5 pt" MIN_WIDTH="40.5 pt"/>
+<node TEXT="date" ID="ID_271331474" CREATED="1489420417950" MODIFIED="1489591912956" MAX_WIDTH="40.5 pt" MIN_WIDTH="40.5 pt"/>
 <node TEXT="" ID="ID_1644832452" CREATED="1489421415258" MODIFIED="1489421415261">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
@@ -1411,13 +1339,13 @@
 </node>
 </node>
 </node>
-<node TEXT="Filtering" FOLDED="true" ID="ID_1590988753" CREATED="1489420423406" MODIFIED="1489591903633" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="Filtering" FOLDED="true" ID="ID_1590988753" CREATED="1489420423406" MODIFIED="1489591903633" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt">
 <node TEXT="Filtering is on if a funnel icon displays" ID="ID_1640127845" CREATED="1489420430831" MODIFIED="1489420449239"/>
 </node>
-<node TEXT="Hyperlink destination" FOLDED="true" ID="ID_361414550" CREATED="1489420528982" MODIFIED="1493477874137" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="Hyperlink destination" FOLDED="true" ID="ID_361414550" CREATED="1489420528982" MODIFIED="1493477874137" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt">
 <node TEXT="When hovering over a node which contains a hyperlink." ID="ID_1642645129" CREATED="1493477843969" MODIFIED="1493477867009"/>
 </node>
-<node TEXT="Errors" FOLDED="true" ID="ID_132909201" CREATED="1493477983158" MODIFIED="1493477998256" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="Errors" FOLDED="true" ID="ID_132909201" CREATED="1493477983158" MODIFIED="1493477998256" MAX_WIDTH="87.75 pt" MIN_WIDTH="87.75 pt">
 <icon BUILTIN="messagebox_warning"/>
 <node TEXT="Sometimes, errors may occur.  If so, you will see a triangle icon with an exclamation mark inside (like the icon in this node.)" FOLDED="true" ID="ID_578909456" CREATED="1493478004607" MODIFIED="1493478096893">
 <icon BUILTIN="messagebox_warning"/>
@@ -1440,10 +1368,9 @@
 </node>
 </node>
 </node>
-<node TEXT="Scrollbars" FOLDED="true" ID="ID_511421073" CREATED="1489245111763" MODIFIED="1493490669680" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Scrollbars" FOLDED="true" ID="ID_511421073" CREATED="1489245111763" MODIFIED="1493490669680" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="located on right &amp; bottom of workspace" FOLDED="true" ID="ID_489211139" CREATED="1489330308382" MODIFIED="1489330319550">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_131057881" CREATED="1489329729489" MODIFIED="1493478729063"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_131057881" CREATED="1489329729489" MODIFIED="1493478729063"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1451,8 +1378,7 @@
   <body>
     <img src="Images/other/workspace/scroll%20bars.png" width="550" height="294"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="To display/hide the Scrollbars" FOLDED="true" ID="ID_845248614" CREATED="1493481365934" MODIFIED="1493482770304">
@@ -1480,10 +1406,9 @@
 </node>
 <node TEXT="Note: you also can pan by hovering over a blank (non-node) spot, holding your left mouse button, and dragging." ID="ID_130260007" CREATED="1493478739613" MODIFIED="1493478795862"/>
 </node>
-<node TEXT="Properties panel" FOLDED="true" ID="ID_342720357" CREATED="1489245117491" MODIFIED="1493490669681" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Properties panel" FOLDED="true" ID="ID_342720357" CREATED="1489245117491" MODIFIED="1493490669681" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="located on right side of workspace" FOLDED="true" ID="ID_445239308" CREATED="1489330284126" MODIFIED="1489330294381">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1037901778" CREATED="1489329729489" MODIFIED="1489591127078"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1037901778" CREATED="1489329729489" MODIFIED="1489591127078"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1491,8 +1416,7 @@
   <body>
     <img src="Images/other/workspace/properties%20panel.png" width="400" height="549"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="To display/hide the Properties panel" FOLDED="true" ID="ID_517494390" CREATED="1493481365934" MODIFIED="1493483314342">
@@ -1523,12 +1447,12 @@
 </node>
 </node>
 <node TEXT="The Properties panel tabs" FOLDED="true" ID="ID_1274600777" CREATED="1493478853861" MODIFIED="1493483510710">
-<node TEXT="Format tab" FOLDED="true" ID="ID_836542924" CREATED="1493478894964" MODIFIED="1541844403580" MAX_WIDTH="225.0 px" MIN_WIDTH="225.0 px">
+<node TEXT="Format tab" FOLDED="true" ID="ID_836542924" CREATED="1493478894964" MODIFIED="1541844403580" MAX_WIDTH="225 px" MIN_WIDTH="225 px">
 <node TEXT="gives you easy, convenient access to all of a node&apos;s properties, where you can change the properties." FOLDED="true" ID="ID_1647506341" CREATED="1493479001386" MODIFIED="1493479001388">
 <node TEXT="(e.g. font, font size, node width, node background color, many more)." ID="ID_471080488" CREATED="1493483019691" MODIFIED="1493483583813"/>
 </node>
 </node>
-<node TEXT="Calendar and attributes tab" FOLDED="true" ID="ID_861913293" CREATED="1493478970731" MODIFIED="1541844407974" MAX_WIDTH="225.0 px" MIN_WIDTH="225.0 px">
+<node TEXT="Calendar and attributes tab" FOLDED="true" ID="ID_861913293" CREATED="1493478970731" MODIFIED="1541844407974" MAX_WIDTH="225 px" MIN_WIDTH="225 px">
 <node TEXT="Calendar tab allows you to" FOLDED="true" ID="ID_1510748401" CREATED="1493479014195" MODIFIED="1493483675334">
 <node TEXT="Insert a date into the core of a node or multiple selected nodes." ID="ID_1678828882" CREATED="1493483675341" MODIFIED="1493483741355"/>
 <node TEXT="Attach a reminder to a node or multiple selected nodes." ID="ID_1575208467" CREATED="1493483746930" MODIFIED="1493483784457"/>
@@ -1550,7 +1474,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Presentations tab (in Freeplane 1.6.x and newer)" FOLDED="true" ID="ID_847363101" CREATED="1493479047034" MODIFIED="1541844412563" MAX_WIDTH="225.0 px" MIN_WIDTH="225.0 px">
+<node TEXT="Presentations tab (in Freeplane 1.6.x and newer)" FOLDED="true" ID="ID_847363101" CREATED="1493479047034" MODIFIED="1541844412563" MAX_WIDTH="225 px" MIN_WIDTH="225 px">
 <node TEXT="lets you organize your map into presentations and slides to show your map&apos;s information in a pre-planned presentation." FOLDED="true" ID="ID_968628392" CREATED="1493479081858" MODIFIED="1493479466334">
 <node ID="ID_1155390727" CREATED="1493479468214" MODIFIED="1493479483823"><richcontent TYPE="NODE">
 
@@ -1576,20 +1500,20 @@
 </node>
 </node>
 </node>
-<node TEXT="Note panel" FOLDED="true" ID="ID_68046350" CREATED="1489330633219" MODIFIED="1493490669682" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Note panel" FOLDED="true" ID="ID_68046350" CREATED="1489330633219" MODIFIED="1493490669682" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Notes let you include larger, more detailed, more document-like information in your maps." ID="ID_705705993" CREATED="1493479713050" MODIFIED="1493480164505"/>
 <node TEXT="can be docked in several locations..." FOLDED="true" ID="ID_1201183220" CREATED="1489330828538" MODIFIED="1489331464455">
 <node TEXT="" ID="ID_1329223806" CREATED="1489330877990" MODIFIED="1489330877993">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="top" ID="ID_765153187" CREATED="1489330841466" MODIFIED="1489330856225" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
-<node TEXT="bottom" ID="ID_1895090603" CREATED="1489330844154" MODIFIED="1489330856224" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
-<node TEXT="left" ID="ID_580470853" CREATED="1489330846338" MODIFIED="1489330856223" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
-<node TEXT="right" ID="ID_63040419" CREATED="1489330847914" MODIFIED="1489330856221" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
+<node TEXT="top" ID="ID_765153187" CREATED="1489330841466" MODIFIED="1489330856225" MAX_WIDTH="60 px" MIN_WIDTH="60 px"/>
+<node TEXT="bottom" ID="ID_1895090603" CREATED="1489330844154" MODIFIED="1489330856224" MAX_WIDTH="60 px" MIN_WIDTH="60 px"/>
+<node TEXT="left" ID="ID_580470853" CREATED="1489330846338" MODIFIED="1489330856223" MAX_WIDTH="60 px" MIN_WIDTH="60 px"/>
+<node TEXT="right" ID="ID_63040419" CREATED="1489330847914" MODIFIED="1489330856221" MAX_WIDTH="60 px" MIN_WIDTH="60 px"/>
 <node TEXT="" ID="ID_152209806" CREATED="1489330877939" MODIFIED="1489330877989">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node ID="ID_1292927872" CREATED="1489330877994" MODIFIED="1489330932151" MAX_WIDTH="206.2499940320851 pt" MIN_WIDTH="206.2499940320851 pt"><richcontent TYPE="NODE">
+<node ID="ID_1292927872" CREATED="1489330877994" MODIFIED="1489330932151" MAX_WIDTH="206.24999 pt" MIN_WIDTH="206.24999 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1608,8 +1532,7 @@
 <node TEXT="Resize by" FOLDED="true" ID="ID_282691784" CREATED="1489331477798" MODIFIED="1489331510223">
 <node TEXT="hover over separator between map area and note panel." FOLDED="true" ID="ID_1456082883" CREATED="1489331510228" MODIFIED="1489331637647">
 <node TEXT="a double-arrow cursor displays when resizing is active" FOLDED="true" ID="ID_1313194494" CREATED="1489331530895" MODIFIED="1489331603399">
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_637741576" CREATED="1489331759965" MODIFIED="1489591313108"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_637741576" CREATED="1489331759965" MODIFIED="1489591313108"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1617,15 +1540,13 @@
   <body>
     <img src="Images/other/workspace/resize%20arrows.png" width="190" height="118"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
 <node TEXT="Drag the double-arrow cursor to increase or decrease note panel size." ID="ID_1115479346" CREATED="1489331575494" MODIFIED="1489331631719"/>
 </node>
-<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1060179331" CREATED="1489330754010" MODIFIED="1489591127075"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1060179331" CREATED="1489330754010" MODIFIED="1489591127075"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
     
@@ -1633,11 +1554,10 @@
   <body>
     <img src="Images/other/workspace/notes%20panel.png" width="739" height="258"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="background color" FOLDED="true" ID="ID_217694395" CREATED="1489245147739" MODIFIED="1493490669683" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="background color" FOLDED="true" ID="ID_217694395" CREATED="1489245147739" MODIFIED="1493490669683" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="To display/hide the background color" FOLDED="true" ID="ID_823484574" CREATED="1493481365934" MODIFIED="1493485382173">
 <edge COLOR="#acacac"/>
 <node TEXT="menubar" FOLDED="true" ID="ID_150196214" CREATED="1493481592900" MODIFIED="1493481595221">
@@ -1681,7 +1601,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Outline view" FOLDED="true" ID="ID_66647782" CREATED="1493485781625" MODIFIED="1493490669684" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Outline view" FOLDED="true" ID="ID_66647782" CREATED="1493485781625" MODIFIED="1493490669684" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="To display/hide the Outline view" FOLDED="true" ID="ID_1520448653" CREATED="1493481365934" MODIFIED="1493486874885">
 <edge COLOR="#acacac"/>
 <node TEXT="menubar" FOLDED="true" ID="ID_711208384" CREATED="1493481592900" MODIFIED="1493481595221">
@@ -1727,7 +1647,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Miscellaneous" FOLDED="true" ID="ID_1649950531" CREATED="1493487284831" MODIFIED="1493490669684" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Miscellaneous" FOLDED="true" ID="ID_1649950531" CREATED="1493487284831" MODIFIED="1493490669684" MAX_WIDTH="127 px" MIN_WIDTH="127 px">
 <node TEXT="Full screen mode" FOLDED="true" ID="ID_671026272" CREATED="1493490773869" MODIFIED="1493490779222">
 <node TEXT="To enter full screen mode..." FOLDED="true" ID="ID_539004628" CREATED="1493491940311" MODIFIED="1493491967872">
 <node TEXT="menubar" FOLDED="true" ID="ID_1551631938" CREATED="1493481592900" MODIFIED="1493481595221">
@@ -1774,8 +1694,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="the &quot;Enter new key&quot; dialog will appear" ID="ID_1428031062" CREATED="1493491646139" MODIFIED="1493491740131"><richcontent TYPE="DETAILS">
-
+<node TEXT="the &quot;Enter new key&quot; dialog will appear" ID="ID_1428031062" CREATED="1493491646139" MODIFIED="1493491740131"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1783,8 +1702,7 @@
   <body>
     <a href="Images/doc/key%20mapping%20dialog.png"><img src="Images/doc/key%20mapping%20dialog.png" width="309" height="117"/>
 </a>  </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node ID="ID_1661572768" CREATED="1493491745585" MODIFIED="1493491904683"><richcontent TYPE="NODE">
 
@@ -1918,8 +1836,7 @@
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="(A dialog, titled &quot;Goto node with ID...&quot;) will display." FOLDED="true" ID="ID_1837317222" CREATED="1493489964207" MODIFIED="1493489996080">
-<node TEXT="screenshot" ID="ID_615582079" CREATED="1493490051102" MODIFIED="1493490091062"><richcontent TYPE="DETAILS">
-
+<node TEXT="screenshot" ID="ID_615582079" CREATED="1493490051102" MODIFIED="1493490091062"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1927,8 +1844,7 @@
   <body>
     <a href="Images/doc/goto%20node%20with%20ID.png"><img src="Images/doc/goto%20node%20with%20ID.png" width="277" height="129"/>
 </a>  </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="type or paste (from clipboard) the target node&apos;s ID;  press &quot;OK&quot; button." ID="ID_262572679" CREATED="1493489929072" MODIFIED="1493490126271"/>
@@ -1952,8 +1868,7 @@
 <node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_642228291" CREATED="1493481005362" MODIFIED="1493481751210">
 <edge COLOR="#acacac"/>
 <node TEXT="When you right-click on a non-node spot in the workspace, you can see your open maps and quickly navigate to them.  (The current map is indicated by a bullet.)" FOLDED="true" ID="ID_966714182" CREATED="1493493030004" MODIFIED="1493493461999">
-<node TEXT="image: right-click context menu (at top)" ID="ID_1477197155" CREATED="1493493333680" MODIFIED="1493493404367"><richcontent TYPE="DETAILS">
-
+<node TEXT="image: right-click context menu (at top)" ID="ID_1477197155" CREATED="1493493333680" MODIFIED="1493493404367"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1961,8 +1876,7 @@
   <body>
     <a href="Images/doc/right-click%20menu%20-%20open%20maps.png"><img src="Images/doc/right-click%20menu%20-%20open%20maps.png" width="340" height="125"/>
 </a>  </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="Click on the map to which you want to switch.  That map becomes the currently focused-on map." ID="ID_1615849897" CREATED="1493493514364" MODIFIED="1493493571517"/>
@@ -1988,8 +1902,7 @@
 <node TEXT="moving between tabs" FOLDED="true" ID="ID_237222699" CREATED="1493496639742" MODIFIED="1493496650135">
 <edge COLOR="#acacac"/>
 <node TEXT="Each open map is represented by a tab, like the tabs on file folders in a filing cabinet.  The currently focused-on map&apos;s tab is colored, while the rest are gray." FOLDED="true" ID="ID_242655555" CREATED="1493496651047" MODIFIED="1493496952980">
-<node TEXT="image" ID="ID_1527855255" CREATED="1493496794021" MODIFIED="1493496831343"><richcontent TYPE="DETAILS">
-
+<node TEXT="image" ID="ID_1527855255" CREATED="1493496794021" MODIFIED="1493496831343"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -1997,8 +1910,7 @@
   <body>
     <img src="Images/doc/tabs%20in%20workspace.png" width="446" height="94"/>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="Click on the map you want to edit." FOLDED="true" ID="ID_1310462292" CREATED="1493496854067" MODIFIED="1493496864956">
@@ -2103,7 +2015,7 @@
 </node>
 </node>
 <node TEXT="Open map on Internet" STYLE_REF="Advanced" FOLDED="true" ID="ID_794559549" CREATED="1329413644062" MODIFIED="1335300198085">
-<node STYLE_REF="TitlesContent" ID="ID_663032265" CREATED="1329413694345" MODIFIED="1335091139945" HGAP_QUANTITY="-123.0 px" VSHIFT_QUANTITY="34.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_663032265" CREATED="1329413694345" MODIFIED="1335091139945" HGAP_QUANTITY="-123 px" VSHIFT_QUANTITY="34 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2120,11 +2032,11 @@
 </node>
 </node>
 <node TEXT="Core map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1541847561399" NUMBERED="true">
-<node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1335300258084" MIN_WIDTH="115.0 px" STYLE="combined">
+<node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1335300258084" MIN_WIDTH="115 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1335094931917" HGAP_QUANTITY="-102.0 px" VSHIFT_QUANTITY="105.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1314148002" CREATED="1323461584875" MODIFIED="1335094931917" HGAP_QUANTITY="-102 px" VSHIFT_QUANTITY="105 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2154,7 +2066,7 @@
 </hook>
 </node>
 </node>
-<node STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1335300258084" STYLE="combined" MIN_WIDTH="115.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="Beginner" FOLDED="true" ID="ID_268413071" CREATED="1314125550476" MODIFIED="1335300258084" STYLE="combined" MIN_WIDTH="115 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2168,7 +2080,7 @@
 </html>
 </richcontent>
 <edge STYLE="bezier"/>
-<node FOLDED="true" ID="ID_265318117" CREATED="1323437723250" MODIFIED="1341131023466" HGAP_QUANTITY="-95.0 px" VSHIFT_QUANTITY="150.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_265318117" CREATED="1323437723250" MODIFIED="1341131023466" HGAP_QUANTITY="-95 px" VSHIFT_QUANTITY="150 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2208,8 +2120,7 @@
 </hook>
 <node TEXT="New map" STYLE_REF="BeginnerTopic" ID="ID_1310307853" CREATED="1310134532663" MODIFIED="1323726805884" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../filenew"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2219,8 +2130,7 @@
       Look up in the toolbar at the top of the screen.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
@@ -2228,8 +2138,7 @@
 </node>
 <node TEXT="Open saved map.." STYLE_REF="BeginnerTopic" ID="ID_1284635316" CREATED="1310134532663" MODIFIED="1323438013786" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../fileopen"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2239,8 +2148,7 @@
       Look up in the toolbar
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2248,8 +2156,7 @@
 </node>
 <node TEXT="Print map" STYLE_REF="BeginnerTopic" ID="ID_111478060" CREATED="1310134532663" MODIFIED="1323438013786" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../fileprint"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -2259,8 +2166,7 @@
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Opens the dialog box associated with the printer on which the map will print.</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2268,8 +2174,7 @@
 </node>
 <node TEXT="Cut" STYLE_REF="BeginnerTopic" ID="ID_353410114" CREATED="1310134532663" MODIFIED="1323438013786" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../editcut"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2279,8 +2184,7 @@
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Cuts the node currently selected and all of its children.</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2288,8 +2192,7 @@
 </node>
 <node TEXT="Copy" STYLE_REF="BeginnerTopic" ID="ID_1274800359" CREATED="1310134532663" MODIFIED="1323438013786" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../editcopy"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2299,8 +2202,7 @@
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Copies the node selected and all of its children.</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2308,8 +2210,7 @@
 </node>
 <node TEXT="Paste" STYLE_REF="BeginnerTopic" ID="ID_1705754282" CREATED="1310134532663" MODIFIED="1323438013786" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../editpaste"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2319,8 +2220,7 @@
       <font color="#000000" face="SansSerif, sans-serif">Pasts copied text. If the selected node is in edit mode, the text will be added to the contents of the node. If the selected node is not in edit mode, the text will be added as a child node.</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2328,8 +2228,7 @@
 </node>
 <node TEXT="New child node" STYLE_REF="BeginnerTopic" ID="ID_942355748" CREATED="1266249828031" MODIFIED="1323438013786" TEXT_SHORTENED="true" STYLE="as_parent">
 <icon BUILTIN="../idea"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -2350,8 +2249,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2374,7 +2272,7 @@
 </node>
 </node>
 </node>
-<node STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1335300258084" STYLE="combined" MIN_WIDTH="115.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="Beginner" FOLDED="true" ID="ID_1279324490" CREATED="1314126040831" MODIFIED="1335300258084" STYLE="combined" MIN_WIDTH="115 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2387,7 +2285,7 @@
   </body>
 </html>
 </richcontent>
-<node FOLDED="true" ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1341131039869" HGAP_QUANTITY="-100.0 px" VSHIFT_QUANTITY="114.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1341131039869" HGAP_QUANTITY="-100 px" VSHIFT_QUANTITY="114 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2430,8 +2328,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Saving &amp; closing" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1335300258084" STYLE="combined" MIN_WIDTH="115.0 px">
-<node FOLDED="true" ID="ID_1460485800" CREATED="1323438690647" MODIFIED="1335094962930" HGAP_QUANTITY="-99.0 px" VSHIFT_QUANTITY="40.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Saving &amp; closing" STYLE_REF="Beginner" FOLDED="true" ID="ID_48547188" CREATED="1314127927655" MODIFIED="1335300258084" STYLE="combined" MIN_WIDTH="115 px">
+<node FOLDED="true" ID="ID_1460485800" CREATED="1323438690647" MODIFIED="1335094962930" HGAP_QUANTITY="-99 px" VSHIFT_QUANTITY="40 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2451,8 +2349,7 @@
 </hook>
 <node TEXT="Save map" STYLE_REF="BeginnerTopic" ID="ID_1253878525" CREATED="1310134532663" MODIFIED="1323726957514" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesave"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2462,8 +2359,7 @@
       Look in the toolbar for the icon button to save the current map.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
@@ -2471,8 +2367,7 @@
 </node>
 <node TEXT="Save map as..." STYLE_REF="BeginnerTopic" ID="ID_449363060" CREATED="1310134532663" MODIFIED="1323438758087" TEXT_SHORTENED="true">
 <icon BUILTIN="../filesaveas"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2482,8 +2377,7 @@
       Look up in the toolbar
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2491,8 +2385,7 @@
 </node>
 <node TEXT="Close current map" STYLE_REF="BeginnerTopic" ID="ID_1018458898" CREATED="1310134532663" MODIFIED="1323438758087" TEXT_SHORTENED="true">
 <icon BUILTIN="../close"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -2502,8 +2395,7 @@
       <font color="#000000" face="SansSerif, sans-serif"><span style="color: #000000; font-family: SansSerif, sans-serif">Closes the map that has focus. If multiple maps are open, focus refers to the tab that you are currently editing.</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -2511,9 +2403,9 @@
 </node>
 </node>
 </node>
-<node TEXT="Free nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1335300258068" MIN_WIDTH="80.0 px">
-<node TEXT="Post-it nodes: free positionable, free floating" STYLE_REF="Advanced" FOLDED="true" ID="ID_630972811" CREATED="1323076049931" MODIFIED="1323806244665" HGAP_QUANTITY="18.0 px" VSHIFT_QUANTITY="227.0 px" STYLE="combined">
-<node FOLDED="true" ID="ID_830664496" CREATED="1323434577171" MODIFIED="1335094977002" HGAP_QUANTITY="-268.0 px" VSHIFT_QUANTITY="77.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Free nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_1401167294" CREATED="1323470356903" MODIFIED="1335300258068" MIN_WIDTH="80 px">
+<node TEXT="Post-it nodes: free positionable, free floating" STYLE_REF="Advanced" FOLDED="true" ID="ID_630972811" CREATED="1323076049931" MODIFIED="1323806244665" HGAP_QUANTITY="18 px" VSHIFT_QUANTITY="227 px" STYLE="combined">
+<node FOLDED="true" ID="ID_830664496" CREATED="1323434577171" MODIFIED="1335094977002" HGAP_QUANTITY="-268 px" VSHIFT_QUANTITY="77 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2529,7 +2421,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1335094985020" HGAP_QUANTITY="-581.0 px" VSHIFT_QUANTITY="187.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="SubWidth" ID="ID_1557640435" CREATED="1323470600645" MODIFIED="1335094985020" HGAP_QUANTITY="-581 px" VSHIFT_QUANTITY="187 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2548,11 +2440,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Making and moving a free floating node" STYLE_REF="Advanced" FOLDED="true" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1323806240625" VGAP_QUANTITY="0.0 px" HGAP_QUANTITY="17.0 px" VSHIFT_QUANTITY="-230.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Making and moving a free floating node" STYLE_REF="Advanced" FOLDED="true" ID="ID_128387683" CREATED="1317135703793" MODIFIED="1323806240625" VGAP_QUANTITY="0 px" HGAP_QUANTITY="17 px" VSHIFT_QUANTITY="-230 px" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1335094997999" HGAP_QUANTITY="-234.0 px" VSHIFT_QUANTITY="213.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1188410566" CREATED="1323685758847" MODIFIED="1335094997999" HGAP_QUANTITY="-234 px" VSHIFT_QUANTITY="213 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2593,10 +2485,9 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Free floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1335095015972" HGAP_QUANTITY="608.0 px" VSHIFT_QUANTITY="23.0 px" MAX_WIDTH="150.0 px">
+<node TEXT="Free floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_1757242560" CREATED="1317754595087" MODIFIED="1335095015972" HGAP_QUANTITY="608 px" VSHIFT_QUANTITY="23 px" MAX_WIDTH="150 px">
 <hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -2606,8 +2497,7 @@
       Hover with the cursor over the left side of me and see my blue, filled oval. Drag me around with this blue handle.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -2615,19 +2505,19 @@
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
 <node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1191713608" CREATED="1483416459506" MODIFIED="1486862695292">
-<node TEXT="Icons, small images, visually add meaning and interest to nodes. Icons are stored in a library." FOLDED="true" ID="ID_1802196286" CREATED="1484847817993" MODIFIED="1498399225958" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Icons, small images, visually add meaning and interest to nodes. Icons are stored in a library." FOLDED="true" ID="ID_1802196286" CREATED="1484847817993" MODIFIED="1498399225958" VGAP_QUANTITY="6 pt">
 <node TEXT="The checkmark icon could symbolize a completed task." ID="ID_1383430036" CREATED="1484847880233" MODIFIED="1486862695292">
 <icon BUILTIN="button_ok"/>
 </node>
 <node TEXT="Numbers could indicate a list or steps in a process." FOLDED="true" ID="ID_274182351" CREATED="1484848042166" MODIFIED="1486862695293">
 <icon BUILTIN="full-1"/>
-<node TEXT="start with this" ID="ID_1973884951" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<node TEXT="start with this" ID="ID_1973884951" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="87 pt" MIN_WIDTH="87 pt">
 <icon BUILTIN="full-1"/>
 </node>
-<node TEXT="then do this" ID="ID_858036391" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<node TEXT="then do this" ID="ID_858036391" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="87 pt" MIN_WIDTH="87 pt">
 <icon BUILTIN="full-2"/>
 </node>
-<node TEXT="end with this" ID="ID_295495697" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<node TEXT="end with this" ID="ID_295495697" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="87 pt" MIN_WIDTH="87 pt">
 <icon BUILTIN="full-3"/>
 </node>
 </node>
@@ -2645,7 +2535,7 @@
 <icon BUILTIN="75%"/>
 <icon BUILTIN="female2"/>
 </node>
-<node ID="ID_1146167776" CREATED="1484848626112" MODIFIED="1498404378714" MAX_WIDTH="197.99999427795427 pt" MIN_WIDTH="197.99999427795427 pt"><richcontent TYPE="NODE">
+<node ID="ID_1146167776" CREATED="1484848626112" MODIFIED="1498404378714" MAX_WIDTH="197.99999 pt" MIN_WIDTH="197.99999 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -2973,9 +2863,9 @@
 </node>
 </node>
 </node>
-<node TEXT="Images" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1335300258068" MIN_WIDTH="80.0 px">
-<node TEXT="Image (node core)" STYLE_REF="Advanced" FOLDED="true" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1323806455078" STYLE="combined" HGAP_QUANTITY="18.0 px" VSHIFT_QUANTITY="12.0 px">
-<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1335095042430" HGAP_QUANTITY="-104.0 px" VSHIFT_QUANTITY="89.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Images" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1335300258068" MIN_WIDTH="80 px">
+<node TEXT="Image (node core)" STYLE_REF="Advanced" FOLDED="true" ID="ID_806240384" CREATED="1315581148847" MODIFIED="1323806455078" STYLE="combined" HGAP_QUANTITY="18 px" VSHIFT_QUANTITY="12 px">
+<node ID="ID_199889694" CREATED="1323435536299" MODIFIED="1335095042430" HGAP_QUANTITY="-104 px" VSHIFT_QUANTITY="89 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3002,12 +2892,12 @@
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Link to image (red arrow)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1333264692422" HGAP_QUANTITY="17.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Link to image (red arrow)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1955041924" CREATED="1314282007169" MODIFIED="1333264692422" HGAP_QUANTITY="17 px" VSHIFT_QUANTITY="-1 px" MAX_WIDTH="550 px" MIN_WIDTH="1 px" STYLE="combined">
 <edge STYLE="bezier"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1335095056626" HGAP_QUANTITY="-145.0 px" VSHIFT_QUANTITY="169.0 px"><richcontent TYPE="NODE">
+<node ID="ID_728788498" CREATED="1323469662830" MODIFIED="1335095056626" HGAP_QUANTITY="-145 px" VSHIFT_QUANTITY="169 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3047,12 +2937,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="In-line image" STYLE_REF="Professional" FOLDED="true" ID="ID_680497355" CREATED="1314282819174" MODIFIED="1323806473283" HGAP_QUANTITY="17.0 px" VSHIFT_QUANTITY="-10.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="In-line image" STYLE_REF="Professional" FOLDED="true" ID="ID_680497355" CREATED="1314282819174" MODIFIED="1323806473283" HGAP_QUANTITY="17 px" VSHIFT_QUANTITY="-10 px" MAX_WIDTH="550 px" MIN_WIDTH="1 px" STYLE="combined">
 <edge STYLE="bezier"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_990348986" CREATED="1323469818677" MODIFIED="1335095066189" HGAP_QUANTITY="-72.0 px" VSHIFT_QUANTITY="33.0 px"><richcontent TYPE="NODE">
+<node ID="ID_990348986" CREATED="1323469818677" MODIFIED="1335095066189" HGAP_QUANTITY="-72 px" VSHIFT_QUANTITY="33 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3071,14 +2961,14 @@
 </node>
 </node>
 </node>
-<node TEXT="Progress" STYLE_REF="Professional" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1335300258068" MIN_WIDTH="100.0 px">
-<node TEXT="When you need to show the progress of some sort, you can add a small or big progress indicator. The amount of progress can be changed. Note that the procedure to do so differs for small and large indicators." ID="ID_707469329" CREATED="1323436243939" MODIFIED="1329770386560" HGAP_QUANTITY="28.0 px" VSHIFT_QUANTITY="81.0 px" STYLE="fork"/>
-<node TEXT="Small progress (icon)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1826965169" CREATED="1314283872699" MODIFIED="1323806550925" HGAP_QUANTITY="26.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Progress" STYLE_REF="Professional" FOLDED="true" ID="ID_1644368711" CREATED="1314283858479" MODIFIED="1335300258068" MIN_WIDTH="100 px">
+<node TEXT="When you need to show the progress of some sort, you can add a small or big progress indicator. The amount of progress can be changed. Note that the procedure to do so differs for small and large indicators." ID="ID_707469329" CREATED="1323436243939" MODIFIED="1329770386560" HGAP_QUANTITY="28 px" VSHIFT_QUANTITY="81 px" STYLE="fork"/>
+<node TEXT="Small progress (icon)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1826965169" CREATED="1314283872699" MODIFIED="1323806550925" HGAP_QUANTITY="26 px" VSHIFT_QUANTITY="1 px" MAX_WIDTH="550 px" MIN_WIDTH="1 px" STYLE="combined">
 <icon BUILTIN="25%"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1268781768" CREATED="1323470955796" MODIFIED="1335095105705" HGAP_QUANTITY="-135.0 px" VSHIFT_QUANTITY="32.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1268781768" CREATED="1323470955796" MODIFIED="1335095105705" HGAP_QUANTITY="-135 px" VSHIFT_QUANTITY="32 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3096,13 +2986,13 @@
 </hook>
 </node>
 </node>
-<node TEXT="Large progress (icon &amp; image)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1080017148" CREATED="1314283905093" MODIFIED="1323806554263" HGAP_QUANTITY="24.0 px" VSHIFT_QUANTITY="-52.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Large progress (icon &amp; image)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1080017148" CREATED="1314283905093" MODIFIED="1323806554263" HGAP_QUANTITY="24 px" VSHIFT_QUANTITY="-52 px" MAX_WIDTH="550 px" MIN_WIDTH="1 px" STYLE="combined">
 <icon BUILTIN="0%"/>
 <hook URI="freeplaneresource:/images/svg/Progress_tenth_01.svg" SIZE="1.0" NAME="ExternalObject"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1335095114534" HGAP_QUANTITY="-182.0 px" VSHIFT_QUANTITY="122.0 px"><richcontent TYPE="NODE">
+<node ID="ID_522359814" CREATED="1323470998328" MODIFIED="1335095114534" HGAP_QUANTITY="-182 px" VSHIFT_QUANTITY="122 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3208,7 +3098,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Joining nodes A, B and C" FOLDED="true" ID="ID_1357475978" CREATED="1485025797446" MODIFIED="1487726279189">
 <node TEXT="A" FOLDED="true" ID="ID_944587770" CREATED="1483837176198" MODIFIED="1487726279190">
-<node TEXT="B" FOLDED="true" ID="ID_904135208" CREATED="1483837178563" MODIFIED="1487726279191" VGAP_QUANTITY="6.0 pt">
+<node TEXT="B" FOLDED="true" ID="ID_904135208" CREATED="1483837178563" MODIFIED="1487726279191" VGAP_QUANTITY="6 pt">
 <node TEXT="C" FOLDED="true" ID="ID_1686214765" CREATED="1484436785819" MODIFIED="1487726279192">
 <node TEXT="becomes" FOLDED="true" ID="ID_1072413837" CREATED="1487726121544" MODIFIED="1487726123195">
 <node TEXT="A&#xa;B&#xa;C" ID="ID_947222609" CREATED="1483837176198" MODIFIED="1487726279192"/>
@@ -3259,7 +3149,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Joining nodes A, B and C" FOLDED="true" ID="ID_185956720" CREATED="1485025797446" MODIFIED="1487726279211">
 <node TEXT="A" FOLDED="true" ID="ID_496862064" CREATED="1483837176198" MODIFIED="1487726279212">
-<node TEXT="B" FOLDED="true" ID="ID_86263605" CREATED="1483837178563" MODIFIED="1487726279213" VGAP_QUANTITY="6.0 pt">
+<node TEXT="B" FOLDED="true" ID="ID_86263605" CREATED="1483837178563" MODIFIED="1487726279213" VGAP_QUANTITY="6 pt">
 <node TEXT="C" FOLDED="true" ID="ID_919592341" CREATED="1484436785819" MODIFIED="1487726279214">
 <node TEXT="becomes" FOLDED="true" ID="ID_609286541" CREATED="1487726121544" MODIFIED="1487726123195">
 <node TEXT="A B C" ID="ID_121989495" CREATED="1483837176198" MODIFIED="1487726279215"/>
@@ -3310,7 +3200,7 @@
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Joining nodes A, B and C" FOLDED="true" ID="ID_459463810" CREATED="1485025797446" MODIFIED="1487726279221">
 <node TEXT="A" FOLDED="true" ID="ID_696732484" CREATED="1483837176198" MODIFIED="1487726279222">
-<node TEXT="B" FOLDED="true" ID="ID_1629821935" CREATED="1483837178563" MODIFIED="1487726279223" VGAP_QUANTITY="6.0 pt">
+<node TEXT="B" FOLDED="true" ID="ID_1629821935" CREATED="1483837178563" MODIFIED="1487726279223" VGAP_QUANTITY="6 pt">
 <node TEXT="C" FOLDED="true" ID="ID_1181763331" CREATED="1484436785819" MODIFIED="1487726279224">
 <node TEXT="becomes" FOLDED="true" ID="ID_1916280882" CREATED="1487726121544" MODIFIED="1487726123195">
 <node TEXT="A, B, C" ID="ID_1243347679" CREATED="1483837176198" MODIFIED="1487726279225"/>
@@ -3355,7 +3245,7 @@
 <hook NAME="FirstGroupNode"/>
 </node>
 <node TEXT="A" FOLDED="true" ID="ID_527302135" CREATED="1483837176198" MODIFIED="1487726279255">
-<node TEXT="B" FOLDED="true" ID="ID_516281758" CREATED="1483837178563" MODIFIED="1487726279256" VGAP_QUANTITY="6.0 pt">
+<node TEXT="B" FOLDED="true" ID="ID_516281758" CREATED="1483837178563" MODIFIED="1487726279256" VGAP_QUANTITY="6 pt">
 <node TEXT="C" ID="ID_191576178" CREATED="1484436785819" MODIFIED="1487726279257"/>
 <node TEXT="D" FOLDED="true" ID="ID_1800336580" CREATED="1484437130982" MODIFIED="1487726279259">
 <node TEXT="E" ID="ID_1559269563" CREATED="1484437140408" MODIFIED="1487726279260"/>
@@ -3373,7 +3263,7 @@
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="becomes" FOLDED="true" ID="ID_1261308493" CREATED="1487726121544" MODIFIED="1487726123195">
-<node TEXT="A 1" FOLDED="true" ID="ID_1760066374" CREATED="1483837178563" MODIFIED="1487726279263" VGAP_QUANTITY="6.0 pt">
+<node TEXT="A 1" FOLDED="true" ID="ID_1760066374" CREATED="1483837178563" MODIFIED="1487726279263" VGAP_QUANTITY="6 pt">
 <node TEXT="B" FOLDED="true" ID="ID_614855328" CREATED="1484439534439" MODIFIED="1487726279264">
 <node TEXT="C" ID="ID_1845867902" CREATED="1484436785819" MODIFIED="1487726279265"/>
 <node TEXT="D" FOLDED="true" ID="ID_809296389" CREATED="1484437130982" MODIFIED="1487726279265">
@@ -3393,7 +3283,7 @@
 <node TEXT="Joining nodes works best if the nodes selected do not contain other node components like node details, notes and attributes." FOLDED="true" ID="ID_262182822" CREATED="1483419527385" MODIFIED="1487726279269">
 <node TEXT="These components will be preserved only in the node in which all others will be joined into." ID="ID_1962604429" CREATED="1487725497106" MODIFIED="1487725497109"/>
 </node>
-<node ID="ID_1678415541" CREATED="1487725785765" MODIFIED="1498417557001" MAX_WIDTH="560.9999834597115 pt" MIN_WIDTH="560.9999834597115 pt"><richcontent TYPE="NODE">
+<node ID="ID_1678415541" CREATED="1487725785765" MODIFIED="1498417557001" MAX_WIDTH="560.99998 pt" MIN_WIDTH="560.99998 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3416,12 +3306,12 @@
 <node TEXT="This command can be hotkey configurable." ID="ID_49447036" CREATED="1498418406461" MODIFIED="1498418421626"/>
 </node>
 </node>
-<node TEXT="Splitting a node" STYLE_REF="Professional" FOLDED="true" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1335300258084" MAX_WIDTH="600.0 px" MIN_WIDTH="100.0 px" STYLE="combined">
+<node TEXT="Splitting a node" STYLE_REF="Professional" FOLDED="true" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1335300258084" MAX_WIDTH="600 px" MIN_WIDTH="100 px" STYLE="combined">
 <font ITALIC="false"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1335095138046" HGAP_QUANTITY="-86.0 px" VSHIFT_QUANTITY="135.0 px"><richcontent TYPE="NODE">
+<node ID="ID_497224980" CREATED="1323468073621" MODIFIED="1335095138046" HGAP_QUANTITY="-86 px" VSHIFT_QUANTITY="135 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3464,11 +3354,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Calculating" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1335300258084" LINK="https://www.freeplane.org/wiki/index.php/Formula" MIN_WIDTH="100.0 px" STYLE="combined">
+<node TEXT="Calculating" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1335300258084" LINK="https://www.freeplane.org/wiki/index.php/Formula" MIN_WIDTH="100 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1335095146423" HGAP_QUANTITY="-83.0 px" VSHIFT_QUANTITY="116.0 px"><richcontent TYPE="NODE">
+<node ID="ID_60050529" CREATED="1323467815625" MODIFIED="1335095146423" HGAP_QUANTITY="-83 px" VSHIFT_QUANTITY="116 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3505,11 +3395,11 @@
 </node>
 </node>
 <node TEXT="Selecting and moving nodes" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_272980743" CREATED="1314248580003" MODIFIED="1541847561399" NUMBERED="true">
-<node TEXT="Scrolling and panning the map" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1335300393571" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Scrolling and panning the map" STYLE_REF="Beginner" FOLDED="true" ID="ID_1577961914" CREATED="1314644535914" MODIFIED="1335300393571" MIN_WIDTH="1 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1335095167077" HGAP_QUANTITY="-187.0 px" VSHIFT_QUANTITY="52.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1560196388" CREATED="1323511488363" MODIFIED="1335095167077" HGAP_QUANTITY="-187 px" VSHIFT_QUANTITY="52 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3536,12 +3426,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Selecting" STYLE_REF="Beginner" FOLDED="true" ID="ID_1573267345" CREATED="1323507663956" MODIFIED="1337158256746" MIN_WIDTH="60.0 px">
-<node TEXT="Automatic selection" STYLE_REF="Beginner" FOLDED="true" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1335300393587" MAX_WIDTH="600.0 px" STYLE="combined">
+<node TEXT="Selecting" STYLE_REF="Beginner" FOLDED="true" ID="ID_1573267345" CREATED="1323507663956" MODIFIED="1337158256746" MIN_WIDTH="60 px">
+<node TEXT="Automatic selection" STYLE_REF="Beginner" FOLDED="true" ID="ID_1387234491" CREATED="1314249066966" MODIFIED="1335300393587" MAX_WIDTH="600 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1185537684" CREATED="1323506992696" MODIFIED="1335095176609" HGAP_QUANTITY="-112.0 px" VSHIFT_QUANTITY="39.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1185537684" CREATED="1323506992696" MODIFIED="1335095176609" HGAP_QUANTITY="-112 px" VSHIFT_QUANTITY="39 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3560,12 +3450,12 @@
 </hook>
 </node>
 </node>
-<node TEXT="Keeping the selection" STYLE_REF="Beginner" FOLDED="true" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1335300393587" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Keeping the selection" STYLE_REF="Beginner" FOLDED="true" ID="ID_970057223" CREATED="1314248859369" MODIFIED="1335300393587" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
 <edge STYLE="bezier" COLOR="#33ffcc"/>
-<node ID="ID_299898759" CREATED="1323507254371" MODIFIED="1335095184877" HGAP_QUANTITY="-125.0 px" VSHIFT_QUANTITY="39.0 px"><richcontent TYPE="NODE">
+<node ID="ID_299898759" CREATED="1323507254371" MODIFIED="1335095184877" HGAP_QUANTITY="-125 px" VSHIFT_QUANTITY="39 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3585,9 +3475,9 @@
 <edge STYLE="hide_edge"/>
 </node>
 </node>
-<node TEXT="Key to the root" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1335300393587" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Key to the root" STYLE_REF="Beginner" FOLDED="true" ID="ID_1316263866" CREATED="1314249586526" MODIFIED="1335300393587" MAX_WIDTH="550 px" MIN_WIDTH="1 px" STYLE="combined">
 <edge STYLE="bezier"/>
-<node ID="ID_279008116" CREATED="1323507943923" MODIFIED="1335095192568" HGAP_QUANTITY="-81.0 px" VSHIFT_QUANTITY="23.0 px"><richcontent TYPE="NODE">
+<node ID="ID_279008116" CREATED="1323507943923" MODIFIED="1335095192568" HGAP_QUANTITY="-81 px" VSHIFT_QUANTITY="23 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3607,16 +3497,16 @@
 </node>
 </node>
 <node TEXT="Select all nodes" STYLE_REF="Beginner" FOLDED="true" ID="ID_376722702" CREATED="1329770963443" MODIFIED="1335300393587">
-<node TEXT="To select all nodes, first select the root (press Escape) and next press CTrl + A." STYLE_REF="TitlesContent" ID="ID_1214336373" CREATED="1329770999440" MODIFIED="1335095203971" HGAP_QUANTITY="-91.0 px" VSHIFT_QUANTITY="25.0 px"/>
+<node TEXT="To select all nodes, first select the root (press Escape) and next press CTrl + A." STYLE_REF="TitlesContent" ID="ID_1214336373" CREATED="1329770999440" MODIFIED="1335095203971" HGAP_QUANTITY="-91 px" VSHIFT_QUANTITY="25 px"/>
 </node>
 </node>
-<node TEXT="Moving" STYLE_REF="Beginner" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1335300393571" MAX_WIDTH="600.0 px" MIN_WIDTH="60.0 px">
-<node TEXT="Moving a node in the hierarchy" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1335300393587" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Moving" STYLE_REF="Beginner" FOLDED="true" ID="ID_1560992291" CREATED="1314248654564" MODIFIED="1335300393571" MAX_WIDTH="600 px" MIN_WIDTH="60 px">
+<node TEXT="Moving a node in the hierarchy" STYLE_REF="Beginner" FOLDED="true" ID="ID_125921821" CREATED="1314250124540" MODIFIED="1335300393587" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
-<node ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1335095213253" HGAP_QUANTITY="-186.0 px" VSHIFT_QUANTITY="39.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1599927930" CREATED="1323510888467" MODIFIED="1335095213253" HGAP_QUANTITY="-186 px" VSHIFT_QUANTITY="39 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3634,22 +3524,22 @@
 </hook>
 </node>
 </node>
-<node TEXT="Moving a connected node in space" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1335300393587" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Moving a connected node in space" STYLE_REF="Beginner" FOLDED="true" ID="ID_293115184" CREATED="1314249849956" MODIFIED="1335300393587" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="To displace a node while leaving its connections in tact, find the oval handle which is at the parent side of a node. Move the cursor over the this side of the node  until the oval lights up. Then click the oval and drag wherever you want the node to go. All other nodes may move with it.  You can restore a moved node to itsoriginal position by double clicking its oval handle." ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1335095222161" HGAP_QUANTITY="-208.0 px" VSHIFT_QUANTITY="49.0 px">
+<node TEXT="To displace a node while leaving its connections in tact, find the oval handle which is at the parent side of a node. Move the cursor over the this side of the node  until the oval lights up. Then click the oval and drag wherever you want the node to go. All other nodes may move with it.  You can restore a moved node to itsoriginal position by double clicking its oval handle." ID="ID_1319283887" CREATED="1323510779368" MODIFIED="1335095222161" HGAP_QUANTITY="-208 px" VSHIFT_QUANTITY="49 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Dropping positions" STYLE_REF="Beginner" FOLDED="true" ID="ID_1039655261" CREATED="1314250309213" MODIFIED="1335300393587" MAX_WIDTH="600.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Dropping positions" STYLE_REF="Beginner" FOLDED="true" ID="ID_1039655261" CREATED="1314250309213" MODIFIED="1335300393587" MAX_WIDTH="600 px" MIN_WIDTH="1 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_786303568" CREATED="1323511320373" MODIFIED="1335095232146" HGAP_QUANTITY="-108.0 px" VSHIFT_QUANTITY="104.0 px" MIN_WIDTH="80.0 px"><richcontent TYPE="NODE">
+<node ID="ID_786303568" CREATED="1323511320373" MODIFIED="1335095232146" HGAP_QUANTITY="-108 px" VSHIFT_QUANTITY="104 px" MIN_WIDTH="80 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3682,11 +3572,11 @@
 </hook>
 </node>
 </node>
-<node TEXT="Moving a group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1335300393587" MAX_WIDTH="600.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Moving a group" STYLE_REF="Advanced" FOLDED="true" ID="ID_1040002877" CREATED="1316181690861" MODIFIED="1335300393587" MAX_WIDTH="600 px" MIN_WIDTH="1 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1239614830" CREATED="1323511365121" MODIFIED="1335095242208" HGAP_QUANTITY="-84.0 px" VSHIFT_QUANTITY="62.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1239614830" CREATED="1323511365121" MODIFIED="1335095242208" HGAP_QUANTITY="-84 px" VSHIFT_QUANTITY="62 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3713,7 +3603,7 @@
 </node>
 </node>
 <node TEXT="Reset node position" STYLE_REF="Advanced" FOLDED="true" ID="ID_1352824494" CREATED="1335300691836" MODIFIED="1335300949728">
-<node STYLE_REF="TitlesContent" ID="ID_688846542" CREATED="1335300712264" MODIFIED="1335300958557" HGAP_QUANTITY="-121.0 px" VSHIFT_QUANTITY="31.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_688846542" CREATED="1335300712264" MODIFIED="1335300958557" HGAP_QUANTITY="-121 px" VSHIFT_QUANTITY="31 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3729,11 +3619,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Sorting nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1335300393571" MAX_WIDTH="600.0 px" STYLE="combined">
+<node TEXT="Sorting nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_1014457432" CREATED="1314338769195" MODIFIED="1335300393571" MAX_WIDTH="600 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1335095252536" HGAP_QUANTITY="-80.0 px" VSHIFT_QUANTITY="44.0 px"><richcontent TYPE="NODE">
+<node ID="ID_915226922" CREATED="1323511424855" MODIFIED="1335095252536" HGAP_QUANTITY="-80 px" VSHIFT_QUANTITY="44 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3757,7 +3647,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_751107880" CREATED="1323514479284" MODIFIED="1335095266982" HGAP_QUANTITY="-28.0 px" VSHIFT_QUANTITY="43.0 px"><richcontent TYPE="NODE">
+<node ID="ID_751107880" CREATED="1323514479284" MODIFIED="1335095266982" HGAP_QUANTITY="-28 px" VSHIFT_QUANTITY="43 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3780,7 +3670,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1335277476237" HGAP_QUANTITY="-55.0 px" VSHIFT_QUANTITY="150.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1649729730" CREATED="1323514507513" MODIFIED="1335277476237" HGAP_QUANTITY="-55 px" VSHIFT_QUANTITY="150 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3824,11 +3714,11 @@
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
-<node TEXT="a" FOLDED="true" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1323517469534" HGAP_QUANTITY="25.0 px" STYLE="as_parent">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="9;-23;" ENDINCLINATION="-28;-89;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<node TEXT="a" FOLDED="true" ID="ID_1328399304" CREATED="1314130936565" MODIFIED="1323517469534" HGAP_QUANTITY="25 px" STYLE="as_parent">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_581303769" MIDDLE_LABEL="label" STARTINCLINATION="6.61224 pt;-16.16326 pt;" ENDINCLINATION="-19.83673 pt;-64.65306 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <edge STYLE="hide_edge"/>
 <node TEXT="b" FOLDED="true" ID="ID_273400211" CREATED="1314130940427" MODIFIED="1323517479815">
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="connector&#xa;without&#xa;begin" STARTINCLINATION="19;86;" ENDINCLINATION="19;86;" STARTARROW="NONE" ENDARROW="NONE"/>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_273400211" MIDDLE_LABEL="connector&#xa;without&#xa;begin" STARTINCLINATION="13.95918 pt;63.18367 pt;" ENDINCLINATION="13.95918 pt;63.18367 pt;" STARTARROW="NONE" ENDARROW="NONE"/>
 <edge STYLE="bezier"/>
 <node TEXT="c" ID="ID_581303769" CREATED="1314130942275" MODIFIED="1314130945036"/>
 </node>
@@ -3839,7 +3729,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_651594550" CREATED="1323514659262" MODIFIED="1335095290460" HGAP_QUANTITY="-119.0 px" VSHIFT_QUANTITY="78.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_651594550" CREATED="1323514659262" MODIFIED="1335095290460" HGAP_QUANTITY="-119 px" VSHIFT_QUANTITY="78 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3871,7 +3761,7 @@
 </node>
 <node TEXT="a" STYLE_REF="AdvancedTopic" ID="ID_902940862" CREATED="1314130883345" MODIFIED="1316165216808"/>
 <node TEXT="b" STYLE_REF="AdvancedTopic" ID="ID_303013117" CREATED="1314130889936" MODIFIED="1316165216824"/>
-<node TEXT="c" STYLE_REF="AdvancedTopic" ID="ID_1837144570" CREATED="1314130892393" MODIFIED="1316165216824" VSHIFT_QUANTITY="-9.0 px"/>
+<node TEXT="c" STYLE_REF="AdvancedTopic" ID="ID_1837144570" CREATED="1314130892393" MODIFIED="1316165216824" VSHIFT_QUANTITY="-9 px"/>
 <node TEXT="" FOLDED="true" ID="ID_1718735488" CREATED="1455910877283" MODIFIED="1455910877283">
 <hook NAME="SummaryNode"/>
 <node TEXT="Summary node" STYLE_REF="AdvancedTopic" ID="ID_460668684" CREATED="1314130905124" MODIFIED="1316165216824"/>
@@ -3882,7 +3772,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1335095305358" HGAP_QUANTITY="-101.0 px" VSHIFT_QUANTITY="52.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1862713604" CREATED="1323514733122" MODIFIED="1335095305358" HGAP_QUANTITY="-101 px" VSHIFT_QUANTITY="52 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3898,12 +3788,12 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="cloud a" STYLE_REF="AdvancedTopic" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1323517713897" VSHIFT_QUANTITY="15.0 px">
+<node TEXT="cloud a" STYLE_REF="AdvancedTopic" FOLDED="true" ID="ID_1742435994" CREATED="1314130827910" MODIFIED="1323517713897" VSHIFT_QUANTITY="15 px">
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <node TEXT="b" ID="ID_1270291744" CREATED="1314130833239" MODIFIED="1314130836016"/>
 <node TEXT="c" ID="ID_1022872809" CREATED="1314130837348" MODIFIED="1314130840017"/>
 </node>
-<node TEXT="cloud b" STYLE_REF="AdvancedTopic" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316165226464" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="-9.0 px">
+<node TEXT="cloud b" STYLE_REF="AdvancedTopic" FOLDED="true" ID="ID_539843005" CREATED="1314208596772" MODIFIED="1316165226464" HGAP_QUANTITY="30 px" VSHIFT_QUANTITY="-9 px">
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 <node TEXT="e" ID="ID_249943796" CREATED="1314208605486" MODIFIED="1314208607670"/>
 <node TEXT="f" ID="ID_1428582117" CREATED="1314208608472" MODIFIED="1314208611937"/>
@@ -3923,8 +3813,7 @@
   </body>
 </html>
 </richcontent>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -3934,8 +3823,7 @@
       Find this icon button in the toolbar
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -3950,7 +3838,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Beginner" LAST="false"/>
 </hook>
-<node TEXT="A dynamic link (hyperlink) is an electronic connection from a source node to a destination object. The destination can be a directory, file, web page, application, e-mail etc. The connection is click-able: double-click to open it. The link appears as an underlined text, or as a red or green arrow. The red arrow connects to an external address or an e-mail address. The green arrow connects to an internal address (other node). The underlined text can represent both. There can be multiple underlined hyperlinks in each node. There can only be one arrow-link or e-mail address pro node. The arrow-icon is shown in the Node core. Besides there can be hyperlinks in socalled attributes. Finally it is possible to link from another application to a particular node in a map. To activate the underlined hyperlink, double-click it." ID="ID_840626562" CREATED="1323768812292" MODIFIED="1335095319398" HGAP_QUANTITY="-82.0 px" VSHIFT_QUANTITY="97.0 px">
+<node TEXT="A dynamic link (hyperlink) is an electronic connection from a source node to a destination object. The destination can be a directory, file, web page, application, e-mail etc. The connection is click-able: double-click to open it. The link appears as an underlined text, or as a red or green arrow. The red arrow connects to an external address or an e-mail address. The green arrow connects to an internal address (other node). The underlined text can represent both. There can be multiple underlined hyperlinks in each node. There can only be one arrow-link or e-mail address pro node. The arrow-icon is shown in the Node core. Besides there can be hyperlinks in socalled attributes. Finally it is possible to link from another application to a particular node in a map. To activate the underlined hyperlink, double-click it." ID="ID_840626562" CREATED="1323768812292" MODIFIED="1335095319398" HGAP_QUANTITY="-82 px" VSHIFT_QUANTITY="97 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -3960,7 +3848,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1335095327448" HGAP_QUANTITY="-83.0 px" VSHIFT_QUANTITY="240.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1913035829" CREATED="1323512829161" MODIFIED="1335095327448" HGAP_QUANTITY="-83 px" VSHIFT_QUANTITY="240 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4026,7 +3914,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1335095339023" HGAP_QUANTITY="-78.0 px" VSHIFT_QUANTITY="89.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1830541497" CREATED="1323512880196" MODIFIED="1335095339023" HGAP_QUANTITY="-78 px" VSHIFT_QUANTITY="89 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4060,7 +3948,7 @@
 </node>
 </node>
 <node TEXT="Linking nodes with anchor" STYLE_REF="Beginner" FOLDED="true" ID="ID_1524719322" CREATED="1336298056719" MODIFIED="1336299477442">
-<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1337500686337" HGAP_QUANTITY="-158.0 px" VSHIFT_QUANTITY="136.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1337500686337" HGAP_QUANTITY="-158 px" VSHIFT_QUANTITY="136 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4101,7 +3989,7 @@
 </node>
 </node>
 <node TEXT="Linking to nodes by node alias" STYLE_REF="Beginner" FOLDED="true" ID="ID_379369183" CREATED="1336298056719" MODIFIED="1534767392035">
-<node STYLE_REF="TitlesContent" ID="ID_1593503433" CREATED="1336298585173" MODIFIED="1534767392035" HGAP_QUANTITY="-159.0 px" VSHIFT_QUANTITY="121.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1593503433" CREATED="1336298585173" MODIFIED="1534767392035" HGAP_QUANTITY="-159 px" VSHIFT_QUANTITY="121 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4133,8 +4021,8 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Linking to nodes by path" STYLE_REF="Beginner" FOLDED="true" ID="ID_1531232571" CREATED="1336298056719" MODIFIED="1534767274687" VGAP_QUANTITY="0.0 pt">
-<node STYLE_REF="TitlesContent" ID="ID_1352292545" CREATED="1336298585173" MODIFIED="1534767274687" HGAP_QUANTITY="-117.0 px" VSHIFT_QUANTITY="512.0 px"><richcontent TYPE="NODE">
+<node TEXT="Linking to nodes by path" STYLE_REF="Beginner" FOLDED="true" ID="ID_1531232571" CREATED="1336298056719" MODIFIED="1534767274687" VGAP_QUANTITY="0 pt">
+<node STYLE_REF="TitlesContent" ID="ID_1352292545" CREATED="1336298585173" MODIFIED="1534767274687" HGAP_QUANTITY="-117 px" VSHIFT_QUANTITY="512 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4210,7 +4098,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1335095349771" HGAP_QUANTITY="-64.0 px" VSHIFT_QUANTITY="145.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1480409284" CREATED="1323512986970" MODIFIED="1335095349771" HGAP_QUANTITY="-64 px" VSHIFT_QUANTITY="145 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4266,7 +4154,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1335095382173" HGAP_QUANTITY="-133.0 px" VSHIFT_QUANTITY="268.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1356533861" CREATED="1323512914336" MODIFIED="1335095382173" HGAP_QUANTITY="-133 px" VSHIFT_QUANTITY="268 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4332,7 +4220,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1108178356" CREATED="1323513038412" MODIFIED="1335095393033" HGAP_QUANTITY="-132.0 px" VSHIFT_QUANTITY="86.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1108178356" CREATED="1323513038412" MODIFIED="1335095393033" HGAP_QUANTITY="-132 px" VSHIFT_QUANTITY="86 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4368,7 +4256,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_116460964" CREATED="1323513079714" MODIFIED="1335095401972" HGAP_QUANTITY="-26.0 px" VSHIFT_QUANTITY="60.0 px"><richcontent TYPE="NODE">
+<node ID="ID_116460964" CREATED="1323513079714" MODIFIED="1335095401972" HGAP_QUANTITY="-26 px" VSHIFT_QUANTITY="60 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4390,7 +4278,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1335095425450" HGAP_QUANTITY="-228.0 px" VSHIFT_QUANTITY="149.0 px"><richcontent TYPE="NODE">
+<node ID="ID_822375535" CREATED="1323513104618" MODIFIED="1335095425450" HGAP_QUANTITY="-228 px" VSHIFT_QUANTITY="149 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -4427,20 +4315,20 @@ node alias can not be a number</pre>
 <node TEXT="Formatting nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_215836627" CREATED="1484492723173" MODIFIED="1499027394252" NUMBERED="true">
 <node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1048626295" CREATED="1483416459506" MODIFIED="1490394239065">
 <node TEXT="Freeplane has many possibilities to set or change node format" ID="ID_1063739575" CREATED="1484494250195" MODIFIED="1499027398248"/>
-<node TEXT="You have control of ..." FOLDED="true" ID="ID_1508685009" CREATED="1490394278457" MODIFIED="1499020568549" VGAP_QUANTITY="10.0 pt">
+<node TEXT="You have control of ..." FOLDED="true" ID="ID_1508685009" CREATED="1490394278457" MODIFIED="1499020568549" VGAP_QUANTITY="10 pt">
 <node TEXT="Background color of a node" ID="ID_890431801" CREATED="1490394341387" MODIFIED="1490394460259" BACKGROUND_COLOR="#ccccff"/>
-<node TEXT="Shape of a node" ID="ID_516458905" CREATED="1490394377219" MODIFIED="1490394702351" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Shape of a node" ID="ID_516458905" CREATED="1490394377219" MODIFIED="1490394702351" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4 pt"/>
 <node TEXT="Size of the text" ID="ID_938799585" CREATED="1490394401896" MODIFIED="1499020568549">
 <font SIZE="20"/>
 </node>
-<node TEXT="Edge width, color and style" ID="ID_1430859807" CREATED="1490394413340" MODIFIED="1499011138634" HGAP_QUANTITY="37.999999284744284 pt" VSHIFT_QUANTITY="0.7499999776482589 pt">
+<node TEXT="Edge width, color and style" ID="ID_1430859807" CREATED="1490394413340" MODIFIED="1499011138634" HGAP_QUANTITY="38 pt" VSHIFT_QUANTITY="0.75 pt">
 <edge STYLE="horizontal" COLOR="#009900" WIDTH="4" DASH="DASHES"/>
 </node>
 <node TEXT="... and much more." ID="ID_1932084403" CREATED="1490394430292" MODIFIED="1490394675978">
 <edge STYLE="horizontal"/>
 </node>
 </node>
-<node TEXT="You can also copy the formatting of a node, and paste it to other nodes by using" FOLDED="true" ID="ID_1287880664" CREATED="1491434054085" MODIFIED="1499020975246" VGAP_QUANTITY="6.0 pt">
+<node TEXT="You can also copy the formatting of a node, and paste it to other nodes by using" FOLDED="true" ID="ID_1287880664" CREATED="1491434054085" MODIFIED="1499020975246" VGAP_QUANTITY="6 pt">
 <node TEXT="Copy format" STYLE_REF="Title" ID="ID_1501116501" CREATED="1491434139735" MODIFIED="1499020975246">
 <icon BUILTIN="../colorpicker"/>
 </node>
@@ -4450,7 +4338,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_554181153" CREATED="1484432866260" MODIFIED="1490495170291">
-<node TEXT="Change formatting" STYLE_REF="Title" FOLDED="true" ID="ID_1165590804" CREATED="1483417620673" MODIFIED="1499027406140" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Change formatting" STYLE_REF="Title" FOLDED="true" ID="ID_1165590804" CREATED="1483417620673" MODIFIED="1499027406140" VGAP_QUANTITY="6 pt">
 <node TEXT="Select the node(s) to change the property" ID="ID_631072212" CREATED="1490495372597" MODIFIED="1490495483386" NUMBERED="true"/>
 <node TEXT="Use one of these formatting options" FOLDED="true" ID="ID_1243040393" CREATED="1498409877688" MODIFIED="1498421316312" NUMBERED="true">
 <node TEXT="Formatting using the Toolbar" STYLE_REF="Title" FOLDED="true" ID="ID_583841334" CREATED="1484492723173" MODIFIED="1499027717141">
@@ -4506,9 +4394,9 @@ node alias can not be a number</pre>
 <node TEXT="" ID="ID_1564629897" CREATED="1491362657953" MODIFIED="1491362657957">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_152951343" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
-<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1778235391" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
-<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_1905118489" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_152951343" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
+<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1778235391" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
+<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_1905118489" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
 <node TEXT="" ID="ID_1371288150" CREATED="1491362657941" MODIFIED="1491362657951">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
@@ -4539,7 +4427,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" ID="ID_704222362" CREATED="1485134404008" MODIFIED="1485646510769"/>
-<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_1967057370" CREATED="1485134404008" MODIFIED="1498408669009" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_1967057370" CREATED="1485134404008" MODIFIED="1498408669009" VGAP_QUANTITY="6 pt">
 <node TEXT="Tool bar" STYLE_REF="Advanced" FOLDED="true" ID="ID_8679357" CREATED="1314167879005" MODIFIED="1498408691023">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -4606,7 +4494,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_45909216" CREATED="1484432866260" MODIFIED="1491354052976">
-<node TEXT="Change a format property" STYLE_REF="Title" FOLDED="true" ID="ID_1032261444" CREATED="1483417620673" MODIFIED="1499022188945" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Change a format property" STYLE_REF="Title" FOLDED="true" ID="ID_1032261444" CREATED="1483417620673" MODIFIED="1499022188945" VGAP_QUANTITY="6 pt">
 <node FOLDED="true" ID="ID_1265623412" CREATED="1490393892009" MODIFIED="1499027464619"><richcontent TYPE="NODE">
 
 <html>
@@ -4668,9 +4556,9 @@ node alias can not be a number</pre>
 <node TEXT="" ID="ID_664169116" CREATED="1491362657953" MODIFIED="1491362657957">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_905805466" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
-<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1331377073" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
-<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_579931512" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_905805466" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
+<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1331377073" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
+<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_579931512" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
 <node TEXT="" ID="ID_1152676203" CREATED="1491362657941" MODIFIED="1491362657951">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
@@ -4731,7 +4619,7 @@ node alias can not be a number</pre>
 <node TEXT="child" ID="ID_1715163263" CREATED="1499047786216" MODIFIED="1499047879617"/>
 <node TEXT="child" ID="ID_1990003970" CREATED="1499047786216" MODIFIED="1499047879617"/>
 </node>
-<node TEXT="Star" FOLDED="true" ID="ID_448124047" CREATED="1484505272644" MODIFIED="1490320564935" HGAP_QUANTITY="43.99999910593036 pt" VSHIFT_QUANTITY="2.2499999329447764 pt">
+<node TEXT="Star" FOLDED="true" ID="ID_448124047" CREATED="1484505272644" MODIFIED="1490320564935" HGAP_QUANTITY="44 pt" VSHIFT_QUANTITY="2.25 pt">
 <cloud COLOR="#ccccff" SHAPE="STAR"/>
 <node TEXT="child" ID="ID_1222142902" CREATED="1499047786216" MODIFIED="1499051631172">
 <hook NAME="AlwaysUnfoldedNode"/>
@@ -4758,7 +4646,7 @@ node alias can not be a number</pre>
 <node TEXT="grandchild" ID="ID_1393792644" CREATED="1499047786216" MODIFIED="1499047873810"/>
 </node>
 </node>
-<node TEXT="" ID="ID_144223462" CREATED="1491361509883" MODIFIED="1499051710061" VGAP_QUANTITY="6.0 pt">
+<node TEXT="" ID="ID_144223462" CREATED="1491361509883" MODIFIED="1499051710061" VGAP_QUANTITY="6 pt">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="A cloud surrounds the node it is applied to and all its descendants." ID="ID_1053651579" CREATED="1490396885182" MODIFIED="1499051710072"/>
@@ -4772,20 +4660,20 @@ node alias can not be a number</pre>
 <node TEXT="As parent" FOLDED="true" ID="ID_1838085656" CREATED="1491362990532" MODIFIED="1491362994850">
 <node TEXT="Edge style will be the same as its parent node edge style" ID="ID_1601230879" CREATED="1491363586412" MODIFIED="1491363619014"/>
 </node>
-<node TEXT="Linear" ID="ID_572246152" CREATED="1490319373001" MODIFIED="1491362941037" HGAP_QUANTITY="55.999998748302495 pt" VSHIFT_QUANTITY="-31.499999061226873 pt">
+<node TEXT="Linear" ID="ID_572246152" CREATED="1490319373001" MODIFIED="1491362941037" HGAP_QUANTITY="56 pt" VSHIFT_QUANTITY="-31.5 pt">
 <edge STYLE="linear" COLOR="#00cc33" WIDTH="2"/>
 </node>
-<node TEXT="Smoothly curved (bezier)" ID="ID_659928825" CREATED="1490319321099" MODIFIED="1491362956015" HGAP_QUANTITY="63.499998524785084 pt" VSHIFT_QUANTITY="-9.749999709427364 pt"/>
-<node TEXT="Sharp linear" ID="ID_545560801" CREATED="1490319396297" MODIFIED="1491362958253" HGAP_QUANTITY="109.24999716132888 pt" VSHIFT_QUANTITY="33.74999899417165 pt">
+<node TEXT="Smoothly curved (bezier)" ID="ID_659928825" CREATED="1490319321099" MODIFIED="1491362956015" HGAP_QUANTITY="63.5 pt" VSHIFT_QUANTITY="-9.75 pt"/>
+<node TEXT="Sharp linear" ID="ID_545560801" CREATED="1490319396297" MODIFIED="1491362958253" HGAP_QUANTITY="109.25 pt" VSHIFT_QUANTITY="33.75 pt">
 <edge STYLE="sharp_linear" COLOR="#ff6600" WIDTH="4"/>
 </node>
-<node TEXT="Sharply curved (bezier)" ID="ID_821912393" CREATED="1490319379817" MODIFIED="1491362964797" HGAP_QUANTITY="48.4999989718199 pt" VSHIFT_QUANTITY="37.499998882412946 pt">
+<node TEXT="Sharply curved (bezier)" ID="ID_821912393" CREATED="1490319379817" MODIFIED="1491362964797" HGAP_QUANTITY="48.5 pt" VSHIFT_QUANTITY="37.5 pt">
 <edge STYLE="sharp_bezier" COLOR="#00cccc" WIDTH="4"/>
 </node>
-<node TEXT="Hide edge" ID="ID_540947272" CREATED="1490319355809" MODIFIED="1491362934162" HGAP_QUANTITY="67.99999839067465 pt" VSHIFT_QUANTITY="14.249999575316918 pt">
+<node TEXT="Hide edge" ID="ID_540947272" CREATED="1490319355809" MODIFIED="1491362934162" HGAP_QUANTITY="68 pt" VSHIFT_QUANTITY="14.25 pt">
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Horizontal" ID="ID_1358390844" CREATED="1490319363569" MODIFIED="1491362937432" HGAP_QUANTITY="72.4999982565642 pt" VSHIFT_QUANTITY="11.999999642372142 pt">
+<node TEXT="Horizontal" ID="ID_1358390844" CREATED="1490319363569" MODIFIED="1491362937432" HGAP_QUANTITY="72.5 pt" VSHIFT_QUANTITY="12 pt">
 <edge STYLE="horizontal" COLOR="#cc00cc" WIDTH="3"/>
 </node>
 </node>
@@ -4817,7 +4705,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_76671619" CREATED="1485134404008" MODIFIED="1498338421309">
-<node TEXT="Menu Format" STYLE_REF="Advanced" FOLDED="true" ID="ID_308746343" CREATED="1314167687616" MODIFIED="1498408889676" HGAP_QUANTITY="29.0 px">
+<node TEXT="Menu Format" STYLE_REF="Advanced" FOLDED="true" ID="ID_308746343" CREATED="1314167687616" MODIFIED="1498408889676" HGAP_QUANTITY="29 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -4837,11 +4725,10 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="Bold" STYLE_REF="AdvancedTopic" ID="ID_121573450" CREATED="1266251692562" MODIFIED="1323519139108" TEXT_SHORTENED="true" HGAP_QUANTITY="25.0 px" STYLE="as_parent">
+<node TEXT="Bold" STYLE_REF="AdvancedTopic" ID="ID_121573450" CREATED="1266251692562" MODIFIED="1323519139108" TEXT_SHORTENED="true" HGAP_QUANTITY="25 px" STYLE="as_parent">
 <icon BUILTIN="../Bold16"/>
 <font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -4851,8 +4738,7 @@ node alias can not be a number</pre>
       This icon-button in the toolbar affects thee whole node text.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -4861,8 +4747,7 @@ node alias can not be a number</pre>
 <node TEXT="Italic" STYLE_REF="AdvancedTopic" ID="ID_313105065" CREATED="1266251689531" MODIFIED="1323519147984" TEXT_SHORTENED="true">
 <icon BUILTIN="../Italic16"/>
 <font ITALIC="true"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -4874,8 +4759,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -5028,7 +4912,7 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="While the tab is showing, you can select a different node to give it the focus." ID="ID_634553406" CREATED="1484493903487" MODIFIED="1490490285054"/>
 <node TEXT="The change takes effect immediately. There is no need to press an OK button or leave the panel. Just select other node(s) and change the property." ID="ID_243057475" CREATED="1484501660798" MODIFIED="1490396835460"/>
-<node FOLDED="true" ID="ID_1958981167" CREATED="1484497650795" MODIFIED="1490490267937" VGAP_QUANTITY="6.0 pt"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1958981167" CREATED="1484497650795" MODIFIED="1490490267937" VGAP_QUANTITY="6 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5278,17 +5162,17 @@ node alias can not be a number</pre>
 <node TEXT="Node shape" STYLE_REF="Title" FOLDED="true" ID="ID_1278873512" CREATED="1484497650795" MODIFIED="1490313934103">
 <node TEXT="Node shape" STYLE_REF="Title" FOLDED="true" ID="ID_109750690" CREATED="1484503655943" MODIFIED="1490313934006">
 <node TEXT="Define the node shape" FOLDED="true" ID="ID_1009941017" CREATED="1490313264270" MODIFIED="1490313267985">
-<node TEXT="Fork" STYLE_REF="Title" ID="ID_1130465908" CREATED="1490313298572" MODIFIED="1490314448825" STYLE="fork" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Fork" STYLE_REF="Title" ID="ID_1130465908" CREATED="1490313298572" MODIFIED="1490314448825" STYLE="fork" SHAPE_HORIZONTAL_MARGIN="4 pt"/>
 <node TEXT="Bubble" STYLE_REF="Title" ID="ID_748450462" CREATED="1490313302235" MODIFIED="1490313364912"/>
-<node TEXT="Oval" STYLE_REF="Title" ID="ID_1049503373" CREATED="1490313309153" MODIFIED="1490313375501" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
-<node TEXT="Rectangle" STYLE_REF="Title" ID="ID_1214294194" CREATED="1490313312396" MODIFIED="1490313378485" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
-<node TEXT="Wide hexagon" STYLE_REF="Title" ID="ID_82816065" CREATED="1490313321232" MODIFIED="1490314282984" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
-<node TEXT="Narrow hexagon" STYLE_REF="Title" ID="ID_1434607100" CREATED="1490313324977" MODIFIED="1490313385356" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
-<node TEXT="As parent" STYLE_REF="Title" FOLDED="true" ID="ID_1242128051" CREATED="1490313342657" MODIFIED="1490313391690" STYLE="as_parent" SHAPE_HORIZONTAL_MARGIN="4.0 pt">
+<node TEXT="Oval" STYLE_REF="Title" ID="ID_1049503373" CREATED="1490313309153" MODIFIED="1490313375501" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4 pt"/>
+<node TEXT="Rectangle" STYLE_REF="Title" ID="ID_1214294194" CREATED="1490313312396" MODIFIED="1490313378485" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4 pt"/>
+<node TEXT="Wide hexagon" STYLE_REF="Title" ID="ID_82816065" CREATED="1490313321232" MODIFIED="1490314282984" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4 pt"/>
+<node TEXT="Narrow hexagon" STYLE_REF="Title" ID="ID_1434607100" CREATED="1490313324977" MODIFIED="1490313385356" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4 pt"/>
+<node TEXT="As parent" STYLE_REF="Title" FOLDED="true" ID="ID_1242128051" CREATED="1490313342657" MODIFIED="1490313391690" STYLE="as_parent" SHAPE_HORIZONTAL_MARGIN="4 pt">
 <node TEXT="Node has same node shape as its parent" ID="ID_1518537303" CREATED="1490313440578" MODIFIED="1490313454160"/>
 </node>
-<node TEXT="Combined" STYLE_REF="Title" FOLDED="true" ID="ID_1725601135" CREATED="1490313355424" MODIFIED="1490313398095" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4.0 pt">
-<node FOLDED="true" ID="ID_633912998" CREATED="1490313457266" MODIFIED="1490313788071" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4.0 pt"><richcontent TYPE="NODE">
+<node TEXT="Combined" STYLE_REF="Title" FOLDED="true" ID="ID_1725601135" CREATED="1490313355424" MODIFIED="1490313398095" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4 pt">
+<node FOLDED="true" ID="ID_633912998" CREATED="1490313457266" MODIFIED="1490313788071" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5303,7 +5187,7 @@ node alias can not be a number</pre>
 </richcontent>
 <node TEXT="Unfolded" ID="ID_517208644" CREATED="1490313814552" MODIFIED="1490313816787"/>
 </node>
-<node FOLDED="true" ID="ID_1599287676" CREATED="1490313457266" MODIFIED="1490318113907" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4.0 pt"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1599287676" CREATED="1490313457266" MODIFIED="1490318113907" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5322,9 +5206,9 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="Horizontal margin" STYLE_REF="Title" FOLDED="true" ID="ID_1761214190" CREATED="1484503660173" MODIFIED="1490313934105">
-<node TEXT="Set the horizontal margin (spacing) between the text in the core and the node border" FOLDED="true" ID="ID_1410328805" CREATED="1490314056557" MODIFIED="1490494887036" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt">
+<node TEXT="Set the horizontal margin (spacing) between the text in the core and the node border" FOLDED="true" ID="ID_1410328805" CREATED="1490314056557" MODIFIED="1490494887036" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4 pt">
 <node TEXT="Text with horizontal margin 2 pt" ID="ID_1256570209" CREATED="1490481151810" MODIFIED="1490481303237" STYLE="bubble"/>
-<node TEXT="Text with horizontal margin 20 pt" ID="ID_578747155" CREATED="1490481151810" MODIFIED="1490481329659" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="20.0 pt"/>
+<node TEXT="Text with horizontal margin 20 pt" ID="ID_578747155" CREATED="1490481151810" MODIFIED="1490481329659" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="20 pt"/>
 </node>
 <node TEXT="Set unit of measure in" FOLDED="true" ID="ID_112687934" CREATED="1490317947710" MODIFIED="1490318073372">
 <node TEXT="px" FOLDED="true" ID="ID_1325261602" CREATED="1490317967389" MODIFIED="1490317973825">
@@ -5347,7 +5231,7 @@ node alias can not be a number</pre>
 <node TEXT="Vertical margin" STYLE_REF="Title" FOLDED="true" ID="ID_632164522" CREATED="1484503666631" MODIFIED="1490313934106">
 <node TEXT="Set the vertical margin (spacing) between the text in the core and the node border" FOLDED="true" ID="ID_1273181893" CREATED="1490314056557" MODIFIED="1490494904403">
 <node TEXT="Text with vertical margin 2 pt" ID="ID_1874613867" CREATED="1490481151810" MODIFIED="1490481252718" STYLE="bubble"/>
-<node TEXT="Text with vertical margin 10 pt" ID="ID_37128828" CREATED="1490481151810" MODIFIED="1490481271484" STYLE="bubble" SHAPE_VERTICAL_MARGIN="10.0 pt"/>
+<node TEXT="Text with vertical margin 10 pt" ID="ID_37128828" CREATED="1490481151810" MODIFIED="1490481271484" STYLE="bubble" SHAPE_VERTICAL_MARGIN="10 pt"/>
 </node>
 <node TEXT="Set unit of measure in" FOLDED="true" ID="ID_1289525366" CREATED="1490317947710" MODIFIED="1490318073372">
 <node TEXT="px" FOLDED="true" ID="ID_291262380" CREATED="1490317967389" MODIFIED="1490317973825">
@@ -5369,20 +5253,20 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Uniform" STYLE_REF="Title" FOLDED="true" ID="ID_1520714242" CREATED="1484503678054" MODIFIED="1490313934108">
 <node TEXT="Select to make height of the node the same as its width." ID="ID_330274987" CREATED="1490474002670" MODIFIED="1490494932682"/>
-<node TEXT="Non-uniform Bubble" STYLE_REF="Title" FOLDED="true" ID="ID_1600307155" CREATED="1490313302235" MODIFIED="1490473432364" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Non-uniform Oval" STYLE_REF="Title" FOLDED="true" ID="ID_974475602" CREATED="1490313309153" MODIFIED="1490473565465" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Non-uniform Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_1371838379" CREATED="1490313312396" MODIFIED="1490473579497" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Non-uniform Wide hexagon" STYLE_REF="Title" FOLDED="true" ID="ID_59142121" CREATED="1490313321232" MODIFIED="1490473897220" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Non-uniform Narrow hexagon" STYLE_REF="Title" ID="ID_161318977" CREATED="1490313324977" MODIFIED="1490473864603" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt"/>
+<node TEXT="Non-uniform Bubble" STYLE_REF="Title" FOLDED="true" ID="ID_1600307155" CREATED="1490313302235" MODIFIED="1490473432364" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4 pt" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Non-uniform Oval" STYLE_REF="Title" FOLDED="true" ID="ID_974475602" CREATED="1490313309153" MODIFIED="1490473565465" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4 pt" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Non-uniform Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_1371838379" CREATED="1490313312396" MODIFIED="1490473579497" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4 pt" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Non-uniform Wide hexagon" STYLE_REF="Title" FOLDED="true" ID="ID_59142121" CREATED="1490313321232" MODIFIED="1490473897220" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4 pt" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Non-uniform Narrow hexagon" STYLE_REF="Title" ID="ID_161318977" CREATED="1490313324977" MODIFIED="1490473864603" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4 pt" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt"/>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="Uniform Bubble" STYLE_REF="Title" FOLDED="true" ID="ID_701036451" CREATED="1490313302235" MODIFIED="1490474254178" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Uniform oval" STYLE_REF="Title" FOLDED="true" ID="ID_1232132080" CREATED="1490313309153" MODIFIED="1490473418068" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Uniform Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_1617679558" CREATED="1490313312396" MODIFIED="1490468395695" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Uniform Wide hexagon" STYLE_REF="Title" FOLDED="true" ID="ID_85043285" CREATED="1490313321232" MODIFIED="1490468395701" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
-<node TEXT="Uniform Narrow hexagon" STYLE_REF="Title" ID="ID_1912995771" CREATED="1490313324977" MODIFIED="1490468395703" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt"/>
+<node TEXT="Uniform Bubble" STYLE_REF="Title" FOLDED="true" ID="ID_701036451" CREATED="1490313302235" MODIFIED="1490474254178" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Uniform oval" STYLE_REF="Title" FOLDED="true" ID="ID_1232132080" CREATED="1490313309153" MODIFIED="1490473418068" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Uniform Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_1617679558" CREATED="1490313312396" MODIFIED="1490468395695" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Uniform Wide hexagon" STYLE_REF="Title" FOLDED="true" ID="ID_85043285" CREATED="1490313321232" MODIFIED="1490468395701" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt">
+<node TEXT="Uniform Narrow hexagon" STYLE_REF="Title" ID="ID_1912995771" CREATED="1490313324977" MODIFIED="1490468395703" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80 pt" MIN_WIDTH="80 pt"/>
 </node>
 </node>
 </node>
@@ -5432,14 +5316,14 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Child gap" STYLE_REF="Title" FOLDED="true" ID="ID_822643295" CREATED="1484503695060" MODIFIED="1490314644994">
 <node TEXT="Set the spacing between child nodes" FOLDED="true" ID="ID_990143548" CREATED="1490316619063" MODIFIED="1490316770049">
-<node TEXT="Child gap 1 pt" FOLDED="true" ID="ID_1957152892" CREATED="1490320976580" MODIFIED="1490321061283" VGAP_QUANTITY="1.0 pt">
+<node TEXT="Child gap 1 pt" FOLDED="true" ID="ID_1957152892" CREATED="1490320976580" MODIFIED="1490321061283" VGAP_QUANTITY="1 pt">
 <node TEXT="A" ID="ID_1220674571" CREATED="1490321002631" MODIFIED="1490321003877"/>
 <node TEXT="B" ID="ID_1117112513" CREATED="1490321009070" MODIFIED="1490321011427"/>
 <node TEXT="C" ID="ID_429680728" CREATED="1490321012406" MODIFIED="1490321013532"/>
 <node TEXT="D" ID="ID_1911968222" CREATED="1490321014005" MODIFIED="1490321015084"/>
 <node TEXT="E" ID="ID_763930929" CREATED="1490321015805" MODIFIED="1490321017316"/>
 </node>
-<node TEXT="Child gap 10 pt" FOLDED="true" ID="ID_1370519144" CREATED="1490320976580" MODIFIED="1490321058150" VGAP_QUANTITY="10.0 pt">
+<node TEXT="Child gap 10 pt" FOLDED="true" ID="ID_1370519144" CREATED="1490320976580" MODIFIED="1490321058150" VGAP_QUANTITY="10 pt">
 <node TEXT="A" ID="ID_1145537875" CREATED="1490321002631" MODIFIED="1490321003877"/>
 <node TEXT="B" ID="ID_1183782424" CREATED="1490321009070" MODIFIED="1490321011427"/>
 <node TEXT="C" ID="ID_534757195" CREATED="1490321012406" MODIFIED="1490321013532"/>
@@ -5447,7 +5331,7 @@ node alias can not be a number</pre>
 <node TEXT="E" ID="ID_909600402" CREATED="1490321015805" MODIFIED="1490321017316"/>
 </node>
 </node>
-<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_445399376" CREATED="1490317947710" MODIFIED="1490320937159" VGAP_QUANTITY="1.0 pt">
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_445399376" CREATED="1490317947710" MODIFIED="1490320937159" VGAP_QUANTITY="1 pt">
 <node TEXT="px" FOLDED="true" ID="ID_1074016350" CREATED="1490317967389" MODIFIED="1490317973825">
 <node TEXT="pixels" ID="ID_1029453220" CREATED="1490317998301" MODIFIED="1490318000536"/>
 </node>
@@ -5469,9 +5353,9 @@ node alias can not be a number</pre>
 <node TEXT="Node border" STYLE_REF="Title" FOLDED="true" ID="ID_449535647" CREATED="1490312033562" MODIFIED="1490312039721">
 <node TEXT="Line width" STYLE_REF="Title" FOLDED="true" ID="ID_125296083" CREATED="1490316668274" MODIFIED="1490318199201">
 <node TEXT="Set the border line width" FOLDED="true" ID="ID_1624385254" CREATED="1490317610328" MODIFIED="1490321906786">
-<node TEXT="Border line width 2 px" ID="ID_1403240434" CREATED="1490321909337" MODIFIED="1490494040668" BORDER_WIDTH="2.0 px"/>
-<node TEXT="Border line width 4 px" ID="ID_889364323" CREATED="1490321909337" MODIFIED="1490494049059" BORDER_WIDTH="4.0 px"/>
-<node TEXT="Border line width 8 px" ID="ID_1039588182" CREATED="1490321909337" MODIFIED="1490494054509" BORDER_WIDTH="8.0 px"/>
+<node TEXT="Border line width 2 px" ID="ID_1403240434" CREATED="1490321909337" MODIFIED="1490494040668" BORDER_WIDTH="2 px"/>
+<node TEXT="Border line width 4 px" ID="ID_889364323" CREATED="1490321909337" MODIFIED="1490494049059" BORDER_WIDTH="4 px"/>
+<node TEXT="Border line width 8 px" ID="ID_1039588182" CREATED="1490321909337" MODIFIED="1490494054509" BORDER_WIDTH="8 px"/>
 </node>
 <node TEXT="Set unit of measure in" FOLDED="true" ID="ID_1230400599" CREATED="1490317947710" MODIFIED="1490318073372">
 <node TEXT="px" FOLDED="true" ID="ID_1267422600" CREATED="1490317967389" MODIFIED="1490317973825">
@@ -5497,12 +5381,12 @@ node alias can not be a number</pre>
 <node TEXT="Use edge line type" STYLE_REF="Title" FOLDED="true" ID="ID_1144471037" CREATED="1490316694460" MODIFIED="1490317115089">
 <node TEXT="Use the edge line type to set line type of node border" ID="ID_286919931" CREATED="1490317721159" MODIFIED="1490318462041"/>
 </node>
-<node TEXT="Border line type" STYLE_REF="Title" FOLDED="true" ID="ID_695681718" CREATED="1490316706132" MODIFIED="1490321819971" VGAP_QUANTITY="10.0 pt">
-<node TEXT="Border line type 1" ID="ID_746184052" CREATED="1490317853275" MODIFIED="1490321775693" BORDER_WIDTH="2.0 px" BORDER_DASH="SOLID"/>
-<node TEXT="Border line type 2" ID="ID_1083570670" CREATED="1490317853275" MODIFIED="1490321809309" BORDER_WIDTH="2.0 px" BORDER_DASH="CLOSE_DOTS"/>
-<node TEXT="Border line type 3" ID="ID_1237826248" CREATED="1490317853275" MODIFIED="1490321806485" BORDER_WIDTH="2.0 px" BORDER_DASH="DASHES"/>
-<node TEXT="Border line type 4" ID="ID_1494300969" CREATED="1490317853275" MODIFIED="1490321803431" BORDER_WIDTH="2.0 px" BORDER_DASH="DISTANT_DOTS"/>
-<node TEXT="Border line type 5" ID="ID_980524683" CREATED="1490317853275" MODIFIED="1490321800253" BORDER_WIDTH="2.0 px" BORDER_DASH="DOTS_AND_DASHES"/>
+<node TEXT="Border line type" STYLE_REF="Title" FOLDED="true" ID="ID_695681718" CREATED="1490316706132" MODIFIED="1490321819971" VGAP_QUANTITY="10 pt">
+<node TEXT="Border line type 1" ID="ID_746184052" CREATED="1490317853275" MODIFIED="1490321775693" BORDER_WIDTH="2 px" BORDER_DASH="SOLID"/>
+<node TEXT="Border line type 2" ID="ID_1083570670" CREATED="1490317853275" MODIFIED="1490321809309" BORDER_WIDTH="2 px" BORDER_DASH="CLOSE_DOTS"/>
+<node TEXT="Border line type 3" ID="ID_1237826248" CREATED="1490317853275" MODIFIED="1490321806485" BORDER_WIDTH="2 px" BORDER_DASH="DASHES"/>
+<node TEXT="Border line type 4" ID="ID_1494300969" CREATED="1490317853275" MODIFIED="1490321803431" BORDER_WIDTH="2 px" BORDER_DASH="DISTANT_DOTS"/>
+<node TEXT="Border line type 5" ID="ID_980524683" CREATED="1490317853275" MODIFIED="1490321800253" BORDER_WIDTH="2 px" BORDER_DASH="DOTS_AND_DASHES"/>
 </node>
 <node TEXT="Use edge color" STYLE_REF="Title" FOLDED="true" ID="ID_683869336" CREATED="1490316713867" MODIFIED="1490317115095">
 <node TEXT="By default, the color of node border is set as edge color" ID="ID_1457385649" CREATED="1490318221443" MODIFIED="1490318428543"/>
@@ -5527,12 +5411,12 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Text Alignment" STYLE_REF="Title" FOLDED="true" ID="ID_676563679" CREATED="1484503938123" MODIFIED="1490317120628">
 <node TEXT="Select text alignment in node core" FOLDED="true" ID="ID_581673430" CREATED="1490318723184" MODIFIED="1490318734076">
-<node TEXT="Default" STYLE_REF="Title" FOLDED="true" ID="ID_1214747054" CREATED="1490318747296" MODIFIED="1490481039424" TEXT_ALIGN="DEFAULT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<node TEXT="Default" STYLE_REF="Title" FOLDED="true" ID="ID_1214747054" CREATED="1490318747296" MODIFIED="1490481039424" TEXT_ALIGN="DEFAULT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt">
 <node TEXT="Left aligned text" ID="ID_1722982300" CREATED="1490318750470" MODIFIED="1490318869493"/>
 </node>
-<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_1347786239" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
-<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_612108527" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
-<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1591411488" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_1347786239" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
+<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_612108527" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
+<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1591411488" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120 pt" MIN_WIDTH="120 pt"/>
 </node>
 </node>
 <node TEXT="Hyperlink" STYLE_REF="Title" FOLDED="true" ID="ID_205209514" CREATED="1484503947075" MODIFIED="1490317120630">
@@ -5548,10 +5432,10 @@ node alias can not be a number</pre>
 <node TEXT="  12pt" ID="ID_838022492" CREATED="1490320677952" MODIFIED="1490320760414">
 <icon BUILTIN="button_ok"/>
 </node>
-<node TEXT=" 16pt" ID="ID_1629605663" CREATED="1490320677952" MODIFIED="1490320766357" ICON_SIZE="16.0 pt">
+<node TEXT=" 16pt" ID="ID_1629605663" CREATED="1490320677952" MODIFIED="1490320766357" ICON_SIZE="16 pt">
 <icon BUILTIN="button_ok"/>
 </node>
-<node TEXT=" 8pt" ID="ID_1558579758" CREATED="1490320677952" MODIFIED="1490320773460" ICON_SIZE="8.0 pt">
+<node TEXT=" 8pt" ID="ID_1558579758" CREATED="1490320677952" MODIFIED="1490320773460" ICON_SIZE="8 pt">
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
@@ -5576,54 +5460,54 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Edges" STYLE_REF="Title" FOLDED="true" ID="ID_1414163711" CREATED="1484497650810" MODIFIED="1490313934120">
 <node TEXT="Edge width" STYLE_REF="Title" FOLDED="true" ID="ID_911449255" CREATED="1484497650819" MODIFIED="1490318964666">
-<node TEXT="Set edge width" FOLDED="true" ID="ID_45892567" CREATED="1490318561020" MODIFIED="1490473216366" VGAP_QUANTITY="6.0 pt">
-<node TEXT="Edge width 0" ID="ID_361678207" CREATED="1490321573861" MODIFIED="1490473166056" HGAP_QUANTITY="29.749999530613437 pt" VSHIFT_QUANTITY="-9.749999709427366 pt"/>
-<node TEXT="Edge width 2" ID="ID_414687193" CREATED="1490321573861" MODIFIED="1490473170478" HGAP_QUANTITY="44.749999083578615 pt" VSHIFT_QUANTITY="1.4999999552965178 pt">
+<node TEXT="Set edge width" FOLDED="true" ID="ID_45892567" CREATED="1490318561020" MODIFIED="1490473216366" VGAP_QUANTITY="6 pt">
+<node TEXT="Edge width 0" ID="ID_361678207" CREATED="1490321573861" MODIFIED="1490473166056" HGAP_QUANTITY="29.75 pt" VSHIFT_QUANTITY="-9.75 pt"/>
+<node TEXT="Edge width 2" ID="ID_414687193" CREATED="1490321573861" MODIFIED="1490473170478" HGAP_QUANTITY="44.75 pt" VSHIFT_QUANTITY="1.5 pt">
 <edge WIDTH="2"/>
 </node>
-<node TEXT="Edge width 4" ID="ID_325154008" CREATED="1490321573861" MODIFIED="1490473177569" HGAP_QUANTITY="46.99999901652339 pt" VSHIFT_QUANTITY="7.499999776482589 pt">
+<node TEXT="Edge width 4" ID="ID_325154008" CREATED="1490321573861" MODIFIED="1490473177569" HGAP_QUANTITY="47 pt" VSHIFT_QUANTITY="7.5 pt">
 <edge WIDTH="4"/>
 </node>
-<node TEXT="Edge width 8" ID="ID_822944717" CREATED="1490321573861" MODIFIED="1490473181965" HGAP_QUANTITY="38.74999926239254 pt" VSHIFT_QUANTITY="17.249999485909953 pt">
+<node TEXT="Edge width 8" ID="ID_822944717" CREATED="1490321573861" MODIFIED="1490473181965" HGAP_QUANTITY="38.75 pt" VSHIFT_QUANTITY="17.25 pt">
 <edge WIDTH="8"/>
 </node>
 </node>
 </node>
 <node TEXT="Edge line type" STYLE_REF="Title" FOLDED="true" ID="ID_1376187402" CREATED="1490318993764" MODIFIED="1490319027144">
-<node TEXT="Select line type" FOLDED="true" ID="ID_1268295632" CREATED="1490319036799" MODIFIED="1490321391633" VGAP_QUANTITY="10.0 pt">
-<node TEXT="Edge line type 1" ID="ID_1405886633" CREATED="1490321281965" MODIFIED="1490321406338" HGAP_QUANTITY="38.74999926239254 pt" VSHIFT_QUANTITY="2.2499999329447764 pt">
+<node TEXT="Select line type" FOLDED="true" ID="ID_1268295632" CREATED="1490319036799" MODIFIED="1490321391633" VGAP_QUANTITY="10 pt">
+<node TEXT="Edge line type 1" ID="ID_1405886633" CREATED="1490321281965" MODIFIED="1490321406338" HGAP_QUANTITY="38.75 pt" VSHIFT_QUANTITY="2.25 pt">
 <edge WIDTH="2"/>
 </node>
-<node TEXT="Edge line type 2" ID="ID_398463052" CREATED="1490321281965" MODIFIED="1490321417976" HGAP_QUANTITY="65.74999845772986 pt" VSHIFT_QUANTITY="8.249999754130847 pt">
+<node TEXT="Edge line type 2" ID="ID_398463052" CREATED="1490321281965" MODIFIED="1490321417976" HGAP_QUANTITY="65.75 pt" VSHIFT_QUANTITY="8.25 pt">
 <edge WIDTH="2" DASH="CLOSE_DOTS"/>
 </node>
-<node TEXT="Edge line type 3" ID="ID_1192163546" CREATED="1490321281965" MODIFIED="1490321423131" HGAP_QUANTITY="66.49999843537813 pt" VSHIFT_QUANTITY="1.4999999552965178 pt">
+<node TEXT="Edge line type 3" ID="ID_1192163546" CREATED="1490321281965" MODIFIED="1490321423131" HGAP_QUANTITY="66.5 pt" VSHIFT_QUANTITY="1.5 pt">
 <edge WIDTH="2" DASH="DASHES"/>
 </node>
-<node TEXT="Edge line type 4" ID="ID_765788335" CREATED="1490321281965" MODIFIED="1490321428152" HGAP_QUANTITY="67.99999839067465 pt" VSHIFT_QUANTITY="14.249999575316918 pt">
+<node TEXT="Edge line type 4" ID="ID_765788335" CREATED="1490321281965" MODIFIED="1490321428152" HGAP_QUANTITY="68 pt" VSHIFT_QUANTITY="14.25 pt">
 <edge WIDTH="2" DASH="DISTANT_DOTS"/>
 </node>
-<node TEXT="Edge line type 5" ID="ID_1675104796" CREATED="1490321281965" MODIFIED="1490321433728" HGAP_QUANTITY="48.499998971819906 pt" VSHIFT_QUANTITY="0.7499999776482589 pt">
+<node TEXT="Edge line type 5" ID="ID_1675104796" CREATED="1490321281965" MODIFIED="1490321433728" HGAP_QUANTITY="48.5 pt" VSHIFT_QUANTITY="0.75 pt">
 <edge WIDTH="2" DASH="DOTS_AND_DASHES"/>
 </node>
 </node>
 </node>
 <node TEXT="Edge style" STYLE_REF="Title" FOLDED="true" ID="ID_666399637" CREATED="1484497650814" MODIFIED="1490318964677">
-<node TEXT="Select edge style" FOLDED="true" ID="ID_544107889" CREATED="1490318944191" MODIFIED="1499025299866" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Select edge style" FOLDED="true" ID="ID_544107889" CREATED="1490318944191" MODIFIED="1499025299866" VGAP_QUANTITY="6 pt">
 <node TEXT="Smoothly curved (bezier)" ID="ID_22779030" CREATED="1490319321099" MODIFIED="1490319331851"/>
-<node TEXT="Hide edge" ID="ID_359729621" CREATED="1490319355809" MODIFIED="1490319573778" HGAP_QUANTITY="115.9999969601632 pt" VSHIFT_QUANTITY="-26.249999217689062 pt">
+<node TEXT="Hide edge" ID="ID_359729621" CREATED="1490319355809" MODIFIED="1490319573778" HGAP_QUANTITY="116 pt" VSHIFT_QUANTITY="-26.25 pt">
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="Horizontal" ID="ID_535911346" CREATED="1490319363569" MODIFIED="1490321533146" HGAP_QUANTITY="96.49999754130847 pt" VSHIFT_QUANTITY="-5.249999843537812 pt">
+<node TEXT="Horizontal" ID="ID_535911346" CREATED="1490319363569" MODIFIED="1490321533146" HGAP_QUANTITY="96.5 pt" VSHIFT_QUANTITY="-5.25 pt">
 <edge STYLE="horizontal" COLOR="#cc00cc" WIDTH="3"/>
 </node>
-<node TEXT="Linear" ID="ID_1072333071" CREATED="1490319373001" MODIFIED="1490321511787" HGAP_QUANTITY="139.24999626725923 pt" VSHIFT_QUANTITY="55.49999834597116 pt">
+<node TEXT="Linear" ID="ID_1072333071" CREATED="1490319373001" MODIFIED="1490321511787" HGAP_QUANTITY="139.25 pt" VSHIFT_QUANTITY="55.5 pt">
 <edge STYLE="linear" COLOR="#00cc33" WIDTH="2"/>
 </node>
-<node TEXT="Sharply curved (bezier)" ID="ID_1152337607" CREATED="1490319379817" MODIFIED="1499025299862" HGAP_QUANTITY="127.99999660253533 pt" VSHIFT_QUANTITY="26.999999195337324 pt">
+<node TEXT="Sharply curved (bezier)" ID="ID_1152337607" CREATED="1490319379817" MODIFIED="1499025299862" HGAP_QUANTITY="128 pt" VSHIFT_QUANTITY="27 pt">
 <edge STYLE="sharp_bezier" COLOR="#00cccc" WIDTH="4"/>
 </node>
-<node TEXT="Sharp linear" ID="ID_1368042269" CREATED="1490319396297" MODIFIED="1490321477787" HGAP_QUANTITY="63.499998524785084 pt" VSHIFT_QUANTITY="0.7499999776482618 pt">
+<node TEXT="Sharp linear" ID="ID_1368042269" CREATED="1490319396297" MODIFIED="1490321477787" HGAP_QUANTITY="63.5 pt" VSHIFT_QUANTITY="0.75 pt">
 <edge STYLE="sharp_linear" COLOR="#ff6600" WIDTH="4"/>
 </node>
 </node>
@@ -5637,7 +5521,7 @@ node alias can not be a number</pre>
 <node TEXT="Cloud color" STYLE_REF="Title" FOLDED="true" ID="ID_1228013104" CREATED="1484505159213" MODIFIED="1490321689375">
 <node TEXT="Change the background color of cloud." ID="ID_1007181608" CREATED="1490319725760" MODIFIED="1490468675006"/>
 </node>
-<node TEXT="Cloud shape" STYLE_REF="Title" FOLDED="true" ID="ID_1766305225" CREATED="1484497650823" MODIFIED="1499051539446" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Cloud shape" STYLE_REF="Title" FOLDED="true" ID="ID_1766305225" CREATED="1484497650823" MODIFIED="1499051539446" VGAP_QUANTITY="6 pt">
 <node TEXT="Arc" STYLE_REF="Title" FOLDED="true" ID="ID_1799950749" CREATED="1484505315988" MODIFIED="1499047984476">
 <cloud COLOR="#ffcccc" SHAPE="ARC"/>
 <node TEXT="child" ID="ID_872866412" CREATED="1499047786216" MODIFIED="1499051626479">
@@ -5708,7 +5592,7 @@ node alias can not be a number</pre>
 </richcontent>
 </node>
 </node>
-<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_392739037" CREATED="1485134404008" MODIFIED="1499021341034" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_392739037" CREATED="1485134404008" MODIFIED="1499021341034" VGAP_QUANTITY="6 pt">
 <node TEXT="Editing a property" STYLE_REF="Advanced" FOLDED="true" ID="ID_740451427" CREATED="1314163244315" MODIFIED="1498415215562">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -5741,16 +5625,16 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="linear" STYLE_REF="AdvancedTopic" ID="ID_1775517582" CREATED="1314172753397" MODIFIED="1323518514233" HGAP_QUANTITY="14.0 px" VSHIFT_QUANTITY="-26.0 px">
+<node TEXT="linear" STYLE_REF="AdvancedTopic" ID="ID_1775517582" CREATED="1314172753397" MODIFIED="1323518514233" HGAP_QUANTITY="14 px" VSHIFT_QUANTITY="-26 px">
 <edge STYLE="linear"/>
 </node>
-<node TEXT="curved" STYLE_REF="AdvancedTopic" ID="ID_1317923820" CREATED="1314172748460" MODIFIED="1323518517665" HGAP_QUANTITY="35.0 px" VSHIFT_QUANTITY="-27.0 px">
+<node TEXT="curved" STYLE_REF="AdvancedTopic" ID="ID_1317923820" CREATED="1314172748460" MODIFIED="1323518517665" HGAP_QUANTITY="35 px" VSHIFT_QUANTITY="-27 px">
 <edge STYLE="bezier"/>
 </node>
-<node TEXT="hidden" STYLE_REF="AdvancedTopic" ID="ID_1790298981" CREATED="1314172761269" MODIFIED="1323518014549" HGAP_QUANTITY="40.0 px" VSHIFT_QUANTITY="-5.0 px">
+<node TEXT="hidden" STYLE_REF="AdvancedTopic" ID="ID_1790298981" CREATED="1314172761269" MODIFIED="1323518014549" HGAP_QUANTITY="40 px" VSHIFT_QUANTITY="-5 px">
 <edge STYLE="hide_edge"/>
 </node>
-<node TEXT="horizontal" STYLE_REF="AdvancedTopic" ID="ID_1854825442" CREATED="1314172936705" MODIFIED="1323518524951" HGAP_QUANTITY="39.0 px" VSHIFT_QUANTITY="25.0 px">
+<node TEXT="horizontal" STYLE_REF="AdvancedTopic" ID="ID_1854825442" CREATED="1314172936705" MODIFIED="1323518524951" HGAP_QUANTITY="39 px" VSHIFT_QUANTITY="25 px">
 <edge STYLE="horizontal"/>
 </node>
 </node>
@@ -5931,13 +5815,13 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Styles" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90.0 px">
-<node TEXT="Why styles ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323807405276" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="138.0 px" STYLE="combined">
+<node TEXT="Styles" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90 px">
+<node TEXT="Why styles ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323807405276" HGAP_QUANTITY="30 px" VSHIFT_QUANTITY="138 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_406943626" CREATED="1323767710004" MODIFIED="1341131531190" HGAP_QUANTITY="-65.0 px" VSHIFT_QUANTITY="50.0 px"><richcontent TYPE="NODE">
+<node ID="ID_406943626" CREATED="1323767710004" MODIFIED="1341131531190" HGAP_QUANTITY="-65 px" VSHIFT_QUANTITY="50 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5955,11 +5839,11 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Find &amp; apply a style" STYLE_REF="Advanced" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1323807409160" HGAP_QUANTITY="29.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Find &amp; apply a style" STYLE_REF="Advanced" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1323807409160" HGAP_QUANTITY="29 px" VSHIFT_QUANTITY="-1 px" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1335095588674" HGAP_QUANTITY="-116.0 px" VSHIFT_QUANTITY="124.0 px"><richcontent TYPE="NODE">
+<node ID="ID_602520818" CREATED="1323521250360" MODIFIED="1335095588674" HGAP_QUANTITY="-116 px" VSHIFT_QUANTITY="124 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -5997,8 +5881,8 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Removing an applied style" STYLE_REF="Advanced" FOLDED="true" ID="ID_1937448981" CREATED="1335278263350" MODIFIED="1335278358664" HGAP_QUANTITY="28.0 px">
-<node STYLE_REF="TitlesContent" ID="ID_1278689402" CREATED="1335278278365" MODIFIED="1335278541211" HGAP_QUANTITY="-157.0 px" VSHIFT_QUANTITY="43.0 px"><richcontent TYPE="NODE">
+<node TEXT="Removing an applied style" STYLE_REF="Advanced" FOLDED="true" ID="ID_1937448981" CREATED="1335278263350" MODIFIED="1335278358664" HGAP_QUANTITY="28 px">
+<node STYLE_REF="TitlesContent" ID="ID_1278689402" CREATED="1335278278365" MODIFIED="1335278541211" HGAP_QUANTITY="-157 px" VSHIFT_QUANTITY="43 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6013,11 +5897,11 @@ node alias can not be a number</pre>
 </richcontent>
 </node>
 </node>
-<node TEXT="Edit styles in node dialog" STYLE_REF="Advanced" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1323807416508" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="2.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Edit styles in node dialog" STYLE_REF="Advanced" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1323807416508" HGAP_QUANTITY="30 px" VSHIFT_QUANTITY="2 px" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1335095601872" HGAP_QUANTITY="-149.0 px" VSHIFT_QUANTITY="106.0 px"><richcontent TYPE="NODE">
+<node ID="ID_443461395" CREATED="1323521242303" MODIFIED="1335095601872" HGAP_QUANTITY="-149 px" VSHIFT_QUANTITY="106 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6046,12 +5930,12 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Apply multiple styles" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1329821005551" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Apply multiple styles" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1329821005551" HGAP_QUANTITY="31 px" VSHIFT_QUANTITY="1 px" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1335095617660" HGAP_QUANTITY="-127.0 px" VSHIFT_QUANTITY="142.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1030002880" CREATED="1323521314827" MODIFIED="1335095617660" HGAP_QUANTITY="-127 px" VSHIFT_QUANTITY="142 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6095,12 +5979,12 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Conditional styles" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1329858287410" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Conditional styles" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1329858287410" HGAP_QUANTITY="31 px" VSHIFT_QUANTITY="-1 px" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
 </hook>
-<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1335095628549" HGAP_QUANTITY="-110.0 px" VSHIFT_QUANTITY="157.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1437965047" CREATED="1323521350949" MODIFIED="1335095628549" HGAP_QUANTITY="-110 px" VSHIFT_QUANTITY="157 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6142,11 +6026,11 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Hierarchical level styles" STYLE_REF="Professional" FOLDED="true" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1323807439362" HGAP_QUANTITY="30.0 px" MAX_WIDTH="550.0 px">
+<node TEXT="Hierarchical level styles" STYLE_REF="Professional" FOLDED="true" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1323807439362" HGAP_QUANTITY="30 px" MAX_WIDTH="550 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1335095638424" HGAP_QUANTITY="-138.0 px" VSHIFT_QUANTITY="196.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1011147934" CREATED="1323521380784" MODIFIED="1335095638424" HGAP_QUANTITY="-138 px" VSHIFT_QUANTITY="196 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6199,11 +6083,11 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Map style" STYLE_REF="Professional" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1323807434292" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="-130.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Map style" STYLE_REF="Professional" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1323807434292" HGAP_QUANTITY="31 px" VSHIFT_QUANTITY="-130 px" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1896765128" CREATED="1323521437116" MODIFIED="1335095645351" HGAP_QUANTITY="-44.0 px" VSHIFT_QUANTITY="59.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1896765128" CREATED="1323521437116" MODIFIED="1335095645351" HGAP_QUANTITY="-44 px" VSHIFT_QUANTITY="59 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6222,8 +6106,8 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Templates" STYLE_REF="Advanced" FOLDED="true" ID="ID_183210534" CREATED="1323612770999" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90.0 px">
-<node FOLDED="true" ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1335095671231" HGAP_QUANTITY="-59.0 px" VSHIFT_QUANTITY="44.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Templates" STYLE_REF="Advanced" FOLDED="true" ID="ID_183210534" CREATED="1323612770999" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90 px">
+<node FOLDED="true" ID="ID_1268042238" CREATED="1323521409870" MODIFIED="1335095671231" HGAP_QUANTITY="-59 px" VSHIFT_QUANTITY="44 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6236,7 +6120,7 @@ node alias can not be a number</pre>
   </body>
 </html>
 </richcontent>
-<node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1335095694181" HGAP_QUANTITY="-583.0 px" VSHIFT_QUANTITY="137.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1335095694181" HGAP_QUANTITY="-583 px" VSHIFT_QUANTITY="137 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6280,8 +6164,7 @@ node alias can not be a number</pre>
 <attribute NAME="e-mail" VALUE=""/>
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6299,13 +6182,12 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1500800025211" NUMBERED="true" MIN_WIDTH="90.0 px">
+<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1500800025211" NUMBERED="true" MIN_WIDTH="90 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
@@ -6313,7 +6195,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1500800034730" HGAP_QUANTITY="-240.0 px" VSHIFT_QUANTITY="38.0 px"><richcontent TYPE="NODE">
+<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1500800034730" HGAP_QUANTITY="-240 px" VSHIFT_QUANTITY="38 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6331,11 +6213,11 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Fixed node width" STYLE_REF="Advanced" FOLDED="true" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1335300487437" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Fixed node width" STYLE_REF="Advanced" FOLDED="true" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1335300487437" MIN_WIDTH="1 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_15604512" CREATED="1323522575632" MODIFIED="1335095713853" HGAP_QUANTITY="-97.0 px" VSHIFT_QUANTITY="88.0 px" MAX_WIDTH="300.0 px" MIN_WIDTH="300.0 px"><richcontent TYPE="NODE">
+<node ID="ID_15604512" CREATED="1323522575632" MODIFIED="1335095713853" HGAP_QUANTITY="-97 px" VSHIFT_QUANTITY="88 px" MAX_WIDTH="300 px" MIN_WIDTH="300 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6371,7 +6253,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_670948093" CREATED="1323522647369" MODIFIED="1335095725319" HGAP_QUANTITY="-158.0 px" VSHIFT_QUANTITY="42.0 px"><richcontent TYPE="NODE">
+<node ID="ID_670948093" CREATED="1323522647369" MODIFIED="1335095725319" HGAP_QUANTITY="-158 px" VSHIFT_QUANTITY="42 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6389,11 +6271,11 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Paste options" STYLE_REF="Advanced" FOLDED="true" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1335300487437" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Paste options" STYLE_REF="Advanced" FOLDED="true" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1335300487437" MIN_WIDTH="1 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1335095732838" HGAP_QUANTITY="-71.0 px" VSHIFT_QUANTITY="87.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1072558009" CREATED="1323522694317" MODIFIED="1335095732838" HGAP_QUANTITY="-71 px" VSHIFT_QUANTITY="87 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6432,7 +6314,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Filtering is a means to only display nodes which you want to be visible.  The same filter rules can be used to search or find information. The same filter rules are also used in conditional styles." ID="ID_1873557100" CREATED="1323769373332" MODIFIED="1329839797022" HGAP_QUANTITY="-85.0 px" VSHIFT_QUANTITY="30.0 px">
+<node TEXT="Filtering is a means to only display nodes which you want to be visible.  The same filter rules can be used to search or find information. The same filter rules are also used in conditional styles." ID="ID_1873557100" CREATED="1323769373332" MODIFIED="1329839797022" HGAP_QUANTITY="-85 px" VSHIFT_QUANTITY="30 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -6442,7 +6324,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1650348629" CREATED="1323769479560" MODIFIED="1335096175025" HGAP_QUANTITY="-180.0 px" VSHIFT_QUANTITY="187.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1650348629" CREATED="1323769479560" MODIFIED="1335096175025" HGAP_QUANTITY="-180 px" VSHIFT_QUANTITY="187 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -6498,8 +6380,7 @@ node alias can not be a number</pre>
 </hook>
 <node TEXT="Quick filter" STYLE_REF="ProfessionalTopic" FOLDED="true" ID="ID_1189166757" CREATED="1310134532663" MODIFIED="1329854269839" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6509,8 +6390,7 @@ node alias can not be a number</pre>
       Perform filter action.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6520,8 +6400,7 @@ node alias can not be a number</pre>
     <conditional_style ACTIVE="true" STYLE_REF="ToNote" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6542,8 +6421,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="No filtering" STYLE_REF="ProfessionalTopic" ID="ID_983064948" CREATED="1310134532663" MODIFIED="1329854292630" TEXT_SHORTENED="true">
@@ -6552,8 +6430,7 @@ node alias can not be a number</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <edge STYLE="horizontal"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6563,13 +6440,11 @@ node alias can not be a number</pre>
       Stop filter action
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Find next" STYLE_REF="ProfessionalTopic" ID="ID_507981913" CREATED="1310134532663" MODIFIED="1329853641469" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6596,8 +6471,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6605,8 +6479,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Filter methods" STYLE_REF="Advanced" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1541845214430" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
-
+<node TEXT="Filter methods" STYLE_REF="Advanced" FOLDED="true" ID="ID_1254354349" CREATED="1266240693156" MODIFIED="1541845214430" TEXT_SHORTENED="true"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6616,8 +6489,7 @@ node alias can not be a number</pre>
       <font color="#000000" face="SansSerif, sans-serif">To the left are shown the icons of the buttons in the Filter toolbar, with their meaning.&#160;&#160; </font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -6626,8 +6498,7 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Undo filter" STYLE_REF="ProfessionalTopic" ID="ID_619416419" CREATED="1310134532663" MODIFIED="1316165694590" TEXT_SHORTENED="true">
 <icon BUILTIN="../undo_filter"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6637,16 +6508,14 @@ node alias can not be a number</pre>
       <font face="SansSerif, sans-serif" color="#000000">Reverses the effect of the previously-used filtering command.</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Redo filter" STYLE_REF="ProfessionalTopic" ID="ID_1724296233" CREATED="1310134532663" MODIFIED="1316165694606" TEXT_SHORTENED="true">
 <icon BUILTIN="../redo_filter"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6656,16 +6525,14 @@ node alias can not be a number</pre>
       <font face="SansSerif, sans-serif" color="#000000">Re-applies the previously-used filtering command, after Filter &gt; Undo has been used.</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Reapply filter" STYLE_REF="ProfessionalTopic" ID="ID_1748016122" CREATED="1310134532663" MODIFIED="1316165694621" TEXT_SHORTENED="true">
 <icon BUILTIN="../reapply_filter"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6675,16 +6542,14 @@ node alias can not be a number</pre>
       <font face="SansSerif, sans-serif" color="#000000">Updates the effect of filtering after changes have been made to the map.</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Quick filter" STYLE_REF="ProfessionalTopic" FOLDED="true" ID="ID_1552136796" CREATED="1310134532663" MODIFIED="1329856791349" TEXT_SHORTENED="true">
 <icon BUILTIN="../apply_quick_filter"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6716,8 +6581,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6726,8 +6590,7 @@ node alias can not be a number</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Procedure" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -6748,14 +6611,12 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="Filter selected nodes" STYLE_REF="ProfessionalTopic" ID="ID_402507556" CREATED="1310134532663" MODIFIED="1316165694637" TEXT_SHORTENED="true">
 <icon BUILTIN="../filter_selected_nodes"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6779,16 +6640,14 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Select all matching" STYLE_REF="ProfessionalTopic" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1316165694652" TEXT_SHORTENED="true">
 <icon BUILTIN="../select_all_found_nodes"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6798,16 +6657,14 @@ node alias can not be a number</pre>
       Filter and select all matching descendants (visible and invisible) of the node in focus and show and select also the nodes in between.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="No filtering" STYLE_REF="ProfessionalTopic" ID="ID_1978139715" CREATED="1310134532663" MODIFIED="1329857078297" TEXT_SHORTENED="true">
 <icon BUILTIN="../remove_filtering"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6817,16 +6674,14 @@ node alias can not be a number</pre>
       <font face="SansSerif, sans-serif" color="#000000">Removes the effect of any filters which were applied; this is the default. Un-sets icon.</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Compose filter" STYLE_REF="ProfessionalTopic" ID="ID_1142884544" CREATED="1310134532663" MODIFIED="1316165694668" TEXT_SHORTENED="true">
 <icon BUILTIN="../edit_filtering_condition"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6884,8 +6739,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -6903,8 +6757,7 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Applies to filtered nodes (refine)" STYLE_REF="ProfessionalTopic" ID="ID_1768599003" CREATED="1310134532663" MODIFIED="1316165694668" TEXT_SHORTENED="true">
 <icon BUILTIN="../applies_to_filtered_nodes"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6914,16 +6767,14 @@ node alias can not be a number</pre>
       <font face="SansSerif, sans-serif" color="#000000">Toggle Apply to filtered (visible) nodes, i.e. add an additional filter condition, to further narrow the results.</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Unfold hidden nodes" STYLE_REF="ProfessionalTopic" ID="ID_865947666" CREATED="1310134532663" MODIFIED="1316165694684" TEXT_SHORTENED="true">
 <icon BUILTIN="../unfold_filtered_ancestors"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6950,16 +6801,14 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Show ancestors" STYLE_REF="ProfessionalTopic" ID="ID_1384592614" CREATED="1310134532663" MODIFIED="1316165694684" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_ancestors"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -6980,16 +6829,14 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Show descendants" STYLE_REF="ProfessionalTopic" ID="ID_347749612" CREATED="1310134532663" MODIFIED="1316165694684" TEXT_SHORTENED="true">
 <icon BUILTIN="../show_descendants"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -7010,8 +6857,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7029,8 +6875,7 @@ node alias can not be a number</pre>
 </node>
 <node TEXT="Find previous" STYLE_REF="ProfessionalTopic" ID="ID_132872030" CREATED="1310134532663" MODIFIED="1316165694699" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_previous"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -7057,16 +6902,14 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Find next" STYLE_REF="ProfessionalTopic" ID="ID_1528431308" CREATED="1310134532663" MODIFIED="1316165694699" TEXT_SHORTENED="true">
 <icon BUILTIN="../find_next"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -7093,8 +6936,7 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
@@ -7112,7 +6954,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_49510380" CREATED="1323529306279" MODIFIED="1335096200281" HGAP_QUANTITY="-95.0 px" VSHIFT_QUANTITY="103.0 px"><richcontent TYPE="NODE">
+<node ID="ID_49510380" CREATED="1323529306279" MODIFIED="1335096200281" HGAP_QUANTITY="-95 px" VSHIFT_QUANTITY="103 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7136,12 +6978,11 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Loading and using filter set for this Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1335301113247" MIN_WIDTH="1.0 px">
+<node TEXT="Loading and using filter set for this Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1335301113247" MIN_WIDTH="1 px">
 <node TEXT="Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of&#xa;one of these 3 levels (Beginner, Advanced, Professional) at a time.&#xa;&#xa;The procedure for filtering is described below. If you click on the red arrow in my parent node, the instruction is illustrated in an animation." ID="ID_352888342" CREATED="1323529491351" MODIFIED="1329857586148"/>
 <node TEXT="Load filter set for this Quick reference" ID="ID_551050917" CREATED="1317234746190" MODIFIED="1323808520350">
 <icon BUILTIN="full-0"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7154,16 +6995,14 @@ node alias can not be a number</pre>
       After this you can use the filters as described in the following nodes.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
 <node TEXT="Select filter and Quickfilter" LOCALIZED_STYLE_REF="default" ID="ID_81563733" CREATED="1316156118436" MODIFIED="1323808537386" LINK="FilterExampleBegin.jpg">
 <icon BUILTIN="full-1"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7194,16 +7033,14 @@ node alias can not be a number</pre>
       </li>
     </ol>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323808558352" HGAP_QUANTITY="15.0 px" VSHIFT_QUANTITY="-8.0 px">
+<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323808558352" HGAP_QUANTITY="15 px" VSHIFT_QUANTITY="-8 px">
 <icon BUILTIN="full-2"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7221,16 +7058,14 @@ node alias can not be a number</pre>
       </li>
     </ol>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
-<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1323808574857" LINK="FilterExampleUnfold.jpg" VSHIFT_QUANTITY="6.0 px">
+<node TEXT="View and finish" ID="ID_1331360426" CREATED="1316177379721" MODIFIED="1323808574857" LINK="FilterExampleUnfold.jpg" VSHIFT_QUANTITY="6 px">
 <icon BUILTIN="full-3"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7248,8 +7083,7 @@ node alias can not be a number</pre>
       You can now follow the same procedure for Beginner, Advanced and Professional.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
@@ -7366,7 +7200,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1759870173" CREATED="1323523347602" MODIFIED="1335095755224" HGAP_QUANTITY="-38.0 px" VSHIFT_QUANTITY="42.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1759870173" CREATED="1323523347602" MODIFIED="1335095755224" HGAP_QUANTITY="-38 px" VSHIFT_QUANTITY="42 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7391,7 +7225,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="You can share mind maps with other users of Freeplane by interchanging the mindmap.mm file. Note that images are not part of a mindmap and therefore must be interchanged seperately. Make sure that at  the new location the images are at the same relative location (subdirectory) they were when you developed  your mind map. The best way to do this is to develop your mindmap.mm and the images in one (sub)directory. You can then zip this whole directory and unpack it at  the other computer." ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1335095763712" HGAP_QUANTITY="-37.0 px" VSHIFT_QUANTITY="61.0 px">
+<node TEXT="You can share mind maps with other users of Freeplane by interchanging the mindmap.mm file. Note that images are not part of a mindmap and therefore must be interchanged seperately. Make sure that at  the new location the images are at the same relative location (subdirectory) they were when you developed  your mind map. The best way to do this is to develop your mindmap.mm and the images in one (sub)directory. You can then zip this whole directory and unpack it at  the other computer." ID="ID_1964465318" CREATED="1323523371275" MODIFIED="1335095763712" HGAP_QUANTITY="-37 px" VSHIFT_QUANTITY="61 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -7401,7 +7235,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1336073288622" HGAP_QUANTITY="-215.0 px" VSHIFT_QUANTITY="233.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1669899571" CREATED="1323523398700" MODIFIED="1336073288622" HGAP_QUANTITY="-215 px" VSHIFT_QUANTITY="233 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7447,7 +7281,7 @@ node alias can not be a number</pre>
     <conditional_style ACTIVE="true" STYLE_REF="Professional" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1336072642148" HGAP_QUANTITY="-246.0 px" VSHIFT_QUANTITY="115.0 px"><richcontent TYPE="NODE">
+<node ID="ID_685749368" CREATED="1323895981367" MODIFIED="1336072642148" HGAP_QUANTITY="-246 px" VSHIFT_QUANTITY="115 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7480,7 +7314,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="The Freeplane documentation desbribes ways how to interchange with texteditors, keeping some of the formatting code." ID="ID_1023242392" CREATED="1323523390908" MODIFIED="1335095794304" HGAP_QUANTITY="-178.0 px" VSHIFT_QUANTITY="32.0 px">
+<node TEXT="The Freeplane documentation desbribes ways how to interchange with texteditors, keeping some of the formatting code." ID="ID_1023242392" CREATED="1323523390908" MODIFIED="1335095794304" HGAP_QUANTITY="-178 px" VSHIFT_QUANTITY="32 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -7488,8 +7322,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="Node extensions" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1541847561399" NUMBERED="true">
-<node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1335301078849"><richcontent TYPE="DETAILS">
-
+<node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1335301078849"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7519,14 +7352,13 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="Show text in tool tip (hover text)" STYLE_REF="Advanced" FOLDED="true" ID="ID_288274844" CREATED="1314206958207" MODIFIED="1335301078849" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1335095962723" HGAP_QUANTITY="-186.0 px" VSHIFT_QUANTITY="123.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1704074218" CREATED="1323527323490" MODIFIED="1335095962723" HGAP_QUANTITY="-186 px" VSHIFT_QUANTITY="123 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7562,12 +7394,11 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<node TEXT="Hidden details" STYLE_REF="Advanced" FOLDED="true" ID="ID_1710723594" CREATED="1323462581502" MODIFIED="1323525821357" HGAP_QUANTITY="24.0 px" VSHIFT_QUANTITY="-12.0 px" STYLE="combined" TEXT_SHORTENED="true">
+<node TEXT="Hidden details" STYLE_REF="Advanced" FOLDED="true" ID="ID_1710723594" CREATED="1323462581502" MODIFIED="1323525821357" HGAP_QUANTITY="24 px" VSHIFT_QUANTITY="-12 px" STYLE="combined" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -7577,9 +7408,8 @@ node alias can not be a number</pre>
       Hidden details can also be made visible by <b>hovering</b>&#160;with the cursor over a node's core. This is specially useful when node details are set to be hidden permanently. In that case there is no triangle to make it display. A small circle at hte parent side of the node indicates if a node contains this type of hidden text, also called a tool tip. The node below is an example. Hover with the cursor over it to display its content. (Try it !)
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="" ID="ID_1347491550" CREATED="1323462604083" MODIFIED="1323525624921" HGAP_QUANTITY="-80.0 px" VSHIFT_QUANTITY="50.0 px">
+</html></richcontent>
+<node TEXT="" ID="ID_1347491550" CREATED="1323462604083" MODIFIED="1323525624921" HGAP_QUANTITY="-80 px" VSHIFT_QUANTITY="50 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -7587,7 +7417,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Image (node extension)" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1335301078849" MIN_WIDTH="1.0 px">
+<node TEXT="Image (node extension)" STYLE_REF="Advanced" FOLDED="true" ID="ID_575269438" CREATED="1314215157545" MODIFIED="1335301078849" MIN_WIDTH="1 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
@@ -7605,11 +7435,11 @@ node alias can not be a number</pre>
 </html>
 </richcontent>
 </node>
-<node TEXT="Internal source" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1336383756945" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Internal source" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1336383756945" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1335095984797" HGAP_QUANTITY="-95.0 px" VSHIFT_QUANTITY="243.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1990291656" CREATED="1323527938617" MODIFIED="1335095984797" HGAP_QUANTITY="-95 px" VSHIFT_QUANTITY="243 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7671,7 +7501,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1335095997496" HGAP_QUANTITY="-99.0 px" VSHIFT_QUANTITY="171.0 px" MAX_WIDTH="550.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_594983153" CREATED="1318936453549" MODIFIED="1335095997496" HGAP_QUANTITY="-99 px" VSHIFT_QUANTITY="171 px" MAX_WIDTH="550 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7709,18 +7539,18 @@ node alias can not be a number</pre>
 </richcontent>
 </node>
 </node>
-<node TEXT="In-line image" STYLE_REF="Professional" FOLDED="true" ID="ID_1242295211" CREATED="1314282819174" MODIFIED="1336383756945" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="In-line image" STYLE_REF="Professional" FOLDED="true" ID="ID_1242295211" CREATED="1314282819174" MODIFIED="1336383756945" MAX_WIDTH="550 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Professional users can add images within text with so-called HTML-code. There is also a script for this. See the Freeplane documentation." ID="ID_796258305" CREATED="1323528211774" MODIFIED="1335096006918" HGAP_QUANTITY="-82.0 px" VSHIFT_QUANTITY="35.0 px" STYLE="combined">
+<node TEXT="Professional users can add images within text with so-called HTML-code. There is also a script for this. See the Freeplane documentation." ID="ID_796258305" CREATED="1323528211774" MODIFIED="1335096006918" HGAP_QUANTITY="-82 px" VSHIFT_QUANTITY="35 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
 <node TEXT="change image" STYLE_REF="Advanced" FOLDED="true" ID="ID_88299847" CREATED="1336383616192" MODIFIED="1336383756930">
-<node STYLE_REF="TitlesContent" ID="ID_656004509" CREATED="1336383628931" MODIFIED="1336383740253" HGAP_QUANTITY="-88.0 px" VSHIFT_QUANTITY="28.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_656004509" CREATED="1336383628931" MODIFIED="1336383740253" HGAP_QUANTITY="-88 px" VSHIFT_QUANTITY="28 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7736,12 +7566,11 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Attributes (node extension)" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1335301078849" MIN_WIDTH="1.0 px">
-<node TEXT="Attributes in node extensions" STYLE_REF="Professional" FOLDED="true" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1335096051051" HGAP_QUANTITY="-160.0 px" VSHIFT_QUANTITY="84.0 px" MAX_WIDTH="550.0 px">
+<node TEXT="Attributes (node extension)" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1335301078849" MIN_WIDTH="1 px">
+<node TEXT="Attributes in node extensions" STYLE_REF="Professional" FOLDED="true" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1335096051051" HGAP_QUANTITY="-160 px" VSHIFT_QUANTITY="84 px" MAX_WIDTH="550 px">
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7751,10 +7580,8 @@ node alias can not be a number</pre>
       Node details can contain structured information, in which each unit of information has a name and a value. This couple, name=value, is also called an attribute. Attributes are displayed in Details as a table with two columns.
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="How to add attributes to node details ?" STYLE_REF="Professional" FOLDED="true" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1335096024531" HGAP_QUANTITY="-549.0 px" VSHIFT_QUANTITY="219.0 px" MAX_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+</html></richcontent>
+<node TEXT="How to add attributes to node details ?" STYLE_REF="Professional" FOLDED="true" ID="ID_1441506319" CREATED="1314210058883" MODIFIED="1335096024531" HGAP_QUANTITY="-549 px" VSHIFT_QUANTITY="219 px" MAX_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7787,10 +7614,8 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<node TEXT="Value options" STYLE_REF="Professional" FOLDED="true" ID="ID_1108500341" CREATED="1314211635490" MODIFIED="1335096040038" HGAP_QUANTITY="-547.0 px" VSHIFT_QUANTITY="202.0 px" MAX_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+</html></richcontent>
+<node TEXT="Value options" STYLE_REF="Professional" FOLDED="true" ID="ID_1108500341" CREATED="1314211635490" MODIFIED="1335096040038" HGAP_QUANTITY="-547 px" VSHIFT_QUANTITY="202 px" MAX_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7800,10 +7625,8 @@ node alias can not be a number</pre>
       Besides entering text as an attribute value, you can add hyperlinks. Right-click on an attribute value to see the options. The differences between types of hyperlinks were described in node<i>&#160;Hyperlinking.</i>&#160; Through <i>Properties Panel &gt; Calendar and Attributes</i>&#160;you can also add formatted dates and numbers. Click on the field just above the attribute to get a drop down menu with formatting options. Read more about formatting in the Freeplane documentation.
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="Professional editing of attrtibutes" STYLE_REF="Professional" FOLDED="true" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1337500610099" HGAP_QUANTITY="-551.0 px" VSHIFT_QUANTITY="123.0 px" MAX_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+</html></richcontent>
+<node TEXT="Professional editing of attrtibutes" STYLE_REF="Professional" FOLDED="true" ID="ID_609269277" CREATED="1314278394970" MODIFIED="1337500610099" HGAP_QUANTITY="-551 px" VSHIFT_QUANTITY="123 px" MAX_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7813,10 +7636,8 @@ node alias can not be a number</pre>
       There are several options to change e.g. the names of the attributes and/or values of all nodes. <i>Edit &gt; Node extensions&#160;&#160;&gt; Attributes</i>&#160;for all available methods and the Freeplane documentation for their description.
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+</html></richcontent>
+<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP_QUANTITY="-550 px" VSHIFT_QUANTITY="80 px" MAX_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7826,19 +7647,18 @@ node alias can not be a number</pre>
       It will be described below that hyperlinks can be added to attribute values through the context menu of the attribute value.
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="Scientific formula (LaTeX)" STYLE_REF="Professional" FOLDED="true" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1335301078849" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Scientific formula (LaTeX)" STYLE_REF="Professional" FOLDED="true" ID="ID_616494746" CREATED="1314361765668" MODIFIED="1335301078849" MIN_WIDTH="1 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1460441144" CREATED="1323527775837" MODIFIED="1335096059210" HGAP_QUANTITY="-170.0 px" VSHIFT_QUANTITY="61.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1460441144" CREATED="1323527775837" MODIFIED="1335096059210" HGAP_QUANTITY="-170 px" VSHIFT_QUANTITY="61 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -7924,8 +7744,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
-<node TEXT="Time management" STYLE_REF="Professional" ID="ID_1047570728" CREATED="1314367182383" MODIFIED="1330162826734" MAX_WIDTH="600.0 px" VSHIFT_QUANTITY="40.0 px"><richcontent TYPE="DETAILS">
-
+<node TEXT="Time management" STYLE_REF="Professional" ID="ID_1047570728" CREATED="1314367182383" MODIFIED="1330162826734" MAX_WIDTH="600 px" VSHIFT_QUANTITY="40 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -7949,18 +7768,17 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="" ID="ID_982845598" CREATED="1455910877283" MODIFIED="1455910877283">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Manage time..." STYLE_REF="Professional" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323808343056" VSHIFT_QUANTITY="10.0 px" MAX_WIDTH="450.0 px" STYLE="combined">
+<node TEXT="Manage time..." STYLE_REF="Professional" FOLDED="true" ID="ID_1104707017" CREATED="1267746559867" MODIFIED="1323808343056" VSHIFT_QUANTITY="10 px" MAX_WIDTH="450 px" STYLE="combined">
 <icon BUILTIN="../TimeManagementAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node FOLDED="true" ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1335096076292" HGAP_QUANTITY="-114.0 px" VSHIFT_QUANTITY="98.0 px" MAX_WIDTH="400.0 px" MIN_WIDTH="400.0 px"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1158360877" CREATED="1323528703218" MODIFIED="1335096076292" HGAP_QUANTITY="-114 px" VSHIFT_QUANTITY="98 px" MAX_WIDTH="400 px" MIN_WIDTH="400 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8003,13 +7821,13 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Manage tasks" STYLE_REF="Professional" FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323808350684" MAX_WIDTH="450.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Manage tasks" STYLE_REF="Professional" FOLDED="true" ID="ID_1106133151" CREATED="1266247905093" MODIFIED="1323808350684" MAX_WIDTH="450 px" MIN_WIDTH="1 px" STYLE="combined">
 <icon BUILTIN="../TimeListAction"/>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0;0;" ENDINCLINATION="0;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1106133151" STARTINCLINATION="0 pt;0 pt;" ENDINCLINATION="0 pt;0 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1400536343" CREATED="1323528892096" MODIFIED="1335096083234" MAX_WIDTH="400.0 px" HGAP_QUANTITY="-105.0 px" VSHIFT_QUANTITY="114.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1400536343" CREATED="1323528892096" MODIFIED="1335096083234" MAX_WIDTH="400 px" HGAP_QUANTITY="-105 px" VSHIFT_QUANTITY="114 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8053,12 +7871,12 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Remove reminder" STYLE_REF="Professional" FOLDED="true" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1323808358937" MAX_WIDTH="450.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Remove reminder" STYLE_REF="Professional" FOLDED="true" ID="ID_148977369" CREATED="1303932208426" MODIFIED="1323808358937" MAX_WIDTH="450 px" MIN_WIDTH="1 px" STYLE="combined">
 <icon BUILTIN="../ReminderHookAction"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_740100275" CREATED="1323528999915" MODIFIED="1323808390464" HGAP_QUANTITY="-125.0 px" VSHIFT_QUANTITY="65.0 px"><richcontent TYPE="NODE">
+<node ID="ID_740100275" CREATED="1323528999915" MODIFIED="1323808390464" HGAP_QUANTITY="-125 px" VSHIFT_QUANTITY="65 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8101,8 +7919,7 @@ node alias can not be a number</pre>
     <conditional_style ACTIVE="true" STYLE_REF="ProfessionalTopic" LAST="false"/>
 </hook>
 <cloud COLOR="#f0f0f0" SHAPE="ARC"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8112,8 +7929,7 @@ node alias can not be a number</pre>
       This node contains a reminder
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
@@ -8122,7 +7938,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1784889270" CREATED="1323769644757" MODIFIED="1335096224025" HGAP_QUANTITY="-249.0 px" VSHIFT_QUANTITY="114.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1784889270" CREATED="1323769644757" MODIFIED="1335096224025" HGAP_QUANTITY="-249 px" VSHIFT_QUANTITY="114 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8158,7 +7974,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_802748820" CREATED="1323769723123" MODIFIED="1335096231715" HGAP_QUANTITY="-125.0 px" VSHIFT_QUANTITY="41.0 px"><richcontent TYPE="NODE">
+<node ID="ID_802748820" CREATED="1323769723123" MODIFIED="1335096231715" HGAP_QUANTITY="-125 px" VSHIFT_QUANTITY="41 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8192,20 +8008,18 @@ node alias can not be a number</pre>
 </html>
 </richcontent>
 </node>
-<node TEXT="All nodes a bubble, particular edge,.." STYLE_REF="Advanced" FOLDED="true" ID="ID_210892586" CREATED="1321645917041" MODIFIED="1335301155197" TEXT_SHORTENED="true" MIN_WIDTH="1.0 px" STYLE="combined"><richcontent TYPE="DETAILS">
-
+<node TEXT="All nodes a bubble, particular edge,.." STYLE_REF="Advanced" FOLDED="true" ID="ID_210892586" CREATED="1321645917041" MODIFIED="1335301155197" TEXT_SHORTENED="true" MIN_WIDTH="1 px" STYLE="combined"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
   </head>
   <body>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1274034553" CREATED="1323529940039" MODIFIED="1335096248797" HGAP_QUANTITY="-234.0 px" VSHIFT_QUANTITY="33.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1274034553" CREATED="1323529940039" MODIFIED="1335096248797" HGAP_QUANTITY="-234 px" VSHIFT_QUANTITY="33 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8222,7 +8036,7 @@ node alias can not be a number</pre>
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
-<node STYLE_REF="TitlesContent" ID="ID_423831026" CREATED="1335124455222" MODIFIED="1335125301266" HGAP_QUANTITY="-231.0 px" VSHIFT_QUANTITY="36.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_423831026" CREATED="1335124455222" MODIFIED="1335125301266" HGAP_QUANTITY="-231 px" VSHIFT_QUANTITY="36 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8255,7 +8069,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1336124389430" HGAP_QUANTITY="-166.0 px" VSHIFT_QUANTITY="114.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1748316183" CREATED="1323530207075" MODIFIED="1336124389430" HGAP_QUANTITY="-166 px" VSHIFT_QUANTITY="114 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8288,7 +8102,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1335096265679" HGAP_QUANTITY="-167.0 px" VSHIFT_QUANTITY="120.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1788895132" CREATED="1323530348451" MODIFIED="1335096265679" HGAP_QUANTITY="-167 px" VSHIFT_QUANTITY="120 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8334,10 +8148,9 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Environment preferences" FOLDED="true" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1335096277784" HGAP_QUANTITY="-197.0 px" VSHIFT_QUANTITY="103.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="550.0 px" STYLE="fork">
+<node TEXT="Environment preferences" FOLDED="true" ID="ID_908072469" CREATED="1314708954177" MODIFIED="1335096277784" HGAP_QUANTITY="-197 px" VSHIFT_QUANTITY="103 px" MAX_WIDTH="550 px" MIN_WIDTH="550 px" STYLE="fork">
 <font BOLD="true"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8370,10 +8183,8 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<node TEXT="Appearance preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_1541392544" CREATED="1314709723082" MODIFIED="1323530642000" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="145.0 px" MIN_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+</html></richcontent>
+<node TEXT="Appearance preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_1541392544" CREATED="1314709723082" MODIFIED="1323530642000" HGAP_QUANTITY="-550 px" VSHIFT_QUANTITY="145 px" MIN_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8394,11 +8205,9 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true"/>
-<node TEXT="Keystrokes preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_748518266" CREATED="1314720398255" MODIFIED="1335096299360" HGAP_QUANTITY="-555.0 px" VSHIFT_QUANTITY="70.0 px" MIN_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+<node TEXT="Keystrokes preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_748518266" CREATED="1314720398255" MODIFIED="1335096299360" HGAP_QUANTITY="-555 px" VSHIFT_QUANTITY="70 px" MIN_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8411,11 +8220,9 @@ node alias can not be a number</pre>
 
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true"/>
-<node TEXT="Behaviour preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_1578508847" CREATED="1314720581515" MODIFIED="1335096307940" HGAP_QUANTITY="-551.0 px" VSHIFT_QUANTITY="169.0 px" MIN_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+<node TEXT="Behaviour preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_1578508847" CREATED="1314720581515" MODIFIED="1335096307940" HGAP_QUANTITY="-551 px" VSHIFT_QUANTITY="169 px" MIN_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8466,11 +8273,9 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true"/>
-<node TEXT="HTML preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_1185446743" CREATED="1314729741193" MODIFIED="1323530646384" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="161.0 px" MIN_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+<node TEXT="HTML preferences" STYLE_REF="Introduction" FOLDED="true" ID="ID_1185446743" CREATED="1314729741193" MODIFIED="1323530646384" HGAP_QUANTITY="-550 px" VSHIFT_QUANTITY="161 px" MIN_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8483,11 +8288,9 @@ node alias can not be a number</pre>
 
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true"/>
-<node TEXT="Plugins" STYLE_REF="Introduction" ID="ID_1546138946" CREATED="1314729857046" MODIFIED="1323531198276" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="55.0 px" MIN_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
-
+<node TEXT="Plugins" STYLE_REF="Introduction" ID="ID_1546138946" CREATED="1314729857046" MODIFIED="1323531198276" HGAP_QUANTITY="-550 px" VSHIFT_QUANTITY="55 px" MIN_WIDTH="550 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8500,8 +8303,7 @@ node alias can not be a number</pre>
 
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true"/>
 </node>
 </node>
@@ -8514,7 +8316,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_801516363" CREATED="1324029189260" MODIFIED="1336124569174" HGAP_QUANTITY="-193.0 px" VSHIFT_QUANTITY="70.0 px"><richcontent TYPE="NODE">
+<node ID="ID_801516363" CREATED="1324029189260" MODIFIED="1336124569174" HGAP_QUANTITY="-193 px" VSHIFT_QUANTITY="70 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8545,7 +8347,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1335096339343" HGAP_QUANTITY="-177.0 px" VSHIFT_QUANTITY="169.0 px"><richcontent TYPE="NODE">
+<node ID="ID_844014092" CREATED="1323530829949" MODIFIED="1335096339343" HGAP_QUANTITY="-177 px" VSHIFT_QUANTITY="169 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8601,7 +8403,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node TEXT="Spell check is pre-installed for English. For other languages, click the hyperlink. Download language_XX.ortho, in which XX is a two lettercode fo the language. Save this file in Tools &gt; Open user directory &gt; recources/ortho" ID="ID_1759599610" CREATED="1323530909501" MODIFIED="1335096347658" HGAP_QUANTITY="-176.0 px" VSHIFT_QUANTITY="39.0 px">
+<node TEXT="Spell check is pre-installed for English. For other languages, click the hyperlink. Download language_XX.ortho, in which XX is a two lettercode fo the language. Save this file in Tools &gt; Open user directory &gt; recources/ortho" ID="ID_1759599610" CREATED="1323530909501" MODIFIED="1335096347658" HGAP_QUANTITY="-176 px" VSHIFT_QUANTITY="39 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
@@ -8611,7 +8413,7 @@ node alias can not be a number</pre>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1335096356675" HGAP_QUANTITY="-124.0 px" VSHIFT_QUANTITY="49.0 px"><richcontent TYPE="NODE">
+<node ID="ID_667200365" CREATED="1323530988242" MODIFIED="1335096356675" HGAP_QUANTITY="-124 px" VSHIFT_QUANTITY="49 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8629,8 +8431,8 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1335301155197" LINK="https://www.freeplane.org/wiki/index.php/Add-ons_%28install%29" MIN_WIDTH="1.0 px">
-<node STYLE_REF="TitlesContent" ID="ID_1670821464" CREATED="1330288802502" MODIFIED="1335096363601" HGAP_QUANTITY="-72.0 px" VSHIFT_QUANTITY="34.0 px"><richcontent TYPE="NODE">
+<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1335301155197" LINK="https://www.freeplane.org/wiki/index.php/Add-ons_%28install%29" MIN_WIDTH="1 px">
+<node STYLE_REF="TitlesContent" ID="ID_1670821464" CREATED="1330288802502" MODIFIED="1335096363601" HGAP_QUANTITY="-72 px" VSHIFT_QUANTITY="34 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8665,8 +8467,7 @@ node alias can not be a number</pre>
 </richcontent>
 </node>
 <node TEXT="The making of this mind map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1394424447" CREATED="1329890506053" MODIFIED="1335301176959">
-<node TEXT="Main title with number" FOLDED="true" ID="ID_1866200606" CREATED="1329891158131" MODIFIED="1329923927942" NUMBERED="true" MIN_WIDTH="180.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Main title with number" FOLDED="true" ID="ID_1866200606" CREATED="1329891158131" MODIFIED="1329923927942" NUMBERED="true" MIN_WIDTH="180 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8687,10 +8488,8 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<node TEXT="Title" FOLDED="true" ID="ID_1129463861" CREATED="1329890593164" MODIFIED="1329896626655" VSHIFT_QUANTITY="28.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+</html></richcontent>
+<node TEXT="Title" FOLDED="true" ID="ID_1129463861" CREATED="1329890593164" MODIFIED="1329896626655" VSHIFT_QUANTITY="28 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8700,10 +8499,8 @@ node alias can not be a number</pre>
       Short label indicating content
     </p>
   </body>
-</html>
-</richcontent>
-<node TEXT="Content associated with title" ID="ID_1693370436" CREATED="1329890604168" MODIFIED="1329896589667" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="29.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+</html></richcontent>
+<node TEXT="Content associated with title" ID="ID_1693370436" CREATED="1329890604168" MODIFIED="1329896589667" HGAP_QUANTITY="19 px" VSHIFT_QUANTITY="29 px"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8721,13 +8518,11 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Signals for Example or Revision" ID="ID_1987503747" CREATED="1329893003272" MODIFIED="1329893364322"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Signals for Example or Revision" ID="ID_1987503747" CREATED="1329893003272" MODIFIED="1329893364322"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8742,12 +8537,10 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="User defined Styles" FOLDED="true" ID="ID_1542766589" CREATED="1329890665063" MODIFIED="1329891699156">
-<node TEXT="Beginner" STYLE_REF="Beginner" ID="ID_1530366440" CREATED="1329890552011" MODIFIED="1329891025524"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Beginner" STYLE_REF="Beginner" ID="ID_1530366440" CREATED="1329890552011" MODIFIED="1329891025524"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8763,11 +8556,9 @@ node alias can not be a number</pre>
       Node backround color green
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="Advanced" STYLE_REF="Advanced" ID="ID_535640598" CREATED="1329890558413" MODIFIED="1329891023028"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Advanced" STYLE_REF="Advanced" ID="ID_535640598" CREATED="1329890558413" MODIFIED="1329891023028"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8783,11 +8574,9 @@ node alias can not be a number</pre>
       Node backround color yellow
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="Professional" STYLE_REF="Professional" ID="ID_1633698334" CREATED="1329890564240" MODIFIED="1329891020032"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Professional" STYLE_REF="Professional" ID="ID_1633698334" CREATED="1329890564240" MODIFIED="1329891020032"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8803,11 +8592,9 @@ node alias can not be a number</pre>
       Node backround color orange/brown
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="TitlesContent" STYLE_REF="TitlesContent" ID="ID_1999102003" CREATED="1329890685983" MODIFIED="1329891614417"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="TitlesContent" STYLE_REF="TitlesContent" ID="ID_1999102003" CREATED="1329890685983" MODIFIED="1329891614417"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8820,11 +8607,9 @@ node alias can not be a number</pre>
       Hidden edge
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="Example" STYLE_REF="Example" ID="ID_149652811" CREATED="1329891620274" MODIFIED="1329892004168"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Example" STYLE_REF="Example" ID="ID_149652811" CREATED="1329891620274" MODIFIED="1329892004168"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8834,11 +8619,9 @@ node alias can not be a number</pre>
       eye-icon
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="Revision" STYLE_REF="Revision" ID="ID_1141559530" CREATED="1329891634025" MODIFIED="1329892021734"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Revision" STYLE_REF="Revision" ID="ID_1141559530" CREATED="1329891634025" MODIFIED="1329892021734"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8848,14 +8631,12 @@ node alias can not be a number</pre>
       R-icon
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 <node TEXT="MyTemplate" STYLE_REF="MyTemplate" ID="ID_669326751" CREATED="1329896085816" MODIFIED="1329896350488">
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
 
@@ -8873,12 +8654,10 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node TEXT="Map with all Freeplane Functions (index)" ID="ID_1680872369" CREATED="1329896383911" MODIFIED="1329897008344"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Map with all Freeplane Functions (index)" ID="ID_1680872369" CREATED="1329896383911" MODIFIED="1329897008344"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8896,11 +8675,9 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
-<node TEXT="Map with example applications (index)" ID="ID_311616726" CREATED="1329896409752" MODIFIED="1329896989686"><richcontent TYPE="DETAILS" HIDDEN="true">
-
+<node TEXT="Map with example applications (index)" ID="ID_311616726" CREATED="1329896409752" MODIFIED="1329896989686"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
 
@@ -8918,13 +8695,12 @@ node alias can not be a number</pre>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node TEXT="Display revisions" STYLE_REF="Advanced" ID="ID_1424120147" CREATED="1323615838293" MODIFIED="1335301176959" LINK="#ID_1437965047"/>
 <node TEXT="Multiple views of one map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1926778226" CREATED="1331306719166" MODIFIED="1335301176974">
-<node STYLE_REF="TitlesContent" ID="ID_1319135286" CREATED="1331306733589" MODIFIED="1335096420932" HGAP_QUANTITY="-169.0 px" VSHIFT_QUANTITY="61.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1319135286" CREATED="1331306733589" MODIFIED="1335096420932" HGAP_QUANTITY="-169 px" VSHIFT_QUANTITY="61 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8941,7 +8717,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="Restore from local history" STYLE_REF="Professional" FOLDED="true" ID="ID_1448419614" CREATED="1329412616257" MODIFIED="1335301176974">
-<node STYLE_REF="TitlesContent" ID="ID_1628771343" CREATED="1329412632660" MODIFIED="1335096430323" HGAP_QUANTITY="-162.0 px" VSHIFT_QUANTITY="25.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_1628771343" CREATED="1329412632660" MODIFIED="1335096430323" HGAP_QUANTITY="-162 px" VSHIFT_QUANTITY="25 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8957,7 +8733,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 <node TEXT="Batch jobs" STYLE_REF="Professional" FOLDED="true" ID="ID_1371818753" CREATED="1330372522196" MODIFIED="1335301176974">
-<node STYLE_REF="TitlesContent" ID="ID_804893281" CREATED="1330372555097" MODIFIED="1335096437531" HGAP_QUANTITY="-73.0 px" VSHIFT_QUANTITY="78.0 px"><richcontent TYPE="NODE">
+<node STYLE_REF="TitlesContent" ID="ID_804893281" CREATED="1330372555097" MODIFIED="1335096437531" HGAP_QUANTITY="-73 px" VSHIFT_QUANTITY="78 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -8981,23 +8757,49 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="What&apos;s new" STYLE_REF="Introduction" POSITION="left" ID="ID_1286342769" CREATED="1541847389542" MODIFIED="1541847665701" TEXT_ALIGN="RIGHT" MIN_WIDTH="0.0 cm">
+<node TEXT="What&apos;s new" STYLE_REF="Introduction" POSITION="left" ID="ID_1286342769" CREATED="1541847389542" MODIFIED="1541847665701" TEXT_ALIGN="RIGHT" MIN_WIDTH="0 cm">
+<node TEXT="Version 1.9.x" STYLE_REF="Actions" FOLDED="true" ID="ID_1638165251" CREATED="1541847687331" MODIFIED="1620389180349">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_1741600255" CREATED="1541848060291" MODIFIED="1541848968607">
+<node TEXT="Connector styles configurable at user style nodes in style editor" ID="ID_309599694" CREATED="1620389785732" MODIFIED="1620389785732"/>
+<node TEXT="Selected node colors configurable at appropriate styles in use style editor" ID="ID_521611641" CREATED="1620389785732" MODIFIED="1620389785732"/>
+<node TEXT="Markdown support for node core, node details and notes" ID="ID_1004436581" CREATED="1620389785746" MODIFIED="1620389785746"/>
+<node TEXT="Latex support for node core, node details and notes" ID="ID_806550986" CREATED="1620389785750" MODIFIED="1620389785750"/>
+<node TEXT="Formula support for node core, node details and notes" ID="ID_1417671379" CREATED="1620389785752" MODIFIED="1620389785752"/>
+<node TEXT="New Freeplane Application icons and splash screen" ID="ID_1937358243" CREATED="1620389785754" MODIFIED="1620389785754"/>
+<node TEXT="Configurable icons for links depending on link URL and file extension" ID="ID_962835223" CREATED="1620389785757" MODIFIED="1620389785757"/>
+<node TEXT="Following styles defined in external maps (synchronized when the map is loaded)" ID="ID_1108233463" CREATED="1620389785759" MODIFIED="1620389785759"/>
+<node TEXT="New action for copying styles from other maps but keeping own user styles if they are different" ID="ID_393838871" CREATED="1620389785762" MODIFIED="1620389785762"/>
+<node TEXT="Fix default edge and node widths" ID="ID_212042030" CREATED="1620389785769" MODIFIED="1620389785769"/>
+<node TEXT="Option to open node links only if Control key is pressed" ID="ID_420124712" CREATED="1620389785773" MODIFIED="1620389785773"/>
+<node TEXT="Add background colors to generated HTML" ID="ID_1992594483" CREATED="1620389785775" MODIFIED="1620389785775"/>
+<node TEXT="Option to disable all colors in generated HTML" ID="ID_216094501" CREATED="1620389785776" MODIFIED="1620389785776"/>
+<node TEXT="Speed up file dialogs" ID="ID_1169212059" CREATED="1620389785777" MODIFIED="1620389785777"/>
+<node TEXT="Support VAqua Look and Feel for MacOS" ID="ID_1622519681" CREATED="1620389785778" MODIFIED="1620389785778"/>
+<node TEXT="Scripting API extended to support the new features" ID="ID_1116916304" CREATED="1620389785779" MODIFIED="1620389785779"/>
+<node TEXT="Copy images pasted into rich text editors" ID="ID_454781677" CREATED="1620389785780" MODIFIED="1620389785780"/>
+<node TEXT="Mind map template previews" ID="ID_704419783" CREATED="1620389785781" MODIFIED="1620389785781"/>
+<node TEXT="Replace SplitToWords by SplitInRows" ID="ID_1145247548" CREATED="1620389785782" MODIFIED="1620389785782"/>
+</node>
+<node TEXT="Updated software components" STYLE_REF="Purpose" FOLDED="true" ID="ID_234329131" CREATED="1541847932161" MODIFIED="1541848968607">
+<node TEXT="Java 15 support" ID="ID_1930135299" CREATED="1620389739143" MODIFIED="1620389742376"/>
+<node TEXT="Updated Groovy to 3.0.8" ID="ID_702829975" CREATED="1620389743797" MODIFIED="1620389751288"/>
+</node>
+</node>
+<node TEXT="Version 1.8.x" STYLE_REF="Actions" FOLDED="true" ID="ID_25848260" CREATED="1541847687331" MODIFIED="1620389153347">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_109116165" CREATED="1541848060291" MODIFIED="1541848968607">
+<node TEXT="Use emoticons from https://twemoji.twitter.com/ as icons" ID="ID_391516983" CREATED="1620389509864" MODIFIED="1620389509864" LINK="https://twemoji.twitter.com/"/>
+<node TEXT="Optionally ignore accents and diacritics in filter conditions" ID="ID_684736245" CREATED="1620389550378" MODIFIED="1620389550378"/>
+<node TEXT="Usability improvements suggested by University of Oulu UX research group" ID="ID_1022343423" CREATED="1620389563253" MODIFIED="1620389563253"/>
+<node TEXT="Quick &quot;And filter&quot; and &quot;Or filter&quot;" ID="ID_1228038812" CREATED="1620389573027" MODIFIED="1620389573027"/>
+<node TEXT="Command/Preferences/icons search dialog (Control/⌘ + F1)" ID="ID_1203365755" CREATED="1620389595525" MODIFIED="1620389686282"/>
+<node TEXT="Draw clouds around hidden or filtered our nodes" ID="ID_556585090" CREATED="1620389771860" MODIFIED="1620389771860"/>
+</node>
+<node TEXT="Updated software components" STYLE_REF="Purpose" ID="ID_1480328703" CREATED="1541847932161" MODIFIED="1541848968607">
+<node TEXT="Java 13 support" ID="ID_1423743100" CREATED="1620389729576" MODIFIED="1620389733768"/>
+</node>
+<node TEXT="Formulas and scripts" STYLE_REF="Purpose" ID="ID_377149294" CREATED="1541847985637" MODIFIED="1541848968607"/>
+</node>
 <node TEXT="Version 1.7.x" STYLE_REF="Actions" FOLDED="true" ID="ID_1757711154" CREATED="1541847687331" MODIFIED="1541847877907">
-<node TEXT="Updated software components" STYLE_REF="Purpose" FOLDED="true" ID="ID_1632208670" CREATED="1541847932161" MODIFIED="1541848968607">
-<node TEXT="Java 7 support dropped, Java 8 is required" ID="ID_231313072" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="Java 11 support" ID="ID_1997699757" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="Update Groovy to version 2.5.3" ID="ID_1119389141" CREATED="1541847881092" MODIFIED="1541847918742"/>
-<node TEXT="Update JLatexMath to versin 1.0.7" ID="ID_14411050" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="Update batik to version 2.10" ID="ID_1048875697" CREATED="1541847881092" MODIFIED="1541847881092"/>
-</node>
-<node TEXT="Formulas and scripts" STYLE_REF="Purpose" FOLDED="true" ID="ID_635077048" CREATED="1541847985637" MODIFIED="1541848968607">
-<node TEXT="Formula dependency tracing" ID="ID_181704820" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="API for referencing nodes from formulas and scripts" ID="ID_170531925" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="API for loading mind maps" ID="ID_1674596796" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="API for script execution" ID="ID_1341352019" CREATED="1541847881092" MODIFIED="1541847881092"/>
-<node TEXT="Persistent cache for compiled library scripts" ID="ID_45063614" CREATED="1541848275479" MODIFIED="1541848294730"/>
-<node TEXT="Runtime cache for compiled formulas and scripts" ID="ID_1167426315" CREATED="1541848295504" MODIFIED="1541848315487"/>
-</node>
 <node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_1765567826" CREATED="1541848060291" MODIFIED="1541848968607">
 <node TEXT="Nodes URLs with relative and absolute paths like #at(:~someNodeAlias)" ID="ID_1539755264" CREATED="1541847881092" MODIFIED="1541847881092"/>
 <node TEXT="Node aliases" ID="ID_1352789056" CREATED="1541847881092" MODIFIED="1541847881092"/>
@@ -9007,8 +8809,25 @@ node alias can not be a number</pre>
 <node TEXT="Denied (inverted) conditions in filter toolbar" ID="ID_1393999486" CREATED="1541847881092" MODIFIED="1541847881092"/>
 <node TEXT="Export for selected branches only" ID="ID_817997036" CREATED="1541847881092" MODIFIED="1541847881092"/>
 <node TEXT="Go to nodes by their &quot;reference paths&quot;" ID="ID_1785822754" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="Dark UI mode support (Look and feel and map template &quot;Darcula&quot;)" ID="ID_1513276613" CREATED="1620389389899" MODIFIED="1620389393403"/>
 </node>
-<node TEXT="Freeplane API to be embedded in arbitrary JVM applications and scripts" ID="ID_343365936" CREATED="1541848092374" MODIFIED="1541850584072"/>
+<node TEXT="Formulas and scripts" STYLE_REF="Purpose" FOLDED="true" ID="ID_635077048" CREATED="1541847985637" MODIFIED="1541848968607">
+<node TEXT="Formula dependency tracing" ID="ID_181704820" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="API for referencing nodes from formulas and scripts" ID="ID_170531925" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="API for loading mind maps" ID="ID_1674596796" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="API for script execution" ID="ID_1341352019" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="Add new properties  to connector API" ID="ID_235525051" CREATED="1620389487416" MODIFIED="1620389488747"/>
+<node TEXT="Persistent cache for compiled library scripts" ID="ID_45063614" CREATED="1541848275479" MODIFIED="1541848294730"/>
+<node TEXT="Runtime cache for compiled formulas and scripts" ID="ID_1167426315" CREATED="1541848295504" MODIFIED="1541848315487"/>
+</node>
+<node TEXT="Updated software components" STYLE_REF="Purpose" FOLDED="true" ID="ID_1632208670" CREATED="1541847932161" MODIFIED="1541848968607">
+<node TEXT="Java 7 support dropped, Java 8 is required" ID="ID_231313072" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="Java 11 support" ID="ID_1997699757" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="Update Groovy to version 2.5.3" ID="ID_1119389141" CREATED="1541847881092" MODIFIED="1541847918742"/>
+<node TEXT="Update JLatexMath to versin 1.0.7" ID="ID_14411050" CREATED="1541847881092" MODIFIED="1541847881092"/>
+<node TEXT="Update batik to version 2.10" ID="ID_1048875697" CREATED="1541847881092" MODIFIED="1541847881092"/>
+</node>
+<node TEXT="Freeplane API can be embedded in arbitrary JVM applications and scripts" ID="ID_343365936" CREATED="1541848092374" MODIFIED="1620389208685"/>
 </node>
 <node TEXT="Version 1.6.x" STYLE_REF="Actions" FOLDED="true" ID="ID_132081568" CREATED="1541847698879" MODIFIED="1541850524278">
 <node TEXT="connectors" STYLE_REF="Purpose" FOLDED="true" ID="ID_1672618426" CREATED="1541848613842" MODIFIED="1541848953471">
