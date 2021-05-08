@@ -460,7 +460,8 @@ implements IExtension, NodeChangeAnnouncer{
 				if (child.hasVisibleContent(filter)) {
 					childShown = true;
 					break;
-				} else if (canBeUnfoldedOnCurrentView(child, filter)) {
+				} else if (canBeUnfoldedOnCurrentView(child, filter)
+				        || SummaryNode.isSummaryNode(child) && child.subtreeHasVisibleContent(filter)) {
 					unfoldUpToVisibleChild(child, filter);
 					childShown = true;
 					break;
