@@ -1,16 +1,17 @@
-<map version="freeplane 1.5.9">
-<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Freeplane 1.2&#xa;Functions" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1323787510068" BACKGROUND_COLOR="#00ff99" VGAP_QUANTITY="0.0 px">
+<map version="freeplane 1.9.0">
+<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<node TEXT="Basic Freeplane&#xa;Functions" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1620564178204" BACKGROUND_COLOR="#00ff99">
 <icon BUILTIN="bee"/>
 <font BOLD="true"/>
 <hook NAME="MapStyle">
-    <properties fit_to_viewport="false;" show_icon_for_attributes="false" show_note_icons="false" show_notes_in_map="false"/>
+    <properties show_icon_for_attributes="false" show_notes_in_map="false" show_note_icons="false" fit_to_viewport="false;"/>
 
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" MAX_WIDTH="600.0 px" MIN_WIDTH="1.0 px">
+<stylenode LOCALIZED_TEXT="default" ID="ID_1511227934" COLOR="#000000" STYLE="fork" MAX_WIDTH="600 px" MIN_WIDTH="1 px">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1511227934" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="8" BOLD="false" ITALIC="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
@@ -22,6 +23,7 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#4e85f8" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#4e85f8"/>
 <stylenode LOCALIZED_TEXT="styles.ok">
 <icon BUILTIN="button_ok"/>
 </stylenode>
@@ -123,15 +125,14 @@
 </stylenode>
 </map_styles>
 </hook>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
   </head>
   <body>
     <p>
-      Hover with the cursor over the different texts to unhide links to <b><i><i>Tutorial</i></i></b>&#160;and <b><i>Documentation</i></b>.
+      Hover with the cursor over the different texts to unhide links to <b><i>Tutorial</i></b>&nbsp;and <b><i>Documentation</i></b>.
     </p>
     <p>
       
@@ -143,7 +144,7 @@
       
     </p>
     <p>
-      To switch lthe<b>&#160;Note panel</b>&#160;on/off:
+      To switch lthe<b>&nbsp;Note panel</b>&nbsp;on/off:
     </p>
     <p>
       
@@ -154,7 +155,13 @@
   </body>
 </html>
 </richcontent>
-<node POSITION="left" ID="ID_1556354626" CREATED="1319792091506" MODIFIED="1329860019627" HGAP_QUANTITY="1.0 px" VSHIFT_QUANTITY="-32.0 px" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="" POSITION="left" ID="ID_1000966299" CREATED="1455910852393" MODIFIED="1455910852393">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Other" POSITION="left" ID="ID_454770946" CREATED="1319875565802" MODIFIED="1620564016957">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node ID="ID_739070756" CREATED="1319915355170" MODIFIED="1620564016959" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -162,15 +169,12 @@
   </head>
   <body>
     <p>
-      In <b>node core</b>
+      <b>Spell check</b>&#160;&amp; Academic Writing suite
     </p>
   </body>
 </html>
-
 </richcontent>
-<font BOLD="false"/>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -181,29 +185,28 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1337127972">Basic map</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_141336344">Spelling dictionaries</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_170927482">Academic writing suite</a>
       </li>
+
     </ul>
   </body>
-</html>
-</richcontent>
-<edge STYLE="sharp_bezier" COLOR="#000099" WIDTH="2"/>
-<node ID="ID_1266354824" CREATED="1319799106394" MODIFIED="1334839359981" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node ID="ID_1058310897" CREATED="1319923489096" MODIFIED="1620564016961" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
     
   </head>
   <body>
-    <p style="text-align: center">
-      <b>Text </b>&#160;with <a href="http://www.freeplane.org">in-line</a>&#160;hyperlink(s), and:
+    <p>
+      <b>Script</b>&#160;&amp; <b>Add-on</b>
     </p>
   </body>
 </html>
-
 </richcontent>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -214,30 +217,14 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_265318117">Edit &gt; Node core text</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_519455593">Writing and using scripts</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1156954596">Add-ons</a>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal" WIDTH="thin"/>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
-<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1336132729252" HGAP_QUANTITY="316.0 px" VSHIFT_QUANTITY="-75.0 px" STYLE="bubble"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <img src="Images/doc/freeplaneApplications.png"/>
-  </body>
-</html>
-
-</richcontent>
-<hook NAME="FreeNode"/>
-<edge STYLE="hide_edge"/>
-<richcontent TYPE="NOTE">
-
+<node TEXT="Publish &amp; share" ID="ID_671406309" CREATED="1330890243562" MODIFIED="1620564016961"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -248,14 +235,14 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1795262306">Image (node core)</a>
+        <i>Help &gt;  </i><i>Tutorial</i><i>&#160;<a href="freeplaneUserGuide.mm#ID_1613405030">7. Publishing and sharing</a></i>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
-<node ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1323786286031" LINK="#ID_784697063" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="-2.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+<node ID="ID_1603681371" CREATED="1319875570304" MODIFIED="1620564016961" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -263,36 +250,12 @@
   </head>
   <body>
     <p>
-      Internal arrow-link (one), or:<br/>
+      <b>Template</b>&#160;&amp; <b>Style</b>
     </p>
   </body>
 </html>
-
 </richcontent>
-<edge STYLE="horizontal" WIDTH="thin"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1830541497">Green arrow link</a>&#160;
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="External arrow-link (one), and:" ID="ID_1537075496" CREATED="1288542605210" MODIFIED="1323786343283" LINK="http://kioo.nl/" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="-3.0 px" TEXT_SHORTENED="true">
-<edge STYLE="horizontal" WIDTH="thin"/>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -303,20 +266,27 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1913035829">Red arrow link</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1268042238">Template-like information</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1838680824">Styles</a>
       </li>
     </ul>
   </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node ID="ID_1987204825" CREATED="1319925023100" MODIFIED="1620564016962" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Filter</b>&#160;&amp; S<b>ort</b>
+    </p>
+  </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Icons" ID="ID_233656995" CREATED="1288542843639" MODIFIED="1323786415950" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="-7.0 px" TEXT_SHORTENED="true">
-<icon BUILTIN="bookmark"/>
-<icon BUILTIN="button_ok"/>
-<icon BUILTIN="closed"/>
-<edge STYLE="horizontal" WIDTH="thin"/>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -327,85 +297,19 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_715025500">Icons</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_828862571">Filtering and finding nodes</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1014457432">Sorting</a>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Progress %" ID="ID_1826346574" CREATED="1319793474635" MODIFIED="1323786473670">
-<icon BUILTIN="25%"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_707469329">Progress</a>&#160;
-      </li>
-
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal" WIDTH="thin"/>
-</node>
-<node TEXT="Automatic node number" ID="ID_1097461051" CREATED="1305277030363" MODIFIED="1323786528270" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1531819965">Automatic node numbering</a>&#160;
-      </li>
-
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal" WIDTH="thin"/>
-</node>
-<node TEXT="Node width" ID="ID_713840726" CREATED="1323095840947" MODIFIED="1323786722366" TEXT_SHORTENED="true">
-<edge STYLE="horizontal" WIDTH="thin"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      See
-    </p>
-    <ul>
-      <li>
-        <a href="freeplaneUserGuide.mm#ID_15604512"><i>Tutorial</i></a>
-      </li>
-
-    </ul>
-  </body>
-</html>
-</richcontent>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
 </node>
-<node TEXT="Free positionable node" POSITION="left" ID="ID_1280208201" CREATED="1319797134021" MODIFIED="1320074445132" HGAP_QUANTITY="140.0 px" VSHIFT_QUANTITY="19.0 px" TEXT_SHORTENED="true">
-<hook NAME="FreeNode"/>
+<node TEXT="" POSITION="left" ID="ID_1520416593" CREATED="1455910852401" MODIFIED="1620563303935">
+<hook NAME="SummaryNode"/>
+<node TEXT="Summary node&#xa;(accolade)" ID="ID_499898058" CREATED="1319795597294" MODIFIED="1620564016962">
 <font BOLD="true"/>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -416,13 +320,18 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneUserGuide.mm#ID_651594550">Summary node group</a>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS">
+</html></richcontent>
+<edge COLOR="#ff00ff" WIDTH="3"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node TEXT="Special" POSITION="left" ID="ID_206364326" CREATED="1319795251644" MODIFIED="1620564016962">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node ID="ID_1885496887" CREATED="1288542096079" MODIFIED="1620564016963" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -430,15 +339,15 @@
   </head>
   <body>
     <p>
-      State
+      Reminder (<b>Calendar</b>)
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="Floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_231217112" CREATED="1319797190586" MODIFIED="1320076203902" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true">
-<font BOLD="true"/>
-<richcontent TYPE="NOTE">
-
+<hook NAME="plugins/TimeManagementReminder.xml">
+    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
+</hook>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -449,13 +358,14 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1959496513">Date and time actions</a>
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS">
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node ID="ID_49859005" CREATED="1319800320485" MODIFIED="1620564016963" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -463,31 +373,12 @@
   </head>
   <body>
     <p>
-      Standard Style
+      <b>Calculate</b>&#160;=3+4
     </p>
   </body>
 </html>
 </richcontent>
-</node>
-</node>
-<node TEXT="Free + floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_188185624" CREATED="1319788879948" MODIFIED="1329860033948" HGAP_QUANTITY="431.0 px" VSHIFT_QUANTITY="43.0 px" TEXT_SHORTENED="true">
-<hook NAME="FreeNode"/>
-<font BOLD="true"/>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      (double-click free area)
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -498,14 +389,272 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_448338872">Perform calculation</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="=3 + 4" ID="ID_38981929" CREATED="1319800292281" MODIFIED="1620564016964" TEXT_SHORTENED="true"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The calculated result
+    </p>
+    <p>
+      does not show if the
+    </p>
+    <p>
+      map is in read only mode !
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1620564016964" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>Protect</b>&#160;with password
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1232153769">Protecting nodes</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node TEXT="Format node core" POSITION="left" ID="ID_1983670807" CREATED="1319795759589" MODIFIED="1620564016964" TEXT_SHORTENED="true"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1778719162">Formatting and styling</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Blinking" ID="ID_1280590016" CREATED="1288548004325" MODIFIED="1620564016965">
+<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Font" ID="ID_8536216" CREATED="1270892460659" MODIFIED="1620564016965">
+<font NAME="SansSerif" SIZE="12"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Dialog font" ID="ID_825914156" CREATED="1270892460659" MODIFIED="1620564016965">
+<font NAME="Dialog" SIZE="21"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Verdana" ID="ID_256616219" CREATED="1270892460659" MODIFIED="1620564016965">
+<font NAME="Verdana" SIZE="12"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Times New Roman" ID="ID_1308363481" CREATED="1270892460659" MODIFIED="1620564016965">
+<font NAME="Times New Roman" SIZE="16"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node TEXT="Color" ID="ID_1602479950" CREATED="1288536644733" MODIFIED="1620564016965">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Node background color" ID="ID_113421480" CREATED="1288536658726" MODIFIED="1620564016965" BACKGROUND_COLOR="#00ff00">
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Node color" ID="ID_1350125844" CREATED="1288536652401" MODIFIED="1620564016966" COLOR="#ff0066">
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node ID="ID_1794331644" CREATED="1288536624648" MODIFIED="1620564016966" STYLE="bubble"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Node core in <b>bubble</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node TEXT="Relations" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1620564016950" STYLE="fork"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <a href="freeplaneUserGuide.mm#ID_448981847">&nbsp;xx</a>&nbsp;
+    </p>
+  </body>
+</html>
+</richcontent>
+<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="above a" ID="ID_1863548649" CREATED="1288536207761" MODIFIED="1620564016966" STYLE="bubble">
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="node a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1620564016967" STYLE="bubble">
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="5" TRANSPARENCY="80" FONT_SIZE="8" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="parent" TARGET_LABEL="grand child" MIDDLE_LABEL="hierarchy" STARTINCLINATION="55.94904 pt;67.41401 pt;" ENDINCLINATION="63.74522 pt;76.12739 pt;" STARTARROW="NONE" ENDARROW="NONE"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="node b" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1620564016967" STYLE="bubble">
+<edge WIDTH="thin"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="node c" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1620564016967" TEXT_SHORTENED="true" STYLE="bubble"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      This text only
+    </p>
+    <p>
+      appears in
+    </p>
+    <p>
+      <b>tool tip</b>
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="etc." ID="ID_1829616131" CREATED="1319919735822" MODIFIED="1620564016967">
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="below a" ID="ID_975219834" CREATED="1288536218798" MODIFIED="1620564016967" HGAP_QUANTITY="8.03822 pt" VSHIFT_QUANTITY="28.43312 pt" STYLE="bubble">
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node TEXT="Cloud" STYLE_REF="Reference" POSITION="right" ID="ID_1697684606" CREATED="1319873881764" MODIFIED="1620564166581"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="star" ID="ID_1434127019" CREATED="1305277804466" MODIFIED="1620564016968">
+<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
-<node POSITION="right" ID="ID_1077719150" CREATED="1319792123071" MODIFIED="1319923775793" VGAP_QUANTITY="0.0 px" HGAP_QUANTITY="-10.0 px" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+<node TEXT="rectangle" ID="ID_1198357672" CREATED="1305277572322" MODIFIED="1620564016968">
+<cloud COLOR="#f0f0f0" SHAPE="RECT"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node POSITION="right" ID="ID_1125102706" CREATED="1319918074662" MODIFIED="1620564016968" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i>Below node extensions </i>
+    </p>
+    <p>
+      <i>or in separate window</i>: <b>Note</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<edge COLOR="#006633" WIDTH="2"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_274601394">Note</a>&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node POSITION="right" ID="ID_1077719150" CREATED="1319792123071" MODIFIED="1620564124890" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -520,11 +669,9 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <font BOLD="false"/>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -535,19 +682,84 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
+        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<edge STYLE="sharp_bezier" COLOR="#cc0000" WIDTH="2"/>
-<node TEXT="Below this node core:" ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1336132743870" STYLE="bubble" VGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="-9.0 px">
+<edge COLOR="#cc0000" WIDTH="2"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Edges" STYLE_REF="Reference" ID="ID_1944496966" CREATED="1319872918353" MODIFIED="1620564016969">
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="55.03185 pt;14.67516 pt;" ENDINCLINATION="55.03185 pt;14.67516 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-21.55414 pt;41.73248 pt;" ENDINCLINATION="-21.55414 pt;41.73248 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-62.36943 pt;11.46497 pt;" ENDINCLINATION="-62.36943 pt;11.46497 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Format edge" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1620564016969">
+<edge STYLE="bezier"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="color" ID="ID_939577724" CREATED="1288536788635" MODIFIED="1620564016969">
+<edge COLOR="#ff0066"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="style" ID="ID_784697063" CREATED="1288536745875" MODIFIED="1620564016969">
+<edge STYLE="sharp_bezier"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Sharply curved" ID="ID_895403951" CREATED="1288538470332" MODIFIED="1620564016969">
+<edge STYLE="sharp_bezier" WIDTH="4"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Sharp" ID="ID_1647821228" CREATED="1288538242377" MODIFIED="1620564016969" HGAP_QUANTITY="35.55414 pt" VSHIFT_QUANTITY="0.9172 pt">
+<edge STYLE="sharp_linear" WIDTH="4"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Smoothly curved" ID="ID_609820168" CREATED="1288538240451" MODIFIED="1620564016969">
+<edge STYLE="bezier" WIDTH="4"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Linear" ID="ID_884692926" CREATED="1288538234095" MODIFIED="1620564016969">
+<edge STYLE="linear" WIDTH="4"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="hidden" ID="ID_1675552701" CREATED="1288538507390" MODIFIED="1620564016970" BACKGROUND_COLOR="#00ffff">
+<edge STYLE="hide_edge" WIDTH="4"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node TEXT="width" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1620564016970">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="8" OBJECT="java.lang.Long|8" ID="ID_1828139471" CREATED="1288541479345" MODIFIED="1620564016970">
+<edge WIDTH="8"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="3" OBJECT="java.lang.Long|3" ID="ID_1152182019" CREATED="1288542920337" MODIFIED="1620564016970">
+<edge WIDTH="3"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="0" OBJECT="java.lang.Long|0" ID="ID_1693976270" CREATED="1288541473878" MODIFIED="1620564016970">
+<edge WIDTH="thin"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Below this node core:" ID="ID_1010722858" CREATED="1288646162992" MODIFIED="1620564016970" STYLE="bubble">
 <font ITALIC="false"/>
 <attribute NAME="a1" VALUE="value1"/>
 <attribute NAME="a2" VALUE="value2"/>
-<richcontent TYPE="DETAILS">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
     
@@ -557,12 +769,101 @@
       <b>Text </b>&#160;with <a href="https://www.freeplane.org">in-line</a>&#160;hyperlink(s), and:
     </p>
   </body>
+</html></richcontent>
+<hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
+<edge WIDTH="thin"/>
+<hook URI="Images/doc/freeplaneApplications.png" SIZE="0.4148148" NAME="ExternalObject"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node STYLE_REF="Reference" ID="ID_1639134686" CREATED="1319873881764" MODIFIED="1620564016970"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Sizeable <b>image</b>&#160;(one)
+    </p>
+  </body>
 </html>
 </richcontent>
-<hook EQUATION="\begin{array}{l}&#xa;\mbox{I}^\fgcolor{ff0000}{\heartsuit}\mbox{\JLaTeXMath}\\&#xa;\end{array}" NAME="plugins/latex/LatexNodeHook.properties"/>
-<edge STYLE="bezier" WIDTH="thin"/>
-<hook URI="Images/doc/freeplaneApplications.png" SIZE="0.4148148" NAME="ExternalObject"/>
-<node STYLE_REF="Reference" ID="ID_965583686" CREATED="1319872918353" MODIFIED="1320248359904" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="-1.0 px"><richcontent TYPE="NODE">
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-60.99363 pt;-13.29936 pt;" ENDINCLINATION="-60.99363 pt;-13.29936 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<font BOLD="false"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node STYLE_REF="Reference" ID="ID_1064212525" CREATED="1319872918353" MODIFIED="1620564016971"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Scientific <b>formula</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1064212525" STARTINCLINATION="-42.64968 pt;-7.79618 pt;" ENDINCLINATION="-42.64968 pt;-7.79618 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<font BOLD="false"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Attributes" STYLE_REF="Reference" ID="ID_1546010515" CREATED="1319872918353" MODIFIED="1620564016971">
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1546010515" STARTINCLINATION="-27.51592 pt;0 pt;" ENDINCLINATION="-27.51592 pt;0 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node STYLE_REF="Reference" ID="ID_965583686" CREATED="1319872918353" MODIFIED="1620564016971"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -574,11 +875,9 @@
     </p>
   </body>
 </html>
-
 </richcontent>
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_965583686" STARTINCLINATION="-65;17;" ENDINCLINATION="-65;17;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<richcontent TYPE="NOTE">
-
+<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_965583686" STARTINCLINATION="-29.35032 pt;7.79618 pt;" ENDINCLINATION="-29.35032 pt;7.79618 pt;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -589,16 +888,16 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
+        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<hook NAME="FreeNode"/>
 <font BOLD="false"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
-<node ID="ID_242844262" CREATED="1319799725287" MODIFIED="1323787594293" HGAP_QUANTITY="370.0 px" VSHIFT_QUANTITY="29.0 px" BACKGROUND_COLOR="#ffff99">
+<node ID="ID_242844262" CREATED="1319799725287" MODIFIED="1620564016971" BACKGROUND_COLOR="#ffff99">
 <icon BUILTIN="yes"/>
 <richcontent TYPE="NODE">
 
@@ -618,12 +917,8 @@
     </p>
   </body>
 </html>
-
 </richcontent>
-<hook NAME="FreeNode"/>
-<edge STYLE="hide_edge"/>
-<richcontent TYPE="NOTE">
-
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -634,815 +929,36 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i> <a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
+        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-</node>
-<node TEXT="Attributes" STYLE_REF="Reference" ID="ID_1546010515" CREATED="1319872918353" MODIFIED="1320248348563" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="59.0 px">
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1546010515" STARTINCLINATION="-61;0;" ENDINCLINATION="-61;0;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<hook NAME="FreeNode"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node STYLE_REF="Reference" ID="ID_1064212525" CREATED="1319872918353" MODIFIED="1320248333790" HGAP_QUANTITY="240.0 px" VSHIFT_QUANTITY="119.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Scientific <b>formula</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1064212525" STARTINCLINATION="-94;-18;" ENDINCLINATION="-94;-18;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<font BOLD="false"/>
-</node>
-<node STYLE_REF="Reference" ID="ID_1639134686" CREATED="1319873881764" MODIFIED="1320248317831" HGAP_QUANTITY="40.0 px" VSHIFT_QUANTITY="90.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Sizeable <b>image</b>&#160;(one)
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1639134686" STARTINCLINATION="-134;-30;" ENDINCLINATION="-134;-30;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<font BOLD="false"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node ID="ID_1802101455" CREATED="1319799725287" MODIFIED="1329859505294" HGAP_QUANTITY="138.0 px" VSHIFT_QUANTITY="192.0 px" BACKGROUND_COLOR="#ffff99">
-<icon BUILTIN="yes"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <i>Drag here </i>
-    </p>
-    <p>
-      <i>to resize</i>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1802101455" STARTINCLINATION="-22;-15;" ENDINCLINATION="-22;-15;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<edge STYLE="hide_edge"/>
-<hook NAME="FreeNode"/>
-</node>
-</node>
-<node TEXT="Edges" STYLE_REF="Reference" FOLDED="true" ID="ID_1944496966" CREATED="1319872918353" MODIFIED="1329859454342" HGAP_QUANTITY="-60.0 px" VSHIFT_QUANTITY="-91.0 px">
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-137;25;" ENDINCLINATION="-137;25;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="-48;91;" ENDINCLINATION="-48;91;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1944496966" STARTINCLINATION="120;32;" ENDINCLINATION="120;32;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<node TEXT="Format edge" ID="ID_1601648824" CREATED="1319796287461" MODIFIED="1319922320701" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="-172.0 px">
-<edge STYLE="bezier"/>
-<node TEXT="dikte tak" ID="ID_241458321" CREATED="1288541466835" MODIFIED="1288646970331" VSHIFT_QUANTITY="7.0 px">
-<node TEXT="dun" ID="ID_1693976270" CREATED="1288541473878" MODIFIED="1288541507504" HGAP_QUANTITY="42.0 px"/>
-<node TEXT="punt 3" ID="ID_1152182019" CREATED="1288542920337" MODIFIED="1288542944097" HGAP_QUANTITY="42.0 px" VSHIFT_QUANTITY="9.0 px">
-<edge WIDTH="2"/>
-</node>
-<node TEXT="punt 8" ID="ID_1828139471" CREATED="1288541479345" MODIFIED="1288542967746" HGAP_QUANTITY="42.0 px" VSHIFT_QUANTITY="5.0 px">
-<edge WIDTH="8"/>
-</node>
-</node>
-<node TEXT="vorm tak" ID="ID_784697063" CREATED="1288536745875" MODIFIED="1289122245318" HGAP_QUANTITY="21.0 px" VSHIFT_QUANTITY="1.0 px">
-<node TEXT="Rechte lijn" ID="ID_884692926" CREATED="1288538234095" MODIFIED="1305276198448" HGAP_QUANTITY="53.0 px" VSHIFT_QUANTITY="-1.0 px">
-<edge STYLE="linear" WIDTH="4"/>
-</node>
-<node TEXT="Bocht" ID="ID_609820168" CREATED="1288538240451" MODIFIED="1288539867421" HGAP_QUANTITY="57.0 px" VSHIFT_QUANTITY="9.0 px">
-<edge STYLE="bezier" WIDTH="4"/>
-</node>
-<node TEXT="Taps toelopend recht" ID="ID_1647821228" CREATED="1288538242377" MODIFIED="1288540221963" HGAP_QUANTITY="60.0 px" VSHIFT_QUANTITY="10.0 px">
-<edge STYLE="sharp_linear" WIDTH="4"/>
-</node>
-<node TEXT="Taps toelopend bocht" ID="ID_895403951" CREATED="1288538470332" MODIFIED="1288540434497" HGAP_QUANTITY="70.0 px" VSHIFT_QUANTITY="15.0 px">
-<edge STYLE="sharp_bezier" WIDTH="4"/>
-</node>
-<node TEXT="Verborgen tak" ID="ID_1675552701" CREATED="1288538507390" MODIFIED="1288548679856" HGAP_QUANTITY="77.0 px" VSHIFT_QUANTITY="18.0 px" BACKGROUND_COLOR="#00ffff">
-<edge STYLE="hide_edge" WIDTH="4"/>
-</node>
-</node>
-<node TEXT="takkleur" ID="ID_939577724" CREATED="1288536788635" MODIFIED="1288542068616">
-<edge COLOR="#ff0066"/>
-</node>
-</node>
-</node>
-</node>
-<node POSITION="right" ID="ID_1125102706" CREATED="1319918074662" MODIFIED="1320001831898" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <i>Below node extensions </i>
-    </p>
-    <p>
-      <i>or in separate window</i>: <b>Note</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<edge STYLE="sharp_bezier" COLOR="#006633" WIDTH="2"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_274601394">Note</a>&#160;
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Cloud" STYLE_REF="Reference" FOLDED="true" POSITION="right" ID="ID_1697684606" CREATED="1319873881764" MODIFIED="1329860050094" HGAP_QUANTITY="510.0 px" VSHIFT_QUANTITY="79.0 px">
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1697684606" STARTINCLINATION="-79;67;" ENDINCLINATION="-79;67;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<node TEXT="rectangle" ID="ID_1198357672" CREATED="1305277572322" MODIFIED="1319834257585" HGAP_QUANTITY="48.0 px" VSHIFT_QUANTITY="4.0 px">
-<cloud COLOR="#f0f0f0" SHAPE="RECT"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="star" ID="ID_1434127019" CREATED="1305277804466" MODIFIED="1319921172289">
-<cloud COLOR="#f0f0f0" SHAPE="STAR"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="Relations" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1330611653263" STYLE="fork" HGAP_QUANTITY="-56.0 px" VSHIFT_QUANTITY="27.0 px"><richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="freeplaneUserGuide.mm#ID_448981847">&#160;xx</a>&#160;
-    </p>
-  </body>
-</html>
-</richcontent>
-<cloud COLOR="#f0f0f0" SHAPE="ARC"/>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node TEXT="above a" ID="ID_1863548649" CREATED="1288536207761" MODIFIED="1319919454936" HGAP_QUANTITY="37.0 px" VSHIFT_QUANTITY="-13.0 px" STYLE="bubble"/>
-<node TEXT="node a" ID="ID_1119041406" CREATED="1288535672221" MODIFIED="1334839310685" STYLE="bubble" HGAP_QUANTITY="53.0 px" VSHIFT_QUANTITY="7.0 px">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="5" TRANSPARENCY="80" FONT_SIZE="8" FONT_FAMILY="SansSerif" DESTINATION="ID_268922755" SOURCE_LABEL="parent" TARGET_LABEL="grand child" MIDDLE_LABEL="hierarchy" STARTINCLINATION="-2;23;" ENDINCLINATION="-21;59;" STARTARROW="NONE" ENDARROW="NONE"/>
-<node TEXT="node b" ID="ID_1908863616" CREATED="1288535688688" MODIFIED="1319920379262" VGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="10.0 px" STYLE="bubble">
-<edge STYLE="bezier" WIDTH="thin"/>
-<node ID="ID_1947425814" CREATED="1319799725287" MODIFIED="1323787460834" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="-46.0 px" BACKGROUND_COLOR="#ffff99">
-<icon BUILTIN="yes"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Indicator <b>tool tip</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1947425814" STARTINCLINATION="4;47;" ENDINCLINATION="4;47;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<edge STYLE="hide_edge"/>
+</node>
+</node>
+</node>
+<node TEXT="Latest features" POSITION="right" ID="ID_1036249423" CREATED="1620559944412" MODIFIED="1620564178203" LINK="latestFreeplaneFeatures.mm" FORMAT_AS_HYPERLINK="true" TEXT_ALIGN="RIGHT" MIN_WIDTH="0 cm" HGAP_QUANTITY="-12.14013 pt" VSHIFT_QUANTITY="190.31847 pt">
+<font SIZE="12"/>
+<cloud COLOR="#ffcccc" SHAPE="ARC"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 <hook NAME="FreeNode"/>
 </node>
-<node ID="ID_1143366438" CREATED="1319799725287" MODIFIED="1323787452551" HGAP_QUANTITY="110.0 px" VSHIFT_QUANTITY="-16.0 px" BACKGROUND_COLOR="#ffff99">
-<icon BUILTIN="yes"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Indicator&#160;<b>Unfold</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1143366438" STARTINCLINATION="-41;22;" ENDINCLINATION="-41;22;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<font BOLD="false"/>
-<edge STYLE="hide_edge"/>
-<hook NAME="FreeNode"/>
-</node>
-<node TEXT="node c" FOLDED="true" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1319920388512" VGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true" STYLE="bubble"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      This text only
-    </p>
-    <p>
-      appears in
-    </p>
-    <p>
-      <b>tool tip</b>
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="etc." ID="ID_1829616131" CREATED="1319919735822" MODIFIED="1319919743997"/>
-</node>
-<node STYLE_REF="Reference" ID="ID_389809087" CREATED="1319872918353" MODIFIED="1320248200160" HGAP_QUANTITY="140.0 px" VSHIFT_QUANTITY="79.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Connector</b>
-    </p>
-    <p>
-      (bilateral)
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_389809087" STARTINCLINATION="-80;-24;" ENDINCLINATION="-80;-24;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1073407528">Connector</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<font BOLD="false"/>
-</node>
-<node TEXT="Label" STYLE_REF="Reference" ID="ID_1560136360" CREATED="1319872918353" MODIFIED="1320248277005" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="99.0 px">
-<arrowlink SHAPE="LINE" COLOR="#0033cc" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1560136360" STARTINCLINATION="-4;-35;" ENDINCLINATION="-4;-35;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1073407528">Connector</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-</node>
-</node>
-</node>
-<node TEXT="below a" ID="ID_975219834" CREATED="1288536218798" MODIFIED="1319919509381" HGAP_QUANTITY="27.0 px" VSHIFT_QUANTITY="34.0 px" STYLE="bubble"/>
-</node>
-<node STYLE_REF="Reference" POSITION="right" ID="ID_1828022839" CREATED="1319963720129" MODIFIED="1329859481362" HGAP_QUANTITY="541.0 px" VSHIFT_QUANTITY="183.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Connector</b>
-    </p>
-    <p>
-      (unilateral)
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1828022839" STARTINCLINATION="-60;-48;" ENDINCLINATION="-60;-48;" STARTARROW="NONE" ENDARROW="DEFAULT"/>
-<hook NAME="FreeNode"/>
-<font BOLD="false"/>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1073407528">Connector</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Format node core" FOLDED="true" POSITION="left" ID="ID_1983670807" CREATED="1319795759589" MODIFIED="1320074527656" HGAP_QUANTITY="10.0 px" VSHIFT_QUANTITY="49.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1778719162">Formatting and styling</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<node ID="ID_1794331644" CREATED="1288536624648" MODIFIED="1320003893255" STYLE="bubble" VSHIFT_QUANTITY="110.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Node core in <b>bubble</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-</node>
-<node TEXT="Color" ID="ID_1602479950" CREATED="1288536644733" MODIFIED="1320005140877">
-<node TEXT="Node color" ID="ID_1350125844" CREATED="1288536652401" MODIFIED="1320005085890" COLOR="#ff0066"/>
-<node TEXT="Node background color" ID="ID_113421480" CREATED="1288536658726" MODIFIED="1320005121096" BACKGROUND_COLOR="#00ff00"/>
-<node TEXT="achtergrondkleur mindmap" ID="ID_1843027739" CREATED="1288536750875" MODIFIED="1288542075698"/>
-</node>
-<node TEXT="Font" ID="ID_8536216" CREATED="1270892460659" MODIFIED="1320005168639">
-<font NAME="SansSerif" SIZE="12"/>
-<node TEXT="Times New Roman" ID="ID_1308363481" CREATED="1270892460659" MODIFIED="1271973714732">
-<font NAME="Times New Roman" SIZE="16"/>
-</node>
-<node TEXT="Verdana" ID="ID_256616219" CREATED="1270892460659" MODIFIED="1271973720643">
-<font NAME="Verdana" SIZE="12"/>
-</node>
-<node TEXT="Dialog font" ID="ID_825914156" CREATED="1270892460659" MODIFIED="1271973770585">
-<font NAME="Dialog" SIZE="21"/>
-</node>
-</node>
-<node TEXT="Blinking" ID="ID_1280590016" CREATED="1288548004325" MODIFIED="1320005179849" VSHIFT_QUANTITY="-13.0 px">
-<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
-</node>
-</node>
-<node TEXT="" POSITION="left" ID="ID_1000966299" CREATED="1455910852393" MODIFIED="1455910852393">
-<hook NAME="FirstGroupNode"/>
-</node>
-<node TEXT="Special" POSITION="left" ID="ID_206364326" CREATED="1319795251644" MODIFIED="1319991650705" VSHIFT_QUANTITY="20.0 px">
-<node ENCRYPTED_CONTENT="t/NS/HPSppU= VbQIDGWIdFE=" ID="ID_36040841" CREATED="1288542236861" MODIFIED="1320074831732" TEXT_SHORTENED="true" HGAP_QUANTITY="30.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Protect</b>&#160;with password
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1232153769">Protecting nodes</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node ID="ID_49859005" CREATED="1319800320485" MODIFIED="1320074545705" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Calculate</b>&#160;=3+4
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_448338872">Perform calculation</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<node TEXT="=3 + 4" ID="ID_38981929" CREATED="1319800292281" MODIFIED="1320162604957" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      The calculated result
-    </p>
-    <p>
-      does not show if the
-    </p>
-    <p>
-      map is in read only mode !
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node ID="ID_1885496887" CREATED="1288542096079" MODIFIED="1320074842745" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="10.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Reminder (<b>Calendar</b>)
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<hook NAME="plugins/TimeManagementReminder.xml">
-    <Parameters REMINDUSERAT="2077460580480" PERIOD="1" UNIT="DAY"/>
-</hook>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1959496513">Date and time actions</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
-<node TEXT="Other" POSITION="left" ID="ID_454770946" CREATED="1319875565802" MODIFIED="1320075121393" VSHIFT_QUANTITY="30.0 px">
-<node ID="ID_1987204825" CREATED="1319925023100" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Filter</b>&#160;&amp; S<b>ort</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_828862571">Filtering and finding nodes</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1014457432">Sorting</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal"/>
-</node>
-<node ID="ID_1603681371" CREATED="1319875570304" MODIFIED="1323787030981" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Template</b>&#160;&amp; <b>Style</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1268042238">Template-like information</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1838680824">Styles</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal"/>
-</node>
-<node TEXT="Publish &amp; share" ID="ID_671406309" CREATED="1330890243562" MODIFIED="1330891132190"><richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i><i>&#160;<a href="freeplaneUserGuide.mm#ID_1613405030">7. Publishing and sharing</a></i>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node ID="ID_1058310897" CREATED="1319923489096" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Script</b>&#160;&amp; <b>Add-on</b>
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_519455593">Writing and using scripts</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1156954596">Add-ons</a>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal"/>
-</node>
-<node ID="ID_739070756" CREATED="1319915355170" MODIFIED="1320075051224" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>Spell check</b>&#160;&amp; Academic Writing suite
-    </p>
-  </body>
-</html>
-
-</richcontent>
-<richcontent TYPE="NOTE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <b>See</b>
-    </p>
-    <ul>
-      <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_141336344">Spelling dictionaries</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_170927482">Academic writing suite</a>
-      </li>
-
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="horizontal"/>
-</node>
-</node>
-<node TEXT="" POSITION="left" ID="ID_1520416593" CREATED="1455910852401" MODIFIED="1455910852401">
-<hook NAME="SummaryNode"/>
-<node TEXT="Summary node&#xa;(accolade)" ID="ID_499898058" CREATED="1319795597294" MODIFIED="1323786930205" HGAP_QUANTITY="40.0 px">
+<node TEXT="Free + floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_188185624" CREATED="1319788879948" MODIFIED="1620564016971" TEXT_SHORTENED="true">
 <font BOLD="true"/>
-<richcontent TYPE="NOTE">
-
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      (double-click free area)
+    </p>
+  </body>
+</html></richcontent>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
     
@@ -1453,13 +969,307 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneUserGuide.mm#ID_651594550">Summary node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Free positionable node" POSITION="left" ID="ID_1280208201" CREATED="1319797134021" MODIFIED="1620564016972" TEXT_SHORTENED="true">
+<font BOLD="true"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<edge COLOR="#ff00ff" WIDTH="3"/>
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      State
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Floating node" LOCALIZED_STYLE_REF="defaultstyle.floating" ID="ID_231217112" CREATED="1319797190586" MODIFIED="1620564016972" TEXT_SHORTENED="true">
+<font BOLD="true"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Standard Style
+    </p>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+<node POSITION="left" ID="ID_1556354626" CREATED="1319792091506" MODIFIED="1620564016972" BACKGROUND_COLOR="#ffff00" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In <b>node core</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<font BOLD="false"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1337127972">Basic map</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<edge COLOR="#000099" WIDTH="2"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Node width" ID="ID_713840726" CREATED="1323095840947" MODIFIED="1620564016973" TEXT_SHORTENED="true">
+<edge WIDTH="thin"/>
+<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      See
+    </p>
+    <ul>
+      <li>
+        <a href="freeplaneUserGuide.mm#ID_15604512"><i>Tutorial</i></a>
+      </li>
+
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Automatic node number" ID="ID_1097461051" CREATED="1305277030363" MODIFIED="1620564016973" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1531819965">Automatic node numbering</a>&#160;
+      </li>
+
+    </ul>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Progress %" ID="ID_1826346574" CREATED="1319793474635" MODIFIED="1620564016973">
+<icon BUILTIN="25%"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_707469329">Progress</a>&#160;
+      </li>
+
+    </ul>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="Icons" ID="ID_233656995" CREATED="1288542843639" MODIFIED="1620564016974" TEXT_SHORTENED="true">
+<icon BUILTIN="bookmark"/>
+<icon BUILTIN="button_ok"/>
+<icon BUILTIN="closed"/>
+<edge WIDTH="thin"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_715025500">Icons</a>&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node TEXT="External arrow-link (one), and:" ID="ID_1537075496" CREATED="1288542605210" MODIFIED="1620564016974" LINK="http://kioo.nl/" TEXT_SHORTENED="true">
+<edge WIDTH="thin"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1913035829">Red arrow link</a>&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node ID="ID_1519332680" CREATED="1288542452827" MODIFIED="1620564016974" LINK="#ID_784697063" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Internal arrow-link (one), or:<br/>
+    </p>
+  </body>
+</html>
+</richcontent>
+<edge WIDTH="thin"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1830541497">Green arrow link</a>&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node ID="ID_300419503" CREATED="1319798221748" MODIFIED="1620564016975" STYLE="bubble"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/doc/freeplaneApplications.png"/>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1795262306">Image (node core)</a>
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+<node ID="ID_1266354824" CREATED="1319799106394" MODIFIED="1620564016975" STYLE="fork" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      <b>Text </b>&#160;with <a href="http://www.freeplane.org">in-line</a>&#160;hyperlink(s), and:
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <b>See</b>
+    </p>
+    <ul>
+      <li>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_265318117">Edit &gt; Node core text</a>&#160;
+      </li>
+    </ul>
+  </body>
+</html></richcontent>
+<edge WIDTH="thin"/>
+<hook NAME="AlwaysUnfoldedNode"/>
 </node>
 </node>
 </node>
