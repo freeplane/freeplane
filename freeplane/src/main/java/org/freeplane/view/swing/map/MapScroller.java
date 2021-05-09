@@ -96,13 +96,46 @@ class MapScroller {
 				/ 2, extentSize.width, extentSize.height);
 
 		final int distanceToMargin = (extentSize.width - content.getWidth()) / 2 - 10;
-		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_LEFT_MARGIN){
+		final int distanceToMarginY = (extentSize.height - content.getHeight()) / 2 - 10;
+
+		switch (scrollingDirective) {
+		case SCROLL_NODE_TO_TOP_LEFT_CORNER:
 			rect.x += distanceToMargin;
-		}
-		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_RIGHT_MARGIN){
+			rect.y += distanceToMarginY;
+			break;
+
+		case SCROLL_NODE_TO_BOTTOM_LEFT_CORNER:
+			rect.x += distanceToMargin;
+			rect.y -= distanceToMarginY;
+			break;
+
+		case SCROLL_NODE_TO_TOP_RIGHT_CORNER:
+			rect.y += distanceToMarginY;
 			rect.x -= distanceToMargin;
-		}
-		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION){
+			break;
+
+		case SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER:
+			rect.x -= distanceToMargin;
+			rect.y -= distanceToMarginY;
+			break;
+
+		case SCROLL_NODE_TO_LEFT_MARGIN: 
+			rect.x += distanceToMargin;
+			break;
+
+		case SCROLL_NODE_TO_TOP_MARGIN:
+			rect.y += distanceToMarginY;
+			break;
+
+		case SCROLL_NODE_TO_RIGHT_MARGIN:
+			rect.x -= distanceToMargin;
+			break;
+
+		case SCROLL_NODE_TO_BOTTOM_MARGIN:
+			rect.y -= distanceToMarginY;
+			break;
+
+		case SCROLL_TO_BEST_ROOT_POSITION: 
 			final Rectangle innerBounds = map.getInnerBounds();
 			if(innerBounds.width <= extentSize.width && map.getModeController().shouldCenterCompactMaps()){
 				rect.x = innerBounds.x - (extentSize.width - innerBounds.width) / 2;
@@ -126,6 +159,9 @@ class MapScroller {
 						rect.x += (extentSize.width - content.getWidth()) / 2 - 10;
 				}
 			}
+			break;
+		default:
+			break;
 		}
 		return rect;
 	}
@@ -287,8 +323,17 @@ class MapScroller {
 }
 
 enum ScrollingDirective {
-	SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_RIGHT_MARGIN, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR;
-	private static ScrollingDirective positionDirective[] = {SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_RIGHT_MARGIN};
+	SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_RIGHT_MARGIN, SCROLL_NODE_TO_TOP_MARGIN, SCROLL_NODE_TO_BOTTOM_MARGIN,
+	SCROLL_NODE_TO_TOP_LEFT_CORNER,
+	SCROLL_NODE_TO_TOP_RIGHT_CORNER,
+	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER,
+	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER,
+	SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR;
+	private static ScrollingDirective positionDirective[] = {
+			SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_RIGHT_MARGIN, SCROLL_NODE_TO_TOP_MARGIN, SCROLL_NODE_TO_BOTTOM_MARGIN, SCROLL_NODE_TO_TOP_LEFT_CORNER,
+			SCROLL_NODE_TO_TOP_RIGHT_CORNER,
+			SCROLL_NODE_TO_BOTTOM_LEFT_CORNER,
+			SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER,};
 	public static ScrollingDirective of(NodePosition position) {
 		return positionDirective[position.ordinal()];
 	}
