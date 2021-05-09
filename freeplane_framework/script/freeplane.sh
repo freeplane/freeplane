@@ -72,7 +72,6 @@ findjava() {
 			return 1
 		fi
 	fi
-
 	_debug "Using $JAVACMD as specified in $JAVA_SOURCE."
 
 	# if we were successful, we return 0 else we complain and return 1
@@ -189,6 +188,13 @@ if [ "${JAVA_TYPE}" != "sun" ]; then
   # this sometimes helps with visual mindmap distortions (default in openjdk>=8!)
   # (but it can also create trouble so it's disabled by default):
   #JAVA_OPTS="-Dsun.java2d.xrender=True $JAVA_OPTS"
+fi
+
+if [ $JAVA_MAJOR_VERSION -ge 11 ]; then
+	JAVA_OPTS="--add-exports java.desktop/sun.awt=ALL-UNNAMED $JAVA_OPTS"
+	JAVA_OPTS="--add-exports java.desktop/sun.swing=ALL-UNNAMED $JAVA_OPTS"
+	JAVA_OPTS="--add-opens java.desktop/sun.awt.X11=ALL-UNNAMED $JAVA_OPTS"
+	JAVA_OPTS="--add-opens java.desktop/javax.swing.text.html=ALL-UNNAMED $JAVA_OPTS"
 fi
 
 # enable this in order to turn off the splash screen:
