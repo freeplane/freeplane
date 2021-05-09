@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.main.application.FreeplaneGUIStarter.UserPropertiesStatus;
 
 /**
  * @author Dimitry Polivaev
@@ -38,10 +39,10 @@ import org.freeplane.core.util.FreeplaneVersion;
 public class UserPropertiesUpdater {
 	private static final String ORG_FREEPLANE_OLD_USERFPDIR = "org.freeplane.old_userfpdir";
 
-	void importOldProperties(){
+	UserPropertiesStatus importOldProperties(){
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		if(userPreferencesFile.exists()){
-			return;
+			return UserPropertiesStatus.CURRENT_VERSION_FOUND;
 		}
 		File previousPropertyDirectory = copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
 		if(userPreferencesFile.exists()) {
@@ -59,10 +60,12 @@ public class UserPropertiesUpdater {
                 }
 
             	saveProperties(userProp, userPreferencesFile);
+            	return UserPropertiesStatus.OLD_VERSION_FOUND;
             }
             catch (IOException e) {
             }
 		}
+		return UserPropertiesStatus.NOT_FOUND;
 	}
 
 	private File copyUserFilesFromPreviousVersionTo(File targetDirectory) {

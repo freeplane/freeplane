@@ -25,8 +25,9 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -36,6 +37,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.ToolTipManager;
 
 import org.freeplane.core.resources.ResourceController;
@@ -60,6 +62,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -89,6 +92,10 @@ import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static boolean ARE_SURVEYS_ENABLED = false;
+	
+	enum UserPropertiesStatus{
+	    CURRENT_VERSION_FOUND, OLD_VERSION_FOUND, NOT_FOUND
+	}
 
 
 	private final ApplicationResourceController applicationResourceController;
@@ -98,10 +105,11 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private ApplicationViewController viewController;
 	/** allows to disable loadLastMap(s) if there already is a second instance running. */
 	private boolean dontLoadLastMaps;
-	final private boolean firstRun;
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
 	final private Options options;
+	
+	private final UserPropertiesStatus userPropertiesStatus;
 
 	private static void fixX11AppName() {
 		if(! System.getProperty("java.version").startsWith("1."))
@@ -146,9 +154,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	public FreeplaneGUIStarter(Options options) {
 		super();
 		this.options = options;
-		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
-		firstRun = !userPreferencesFile.exists();
-		new UserPropertiesUpdater().importOldProperties();
+		userPropertiesStatus = new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
 		fixMousePointerForLinux();
 		fixX11AppName();
@@ -362,9 +368,23 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			addonsController.setAutoInstallEnabled(true);
 		}
 		final ModeController modeController = Controller.getCurrentModeController();
-		if(firstRun && ! dontLoadLastMaps){
-			final String map = ResourceController.getResourceController().getProperty("tutorial_map");
-			((MMapController)modeController.getMapController()).newDocumentationMap(map);
+		if(userPropertiesStatus != UserPropertiesStatus.CURRENT_VERSION_FOUND 
+		        && ! dontLoadLastMaps){
+			final String mapSource = ResourceController.getResourceController().getProperty(
+			        userPropertiesStatus == UserPropertiesStatus.NOT_FOUND ? "tutorial_map" : "latest_features_map"
+			        );
+			MMapController mapController = (MMapController)modeController.getMapController();
+            mapController.newDocumentationMap(mapSource);
+	        MapModel map = controller.getMap();
+            if (null != map) {
+	            Timer docuMapTimer = new Timer(300, new ActionListener() {
+	                public void actionPerformed(ActionEvent e) {
+	                    mapController.newDocumentationMap(mapSource);
+	                }
+	              });
+	            docuMapTimer.setRepeats(false);
+	            docuMapTimer.start();
+	        }
 		}
 		if (null != controller.getMap()) {
 			return;
@@ -378,7 +398,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    final boolean loadLastMaps = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAPS);
 	    if(loadLastMaps)
 	    	viewController.openMapsOnStart();
-	    if(loadLastMaps || loadLastMap)
+	    if(userPropertiesStatus == UserPropertiesStatus.CURRENT_VERSION_FOUND && (loadLastMaps || loadLastMap))
 	    	applicationResourceController.getLastOpenedList().openLastMapOnStart();
     }
 
