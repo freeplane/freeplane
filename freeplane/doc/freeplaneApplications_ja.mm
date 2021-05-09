@@ -192,11 +192,11 @@
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ff00" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneTutorial_ja.mm#ID_887149959&quot;&gt;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1380673058" CREATED="1349505091067" MODIFIED="1349505091067" HGAP_QUANTITY="443.0 px" VSHIFT_QUANTITY="18.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneUserGuide_ja.mm#ID_887149959&quot;&gt;&amp;#12501;&amp;#12451;&amp;#12523;&amp;#12479;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1380673058" CREATED="1349505091067" MODIFIED="1349505091067" HGAP_QUANTITY="443.0 px" VSHIFT_QUANTITY="18.0 px">
 <hook NAME="FreeNode"/>
 <edge COLOR="#7c007c" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneTutorial_ja.mm#ID_1047570728&quot;&gt;&amp;#20633;&amp;#12288;&amp;#24536;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_545955177" CREATED="1349505091067" MODIFIED="1349505091067" HGAP_QUANTITY="-314.0 px" VSHIFT_QUANTITY="40.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneUserGuide_ja.mm#ID_1047570728&quot;&gt;&amp;#20633;&amp;#12288;&amp;#24536;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_545955177" CREATED="1349505091067" MODIFIED="1349505091067" HGAP_QUANTITY="-314.0 px" VSHIFT_QUANTITY="40.0 px">
 <icon BUILTIN="calendar"/>
 <hook NAME="FreeNode"/>
 <edge COLOR="#00ffff" WIDTH="3"/>
@@ -301,7 +301,7 @@
 <hook NAME="FreeNode"/>
 <edge COLOR="#007c7c" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneTutorial_ja.mm&quot;&gt;&amp;#25991;&amp;#26360;&amp;#20316;&amp;#25104;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1349505091067" MODIFIED="1349505091067" LINK="menuitem:_$GettingStartedAction$0" HGAP_QUANTITY="-2.0 px" VSHIFT_QUANTITY="149.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneUserGuide_ja.mm&quot;&gt;&amp;#25991;&amp;#26360;&amp;#20316;&amp;#25104;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_360719522" CREATED="1349505091067" MODIFIED="1349505091067" LINK="menuitem:_$GettingStartedAction$0" HGAP_QUANTITY="-2.0 px" VSHIFT_QUANTITY="149.0 px">
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -317,14 +317,14 @@
       &#27096;&#12293;&#12394;&#25903;&#25588;&#12434;&#34892;&#12394;&#12356;&#12414;&#12377;&#12290;
     </p>
     <p>
-      Freeplane <a href="freeplaneTutorial_ja.mm">&#12481;&#12517;&#12540;&#12488;&#12522;&#12450;&#12523;</a><br/>&#160;&#12364;&#22909;&#12356;&#35211;&#26412;&#12391;&#12377;&#12290;
+      Freeplane <a href="freeplaneUserGuide_ja.mm">&#12481;&#12517;&#12540;&#12488;&#12522;&#12450;&#12523;</a><br/>&#160;&#12364;&#22909;&#12356;&#35211;&#26412;&#12391;&#12377;&#12290;
     </p>
   </body>
 </html>
 </richcontent>
 <edge COLOR="#7c7c00" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneTutorial_ja.mm#ID_1838680824&quot;&gt;&amp;#12473;&amp;#12479;&amp;#12452;&amp;#12523;&amp;#35519;&amp;#25972;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1875337895" CREATED="1349505091083" MODIFIED="1349505091083" HGAP_QUANTITY="332.0 px" VSHIFT_QUANTITY="187.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;freeplaneUserGuide_ja.mm#ID_1838680824&quot;&gt;&amp;#12473;&amp;#12479;&amp;#12452;&amp;#12523;&amp;#35519;&amp;#25972;&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1875337895" CREATED="1349505091083" MODIFIED="1349505091083" HGAP_QUANTITY="332.0 px" VSHIFT_QUANTITY="187.0 px">
 <arrowlink SHAPE="LINE" COLOR="#ff0000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1875337895" STARTINCLINATION="32;38;" ENDINCLINATION="32;38;" STARTARROW="NONE" ENDARROW="NONE"/>
 <hook NAME="FreeNode"/>
 <edge COLOR="#0000ff" WIDTH="3"/>

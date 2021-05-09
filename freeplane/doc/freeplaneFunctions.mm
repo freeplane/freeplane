@@ -181,7 +181,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1337127972">Basic map</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1337127972">Basic map</a>
       </li>
     </ul>
   </body>
@@ -214,7 +214,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_265318117">Edit &gt; Node core text</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_265318117">Edit &gt; Node core text</a>&#160;
       </li>
     </ul>
   </body>
@@ -248,7 +248,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1795262306">Image (node core)</a>
       </li>
     </ul>
   </body>
@@ -282,7 +282,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1830541497">Green arrow link</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1830541497">Green arrow link</a>&#160;
       </li>
     </ul>
   </body>
@@ -303,7 +303,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1913035829">Red arrow link</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1913035829">Red arrow link</a>&#160;
       </li>
     </ul>
   </body>
@@ -327,7 +327,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_715025500">Icons</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_715025500">Icons</a>&#160;
       </li>
     </ul>
   </body>
@@ -348,7 +348,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_707469329">Progress</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_707469329">Progress</a>&#160;
       </li>
 
     </ul>
@@ -369,7 +369,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1531819965">Automatic node numbering</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1531819965">Automatic node numbering</a>&#160;
       </li>
 
     </ul>
@@ -392,7 +392,7 @@
     </p>
     <ul>
       <li>
-        <a href="freeplaneTutorial.mm#ID_15604512"><i>Tutorial</i></a>
+        <a href="freeplaneUserGuide.mm#ID_15604512"><i>Tutorial</i></a>
       </li>
 
     </ul>
@@ -416,7 +416,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
@@ -449,7 +449,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
@@ -498,7 +498,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
@@ -535,7 +535,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_143196514">Node extensions</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
       </li>
     </ul>
   </body>
@@ -589,7 +589,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_898889730">Edit text in node details</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
       </li>
     </ul>
   </body>
@@ -634,7 +634,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i> <a href="freeplaneTutorial.mm#ID_288274844">Show in tool tip (hover text)</a>
+        <i>Help &gt;  </i><i>Tutorial</i> <a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
       </li>
     </ul>
   </body>
@@ -656,7 +656,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1324773677">Attributes in node extensions</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
       </li>
     </ul>
   </body>
@@ -690,7 +690,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_616494746">Scientific formula</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
       </li>
     </ul>
   </body>
@@ -727,7 +727,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_575269438">Image</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
       </li>
     </ul>
   </body>
@@ -841,7 +841,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_274601394">Note</a>&#160;
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_274601394">Note</a>&#160;
       </li>
     </ul>
   </body>
@@ -862,7 +862,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
       </li>
     </ul>
   </body>
@@ -883,7 +883,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
       </li>
     </ul>
   </body>
@@ -904,7 +904,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
       </li>
     </ul>
   </body>
@@ -920,7 +920,7 @@
   </head>
   <body>
     <p>
-      <a href="freeplaneTutorial.mm#ID_448981847">&#160;xx</a>&#160;
+      <a href="freeplaneUserGuide.mm#ID_448981847">&#160;xx</a>&#160;
     </p>
   </body>
 </html>
@@ -1024,7 +1024,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1073407528">Connector</a>
       </li>
     </ul>
   </body>
@@ -1047,7 +1047,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1073407528">Connector</a>
       </li>
     </ul>
   </body>
@@ -1091,7 +1091,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneTutorial.mm#ID_1073407528">Connector</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i></b>&#160;<a href="freeplaneUserGuide.mm#ID_1073407528">Connector</a>
       </li>
     </ul>
   </body>
@@ -1110,7 +1110,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1778719162">Formatting and styling</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1778719162">Formatting and styling</a>
       </li>
     </ul>
   </body>
@@ -1182,7 +1182,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1232153769">Protecting nodes</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1232153769">Protecting nodes</a>
       </li>
     </ul>
   </body>
@@ -1215,7 +1215,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_448338872">Perform calculation</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_448338872">Perform calculation</a>
       </li>
     </ul>
   </body>
@@ -1271,7 +1271,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1959496513">Date and time actions</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1959496513">Date and time actions</a>
       </li>
     </ul>
   </body>
@@ -1306,7 +1306,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_828862571">Filtering and finding nodes</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1014457432">Sorting</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_828862571">Filtering and finding nodes</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1014457432">Sorting</a>
       </li>
     </ul>
   </body>
@@ -1340,7 +1340,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1268042238">Template-like information</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1838680824">Styles</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_1268042238">Template-like information</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1838680824">Styles</a>
       </li>
     </ul>
   </body>
@@ -1360,7 +1360,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i><i>&#160;<a href="freeplaneTutorial.mm#ID_1613405030">7. Publishing and sharing</a></i>
+        <i>Help &gt;  </i><i>Tutorial</i><i>&#160;<a href="freeplaneUserGuide.mm#ID_1613405030">7. Publishing and sharing</a></i>
       </li>
     </ul>
   </body>
@@ -1393,7 +1393,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_519455593">Writing and using scripts</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_1156954596">Add-ons</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_519455593">Writing and using scripts</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_1156954596">Add-ons</a>
       </li>
     </ul>
   </body>
@@ -1427,7 +1427,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_141336344">Spelling dictionaries</a>&#160;resp. <a href="freeplaneTutorial.mm#ID_170927482">Academic writing suite</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_141336344">Spelling dictionaries</a>&#160;resp. <a href="freeplaneUserGuide.mm#ID_170927482">Academic writing suite</a>
       </li>
 
     </ul>
@@ -1453,7 +1453,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneTutorial.mm#ID_651594550">Summary node group</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneUserGuide.mm#ID_651594550">Summary node group</a>
       </li>
     </ul>
   </body>
