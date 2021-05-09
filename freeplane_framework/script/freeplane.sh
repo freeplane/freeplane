@@ -29,26 +29,51 @@ _error() {
 
 findjava() {
 	# We try hard to find the proper 'java' command
+	
+	JAVA_SOURCE=
+	
 	if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]; then
-		_debug "Using \$JAVACMD to find java virtual machine."
+		JAVA_SOURCE="\$JAVACMD"
 	elif [ -n "${JAVA_BINDIR}" ] && [ -x "${JAVA_BINDIR}/java" ]; then
 		JAVACMD="${JAVA_BINDIR}/java"
-		_debug "Using \$JAVA_BINDIR to find java virtual machine."
+		JAVA_SOURCE="\$JAVA_BINDIR"
 	elif [ -n "${FREEPLANE_JAVA_HOME}" ] && [ -x "${FREEPLANE_JAVA_HOME}/bin/java" ]; then
 		JAVACMD="${FREEPLANE_JAVA_HOME}/bin/java"
-		_debug "Using \$FREEPLANE_JAVA_HOME to find java virtual machine."
+		JAVA_SOURCE="\$FREEPLANE_JAVA_HOME"
 	elif [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ]; then
 		JAVACMD="${JAVA_HOME}/bin/java"
-		_debug "Using \$JAVA_HOME to find java virtual machine."
+		JAVA_SOURCE="\$JAVA_HOME"
 	else
 		JAVACMD=$(which java)
 		if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]; then
-			_debug "Using \$PATH to find java virtual machine."
+			JAVA_SOURCE="\$PATH"
 		elif [ -x /usr/bin/java ]; then
-			_debug "Using /usr/bin/java to find java virtual machine."
 			JAVACMD=/usr/bin/java
+			JAVA_SOURCE="/usr/bin/java"
+		else
+			_error "Couldn't find a java virtual machine," \
+				"define JAVACMD, JAVA_BINDIR, JAVA_HOME, FREEPLANE_JAVA_HOME or PATH."
+			return 1
 		fi
 	fi
+
+	JAVA_VERSION=$(${JAVACMD} -version |& grep -E "[[:alnum:]]+ version" | awk '{print $3}' | tr -d '"')
+	JAVA_MAJOR_VERSION=$(echo $JAVA_VERSION | awk -F. '{print $1}')
+	if [ $JAVA_MAJOR_VERSION -ge 16 ]; then
+		if [ -z "${FREEPLANE_USE_UNSUPPORTED_JAVA_VERSION}" ]; then
+			_error "Found $JAVACMD in $JAVA_SOURCE."
+			_error "It has version $JAVA_VERSION"
+			_error "Currently, freeplane requires java versions up to 15"
+			_error ""
+			_error "Select a supported java version"
+			_error "by setting FREEPLANE_JAVA_HOME to a valid java location"
+			_error "OR use an unsupported java version"
+			_error "by setting FREEPLANE_USE_UNSUPPORTED_JAVA_VERSION to 1"
+			return 1
+		fi
+	fi
+
+	_debug "Using $JAVACMD as specified in $JAVA_SOURCE."
 
 	# if we were successful, we return 0 else we complain and return 1
 	if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]; then
@@ -62,10 +87,6 @@ findjava() {
 			JAVA_TYPE=sun
 		fi
 		return 0
-	else
-		_error "Couldn't find a java virtual machine," \
-		       "define JAVACMD, JAVA_BINDIR, JAVA_HOME or PATH."
-		return 1
 	fi
 }
 
