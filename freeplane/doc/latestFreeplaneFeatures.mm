@@ -29,10 +29,10 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.details">
+<stylenode LOCALIZED_TEXT="defaultstyle.details" BACKGROUND_COLOR="#ffcccc">
 <font SIZE="8"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.note"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.note" BACKGROUND_COLOR="#ffffff"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#ccffff" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#002080"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
