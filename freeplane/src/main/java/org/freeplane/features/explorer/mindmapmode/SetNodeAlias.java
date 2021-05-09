@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.FocusRequester;
+import org.freeplane.core.ui.components.FocusRequestor;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -54,7 +54,7 @@ class SetNodeAlias extends AFreeplaneAction {
 		final String title = TextUtils.getText(getTextKey());
 		final JLabel aliasLabel = TranslatedElementFactory.createLabel("node_alias");
 		final JTextField aliasInput = new JTextField(alias, 40);
-		aliasInput.addHierarchyListener(new FocusRequester());
+		FocusRequestor.requestFocus(aliasInput);
 		JCheckBox globalNodeCheckBox = TranslatedElementFactory.createCheckBox("globally_accessible");
 		globalNodeCheckBox.setSelected(explorer.isGlobal(node));
 		Box components = Box.createVerticalBox();

@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.FocusRequester;
+import org.freeplane.core.ui.components.FocusRequestor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -78,7 +78,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		inputField.setText(linkAsString);
 		inputField.setSelectionStart(0);
 		inputField.setSelectionEnd(linkAsString.length());
-		inputField.addHierarchyListener(new FocusRequester());
+		FocusRequestor.requestFocus(inputField);
 
 		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(), inputField,  TextUtils.getText("edit_link_manually"), JOptionPane.OK_CANCEL_OPTION);
 		String inputValue = inputField.getText();
