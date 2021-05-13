@@ -45,6 +45,7 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudShape;
+import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.link.ConnectorModel;
@@ -82,24 +83,24 @@ public class MapStyleModel implements IExtension {
 	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
 	public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
 	public static final IStyle FLOATING_STYLE = new StyleTranslatedObject("defaultstyle.floating");
-	
+
     public static boolean isDefaultStyleNode(NodeModel node) {
         return node.getUserObject().equals(MapStyleModel.DEFAULT_STYLE);
     }
-    
+
     public static boolean isStyleNode(NodeModel node) {
         return node.isLeaf() && node.getMap().getClass().equals(StyleMapModel.class);
     }
-    
+
 
     public static boolean isUserStyleNode(NodeModel node) {
         return node.isLeaf() && node.getParentNode().getUserObject().equals(STYLE_USER_DEFINED_TRANSLATED_OBJECT);
     }
-    
+
     public static boolean isPredefinedStyleNode(NodeModel node) {
         return node.isLeaf() && node.getParentNode().getUserObject().equals(STYLE_PREDEFINED_TRANSLATED_OBJECT);
     }
-    
+
 	private Map<IStyle, NodeModel> styleNodes;
 	private NodeModel defaultStyleNode;
 	private MapModel styleMap;
@@ -318,7 +319,7 @@ public class MapStyleModel implements IExtension {
     public NodeModel getDefaultStyleNode() {
         return defaultStyleNode;
     }
-    
+
 	public NodeModel getStyleNode(final IStyle style) {
 		if (style instanceof StyleNode) {
 			return ((StyleNode) style).getNode();
@@ -391,11 +392,21 @@ public class MapStyleModel implements IExtension {
         conditionalStyleModel = source.conditionalStyleModel;
     }
 
+    void setNonStyleUserPropertiesFrom(MapStyleModel oldStyleModel) {
+        String edgeColorConfiguration = properties.get(EdgeColorsConfigurationFactory.EDGE_COLOR_CONFIGURATION_PROPERTY);
+        properties.clear();
+        properties.putAll(oldStyleModel.properties);
+        if(edgeColorConfiguration != null) {
+            properties.put(EdgeColorsConfigurationFactory.EDGE_COLOR_CONFIGURATION_PROPERTY, edgeColorConfiguration);
+        }
+    }
+
+
     void addUserStylesFrom(MapStyleModel source) {
-        
+
         NodeModel targetGroup = getStyleNodeGroup(styleMap, STYLES_USER_DEFINED);
         NodeModel sourceGroup = getStyleNodeGroup(source.styleMap, STYLES_USER_DEFINED);
-        
+
         for(NodeModel styleNode : sourceGroup.getChildren()) {
             IStyle sourceStyle = (IStyle) styleNode.getUserObject();
             if(! styleNodes.containsKey(sourceStyle)) {
@@ -407,11 +418,11 @@ public class MapStyleModel implements IExtension {
             }
         }
     }
-    
+
     void addConditionalStylesFrom(MapStyleModel source) {
         conditionalStyleModel.addDifferentConditions(source.conditionalStyleModel);
     }
-    
+
 	public void setProperty(String key, String value) {
 		if (value != null) {
 			properties.put(key, value);
@@ -456,4 +467,5 @@ public class MapStyleModel implements IExtension {
 	ComboBoxModel getStylesAsComboBoxModel() {
 		return stylesComboBoxModel;
 	}
+
 }

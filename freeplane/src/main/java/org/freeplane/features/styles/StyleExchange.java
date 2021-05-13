@@ -23,6 +23,8 @@ class StyleExchange {
         final ModeController modeController = Controller.getCurrentModeController();
         final MapStyleModel oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
         modeController.getExtension(MapStyle.class).onCreate(sourceMap);
+        final MapStyleModel source = MapStyleModel.getExtension(sourceMap);
+        source.setNonStyleUserPropertiesFrom(oldStyleModel);
         moveStyle(true);
         targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
             	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
@@ -46,6 +48,7 @@ class StyleExchange {
         final MapStyleModel source = MapStyleModel.getExtension(sourceMap);
         source.addUserStylesFrom(oldStyleModel);
         source.addConditionalStylesFrom(oldStyleModel);
+        source.setNonStyleUserPropertiesFrom(oldStyleModel);
         moveStyle(true);
         targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
             	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
