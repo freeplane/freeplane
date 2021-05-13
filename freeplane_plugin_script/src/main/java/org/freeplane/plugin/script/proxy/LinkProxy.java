@@ -48,7 +48,6 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	    	return new File(link);
 	    }
 	    catch (Exception e) {
-			LogUtils.warn("link is not a file uri: " + e);
 			return null;
 	    }
     }
@@ -65,7 +64,6 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 			return null;
 		final String link = uri.toString();
 		if (!link.startsWith("#")) {
-			LogUtils.warn(link + " is no node id link");
 			return null;
 		}
 		final NodeModel targetNode = resolve(link);
