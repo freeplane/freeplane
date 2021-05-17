@@ -40,7 +40,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
-    private static final double VIEWPORT_SCALE = .15d;
+    private static final int MINI_MAP_SIZE = 320;
 
     private class MiniMapMouseHandler extends MouseInputAdapter {
         @Override
@@ -191,43 +191,55 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         return new Color(255 - bgColor.getRed(), 255 - bgColor.getGreen(), 255 - bgColor.getBlue());
     }
 
-    private double computeProperScale() {
-        Dimension d = mapView.getSize();
-        float zoom = mapView.getZoom();
-        if (zoom <= 1) {
-            return 1.0d;
-        }
-        double scale = 1.0d / zoom;
-        int newImageW = (int) Math.round(d.width * scale);
-        int newImageH = (int) Math.round(d.height * scale);
-        long size = newImageW * newImageH;
-        if (size > 2500 * 2500) {
-            scale *= (2500 * 2500d / size);
-        }
-        return scale;
+    private final long MAX_IMAGE_PIXELS = 3500 * 3500;
+
+    private double computeMemGuardScale() {
+        Dimension viewSize = mapView.getSize();
+        long size = (long) viewSize.width * viewSize.height;
+        return size > MAX_IMAGE_PIXELS ? ((double) MAX_IMAGE_PIXELS / size) : 1.0d;
     }
 
     private Icon makeMiniMap() {
-        Dimension d = mapView.getSize();
-        double scale = computeProperScale();
-        int newImageW = (int) Math.round(d.width * scale);
-        int newImageH = (int) Math.round(d.height * scale);
-        BufferedImage image = new BufferedImage(newImageW, newImageH, BufferedImage.TYPE_INT_ARGB);
+        Dimension viewSize = mapView.getSize();
+        double memGuardScale = computeMemGuardScale();
+        int newImageW = (int) (viewSize.width * memGuardScale);
+        int newImageH = (int) (viewSize.height * memGuardScale);
+
+        // make a square image
+        int newImageSize = Math.max(newImageW, newImageH);
+        BufferedImage image = new BufferedImage(newImageSize, newImageSize, BufferedImage.TYPE_INT_ARGB);
         Graphics2D imageG2D = image.createGraphics();
         imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        imageG2D.scale(scale, scale);
+        imageG2D.setColor(mapView.getBackground());
+        imageG2D.fillRect(0, 0, newImageSize, newImageSize);
+        AffineTransform guardedImageTranslation = newImageW > newImageH
+                ? AffineTransform.getTranslateInstance(0d, (newImageW - newImageH) / 2d)
+                : AffineTransform.getTranslateInstance((newImageH - newImageW) / 2d, 0d);
+        imageG2D.transform(guardedImageTranslation);
+        imageG2D.scale(memGuardScale, memGuardScale);
         mapView.paint(imageG2D);
         imageG2D.dispose();
 
-        Rectangle mvInnerRect = mapView.getInnerBounds();
-        AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
-        Rectangle scaled = transformer.createTransformedShape(mvInnerRect).getBounds();
+        // translate the MapView innerBounds and then scale it
+        Rectangle transformedBounds = AffineTransform.getScaleInstance(memGuardScale, memGuardScale)
+                .createTransformedShape(guardedImageTranslation.createTransformedShape(mapView.getInnerBounds()))
+                .getBounds();
 
-        Dimension vpd = mapViewScrollPane.getSize();
-        int scaledViewPortWidth = Math.max((int) Math.round(vpd.width * VIEWPORT_SCALE), 1);
-        int scaledViewPortHeight = Math.max((int) Math.round(vpd.height * VIEWPORT_SCALE), 1);
-        return new ImageIcon(image.getSubimage(scaled.x, scaled.y, scaled.width, scaled.height)
-                .getScaledInstance(scaledViewPortWidth, scaledViewPortHeight, Image.SCALE_FAST));
+        // crop the desired square
+        int scaledImageSize = Math.max(transformedBounds.width, transformedBounds.height);
+        int extend = Math.abs(transformedBounds.width - transformedBounds.height) / 2;
+        if (transformedBounds.width > transformedBounds.height) {
+            transformedBounds.y -= extend;
+        } else {
+            transformedBounds.x -= extend;
+        }
+
+        int x = Math.max(transformedBounds.x, 0);
+        int y = Math.max(transformedBounds.y, 0);
+        return new ImageIcon(image
+                .getSubimage(x, y, Math.min(scaledImageSize, image.getWidth() - x),
+                        Math.min(scaledImageSize, image.getHeight() - y))
+                .getScaledInstance(MINI_MAP_SIZE, MINI_MAP_SIZE, Image.SCALE_SMOOTH));
     }
 
     @Override
