@@ -31,6 +31,7 @@ import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
@@ -40,7 +41,8 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
-    private static final int MINI_MAP_SIZE = 320;
+
+    private int miniMapSize;
 
     private class MiniMapMouseHandler extends MouseInputAdapter {
         @Override
@@ -140,6 +142,8 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     public MiniMapView(JScrollPane mapViewScrollPane) {
         this.mapViewScrollPane = mapViewScrollPane;
         this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
+        this.miniMapSize = (int) ResourceController.getResourceController().getLengthQuantityProperty("minimap_size")
+                .in(LengthUnit.px).value;
         setLayout(new BorderLayout(0, 0) {
             private static final long serialVersionUID = 3702408082745761647L;
 
@@ -239,7 +243,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         return new ImageIcon(image
                 .getSubimage(x, y, Math.min(scaledImageSize, image.getWidth() - x),
                         Math.min(scaledImageSize, image.getHeight() - y))
-                .getScaledInstance(MINI_MAP_SIZE, MINI_MAP_SIZE, Image.SCALE_SMOOTH));
+                .getScaledInstance(miniMapSize, miniMapSize, Image.SCALE_SMOOTH));
     }
 
     @Override
