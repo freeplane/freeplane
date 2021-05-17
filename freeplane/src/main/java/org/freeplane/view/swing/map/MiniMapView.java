@@ -224,8 +224,8 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         Rectangle scaled = transformer.createTransformedShape(mvInnerRect).getBounds();
 
         Dimension vpd = mapViewScrollPane.getSize();
-        int scaledViewPortWidth = (int) Math.round(vpd.width * VIEWPORT_SCALE);
-        int scaledViewPortHeight = (int) Math.round(vpd.height * VIEWPORT_SCALE);
+        int scaledViewPortWidth = Math.max((int) Math.round(vpd.width * VIEWPORT_SCALE), 1);
+        int scaledViewPortHeight = Math.max((int) Math.round(vpd.height * VIEWPORT_SCALE), 1);
         return new ImageIcon(image.getSubimage(scaled.x, scaled.y, scaled.width, scaled.height)
                 .getScaledInstance(scaledViewPortWidth, scaledViewPortHeight, Image.SCALE_FAST));
     }
