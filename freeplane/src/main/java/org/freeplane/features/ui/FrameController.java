@@ -201,6 +201,7 @@ abstract public class FrameController implements ViewController {
 		controller.addAction(new ToggleFullScreenAction(this));
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleScrollbarsAction(this));
+		controller.addAction(new ToggleMinimapAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
 		addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
@@ -260,6 +261,11 @@ abstract public class FrameController implements ViewController {
 	@Override
 	public boolean isMenubarVisible() {
 		return isComponentVisible("menubar");
+	}
+
+	@Override
+	public boolean isMinimapVisible() {
+		return isComponentVisible("minimap");
 	}
 
 	@Override
@@ -426,6 +432,11 @@ abstract public class FrameController implements ViewController {
 		setComponentVisibleProperty("menubar", visible);
 		final Component freeplaneMenuBar = getFreeplaneMenuBar();
 		freeplaneMenuBar.setVisible(visible);
+	}
+
+	@Override
+	public void setMinimapVisible(final boolean visible) {
+		setComponentVisibleProperty("minimap", visible);
 	}
 
 	@Override

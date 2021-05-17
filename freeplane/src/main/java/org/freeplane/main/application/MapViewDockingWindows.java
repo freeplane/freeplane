@@ -307,7 +307,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
 
 	static Component getContainedMapView(View dockedWindow) {
-        JScrollPane scrollPane = (JScrollPane) dockedWindow.getComponent();
+        JScrollPane scrollPane = (JScrollPane) ((Container) dockedWindow.getComponent()).getComponent(1);
 		Component view = scrollPane.getViewport().getView();
         return view;
     }

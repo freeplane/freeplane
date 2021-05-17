@@ -39,6 +39,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewScrollPane;
+import org.freeplane.view.swing.map.MiniMapView;
 
 /**
  * @author Dimitry Polivaev
@@ -103,7 +104,7 @@ class MapViewSerializer implements ViewSerializer {
 		MapViewScrollPane mapViewScrollPane = new MapViewScrollPane();
 		mapViewScrollPane.getViewport().setView(pNewMap);
 		@SuppressWarnings("serial")
-        final View viewFrame = new ConnectedToMenuView(title, null, mapViewScrollPane);
+        final View viewFrame = new ConnectedToMenuView(title, null, new MiniMapView(mapViewScrollPane));
 	    return viewFrame;
 	}
 
