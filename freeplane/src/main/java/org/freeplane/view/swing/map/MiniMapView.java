@@ -40,7 +40,8 @@ import org.freeplane.features.ui.ViewController;
 public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
-    private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
+    private static final Color THUMB_COLOR_BLUE = new Color(0x32_00_00_FF, true);
+    private static final Color THUMB_COLOR_RED = new Color(0x92_FF_00_00, true);
 
     private int miniMapSize;
 
@@ -67,24 +68,31 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         }
 
         protected final void processMiniMapMouseEvent(MouseEvent e) {
-            setHorizontalRange(e);
-            setVerticalRange(e);
+            Rectangle innerBounds = mapView.getInnerBounds();
+            double scale = (double) miniMapSize / Math.max(innerBounds.width, innerBounds.height);
+            Point pt = e.getPoint();
+            setHorizontalRange(pt.x, scale, innerBounds);
+            setVerticalRange(pt.y, scale, innerBounds);
         }
 
-        private final void setVerticalRange(MouseEvent e) {
-            Point pt = e.getPoint();
-            Component c = e.getComponent();
+        private final void setVerticalRange(int y, double scale, Rectangle innerBounds) {
+            if (y < 0 || y > miniMapSize) {
+                return;
+            }
             BoundedRangeModel m = mapViewScrollPane.getVerticalScrollBar().getModel();
-            int iv = Math.round(pt.y * (m.getMaximum() - m.getMinimum()) / (float) c.getHeight() - m.getExtent() / 2f);
-            m.setValue(iv);
+            int value = (int) (y / scale + innerBounds.y) - m.getExtent() / 2
+                    - (innerBounds.width > innerBounds.height ? (innerBounds.width - innerBounds.height) / 2 : 0);
+            m.setValue(Math.max(value, 0));
         }
 
-        private final void setHorizontalRange(MouseEvent e) {
-            Point pt = e.getPoint();
-            Component c = e.getComponent();
+        private final void setHorizontalRange(int x, double scale, Rectangle innerBounds) {
+            if (x < 0 || x > miniMapSize) {
+                return;
+            }
             BoundedRangeModel m = mapViewScrollPane.getHorizontalScrollBar().getModel();
-            int iv = Math.round(pt.x * (m.getMaximum() - m.getMinimum()) / (float) c.getWidth() - m.getExtent() / 2f);
-            m.setValue(iv);
+            int value = (int) (x / scale + innerBounds.x) - m.getExtent() / 2
+                    + (innerBounds.width < innerBounds.height ? (innerBounds.width - innerBounds.height) / 2 : 0);
+            m.setValue(Math.max(value, 0));
         }
     };
 
@@ -107,34 +115,29 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Container c = SwingUtilities.getAncestorOfClass(JViewport.class, mapView);
-            if (!(c instanceof JViewport)) {
-                return;
-            }
-            JViewport vport = (JViewport) c;
-            Rectangle viewPortRect = vport.getBounds();
-            Rectangle mapViewRect = mapView.getBounds();
-            Rectangle crect = SwingUtilities.calculateInnerArea(this, null);
-
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            double sx = crect.getWidth() / mapViewRect.getWidth();
-            double sy = crect.getHeight() / mapViewRect.getHeight();
-            AffineTransform at = AffineTransform.getScaleInstance(sx, sy);
-
+            JViewport viewPort = (JViewport) mapView.getParent();
+            Point viewPortPosition = viewPort.getViewPosition();
+            Rectangle innerBounds = mapView.getInnerBounds();
+            Rectangle viewPortRect = viewPort.getBounds();
             Rectangle thumbRect = new Rectangle(viewPortRect);
-            thumbRect.x = vport.getViewPosition().x;
-            thumbRect.y = vport.getViewPosition().y;
-            Rectangle r = at.createTransformedShape(thumbRect).getBounds();
-            int x = crect.x + r.x;
-            int y = crect.y + r.y;
-
-            g2.setColor(THUMB_COLOR);
-            g2.fillRect(x, y, r.width, r.height);
-            g2.setColor(THUMB_COLOR.darker());
-            g2.drawRect(x, y, r.width - 1, r.height - 1);
-            g2.dispose();
+            thumbRect.x = viewPortPosition.x - innerBounds.x;
+            thumbRect.y = viewPortPosition.y - innerBounds.y;
+            int extend = Math.abs(innerBounds.width - innerBounds.height) / 2;
+            if (innerBounds.width > innerBounds.height) {
+                thumbRect.y += extend;
+            } else {
+                thumbRect.x += extend;
+            }
+            double scale = (double) miniMapSize / Math.max(innerBounds.getWidth(), innerBounds.getHeight());
+            AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
+            Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
+            Graphics2D g2d = (Graphics2D) g.create();
+            Color color = scaledThumbRect.width * scaledThumbRect.height < 400 ? THUMB_COLOR_RED : THUMB_COLOR_BLUE;
+            g2d.setColor(color);
+            g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
+            g2d.setColor(color.darker());
+            g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1, scaledThumbRect.height - 1);
+            g2d.dispose();
         }
     };
 
