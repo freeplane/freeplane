@@ -206,7 +206,8 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
 
     private double computeMemGuardScale() {
         Dimension viewSize = mapView.getSize();
-        long size = (long) viewSize.width * viewSize.height;
+        long maxSide = Math.max(viewSize.width, viewSize.height);
+        long size = maxSide * maxSide;
         return size > MAX_IMAGE_PIXELS ? ((double) MAX_IMAGE_PIXELS / size) : 1.0d;
     }
 
@@ -245,9 +246,10 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
             transformedBounds.x -= extend;
         }
 
-        return new ImageIcon(
-                image.getSubimage(transformedBounds.x, transformedBounds.y, scaledImageSize, scaledImageSize)
-                        .getScaledInstance(miniMapSize, miniMapSize, Image.SCALE_SMOOTH));
+        int width = Math.min(scaledImageSize, image.getWidth() - transformedBounds.x);
+        int height = Math.min(scaledImageSize, image.getHeight() - transformedBounds.y);
+        return new ImageIcon(image.getSubimage(transformedBounds.x, transformedBounds.y, width, height)
+                .getScaledInstance(miniMapSize, miniMapSize, Image.SCALE_SMOOTH));
     }
 
     @Override
