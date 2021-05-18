@@ -55,6 +55,9 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
             double oldZoom = mapView.getZoom();
             double amount = Math.pow(1.1, e.getScrollAmount());
             float zoom = (float) (e.getWheelRotation() > 0 ? (oldZoom / amount) : (oldZoom * amount));
+            if (zoom > 32 || zoom <= 0.03f) {
+                return;
+            }
             Controller.getCurrentController().getMapViewManager().setZoom(zoom);
         }
 
