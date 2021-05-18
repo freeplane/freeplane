@@ -198,7 +198,8 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         return new Color(255 - bgColor.getRed(), 255 - bgColor.getGreen(), 255 - bgColor.getBlue());
     }
 
-    private final long MAX_IMAGE_PIXELS = 3500 * 3500;
+    // scale to restrict image memory
+    private final long MAX_IMAGE_PIXELS = 16 * 1024 * 1024;
 
     private double computeMemGuardScale() {
         Dimension viewSize = mapView.getSize();
@@ -219,21 +220,21 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
         imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         imageG2D.setColor(mapView.getBackground());
         imageG2D.fillRect(0, 0, newImageSize, newImageSize);
-        AffineTransform guardedImageTranslation = newImageW > newImageH
-                ? AffineTransform.getTranslateInstance(0d, (newImageW - newImageH) / 2d)
-                : AffineTransform.getTranslateInstance((newImageH - newImageW) / 2d, 0d);
-        imageG2D.transform(guardedImageTranslation);
-        imageG2D.scale(memGuardScale, memGuardScale);
+
+        AffineTransform transformer = AffineTransform.getScaleInstance(memGuardScale, memGuardScale);
+        AffineTransform translation = newImageW > newImageH
+                ? AffineTransform.getTranslateInstance(0d, (viewSize.width - viewSize.height) / 2d)
+                : AffineTransform.getTranslateInstance((viewSize.height - viewSize.width) / 2d, 0d);
+        transformer.concatenate(translation);
+        imageG2D.transform(transformer);
         mapView.paint(imageG2D);
         imageG2D.dispose();
 
-        // translate the MapView innerBounds and then scale it
-        Rectangle transformedBounds = AffineTransform.getScaleInstance(memGuardScale, memGuardScale)
-                .createTransformedShape(guardedImageTranslation.createTransformedShape(mapView.getInnerBounds()))
-                .getBounds();
-
         // crop the desired square
-        int scaledImageSize = Math.max(transformedBounds.width, transformedBounds.height);
+        Rectangle transformedBounds = transformer.createTransformedShape(mapView.getInnerBounds()).getBounds();
+        int scaledImageSize = Math.max(1, Math.max(transformedBounds.width, transformedBounds.height));
+        // This assumes the MapView always centers its
+        // contents, i.e innerBounds is centered.
         int extend = Math.abs(transformedBounds.width - transformedBounds.height) / 2;
         if (transformedBounds.width > transformedBounds.height) {
             transformedBounds.y -= extend;
@@ -241,12 +242,9 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
             transformedBounds.x -= extend;
         }
 
-        int x = Math.max(transformedBounds.x, 0);
-        int y = Math.max(transformedBounds.y, 0);
-        return new ImageIcon(image
-                .getSubimage(x, y, Math.min(scaledImageSize, image.getWidth() - x),
-                        Math.min(scaledImageSize, image.getHeight() - y))
-                .getScaledInstance(miniMapSize, miniMapSize, Image.SCALE_SMOOTH));
+        return new ImageIcon(
+                image.getSubimage(transformedBounds.x, transformedBounds.y, scaledImageSize, scaledImageSize)
+                        .getScaledInstance(miniMapSize, miniMapSize, Image.SCALE_SMOOTH));
     }
 
     @Override
