@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,6 +13,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -43,12 +45,38 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     private static final Color THUMB_COLOR_BLUE = new Color(0x32_00_00_FF, true);
     private static final Color THUMB_COLOR_RED = new Color(0x92_FF_00_00, true);
 
-    private int miniMapSize;
+    private static Cursor MAG_CURSOR;
+
+    static {
+        ImageIcon imageIcon = (ImageIcon) ResourceController.getResourceController().getImageIcon("minimap_cursor");
+        if (imageIcon != null && imageIcon.getImage() != null) {
+            MAG_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(imageIcon.getImage(), new Point(), "Mmap");
+        }
+
+    }
 
     private class MiniMapMouseHandler extends MouseInputAdapter {
+        private Cursor oldCursor;
+
         @Override
         public void mousePressed(MouseEvent e) {
             processMiniMapMouseEvent(e);
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (MAG_CURSOR == null) {
+                return;
+            }
+            oldCursor = getCursor();
+            setCursor(MAG_CURSOR);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if (oldCursor != null) {
+                setCursor(oldCursor);
+            }
         }
 
         @Override
@@ -144,6 +172,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     private JScrollPane mapViewScrollPane;
     private JPanel miniMapPanel;
     private MapView mapView;
+    private int miniMapSize;
 
     public MiniMapView(JScrollPane mapViewScrollPane) {
         this.mapViewScrollPane = mapViewScrollPane;
