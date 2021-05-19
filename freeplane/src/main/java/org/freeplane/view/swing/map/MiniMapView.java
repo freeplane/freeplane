@@ -23,8 +23,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -38,6 +40,8 @@ import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 
 public class MiniMapView extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
@@ -83,7 +87,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             double oldZoom = mapView.getZoom();
-            double amount = Math.pow(1.1, e.getScrollAmount());
+            double amount = Math.pow(1.0345, e.getScrollAmount());
             float zoom = (float) (e.getWheelRotation() > 0 ? (oldZoom / amount) : (oldZoom * amount));
             if (zoom > 32 || zoom <= 0.03f) {
                 return;
@@ -168,9 +172,32 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
                 g2d.setColor(color.darker());
                 g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1,
                         scaledThumbRect.height - 1);
+
+                IMapViewManager mapViewManager = (MapViewController) Controller.getCurrentController()
+                        .getMapViewManager();
+                if (mapViewManager instanceof MapViewController && isFullScreenEnabled()) {
+                    String zoom = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
+                    Color zoomColor = complementaryColor(mapView.getBackground());
+                    zoomColor = new Color(zoomColor.getRed(), zoomColor.getGreen(), zoomColor.getBlue(), 0x7F);
+                    g2d.setColor(zoomColor);
+                    g2d.drawChars(zoom.toCharArray(), 0, zoom.length(), 5, miniMapSize - 5);
+                }
+
             } finally {
                 g2d.dispose();
             }
+        }
+
+        private boolean isFullScreenEnabled() {
+            final FrameController viewController = (FrameController) Controller.getCurrentController()
+                    .getViewController();
+            final Component component = viewController.getCurrentRootComponent();
+            if (component instanceof JFrame) {
+                JRootPane rootPane = ((JFrame) component).getRootPane();
+                return rootPane != null
+                        && Boolean.TRUE.equals(rootPane.getClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY));
+            }
+            return false;
         }
     };
 
@@ -239,7 +266,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
             return;
         }
         if (event.getProperty() == MapStyle.RESOURCES_BACKGROUND_COLOR) {
-            miniMapPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
+            miniMapPanel.setBorder(BorderFactory.createLineBorder(complementaryColor((Color) event.getNewValue())));
         }
         updateMiniMap();
     }
