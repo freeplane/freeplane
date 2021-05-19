@@ -22,7 +22,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoundedRangeModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -162,12 +161,16 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
             AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
             Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
             Graphics2D g2d = (Graphics2D) g.create();
-            Color color = scaledThumbRect.width * scaledThumbRect.height < 400 ? THUMB_COLOR_RED : THUMB_COLOR_BLUE;
-            g2d.setColor(color);
-            g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
-            g2d.setColor(color.darker());
-            g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1, scaledThumbRect.height - 1);
-            g2d.dispose();
+            try {
+                Color color = scaledThumbRect.width * scaledThumbRect.height < 400 ? THUMB_COLOR_RED : THUMB_COLOR_BLUE;
+                g2d.setColor(color);
+                g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
+                g2d.setColor(color.darker());
+                g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1,
+                        scaledThumbRect.height - 1);
+            } finally {
+                g2d.dispose();
+            }
         }
     };
 
@@ -175,12 +178,14 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
     private JPanel miniMapPanel;
     private MapView mapView;
     private int miniMapSize;
+    private boolean isMinimapVisible;
 
     public MiniMapView(JScrollPane mapViewScrollPane) {
         this.mapViewScrollPane = mapViewScrollPane;
         this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
         this.miniMapSize = (int) ResourceController.getResourceController().getLengthQuantityProperty("minimap_size")
                 .in(LengthUnit.px).value;
+        this.miniMap.setIcon(new ImageIcon(new BufferedImage(miniMapSize, miniMapSize, BufferedImage.TYPE_INT_ARGB)));
         setLayout(new BorderLayout(0, 0) {
             private static final long serialVersionUID = 3702408082745761647L;
 
@@ -210,12 +215,12 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
                 }
             }
         });
-        mapViewScrollPane.getVerticalScrollBar().getModel().addChangeListener(e -> miniMap.repaint());
         miniMapPanel = new JPanel(new BorderLayout(0, 0));
         miniMapPanel.add(miniMap);
         miniMapPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
         final ViewController viewController = Controller.getCurrentController().getViewController();
-        miniMapPanel.setVisible(viewController.isMinimapVisible());
+        isMinimapVisible = viewController.isMinimapVisible();
+        miniMapPanel.setVisible(isMinimapVisible);
         add(miniMapPanel, BorderLayout.EAST);
         add(mapViewScrollPane);
 
@@ -240,8 +245,12 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
     }
 
     private void updateMiniMap() {
+        if (!isMinimapVisible) {
+            return;
+        }
         SwingUtilities.invokeLater(() -> {
-            miniMap.setIcon(makeMiniMap());
+            snapshot();
+            miniMap.repaint();
         });
     }
 
@@ -249,7 +258,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         return new Color(255 - bgColor.getRed(), 255 - bgColor.getGreen(), 255 - bgColor.getBlue());
     }
 
-    private Icon makeMiniMap() {
+    private void snapshot() {
         Rectangle innerBounds = mapView.getInnerBounds();
         int x = innerBounds.x;
         int y = innerBounds.y;
@@ -263,7 +272,8 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
         transformer.concatenate(translation);
 
-        BufferedImage image = new BufferedImage(miniMapSize, miniMapSize, BufferedImage.TYPE_INT_ARGB);
+        ImageIcon icon = (ImageIcon) miniMap.getIcon();
+        BufferedImage image = (BufferedImage) icon.getImage();
         Graphics2D imageG2D = image.createGraphics();
         try {
             imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -275,8 +285,6 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         } finally {
             imageG2D.dispose();
         }
-
-        return new ImageIcon(image);
     }
 
     @Override
@@ -298,11 +306,11 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
 
     @Override
     public void propertyChanged(String propertyName, String newValue, String oldValue) {
-        if (!"minimapVisible".equals(propertyName)) {
-            return;
+        if ("minimapVisible".equals(propertyName)) {
+            final ViewController viewController = Controller.getCurrentController().getViewController();
+            isMinimapVisible = viewController.isMinimapVisible();
+            miniMapPanel.setVisible(isMinimapVisible);
+            updateMiniMap();
         }
-        final ViewController viewController = Controller.getCurrentController().getViewController();
-        boolean minimapVisible = viewController.isMinimapVisible();
-        miniMapPanel.setVisible(minimapVisible);
     }
 }
