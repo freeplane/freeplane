@@ -50,7 +50,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
     static {
         ImageIcon imageIcon = (ImageIcon) ResourceController.getResourceController().getImageIcon("minimap_cursor");
         if (imageIcon != null && imageIcon.getImage() != null) {
-            MAG_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(imageIcon.getImage(), new Point(), "Mmap");
+            MAG_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(imageIcon.getImage(), new Point(6, 6), "Mmap");
         }
 
     }
