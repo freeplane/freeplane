@@ -36,10 +36,13 @@ import javax.swing.event.MouseInputAdapter;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.ViewController;
 
-public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
+public class MiniMapView extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private static final Color THUMB_COLOR_BLUE = new Color(0x32_00_00_FF, true);
@@ -219,10 +222,27 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener {
 
         mapView.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                SwingUtilities.invokeLater(() -> {
-                    miniMap.setIcon(makeMiniMap());
-                });
+                updateMiniMap();
             };
+        });
+
+        Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
+    }
+
+    @Override
+    public void mapChanged(MapChangeEvent event) {
+        if (event.getMap() != mapView.getModel()) {
+            return;
+        }
+        if (event.getProperty() == MapStyle.RESOURCES_BACKGROUND_COLOR) {
+            miniMapPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
+        }
+        updateMiniMap();
+    }
+
+    private void updateMiniMap() {
+        SwingUtilities.invokeLater(() -> {
+            miniMap.setIcon(makeMiniMap());
         });
     }
 
