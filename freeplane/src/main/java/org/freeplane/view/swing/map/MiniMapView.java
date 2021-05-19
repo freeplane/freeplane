@@ -8,7 +8,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -250,55 +249,34 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         return new Color(255 - bgColor.getRed(), 255 - bgColor.getGreen(), 255 - bgColor.getBlue());
     }
 
-    // scale to restrict image memory
-    private final long MAX_IMAGE_PIXELS = 16 * 1024 * 1024;
-
-    private double computeMemGuardScale() {
-        Dimension viewSize = mapView.getSize();
-        long maxSide = Math.max(viewSize.width, viewSize.height);
-        long size = maxSide * maxSide;
-        return size > MAX_IMAGE_PIXELS ? ((double) MAX_IMAGE_PIXELS / size) : 1.0d;
-    }
-
     private Icon makeMiniMap() {
-        Dimension viewSize = mapView.getSize();
-        double memGuardScale = computeMemGuardScale();
-        int newImageW = (int) (viewSize.width * memGuardScale);
-        int newImageH = (int) (viewSize.height * memGuardScale);
+        Rectangle innerBounds = mapView.getInnerBounds();
+        int x = innerBounds.x;
+        int y = innerBounds.y;
+        int width = innerBounds.width;
+        int height = innerBounds.height;
+        int maxSize = Math.max(width, height);
+        double scale = (double) miniMapSize / maxSize;
 
-        // make a square image
-        int newImageSize = Math.max(newImageW, newImageH);
-        BufferedImage image = new BufferedImage(newImageSize, newImageSize, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D imageG2D = image.createGraphics();
-        imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        imageG2D.setColor(mapView.getBackground());
-        imageG2D.fillRect(0, 0, newImageSize, newImageSize);
-
-        AffineTransform transformer = AffineTransform.getScaleInstance(memGuardScale, memGuardScale);
-        AffineTransform translation = newImageW > newImageH
-                ? AffineTransform.getTranslateInstance(0d, (viewSize.width - viewSize.height) / 2d)
-                : AffineTransform.getTranslateInstance((viewSize.height - viewSize.width) / 2d, 0d);
+        AffineTransform translation = AffineTransform.getTranslateInstance((maxSize - width) / 2d - x,
+                (maxSize - height) / 2d - y);
+        AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
         transformer.concatenate(translation);
-        imageG2D.transform(transformer);
-        mapView.paint(imageG2D);
-        imageG2D.dispose();
 
-        // crop the desired square
-        Rectangle transformedBounds = transformer.createTransformedShape(mapView.getInnerBounds()).getBounds();
-        int scaledImageSize = Math.max(1, Math.max(transformedBounds.width, transformedBounds.height));
-        // This assumes the MapView always centers its
-        // contents, i.e innerBounds is centered.
-        int extend = Math.abs(transformedBounds.width - transformedBounds.height) / 2;
-        if (transformedBounds.width > transformedBounds.height) {
-            transformedBounds.y -= extend;
-        } else {
-            transformedBounds.x -= extend;
+        BufferedImage image = new BufferedImage(miniMapSize, miniMapSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D imageG2D = image.createGraphics();
+        try {
+            imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            imageG2D.setColor(mapView.getBackground());
+            imageG2D.fillRect(0, 0, miniMapSize, miniMapSize);
+            imageG2D.transform(transformer);
+            imageG2D.clip(innerBounds);
+            mapView.paint(imageG2D);
+        } finally {
+            imageG2D.dispose();
         }
 
-        int width = Math.min(scaledImageSize, image.getWidth() - transformedBounds.x);
-        int height = Math.min(scaledImageSize, image.getHeight() - transformedBounds.y);
-        return new ImageIcon(image.getSubimage(transformedBounds.x, transformedBounds.y, width, height)
-                .getScaledInstance(miniMapSize, miniMapSize, Image.SCALE_SMOOTH));
+        return new ImageIcon(image);
     }
 
     @Override
