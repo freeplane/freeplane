@@ -235,7 +235,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
                         JScrollBar vsb = mapViewScrollPane.getVerticalScrollBar();
                         int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
                         int hsw = hsb.isVisible() ? hsb.getSize().height : 0;
-                        ec.setBounds(right - d.width - vsw, height - d.height - hsw, d.width, d.height);
+                        ec.setBounds(right - d.width - vsw - 1, height - d.height - hsw - 1, d.width, d.height);
                     }
                 }
             }
