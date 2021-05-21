@@ -74,6 +74,7 @@ public class Launcher {
 	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
 	private static final String BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
 	private static final String JAVA_VERSION = System.getProperty("java.version");
+	private static final String OS_NAME =  System.getProperty("os.name");
 	private final File freeplaneInstallationDirectory;
 	private int argCount;
 	private boolean disableSecurityManager;
@@ -88,16 +89,27 @@ public class Launcher {
 	}
 
 	private static void checkForCompatibleJavaVersion() {
-		if(JAVA_VERSION.startsWith("10.") || JAVA_VERSION.startsWith("10-")) {
-			JOptionPane optionPane = new JOptionPane(
-				"Freeplane is not compatible with java 10, exiting",
-				JOptionPane.ERROR_MESSAGE);
-			JDialog dialog = optionPane.createDialog("Incompatible JRE version");
-			dialog.setAlwaysOnTop(true);
-			dialog.setVisible(true);
-			System.exit(0);
-		}
+	    exitOnNonCompatibleJavaVersion("10");
+		if(OS_NAME.startsWith("Windows")) {
+            exitOnNonCompatibleJavaVersion("16");
+            exitOnNonCompatibleJavaVersion("17");
+            exitOnNonCompatibleJavaVersion("18");
+		};
 	}
+
+    private static void exitOnNonCompatibleJavaVersion(String version) {
+        if(JAVA_VERSION.startsWith(version) 
+                && JAVA_VERSION.length() > version.length() 
+                &&  0 <= "._".indexOf(JAVA_VERSION.charAt(version.length()))) {
+            JOptionPane optionPane = new JOptionPane(
+                    "Freeplane is not compatible with java " + version + ", exiting",
+                    JOptionPane.ERROR_MESSAGE);
+            JDialog dialog = optionPane.createDialog("Incompatible JRE version");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+            System.exit(0);
+        }
+    }
 
 	/**
 	 * Creates Launcher for starting embedded Freeplane instance.
