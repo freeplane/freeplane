@@ -77,9 +77,12 @@ public class NodeViewDecorator
     }
 
     private List<LinkMatchResult> findMatchingResults(String link) {
+        List<LinkDecorationRule> rules = decorationConfig.getRules();
+        if(rules.isEmpty())
+            return Collections.emptyList();
         List<LinkMatchResult> matchResults = new ArrayList<LinkMatchResult>();
 		int matchedScore = 0;
-		for (LinkDecorationRule rule : decorationConfig.getRules()) {
+        for (LinkDecorationRule rule : rules) {
 		    if(rule.getMaximalScore() < matchedScore)
 		        break;
 			LinkMatchResult result = rule.matches(link);
