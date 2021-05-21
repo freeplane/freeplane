@@ -254,8 +254,6 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
                 updateMiniMap();
             };
         });
-
-        Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
     }
 
     @Override
@@ -320,12 +318,14 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
     @Override
     public void addNotify() {
         super.addNotify();
+        Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
         ResourceController.getResourceController().addPropertyChangeListener(this);
     }
 
     @Override
     public void removeNotify() {
         super.removeNotify();
+        Controller.getCurrentModeController().getMapController().removeMapChangeListener(this);
         ResourceController.getResourceController().removePropertyChangeListener(this);
     }
 
