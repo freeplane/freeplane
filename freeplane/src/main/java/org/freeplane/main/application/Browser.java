@@ -64,7 +64,7 @@ public class Browser {
 			String browserCommand = null;
 			try {
 				if(uri.getScheme().equals("file"))
-					uriString = decodedString(uri);
+					uriString = uri.getPath();
 				browserCommand = ResourceController.getResourceController().getProperty("default_browser_command_mac");
 				Controller.exec(new String[]{browserCommand, uriString});
 			}
@@ -91,51 +91,5 @@ public class Browser {
 			}
 		}
 	}
-	
-    private String decodedString(URI uri) {
-
-        StringBuffer sb = new StringBuffer();
-        String scheme = uri.getScheme();
-		if (scheme != null) {
-            sb.append(scheme);
-            sb.append(':');
-        }
-        if (uri.isOpaque()) {
-            sb.append(uri.getSchemeSpecificPart());
-        } else {
-        	String host = uri.getHost();
-            if (host != null) {
-                sb.append("//");
-                if (uri.getUserInfo() != null) {
-                    sb.append(uri.getUserInfo());
-                    sb.append('@');
-                }
-                boolean needBrackets = ((host.indexOf(':') >= 0)
-                                    && !host.startsWith("[")
-                                    && !host.endsWith("]"));
-                if (needBrackets) sb.append('[');
-                sb.append(host);
-                if (needBrackets) sb.append(']');
-                if (uri.getPort() != -1) {
-                    sb.append(':');
-                    sb.append(uri.getPort());
-                }
-            } else if (uri.getAuthority() != null) {
-                sb.append("//");
-                sb.append(uri.getAuthority());
-            }
-            if (uri.getPath() != null)
-                sb.append(uri.getPath());
-            if (uri.getQuery() != null) {
-                sb.append('?');
-                sb.append(uri.getQuery());
-            }
-        }
-        if (uri.getFragment() != null) {
-            sb.append('#');
-            sb.append(uri.getFragment());
-        }
-        return sb.toString();
-    }
 
 }
