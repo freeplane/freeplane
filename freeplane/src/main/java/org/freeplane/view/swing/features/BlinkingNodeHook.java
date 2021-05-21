@@ -154,6 +154,9 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		public void onRemove(final MapModel map) {
 			if (node.getMap().equals(map)) {
 				timer.stop();
+				final MapController mapController = Controller.getCurrentModeController().getMapController();
+				mapController.removeMapChangeListener(this);
+				mapController.removeMapLifeCycleListener(this);
 			}
 		}
 	}
