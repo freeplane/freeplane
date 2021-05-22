@@ -275,6 +275,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		reminderExtension.deactivateTimer();
 		final MapController mapController = modeController.getMapController();
 		mapController.removeMapChangeListener(reminderExtension);
+		mapController.removeMapLifeCycleListener(reminderExtension);
 		mapController.setSaved(node.getMap(), false);
 		super.remove(node, extension);
 	}

@@ -32,6 +32,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
@@ -68,8 +69,9 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
     public ReminderExtension(ReminderHook reminderController, final NodeModel node) {
         this.reminderController = reminderController;
         this.node = node;
-        this.reminderController.getModeController().getMapController().addUIMapChangeListener(this);
-        this.reminderController.getModeController().getMapController().addMapLifeCycleListener(this);
+        MapController mapController = this.reminderController.getModeController().getMapController();
+        mapController.addUIMapChangeListener(this);
+        mapController.addMapLifeCycleListener(this);
     }
 
     public NodeModel getNode() {
@@ -259,7 +261,8 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
 
     @Override
     public void onRemove(MapModel map) {
-        this.reminderController.getModeController().getMapController().removeMapChangeListener(this);
-        this.reminderController.getModeController().getMapController().removeMapLifeCycleListener(this);
+        MapController mapController = this.reminderController.getModeController().getMapController();
+        mapController.removeMapChangeListener(this);
+        mapController.removeMapLifeCycleListener(this);
     }
 }
