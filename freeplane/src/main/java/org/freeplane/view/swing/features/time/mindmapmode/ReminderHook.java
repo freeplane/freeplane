@@ -241,7 +241,6 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	public void add(final NodeModel node, final IExtension extension) {
 		final ReminderExtension reminder = (ReminderExtension) extension;
 		reminder.scheduleTimer();
-		modeController.getMapController().addUIMapChangeListener(reminder);
 		super.add(node, extension);
 	}
 

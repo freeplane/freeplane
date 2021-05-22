@@ -31,6 +31,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
@@ -43,7 +44,7 @@ import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemin
 /**
  * @author Dimitry Polivaev 30.11.2008
  */
-public class ReminderExtension implements IExtension, IMapChangeListener {
+public class ReminderExtension implements IExtension, IMapChangeListener, IMapLifeCycleListener {
     private static final ShowPastRemindersOnce pastReminders = new ShowPastRemindersOnce();
     private static final int BLINKING_PERIOD = 1000;
     private static final int MAXIMAL_DELAY = (int) Duration.ofMinutes(5).toMillis();
@@ -67,6 +68,8 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
     public ReminderExtension(ReminderHook reminderController, final NodeModel node) {
         this.reminderController = reminderController;
         this.node = node;
+        this.reminderController.getModeController().getMapController().addUIMapChangeListener(this);
+        this.reminderController.getModeController().getMapController().addMapLifeCycleListener(this);
     }
 
     public NodeModel getNode() {
@@ -252,5 +255,11 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
     @Override
     public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
         displayStateIcon(nodeMoveEvent.oldParent, null);
+    }
+
+    @Override
+    public void onRemove(MapModel map) {
+        this.reminderController.getModeController().getMapController().removeMapChangeListener(this);
+        this.reminderController.getModeController().getMapController().removeMapLifeCycleListener(this);
     }
 }
