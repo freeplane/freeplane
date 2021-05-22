@@ -368,11 +368,13 @@ public class LinkController extends SelectionController implements IExtension {
 	    IStyle style = connector.getStyle();
 	    MapModel map = connector.getSource().getMap();
 	    MapStyleModel mapStyles = MapStyleModel.getExtension(map);
-        if(! MapStyleModel.DEFAULT_STYLE.equals(style)) {
+	    if(! MapStyleModel.DEFAULT_STYLE.equals(style)) {
 	        NodeModel styleNode = mapStyles.getStyleNode(style);
-	        Optional<T> styleProperty = NodeLinks.getSelfConnector(styleNode).flatMap(connectorFunction);
-	        if(styleProperty.isPresent())
-	            return styleProperty.get();
+	        if(styleNode != null) {
+	            Optional<T> styleProperty = NodeLinks.getSelfConnector(styleNode).flatMap(connectorFunction);
+	            if(styleProperty.isPresent())
+	                return styleProperty.get();
+	        }
 	    }
         NodeModel defaultStyleNode = mapStyles.getDefaultStyleNode();
 	    return NodeLinks.getSelfConnector(defaultStyleNode)

@@ -42,7 +42,10 @@ class LinkDecorationConfig {
 	}
 
 	public List<LinkDecorationRule> getRules() {
-		if (iniFile != null && (rules == null || rulesFileHasChanged())) {
+	    if (iniFile == null && rules == null) {
+	        rules = Collections.emptyList();
+	    }
+	    else if (iniFile != null && (rules == null || rulesFileHasChanged())) {
 			loadRules();
 		}
 		return rules;

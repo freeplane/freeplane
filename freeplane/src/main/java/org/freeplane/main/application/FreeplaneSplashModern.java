@@ -58,7 +58,7 @@ public class FreeplaneSplashModern extends JWindow {
 		splashImage = new ImageIcon(splashResource);
 		GraphicsConfiguration gc = getGraphicsConfiguration();
         GraphicsDevice gd = gc.getDevice();
-        int alpha = gd.isWindowTranslucencySupported(WindowTranslucency.TRANSLUCENT) ? 0 : 255;
+        int alpha = gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT) ? 0 : 255;
 		setBackground(new Color(40, 75, 144, alpha));
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
