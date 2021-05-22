@@ -333,7 +333,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
 
     @Override
     public void propertyChanged(String propertyName, String newValue, String oldValue) {
-        if ("minimapVisible".equals(propertyName)) {
+        if ("minimapVisible".equals(propertyName) || "minimapVisible.fullscreen".equals(propertyName)) {
             final ViewController viewController = Controller.getCurrentController().getViewController();
             isMinimapVisible = viewController.isMinimapVisible();
             miniMapPanel.setVisible(isMinimapVisible);
