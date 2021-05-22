@@ -25,7 +25,7 @@
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
 				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="ToggleMinimapAction" accelerator="control M" />
+				<Entry name="ToggleMinimapAction" />
 				<Entry name="SetBooleanPropertyAction.spotlight" />
 			</Entry>
 			<Entry name="zoom">
@@ -106,7 +106,7 @@
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />
-		<Entry name="ToggleMinimapAction" accelerator="control M" />
+		<Entry name="ToggleMinimapAction" />
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
 		<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 	</Entry>
