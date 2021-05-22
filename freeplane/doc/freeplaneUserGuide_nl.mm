@@ -3992,7 +3992,7 @@
 <edge STYLE="horizontal"/>
 </node>
 <node TEXT="Filteren en selecteren" STYLE_REF="ProfessionalOnderwerp" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1330166218726" TEXT_SHORTENED="true">
-<icon BUILTIN="../select_all_found_nodes"/>
+<icon BUILTIN="../select_matching_nodes"/>
 <richcontent TYPE="DETAILS">
 
 <html>
