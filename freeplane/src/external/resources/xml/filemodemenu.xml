@@ -20,25 +20,11 @@
 			</Entry>
 		</Entry>
 		<Entry name="view">
-			<Entry name="controls">
-				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
-				<Entry name="ToggleToolbarAction" />
-				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
-				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="ToggleMapOverviewAction" />
-				<Entry name="SetBooleanPropertyAction.spotlight" />
-			</Entry>
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
 			</Entry>
-			<Entry name="menu_viewmode">
-				<Entry name="ViewLayoutTypeAction.OUTLINE" />
-				<Entry name="ShowSelectionAsRectangleAction" />
-				<Entry name="SetBooleanPropertyAction.show_icons" />
-				<Entry name="SetBooleanPropertyAction.show_connectors" />
-				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
-				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
+			<Entry name="menu_scroll_map">
 				<Entry accelerator="alt W" name="MoveSelectedNodeAction.LEFT" />
 				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
 				<Entry accelerator="alt E" name="MoveSelectedNodeAction.RIGHT" />
@@ -48,6 +34,22 @@
 				<Entry name="MoveSelectedNodeAction.TOP_RIGHT" />
 				<Entry name="MoveSelectedNodeAction.BOTTOM_LEFT" />
 				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
+			</Entry>
+			<Entry name="controls">
+				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleToolbarAction" />
+				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
+				<Entry name="ToggleScrollbarsAction" />
+				<Entry name="ToggleMapOverviewAction" />
+				<Entry name="SetBooleanPropertyAction.spotlight" />
+			</Entry>
+			<Entry name="menu_viewmode">
+				<Entry name="ViewLayoutTypeAction.OUTLINE" />
+				<Entry name="ShowSelectionAsRectangleAction" />
+				<Entry name="SetBooleanPropertyAction.show_icons" />
+				<Entry name="SetBooleanPropertyAction.show_connectors" />
+				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
+				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 			</Entry>
 		</Entry>

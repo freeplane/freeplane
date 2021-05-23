@@ -267,6 +267,22 @@
         </Entry>
 		<Entry name="view">
 			<Entry name="NewMapViewAction" />
+			<Entry name="zoom">
+				<Entry name="ZoomInAction" accelerator="alt UP" />
+				<Entry name="ZoomOutAction" accelerator="alt DOWN" />
+				<Entry name="FitToPage" />
+			</Entry>
+			<Entry name="menu_scroll_map">
+				<Entry name="MoveSelectedNodeAction.CENTER" />
+				<Entry name="MoveSelectedNodeAction.LEFT" />
+				<Entry name="MoveSelectedNodeAction.RIGHT" />
+				<Entry name="MoveSelectedNodeAction.TOP" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM" />
+				<Entry name="MoveSelectedNodeAction.TOP_LEFT" />
+				<Entry name="MoveSelectedNodeAction.TOP_RIGHT" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM_LEFT" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
+			</Entry>
 			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 				<Entry name="ToggleToolbarAction" />
@@ -278,11 +294,6 @@
 				<Entry name="ToggleScrollbarsAction" />
 				<Entry name="ToggleMapOverviewAction" />
 				<Entry name="ShowFormatPanel" accelerator="alt shift P" />
-			</Entry>
-			<Entry name="zoom">
-				<Entry name="ZoomInAction" accelerator="alt UP" />
-				<Entry name="ZoomOutAction" accelerator="alt DOWN" />
-				<Entry name="FitToPage" />
 			</Entry>
 			<Entry name="menu_viewmode" >
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
@@ -300,15 +311,6 @@
 				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
-				<Entry name="MoveSelectedNodeAction.LEFT" />
-				<Entry name="MoveSelectedNodeAction.CENTER" />
-				<Entry name="MoveSelectedNodeAction.RIGHT" />
-				<Entry name="MoveSelectedNodeAction.TOP" />
-				<Entry name="MoveSelectedNodeAction.BOTTOM" />
-				<Entry name="MoveSelectedNodeAction.TOP_LEFT" />
-				<Entry name="MoveSelectedNodeAction.TOP_RIGHT" />
-				<Entry name="MoveSelectedNodeAction.BOTTOM_LEFT" />
-				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
