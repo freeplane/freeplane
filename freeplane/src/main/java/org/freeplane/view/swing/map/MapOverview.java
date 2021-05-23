@@ -336,11 +336,15 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
 
     @Override
     public void propertyChanged(String propertyName, String newValue, String oldValue) {
-        if ("mapOverviewVisible".equals(propertyName) || "mapOverviewVisible.fullscreen".equals(propertyName)) {
+        if (ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
+                || "mapOverviewVisible".equals(propertyName) 
+                || "mapOverviewVisible.fullscreen".equals(propertyName)) {
             final ViewController viewController = Controller.getCurrentController().getViewController();
-            isMapOverviewVisible = viewController.isMapOverviewVisible();
-            mapOverviewPanel.setVisible(isMapOverviewVisible);
-            updateMapOverview();
+            if (isMapOverviewVisible != viewController.isMapOverviewVisible()) {
+                isMapOverviewVisible = ! isMapOverviewVisible;
+                mapOverviewPanel.setVisible(isMapOverviewVisible);
+                updateMapOverview();
+            }
         }
     }
 }
