@@ -42,6 +42,12 @@
 				<Entry accelerator="alt W" name="MoveSelectedNodeAction.WEST" />
 				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
 				<Entry accelerator="alt E" name="MoveSelectedNodeAction.EAST" />
+				<Entry name="MoveSelectedNodeAction.NORTH" />
+				<Entry name="MoveSelectedNodeAction.SOUTH" />
+				<Entry name="MoveSelectedNodeAction.NORTHWEST" />
+				<Entry name="MoveSelectedNodeAction.NORTHEAST" />
+				<Entry name="MoveSelectedNodeAction.SOUTHWEST" />
+				<Entry name="MoveSelectedNodeAction.SOUTHEAST" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 			</Entry>
 		</Entry>

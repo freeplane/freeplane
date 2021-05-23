@@ -303,6 +303,12 @@
 				<Entry name="MoveSelectedNodeAction.WEST" />
 				<Entry name="MoveSelectedNodeAction.CENTER" />
 				<Entry name="MoveSelectedNodeAction.EAST" />
+				<Entry name="MoveSelectedNodeAction.NORTH" />
+				<Entry name="MoveSelectedNodeAction.SOUTH" />
+				<Entry name="MoveSelectedNodeAction.NORTHWEST" />
+				<Entry name="MoveSelectedNodeAction.NORTHEAST" />
+				<Entry name="MoveSelectedNodeAction.SOUTHWEST" />
+				<Entry name="MoveSelectedNodeAction.SOUTHEAST" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>

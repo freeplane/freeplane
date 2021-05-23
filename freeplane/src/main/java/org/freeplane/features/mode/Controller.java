@@ -78,10 +78,20 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		this.resourceController = resourceController; 
 		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
+		
 		addAction(new MoveToRootAction());
-		addAction(new MoveSelectedNodeAction(NodePosition.EAST));
 		addAction(new MoveSelectedNodeAction(NodePosition.CENTER));
+		// margins
+		addAction(new MoveSelectedNodeAction(NodePosition.EAST));
 		addAction(new MoveSelectedNodeAction(NodePosition.WEST));
+		addAction(new MoveSelectedNodeAction(NodePosition.SOUTH));
+		addAction(new MoveSelectedNodeAction(NodePosition.NORTH));
+		// corners
+		addAction(new MoveSelectedNodeAction(NodePosition.SOUTHWEST));
+		addAction(new MoveSelectedNodeAction(NodePosition.NORTHWEST));
+		addAction(new MoveSelectedNodeAction(NodePosition.SOUTHEAST));
+		addAction(new MoveSelectedNodeAction(NodePosition.NORTHEAST));
+		
 		addAction(new CloseAllMapsAction());
 		addAction(new CloseAllOtherMapsAction());
 	}
