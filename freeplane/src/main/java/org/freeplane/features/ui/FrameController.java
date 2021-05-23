@@ -201,7 +201,7 @@ abstract public class FrameController implements ViewController {
 		controller.addAction(new ToggleFullScreenAction(this));
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleScrollbarsAction(this));
-		controller.addAction(new ToggleMinimapAction(this));
+		controller.addAction(new ToggleMapOverviewAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
 		addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
@@ -264,8 +264,8 @@ abstract public class FrameController implements ViewController {
 	}
 
 	@Override
-	public boolean isMinimapVisible() {
-		return isComponentVisible("minimap");
+	public boolean isMapOverviewVisible() {
+		return isComponentVisible("mapOverview");
 	}
 
 	@Override
@@ -435,8 +435,8 @@ abstract public class FrameController implements ViewController {
 	}
 
 	@Override
-	public void setMinimapVisible(final boolean visible) {
-		setComponentVisibleProperty("minimap", visible);
+	public void setMapOverviewVisible(final boolean visible) {
+		setComponentVisibleProperty("mapOverview", visible);
 	}
 
 	@Override

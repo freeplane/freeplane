@@ -119,9 +119,9 @@ public interface ViewController {
 
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException;
 
-	public boolean isMinimapVisible();
+	public boolean isMapOverviewVisible();
 
-	public void setMinimapVisible(boolean b);
+	public void setMapOverviewVisible(boolean b);
 
 	public boolean areScrollbarsVisible();
 

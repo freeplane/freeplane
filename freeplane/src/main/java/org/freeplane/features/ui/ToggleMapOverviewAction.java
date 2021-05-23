@@ -26,22 +26,22 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 
 @SelectableAction(checkOnPopup = true)
-class ToggleMinimapAction extends AFreeplaneAction {
+class ToggleMapOverviewAction extends AFreeplaneAction {
     private static final long serialVersionUID = 1L;
     final private ViewController controller;
 
-    ToggleMinimapAction(final ViewController viewController) {
-        super("ToggleMinimapAction");
+    ToggleMapOverviewAction(final ViewController viewController) {
+        super("ToggleMapOverviewAction");
         this.controller = viewController;
     }
 
     public void actionPerformed(final ActionEvent event) {
-        controller.setMinimapVisible(!controller.isMinimapVisible());
+        controller.setMapOverviewVisible(!controller.isMapOverviewVisible());
     }
 
     @Override
     public void setSelected() {
-        setSelected(controller.isMinimapVisible());
+        setSelected(controller.isMapOverviewVisible());
     }
 
     @Override
