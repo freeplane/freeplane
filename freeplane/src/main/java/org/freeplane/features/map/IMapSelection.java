@@ -32,8 +32,8 @@ import org.freeplane.features.filter.Filter;
 public interface IMapSelection {
 
 	public enum NodePosition {
-		WEST, CENTER, EAST, NORTH, SOUTH,
-		NORTHWEST, NORTHEAST, SOUTHWEST, SOUTHEAST;
+		CENTER, LEFT, RIGHT, TOP, BOTTOM,
+		TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
 	}
 
 	public void centerNode(final NodeModel node);

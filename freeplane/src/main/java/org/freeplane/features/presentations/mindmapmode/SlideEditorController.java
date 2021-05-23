@@ -80,9 +80,9 @@ class SlideEditorController{
 		btnSelectNodes = createSelectNodesButton();
 		tglBtnPlaceSelectedNode = createPlacesSelectedNodeToggleButton();
 		nodePositions = new ButtonGroup();
-		btnOnTheLeft = createNodePositionToggleButton("slide.on_the_left", NodePosition.WEST);
+		btnOnTheLeft = createNodePositionToggleButton("slide.on_the_left", NodePosition.LEFT);
 		btnAtCenter = createNodePositionToggleButton("slide.at_center", NodePosition.CENTER);
-		btnOnTheRight = createNodePositionToggleButton("slide.on_the_right", NodePosition.EAST);
+		btnOnTheRight = createNodePositionToggleButton("slide.on_the_right", NodePosition.RIGHT);
 		positionButtons = new JToggleButton[]{btnOnTheLeft, btnAtCenter, btnOnTheRight};
 		tglbtnChangeZoom = createSetZoomToggleButton();
 		lblZoomFactor = new JLabel("100 %");

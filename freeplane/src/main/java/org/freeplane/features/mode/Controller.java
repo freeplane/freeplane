@@ -82,15 +82,15 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		addAction(new MoveToRootAction());
 		addAction(new MoveSelectedNodeAction(NodePosition.CENTER));
 		// margins
-		addAction(new MoveSelectedNodeAction(NodePosition.EAST));
-		addAction(new MoveSelectedNodeAction(NodePosition.WEST));
-		addAction(new MoveSelectedNodeAction(NodePosition.SOUTH));
-		addAction(new MoveSelectedNodeAction(NodePosition.NORTH));
+		addAction(new MoveSelectedNodeAction(NodePosition.RIGHT));
+		addAction(new MoveSelectedNodeAction(NodePosition.LEFT));
+		addAction(new MoveSelectedNodeAction(NodePosition.BOTTOM));
+		addAction(new MoveSelectedNodeAction(NodePosition.TOP));
 		// corners
-		addAction(new MoveSelectedNodeAction(NodePosition.SOUTHWEST));
-		addAction(new MoveSelectedNodeAction(NodePosition.NORTHWEST));
-		addAction(new MoveSelectedNodeAction(NodePosition.SOUTHEAST));
-		addAction(new MoveSelectedNodeAction(NodePosition.NORTHEAST));
+		addAction(new MoveSelectedNodeAction(NodePosition.BOTTOM_LEFT));
+		addAction(new MoveSelectedNodeAction(NodePosition.TOP_LEFT));
+		addAction(new MoveSelectedNodeAction(NodePosition.BOTTOM_RIGHT));
+		addAction(new MoveSelectedNodeAction(NodePosition.TOP_RIGHT));
 		
 		addAction(new CloseAllMapsAction());
 		addAction(new CloseAllOtherMapsAction());

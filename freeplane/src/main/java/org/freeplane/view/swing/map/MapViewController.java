@@ -400,10 +400,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				contentLocation.y + content.getHeight() / 2 - slideSize.height / 2, slideSize.width, slideSize.height);
 
 		final int distanceToMargin = (slideSize.width - content.getWidth()) / 2 - 10;
-		if(placedNodePosition == NodePosition.WEST){
+		if(placedNodePosition == NodePosition.LEFT){
 			printedGraphicsBounds.x += distanceToMargin;
 		}
-		if(placedNodePosition == NodePosition.EAST){
+		if(placedNodePosition == NodePosition.RIGHT){
 			printedGraphicsBounds.x -= distanceToMargin;
 		}
 		return createImage(dpi, printedGraphicsBounds);

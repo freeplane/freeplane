@@ -300,15 +300,15 @@
 				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
-				<Entry name="MoveSelectedNodeAction.WEST" />
+				<Entry name="MoveSelectedNodeAction.LEFT" />
 				<Entry name="MoveSelectedNodeAction.CENTER" />
-				<Entry name="MoveSelectedNodeAction.EAST" />
-				<Entry name="MoveSelectedNodeAction.NORTH" />
-				<Entry name="MoveSelectedNodeAction.SOUTH" />
-				<Entry name="MoveSelectedNodeAction.NORTHWEST" />
-				<Entry name="MoveSelectedNodeAction.NORTHEAST" />
-				<Entry name="MoveSelectedNodeAction.SOUTHWEST" />
-				<Entry name="MoveSelectedNodeAction.SOUTHEAST" />
+				<Entry name="MoveSelectedNodeAction.RIGHT" />
+				<Entry name="MoveSelectedNodeAction.TOP" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM" />
+				<Entry name="MoveSelectedNodeAction.TOP_LEFT" />
+				<Entry name="MoveSelectedNodeAction.TOP_RIGHT" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM_LEFT" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
