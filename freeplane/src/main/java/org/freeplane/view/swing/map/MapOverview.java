@@ -44,7 +44,7 @@ import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 
-public class MiniMapView extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
+public class MapOverview extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private static final Color THUMB_COLOR_BLUE = new Color(0x32_00_00_FF, true);
@@ -53,19 +53,21 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
     private static Cursor MAG_CURSOR;
 
     static {
-        ImageIcon imageIcon = (ImageIcon) ResourceController.getResourceController().getImageIcon("minimap_cursor");
+        ImageIcon imageIcon = (ImageIcon) ResourceController.getResourceController()
+                .getImageIcon("map_overview_cursor");
         if (imageIcon != null && imageIcon.getImage() != null) {
-            MAG_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(imageIcon.getImage(), new Point(6, 6), "Mmap");
+            MAG_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(imageIcon.getImage(), new Point(6, 6),
+                    "Map Overview Cursor");
         }
 
     }
 
-    private class MiniMapMouseHandler extends MouseInputAdapter {
+    private class MapOverviewMouseHandler extends MouseInputAdapter {
         private Cursor oldCursor;
 
         @Override
         public void mousePressed(MouseEvent e) {
-            processMiniMapMouseEvent(e);
+            processMousePanEvent(e);
         }
 
         @Override
@@ -97,19 +99,19 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            processMiniMapMouseEvent(e);
+            processMousePanEvent(e);
         }
 
-        protected final void processMiniMapMouseEvent(MouseEvent e) {
+        protected final void processMousePanEvent(MouseEvent e) {
             Rectangle innerBounds = mapView.getInnerBounds();
-            double scale = (double) miniMapSize / Math.max(innerBounds.width, innerBounds.height);
+            double scale = (double) mapOverviewSize / Math.max(innerBounds.width, innerBounds.height);
             Point pt = e.getPoint();
             setHorizontalRange(pt.x, scale, innerBounds);
             setVerticalRange(pt.y, scale, innerBounds);
         }
 
         private final void setVerticalRange(int y, double scale, Rectangle innerBounds) {
-            if (y < 0 || y > miniMapSize) {
+            if (y < 0 || y > mapOverviewSize) {
                 return;
             }
             BoundedRangeModel m = mapViewScrollPane.getVerticalScrollBar().getModel();
@@ -119,7 +121,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         }
 
         private final void setHorizontalRange(int x, double scale, Rectangle innerBounds) {
-            if (x < 0 || x > miniMapSize) {
+            if (x < 0 || x > mapOverviewSize) {
                 return;
             }
             BoundedRangeModel m = mapViewScrollPane.getHorizontalScrollBar().getModel();
@@ -129,7 +131,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         }
     };
 
-    private JLabel miniMap = new JLabel() {
+    private JLabel mapOverviewLabel = new JLabel() {
         private static final long serialVersionUID = -3555087194678925L;
         private transient MouseInputAdapter handler;
 
@@ -139,7 +141,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
             removeMouseMotionListener(handler);
             removeMouseWheelListener(handler);
             super.updateUI();
-            handler = new MiniMapMouseHandler();
+            handler = new MapOverviewMouseHandler();
             addMouseListener(handler);
             addMouseMotionListener(handler);
             addMouseWheelListener(handler);
@@ -161,7 +163,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
             } else {
                 thumbRect.x += extend;
             }
-            double scale = (double) miniMapSize / Math.max(innerBounds.getWidth(), innerBounds.getHeight());
+            double scale = (double) mapOverviewSize / Math.max(innerBounds.getWidth(), innerBounds.getHeight());
             AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
             Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
             Graphics2D g2d = (Graphics2D) g.create();
@@ -180,7 +182,7 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
                     Color zoomColor = complementaryColor(mapView.getBackground());
                     zoomColor = new Color(zoomColor.getRed(), zoomColor.getGreen(), zoomColor.getBlue(), 0x7F);
                     g2d.setColor(zoomColor);
-                    g2d.drawChars(zoom.toCharArray(), 0, zoom.length(), 5, miniMapSize - 5);
+                    g2d.drawChars(zoom.toCharArray(), 0, zoom.length(), 5, mapOverviewSize - 5);
                 }
 
             } finally {
@@ -202,17 +204,18 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
     };
 
     private JScrollPane mapViewScrollPane;
-    private JPanel miniMapPanel;
+    private JPanel mapOverviewPanel;
     private MapView mapView;
-    private int miniMapSize;
-    private boolean isMinimapVisible;
+    private int mapOverviewSize;
+    private boolean isMapOverviewVisible;
 
-    public MiniMapView(JScrollPane mapViewScrollPane) {
+    public MapOverview(JScrollPane mapViewScrollPane) {
         this.mapViewScrollPane = mapViewScrollPane;
         this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
-        this.miniMapSize = (int) ResourceController.getResourceController().getLengthQuantityProperty("minimap_size")
-                .in(LengthUnit.px).value;
-        this.miniMap.setIcon(new ImageIcon(new BufferedImage(miniMapSize, miniMapSize, BufferedImage.TYPE_INT_ARGB)));
+        this.mapOverviewSize = (int) ResourceController.getResourceController()
+                .getLengthQuantityProperty("map_overview_size").in(LengthUnit.px).value;
+        this.mapOverviewLabel.setIcon(
+                new ImageIcon(new BufferedImage(mapOverviewSize, mapOverviewSize, BufferedImage.TYPE_INT_ARGB)));
         setLayout(new BorderLayout(0, 0) {
             private static final long serialVersionUID = 3702408082745761647L;
 
@@ -242,18 +245,18 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
                 }
             }
         });
-        miniMapPanel = new JPanel(new BorderLayout(0, 0));
-        miniMapPanel.add(miniMap);
-        miniMapPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
+        mapOverviewPanel = new JPanel(new BorderLayout(0, 0));
+        mapOverviewPanel.add(mapOverviewLabel);
+        mapOverviewPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
         final ViewController viewController = Controller.getCurrentController().getViewController();
-        isMinimapVisible = viewController.isMinimapVisible();
-        miniMapPanel.setVisible(isMinimapVisible);
-        add(miniMapPanel, BorderLayout.EAST);
+        isMapOverviewVisible = viewController.isMapOverviewVisible();
+        mapOverviewPanel.setVisible(isMapOverviewVisible);
+        add(mapOverviewPanel, BorderLayout.EAST);
         add(mapViewScrollPane);
 
         mapView.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                updateMiniMap();
+                updateMapOverview();
             };
         });
     }
@@ -264,18 +267,18 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
             return;
         }
         if (event.getProperty() == MapStyle.RESOURCES_BACKGROUND_COLOR) {
-            miniMapPanel.setBorder(BorderFactory.createLineBorder(complementaryColor((Color) event.getNewValue())));
+            mapOverviewPanel.setBorder(BorderFactory.createLineBorder(complementaryColor((Color) event.getNewValue())));
         }
-        updateMiniMap();
+        updateMapOverview();
     }
 
-    private void updateMiniMap() {
-        if (!isMinimapVisible) {
+    private void updateMapOverview() {
+        if (!isMapOverviewVisible) {
             return;
         }
         SwingUtilities.invokeLater(() -> {
             snapshot();
-            miniMap.repaint();
+            mapOverviewLabel.repaint();
         });
     }
 
@@ -290,20 +293,20 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
         int width = innerBounds.width;
         int height = innerBounds.height;
         int maxSize = Math.max(width, height);
-        double scale = (double) miniMapSize / maxSize;
+        double scale = (double) mapOverviewSize / maxSize;
 
         AffineTransform translation = AffineTransform.getTranslateInstance((maxSize - width) / 2d - x,
                 (maxSize - height) / 2d - y);
         AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
         transformer.concatenate(translation);
 
-        ImageIcon icon = (ImageIcon) miniMap.getIcon();
+        ImageIcon icon = (ImageIcon) mapOverviewLabel.getIcon();
         BufferedImage image = (BufferedImage) icon.getImage();
         Graphics2D imageG2D = image.createGraphics();
         try {
             imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             imageG2D.setColor(mapView.getBackground());
-            imageG2D.fillRect(0, 0, miniMapSize, miniMapSize);
+            imageG2D.fillRect(0, 0, mapOverviewSize, mapOverviewSize);
             imageG2D.transform(transformer);
             imageG2D.clip(innerBounds);
             mapView.paint(imageG2D);
@@ -333,11 +336,11 @@ public class MiniMapView extends JPanel implements IFreeplanePropertyListener, I
 
     @Override
     public void propertyChanged(String propertyName, String newValue, String oldValue) {
-        if ("minimapVisible".equals(propertyName) || "minimapVisible.fullscreen".equals(propertyName)) {
+        if ("mapOverviewVisible".equals(propertyName) || "mapOverviewVisible.fullscreen".equals(propertyName)) {
             final ViewController viewController = Controller.getCurrentController().getViewController();
-            isMinimapVisible = viewController.isMinimapVisible();
-            miniMapPanel.setVisible(isMinimapVisible);
-            updateMiniMap();
+            isMapOverviewVisible = viewController.isMapOverviewVisible();
+            mapOverviewPanel.setVisible(isMapOverviewVisible);
+            updateMapOverview();
         }
     }
 }

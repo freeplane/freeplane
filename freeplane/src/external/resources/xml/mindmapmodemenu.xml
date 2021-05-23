@@ -276,7 +276,7 @@
 				<Entry name="ToggleStatusAction" />
 				<Entry name="SetBooleanPropertyAction.show_creation_modification_in_status" />
 				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="ToggleMinimapAction" />
+				<Entry name="ToggleMapOverviewAction" />
 				<Entry name="ShowFormatPanel" accelerator="alt shift P" />
 			</Entry>
 			<Entry name="zoom">
@@ -575,7 +575,7 @@
 		<Entry name="ToggleLeftToolbarAction" />
 		<Entry name="ToggleStatusAction" />
 		<Entry name="ToggleScrollbarsAction" />
-		<Entry name="ToggleMinimapAction" />
+		<Entry name="ToggleMapOverviewAction" />
 		<Entry builder="separator" />
 		<Entry name="ShowFormatPanel" />
 		<Entry name="ShowHideNoteAction" accelerator="control GREATER" />
