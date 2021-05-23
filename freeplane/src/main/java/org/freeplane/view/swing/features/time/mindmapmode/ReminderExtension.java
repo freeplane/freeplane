@@ -31,6 +31,8 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
@@ -43,7 +45,7 @@ import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemin
 /**
  * @author Dimitry Polivaev 30.11.2008
  */
-public class ReminderExtension implements IExtension, IMapChangeListener {
+public class ReminderExtension implements IExtension, IMapChangeListener, IMapLifeCycleListener {
     private static final ShowPastRemindersOnce pastReminders = new ShowPastRemindersOnce();
     private static final int BLINKING_PERIOD = 1000;
     private static final int MAXIMAL_DELAY = (int) Duration.ofMinutes(5).toMillis();
@@ -67,6 +69,9 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
     public ReminderExtension(ReminderHook reminderController, final NodeModel node) {
         this.reminderController = reminderController;
         this.node = node;
+        MapController mapController = this.reminderController.getModeController().getMapController();
+        mapController.addUIMapChangeListener(this);
+        mapController.addMapLifeCycleListener(this);
     }
 
     public NodeModel getNode() {
@@ -126,7 +131,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
         final NodeModel node = getNode();
         if(reminderInThePast)
             pastReminders.addNode(node);
-        displayState(ClockState.CLOCK_VISIBLE, node, false);
+        displayStateIcon(ClockState.CLOCK_VISIBLE, node, false);
     }
 
 
@@ -134,7 +139,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
         if (timer == null) {
             return;
         }
-        displayState(null, getNode(), true);
+        removeStateIcon(getNode());
         timer.stop();
         timer = null;
     }
@@ -205,52 +210,70 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
         if (getNode().getMap() != Controller.getCurrentController().getMap()) {
             return;
         }
-        displayState((stateAdded) ? ClockState.CLOCK_INVISIBLE : ClockState.CLOCK_VISIBLE, getNode(), true);
+        displayStateIcon((stateAdded) ? ClockState.CLOCK_INVISIBLE : ClockState.CLOCK_VISIBLE, getNode(), true);
         if(! ResourceController.getResourceController().getBooleanProperty(ReminderHook.REMINDERS_BLINK))
             deactivateTimer();
     }
 
-    private void displayStateIcon(final NodeModel parent, final ClockState state) {
+    private void updateStateIcon(final NodeModel parent, final ClockState state) {
         if (alreadyExecuted || !isAncestorNode(parent)) {
             return;
         }
-        displayState(state, parent, true);
+        if(state != null)
+            displayStateIcon(state, parent, true);
+        else
+            removeStateIcon(parent);
     }
 
-    private void displayState(final ClockState stateAdded, final NodeModel pNode,
+    private static void displayStateIcon(final ClockState stateAdded, final NodeModel pNode,
             final boolean recurse) {
-        if(stateAdded != null)
-            pNode.putExtension(stateAdded);
-        else
-            pNode.removeExtension(ClockState.class);
+        pNode.putExtension(stateAdded);
         Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
         if (!recurse) {
             return;
         }
         final NodeModel parentNode = pNode.getParentNode();
-        if (parentNode == null) {
-            return;
+        if (parentNode != null) {
+            displayStateIcon(stateAdded, parentNode, recurse);
         }
-        displayState(stateAdded, parentNode, recurse);
+    }
+
+    private static void removeStateIcon(final NodeModel pNode) {
+        if(pNode.containsExtension(ReminderExtension.class))
+            pNode.putExtension(ClockState.CLOCK_VISIBLE);
+        else
+            pNode.removeExtension(ClockState.class);
+        Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
+        final NodeModel parentNode = pNode.getParentNode();
+        if (parentNode != null) {
+            removeStateIcon(parentNode);
+        }
     }
 
     @Override
     public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-        displayStateIcon(parent, ClockState.CLOCK_VISIBLE);
+        updateStateIcon(parent, ClockState.CLOCK_VISIBLE);
     }
 
     @Override
     public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-        displayStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
+        updateStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
     }
 
     @Override
     public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-        displayStateIcon(nodeDeletionEvent.parent, null);
+        updateStateIcon(nodeDeletionEvent.parent, null);
     }
 
     @Override
     public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-        displayStateIcon(nodeMoveEvent.oldParent, null);
+        updateStateIcon(nodeMoveEvent.oldParent, null);
+    }
+
+    @Override
+    public void onRemove(MapModel map) {
+        MapController mapController = this.reminderController.getModeController().getMapController();
+        mapController.removeMapChangeListener(this);
+        mapController.removeMapLifeCycleListener(this);
     }
 }

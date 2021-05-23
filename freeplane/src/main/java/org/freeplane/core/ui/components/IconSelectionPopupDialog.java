@@ -59,6 +59,7 @@ import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.GrabKeyDialog;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
@@ -317,10 +318,11 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 			final KeyStroke iconKeyStroke = getKeyStroke(info.getShortcutKey());
 			if (iconKeyStroke != null
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
-			                && keyEvent.getKeyCode() != 0
-			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent.getModifiers() & InputEvent.SHIFT_MASK) || keyEvent
-			            .getKeyChar() == iconKeyStroke.getKeyChar()) && keyEvent.getKeyChar() != 0
-			        && keyEvent.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
+			            && keyEvent.getKeyCode() != 0
+			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent.getModifiers() & InputEvent.SHIFT_MASK) 
+			                || 
+			                (keyEvent.getKeyChar() == iconKeyStroke.getKeyChar()) && keyEvent.getKeyChar() != 0
+			                && keyEvent.getKeyChar() != KeyEvent.CHAR_UNDEFINED)) {
 				return i;
 			}
 		}
@@ -475,9 +477,24 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	        this.selected = newSelected;
 	        highlightSelected();
 	        final IconDescription iconInformation = icons.get(index);
-	        final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
-	        if (keyStroke != null) {
-	            message = iconInformation.getTranslatedDescription() + ", " + keyStroke;
+	        KeyStroke accelerator = getKeyStroke(iconInformation.getShortcutKey());
+	        if (accelerator != null) {
+	            String accText = "";
+	            if (accelerator != null) {
+	                int modifiers = accelerator.getModifiers() | ((Compat.isMacOsX() ? KeyEvent.META_DOWN_MASK : KeyEvent.CTRL_DOWN_MASK));
+	                if (modifiers > 0) {
+	                    accText = InputEvent.getModifiersExText(modifiers);
+	                    accText += "+";
+	                }
+	                int keyCode = accelerator.getKeyCode();
+	                if (keyCode != 0) {
+	                    accText += KeyEvent.getKeyText(keyCode);
+	                } else {
+	                    accText += accelerator.getKeyChar();
+	                }
+	            }
+
+	            message = iconInformation.getTranslatedDescription() + ", " + accText;
 	        }
 	        else {
 	            message = iconInformation.getTranslatedDescription();

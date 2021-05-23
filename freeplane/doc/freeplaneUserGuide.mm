@@ -6646,7 +6646,7 @@ node alias can not be a number</pre>
 </hook>
 </node>
 <node TEXT="Select all matching" STYLE_REF="ProfessionalTopic" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1316165694652" TEXT_SHORTENED="true">
-<icon BUILTIN="../select_all_found_nodes"/>
+<icon BUILTIN="../select_matching_nodes"/>
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
 <html>
   <head>
@@ -6766,40 +6766,6 @@ node alias can not be a number</pre>
     <p>
       <font face="SansSerif, sans-serif" color="#000000">Toggle Apply to filtered (visible) nodes, i.e. add an additional filter condition, to further narrow the results.</font>
     </p>
-  </body>
-</html></richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-</node>
-<node TEXT="Unfold hidden nodes" STYLE_REF="ProfessionalTopic" ID="ID_865947666" CREATED="1310134532663" MODIFIED="1316165694684" TEXT_SHORTENED="true">
-<icon BUILTIN="../unfold_filtered_ancestors"/>
-<richcontent CONTENT-TYPE="xml/" TYPE="DETAILS" HIDDEN="true">
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      <font face="SansSerif, sans-serif" color="#000000">Expand all nodes in a map that match the filter. This is not a toggle switch: once the nodes are expanded, they can only be collapsed using other commands (such as Filter &gt; Undo, which may be used immediately after this command). </font>
-    </p>
-    <p>
-
-    </p>
-    <p>
-      <b><font color="#000000" face="SansSerif, sans-serif">See also</font></b><font color="#000000" face="SansSerif, sans-serif">&#160;</font>
-    </p>
-    <ul>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Toggle Folded</font>
-      </li>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold All</font>
-      </li>
-      <li>
-        <font color="#000000" face="SansSerif, sans-serif">Navigate &gt; Fold One Level.</font>
-      </li>
-    </ul>
   </body>
 </html></richcontent>
 <hook NAME="NodeConditionalStyles">
