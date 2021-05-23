@@ -2,6 +2,7 @@
 1.9.3
 ===============================
 Map overview
+Center/move the selected node at/to top/bottom/corners
 
 ===============================
 1.9.2
