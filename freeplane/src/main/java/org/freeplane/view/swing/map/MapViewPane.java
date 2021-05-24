@@ -44,7 +44,7 @@ import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 
-public class MapOverview extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
+public class MapViewPane extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private static final Color THUMB_COLOR_BLUE = new Color(0x32_00_00_FF, true);
@@ -263,7 +263,7 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
     private final int mapOverviewSize;
     private boolean isMapOverviewVisible;
 
-    public MapOverview(JScrollPane mapViewScrollPane) {
+    public MapViewPane(JScrollPane mapViewScrollPane) {
         this.mapViewScrollPane = mapViewScrollPane;
         this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
         this.mapOverviewSize = (int) ResourceController.getResourceController()
