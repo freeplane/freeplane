@@ -58,7 +58,7 @@ public class FixedSizeUIIcon implements Icon {
 					x * transform.getScaleX() + transform.getTranslateX(), 
 					y * transform.getScaleY()  + transform.getTranslateY());
 			gg.setTransform(newTransform);
-			gg.drawImage(image, 0, 0, null);
+			gg.drawImage(image, 0, 0, c);
 			gg.setTransform(transform);
 		}
 	}
