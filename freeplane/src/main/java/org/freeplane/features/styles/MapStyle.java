@@ -239,7 +239,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				final Map<String, String> properties = model.getProperties();
 				final Properties attributes = propertyXml.get(0).getAttributes();
 				for(Entry<Object, Object> attribute:attributes.entrySet()){
-					properties.put(attribute.getKey().toString(), attribute.getValue().toString());
+					final String key = attribute.getKey().toString();
+					// fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
+					if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
+						continue;
+					properties.put(key, attribute.getValue().toString());
 				}
 			}
         }
