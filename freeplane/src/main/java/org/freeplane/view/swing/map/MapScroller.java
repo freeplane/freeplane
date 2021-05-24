@@ -323,18 +323,24 @@ class MapScroller {
 }
 
 enum ScrollingDirective {
-	SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_RIGHT_MARGIN, SCROLL_NODE_TO_TOP_MARGIN, SCROLL_NODE_TO_BOTTOM_MARGIN,
-	SCROLL_NODE_TO_TOP_LEFT_CORNER,
-	SCROLL_NODE_TO_TOP_RIGHT_CORNER,
-	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER,
-	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER,
+	SCROLL_NODE_TO_CENTER(NodePosition.CENTER),
+	SCROLL_NODE_TO_LEFT_MARGIN(NodePosition.LEFT),
+	SCROLL_NODE_TO_RIGHT_MARGIN(NodePosition.RIGHT), 
+	SCROLL_NODE_TO_TOP_MARGIN(NodePosition.TOP),
+	SCROLL_NODE_TO_BOTTOM_MARGIN(NodePosition.BOTTOM),
+	SCROLL_NODE_TO_TOP_LEFT_CORNER(NodePosition.TOP_LEFT),
+	SCROLL_NODE_TO_TOP_RIGHT_CORNER(NodePosition.TOP_RIGHT),
+	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER(NodePosition.BOTTOM_LEFT),
+	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER(NodePosition.BOTTOM_RIGHT),
 	SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR;
-	private static ScrollingDirective positionDirective[] = {
-			SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_RIGHT_MARGIN, SCROLL_NODE_TO_TOP_MARGIN, SCROLL_NODE_TO_BOTTOM_MARGIN, SCROLL_NODE_TO_TOP_LEFT_CORNER,
-			SCROLL_NODE_TO_TOP_RIGHT_CORNER,
-			SCROLL_NODE_TO_BOTTOM_LEFT_CORNER,
-			SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER,};
+	static private class CompanionObject{
+		private static final ScrollingDirective positionDirectiveMapping[] = new ScrollingDirective[NodePosition.values().length];
+	}
 	public static ScrollingDirective of(NodePosition position) {
-		return positionDirective[position.ordinal()];
+		return CompanionObject.positionDirectiveMapping[position.ordinal()];
+	}
+	private ScrollingDirective() {/**/}
+	private ScrollingDirective(NodePosition position) {
+		CompanionObject.positionDirectiveMapping[position.ordinal()] = this;
 	}
 }
