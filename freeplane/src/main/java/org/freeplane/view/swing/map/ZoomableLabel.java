@@ -39,12 +39,16 @@ public class ZoomableLabel extends JLabel {
 	private int minimumWidth;
 	private int maximumWidth;
 
-	public int getIconWidth() {
+	public int getZoomedIconWidth() {
 		final Icon icon = getIcon();
 		if (icon == null) {
 			return 0;
 		}
 		return getMap().getZoomed(icon.getIconWidth());
+	}
+	public int getZoomedIconTextGap() {
+		final int iconTextGap = getIconTextGap();
+		return iconTextGap == 0 ? 0 : getMap().getZoomed(iconTextGap);
 	}
 
 	public NodeView getNodeView() {
@@ -219,8 +223,9 @@ public class ZoomableLabel extends JLabel {
 			return null;
 		if(!textR.contains(p))
 			return null;
-		int x = (int) (p.x / getZoom());
-		int y = (int) (p.y / getZoom());
+		final float zoom = getZoom();
+		int x = (int) (p.x / zoom);
+		int y = (int) (p.y / zoom);
 		final int pos = view.viewToModel(x, y, textR);
 		final HTMLDocument document = (HTMLDocument) view.getDocument();
 		final String linkURL = HtmlUtils.getURLOfExistingLink(document, pos);
