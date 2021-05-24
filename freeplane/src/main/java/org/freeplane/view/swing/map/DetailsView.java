@@ -39,7 +39,7 @@ final class DetailsView extends ZoomableLabel {
     		final Color background = getBackground();
     		final Color oldColor = g.getColor();
     		g.setColor(background);
-    		final int iconWidth = getIconWidth() + getIconTextGap();
+    		final int iconWidth = getZoomedIconWidth() + getZoomedIconTextGap()/4;
     		g.fillRect(iconWidth, 0, getWidth() - iconWidth, getHeight());
     		g.setColor(oldColor);
     	}

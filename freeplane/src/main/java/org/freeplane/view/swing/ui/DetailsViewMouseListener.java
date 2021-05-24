@@ -79,7 +79,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 
 	protected boolean eventFromHideDisplayArea(MouseEvent e) {
 		final ZoomableLabel component = (ZoomableLabel) e.getComponent();
-	    return e.getX() < component.getIconWidth();
+	    return e.getX() < component.getZoomedIconWidth();
     }
 
 	private boolean canEdit(TextController controller) {
