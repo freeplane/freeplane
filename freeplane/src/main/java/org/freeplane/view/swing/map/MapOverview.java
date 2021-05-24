@@ -23,8 +23,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollBar;
@@ -62,7 +62,131 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
 
     }
 
-    private class MapOverviewMouseHandler extends MouseInputAdapter {
+    private class JMapOverviewImage extends JComponent {
+		private static final long serialVersionUID = 1L;
+		private BufferedImage image;
+		
+		JMapOverviewImage(){
+			MapOverviewMouseHandler handler = new MapOverviewMouseHandler();
+            addMouseListener(handler);
+            addMouseMotionListener(handler);
+            addMouseWheelListener(handler);
+		}
+				
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(mapOverviewSize, mapOverviewSize);
+		}
+
+		private BufferedImage snapshot(Graphics2D g) {
+            Rectangle innerBounds = mapView.getInnerBounds();
+            int x = innerBounds.x;
+            int y = innerBounds.y;
+            int width = innerBounds.width;
+            int height = innerBounds.height;
+            int maxSize = Math.max(width, height);
+            final double scaledSize = mapOverviewSize * g.getTransform().getScaleX();
+			double scale = scaledSize / maxSize;
+
+            AffineTransform translation = AffineTransform.getTranslateInstance((maxSize - width) / 2d - x,
+                    (maxSize - height) / 2d - y);
+            AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
+            transformer.concatenate(translation);
+
+            int scaledSizeInt = (int)scaledSize;
+			BufferedImage image = new BufferedImage(scaledSizeInt, scaledSizeInt, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D imageG2D = image.createGraphics();
+            try {
+                imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                imageG2D.setColor(mapView.getBackground());
+                imageG2D.fillRect(0, 0, scaledSizeInt, scaledSizeInt);
+                imageG2D.transform(transformer);
+                imageG2D.clip(innerBounds);
+                mapView.paintOverview(imageG2D);
+            } finally {
+                imageG2D.dispose();
+            }
+            return image;
+        }		
+		
+
+		@Override
+        protected void paintComponent(Graphics g) {
+			final Graphics2D g2 = (Graphics2D)g;
+			final AffineTransform transform = g2.getTransform();
+			final double scaleX = transform.getScaleX();
+			if(image == null || image.getWidth() != (int)(mapOverviewSize * scaleX)) {
+				image = snapshot(g2);
+			}
+			if(scaleX == 1) {
+				g2.drawImage(image, 0, 0, this);
+			}
+			else {
+				AffineTransform newTransform = AffineTransform.getTranslateInstance(
+						transform.getTranslateX(), 
+						 transform.getTranslateY());
+				g2.setTransform(newTransform);
+				g2.drawImage(image, 0, 0, this);
+				g2.setTransform(transform);
+			}            
+			JViewport viewPort = (JViewport) mapView.getParent();
+            Point viewPortPosition = viewPort.getViewPosition();
+            Rectangle innerBounds = mapView.getInnerBounds();
+            Rectangle viewPortRect = viewPort.getBounds();
+            Rectangle thumbRect = new Rectangle(viewPortRect);
+            thumbRect.x = viewPortPosition.x - innerBounds.x;
+            thumbRect.y = viewPortPosition.y - innerBounds.y;
+            int extend = Math.abs(innerBounds.width - innerBounds.height) / 2;
+            if (innerBounds.width > innerBounds.height) {
+                thumbRect.y += extend;
+            } else {
+                thumbRect.x += extend;
+            }
+            double scale = (double) mapOverviewSize / Math.max(innerBounds.getWidth(), innerBounds.getHeight());
+            AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
+            Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
+            Graphics2D g2d = (Graphics2D) g.create();
+            try {
+                Color color = scaledThumbRect.width * scaledThumbRect.height < 400 ? THUMB_COLOR_RED : THUMB_COLOR_BLUE;
+                g2d.setColor(color);
+                g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
+                g2d.setColor(color.darker());
+                g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1,
+                        scaledThumbRect.height - 1);
+
+                IMapViewManager mapViewManager = (MapViewController) Controller.getCurrentController()
+                        .getMapViewManager();
+                if (mapViewManager instanceof MapViewController && isFullScreenEnabled()) {
+                    String zoom = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
+                    Color zoomColor = complementaryColor(mapView.getBackground());
+                    zoomColor = new Color(zoomColor.getRed(), zoomColor.getGreen(), zoomColor.getBlue(), 0x7F);
+                    g2d.setColor(zoomColor);
+                    g2d.drawChars(zoom.toCharArray(), 0, zoom.length(), 5, mapOverviewSize - 5);
+                }
+
+            } finally {
+                g2d.dispose();
+            }
+        }
+
+		private boolean isFullScreenEnabled() {
+            final FrameController viewController = (FrameController) Controller.getCurrentController()
+                    .getViewController();
+            final Component component = viewController.getCurrentRootComponent();
+            if (component instanceof JFrame) {
+                JRootPane rootPane = ((JFrame) component).getRootPane();
+                return rootPane != null
+                        && Boolean.TRUE.equals(rootPane.getClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY));
+            }
+            return false;
+        }
+
+		public void resetImage() {
+			image = null;
+		}
+	}
+
+	private class MapOverviewMouseHandler extends MouseInputAdapter {
         private Cursor oldCursor;
 
         @Override
@@ -131,82 +255,12 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
         }
     };
 
-    private JLabel mapOverviewLabel = new JLabel() {
-        private static final long serialVersionUID = -3555087194678925L;
-        private transient MouseInputAdapter handler;
+    private final JMapOverviewImage mapOverviewImage;
 
-        @Override
-        public void updateUI() {
-            removeMouseListener(handler);
-            removeMouseMotionListener(handler);
-            removeMouseWheelListener(handler);
-            super.updateUI();
-            handler = new MapOverviewMouseHandler();
-            addMouseListener(handler);
-            addMouseMotionListener(handler);
-            addMouseWheelListener(handler);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            JViewport viewPort = (JViewport) mapView.getParent();
-            Point viewPortPosition = viewPort.getViewPosition();
-            Rectangle innerBounds = mapView.getInnerBounds();
-            Rectangle viewPortRect = viewPort.getBounds();
-            Rectangle thumbRect = new Rectangle(viewPortRect);
-            thumbRect.x = viewPortPosition.x - innerBounds.x;
-            thumbRect.y = viewPortPosition.y - innerBounds.y;
-            int extend = Math.abs(innerBounds.width - innerBounds.height) / 2;
-            if (innerBounds.width > innerBounds.height) {
-                thumbRect.y += extend;
-            } else {
-                thumbRect.x += extend;
-            }
-            double scale = (double) mapOverviewSize / Math.max(innerBounds.getWidth(), innerBounds.getHeight());
-            AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
-            Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
-            Graphics2D g2d = (Graphics2D) g.create();
-            try {
-                Color color = scaledThumbRect.width * scaledThumbRect.height < 400 ? THUMB_COLOR_RED : THUMB_COLOR_BLUE;
-                g2d.setColor(color);
-                g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
-                g2d.setColor(color.darker());
-                g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1,
-                        scaledThumbRect.height - 1);
-
-                IMapViewManager mapViewManager = (MapViewController) Controller.getCurrentController()
-                        .getMapViewManager();
-                if (mapViewManager instanceof MapViewController && isFullScreenEnabled()) {
-                    String zoom = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
-                    Color zoomColor = complementaryColor(mapView.getBackground());
-                    zoomColor = new Color(zoomColor.getRed(), zoomColor.getGreen(), zoomColor.getBlue(), 0x7F);
-                    g2d.setColor(zoomColor);
-                    g2d.drawChars(zoom.toCharArray(), 0, zoom.length(), 5, mapOverviewSize - 5);
-                }
-
-            } finally {
-                g2d.dispose();
-            }
-        }
-
-        private boolean isFullScreenEnabled() {
-            final FrameController viewController = (FrameController) Controller.getCurrentController()
-                    .getViewController();
-            final Component component = viewController.getCurrentRootComponent();
-            if (component instanceof JFrame) {
-                JRootPane rootPane = ((JFrame) component).getRootPane();
-                return rootPane != null
-                        && Boolean.TRUE.equals(rootPane.getClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY));
-            }
-            return false;
-        }
-    };
-
-    private JScrollPane mapViewScrollPane;
-    private JPanel mapOverviewPanel;
-    private MapView mapView;
-    private int mapOverviewSize;
+    private final JScrollPane mapViewScrollPane;
+    private final JPanel mapOverviewPanel;
+    private final MapView mapView;
+    private final int mapOverviewSize;
     private boolean isMapOverviewVisible;
 
     public MapOverview(JScrollPane mapViewScrollPane) {
@@ -214,8 +268,6 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
         this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
         this.mapOverviewSize = (int) ResourceController.getResourceController()
                 .getLengthQuantityProperty("map_overview_size").in(LengthUnit.px).value;
-        this.mapOverviewLabel.setIcon(
-                new ImageIcon(new BufferedImage(mapOverviewSize, mapOverviewSize, BufferedImage.TYPE_INT_ARGB)));
         setLayout(new BorderLayout(0, 0) {
             private static final long serialVersionUID = 3702408082745761647L;
 
@@ -245,8 +297,9 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
                 }
             }
         });
+        mapOverviewImage = new JMapOverviewImage();
         mapOverviewPanel = new JPanel(new BorderLayout(0, 0));
-        mapOverviewPanel.add(mapOverviewLabel);
+        mapOverviewPanel.add(mapOverviewImage);
         mapOverviewPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
         final ViewController viewController = Controller.getCurrentController().getViewController();
         isMapOverviewVisible = viewController.isMapOverviewVisible();
@@ -273,47 +326,17 @@ public class MapOverview extends JPanel implements IFreeplanePropertyListener, I
     }
 
     private void updateMapOverview() {
-        if (!isMapOverviewVisible) {
-            return;
+        if (isMapOverviewVisible) {
+        	mapOverviewImage.resetImage();
+        	SwingUtilities.invokeLater(mapOverviewPanel::repaint);
         }
-        SwingUtilities.invokeLater(() -> {
-            snapshot();
-            mapOverviewLabel.repaint();
-        });
+
     }
 
     private Color complementaryColor(final Color bgColor) {
         return new Color(255 - bgColor.getRed(), 255 - bgColor.getGreen(), 255 - bgColor.getBlue());
     }
 
-    private void snapshot() {
-        Rectangle innerBounds = mapView.getInnerBounds();
-        int x = innerBounds.x;
-        int y = innerBounds.y;
-        int width = innerBounds.width;
-        int height = innerBounds.height;
-        int maxSize = Math.max(width, height);
-        double scale = (double) mapOverviewSize / maxSize;
-
-        AffineTransform translation = AffineTransform.getTranslateInstance((maxSize - width) / 2d - x,
-                (maxSize - height) / 2d - y);
-        AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
-        transformer.concatenate(translation);
-
-        ImageIcon icon = (ImageIcon) mapOverviewLabel.getIcon();
-        BufferedImage image = (BufferedImage) icon.getImage();
-        Graphics2D imageG2D = image.createGraphics();
-        try {
-            imageG2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            imageG2D.setColor(mapView.getBackground());
-            imageG2D.fillRect(0, 0, mapOverviewSize, mapOverviewSize);
-            imageG2D.transform(transformer);
-            imageG2D.clip(innerBounds);
-            mapView.paint(imageG2D);
-        } finally {
-            imageG2D.dispose();
-        }
-    }
 
     @Override
     public boolean isOptimizedDrawingEnabled() {

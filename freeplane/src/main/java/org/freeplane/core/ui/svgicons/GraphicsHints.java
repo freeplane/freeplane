@@ -12,7 +12,7 @@ public class GraphicsHints  extends RenderingHints.Key{
 
 	@Override
 	public boolean isCompatibleValue(Object val) {
-		return val == Boolean.TRUE;
+		return val == Boolean.TRUE || val == Boolean.FALSE;
 	}
 }
 
