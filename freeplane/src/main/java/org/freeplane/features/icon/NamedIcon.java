@@ -28,7 +28,7 @@ import org.freeplane.api.Quantity;
  * @author Dimitry Polivaev
  * Dec 25, 2019
  */
-public interface NamedIcon  {
+public interface NamedIcon extends Comparable<NamedIcon> {
     String getName();
     String getFile();
 	Icon getIcon();
@@ -36,4 +36,11 @@ public interface NamedIcon  {
 	NamedIcon zoom(float zoom);
 	int getOrder();
 	boolean hasStandardSize();
+
+
+	@Override
+    default int compareTo(final NamedIcon uiIcon) {
+		int orderCompare = Integer.compare(getOrder(), uiIcon.getOrder());
+		return orderCompare != 0 ? orderCompare : getName().compareTo(uiIcon.getName());
+	}
 }
