@@ -210,6 +210,7 @@
 					<choice value="IGNORE" />
 					<choice value="ADD_SIBLING" />
 					<choice value="ADD_CHILD" />
+					<choice value="EMULATE_VIM_NAV" />
 				</combo>
 				<boolean name="copyFormatToNewSibling"/>
 				<boolean name="copyFormatToNewChild"/>

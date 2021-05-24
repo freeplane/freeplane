@@ -23,6 +23,6 @@ package org.freeplane.core.ui;
 import java.awt.event.KeyEvent;
 
 public interface IEditHandler {
-	public enum FirstAction{EDIT_CURRENT, ADD_SIBLING, ADD_CHILD, IGNORE}
+	public enum FirstAction{EDIT_CURRENT, ADD_SIBLING, ADD_CHILD, IGNORE, EMULATE_VIM_NAV}
 	void edit(KeyEvent e, FirstAction keyTypeAction, boolean editLong);
 }
