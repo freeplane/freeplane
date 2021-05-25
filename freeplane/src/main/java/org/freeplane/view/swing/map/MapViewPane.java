@@ -12,7 +12,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -22,7 +21,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoundedRangeModel;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -49,18 +47,6 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
     private static final Color THUMB_COLOR_BLUE = new Color(0x32_00_00_FF, true);
     private static final Color THUMB_COLOR_RED = new Color(0x92_FF_00_00, true);
-
-    private static Cursor MAG_CURSOR;
-
-    static {
-        ImageIcon imageIcon = (ImageIcon) ResourceController.getResourceController()
-                .getImageIcon("map_overview_cursor");
-        if (imageIcon != null && imageIcon.getImage() != null) {
-            MAG_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(imageIcon.getImage(), new Point(6, 6),
-                    "Map Overview Cursor");
-        }
-
-    }
 
     private class JMapOverviewImage extends JComponent {
 		private static final long serialVersionUID = 1L;
@@ -187,8 +173,6 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 	}
 
 	private class MapOverviewMouseHandler extends MouseInputAdapter {
-        private Cursor oldCursor;
-
         @Override
         public void mousePressed(MouseEvent e) {
             processMousePanEvent(e);
@@ -196,18 +180,12 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            if (MAG_CURSOR == null) {
-                return;
-            }
-            oldCursor = getCursor();
-            setCursor(MAG_CURSOR);
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            if (oldCursor != null) {
-                setCursor(oldCursor);
-            }
+            setCursor(Cursor.getDefaultCursor());
         }
 
         @Override
