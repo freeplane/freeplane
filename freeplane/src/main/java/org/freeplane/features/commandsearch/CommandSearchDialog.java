@@ -343,6 +343,10 @@ public class CommandSearchDialog extends JDialog
         }
         UpdateableListModel<SearchItem> model = new UpdateableListModel<>(matches);
         resultList.setModel(model);
+
+        if (resultList.getModel().getSize() > 0) {
+            resultList.setSelectedIndex(0);
+        }
     }
 
     @Override
