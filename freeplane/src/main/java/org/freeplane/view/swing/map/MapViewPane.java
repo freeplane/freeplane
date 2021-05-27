@@ -23,10 +23,8 @@ import java.util.Optional;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -38,10 +36,10 @@ import javax.swing.event.MouseInputListener;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 
@@ -179,7 +177,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
             g2.drawChars(anchorSymbol.toCharArray(), 0, anchorSymbol.length(), anchorPos.x, anchorPos.y);
 
             IMapViewManager mapViewManager = (MapViewController) Controller.getCurrentController().getMapViewManager();
-            if (mapViewManager instanceof MapViewController && isFullScreenEnabled()) {
+            if (mapViewManager instanceof MapViewController && isToolbarHidden()) {
                 String zoom = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
                 Color zoomColor = complementaryColor(mapView.getBackground());
                 zoomColor = new Color(zoomColor.getRed(), zoomColor.getGreen(), zoomColor.getBlue(), 0x7F);
@@ -188,16 +186,10 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
             }
         }
 
-		private boolean isFullScreenEnabled() {
-            final FrameController viewController = (FrameController) Controller.getCurrentController()
-                    .getViewController();
-            final Component component = viewController.getCurrentRootComponent();
-            if (component instanceof JFrame) {
-                JRootPane rootPane = ((JFrame) component).getRootPane();
-                return rootPane != null
-                        && Boolean.TRUE.equals(rootPane.getClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY));
-            }
-            return false;
+        private boolean isToolbarHidden() {
+            final JComponent toolBar = Controller.getCurrentModeController().getUserInputListenerFactory()
+                    .getToolBar("/main_toolbar");
+            return toolBar == null || ! UIComponentVisibilityDispatcher.of(toolBar).isVisible();
         }
 
 		public void resetImage() {
