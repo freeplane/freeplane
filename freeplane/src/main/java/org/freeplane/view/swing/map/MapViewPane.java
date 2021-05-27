@@ -59,7 +59,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
     private final static String MAP_OVERVIEW_VISIBLE_FS = "mapOverviewVisible.fullscreen";
 
     private final static String MAP_OVERVIEW_PREFIX = "map_overview_";
-    private final static String MAP_OVERVIEW_ORIGIN_POINT = MAP_OVERVIEW_PREFIX + "origin_point";
+    private final static String MAP_OVERVIEW_ATTACH_POINT = MAP_OVERVIEW_PREFIX + "attach_point";
     private final static String MAP_OVERVIEW_BOUNDS = MAP_OVERVIEW_PREFIX + "bounds";
 
     private static final int RESIZE_PANEL_BORDER_SIZE = 4;
@@ -161,8 +161,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
 
             Point anchorPos = new Point();
             Point zoomTextPos = new Point(1, mapOverviewBounds.height - 12);
-            MapOverviewOriginPoint originPoint = getMapOverviewOriginPoint();
-            switch (originPoint) {
+            switch (getMapOverviewAttachPoint()) {
             case SOUTH_EAST:
                 anchorPos.setLocation(mapOverviewBounds.width - 22, mapOverviewBounds.height - 12);
                 break;
@@ -306,7 +305,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                 int ordinal = dir.ordinal();
                 if (ordinal > Directions.EAST.ordinal() && ordinal < Directions.MOVE.ordinal()) {
                     final ResourceController resourceController = ResourceController.getResourceController();
-                    resourceController.setProperty(MAP_OVERVIEW_ORIGIN_POINT, dir.name());
+                    resourceController.setProperty(MAP_OVERVIEW_ATTACH_POINT, dir.name());
                     Component c = e.getComponent();
                     setMapOverviewBounds(c.getBounds());
                 }
@@ -592,7 +591,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
         }
     }
 
-    private enum MapOverviewOriginPoint {
+    private enum MapOverviewAttachPoint {
         SOUTH_EAST, SOUTH_WEST, NORTH_EAST, NORTH_WEST
     }
 
@@ -640,14 +639,14 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
         });
     }
 
-    private MapOverviewOriginPoint getMapOverviewOriginPoint() {
+    private MapOverviewAttachPoint getMapOverviewAttachPoint() {
         ResourceController resourceController = ResourceController.getResourceController();
-        String rawOriginPoint = resourceController.getProperty(MAP_OVERVIEW_ORIGIN_POINT,
-                MapOverviewOriginPoint.SOUTH_EAST.name());
+        String rawAttachPoint = resourceController.getProperty(MAP_OVERVIEW_ATTACH_POINT,
+                MapOverviewAttachPoint.SOUTH_EAST.name());
         try {
-            return MapOverviewOriginPoint.valueOf(rawOriginPoint);
+            return MapOverviewAttachPoint.valueOf(rawAttachPoint);
         } catch (IllegalArgumentException e) {
-            return MapOverviewOriginPoint.SOUTH_EAST;
+            return MapOverviewAttachPoint.SOUTH_EAST;
         }
     }
 
@@ -655,7 +654,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
         return Math.max(Math.min(value, max), min);
     }
 
-    private void changeOriginPoint(Rectangle bounds) {
+    private void convertOriginByAttachPoint(Rectangle bounds) {
         Insets insets = getInsets();
         int bottom = getHeight() - insets.bottom;
         int right = getWidth() - insets.right;
@@ -664,8 +663,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
         int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
         int hsw = hsb.isVisible() ? hsb.getSize().height : 0;
 
-        MapOverviewOriginPoint originPoint = getMapOverviewOriginPoint();
-        switch (originPoint) {
+        switch (getMapOverviewAttachPoint()) {
         case SOUTH_EAST:
             bounds.setLocation(right - bounds.x - vsw - 1 - bounds.width, bottom - bounds.y - hsw - 1 - bounds.height);
             break;
@@ -707,12 +705,12 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
         int width = getBoundedValue(elements[2], MAP_OVERVIEW_MIN_SIZE, MAP_OVERVIEW_MAX_SIZE);
         int height = getBoundedValue(elements[3], MAP_OVERVIEW_MIN_SIZE, MAP_OVERVIEW_MAX_SIZE);
         Rectangle bounds = new Rectangle(x, y, width, height);
-        changeOriginPoint(bounds);
+        convertOriginByAttachPoint(bounds);
         return bounds;
     }
 
     private void setMapOverviewBounds(Rectangle bounds) {
-        changeOriginPoint(bounds);
+        convertOriginByAttachPoint(bounds);
         ResourceController.getResourceController().setProperty(MAP_OVERVIEW_BOUNDS,
                 String.format("%s,%s,%s,%s", bounds.x, bounds.y, bounds.width, bounds.height));
     }
