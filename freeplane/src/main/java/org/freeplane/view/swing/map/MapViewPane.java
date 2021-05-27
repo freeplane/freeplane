@@ -299,17 +299,27 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
             if (e.getClickCount() != 2) {
                 return;
             }
-
-            int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
-            Directions.getByCursorType(cursorType).ifPresent(dir -> {
-                int ordinal = dir.ordinal();
-                if (ordinal > Directions.EAST.ordinal() && ordinal < Directions.MOVE.ordinal()) {
-                    final ResourceController resourceController = ResourceController.getResourceController();
-                    resourceController.setProperty(MAP_OVERVIEW_ATTACH_POINT, dir.name());
-                    Component c = e.getComponent();
-                    setMapOverviewBounds(c.getBounds());
-                }
-            });
+            if (e.getButton() == 1) {
+                System.out.println("left");
+                int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
+                Directions.getByCursorType(cursorType).ifPresent(dir -> {
+                    int ordinal = dir.ordinal();
+                    if (ordinal > Directions.EAST.ordinal() && ordinal < Directions.MOVE.ordinal()) {
+                        final ResourceController resourceController = ResourceController.getResourceController();
+                        resourceController.setProperty(MAP_OVERVIEW_ATTACH_POINT, dir.name());
+                        Component c = e.getComponent();
+                        setMapOverviewBounds(c.getBounds());
+                    }
+                });
+            } else if (e.getButton() == 3) {
+                System.out.println("right");
+                int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
+                Directions.getByCursorType(cursorType).ifPresent(dir -> {
+                    if (dir.name().equals(getMapOverviewAttachPoint().name())) {
+                        ResourceController.getResourceController().setProperty(MAP_OVERVIEW_BOUNDS, "");
+                    }
+                });
+            }
         }
 
         @Override
@@ -775,8 +785,8 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                 mapOverviewPanel.setVisible(isMapOverviewVisible);
                 updateMapOverview();
             }
-        } else if (MAP_OVERVIEW_BOUNDS.equals(propertyName)) {
-            mapOverviewPanel.revalidate();
+        } else if (propertyName.startsWith(MAP_OVERVIEW_PREFIX)) {
+            revalidate();
             mapOverviewPanel.repaint();
         }
     }
