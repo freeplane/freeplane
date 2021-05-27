@@ -80,17 +80,8 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		
 		addAction(new MoveToRootAction());
-		addAction(new MoveSelectedNodeAction(NodePosition.CENTER));
-		// margins
-		addAction(new MoveSelectedNodeAction(NodePosition.RIGHT));
-		addAction(new MoveSelectedNodeAction(NodePosition.LEFT));
-		addAction(new MoveSelectedNodeAction(NodePosition.BOTTOM));
-		addAction(new MoveSelectedNodeAction(NodePosition.TOP));
-		// corners
-		addAction(new MoveSelectedNodeAction(NodePosition.BOTTOM_LEFT));
-		addAction(new MoveSelectedNodeAction(NodePosition.TOP_LEFT));
-		addAction(new MoveSelectedNodeAction(NodePosition.BOTTOM_RIGHT));
-		addAction(new MoveSelectedNodeAction(NodePosition.TOP_RIGHT));
+		Arrays.stream(NodePosition.values()).forEach(p -> addAction(new MoveSelectedNodeAction(p)));
+		Arrays.stream(FreeScrollAction.Direction.values()).forEach(d -> addAction(new FreeScrollAction(d)));
 		
 		addAction(new CloseAllMapsAction());
 		addAction(new CloseAllOtherMapsAction());
