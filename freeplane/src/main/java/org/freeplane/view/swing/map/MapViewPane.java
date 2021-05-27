@@ -778,8 +778,8 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                 updateMapOverview();
             }
         } else if (MAP_OVERVIEW_BOUNDS.equals(propertyName)) {
-            revalidate();
-            repaint();
+            mapOverviewPanel.revalidate();
+            mapOverviewPanel.repaint();
         }
     }
 }
