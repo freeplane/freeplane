@@ -37,6 +37,7 @@ import javax.swing.event.MouseInputListener;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
@@ -154,24 +155,24 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
             g2.setColor(color.darker());
             g2.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1, scaledThumbRect.height - 1);
 
-            String anchorSymbol = "\u2693";
+            String anchorSymbol = Compat.isMacOsX() ? "+" : "\u2693"; // "⚓"
             g2.setColor(complementaryColor(mapView.getBackground()));
 
             Point anchorPos = new Point();
-            Point zoomTextPos = new Point(1, mapOverviewBounds.height - 12);
+            Point zoomTextPos = new Point(1, mapOverviewBounds.height - RESIZE_PANEL_BORDER_SIZE - 8);
             switch (getMapOverviewAttachPoint()) {
             case SOUTH_EAST:
-                anchorPos.setLocation(mapOverviewBounds.width - 22, mapOverviewBounds.height - 12);
+                anchorPos.setLocation(mapOverviewBounds.width - RESIZE_PANEL_BORDER_SIZE - 16, mapOverviewBounds.height - RESIZE_PANEL_BORDER_SIZE - 6);
                 break;
             case SOUTH_WEST:
-                anchorPos.setLocation(1, mapOverviewBounds.height - 12);
-                zoomTextPos.setLocation(1, 12);
+                anchorPos.setLocation(0, mapOverviewBounds.height - RESIZE_PANEL_BORDER_SIZE - 6);
+                zoomTextPos.setLocation(0, 10 + RESIZE_PANEL_BORDER_SIZE);
                 break;
             case NORTH_EAST:
-                anchorPos.setLocation(mapOverviewBounds.width - 22, 12);
+                anchorPos.setLocation(mapOverviewBounds.width - RESIZE_PANEL_BORDER_SIZE - 16, 8 + RESIZE_PANEL_BORDER_SIZE);
                 break;
             case NORTH_WEST:
-                anchorPos.setLocation(1, 12);
+                anchorPos.setLocation(0, 8 + RESIZE_PANEL_BORDER_SIZE);
                 break;
             }
             g2.drawChars(anchorSymbol.toCharArray(), 0, anchorSymbol.length(), anchorPos.x, anchorPos.y);
@@ -292,7 +293,6 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                 return;
             }
             if (e.getButton() == 1) {
-                System.out.println("left");
                 int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
                 Directions.getByCursorType(cursorType).ifPresent(dir -> {
                     int ordinal = dir.ordinal();
@@ -304,7 +304,6 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                     }
                 });
             } else if (e.getButton() == 3) {
-                System.out.println("right");
                 int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
                 Directions.getByCursorType(cursorType).ifPresent(dir -> {
                     if (dir.name().equals(getMapOverviewAttachPoint().name())) {
@@ -378,6 +377,8 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
         }
     }
 
+    private final static int COMPAT_MOVE_CURSOR = Compat.isMacOsX() ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR;
+
     private enum Directions {
         NORTH(Cursor.N_RESIZE_CURSOR) {
             @Override
@@ -427,7 +428,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                 return new Rectangle(r.x, r.y, r.width - d.x, r.height - d.y);
             }
         },
-        MOVE(Cursor.MOVE_CURSOR) {
+        MOVE(COMPAT_MOVE_CURSOR) {
             @Override
             Rectangle getBounds(Rectangle r, Point d) {
                 return new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height);
@@ -517,13 +518,11 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
     }
 
     private class DefaultResizableBorder implements ResizableBorder, SwingConstants {
-        private final Color BORDER_CORDER_SQUARE_COLOR = new Color(0xDF_BF_BF_BF, true);
-        private final Color BORDER_CENTER_LINE_COLOR = new Color(0x7F_FF_FF_FF, true);
 
         @Override
         public Insets getBorderInsets(Component component) {
-            return new Insets(RESIZE_PANEL_BORDER_SIZE, RESIZE_PANEL_BORDER_SIZE, RESIZE_PANEL_BORDER_SIZE,
-                    RESIZE_PANEL_BORDER_SIZE);
+            final int size = RESIZE_PANEL_BORDER_SIZE;
+            return new Insets(size, size, size, size);
         }
 
         @Override
@@ -533,16 +532,19 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
 
         @Override
         public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
-            g.setColor(BORDER_CENTER_LINE_COLOR);
+            final Color mapViewBackground = MapViewPane.this.mapView.getBackground();
+            g.setColor(complementaryColor(mapViewBackground));
+            g.fillRect(x, y, w, h);
+            g.setColor(mapViewBackground);
             g.drawRect(x + RESIZE_PANEL_BORDER_SIZE / 2, y + RESIZE_PANEL_BORDER_SIZE / 2, w - RESIZE_PANEL_BORDER_SIZE,
                     h - RESIZE_PANEL_BORDER_SIZE);
             Rectangle rect = new Rectangle(RESIZE_PANEL_BORDER_SIZE, RESIZE_PANEL_BORDER_SIZE);
             Rectangle r = new Rectangle(x, y, w, h);
             for (Locations loc : Locations.values()) {
                 rect.setLocation(loc.getPoint(r));
-                g.setColor(BORDER_CORDER_SQUARE_COLOR);
+                g.setColor(mapViewBackground);
                 g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
-                g.setColor(complementaryColor(BORDER_CORDER_SQUARE_COLOR));
+                g.setColor(complementaryColor(mapViewBackground));
                 g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
             }
         }
@@ -572,7 +574,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                     return loc.getCursor();
                 }
             }
-            return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+            return Cursor.getPredefinedCursor(COMPAT_MOVE_CURSOR);
         }
     }
 
