@@ -31,25 +31,25 @@ class FreeScrollAction extends AFreeplaneAction {
         LEFT {
             @Override
             void scroll(MapView mapView) {
-                mapView.scrollBy(-10, 0);
+                mapView.scrollBy(10, 0);
             }
         },
         UP {
             @Override
             void scroll(MapView mapView) {
-                mapView.scrollBy(0, -10);
+                mapView.scrollBy(0, 10);
             }
         },
         RIGHT {
             @Override
             void scroll(MapView mapView) {
-                mapView.scrollBy(10, 0);
+                mapView.scrollBy(-10, 0);
             }
         },
         DOWN {
             @Override
             void scroll(MapView mapView) {
-                mapView.scrollBy(0, 10);
+                mapView.scrollBy(0, -10);
             }
         };
 
