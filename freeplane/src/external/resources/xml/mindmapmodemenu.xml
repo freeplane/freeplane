@@ -297,7 +297,7 @@
 				<Entry name="SetBooleanPropertyAction.show_creation_modification_in_status" />
 				<Entry name="ToggleScrollbarsAction" />
 				<Entry name="ToggleMapOverviewAction" />
-				<Entry name="ShowFormatPanel" accelerator="alt shift P" />
+				<Entry name="ShowFormatPanel"/>
 			</Entry>
 			<Entry name="menu_viewmode" >
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />

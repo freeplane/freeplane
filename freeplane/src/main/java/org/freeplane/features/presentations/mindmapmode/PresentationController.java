@@ -18,6 +18,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -49,7 +50,7 @@ public class PresentationController implements IExtension{
 		final PresentationState presentationState = presentationController.presentationState;
 		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-		tabs.add("Presentations", presentationController.createPanel());
+		tabs.add(TextUtils.getText("presentation_panel"), presentationController.createPanel());
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 
 			@Override
