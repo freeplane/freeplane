@@ -52,6 +52,7 @@ import org.freeplane.core.util.logging.internal.LogInitializer;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.FreeSelectNodeAction;
 import org.freeplane.features.filter.NextNodeAction;
 import org.freeplane.features.filter.NextPresentationItemAction;
 import org.freeplane.features.format.FormatController;
@@ -227,6 +228,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			controller.addAction(new NextNodeAction(Direction.BACK));
 			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
 			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+			Arrays.stream(FreeSelectNodeAction.Direction.values())
+					 .forEach(d -> controller.addAction(new FreeSelectNodeAction(d)));
 			controller.addAction(NextPresentationItemAction.createFoldingAction());
 			controller.addAction(NextPresentationItemAction.createNotFoldingAction());
 			controller.addAction(new ShowSelectionAsRectangleAction());

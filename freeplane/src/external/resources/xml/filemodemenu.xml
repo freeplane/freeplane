@@ -25,6 +25,10 @@
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
 			</Entry>
 			<Entry name="menu_scroll_map">
+				<Entry name="FreeScrollAction.LEFT" />
+				<Entry name="FreeScrollAction.UP" />
+				<Entry name="FreeScrollAction.RIGHT" />
+				<Entry name="FreeScrollAction.DOWN" />
 				<Entry accelerator="alt W" name="MoveSelectedNodeAction.LEFT" />
 				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
 				<Entry accelerator="alt E" name="MoveSelectedNodeAction.RIGHT" />
@@ -64,6 +68,10 @@
 				</Entry>
 			</Entry>
 			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
+			<Entry name="FreeSelectNodeAction.LEFT" />
+			<Entry name="FreeSelectNodeAction.UP" />
+			<Entry name="FreeSelectNodeAction.RIGHT" />
+			<Entry name="FreeSelectNodeAction.DOWN" />
 			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
 			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
 		</Entry>

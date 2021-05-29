@@ -273,6 +273,10 @@
 				<Entry name="FitToPage" />
 			</Entry>
 			<Entry name="menu_scroll_map">
+				<Entry name="FreeScrollAction.LEFT" />
+				<Entry name="FreeScrollAction.UP" />
+				<Entry name="FreeScrollAction.RIGHT" />
+				<Entry name="FreeScrollAction.DOWN" />
 				<Entry name="MoveSelectedNodeAction.CENTER" />
 				<Entry name="MoveSelectedNodeAction.LEFT" />
 				<Entry name="MoveSelectedNodeAction.RIGHT" />
@@ -463,6 +467,10 @@
 			<Entry builder="separator" />
 			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 			<Entry name="GotoNodeAction" />
+			<Entry name="FreeSelectNodeAction.LEFT" />
+			<Entry name="FreeSelectNodeAction.UP" />
+			<Entry name="FreeSelectNodeAction.RIGHT" />
+			<Entry name="FreeSelectNodeAction.DOWN" />
 			<Entry name="NextNodeAction.BACK" accelerator="control alt LEFT" />
 			<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
 			<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
