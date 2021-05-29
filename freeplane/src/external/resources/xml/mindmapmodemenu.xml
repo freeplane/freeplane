@@ -313,15 +313,11 @@
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
-				<Entry name="map_overview" >
-					<Entry name="SetStringPropertyAction.map_overview_bounds." />
-				    <Entry builder="separator" />
-					<Entry builder="radio_button_group" name="map_overview_attach_point" textKey="map_overview_attach_point">
-						<Entry name="SetStringPropertyAction.map_overview_attach_point.SOUTH_EAST" />
-						<Entry name="SetStringPropertyAction.map_overview_attach_point.SOUTH_WEST" />
-						<Entry name="SetStringPropertyAction.map_overview_attach_point.NORTH_EAST" />
-						<Entry name="SetStringPropertyAction.map_overview_attach_point.NORTH_WEST" />
-					</Entry>
+				<Entry builder="radio_button_group" name="map_overview_attach_point" textKey="map_overview_attach_point">
+					<Entry name="SetStringPropertyAction.map_overview_attach_point.SOUTH_EAST" />
+					<Entry name="SetStringPropertyAction.map_overview_attach_point.SOUTH_WEST" />
+					<Entry name="SetStringPropertyAction.map_overview_attach_point.NORTH_EAST" />
+					<Entry name="SetStringPropertyAction.map_overview_attach_point.NORTH_WEST" />
 				</Entry>
 			</Entry>
 			<Entry builder="separator" />
