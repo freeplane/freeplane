@@ -7,10 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.freeplane.core.ui.ColoredIconCreator;
 import org.freeplane.core.util.ColorUtils;
 
-public class IconColorReplacer {
+class IconColorReplacer {
 	final private List<Image> originalIconImages;
 	final Map<Color, List<Image>> derivedImages;
 	public IconColorReplacer(List<Image> iconImages) {
@@ -18,7 +17,7 @@ public class IconColorReplacer {
 		derivedImages = new HashMap<Color, List<Image>>();
 		derivedImages.put(original, iconImages);
 	}
-	private static final Color original = ColorUtils.stringToColor("#E6D837");
+	private static final Color original = ColorUtils.stringToColor("#ffffff");
 	private static final Color red = ColorUtils.stringToColor("#ff0000");
 	private static final Color blue = ColorUtils.stringToColor("#0099ff");
 	private static final Color green = ColorUtils.stringToColor("#009900");

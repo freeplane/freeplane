@@ -1,4 +1,4 @@
-package org.freeplane.core.ui;
+package org.freeplane.main.application;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,13 +10,13 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-public class ColoredIconCreator{
+class ColoredIconCreator{
 	final private Map<Color, Icon> coloredNoteIcons;
-	private final int replacedColorRGB;
 	private final Image originalImage;
+    private final Color replacedColor;
 	public ColoredIconCreator(Image originalImage, Color replacedColor) {
 		super();
-		replacedColorRGB = 0xffffff & replacedColor.getRGB();
+        this.replacedColor = replacedColor;
 		coloredNoteIcons  = new HashMap<Color, Icon>();
 		this.originalImage = originalImage;
 	}
@@ -41,13 +41,15 @@ public class ColoredIconCreator{
 
 	public Image createColoredImage(Color newColor) {
 		final int newRGB = 0xffffff & newColor.getRGB();
-		if(replacedColorRGB != newRGB && originalImage != null){
+		if(! replacedColor.equals(newColor) && originalImage != null){
 			final BufferedImage img = copy(originalImage); 
-			for (int x = 0; x < img.getWidth(); x++) {
-				for (int y = 0; y < img.getHeight(); y++) {
+			int width = img.getWidth();
+            for (int x = width/3; x < width * 2 / 3; x++) {
+				int height = img.getHeight();
+                for (int y = height / 3; y < height * 2 / 3; y++) {
 					final int rgb =  img.getRGB(x, y);
-					if ((0xffffff &rgb) == replacedColorRGB)
-						img.setRGB(x, y, 0xff000000 & rgb| newRGB);
+					if (shouldReplace(rgb))
+						img.setRGB(x, y, 0xff000000| newRGB);
 				}
 			}
 			return img;
@@ -55,4 +57,8 @@ public class ColoredIconCreator{
 		else
 			return originalImage;
 	}
+
+    private boolean shouldReplace(final int rgb) {
+        return ((rgb >> 16) & 0xff) > 0xa0;
+   }
 }
