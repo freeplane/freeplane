@@ -160,6 +160,9 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
         int deltaX = mouseStartLocation.x - targetPoint.x;
         int deltaY = mouseStartLocation.y - targetPoint.y;
         Container mapViewPane = SwingUtilities.getUnwrappedParent(resizedPanel);
+        if (! resizedPanel.getCursor().equals(cursor)) {
+            resizedPanel.setCursor(cursor); // restore the cursor in case mouseExited is triggered while dragging
+        }
         int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
         MouseDragAction.getByCursorType(cursorType).ifPresent(action -> {
             Dimension delta = getLimitedDimensionDelta(cursorType, mapViewPane.getBounds(), deltaX, deltaY);
