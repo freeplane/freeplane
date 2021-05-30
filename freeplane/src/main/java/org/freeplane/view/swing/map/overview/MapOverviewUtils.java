@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map.overview;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
 
@@ -11,14 +12,21 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.view.swing.map.MapView;
 
 public class MapOverviewUtils {
+
+    enum MapOverviewAttachPoint {
+        NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST
+    }
+
     static Color complementaryColor(final Color color) {
         return new Color(0xFF - color.getRed(), 0xFF - color.getGreen(), 0xFF - color.getBlue());
     }
 
-    private static MapOverviewAttachPoint getMapOverviewAttachPoint() {
+    static MapOverviewAttachPoint getMapOverviewAttachPoint() {
         ResourceController resourceController = ResourceController.getResourceController();
-        String rawAttachPoint = resourceController.getProperty(MapOverviewConstants.PROP_MAP_OVERVIEW_ATTACH_POINT,
-                MapOverviewAttachPoint.SOUTH_EAST.name());
+        String rawAttachPoint = resourceController.getProperty(MapOverviewConstants.ATTACH_POINT_PROPERTY);
+        if (rawAttachPoint == null) {
+            return MapOverviewAttachPoint.SOUTH_EAST;
+        }
         try {
             return MapOverviewAttachPoint.valueOf(rawAttachPoint);
         } catch (IllegalArgumentException e) {
@@ -26,7 +34,7 @@ public class MapOverviewUtils {
         }
     }
 
-    public static void convertOriginByAttachPoint(MapView mapView, Rectangle bounds) {
+    static void convertOriginByAttachPoint(MapView mapView, Rectangle bounds) {
         final JScrollPane mapViewScrollPane = (JScrollPane) (mapView.getParent().getParent());
         Insets insets = mapViewScrollPane.getInsets();
         int bottom = mapViewScrollPane.getHeight() - insets.bottom;
@@ -51,13 +59,13 @@ public class MapOverviewUtils {
         }
     }
 
-    public static int getBoundedValue(int value, int min, int max) {
+    static int getBoundedValue(int value, int min, int max) {
         return Math.max(Math.min(value, max), min);
     }
 
     public static Rectangle getMapOverviewBounds(MapView mapView) {
         ResourceController resourceController = ResourceController.getResourceController();
-        String rawBoundsValue = resourceController.getProperty(MapOverviewConstants.PROP_MAP_OVERVIEW_BOUNDS);
+        String rawBoundsValue = resourceController.getProperty(MapOverviewConstants.BOUNDS_PROPERTY);
         int[] elements = null;
         if (rawBoundsValue != null) {
             String[] rawElements = rawBoundsValue.split(",");
@@ -86,15 +94,20 @@ public class MapOverviewUtils {
         return bounds;
     }
 
-    public static double getBestScale(Rectangle source, double scaledOverviewBoundWidth,
-            double scaledOverviewBoundHeight) {
-        double innerBoundsWidth = (double) source.width;
-        double innerBoundsHeight = (double) source.height;
-        double scaleX = scaledOverviewBoundWidth / innerBoundsWidth;
-        double scaleY = scaledOverviewBoundHeight / innerBoundsHeight;
-        return ((innerBoundsWidth / innerBoundsHeight) > (scaledOverviewBoundWidth / scaledOverviewBoundHeight))
-                ? scaleX
-                : scaleY;
+    static double getBestScale(Dimension source, Dimension target, Dimension extentedSize) {
+        double sourceWidth = source.getWidth();
+        double sourceHeight = source.getHeight();
+        double targetWidth = target.getWidth();
+        double targetHeight = target.getHeight();
+        double scaleX = targetWidth / sourceWidth;
+        double scaleY = targetHeight / sourceHeight;
+        double scale = ((sourceWidth / sourceHeight) > (targetWidth / targetHeight)) ? scaleX : scaleY;
+        if (extentedSize != null) {
+            double extendedWidth = (targetWidth / scale - sourceWidth) / 2d;
+            double extendedHeight = (targetHeight / scale - sourceHeight) / 2d;
+            extentedSize.setSize(extendedWidth, extendedHeight);
+        }
+        return scale;
     }
 
 }

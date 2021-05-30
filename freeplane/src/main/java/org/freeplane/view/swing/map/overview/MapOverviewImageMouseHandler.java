@@ -1,6 +1,7 @@
 package org.freeplane.view.swing.map.overview;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -55,28 +56,24 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
     protected void processMousePanEvent(MouseEvent e) {
         Rectangle innerBounds = mapView.getInnerBounds();
         Rectangle mapOverviewBounds = e.getComponent().getBounds();
-        double scale = MapOverviewUtils.getBestScale(mapView.getInnerBounds(), mapOverviewBounds.width,
-                mapOverviewBounds.height);
-
-        double extendedWidth = (mapOverviewBounds.width / scale - innerBounds.width) / 2d;
-        double extendedHeight = (mapOverviewBounds.height / scale - innerBounds.height) / 2d;
-
-        Point pt = e.getPoint();
-        setHorizontalRange((int) (pt.x - extendedWidth * scale), scale, innerBounds);
-        setVerticalRange((int) (pt.y - extendedHeight * scale), scale, innerBounds);
+        Dimension extension = new Dimension();
+        double scale = MapOverviewUtils.getBestScale(innerBounds.getSize(), mapOverviewBounds.getSize(), extension);
+        Point target = e.getPoint();
+        setHorizontalRange((int) (target.x - extension.width * scale), scale, innerBounds);
+        setVerticalRange((int) (target.y - extension.height * scale), scale, innerBounds);
     }
 
     private final void setVerticalRange(int y, double scale, Rectangle innerBounds) {
         JScrollPane mapViewScrollPane = (JScrollPane) (mapView.getParent().getParent());
-        BoundedRangeModel m = mapViewScrollPane.getVerticalScrollBar().getModel();
-        int value = (int) (y / scale + innerBounds.y) - m.getExtent() / 2;
-        m.setValue(Math.max(value, 0));
+        BoundedRangeModel model = mapViewScrollPane.getVerticalScrollBar().getModel();
+        int value = (int) (y / scale + innerBounds.y) - model.getExtent() / 2;
+        model.setValue(Math.max(value, 0));
     }
 
     private final void setHorizontalRange(int x, double scale, Rectangle innerBounds) {
         JScrollPane mapViewScrollPane = (JScrollPane) (mapView.getParent().getParent());
-        BoundedRangeModel m = mapViewScrollPane.getHorizontalScrollBar().getModel();
-        int value = (int) (x / scale + innerBounds.x) - m.getExtent() / 2;
-        m.setValue(Math.max(value, 0));
+        BoundedRangeModel model = mapViewScrollPane.getHorizontalScrollBar().getModel();
+        int value = (int) (x / scale + innerBounds.x) - model.getExtent() / 2;
+        model.setValue(Math.max(value, 0));
     }
 };

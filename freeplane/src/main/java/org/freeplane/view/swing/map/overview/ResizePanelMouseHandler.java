@@ -3,6 +3,7 @@ package org.freeplane.view.swing.map.overview;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -21,58 +22,65 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
     final static int COMPAT_MOVE_CURSOR = Compat.isMacOsX() ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR;
 
     private enum MouseDragAction {
-        NORTH(Cursor.N_RESIZE_CURSOR) {
+        RESIZE_NORTH(Cursor.N_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x, r.y - d.y, r.width, r.height + d.y);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x, startBounds.y - d.height, startBounds.width,
+                        startBounds.height + d.height);
             }
         },
-        SOUTH(Cursor.S_RESIZE_CURSOR) {
+        RESIZE_SOUTH(Cursor.S_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x, r.y, r.width, r.height - d.y);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x, startBounds.y, startBounds.width, startBounds.height - d.height);
             }
         },
-        WEST(Cursor.W_RESIZE_CURSOR) {
+        RESIZE_WEST(Cursor.W_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x - d.width, startBounds.y, startBounds.width + d.width,
+                        startBounds.height);
             }
         },
-        EAST(Cursor.E_RESIZE_CURSOR) {
+        RESIZE_EAST(Cursor.E_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x, r.y, r.width - d.x, r.height);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x, startBounds.y, startBounds.width - d.width, startBounds.height);
             }
         },
-        NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
+        RESIZE_NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x - d.x, r.y - d.y, r.width + d.x, r.height + d.y);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x - d.width, startBounds.y - d.height, startBounds.width + d.width,
+                        startBounds.height + d.height);
             }
         },
-        NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
+        RESIZE_NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x, r.y - d.y, r.width - d.x, r.height + d.y);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x, startBounds.y - d.height, startBounds.width - d.width,
+                        startBounds.height + d.height);
             }
         },
-        SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
+        RESIZE_SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height - d.y);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x - d.width, startBounds.y, startBounds.width + d.width,
+                        startBounds.height - d.height);
             }
         },
-        SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
+        RESIZE_SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x, r.y, r.width - d.x, r.height - d.y);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x, startBounds.y, startBounds.width - d.width,
+                        startBounds.height - d.height);
             }
         },
-        MOVE(COMPAT_MOVE_CURSOR) {
+        MOVE_COMPONENT(COMPAT_MOVE_CURSOR) {
             @Override
-            Rectangle getFinalBounds(Rectangle r, Point d) {
-                return new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height);
+            Rectangle getTargetBounds(Rectangle startBounds, Dimension d) {
+                return new Rectangle(startBounds.x - d.width, startBounds.y - d.height, startBounds.width,
+                        startBounds.height);
             }
         };
 
@@ -82,15 +90,15 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
             this.cursor = cursor;
         }
 
-        abstract Rectangle getFinalBounds(Rectangle rect, Point delta);
+        abstract Rectangle getTargetBounds(Rectangle startBounds, Dimension delta);
 
         public static Optional<MouseDragAction> getByCursorType(int cursor) {
             return EnumSet.allOf(MouseDragAction.class).stream().filter(d -> d.cursor == cursor).findFirst();
         }
     }
 
-    private final Point startPos = new Point();
-    private final Rectangle startingBounds = new Rectangle();
+    private final Point mouseStartLocation = new Point();
+    private final Rectangle startBounds = new Rectangle();
     private final MapView mapView;
     private Cursor cursor;
 
@@ -99,9 +107,27 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() != 2 || e.getButton() != 1) {
+            return;
+        }
+        int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
+        MouseDragAction.getByCursorType(cursorType).ifPresent(action -> {
+            int ordinal = action.ordinal();
+            if (ordinal > MouseDragAction.RESIZE_EAST.ordinal() && ordinal < MouseDragAction.MOVE_COMPONENT.ordinal()) {
+                final ResourceController resourceController = ResourceController.getResourceController();
+                resourceController.setProperty(MapOverviewConstants.ATTACH_POINT_PROPERTY,
+                        MapOverviewUtils.MapOverviewAttachPoint
+                                .values()[(ordinal - MouseDragAction.RESIZE_NORTH_WEST.ordinal())].name());
+                resourceController.setProperty(MapOverviewConstants.BOUNDS_PROPERTY, "");
+            }
+        });
+    }
+
+    @Override
     public void mouseMoved(MouseEvent e) {
         JComponent c = (JComponent) e.getComponent();
-        ResizableBorder border = (ResizableBorder) c.getBorder();
+        ResizablePanelBorder border = (ResizablePanelBorder) c.getBorder();
         c.setCursor(border.getResizeCursor(e));
     }
 
@@ -113,83 +139,82 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         JComponent c = (JComponent) e.getComponent();
-        ResizableBorder border = (ResizableBorder) c.getBorder();
+        ResizablePanelBorder border = (ResizablePanelBorder) c.getBorder();
         cursor = border.getResizeCursor(e);
-        startPos.setLocation(SwingUtilities.convertPoint(c, e.getX(), e.getY(), null));
-        startingBounds.setBounds(c.getBounds());
+        mouseStartLocation.setLocation(SwingUtilities.convertPoint(c, e.getX(), e.getY(), null));
+        startBounds.setBounds(c.getBounds());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        startingBounds.setSize(0, 0);
+        startBounds.setSize(0, 0);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (startingBounds.isEmpty()) {
+        if (startBounds.isEmpty()) {
             return;
         }
-        Component c = e.getComponent();
-        Point p = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
-        int deltaX = startPos.x - p.x;
-        int deltaY = startPos.y - p.y;
-        Container parent = SwingUtilities.getUnwrappedParent(c);
+        Component resizedPanel = e.getComponent();
+        Point targetPoint = SwingUtilities.convertPoint(resizedPanel, e.getX(), e.getY(), null);
+        int deltaX = mouseStartLocation.x - targetPoint.x;
+        int deltaY = mouseStartLocation.y - targetPoint.y;
+        Container mapViewPane = SwingUtilities.getUnwrappedParent(resizedPanel);
         int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
         MouseDragAction.getByCursorType(cursorType).ifPresent(action -> {
-            Point delta = getLimitedDelta(cursorType, parent.getBounds(), deltaX, deltaY);
-            Rectangle bounds = action.getFinalBounds(startingBounds, delta);
-            setMapOverviewBounds(bounds);
+            Dimension delta = getLimitedDimensionDelta(cursorType, mapViewPane.getBounds(), deltaX, deltaY);
+            setMapOverviewBounds(action.getTargetBounds(startBounds, delta));
         });
     }
 
     private void setMapOverviewBounds(Rectangle bounds) {
         MapOverviewUtils.convertOriginByAttachPoint(mapView, bounds);
-        ResourceController.getResourceController().setProperty(MapOverviewConstants.PROP_MAP_OVERVIEW_BOUNDS,
+        ResourceController.getResourceController().setProperty(MapOverviewConstants.BOUNDS_PROPERTY,
                 String.format("%s,%s,%s,%s", bounds.x, bounds.y, bounds.width, bounds.height));
     }
 
     private int getDeltaX(int dx) {
-        int left = Math.min(MapOverviewConstants.MAX_SIZE - startingBounds.width, startingBounds.x);
-        return Math.max(Math.min(dx, left), MapOverviewConstants.MIN_SIZE - startingBounds.width);
+        int left = Math.min(MapOverviewConstants.MAX_SIZE - startBounds.width, startBounds.x);
+        return Math.max(Math.min(dx, left), MapOverviewConstants.MIN_SIZE - startBounds.width);
     }
 
     private int getDeltaX(int dx, Rectangle pr) {
-        int right = Math.max(startingBounds.width - MapOverviewConstants.MAX_SIZE,
-                startingBounds.x + startingBounds.width - pr.width);
-        return Math.min(Math.max(dx, right), startingBounds.width - MapOverviewConstants.MIN_SIZE);
+        int right = Math.max(startBounds.width - MapOverviewConstants.MAX_SIZE,
+                startBounds.x + startBounds.width - pr.width);
+        return Math.min(Math.max(dx, right), startBounds.width - MapOverviewConstants.MIN_SIZE);
     }
 
     private int getDeltaY(int dy) {
-        int top = Math.min(MapOverviewConstants.MAX_SIZE - startingBounds.height, startingBounds.y);
-        return Math.max(Math.min(dy, top), MapOverviewConstants.MIN_SIZE - startingBounds.height);
+        int top = Math.min(MapOverviewConstants.MAX_SIZE - startBounds.height, startBounds.y);
+        return Math.max(Math.min(dy, top), MapOverviewConstants.MIN_SIZE - startBounds.height);
     }
 
     private int getDeltaY(int dy, Rectangle pr) {
-        int bottom = Math.max(startingBounds.height - MapOverviewConstants.MAX_SIZE,
-                startingBounds.y + startingBounds.height - pr.height);
-        return Math.min(Math.max(dy, bottom), startingBounds.height - MapOverviewConstants.MIN_SIZE);
+        int bottom = Math.max(startBounds.height - MapOverviewConstants.MAX_SIZE,
+                startBounds.y + startBounds.height - pr.height);
+        return Math.min(Math.max(dy, bottom), startBounds.height - MapOverviewConstants.MIN_SIZE);
     }
 
-    private Point getLimitedDelta(int cursorType, Rectangle pr, int deltaX, int deltaY) {
+    private Dimension getLimitedDimensionDelta(int cursorType, Rectangle pr, int deltaX, int deltaY) {
         switch (cursorType) {
         case Cursor.N_RESIZE_CURSOR:
-            return new Point(0, getDeltaY(deltaY));
+            return new Dimension(0, getDeltaY(deltaY));
         case Cursor.S_RESIZE_CURSOR:
-            return new Point(0, getDeltaY(deltaY, pr));
+            return new Dimension(0, getDeltaY(deltaY, pr));
         case Cursor.W_RESIZE_CURSOR:
-            return new Point(getDeltaX(deltaX), 0);
+            return new Dimension(getDeltaX(deltaX), 0);
         case Cursor.E_RESIZE_CURSOR:
-            return new Point(getDeltaX(deltaX, pr), 0);
+            return new Dimension(getDeltaX(deltaX, pr), 0);
         case Cursor.NW_RESIZE_CURSOR:
-            return new Point(getDeltaX(deltaX), getDeltaY(deltaY));
+            return new Dimension(getDeltaX(deltaX), getDeltaY(deltaY));
         case Cursor.SW_RESIZE_CURSOR:
-            return new Point(getDeltaX(deltaX), getDeltaY(deltaY, pr));
+            return new Dimension(getDeltaX(deltaX), getDeltaY(deltaY, pr));
         case Cursor.NE_RESIZE_CURSOR:
-            return new Point(getDeltaX(deltaX, pr), getDeltaY(deltaY));
+            return new Dimension(getDeltaX(deltaX, pr), getDeltaY(deltaY));
         case Cursor.SE_RESIZE_CURSOR:
-            return new Point(getDeltaX(deltaX, pr), getDeltaY(deltaY, pr));
+            return new Dimension(getDeltaX(deltaX, pr), getDeltaY(deltaY, pr));
         default:
-            return new Point(deltaX, deltaY);
+            return new Dimension(deltaX, deltaY);
         }
     }
 }

@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -18,13 +17,13 @@ import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
-import org.freeplane.view.swing.map.overview.MapOverviewImage;
 import org.freeplane.view.swing.map.overview.MapOverviewConstants;
+import org.freeplane.view.swing.map.overview.MapOverviewImage;
 import org.freeplane.view.swing.map.overview.MapOverviewUtils;
-import org.freeplane.view.swing.map.overview.ResizableBorder;
+import org.freeplane.view.swing.map.overview.ResizablePanelBorder;
 import org.freeplane.view.swing.map.overview.ResizePanelMouseHandler;
 
-public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListener, IMapChangeListener {
+public class MapViewPane extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private final MapOverviewImage mapOverviewImage;
@@ -62,7 +61,7 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
                 MouseInputListener handler = new ResizePanelMouseHandler(mapView);
                 addMouseListener(handler);
                 addMouseMotionListener(handler);
-                setBorder(new ResizableBorder(mapView));
+                setBorder(new ResizablePanelBorder(mapView));
             }
         };
         mapOverviewPanel.add(mapOverviewImage);
@@ -116,18 +115,17 @@ public class MapViewPane extends JLayeredPane implements IFreeplanePropertyListe
     @Override
     public void propertyChanged(String propertyName, String newValue, String oldValue) {
         if (ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
-                || MapOverviewConstants.PROP_MAP_OVERVIEW_VISIBLE.equals(propertyName)
-                || MapOverviewConstants.PROP_MAP_OVERVIEW_VISIBLE_FS.equals(propertyName)) {
+                || MapOverviewConstants.VISIBLE_PROPERTY.equals(propertyName)
+                || MapOverviewConstants.VISIBLE_FS_PROPERTY.equals(propertyName)) {
             final ViewController viewController = Controller.getCurrentController().getViewController();
             if (isMapOverviewVisible != viewController.isMapOverviewVisible()) {
                 isMapOverviewVisible = ! isMapOverviewVisible;
                 mapOverviewPanel.setVisible(isMapOverviewVisible);
                 updateMapOverview();
             }
-        } else if (propertyName.startsWith(MapOverviewConstants.PROP_MAP_OVERVIEW_PREFIX)) {
-            if (MapOverviewConstants.PROP_MAP_OVERVIEW_ATTACH_POINT.equals(propertyName)) {
-                ResourceController.getResourceController().setProperty(MapOverviewConstants.PROP_MAP_OVERVIEW_BOUNDS,
-                        "");
+        } else if (propertyName.startsWith(MapOverviewConstants.PROPERTY_PREFIX)) {
+            if (MapOverviewConstants.ATTACH_POINT_PROPERTY.equals(propertyName)) {
+                ResourceController.getResourceController().setProperty(MapOverviewConstants.BOUNDS_PROPERTY, "");
             }
             revalidate();
             updateMapOverview();
