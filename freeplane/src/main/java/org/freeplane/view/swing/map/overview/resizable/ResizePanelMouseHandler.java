@@ -1,7 +1,6 @@
-package org.freeplane.view.swing.map.overview;
+package org.freeplane.view.swing.map.overview.resizable;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -14,9 +13,9 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.overview.MapOverviewAttachPoint;
+import org.freeplane.view.swing.map.overview.MapViewPane;
 
 public class ResizePanelMouseHandler extends MouseInputAdapter {
     final static int COMPAT_MOVE_CURSOR = Compat.isMacOsX() ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR;
@@ -97,14 +96,9 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
         }
     }
 
-    private final Point mouseStartLocation = new Point();
+    private final Point startLocation = new Point();
     private final Rectangle startBounds = new Rectangle();
-    private final MapView mapView;
     private Cursor cursor;
-
-    public ResizePanelMouseHandler(MapView mapView) {
-        this.mapView = mapView;
-    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -115,11 +109,11 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
         MouseDragAction.getByCursorType(cursorType).ifPresent(action -> {
             int ordinal = action.ordinal();
             if (ordinal > MouseDragAction.RESIZE_EAST.ordinal() && ordinal < MouseDragAction.MOVE_COMPONENT.ordinal()) {
-                final ResourceController resourceController = ResourceController.getResourceController();
-                resourceController.setProperty(MapOverviewConstants.ATTACH_POINT_PROPERTY,
-                        MapOverviewUtils.MapOverviewAttachPoint
-                                .values()[(ordinal - MouseDragAction.RESIZE_NORTH_WEST.ordinal())].name());
-                resourceController.setProperty(MapOverviewConstants.BOUNDS_PROPERTY, "");
+                String attachPoint = MapOverviewAttachPoint
+                        .values()[(ordinal - MouseDragAction.RESIZE_NORTH_WEST.ordinal())].name();
+                MapViewPane mapViewPane = (MapViewPane) e.getComponent().getParent();
+                mapViewPane.setMapOverviewAttachPoint(attachPoint);
+                mapViewPane.resetMapOverviewBounds();
             }
         });
     }
@@ -141,7 +135,7 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
         JComponent c = (JComponent) e.getComponent();
         ResizablePanelBorder border = (ResizablePanelBorder) c.getBorder();
         cursor = border.getResizeCursor(e);
-        mouseStartLocation.setLocation(SwingUtilities.convertPoint(c, e.getX(), e.getY(), null));
+        startLocation.setLocation(SwingUtilities.convertPoint(c, e.getX(), e.getY(), null));
         startBounds.setBounds(c.getBounds());
     }
 
@@ -157,45 +151,40 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
         }
         Component resizedPanel = e.getComponent();
         Point targetPoint = SwingUtilities.convertPoint(resizedPanel, e.getX(), e.getY(), null);
-        int deltaX = mouseStartLocation.x - targetPoint.x;
-        int deltaY = mouseStartLocation.y - targetPoint.y;
-        Container mapViewPane = SwingUtilities.getUnwrappedParent(resizedPanel);
+        int deltaX = startLocation.x - targetPoint.x;
+        int deltaY = startLocation.y - targetPoint.y;
         if (! resizedPanel.getCursor().equals(cursor)) {
             resizedPanel.setCursor(cursor); // restore the cursor in case mouseExited is triggered while dragging
         }
+
+        MapViewPane mapViewPane = (MapViewPane) e.getComponent().getParent();
         int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
         MouseDragAction.getByCursorType(cursorType).ifPresent(action -> {
             Dimension delta = getLimitedDimensionDelta(cursorType, mapViewPane.getBounds(), deltaX, deltaY);
-            setMapOverviewBounds(action.getTargetBounds(startBounds, delta));
+            mapViewPane.setMapOverviewBounds(action.getTargetBounds(startBounds, delta));
         });
     }
 
-    private void setMapOverviewBounds(Rectangle bounds) {
-        MapOverviewUtils.convertOriginByAttachPoint(mapView, bounds);
-        ResourceController.getResourceController().setProperty(MapOverviewConstants.BOUNDS_PROPERTY,
-                String.format("%s,%s,%s,%s", bounds.x, bounds.y, bounds.width, bounds.height));
-    }
-
     private int getDeltaX(int dx) {
-        int left = Math.min(MapOverviewConstants.MAX_SIZE - startBounds.width, startBounds.x);
-        return Math.max(Math.min(dx, left), MapOverviewConstants.MIN_SIZE - startBounds.width);
+        int left = Math.min(MapViewPane.MAP_OVERVIEW_MAX_SIZE - startBounds.width, startBounds.x);
+        return Math.max(Math.min(dx, left), MapViewPane.MAP_OVERVIEW_MIN_SIZE - startBounds.width);
     }
 
     private int getDeltaX(int dx, Rectangle pr) {
-        int right = Math.max(startBounds.width - MapOverviewConstants.MAX_SIZE,
+        int right = Math.max(startBounds.width - MapViewPane.MAP_OVERVIEW_MAX_SIZE,
                 startBounds.x + startBounds.width - pr.width);
-        return Math.min(Math.max(dx, right), startBounds.width - MapOverviewConstants.MIN_SIZE);
+        return Math.min(Math.max(dx, right), startBounds.width - MapViewPane.MAP_OVERVIEW_MIN_SIZE);
     }
 
     private int getDeltaY(int dy) {
-        int top = Math.min(MapOverviewConstants.MAX_SIZE - startBounds.height, startBounds.y);
-        return Math.max(Math.min(dy, top), MapOverviewConstants.MIN_SIZE - startBounds.height);
+        int top = Math.min(MapViewPane.MAP_OVERVIEW_MAX_SIZE - startBounds.height, startBounds.y);
+        return Math.max(Math.min(dy, top), MapViewPane.MAP_OVERVIEW_MIN_SIZE - startBounds.height);
     }
 
     private int getDeltaY(int dy, Rectangle pr) {
-        int bottom = Math.max(startBounds.height - MapOverviewConstants.MAX_SIZE,
+        int bottom = Math.max(startBounds.height - MapViewPane.MAP_OVERVIEW_MAX_SIZE,
                 startBounds.y + startBounds.height - pr.height);
-        return Math.min(Math.max(dy, bottom), startBounds.height - MapOverviewConstants.MIN_SIZE);
+        return Math.min(Math.max(dy, bottom), startBounds.height - MapViewPane.MAP_OVERVIEW_MIN_SIZE);
     }
 
     private Dimension getLimitedDimensionDelta(int cursorType, Rectangle pr, int deltaX, int deltaY) {

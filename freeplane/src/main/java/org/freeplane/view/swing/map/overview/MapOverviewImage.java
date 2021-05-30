@@ -1,5 +1,6 @@
 package org.freeplane.view.swing.map.overview;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,20 +18,41 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;
-import org.freeplane.view.swing.map.overview.MapOverviewUtils.MapOverviewAttachPoint;
 
-public class MapOverviewImage extends JComponent {
+class MapOverviewImage extends JComponent {
     private static final long serialVersionUID = 1L;
+
+    static final Color VIEWPORT_THUMBNAIL_COLOR = new Color(0x32_00_00_FF, true);
 
     private BufferedImage image;
     private MapView mapView;
 
-    public MapOverviewImage(MapView mapView) {
+    MapOverviewImage(MapView mapView) {
         this.mapView = mapView;
         MapOverviewImageMouseHandler handler = new MapOverviewImageMouseHandler(mapView);
         addMouseListener(handler);
         addMouseMotionListener(handler);
         addMouseWheelListener(handler);
+    }
+
+    void resetImage() {
+        image = null;
+    }
+
+    double getBestScale(Dimension source, Dimension target, Dimension extentedSize) {
+        double sourceWidth = source.getWidth();
+        double sourceHeight = source.getHeight();
+        double targetWidth = target.getWidth();
+        double targetHeight = target.getHeight();
+        double scaleX = targetWidth / sourceWidth;
+        double scaleY = targetHeight / sourceHeight;
+        double scale = ((sourceWidth / sourceHeight) > (targetWidth / targetHeight)) ? scaleX : scaleY;
+        if (extentedSize != null) {
+            double extendedWidth = (targetWidth / scale - sourceWidth) / 2d;
+            double extendedHeight = (targetHeight / scale - sourceHeight) / 2d;
+            extentedSize.setSize(extendedWidth, extendedHeight);
+        }
+        return scale;
     }
 
     @Override
@@ -44,7 +66,7 @@ public class MapOverviewImage extends JComponent {
         AffineTransform overviewTransform = AffineTransform.getScaleInstance(transform.getScaleX(),
                 transform.getScaleY());
         overviewBounds = overviewTransform.createTransformedShape(overviewBounds).getBounds();
-        double scale = MapOverviewUtils.getBestScale(mapInnerBounds.getSize(), overviewBounds.getSize(), extentedSize);
+        double scale = getBestScale(mapInnerBounds.getSize(), overviewBounds.getSize(), extentedSize);
         if (image == null || image.getWidth() != (int) overviewBounds.width * scaleX) {
             image = snapshot(mapInnerBounds, overviewBounds, scale, extentedSize);
         }
@@ -59,25 +81,26 @@ public class MapOverviewImage extends JComponent {
         }
 
         drawViewportThumbnail(g2d, mapInnerBounds, scale, extentedSize);
-        drawAnchorAndZoomLevel(g);
+        drawAnchorAndZoomLevel(g2d);
     }
 
-    private void drawAnchorAndZoomLevel(Graphics g) {
-        Dimension overviewSize = getSize();
+    private void drawAnchorAndZoomLevel(Graphics2D g2d) {
+        Dimension imageSize = getSize();
 
         String anchorSymbol = Compat.isMacOsX() ? "+" : "\u2693"; // "⚓"
         Point anchorLocation = new Point();
-        Point zoomLevelLocation = new Point(4, overviewSize.height - 8);
-        MapOverviewAttachPoint anchorPoint = MapOverviewUtils.getMapOverviewAttachPoint();
+        Point zoomLevelLocation = new Point(4, imageSize.height - 8);
+        final MapViewPane mapViewPane = (MapViewPane) getParent().getParent();
+        MapOverviewAttachPoint anchorPoint = mapViewPane.getMapOverviewAttachPoint();
         switch (anchorPoint) {
         case SOUTH_EAST:
-            anchorLocation.setLocation(overviewSize.width - 16, overviewSize.height - 8);
+            anchorLocation.setLocation(imageSize.width - 16, imageSize.height - 8);
             break;
         case SOUTH_WEST:
-            anchorLocation.setLocation(4, overviewSize.height - 8);
+            anchorLocation.setLocation(4, imageSize.height - 8);
             break;
         case NORTH_EAST:
-            anchorLocation.setLocation(overviewSize.width - 16, 16);
+            anchorLocation.setLocation(imageSize.width - 16, 16);
             break;
         case NORTH_WEST:
             anchorLocation.setLocation(4, 16);
@@ -88,15 +111,21 @@ public class MapOverviewImage extends JComponent {
         if (mapViewManager instanceof MapViewController) {
             zoomLevelString = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
         }
-        g.setColor(MapOverviewUtils.complementaryColor(mapView.getBackground()));
 
+        Color invBgColor = complementaryColor(mapView.getBackground());
+        Color textColor = new Color(invBgColor.getRed(), invBgColor.getGreen(), invBgColor.getBlue(), 0x4F);
+        g2d.setColor(textColor);
         if (anchorPoint == MapOverviewAttachPoint.SOUTH_WEST && zoomLevelString != null) {
             anchorSymbol += " " + zoomLevelString;
         } else if (zoomLevelString != null) {
-            g.drawChars(zoomLevelString.toCharArray(), 0, zoomLevelString.length(), zoomLevelLocation.x,
+            g2d.drawChars(zoomLevelString.toCharArray(), 0, zoomLevelString.length(), zoomLevelLocation.x,
                     zoomLevelLocation.y);
         }
-        g.drawChars(anchorSymbol.toCharArray(), 0, anchorSymbol.length(), anchorLocation.x, anchorLocation.y);
+        g2d.drawChars(anchorSymbol.toCharArray(), 0, anchorSymbol.length(), anchorLocation.x, anchorLocation.y);
+    }
+
+    private Color complementaryColor(final Color color) {
+        return new Color(0xFF - color.getRed(), 0xFF - color.getGreen(), 0xFF - color.getBlue());
     }
 
     private BufferedImage snapshot(Rectangle mapInnerBounds, Rectangle overviewBounds, double scale, Dimension extent) {
@@ -132,14 +161,10 @@ public class MapOverviewImage extends JComponent {
         AffineTransform transformer = AffineTransform.getScaleInstance(scale / transformed.getScaleX(),
                 scale / transformed.getScaleY());
         Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
-        g2d.setColor(MapOverviewConstants.VIEWPORT_THUMBNAIL_COLOR);
+        g2d.setColor(VIEWPORT_THUMBNAIL_COLOR);
         g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
-        g2d.setColor(MapOverviewConstants.VIEWPORT_THUMBNAIL_COLOR.darker());
+        g2d.setColor(VIEWPORT_THUMBNAIL_COLOR.darker());
         g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1, scaledThumbRect.height - 1);
-    }
-
-    public void resetImage() {
-        image = null;
     }
 
 }

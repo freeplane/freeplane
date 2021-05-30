@@ -39,7 +39,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewScrollPane;
-import org.freeplane.view.swing.map.MapViewPane;
+import org.freeplane.view.swing.map.overview.MapViewPane;
 
 /**
  * @author Dimitry Polivaev

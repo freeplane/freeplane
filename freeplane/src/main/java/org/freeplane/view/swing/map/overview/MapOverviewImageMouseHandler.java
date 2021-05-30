@@ -53,11 +53,12 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
         processMousePanEvent(e);
     }
 
-    protected void processMousePanEvent(MouseEvent e) {
+    private void processMousePanEvent(MouseEvent e) {
         Rectangle innerBounds = mapView.getInnerBounds();
         Rectangle mapOverviewBounds = e.getComponent().getBounds();
         Dimension extension = new Dimension();
-        double scale = MapOverviewUtils.getBestScale(innerBounds.getSize(), mapOverviewBounds.getSize(), extension);
+        MapOverviewImage image = (MapOverviewImage) e.getComponent();
+        double scale = image.getBestScale(innerBounds.getSize(), mapOverviewBounds.getSize(), extension);
         Point target = e.getPoint();
         setHorizontalRange((int) (target.x - extension.width * scale), scale, innerBounds);
         setVerticalRange((int) (target.y - extension.height * scale), scale, innerBounds);

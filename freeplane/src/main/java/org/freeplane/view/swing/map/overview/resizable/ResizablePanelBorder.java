@@ -1,4 +1,4 @@
-package org.freeplane.view.swing.map.overview;
+package org.freeplane.view.swing.map.overview.resizable;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -13,11 +13,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.overview.MapViewPane;
 
 public class ResizablePanelBorder implements Border, SwingConstants {
-    public static final int SIZE = 4;
-    public static final int EXTENDED_SIZE = SIZE + 24;
 
     private enum MouseActionableSite {
         NORTH(Cursor.N_RESIZE_CURSOR) {
@@ -82,15 +80,17 @@ public class ResizablePanelBorder implements Border, SwingConstants {
         }
     }
 
-    private final MapView mapView;
+    private final int size;
+    private final int extendedSize;
 
-    public ResizablePanelBorder(MapView mapView) {
-        this.mapView = mapView;
+    public ResizablePanelBorder(int size, int extendedSize) {
+        this.size = size;
+        this.extendedSize = extendedSize;
     }
 
     @Override
     public Insets getBorderInsets(Component component) {
-        return new Insets(SIZE, SIZE, SIZE, SIZE);
+        return new Insets(size, size, size, size);
     }
 
     @Override
@@ -100,21 +100,26 @@ public class ResizablePanelBorder implements Border, SwingConstants {
 
     @Override
     public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
-        final Color mapViewBackground = mapView.getBackground();
-        final Color invertedColor = MapOverviewUtils.complementaryColor(mapViewBackground);
+        MapViewPane mapViewPane = (MapViewPane) component.getParent();
+        final Color mapViewBackground = mapViewPane.getMapViewBackground();
+        final Color invertedColor = complementaryColor(mapViewBackground);
         g.setColor(mapViewBackground);
         g.fillRect(x, y, w, h);
         g.setColor(invertedColor);
-        g.drawRect(x + SIZE / 2, y + SIZE / 2, w - SIZE, h - SIZE);
+        g.drawRect(x + size / 2, y + size / 2, w - size, h - size);
 
-        Rectangle rect = new Rectangle(EXTENDED_SIZE, EXTENDED_SIZE);
+        Rectangle rect = new Rectangle(extendedSize, extendedSize);
         for (MouseActionableSite loc : MouseActionableSite.values()) {
-            rect.setLocation(loc.getSiteLocation(new Dimension(w, h), EXTENDED_SIZE));
+            rect.setLocation(loc.getSiteLocation(new Dimension(w, h), extendedSize));
             g.setColor(invertedColor);
             g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
             g.setColor(mapViewBackground);
             g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
         }
+    }
+
+    private Color complementaryColor(final Color color) {
+        return new Color(0xFF - color.getRed(), 0xFF - color.getGreen(), 0xFF - color.getBlue());
     }
 
     public Cursor getResizeCursor(MouseEvent e) {
@@ -128,14 +133,14 @@ public class ResizablePanelBorder implements Border, SwingConstants {
             return Cursor.getDefaultCursor();
         }
 
-        Rectangle contentAreaBounds = new Rectangle(SIZE, SIZE, width - 2 * SIZE, height - 2 * SIZE);
+        Rectangle contentAreaBounds = new Rectangle(size, size, width - 2 * size, height - 2 * size);
         if (contentAreaBounds.contains(mouseLocation)) {
             return Cursor.getDefaultCursor();
         }
 
-        Rectangle actionableRegion = new Rectangle(EXTENDED_SIZE, EXTENDED_SIZE);
+        Rectangle actionableRegion = new Rectangle(extendedSize, extendedSize);
         for (MouseActionableSite site : MouseActionableSite.values()) {
-            actionableRegion.setLocation(site.getSiteLocation(c.getSize(), EXTENDED_SIZE));
+            actionableRegion.setLocation(site.getSiteLocation(c.getSize(), extendedSize));
             if (actionableRegion.contains(mouseLocation)) {
                 return site.getCursor();
             }
