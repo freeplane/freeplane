@@ -342,7 +342,14 @@ public class CommandSearchDialog extends JDialog
             matches.add(new InformationItem(LIMIT_EXCEEDED_MESSAGE, WARNING_ICON, LIMIT_EXCEEDED_RANK));
         }
         UpdateableListModel<SearchItem> model = new UpdateableListModel<>(matches);
+        
+        SearchItem selectedItem = resultList.getSelectedValue();
         resultList.setModel(model);
+        if (resultList.getModel().getSize() > 0) {
+            resultList.setSelectedValue(selectedItem, true);
+            if(resultList.getSelectedIndex() == -1)
+                resultList.setSelectedIndex(0);
+        }
     }
 
     @Override
