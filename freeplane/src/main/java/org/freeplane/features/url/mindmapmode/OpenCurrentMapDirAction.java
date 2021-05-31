@@ -24,21 +24,31 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.view.swing.map.MapView;
 
-class OpenCurrentMapDirAction extends AFreeplaneAction implements IMapViewChangeListener {
+class OpenCurrentMapDirAction extends AFreeplaneAction implements IMapViewChangeListener, IMapChangeListener {
     private static final long serialVersionUID = 1L;
 
     public OpenCurrentMapDirAction() {
         super("OpenCurrentMapDirAction");
         Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(this);
+        Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
     }
 
     public void actionPerformed(final ActionEvent e) {
         final Controller controller = Controller.getCurrentController();
         LinkController.getController().loadURI(controller.getMap().getFile().getParentFile().toURI());
+    }
+
+    @Override
+    public void mapChanged(MapChangeEvent event) {
+        final MapModel map = event.getMap();
+        setEnabled(map != null && map.getFile() != null);
     }
 
     public void afterViewChange(Component oldView, Component newView) {
