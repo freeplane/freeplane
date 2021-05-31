@@ -2,6 +2,8 @@ package org.freeplane.view.swing.map.overview;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,6 +15,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JViewport;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
@@ -22,7 +26,9 @@ import org.freeplane.view.swing.map.MapViewController;
 class MapOverviewImage extends JComponent {
     private static final long serialVersionUID = 1L;
 
-    static final Color VIEWPORT_THUMBNAIL_COLOR = new Color(0x32_00_00_FF, true);
+    private static final Color VIEWPORT_THUMBNAIL_COLOR = new Color(0x32_00_00_FF, true);
+    private static final float FONT_SCALE = 0.75F;
+    private static final int FONT_RIGHT_MARGIN = new Quantity<LengthUnit>(3, LengthUnit.pt).toBaseUnitsRounded();
 
     private BufferedImage image;
     private MapView mapView;
@@ -87,41 +93,54 @@ class MapOverviewImage extends JComponent {
     private void drawAnchorAndZoomLevel(Graphics2D g2d) {
         Dimension imageSize = getSize();
 
-        String anchorSymbol = Compat.isMacOsX() ? "+" : "\u2693"; // "⚓"
+        String anchor = Compat.isMacOsX() ? "+" : "\u2693"; // "⚓"
         Point anchorLocation = new Point();
-        Point zoomLevelLocation = new Point(4, imageSize.height - 8);
+
+        final FontMetrics fontMetrics = g2d.getFontMetrics();
+
+        AffineTransform transform = AffineTransform.getScaleInstance(FONT_SCALE, FONT_SCALE);
+        Rectangle anchorBounds = transform.createTransformedShape(fontMetrics.getStringBounds(anchor, g2d)).getBounds();
+
+        int borderSize = MapViewPane.MAP_OVERVIEW_BORDER_SIZE;
+        Point zoomLevelLoc = new Point(borderSize, imageSize.height - borderSize);
+
         final MapViewPane mapViewPane = (MapViewPane) getParent().getParent();
         MapOverviewAttachPoint anchorPoint = mapViewPane.getMapOverviewAttachPoint();
         switch (anchorPoint) {
         case SOUTH_EAST:
-            anchorLocation.setLocation(imageSize.width - 16, imageSize.height - 8);
+            anchorLocation.setLocation(imageSize.width - anchorBounds.width - FONT_RIGHT_MARGIN, zoomLevelLoc.y);
             break;
         case SOUTH_WEST:
-            anchorLocation.setLocation(4, imageSize.height - 8);
+            anchorLocation.setLocation(zoomLevelLoc);
             break;
         case NORTH_EAST:
-            anchorLocation.setLocation(imageSize.width - 16, 16);
+            anchorLocation.setLocation(imageSize.width - anchorBounds.width - FONT_RIGHT_MARGIN, anchorBounds.height);
             break;
         case NORTH_WEST:
-            anchorLocation.setLocation(4, 16);
+            anchorLocation.setLocation(borderSize, anchorBounds.height);
             break;
         }
-        String zoomLevelString = null;
+
+        String zoomLevel = null;
         IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         if (mapViewManager instanceof MapViewController) {
-            zoomLevelString = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
+            zoomLevel = ((MapViewController) mapViewManager).getItemForZoom(mapView.getZoom());
         }
 
         Color invBgColor = complementaryColor(mapView.getBackground());
-        Color textColor = new Color(invBgColor.getRed(), invBgColor.getGreen(), invBgColor.getBlue(), 0x4F);
+        Color textColor = new Color(invBgColor.getRed(), invBgColor.getGreen(), invBgColor.getBlue(), 0x5F);
         g2d.setColor(textColor);
-        if (anchorPoint == MapOverviewAttachPoint.SOUTH_WEST && zoomLevelString != null) {
-            anchorSymbol += " " + zoomLevelString;
-        } else if (zoomLevelString != null) {
-            g2d.drawChars(zoomLevelString.toCharArray(), 0, zoomLevelString.length(), zoomLevelLocation.x,
-                    zoomLevelLocation.y);
+
+        final Font origFont = getFont();
+        g2d.setFont(origFont.deriveFont(origFont.getSize() * FONT_SCALE));
+
+        if (anchorPoint == MapOverviewAttachPoint.SOUTH_WEST && zoomLevel != null) {
+            anchor += " " + zoomLevel;
+        } else if (zoomLevel != null) {
+            g2d.drawChars(zoomLevel.toCharArray(), 0, zoomLevel.length(), zoomLevelLoc.x, zoomLevelLoc.y);
         }
-        g2d.drawChars(anchorSymbol.toCharArray(), 0, anchorSymbol.length(), anchorLocation.x, anchorLocation.y);
+
+        g2d.drawChars(anchor.toCharArray(), 0, anchor.length(), anchorLocation.x, anchorLocation.y);
     }
 
     private Color complementaryColor(final Color color) {

@@ -106,15 +106,13 @@ public class ResizablePanelBorder implements Border, SwingConstants {
         g.setColor(mapViewBackground);
         g.fillRect(x, y, w, h);
         g.setColor(invertedColor);
-        g.drawRect(x + size / 2, y + size / 2, w - size, h - size);
+        g.drawRect(x, y, w - 1, h - 1);
 
-        Rectangle rect = new Rectangle(extendedSize, extendedSize);
+        Rectangle rect = new Rectangle(size, size);
+        g.setColor(invertedColor);
         for (MouseActionableSite loc : MouseActionableSite.values()) {
-            rect.setLocation(loc.getSiteLocation(new Dimension(w, h), extendedSize));
-            g.setColor(invertedColor);
-            g.fillRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
-            g.setColor(mapViewBackground);
-            g.drawRect(rect.x, rect.y, rect.width - 1, rect.height - 1);
+            rect.setLocation(loc.getSiteLocation(new Dimension(w, h), size));
+            g.fillRect(rect.x, rect.y, rect.width, rect.height);
         }
     }
 

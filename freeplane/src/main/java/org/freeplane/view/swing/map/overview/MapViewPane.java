@@ -43,7 +43,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
     public static final int MAP_OVERVIEW_BORDER_SIZE = new Quantity<LengthUnit>(3, LengthUnit.pt).toBaseUnitsRounded();
     public static final int MAP_OVERVIEW_BORDER_EXTENDED_SIZE = MAP_OVERVIEW_BORDER_SIZE
-            + new Quantity<LengthUnit>(18, LengthUnit.pt).toBaseUnitsRounded();
+            + new Quantity<LengthUnit>(24, LengthUnit.pt).toBaseUnitsRounded();
 
     private final MapOverviewImage mapOverviewImage;
     private final JPanel mapOverviewPanel;
@@ -144,7 +144,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
             }
         } else if (propertyName.startsWith(MAP_OVERVIEW_PROPERTY_PREFIX)) {
             if (MAP_OVERVIEW_ATTACH_POINT_PROPERTY.equals(propertyName)) {
-                ResourceController.getResourceController().setProperty(MAP_OVERVIEW_BOUNDS_PROPERTY, "");
+                resetMapOverviewBounds();
             }
             revalidate();
             updateMapOverview();
@@ -229,13 +229,13 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
         switch (getMapOverviewAttachPoint()) {
         case SOUTH_EAST:
-            bounds.setLocation(right - bounds.x - vsw - 1 - bounds.width, bottom - bounds.y - hsw - 1 - bounds.height);
+            bounds.setLocation(right - bounds.x - vsw - bounds.width, bottom - bounds.y - hsw - bounds.height);
             break;
         case SOUTH_WEST:
-            bounds.setLocation(bounds.x, bottom - bounds.y - hsw - 1 - bounds.height);
+            bounds.setLocation(bounds.x, bottom - bounds.y - hsw - bounds.height);
             break;
         case NORTH_EAST:
-            bounds.setLocation(right - bounds.x - vsw - 1 - bounds.width, bounds.y);
+            bounds.setLocation(right - bounds.x - vsw - bounds.width, bounds.y);
             break;
         case NORTH_WEST:
             break;
