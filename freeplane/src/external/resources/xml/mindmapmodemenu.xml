@@ -540,6 +540,7 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
+			<Entry name="OpenCurrentMapDirAction" />
 			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"

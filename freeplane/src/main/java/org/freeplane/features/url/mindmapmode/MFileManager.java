@@ -96,7 +96,6 @@ import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.IMapInputStreamConverter;
@@ -355,6 +354,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new ImportExplorerFavoritesAction());
 		modeController.addAction(new ImportFolderStructureAction());
 		modeController.addAction(new RevertAction());
+		modeController.addAction(new OpenCurrentMapDirAction());
 		modeController.addAction(new OpenUserDirAction());
 	}
 
