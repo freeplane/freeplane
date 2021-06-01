@@ -109,11 +109,10 @@ public class ResizePanelMouseHandler extends MouseInputAdapter {
         MouseDragAction.getByCursorType(cursorType).ifPresent(action -> {
             int ordinal = action.ordinal();
             if (ordinal > MouseDragAction.RESIZE_EAST.ordinal() && ordinal < MouseDragAction.MOVE_COMPONENT.ordinal()) {
-                String attachPoint = MapOverviewAttachPoint
-                        .values()[(ordinal - MouseDragAction.RESIZE_NORTH_WEST.ordinal())].name();
+                MapOverviewAttachPoint attachPoint = MapOverviewAttachPoint
+                        .values()[(ordinal - MouseDragAction.RESIZE_NORTH_WEST.ordinal())];
                 MapViewPane mapViewPane = (MapViewPane) e.getComponent().getParent();
-                mapViewPane.setMapOverviewAttachPoint(attachPoint);
-                mapViewPane.resetMapOverviewBounds();
+                mapViewPane.updateMapOverviewAttachPoint(attachPoint);
             }
         });
     }

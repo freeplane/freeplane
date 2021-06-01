@@ -144,7 +144,10 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
             }
         } else if (propertyName.startsWith(MAP_OVERVIEW_PROPERTY_PREFIX)) {
             if (MAP_OVERVIEW_ATTACH_POINT_PROPERTY.equals(propertyName)) {
-                resetMapOverviewBounds();
+                Rectangle mapOverviewBounds = mapOverviewPanel.getBounds();
+                convertOriginByAttachPoint(mapOverviewBounds);
+                mapOverviewBounds.setLocation(0, 0);
+                setMapOverviewBounds(mapOverviewBounds, true);
             }
             revalidate();
             updateMapOverview();
@@ -168,11 +171,23 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         return mapView.getBackground();
     }
 
-    public void setMapOverviewAttachPoint(String attachPoint) {
-        ResourceController.getResourceController().setProperty(MAP_OVERVIEW_ATTACH_POINT_PROPERTY, attachPoint);
+    public void updateMapOverviewAttachPoint(MapOverviewAttachPoint attachPoint) {
+        Rectangle oldBounds = mapOverviewPanel.getBounds();
+        Rectangle oldAttachBounds = new Rectangle(oldBounds);
+        convertOriginByAttachPoint(oldAttachBounds);
+
+        MapOverviewAttachPoint oldAttachPoint = getMapOverviewAttachPoint();
+        if (attachPoint != oldAttachPoint) {
+            ResourceController.getResourceController().setProperty(MAP_OVERVIEW_ATTACH_POINT_PROPERTY,
+                    attachPoint.name());
+        } else if (oldAttachBounds.x == 0 && oldAttachBounds.y == 0) {
+            oldAttachBounds.setSize(MAP_OVERVIEW_DEFAULT_SIZE, MAP_OVERVIEW_DEFAULT_SIZE);
+        }
+        oldAttachBounds.setLocation(0, 0);
+        setMapOverviewBounds(oldAttachBounds, true);
     }
 
-    public Rectangle getMapOverviewBounds() {
+    private Rectangle getMapOverviewBounds() {
         ResourceController resourceController = ResourceController.getResourceController();
         String rawBoundsValue = resourceController.getProperty(MAP_OVERVIEW_BOUNDS_PROPERTY);
         int[] elements = null;
@@ -207,12 +222,14 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         return Math.max(Math.min(value, max), min);
     }
 
-    public void resetMapOverviewBounds() {
-        ResourceController.getResourceController().setProperty(MAP_OVERVIEW_BOUNDS_PROPERTY, "");
+    public void setMapOverviewBounds(Rectangle bounds) {
+        setMapOverviewBounds(bounds, false);
     }
 
-    public void setMapOverviewBounds(Rectangle bounds) {
-        convertOriginByAttachPoint(bounds);
+    private void setMapOverviewBounds(Rectangle bounds, boolean isConverted) {
+        if (! isConverted) {
+            convertOriginByAttachPoint(bounds);
+        }
         ResourceController.getResourceController().setProperty(MAP_OVERVIEW_BOUNDS_PROPERTY,
                 String.format("%s,%s,%s,%s", bounds.x, bounds.y, bounds.width, bounds.height));
     }
