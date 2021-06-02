@@ -106,7 +106,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
     }
 
     private void updateMapOverview() {
-        if (isMapOverviewVisible) {
+        if (mapOverviewPanel.isVisible()) {
             mapOverviewImage.resetImage();
             SwingUtilities.invokeLater(mapOverviewPanel::repaint);
         }

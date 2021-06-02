@@ -6,9 +6,13 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MenuItem;
 import java.awt.Point;
+import java.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -18,6 +22,7 @@ import javax.swing.JViewport;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.view.swing.map.MapView;
@@ -32,6 +37,7 @@ class MapOverviewImage extends JComponent {
 
     private BufferedImage image;
     private MapView mapView;
+    private PopupMenu popupMenu;
 
     MapOverviewImage(MapView mapView) {
         this.mapView = mapView;
@@ -39,6 +45,20 @@ class MapOverviewImage extends JComponent {
         addMouseListener(handler);
         addMouseMotionListener(handler);
         addMouseWheelListener(handler);
+        popupMenu = new PopupMenu();
+        MenuItem hideItem = new MenuItem(TextUtils.getText("map_overview_hide"));
+        hideItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MapOverviewImage.this.getParent().setVisible(false);
+            }
+        });
+        popupMenu.add(hideItem);
+        add(popupMenu);
+    }
+
+    void showPopupMenu(int x, int y) {
+        popupMenu.show(this, x, y);
     }
 
     void resetImage() {
