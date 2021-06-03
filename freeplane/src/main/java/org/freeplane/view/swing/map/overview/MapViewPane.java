@@ -235,7 +235,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
     }
 
     private void convertOriginByAttachPoint(Rectangle bounds) {
-        final JScrollPane mapViewScrollPane = (JScrollPane) (mapView.getParent().getParent());
+        final JScrollPane mapViewScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, mapView);
         Insets insets = mapViewScrollPane.getInsets();
         int bottom = mapViewScrollPane.getHeight() - insets.bottom;
         int right = mapViewScrollPane.getWidth() - insets.right;

@@ -50,7 +50,7 @@ class MapOverviewImage extends JComponent {
         hideItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MapOverviewImage.this.getParent().setVisible(false);
+                Controller.getCurrentController().getViewController().setMapOverviewVisible(false);
             }
         });
         popupMenu.add(hideItem);
