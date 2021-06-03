@@ -45,6 +45,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author foltin
@@ -94,9 +96,18 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 					ResourceController.getResourceController().setProperty(key, newProperty);
 				}
 				if (propertiesChanged) {
-					JOptionPane.showMessageDialog(UITools.getMenuComponent(), TextUtils
-					    .getText("option_changes_may_require_restart"));
+					int option = JOptionPane.showConfirmDialog(UITools.getMenuComponent(),
+							TextUtils.getText("option_changes_may_require_restart"),
+							TextUtils.getText("option_changes_may_require_restart_title"),
+							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					ResourceController.getResourceController().saveProperties();
+					if (option == JOptionPane.OK_OPTION) {
+						final AFreeplaneAction restartAction = Controller.getCurrentModeController()
+								.getAction("RestartAction");
+						if (restartAction != null) {
+							restartAction.actionPerformed(null);
+						}
+					}
 				}
 			}
 		});

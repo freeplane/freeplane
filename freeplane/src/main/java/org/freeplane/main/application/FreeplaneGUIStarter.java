@@ -68,6 +68,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
+import org.freeplane.features.mode.RestartAction;
 import org.freeplane.features.mode.filemode.FModeController;
 import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -174,6 +175,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			Controller.setCurrentController(controller);
 			Compat.macAppChanges();
 			controller.addAction(new QuitAction());
+			controller.addAction(new RestartAction());
 			applicationResourceController.init();
 			LogInitializer.createLogger();
 			ApplicationResourceController.showSysInfo();

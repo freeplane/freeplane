@@ -53,6 +53,8 @@ import org.freeplane.main.application.ApplicationLifecycleListener;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController implements FreeplaneActions, IMapLifeCycleListener{
+    private final static int QUIT_MODE_EXIT = 0;
+    private final static int QUIT_MODE_RESTART = 194;
 	private final ExtensionContainer extensionContainer;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
@@ -157,8 +159,16 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	}
 
 	public void quit() {
+	    quit(false);
+	}
+
+	public void restart() {
+	    quit(true);
+	}
+
+	private void quit(boolean restart) {
 		if (shutdown()) {
-			System.exit(0);
+			System.exit(restart ? QUIT_MODE_RESTART : QUIT_MODE_EXIT);
 		}
 	}
 
