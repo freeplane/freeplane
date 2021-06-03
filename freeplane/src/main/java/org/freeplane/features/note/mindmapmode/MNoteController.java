@@ -239,8 +239,7 @@ public class MNoteController extends NoteController {
 	    final ModeController modeController = Controller.getCurrentModeController();
 	    final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
 		String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
-		Color noteForeground = noteStyleAccessor.getNoteForeground();
-		notePanel.updateCaretColor(noteForeground);
+		notePanel.updateColors(noteStyleAccessor.getNoteForeground(), noteStyleAccessor.getNoteBackground());
 		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
 		styleSheet.addRule(bodyRule);
 	    if (ResourceController.getResourceController().getBooleanProperty(

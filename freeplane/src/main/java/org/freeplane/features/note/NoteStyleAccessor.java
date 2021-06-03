@@ -15,6 +15,7 @@ import org.freeplane.features.styles.MapStyleModel;
 public class NoteStyleAccessor {
 	final private String rule;
 	final private Color noteForeground;
+	private Color noteBackground;
 	public NoteStyleAccessor(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
 		final Controller controller = modeController.getController();
 		MapModel map = controller.getMap();
@@ -24,7 +25,7 @@ public class NoteStyleAccessor {
 			final NodeStyleController style = Controller.getCurrentModeController().getExtension(
 				NodeStyleController.class);
 			final Font noteFont = style.getFont(noteStyleNode);
-			Color noteBackground = style.getBackgroundColor(noteStyleNode);
+			this.noteBackground = style.getBackgroundColor(noteStyleNode);
 			this.noteForeground = style.getColor(noteStyleNode);
 			final int alignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
 			final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
@@ -43,6 +44,7 @@ public class NoteStyleAccessor {
 		else {
 			this.rule = "";
 			this.noteForeground = null;
+			this.noteBackground = null;
 		}
 
 	}
@@ -51,6 +53,9 @@ public class NoteStyleAccessor {
 	}
 	public Color getNoteForeground() {
 		return noteForeground;
+	}
+	public Color getNoteBackground() {
+		return noteBackground;
 	}
 
 

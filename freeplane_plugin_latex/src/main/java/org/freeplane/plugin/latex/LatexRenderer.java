@@ -1,6 +1,5 @@
 package org.freeplane.plugin.latex;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -28,6 +27,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
@@ -99,10 +99,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		scrollPaneSupplier.get().setViewportView(textEditor);
 		textEditor.setContentType("text/latex");
 		textEditor.setText(latexText);
-		textEditor.setBackground(Color.WHITE);
-		textEditor.setForeground(Color.BLACK);
-		textEditor.setSelectedTextColor(Color.BLUE);
-		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+		SourceTextEditorUIConfigurator.configureColors(textEditor);
 		final String fontName = ResourceController.getResourceController().getProperty(LATEX_EDITOR_FONT);
 		final int fontSize = ResourceController.getResourceController().getIntProperty(LATEX_EDITOR_FONT_SIZE);
 		final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
