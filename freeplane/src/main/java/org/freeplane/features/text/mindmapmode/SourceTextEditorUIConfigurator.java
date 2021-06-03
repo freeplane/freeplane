@@ -10,8 +10,8 @@ public class SourceTextEditorUIConfigurator {
 		textEditor.setOpaque(true);
 		textEditor.setBackground(Color.WHITE);
 		textEditor.setForeground(Color.BLACK);
-		textEditor.setSelectedTextColor(Color.BLUE);
+		textEditor.setSelectionColor(Color.BLUE.darker());
+		textEditor.setSelectedTextColor(Color.WHITE);
 		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-
 	}
 }
