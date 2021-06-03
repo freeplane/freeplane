@@ -718,6 +718,8 @@ public class LinkController extends SelectionController implements IExtension {
 		final String rawFragment = targetUri.getRawFragment();
 		if(rawFragment != null)
 			relativePath.append("#" + rawFragment);
+		if(relativePath.length() == 0)
+			relativePath.append(".");
 		try {
 			return new URI(relativePath.toString());
 		}
