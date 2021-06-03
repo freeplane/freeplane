@@ -1,6 +1,5 @@
 package org.freeplane.plugin.formula;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -29,6 +28,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 import org.freeplane.plugin.script.FormulaUtils;
 
 class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
@@ -94,10 +94,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         scrollPaneSupplier.get().setViewportView(textEditor);
         textEditor.setContentType("text/groovy");
         textEditor.setText(text);
-        textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-        textEditor.setBackground(Color.WHITE);
-        textEditor.setForeground(Color.BLACK);
-        textEditor.setSelectedTextColor(Color.BLUE);
+        SourceTextEditorUIConfigurator.configureColors(textEditor);
         final String fontName = ResourceController.getResourceController().getProperty(FormulaEditor.GROOVY_EDITOR_FONT);
         final int fontSize = ResourceController.getResourceController().getIntProperty(FormulaEditor.GROOVY_EDITOR_FONT_SIZE);
         final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));

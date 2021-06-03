@@ -1607,7 +1607,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	void paintOverview(Graphics2D g) {
+	public void paintOverview(Graphics2D g) {
 		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.FALSE);
 		super.print(g);
 	}

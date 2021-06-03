@@ -37,6 +37,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 
 /**
  * @author Stefan Ott
@@ -73,7 +74,7 @@ public class LegacyLatexEditor {
 	 */
 	public static String editLatex(final String oldEquation, final NodeModel node) {
 		final JEditorPane textArea = new JEditorPane();
-		textArea.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+		SourceTextEditorUIConfigurator.configureColors(textArea);
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(700, 200));
