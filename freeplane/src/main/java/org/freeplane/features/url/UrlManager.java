@@ -99,7 +99,7 @@ public class UrlManager implements IExtension {
 	        URL context = map.getURL();
 	        if(context == null)
 	            return null;
-	        final URL url = new URL(context, path);
+	        final URL url = new URL(context, path != null && path.isEmpty() ? "." : path);
 	        return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
 	    }
 	    catch (final URISyntaxException e) {
