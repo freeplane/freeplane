@@ -87,7 +87,8 @@ class NotePanel extends JPanel {
 		viewerScrollPanel.setVisible(false);
 		add(viewerScrollPanel);
 		htmlViewerPanel = new JEditorPane();
-		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+		htmlViewerPanel.setOpaque(true);
 		htmlViewerPanel.setEditable(false);
 		htmlViewerPanel.setEditorKitForContentType(CONTENT_TYPE_TEXT_HTML, ScaledEditorKit.create());
 		iconViewerPanel = new JLabel();
@@ -298,8 +299,18 @@ class NotePanel extends JPanel {
 			return htmlViewerPanel;
 	}
 
-	void updateCaretColor(Color noteForeground) {
-	    htmlEditorPanel.getEditorPane().setCaretColor(noteForeground != null ? noteForeground : defaultCaretColor);
+	void updateColors(Color noteForeground, Color noteBackground) {
+	    final Color caretColor = noteForeground != null ? noteForeground : defaultCaretColor;
+	    final JEditorPane editorPane;
+	    if(htmlEditorPanel.isVisible()) {
+	    	editorPane = htmlEditorPanel.getEditorPane();
+	    }
+	    else {
+	    	editorPane = htmlViewerPanel;
+	    }
+	    editorPane.setCaretColor(caretColor);
+	    editorPane.setForeground(noteForeground);
+	    editorPane.setBackground(noteBackground);
 	}
 
 	StyleSheet getStyleSheet() {

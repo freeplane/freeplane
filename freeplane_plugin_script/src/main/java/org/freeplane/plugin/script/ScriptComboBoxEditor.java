@@ -19,7 +19,6 @@
  */
 package org.freeplane.plugin.script;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -41,6 +40,7 @@ import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 
 /**
  * @author Dimitry Polivaev
@@ -80,10 +80,7 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 
 	protected void editScript(boolean selectAll) {
 		JEditorPane textEditor = new JEditorPane();
-		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		textEditor.setBackground(Color.WHITE);
-		textEditor.setForeground(Color.BLACK);
-		textEditor.setSelectedTextColor(Color.BLUE);
+		SourceTextEditorUIConfigurator.configureColors(textEditor);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 		scrollPane.setMinimumSize(minimumSize);
 		textEditor.setContentType("text/groovy");

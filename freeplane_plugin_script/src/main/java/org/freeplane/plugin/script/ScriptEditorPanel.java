@@ -21,7 +21,6 @@
 package org.freeplane.plugin.script;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -61,6 +60,7 @@ import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 
 import de.sciss.syntaxpane.actions.ActionUtils;
 
@@ -336,10 +336,7 @@ class ScriptEditorPanel extends JDialog {
 			}
 		});
 		final JEditorPane editorPane = new JEditorPane();
-		editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		editorPane.setBackground(Color.WHITE);
-		editorPane.setForeground(Color.BLACK);
-		editorPane.setSelectedTextColor(Color.BLUE);
+		SourceTextEditorUIConfigurator.configureColors(editorPane);
 		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);
 		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, new JScrollPane(mScriptTextField));

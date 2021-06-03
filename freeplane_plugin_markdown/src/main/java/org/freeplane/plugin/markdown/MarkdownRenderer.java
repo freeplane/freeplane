@@ -1,6 +1,5 @@
 package org.freeplane.plugin.markdown;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -26,6 +25,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 
 import io.github.gitbucket.markedj.Marked;
 import io.github.gitbucket.markedj.Options;
@@ -98,10 +98,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 		scrollPaneSupplier.get().setViewportView(textEditor);
 		textEditor.setContentType("text/markdown");
 		textEditor.setText(text);
-		textEditor.setBackground(Color.WHITE);
-		textEditor.setForeground(Color.BLACK);
-		textEditor.setSelectedTextColor(Color.BLUE);
-		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+		SourceTextEditorUIConfigurator.configureColors(textEditor);
 		final String fontName = ResourceController.getResourceController().getProperty(MARKDOWN_EDITOR_FONT);
 		final int fontSize = ResourceController.getResourceController().getIntProperty(MARKDOWN_EDITOR_FONT_SIZE);
 		final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));

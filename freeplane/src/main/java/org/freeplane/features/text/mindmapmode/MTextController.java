@@ -1146,9 +1146,11 @@ public class MTextController extends TextController {
 		});
 		final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
 		final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
+		sourceEditorPane.setOpaque(true);
+		shtmlPanel.getSourceEditorPane().setOpaque(true);
 		final Font originalFont = sourceEditorPane.getFont();
 		final Font scaledFont = UITools.scale(originalFont);
-		sourceEditorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+		SourceTextEditorUIConfigurator.configureColors(sourceEditorPane);
 		sourceEditorPane.setFont(scaledFont);
 		shtmlPanel.setOpenHyperlinkHandler(new ActionListener() {
 			@Override
