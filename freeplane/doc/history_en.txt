@@ -1,4 +1,10 @@
 ===============================
+1.9.4
+===============================
+Resizable and moveable map overview
+Action to open directory of the current map
+
+===============================
 1.9.3
 ===============================
 Map overview
