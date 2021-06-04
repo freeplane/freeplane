@@ -37,7 +37,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
@@ -278,7 +277,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         mapOverviewImage = new JMapOverviewImage();
         mapOverviewPanel = new JPanel(new BorderLayout(0, 0));
         mapOverviewPanel.add(mapOverviewImage);
-        mapOverviewPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
+        updateBorder();
         final ViewController viewController = Controller.getCurrentController().getViewController();
         isMapOverviewVisible = viewController.isMapOverviewVisible();
         mapOverviewPanel.setVisible(isMapOverviewVisible);
@@ -290,15 +289,16 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
                 updateMapOverview();
             };
         });
-    }
+        mapView.addPropertyChangeListener("background", event -> updateBorder());  }
+
+	private void updateBorder() {
+		mapOverviewPanel.setBorder(BorderFactory.createLineBorder(complementaryColor(mapView.getBackground())));
+	}
 
     @Override
     public void mapChanged(MapChangeEvent event) {
         if (event.getMap() != mapView.getModel()) {
             return;
-        }
-        if (event.getProperty() == MapStyle.RESOURCES_BACKGROUND_COLOR) {
-            mapOverviewPanel.setBorder(BorderFactory.createLineBorder(complementaryColor((Color) event.getNewValue())));
         }
         updateMapOverview();
     }
