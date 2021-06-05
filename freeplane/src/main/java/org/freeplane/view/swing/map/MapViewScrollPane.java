@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
@@ -48,9 +49,20 @@ import org.freeplane.features.ui.ViewController;
  * 10.01.2009
  */
 public class MapViewScrollPane extends JScrollPane implements IFreeplanePropertyListener {
+	public static final Rectangle EMPTY_RECTANGLE = new Rectangle();
+	public interface ViewportHiddenAreaSupplier {
+		Rectangle getHiddenArea(); 
+	}
 	@SuppressWarnings("serial")
     static class MapViewPort extends JViewport{
+		private ViewportHiddenAreaSupplier hiddenAreaSupplier = () -> EMPTY_RECTANGLE;
 		private boolean layoutInProgress = false;
+		
+		void setHiddenAreaSupplier(ViewportHiddenAreaSupplier hiddenAreaSupplier) {
+			this.hiddenAreaSupplier = hiddenAreaSupplier;
+		}
+
+
 		@Override
         public void doLayout() {
 	        final Component view = getView();
@@ -65,6 +77,79 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
         public void setBackgroundComponent(JComponent backgroundComponent) {
             this.backgroundComponent = backgroundComponent;
+        }
+
+
+
+        @Override
+        public void scrollRectToVisible(Rectangle newContentRectangle) {
+        	final Rectangle hiddenArea = hiddenAreaSupplier.getHiddenArea();
+        	if(hiddenArea.width != 0 && hiddenArea.height != 0) {
+        		Point viewportLocation = new Point(0, 0);
+        		UITools.convertPointToAncestor(this, viewportLocation, JScrollPane.class);
+        		hiddenArea.x -= viewportLocation.x;
+        		hiddenArea.y -= viewportLocation.y;
+        		if(hiddenArea.x == 0 || hiddenArea.y == 0 || hiddenArea.x + hiddenArea.width == getWidth()
+        				|| hiddenArea.y + hiddenArea.height == getHeight()) {
+        			final Rectangle newContentRectangleWithHiddenArea = new Rectangle(newContentRectangle);
+        			int dx = positionAdjustment(getWidth(), newContentRectangle.width, newContentRectangle.x);
+        			int dy = positionAdjustment(getHeight(), newContentRectangle.height, newContentRectangle.y);
+        			final boolean overlapsOnXAxis = newContentRectangle.x + dx < hiddenArea.x + hiddenArea.width
+        					&& newContentRectangle.x + dx + newContentRectangle.width > hiddenArea.x;
+        			final boolean overlapsOnYAxis = newContentRectangle.y + dy < hiddenArea.y + hiddenArea.height 
+        				&& newContentRectangle.y + dy + newContentRectangle.height > hiddenArea.y;
+					if (overlapsOnYAxis && overlapsOnXAxis) {
+        				if(hiddenArea.width + newContentRectangle.width < getWidth()) {
+        					if(hiddenArea.x == 0) {
+        						newContentRectangleWithHiddenArea.x -= hiddenArea.width;
+        						newContentRectangleWithHiddenArea.width += hiddenArea.width;
+        					}
+        					else if (hiddenArea.x + hiddenArea.width == getWidth()){
+        						newContentRectangleWithHiddenArea.width += hiddenArea.width;
+        					}
+        				}
+        				else if(hiddenArea.height  + newContentRectangle.height < getHeight()) {
+        					if(hiddenArea.y == 0) {
+        						newContentRectangleWithHiddenArea.y -= hiddenArea.height;
+        						newContentRectangleWithHiddenArea.height += hiddenArea.height;
+        					}
+        					else if (hiddenArea.y + hiddenArea.height == getHeight()){
+        						newContentRectangleWithHiddenArea.height += hiddenArea.height;
+        					}
+        				}
+        			}
+        			super.scrollRectToVisible(newContentRectangleWithHiddenArea);
+        			return;
+
+        		}
+        	} 
+        	super.scrollRectToVisible(newContentRectangle);
+        }
+        private int positionAdjustment(int parentWidth, int childWidth, int childAt)    {
+
+            //   +-----+
+            //   | --- |     No Change
+            //   +-----+
+            if (childAt >= 0 && childWidth + childAt <= parentWidth)    {
+                return 0;
+            }
+  
+            //   +-----+          +-----+
+            //   |   ----    ->   | ----|
+            //   +-----+          +-----+
+            if (childAt > 0 && childWidth <= parentWidth)    {
+                return -childAt + parentWidth - childWidth;
+            }
+
+            //   +-----+          +-----+
+            // ----    |     ->   |---- |
+            //   +-----+          +-----+
+            if (childAt <= 0 && childWidth <= parentWidth)   {
+                return -childAt;
+            }
+
+
+            return 0;
         }
 
         @Override
@@ -202,6 +287,11 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	    final boolean isFullScreenEnabled = ! UITools.getCurrentFrame().isResizable();
 	    setBorder(isFullScreenEnabled && ! areScrollbarsVisible ? null : defaultBorder);
     }
+	
+	public void setViewportHiddenAreaSupplier(ViewportHiddenAreaSupplier hiddenAreaSupplier) {
+		((MapViewPort)getViewport()).setHiddenAreaSupplier(hiddenAreaSupplier);
+	}
+
 
 	@Override
     public void doLayout() {

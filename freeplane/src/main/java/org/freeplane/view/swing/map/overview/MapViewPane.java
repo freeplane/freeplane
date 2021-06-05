@@ -4,13 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 
@@ -18,15 +19,18 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapViewScrollPane;
+import org.freeplane.view.swing.map.MapViewScrollPane.ViewportHiddenAreaSupplier;
 import org.freeplane.view.swing.map.overview.resizable.ResizablePanelBorder;
 import org.freeplane.view.swing.map.overview.resizable.ResizePanelMouseHandler;
 
-public class MapViewPane extends JPanel implements IFreeplanePropertyListener, IMapChangeListener {
+public class MapViewPane extends JPanel implements IFreeplanePropertyListener, IMapChangeListener, ViewportHiddenAreaSupplier {
     private static final long serialVersionUID = 8664710783654626093L;
 
     private final static String MAP_OVERVIEW_VISIBLE_PROPERTY = "mapOverviewVisible";
@@ -45,13 +49,16 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
     public static final int MAP_OVERVIEW_BORDER_EXTENDED_SIZE = MAP_OVERVIEW_BORDER_SIZE
             + new Quantity<LengthUnit>(24, LengthUnit.pt).toBaseUnitsRounded();
 
-    private final MapOverviewImage mapOverviewImage;
+    private final JScrollPane mapViewScrollPane;
     private final JPanel mapOverviewPanel;
+    private final MapOverviewImage mapOverviewImage;
     private final MapView mapView;
     private boolean isMapOverviewVisible;
 
+
     public MapViewPane(JScrollPane mapViewScrollPane) {
-        this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
+        this.mapViewScrollPane = mapViewScrollPane;
+		this.mapView = (MapView) mapViewScrollPane.getViewport().getView();
         setLayout(new BorderLayout(0, 0) {
             private static final long serialVersionUID = 3702408082745761647L;
 
@@ -66,7 +73,8 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
                     int left = insets.left;
                     int right = width - insets.right;
                     mapViewScrollPane.setBounds(left, top, right - left, bottom - top);
-                    mapOverviewPanel.setBounds(getMapOverviewBounds());
+                    mapViewScrollPane.validate();
+                    mapOverviewPanel.setBounds(calculateMapOverviewBounds());
                 }
             }
         });
@@ -187,7 +195,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         setMapOverviewBounds(oldAttachBounds, true);
     }
 
-    private Rectangle getMapOverviewBounds() {
+    private Rectangle calculateMapOverviewBounds() {
         ResourceController resourceController = ResourceController.getResourceController();
         String rawBoundsValue = resourceController.getProperty(MAP_OVERVIEW_BOUNDS_PROPERTY);
         int[] elements = null;
@@ -235,28 +243,36 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
     }
 
     private void convertOriginByAttachPoint(Rectangle bounds) {
-        final JScrollPane mapViewScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, mapView);
-        Insets insets = mapViewScrollPane.getInsets();
-        int bottom = mapViewScrollPane.getHeight() - insets.bottom;
-        int right = mapViewScrollPane.getWidth() - insets.right;
-        JScrollBar hsb = mapViewScrollPane.getHorizontalScrollBar();
-        JScrollBar vsb = mapViewScrollPane.getVerticalScrollBar();
-        int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
-        int hsw = hsb.isVisible() ? hsb.getSize().height : 0;
-
+        final JViewport viewPort = mapViewScrollPane.getViewport();
+        int bottom = viewPort.getHeight();
+        int right = viewPort.getWidth();
+        Point location;
         switch (getMapOverviewAttachPoint()) {
         case SOUTH_EAST:
-            bounds.setLocation(right - bounds.x - vsw - bounds.width, bottom - bounds.y - hsw - bounds.height);
+        	location = new Point(right - bounds.x - bounds.width, bottom - bounds.y - bounds.height);
             break;
         case SOUTH_WEST:
-            bounds.setLocation(bounds.x, bottom - bounds.y - hsw - bounds.height);
+        	location = new Point(bounds.x, bottom - bounds.y  - bounds.height);
             break;
         case NORTH_EAST:
-            bounds.setLocation(right - bounds.x - vsw - bounds.width, bounds.y);
+        	location = new Point(right - bounds.x  - bounds.width, bounds.y);
             break;
         case NORTH_WEST:
+        	location = new Point(0, 0);
             break;
+        default:
+        	throw new RuntimeException("All cases handled above");
         }
+        UITools.convertPointToAncestor(viewPort, location, JScrollPane.class);
+        bounds.setLocation(location);
     }
+
+	@Override
+	public Rectangle getHiddenArea() {
+		if (isMapOverviewVisible) {
+			return mapOverviewPanel.getBounds();
+		} else
+			return MapViewScrollPane.EMPTY_RECTANGLE;
+	}
 
 }

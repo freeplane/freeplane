@@ -103,8 +103,9 @@ class MapViewSerializer implements ViewSerializer {
 			return null;
 		MapViewScrollPane mapViewScrollPane = new MapViewScrollPane();
 		mapViewScrollPane.getViewport().setView(pNewMap);
-		@SuppressWarnings("serial")
-        final View viewFrame = new ConnectedToMenuView(title, null, new MapViewPane(mapViewScrollPane));
+		final MapViewPane mapViewPane = new MapViewPane(mapViewScrollPane);
+		mapViewScrollPane.setViewportHiddenAreaSupplier(mapViewPane);
+        final View viewFrame = new ConnectedToMenuView(title, null, mapViewPane);
 	    return viewFrame;
 	}
 
