@@ -89,8 +89,12 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         		UITools.convertPointToAncestor(this, viewportLocation, JScrollPane.class);
         		hiddenArea.x -= viewportLocation.x;
         		hiddenArea.y -= viewportLocation.y;
-        		if(hiddenArea.x == 0 || hiddenArea.y == 0 || hiddenArea.x + hiddenArea.width == getWidth()
-        				|| hiddenArea.y + hiddenArea.height == getHeight()) {
+        		final boolean isHiddenAreaAtTheLeft = hiddenArea.x == 0;
+				final boolean isHiddenAreaAtTheTop = hiddenArea.y == 0;
+				final boolean isHiddenAreaAtTheRight = hiddenArea.x + hiddenArea.width == getWidth();
+				final boolean isHiddenAreaAtTheBottom = hiddenArea.y + hiddenArea.height == getHeight();
+				if(isHiddenAreaAtTheLeft || isHiddenAreaAtTheRight
+						|| isHiddenAreaAtTheTop || isHiddenAreaAtTheBottom) {
         			final Rectangle newContentRectangleWithHiddenArea = new Rectangle(newContentRectangle);
         			int dx = positionAdjustment(getWidth(), newContentRectangle.width, newContentRectangle.x);
         			int dy = positionAdjustment(getHeight(), newContentRectangle.height, newContentRectangle.y);
@@ -99,24 +103,28 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         			final boolean overlapsOnYAxis = newContentRectangle.y + dy < hiddenArea.y + hiddenArea.height 
         				&& newContentRectangle.y + dy + newContentRectangle.height > hiddenArea.y;
 					if (overlapsOnYAxis && overlapsOnXAxis) {
-        				if(hiddenArea.width + newContentRectangle.width < getWidth()) {
-        					if(hiddenArea.x == 0) {
+        				final boolean isWidthSufficient = hiddenArea.width + newContentRectangle.width < getWidth();
+						if(isWidthSufficient
+        						&& (isHiddenAreaAtTheLeft || isHiddenAreaAtTheRight)) {
+        					if(isHiddenAreaAtTheLeft) {
         						newContentRectangleWithHiddenArea.x -= hiddenArea.width;
         						newContentRectangleWithHiddenArea.width += hiddenArea.width;
         					}
-        					else if (hiddenArea.x + hiddenArea.width == getWidth()){
+        					else if (isHiddenAreaAtTheRight){
         						newContentRectangleWithHiddenArea.width += hiddenArea.width;
         					}
-        				}
-        				else if(hiddenArea.height  + newContentRectangle.height < getHeight()) {
-        					if(hiddenArea.y == 0) {
-        						newContentRectangleWithHiddenArea.y -= hiddenArea.height;
-        						newContentRectangleWithHiddenArea.height += hiddenArea.height;
-        					}
-        					else if (hiddenArea.y + hiddenArea.height == getHeight()){
-        						newContentRectangleWithHiddenArea.height += hiddenArea.height;
-        					}
-        				}
+        				} else {
+							final boolean isHeightSufficient = hiddenArea.height  + newContentRectangle.height < getHeight();
+							if(isHeightSufficient) {
+								if(isHiddenAreaAtTheTop) {
+									newContentRectangleWithHiddenArea.y -= hiddenArea.height;
+									newContentRectangleWithHiddenArea.height += hiddenArea.height;
+								}
+								else if (isHiddenAreaAtTheBottom){
+									newContentRectangleWithHiddenArea.height += hiddenArea.height;
+								}
+							}
+						}
         			}
         			super.scrollRectToVisible(newContentRectangleWithHiddenArea);
         			return;
