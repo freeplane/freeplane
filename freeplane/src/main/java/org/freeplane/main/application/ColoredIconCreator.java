@@ -44,9 +44,9 @@ class ColoredIconCreator{
 		if(! replacedColor.equals(newColor) && originalImage != null){
 			final BufferedImage img = copy(originalImage); 
 			int width = img.getWidth();
-            for (int x = width/3; x < width * 2 / 3; x++) {
+            for (int x = 0; x < width; x++) {
 				int height = img.getHeight();
-                for (int y = height / 3; y < height * 2 / 3; y++) {
+                for (int y = 0; y < height; y++) {
 					final int rgb =  img.getRGB(x, y);
 					if (shouldReplace(rgb))
 						img.setRGB(x, y, 0xff000000| newRGB);
@@ -59,6 +59,6 @@ class ColoredIconCreator{
 	}
 
     private boolean shouldReplace(final int rgb) {
-        return ((rgb >> 16) & 0xff) > 0xa0;
+        return ((rgb >> 16) & 0xff) != 0;
    }
 }
