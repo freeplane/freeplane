@@ -28,7 +28,7 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == 3) {
+        if (e.isPopupTrigger()) {
             MapOverviewImage image = (MapOverviewImage) e.getComponent();
             image.showPopupMenu(e.getX(), e.getY());
         } else if (e.getButton() == 1) {
