@@ -59,6 +59,7 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
             MapOverviewImage image = (MapOverviewImage) e.getComponent();
             final Point keptPoint = convertToMapViewPoint(image, e.getPoint());
             mapView.setZoom(zoom, keptPoint);
+            scrollTo(keptPoint);
         }
         viewManager.setZoom(zoom);
     }
@@ -70,11 +71,15 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
 
     private void processMousePanEvent(MouseEvent e) {
         MapOverviewImage image = (MapOverviewImage) e.getComponent();
-        final Point keptPoint = convertToMapViewPoint(image, e.getPoint());
-        JScrollPane mapViewScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, mapView);
-        setScrollingValue(keptPoint.x, mapViewScrollPane.getHorizontalScrollBar().getModel());
-        setScrollingValue(keptPoint.y, mapViewScrollPane.getVerticalScrollBar().getModel());
+        final Point newCenterPoint = convertToMapViewPoint(image, e.getPoint());
+        scrollTo(newCenterPoint);
     }
+
+	private void scrollTo(final Point newCenterPoint) {
+		JScrollPane mapViewScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, mapView);
+        setScrollingValue(newCenterPoint.x, mapViewScrollPane.getHorizontalScrollBar().getModel());
+        setScrollingValue(newCenterPoint.y, mapViewScrollPane.getVerticalScrollBar().getModel());
+	}
 
     private void setScrollingValue(int value, BoundedRangeModel model) {
         model.setValue(Math.max(value - model.getExtent() / 2, 0));
