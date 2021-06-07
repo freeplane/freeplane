@@ -268,7 +268,23 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 	@Override
 	public Rectangle getHiddenArea() {
 		if (isMapOverviewVisible) {
-			return mapOverviewPanel.getBounds();
+			Rectangle overviewBounds = mapOverviewPanel.getBounds();
+			int width = getWidth();
+			int height = getHeight();
+			if (overviewBounds.x < width - overviewBounds.x - overviewBounds.width) {
+				overviewBounds.width += overviewBounds.x;
+				overviewBounds.x = 0;
+			} else {
+				overviewBounds.width = width - overviewBounds.x;
+			}
+			if (overviewBounds.y < height - overviewBounds.y - overviewBounds.height) {
+				overviewBounds.height += overviewBounds.y;
+				overviewBounds.y = 0;
+			} else {
+				overviewBounds.height = height - overviewBounds.y;
+			}
+
+			return overviewBounds;
 		} else
 			return MapViewScrollPane.EMPTY_RECTANGLE;
 	}
