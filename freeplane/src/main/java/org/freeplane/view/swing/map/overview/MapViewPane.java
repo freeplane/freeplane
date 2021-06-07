@@ -19,7 +19,6 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
@@ -263,7 +262,6 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         default:
         	throw new RuntimeException("All cases handled above");
         }
-        UITools.convertPointToAncestor(viewPort, location, JScrollPane.class);
         bounds.setLocation(location);
     }
 
