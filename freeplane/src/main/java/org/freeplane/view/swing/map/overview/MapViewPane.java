@@ -258,7 +258,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         	location = new Point(right - bounds.x  - bounds.width, bounds.y);
             break;
         case NORTH_WEST:
-        	location = new Point(0, 0);
+		location = new Point(bounds.x, bounds.y);
             break;
         default:
         	throw new RuntimeException("All cases handled above");
