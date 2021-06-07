@@ -1,13 +1,17 @@
 package org.freeplane.view.swing.map.overview;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -55,6 +59,8 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
     private final MapView mapView;
     private boolean isMapOverviewVisible;
 
+    private boolean isMapOverviewHovered;
+    private final AWTEventListener mapOverviewHoveringListener;
 
     public MapViewPane(JScrollPane mapViewScrollPane) {
         this.mapViewScrollPane = mapViewScrollPane;
@@ -78,6 +84,29 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
                 }
             }
         });
+
+        mapOverviewHoveringListener = new AWTEventListener() {
+            @Override
+            public void eventDispatched(AWTEvent event) {
+                if (! (event instanceof MouseEvent)) {
+                    return;
+                }
+
+                MouseEvent evt = (MouseEvent) event;
+                if (evt.getID() != MouseEvent.MOUSE_MOVED) {
+                    return;
+                }
+
+                final Point point = evt.getLocationOnScreen();
+                SwingUtilities.convertPointFromScreen(point, mapOverviewPanel);
+                boolean newValue = mapOverviewPanel.contains(point);
+                if (newValue != isMapOverviewHovered) {
+                    isMapOverviewHovered = newValue;
+                    mapOverviewPanel.repaint();
+                }
+            }
+        };
+
         mapOverviewImage = new MapOverviewImage(mapView);
         mapOverviewPanel = new JPanel(new BorderLayout(0, 0)) {
             private static final long serialVersionUID = 1L;
@@ -130,6 +159,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         super.addNotify();
         Controller.getCurrentModeController().getMapController().addMapChangeListener(this);
         ResourceController.getResourceController().addPropertyChangeListener(this);
+        Toolkit.getDefaultToolkit().addAWTEventListener(mapOverviewHoveringListener, AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
 
     @Override
@@ -137,6 +167,11 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         super.removeNotify();
         Controller.getCurrentModeController().getMapController().removeMapChangeListener(this);
         ResourceController.getResourceController().removePropertyChangeListener(this);
+        Toolkit.getDefaultToolkit().removeAWTEventListener(mapOverviewHoveringListener);
+    }
+
+    public boolean isHoveringMapOverview() {
+        return isMapOverviewHovered;
     }
 
     @Override
