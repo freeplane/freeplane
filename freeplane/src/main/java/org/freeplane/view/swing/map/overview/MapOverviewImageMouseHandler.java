@@ -49,8 +49,8 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         double oldZoom = mapView.getZoom();
-        double amount = Math.pow(1.0345, e.getScrollAmount());
-        float zoom = (float) (e.getWheelRotation() > 0 ? (oldZoom / amount) : (oldZoom * amount));
+        double zoomFactor = Math.pow(1.25, e.getScrollAmount());
+        float zoom = (float) (e.getWheelRotation() > 0 ? (oldZoom / zoomFactor) : (oldZoom * zoomFactor));
         zoom = Math.max(Math.min(zoom, 32f), 0.03f);
         IMapViewManager viewManager = Controller.getCurrentController().getMapViewManager();
         viewManager.changeToMapView(mapView);
