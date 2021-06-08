@@ -87,8 +87,8 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         	if(hiddenArea.width != 0 && hiddenArea.height != 0) {
         		final boolean isHiddenAreaAtTheLeft = hiddenArea.x == 0;
 				final boolean isHiddenAreaAtTheTop = hiddenArea.y == 0;
-				final boolean isHiddenAreaAtTheRight = hiddenArea.x + hiddenArea.width == getParent().getWidth();
-				final boolean isHiddenAreaAtTheBottom = hiddenArea.y + hiddenArea.height == getParent().getHeight();
+				final boolean isHiddenAreaAtTheRight = hiddenArea.x + hiddenArea.width == getWidth();
+				final boolean isHiddenAreaAtTheBottom = hiddenArea.y + hiddenArea.height == getHeight();
 				if(isHiddenAreaAtTheLeft || isHiddenAreaAtTheRight
 						|| isHiddenAreaAtTheTop || isHiddenAreaAtTheBottom) {
         			final Rectangle newContentRectangleWithHiddenArea = new Rectangle(newContentRectangle);

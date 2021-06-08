@@ -19,6 +19,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
@@ -152,8 +153,9 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         } else if (propertyName.startsWith(MAP_OVERVIEW_PROPERTY_PREFIX)) {
             if (MAP_OVERVIEW_ATTACH_POINT_PROPERTY.equals(propertyName)) {
                 Rectangle mapOverviewBounds = mapOverviewPanel.getBounds();
-                convertOriginByAttachPoint(mapOverviewBounds);
-                mapOverviewBounds.setLocation(0, 0);
+                convertOriginByAttachPoint(mapOverviewBounds, true);
+                Point location = new Point(0, 0);
+                mapOverviewBounds.setLocation(location);
                 setMapOverviewBounds(mapOverviewBounds, true);
             }
             revalidate();
@@ -180,18 +182,19 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
     public void updateMapOverviewAttachPoint(MapOverviewAttachPoint attachPoint) {
         Rectangle oldBounds = mapOverviewPanel.getBounds();
-        Rectangle oldAttachBounds = new Rectangle(oldBounds);
-        convertOriginByAttachPoint(oldAttachBounds);
+        Rectangle convertedAttachBounds = new Rectangle(oldBounds);
+        convertOriginByAttachPoint(convertedAttachBounds, false);
 
         MapOverviewAttachPoint oldAttachPoint = getMapOverviewAttachPoint();
+        Point location = new Point(0, 0);
         if (attachPoint != oldAttachPoint) {
             ResourceController.getResourceController().setProperty(MAP_OVERVIEW_ATTACH_POINT_PROPERTY,
                     attachPoint.name());
-        } else if (oldAttachBounds.x == 0 && oldAttachBounds.y == 0) {
-            oldAttachBounds.setSize(MAP_OVERVIEW_DEFAULT_SIZE, MAP_OVERVIEW_DEFAULT_SIZE);
+        } else if (convertedAttachBounds.getLocation().equals(location)) {
+            convertedAttachBounds.setSize(MAP_OVERVIEW_DEFAULT_SIZE, MAP_OVERVIEW_DEFAULT_SIZE);
         }
-        oldAttachBounds.setLocation(0, 0);
-        setMapOverviewBounds(oldAttachBounds, true);
+        convertedAttachBounds.setLocation(location);
+        setMapOverviewBounds(convertedAttachBounds, true);
     }
 
     private Rectangle calculateMapOverviewBounds() {
@@ -221,7 +224,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         int width = getBoundedValue(elements[2], MAP_OVERVIEW_MIN_SIZE, MAP_OVERVIEW_MAX_SIZE);
         int height = getBoundedValue(elements[3], MAP_OVERVIEW_MIN_SIZE, MAP_OVERVIEW_MAX_SIZE);
         Rectangle bounds = new Rectangle(x, y, width, height);
-        convertOriginByAttachPoint(bounds);
+        convertOriginByAttachPoint(bounds, true);
         return bounds;
     }
 
@@ -235,17 +238,22 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
     private void setMapOverviewBounds(Rectangle bounds, boolean isConverted) {
         if (! isConverted) {
-            convertOriginByAttachPoint(bounds);
+            convertOriginByAttachPoint(bounds, false);
         }
         ResourceController.getResourceController().setProperty(MAP_OVERVIEW_BOUNDS_PROPERTY,
                 String.format("%s,%s,%s,%s", bounds.x, bounds.y, bounds.width, bounds.height));
     }
 
-    private void convertOriginByAttachPoint(Rectangle bounds) {
+    private void convertOriginByAttachPoint(Rectangle bounds, boolean toAncestor) {
         final JViewport viewPort = mapViewScrollPane.getViewport();
         int bottom = viewPort.getHeight();
         int right = viewPort.getWidth();
         Point location;
+        if (! toAncestor) {
+            location = bounds.getLocation();
+            UITools.convertPointFromAncestor(this, location, viewPort);
+            bounds.setLocation(location);
+        }
         switch (getMapOverviewAttachPoint()) {
         case SOUTH_EAST:
         	location = new Point(right - bounds.x - bounds.width, bottom - bounds.y - bounds.height);
@@ -262,6 +270,11 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
         default:
         	throw new RuntimeException("All cases handled above");
         }
+
+        if (toAncestor) {
+            UITools.convertPointToAncestor(viewPort, location, this);
+        }
+
         bounds.setLocation(location);
     }
 
@@ -269,19 +282,23 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 	public Rectangle getHiddenArea() {
 		if (isMapOverviewVisible) {
 			Rectangle overviewBounds = mapOverviewPanel.getBounds();
-			int width = getWidth();
-			int height = getHeight();
-			if (overviewBounds.x < width - overviewBounds.x - overviewBounds.width) {
+			JViewport vp = mapViewScrollPane.getViewport();
+			Point location = overviewBounds.getLocation();
+			UITools.convertPointFromAncestor(this, location, vp);
+			overviewBounds.setLocation(location);
+			int vpWidth = vp.getWidth();
+			int vpHeight = vp.getHeight();
+			if (overviewBounds.x < vpWidth - overviewBounds.x - overviewBounds.width) {
 				overviewBounds.width += overviewBounds.x;
 				overviewBounds.x = 0;
 			} else {
-				overviewBounds.width = width - overviewBounds.x;
+				overviewBounds.width = vpWidth - overviewBounds.x;
 			}
-			if (overviewBounds.y < height - overviewBounds.y - overviewBounds.height) {
+			if (overviewBounds.y < vpHeight - overviewBounds.y - overviewBounds.height) {
 				overviewBounds.height += overviewBounds.y;
 				overviewBounds.y = 0;
 			} else {
-				overviewBounds.height = height - overviewBounds.y;
+				overviewBounds.height = vpHeight - overviewBounds.y;
 			}
 
 			return overviewBounds;
