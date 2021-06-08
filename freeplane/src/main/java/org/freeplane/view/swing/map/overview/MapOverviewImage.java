@@ -63,19 +63,12 @@ class MapOverviewImage extends JComponent {
         image = null;
     }
 
-    double getBestScale(Dimension source, Dimension target, Dimension extentedSize) {
-        double sourceWidth = source.getWidth();
-        double sourceHeight = source.getHeight();
-        double targetWidth = target.getWidth();
-        double targetHeight = target.getHeight();
-        double scaleX = targetWidth / sourceWidth;
-        double scaleY = targetHeight / sourceHeight;
-        double scale = ((sourceWidth / sourceHeight) > (targetWidth / targetHeight)) ? scaleX : scaleY;
-        if (extentedSize != null) {
-            double extendedWidth = (targetWidth / scale - sourceWidth) / 2d;
-            double extendedHeight = (targetHeight / scale - sourceHeight) / 2d;
-            extentedSize.setSize(extendedWidth, extendedHeight);
-        }
+    double getBestScale(Dimension source, Dimension target) {
+        double tw = target.getWidth();
+        double sw = source.getWidth();
+        double th = target.getHeight();
+        double sh = source.getHeight();
+        double scale = ((sw / sh) > (tw / th)) ? tw / sw : th / sh;
         return scale;
     }
 
@@ -83,16 +76,20 @@ class MapOverviewImage extends JComponent {
     protected void paintComponent(Graphics g) {
         Rectangle overviewBounds = getBounds();
         Rectangle mapInnerBounds = mapView.getInnerBounds();
-        Dimension extentedSize = new Dimension();
         Graphics2D g2d = (Graphics2D) g;
         final AffineTransform transform = g2d.getTransform();
         double scaleX = transform.getScaleX();
         AffineTransform overviewTransform = AffineTransform.getScaleInstance(transform.getScaleX(),
                 transform.getScaleY());
         overviewBounds = overviewTransform.createTransformedShape(overviewBounds).getBounds();
-        double scale = getBestScale(mapInnerBounds.getSize(), overviewBounds.getSize(), extentedSize);
+        Dimension source = mapInnerBounds.getSize();
+        Dimension target = overviewBounds.getSize();
+        double scale = getBestScale(source, target);
+        int extendedWidth = (int)Math.ceil ((target.getWidth() / scale - source.getWidth()) / 2);
+        int extendedHeight = (int)Math.ceil ((target.getHeight() / scale - source.getHeight()) / 2);
+        Dimension extendedSize = new Dimension(extendedWidth, extendedHeight);
         if (image == null || image.getWidth() != (int) overviewBounds.width * scaleX) {
-            image = snapshot(mapInnerBounds, overviewBounds, scale, extentedSize);
+            image = snapshot(mapInnerBounds, overviewBounds, scale, extendedSize);
         }
         if (scaleX == 1) {
             g2d.drawImage(image, 0, 0, this);
@@ -104,7 +101,7 @@ class MapOverviewImage extends JComponent {
             g2d.setTransform(transform);
         }
 
-        drawViewportThumbnail(g2d, mapInnerBounds, scale, extentedSize);
+        drawViewportThumbnail(g2d, mapInnerBounds, scale, extendedSize);
         drawZoomLevel(g2d);
     }
 

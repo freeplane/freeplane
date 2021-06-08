@@ -60,8 +60,8 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
         if (! resourceController.getBooleanProperty(ZOOM_AROUND_SELECTED_NODE_PROPERTY)) {
             MapOverviewImage image = (MapOverviewImage) e.getComponent();
             final Point keptPoint = convertToMapViewPoint(image, e.getPoint());
-            mapView.setZoom((float) zoom, keptPoint);
             scrollTo(keptPoint);
+            mapView.setZoom((float) zoom, keptPoint);
         }
         viewManager.setZoom((float) zoom);
     }
@@ -90,10 +90,16 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
     private Point convertToMapViewPoint(MapOverviewImage image, Point overviewPoint) {
         Rectangle innerBounds = mapView.getInnerBounds();
         Rectangle mapOverviewBounds = image.getBounds();
-        Dimension extension = new Dimension();
-        double scale = image.getBestScale(innerBounds.getSize(), mapOverviewBounds.getSize(), extension);
-        int x = (int) (overviewPoint.x / scale - extension.width + innerBounds.x);
-        int y = (int) (overviewPoint.y / scale - extension.height + innerBounds.y);
-        return new Point(x, y);
+        Dimension source = innerBounds.getSize();
+        Dimension target = mapOverviewBounds.getSize();
+        double scale = image.getBestScale(source, target);
+        double extendedWidth = (target.getWidth() / scale - source.getWidth()) / 2d;
+        double extendedHeight = (target.getHeight() / scale - source.getHeight()) / 2d;
+        int x = (int) (overviewPoint.x / scale - extendedWidth + innerBounds.x);
+        int y = (int) (overviewPoint.y / scale - extendedHeight + innerBounds.y);
+        Point point = new Point(x, y);
+//System.out.println("" + overviewPoint + ", " + innerBounds + ", " + mapOverviewBounds + ", " + source + ", " + 
+//        target + ", " +  scale + ", " +  extendedWidth + ", " + extendedHeight + ", " + point);        
+        return point;
     }
 };
