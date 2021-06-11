@@ -92,7 +92,7 @@ public class OptionPanelBuilder {
 			this.enumClass = enumClass;
 			return this;
 		}
-		
+
 		@Override
 		public String getPropertyName() {
 			return name;
@@ -191,8 +191,6 @@ public class OptionPanelBuilder {
 
 		private Set<String> findAvailableLocales() {
 			final TreeSet<String> locales = new TreeSet<String>();
-			LogUtils.info("available locales not found");
-			// as this happens when Freeplane is started from Eclipse add some locales for developer's sake
 			locales.addAll(Arrays.asList(ResourceController.getResourceController().getProperty("locales") .split(",")));
 			return locales;
 		}
@@ -227,7 +225,7 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new NumberProperty(name, min, max, step);
 				}
-				
+
 				@Override
 				public String getPropertyName() {
 					return name;
@@ -242,7 +240,7 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new NumberProperty(name, min, max, step);
 				}
-				
+
 				@Override
 				public String getPropertyName() {
 					return name;
@@ -280,7 +278,7 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new QuantityProperty<LengthUnit>(name, min, max, step, LengthUnit.valueOf(defaultUnit));
 				}
-				
+
 				@Override
 				public String getPropertyName() {
 					return name;
@@ -310,7 +308,7 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new QuantityProperty<TimePeriodUnits>(name, min, max, step, TimePeriodUnits.valueOf(defaultUnit));
 				}
-				
+
 				@Override
 				public String getPropertyName() {
 					return name;
@@ -339,7 +337,7 @@ public class OptionPanelBuilder {
 				public IPropertyControl createControl() {
 					return new PathProperty(name, isDir, suffixes);
 				}
-				
+
 				@Override
 				public String getPropertyName() {
 					return name;
@@ -432,7 +430,7 @@ public class OptionPanelBuilder {
 							}
 							return control;
                         }
-						
+
 						@Override
 						public String getPropertyName() {
 							return name;
@@ -442,8 +440,8 @@ public class OptionPanelBuilder {
 						public String getTranslatedText() {
 							return TextUtils.getRawText(text);
 						}
-						
-						
+
+
 					});
 				}
 
@@ -526,7 +524,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new NextLineProperty();
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return "";
@@ -606,7 +604,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new BooleanProperty(name);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -620,7 +618,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new ColorProperty(name, ResourceController.getResourceController().getDefaultProperty(name));
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -647,7 +645,7 @@ public class OptionPanelBuilder {
 				comboProperty.setEditable(true);
 				return comboProperty;
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -661,7 +659,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new FontProperty(name);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -675,7 +673,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new KeyProperty(name);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -689,7 +687,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new NumberProperty(name, min, max, step);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -703,7 +701,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new MaybeBooleanProperty(name);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -717,7 +715,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new SeparatorProperty(label);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return "";
@@ -736,7 +734,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new StringProperty(name);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -750,7 +748,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new TextBoxProperty(name, lines);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return name;
@@ -767,12 +765,12 @@ public class OptionPanelBuilder {
 				}
 				return new TabProperty(label);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return "";
 			}
-			
+
 			@Override
 			public String getTranslatedText() {
 				return TextUtils.getOptionalText(label, "");
@@ -787,7 +785,7 @@ public class OptionPanelBuilder {
 			public IPropertyControl createControl() {
 				return new TextLine(label);
 			}
-			
+
 			@Override
 			public String getPropertyName() {
 				return "";
