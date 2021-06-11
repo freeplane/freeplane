@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
@@ -47,7 +48,8 @@ import org.freeplane.main.addons.AddOnsController;
  * @author robert ladstaetter
  */
 class UpdateCheckAction extends AFreeplaneAction {
-	private static boolean autorunEnabled = true;
+	private static final int VISIBLE_ADDON_ROWS = 8;
+    private static boolean autorunEnabled = true;
 	private static Timer autorunTimer = null;
 	private static final int CHECK_TIME = 30 * 1000;
 	private static final String CHECK_UPDATES_AUTOMATICALLY = "check_updates_automatically";
@@ -392,6 +394,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 
 		final List<AddOnProperties> installedAddOns = AddOnsController.getController().getInstalledAddOns();
 		gridRow = 3;
+		int addonViewportPreferredHeight = 0;
 		for (AddOnProperties addOnProperties : installedAddOns) {
 			FreeplaneVersion addOnLocalVersion = toFreeplaneVersion(addOnProperties.getVersion());
 			FreeplaneVersion addOnLatestVersion = toFreeplaneVersion(addOnProperties.getLatestVersion());
@@ -451,8 +454,19 @@ class UpdateCheckAction extends AFreeplaneAction {
 			updateButton.setEnabled(needsUpdate);
 
 			gridRow++;
+			if(gridRow == VISIBLE_ADDON_ROWS)
+			    addonViewportPreferredHeight = gridPane.getPreferredSize().height;
 		}
-		messagePane.add(gridPane);
+		if (gridRow > VISIBLE_ADDON_ROWS) {
+            final JScrollPane scrollPane = new JScrollPane(gridPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            scrollPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+            JViewport viewport = scrollPane.getViewport();
+            viewport.setPreferredSize(new Dimension(gridPane.getPreferredSize().width, addonViewportPreferredHeight));
+            scrollPane.setBorder(BorderFactory.createEtchedBorder());
+            messagePane.add(scrollPane);
+		}
+		else
+		    messagePane.add(gridPane);
 		
 		if(! history.isEmpty()) {
 			final JTextArea text = new JTextArea(history);
