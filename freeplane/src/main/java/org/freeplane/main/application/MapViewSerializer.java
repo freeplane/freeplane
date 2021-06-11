@@ -32,8 +32,8 @@ import javax.swing.JPanel;
 import net.infonode.docking.View;
 import net.infonode.docking.ViewSerializer;
 
+import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;

@@ -33,7 +33,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -169,10 +168,15 @@ public class IconStoreFactory {
 
     private String createDescription(final String groupName) {
         String translatedDescription = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName), "");
-        return translatedDescription.isEmpty() ? StringUtils.capitalize(groupName.replaceFirst(".*\\.", "")) : translatedDescription;
+        if (translatedDescription.isEmpty()) {
+			String x = groupName.replaceFirst(".*\\.", "");
+			return TextUtils.capitalize(x);
+		}
+		else
+			return translatedDescription;
     }
 
-    private MindIcon findGroupIcon(final List<MindIcon> icons, final List<IconGroup> groups,
+	private MindIcon findGroupIcon(final List<MindIcon> icons, final List<IconGroup> groups,
             final String groupName) {
         String key = String.format(GROUP_ICON_KEY, groupName);
         final String groupIconName = RESOURCE_CONTROLLER.getProperty(key);

@@ -188,6 +188,13 @@ public class TextUtils {
 		return FormatController.getController().getDefaultDateTimeFormat();
 	}
 
+	static public String capitalize(String string) {
+		StringBuilder stringBuilder = new StringBuilder(string);
+		if(stringBuilder.length() > 0)
+			stringBuilder.setCharAt(0, Character.toTitleCase(stringBuilder.charAt(0)));
+		return stringBuilder.toString();
+	}
+
 	static public String replaceAtBegin(String source, String from, String to) {
         if (source != null && source.startsWith(from)) {
             source = to + source.substring(from.length());

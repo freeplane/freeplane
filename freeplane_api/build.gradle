@@ -15,6 +15,9 @@ task viewerApiJar(type: Jar) {
     dependsOn classes
 	
     from (sourceSets.main.output) {
+				include '**/LengthUnit.class'
+				include '**/PhysicalUnit.class'
+				include '**/Quantity.class'
 				include '**/EdgeStyle.class'
 				include '**/FreeplaneVersion.class'
     }

@@ -64,6 +64,7 @@ import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.Clones;
+import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
