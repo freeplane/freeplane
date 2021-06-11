@@ -172,10 +172,10 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
             scanners.add(createScanner_de());
         if (findGoodMatch(new Locale("hr")) == null)
             scanners.add(createScanner_hr());
-        if (findGoodMatch(Locale.getDefault()) == null) {
+        Locale defaultLocale = Locale.getDefault();
+        if (findGoodMatch(defaultLocale) == null) {
             // "de_DE_WIN" -> "de_DE"
-            final String shortLocale = Locale.getDefault().toString().replaceAll("(.*_.*)_.*", "$1");
-            scanners.add(createScanner(new Locale(shortLocale)));
+            scanners.add(createScanner(new Locale(defaultLocale.getLanguage(), defaultLocale.getCountry())));
         }
         if (scanners.size() != originalCount)
             saveScannersNoThrow();
