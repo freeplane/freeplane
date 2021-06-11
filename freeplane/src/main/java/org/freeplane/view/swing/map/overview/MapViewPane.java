@@ -78,7 +78,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
                 }
             }
         });
-        mapOverviewImage = new MapOverviewImage(mapView);
+        mapOverviewImage = new MapOverviewImage(mapView, mapViewScrollPane);
         mapOverviewPanel = new JPanel(new BorderLayout(0, 0)) {
             private static final long serialVersionUID = 1L;
 

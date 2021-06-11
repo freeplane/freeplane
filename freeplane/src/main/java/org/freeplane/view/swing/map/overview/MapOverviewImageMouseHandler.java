@@ -7,9 +7,8 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
-import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
+import javax.swing.JViewport;
 import javax.swing.event.MouseInputAdapter;
 
 import org.freeplane.core.resources.ResourceController;
@@ -22,8 +21,11 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
 
     private final MapView mapView;
 
-    MapOverviewImageMouseHandler(MapView mapView) {
+    private final JScrollPane mapViewScrollPane;
+
+    MapOverviewImageMouseHandler(MapView mapView, JScrollPane mapViewScrollPane) {
         this.mapView = mapView;
+        this.mapViewScrollPane = mapViewScrollPane;
     }
 
     @Override
@@ -59,8 +61,11 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
         final ResourceController resourceController = ResourceController.getResourceController();
         if (! resourceController.getBooleanProperty(ZOOM_AROUND_SELECTED_NODE_PROPERTY)) {
             MapOverviewImage image = (MapOverviewImage) e.getComponent();
-            final Point keptPoint = convertToMapViewPoint(image, e.getPoint());
-            scrollTo(keptPoint);
+            scrollTo(image, e.getPoint());
+            Dimension viewportSize = mapViewScrollPane.getViewport().getExtentSize();
+            Point mapViewLocation = mapView.getLocation();
+            Point keptPoint = new Point(-mapViewLocation.x + viewportSize.width / 2, 
+                    -mapViewLocation.y + viewportSize.height / 2);
             mapView.setZoom((float) zoom, keptPoint);
         }
         viewManager.setZoom((float) zoom);
@@ -73,33 +78,26 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
 
     private void processMousePanEvent(MouseEvent e) {
         MapOverviewImage image = (MapOverviewImage) e.getComponent();
-        final Point newCenterPoint = convertToMapViewPoint(image, e.getPoint());
-        scrollTo(newCenterPoint);
+        scrollTo(image, e.getPoint());
     }
 
-	private void scrollTo(final Point newCenterPoint) {
-		JScrollPane mapViewScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, mapView);
-        setScrollingValue(newCenterPoint.x, mapViewScrollPane.getHorizontalScrollBar().getModel());
-        setScrollingValue(newCenterPoint.y, mapViewScrollPane.getVerticalScrollBar().getModel());
-	}
-
-    private void setScrollingValue(int value, BoundedRangeModel model) {
-        model.setValue(Math.max(value - model.getExtent() / 2, 0));
-    }
-
-    private Point convertToMapViewPoint(MapOverviewImage image, Point overviewPoint) {
-        Rectangle innerBounds = mapView.getInnerBounds();
-        Rectangle mapOverviewBounds = image.getBounds();
-        Dimension source = innerBounds.getSize();
-        Dimension target = mapOverviewBounds.getSize();
-        double scale = image.getBestScale(source, target);
-        double extendedWidth = (target.getWidth() / scale - source.getWidth()) / 2d;
-        double extendedHeight = (target.getHeight() / scale - source.getHeight()) / 2d;
-        int x = (int) (overviewPoint.x / scale - extendedWidth + innerBounds.x);
-        int y = (int) (overviewPoint.y / scale - extendedHeight + innerBounds.y);
-        Point point = new Point(x, y);
-//System.out.println("" + overviewPoint + ", " + innerBounds + ", " + mapOverviewBounds + ", " + source + ", " + 
-//        target + ", " +  scale + ", " +  extendedWidth + ", " + extendedHeight + ", " + point);        
-        return point;
+    private void scrollTo(MapOverviewImage overview, Point newCenterPointOnOverview) {
+        Rectangle mapBounds = mapView.getInnerBounds();
+        Dimension mapSize = mapBounds.getSize();
+        Rectangle overviewBounds = overview.getBounds();
+        Dimension overviewSize = overviewBounds.getSize();
+        double scale = overview.getBestScale(mapSize, overviewSize);
+        Point mapLocation = mapBounds.getLocation();
+        JViewport viewport = mapViewScrollPane.getViewport();
+        Dimension viewportSize = viewport.getExtentSize();
+        Point newViewPosition = new Point(
+                mapLocation.x
+                    + (int)((newCenterPointOnOverview.x - overviewSize.width / 2) / scale)
+                    + (mapSize.width - viewportSize.width) / 2,
+                mapLocation.y 
+                    + (int)((newCenterPointOnOverview.y - overviewSize.height / 2) / scale)
+                    + (mapSize.height -viewportSize.height) / 2
+                );
+        viewport.setViewPosition(newViewPosition);
     }
 };

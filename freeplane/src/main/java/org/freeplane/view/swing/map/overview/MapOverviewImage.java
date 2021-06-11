@@ -16,10 +16,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
-import org.freeplane.api.LengthUnit;
-import org.freeplane.api.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
@@ -31,15 +30,14 @@ class MapOverviewImage extends JComponent {
 
     private static final Color VIEWPORT_THUMBNAIL_COLOR = new Color(0x32_00_00_FF, true);
     private static final float FONT_SCALE = 0.75F;
-    private static final int FONT_RIGHT_MARGIN = new Quantity<LengthUnit>(3, LengthUnit.pt).toBaseUnitsRounded();
 
     private BufferedImage image;
     private MapView mapView;
     private PopupMenu popupMenu;
 
-    MapOverviewImage(MapView mapView) {
+    MapOverviewImage(MapView mapView, JScrollPane mapViewScrollPane) {
         this.mapView = mapView;
-        MapOverviewImageMouseHandler handler = new MapOverviewImageMouseHandler(mapView);
+        MapOverviewImageMouseHandler handler = new MapOverviewImageMouseHandler(mapView, mapViewScrollPane);
         addMouseListener(handler);
         addMouseMotionListener(handler);
         addMouseWheelListener(handler);
@@ -63,11 +61,11 @@ class MapOverviewImage extends JComponent {
         image = null;
     }
 
-    double getBestScale(Dimension source, Dimension target) {
-        double tw = target.getWidth();
-        double sw = source.getWidth();
-        double th = target.getHeight();
-        double sh = source.getHeight();
+    double getBestScale(Dimension mapSize, Dimension overviewSize) {
+        double tw = overviewSize.getWidth();
+        double sw = mapSize.getWidth();
+        double th = overviewSize.getHeight();
+        double sh = mapSize.getHeight();
         double scale = ((sw / sh) > (tw / th)) ? tw / sw : th / sh;
         return scale;
     }
