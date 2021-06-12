@@ -28,7 +28,7 @@ import org.freeplane.view.swing.map.MapViewController;
 class MapOverviewImage extends JComponent {
     private static final long serialVersionUID = 1L;
 
-    private static final Color VIEWPORT_THUMBNAIL_COLOR = new Color(0x32_00_00_FF, true);
+    private static final Color VIEWPORT_HIGHLIGHTING_COLOR = new Color(0x32_00_00_FF, true);
     private static final float FONT_SCALE = 0.75F;
 
     private BufferedImage image;
@@ -83,23 +83,23 @@ class MapOverviewImage extends JComponent {
         Dimension source = mapInnerBounds.getSize();
         Dimension target = overviewBounds.getSize();
         double scale = getBestScale(source, target);
-        int extendedWidth = (int)Math.ceil ((target.getWidth() / scale - source.getWidth()) / 2);
-        int extendedHeight = (int)Math.ceil ((target.getHeight() / scale - source.getHeight()) / 2);
-        Dimension extendedSize = new Dimension(extendedWidth, extendedHeight);
         if (image == null || image.getWidth() != (int) overviewBounds.width * scaleX) {
-            image = snapshot(mapInnerBounds, overviewBounds, scale, extendedSize);
+            image = createOverviewImage(mapInnerBounds, overviewBounds, scale);
         }
+        double overviewImageX = (target.getWidth() - source.getWidth() * scale) / 2;
+        double overviewImageY = (target.getHeight() - source.getHeight() * scale) / 2;
         if (scaleX == 1) {
-            g2d.drawImage(image, 0, 0, this);
-        } else {
+            g2d.drawImage(image, (int)overviewImageX, (int)overviewImageY, this);
+        } 
+        else {
             AffineTransform newTransform = AffineTransform.getTranslateInstance(transform.getTranslateX(),
                     transform.getTranslateY());
             g2d.setTransform(newTransform);
-            g2d.drawImage(image, 0, 0, this);
+            g2d.drawImage(image, (int)(overviewImageX*scaleX), (int)(overviewImageY*scaleX), this);
             g2d.setTransform(transform);
         }
 
-        drawViewportThumbnail(g2d, mapInnerBounds, scale, extendedSize);
+        highlightViewport(g2d, mapInnerBounds, scale,(int)overviewImageX, (int)overviewImageY);
         drawZoomLevel(g2d);
     }
 
@@ -128,9 +128,9 @@ class MapOverviewImage extends JComponent {
         return new Color(0xFF - color.getRed(), 0xFF - color.getGreen(), 0xFF - color.getBlue());
     }
 
-    private BufferedImage snapshot(Rectangle mapInnerBounds, Rectangle overviewBounds, double scale, Dimension extent) {
-        AffineTransform translation = AffineTransform.getTranslateInstance(extent.width - mapInnerBounds.x,
-                extent.height - mapInnerBounds.y);
+    private BufferedImage createOverviewImage(Rectangle mapInnerBounds, Rectangle overviewBounds, double scale) {
+        AffineTransform translation = AffineTransform.getTranslateInstance(- mapInnerBounds.x,
+                - mapInnerBounds.y);
         AffineTransform transformer = AffineTransform.getScaleInstance(scale, scale);
         transformer.concatenate(translation);
 
@@ -150,21 +150,23 @@ class MapOverviewImage extends JComponent {
         return image;
     }
 
-    private void drawViewportThumbnail(Graphics2D g2d, Rectangle mapInnerBounds, double scale, Dimension extent) {
+    private void highlightViewport(Graphics2D g2d, Rectangle mapInnerBounds, double scale, int overviewImageX, int overviewImageY) {
         JViewport viewPort = (JViewport) mapView.getParent();
         Point viewPortPosition = viewPort.getViewPosition();
-        Rectangle viewPortRect = viewPort.getBounds();
-        Rectangle thumbRect = new Rectangle(viewPortRect);
-        thumbRect.x = viewPortPosition.x - mapInnerBounds.x + extent.width;
-        thumbRect.y = viewPortPosition.y - mapInnerBounds.y + extent.height;
+        Dimension viewportSize = viewPort.getExtentSize();
+        Rectangle highlightedRectangleOnMap = new Rectangle(viewPortPosition.x - mapInnerBounds.x, 
+                viewPortPosition.y - mapInnerBounds.y, 
+                viewportSize.width, 
+                viewportSize.height);
         AffineTransform transformed = g2d.getTransform();
-        AffineTransform transformer = AffineTransform.getScaleInstance(scale / transformed.getScaleX(),
-                scale / transformed.getScaleY());
-        Rectangle scaledThumbRect = transformer.createTransformedShape(thumbRect).getBounds();
-        g2d.setColor(VIEWPORT_THUMBNAIL_COLOR);
-        g2d.fillRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width, scaledThumbRect.height);
-        g2d.setColor(VIEWPORT_THUMBNAIL_COLOR.darker());
-        g2d.drawRect(scaledThumbRect.x, scaledThumbRect.y, scaledThumbRect.width - 1, scaledThumbRect.height - 1);
+        AffineTransform transformer = AffineTransform.getScaleInstance(scale / transformed.getScaleX(), scale / transformed.getScaleY());
+        Rectangle highlightedRectanlgleOnOverview = transformer.createTransformedShape(highlightedRectangleOnMap).getBounds();
+        highlightedRectanlgleOnOverview.x += overviewImageX;
+        highlightedRectanlgleOnOverview.y += overviewImageY;
+        g2d.setColor(VIEWPORT_HIGHLIGHTING_COLOR);
+        g2d.fillRect(highlightedRectanlgleOnOverview.x, highlightedRectanlgleOnOverview.y, highlightedRectanlgleOnOverview.width, highlightedRectanlgleOnOverview.height);
+        g2d.setColor(VIEWPORT_HIGHLIGHTING_COLOR.darker());
+        g2d.drawRect(highlightedRectanlgleOnOverview.x, highlightedRectanlgleOnOverview.y, highlightedRectanlgleOnOverview.width - 1, highlightedRectanlgleOnOverview.height - 1);
     }
 
 }
