@@ -189,12 +189,12 @@ class MapScroller {
 		if (! map.isDisplayable()) {
 			return new Point();
 		}
-		final JComponent content = anchor.getContent();
-		final int contentWidth = content.getWidth();
-		final int contentHeight = content.getHeight();
-		final Point anchorCenterPoint = new Point((int) (contentWidth * anchorHorizontalPoint), (int) (contentHeight * anchorVerticalPoint));
+		final JComponent mainView = anchor.getMainView();
+		final int referenceWidth = mainView.getWidth();
+		final int referenceHeight = mainView.getHeight();
+		final Point anchorCenterPoint = new Point((int) (referenceWidth * anchorHorizontalPoint), (int) (referenceHeight * anchorVerticalPoint));
 		final JViewport viewPort = (JViewport) map.getParent();
-		UITools.convertPointToAncestor(content, anchorCenterPoint, map);
+		UITools.convertPointToAncestor(mainView, anchorCenterPoint, map);
 		final Dimension extentSize = viewPort.getExtentSize();
 		anchorCenterPoint.x += (extentSize.width - viewPort.getWidth()) / 2;
 		anchorCenterPoint.y += (extentSize.height - viewPort.getHeight()) / 2;
