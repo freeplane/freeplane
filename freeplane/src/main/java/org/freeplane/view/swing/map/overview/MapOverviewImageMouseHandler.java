@@ -99,7 +99,7 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
         if(newCenterPointOnOverview.y < minimumValidY)
             newCenterPointOnOverview.y = minimumValidY;
         else if (0 < minimumValidY){
-            int maximumValidY = overviewSize.width - minimumValidY;
+            int maximumValidY = overviewSize.height - minimumValidY;
             if (newCenterPointOnOverview.y > maximumValidY)
                 newCenterPointOnOverview.y = maximumValidY;
         }
