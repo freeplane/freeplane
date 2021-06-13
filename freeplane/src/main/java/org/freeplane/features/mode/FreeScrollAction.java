@@ -60,9 +60,9 @@ class FreeScrollAction extends AFreeplaneAction {
 
     private final Direction direction;
 
-    public FreeScrollAction(final Direction driection) {
-        super("FreeScrollAction." + driection.name());
-        this.direction = driection;
+    public FreeScrollAction(final Direction direction) {
+        super("FreeScrollAction." + direction.name());
+        this.direction = direction;
     }
 
     public void actionPerformed(final ActionEvent e) {
