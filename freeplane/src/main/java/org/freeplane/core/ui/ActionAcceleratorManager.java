@@ -466,17 +466,15 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 
 		public boolean isValid(final KeyStroke keystroke, final Character keyChar) {
-			if (keystroke == null) {
-				return true;
-			}
-			if (actionMap.containsKey(key(action.getKey()))) {
+		    if (keystroke == null) {
 				return true;
 			}
 			if (keyChar != KeyEvent.CHAR_UNDEFINED && (keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK | Event.META_MASK)) == 0) {
 				final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action",
 						FirstAction.EDIT_CURRENT.toString());
 				FirstAction keyTypeAction = FirstAction.valueOf(keyTypeActionString);
-				return FirstAction.IGNORE.equals(keyTypeAction);
+				if(! FirstAction.IGNORE.equals(keyTypeAction))
+				    return false;
 			}
 			if (!checkForOverwriteShortcut(keystroke)) {
 				return false;
