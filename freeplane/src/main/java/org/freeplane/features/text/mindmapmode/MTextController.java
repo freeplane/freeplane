@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.text.mindmapmode;
 
-import java.awt.AWTEvent;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
@@ -70,7 +68,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -959,7 +956,7 @@ public class MTextController extends TextController {
 		private final NodeModel prevSelectedModel;
 		private final NodeModel nodeModel;
 		private final ModeController modeController;
-        private final KeyEvent initialKeyEvent;
+        private KeyEvent initialKeyEvent;
 
 		private EditEventDispatcher(ModeController modeController, NodeModel nodeModel, NodeModel prevSelectedModel,
 		                            boolean isNewNode,
@@ -970,15 +967,17 @@ public class MTextController extends TextController {
 			this.isNewNode = isNewNode;
 			this.prevSelectedModel = prevSelectedModel;
 			this.nodeModel = nodeModel;
-			this.initialKeyEvent = initialKeyEvent;
+			this.initialKeyEvent = initialKeyEvent.getID() == KeyEvent.KEY_RELEASED ? null : initialKeyEvent;
 		}
- 
+
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
 		    int keyCode = e.getKeyCode();
 			if (initialKeyEvent != null && initialKeyEvent.getKeyCode() == keyCode
-			         && e.getID() == KeyEvent.KEY_RELEASED)
+			         && e.getID() == KeyEvent.KEY_RELEASED) {
+				initialKeyEvent = null;
 				return false;
+			}
 			switch (keyCode) {
 				case KeyEvent.VK_SHIFT:
 				case KeyEvent.VK_CONTROL:
@@ -1053,7 +1052,7 @@ public class MTextController extends TextController {
             final boolean parentFolded, final boolean editInDialog) {
         edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editInDialog, null);
     }
-    
+
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
 	                 final boolean parentFolded, final boolean editInDialog, KeyEvent initialKeyEvent) {
 		if (nodeModel == null || currentBlockingEditor != null) {
