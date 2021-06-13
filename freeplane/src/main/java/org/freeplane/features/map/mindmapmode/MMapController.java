@@ -22,11 +22,14 @@ package org.freeplane.features.map.mindmapmode;
 import static org.freeplane.features.map.FirstGroupNodeFlag.FIRST_GROUP;
 import static org.freeplane.features.map.SummaryNodeFlag.SUMMARY;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -253,6 +256,7 @@ public class MMapController extends MapController {
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if(component == null)
 			return;
+		KeyEvent currentKeyEvent = getCurrentKeyEvent();
 		component.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -262,10 +266,19 @@ public class MMapController extends MapController {
 			public void focusGained(FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
 				final TextController textController = TextController.getController();
-				((MTextController) textController).edit(newNode, newNode.getParentNode(), true, false, false);
+				((MTextController) textController).edit(newNode, newNode.getParentNode(), true, false, false, currentKeyEvent);
 			}
 		});
     }
+	
+    private KeyEvent getCurrentKeyEvent() {
+        AWTEvent currentEvent = EventQueue.getCurrentEvent();
+        if(currentEvent instanceof KeyEvent)
+            return (KeyEvent) currentEvent;
+        else
+            return null;
+    }
+
 
 	private void stopInlineEditing() {
 		final TextController textController = TextController.getController();
