@@ -972,13 +972,17 @@ public class MTextController extends TextController {
 		public boolean dispatchKeyEvent(KeyEvent e) {
 			if (e.getID() == KeyEvent.KEY_RELEASED || e.getID() == KeyEvent.KEY_TYPED)
 				return false;
-			switch (e.getKeyCode()) {
+			int keyCode = e.getKeyCode();
+			switch (keyCode) {
 				case KeyEvent.VK_SHIFT:
 				case KeyEvent.VK_CONTROL:
 				case KeyEvent.VK_CAPS_LOCK:
 				case KeyEvent.VK_ALT:
 				case KeyEvent.VK_ALT_GRAPH:
 					return false;
+				default:
+					if(isDeadKey(keyCode))
+						return false;
 			}
 			uninstall();
 			if (isMenuEvent(e)) {
@@ -987,6 +991,10 @@ public class MTextController extends TextController {
 			eventQueue.activate(e);
 			edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editInDialog);
 			return true;
+		}
+
+		private boolean isDeadKey(int keyCode) {
+			return (keyCode & ~0xf) == 0x80;
 		}
 
 		private boolean isMenuEvent(KeyEvent e) {
@@ -1168,7 +1176,7 @@ public class MTextController extends TextController {
 		fireEditorPaneCreated(editorPane, purpose);
 		return shtmlPanel;
 	}
-	
+
 	public JEditorPane createEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel nodeModel, Object nodeProperty,
 	        Object content) {
 	    final List<IContentTransformer> textTransformers = getTextTransformers();
