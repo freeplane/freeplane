@@ -983,8 +983,8 @@ public class MTextController extends TextController {
 		        return false;
 		    if(initialKeyEvent != null && 
 		            (initialKeyEvent.getKeyChar() != 0 
-		            && initialKeyEvent.getKeyChar() == e.getKeyChar())
-		            || initialKeyEvent.getKeyCode() == e.getKeyCode()) {
+		            && initialKeyEvent.getKeyChar() == e.getKeyChar()
+		            || initialKeyEvent.getKeyCode() == e.getKeyCode())) {
 		        return false;
 		    }
 			uninstall();

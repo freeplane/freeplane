@@ -175,7 +175,8 @@ public class MMapController extends MapController {
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
-		stopInlineEditing();
+        KeyEvent currentKeyEvent = getCurrentKeyEvent();
+        stopInlineEditing();
 		final NodeModel targetNode = getSelectedNode();
 		final NodeModel newNode;
 		switch (newNodeMode) {
@@ -194,7 +195,6 @@ public class MMapController extends MapController {
 					if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSibling")) {
 						copyFormat(targetNode, newNode);
 					}
-					KeyEvent currentKeyEvent = getCurrentKeyEvent();
 					select(newNode);
                     startEditing(newNode, currentKeyEvent);
 					break;
@@ -225,7 +225,6 @@ public class MMapController extends MapController {
                 if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewChild")) {
                     copyFormat(targetNode, newNode);
                 }
-                KeyEvent currentKeyEvent = getCurrentKeyEvent();
 				select(newNode);
 				startEditing(newNode, currentKeyEvent);
 				break;
