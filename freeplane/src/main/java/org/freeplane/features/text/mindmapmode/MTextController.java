@@ -949,56 +949,58 @@ public class MTextController extends TextController {
         }
     }
 
-    private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener {
+    private class EditEventDispatcher implements KeyEventDispatcher, INodeSelectionListener {
 		private final boolean editInDialog;
 		private final boolean parentFolded;
-		private final boolean isNewNode;
 		private final NodeModel prevSelectedModel;
 		private final NodeModel nodeModel;
 		private final ModeController modeController;
-        private KeyEvent initialKeyEvent;
+        private final KeyEvent initialKeyEvent;
 
 		private EditEventDispatcher(ModeController modeController, NodeModel nodeModel, NodeModel prevSelectedModel,
-		                            boolean isNewNode,
 		                            boolean parentFolded, boolean editInDialog, KeyEvent initialKeyEvent) {
 			this.modeController = modeController;
 			this.editInDialog = editInDialog;
 			this.parentFolded = parentFolded;
-			this.isNewNode = isNewNode;
 			this.prevSelectedModel = prevSelectedModel;
 			this.nodeModel = nodeModel;
-			this.initialKeyEvent = initialKeyEvent.getID() == KeyEvent.KEY_RELEASED ? null : initialKeyEvent;
+            this.initialKeyEvent = initialKeyEvent;
 		}
 
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
 		    int keyCode = e.getKeyCode();
-			if (initialKeyEvent != null && initialKeyEvent.getKeyCode() == keyCode
-			         && e.getID() == KeyEvent.KEY_RELEASED) {
-				initialKeyEvent = null;
-				return false;
-			}
-			switch (keyCode) {
-				case KeyEvent.VK_SHIFT:
-				case KeyEvent.VK_CONTROL:
-				case KeyEvent.VK_CAPS_LOCK:
-				case KeyEvent.VK_ALT:
-				case KeyEvent.VK_ALT_GRAPH:
-					return false;
-				default:
-					if(isDeadKey(keyCode))
-						return false;
-			}
+		    switch (keyCode) {
+		    case KeyEvent.VK_SHIFT:
+		    case KeyEvent.VK_CONTROL:
+		    case KeyEvent.VK_CAPS_LOCK:
+		    case KeyEvent.VK_ALT:
+		    case KeyEvent.VK_ALT_GRAPH:
+		        return false;
+		    default:
+		    }
+		    if(e.getID() == KeyEvent.KEY_RELEASED|| isDeadKey(keyCode) || isNavigationKey(keyCode))
+		        return false;
+		    if(initialKeyEvent != null && 
+		            (initialKeyEvent.getKeyChar() != 0 
+		            && initialKeyEvent.getKeyChar() == e.getKeyChar())
+		            || initialKeyEvent.getKeyCode() == e.getKeyCode()) {
+		        return false;
+		    }
 			uninstall();
 			if (isMenuEvent(e)) {
 				return false;
 			}
 			eventQueue.activate(e);
-			edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editInDialog);
+			edit(nodeModel, prevSelectedModel, true, parentFolded, editInDialog);
 			return true;
 		}
 
-		private boolean isDeadKey(int keyCode) {
+		private boolean isNavigationKey(int keyCode) {
+		    return keyCode >= 0x21 && keyCode <= 0x28;
+        }
+
+        private boolean isDeadKey(int keyCode) {
 			return (keyCode & ~0xf) == 0x80;
 		}
 
@@ -1020,7 +1022,6 @@ public class MTextController extends TextController {
 		public void uninstall() {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
 			MapController mapController = modeController.getMapController();
-			mapController.removeNodeChangeListener(this);
 			mapController.removeNodeSelectionListener(this);
 			keyEventDispatcher = null;
 		}
@@ -1028,7 +1029,6 @@ public class MTextController extends TextController {
 		public void install() {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 			MapController mapController = modeController.getMapController();
-			mapController.addUINodeChangeListener(this);
 			mapController.addNodeSelectionListener(this);
 		}
 
@@ -1039,12 +1039,7 @@ public class MTextController extends TextController {
 
 		@Override
 		public void onSelect(NodeModel node) {
-			uninstall();
-		}
-
-		@Override
-		public void nodeChanged(NodeChangeEvent event) {
-			uninstall();
+		    uninstall();
 		}
 	}
 
@@ -1083,7 +1078,7 @@ public class MTextController extends TextController {
 		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")
 		            && ! isTextFormattingDisabled(nodeModel)) {
 			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel,
-			    prevSelectedModel, isNewNode, parentFolded, editInDialog, initialKeyEvent);
+			    prevSelectedModel, parentFolded, editInDialog, initialKeyEvent);
 			keyEventDispatcher.install();
 			return;
 		};

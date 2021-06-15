@@ -194,8 +194,9 @@ public class MMapController extends MapController {
 					if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSibling")) {
 						copyFormat(targetNode, newNode);
 					}
-					startEditingAfterSelect(newNode);
+					KeyEvent currentKeyEvent = getCurrentKeyEvent();
 					select(newNode);
+                    startEditing(newNode, currentKeyEvent);
 					break;
 				}
 				else {
@@ -224,8 +225,9 @@ public class MMapController extends MapController {
                 if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewChild")) {
                     copyFormat(targetNode, newNode);
                 }
-				startEditingAfterSelect(newNode);
+                KeyEvent currentKeyEvent = getCurrentKeyEvent();
 				select(newNode);
+				startEditing(newNode, currentKeyEvent);
 				break;
 			}
 			default:
@@ -252,23 +254,12 @@ public class MMapController extends MapController {
 		return mapClipboardController;
 	}
 
-	private void startEditingAfterSelect(final NodeModel newNode) {
+	private void startEditing(final NodeModel newNode, KeyEvent currentKeyEvent) {
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if(component == null)
 			return;
-		KeyEvent currentKeyEvent = getCurrentKeyEvent();
-		component.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				e.getComponent().removeFocusListener(this);
-				final TextController textController = TextController.getController();
-				((MTextController) textController).edit(newNode, newNode.getParentNode(), true, false, false, currentKeyEvent);
-			}
-		});
+		final TextController textController = TextController.getController();
+		((MTextController) textController).edit(newNode, newNode.getParentNode(), true, false, false, currentKeyEvent);
     }
 	
     private KeyEvent getCurrentKeyEvent() {
@@ -325,8 +316,9 @@ public class MMapController extends MapController {
 			}
 		}
 		final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
-		startEditingAfterSelect(firstSummaryChildNode);
+        KeyEvent currentKeyEvent = getCurrentKeyEvent();
 		select(firstSummaryChildNode);
+		startEditing(firstSummaryChildNode, currentKeyEvent);
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
