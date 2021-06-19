@@ -412,7 +412,7 @@ class NodeList {
 		final MapModel newMap = MFileManager.getController(mindMapController).newMapFromDefaultTemplate();
 		if(newMap != null) {
 		    for (final NodeModel node : selectedNodes) {
-		        final NodeModel copy = MapClipboardController.getController().duplicate(node, false);
+		        final NodeModel copy = MapClipboardController.getController().duplicate(node, newMap, false);
 		        if (copy != null) {
 		            mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
 		        }

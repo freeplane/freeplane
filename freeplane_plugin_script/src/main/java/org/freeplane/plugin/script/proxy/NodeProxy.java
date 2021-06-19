@@ -139,8 +139,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	private Node appendBranchImpl(final NodeRO node, final boolean withChildren) {
 	    final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController.getController();
-		final NodeModel newNodeModel = clipboardController.duplicate(((NodeProxy) node).getDelegate(), withChildren);
-		getMapController().insertNode(newNodeModel, getDelegate());
+		NodeModel source = ((NodeProxy) node).getDelegate();
+		NodeModel target = getDelegate();
+        final NodeModel newNodeModel = clipboardController.duplicate(source, target.getMap(), withChildren);
+        getMapController().insertNode(newNodeModel, target);
 		return new NodeProxy(newNodeModel, getScriptContext());
     }
 

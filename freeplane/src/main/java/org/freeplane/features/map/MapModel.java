@@ -311,7 +311,7 @@ public class MapModel {
 	}
 
     NodeModel duplicate(NodeModel source, boolean withChildren) {
-        return getNodeDuplicator().duplicate(source, withChildren);
+        return getNodeDuplicator().duplicate(source, this, withChildren);
     }
 
     public INodeDuplicator getNodeDuplicator() {

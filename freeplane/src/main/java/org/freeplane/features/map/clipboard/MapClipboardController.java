@@ -46,6 +46,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeDuplicator;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -207,7 +208,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	}
 
 	@Override
-	public NodeModel duplicate(final NodeModel source, boolean withChildren) {
+	public NodeModel duplicate(final NodeModel source, final MapModel targetMap,  boolean withChildren) {
 		try {
 			final StringWriter writer = new StringWriter();
 			Mode copyMode = source.getUserObject() instanceof IStyle ? Mode.STYLE : Mode.CLIPBOARD;
@@ -215,7 +216,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 			    .writeNodeAsXml(writer, source, copyMode, true, withChildren, false);
 			final String result = writer.toString();
             final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
-			    source.getMap(), new StringReader(result), copyMode);
+                    targetMap, new StringReader(result), copyMode);
 			copy.setFolded(false);
 			return copy;
 		}
