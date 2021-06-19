@@ -91,7 +91,7 @@ public class MapExplorerController  implements IExtension{
 		return getNodeAt(start, reference, AccessedNodes.IGNORE);
 	}
 
-	public NodeModel getNodeAt(NodeModel start, String reference, AccessedNodes accessedNodes) {
+	private NodeModel getNodeAt(NodeModel start, String reference, AccessedNodes accessedNodes) {
 		if(reference.startsWith("ID"))
 			return  start.getMap().getNodeForID(reference);
 		else if(start != null && reference.startsWith("at(") && reference.endsWith(")")){

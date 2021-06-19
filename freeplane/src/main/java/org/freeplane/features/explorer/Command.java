@@ -18,7 +18,7 @@ class Command {
 
 	public Collection<? extends NodeModel> getNodes(NodeModel start) {
 		final NodeMatcher nodeMatcher = createMatcher();
-		return operator.getAllNodes(start, nodeMatcher, accessedNodes);
+		return operator.getNodes(start, nodeMatcher, accessedNodes);
 	}
 
 	private NodeMatcher createMatcher() {

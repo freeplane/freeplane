@@ -18,14 +18,14 @@ public class GlobalNodes implements IExtension, Iterable<NodeModel>{
 
     private final Map<NodeModel, Void> nodes;
 
-    GlobalNodes(Map<NodeModel, Void> nodes) {
+    private GlobalNodes(Map<NodeModel, Void> nodes) {
         super();
         this.nodes = nodes;
     }
 
 
 
-    boolean contains(NodeModel key) {
+    private boolean contains(NodeModel key) {
         return nodes.containsKey(key) && isContainedInTheMap(key);
     }
 
@@ -43,10 +43,6 @@ public class GlobalNodes implements IExtension, Iterable<NodeModel>{
         return globalNodes == null ? EMPTY : globalNodes;
     }
 
-    static void add(NodeModel node) {
-        writeableOf(node.getMap()).makeGlobal(node);
-    }
-
     public void makeGlobal(NodeModel node, boolean isGlobal) {
         if(isGlobal)
             makeGlobal(node);
@@ -58,11 +54,11 @@ public class GlobalNodes implements IExtension, Iterable<NodeModel>{
         nodes.put(node, null);
     }
 
-    void makeNotGlobal(NodeModel node) {
+    private void makeNotGlobal(NodeModel node) {
         nodes.remove(node);
     }
 
-    public static boolean isGlobal(NodeModel node) {
+    static boolean isGlobal(NodeModel node) {
         return readableOf(node.getMap()).contains(node);
     }
     

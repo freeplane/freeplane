@@ -27,7 +27,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public class GlobalNodeCondition extends ASelectableCondition {
+class GlobalNodeCondition extends ASelectableCondition {
 	static final String NAME = "filter_global";
 
 	public GlobalNodeCondition() {

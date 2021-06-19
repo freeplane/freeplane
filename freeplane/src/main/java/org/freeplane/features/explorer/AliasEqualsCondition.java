@@ -27,12 +27,12 @@ import org.freeplane.features.filter.condition.ConditionFactory;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public class AliasEqualsCondition extends AliasCondition {
+class AliasEqualsCondition extends AliasCondition {
 	public static final String NAME = "alias_equals";
 
 	private final StringMatchingStrategy stringMatchingStrategy;
 
-	public AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+	AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
 		super(alias, matchCase, matchApproximately, ignoreDiacritics);
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;

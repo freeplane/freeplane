@@ -27,10 +27,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class AliasCondition extends StringConditionAdapter {
+abstract class AliasCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String alias;
-	public AliasCondition(final String alias, boolean matchCase, boolean matchAproximately, boolean ignoreDiacritics) {
+	AliasCondition(final String alias, boolean matchCase, boolean matchAproximately, boolean ignoreDiacritics) {
 		super(matchCase, matchAproximately, ignoreDiacritics);
 		this.alias = alias;
 	}

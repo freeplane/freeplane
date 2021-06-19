@@ -12,14 +12,14 @@ public class MapExplorer {
 	private final NodeModel start;
 	private final List<Command> path;
 
-	public MapExplorer(NodeModel start, String path, AccessedNodes accessedNodes) {
+	MapExplorer(NodeModel start, String path, AccessedNodes accessedNodes) {
 		this(start,
 			new ExploringStepBuilder(path, accessedNodes).buildSteps());
 	}
 
 
 
-	MapExplorer(NodeModel start, List<Command> path) {
+	private MapExplorer(NodeModel start, List<Command> path) {
 		this.start = start;
 		this.path = path;
 	}

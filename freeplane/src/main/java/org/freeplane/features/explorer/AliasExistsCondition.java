@@ -28,8 +28,8 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public class AliasExistsCondition extends ASelectableCondition {
-	public static final String NAME = "alias_exists";
+class AliasExistsCondition extends ASelectableCondition {
+	static final String NAME = "alias_exists";
 
 	public AliasExistsCondition() {
 		super();

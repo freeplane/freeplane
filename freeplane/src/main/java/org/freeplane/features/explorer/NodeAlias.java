@@ -4,9 +4,9 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
 public class NodeAlias implements IExtension {
-	public final String value;
+	final String value;
 
-	public NodeAlias(String value) {
+	private NodeAlias(String value) {
 		super();
 		this.value = value;
 	}
@@ -23,7 +23,7 @@ public class NodeAlias implements IExtension {
 			NodeAliases.of(node.getMap()).add(a, node.createID());
 		}
 	}
-	static void removeAlias(NodeModel node) {
+	private static void removeAlias(NodeModel node) {
 		node.removeExtension(NodeAlias.class);
 	}
 }

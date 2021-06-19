@@ -47,7 +47,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * Mar 7, 2009
  */
 public class MapExplorerConditionController implements IElementaryConditionController {
-	static final String FILTER_GLOBAL = "filter_global";
+	private final String FILTER_GLOBAL = "filter_global";
 	static final String FILTER_ALIAS = "filter_alias";
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
 

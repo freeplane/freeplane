@@ -119,11 +119,6 @@ enum ExploringStep {
 		}
 	};
 
-	public enum Cardinality {
-		SINGLE, FIRST, ALL;
-	}
-
-
 	public void assertValidString(String searchedString) {
 		//
 	}
@@ -139,15 +134,5 @@ enum ExploringStep {
 	}
 
 	abstract List<NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes);
-
-
-	NodeModel getSingleNode(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
-		final List<NodeModel> nodes = getNodes(start, nodeMatcher, accessedNodes);
-		return nodes.get(0);
-	}
-
-	Collection<NodeModel> getAllNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
-		return getNodes(start, nodeMatcher, accessedNodes);
-	}
 
 }
