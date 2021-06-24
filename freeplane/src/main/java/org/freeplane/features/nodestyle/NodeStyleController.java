@@ -621,8 +621,7 @@ public class NodeStyleController implements IExtension {
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
 		final Quantity<LengthUnit> borderWidth = getBorderWidth(map, style);
-		return borderWidth != null ? borderWidth : 
-			new Quantity<>(modeController.getExtension(EdgeController.class).getWidth(node), LengthUnit.px);
+		return borderWidth != null ? borderWidth : new Quantity<>(1, LengthUnit.px);
 	}
 
 	public DashVariant getBorderDash(NodeModel node) {
