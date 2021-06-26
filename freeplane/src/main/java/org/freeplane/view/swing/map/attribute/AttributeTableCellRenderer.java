@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.net.URI;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -34,6 +33,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -85,7 +85,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		String text = originalText;
 		Icon icon;
 		Color color = null;
-		URI uri = null;
+		Hyperlink link = null;
 		if (column == 1 && isAttributeHighlighted(attributeTable, row))
 			color = FilterController.HIGHLIGHT_COLOR;
 		if (column == 1 && value != null) {
@@ -102,9 +102,9 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
 				color = HighlightedTransformedObject.FAILURE_COLOR;
 			}
-			uri = attributeTable.toUri(value);
-			if(uri != null){
-	                icon = (attributeTable).getLinkIcon(uri);
+			link = attributeTable.toHyperlink(value);
+			if(link != null){
+	                icon = (attributeTable).getLinkIcon(link);
 			}
 			else{
 				icon = null;
@@ -127,10 +127,10 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		setText(text);
 		String toolTip = null;
-		if(uri != null) {
+		if(link != null) {
 			final ViewerController viewerController = Controller.getCurrentModeController().getExtension(ViewerController.class);
-			if (viewerController != null && viewerController.getViewerFactory().accept(uri)) {
-				toolTip = uri.toString();
+			if (viewerController != null && viewerController.getViewerFactory().accept(link.getUri())) {
+				toolTip = link.toString();
 }
 		}
 		if(toolTip == null) {

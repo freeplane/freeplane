@@ -52,6 +52,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageTyp
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
@@ -892,7 +893,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = mapController.newNode(text, map);
 		if(uri != null){
-			NodeLinks.createLinkExtension(node).setHyperLink(uri);
+			NodeLinks.createLinkExtension(node).setHyperLink(new Hyperlink(uri));
 		}
 		return node;
 	}

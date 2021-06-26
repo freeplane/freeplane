@@ -69,6 +69,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.OptionalReference;
@@ -418,7 +419,7 @@ public class MTextController extends TextController {
 		boolean picturesAmongSelecteds = false;
 		final ModeController modeController = Controller.getCurrentModeController();
 		for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
-			final URI link = NodeLinks.getLink(node);
+			final Hyperlink link = NodeLinks.getLink(node);
 			if (link != null) {
 				final String linkString = link.toString();
 				final String lowerCase = linkString.toLowerCase();
@@ -1169,7 +1170,7 @@ public class MTextController extends TextController {
 			@Override
 			public void actionPerformed(ActionEvent pE) {
 				try {
-					UrlManager.getController().loadURL(new URI(pE.getActionCommand()));
+					UrlManager.getController().loadHyperlink(new Hyperlink(new URI(pE.getActionCommand())));
 				}
 				catch (Exception e) {
 					LogUtils.warn(e);

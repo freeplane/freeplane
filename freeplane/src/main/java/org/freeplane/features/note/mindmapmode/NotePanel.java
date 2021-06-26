@@ -38,6 +38,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
@@ -189,7 +190,7 @@ class NotePanel extends JPanel {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
 					String uriText = pE.getActionCommand();
-					LinkController.getController().loadURI(noteManager.getNode(), new URI(uriText));
+					LinkController.getController().loadURI(noteManager.getNode(), new Hyperlink(new URI(uriText)));
 				}
 				catch (final Exception e) {
 					LogUtils.severe(e);

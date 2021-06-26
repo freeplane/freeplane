@@ -39,7 +39,7 @@ public class Compat {
 	public static final Set<String> executableExtensions = new HashSet<String>(Arrays.asList(new String[] { "exe",
 	        "com", "vbs", "bat", "lnk", "cmd" }));
 
-	public static boolean isWindowsExecutable(final URI link) {
+	public static boolean isWindowsExecutable(final Hyperlink link) {
 		if (link == null
 				|| !"file".equalsIgnoreCase(link.getScheme())) {
 			return false;

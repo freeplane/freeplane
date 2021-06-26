@@ -25,9 +25,10 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.net.URI;
 
 import javax.swing.Icon;
+
+import org.freeplane.core.util.Hyperlink;
 
 /**
  * @author Dimitry Polivaev
@@ -73,11 +74,11 @@ class CursorUpdater extends MouseAdapter implements MouseMotionListener{
             return Cursor.DEFAULT_CURSOR;
         }
 		Object value = table.getValueAt(row, col);
-		URI uri = table.toUri(value);
-		if(uri == null){
+		Hyperlink link = table.toHyperlink(value);
+		if(link == null){
 			return Cursor.DEFAULT_CURSOR;
 		}
-		final Icon linkIcon = table.getLinkIcon(uri);
+		final Icon linkIcon = table.getLinkIcon(link);
 		if (linkIcon == null)
 			return Cursor.DEFAULT_CURSOR;
 		final int leftColumnWidth = table.getColumnModel().getColumn(0).getWidth();

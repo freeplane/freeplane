@@ -63,7 +63,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
-		final URI uri = NodeLinks.getLink(selected);
+		final URI uri = NodeLinks.getLink(selected).getUri();
 		try {
 			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri
 			    .getPath()).getFile());

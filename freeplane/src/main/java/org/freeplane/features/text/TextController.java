@@ -37,6 +37,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
@@ -461,9 +462,9 @@ public class TextController implements IExtension {
 		return false;
 	}
 
-	public URI toUri(final Object value, final NodeModel node, Object extension) {
+	public Hyperlink toLink(final Object value, final NodeModel node, Object extension) {
 		final Object transformedObject = getTransformedObjectNoFormattingNoThrow(node, extension, value);
-		return LinkController.toUri(transformedObject);
+		return LinkController.toLink(transformedObject);
 	}
 
 }

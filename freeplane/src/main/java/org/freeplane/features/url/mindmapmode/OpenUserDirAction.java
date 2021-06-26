@@ -25,6 +25,7 @@ import java.io.File;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
@@ -37,8 +38,8 @@ class OpenUserDirAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getURLManager().loadURL(
-		    new File(ResourceController.getResourceController().getFreeplaneUserDirectory()).toURI());
+		getURLManager().loadHyperlink(new Hyperlink(
+		    new File(ResourceController.getResourceController().getFreeplaneUserDirectory()).toURI()));
 	}
 
 	private UrlManager getURLManager() {

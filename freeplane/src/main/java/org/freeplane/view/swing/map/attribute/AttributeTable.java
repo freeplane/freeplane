@@ -82,6 +82,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
@@ -328,13 +329,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(column == 1 && e instanceof MouseEvent){
 			final MouseEvent me = (MouseEvent) e;
 			final Object value = getValueAt(row, column);
-			URI uri =  toUri(value);
-			if(uri != null){
-				final Icon linkIcon = getLinkIcon(uri);
+			Hyperlink link =  toHyperlink(value);
+			if(link != null){
+				final Icon linkIcon = getLinkIcon(link);
 				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
 				if(x < xmax){
-					LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), uri);
+					LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
 					return false;
 				}
              }
@@ -362,9 +363,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
     }
 
-	URI toUri(final Object value) {
+	Hyperlink toHyperlink(final Object value) {
 		NodeModel node = attributeView.getNode();
-		return TextController.getController().toUri(value, node, NodeAttributeTableModel.getModel(node));
+		return TextController.getController().toLink(value, node, NodeAttributeTableModel.getModel(node));
 	}
 
 	private void startEditing(EventObject e, final JComboBox comboBox) {
@@ -392,9 +393,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	Icon getLinkIcon(final URI uri) {
+	Icon getLinkIcon(final Hyperlink link) {
 		NodeModel nodeModel = ((AttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(uri, nodeModel);
+	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(link, nodeModel);
 	    return linkIcon;
     }
 

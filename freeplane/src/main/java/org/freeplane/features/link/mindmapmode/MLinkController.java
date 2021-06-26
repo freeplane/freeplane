@@ -58,6 +58,7 @@ import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
@@ -704,9 +705,9 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setLink(final NodeModel node, final URI argUri, final int linkType) {
-		final URI uri = relativeLink(argUri, node, linkType);
+		final Hyperlink uri = new Hyperlink(relativeLink(argUri, node, linkType));
 		final IActor actor = new IActor() {
-			private URI oldlink;
+			private Hyperlink oldlink;
 			private String oldTargetID;
 
 			@Override
@@ -736,7 +737,7 @@ public class MLinkController extends LinkController {
 			@Override
 			public void undo() {
 				final NodeLinks links = NodeLinks.getLinkExtension(node);
-				URI undoneLink = links.getHyperLink(node);
+				Hyperlink undoneLink = links.getHyperLink(node);
 				links.setLocalHyperlink(node, oldTargetID);
 				links.setHyperLink(oldlink);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeLinks.HYPERLINK_CHANGED, undoneLink, oldlink);
@@ -979,7 +980,7 @@ public class MLinkController extends LinkController {
 	}
 
 	@Override
-	public void loadURI(NodeModel node, URI uri) {
+	public void loadURI(NodeModel node, Hyperlink uri) {
 		// load as documentation map if the node belongs to a documentation map
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
 				&& ! modeController.containsExtension(DocuMapAttribute.class);

@@ -11,6 +11,7 @@ import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
@@ -130,7 +131,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	private void loadLink(NodeModel node, final String link) {
 		try {
-			LinkController.getController().loadURI(node, new URI(link));
+			LinkController.getController().loadURI(node, new Hyperlink(new URI(link)));
 		} catch (Exception ex) {
 			LogUtils.warn(ex);
 		}

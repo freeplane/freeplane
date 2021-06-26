@@ -19,8 +19,7 @@
  */
 package org.freeplane.features.link;
 
-import java.net.URI;
-
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -37,7 +36,7 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	}
 
 	@Override
-	protected boolean checkLink(final URI nodeLink) {
+	protected boolean checkLink(final Hyperlink nodeLink) {
 		return true;
 	}
 

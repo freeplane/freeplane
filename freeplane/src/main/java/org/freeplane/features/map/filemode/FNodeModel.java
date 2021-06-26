@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -71,7 +72,7 @@ class FNodeModel extends NodeModel {
 					for (File childFile : files) {
 						if (!childFile.isHidden() || file == null) {
 							final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
-							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(childFile.toURI());
+							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(new Hyperlink(childFile.toURI()));
 							fileNodeModel.setLeft(isRoot() ?  (childCount % 2 == 1) : isLeft());
 							super.getChildrenInternal().add(childCount, fileNodeModel);
 							childCount++;

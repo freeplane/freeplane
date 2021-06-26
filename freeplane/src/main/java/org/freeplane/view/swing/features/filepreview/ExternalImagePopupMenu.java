@@ -28,6 +28,7 @@ import java.net.URI;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -96,7 +97,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 						return;
 					final UrlManager urlManager = Controller.getCurrentModeController().getExtension(
 					    UrlManager.class);
-					urlManager.loadURL(extRes.getUri());
+					urlManager.loadHyperlink(new Hyperlink(extRes.getUri()));
 				}
 			});
 		}

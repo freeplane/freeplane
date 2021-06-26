@@ -36,6 +36,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -138,24 +139,9 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 	}
 
 	@Override
-	public void openDocument(final URI location) {
+	public void openDocument(final Hyperlink location) {
 		try {
-			final String scheme = location.getScheme();
-			final String host = location.getHost();
-			final String path = location.isOpaque() ? location.getSchemeSpecificPart() : location.getPath();
-			final int port = location.getPort();
-			final String query = location.getQuery();
-			final String fragment = location.getFragment();
-			final StringBuilder file = new StringBuilder(path);
-			if(query != null){
-				file.append('?');
-				file.append(query);
-			}
-			if(fragment != null){
-				file.append('#');
-				file.append(fragment);
-			}
-			final URL url = new URL(scheme, host, port, file.toString());
+			URL url = location.toUrl();
 			openDocument(url);
 		}
 		catch (final MalformedURLException e) {

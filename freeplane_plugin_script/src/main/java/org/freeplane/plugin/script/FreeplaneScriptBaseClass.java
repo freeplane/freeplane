@@ -13,6 +13,7 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.api.ControllerRO;
 import org.freeplane.api.NodeRO;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.link.LinkController;
@@ -303,7 +304,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     /** opens a {@link URI} */
     public void loadUri(final URI uri) {
     	final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
-        LinkController.getController().loadURI(delegate, uri);
+        LinkController.getController().loadURI(delegate, new Hyperlink(uri));
     }
 
 	@Override
