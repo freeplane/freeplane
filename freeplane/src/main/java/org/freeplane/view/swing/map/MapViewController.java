@@ -221,6 +221,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		mapViewChangeListeners.beforeMapViewChange(oldMapView, newMapView);
 		selectedMapView = newMapView;
+		if(oldMapView != null)
+			oldMapView.repaint();
 		if (selectedMapView != null) {
 			selectedMapView.revalidateSelecteds();
 			final ModeController modeController = selectedMapView.getModeController();
@@ -230,6 +232,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				setZoom(mapViewZoom);
 			}
 			modeController.getController().selectMode(modeController);
+			selectedMapView.repaint();
 		}
 		mapViewChangeListeners.afterMapViewChange(oldMapView, newMapView);
 		return true;
