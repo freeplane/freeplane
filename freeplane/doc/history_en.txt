@@ -1,4 +1,9 @@
 ===============================
+1.9.6
+===============================
+Highlight nodes depending on selected condition in filter composer
+
+===============================
 1.9.5
 ===============================
 Bug fixes
