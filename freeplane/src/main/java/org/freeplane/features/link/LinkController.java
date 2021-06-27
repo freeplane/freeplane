@@ -136,20 +136,21 @@ public class LinkController extends SelectionController implements IExtension {
 	public static Hyperlink toLink(Object object) {
 		if (object instanceof Hyperlink)
 			return (Hyperlink)object;
-		URI uri = toUri(object);
-		return uri !=  null ? new Hyperlink(uri) : null;
+		return toHyperlink(object);
 	}
 	
-	private static URI toUri(Object object) {
+	private static Hyperlink toHyperlink(Object object) {
+		if (object instanceof Hyperlink)
+			return (Hyperlink)object;
 		if (object instanceof URI)
-			return (URI)object;
+			return new Hyperlink ((URI)object);
 		final String objectAsFileReference;
 		if(object instanceof File) {
 			objectAsFileReference = FILE_PROTOCOL + ((File)object).getPath();
 		}
 		else if(object instanceof URL) {
 			try {
-				return ((URL)object).toURI();
+				return new Hyperlink (((URL)object).toURI());
 			} catch (URISyntaxException e) {
 				return null;
 			}
@@ -162,7 +163,7 @@ public class LinkController extends SelectionController implements IExtension {
 		else
 			return null;
 		try {
-			return createURI(objectAsFileReference);
+			return createHyperlink(objectAsFileReference);
 		}
 		catch (URISyntaxException e) {
 			return null;
@@ -543,8 +544,8 @@ public class LinkController extends SelectionController implements IExtension {
 				if (link.startsWith("\"") && link.endsWith("\"")) {
 					link = link.substring(1, link.length() - 1);
 				}
-				final URI hyperlink = LinkController.createURI(link);
-				links.setHyperLink(new Hyperlink(hyperlink));
+				final Hyperlink hyperlink = LinkController.createHyperlink(link);
+				links.setHyperLink(hyperlink);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
@@ -750,9 +751,9 @@ public class LinkController extends SelectionController implements IExtension {
 	 * spaces), whereas the 3-argument constructors does do escape
 	 * them (e.g. space into %20).
 	 */
-	public static URI createURI(final String inputValue) throws URISyntaxException {
+	public static Hyperlink createHyperlink(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
-			return new URI(inputValue);
+			return new Hyperlink(inputValue);
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment]
@@ -764,7 +765,7 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = "smb";
 					final String ssp = "//" + mat.group(1) + "/" + mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					return new Hyperlink(new URI(scheme, ssp, fragment));
 				}
 			}
 			{
@@ -776,7 +777,7 @@ public class LinkController extends SelectionController implements IExtension {
 					}
 					final String fragment = mat.group(3);
 					if (mat.group(2) == null) {
-						return new URI(null, null, ssp, fragment);
+						return new Hyperlink(new URI(null, null, ssp, fragment));
 					}
 					final String scheme = "file";
 					if (ssp.startsWith("//")) {
@@ -785,7 +786,7 @@ public class LinkController extends SelectionController implements IExtension {
 					else if (!ssp.startsWith("/")) {
 						ssp = "/" + ssp;
 					}
-					return new URI(scheme, null, ssp, fragment);
+					return new Hyperlink(new URI(scheme, null, ssp, fragment));
 				}
 			}
 			// if this doesn't work out, we try to
@@ -797,7 +798,7 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = mat.group(1);
 					final String ssp = mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					return new Hyperlink(new URI(scheme, ssp, fragment));
 				}
 			}
 			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");

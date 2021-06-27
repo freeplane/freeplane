@@ -81,8 +81,8 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 
 			final MLinkController linkController_selected = (MLinkController) MLinkController.getController();
 			try {
-				final URI linkToAnchorNode = LinkController.createURI(sourceID.trim());
-				linkController_selected.loadHyperlink(new Hyperlink(linkToAnchorNode));
+				final Hyperlink linkToAnchorNode = LinkController.createHyperlink(sourceID.trim());
+				linkController_selected.loadHyperlink(linkToAnchorNode);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
@@ -93,7 +93,7 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 
 			final MLinkController linkController_anchored = (MLinkController) MLinkController.getController();
 			try {
-				final URI linkToCurrentNode = LinkController.createURI(targetID.trim());
+				final URI linkToCurrentNode = LinkController.createHyperlink(targetID.trim()).getUri();
 				linkController_anchored.setLinkTypeDependantLink(sourceNode, linkToCurrentNode);
 			}
 			catch (final URISyntaxException e1) {
@@ -102,8 +102,8 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			}
 
 			try {
-				final URI linkBackToSelectedNode = LinkController.createURI(targetID.trim());
-				linkController_anchored.loadHyperlink(new Hyperlink(linkBackToSelectedNode));
+				final Hyperlink linkBackToSelectedNode = LinkController.createHyperlink(targetID.trim());
+				linkController_anchored.loadHyperlink(linkBackToSelectedNode);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);

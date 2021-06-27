@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.freeplane.api.ControllerRO;
 import org.freeplane.api.NodeRO;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Hyperlink;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.link.LinkController;
@@ -305,6 +307,16 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public void loadUri(final URI uri) {
     	final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
         LinkController.getController().loadURI(delegate, new Hyperlink(uri));
+    }
+
+    /** opens a link */
+    public void loadUri(final String link) {
+    	try {
+			final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
+			LinkController.getController().loadURI(delegate, new Hyperlink(link));
+		} catch (URISyntaxException e) {
+			LogUtils.warn(e);
+		}
     }
 
 	@Override

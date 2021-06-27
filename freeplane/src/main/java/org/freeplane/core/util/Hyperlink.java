@@ -2,12 +2,20 @@ package org.freeplane.core.util;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
 public class Hyperlink {
-	private final URI uri;
+	private URI uri;
+	private String uriString;
 
+	public Hyperlink(String uriString) throws URISyntaxException {
+		super();
+		this.uriString = uriString;
+		this.uri = new URI(uriString);
+	}
+	
 	public Hyperlink(URI uri) {
 		super();
 		this.uri = uri;
@@ -19,7 +27,7 @@ public class Hyperlink {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uri);
+		return Objects.hash(toString());
 	}
 
 	@Override
@@ -31,12 +39,14 @@ public class Hyperlink {
 		if (getClass() != obj.getClass())
 			return false;
 		Hyperlink other = (Hyperlink) obj;
-		return Objects.equals(uri, other.uri);
+		return Objects.equals(toString(), other.toString());
 	}
 
 	@Override
 	public String toString() {
-		return uri.toString();
+		if(uriString == null)
+			uriString = uri.toString();
+		return uriString;
 	}
 
 	public String getScheme() {
@@ -62,5 +72,7 @@ public class Hyperlink {
 		final URL url = new URL(scheme, host, port, file.toString());
 		return url;
 	}
+	
+	
 
 }

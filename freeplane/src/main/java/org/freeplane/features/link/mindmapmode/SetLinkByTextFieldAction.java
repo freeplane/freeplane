@@ -90,8 +90,8 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				return;
 			}
 			try {
-				final URI link = LinkController.createURI(inputValue.trim());
-				linkController.setLink(selectedNode, link, LinkController.LINK_ABSOLUTE);
+				final Hyperlink link = LinkController.createHyperlink(inputValue.trim());
+				linkController.setLink(selectedNode, link);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);

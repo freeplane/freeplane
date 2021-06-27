@@ -1,21 +1,23 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.net.URI;
 import java.net.URISyntaxException;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTML;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
+
+import com.lightdev.app.shtm.SHTMLAction;
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
-import com.lightdev.app.shtm.SHTMLAction;
 
 
 public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction {
@@ -57,7 +59,7 @@ public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction
 				return;
 			}
 			try {
-				final URI link = LinkController.createURI(inputValue.trim());
+				final Hyperlink link = LinkController.createHyperlink(inputValue.trim());
 				editor.setLink(null, link.toString(), null);
 			}
 			catch (final URISyntaxException e1) {

@@ -38,6 +38,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
@@ -190,7 +191,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 							table.setValueAt("", row, col);
 						}
 						try {
-							final URI link = LinkController.createURI(inputValue.trim());
+							final Hyperlink link = LinkController.createHyperlink(inputValue.trim());
 							if(! oldValue.equals(link))
 								table.setValueAt(link, row, col);
 						}
@@ -223,7 +224,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 								return;
 							final String inputValue = "#" + node.getID();
 							try {
-								final URI link = LinkController.createURI(inputValue);
+								final Hyperlink link = LinkController.createHyperlink(inputValue);
 								if(! oldValue.equals(link))
 									table.setValueAt(link, row, col);
 							}
@@ -255,7 +256,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
                             try {
                             	final String anchorIDforNode = mLinkController.getAnchorIDforNode(((AttributeTableModel) table.getModel()).getNode());
                             	if(anchorIDforNode != null){
-                            		URI link = LinkController.createURI(anchorIDforNode);
+                            		Hyperlink link = LinkController.createHyperlink(anchorIDforNode);
                             		if(! oldValue.equals(link))
                             			table.setValueAt(link, row, col);
                             	}

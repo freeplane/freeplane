@@ -705,7 +705,12 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setLink(final NodeModel node, final URI argUri, final int linkType) {
-		final Hyperlink uri = new Hyperlink(relativeLink(argUri, node, linkType));
+		final Hyperlink hyperlink = argUri != null ? new Hyperlink(relativeLink(argUri, node, linkType)) : null;
+		setLink(node, hyperlink);
+	}
+	
+
+	public void setLink(NodeModel node, Hyperlink hyperlink) {
 		final IActor actor = new IActor() {
 			private Hyperlink oldlink;
 			private String oldTargetID;
@@ -720,12 +725,12 @@ public class MLinkController extends LinkController {
 				else {
 					links = NodeLinks.createLinkExtension(node);
 				}
-				if (uri != null && uri.toString().startsWith("#")) {
-					links.setLocalHyperlink(node, uri.toString().substring(1));
+				if (hyperlink != null && hyperlink.toString().startsWith("#")) {
+					links.setLocalHyperlink(node, hyperlink.toString().substring(1));
 				}
 				else
-					links.setHyperLink(uri);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeLinks.HYPERLINK_CHANGED, oldlink, uri);
+					links.setHyperLink(hyperlink);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeLinks.HYPERLINK_CHANGED, oldlink, hyperlink);
 
 			}
 
@@ -745,6 +750,7 @@ public class MLinkController extends LinkController {
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
+
 
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();
