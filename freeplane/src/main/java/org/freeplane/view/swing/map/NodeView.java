@@ -1188,12 +1188,14 @@ public class NodeView extends JComponent implements INodeView {
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
-		final HighlightController highlightController = getMap().getModeController().getController().getExtension(HighlightController.class);
-		final List<NodeHighlighter> highlighters = highlightController.getHighlighters(model, map.isPrinting());
-		int margin = HIGHLIGHTED_NODE_ARC_MARGIN;
-		for(NodeHighlighter highlighter : highlighters){
-			margin += HIGHLIGHTED_NODE_ARC_MARGIN;
-			highlightNode(g, highlighter, margin);
+		if (map.isSelected()) {
+			final HighlightController highlightController = getMap().getModeController().getController().getExtension(HighlightController.class);
+			final List<NodeHighlighter> highlighters = highlightController.getHighlighters(model, map.isPrinting());
+			int margin = HIGHLIGHTED_NODE_ARC_MARGIN;
+			for(NodeHighlighter highlighter : highlighters){
+				margin += HIGHLIGHTED_NODE_ARC_MARGIN;
+				highlightNode(g, highlighter, margin);
+			}
 		}
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}

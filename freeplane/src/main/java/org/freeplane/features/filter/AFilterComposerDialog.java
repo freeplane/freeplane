@@ -26,8 +26,13 @@ import java.awt.EventQueue;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.Collection;
 
@@ -164,6 +169,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 				btnName.setEnabled(false);
 				btnUp.setEnabled(false);
 				btnDown.setEnabled(false);
+				filterController.setHighlightCondition(null);
 			}
             else {
             	btnUp.setEnabled(true);
@@ -177,6 +183,12 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 				btnAnd.setEnabled(! oneElementChosen && areValuesOnlySelected);
 				btnOr.setEnabled(! oneElementChosen && areValuesOnlySelected);
 				btnSplit.setEnabled(oneElementChosen && elementaryConditionList.getSelectedValue() instanceof ICombinedCondition);
+				if(oneElementChosen) {
+					filterController.setHighlightCondition((ASelectableCondition) elementaryConditionList.getSelectedValue());
+				}
+				else {
+					filterController.setHighlightCondition(null);
+				}
             }
 		}
 
@@ -605,6 +617,14 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 		conditionScrollPane.setPreferredSize(preferredSize);
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);
+		addHierarchyListener(new HierarchyListener() {
+			
+			@Override
+			public void hierarchyChanged(HierarchyEvent e) {
+				if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0  && ! isShowing())
+				filterController.setHighlightCondition(null);
+			}
+		});
 		pack();
 	}
 
