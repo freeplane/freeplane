@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
@@ -42,7 +43,7 @@ class OpenCurrentMapDirAction extends AFreeplaneAction implements IMapViewChange
 
     public void actionPerformed(final ActionEvent e) {
         final Controller controller = Controller.getCurrentController();
-        LinkController.getController().loadURI(controller.getMap().getFile().getParentFile().toURI());
+        LinkController.getController().loadHyperlink(new Hyperlink(controller.getMap().getFile().getParentFile().toURI()));
     }
 
     @Override
