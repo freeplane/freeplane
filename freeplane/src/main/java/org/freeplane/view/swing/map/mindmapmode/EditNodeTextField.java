@@ -103,10 +103,9 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
 import org.freeplane.view.swing.map.ZoomableLabelUI.LayoutData;
 
-import com.lightdev.app.shtm.bugfix.MapElementRemovingWorkaround;
-
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLWriter;
+import com.lightdev.app.shtm.bugfix.MapElementRemovingWorkaround;
 
 
 /**
@@ -728,7 +727,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final int textFieldBorderWidth = 2;
 		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeView.getSelectionBackgroundColor()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
-		textFieldMinimumSize.width += 1;
+		textFieldMinimumSize.width = 1 + textFieldMinimumSize.width * 21 / 20;
         if(textFieldMinimumSize.width < extraWidth)
             textFieldMinimumSize.width = extraWidth;
         if(textFieldMinimumSize.width < 10)
@@ -815,7 +814,8 @@ public class EditNodeTextField extends EditNodeBase {
 			textfield.setCaretPosition(caretPosition);
 		}
 		document.addDocumentListener(documentListener);
-		if(textController.isMinimized(node)){
+		if(textController.isMinimized(node)
+				|| textfield.getPreferredSize().height > textfield.getHeight()){
 			layout();
 		}
 		textfield.repaint();
