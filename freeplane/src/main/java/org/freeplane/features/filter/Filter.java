@@ -124,12 +124,7 @@ public class Filter implements IExtension {
 		final boolean conditionSatisfied =  (condition == null || condition.checkNode(node));
 		final boolean matchesCombinedFilter;
 		if(appliesToVisibleNodesOnly()) {
-		    FilterInfo filterInfo = baseFilter.getFilterInfo(node);
-            final boolean alreadyMatched = filterInfo.isMatched();
-		    if(hidesMatchingNodes)
-		        matchesCombinedFilter = conditionSatisfied || alreadyMatched;
-		    else
-		        matchesCombinedFilter = conditionSatisfied && (alreadyMatched || filterInfo.isNotChecked());
+		    matchesCombinedFilter = conditionSatisfied  && baseFilter.isVisible(node);
 		}
 		else {
 		    matchesCombinedFilter = conditionSatisfied;
