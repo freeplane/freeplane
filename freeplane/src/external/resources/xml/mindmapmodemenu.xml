@@ -71,7 +71,7 @@
 			<Entry name="SaveAction" accelerator="control S" usedBy = "EDITOR" />
 			<Entry name="SaveAsAction" accelerator="control shift S" />
 			<Entry name="SaveAll" />
-			<Entry name="RevertAction" usedBy = "EDITOR" />
+			<Entry name="RevertAction"/>
 			<Entry builder="separator"  />
 			<Entry name="OpenAction" accelerator="control O" />
 			<Entry name="OpenURLMapAction" />
