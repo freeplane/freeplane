@@ -80,7 +80,7 @@ public class TypeReference{
 	public static String toSpec(Object obj){
 		final Class<? extends Object> clazz = obj.getClass();
 		final SerializationMethod method = clazz.getAnnotation(SerializationMethod.class);
-		final String type = clazz.getName() + '|';
+		final String type = (clazz.equals(Hyperlink.class) ? URI.class : clazz).getName() + '|';
 		if(method == null){
 			return type + obj.toString();
 		}

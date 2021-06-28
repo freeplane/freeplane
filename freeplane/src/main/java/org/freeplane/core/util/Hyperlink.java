@@ -16,10 +16,16 @@ public class Hyperlink {
 		this.uri = new URI(uriString);
 	}
 	
-	public Hyperlink(URI uri) {
-		super();
-		this.uri = uri;
-	}
+    public Hyperlink(URI uri) {
+        super();
+        this.uri = uri;
+    }
+
+    public Hyperlink(String uriString, URI uri) {
+        super();
+        this.uriString = uriString;
+        this.uri = uri;
+    }
 
 	public URI getUri() {
 		return uri;

@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.CdataContentXmlWriter;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -283,8 +284,10 @@ public class AddOnProperties {
 				return null;
 			else if (updateUrl instanceof URL)
 				return (URL) updateUrl;
-			else if (updateUrl instanceof URI)
-				return ((URI) updateUrl).toURL();
+            else if (updateUrl instanceof Hyperlink)
+                return ((Hyperlink) updateUrl).getUri().toURL();
+            else if (updateUrl instanceof URI)
+                return ((URI) updateUrl).toURL();
 			else
 				return new URL((String) updateUrl.toString());
 		}

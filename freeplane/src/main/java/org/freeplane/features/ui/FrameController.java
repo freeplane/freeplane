@@ -800,7 +800,7 @@ abstract public class FrameController implements ViewController {
 		else if (value instanceof Number) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, numberIcon);
 		}
-		else if (value instanceof URI) {
+		else if (value instanceof Hyperlink || value instanceof URI) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, linkIcon);
 		}
 		else {

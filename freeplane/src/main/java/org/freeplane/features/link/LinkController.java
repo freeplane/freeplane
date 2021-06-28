@@ -798,7 +798,7 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = mat.group(1);
 					final String ssp = mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new Hyperlink(new URI(scheme, ssp, fragment));
+					return new Hyperlink(inputValue, new URI(scheme, ssp, fragment));
 				}
 			}
 			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");
