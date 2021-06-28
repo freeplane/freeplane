@@ -75,6 +75,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
@@ -84,7 +85,6 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.icons.NodeViewDecorator;
 import org.freeplane.features.map.IMapSelection;
@@ -133,16 +133,24 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private static final String FILE_PROTOCOL = "file:";
-	public static URI toUri(Object object) {
+	public static Hyperlink toLink(Object object) {
+		if (object instanceof Hyperlink)
+			return (Hyperlink)object;
+		return toHyperlink(object);
+	}
+	
+	private static Hyperlink toHyperlink(Object object) {
+		if (object instanceof Hyperlink)
+			return (Hyperlink)object;
 		if (object instanceof URI)
-			return (URI)object;
+			return new Hyperlink ((URI)object);
 		final String objectAsFileReference;
 		if(object instanceof File) {
 			objectAsFileReference = FILE_PROTOCOL + ((File)object).getPath();
 		}
 		else if(object instanceof URL) {
 			try {
-				return ((URL)object).toURI();
+				return new Hyperlink (((URL)object).toURI());
 			} catch (URISyntaxException e) {
 				return null;
 			}
@@ -155,7 +163,7 @@ public class LinkController extends SelectionController implements IExtension {
 		else
 			return null;
 		try {
-			return createURI(objectAsFileReference);
+			return createHyperlink(objectAsFileReference);
 		}
 		catch (URISyntaxException e) {
 			return null;
@@ -181,7 +189,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 			@Override
 			public void onSelect(final NodeModel node) {
-				final URI link = NodeLinks.getValidLink(node);
+				final Hyperlink link = NodeLinks.getValidLink(node);
 				final String linkString = (link != null ? link.toString() : null);
 				if (linkString != null) {
 					Controller.getCurrentController().getViewController().out(linkString);
@@ -428,11 +436,11 @@ public class LinkController extends SelectionController implements IExtension {
     }
 
  	public String getLinkShortText(final NodeModel node) {
-		final URI uri = NodeLinks.getLink(node);
-		if (uri == null) {
+		final Hyperlink link = NodeLinks.getLink(node);
+		if (link == null) {
 			return null;
 		}
-		final String adaptedText = uri.toString();
+		final String adaptedText = link.toString();
 		if (adaptedText.startsWith("#")) {
 			ModeController modeController = Controller.getCurrentModeController();
 			final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
@@ -536,7 +544,7 @@ public class LinkController extends SelectionController implements IExtension {
 				if (link.startsWith("\"") && link.endsWith("\"")) {
 					link = link.substring(1, link.length() - 1);
 				}
-				final URI hyperlink = LinkController.createURI(link);
+				final Hyperlink hyperlink = LinkController.createHyperlink(link);
 				links.setHyperLink(hyperlink);
 			}
 			catch (final URISyntaxException e1) {
@@ -562,8 +570,8 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	@SuppressWarnings("deprecation")
-    public void loadURI(URI uri) {
-		UrlManager.getController().loadURL(uri);
+    public void loadHyperlink(Hyperlink link) {
+		UrlManager.getController().loadHyperlink(link);
     }
 
 	public void loadMap(String map)
@@ -575,7 +583,7 @@ public class LinkController extends SelectionController implements IExtension {
 		loadURL(selectedNode, e, NodeLinks.getValidLink(selectedNode));
 	}
 
-    public void loadURL(final NodeModel selectedNode, final ActionEvent e, final URI link) {
+    public void loadURL(final NodeModel selectedNode, final ActionEvent e, final Hyperlink link) {
         if (link != null) {
 			onDeselect(selectedNode);
 			ModeController modeController = Controller.getCurrentModeController();
@@ -743,9 +751,9 @@ public class LinkController extends SelectionController implements IExtension {
 	 * spaces), whereas the 3-argument constructors does do escape
 	 * them (e.g. space into %20).
 	 */
-	public static URI createURI(final String inputValue) throws URISyntaxException {
+	public static Hyperlink createHyperlink(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
-			return new URI(inputValue);
+			return new Hyperlink(inputValue);
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment]
@@ -757,7 +765,7 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = "smb";
 					final String ssp = "//" + mat.group(1) + "/" + mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					return new Hyperlink(new URI(scheme, ssp, fragment));
 				}
 			}
 			{
@@ -769,7 +777,7 @@ public class LinkController extends SelectionController implements IExtension {
 					}
 					final String fragment = mat.group(3);
 					if (mat.group(2) == null) {
-						return new URI(null, null, ssp, fragment);
+						return new Hyperlink(new URI(null, null, ssp, fragment));
 					}
 					final String scheme = "file";
 					if (ssp.startsWith("//")) {
@@ -778,7 +786,7 @@ public class LinkController extends SelectionController implements IExtension {
 					else if (!ssp.startsWith("/")) {
 						ssp = "/" + ssp;
 					}
-					return new URI(scheme, null, ssp, fragment);
+					return new Hyperlink(new URI(scheme, null, ssp, fragment));
 				}
 			}
 			// if this doesn't work out, we try to
@@ -790,7 +798,7 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = mat.group(1);
 					final String ssp = mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new URI(scheme, ssp, fragment);
+					return new Hyperlink(inputValue, new URI(scheme, ssp, fragment));
 				}
 			}
 			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");
@@ -845,18 +853,18 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	public static boolean isMenuItemLink(final URI uri) {
-		return isSpecialLink(MENUITEM_SCHEME, uri);
+	public static boolean isMenuItemLink(final Hyperlink link) {
+		return isSpecialLink(MENUITEM_SCHEME, link);
 	}
 
-	public static boolean isSpecialLink(final String requiredScheme, final URI uri) {
-		final String scheme = uri.getScheme();
+	public static boolean isSpecialLink(final String requiredScheme, final Hyperlink link) {
+		final String scheme = link.getScheme();
 		return scheme != null && scheme.equals(requiredScheme);
 	}
 
 	// this will fail badly for non-menuitem uris!
-	public static String parseSpecialLink(final URI uri) {
-		return convertPre15VersionStyleKeysToCurrent(uri.getSchemeSpecificPart().substring(1));
+	public static String parseSpecialLink(final Hyperlink link) {
+		return convertPre15VersionStyleKeysToCurrent(link.getUri().getSchemeSpecificPart().substring(1));
 	}
 
 	private static String convertPre15VersionStyleKeysToCurrent(final String actionKey) {
@@ -937,7 +945,7 @@ public class LinkController extends SelectionController implements IExtension {
         final public Icon decoratedIcon;
 	}
 
-	public Icon getLinkIcon(final URI link, final NodeModel model) {
+	public Icon getLinkIcon(final Hyperlink link, final NodeModel model) {
 		final LinkType linkType = getLinkType(link, model);
 	    if(linkType == null)
 	    	return null;
@@ -960,15 +968,14 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model) {
-	    final URI link = NodeLinks.getLink(model);
+	    final Hyperlink link = NodeLinks.getLink(model);
 	    if (link != null) {
 	        addIconsBasedOnLinkType(link, iconImages, model);
 	    }
 	}
 
-
 	public boolean containsLinkDecorationIcon(NodeModel node, String iconName) {
-	    final URI link = NodeLinks.getLink(node);
+	    final Hyperlink link = NodeLinks.getLink(node);
 	    if (link == null) {
 	        return false;
 	    }
@@ -980,7 +987,7 @@ public class LinkController extends SelectionController implements IExtension {
         return iconsForLink.stream().map(name -> "links/" + name).anyMatch(iconName::equals);
 	    
 	}
-	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel node)
+	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImage iconImages, NodeModel node)
 	{
 	    try {
 	        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
@@ -1009,7 +1016,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 
-	public static LinkType getLinkType(final URI link, final NodeModel model) {
+	public static LinkType getLinkType(final Hyperlink link, final NodeModel model) {
 		if (link == null)
 			return null;
 	    final String linkText = link.toString();
@@ -1067,13 +1074,13 @@ public class LinkController extends SelectionController implements IExtension {
 		return formatNodeAsHyperlink;
 	}
 
-	public void loadURI(NodeModel node, URI uri) {
+	public void loadURI(NodeModel node, Hyperlink uri) {
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
 			UrlManager.getController().selectNode(node, uriString.substring(1));
 		}
 		else
-			loadURI(uri);
+			loadHyperlink(uri);
 	}
 
 }

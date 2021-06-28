@@ -29,6 +29,7 @@ import javax.swing.JList;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.icon.factory.IconFactory;
 
@@ -81,7 +82,7 @@ public class TypedListCellRenderer extends DefaultListCellRenderer{
 			else
 				icon = dateIcon;
 		}
-		else if (value instanceof URI) {
+		else if (value instanceof Hyperlink || value instanceof URI) {
 			icon = linkIcon;
 		}
 		else if (value instanceof Number) {

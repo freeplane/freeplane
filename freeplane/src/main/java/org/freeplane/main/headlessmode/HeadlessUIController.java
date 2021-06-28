@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -36,6 +35,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.FrameController;
@@ -113,7 +113,7 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	@Override
-	public void openDocument(URI uri) throws IOException {
+	public void openDocument(Hyperlink link) throws IOException {
 		throw methodNotImplementedException();
 	}
 

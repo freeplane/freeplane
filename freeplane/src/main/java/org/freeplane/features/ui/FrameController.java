@@ -82,6 +82,7 @@ import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -304,7 +305,7 @@ abstract public class FrameController implements ViewController {
 	}
 
 	@Override
-	abstract public void openDocument(URI uri) throws IOException;
+	abstract public void openDocument(Hyperlink link) throws IOException;
 
 	@Override
 	abstract public void openDocument(URL fileToUrl) throws Exception;
@@ -799,7 +800,7 @@ abstract public class FrameController implements ViewController {
 		else if (value instanceof Number) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, numberIcon);
 		}
-		else if (value instanceof URI) {
+		else if (value instanceof Hyperlink || value instanceof URI) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, linkIcon);
 		}
 		else {

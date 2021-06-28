@@ -32,6 +32,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
@@ -70,7 +71,7 @@ public class LinkNavigatorMouseListener extends AMouseListener {
     				if (link != null) {
     					try {
     						NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
-    						LinkController.getController().loadURI(nodeView.getModel(), new URI(link));
+    						LinkController.getController().loadURI(nodeView.getModel(), new Hyperlink(link));
     					} catch (Exception ex) {
     						LogUtils.warn(ex);
     					}

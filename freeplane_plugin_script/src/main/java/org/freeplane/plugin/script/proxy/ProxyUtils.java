@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.DelegateCondition;
 import org.freeplane.features.filter.condition.ICondition;
@@ -234,7 +235,7 @@ public class ProxyUtils {
             return createDefaultFormattedDate((Date) object);
     	else if (object instanceof Calendar)
             return createDefaultFormattedDate(((Calendar) object).getTime());
-    	else if (object instanceof URI)
+    	else if (object instanceof Hyperlink || object instanceof URI)
     	    return object;
         else
             return Convertible.toString(object);

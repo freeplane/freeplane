@@ -21,6 +21,7 @@ package org.freeplane.features.link;
 
 import java.net.URI;
 
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
@@ -39,10 +40,10 @@ public abstract class HyperLinkCondition extends StringConditionAdapter {
 		this.hyperlink = hyperlink;
 	}
 
-	abstract protected boolean checkLink(final URI nodeLink);
+	abstract protected boolean checkLink(final Hyperlink nodeLink);
 
 	public boolean checkNode(final NodeModel node) {
-		final URI nodeLink = NodeLinks.getValidLink(node);
+		final Hyperlink nodeLink = NodeLinks.getValidLink(node);
 		if (nodeLink != null && checkLink(nodeLink))
 			return true;
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
@@ -53,7 +54,9 @@ public abstract class HyperLinkCondition extends StringConditionAdapter {
 		for(int i = 0; i < rowCount; i++){
 			final Attribute attribute = attributes.getAttribute(i);
 			final Object value = attribute.getValue();
-			if (value instanceof URI && checkLink((URI)value))
+			if (value instanceof Hyperlink && checkLink((Hyperlink)value))
+				return true;
+			if (value instanceof URI && checkLink(new Hyperlink((URI)value)))
 				return true;
 		}
 		return false;

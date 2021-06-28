@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -53,7 +54,7 @@ class OpenURLMapAction extends AFreeplaneAction {
 			try {
 				String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(urlText);
 				URI uri = new URI(fixedUri);
-				LinkController.getController().loadURI(uri);
+				LinkController.getController().loadHyperlink(new Hyperlink(uri));
 			}
 			catch (Exception ex) {
 				UITools.errorMessage(TextUtils.format("url_open_error", urlText));

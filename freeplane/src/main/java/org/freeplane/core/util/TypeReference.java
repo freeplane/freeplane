@@ -22,6 +22,7 @@ package org.freeplane.core.util;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.URI;
 
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
@@ -66,6 +67,8 @@ public class TypeReference{
 			typeReference = FormattedDate.class.getName();
 		else if (typeReference.equals("org.freeplane.features.common.format.FormattedNumber"))
 		    typeReference = FormattedNumber.class.getName();
+		else if (typeReference.equals(URI.class.getName()))
+			typeReference = Hyperlink.class.getName();
 		final Class<?> clazz = TypeReference.class.getClassLoader().loadClass(typeReference);
 		final FactoryMethod factoryAnnotation = clazz.getAnnotation(FactoryMethod.class);
 		if (factoryAnnotation != null)
@@ -77,7 +80,7 @@ public class TypeReference{
 	public static String toSpec(Object obj){
 		final Class<? extends Object> clazz = obj.getClass();
 		final SerializationMethod method = clazz.getAnnotation(SerializationMethod.class);
-		final String type = clazz.getName() + '|';
+		final String type = (clazz.equals(Hyperlink.class) ? URI.class : clazz).getName() + '|';
 		if(method == null){
 			return type + obj.toString();
 		}

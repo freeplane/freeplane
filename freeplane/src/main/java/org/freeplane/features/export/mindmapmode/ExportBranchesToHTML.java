@@ -21,6 +21,7 @@ package org.freeplane.features.export.mindmapmode;
 
 import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -42,7 +43,7 @@ class ExportBranchesToHTML implements IExportEngine {
 		try {
 			MapClipboardController.getController().saveHTML(branches, file);
 			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
-			    .loadURL(file.toURI());
+			    .loadHyperlink(new Hyperlink(file.toURI()));
 		}
 		catch (final IOException ex) {
 			LogUtils.warn(ex);

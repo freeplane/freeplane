@@ -25,6 +25,7 @@ import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ObjectAndIcon;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
@@ -50,7 +51,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 	public Object transformContent(NodeModel node, Object nodeProperty, Object content, TextController textController, Mode mode) {
 		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
 			return content;
-		if(! (content instanceof URI))
+		if(! ( content instanceof Hyperlink ||  content instanceof URI))
 			return content;
 		final String string = content.toString();
 		if(! string.startsWith("#"))

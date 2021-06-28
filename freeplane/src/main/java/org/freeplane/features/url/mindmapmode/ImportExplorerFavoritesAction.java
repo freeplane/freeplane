@@ -97,7 +97,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 			            while ((line = in.readLine()) != null) {
 			                if (line.startsWith("URL=")) {
 			                    final String link = line.substring(4);
-			                    ((MLinkController) LinkController.getController()).setLink(node,LinkController.createURI(link), LinkController.LINK_ABSOLUTE);
+			                    ((MLinkController) LinkController.getController()).setLink(node,LinkController.createHyperlink(link));
 			                    break;
 			                }
 			            }

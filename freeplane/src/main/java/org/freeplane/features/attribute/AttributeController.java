@@ -50,7 +50,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.TextController;
-
+import org.freeplane.core.util.Hyperlink;
 /**
  * @author Dimitry Polivaev 22.11.2008
  */
@@ -199,7 +199,7 @@ public class AttributeController implements IExtension {
 					tooltip.append("</td><td style='border: 1px solid;'>");
 					final Object object = attributes.getValueAt(i, 1);
 					final String text = getTransformedValue(node, attributes, textController, object);
-					if(object instanceof URI){
+					if(object instanceof Hyperlink || object instanceof URI){
 						tooltip.append("<a");
 						tooltip.append(" href=\"");
 						tooltip.append(object);

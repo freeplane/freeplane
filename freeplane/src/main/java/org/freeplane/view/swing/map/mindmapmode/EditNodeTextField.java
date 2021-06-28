@@ -82,6 +82,7 @@ import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
@@ -436,7 +437,7 @@ public class EditNodeTextField extends EditNodeBase {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
 				if (linkURL != null) {
 					try {
-						LinkController.getController().loadURI(nodeView.getModel(), new URI(linkURL));
+						LinkController.getController().loadURI(nodeView.getModel(), new Hyperlink(linkURL));
 					} catch (Exception e) {
 						LogUtils.warn(e);
 					}

@@ -54,6 +54,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -212,8 +213,8 @@ class ApplicationViewController extends FrameController {
 	}
 
 	@Override
-	public void openDocument(final URI uri) throws IOException {
-		new Browser().openDocument(uri);
+	public void openDocument(final Hyperlink link) throws IOException {
+		new Browser().openDocument(link);
 	}
 /**
 	 * Open url in WWW browser. This method hides some differences between
@@ -228,7 +229,6 @@ class ApplicationViewController extends FrameController {
 		catch (URISyntaxException e) {
 			uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
 		}
-		openDocument(uri);
 	}
 
 	@Override

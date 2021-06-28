@@ -127,7 +127,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
         if (text == null)
             return null;
         try {
-            return LinkController.createURI(text);
+            return LinkController.createHyperlink(text).getUri();
         }
         catch (URISyntaxException e) {
             // throw below

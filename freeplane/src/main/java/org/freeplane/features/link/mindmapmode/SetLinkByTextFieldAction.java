@@ -32,6 +32,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FocusRequestor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
@@ -57,8 +58,8 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		String linkAsString = NodeLinks.getLinkAsString(selectedNode);
 		if(Compat.isWindowsOS() && linkAsString != null && linkAsString.startsWith("smb:")){
-			final URI link = NodeLinks.getValidLink(selectedNode);
-			linkAsString = Compat.smbUri2unc(link);
+			final Hyperlink link = NodeLinks.getValidLink(selectedNode);
+			linkAsString = Compat.smbUri2unc(link.getUri());
 		}
 		if(linkAsString == null || "".equals(linkAsString)){
 			linkAsString = "http://";
@@ -89,8 +90,8 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				return;
 			}
 			try {
-				final URI link = LinkController.createURI(inputValue.trim());
-				linkController.setLink(selectedNode, link, LinkController.LINK_ABSOLUTE);
+				final Hyperlink link = LinkController.createHyperlink(inputValue.trim());
+				linkController.setLink(selectedNode, link);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);

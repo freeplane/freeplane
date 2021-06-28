@@ -24,6 +24,7 @@ import java.net.URI;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -40,7 +41,7 @@ class AddExecutionLinkAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selectedNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		String linkAsString;
-		final URI link = NodeLinks.getLink(selectedNode);
+		final Hyperlink link = NodeLinks.getLink(selectedNode);
 		if (link != null && LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link))
 			linkAsString = LinkController.parseSpecialLink(link);
 		else

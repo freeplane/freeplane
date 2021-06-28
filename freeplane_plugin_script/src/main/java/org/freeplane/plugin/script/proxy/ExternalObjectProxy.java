@@ -7,6 +7,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
@@ -62,7 +63,10 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 
     private URI convertToUri(Object target) {
         try {
-            if (target instanceof URI) {
+            if (target instanceof Hyperlink) {
+                return ((Hyperlink) target).getUri();
+            }
+            else if (target instanceof URI) {
                 return (URI) target;
             }
             else if (target instanceof String) {

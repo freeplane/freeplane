@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -30,7 +31,7 @@ public class NodeViewDecorator
 	 * Returns a list of zero or more icon names, representing the icons that will be added to the <code>nodeView</code>
 	 * that owns the given <code>link</code> (not persistently, but only in the view) so as to represent the link held
 	 */
-	public List<String> getIconsForLink(URI link)
+	public List<String> getIconsForLink(Hyperlink link)
 	{
 		if(ResourceController.getResourceController().getBooleanProperty(SHOW_LINK_SPECIFIC_ICONS_PROPERTY)) {
 			List<String> icons = new ArrayList<String>();
