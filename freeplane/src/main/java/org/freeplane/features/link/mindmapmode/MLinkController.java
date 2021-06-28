@@ -1027,7 +1027,7 @@ public class MLinkController extends LinkController {
 		if (isAnchored() && ! targetID.matches("\\w+://")) {
 
 			// extract fileName from target map
-			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.indexOf("#") );
+			final String targetMapFileName = targetID.substring( targetID.indexOf("/") +1, targetID.lastIndexOf("#") );
 
 			// get fileName of selected node (source)
 			final File sourceMapFile = node.getMap().getFile();
@@ -1041,7 +1041,7 @@ public class MLinkController extends LinkController {
 			if( sourceMapFileNameURI.substring(sourceMapFileNameURI.indexOf("/")+1).equals(targetMapFileName) ) {
 
 				// insert only targetNodeID as link
-				link = targetID.substring(targetID.indexOf("#"));
+				link = targetID.substring(targetID.lastIndexOf("#"));
 
 			} else {
 
