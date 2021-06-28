@@ -198,6 +198,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	    final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
 			final WeakReference<MapModel> mapReference = new WeakReference<>(map);
+			String lastVisitedNodeId = recentFile.lastVisitedNodeId;
 			mapController.addNodeSelectionListener(new INodeSelectionListener() {
 				@Override
 				public void onSelect(NodeModel node) {
@@ -207,7 +208,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 					else if (node.getMap() == map) {
 						// only once
 						mapController.removeNodeSelectionListener(this);
-						final NodeModel toSelect = map.getNodeForID(recentFile.lastVisitedNodeId);
+						final NodeModel toSelect = map.getNodeForID(lastVisitedNodeId);
 						// don't restore an old position if a new one is selected
 						if (toSelect != null && node.isRoot())
 							Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(toSelect);
@@ -386,9 +387,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		final RecentFile recentFile = findRecentFileByMapModel(getMapModel(mapView));
 		if (selected != null && recentFile != null) {
 			NodeModel selectedNode = selected.getModel();
-			// if a map has never been visited restoration of the selection has not yet taken place
-			if (!selectedNode.isRoot())
-				recentFile.lastVisitedNodeId = selectedNode.getID();
+			recentFile.lastVisitedNodeId = selectedNode.getID();
 		}
 	}
 
