@@ -2,6 +2,8 @@
 1.9.6
 ===============================
 Highlight nodes depending on selected condition in filter composer
+Fix custom hyperlinks
+Bug fixes
 
 ===============================
 1.9.5
