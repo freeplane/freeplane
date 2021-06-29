@@ -84,7 +84,7 @@ public class CompiledFilesSpec {
         PrecompiledClasses uut = PrecompiledClasses.readThrowExceptions(eventReader);
 		
         final PrecompiledClasses expected = new PrecompiledClasses(2, Collections.singleton("file"));
-		assertThat(uut).isEqualToComparingFieldByField(expected);
+		assertThat(uut).usingRecursiveComparison().isEqualTo(expected);
 
 	}
 	
@@ -95,7 +95,6 @@ public class CompiledFilesSpec {
 		PrecompiledClasses uut = compiledFiles;
 		
         final PrecompiledClasses expected = new PrecompiledClasses(2, Collections.singleton(new File("file").getAbsolutePath()));
-		assertThat(uut).isEqualToComparingFieldByField(expected);
-
+		assertThat(uut).usingRecursiveComparison().isEqualTo(expected);
 	}
 }
