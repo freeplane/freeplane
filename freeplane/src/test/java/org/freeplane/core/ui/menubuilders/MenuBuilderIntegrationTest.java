@@ -2,7 +2,7 @@ package org.freeplane.core.ui.menubuilders;
 
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

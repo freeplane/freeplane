@@ -1,8 +1,8 @@
 package org.freeplane.core.ui.menubuilders;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
 
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.junit.Test;
