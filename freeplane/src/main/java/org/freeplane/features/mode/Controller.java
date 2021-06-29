@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
-import org.apache.commons.io.IOExceptionWithCause;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.OptionPanelController;
@@ -244,13 +243,12 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 				waiting(waitFor, proc);
 			}
 
-			private void waiting(boolean waitFor, Process proc)
-					throws IOExceptionWithCause {
+			private void waiting(boolean waitFor, Process proc) throws IOException {
 				if(waitFor) {
 					try {
 						proc.waitFor();
 					} catch (InterruptedException e) {
-						throw new IOExceptionWithCause(e);
+						throw new IOException(e);
 					}
 				}
 			}

@@ -1,6 +1,6 @@
 package org.freeplane.core.ui.menubuilders.action;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,7 +26,7 @@ public class ActionFinderTest {
 		final ActionFinder actionFinder = new ActionFinder(freeplaneActions);
 		actionFinder.visit(entry);
 		
-		assertThat((AFreeplaneAction) new EntryAccessor().getAction(entry), CoreMatchers.equalTo(someAction));
+		assertThat(new EntryAccessor().getAction(entry), CoreMatchers.equalTo(someAction));
 	}
 
 	@Test

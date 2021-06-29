@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -12,7 +13,6 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -50,6 +50,6 @@ public class JMenuRadioGroupBuilderTest {
 	}
 	@Test
 	public void buildsWholeSubtree() throws Exception {
-		Assert.assertThat(radioGroupBuilder.shouldSkipChildren(null), equalTo(true));
+		assertThat(radioGroupBuilder.shouldSkipChildren(null), equalTo(true));
 	}
 }

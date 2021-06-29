@@ -23,7 +23,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,8 +40,8 @@ import org.apache.tools.ant.util.StringUtils;
 
 public class TaskUtils {
 	static class IncludeFileFilter implements FileFilter {
-		private ArrayList<Pattern> includePatterns = new ArrayList<Pattern>();
-		private ArrayList<Pattern> excludePatterns = new ArrayList<Pattern>();
+		private final ArrayList<Pattern> includePatterns;
+		private final ArrayList<Pattern> excludePatterns;
 
 		IncludeFileFilter(ArrayList<Pattern> includePatterns, ArrayList<Pattern> excludePatterns) {
 			this.includePatterns = includePatterns;
@@ -64,23 +66,11 @@ public class TaskUtils {
 	}
 
 	static void writeFile(File outputFile, ArrayList<String> sortedLines, String lineSeparator) throws IOException {
-		BufferedWriter out = null;
-		try {
-			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "US-ASCII"));
+		try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.US_ASCII))) {
 			for (String line : sortedLines) {
 				out.write(line.replaceAll("\\\\[\n\r]+", "\\\\" + lineSeparator));
 				// change this to write(<sep>) to enforce Unix or Dos or Mac newlines
 				out.write(lineSeparator);
-			}
-		}
-		finally {
-			if (out != null) {
-				try {
-					out.close();
-				}
-				catch (IOException e) {
-					// can't help it
-				}
 			}
 		}
 	}
@@ -121,9 +111,7 @@ public class TaskUtils {
 	}
 
 	static String readFile(final File inputFile) throws IOException {
-		InputStreamReader in = null;
-		try {
-			in = new InputStreamReader(new FileInputStream(inputFile), "ISO-8859-1");
+		try (InputStreamReader in = new InputStreamReader(new FileInputStream(inputFile), StandardCharsets.ISO_8859_1)) {
 			StringBuilder builder = new StringBuilder();
 			final char[] buf = new char[1024];
 			int len;
@@ -132,20 +120,10 @@ public class TaskUtils {
 			}
 			return builder.toString();
 		}
-		finally {
-			if (in != null) {
-				try {
-					in.close();
-				}
-				catch (IOException e) {
-					// can't help it
-				}
-			}
-		}
 	}
 
 	/** returns true if all eols match <code>lineSep</code>. */
-	/*package*/static boolean checkEolStyleAndReadLines(String input, ArrayList<String> resultList, String lineSep) {
+	static boolean checkEolStyleAndReadLines(String input, ArrayList<String> resultList, String lineSep) {
 		resultList.clear();
 		boolean eolStyleMatches = true;
 		final Matcher matcher = Pattern.compile("(?<!\\\\)(\r\n?|\n)").matcher(input);
@@ -171,7 +149,7 @@ public class TaskUtils {
 		return eolStyleMatches;
 	}
 
-	/*package*/static boolean matchEolStyle(String eol, String lineSep) {
+	static boolean matchEolStyle(String eol, String lineSep) {
 		// quick success in the normal case
 		if (lineSep.equals(eol))
 			return true;
@@ -204,12 +182,11 @@ public class TaskUtils {
     	return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 
-	@SuppressWarnings("unchecked")
     static String multipleChoice(Project project, String message, String validValues, String defaultValue) {
     	InputRequest request = null;
     	if (validValues != null) {
     		Vector<String> accept = StringUtils.split(validValues, ',');
-    		request = new MultipleChoiceInputRequest(message, accept);
+    		request = new MultipleChoiceInputRequest(message, Collections.list(accept.elements()));
     	}
     	else {
     		request = new InputRequest(message);

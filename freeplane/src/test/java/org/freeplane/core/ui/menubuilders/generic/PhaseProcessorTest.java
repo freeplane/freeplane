@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.generic;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACCELERATORS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -10,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -59,7 +59,7 @@ public class PhaseProcessorTest {
 	public void returnsPhase() throws Exception {
 		RecursiveMenuStructureProcessor builder = mock(RecursiveMenuStructureProcessor.class);
 		final PhaseProcessor phasedBuilder = new PhaseProcessor().withPhase(ACTIONS, builder);
-		Assert.assertThat(phasedBuilder.phase(ACTIONS), equalTo(builder));
+		assertThat(phasedBuilder.phase(ACTIONS), equalTo(builder));
 	}
 
 	@Test

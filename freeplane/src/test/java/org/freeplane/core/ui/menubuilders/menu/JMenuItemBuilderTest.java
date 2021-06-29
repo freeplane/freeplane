@@ -1,15 +1,14 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.awt.Container;
+import java.util.Collections;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -30,7 +29,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.util.Compat;
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -94,7 +92,7 @@ public class JMenuItemBuilderTest {
 		JMenuItem item = (JMenuItem)new EntryAccessor().getComponent(actionEntry);
 
 		assertThatMenuItemHasCorrectAction(item);
-		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
+		assertThat(item.getParent(), CoreMatchers.equalTo(menu.getPopupMenu()));
 	}
 
 	@Test
@@ -106,7 +104,7 @@ public class JMenuItemBuilderTest {
 		when(accelerators.getAccelerator(action)).thenReturn(keyStroke);
 		menuActionGroupBuilder.visit(actionEntry);
 		JMenuItem item = (JMenuItem) new EntryAccessor().getComponent(actionEntry);
-		Assert.assertThat(item.getAccelerator(), equalTo(keyStroke));
+		assertThat(item.getAccelerator(), equalTo(keyStroke));
 	}
 
 	@Test
@@ -120,21 +118,21 @@ public class JMenuItemBuilderTest {
 
 		final AccelerateableAction itemAction = (AccelerateableAction) item.getAction();
 		assertThat(itemAction.getOriginalAction(), CoreMatchers.<Action> equalTo(action));
-		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
+		assertThat(item.getParent(), CoreMatchers.equalTo(menu.getPopupMenu()));
 	}
 	
 	@Test
 	public void createsMenuSeparator() {
 		new EntryAccessor().setComponent(menuEntry, menu);
 		Entry separatorEntry = new Entry();
-		separatorEntry.setBuilders(asList("separator"));
+		separatorEntry.setBuilders(Collections.singletonList("separator"));
 		menuEntry.addChild(separatorEntry);
 		
 		menuActionGroupBuilder.visit(separatorEntry);
 
 		JPopupMenu.Separator separator = (JPopupMenu.Separator)new EntryAccessor().getComponent(separatorEntry);
 
-		assertThat(separator.getParent(), CoreMatchers.<Container>equalTo(menu.getPopupMenu()));
+		assertThat(separator.getParent(), CoreMatchers.equalTo(menu.getPopupMenu()));
 	}
 
 	@Test
@@ -148,7 +146,7 @@ public class JMenuItemBuilderTest {
 		menuActionGroupBuilder.visit(menuEntry);
 
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
-		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(parentMenu.getPopupMenu()));
+		assertThat(item.getParent(), CoreMatchers.equalTo(parentMenu.getPopupMenu()));
 	}
 
 	@Test
@@ -162,7 +160,7 @@ public class JMenuItemBuilderTest {
 		menuActionGroupBuilder.visit(menuEntry);
 
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
-		assertThat(item.getParent(), CoreMatchers.<Container>equalTo(parentMenu));
+		assertThat(item.getParent(), CoreMatchers.equalTo(parentMenu));
 	}
 
 	@Test
@@ -227,7 +225,7 @@ public class JMenuItemBuilderTest {
 	@Test
 	public void whenNoPopupMenuBecomesVisible_PopupListenerIsNotCalled() {
 		menuActionGroupBuilder.visit(menuEntry);
-		verify(popupListener, never()).childEntriesWillBecomeVisible(Mockito.<Entry> anyObject());
+		verify(popupListener, never()).childEntriesWillBecomeVisible(Mockito.any());
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.awt.event.KeyEvent;
@@ -12,7 +13,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class MenuAcceleratorChangeListenerTest {
@@ -28,6 +28,6 @@ public class MenuAcceleratorChangeListenerTest {
 
 		final KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0);
 		menuAcceleratorChangeListener.acceleratorChanged(action, null, keyStroke);
-		Assert.assertThat(menu.getAccelerator(), equalTo(keyStroke));
+		assertThat(menu.getAccelerator(), equalTo(keyStroke));
 	}
 }

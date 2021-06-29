@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 
 import javax.swing.JTextPane;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import com.inet.jortho.SpellChecker;
@@ -31,7 +30,7 @@ public class MemoryTest extends TestCase {
 		}
 		final long memoryAfter = usedMemory();
 		if (memoryBefore + 100000 < memoryAfter) {
-			Assert.fail("Memory Leak SpellChecker.createLanguagesMenu. memory before:" + (memoryBefore / 1024)
+			fail("Memory Leak SpellChecker.createLanguagesMenu. memory before:" + (memoryBefore / 1024)
 			        + " KB  memory after:" + (memoryAfter / 1024) + " KB");
 		}
 	}
@@ -62,7 +61,7 @@ public class MemoryTest extends TestCase {
 		}
 		final long memoryAfter = usedMemory();
 		if (memoryBefore + 1000000 < memoryAfter) {
-			Assert.fail("Memory Leak SpellChecker.register. memory before:" + (memoryBefore / 1024)
+			fail("Memory Leak SpellChecker.register. memory before:" + (memoryBefore / 1024)
 			        + " KB  memory after:" + (memoryAfter / 1024) + " KB");
 		}
 	}

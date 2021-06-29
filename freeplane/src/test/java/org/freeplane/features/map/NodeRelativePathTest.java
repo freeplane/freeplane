@@ -20,8 +20,9 @@
 package org.freeplane.features.map;
 
 import static org.freeplane.features.map.NodeModel.CloneType.TREE;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -162,7 +163,7 @@ public class NodeRelativePathTest {
 	public void compareSameNode(){
 		final NodeModel parent = root();
 		final int compared = new NodeRelativePath(parent, parent).compareNodePositions();
-		assertTrue(compared == 0);
+		assertEquals(0, compared);
 	}
 
 	@Test

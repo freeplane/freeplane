@@ -464,7 +464,7 @@ class ScriptEditorPanel extends JDialog {
 		}
 		storeCurrent();
 		mScriptTextField.setText(mScriptModel.getScript(pIndex).getScript());
-		mLastSelected = new Integer(pIndex);
+		mLastSelected = pIndex;
 		if (pIndex >= 0 && mScriptList.getSelectedIndex() != pIndex) {
 			mScriptList.setSelectedIndex(pIndex);
 		}
@@ -472,7 +472,7 @@ class ScriptEditorPanel extends JDialog {
 
 	private void storeCurrent() {
 		if (mLastSelected != null) {
-			final int oldIndex = mLastSelected.intValue();
+			final int oldIndex = mLastSelected;
 			mScriptModel.setScript(oldIndex, mScriptModel.getScript(oldIndex).setScript(mScriptTextField.getText()));
 		}
 	}

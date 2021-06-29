@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -9,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class EntryAccessorTest {
 	public void getsTextFromEntryAttributeText() throws Exception {
 		entry.setAttribute("text", "entry text");
 		final String entryText = entryAccessor.getText(entry);
-		Assert.assertThat(entryText, equalTo("entry text"));
+		assertThat(entryText, equalTo("entry text"));
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ public class EntryAccessorTest {
 		entry.setAttribute("textKey", "entry text key");
 		when(resourceAccessor.getRawText("entry text key")).thenReturn("entry text");
 		final String entryText = entryAccessor.getText(entry);
-		Assert.assertThat(entryText, equalTo("entry text"));
+		assertThat(entryText, equalTo("entry text"));
 	}
 
 	@Test
@@ -45,14 +45,14 @@ public class EntryAccessorTest {
 		final Icon icon = new ImageIcon();
 		entry.setAttribute(EntryAccessor.ICON_INSTANCE, icon);
 		final Icon entryIcon = entryAccessor.getIcon(entry);
-		Assert.assertThat(entryIcon, equalTo(icon));
+		assertThat(entryIcon, equalTo(icon));
 	}
 
 	@Test
 	public void setsTextToEntryAttributeText() throws Exception {
 		entryAccessor.setText(entry, "entry text");
 		final String entryText = entryAccessor.getText(entry);
-		Assert.assertThat(entryText, equalTo("entry text"));
+		assertThat(entryText, equalTo("entry text"));
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class EntryAccessorTest {
 		final Icon icon = new ImageIcon();
 		entryAccessor.setIcon(entry, icon);
 		final Icon entryIcon = entryAccessor.getIcon(entry);
-		Assert.assertThat(entryIcon, equalTo(icon));
+		assertThat(entryIcon, equalTo(icon));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class EntryAccessorTest {
 		final AFreeplaneAction action = mock(AFreeplaneAction.class);
 		entryAccessor.setAction(entry, action);
 		final AFreeplaneAction entryAction = entryAccessor.getAction(entry);
-		Assert.assertThat(entryAction, equalTo(action));
+		assertThat(entryAction, equalTo(action));
 	}
 
 	@Test
@@ -78,8 +78,8 @@ public class EntryAccessorTest {
 		entryAccessor.addChildAction(entry, action);
 		final Entry actionEntry = entry.getChild(0);
 		final AFreeplaneAction entryAction = entryAccessor.getAction(actionEntry);
-		Assert.assertThat(actionEntry.getName(), equalTo("key"));
-		Assert.assertThat(entryAction, equalTo(action));
+		assertThat(actionEntry.getName(), equalTo("key"));
+		assertThat(entryAction, equalTo(action));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class EntryAccessorTest {
 		entryAccessor.setComponent(entry, new JSeparator());
 		
 		final String entryText = entryAccessor.getLocationDescription(entry);
-		Assert.assertThat(entryText, equalTo(""));
+		assertThat(entryText, equalTo(""));
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class EntryAccessorTest {
 		entryAccessor.setComponent(entry, new JSeparator());
 		
 		final String entryText = entryAccessor.getLocationDescription(entry);
-		Assert.assertThat(entryText, equalTo(text));
+		assertThat(entryText, equalTo(text));
 	}
 
 	@Test
@@ -111,6 +111,6 @@ public class EntryAccessorTest {
 		entryAccessor.setComponent(parent, new JSeparator());
 
 		final String entryText = entryAccessor.getLocationDescription(entry);
-		Assert.assertThat(entryText, equalTo("parent -> entry"));
+		assertThat(entryText, equalTo("parent -> entry"));
 	}
 }

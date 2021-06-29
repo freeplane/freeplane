@@ -20,7 +20,7 @@ public class TestApp {
 	private static void createNewMindMap(File freeplaneInstallationDirectory, final File newMapFile) {
 		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
 		HeadlessMapCreator mapCreator = launcher.launchHeadless();
-		final MindMap map = mapCreator.mapLoader(TestApp.class.getResource("/templateFile.mm")).unsetMapLocation().load();
+		final MindMap map = mapCreator.mapLoader(TestApp.class.getResource("/templateFile.mm")).unsetMapLocation().getMindMap();
 		if(map != null) {
 		    final Node childNode = map.getRoot().createChild();
 		    String value = "hello world";

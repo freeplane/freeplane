@@ -20,10 +20,10 @@
 package org.freeplane.features.map;
 
 import static org.freeplane.features.map.NodeModel.CloneType.TREE;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
 
 import org.hamcrest.collection.IsEmptyIterable;
 import org.junit.Test;

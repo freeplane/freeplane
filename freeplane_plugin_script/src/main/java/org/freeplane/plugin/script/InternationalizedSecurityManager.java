@@ -201,8 +201,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	}
 
 	private SecurityException getException(final AccessControlException e, final int pPermissionGroup, final int pPermission, final String pFile) {
-		final String message = TextUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", new Integer(
-			    pPermissionGroup), new Integer(pPermission), pFile);
+		final String message = TextUtils.format("plugins/ScriptEditor.FORBIDDEN_ACTION", pPermissionGroup, pPermission, pFile);
 		return new SecurityException(message, e);
     }
 
@@ -222,7 +221,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkPermission(Permission perm, Object context) {
 		disallowSupressingAccessChecks(perm);
-		super.checkPermission(perm, context);	
+		super.checkPermission(perm, context);
 	}
 	
 	
