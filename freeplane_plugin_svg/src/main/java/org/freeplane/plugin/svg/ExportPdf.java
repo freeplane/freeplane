@@ -108,8 +108,8 @@ class ExportPdf extends ExportVectorGraphic {
 		 * Frank Spangenberg (f_spangenberg) Summary: Large mind maps
 		 * produce invalid PDF
 		 */
-		pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
-		pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_WIDTH, new Float(19200));
+		pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, 19200F);
+		pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_WIDTH, 19200F);
 		/* end patch */
 		pdfTranscoder.addTranscodingHint(ImageTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 25.4f/72f/ UITools.FONT_SCALE_FACTOR);
 		if(ResourceController.getResourceController().getBooleanProperty(PDF_CONVERT_TEXT_TO_SHAPES)) {
