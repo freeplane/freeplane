@@ -85,10 +85,6 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         public void scrollRectToVisible(Rectangle newContentRectangle) {
         	final Rectangle hiddenArea = hiddenAreaSupplier.getHiddenArea();
         	if(hiddenArea.width != 0 && hiddenArea.height != 0) {
-        		Point viewportLocation = new Point(0, 0);
-        		UITools.convertPointToAncestor(this, viewportLocation, JScrollPane.class);
-        		hiddenArea.x -= viewportLocation.x;
-        		hiddenArea.y -= viewportLocation.y;
         		final boolean isHiddenAreaAtTheLeft = hiddenArea.x == 0;
 				final boolean isHiddenAreaAtTheTop = hiddenArea.y == 0;
 				final boolean isHiddenAreaAtTheRight = hiddenArea.x + hiddenArea.width == getWidth();
