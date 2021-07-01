@@ -8,7 +8,7 @@ repositories {
 dependencies {
 	def exclusions = [project.name, 'freeplane_ant']
 	if (! Os.isFamily(Os.FAMILY_MAC)) {
-		exclusions.add('freeplane_mac')
+    		exclusions.add('freeplane_mac')
 	}
 	parent.subprojects.findAll{! exclusions.contains(it.name)}.each {
 		runtimeOnly it

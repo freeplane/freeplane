@@ -89,6 +89,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				linkController.setLink(selectedNode, (URI) null, LinkController.LINK_ABSOLUTE);
 				return;
 			}
+            inputValue = inputValue.replace("\"", ""); // AV2021-04-18_22-25-23 (This is to remove the " when a link is pasted from Windows Explorer shift+right-click > Copy as path.)
 			try {
 				final Hyperlink link = LinkController.createHyperlink(inputValue.trim());
 				linkController.setLink(selectedNode, link);
