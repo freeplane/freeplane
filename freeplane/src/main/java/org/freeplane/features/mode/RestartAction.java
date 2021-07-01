@@ -24,28 +24,18 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 
-/**
- * Manages the history of visited maps. Maybe explicitly closed maps should be
- * removed from History too?
- */
-public class QuitAction extends AFreeplaneAction {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class RestartAction extends AFreeplaneAction {
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param resourceController
-	 */
-	public QuitAction() {
-		super("QuitAction");
-	}
+    public RestartAction() {
+        super("RestartAction");
+    }
 
-	public void actionPerformed(final ActionEvent e) {
-		Controller.getCurrentController().quit();
-	}
+    public void actionPerformed(final ActionEvent e) {
+        Controller.getCurrentController().restart();
+    }
 
-	@Override
-	public void afterMapChange(UserRole userRole) {
-	}
+    @Override
+    public void afterMapChange(UserRole userRole) {
+    }
 }

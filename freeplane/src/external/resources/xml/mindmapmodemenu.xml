@@ -107,6 +107,7 @@
 			<Entry name="CloseAction" accelerator="control W" />
 			<Entry builder="separator" />
 			<Entry name="QuitAction" accelerator="control Q" builder="removeOnMac" />
+			<Entry name="RestartAction" builder="removeOnMac" />
 		</Entry>
 		<Entry name="edit">
 			<Entry usedBy = "EDITOR" >

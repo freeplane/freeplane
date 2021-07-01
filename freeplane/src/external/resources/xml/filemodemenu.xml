@@ -10,6 +10,7 @@
 			<Entry accelerator="control P" name="PrintAction" />
 			<Entry accelerator="control W" name="CloseAction" />
 			<Entry accelerator="control Q" name="QuitAction" builder="MB_QuitAction" />
+			<Entry name="RestartAction" />
 		</Entry>
 		<Entry name="edit">
 			<Entry name="find">

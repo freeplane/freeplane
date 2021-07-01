@@ -217,13 +217,21 @@ _debug "Calling: "\
  "$@"
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
 
-# now actually launch Freeplane
-"${JAVACMD}" -Xmx512m\
- "-Dorg.freeplane.userfpdir=$userfpdir"\
- "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
- "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
- "-Dswing.systemlaf=javax.swing.plaf.metal.MetalLookAndFeel"\
- $JAVA_OPTS\
- $xdockname\
- -jar "${freedir}/freeplanelauncher.jar"\
- "$@"
+while true; do
+  # now actually launch Freeplane
+  "${JAVACMD}" -Xmx512m\
+   "-Dorg.freeplane.userfpdir=$userfpdir"\
+   "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
+   "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
+   "-Dswing.systemlaf=javax.swing.plaf.metal.MetalLookAndFeel"\
+   $JAVA_OPTS\
+   $xdockname\
+   -jar "${freedir}/freeplanelauncher.jar"\
+   "$@"
+  exit_code=$?
+  if [[ "${exit_code}" -ne 194 ]]; then
+    break
+  fi
+  echo
+  echo "Restarting freeplane..."
+done
