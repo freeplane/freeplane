@@ -81,6 +81,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
@@ -156,13 +157,21 @@ public class MIconController extends IconController {
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
-			if (!key.equals(Keys.ICONS)) {
-				return;
-			}
-			copy(from, to);
+            if (key.equals(Keys.ICONS)) {
+                copyIcons(from, to);
+            }
+            if (key.equals(LogicalStyleKeys.NODE_STYLE)) {
+                copyIconSize(from, to);
+            }
 		}
 
-		public void copy(final NodeModel from, final NodeModel to) {
+		private void copyIconSize(NodeModel from, NodeModel to) {
+		    Quantity<LengthUnit> iconSize = from.getSharedData().getIcons().getIconSize();
+		    to.getSharedData().getIcons().setIconSize(iconSize);
+            
+        }
+
+        private void copyIcons(final NodeModel from, final NodeModel to) {
 			final List<NamedIcon> sourceIcons = from.getIcons();
 			final List<NamedIcon> targetIcons = to.getIcons();
 			for (final NamedIcon icon : sourceIcons) {
@@ -175,18 +184,32 @@ public class MIconController extends IconController {
 
 		@Override
 		public void remove(final Object key, final NodeModel from) {
-			if (!key.equals(Keys.ICONS)) {
-				return;
+			if (key.equals(Keys.ICONS)) {
+			    while (from.removeIcon() > 0) {/**/}
 			}
-			while (from.removeIcon() > 0) {/**/}
+            if (key.equals(LogicalStyleKeys.NODE_STYLE)) {
+                removeIconSize(from);
+            }
+
 		}
 
-		@Override
+		private void removeIconSize(NodeModel from) {
+		    from.getSharedData().getIcons().setIconSize(null);
+        }
+
+        @Override
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
-			if (!key.equals(Keys.ICONS)) {
-				return;
+			if (key.equals(Keys.ICONS)) {
+			    removeIcons(from, which);
 			}
-			final List<NamedIcon> targetIcons = from.getIcons();
+            if (key.equals(LogicalStyleKeys.NODE_STYLE)
+                     &&  which.getSharedData().getIcons().getIconSize() != null) {
+                removeIconSize(from);
+            }
+		}
+
+        private void removeIcons(final NodeModel from, final NodeModel which) {
+            final List<NamedIcon> targetIcons = from.getIcons();
 			final List<NamedIcon> whichIcons = which.getIcons();
 			final Iterator<NamedIcon> targetIconIterator = targetIcons.iterator();
 			while (targetIconIterator.hasNext()) {
@@ -196,7 +219,7 @@ public class MIconController extends IconController {
 				}
 				targetIconIterator.remove();
 			}
-		}
+        }
 		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
 		    //
