@@ -28,16 +28,12 @@ import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.regex.Matcher;
 
-import javax.swing.SwingUtilities;
-
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 import groovy.lang.Binding;
@@ -127,15 +123,6 @@ public class GroovyScript implements IScript {
             // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         } catch (final Throwable e) {
-            IMapSelection selection = Controller.getCurrentController().getSelection();
-			if (selection != null && node != null && ! node.equals(selection.getSelected()) && node.hasVisibleContent(selection.getFilter())) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Controller.getCurrentModeController().getMapController().select(node);
-					}
-				});
-            }
             throw new ExecuteScriptException(e.getMessage(), e);
         }
     }
