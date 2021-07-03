@@ -32,7 +32,8 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	// LinkRO
 	@Override
 	public URI getUri() {
-		return NodeLinks.getLink(getDelegate()).getUri();
+		Hyperlink hyperlink = NodeLinks.getLink(getDelegate());
+        return hyperlink != null ? hyperlink.getUri() : null;
 	}
 
 	// LinkRO
