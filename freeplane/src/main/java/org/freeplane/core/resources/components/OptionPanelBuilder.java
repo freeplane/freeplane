@@ -472,7 +472,7 @@ public class OptionPanelBuilder {
 
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			final String label = "OptionPanel.separator." + name;
+			final String label = data.getAttribute("text", "OptionPanel.separator." + name);
 			return createSeparatorCreator(label);
 		}
 	}

@@ -688,6 +688,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		};
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
+		if(ResourceController.getResourceController().getBooleanProperty("activateSpotlightByDefault"))
+		    putClientProperty(SPOTLIGHT_ENABLED, Boolean.TRUE);
 	}
 
     public void replaceSelection(final NodeView[] views) {

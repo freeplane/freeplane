@@ -103,10 +103,9 @@
 				<color name="revision_color" />
 				<boolean name="printonwhitebackground" />
 			</separator>
-			<separator name="selection_colors">
-				<boolean name="standarddrawrectangleforselection" />
-				<color name="standardselectednoderectanglecolor" />
-				<color name="standardselectednodecolor" />
+			<separator name="spotlight" text="OptionPanel.spotlight">
+				<boolean name="activateSpotlightByDefault"/>
+				<color name= "spotlight_background_color"/>
 			</separator>
 			<separator name="root_node_appearance">
 				<boolean name="use_common_out_point_for_root_node" />
@@ -131,25 +130,6 @@
 				<length name="default_attribute_key_column_width" defaultUnit = "px" min="0" max = "1000" step = "0.1" />
 				<length name="default_attribute_value_column_width" defaultUnit = "px" min="0" max = "1000" step = "0.1" />
 				
-			</separator>
-			<separator name="connectors">
-				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
-				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
-				<color name="connector_color" />
-				<number name="connector_alpha" text="edit_transparency_label"
-					min="20" max="255" />
-				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorShape"/>
-				<number name="connector_width" text="edit_width_label" min="1"
-					max="32" />
-				<font name="label_font_family" />
-				<number name="label_font_size" min="4" max="216" />
-				<combo name="show_connectors" >
-					<choice value="true" text="OptionPanel.show_connectors.true" />
-					<choice value="false" text="OptionPanel.show_connectors.false" />
-					<choice value="for_selection" text="OptionPanel.show_connectors.for_selection" />
-					<choice value="never" text="OptionPanel.show_connectors.never" />
-				</combo>
-				<boolean name="paint_connectors_behind" />
 			</separator>
 			<separator name="clones">
 				<boolean name="markClones"/>
@@ -182,6 +162,30 @@
 			<separator name="cloud">
 				<color name="standardcloudcolor" />
 				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudShape"/>
+			</separator>
+			<separator name="connectors">
+				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
+				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
+				<color name="connector_color" />
+				<number name="connector_alpha" text="edit_transparency_label"
+					min="20" max="255" />
+				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorShape"/>
+				<number name="connector_width" text="edit_width_label" min="1"
+					max="32" />
+				<font name="label_font_family" />
+				<number name="label_font_size" min="4" max="216" />
+				<combo name="show_connectors" >
+					<choice value="true" text="OptionPanel.show_connectors.true" />
+					<choice value="false" text="OptionPanel.show_connectors.false" />
+					<choice value="for_selection" text="OptionPanel.show_connectors.for_selection" />
+					<choice value="never" text="OptionPanel.show_connectors.never" />
+				</combo>
+				<boolean name="paint_connectors_behind" />
+			</separator>
+			<separator name="selection_colors">
+				<boolean name="standarddrawrectangleforselection" />
+				<color name="standardselectednoderectanglecolor" />
+				<color name="standardselectednodecolor" />
 			</separator>
 			<separator name="cmdsearch">
                 <number name="cmdsearch_item_limit" min="10"/>
@@ -334,7 +338,6 @@
 				<boolean name="presentation.switchToSpotlight"/>
 				<boolean name="presentation.zoom"/>
 				<boolean name="presentation.combineAll"/>
-				<color name= "spotlight_background_color"/>
 				<boolean name="presentation.slowMotion"/>
 				<number name="presentation.maxDropBoxRowCount" min="3" max="999" /> 
 				<string name="presentation.exportDirectory" />
