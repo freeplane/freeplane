@@ -3,6 +3,7 @@
 ===============================
 Highlight nodes depending on selected condition in filter composer
 Fix custom hyperlinks
+Option to activate spotlight by default
 Bug fixes
 
 ===============================
