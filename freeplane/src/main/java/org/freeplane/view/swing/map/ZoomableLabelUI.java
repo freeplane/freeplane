@@ -426,7 +426,10 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	    			String text = lbl.getText();
 	    			GlyphPainterMetricResetter.resetPainter();
 	    			try {
-	    			ScaledHTML.updateRenderer(lbl, text);
+	    			    if("foreground" == name)
+	    			        ScaledHTML.updateRendererOnForegroundChange(lbl, text);
+	    			    else
+                            ScaledHTML.updateRenderer(lbl, text);
 	    			}
 	    			finally{
 	    				GlyphPainterMetricResetter.resetPainter();
