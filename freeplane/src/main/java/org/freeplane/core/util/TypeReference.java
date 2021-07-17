@@ -26,6 +26,7 @@ import java.net.URI;
 
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
+import org.freeplane.features.link.LinkController;
 
 
 /**
@@ -68,7 +69,7 @@ public class TypeReference{
 		else if (typeReference.equals("org.freeplane.features.common.format.FormattedNumber"))
 		    typeReference = FormattedNumber.class.getName();
 		else if (typeReference.equals(URI.class.getName()))
-			typeReference = Hyperlink.class.getName();
+			return LinkController.class.getMethod("createHyperlink", String.class);
 		final Class<?> clazz = TypeReference.class.getClassLoader().loadClass(typeReference);
 		final FactoryMethod factoryAnnotation = clazz.getAnnotation(FactoryMethod.class);
 		if (factoryAnnotation != null)
