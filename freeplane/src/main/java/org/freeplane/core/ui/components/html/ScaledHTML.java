@@ -39,28 +39,40 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTMLDocument;
 
+import org.freeplane.view.swing.map.ZoomableLabel;
+
 public class ScaledHTML extends BasicHTML{
 
     /**
      * Create an html renderer for the given component and
      * string of html.
      */
-    public static View createHTMLView(JLabel c, String html) {
-	ScaledEditorKit kit = SynchronousScaledEditorKit.create();
-	Document doc = kit.createDefaultDocument(c);
-	Object base = c.getClientProperty(documentBaseKey);
-	if (base instanceof URL) {
-	    ((HTMLDocument)doc).setBase((URL)base);
-	}
-	Reader r = new StringReader(html);
-	try {
-	    kit.read(r, doc, 0);
-	} catch (Throwable e) {
-	}
-	ViewFactory f = kit.getViewFactory();
-	View hview = f.create(doc.getDefaultRootElement());
-	View v = new Renderer(c, f, hview);
-	return v;
+    static Renderer createHTMLView(JLabel c, String html) {
+        ScaledEditorKit kit = SynchronousScaledEditorKit.create();
+        Document doc = kit.createDefaultDocument(c);
+        Object base = c.getClientProperty(documentBaseKey);
+        if (base instanceof URL) {
+            ((HTMLDocument)doc).setBase((URL)base);
+        }
+        Reader r = new StringReader(html);
+        try {
+            kit.read(r, doc, 0);
+        } catch (Throwable e) {
+        }
+        ViewFactory f = kit.getViewFactory();
+        View hview = f.create(doc.getDefaultRootElement());
+        Renderer v = new Renderer(c, f, hview);
+        return v;
+    }
+
+    public static void updateRendererOnForegroundChange(JLabel c, String text) {
+        Renderer oldRenderer = (Renderer) c.getClientProperty(BasicHTML.propertyKey);
+        updateRenderer(c, text);
+        if(oldRenderer !=  null) {
+            Object newRenderer = c.getClientProperty(BasicHTML.propertyKey);
+            if(newRenderer instanceof Renderer)
+                ((Renderer) newRenderer).setSize(oldRenderer);
+        }
     }
 
      public static void updateRenderer(JLabel c, String text) {
@@ -98,12 +110,14 @@ public class ScaledHTML extends BasicHTML{
     	private static final int NOT_INITIALIZED = -1;
 
     	private int width;
+    	private int height;
     	private View view;
     	private ViewFactory factory;
     	private JComponent host;
     	private boolean setSizeRunning;
     	private float initialWidth = NOT_INITIALIZED;
     	private float initialHeight = NOT_INITIALIZED;
+
 
 		Renderer(JComponent c, ViewFactory f, View v) {
     		super(null);
@@ -114,6 +128,14 @@ public class ScaledHTML extends BasicHTML{
     		view.setParent(this);
     		// initially layout to the preferred size
     	}
+
+        private void setSize(Renderer oldRenderer) {
+            initialWidth = oldRenderer.initialWidth;
+            if(initialWidth != NOT_INITIALIZED) {
+                initialHeight = oldRenderer.initialHeight;
+                setSize(oldRenderer.width, oldRenderer.height);
+            }
+        }
 
         @Override
 		public AttributeSet getAttributes() {
@@ -224,6 +246,7 @@ public class ScaledHTML extends BasicHTML{
         	setSizeRunning = true;
         	try {
         	this.width = (int) width;
+        	this.height = (int) height;
         	view.setSize(width, height);
         	}
         	finally {
@@ -261,4 +284,5 @@ public class ScaledHTML extends BasicHTML{
 			setSize(width, initialHeight);
 		}
     }
-}
+
+ }
