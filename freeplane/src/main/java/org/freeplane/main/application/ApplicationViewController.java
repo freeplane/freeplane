@@ -71,7 +71,7 @@ class ApplicationViewController extends FrameController {
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
 	private static final String SPLIT_PANE_RIGHT_POSITION = "split_pane_right_position";
 	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
-	
+
 
     private static Image frameIcon(String size) {
         return new ImageIcon(ResourceController.getResourceController().getResource(
@@ -229,6 +229,7 @@ class ApplicationViewController extends FrameController {
 		catch (URISyntaxException e) {
 			uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), url.getRef());
 		}
+		openDocument(new Hyperlink(uri));
 	}
 
 	@Override
