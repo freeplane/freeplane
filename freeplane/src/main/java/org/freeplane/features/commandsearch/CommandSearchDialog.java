@@ -58,6 +58,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -157,7 +158,18 @@ public class CommandSearchDialog extends JDialog
         iconIndexer = new IconIndexer();
 
         Handler handler = new Handler();
-        input = new JTextField("");
+        input = new JTextField("") {
+
+            @Override
+            public void copy() {
+                if(getSelectionStart() < getSelectionEnd())
+                    super.copy();
+                else {
+                    copySelectedItemToClipboard();
+                }
+            }
+            
+        };
         input.setColumns(40);
         input.addKeyListener(handler);
         resultList = new SingleSelectionList();
@@ -400,6 +412,14 @@ public class CommandSearchDialog extends JDialog
                 model.fireContentsChanged(this, 0, lastElementIndex);
 
          }
+    }
+
+    private void copySelectedItemToClipboard() {
+        SearchItem item = resultList.getSelectedValue();
+        if(item != null) {
+            String text = item.getDisplayedText();
+            ClipboardAccessor.getInstance().setClipboardContents(text);
+        }
     }
 
     class Handler implements MouseListener, KeyListener {
