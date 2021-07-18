@@ -427,6 +427,7 @@
 				<Entry name="menu_manageStyles">
 					<Entry name="NewUserStyleAction" />
 					<Entry name="RedefineStyleAction" accelerator="alt shift R" />
+					<Entry name="RedefineStyleUpdateTemplateAction" />
 					<Entry name="RemoveFormatAction" />
 					<Entry name="ManageConditionalStylesAction" />
 					<Entry name="ManageNodeConditionalStylesAction" />
