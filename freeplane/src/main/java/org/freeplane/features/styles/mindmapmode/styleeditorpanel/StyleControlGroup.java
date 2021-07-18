@@ -175,13 +175,7 @@ class StyleControlGroup implements ControlGroup{
 	}
 
 	private JButton addStyleButton(DefaultFormBuilder formBuilder, String label, AFreeplaneAction action) {
-	    final JButton button = new JButton(){
-			private static final long serialVersionUID = 1L;
-			{
-				setUI(BasicButtonUI.createUI(this));
-				
-			}
-		};
+	    final JButton button = new JButton();
 	    button.addActionListener(action);
 	    button.setHorizontalAlignment(SwingConstants.LEFT);
 	    final String labelText = TextUtils.getText(label);
