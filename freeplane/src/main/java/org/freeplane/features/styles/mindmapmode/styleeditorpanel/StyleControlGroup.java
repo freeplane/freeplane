@@ -29,6 +29,7 @@ import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -50,7 +51,9 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
 
 class StyleControlGroup implements ControlGroup{
-	private boolean internalChange;
+	private static final String FOR_THIS_MAP = "change_style_for_this_map";
+    private static final String FOR_NEW_MAPS = "change_style_for_new_maps";
+    private boolean internalChange;
 	private BooleanProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
@@ -108,9 +111,9 @@ class StyleControlGroup implements ControlGroup{
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
-                redefineStyleBtn.setText(TextUtils.format("for_this_map", firstStyle));
+                redefineStyleBtn.setText(TextUtils.format(FOR_THIS_MAP, firstStyle));
 	            redefineStyleUpdateTemplateBtn.setText(
-	                            TextUtils.format("for_new_maps", firstStyle, 
+	                            TextUtils.format(FOR_NEW_MAPS, firstStyle, 
 	                                    ResourceController.getResourceController().getProperty(MFileManager.STANDARD_TEMPLATE)));
 
 			}
@@ -167,10 +170,29 @@ class StyleControlGroup implements ControlGroup{
 			redefineStyleBtn.setToolTipText(TextUtils.getRawText(redefineStyleAction.getTooltipKey()));
             redefineStyleBtn.setText(" ");
 
-			AFreeplaneAction redefineStyleUpdateTemplateAction = modeController.getAction(RedefineStyleUpdateTemplateAction.NAME);
-			redefineStyleUpdateTemplateBtn = addStyleButton(formBuilder, redefineStyleUpdateTemplateAction.getTextKey(), redefineStyleUpdateTemplateAction);
-			redefineStyleUpdateTemplateBtn.setToolTipText(TextUtils.getRawText(redefineStyleUpdateTemplateAction.getTooltipKey()));
-            redefineStyleUpdateTemplateBtn.setText(" ");			
+            AFreeplaneAction redefineStyleUpdateTemplateAction = modeController.getAction(RedefineStyleUpdateTemplateAction.NAME);
+            redefineStyleUpdateTemplateBtn = addStyleButton(formBuilder, redefineStyleUpdateTemplateAction.getTextKey(), redefineStyleUpdateTemplateAction);
+            redefineStyleUpdateTemplateBtn.setToolTipText(TextUtils.getRawText(redefineStyleUpdateTemplateAction.getTooltipKey()));
+            redefineStyleUpdateTemplateBtn.setText(" ");
+
+            ResourceController.getResourceController().addPropertyChangeListener((propertyName, newValue, oldValue) -> {
+                if(! MFileManager.STANDARD_TEMPLATE.equals(propertyName))
+                    return;
+                IMapSelection selection = Controller.getCurrentController().getSelection();
+                if(selection == null) {
+                    return;    
+                } 
+                NodeModel selected = selection.getSelected();
+                if(selected == null) {
+                    return;
+                }
+                IStyle firstStyle = LogicalStyleController.getController().getFirstStyle(selected);
+                redefineStyleUpdateTemplateBtn.setText(
+                        TextUtils.format(FOR_NEW_MAPS, firstStyle, 
+                                ResourceController.getResourceController().getProperty(MFileManager.STANDARD_TEMPLATE)));
+            });
+
+
 		}
 	}
 
