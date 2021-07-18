@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -41,6 +42,9 @@ import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesAction;
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
+import org.freeplane.features.styles.mindmapmode.RedefineStyleAction;
+import org.freeplane.features.styles.mindmapmode.RedefineStyleUpdateTemplateAction;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -50,6 +54,8 @@ class StyleControlGroup implements ControlGroup{
 	private BooleanProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
+	private JButton redefineStyleBtn;
+	private JButton redefineStyleUpdateTemplateBtn;
 	private final boolean addStyleBox;
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
@@ -101,6 +107,12 @@ class StyleControlGroup implements ControlGroup{
 				final boolean isStyleSet = LogicalStyleModel.getStyle(node) != null;
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
+	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
+                redefineStyleBtn.setText(TextUtils.format("for_this_map", firstStyle));
+	            redefineStyleUpdateTemplateBtn.setText(
+	                            TextUtils.format("for_new_maps", firstStyle, 
+	                                    ResourceController.getResourceController().getProperty(MFileManager.STANDARD_TEMPLATE)));
+
 			}
 			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
 			if(mAutomaticLayoutComboBox != null){
@@ -150,9 +162,18 @@ class StyleControlGroup implements ControlGroup{
 		mNodeStyleButton = addStyleButton(formBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
 		if (addStyleBox) {
 			mMapStyleButton = addStyleButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
+			AFreeplaneAction redefineStyleAction = modeController.getAction(RedefineStyleAction.NAME);
+			redefineStyleBtn = addStyleButton(formBuilder, redefineStyleAction.getTextKey(), redefineStyleAction);
+			redefineStyleBtn.setToolTipText(TextUtils.getRawText(redefineStyleAction.getTooltipKey()));
+            redefineStyleBtn.setText(" ");
+
+			AFreeplaneAction redefineStyleUpdateTemplateAction = modeController.getAction(RedefineStyleUpdateTemplateAction.NAME);
+			redefineStyleUpdateTemplateBtn = addStyleButton(formBuilder, redefineStyleUpdateTemplateAction.getTextKey(), redefineStyleUpdateTemplateAction);
+			redefineStyleUpdateTemplateBtn.setToolTipText(TextUtils.getRawText(redefineStyleUpdateTemplateAction.getTooltipKey()));
+            redefineStyleUpdateTemplateBtn.setText(" ");			
 		}
 	}
-	
+
 	private JButton addStyleButton(DefaultFormBuilder formBuilder, String label, AFreeplaneAction action) {
 	    final JButton button = new JButton(){
 			private static final long serialVersionUID = 1L;

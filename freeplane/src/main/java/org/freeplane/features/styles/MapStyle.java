@@ -31,12 +31,12 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.swing.JOptionPane;
-
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
@@ -68,6 +68,7 @@ import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -442,11 +443,47 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	        {
 				new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
 				updateFollowProperties(targetMap, uri, shouldFollow);
-			});
+	        });
 	}
 
+    private void copyStyleToDefaultExternalTemplate(MapModel map, IStyle styleKey){
+        final ModeController modeController = Controller.getCurrentModeController();
+        final MFileManager fileManager = MFileManager.getController(modeController);
+        File source = fileManager.defaultTemplateFile();
+        File target;
+        if(fileManager.defaultStandardTemplateDir().equals(source.getParentFile())) {
+           target = new File(fileManager.defaultUserTemplateDir(), source.getName()); 
+        }
+        else
+            target = source;
+        try {
+            copyStyleToExternalMap(map, styleKey, source, target);
+        } catch (MalformedURLException e) {
+            LogUtils.severe(e);
+        }
 
-	private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow) {
+    }
+    
+    private void copyStyleToExternalMap(MapModel map, IStyle styleKey, File sourceFile, File targetFile) throws MalformedURLException {
+	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
+	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
+	    Objects.requireNonNull(copiedStyleNode);
+	    final URL url = sourceFile.toURI().toURL();
+	    loadStyleMapContainer(url).ifPresent(styleMapTarget ->
+	    {
+	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
+	        targetStyles.copyStyle(copiedStyleNode, styleKey);
+	        try {
+	            MFileManager.getController(Controller.getCurrentModeController()).writeToFile(styleMapTarget, targetFile);
+	        } catch (IOException e) {
+	            LogUtils.warn(e);
+	        }
+	        
+	    });
+
+	}
+
+    private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow) {
 		if(shouldFollow) {
 			setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, uri.toString());
 			updateLastModificationTime(map, uri);
@@ -661,6 +698,18 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     public Map<String, String> getPropertiesReadOnly(final MapModel model) {
         return Collections.unmodifiableMap(MapStyleModel.getExtension(model).getProperties());
+    }
+
+    public void redefineStyle(final NodeModel node, boolean copyToExternalTemplate) {
+        final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
+        final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+        final NodeModel styleNode = extension.getStyleNode(style);
+        if(styleNode == null)
+            return;
+        Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
+        Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+        LogicalStyleController.getController().refreshMap(node.getMap());
+        copyStyleToDefaultExternalTemplate(node.getMap(), style);
     }
 
 }

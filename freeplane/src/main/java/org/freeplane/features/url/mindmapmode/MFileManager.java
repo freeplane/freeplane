@@ -1024,7 +1024,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 	}
 
-	protected TreeSet<String> collectAvailableMapTemplates() {
+	public TreeSet<String> collectAvailableMapTemplates() {
 		final TreeSet<String> templates = new TreeSet<String>();
 		for (File dir : new File[] { defaultStandardTemplateDir(), defaultUserTemplateDir() })
 			if (dir.isDirectory())

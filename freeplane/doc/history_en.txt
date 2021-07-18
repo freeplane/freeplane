@@ -4,6 +4,7 @@
 Highlight nodes depending on selected condition in filter composer
 Fix custom hyperlinks
 Option to activate spotlight by default
+Easy template updates from formatting panel
 Bug fixes
 
 ===============================

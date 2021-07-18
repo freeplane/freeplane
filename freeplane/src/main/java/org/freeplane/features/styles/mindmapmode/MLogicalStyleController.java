@@ -223,7 +223,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().addUINodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
-		modeController.addAction(new RedefineStyleAction());
+        modeController.addAction(new RedefineStyleAction());
+        modeController.addAction(new RedefineStyleUpdateTemplateAction());
 		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new ManageMapConditionalStylesAction());
 		modeController.addAction(new ManageNodeConditionalStylesAction());

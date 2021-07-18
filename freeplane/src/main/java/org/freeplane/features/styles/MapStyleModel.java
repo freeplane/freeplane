@@ -468,4 +468,32 @@ public class MapStyleModel implements IExtension {
 		return stylesComboBoxModel;
 	}
 
+    void copyStyle(NodeModel copiedStyleNode, IStyle styleKey) {
+        NodeModel targetStyleNode = getStyleNode(styleKey);
+        ModeController modeController = Controller.getCurrentModeController();
+        if(targetStyleNode == null) {
+            NodeModel sourceGroupNode = copiedStyleNode.getParentNode();
+            String group = (String) ((StyleTranslatedObject)sourceGroupNode.getUserObject()).getObject();
+            final MapModel styleMap = getStyleMap();
+            NodeModel targetGroupNode = getStyleNodeGroup(styleMap, group);
+            if(group.equals(MapStyleModel.STYLES_AUTOMATIC_LAYOUT)) {
+                while(targetGroupNode.getChildCount() < sourceGroupNode.getChildCount() - 1) {
+                    NodeModel source = sourceGroupNode.getChildAt(targetGroupNode.getChildCount());
+                    targetStyleNode = new NodeModel(styleMap);
+                    targetStyleNode.setUserObject(source.getUserObject());
+                    targetGroupNode.insert(targetStyleNode);
+                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);         
+                    addStyleNode(targetStyleNode);
+                }
+            }
+            targetStyleNode = new NodeModel(styleMap);
+            targetStyleNode.setUserObject(copiedStyleNode.getUserObject());
+            targetGroupNode.insert(targetStyleNode);
+            addStyleNode(targetStyleNode);
+        } else {
+            modeController.removeExtensions(LogicalStyleKeys.NODE_STYLE, targetStyleNode, targetStyleNode);
+        }
+        modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
+    }
+
 }
