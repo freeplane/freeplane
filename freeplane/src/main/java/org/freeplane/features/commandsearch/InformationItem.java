@@ -59,5 +59,8 @@ public class InformationItem extends SearchItem {
         return true;
     }
 
-
+    @Override
+    String getCopiedText() {
+        return getDisplayedText();
+    }
 }

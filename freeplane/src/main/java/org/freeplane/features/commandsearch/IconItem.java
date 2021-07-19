@@ -3,8 +3,11 @@ package org.freeplane.features.commandsearch;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.TextUtils;
 
 public class IconItem extends SearchItem {
+    private static final String ICONS_PATH =  TextUtils.getText("icons") + ITEM_PATH_SEPARATOR;
+
     private final Icon icon;
 
     private final AFreeplaneAction action;
@@ -31,10 +34,19 @@ public class IconItem extends SearchItem {
 
     @Override
     String getDisplayedText() {
-        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
-        return iconDescription + (accelerator != null ? " (" + accelerator + ")" : "");
+        return getTextWithAccelerator(iconDescription);
     }
 
+    @Override
+    String getCopiedText() {
+        return getTextWithAccelerator(ICONS_PATH + comparedText);
+    }
+
+    private String getTextWithAccelerator(String text) {
+        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
+        return text + (accelerator != null ? " (" + accelerator + ")" : "");
+    }
+    
     private String getSearchedText() {
         String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
         return searchedText + (accelerator != null ? " (" + normalizeText(accelerator) + ")" : "");
