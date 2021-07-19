@@ -417,7 +417,7 @@ public class CommandSearchDialog extends JDialog
     private void copySelectedItemToClipboard() {
         SearchItem item = resultList.getSelectedValue();
         if(item != null) {
-            String text = item.getDisplayedText();
+            String text = item.getCopiedText();
             ClipboardAccessor.getInstance().setClipboardContents(text);
         }
     }

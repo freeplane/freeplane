@@ -93,6 +93,11 @@ class MenuItem extends SearchItem {
     String getComparedText() {
         return path;
     }
+    
+    @Override
+    String getCopiedText() {
+        return getDisplayedText();
+    }
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {

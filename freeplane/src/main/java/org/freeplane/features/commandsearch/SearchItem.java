@@ -49,4 +49,6 @@ abstract class SearchItem implements Comparable<SearchItem> {
     }
 
     abstract protected boolean checkAndMatch(final String searchTerm, ItemChecker textChecker);
+
+    abstract String getCopiedText();
 }

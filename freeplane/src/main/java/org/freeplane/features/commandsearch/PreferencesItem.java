@@ -23,10 +23,12 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+import org.freeplane.core.util.TextUtils;
 
 class PreferencesItem extends SearchItem {
 
     private static final ImageIcon PREFERENCES_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
+    private static final String PREFERENCES_PATH =  TextUtils.getText(ShowPreferencesAction.KEY + ".text") + ITEM_PATH_SEPARATOR;
 
     private final String tab;
     private final String key;
@@ -99,6 +101,11 @@ class PreferencesItem extends SearchItem {
 	String getKey() {
 		return key;
 	}
+
+    @Override
+    public String getCopiedText() {
+        return PREFERENCES_PATH + getDisplayedText();
+    }
 
 
 }
