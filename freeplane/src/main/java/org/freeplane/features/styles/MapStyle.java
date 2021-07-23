@@ -709,7 +709,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
         Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
         LogicalStyleController.getController().refreshMap(node.getMap());
-        copyStyleToDefaultExternalTemplate(node.getMap(), style);
+        if(copyToExternalTemplate)
+            copyStyleToDefaultExternalTemplate(node.getMap(), style);
     }
 
 }

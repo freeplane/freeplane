@@ -17,6 +17,6 @@ public class RedefineStyleUpdateTemplateAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 	    final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
-        MapStyle.getController().redefineStyle(node, false);
+        MapStyle.getController().redefineStyle(node, true);
 	}
 }
