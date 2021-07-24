@@ -33,6 +33,7 @@ allprojects {
 
     repositories {
 		mavenCentral()
+		maven {url 'https://s01.oss.sonatype.org/content/groups/public/' }
 		maven { url 'https://resources.knopflerfish.org/repo/maven2/release/' }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 
