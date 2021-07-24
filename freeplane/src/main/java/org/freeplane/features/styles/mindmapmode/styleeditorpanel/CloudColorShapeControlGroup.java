@@ -24,11 +24,9 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.cloud.CloudController;
@@ -113,7 +111,6 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		addCloudColorControl(formBuilder);
 		new NextLineProperty().appendToForm(formBuilder);
-		new NextColumnProperty(2).appendToForm(formBuilder);
 		addCloudShapeControl(formBuilder);
 	}
 	
