@@ -25,6 +25,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -43,13 +44,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class ChildDistanceControlGroup implements ControlGroup {
 	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
 
-	private BooleanProperty mSetChildDistance;
+	private RevertingProperty mSetChildDistance;
 	private QuantityProperty<LengthUnit> mChildDistance;
 
 	private ChildDistanceChangeListener propertyChangeListener;
 
 	private class ChildDistanceChangeListener extends ControlGroupChangeListener {
-		public ChildDistanceChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
+		public ChildDistanceChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -72,13 +73,13 @@ class ChildDistanceControlGroup implements ControlGroup {
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetChildDistance = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetChildDistance = new RevertingProperty();
 		mChildDistance = new  QuantityProperty<LengthUnit>(VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnit.px);
 		propertyChangeListener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.addPropertyChangeListener(propertyChangeListener);
-		mSetChildDistance.appendToForm(formBuilder);
 		mChildDistance.appendToForm(formBuilder);
+		mSetChildDistance.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

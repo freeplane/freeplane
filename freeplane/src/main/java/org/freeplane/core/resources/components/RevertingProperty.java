@@ -19,26 +19,41 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JCheckBox;
+import javax.swing.JButton;
+
+import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class BooleanProperty extends PropertyBean implements IPropertyControl {
-	private final JCheckBox mCheckBox = new JCheckBox();
+public class RevertingProperty extends PropertyBean implements IPropertyControl {
+    private final static String REVERT_RESOURCE = "reset_property_text";
+    private static final String TEXT = TextUtils.getText(REVERT_RESOURCE);
+	private final JButton revertButton;
 
 	/**
 	 */
-	public BooleanProperty(final String name) {
-		super(name);
-		mCheckBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(final ItemEvent pE) {
+	public RevertingProperty() {
+		super(TEXT);
+		revertButton = new JButton(TEXT) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension preferredSize = new Dimension(super.getPreferredSize());
+                Insets insets = getInsets();
+                preferredSize.height -= insets.top + insets.bottom;
+                return preferredSize;
+            }		    
+		};
+		revertButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                revertButton.setVisible(! getBooleanValue());
 				firePropertyChangeEvent();
 			}
 		});
@@ -46,23 +61,15 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public String getValue() {
-		return mCheckBox.isSelected() ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
+		return revertButton.isVisible() ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {
-		appendToForm(builder, mCheckBox);
-		getLabelComponent().addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mCheckBox.setSelected(! getBooleanValue());
-			}
-			
-		});
+	    builder.append(revertButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {
-		mCheckBox.setEnabled(pEnabled);
+		revertButton.setEnabled(pEnabled);
 	}
 
 	@Override
@@ -72,20 +79,10 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void setValue(final boolean booleanValue) {
-		mCheckBox.setSelected(booleanValue);
+		revertButton.setVisible(booleanValue);
 	}
 
 	public boolean getBooleanValue() {
-		return mCheckBox.isSelected();
-	}
-
-	public void enables(final IPropertyControl control) {
-		control.setEnabled(getBooleanValue());
-		addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				control.setEnabled(getBooleanValue());
-			}
-		});
+		return revertButton.isVisible();
 	}
 }

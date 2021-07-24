@@ -6,6 +6,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.MIconController;
@@ -16,7 +17,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class IconSizeControlGroup implements ControlGroup{
 	private class IconSizeChangeListener extends ControlGroupChangeListener{
 
-		public IconSizeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public IconSizeChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 		@Override
@@ -35,18 +36,18 @@ class IconSizeControlGroup implements ControlGroup{
 	}
 	private static final String ICON_SIZE = "icon_size";
 	private QuantityProperty<LengthUnit> mIconSize;
-	private BooleanProperty mSetIconSize;
+	private RevertingProperty mSetIconSize;
 	private IconSizeChangeListener propertyChangeListener;
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-			mSetIconSize = new BooleanProperty(SET_RESOURCE);
+			mSetIconSize = new RevertingProperty();
 			mIconSize = new QuantityProperty<LengthUnit>(ICON_SIZE, 0, 256, 4, LengthUnit.px);
 			propertyChangeListener = new IconSizeChangeListener(mSetIconSize, mIconSize);
 			mSetIconSize.addPropertyChangeListener(propertyChangeListener);
 			mIconSize.addPropertyChangeListener(propertyChangeListener);
-			mSetIconSize.appendToForm(formBuilder);
 			mIconSize.appendToForm(formBuilder);
+			mSetIconSize.appendToForm(formBuilder);
 	}
 	@Override
 	public void setStyle(NodeModel node, boolean canEdit) {

@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NumberProperty;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
@@ -39,12 +40,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class EdgeWidthControlGroup implements ControlGroup {
 	private static final String EDGE_WIDTH = "edgewidth";
 
-	private BooleanProperty mSetEdgeWidth;
+	private RevertingProperty mSetEdgeWidth;
 	private NumberProperty mEdgeWidth;
 	private EdgeWidthChangeListener propertyChangeListener;
 	
 	private class EdgeWidthChangeListener extends ControlGroupChangeListener {
-		public EdgeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public EdgeWidthChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -71,13 +72,13 @@ public class EdgeWidthControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetEdgeWidth = new RevertingProperty();
 		mEdgeWidth = new NumberProperty(EDGE_WIDTH, 0, 100, 1);
 		propertyChangeListener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(propertyChangeListener);
 		mEdgeWidth.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeWidth.appendToForm(formBuilder);
 		mEdgeWidth.appendToForm(formBuilder);
+		mSetEdgeWidth.appendToForm(formBuilder);
 	}
 
 	@Override

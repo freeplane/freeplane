@@ -26,6 +26,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -43,10 +44,10 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	private static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
 	private static final String BORDER_WIDTH = "border_width";
 	
-	private BooleanProperty mSetBorderWidthMatchesEdgeWidth;
+	private RevertingProperty mSetBorderWidthMatchesEdgeWidth;
 	private BooleanProperty mBorderWidthMatchesEdgeWidth;
 
-	private BooleanProperty mSetBorderWidth;
+	private RevertingProperty mSetBorderWidth;
 	private QuantityProperty<LengthUnit> mBorderWidth;
 
 	private BorderWidthMatchesEdgeWidthListener borderWidthMatchesEdgeChangeListener;
@@ -54,7 +55,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	private boolean canEdit;
 	
 	private class BorderWidthMatchesEdgeWidthListener extends ControlGroupChangeListener {
-		public BorderWidthMatchesEdgeWidthListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public BorderWidthMatchesEdgeWidthListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -77,7 +78,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	}
 	
 	private class BorderWidthListener extends ControlGroupChangeListener {
-		public BorderWidthListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public BorderWidthListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -107,17 +108,17 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	}
 	
 	private void addBorderWidthControl(DefaultFormBuilder formBuilder) {
-		mSetBorderWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetBorderWidth = new RevertingProperty();
 		mBorderWidth = new QuantityProperty<LengthUnit>(BORDER_WIDTH, 0, 100000, 0.1, LengthUnit.px);
 		borderWidthListener = new BorderWidthListener(mSetBorderWidth, mBorderWidth);
 		mSetBorderWidth.addPropertyChangeListener(borderWidthListener);
 		mBorderWidth.addPropertyChangeListener(borderWidthListener);
-		mSetBorderWidth.appendToForm(formBuilder);
 		mBorderWidth.appendToForm(formBuilder);
+		mSetBorderWidth.appendToForm(formBuilder);
 	}
 	
 	public void addBorderWidthMatchesEdgeWidthControl(DefaultFormBuilder formBuilder) {
-		mSetBorderWidthMatchesEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetBorderWidthMatchesEdgeWidth = new RevertingProperty();
 		mBorderWidthMatchesEdgeWidth = new BooleanProperty(BORDER_WIDTH_MATCHES_EDGE_WIDTH);
 		borderWidthMatchesEdgeChangeListener = new BorderWidthMatchesEdgeWidthListener(mSetBorderWidthMatchesEdgeWidth, mBorderWidthMatchesEdgeWidth);
 		mSetBorderWidthMatchesEdgeWidth.addPropertyChangeListener(borderWidthMatchesEdgeChangeListener);
@@ -129,8 +130,8 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 				enableOrDisableBorderWidthControls();
 			}
 		});
-		mSetBorderWidthMatchesEdgeWidth.appendToForm(formBuilder);
 		mBorderWidthMatchesEdgeWidth.appendToForm(formBuilder);
+		mSetBorderWidthMatchesEdgeWidth.appendToForm(formBuilder);
 	}
 
 	public void enableOrDisableBorderWidthControls() {

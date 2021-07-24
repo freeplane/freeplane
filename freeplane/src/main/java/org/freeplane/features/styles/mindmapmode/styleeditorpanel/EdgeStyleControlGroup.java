@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
@@ -41,12 +42,12 @@ public class EdgeStyleControlGroup implements ControlGroup {
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = EnumToStringMapper.getStringValuesOf(EdgeStyle.class, EdgeStyle.values().length - 1);
 
-	private BooleanProperty mSetEdgeStyle;
+	private RevertingProperty mSetEdgeStyle;
 	private ComboProperty mEdgeStyle;
 	private EdgeStyleChangeListener propertyChangeListener;
 	
 	private class EdgeStyleChangeListener extends ControlGroupChangeListener {
-		public EdgeStyleChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public EdgeStyleChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -74,13 +75,13 @@ public class EdgeStyleControlGroup implements ControlGroup {
 	
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetEdgeStyle = new RevertingProperty();
 		mEdgeStyle = new ComboProperty(EDGE_STYLE, EDGE_STYLES);
 		propertyChangeListener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(propertyChangeListener);
 		mEdgeStyle.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeStyle.appendToForm(formBuilder);
 		mEdgeStyle.appendToForm(formBuilder);
+		mSetEdgeStyle.appendToForm(formBuilder);
 	}
 
 	@Override

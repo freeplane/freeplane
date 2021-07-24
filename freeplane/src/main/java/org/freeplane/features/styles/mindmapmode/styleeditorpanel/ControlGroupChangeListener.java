@@ -24,8 +24,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -36,10 +36,10 @@ import org.freeplane.features.mode.Controller;
  */
 abstract class ControlGroupChangeListener implements PropertyChangeListener {
 	final private Collection<IPropertyControl> properties;
-	final private BooleanProperty mSet;
+	final private RevertingProperty mSet;
 	protected boolean internalChange;
 
-	public ControlGroupChangeListener(final BooleanProperty mSet, final IPropertyControl... properties) {
+	public ControlGroupChangeListener(final RevertingProperty mSet, final IPropertyControl... properties) {
 		super();
 		this.mSet = mSet;
 		this.properties = Arrays.asList(properties);

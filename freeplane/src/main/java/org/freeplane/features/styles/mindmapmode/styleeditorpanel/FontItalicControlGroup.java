@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -38,13 +39,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class FontItalicControlGroup implements ControlGroup {
 	private static final String NODE_FONT_ITALIC = "nodefontitalic";
 
-	private BooleanProperty mSetNodeFontItalic;
+	private RevertingProperty mSetNodeFontItalic;
 	private BooleanProperty mNodeFontItalic;
 
 	private FontItalicChangeListener propertyChangeListener;
 	
 	private class FontItalicChangeListener extends ControlGroupChangeListener {
-		public FontItalicChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public FontItalicChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -73,12 +74,12 @@ public class FontItalicControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeFontItalic = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeFontItalic = new RevertingProperty();
 		mNodeFontItalic = new BooleanProperty(NODE_FONT_ITALIC);
 		propertyChangeListener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
 		mSetNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontItalic.appendToForm(formBuilder);
 		mNodeFontItalic.appendToForm(formBuilder);
+		mSetNodeFontItalic.appendToForm(formBuilder);
 	}
 }

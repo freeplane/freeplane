@@ -27,6 +27,7 @@ import java.util.List;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -43,13 +44,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class FontSizeControlGroup implements ControlGroup {
 	private static final String NODE_FONT_SIZE = "nodefontsize";
 
-	private BooleanProperty mSetNodeFontSize;
+	private RevertingProperty mSetNodeFontSize;
 	private ComboProperty mNodeFontSize;
 
 	private FontSizeChangeListener propertyChangeListener;
 	
 	private class FontSizeChangeListener extends ControlGroupChangeListener {
-		public FontSizeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public FontSizeChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -82,14 +83,14 @@ public class FontSizeControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeFontSize = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeFontSize = new RevertingProperty();
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(MUIFactory.FONT_SIZES));
 		mNodeFontSize = new ComboProperty(NODE_FONT_SIZE, sizesVector, sizesVector);
 		mNodeFontSize.setEditable(true);
 		propertyChangeListener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontSize.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontSize.appendToForm(formBuilder);
 		mNodeFontSize.appendToForm(formBuilder);
+		mSetNodeFontSize.appendToForm(formBuilder);
 	}
 }

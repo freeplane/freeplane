@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
@@ -55,7 +57,7 @@ class StyleControlGroup implements ControlGroup{
     private static final String FOR_NEW_MAPS = "changes_style_for_new_maps";
     private static final String FOR_NEW_MAPS_TOOLTIP =FOR_NEW_MAPS + ".tooltip";
     private boolean internalChange;
-	private BooleanProperty mSetStyle;
+	private RevertingProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
     private JRadioButton redefinesStyleForCurrentMapAndTemplate;
@@ -82,7 +84,7 @@ class StyleControlGroup implements ControlGroup{
 			if(internalChange){
 				return;
 			}
-			BooleanProperty isSet = (BooleanProperty) evt.getSource();
+			RevertingProperty isSet = (RevertingProperty) evt.getSource();
 			final MLogicalStyleController styleController = (MLogicalStyleController) LogicalStyleController.getController();
 			if(isSet.getBooleanValue()){
 				styleController.setStyle((IStyle) uiFactory.getStyles().getSelectedItem());
@@ -183,8 +185,13 @@ class StyleControlGroup implements ControlGroup{
             ButtonGroup redefineStyleButtonGroup = new ButtonGroup();
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapOnly);
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapAndTemplate);
-            formBuilder.append(redefinesStyleForCurrentMapOnly, 5);
-            formBuilder.append(redefinesStyleForCurrentMapAndTemplate, 2);
+            
+            Box radioButtonBox = Box.createHorizontalBox();
+            radioButtonBox.add(Box.createHorizontalGlue());
+            radioButtonBox.add(redefinesStyleForCurrentMapOnly);
+            radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
+            radioButtonBox.add(Box.createHorizontalGlue());
+            formBuilder.append(radioButtonBox, formBuilder.getColumnCount() - 1);
             formBuilder.nextLine();
 
             ResourceController.getResourceController().addPropertyChangeListener((propertyName, newValue, oldValue) -> {
@@ -227,12 +234,14 @@ class StyleControlGroup implements ControlGroup{
 
 	private void addStyleBox(final DefaultFormBuilder formBuilder) {
 	    mStyleBox = uiFactory.createStyleBox();
-	    mSetStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
+	    mSetStyle = new RevertingProperty();
 		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
-		mSetStyle.appendToForm(formBuilder);
 		formBuilder.append(new JLabel(TextUtils.getText("style")));
 		formBuilder.append(mStyleBox);
+		
+		appendLabeledComponent(formBuilder, "style", mStyleBox);
+		mSetStyle.appendToForm(formBuilder);
 		formBuilder.nextLine();
 	}
 	private void addAutomaticLayout(final DefaultFormBuilder formBuilder) {
@@ -301,7 +310,7 @@ class StyleControlGroup implements ControlGroup{
 			formBuilder.nextLine();
 			formBuilder.appendRow(FormSpecs.PREF_ROWSPEC);
 			formBuilder.setColumn(1);
-			formBuilder.append(mEditEdgeColorsBtn, 7);
+			formBuilder.append(mEditEdgeColorsBtn, formBuilder.getColumnCount());
 			formBuilder.nextLine();
 			
 	}
@@ -310,8 +319,8 @@ class StyleControlGroup implements ControlGroup{
 		final String text = TextUtils.getText(labelKey);
 	    final JLabel label = new JLabel(text);
 		TranslatedElement.TEXT.setKey(label, labelKey);
-		formBuilder.append(label, 5);
-	    formBuilder.append(component);
+		formBuilder.append(label, 1);
+	    formBuilder.append(component, 3);
 	    formBuilder.nextLine();
 	}
 

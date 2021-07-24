@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -35,12 +36,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class FontStrikeThroughControlGroup implements ControlGroup {
 	private static final String NODE_FONT_STRIKE_THROUGH = "nodefontstrikethrough";
 
-	private BooleanProperty mSetNodeFontStrikeThrough;
+	private RevertingProperty mSetNodeFontStrikeThrough;
 	private BooleanProperty mNodeFontStrikeThrough;
 	private FontStrikeThroughChangeListener propertyChangeListener;
 	
 	private class FontStrikeThroughChangeListener extends ControlGroupChangeListener {
-		public FontStrikeThroughChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public FontStrikeThroughChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -69,12 +70,12 @@ public class FontStrikeThroughControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeFontStrikeThrough = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeFontStrikeThrough = new RevertingProperty();
 		mNodeFontStrikeThrough = new BooleanProperty(NODE_FONT_STRIKE_THROUGH);
 		propertyChangeListener = new FontStrikeThroughChangeListener(mSetNodeFontStrikeThrough, mNodeFontStrikeThrough);
 		mSetNodeFontStrikeThrough.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontStrikeThrough.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontStrikeThrough.appendToForm(formBuilder);
 		mNodeFontStrikeThrough.appendToForm(formBuilder);
+		mSetNodeFontStrikeThrough.appendToForm(formBuilder);
 	}
 }

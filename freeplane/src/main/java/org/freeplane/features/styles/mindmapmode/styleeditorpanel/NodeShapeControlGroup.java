@@ -26,13 +26,14 @@ import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -47,7 +48,7 @@ class NodeShapeControlGroup implements ControlGroup {
 	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
 	private static final String UNIFORM_SHAPE = "uniform_shape";
 
-	private BooleanProperty mSetNodeShape;
+	private RevertingProperty mSetNodeShape;
 	private ComboProperty mNodeShape;
 	
 	private QuantityProperty<LengthUnit> mShapeHorizontalMargin;
@@ -58,7 +59,7 @@ class NodeShapeControlGroup implements ControlGroup {
 	private boolean canEdit;
 
 	private class NodeShapeChangeListener extends ControlGroupChangeListener {
-		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
+		public NodeShapeChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -98,7 +99,7 @@ class NodeShapeControlGroup implements ControlGroup {
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeShape = new RevertingProperty();
 		mNodeShape = ComboProperty.of(NODE_SHAPE, NodeStyleShape.class);
 		mShapeHorizontalMargin = new QuantityProperty<LengthUnit>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnit.pt);
 		mShapeVerticalMargin = new QuantityProperty<LengthUnit>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnit.pt);
@@ -110,14 +111,14 @@ class NodeShapeControlGroup implements ControlGroup {
 		mShapeVerticalMargin.addPropertyChangeListener(propertyChangeListener);
 		mUniformShape.addPropertyChangeListener(propertyChangeListener);
 		
-		mSetNodeShape.appendToForm(formBuilder);
 		mNodeShape.appendToForm(formBuilder);
-		new NextColumnProperty(2).appendToForm(formBuilder);
+		mSetNodeShape.appendToForm(formBuilder);
 		mShapeHorizontalMargin.appendToForm(formBuilder);
-		new NextColumnProperty(2).appendToForm(formBuilder);
+		formBuilder.nextLine();
 		mShapeVerticalMargin.appendToForm(formBuilder);
-		new NextColumnProperty(2).appendToForm(formBuilder);
+		formBuilder.nextLine();
 		mUniformShape.appendToForm(formBuilder);
+		formBuilder.nextLine();
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

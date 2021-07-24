@@ -22,9 +22,11 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
@@ -43,10 +45,10 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	private static final String BORDER_COLOR_MATCHES_EDGE_COLOR = "border_color_matches_edge_color";
 	private static final String BORDER_COLOR = "border_color";
 	
-	private BooleanProperty mSetBorderColor;
+	private RevertingProperty mSetBorderColor;
 	private ColorProperty mBorderColor;
 
-	private BooleanProperty mSetBorderColorMatchesEdgeColor;
+	private RevertingProperty mSetBorderColorMatchesEdgeColor;
 	private BooleanProperty mBorderColorMatchesEdgeColor;
 	
 	private BorderColorListener borderColorListener;
@@ -54,7 +56,7 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	private boolean canEdit;
 	
 	private class BorderColorListener extends ControlGroupChangeListener {
-		public BorderColorListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public BorderColorListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -78,7 +80,7 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	}
 	
 	private class BorderColorMatchesEdgeColorListener extends ControlGroupChangeListener {
-		public BorderColorMatchesEdgeColorListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public BorderColorMatchesEdgeColorListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -107,17 +109,17 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	}
 	
 	private void addBorderColorControl(DefaultFormBuilder formBuilder) {
-		mSetBorderColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetBorderColor = new RevertingProperty();
 		mBorderColor = new ColorProperty(BORDER_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
 		borderColorListener = new BorderColorListener(mSetBorderColor, mBorderColor);
 		mSetBorderColor.addPropertyChangeListener(borderColorListener);
 		mBorderColor.addPropertyChangeListener(borderColorListener);
-		mSetBorderColor.appendToForm(formBuilder);
 		mBorderColor.appendToForm(formBuilder);
+		mSetBorderColor.appendToForm(formBuilder);
 	}
 	
 	public void addBorderColorMatchesEdgeColorControl(DefaultFormBuilder formBuilder) {
-		mSetBorderColorMatchesEdgeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetBorderColorMatchesEdgeColor = new RevertingProperty();
 		mBorderColorMatchesEdgeColor = new BooleanProperty(BORDER_COLOR_MATCHES_EDGE_COLOR);
 		borderColorMatchesEdgeColorChangeListener = new BorderColorMatchesEdgeColorListener(mSetBorderColorMatchesEdgeColor, mBorderColorMatchesEdgeColor);
 		mSetBorderColorMatchesEdgeColor.addPropertyChangeListener(borderColorMatchesEdgeColorChangeListener);
@@ -129,8 +131,8 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 			}
 		});
 		
-		mSetBorderColorMatchesEdgeColor.appendToForm(formBuilder);
 		mBorderColorMatchesEdgeColor.appendToForm(formBuilder);
+		mSetBorderColorMatchesEdgeColor.appendToForm(formBuilder);
 	}
 
 	@Override
