@@ -51,7 +51,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
-import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -100,7 +99,6 @@ class ExportPdf extends ExportVectorGraphic {
 		}
 	}
 
-	@NotNull
 	private PDFTranscoder createPdfTranscoder() {
 		final PDFTranscoder pdfTranscoder = new PDFTranscoder();
 		/*
