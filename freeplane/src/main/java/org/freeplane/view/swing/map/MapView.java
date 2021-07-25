@@ -825,6 +825,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void onSelectionChange(final NodeView node) {
+		if(! node.isShowing())
+			return;
 		node.getMainView().updateTextColor(node);
 		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors)
 			repaint(getVisibleRect());
