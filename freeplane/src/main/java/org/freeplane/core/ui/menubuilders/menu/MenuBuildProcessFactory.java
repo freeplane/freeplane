@@ -31,7 +31,7 @@ import org.freeplane.features.mode.FreeplaneActions;
 public class MenuBuildProcessFactory implements BuildProcessFactory {
 
 	private PhaseProcessor buildProcessor;
-	
+
 	private SubtreeProcessor childProcessor;
 
 	@Override
@@ -55,25 +55,25 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
 		    new AcceleratorDestroyer(modeController, acceleratorMap, entries));
 
-        
+
         childProcessor = new SubtreeProcessor(RecursiveMenuStructureProcessor::shouldProcessOnEvent);
         final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
         EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
         entryPopupListenerCollection.addEntryPopupListener(childProcessor);
-        
+
         acceleratorMap.addAcceleratorChangeListener(modeController, new MenuAcceleratorChangeListener(entries));
 
         final RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
 		uiBuilder.setDefaultBuilderPair(EntryVisitor.EMTPY, EntryVisitor.EMTPY);
 		uiBuilder.addBuilderPair("skip", EntryVisitor.SKIP, EntryVisitor.SKIP);
-		
+
 		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
 
 		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
         uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu");
-		
+
 		uiBuilder.addBuilder("map_popup", new PopupBuilder(userInputListenerFactory.getMapPopup(), entryPopupListenerCollection, resourceAccessor));
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu");
 		uiBuilder.addBuilder("node_popup", new PopupBuilder(userInputListenerFactory.getNodePopupMenu(), entryPopupListenerCollection, resourceAccessor));
@@ -101,7 +101,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 				return ! uiBuilder.containsOneOf(entry.builders());
 			}
 		}, EntryVisitor.EMTPY);
-		
+
 		if(Compat.isMacOsX()){
 			actionBuilder.addBuilderPair("removeOnMac", new ChildEntryFilter() {
 				@Override
@@ -116,12 +116,12 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 							    .withPhase(ACCELERATORS, acceleratorBuilder)
 							    .withPhase(UI, uiBuilder);
 		childProcessor.setProcessor(buildProcessor);
-		
+
 		PhaseProcessor menuItemProcessor = new PhaseProcessor(buildPhaseListeners)
 		.withPhase(UI, menuItemBuilder);
-		
-        SubtreeProcessor menuProcessor = new SubtreeProcessor(e -> 
-                UI.equals(e.getAttribute(PROCESS_ON_POPUP)));
+
+        SubtreeProcessor menuProcessor = new SubtreeProcessor(e ->
+        RecursiveMenuStructureProcessor.UI.equals(e.getAttribute(PROCESS_ON_POPUP)));
         entryPopupListenerCollection.addEntryPopupListener(menuProcessor);
         entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 		menuProcessor.setProcessor(menuItemProcessor);
