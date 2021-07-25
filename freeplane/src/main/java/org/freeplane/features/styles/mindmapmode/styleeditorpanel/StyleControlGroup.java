@@ -239,8 +239,6 @@ class StyleControlGroup implements ControlGroup{
 		mSetStyle.addPropertyChangeListener(listener);
 		formBuilder.append(new JLabel(TextUtils.getText("style")));
 		formBuilder.append(mStyleBox);
-		
-		appendLabeledComponent(formBuilder, "style", mStyleBox);
 		mSetStyle.appendToForm(formBuilder);
 		formBuilder.nextLine();
 	}
