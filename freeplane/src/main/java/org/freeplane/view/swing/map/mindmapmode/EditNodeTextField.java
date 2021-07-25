@@ -40,7 +40,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URI;
 import java.text.AttributedCharacterIterator;
 
 import javax.swing.Action;
@@ -570,7 +569,7 @@ public class EditNodeTextField extends EditNodeBase {
 		mapViewManager.removeMapViewChangeListener(mapViewChangeListener);
 		mapViewChangeListener = null;
 		parent.setPreferredSize(null);
-		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null) {
+		if(nodeView.isShowing()) {
 			nodeView.update();
 			preserveRootNodeLocationOnScreen();
 		}
