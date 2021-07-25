@@ -12,13 +12,13 @@ import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair.VisitorTy
 
 public class RecursiveMenuStructureProcessor{
 
-	static final String UI = "UI";
+	public static final String PROCESS_ON_POPUP = "processOnPopup";
+	public static final String UI = "UI";
 	final private Map<String, BuilderDestroyerPair> visitors;
 	final private Map<String, String> subtreeDefaultVisitors;
 	private LinkedList<String> subtreeDefaultVisitorStack;
 	private BuilderDestroyerPair defaultBuilder = new BuilderDestroyerPair(EntryVisitor.ILLEGAL,
 	    EntryVisitor.ILLEGAL);
-	public static final String PROCESS_ON_POPUP = "processOnPopup"; 
 
 	private RecursiveMenuStructureProcessor(Map<String, BuilderDestroyerPair> visitors,
 	                                        Map<String, String> subtreeDefaultVisitors,
@@ -33,7 +33,7 @@ public class RecursiveMenuStructureProcessor{
 	public RecursiveMenuStructureProcessor() {
 		visitors = new HashMap<String, BuilderDestroyerPair>();
 		subtreeDefaultVisitors = new HashMap<String, String>();
-		subtreeDefaultVisitorStack = new LinkedList<String>(); 
+		subtreeDefaultVisitorStack = new LinkedList<String>();
 	}
 
 	public void addBuilderPair(String name, BuilderDestroyerPair pair) {
@@ -76,7 +76,7 @@ public class RecursiveMenuStructureProcessor{
 	public static boolean shouldProcessUiOnEvent(Entry target) {
 		return shouldProcessOnEvent(target) || UI.equals(target.getAttribute(PROCESS_ON_POPUP));
 	}
-	
+
 	private void processChildren(Entry target, VisitorType visitorType) {
 		final int originalDefaultBuilderStackSize = subtreeDefaultVisitorStack.size();
 		final String visitorToCall = visitorToCall(target);
@@ -136,7 +136,7 @@ public class RecursiveMenuStructureProcessor{
 		final Entry explicitDefaultBuilderEntry = explicitDefaultBuilderEntry(root, entry);
 		if (explicitDefaultBuilderEntry != null) {
 			String builderName = explicitBuilderName(explicitDefaultBuilderEntry);
-			int count = 1; 
+			int count = 1;
 			for (Entry index = entry; index != explicitDefaultBuilderEntry; index = index.getParent()) {
 			    count++;
 			}
