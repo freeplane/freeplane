@@ -328,6 +328,7 @@ public class UrlManager implements IExtension {
 					return;
 				}
 				uri = absoluteUri;
+				link = new Hyperlink(absoluteUri);
 			}
 			//DOCEAR: mindmaps can be linked in a mindmap --> therefore project-relative-paths are possible
 			if(! asList(FILE_SCHEME, SMB_SCHEME, FREEPLANE_SCHEME).contains(uri.getScheme())) {
