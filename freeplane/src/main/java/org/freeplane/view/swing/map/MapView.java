@@ -2057,12 +2057,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final NodeModel node = newSelected.getModel();
 		if(node.isHiddenSummary())
 			throw new AssertionError("select invisible node");
-		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
-			mapScroller.scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
-		}
-		else {
-			mapScroller.scrollNodeToVisible(newSelected);
-		}
 		selectAsTheOnlyOneSelected(newSelected, true);
 		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(filter));
 	}
@@ -2071,7 +2065,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (requestFocus) {
 			newSelected.requestFocusInWindow();
 		}
-		mapScroller.scrollNodeToVisible(newSelected);
+        if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
+            mapScroller.scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
+        }
+        else {
+            mapScroller.scrollNodeToVisible(newSelected);
+        }
 		if(selection.size() == 1 && getSelected().equals(newSelected)){
 			return;
 		}
