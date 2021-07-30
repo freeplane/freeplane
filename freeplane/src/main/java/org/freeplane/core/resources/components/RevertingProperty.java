@@ -19,18 +19,21 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.border.Border;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class RevertingProperty extends PropertyBean implements IPropertyControl {
+    private static final int PADDING = (int) (UITools.FONT_SCALE_FACTOR * 2);
+    private static final Border BORDER = BorderFactory.createEmptyBorder(PADDING, 2 * PADDING, PADDING, 2 * PADDING);
     private final static String REVERT_RESOURCE = "reset_property_text";
     private static final String TEXT = TextUtils.getText(REVERT_RESOURCE);
 	private final JButton revertButton;
@@ -39,17 +42,8 @@ public class RevertingProperty extends PropertyBean implements IPropertyControl 
 	 */
 	public RevertingProperty() {
 		super(TEXT);
-		revertButton = new JButton(TEXT) {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Dimension getPreferredSize() {
-                Dimension preferredSize = new Dimension(super.getPreferredSize());
-                Insets insets = getInsets();
-                preferredSize.height -= insets.top + insets.bottom;
-                return preferredSize;
-            }		    
-		};
+		revertButton = new JButton(TEXT);
+		revertButton.setBorder(BORDER);
 		revertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
