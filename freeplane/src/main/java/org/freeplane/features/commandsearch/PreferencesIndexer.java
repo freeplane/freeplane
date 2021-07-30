@@ -73,6 +73,7 @@ class PreferencesIndexer
 				    String currentTabTranslated = path.get(0);
 				    if(path.size() > 1) {
 				    	String currentSeparatorTranslated = path.get(1);
+//				    	System.out.println(currentTabTranslated + ITEM_PATH_SEPARATOR + currentSeparatorTranslated + ITEM_PATH_SEPARATOR + translatedText);
 				    	if(parent.getChildCount() < 20) {
 				    		String prefPath = currentSeparatorTranslated + ITEM_PATH_SEPARATOR + translatedText;
 				    		prefs.add(new PreferencesItem(currentTabTranslated, propertyName, prefPath, tooltipText));
