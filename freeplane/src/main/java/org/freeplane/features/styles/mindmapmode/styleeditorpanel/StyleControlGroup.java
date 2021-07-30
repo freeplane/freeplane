@@ -1,5 +1,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -172,7 +174,6 @@ class StyleControlGroup implements ControlGroup{
 			        MapStyle.getController().redefineStyle(node, redefinesStyleForCurrentMapAndTemplate.isSelected());
 
 			});
-			redefineStyleBtnBorder = UITools.addTitledBorder(redefineStyleBtn, "", StyleEditorPanel.FONT_SIZE);
 			addComponent(formBuilder, redefineStyleBtn);
 
             JRadioButton redefinesStyleForCurrentMapOnly = new JRadioButton();
@@ -186,12 +187,17 @@ class StyleControlGroup implements ControlGroup{
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapOnly);
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapAndTemplate);
             
-            Box radioButtonBox = Box.createHorizontalBox();
-            radioButtonBox.add(Box.createHorizontalGlue());
+            Box buttonBox = Box.createHorizontalBox();
+            Box radioButtonBox = Box.createVerticalBox();
             radioButtonBox.add(redefinesStyleForCurrentMapOnly);
             radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
-            radioButtonBox.add(Box.createHorizontalGlue());
-            formBuilder.append(radioButtonBox, formBuilder.getColumnCount() - 1);
+            radioButtonBox.setMaximumSize(radioButtonBox.getPreferredSize());
+            buttonBox.add(radioButtonBox);
+//            buttonBox.add(Box.createHorizontalGlue());
+            buttonBox.add(redefineStyleBtn);
+//            buttonBox.add(Box.createHorizontalGlue());
+            redefineStyleBtnBorder = UITools.addTitledBorder(buttonBox, "", StyleEditorPanel.FONT_SIZE);
+            formBuilder.append(buttonBox, formBuilder.getColumnCount());
             formBuilder.nextLine();
 
             ResourceController.getResourceController().addPropertyChangeListener((propertyName, newValue, oldValue) -> {
