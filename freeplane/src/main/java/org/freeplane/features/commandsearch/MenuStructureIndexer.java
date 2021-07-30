@@ -122,6 +122,7 @@ class MenuStructureIndexer {
             else
             {
                 path = prefix + SearchItem.ITEM_PATH_SEPARATOR + component;
+//                System.out.println(path);
             }
         } else {
             path = prefix;
