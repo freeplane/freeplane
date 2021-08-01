@@ -43,7 +43,7 @@ public class MindMapPreviewWithOptions extends Box{
 		follow.setAlignmentX(LEFT_ALIGNMENT);
         associate = new JCheckBox();
         associate.setSelected(true);
-        LabelAndMnemonicSetter.setLabelAndMnemonic(associate, TextUtils.getRawText("associateMindMap"));
+        LabelAndMnemonicSetter.setLabelAndMnemonic(associate, TextUtils.getRawText("associateUpdatedTemplate"));
         associate.setAlignmentX(LEFT_ALIGNMENT);
         Box checkboxes = Box.createHorizontalBox();
         checkboxes.setAlignmentX(LEFT_ALIGNMENT);
