@@ -451,7 +451,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         final ModeController modeController = Controller.getCurrentModeController();
         MFileManager fileManager = MFileManager.getController(modeController);
         File source = fileManager.defaultTemplateFile();
-        final TemplateManager templateManager = fileManager.templateManager;
+        final TemplateManager templateManager = TemplateManager.INSTANCE;
         File target  = templateManager.defaultStandardTemplateDir().equals(source.getParentFile()) 
                 ? new File(templateManager.defaultUserTemplateDir(), source.getName()) 
                         : source;

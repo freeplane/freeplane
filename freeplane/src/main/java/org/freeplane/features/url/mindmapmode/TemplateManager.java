@@ -8,6 +8,9 @@ import java.util.TreeSet;
 import org.freeplane.core.resources.ResourceController;
 
 public class TemplateManager {
+    public static final TemplateManager INSTANCE = new TemplateManager();
+
+
     File templateFile(final String userDefinedTemplateFilePath) {
         final ResourceController resourceController = ResourceController.getResourceController();
         final File userDefinedTemplateFile = new File(userDefinedTemplateFilePath);

@@ -154,8 +154,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
     private final static FileFilter MINDMAP_FILE_FILTER = new CaseSensitiveFileNameExtensionFilter("mm", TextUtils.getText("mindmaps_desc"));
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
 	private static File singleBackupDirectory;
-	public final TemplateManager templateManager = new TemplateManager();
-
 	private File[] findFileRevisions(final File file, final File backupDir, final AlternativeFileMode mode) {
 		final String fileExtensionPattern;
 		if (mode == AlternativeFileMode.ALL)
@@ -306,7 +304,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		optionPanelBuilder.addCreator("Environment/files/skip_template_selection", new IPropertyControlCreator() {
 			@Override
 			public IPropertyControl createControl() {
-				final Collection<String> templates = templateManager.collectAvailableMapTemplates();
+				final Collection<String> templates = TemplateManager.INSTANCE.collectAvailableMapTemplates();
 				ComboProperty comboProperty = new ComboProperty(getPropertyName(), templates, templates);
 				comboProperty.setEditable(true);
 				return comboProperty;
@@ -333,7 +331,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		controller.addAction(new OpenAction());
 		controller.addAction(new OpenURLMapAction());
 		controller.addAction(new NewMapAction());
-		final File userTemplates = templateManager.defaultUserTemplateDir();
+		final File userTemplates = TemplateManager.INSTANCE.defaultUserTemplateDir();
 		userTemplates.mkdir();
 		modeController.addAction(new NewMapFromTemplateAction("new_map_from_user_templates"));
 		modeController.addAction(new SaveAction());
@@ -353,8 +351,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	    final JFreeplaneCustomizableFileChooser fileChooser = super.getFileChooser();
         final File mapsDirectory = fileChooser.getCurrentDirectory();
-        final File templateDir = templateManager.defaultStandardTemplateDir();
-        final File userTemplateDir = templateManager.defaultUserTemplateDir();
+        final File templateDir = TemplateManager.INSTANCE.defaultStandardTemplateDir();
+        final File userTemplateDir = TemplateManager.INSTANCE.defaultUserTemplateDir();
 
         MindMapDirectoryFilter maps = new MindMapDirectoryFilter(MindmapDirectory.MINDMAPS, mapsDirectory);
         MindMapDirectoryFilter templates = new MindMapDirectoryFilter(MindmapDirectory.TEMPLATES, templateDir);
@@ -642,7 +640,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				    follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
 				}
 				else {
-					TemplateChooser templateChooser = new TemplateChooser(templateManager, false);
+					TemplateChooser templateChooser = new TemplateChooser(TemplateManager.INSTANCE, false);
 					chosenFile = templateChooser.chosenTemplateFile();
 					follow = templateChooser.isConnectChecked();
 				}
@@ -659,7 +657,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public File defaultTemplateFile() {
 		final String userDefinedTemplateFilePath = ResourceController.getResourceController()
 		    .getProperty(STANDARD_TEMPLATE);
-		return templateManager.templateFile(userDefinedTemplateFilePath);
+		return TemplateManager.INSTANCE.templateFile(userDefinedTemplateFilePath);
 	}
 
 	public MapModel openUntitledMap(final File startFile, boolean startFollow) {
