@@ -20,6 +20,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 
 @EnabledAction(checkOnPopup = true)
 class ManageFollowedMindMapAction extends AFreeplaneAction{
@@ -33,7 +34,7 @@ class ManageFollowedMindMapAction extends AFreeplaneAction{
 	public void actionPerformed(ActionEvent event) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		MapStyle mapStyleController = MapStyle.getController();
-		String followedMap = mapStyleController.getProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+		String followedMap = mapStyleController.getProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
 		if(followedMap != null) {
 
 			final Object[] options;
@@ -44,32 +45,39 @@ class ManageFollowedMindMapAction extends AFreeplaneAction{
 					TextUtils.getText("close") };
 			try {
 				URI uri = new URI(followedMap);
-				String followedMapPath = "file".equalsIgnoreCase(uri.getScheme()) ? Paths.get(uri).toFile().getAbsolutePath() : followedMap;
-				String message = TextUtils.format("followed_map", followedMapPath);
+				URI expandedUri = TemplateManager.INSTANCE.expandTemplateLocation(uri);
+				String message;
+                if (TemplateManager.TEMPLATE_SCHEME.equals(uri.getScheme())) {
+                    message = TextUtils.format("followed_template", uri.getPath().substring(1));
+                } else {
+                    String followedMapPath = "file".equalsIgnoreCase(uri.getScheme()) 
+                            ? Paths.get(uri).toFile().getAbsolutePath() : followedMap;
+                    message = TextUtils.format("followed_map", followedMapPath);
+                }
 				final int choice = JOptionPane.showOptionDialog(UITools.getMenuComponent(), message,
 						getValue(Action.NAME).toString(), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 						options, options[4]);
 
 				switch(choice) {
 				case 0:
-					UrlManager.getController().loadHyperlink(new Hyperlink(uri));
+					UrlManager.getController().loadHyperlink(new Hyperlink(expandedUri));
 					break;
 				case 1:
 					try {
-						mapStyleController.copyStyles(uri, map, true);
+						mapStyleController.copyStyles(expandedUri, map, true);
 					} catch (MalformedURLException e) {
 						LogUtils.warn(e);
 					}
 					break;
 				case 2:
 					try {
-						mapStyleController.replaceStyles(uri, map, true);
+						mapStyleController.replaceStyles(expandedUri, map, true);
 					} catch (MalformedURLException e) {
 						LogUtils.warn(e);
 					}
 					break;
 				case 3:
-					mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, null);
+					mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, null);
 					mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, null);
 					break;
 				default:
@@ -89,7 +97,7 @@ class ManageFollowedMindMapAction extends AFreeplaneAction{
 	protected void setEnabled() {
 		final MapModel map = Controller.getCurrentController().getMap();
 		MapStyle mapStyleController = MapStyle.getController();
-		boolean containsProperty = mapStyleController.getProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY) != null;
+		boolean containsProperty = mapStyleController.getProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY) != null;
 		setEnabled(containsProperty);
 	}
 }

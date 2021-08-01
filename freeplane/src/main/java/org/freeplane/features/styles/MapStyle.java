@@ -485,13 +485,14 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow) {
 		if(shouldFollow) {
-			setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, uri.toString());
+			setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
+			        TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString());
 			updateLastModificationTime(map, uri);
 			
 		}
 		else {
-			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
-			if(followedMapUri != null && uri.toString().equals(followedMapUri)) {
+			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
+			if(followedMapUri != null && TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString().equals(followedMapUri)) {
 				updateLastModificationTime(map, uri);
 			}
 		}
@@ -524,13 +525,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     private void copyMapStylesNoUndoNoRefresh(final MapModel targetMap) {
         MapStyleModel mapStyleModel = MapStyleModel.getExtension(targetMap);
-        String followedMap = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+        String followedTemplate = followedTemplate(mapStyleModel);
         String lastUpdateTimeString = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME);
         long lastUpdateTime = lastUpdateTimeString != null ? Long.parseLong(lastUpdateTimeString) : 0;
         String followedMapPath; 
-        if(followedMap != null) {
+        if(followedTemplate != null) {
             try {
-                URI source = new URI(followedMap);
+                URI source = TemplateManager.INSTANCE.expandTemplateLocation(new URI(followedTemplate));
                 boolean shouldUpdate;
                 long sourceLastModificationTime ;
                 if(source.getScheme().equalsIgnoreCase("file")) {
@@ -541,7 +542,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                 } else {
                     sourceLastModificationTime = lastUpdateTime;
                     shouldUpdate = true;
-                    followedMapPath = followedMap;
+                    followedMapPath = followedTemplate;
                 }
                 if(shouldUpdate) {
                     loadStyleMapContainer(source.toURL()).ifPresent(styleMapContainer ->
@@ -554,10 +555,28 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                     MapStyleModel.getExtension(targetMap).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceLastModificationTime));
             }
             catch (URISyntaxException | MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LogUtils.severe(e);
             }
 
+        }
+    }
+
+    private String followedTemplate(MapStyleModel mapStyleModel) {
+        normalizeOldFormatTemplateLocation(mapStyleModel);
+        return mapStyleModel.getProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
+    }
+
+    private void normalizeOldFormatTemplateLocation(MapStyleModel mapStyleModel) {
+        TemplateManager templateManager = TemplateManager.INSTANCE;
+        String oldPropertyLocation = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+        if(oldPropertyLocation != null) {
+            mapStyleModel.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, null);
+            try {
+                mapStyleModel.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, 
+                        templateManager.normalizeTemplateLocation(new URI(oldPropertyLocation)).toString());
+            } catch (URISyntaxException e) {
+                LogUtils.severe(e);
+            }
         }
     }
 

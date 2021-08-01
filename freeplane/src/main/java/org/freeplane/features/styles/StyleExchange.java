@@ -26,8 +26,8 @@ class StyleExchange {
         final MapStyleModel source = MapStyleModel.getExtension(sourceMap);
         source.setNonStyleUserPropertiesFrom(oldStyleModel);
         moveStyle(true);
-        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
-            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
+        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
+            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY));
         targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME,
             	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME));
         modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, sourceMap, targetMap);
@@ -50,8 +50,8 @@ class StyleExchange {
         source.addConditionalStylesFrom(oldStyleModel);
         source.setNonStyleUserPropertiesFrom(oldStyleModel);
         moveStyle(true);
-        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
-            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
+        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
+            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY));
         targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME,
         		oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME));
 	}
