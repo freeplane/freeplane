@@ -14,16 +14,16 @@ public class MindMapPreviewWithOptions extends Box{
 	private static final long serialVersionUID = 1L;
     private final JCheckBox follow;
     private final JCheckBox associate;
-
-	public MindMapPreviewWithOptions(JFileChooser fileChooser, boolean selectFollow) {
-		this(new MindMapPreview(fileChooser), selectFollow);
+    private final JFileChooser fileChooser;
+    public MindMapPreviewWithOptions(JFileChooser fileChooser) {
+		this(new MindMapPreview(fileChooser), fileChooser);
 	}
-	private MindMapPreviewWithOptions(MindMapPreview preview, boolean selectFollow) {
+	private MindMapPreviewWithOptions(MindMapPreview preview, JFileChooser fileChooser) {
 		super(BoxLayout.Y_AXIS);
+        this.fileChooser = fileChooser;
 		preview.setAlignmentX(LEFT_ALIGNMENT);
 		add(preview);
 		follow = new JCheckBox();
-		follow.setSelected(selectFollow);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(follow, TextUtils.getRawText("followMindMap"));
 		follow.setAlignmentX(LEFT_ALIGNMENT);
         associate = new JCheckBox();
@@ -37,11 +37,16 @@ public class MindMapPreviewWithOptions extends Box{
         add(checkboxes);
 	}
 	
-	public MindMapPreviewWithOptions associateAlways() {
-	    associate.setSelected(true);
-	    associate.setEnabled(false);
-	    return this;
-	}
+    public MindMapPreviewWithOptions selectFollows() {
+        follow.setSelected(true);
+        return this;
+    }
+    
+    public MindMapPreviewWithOptions associateAlways() {
+        associate.setSelected(true);
+        associate.setEnabled(false);
+        return this;
+    }
 
     public boolean isFollowChecked() {
         return follow.isSelected();
@@ -49,5 +54,16 @@ public class MindMapPreviewWithOptions extends Box{
 
     public boolean isAssociateChecked() {
         return associate.isSelected();
+    }
+    
+    public MindMapPreviewWithOptions hideOptions() {
+        follow.setVisible(false);
+        associate.setVisible(false);
+        return this;
+    }
+
+
+    public JFileChooser getFileChooser() {
+        return fileChooser;
     }
 }

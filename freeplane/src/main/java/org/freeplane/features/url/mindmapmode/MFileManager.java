@@ -672,7 +672,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				}
 				else if (startFile.isDirectory()) {
                     final JFileChooser chooser = getMindMapFileChooser();
-                    MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(chooser, startFollow);
+                    MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(chooser);
+                    if(startFollow)
+                        previewWithOptions.selectFollows();
                     previewWithOptions.associateAlways();
 					chooser.setAccessory(previewWithOptions);
 					Stream.of(chooser.getChoosableFileFilters())

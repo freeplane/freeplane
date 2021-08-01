@@ -266,8 +266,9 @@ public class MapLoader{
 			MapStyleModel properties = MapStyleModel.getExtension(map);
 			try {
 				URI sourceUri = sourceLocation.toURI();
-                properties.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
-					TemplateManager.INSTANCE.normalizeTemplateLocation(sourceUri).toString());
+                String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(sourceUri).toString();
+                properties.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
+                properties.setProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
                 if(sourceUri.getScheme().equalsIgnoreCase("file")) {
                     File file = Paths.get(sourceUri).toFile();
                     properties.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(file.lastModified()));

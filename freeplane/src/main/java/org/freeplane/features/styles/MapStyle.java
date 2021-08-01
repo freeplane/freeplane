@@ -433,17 +433,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 
-	public void replaceStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+	public void replaceStyles(final File file, final MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
         URI uri = file.toURI();
-        replaceStyles(uri, targetMap, shouldFollow);
+        replaceStyles(uri, targetMap, shouldFollow, shouldAssociate);
 	}
 	
-	public void replaceStyles(URI uri, MapModel targetMap, boolean shouldFollow) throws MalformedURLException{
+	public void replaceStyles(URI uri, MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException{
 		final URL url = uri.toURL();
 	    loadStyleMapContainer(url).ifPresent(styleMapContainer ->
 	        {
 				new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
-				updateFollowProperties(targetMap, uri, shouldFollow);
+				updateFollowProperties(targetMap, uri, shouldFollow, shouldAssociate);
 	        });
 	}
 
@@ -483,19 +483,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	}
 
-    private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow) {
-		if(shouldFollow) {
-			setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
-			        TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString());
+    private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow, boolean shouldAssociate) {
+		String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString();
+        if(shouldFollow) {
+			setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, normalizedLocation);
 			updateLastModificationTime(map, uri);
 			
 		}
 		else {
 			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
-			if(followedMapUri != null && TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString().equals(followedMapUri)) {
+			if(followedMapUri != null && normalizedLocation.equals(followedMapUri)) {
 				updateLastModificationTime(map, uri);
 			}
 		}
+        if(shouldAssociate) {
+            setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, normalizedLocation);
+        }
 	}
 
 	public void updateLastModificationTime(final MapModel map, URI uri) {
@@ -509,18 +512,18 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 	
 
-	public void copyStyles(URI uri, MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+	public void copyStyles(URI uri, MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
 		final URL url = uri.toURL();
         loadStyleMapContainer(url).ifPresent(styleMapContainer ->
             {
 				new StyleExchange(styleMapContainer, targetMap).copyMapStyles();
-				updateFollowProperties(targetMap, uri, shouldFollow);
+				updateFollowProperties(targetMap, uri, shouldFollow, shouldAssociate);
 			});
 	}
 
-    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
         URI uri = file.toURI();
-        copyStyles(uri, targetMap, shouldFollow);
+        copyStyles(uri, targetMap, shouldFollow, shouldAssociate);
     }
 
     private void copyMapStylesNoUndoNoRefresh(final MapModel targetMap) {
