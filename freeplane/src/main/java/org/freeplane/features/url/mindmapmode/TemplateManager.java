@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.TreeSet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 
 public class TemplateManager {
     public static final String TEMPLATE_SCHEME = "template";
@@ -31,14 +33,21 @@ public class TemplateManager {
     }
 
 
-    public File writeableTemplateFile(final String filePath) {
-        final File userDefinedTemplateFile = new File(filePath);
-        if (userDefinedTemplateFile.isAbsolute()) {
-                return userDefinedTemplateFile;
+    public File writeableTemplateFile(final String location) {
+        if(location == null)
+            return null;
+        try {
+            URI uri = new URI(location);
+            if ("file".equals(uri.getScheme())) {
+                    return Paths.get(uri).toFile();
+            }
+            else if (TEMPLATE_SCHEME.equals(uri.getScheme())){
+                return new File(defaultUserTemplateDir(), uri.getPath().substring(1));
+            }
+        } catch (URISyntaxException e) {
+            LogUtils.severe(e);
         }
-        else {
-            return new File(defaultUserTemplateDir(), filePath);
-        }
+        return null;
     }
     
     private File fallbackTemplate() {
@@ -87,7 +96,7 @@ public class TemplateManager {
     }
     
     public URI expandExistingTemplateLocation (URI locationUri) {
-        if(! TEMPLATE_SCHEME.equals(locationUri.getScheme()))
+        if(locationUri == null || ! TEMPLATE_SCHEME.equals(locationUri.getScheme()))
             return locationUri;
         String path = locationUri.getPath().substring(1);
         return existingTemplateFile(path).toURI();
@@ -125,5 +134,30 @@ public class TemplateManager {
                 })));
         return templates;
     }
+    
+    public  String describeNormalizedLocation(URI location) {
+        String message;
+        if (TemplateManager.TEMPLATE_SCHEME.equals(location.getScheme())) {
+            message = TextUtils.format("template_location", location.getPath().substring(1));
+        } else {
+            String followedMapPath = "file".equalsIgnoreCase(location.getScheme()) 
+                    ? Paths.get(location).toFile().getAbsolutePath() : location.toString();
+            message = followedMapPath;
+        }
+        return message;
+    }
+
+
+    public String describeNormalizedLocation(String location) {
+        if(location == null)
+            return TextUtils.getText("no_template_assigned");
+        try {
+            return describeNormalizedLocation(new URI(location));
+        } catch (URISyntaxException e) {
+            LogUtils.severe(e);
+            return TextUtils.getText("no_template_assigned");
+        }
+    }
+
 
 }

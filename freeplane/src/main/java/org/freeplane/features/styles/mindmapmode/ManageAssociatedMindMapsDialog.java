@@ -5,7 +5,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,51 +16,52 @@ import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 import com.jgoodies.forms.builder.FormBuilder;
 
-class ManageAssociatedMindMapsDialog{
+public class ManageAssociatedMindMapsDialog{
     private final MapModel map;
     private final JDialog dialog;
     private URI followedMapLocation;
     private URI associatedMapLocation;
-    ManageAssociatedMindMapsDialog(String title, final MapModel map){
+    public ManageAssociatedMindMapsDialog(String title, final MapModel map){
         this.map = map;
         Frame owner = UITools.getCurrentFrame();
         dialog = new JDialog(owner);
-        FormBuilder formBuilder = FormBuilder.create().columns("p, 3dlu, p")
+        FormBuilder formBuilder = FormBuilder.create().columns("p, 3dlu, p, 3dlu, p")
                 .rows("p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p, 3dlu, p");
+        formBuilder.add(TextUtils.getText("followed_map")).xy(1,  1);
         JTextField followedMapField = new JTextField(80);
         followedMapLocation = updateAssociatedMap(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, followedMapField, TextUtils.getText("no_map_followed"));      
-        formBuilder.add(followedMapField).xy(1, 1);
-        JButton changeFollowedMapButton = createChangeMapButton(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, followedMapField);
-        formBuilder.add(changeFollowedMapButton).xy(3, 1);
+        formBuilder.add(followedMapField).xy(3, 1);
+        JButton changeFollowedMapButton = createChangeMapButton(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, "select_followed_map", followedMapField);
+        formBuilder.add(changeFollowedMapButton).xy(5, 1);
         JButton openFollowedMapButton = createOpenButton(followedMapLocation);
         JButton copyStylesFromFollowedMapButton = createCopyStylesButton(followedMapLocation);
         JButton replaceStylesFromFollowedMapButton = createReplaceStylesButton(followedMapLocation);
         JButton unfolowButton = createUnfollowButton(followedMapField);
-        formBuilder.addBar(openFollowedMapButton, copyStylesFromFollowedMapButton, replaceStylesFromFollowedMapButton, unfolowButton).xyw(1, 3, 3);
+        formBuilder.addBar(openFollowedMapButton, copyStylesFromFollowedMapButton, 
+                replaceStylesFromFollowedMapButton, unfolowButton).xyw(1, 3, 5);
         
+        formBuilder.add(TextUtils.getText("associated_template")).xy(1,  5);
         JTextField associatedMapField = new JTextField(80);
         associatedMapLocation = updateAssociatedMap(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, associatedMapField, "???");      
-        formBuilder.add(associatedMapField).xy(1, 5);
-        JButton changeAssosiatedMapButton = createChangeMapButton(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, associatedMapField);
-        formBuilder.add(changeAssosiatedMapButton).xy(3, 5);
+        formBuilder.add(associatedMapField).xy(3, 5);
+        JButton changeAssosiatedMapButton = createChangeMapButton(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, "select_associated_template", associatedMapField);
+        formBuilder.add(changeAssosiatedMapButton).xy(5, 5);
         JButton openAssociatedMapButton = createOpenButton(associatedMapLocation);
         JButton copyStylesFromAssociatedMapButton = createCopyStylesButton(associatedMapLocation);
         JButton replaceStylesFromAssociatedMapButton = createReplaceStylesButton(associatedMapLocation);
-        formBuilder.addBar(openAssociatedMapButton, copyStylesFromAssociatedMapButton, replaceStylesFromAssociatedMapButton).xyw(1, 7, 3);
+        formBuilder.addBar(openAssociatedMapButton, copyStylesFromAssociatedMapButton, 
+                replaceStylesFromAssociatedMapButton).xyw(1, 7, 5);
         
         JButton closeButton = createCloseMapButton();
-        formBuilder.add(closeButton).xy(1, 9, "left");
+        formBuilder.add(closeButton).xy(1, 9, "l,c");
         dialog.setModal(true);
         dialog.setTitle(title);
         dialog.getContentPane().add(formBuilder.build());
@@ -119,12 +119,14 @@ class ManageAssociatedMindMapsDialog{
         return openFollowedMapButton;
     }
 
-    private JButton createChangeMapButton(String property, JTextField field) {
+    private JButton createChangeMapButton(String mapProperty, String fileChooserTitleProperty, JTextField field) {
         JButton changeFollowedMapButton = new JButton(TextUtils.getText("OptionPanel.set_property_text"));
         changeFollowedMapButton.addActionListener(e -> {
-            MindMapPreviewWithOptions previewWithOptions = createFileOpenDialogAndOptions();
+            MindMapPreviewWithOptions previewWithOptions = MindMapPreviewWithOptions.createFileOpenDialogAndOptions(
+                    TextUtils.getText(fileChooserTitleProperty)
+            );
             JFileChooser fileChooser = previewWithOptions.getFileChooser();
-            final int returnVal = fileChooser.showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
+            final int returnVal = fileChooser.showOpenDialog(UITools.getCurrentFrame());
             if (returnVal != JFileChooser.APPROVE_OPTION) {
                 return;
             }
@@ -132,21 +134,11 @@ class ManageAssociatedMindMapsDialog{
             if(! file.exists()){
                 return;
             }
-            MapStyle.getController().setProperty(map, property,
+            MapStyle.getController().setProperty(map, mapProperty,
                     TemplateManager.INSTANCE.normalizeTemplateLocation(file.toURI()).toString());
             followedMapLocation = updateAssociatedMap(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, field, TextUtils.getText("no_map_followed"));
         });
         return changeFollowedMapButton;
-    }
-
-    private MindMapPreviewWithOptions createFileOpenDialogAndOptions() {
-        final ModeController modeController = Controller.getCurrentModeController();
-        final MFileManager fileManager = MFileManager.getController(modeController);
-        MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(fileManager.getMindMapFileChooser());
-        previewWithOptions.hideOptions();
-        previewWithOptions.getFileChooser().setAccessory(previewWithOptions);
-        previewWithOptions.getFileChooser().setMultiSelectionEnabled(false);
-        return previewWithOptions;
     }
 
     private URI updateAssociatedMap(String propertyName, JTextField followedMapField, String noMapMessage) {
@@ -156,14 +148,7 @@ class ManageAssociatedMindMapsDialog{
             URI uri;
             try {
                 uri = new URI(followedMap);
-                String message;
-                if (TemplateManager.TEMPLATE_SCHEME.equals(uri.getScheme())) {
-                    message = TextUtils.format("followed_template", uri.getPath().substring(1));
-                } else {
-                    String followedMapPath = "file".equalsIgnoreCase(uri.getScheme()) 
-                            ? Paths.get(uri).toFile().getAbsolutePath() : followedMap;
-                    message = TextUtils.format("followed_map", followedMapPath);
-                }
+                String message = TemplateManager.INSTANCE.describeNormalizedLocation(uri);
                 followedMapField.setText(message);
                 return TemplateManager.INSTANCE.expandTemplateLocation(uri);
             } catch (URISyntaxException e) {

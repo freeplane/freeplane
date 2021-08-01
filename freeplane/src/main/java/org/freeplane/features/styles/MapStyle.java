@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
@@ -71,6 +72,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 /**
  * @author Dimitry Polivaev
@@ -447,28 +449,45 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	        });
 	}
 
-    private void copyStyleToDefaultExternalTemplate(MapModel map, IStyle styleKey){
-        final ModeController modeController = Controller.getCurrentModeController();
-        MFileManager fileManager = MFileManager.getController(modeController);
-        File source = fileManager.defaultTemplateFile();
+    private void copyStyleToAssociatedExternalTemplate(MapModel map, IStyle styleKey){
         final TemplateManager templateManager = TemplateManager.INSTANCE;
-        File target  = templateManager.defaultStandardTemplateDir().equals(source.getParentFile()) 
-                ? new File(templateManager.defaultUserTemplateDir(), source.getName()) 
-                        : source;
-        
-        try {
-            copyStyleToExternalMap(map, styleKey, source, target);
-        } catch (MalformedURLException e) {
-            LogUtils.severe(e);
+        String templateLocationPropertyValue = getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
+        URI source = templateManager.expandExistingTemplateLocation(null);
+        if(source == null) {
+            MindMapPreviewWithOptions previewWithOptions = MindMapPreviewWithOptions.createFileOpenDialogAndOptions(
+                    TextUtils.getText("select_associated_template"));
+            JFileChooser fileChooser = previewWithOptions.getFileChooser();
+            final int returnVal = fileChooser.showOpenDialog(UITools.getCurrentFrame());
+            if (returnVal != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            File file = fileChooser.getSelectedFile();
+            if(! file.exists()){
+                return;
+            }
+            source = file.toURI();
+            MapStyle.getController().setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
+                    TemplateManager.INSTANCE.normalizeTemplateLocation(source).toString());
+
+        }
+        File target = templateManager.writeableTemplateFile(templateLocationPropertyValue);
+        if(target != null && !target.isDirectory() && target.canWrite()) {
+            try {
+                copyStyleToExternalMap(map, styleKey, source, target);
+            } catch (MalformedURLException e) {
+                LogUtils.severe(e);
+            }
+        } else {
+              UITools.errorMessage(TextUtils.format("file_not_accessible", String.valueOf(target)));
         }
 
     }
     
-    private void copyStyleToExternalMap(MapModel map, IStyle styleKey, File sourceFile, File targetFile) throws MalformedURLException {
+    private void copyStyleToExternalMap(MapModel map, IStyle styleKey, URI sourceLocation, File targetFile) throws MalformedURLException {
 	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
 	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
 	    Objects.requireNonNull(copiedStyleNode);
-	    final URL url = sourceFile.toURI().toURL();
+	    final URL url = sourceLocation.toURL();
 	    loadStyleMapContainer(url).ifPresent(styleMapTarget ->
 	    {
 	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
@@ -732,7 +751,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
         LogicalStyleController.getController().refreshMap(node.getMap());
         if(copyToExternalTemplate)
-            copyStyleToDefaultExternalTemplate(node.getMap(), style);
+            copyStyleToAssociatedExternalTemplate(node.getMap(), style);
     }
 
 }

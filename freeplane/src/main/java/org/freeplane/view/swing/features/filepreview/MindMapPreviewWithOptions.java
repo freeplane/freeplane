@@ -6,10 +6,25 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 
 public class MindMapPreviewWithOptions extends Box{
+    public static MindMapPreviewWithOptions createFileOpenDialogAndOptions(String title) {
+        final ModeController modeController = Controller.getCurrentModeController();
+        final MFileManager fileManager = MFileManager.getController(modeController);
+        JFreeplaneCustomizableFileChooser fileChooser = fileManager.getMindMapFileChooser();
+        MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(fileChooser);
+        previewWithOptions.hideOptions();
+        fileChooser.setAccessory(previewWithOptions);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setDialogTitle(title);
+        return previewWithOptions;
+    }
 
 	private static final long serialVersionUID = 1L;
     private final JCheckBox follow;
@@ -31,6 +46,7 @@ public class MindMapPreviewWithOptions extends Box{
         LabelAndMnemonicSetter.setLabelAndMnemonic(associate, TextUtils.getRawText("associateMindMap"));
         associate.setAlignmentX(LEFT_ALIGNMENT);
         Box checkboxes = Box.createHorizontalBox();
+        checkboxes.setAlignmentX(LEFT_ALIGNMENT);
         checkboxes.add(follow);
         checkboxes.add(Box.createHorizontalStrut((int) (10 * UITools.FONT_SCALE_FACTOR)));
         checkboxes.add(associate);

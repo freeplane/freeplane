@@ -20,11 +20,13 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
+import javax.swing.Box;
 import javax.swing.JPanel;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -204,9 +206,17 @@ public class StyleEditorPanel extends JPanel {
 
 	private void setComponentsEnabled(boolean enabled) {
 		final Container panel = (Container) getComponent(0);
-		for (int i = 0; i < panel.getComponentCount(); i++) {
-			panel.getComponent(i).setEnabled(enabled);
-		}
+		setComponentsEnabled(panel, enabled);
+	}
+
+	private void setComponentsEnabled(final Container container, boolean enabled) {
+	    container.setEnabled(enabled);
+	    if(container instanceof Box || container instanceof JPanel)
+	        for (int i = 0; i < container.getComponentCount(); i++) {
+	            Component component = container.getComponent(i);
+	            if(container instanceof Container)
+	                setComponentsEnabled((Container) component, enabled);
+	        }
 	}
 	
 	private void addListeners() {

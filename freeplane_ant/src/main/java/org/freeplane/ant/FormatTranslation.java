@@ -248,11 +248,6 @@ public class FormatTranslation extends Task {
 			if (thisValue.matches(".*\\{\\d[^},]*")) {
 				warn(filename + ": mismatched braces in placeholder: '{' not closed by '}': " + line);
 			}
-			if (thisValue.matches(".*[^']'[^'].*\\{\\d\\}.*") || thisValue.matches(".*\\{\\d\\}.*[^']'[^'].*")) {
-				warn(filename + ": replaced single quotes in strings containing placeholders by two: "
-				        + "\"'{0}' n'a\" -> \"''{0}'' n''a\": " + line);
-				thisValue = thisValue.replaceAll("([^'])'([^'])", "$1''$2");
-			}
 			if (lastKey != null && thisKey.equals(lastKey)) {
 				if (quality(thisValue) < quality(lastValue)) {
 					log(filename + ": drop " + TaskUtils.toLine(lastKey, thisValue));

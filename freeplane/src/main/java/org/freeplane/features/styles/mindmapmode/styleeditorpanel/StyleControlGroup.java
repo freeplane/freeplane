@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URI;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -34,6 +35,9 @@ import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -44,11 +48,13 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesAction;
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -117,7 +123,8 @@ class StyleControlGroup implements ControlGroup{
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
 	            final String labelText = TextUtils.format(REDEFINE_STYLE, firstStyle);
-	            redefineStyleBtnBorder.setTitle(labelText);;
+	            redefineStyleBtnBorder.setTitle(labelText);
+	            updateTemplateName(node.getMap());
 
 			}
 			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
@@ -181,7 +188,6 @@ class StyleControlGroup implements ControlGroup{
             redefinesStyleForCurrentMapOnly.setText(TextUtils.getRawText(FOR_THIS_MAP));
             
             redefinesStyleForCurrentMapAndTemplate = new JRadioButton(); 
-            updateTemplateName();
             
             ButtonGroup redefineStyleButtonGroup = new ButtonGroup();
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapOnly);
@@ -191,31 +197,33 @@ class StyleControlGroup implements ControlGroup{
             Box radioButtonBox = Box.createVerticalBox();
             radioButtonBox.add(redefinesStyleForCurrentMapOnly);
             radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
-            radioButtonBox.setMaximumSize(radioButtonBox.getPreferredSize());
             buttonBox.add(radioButtonBox);
-//            buttonBox.add(Box.createHorizontalGlue());
             buttonBox.add(redefineStyleBtn);
-//            buttonBox.add(Box.createHorizontalGlue());
             redefineStyleBtnBorder = UITools.addTitledBorder(buttonBox, "", StyleEditorPanel.FONT_SIZE);
             formBuilder.append(buttonBox, formBuilder.getColumnCount());
             formBuilder.nextLine();
 
-            ResourceController.getResourceController().addPropertyChangeListener((propertyName, newValue, oldValue) -> {
-                if(! MFileManager.STANDARD_TEMPLATE.equals(propertyName))
-                    return;
-                updateTemplateName();
+            MapController mapController = Controller.getCurrentModeController().getMapController();
+            mapController.addMapChangeListener(new IMapChangeListener(){
+                @Override
+                public void mapChanged(MapChangeEvent event) {
+                    if(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY.equals(event.getProperty())
+                            && event.getMap().equals(Controller.getCurrentController().getMap())){
+                        updateTemplateName(event.getMap());
+                    }
+                 }
+                
             });
-
-
 		}
 	}
 
-    private void updateTemplateName() {
-        String standardTemplate = ResourceController.getResourceController().getProperty(MFileManager.STANDARD_TEMPLATE);
+    private void updateTemplateName(MapModel map) {
+        String templateLocation = MapStyle.getController().getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
+        String text = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
         redefinesStyleForCurrentMapAndTemplate.setText(
-                TextUtils.format(FOR_NEW_MAPS, standardTemplate));
+                TextUtils.format(FOR_NEW_MAPS, text));
         redefinesStyleForCurrentMapAndTemplate.setToolTipText(
-                TextUtils.format(FOR_NEW_MAPS_TOOLTIP, standardTemplate));
+                TextUtils.format(FOR_NEW_MAPS_TOOLTIP, text));
     }
 	private JButton addButton(DefaultFormBuilder formBuilder, String label, ActionListener action) {
 	    final JButton button = addButton(formBuilder, action);
