@@ -73,7 +73,7 @@ public class ManageAssociatedMindMapsDialog{
         unfolowButton.addActionListener(e -> {
             MapStyle.getController().setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, null);
             MapStyle.getController().setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, null);
-            followedMapField.setText("");
+            followedMapField.setText(TextUtils.getText("no_map_followed"));
         });
         return unfolowButton;
     }
