@@ -640,7 +640,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				    follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
 				}
 				else {
-					TemplateChooser templateChooser = new TemplateChooser(TemplateManager.INSTANCE, false);
+					TemplateChooser templateChooser = new TemplateChooser();
 					chosenFile = templateChooser.chosenTemplateFile();
 					follow = templateChooser.isConnectChecked();
 				}

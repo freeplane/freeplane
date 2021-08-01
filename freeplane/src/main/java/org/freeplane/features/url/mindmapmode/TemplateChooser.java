@@ -23,11 +23,10 @@ class TemplateChooser {
 	private Box verticalBox;
 	private JCheckBox mDontShowAgainBox;
 	private JComboBox<String> templateComboBox;
-	private final TemplateManager templateManager;
+	private static final TemplateManager templateManager = TemplateManager.INSTANCE;
 
 
-	public TemplateChooser(TemplateManager templateManager, boolean followSelected) {
-		this.templateManager = templateManager;
+	public TemplateChooser() {
         final ResourceController resourceController = ResourceController.getResourceController();
 		final String standardTemplatePath = resourceController.getProperty(MFileManager.STANDARD_TEMPLATE);
 		final TreeSet<String> availableMapTemplates = templateManager.collectAvailableMapTemplates();
@@ -36,7 +35,7 @@ class TemplateChooser {
 		follow = new JCheckBox();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(follow, TextUtils.getRawText("followMindMap"));
 		follow.setAlignmentX(Component.LEFT_ALIGNMENT);
-		follow.setSelected(followSelected);
+		follow.setSelected(false);
 		verticalBox.add(follow);
 
 		MindMapPreview mindMapPreview = new MindMapPreview();
