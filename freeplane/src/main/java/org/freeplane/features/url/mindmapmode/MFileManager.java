@@ -657,7 +657,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public File defaultTemplateFile() {
 		final String userDefinedTemplateFilePath = ResourceController.getResourceController()
 		    .getProperty(STANDARD_TEMPLATE);
-		return TemplateManager.INSTANCE.templateFile(userDefinedTemplateFilePath);
+		return TemplateManager.INSTANCE.existingTemplateFile(userDefinedTemplateFilePath);
 	}
 
 	public MapModel openUntitledMap(final File startFile, boolean startFollow) {
@@ -673,6 +673,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				else if (startFile.isDirectory()) {
                     final JFileChooser chooser = getMindMapFileChooser();
                     MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(chooser, startFollow);
+                    previewWithOptions.associateAlways();
 					chooser.setAccessory(previewWithOptions);
 					Stream.of(chooser.getChoosableFileFilters())
 					    .filter(filter -> filter instanceof MindMapDirectoryFilter)

@@ -45,7 +45,7 @@ class TemplateChooser {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED) {
-					mindMapPreview.updateView(templateManager.templateFile(e.getItem().toString()));
+					mindMapPreview.updateView(templateManager.existingTemplateFile(e.getItem().toString()));
 				}
 			}
 		});
@@ -74,7 +74,7 @@ class TemplateChooser {
 			resourceController.setProperty("follow_mind_map_by_default", follow.isSelected());
 			resourceController.setProperty(MFileManager.STANDARD_TEMPLATE, selectedTemplate);
 		}
-		return templateManager.templateFile(selectedTemplate);
+		return templateManager.existingTemplateFile(selectedTemplate);
 	}
 
 	public boolean isConnectChecked() {
