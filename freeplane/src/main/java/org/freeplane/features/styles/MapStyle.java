@@ -69,6 +69,7 @@ import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -448,14 +449,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     private void copyStyleToDefaultExternalTemplate(MapModel map, IStyle styleKey){
         final ModeController modeController = Controller.getCurrentModeController();
-        final MFileManager fileManager = MFileManager.getController(modeController);
+        MFileManager fileManager = MFileManager.getController(modeController);
         File source = fileManager.defaultTemplateFile();
-        File target;
-        if(fileManager.defaultStandardTemplateDir().equals(source.getParentFile())) {
-           target = new File(fileManager.defaultUserTemplateDir(), source.getName()); 
-        }
-        else
-            target = source;
+        final TemplateManager templateManager = fileManager.templateManager;
+        File target  = templateManager.defaultStandardTemplateDir().equals(source.getParentFile()) 
+                ? new File(templateManager.defaultUserTemplateDir(), source.getName()) 
+                        : source;
+        
         try {
             copyStyleToExternalMap(map, styleKey, source, target);
         } catch (MalformedURLException e) {
