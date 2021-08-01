@@ -50,7 +50,7 @@ public class ManageAssociatedMindMapsDialog{
         
         formBuilder.add(TextUtils.getText("associated_template")).xy(1,  5);
         JTextField associatedMapField = new JTextField(80);
-        associatedMapLocation = updateAssociatedMap(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, associatedMapField, "???");      
+        associatedMapLocation = updateAssociatedMap(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, associatedMapField, TextUtils.getText("no_template_associated"));      
         formBuilder.add(associatedMapField).xy(3, 5);
         JButton changeAssosiatedMapButton = createChangeMapButton(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, "select_associated_template", associatedMapField);
         formBuilder.add(changeAssosiatedMapButton).xy(5, 5);

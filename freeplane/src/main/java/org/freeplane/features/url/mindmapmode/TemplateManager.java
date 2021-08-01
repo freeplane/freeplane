@@ -150,12 +150,12 @@ public class TemplateManager {
 
     public String describeNormalizedLocation(String location) {
         if(location == null)
-            return TextUtils.getText("no_template_assigned");
+            return TextUtils.getText("no_template_associated");
         try {
             return describeNormalizedLocation(new URI(location));
         } catch (URISyntaxException e) {
             LogUtils.severe(e);
-            return TextUtils.getText("no_template_assigned");
+            return TextUtils.getText("no_template_associated");
         }
     }
 
