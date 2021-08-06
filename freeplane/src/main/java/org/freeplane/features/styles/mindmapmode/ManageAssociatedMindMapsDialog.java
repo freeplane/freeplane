@@ -136,26 +136,26 @@ public class ManageAssociatedMindMapsDialog{
             }
             MapStyle.getController().setProperty(map, mapProperty,
                     TemplateManager.INSTANCE.normalizeTemplateLocation(file.toURI()).toString());
-            followedMapLocation = updateAssociatedMap(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, field, TextUtils.getText("no_map_followed"));
+            followedMapLocation = updateAssociatedMap(mapProperty, field, TextUtils.getText("no_map_followed"));
         });
         return changeFollowedMapButton;
     }
 
-    private URI updateAssociatedMap(String propertyName, JTextField followedMapField, String noMapMessage) {
+    private URI updateAssociatedMap(String propertyName, JTextField mapField, String noMapMessage) {
         String followedMap = MapStyle.getController().getProperty(map, propertyName);
-        followedMapField.setEditable(false);
+        mapField.setEditable(false);
         if(followedMap != null) {
             URI uri;
             try {
                 uri = new URI(followedMap);
                 String message = TemplateManager.INSTANCE.describeNormalizedLocation(uri);
-                followedMapField.setText(message);
+                mapField.setText(message);
                 return TemplateManager.INSTANCE.expandTemplateLocation(uri);
             } catch (URISyntaxException e) {
                 LogUtils.severe(e);               
             }
         } 
-        followedMapField.setText(noMapMessage);
+        mapField.setText(noMapMessage);
         return null;
     }
     public void show() {
