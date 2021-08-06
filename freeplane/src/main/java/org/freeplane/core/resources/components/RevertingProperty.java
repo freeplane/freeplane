@@ -19,31 +19,49 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class RevertingProperty extends PropertyBean implements IPropertyControl {
+    static private Font createRevertTextFont() {
+        try (InputStream fontInputStream= ResourceController.getResourceController()
+                .getResource("/fonts/revert.ttf").openStream()){
+            return Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
+        }
+        catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final int PADDING = (int) (UITools.FONT_SCALE_FACTOR * 2);
-    private static final Border BORDER = BorderFactory.createEmptyBorder(PADDING, 2 * PADDING, PADDING, 2 * PADDING);
+    private static final Border BORDER = BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING);
     private final static String REVERT_RESOURCE = "reset_property_text";
     private static final String TEXT = TextUtils.getText(REVERT_RESOURCE);
+    private static final Font FONT = createRevertTextFont();
 	private final JButton revertButton;
+	
+
 
 	/**
 	 */
 	public RevertingProperty() {
 		super(TEXT);
-		revertButton = new JButton(TEXT);
+		revertButton = new JButton("\ue900");
+		revertButton.setFont(FONT);
 		revertButton.setBorder(BORDER);
+		revertButton.setToolTipText(TEXT);
 		revertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
