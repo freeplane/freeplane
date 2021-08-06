@@ -15,8 +15,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
@@ -62,13 +64,14 @@ import com.jgoodies.forms.layout.FormSpecs;
 class StyleControlGroup implements ControlGroup{
     private static final String REDEFINE_STYLE = "change_style";
     private static final String FOR_THIS_MAP = "changes_style_for_this_map";
-    private static final String FOR_NEW_MAPS = "changes_style_for_new_maps";
-    private static final String FOR_NEW_MAPS_TOOLTIP =FOR_NEW_MAPS + ".tooltip";
+    private static final String FOR_TEMPLATE = "changes_template_style";
+    private static final String FOR_TEMPLATE_TOOLTIP =FOR_TEMPLATE + ".tooltip";
     private boolean internalChange;
 	private RevertingProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
     private JRadioButton redefinesStyleForCurrentMapAndTemplate;
+    private JTextField redefinedTemplate;
 	private final boolean addStyleBox;
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
@@ -175,19 +178,21 @@ class StyleControlGroup implements ControlGroup{
 		mNodeStyleButton = addButton(formBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
 		if (addStyleBox) {
 			mMapStyleButton = addButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
-			JButton redefineStyleBtn = TranslatedElementFactory.createButton("ApplyAction.text");
-			redefineStyleBtn.addActionListener(e -> {
-			     final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
-			        MapStyle.getController().redefineStyle(node, redefinesStyleForCurrentMapAndTemplate.isSelected());
 
-			});
-			addComponent(formBuilder, redefineStyleBtn);
-
-            JRadioButton redefinesStyleForCurrentMapOnly = new JRadioButton();
+			JRadioButton redefinesStyleForCurrentMapOnly = new JRadioButton();
             redefinesStyleForCurrentMapOnly.setSelected(true);
             redefinesStyleForCurrentMapOnly.setText(TextUtils.getRawText(FOR_THIS_MAP));
+            redefinesStyleForCurrentMapOnly.setAlignmentX(Component.LEFT_ALIGNMENT);
             
             redefinesStyleForCurrentMapAndTemplate = new JRadioButton(); 
+            redefinesStyleForCurrentMapAndTemplate.setText(TextUtils.getText(FOR_TEMPLATE));
+            redefinesStyleForCurrentMapAndTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
+            
+            redefinedTemplate= new JTextField(80);
+            redefinedTemplate.setBorder(BorderFactory.createEmptyBorder(0, (int) (15 * UITools.FONT_SCALE_FACTOR), 0, 0));
+            redefinedTemplate.setEditable(false);
+            redefinedTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
+
             
             ButtonGroup redefineStyleButtonGroup = new ButtonGroup();
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapOnly);
@@ -197,8 +202,19 @@ class StyleControlGroup implements ControlGroup{
             Box radioButtonBox = Box.createVerticalBox();
             radioButtonBox.add(redefinesStyleForCurrentMapOnly);
             radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
+            radioButtonBox.add(redefinedTemplate);
+            radioButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
             buttonBox.add(radioButtonBox);
+            
+            JButton redefineStyleBtn = TranslatedElementFactory.createButton("ApplyAction.text");
+            redefineStyleBtn.addActionListener(e -> {
+                 final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
+                    MapStyle.getController().redefineStyle(node, redefinesStyleForCurrentMapAndTemplate.isSelected());
+
+            });
+            redefineStyleBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
             buttonBox.add(redefineStyleBtn);
+
             redefineStyleBtnBorder = UITools.addTitledBorder(buttonBox, "", StyleEditorPanel.FONT_SIZE);
             formBuilder.append(buttonBox, formBuilder.getColumnCount());
             formBuilder.nextLine();
@@ -219,11 +235,10 @@ class StyleControlGroup implements ControlGroup{
 
     private void updateTemplateName(MapModel map) {
         String templateLocation = MapStyle.getController().getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
-        String text = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
-        redefinesStyleForCurrentMapAndTemplate.setText(
-                TextUtils.format(FOR_NEW_MAPS, text));
+        String templateDescription = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
+        redefinedTemplate.setText(templateDescription);
         redefinesStyleForCurrentMapAndTemplate.setToolTipText(
-                TextUtils.format(FOR_NEW_MAPS_TOOLTIP, text));
+                TextUtils.format(FOR_TEMPLATE_TOOLTIP, templateDescription));
     }
 	private JButton addButton(DefaultFormBuilder formBuilder, String label, ActionListener action) {
 	    final JButton button = addButton(formBuilder, action);

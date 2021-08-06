@@ -165,7 +165,7 @@ public class StyleEditorPanel extends JPanel {
 	 * @param modeController
 	 */
 	private void init() {
-        final String form = "right:max(20dlu;p), 4dlu, 80dlu, 4dlu, max(20dlu;p)";
+        final String form = "right:max(20dlu;p), 4dlu, max(80dlu;p), 4dlu, max(20dlu;p)";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
