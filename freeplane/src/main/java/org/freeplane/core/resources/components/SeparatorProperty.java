@@ -20,6 +20,7 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Component;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -60,8 +61,10 @@ public class SeparatorProperty implements IPropertyControl {
 		final JComponent separator = builder.appendSeparator(text);
 		if(text != null) {
 			for (Component child : separator.getComponents()) {
-				if(child instanceof JLabel)
-					TranslatedElement.TEXT.setKey((JComponent) child, labelKey);
+				if(child instanceof JLabel) {
+                    TranslatedElement.TEXT.setKey((JComponent) child, labelKey);
+                    child.setFont(child.getFont().deriveFont(AffineTransform.getScaleInstance(1.5, 1.5)));
+                }
 				break;
 			}
 		}
