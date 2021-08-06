@@ -25,6 +25,7 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
@@ -40,12 +41,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class EdgeColorControlGroup implements ControlGroup {
 	private static final String EDGE_COLOR = "edgecolor";
 
-	private BooleanProperty mSetEdgeColor;
+	private RevertingProperty mSetEdgeColor;
 	private ColorProperty mEdgeColor;
 	private EdgeColorChangeListener propertyChangeListener;
 
 	private class EdgeColorChangeListener extends ControlGroupChangeListener {
-		public EdgeColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public EdgeColorChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -68,13 +69,13 @@ class EdgeColorControlGroup implements ControlGroup {
 		}
 	}
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetEdgeColor = new RevertingProperty();
 		mEdgeColor = new ColorProperty(EdgeColorControlGroup.EDGE_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
 		propertyChangeListener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
 		mSetEdgeColor.addPropertyChangeListener(propertyChangeListener);
 		mEdgeColor.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeColor.appendToForm(formBuilder);;
 		mEdgeColor.appendToForm(formBuilder);;
+		mSetEdgeColor.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

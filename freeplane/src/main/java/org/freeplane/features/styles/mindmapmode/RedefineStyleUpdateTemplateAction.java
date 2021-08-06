@@ -7,16 +7,16 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
 
-public class RedefineStyleAction extends AFreeplaneAction {
-	public static final String NAME = "RedefineStyleAction";
+public class RedefineStyleUpdateTemplateAction extends AFreeplaneAction {
+	public static final String NAME = "RedefineStyleUpdateTemplateAction";
     private static final long serialVersionUID = 1L;
 	
-	public RedefineStyleAction() {
+	public RedefineStyleUpdateTemplateAction() {
 		super(NAME);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 	    final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
-        MapStyle.getController().redefineStyle(node, false);
+        MapStyle.getController().redefineStyle(node, true);
 	}
 }

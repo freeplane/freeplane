@@ -25,6 +25,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -41,12 +42,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class MaxNodeWidthControlGroup implements ControlGroup {
 	private static final String MAX_NODE_WIDTH = "max_node_width";
 
-	private BooleanProperty mSetMaxNodeWidth;
+	private RevertingProperty mSetMaxNodeWidth;
 	private QuantityProperty<LengthUnit> mMaxNodeWidth;
 	private MaxNodeWidthChangeListener propertyChangeListener;
 
 	private class MaxNodeWidthChangeListener extends ControlGroupChangeListener {
-		public MaxNodeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
+		public MaxNodeWidthChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -69,13 +70,13 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetMaxNodeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetMaxNodeWidth = new RevertingProperty();
 		mMaxNodeWidth = new QuantityProperty<LengthUnit>(MAX_NODE_WIDTH, 0, 100000, 0.1, LengthUnit.px);
 		propertyChangeListener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
 		mSetMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);
 		mMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);
-		mSetMaxNodeWidth.appendToForm(formBuilder);
 		mMaxNodeWidth.appendToForm(formBuilder);
+		mSetMaxNodeWidth.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

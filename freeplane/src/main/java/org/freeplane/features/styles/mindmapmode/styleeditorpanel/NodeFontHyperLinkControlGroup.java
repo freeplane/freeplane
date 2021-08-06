@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -38,13 +39,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class NodeFontHyperLinkControlGroup implements ControlGroup {
 	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
 
-	private BooleanProperty mSetNodeFontHyperlink;
+	private RevertingProperty mSetNodeFontHyperlink;
 	private BooleanProperty mNodeFontHyperlink;
 
 	private FontHyperlinkChangeListener propertyChangeListener;
 
 	private class FontHyperlinkChangeListener extends ControlGroupChangeListener {
-		public FontHyperlinkChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
+		public FontHyperlinkChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -66,13 +67,13 @@ class NodeFontHyperLinkControlGroup implements ControlGroup {
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeFontHyperlink = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeFontHyperlink = new RevertingProperty();
 		mNodeFontHyperlink = new BooleanProperty(NODE_FONT_HYPERLINK);
 		propertyChangeListener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
 		mSetNodeFontHyperlink.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontHyperlink.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontHyperlink.appendToForm(formBuilder);
 		mNodeFontHyperlink.appendToForm(formBuilder);
+		mSetNodeFontHyperlink.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

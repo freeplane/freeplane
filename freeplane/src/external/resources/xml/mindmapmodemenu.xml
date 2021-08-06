@@ -427,13 +427,14 @@
 				<Entry name="menu_manageStyles">
 					<Entry name="NewUserStyleAction" />
 					<Entry name="RedefineStyleAction" accelerator="alt shift R" />
+					<Entry name="RedefineStyleUpdateTemplateAction" />
 					<Entry name="RemoveFormatAction" />
 					<Entry name="ManageConditionalStylesAction" />
 					<Entry name="ManageNodeConditionalStylesAction" />
 					<Entry builder="separator" />
 					<Entry name="CopyMapStylesAction"/>
 					<Entry name="ReplaceMapStylesAction"/>
-					<Entry name="ManageFollowedMindMapAction"/>
+					<Entry name="ManageAssociatedMindMapsAction"/>
 					<Entry name="EditStylesAction" accelerator="control F11" />
 				</Entry>
 				<Entry name="FormatCopy" accelerator="alt shift C" />

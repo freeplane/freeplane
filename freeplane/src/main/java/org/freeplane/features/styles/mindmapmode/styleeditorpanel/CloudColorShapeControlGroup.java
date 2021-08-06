@@ -24,12 +24,11 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudShape;
@@ -49,13 +48,13 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	private static final String CLOUD_COLOR = "cloudcolor";
 	private static final String CLOUD_SHAPE = "cloudshape";
 
-	final private BooleanProperty mSetCloud;
+	final private RevertingProperty mSetCloud;
 	final private ColorProperty mCloudColor;
 	final private ComboProperty mCloudShape;
 	final private CloudColorChangeListener mPropertyListener;
 	
 	public CloudColorShapeControlGroup() {
-		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetCloud = new RevertingProperty();
 		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
 		mCloudShape = ComboProperty.of(CLOUD_SHAPE, CloudShape.class);
@@ -78,7 +77,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	}
 
 	private class CloudColorChangeListener extends ControlGroupChangeListener {
-		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty1, final IPropertyControl mProperty2) {
+		public CloudColorChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty1, final IPropertyControl mProperty2) {
 			super(mSet, mProperty1, mProperty2);
 		}
 
@@ -112,13 +111,12 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		addCloudColorControl(formBuilder);
 		new NextLineProperty().appendToForm(formBuilder);
-		new NextColumnProperty(2).appendToForm(formBuilder);
 		addCloudShapeControl(formBuilder);
 	}
 	
 	private void addCloudColorControl(DefaultFormBuilder formBuilder) {
-		mSetCloud.appendToForm(formBuilder);
 		mCloudColor.appendToForm(formBuilder);
+		mSetCloud.appendToForm(formBuilder);
 	}
 
 	private void addCloudShapeControl(DefaultFormBuilder formBuilder) {

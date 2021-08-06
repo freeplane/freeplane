@@ -26,6 +26,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -42,12 +43,12 @@ class NodeColorControlGroup implements ControlGroup {
 	private static final String NODE_COLOR = "nodecolor";
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 
-	private BooleanProperty mSetNodeColor;
+	private RevertingProperty mSetNodeColor;
 	private ColorProperty mNodeColor;
 	private NodeColorChangeListener propertyChangeListener;
 
 	private class NodeColorChangeListener extends ControlGroupChangeListener {
-		public NodeColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public NodeColorChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -70,14 +71,14 @@ class NodeColorControlGroup implements ControlGroup {
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeColor = new RevertingProperty();
 		mNodeColor = new ColorProperty(NODE_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(NODE_TEXT_COLOR));
 		propertyChangeListener = new NodeColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(propertyChangeListener);
 		mNodeColor.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeColor.appendToForm(formBuilder);
 		mNodeColor.appendToForm(formBuilder);
+		mSetNodeColor.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

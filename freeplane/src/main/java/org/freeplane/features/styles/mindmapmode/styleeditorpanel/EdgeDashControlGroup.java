@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
@@ -40,12 +41,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class EdgeDashControlGroup implements ControlGroup {
 	private static final String EDGE_DASH = "edgedash";
 
-	private BooleanProperty mSetEdgeDash;
+	private RevertingProperty mSetEdgeDash;
 	private ComboProperty mEdgeDash;
 	private EdgeDashChangeListener propertyChangeListener;
 	
 	private class EdgeDashChangeListener extends ControlGroupChangeListener {
-		public EdgeDashChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public EdgeDashChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -77,12 +78,12 @@ public class EdgeDashControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetEdgeDash = new RevertingProperty();
 		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);
 		propertyChangeListener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
 		mSetEdgeDash.addPropertyChangeListener(propertyChangeListener);
 		mEdgeDash.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeDash.appendToForm(formBuilder);
 		mEdgeDash.appendToForm(formBuilder);
+		mSetEdgeDash.appendToForm(formBuilder);
 	}
 }

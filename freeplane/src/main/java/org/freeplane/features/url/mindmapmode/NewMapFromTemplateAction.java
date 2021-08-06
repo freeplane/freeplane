@@ -38,10 +38,10 @@ class NewMapFromTemplateAction extends AFreeplaneAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-        MFileManager fileManager = (MFileManager) UrlManager.getController();
-        final File userTemplateDir = fileManager.defaultUserTemplateDir();
-        File startDirectory = userTemplateDir.listFiles().length != 0 ? userTemplateDir : fileManager.defaultStandardTemplateDir();
-        fileManager.openUntitledMap(startDirectory, false);
+        TemplateManager templateManager = TemplateManager.INSTANCE;
+        final File userTemplateDir = templateManager.defaultUserTemplateDir();
+        File startDirectory = userTemplateDir.listFiles().length != 0 ? userTemplateDir : templateManager.defaultStandardTemplateDir();
+        ((MFileManager) UrlManager.getController()).openUntitledMap(startDirectory, false);
 	}
 
 	@Override

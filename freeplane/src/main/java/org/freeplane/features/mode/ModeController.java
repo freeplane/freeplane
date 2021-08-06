@@ -150,7 +150,7 @@ public class ModeController extends AController implements FreeplaneActions{
 		execute(actor, map);
 	}
 
-	void removeExtensions(final Object key, final NodeModel from, final NodeModel which) {
+	public void removeExtensions(final Object key, final NodeModel from, final NodeModel which) {
 		if (from.equals(which)) {
 			for (final IExtensionCopier copier : copiers) {
 				copier.remove(key, from);

@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -38,13 +39,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class NodeNumberingControlGroup implements ControlGroup {
 	private static final String NODE_NUMBERING = "nodenumbering";
 
-	private BooleanProperty mSetNodeNumbering;
+	private RevertingProperty mSetNodeNumbering;
 	private BooleanProperty mNodeNumbering;
 
 	private NodeNumberingChangeListener propertyChangeListener;
 	
 	private class NodeNumberingChangeListener extends ControlGroupChangeListener {
-		public NodeNumberingChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public NodeNumberingChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -72,12 +73,12 @@ public class NodeNumberingControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeNumbering = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeNumbering = new RevertingProperty();
 		mNodeNumbering = new BooleanProperty(NODE_NUMBERING);
 		propertyChangeListener = new NodeNumberingChangeListener(mSetNodeNumbering, mNodeNumbering);
 		mSetNodeNumbering.addPropertyChangeListener(propertyChangeListener);
 		mNodeNumbering.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeNumbering.appendToForm(formBuilder);
 		mNodeNumbering.appendToForm(formBuilder);
+		mSetNodeNumbering.appendToForm(formBuilder);
 	}
 }

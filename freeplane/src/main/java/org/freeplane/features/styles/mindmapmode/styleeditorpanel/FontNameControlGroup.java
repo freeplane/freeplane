@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -39,13 +40,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class FontNameControlGroup implements ControlGroup {
 	private static final String NODE_FONT_NAME = "nodefontname";
 
-	private BooleanProperty mSetNodeFontName;
+	private RevertingProperty mSetNodeFontName;
 	private FontProperty mNodeFontName;
 
 	private FontNameChangeListener propertyChangeListener;
 	
 	private class FontNameChangeListener extends ControlGroupChangeListener {
-		public FontNameChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public FontNameChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -74,12 +75,12 @@ public class FontNameControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeFontName = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeFontName = new RevertingProperty();
 		mNodeFontName = new FontProperty(NODE_FONT_NAME);
 		propertyChangeListener = new FontNameChangeListener(mSetNodeFontName, mNodeFontName);
 		mSetNodeFontName.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontName.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontName.appendToForm(formBuilder);
 		mNodeFontName.appendToForm(formBuilder);
+		mSetNodeFontName.appendToForm(formBuilder);
 	}
 }

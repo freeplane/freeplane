@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
@@ -43,13 +44,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class FormatControlGroup implements ControlGroup {
 	private static final String NODE_FORMAT = "nodeformat";
 
-	private BooleanProperty mSetNodeFormat;
+	private RevertingProperty mSetNodeFormat;
 	private EditablePatternComboProperty mNodeFormat;
 	
 	private NodeFormatChangeListener propertyChangeListener;
 	
 	private class NodeFormatChangeListener extends ControlGroupChangeListener {
-		public NodeFormatChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public NodeFormatChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -78,13 +79,13 @@ public class FormatControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-        mSetNodeFormat = new BooleanProperty(ControlGroup.SET_RESOURCE);
+        mSetNodeFormat = new RevertingProperty();
         mNodeFormat = new EditablePatternComboProperty(NODE_FORMAT,
             PatternFormat.getIdentityPatternFormat(), FormatController.getController().getAllFormats());
         propertyChangeListener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
         mSetNodeFormat.addPropertyChangeListener(propertyChangeListener);
         mNodeFormat.addPropertyChangeListener(propertyChangeListener);
-        mSetNodeFormat.appendToForm(formBuilder);
         mNodeFormat.appendToForm(formBuilder);
+        mSetNodeFormat.appendToForm(formBuilder);
 	}
 }

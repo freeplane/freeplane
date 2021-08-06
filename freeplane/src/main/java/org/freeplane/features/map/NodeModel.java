@@ -191,7 +191,7 @@ public class NodeModel{
 		if (views == null) {
 			return;
 		}
-		final Iterator<INodeView> iterator = views.iterator();
+		final Iterator<INodeView> iterator = new ArrayList<>(views).iterator();
 		while (iterator.hasNext()) {
 			iterator.next().nodeChanged(nodeChangeEvent);
 		}

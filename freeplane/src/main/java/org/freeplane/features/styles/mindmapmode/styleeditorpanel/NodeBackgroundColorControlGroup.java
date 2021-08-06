@@ -26,6 +26,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -41,12 +42,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class NodeBackgroundColorControlGroup implements ControlGroup {
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 
-	private BooleanProperty mSetNodeBackgroundColor;
+	private RevertingProperty mSetNodeBackgroundColor;
 	private ColorProperty mNodeBackgroundColor;
 	private BgColorChangeListener propertyChangeListener;
 	
 	private class BgColorChangeListener extends ControlGroupChangeListener {
-		public BgColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public BgColorChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -76,14 +77,14 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeBackgroundColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeBackgroundColor = new RevertingProperty();
 		mNodeBackgroundColor = new ColorProperty(NODE_BACKGROUND_COLOR, ResourceController
 		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		propertyChangeListener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mSetNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
 		mNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeBackgroundColor.appendToForm(formBuilder);
 		mNodeBackgroundColor.appendToForm(formBuilder);
+		mSetNodeBackgroundColor.appendToForm(formBuilder);
 	}
 
 	

@@ -1,23 +1,32 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URI;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
-import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
@@ -28,6 +37,9 @@ import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -37,19 +49,29 @@ import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesAction;
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
+import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
 
 class StyleControlGroup implements ControlGroup{
-	private boolean internalChange;
-	private BooleanProperty mSetStyle;
+    private static final String REDEFINE_STYLE = "change_style";
+    private static final String FOR_THIS_MAP = "changes_style_for_this_map";
+    private static final String FOR_TEMPLATE = "changes_template_style";
+    private static final String FOR_TEMPLATE_TOOLTIP =FOR_TEMPLATE + ".tooltip";
+    private boolean internalChange;
+	private RevertingProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
+    private JRadioButton redefinesStyleForCurrentMapAndTemplate;
+    private JTextField redefinedTemplate;
 	private final boolean addStyleBox;
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
@@ -60,6 +82,7 @@ class StyleControlGroup implements ControlGroup{
 	private final ModeController modeController;
 	
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
+    private TitledBorder redefineStyleBtnBorder;
 
 	
 	private class StyleChangeListener implements PropertyChangeListener{
@@ -72,7 +95,7 @@ class StyleControlGroup implements ControlGroup{
 			if(internalChange){
 				return;
 			}
-			BooleanProperty isSet = (BooleanProperty) evt.getSource();
+			RevertingProperty isSet = (RevertingProperty) evt.getSource();
 			final MLogicalStyleController styleController = (MLogicalStyleController) LogicalStyleController.getController();
 			if(isSet.getBooleanValue()){
 				styleController.setStyle((IStyle) uiFactory.getStyles().getSelectedItem());
@@ -101,6 +124,11 @@ class StyleControlGroup implements ControlGroup{
 				final boolean isStyleSet = LogicalStyleModel.getStyle(node) != null;
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
+	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
+	            final String labelText = TextUtils.format(REDEFINE_STYLE, firstStyle);
+	            redefineStyleBtnBorder.setTitle(labelText);
+	            updateTemplateName(node.getMap());
+
 			}
 			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
 			if(mAutomaticLayoutComboBox != null){
@@ -147,38 +175,100 @@ class StyleControlGroup implements ControlGroup{
 			addAutomaticLayout(formBuilder);
 			addStyleBox(formBuilder);
 		}
-		mNodeStyleButton = addStyleButton(formBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
+		mNodeStyleButton = addButton(formBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
 		if (addStyleBox) {
-			mMapStyleButton = addStyleButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
+			mMapStyleButton = addButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
+
+			JRadioButton redefinesStyleForCurrentMapOnly = new JRadioButton();
+            redefinesStyleForCurrentMapOnly.setSelected(true);
+            redefinesStyleForCurrentMapOnly.setText(TextUtils.getRawText(FOR_THIS_MAP));
+            redefinesStyleForCurrentMapOnly.setAlignmentX(Component.LEFT_ALIGNMENT);
+            
+            redefinesStyleForCurrentMapAndTemplate = new JRadioButton(); 
+            redefinesStyleForCurrentMapAndTemplate.setText(TextUtils.getText(FOR_TEMPLATE));
+            redefinesStyleForCurrentMapAndTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
+            
+            redefinedTemplate= new JTextField(80);
+            redefinedTemplate.setBorder(BorderFactory.createEmptyBorder(0, (int) (15 * UITools.FONT_SCALE_FACTOR), 0, 0));
+            redefinedTemplate.setEditable(false);
+            redefinedTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            
+            ButtonGroup redefineStyleButtonGroup = new ButtonGroup();
+            redefineStyleButtonGroup.add(redefinesStyleForCurrentMapOnly);
+            redefineStyleButtonGroup.add(redefinesStyleForCurrentMapAndTemplate);
+            
+            Box buttonBox = Box.createHorizontalBox();
+            Box radioButtonBox = Box.createVerticalBox();
+            radioButtonBox.add(redefinesStyleForCurrentMapOnly);
+            radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
+            radioButtonBox.add(redefinedTemplate);
+            radioButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+            buttonBox.add(radioButtonBox);
+            
+            JButton redefineStyleBtn = TranslatedElementFactory.createButton("ApplyAction.text");
+            redefineStyleBtn.addActionListener(e -> {
+                 final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
+                    MapStyle.getController().redefineStyle(node, redefinesStyleForCurrentMapAndTemplate.isSelected());
+
+            });
+            redefineStyleBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+            buttonBox.add(redefineStyleBtn);
+
+            redefineStyleBtnBorder = UITools.addTitledBorder(buttonBox, "", StyleEditorPanel.FONT_SIZE);
+            formBuilder.append(buttonBox, formBuilder.getColumnCount());
+            formBuilder.nextLine();
+
+            MapController mapController = Controller.getCurrentModeController().getMapController();
+            mapController.addMapChangeListener(new IMapChangeListener(){
+                @Override
+                public void mapChanged(MapChangeEvent event) {
+                    if(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY.equals(event.getProperty())
+                            && event.getMap().equals(Controller.getCurrentController().getMap())){
+                        updateTemplateName(event.getMap());
+                    }
+                 }
+                
+            });
 		}
 	}
-	
-	private JButton addStyleButton(DefaultFormBuilder formBuilder, String label, AFreeplaneAction action) {
-	    final JButton button = new JButton(){
-			private static final long serialVersionUID = 1L;
-			{
-				setUI(BasicButtonUI.createUI(this));
-				
-			}
-		};
-	    button.addActionListener(action);
-	    button.setHorizontalAlignment(SwingConstants.LEFT);
-	    final String labelText = TextUtils.getText(label);
-	    UITools.addTitledBorder(button, labelText, StyleEditorPanel.FONT_SIZE);
+
+    private void updateTemplateName(MapModel map) {
+        String templateLocation = MapStyle.getController().getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
+        String templateDescription = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
+        redefinedTemplate.setText(templateDescription);
+        redefinesStyleForCurrentMapAndTemplate.setToolTipText(
+                TextUtils.format(FOR_TEMPLATE_TOOLTIP, templateDescription));
+    }
+	private JButton addButton(DefaultFormBuilder formBuilder, String label, ActionListener action) {
+	    final JButton button = addButton(formBuilder, action);
 		TranslatedElement.BORDER.setKey(button, label);
-	    formBuilder.append(button, formBuilder.getColumnCount());
-		formBuilder.nextLine();
+		final String labelText = TextUtils.getText(label);
+		UITools.addTitledBorder(button, labelText, StyleEditorPanel.FONT_SIZE);
 		return button;
+    }
+
+    private JButton addButton(DefaultFormBuilder formBuilder, ActionListener action) {
+        final JButton button = new JButton();
+        button.setHorizontalAlignment(SwingConstants.LEFT);
+	    addComponent(formBuilder, button);
+		button.addActionListener(action);
+        return button;
+    }
+
+    private void addComponent(DefaultFormBuilder formBuilder, final Component component) {
+	    formBuilder.append(component, formBuilder.getColumnCount());
+		formBuilder.nextLine();
     }
 
 	private void addStyleBox(final DefaultFormBuilder formBuilder) {
 	    mStyleBox = uiFactory.createStyleBox();
-	    mSetStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
+	    mSetStyle = new RevertingProperty();
 		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
-		mSetStyle.appendToForm(formBuilder);
 		formBuilder.append(new JLabel(TextUtils.getText("style")));
 		formBuilder.append(mStyleBox);
+		mSetStyle.appendToForm(formBuilder);
 		formBuilder.nextLine();
 	}
 	private void addAutomaticLayout(final DefaultFormBuilder formBuilder) {
@@ -247,7 +337,7 @@ class StyleControlGroup implements ControlGroup{
 			formBuilder.nextLine();
 			formBuilder.appendRow(FormSpecs.PREF_ROWSPEC);
 			formBuilder.setColumn(1);
-			formBuilder.append(mEditEdgeColorsBtn, 7);
+			formBuilder.append(mEditEdgeColorsBtn, formBuilder.getColumnCount());
 			formBuilder.nextLine();
 			
 	}
@@ -256,8 +346,8 @@ class StyleControlGroup implements ControlGroup{
 		final String text = TextUtils.getText(labelKey);
 	    final JLabel label = new JLabel(text);
 		TranslatedElement.TEXT.setKey(label, labelKey);
-		formBuilder.append(label, 5);
-	    formBuilder.append(component);
+		formBuilder.append(label, 1);
+	    formBuilder.append(component, 3);
 	    formBuilder.nextLine();
 	}
 

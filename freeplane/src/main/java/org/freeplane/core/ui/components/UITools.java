@@ -599,7 +599,7 @@ public class UITools {
     	return dialog;
     }
 
-	public static void addTitledBorder(final JComponent c, final String title, final float size) {
+	public static TitledBorder addTitledBorder(final JComponent c, final String title, final float size) {
         final TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         final Font titleFont = UIManager.getFont("TitledBorder.font");
         titledBorder.setTitleFont(titleFont.deriveFont(size));
@@ -611,6 +611,7 @@ public class UITools {
     	else{
     		c.setBorder(titledBorder);
     	}
+    	return titledBorder;
     }
 
 	public static void backOtherWindows() {

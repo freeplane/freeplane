@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
@@ -39,13 +40,13 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class NoteContentTypeControlGroup implements ControlGroup {
 	private static final String NAME = "noteContentType";
 
-	private BooleanProperty mSetContentType;
+	private RevertingProperty mSetContentType;
 	private ComboProperty mContentType;
 	
 	private ContentTypeChangeListener propertyChangeListener;
 	
 	private class ContentTypeChangeListener extends ControlGroupChangeListener {
-		public ContentTypeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+		public ContentTypeChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -71,12 +72,12 @@ public class NoteContentTypeControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-        mSetContentType = new BooleanProperty(ControlGroup.SET_RESOURCE);
+        mSetContentType = new RevertingProperty();
         mContentType = new ComboProperty(NAME, MTextController.getController().getDetailContentTypes());
         propertyChangeListener = new ContentTypeChangeListener(mSetContentType, mContentType);
         mSetContentType.addPropertyChangeListener(propertyChangeListener);
         mContentType.addPropertyChangeListener(propertyChangeListener);
-        mSetContentType.appendToForm(formBuilder);
         mContentType.appendToForm(formBuilder);
+        mSetContentType.appendToForm(formBuilder);
 	}
 }

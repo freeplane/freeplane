@@ -223,7 +223,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().addUINodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
-		modeController.addAction(new RedefineStyleAction());
+        modeController.addAction(new RedefineStyleAction());
+        modeController.addAction(new RedefineStyleUpdateTemplateAction());
 		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new ManageMapConditionalStylesAction());
 		modeController.addAction(new ManageNodeConditionalStylesAction());
@@ -235,7 +236,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_VIEWPORT));
             modeController.addAction(new CopyMapStylesAction());
             modeController.addAction(new ReplaceMapStylesAction());
-            modeController.addAction(new ManageFollowedMindMapAction());
+            modeController.addAction(new ManageAssociatedMindMapsAction());
 		}
 		if(! GraphicsEnvironment.isHeadless()){
 			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),

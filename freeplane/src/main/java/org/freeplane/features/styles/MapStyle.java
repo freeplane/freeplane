@@ -31,12 +31,13 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.swing.JOptionPane;
-
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
@@ -68,7 +69,10 @@ import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 /**
  * @author Dimitry Polivaev
@@ -431,33 +435,89 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 
-	public void replaceStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+	public void replaceStyles(final File file, final MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
         URI uri = file.toURI();
-        replaceStyles(uri, targetMap, shouldFollow);
+        replaceStyles(uri, targetMap, shouldFollow, shouldAssociate);
 	}
 	
-	public void replaceStyles(URI uri, MapModel targetMap, boolean shouldFollow) throws MalformedURLException{
+	public void replaceStyles(URI uri, MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException{
 		final URL url = uri.toURL();
 	    loadStyleMapContainer(url).ifPresent(styleMapContainer ->
 	        {
 				new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
-				updateFollowProperties(targetMap, uri, shouldFollow);
-			});
+				updateFollowProperties(targetMap, uri, shouldFollow, shouldAssociate);
+	        });
 	}
 
+    private void copyStyleToAssociatedExternalTemplate(MapModel map, IStyle styleKey){
+        final TemplateManager templateManager = TemplateManager.INSTANCE;
+        String templateLocationPropertyValue = getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
+        URI source = templateManager.expandExistingTemplateLocation(null);
+        if(source == null) {
+            MindMapPreviewWithOptions previewWithOptions = MindMapPreviewWithOptions.createFileOpenDialogAndOptions(
+                    TextUtils.getText("select_associated_template"));
+            JFileChooser fileChooser = previewWithOptions.getFileChooser();
+            final int returnVal = fileChooser.showOpenDialog(UITools.getCurrentFrame());
+            if (returnVal != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            File file = fileChooser.getSelectedFile();
+            if(! file.exists()){
+                return;
+            }
+            source = file.toURI();
+            MapStyle.getController().setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
+                    TemplateManager.INSTANCE.normalizeTemplateLocation(source).toString());
 
-	private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow) {
-		if(shouldFollow) {
-			setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, uri.toString());
+        }
+        File target = templateManager.writeableTemplateFile(templateLocationPropertyValue);
+        if(target != null && !target.isDirectory() && target.canWrite()) {
+            try {
+                copyStyleToExternalMap(map, styleKey, source, target);
+            } catch (MalformedURLException e) {
+                LogUtils.severe(e);
+            }
+        } else {
+              UITools.errorMessage(TextUtils.format("file_not_accessible", String.valueOf(target)));
+        }
+
+    }
+    
+    private void copyStyleToExternalMap(MapModel map, IStyle styleKey, URI sourceLocation, File targetFile) throws MalformedURLException {
+	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
+	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
+	    Objects.requireNonNull(copiedStyleNode);
+	    final URL url = sourceLocation.toURL();
+	    loadStyleMapContainer(url).ifPresent(styleMapTarget ->
+	    {
+	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
+	        targetStyles.copyStyle(copiedStyleNode, styleKey);
+	        try {
+	            MFileManager.getController(Controller.getCurrentModeController()).writeToFile(styleMapTarget, targetFile);
+	        } catch (IOException e) {
+	            LogUtils.warn(e);
+	        }
+	        
+	    });
+
+	}
+
+    private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow, boolean shouldAssociate) {
+		String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString();
+        if(shouldFollow) {
+			setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, normalizedLocation);
 			updateLastModificationTime(map, uri);
 			
 		}
 		else {
-			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
-			if(followedMapUri != null && uri.toString().equals(followedMapUri)) {
+			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
+			if(followedMapUri != null && normalizedLocation.equals(followedMapUri)) {
 				updateLastModificationTime(map, uri);
 			}
 		}
+        if(shouldAssociate) {
+            setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, normalizedLocation);
+        }
 	}
 
 	public void updateLastModificationTime(final MapModel map, URI uri) {
@@ -471,29 +531,29 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 	
 
-	public void copyStyles(URI uri, MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+	public void copyStyles(URI uri, MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
 		final URL url = uri.toURL();
         loadStyleMapContainer(url).ifPresent(styleMapContainer ->
             {
 				new StyleExchange(styleMapContainer, targetMap).copyMapStyles();
-				updateFollowProperties(targetMap, uri, shouldFollow);
+				updateFollowProperties(targetMap, uri, shouldFollow, shouldAssociate);
 			});
 	}
 
-    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
         URI uri = file.toURI();
-        copyStyles(uri, targetMap, shouldFollow);
+        copyStyles(uri, targetMap, shouldFollow, shouldAssociate);
     }
 
     private void copyMapStylesNoUndoNoRefresh(final MapModel targetMap) {
         MapStyleModel mapStyleModel = MapStyleModel.getExtension(targetMap);
-        String followedMap = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+        String followedTemplate = followedTemplate(mapStyleModel);
         String lastUpdateTimeString = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME);
         long lastUpdateTime = lastUpdateTimeString != null ? Long.parseLong(lastUpdateTimeString) : 0;
         String followedMapPath; 
-        if(followedMap != null) {
+        if(followedTemplate != null) {
             try {
-                URI source = new URI(followedMap);
+                URI source = TemplateManager.INSTANCE.expandTemplateLocation(new URI(followedTemplate));
                 boolean shouldUpdate;
                 long sourceLastModificationTime ;
                 if(source.getScheme().equalsIgnoreCase("file")) {
@@ -504,7 +564,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                 } else {
                     sourceLastModificationTime = lastUpdateTime;
                     shouldUpdate = true;
-                    followedMapPath = followedMap;
+                    followedMapPath = followedTemplate;
                 }
                 if(shouldUpdate) {
                     loadStyleMapContainer(source.toURL()).ifPresent(styleMapContainer ->
@@ -517,10 +577,28 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                     MapStyleModel.getExtension(targetMap).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceLastModificationTime));
             }
             catch (URISyntaxException | MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LogUtils.severe(e);
             }
 
+        }
+    }
+
+    private String followedTemplate(MapStyleModel mapStyleModel) {
+        normalizeOldFormatTemplateLocation(mapStyleModel);
+        return mapStyleModel.getProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
+    }
+
+    private void normalizeOldFormatTemplateLocation(MapStyleModel mapStyleModel) {
+        TemplateManager templateManager = TemplateManager.INSTANCE;
+        String oldPropertyLocation = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+        if(oldPropertyLocation != null) {
+            mapStyleModel.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, null);
+            try {
+                mapStyleModel.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, 
+                        templateManager.normalizeTemplateLocation(new URI(oldPropertyLocation)).toString());
+            } catch (URISyntaxException e) {
+                LogUtils.severe(e);
+            }
         }
     }
 
@@ -661,6 +739,19 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     public Map<String, String> getPropertiesReadOnly(final MapModel model) {
         return Collections.unmodifiableMap(MapStyleModel.getExtension(model).getProperties());
+    }
+
+    public void redefineStyle(final NodeModel node, boolean copyToExternalTemplate) {
+        final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
+        final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+        final NodeModel styleNode = extension.getStyleNode(style);
+        if(styleNode == null)
+            return;
+        Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
+        Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+        LogicalStyleController.getController().refreshMap(node.getMap());
+        if(copyToExternalTemplate)
+            copyStyleToAssociatedExternalTemplate(node.getMap(), style);
     }
 
 }

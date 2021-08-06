@@ -20,11 +20,13 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
+import javax.swing.Box;
 import javax.swing.JPanel;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -49,6 +51,7 @@ import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.util.LayoutStyle;
 
 public class StyleEditorPanel extends JPanel {
 	private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
@@ -117,36 +120,44 @@ public class StyleEditorPanel extends JPanel {
 	private ControlGroup[] createControlGroups(ModeController modeController, MUIFactory uiFactory, boolean addStyleBox) {
 		return new ControlGroup[]{
 				new StyleControlGroup(addStyleBox, uiFactory, modeController),
+				
 				new GroupSeparator("OptionPanel.separator.NodeColors"),
 				new NodeColorControlGroup(),
 				new NodeBackgroundColorControlGroup(),
-				new GroupSeparator("OptionPanel.separator.NodeText"),
-				new FormatControlGroup(),
-				new NodeNumberingControlGroup(),
+				
+                new GroupSeparator("OptionPanel.separator.NodeFont"),
+                new FontNameControlGroup(),
+                new FontSizeControlGroup(),
+                new FontBoldControlGroup(),
+                new FontStrikeThroughControlGroup(),
+                new FontItalicControlGroup(),
+                new NodeHorizontalTextAlignmentControlGroup(),
+                new NodeFontHyperLinkControlGroup(),
+                new NextLineControlGroup(),
+                
+                new GroupSeparator("OptionPanel.separator.IconControls"),
+                new IconSizeControlGroup(),
+                
+                new GroupSeparator("OptionPanel.separator.NodeText"),
+                new FormatControlGroup(),
+                new NodeNumberingControlGroup(),
+                
 				new GroupSeparator("OptionPanel.separator.ContentTypes"),
                 new DetailContentTypeControlGroup(),
                 new NoteContentTypeControlGroup(),
-				new GroupSeparator("OptionPanel.separator.NodeShape"),
+				
+                new GroupSeparator("OptionPanel.separator.NodeShape"),
 				new NodeShapeControlGroup(),
 				new MinNodeWidthControlGroup(),
 				new MaxNodeWidthControlGroup(),
 				new ChildDistanceControlGroup(),
+				
 				new GroupSeparator("OptionPanel.separator.NodeBorder"),
 				new BorderWidthAndBorderWidthMatchesEdgeControlGroup(),
 				new BorderDashAndDashMatchesEdgeControlGroup(),
 				new BorderColorAndColorMatchesEdgeControlGroup(),
 				new NextLineControlGroup(),
-				new GroupSeparator("OptionPanel.separator.NodeFont"),
-				new FontNameControlGroup(),
-				new FontSizeControlGroup(),
-				new FontBoldControlGroup(),
-				new FontStrikeThroughControlGroup(),
-				new FontItalicControlGroup(),
-				new NodeHorizontalTextAlignmentControlGroup(),
-				new NodeFontHyperLinkControlGroup(),
-				new NextLineControlGroup(),
-				new GroupSeparator("OptionPanel.separator.IconControls"),
-				new IconSizeControlGroup(),
+				
 				new GroupSeparator("OptionPanel.separator.EdgeControls"),
 				new EdgeWidthControlGroup(),
 				new EdgeDashControlGroup(),
@@ -162,15 +173,17 @@ public class StyleEditorPanel extends JPanel {
 	 * @param modeController
 	 */
 	private void init() {
-		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
+        final String form = "right:max(20dlu;p), 4dlu, max(80dlu;p), 4dlu, max(20dlu;p)";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
+		formBuilder.lineGapSize(LayoutStyle.getCurrent().getNarrowLinePad());
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").appendToForm(formBuilder);
 
 		for (ControlGroup controlGroup :controlGroups) {
 			controlGroup.addControlGroup(formBuilder);
 		}
+		formBuilder.getLayout().setHonorsVisibility(false);
 		add(formBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners();
 		setFont(this, FONT_SIZE);
@@ -201,9 +214,17 @@ public class StyleEditorPanel extends JPanel {
 
 	private void setComponentsEnabled(boolean enabled) {
 		final Container panel = (Container) getComponent(0);
-		for (int i = 0; i < panel.getComponentCount(); i++) {
-			panel.getComponent(i).setEnabled(enabled);
-		}
+		setComponentsEnabled(panel, enabled);
+	}
+
+	private void setComponentsEnabled(final Container container, boolean enabled) {
+	    container.setEnabled(enabled);
+	    if(container instanceof Box || container instanceof JPanel)
+	        for (int i = 0; i < container.getComponentCount(); i++) {
+	            Component component = container.getComponent(i);
+	            if(container instanceof Container)
+	                setComponentsEnabled((Container) component, enabled);
+	        }
 	}
 	
 	private void addListeners() {

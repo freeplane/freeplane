@@ -262,15 +262,18 @@ public class MapLoader{
 	}
 
     private void setFollowedMapProperties(final MMapModel map) {
-        if(followSourceMap && sourceLocation != null && ! sourceLocation.equals(newMapLocation)) {
+        if(sourceLocation != null && ! sourceLocation.equals(newMapLocation)) {
 			MapStyleModel properties = MapStyleModel.getExtension(map);
 			try {
 				URI sourceUri = sourceLocation.toURI();
-                properties.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
-					sourceUri.toString());
-                if(sourceUri.getScheme().equalsIgnoreCase("file")) {
-                    File file = Paths.get(sourceUri).toFile();
-                    properties.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(file.lastModified()));
+                String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(sourceUri).toString();
+                properties.setProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
+                if(followSourceMap) {
+                    properties.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
+                    if(sourceUri.getScheme().equalsIgnoreCase("file")) {
+                        File file = Paths.get(sourceUri).toFile();
+                        properties.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(file.lastModified()));
+                    }
                 }
 			}
 			catch (URISyntaxException e) {

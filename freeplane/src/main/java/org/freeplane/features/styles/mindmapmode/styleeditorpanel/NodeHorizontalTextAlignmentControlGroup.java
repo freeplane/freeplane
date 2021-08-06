@@ -26,6 +26,7 @@ import java.util.Vector;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -44,13 +45,13 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 	private static final String TEXT_ALIGNMENT = "textalignment";
 	
 	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(HorizontalTextAlignment.class);
-	private BooleanProperty mSetNodeTextAlignment;
+	private RevertingProperty mSetNodeTextAlignment;
 	private ComboProperty mNodeTextAlignment;
 
 	private NodeTextAlignmentChangeListener propertyChangeListener;
 
 	private class NodeTextAlignmentChangeListener extends ControlGroupChangeListener {
-		public NodeTextAlignmentChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
+		public NodeTextAlignmentChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -72,7 +73,7 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeTextAlignment = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mSetNodeTextAlignment = new RevertingProperty();
 		final Vector<String> possibleTranslations = new Vector<String>(TEXT_ALIGNMENTS.length);
 		for (int i = 0; i < TEXT_ALIGNMENTS.length; i++) {
 			possibleTranslations.add(TextUtils.getText("TextAlignAction." + TEXT_ALIGNMENTS[i] + ".text"));
@@ -82,8 +83,8 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 		propertyChangeListener = new NodeTextAlignmentChangeListener(mSetNodeTextAlignment, mNodeTextAlignment);
 		mSetNodeTextAlignment.addPropertyChangeListener(propertyChangeListener);
 		mNodeTextAlignment.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeTextAlignment.appendToForm(formBuilder);
 		mNodeTextAlignment.appendToForm(formBuilder);
+		mSetNodeTextAlignment.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {
