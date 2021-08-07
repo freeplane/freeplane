@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
@@ -318,12 +319,10 @@ class ControllerProxy implements Proxy.Controller {
 
     @Override
 	public List<MindMap> getOpenMindMaps() {
-    	Collection<MapModel> mapModels = getMapViewManager().getMaps().values();
-    	ArrayList<MindMap> mapProxies = new ArrayList<MindMap>(mapModels.size());
-    	for (MapModel mapModel : mapModels) {
-	        mapProxies.add(new MapProxy(mapModel, scriptContext));
-        }
-    	return mapProxies;
+    	return getMapViewManager().getMaps().values().stream()
+    	.distinct()
+    	.map(m -> new MapProxy(m, scriptContext))
+    	.collect(Collectors.toList());
     }
 
 	@Override

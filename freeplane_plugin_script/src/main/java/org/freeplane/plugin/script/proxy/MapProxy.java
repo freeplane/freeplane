@@ -59,12 +59,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	// MapRO: R
 	@Override
 	public String getName() {
-		final IMapViewManager mapViewManager = getMapViewManager();
-		for (Entry<String, MapModel> map : mapViewManager.getMaps().entrySet()) {
-			if (map.getValue().equals(getDelegate()))
-				return map.getKey();
-		}
-		return null;
+		return getDelegate().getTitle();
 	}
 
 	// MapRO: R
