@@ -94,7 +94,16 @@ public class TemplateManager {
             return locationUri;
         }
     }
-    
+
+    public URI expandExistingTemplateLocation(String location) {
+        try {
+            return expandExistingTemplateLocation(new URI(location));
+        } catch (URISyntaxException e) {
+            LogUtils.severe(e);
+            return null;
+        }
+    }
+
     public URI expandExistingTemplateLocation (URI locationUri) {
         if(locationUri == null || ! TEMPLATE_SCHEME.equals(locationUri.getScheme()))
             return locationUri;
@@ -158,6 +167,5 @@ public class TemplateManager {
             return TextUtils.getText("no_template_associated");
         }
     }
-
 
 }
