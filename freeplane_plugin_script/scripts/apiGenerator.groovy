@@ -249,8 +249,12 @@ def ICONS_NODE = textUtils.getText('icons')
 c.deactivateUndo()
 def resourceBaseDir = ResourceController.resourceController.resourceBaseDir;
 def allUserTemplates = new File(resourceBaseDir, 'templates');
-def defaultTemplate = new File(allUserTemplates, 'standard.mm')
+def defaultTemplate = new File(allUserTemplates, 'standard-1.6.mm')
 Proxy.Map newMap = defaultTemplate.canRead() ? c.newMapFromTemplate(defaultTemplate) : c.newMap()
+if(newMap == null) {
+	ui.errorMessage('Can not load map template')
+    return
+}
 def oldName = newMap.name
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
