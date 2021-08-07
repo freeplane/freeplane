@@ -588,8 +588,17 @@ public class MMapController extends MapController {
 	                     final boolean changeSide) {
 		final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
 		int index = newIndex;
-		for(NodeModel node : movedNodesWithSummaryGroupIndicators)
+		for(NodeModel node : movedNodesWithSummaryGroupIndicators) {
+            final NodeModel oldParent = node.getParentNode();
+            if(newParent.subtreeClones().contains(oldParent)){
+                final NodeModel childNode = node;
+                final int oldIndex = oldParent.getIndex(childNode);
+                if(oldIndex < newIndex) {
+                    index--;
+                }
+            }
 			moveNodeAndItsClones(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
+		}
 	}
 
 	public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, int newIndex, final boolean isLeft,
@@ -697,13 +706,6 @@ public class MMapController extends MapController {
         final NodeModel newParent = target.getParentNode();
         int newIndex = newParent.getIndex(target);
         for(NodeModel node : children){
-        	final NodeModel oldParent = node.getParentNode();
-        	if(newParent.subtreeClones().contains(oldParent)){
-        		final NodeModel childNode = node;
-				final int oldIndex = oldParent.getIndex(childNode);
-        		if(oldIndex < newIndex)
-        			newIndex--;
-        	}
         	Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(node);
         }
         moveNodes(children, newParent, newIndex, isLeft, changeSide);
