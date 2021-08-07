@@ -492,6 +492,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    {
 	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
 	        NodeModel oldNode = targetStyles.getStyleNode(styleKey).duplicate(false);
+	        oldNode.setMap(null);
 	        IActor actor = new IActor() {
 
                 @Override
