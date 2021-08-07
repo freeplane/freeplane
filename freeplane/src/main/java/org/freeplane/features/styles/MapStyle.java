@@ -448,11 +448,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				updateFollowProperties(targetMap, uri, shouldFollow, shouldAssociate);
 	        });
 	}
-
-    private void copyStyleToAssociatedExternalTemplate(MapModel map, IStyle styleKey){
+	
+    private void undoableCopyStyleToAssociatedExternalTemplate(MapModel map, IStyle styleKey){
         final TemplateManager templateManager = TemplateManager.INSTANCE;
         String templateLocationPropertyValue = getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
-        URI source = templateManager.expandExistingTemplateLocation(null);
+        URI source = templateManager.expandExistingTemplateLocation(templateLocationPropertyValue);
         if(source == null) {
             MindMapPreviewWithOptions previewWithOptions = MindMapPreviewWithOptions.createFileOpenDialogAndOptions(
                     TextUtils.getText("select_associated_template"));
@@ -471,9 +471,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
         }
         File target = templateManager.writeableTemplateFile(templateLocationPropertyValue);
-        if(target != null && !target.isDirectory() && target.canWrite()) {
+        if(target != null && !target.isDirectory() && target.canWrite() || ! target.exists()) {
             try {
-                copyStyleToExternalMap(map, styleKey, source, target);
+                undoableCopyStyleToExternalMap(map, styleKey, source, target);
             } catch (MalformedURLException e) {
                 LogUtils.severe(e);
             }
@@ -483,7 +483,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     }
     
-    private void copyStyleToExternalMap(MapModel map, IStyle styleKey, URI sourceLocation, File targetFile) throws MalformedURLException {
+    private void undoableCopyStyleToExternalMap(MapModel map, IStyle styleKey, URI sourceLocation, File targetFile) throws MalformedURLException {
 	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
 	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
 	    Objects.requireNonNull(copiedStyleNode);
@@ -491,13 +491,36 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    loadStyleMapContainer(url).ifPresent(styleMapTarget ->
 	    {
 	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
-	        targetStyles.copyStyle(copiedStyleNode, styleKey);
-	        try {
-	            MFileManager.getController(Controller.getCurrentModeController()).writeToFile(styleMapTarget, targetFile);
-	        } catch (IOException e) {
-	            LogUtils.warn(e);
-	        }
-	        
+	        NodeModel oldNode = targetStyles.getStyleNode(styleKey).duplicate(false);
+	        IActor actor = new IActor() {
+
+                @Override
+                public void act() {
+                    copy(copiedStyleNode);
+                }
+
+                @Override
+                public String getDescription() {
+                    return "copyStyleToExternalMap";
+                }
+
+                @Override
+                public void undo() {
+                    if(oldNode != null)
+                        copy(oldNode);
+                }
+                
+                private void copy(NodeModel sourceNode) {
+                    targetStyles.copyStyle(sourceNode, styleKey);
+                    try {
+                        MFileManager.getController(Controller.getCurrentModeController()).writeToFile(styleMapTarget, targetFile);
+                    } catch (IOException e) {
+                        LogUtils.warn(e);
+                    }
+
+                }
+	        };
+	        Controller.getCurrentModeController().execute(actor, map);
 	    });
 
 	}
@@ -751,7 +774,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
         LogicalStyleController.getController().refreshMap(node.getMap());
         if(copyToExternalTemplate)
-            copyStyleToAssociatedExternalTemplate(node.getMap(), style);
+            undoableCopyStyleToAssociatedExternalTemplate(node.getMap(), style);
     }
 
 }
