@@ -50,11 +50,14 @@ import org.freeplane.features.styles.mindmapmode.MUIFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
+import com.jgoodies.forms.layout.ConstantSize;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.forms.util.LayoutStyle;
 
 public class StyleEditorPanel extends JPanel {
-	private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
+
+    private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
 		private final Controller controller;
 		private final ModeController modeController;
 		boolean canEdit = true;
@@ -86,7 +89,8 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
-	static final float FONT_SIZE = UITools.getUIFontSize(0.8);
+	static final float FONT_SIZE = UITools.getUIFontSize(1);
+	private static final ConstantSize PARAGRAPH_GAP_SIZE = Sizes.pixel((int) (2.5 * FONT_SIZE));
 
 	/**
 	*
@@ -178,6 +182,7 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
 		formBuilder.lineGapSize(LayoutStyle.getCurrent().getNarrowLinePad());
+		formBuilder.paragraphGapSize(PARAGRAPH_GAP_SIZE);
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").appendToForm(formBuilder);
 
 		for (ControlGroup controlGroup :controlGroups) {

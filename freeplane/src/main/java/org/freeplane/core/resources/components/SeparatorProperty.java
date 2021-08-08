@@ -31,7 +31,8 @@ import org.freeplane.core.util.TextUtils;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class SeparatorProperty implements IPropertyControl {
-	private final String label;
+	private static final AffineTransform FONT_TRANSFORM = AffineTransform.getScaleInstance(1.5, 1.5);
+    private final String label;
 
 	public SeparatorProperty(final String label) {
 		super();
@@ -63,7 +64,7 @@ public class SeparatorProperty implements IPropertyControl {
 			for (Component child : separator.getComponents()) {
 				if(child instanceof JLabel) {
                     TranslatedElement.TEXT.setKey((JComponent) child, labelKey);
-                    child.setFont(child.getFont().deriveFont(AffineTransform.getScaleInstance(1.5, 1.5)));
+                    child.setFont(child.getFont().deriveFont(FONT_TRANSFORM));
                 }
 				break;
 			}
