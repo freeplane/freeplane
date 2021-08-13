@@ -323,42 +323,24 @@ public class MLogicalStyleController extends LogicalStyleController {
 			if (map == null) {
 				return;
 			}
-			final MapStyleModel extension = MapStyleModel.getExtension(map);
-			if (extension == null) {
-				return;
+			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
+			if (mapStyleModel == null) {
+			    return;
 			}
 			actions.clear();
-			final NodeModel rootNode = extension.getStyleMap().getRootNode();
-            AssignStyleAction resetAction = new AssignStyleAction(null);
-            final AssignStyleAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(resetAction);
-            if(resetAction == action)
-                actions.add(resetAction);
-			new EntryAccessor().addChildAction(target, action);
-			addStyleMenu(target, rootNode, extension);
-		}
-
-		private void addStyleMenu(final Entry target, final NodeModel styleMapNode, MapStyleModel extension) {
-			final List<NodeModel> children = styleMapNode.getChildren();
+			final NodeModel rootNode = mapStyleModel.getStyleMap().getRootNode();
+			AssignStyleAction resetAction = new AssignStyleAction(null);
+			final AssignStyleAction addedResetAction =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(resetAction);
+			if(resetAction == addedResetAction)
+			    actions.add(resetAction);
 			final EntryAccessor entryAccessor = new EntryAccessor();
-			for (final NodeModel child : children) {
-				if (child.hasChildren()) {
-					addStyleMenu(target, child, extension);
-				}
-				else {
-					Object userObject = child.getUserObject();
-					if (userObject instanceof IStyle) {
-						final IStyle style = (IStyle) userObject;
-						if (null != extension.getStyleNode(style)) {
-							AssignStyleAction newAction = new AssignStyleAction(style);
-                            final AssignStyleAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(newAction);
-                            if(newAction == action)
-                                actions.add(newAction);
-							entryAccessor.addChildAction(target, action);
-						}
-					}
-					else
-						LogUtils.severe("unexpected user object on style map: " + userObject);
-				}
+			entryAccessor.addChildAction(target, addedResetAction);
+			for (final IStyle style : mapStyleModel.getNodeStyles()) {
+			    AssignStyleAction newAction = new AssignStyleAction(style);
+			    final AssignStyleAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(newAction);
+			    if(newAction == action)
+			        actions.add(newAction);
+			    entryAccessor.addChildAction(target, action);
 			}
 		}
 	}
