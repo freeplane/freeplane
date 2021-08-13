@@ -267,6 +267,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		for (final IStyle style : styleObjects) {
 			styles.addElement(style);
 		}
+		styles.addElement(MapStyleModel.NEW_STYLE);
 		ignoreChangeEvent = false;
 	}
 

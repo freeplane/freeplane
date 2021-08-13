@@ -74,11 +74,12 @@ import org.freeplane.view.swing.map.MapView;
  */
 public class MapStyleModel implements IExtension {
 	public static final String STYLES_PREDEFINED = "styles.predefined";
-	public static final String STYLES_USER_DEFINED = "styles.user-defined";
+    public static final String STYLES_USER_DEFINED = "styles.user-defined";
     private static final StyleTranslatedObject STYLE_USER_DEFINED_TRANSLATED_OBJECT = new StyleTranslatedObject(STYLES_USER_DEFINED);
     private static final StyleTranslatedObject STYLE_PREDEFINED_TRANSLATED_OBJECT = new StyleTranslatedObject(STYLES_PREDEFINED);
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
     public static final IStyle DEFAULT_STYLE = new StyleTranslatedObject("default");
+    public static final IStyle NEW_STYLE = new StyleTranslatedObject("newStyle");
     public static final IStyle SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.selection");
 	public static final IStyle DETAILS_STYLE = new StyleTranslatedObject("defaultstyle.details");
 	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");

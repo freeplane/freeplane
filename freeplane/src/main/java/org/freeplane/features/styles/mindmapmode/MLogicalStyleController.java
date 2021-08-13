@@ -20,14 +20,18 @@
 package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.GraphicsEnvironment;
+import java.awt.KeyboardFocusManager;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -35,10 +39,13 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -49,6 +56,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
@@ -63,6 +71,8 @@ import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
+import org.freeplane.features.styles.StyleFactory;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;
@@ -419,6 +429,21 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 	public void setStyle(final IStyle style) {
 		final ModeController modeController = Controller.getCurrentModeController();
+		if(MapStyleModel.NEW_STYLE.equals(style)) {
+		    IMapSelection selection = Controller.getCurrentController().getSelection();
+		    if(selection == null) {
+		      return;  
+		    }
+		    IStyle newStyle = addNewUserStyle(false);
+		    if(newStyle == null) {
+		        NodeModel node = selection.getSelected();
+		        final IStyle oldStyle = LogicalStyleModel.getStyle(node);
+		        modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, oldStyle);
+		    }
+		    else 
+		        setStyle(newStyle);
+		    return;
+		}
 		final Collection<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
 			setStyle(selected, style);
@@ -563,6 +588,69 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 		};
 	}
+
+    IStyle addNewUserStyle(final boolean copyStyleFromSelected) {
+        final String styleName = JOptionPane.showInputDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), 
+                TextUtils.getText("enter_new_style_name"), "");
+    	if (styleName == null || styleName.isEmpty()) {
+    		return null;
+    	}
+    
+    	final MapModel map = Controller.getCurrentController().getMap();
+    	final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+    	final MapModel styleMap = styleModel.getStyleMap();
+    	final IStyle newStyle = StyleFactory.create(styleName);
+    	if (null != styleModel.getStyleNode(newStyle)) {
+    		UITools.errorMessage(TextUtils.getText("style_already_exists"));
+    		return null;
+    	}
+    	final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+    	final NodeModel newNode = new NodeModel(styleMap);
+    	newNode.setUserObject(newStyle);
+    	if(copyStyleFromSelected) {
+            NodeModel styleSourceNode = Controller.getCurrentController().getSelection().getSelected();
+    	    final ArrayList<IStyle> styles = new ArrayList<IStyle>(getStyles(styleSourceNode));
+    	    for(int i = styles.size() - 1; i >= 0; i--){
+    	        IStyle style = styles.get(i);
+    	        if(MapStyleModel.DEFAULT_STYLE.equals(style)){
+    	            continue;
+    	        }
+    	        final NodeModel styleNode = styleModel.getStyleNode(style);
+    	        if(styleNode == null){
+    	            continue;
+    	        }
+    	        Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleNode, newNode);
+    	    }
+    	    Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleSourceNode, newNode);
+    	    Controller.getCurrentModeController().copyExtensions(Keys.ICONS, styleSourceNode, newNode);
+    	}
+    	NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
+    	if(userStyleParentNode == null){
+    		userStyleParentNode = new NodeModel(styleMap);
+    		userStyleParentNode.setUserObject(new StyleTranslatedObject(MapStyleModel.STYLES_USER_DEFINED));
+    		mapController.insertNode(userStyleParentNode, styleMap.getRootNode(), false, false, true);
+    
+    	}
+    	mapController.insertNode(newNode, userStyleParentNode, false, false, true);
+    	mapController.select(newNode);
+    	final IActor actor = new IActor() {
+    		public void undo() {
+    			styleModel.removeStyleNode(newNode);
+    			refreshMap(map);
+    		}
+    
+    		public String getDescription() {
+    			return "NewStyle";
+    		}
+    
+    		public void act() {
+    			styleModel.addStyleNode(newNode);
+    			refreshMap(map);
+    		}
+    	};
+    	Controller.getCurrentModeController().execute(actor, styleMap);
+    	return newStyle;
+    }
 
 
 }
