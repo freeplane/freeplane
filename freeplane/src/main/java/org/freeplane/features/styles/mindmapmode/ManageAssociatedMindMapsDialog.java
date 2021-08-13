@@ -120,8 +120,8 @@ public class ManageAssociatedMindMapsDialog{
     }
 
     private JButton createChangeMapButton(String mapProperty, String fileChooserTitleProperty, JTextField field) {
-        JButton changeFollowedMapButton = new JButton(TextUtils.getText("OptionPanel.set_property_text"));
-        changeFollowedMapButton.addActionListener(e -> {
+        JButton assignMapButton = new JButton(TextUtils.getText("OptionPanel.set_property_text"));
+        assignMapButton.addActionListener(e -> {
             MindMapPreviewWithOptions previewWithOptions = MindMapPreviewWithOptions.createFileOpenDialogAndOptions(
                     TextUtils.getText(fileChooserTitleProperty)
             );
@@ -138,7 +138,7 @@ public class ManageAssociatedMindMapsDialog{
                     TemplateManager.INSTANCE.normalizeTemplateLocation(file.toURI()).toString());
             followedMapLocation = updateAssociatedMap(mapProperty, field, TextUtils.getText("no_map_followed"));
         });
-        return changeFollowedMapButton;
+        return assignMapButton;
     }
 
     private URI updateAssociatedMap(String propertyName, JTextField mapField, String noMapMessage) {
