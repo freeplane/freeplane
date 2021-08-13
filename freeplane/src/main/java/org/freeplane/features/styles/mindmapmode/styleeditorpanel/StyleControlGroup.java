@@ -1,13 +1,13 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.URI;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,7 +15,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -23,9 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
@@ -55,13 +53,14 @@ import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesAction;
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
-import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.TemplateManager;
+import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
 
 class StyleControlGroup implements ControlGroup{
+    private static final String CHOOSE_TEMPLATE = "choose_template";
     private static final String REDEFINE_STYLE = "change_style";
     private static final String FOR_THIS_MAP = "changes_style_for_this_map";
     private static final String FOR_TEMPLATE = "changes_template_style";
@@ -70,8 +69,10 @@ class StyleControlGroup implements ControlGroup{
 	private RevertingProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
+	private JRadioButton redefinesStyleForCurrentMapOnly;
     private JRadioButton redefinesStyleForCurrentMapAndTemplate;
     private JTextField redefinedTemplate;
+    private JButton associateTemplateButton;
 	private final boolean addStyleBox;
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
@@ -179,7 +180,7 @@ class StyleControlGroup implements ControlGroup{
 		if (addStyleBox) {
 			mMapStyleButton = addButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
 
-			JRadioButton redefinesStyleForCurrentMapOnly = new JRadioButton();
+			redefinesStyleForCurrentMapOnly = new JRadioButton();
             redefinesStyleForCurrentMapOnly.setSelected(true);
             redefinesStyleForCurrentMapOnly.setText(TextUtils.getRawText(FOR_THIS_MAP));
             redefinesStyleForCurrentMapOnly.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -192,6 +193,33 @@ class StyleControlGroup implements ControlGroup{
             redefinedTemplate.setBorder(BorderFactory.createEmptyBorder(0, (int) (15 * UITools.FONT_SCALE_FACTOR), 0, 0));
             redefinedTemplate.setEditable(false);
             redefinedTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
+            
+            associateTemplateButton = new JButton(TextUtils.getRawText(CHOOSE_TEMPLATE));
+            associateTemplateButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+            associateTemplateButton.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    MapModel map = Controller.getCurrentController().getMap();
+                    if(map == null)
+                        return;
+                    MindMapPreviewWithOptions previewWithOptions = MindMapPreviewWithOptions.createFileOpenDialogAndOptions(
+                            TextUtils.getText("select_associated_template")
+                    );
+                    JFileChooser fileChooser = previewWithOptions.getFileChooser();
+                    final int returnVal = fileChooser.showOpenDialog(UITools.getCurrentFrame());
+                    if (returnVal != JFileChooser.APPROVE_OPTION) {
+                        return;
+                    }
+                    File file = fileChooser.getSelectedFile();
+                    if(! file.exists()){
+                        return;
+                    }
+                    MapStyle.getController().setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
+                            TemplateManager.INSTANCE.normalizeTemplateLocation(file.toURI()).toString());
+
+                }
+            });
 
             
             ButtonGroup redefineStyleButtonGroup = new ButtonGroup();
@@ -203,6 +231,11 @@ class StyleControlGroup implements ControlGroup{
             radioButtonBox.add(redefinesStyleForCurrentMapOnly);
             radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
             radioButtonBox.add(redefinedTemplate);
+            Box associateTemplateButtonBox = Box.createHorizontalBox();
+            associateTemplateButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+            associateTemplateButtonBox.add(Box.createHorizontalStrut((int) (40 * UITools.FONT_SCALE_FACTOR)));
+            associateTemplateButtonBox.add(associateTemplateButton);
+            radioButtonBox.add(associateTemplateButtonBox);
             radioButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
             buttonBox.add(radioButtonBox);
             
@@ -237,8 +270,13 @@ class StyleControlGroup implements ControlGroup{
         String templateLocation = MapStyle.getController().getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
         String templateDescription = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
         redefinedTemplate.setText(templateDescription);
+        redefinedTemplate.setFont(redefinedTemplate.getFont().deriveFont(templateLocation == null ? Font.ITALIC : Font.PLAIN));
         redefinesStyleForCurrentMapAndTemplate.setToolTipText(
                 TextUtils.format(FOR_TEMPLATE_TOOLTIP, templateDescription));
+        if(templateLocation == null)
+            redefinesStyleForCurrentMapOnly.setSelected(true);
+        redefinesStyleForCurrentMapAndTemplate.setEnabled(templateLocation != null);
+        associateTemplateButton.setVisible(templateLocation == null);
     }
 	private JButton addButton(DefaultFormBuilder formBuilder, String label, ActionListener action) {
 	    final JButton button = addButton(formBuilder, action);
