@@ -28,9 +28,9 @@ import org.freeplane.features.styles.LogicalStyleController;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class NewUserStyleAction extends AFreeplaneAction {
-	public NewUserStyleAction() {
-		super("NewUserStyleAction");
+public class NewUserStyleFromSelectionAction extends AFreeplaneAction {
+	public NewUserStyleFromSelectionAction() {
+		super("NewUserStyleFromSelectionAction");
 	}
 
 	/**

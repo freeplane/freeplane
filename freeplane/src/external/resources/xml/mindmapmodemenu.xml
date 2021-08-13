@@ -425,7 +425,7 @@
 					<Entry name="AutomaticLayoutControllerAction.null" />
 				</Entry>
 				<Entry name="menu_manageStyles">
-					<Entry name="NewUserStyleAction" />
+					<Entry name="NewUserStyleFromSelectionAction" />
 					<Entry name="RedefineStyleAction" accelerator="alt shift R" />
 					<Entry name="RedefineStyleUpdateTemplateAction" />
 					<Entry name="RemoveFormatAction" />
