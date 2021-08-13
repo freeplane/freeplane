@@ -97,7 +97,7 @@ public class TemplateManager {
 
     public URI expandExistingTemplateLocation(String location) {
         try {
-            return expandExistingTemplateLocation(new URI(location));
+            return location == null ? null : expandExistingTemplateLocation(new URI(location));
         } catch (URISyntaxException e) {
             LogUtils.severe(e);
             return null;
