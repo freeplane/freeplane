@@ -263,7 +263,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		if (newMap == null) {
 			return;
 		}
-		final Collection<IStyle> styleObjects = MapStyleModel.getExtension(newMap).getStyles();
+		final Collection<IStyle> styleObjects = MapStyleModel.getExtension(newMap).getNodeStyles();
 		for (final IStyle style : styleObjects) {
 			styles.addElement(style);
 		}

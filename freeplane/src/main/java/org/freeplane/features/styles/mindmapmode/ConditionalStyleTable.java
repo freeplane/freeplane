@@ -109,7 +109,7 @@ class ConditionalStyleTable extends JTable {
 			@Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
                                                          int column) {
-				final Collection<IStyle> styles = ConditionalStyleTable.this.styleModel.getStyles();
+				final Collection<IStyle> styles = ConditionalStyleTable.this.styleModel.getNodeStyles();
 				final DefaultComboBoxModel boxContent = new DefaultComboBoxModel(styles.toArray());
 				styleBox.setModel(boxContent);
 	            return super.getTableCellEditorComponent(table, value, isSelected, row, column);

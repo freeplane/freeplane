@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -336,9 +337,22 @@ public class MapStyleModel implements IExtension {
 		this.backgroundColor = backgroundColor;
 	}
 
-	public Set<IStyle> getStyles() {
-		return styleNodes.keySet();
-	}
+    public Set<IStyle> getStyles() {
+        return styleNodes.keySet();
+    }
+
+    public List<IStyle> getNodeStyles() {
+        NodeModel userStyles = getStyleNodeGroup(styleMap, STYLES_USER_DEFINED);
+        ArrayList<IStyle> styles = new ArrayList<IStyle>(1 + userStyles.getChildCount());
+        styles.add(DEFAULT_STYLE);
+        for(NodeModel styleNode : userStyles.getChildren()) {
+            IStyle style = (IStyle) styleNode.getUserObject();
+            styles.add(style);
+           
+        }
+
+        return styles;
+    }
 
 	private float zoom = 1f;
 
