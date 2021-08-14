@@ -60,6 +60,8 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
 
 class StyleControlGroup implements ControlGroup{
+    private static final int LEFT_MARGIN = (int) (15 * UITools.FONT_SCALE_FACTOR);
+    private static final int GAP = (int) (6 * UITools.FONT_SCALE_FACTOR);
     private static final String CHOOSE_TEMPLATE = "choose_template";
     private static final String REDEFINE_STYLE = "change_style";
     private static final String FOR_THIS_MAP = "changes_style_for_this_map";
@@ -190,7 +192,8 @@ class StyleControlGroup implements ControlGroup{
             redefinesStyleForCurrentMapAndTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
             
             redefinedTemplate= new JTextField(80);
-            redefinedTemplate.setBorder(BorderFactory.createEmptyBorder(0, (int) (15 * UITools.FONT_SCALE_FACTOR), 0, 0));
+            redefinedTemplate.setBorder(BorderFactory.createEmptyBorder(0, LEFT_MARGIN, GAP, 0));
+            redefinedTemplate.setFont(redefinedTemplate.getFont().deriveFont(Font.ITALIC));
             redefinedTemplate.setEditable(false);
             redefinedTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
             
@@ -233,10 +236,11 @@ class StyleControlGroup implements ControlGroup{
             radioButtonBox.add(redefinedTemplate);
             Box associateTemplateButtonBox = Box.createHorizontalBox();
             associateTemplateButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-            associateTemplateButtonBox.add(Box.createHorizontalStrut((int) (40 * UITools.FONT_SCALE_FACTOR)));
+            associateTemplateButtonBox.add(Box.createHorizontalStrut(LEFT_MARGIN));
             associateTemplateButtonBox.add(associateTemplateButton);
             radioButtonBox.add(associateTemplateButtonBox);
             radioButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+            radioButtonBox.setBorder(BorderFactory.createEmptyBorder(0, 0, GAP, 0));
             buttonBox.add(radioButtonBox);
             
             JButton redefineStyleBtn = TranslatedElementFactory.createButton("ApplyAction.text");
@@ -270,15 +274,14 @@ class StyleControlGroup implements ControlGroup{
         String templateLocation = MapStyle.getController().getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
         String templateDescription = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
         redefinedTemplate.setText(templateDescription);
-        redefinedTemplate.setFont(redefinedTemplate.getFont().deriveFont(templateLocation == null ? Font.ITALIC : Font.PLAIN));
         redefinesStyleForCurrentMapAndTemplate.setToolTipText(
                 TextUtils.format(FOR_TEMPLATE_TOOLTIP, templateDescription));
         if(templateLocation == null)
             redefinesStyleForCurrentMapOnly.setSelected(true);
         redefinesStyleForCurrentMapAndTemplate.setEnabled(templateLocation != null);
-        associateTemplateButton.setVisible(templateLocation == null);
     }
-	private JButton addButton(DefaultFormBuilder formBuilder, String label, ActionListener action) {
+
+    private JButton addButton(DefaultFormBuilder formBuilder, String label, ActionListener action) {
 	    final JButton button = addButton(formBuilder, action);
 		TranslatedElement.BORDER.setKey(button, label);
 		final String labelText = TextUtils.getText(label);

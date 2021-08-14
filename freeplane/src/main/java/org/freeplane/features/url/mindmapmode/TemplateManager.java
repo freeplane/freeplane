@@ -147,7 +147,7 @@ public class TemplateManager {
     public  String describeNormalizedLocation(URI location) {
         String message;
         if (TemplateManager.TEMPLATE_SCHEME.equals(location.getScheme())) {
-            message = TextUtils.format("template_location", location.getPath().substring(1));
+            message = location.getPath().substring(1);
         } else {
             String followedMapPath = "file".equalsIgnoreCase(location.getScheme()) 
                     ? Paths.get(location).toFile().getAbsolutePath() : location.toString();
