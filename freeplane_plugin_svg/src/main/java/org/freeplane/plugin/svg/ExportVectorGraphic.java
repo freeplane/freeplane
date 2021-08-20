@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 
 import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -36,6 +37,7 @@ import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -46,14 +48,24 @@ import org.w3c.dom.Document;
 abstract class ExportVectorGraphic implements IExportEngine {
 
 	private static final String DARCULA_LAF = "com.bulenkov.darcula.DarculaLaf";
+	private static final LookAndFeel CROSS_PLATTFORM_LOOK_AND_FEEL;
+	static {
+		try {
+			CROSS_PLATTFORM_LOOK_AND_FEEL = (LookAndFeel) 
+					FrameController.class.getClassLoader().loadClass(UIManager.getCrossPlatformLookAndFeelClassName()).newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 
 	/**
 	 */
 	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {
 
 		// work around svg/pdf-Export problems when exporting with Gtk or Nimbus L&Fs
-		final String previousLnF = currentLookAndFeelClassName();
-		setLnF(view, UIManager.getCrossPlatformLookAndFeelClassName());
+		final LookAndFeel previousLnF = UIManager.getLookAndFeel();
+		setLnF(view, CROSS_PLATTFORM_LOOK_AND_FEEL);
 
 		try
 		{
@@ -92,22 +104,21 @@ abstract class ExportVectorGraphic implements IExportEngine {
 		return ctx;
 	}
 
-	private void setLnF(final MapView view, final String LnF)
+	private void setLnF(final MapView view, final LookAndFeel newLookAndFeel)
 	{
-		if(! currentLookAndFeelClassName().equals(DARCULA_LAF)) {
-			try {
-				// Set cross-platform Java L&F (also called "Metal")
-				UIManager.setLookAndFeel(LnF);
-
-				Frame frame = JOptionPane.getFrameForComponent(view.getRoot().getRootPane());
-				SwingUtilities.updateComponentTreeUI(frame);
-				// this is recommended but causes the root node to be shifted to the bottom right corner :-(
-				// frame.pack();
-			}
-			catch(Exception ex)
-			{
-				throw new RuntimeException("Error when changing L&F for SVG Export!", ex);
-			}
+		String currentLookAndFeelClassName = currentLookAndFeelClassName();
+		if(currentLookAndFeelClassName.equals(DARCULA_LAF) 
+				||currentLookAndFeelClassName.equals(newLookAndFeel.getClass().getName())) {
+			return;
+		}
+		try {
+			UIManager.setLookAndFeel(newLookAndFeel);
+			Frame frame = JOptionPane.getFrameForComponent(view.getRoot().getRootPane());
+			SwingUtilities.updateComponentTreeUI(frame);
+		}
+		catch(Exception ex)
+		{
+			throw new RuntimeException("Error when changing L&F for SVG Export!", ex);
 		}
 	}
 
