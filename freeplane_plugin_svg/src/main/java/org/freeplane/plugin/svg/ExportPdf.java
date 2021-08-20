@@ -75,7 +75,8 @@ class ExportPdf extends ExportVectorGraphic {
 				return;
 			}
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			transcodeSvgToPdfFile(chosenFile, fillSVGGraphics2D(view));
+			SVGGraphics2D svgGraphics2D = createSVGGraphics2D(view);
+			new Thread(() ->transcodeSvgToPdfFile(chosenFile, svgGraphics2D)).start();
 		}
 		catch (final Exception ex) {
 			org.freeplane.core.util.LogUtils.warn(ex);
@@ -86,16 +87,22 @@ class ExportPdf extends ExportVectorGraphic {
 		}
 	}
 
-	private void transcodeSvgToPdfFile(File chosenFile, SVGGraphics2D g2d) throws TranscoderException, IOException {
+	private void transcodeSvgToPdfFile(File chosenFile, SVGGraphics2D g2d) {
 		final Document doc = g2d.getDOMFactory();
 		final Element rootE = doc.getDocumentElement();
 		g2d.getRoot(rootE);
 		final TranscoderInput input = new TranscoderInput(doc);
-		try (final FileOutputStream ostream = new FileOutputStream(chosenFile)) {
-		    final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
-		    final TranscoderOutput output = new TranscoderOutput(bufStream);
-		    final PDFTranscoder transcoder = createPdfTranscoder();
-		    transcoder.transcode(input, output);
+		
+		try {
+			try (final FileOutputStream ostream = new FileOutputStream(chosenFile)) {
+			    final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
+			    final TranscoderOutput output = new TranscoderOutput(bufStream);
+			    final PDFTranscoder transcoder = createPdfTranscoder();
+			    transcoder.transcode(input, output);
+			}
+		} catch (TranscoderException | IOException e) {
+			org.freeplane.core.util.LogUtils.warn(e);
+			UITools.errorMessage(e.getLocalizedMessage());
 		}
 	}
 
@@ -131,33 +138,8 @@ class ExportPdf extends ExportVectorGraphic {
 		DefaultConfiguration autodetect = new DefaultConfiguration("auto-detect");
 		fonts.addChild(autodetect);
 		c.addChild(fonts);
-		final Thread fontCreationThread = new Thread(() -> {
-		try {
-			PDFDocumentGraphics2DConfigurator.createFontInfo(c, false);
-		} catch (FOPException e) {
-			throw new RuntimeException(e);
-		}});
-		try {
-			fontCreationThread.start();
-			fontCreationThread.join(3000);
-			if(fontCreationThread.isAlive()) {
-				final String warning = TextUtils.getText("firstTimePdfExportWarning");
-				final JTextArea textArea = new JTextArea( warning);
-				textArea.setEditable(false);
-				textArea.setLineWrap(true);
-				textArea.setWrapStyleWord(true);
-				textArea.setColumns(80);
-				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(),
-						new JScrollPane(textArea), "Freeplane", JOptionPane.WARNING_MESSAGE);
-				fontCreationThread.join();
-			}
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 		return c;
 	}
-
-
 
 	@Override
 	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {

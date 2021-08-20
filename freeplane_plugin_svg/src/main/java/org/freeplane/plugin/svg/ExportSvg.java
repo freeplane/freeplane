@@ -51,7 +51,7 @@ class ExportSvg extends ExportVectorGraphic {
 				return;
 			}
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
+			final SVGGraphics2D g2d = createSVGGraphics2D(view);
 			try (final FileOutputStream bos = new FileOutputStream(chosenFile)){
 	            final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
 	            final OutputStreamWriter osw = new OutputStreamWriter(bufStream, "UTF-8");

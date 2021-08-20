@@ -61,7 +61,7 @@ abstract class ExportVectorGraphic implements IExportEngine {
 
 	/**
 	 */
-	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {
+	protected SVGGraphics2D createSVGGraphics2D(final MapView view) {
 
 		// work around svg/pdf-Export problems when exporting with Gtk or Nimbus L&Fs
 		final LookAndFeel previousLnF = UIManager.getLookAndFeel();
