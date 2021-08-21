@@ -26,10 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
@@ -37,16 +33,15 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
-import org.apache.fop.apps.FOPException;
 import org.apache.fop.configuration.ConfigurationException;
 import org.apache.fop.configuration.DefaultConfiguration;
 import org.apache.fop.svg.AbstractFOPTranscoder;
-import org.apache.fop.svg.PDFDocumentGraphics2DConfigurator;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.export.mindmapmode.ExportController;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -100,6 +95,7 @@ class ExportPdf extends ExportVectorGraphic {
 			    final PDFTranscoder transcoder = createPdfTranscoder();
 			    transcoder.transcode(input, output);
 			}
+			LinkController.getController().loadHyperlink(new Hyperlink(chosenFile.toURI()));
 		} catch (TranscoderException | IOException e) {
 			org.freeplane.core.util.LogUtils.warn(e);
 			UITools.errorMessage(e.getLocalizedMessage());
