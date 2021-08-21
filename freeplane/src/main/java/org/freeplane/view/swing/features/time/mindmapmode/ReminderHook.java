@@ -230,7 +230,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 						timePanel.update(node);
 			}
 		});
-		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
 		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(timeScrollPane);

@@ -164,7 +164,7 @@ public class MModeControllerFactory {
 		final JScrollPane styleScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(styleScrollPane);
-		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		tabs.add(TextUtils.getText("attributes_attribute"), createAttributesPanel());
         HierarchicalIcons.install(modeController);
@@ -274,7 +274,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, frameController
 		    .getStatusBar());
-		final JTabbedPane formattingPanel = new JTabbedPane();
+		final JTabbedPane formattingPanel = UITools.getFreeplaneTabbedPanel();
 		Box resisableTabs = new CollapseableBoxBuilder().setPropertyNameBase("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		final JRootPane rootPane = ((RootPaneContainer)frameController.getMenuComponent()).getRootPane();

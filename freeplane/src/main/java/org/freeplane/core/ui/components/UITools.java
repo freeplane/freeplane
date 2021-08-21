@@ -56,6 +56,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -657,6 +658,7 @@ public class UITools {
 	}
 
 	public static final float FONT_SCALE_FACTOR;
+    
 	static {
 		float factor = Defaults.DEFAULT_FONT_SCALING_FACTOR;
 		try {
@@ -667,6 +669,7 @@ public class UITools {
         }
 		FONT_SCALE_FACTOR = factor;
 	}
+	private static final JTabbedPane FREEPLANE_TABBED_PANEL = new JTabbedPane();
 
 	private static float getScaleFactor() {
 			final ResourceController resourceController = ResourceController.getResourceController();
@@ -793,6 +796,10 @@ public class UITools {
 
     public static JFileChooser newFileChooser(File directory) {
         return new JFreeplaneCustomizableFileChooser(directory);
+    }
+
+    public static JTabbedPane getFreeplaneTabbedPanel() {
+        return FREEPLANE_TABBED_PANEL;
     }
 
 }

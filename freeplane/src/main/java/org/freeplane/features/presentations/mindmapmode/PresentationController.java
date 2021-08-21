@@ -49,7 +49,7 @@ public class PresentationController implements IExtension{
 		HighlightController highlightController = modeController.getController().getExtension(HighlightController.class);
 		final PresentationState presentationState = presentationController.presentationState;
 		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
-		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
 		tabs.add(TextUtils.getText("presentation_panel"), presentationController.createPanel());
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 
