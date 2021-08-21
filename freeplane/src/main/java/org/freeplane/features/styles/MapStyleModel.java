@@ -300,8 +300,9 @@ public class MapStyleModel implements IExtension {
 		stylesComboBoxModel.removeAllElements();
 		stylesComboBoxModel.addElement(DEFAULT_STYLE);
 		NodeModel userStyleParentNode = getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
-		for (NodeModel userStyleNode: userStyleParentNode.getChildren())
-			stylesComboBoxModel.addElement(userStyleNode.getUserObject());
+		if(userStyleParentNode != null)
+		    for (NodeModel userStyleNode: userStyleParentNode.getChildren())
+		        stylesComboBoxModel.addElement(userStyleNode.getUserObject());
 	}
 
 	public void removeStyleNode(final NodeModel node) {
