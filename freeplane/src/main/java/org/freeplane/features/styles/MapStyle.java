@@ -497,7 +497,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
                 @Override
                 public void act() {
-                    copy(copiedStyleNode);
+                    copy(Optional.of(copiedStyleNode));
                 }
 
                 @Override
@@ -507,11 +507,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
                 @Override
                 public void undo() {
-                    oldNode.ifPresent(this::copy);
+                    copy(oldNode);
                 }
-                
-                private void copy(NodeModel sourceNode) {
-                    targetStyles.copyStyle(sourceNode, styleKey);
+
+                private void copy(Optional<NodeModel> sourceNode) {
+                    if(sourceNode.isPresent())
+                        targetStyles.copyStyle(sourceNode.get(), styleKey);
+                    else {
+                        NodeModel targetNode = targetStyles.getStyleNode(styleKey);
+                        targetNode.getParentNode().remove(targetNode.getIndex());
+                        targetStyles.removeStyleNode(targetNode);
+                    }
                     try {
                         MFileManager.getController(Controller.getCurrentModeController()).writeToFile(styleMapTarget, targetFile);
                     } catch (IOException e) {
