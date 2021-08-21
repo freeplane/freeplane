@@ -290,7 +290,7 @@ public class MapStyleModel implements IExtension {
             return;
 		}
         final IStyle style = (IStyle) userObject;
-		if (null == styleNodes.put(style, node))
+		if (null == styleNodes.put(style, node) && isUserStyleNode(node))
 			stylesComboBoxModel.addElement(style);
 		if(style.equals(DEFAULT_STYLE))
 		    defaultStyleNode = node;
@@ -298,8 +298,10 @@ public class MapStyleModel implements IExtension {
 
 	private void initStylesComboBoxModel() {
 		stylesComboBoxModel.removeAllElements();
-		for (IStyle s : getStyles())
-			stylesComboBoxModel.addElement(s);
+		stylesComboBoxModel.addElement(DEFAULT_STYLE);
+		NodeModel userStyleParentNode = getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
+		for (NodeModel userStyleNode: userStyleParentNode.getChildren())
+			stylesComboBoxModel.addElement(userStyleNode.getUserObject());
 	}
 
 	public void removeStyleNode(final NodeModel node) {
