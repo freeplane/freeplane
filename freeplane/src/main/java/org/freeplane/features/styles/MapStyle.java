@@ -491,8 +491,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    loadStyleMapContainer(url).ifPresent(styleMapTarget ->
 	    {
 	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
-	        NodeModel oldNode = targetStyles.getStyleNode(styleKey).duplicate(false);
-	        oldNode.setMap(null);
+	        Optional<NodeModel> oldNode = Optional.ofNullable(targetStyles.getStyleNode(styleKey)).map(node -> node.duplicate(false));
+	        oldNode.ifPresent(node -> node.setMap(null));
 	        IActor actor = new IActor() {
 
                 @Override
@@ -507,8 +507,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
                 @Override
                 public void undo() {
-                    if(oldNode != null)
-                        copy(oldNode);
+                    oldNode.ifPresent(this::copy);
                 }
                 
                 private void copy(NodeModel sourceNode) {
