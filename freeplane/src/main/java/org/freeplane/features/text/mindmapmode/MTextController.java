@@ -1170,7 +1170,7 @@ public class MTextController extends TextController {
 			@Override
 			public void actionPerformed(ActionEvent pE) {
 				try {
-					UrlManager.getController().loadHyperlink(new Hyperlink(pE.getActionCommand()));
+					UrlManager.getController().loadHyperlink(LinkController.createHyperlink(pE.getActionCommand()));
 				}
 				catch (Exception e) {
 					LogUtils.warn(e);

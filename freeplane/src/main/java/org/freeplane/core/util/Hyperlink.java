@@ -2,7 +2,6 @@ package org.freeplane.core.util;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
@@ -10,12 +9,6 @@ public class Hyperlink {
 	private URI uri;
 	private String uriString;
 
-	public Hyperlink(String uriString) throws URISyntaxException {
-		super();
-		this.uriString = uriString;
-		this.uri = new URI(uriString);
-	}
-	
     public Hyperlink(URI uri) {
         super();
         this.uri = uri;

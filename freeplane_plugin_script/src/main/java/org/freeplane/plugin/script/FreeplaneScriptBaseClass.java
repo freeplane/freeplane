@@ -313,7 +313,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public void loadUri(final String link) {
     	try {
 			final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
-			LinkController.getController().loadURI(delegate, new Hyperlink(link));
+			LinkController.getController().loadURI(delegate, LinkController.createHyperlink(link));
 		} catch (URISyntaxException e) {
 			LogUtils.warn(e);
 		}

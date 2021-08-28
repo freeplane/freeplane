@@ -131,7 +131,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	private void loadLink(NodeModel node, final String link) {
 		try {
-			LinkController.getController().loadURI(node, new Hyperlink(link));
+			LinkController.getController().loadURI(node, LinkController.createHyperlink(link));
 		} catch (Exception ex) {
 			LogUtils.warn(ex);
 		}

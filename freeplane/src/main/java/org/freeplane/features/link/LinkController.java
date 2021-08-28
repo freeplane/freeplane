@@ -753,7 +753,7 @@ public class LinkController extends SelectionController implements IExtension {
 	 */
 	public static Hyperlink createHyperlink(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
-			return new Hyperlink(inputValue);
+			return new Hyperlink(inputValue, new URI(inputValue));
 		}
 		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment]

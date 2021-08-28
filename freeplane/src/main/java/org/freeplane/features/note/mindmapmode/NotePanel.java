@@ -190,7 +190,7 @@ class NotePanel extends JPanel {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
 					String uriText = pE.getActionCommand();
-					LinkController.getController().loadURI(noteManager.getNode(), new Hyperlink(uriText));
+					LinkController.getController().loadURI(noteManager.getNode(), LinkController.createHyperlink(uriText));
 				}
 				catch (final Exception e) {
 					LogUtils.severe(e);

@@ -71,7 +71,7 @@ public class LinkNavigatorMouseListener extends AMouseListener {
     				if (link != null) {
     					try {
     						NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
-    						LinkController.getController().loadURI(nodeView.getModel(), new Hyperlink(link));
+    						LinkController.getController().loadURI(nodeView.getModel(), LinkController.createHyperlink(link));
     					} catch (Exception ex) {
     						LogUtils.warn(ex);
     					}
