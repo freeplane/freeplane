@@ -109,6 +109,11 @@
 			<Entry name="QuitAction" accelerator="control Q" builder="removeOnMac" />
 		</Entry>
 		<Entry name="edit">
+			<Entry builder="radio_button_group">
+				<Entry name="SetStringPropertyAction.view_mode.false" />
+				<Entry name="SetStringPropertyAction.view_mode.true" />
+			</Entry>
+			<Entry builder="separator" />
 			<Entry usedBy = "EDITOR" >
                 <Entry name="UndoAction" accelerator="control Z" />
                 <Entry name="RedoAction" accelerator="control Y" />
@@ -559,10 +564,6 @@
 				accelerator="control shift F10" />
 		</Entry>
 		<Entry name="mindmaps">
-			<Entry builder="radio_button_group">
-				<Entry name="SetStringPropertyAction.view_mode.true" />
-				<Entry name="SetStringPropertyAction.view_mode.false" />
-			</Entry>
 			<Entry builder="separator" />
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry builder="separator" />
