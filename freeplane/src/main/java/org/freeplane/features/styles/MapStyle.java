@@ -63,6 +63,8 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
@@ -487,13 +489,27 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
 	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
 	    Objects.requireNonNull(copiedStyleNode);
-	    final URL url = sourceLocation.toURL();
-	    loadStyleMapContainer(url).ifPresent(styleMapTarget ->
-	    {
-	        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
-	        Optional<NodeModel> oldNode = Optional.ofNullable(targetStyles.getStyleNode(styleKey)).map(node -> node.duplicate(false));
-	        oldNode.ifPresent(node -> node.setMap(null));
-	        IActor actor = new IActor() {
+	    if(! sourceLocation.equals(map.getFile().toURI())) {
+	        final URL url = sourceLocation.toURL();
+            loadStyleMapContainer(url).ifPresent(styleMapTarget ->
+            {
+                undoableCopyStyleToTargetFile(map, styleKey, copiedStyleNode, styleMapTarget,
+                        targetFile);
+                undoableCopyStyleToLoadedMap(styleKey, copiedStyleNode, url);
+            });
+        }
+
+    }
+
+    private void undoableCopyStyleToLoadedMap(IStyle styleKey, NodeModel copiedStyleNode,
+            final URL url) {
+        ModeController modeController = Controller.getCurrentModeController();
+        MMapModel loadedMap = ((MMapController) modeController.getMapController()).getMap(url);
+        if(loadedMap != null) {
+            MapStyleModel targetStyles = MapStyleModel.getExtension(loadedMap);
+            Optional<NodeModel> oldNode = Optional.ofNullable(targetStyles.getStyleNode(styleKey)).map(node -> node.duplicate(false));
+            oldNode.ifPresent(node -> node.setMap(null));
+            IActor actor = new IActor() {
 
                 @Override
                 public void act() {
@@ -502,7 +518,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
                 @Override
                 public String getDescription() {
-                    return "copyStyleToExternalMap";
+                    return "copyStyleToLoadedMap";
                 }
 
                 @Override
@@ -518,18 +534,55 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                         targetNode.getParentNode().remove(targetNode.getIndex());
                         targetStyles.removeStyleNode(targetNode);
                     }
-                    try {
-                        MFileManager.getController(Controller.getCurrentModeController()).writeToFile(styleMapTarget, targetFile);
-                    } catch (IOException e) {
-                        LogUtils.warn(e);
-                    }
+                    modeController.getMapController().fireMapChanged(
+                            new MapChangeEvent(this, loadedMap, MapStyle.MAP_STYLES, null, null));
+                    loadedMap.updateLastKnownFileModificationTime();                }
+            };
+            modeController.execute(actor, loadedMap);
+        }   
+    }
 
+    private void undoableCopyStyleToTargetFile(MapModel map, IStyle styleKey,
+            NodeModel copiedStyleNode, MapModel styleMapTarget, File targetFile) {
+        ModeController modeController = Controller.getCurrentModeController();
+        MapStyleModel targetStyles = MapStyleModel.getExtension(styleMapTarget);
+        Optional<NodeModel> oldNode = Optional.ofNullable(targetStyles.getStyleNode(styleKey)).map(node -> node.duplicate(false));
+        oldNode.ifPresent(node -> node.setMap(null));
+        IActor actor = new IActor() {
+
+            @Override
+            public void act() {
+                copy(Optional.of(copiedStyleNode));
+            }
+
+            @Override
+            public String getDescription() {
+                return "copyStyleToExternalMap";
+            }
+
+            @Override
+            public void undo() {
+                copy(oldNode);
+            }
+
+            private void copy(Optional<NodeModel> sourceNode) {
+                if(sourceNode.isPresent())
+                    targetStyles.copyStyle(sourceNode.get(), styleKey);
+                else {
+                    NodeModel targetNode = targetStyles.getStyleNode(styleKey);
+                    targetNode.getParentNode().remove(targetNode.getIndex());
+                    targetStyles.removeStyleNode(targetNode);
                 }
-	        };
-	        Controller.getCurrentModeController().execute(actor, map);
-	    });
+                try {
+                    MFileManager.getController(modeController).writeToFile(styleMapTarget, targetFile);
+                } catch (IOException e) {
+                    LogUtils.warn(e);
+                }
 
-	}
+            }
+        };
+        modeController.execute(actor, map);
+    }
 
     private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow, boolean shouldAssociate) {
 		String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString();
