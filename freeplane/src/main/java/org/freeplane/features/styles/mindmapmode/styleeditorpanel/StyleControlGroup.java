@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,6 +31,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
@@ -215,7 +217,17 @@ class StyleControlGroup implements ControlGroup{
                         return;
                     }
                     File file = fileChooser.getSelectedFile();
-                    if(! file.exists()){
+                    try {
+                        if(file == null || ! file.exists()){
+                            return;
+                        } else if (map.getFile() != null && 
+                                file.getCanonicalFile().equals(map.getFile().getCanonicalFile())) {
+                            MapStyle.getController().setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
+                                    null);
+                            return;
+                        }
+                    } catch (IOException e1) {
+                        LogUtils.warn(e1);
                         return;
                     }
                     MapStyle.getController().setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
