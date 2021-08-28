@@ -106,7 +106,7 @@ public class FileOpener implements DropTargetListener {
 						if(isMindMapUrl(urlString)) {
 							try {
 								final URI uri = new URI(urlString);
-								final URL url = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+								final URL url = new URL(uri.getScheme(), uri.getHost() == null ? "" : uri.getHost(), uri.getPath());
 								final File file = Compat.urlToFile(url);
 								if(! file.exists() || file.isDirectory())
 									continue;

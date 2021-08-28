@@ -61,7 +61,7 @@ public class Hyperlink {
 
 	public URL toUrl() throws MalformedURLException {
 		final String scheme = uri.getScheme();
-		final String host = uri.getHost();
+		final String host = uri.getHost() == null ? "" : uri.getHost();
 		final String path = uri.isOpaque() ? uri.getSchemeSpecificPart() : uri.getPath();
 		final int port = uri.getPort();
 		final String query = uri.getQuery();

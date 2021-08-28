@@ -101,7 +101,7 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 			try {
 				final URI codebase = locationUrl != null ?  new URI(locationUrl):applet.getCodeBase().toURI();
 				URI uri = codebase.resolve(new URI(null, null, initialMapName, null));
-				URL documentBase = new URL(uri.getScheme(), uri.getHost(),  uri.getPort(), uri.getPath());
+				URL documentBase = new URL(uri.getScheme(), uri.getHost() == null ? "" : uri.getHost(),  uri.getPort(), uri.getPath());
 				initialMapName = documentBase.toString();
 			}
 			catch (final Exception e) {
