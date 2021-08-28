@@ -177,7 +177,7 @@ class FileRevisionsDialog extends JDialog {
 	private String keyBase;
 	private JButton btnRestore;
 	private JButton btnSkip;
-	private boolean cancelled;
+	private boolean cancelled = true;
 	private final File file;
 	private File selectedFile;
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -210,7 +210,6 @@ class FileRevisionsDialog extends JDialog {
 		UITools.backOtherWindows();
 		this.selectedFile = this.file = file;
 		setBackground(Color.white);
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
