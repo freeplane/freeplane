@@ -14,7 +14,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.URI;
 import java.net.URL;
 import java.util.regex.Pattern;
 
@@ -38,7 +37,6 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
