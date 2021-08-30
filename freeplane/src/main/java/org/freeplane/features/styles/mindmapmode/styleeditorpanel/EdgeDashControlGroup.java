@@ -24,7 +24,6 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;

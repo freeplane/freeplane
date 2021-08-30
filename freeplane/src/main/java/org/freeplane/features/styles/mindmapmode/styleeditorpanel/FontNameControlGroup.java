@@ -24,7 +24,6 @@ import java.beans.PropertyChangeEvent;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;

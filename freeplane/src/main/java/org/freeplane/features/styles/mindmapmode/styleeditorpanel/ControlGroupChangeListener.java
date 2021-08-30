@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;

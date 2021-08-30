@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.components;
+package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,12 +29,14 @@ import javax.swing.JButton;
 import javax.swing.border.Border;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.core.resources.components.PropertyBean;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class RevertingProperty extends PropertyBean implements IPropertyControl {
+class RevertingProperty extends PropertyBean implements IPropertyControl {
     static private Font createRevertTextFont() {
         try (InputStream fontInputStream= ResourceController.getResourceController()
                 .getResource("/fonts/revert.ttf").openStream()){
@@ -45,6 +47,7 @@ public class RevertingProperty extends PropertyBean implements IPropertyControl 
         }
     }
 
+    static final String NAME = "revert";
     private static final int PADDING = (int) (UITools.FONT_SCALE_FACTOR * 2);
     private static final Border BORDER = BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING);
     private final static String REVERT_RESOURCE = "reset_property_text";
@@ -57,7 +60,7 @@ public class RevertingProperty extends PropertyBean implements IPropertyControl 
 	/**
 	 */
 	public RevertingProperty() {
-		super(TEXT);
+		super(NAME);
 		revertButton = new JButton("\ue900");
 		revertButton.setFont(FONT);
 		revertButton.setBorder(BORDER);

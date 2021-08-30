@@ -25,7 +25,6 @@ import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;

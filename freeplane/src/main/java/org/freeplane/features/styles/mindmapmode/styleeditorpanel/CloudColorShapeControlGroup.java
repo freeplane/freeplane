@@ -28,7 +28,6 @@ import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextLineProperty;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudShape;

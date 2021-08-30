@@ -23,7 +23,6 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;

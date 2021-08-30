@@ -26,7 +26,6 @@ import java.beans.PropertyChangeListener;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.RevertingProperty;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.NodeModel;
