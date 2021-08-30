@@ -299,6 +299,7 @@ public class MapStyleModel implements IExtension {
 	private void initStylesComboBoxModel() {
 		stylesComboBoxModel.removeAllElements();
 		stylesComboBoxModel.addElement(DEFAULT_STYLE);
+		stylesComboBoxModel.addElement(FLOATING_STYLE);
 		NodeModel userStyleParentNode = getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
 		if(userStyleParentNode != null)
 		    for (NodeModel userStyleNode: userStyleParentNode.getChildren())
@@ -347,8 +348,9 @@ public class MapStyleModel implements IExtension {
 
     public List<IStyle> getNodeStyles() {
         NodeModel userStyles = getStyleNodeGroup(styleMap, STYLES_USER_DEFINED);
-        ArrayList<IStyle> styles = new ArrayList<IStyle>(1 + userStyles.getChildCount());
+        ArrayList<IStyle> styles = new ArrayList<IStyle>(2 + userStyles.getChildCount());
         styles.add(DEFAULT_STYLE);
+        styles.add(FLOATING_STYLE);
         for(NodeModel styleNode : userStyles.getChildren()) {
             IStyle style = (IStyle) styleNode.getUserObject();
             styles.add(style);
