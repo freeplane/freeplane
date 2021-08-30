@@ -33,7 +33,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 
 public class FontStrikeThroughControlGroup implements ControlGroup {
-	private static final String NODE_FONT_STRIKE_THROUGH = "nodefontstrikethrough";
+	static final String NODE_FONT_STRIKE_THROUGH = "nodefontstrikethrough";
 
 	private RevertingProperty mSetNodeFontStrikeThrough;
 	private BooleanProperty mNodeFontStrikeThrough;
@@ -60,6 +60,12 @@ public class FontStrikeThroughControlGroup implements ControlGroup {
 			mSetNodeFontStrikeThrough.setValue(strikeThrough != null);
 			mNodeFontStrikeThrough.setValue(viewstrikeThrough);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFontStrikeThrough);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeFontStrikeThrough);
+        }
 	}
 
 	@Override

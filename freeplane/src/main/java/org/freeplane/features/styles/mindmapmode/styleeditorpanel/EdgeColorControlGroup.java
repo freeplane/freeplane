@@ -57,15 +57,19 @@ class EdgeColorControlGroup implements ControlGroup {
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
-			final EdgeModel edgeModel = EdgeModel.getModel(node);
-			final EdgeController edgeController = EdgeController.getController();
-			{
-				final Color edgeColor = edgeModel != null ? edgeModel.getColor() : null;
-				final Color viewColor = edgeController.getColor(node);
-				mSetEdgeColor.setValue(edgeColor != null);
-				mEdgeColor.setColorValue(viewColor);
-			}
+		    final EdgeModel edgeModel = EdgeModel.getModel(node);
+		    final EdgeController edgeController = EdgeController.getController();
+		    final Color edgeColor = edgeModel != null ? edgeModel.getColor() : null;
+		    final Color viewColor = edgeController.getColor(node);
+		    mSetEdgeColor.setValue(edgeColor != null);
+		    mEdgeColor.setColorValue(viewColor);
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetEdgeColor);
+            StylePropertyAdjuster.adjustPropertyControl(node, mEdgeColor);
+        }
 	}
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetEdgeColor = new RevertingProperty();

@@ -82,7 +82,9 @@ abstract class ControlGroupChangeListener implements PropertyChangeListener {
 		finally {
 			internalChange = false;
 		}
+		adjustForStyle(node);
 
 	}
 	abstract void setStyleOnExternalChange(NodeModel node);
+	abstract void adjustForStyle(NodeModel node);
 }

@@ -36,7 +36,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class FontBoldControlGroup implements ControlGroup {
-	private static final String NODE_FONT_BOLD = "nodefontbold";
+	static final String NODE_FONT_BOLD = "nodefontbold";
 
 	private RevertingProperty mSetNodeFontBold;
 	private BooleanProperty mNodeFontBold;
@@ -62,6 +62,12 @@ public class FontBoldControlGroup implements ControlGroup {
 			final Boolean viewbold = styleController.isBold(node);
 			mSetNodeFontBold.setValue(bold != null);
 			mNodeFontBold.setValue(viewbold);
+		}
+
+		@Override
+		void adjustForStyle(NodeModel node) {
+		    StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFontBold);
+		    StylePropertyAdjuster.adjustPropertyControl(node, mNodeFontBold);
 		}
 	}
 

@@ -86,15 +86,25 @@ class NodeShapeControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeStyleShape shape = NodeStyleModel.getShape(node);
-			NodeGeometryModel viewShape = styleController.getShapeConfiguration(node);
 			final boolean enabled = shape != null;
 			mSetNodeShape.setValue(enabled);
+			NodeGeometryModel viewShape = styleController.getShapeConfiguration(node);
 			mNodeShape.setValue(viewShape.getShape().toString());
-			enableShapeConfigurationProperties(enabled, shape);
 			mShapeHorizontalMargin.setQuantifiedValue(viewShape.getHorizontalMargin());
 			mShapeVerticalMargin.setQuantifiedValue(viewShape.getVerticalMargin());
 			mUniformShape.setValue(viewShape.isUniform());
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeShape);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeShape);
+            StylePropertyAdjuster.adjustPropertyControl(node, mShapeHorizontalMargin);
+            StylePropertyAdjuster.adjustPropertyControl(node, mShapeVerticalMargin);
+            StylePropertyAdjuster.adjustPropertyControl(node, mUniformShape);
+            if(mSetNodeShape.isEnabled())
+                enableShapeConfigurationProperties(NodeStyleModel.getShape(node) != null, NodeStyleModel.getShape(node));
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {

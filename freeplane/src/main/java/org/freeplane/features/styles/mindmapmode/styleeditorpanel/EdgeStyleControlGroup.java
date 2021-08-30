@@ -70,6 +70,12 @@ public class EdgeStyleControlGroup implements ControlGroup {
 				mEdgeStyle.setValue(viewStyle.toString());
 			}
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetEdgeStyle);
+            StylePropertyAdjuster.adjustPropertyControl(node, mEdgeStyle);
+        }
 	}
 	
 	@Override

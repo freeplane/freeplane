@@ -39,7 +39,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Nov 27, 2016
  */
 class NodeColorControlGroup implements ControlGroup {
-	private static final String NODE_COLOR = "nodecolor";
+	static final String NODE_COLOR = "nodecolor";
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 
 	private RevertingProperty mSetNodeColor;
@@ -67,6 +67,12 @@ class NodeColorControlGroup implements ControlGroup {
 			mSetNodeColor.setValue(nodeColor != null);
 			mNodeColor.setColorValue(viewNodeColor);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeColor);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeColor);
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {

@@ -69,6 +69,12 @@ class ChildDistanceControlGroup implements ControlGroup {
 			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_VGAP);
 			mChildDistance.setQuantifiedValue(viewGap);
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetChildDistance);
+            StylePropertyAdjuster.adjustPropertyControl(node, mChildDistance);
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {

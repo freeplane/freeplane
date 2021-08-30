@@ -37,7 +37,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class FontNameControlGroup implements ControlGroup {
-	private static final String NODE_FONT_NAME = "nodefontname";
+	static final String NODE_FONT_NAME = "nodefontname";
 
 	private RevertingProperty mSetNodeFontName;
 	private FontProperty mNodeFontName;
@@ -65,6 +65,12 @@ public class FontNameControlGroup implements ControlGroup {
 			mSetNodeFontName.setValue(fontFamilyName != null);
 			mNodeFontName.setValue(viewFontFamilyName);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFontName);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeFontName);
+        }
 	}
 
 	@Override

@@ -66,6 +66,12 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 			mSetMaxNodeWidth.setValue(width != null);
 			mMaxNodeWidth.setQuantifiedValue(viewWidth);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetMaxNodeWidth);
+            StylePropertyAdjuster.adjustPropertyControl(node, mMaxNodeWidth);
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {

@@ -32,6 +32,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -74,6 +75,14 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 			mSetBorderWidthMatchesEdgeWidth.setValue(match != null);
 			mBorderWidthMatchesEdgeWidth.setValue(viewMatch);
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderWidthMatchesEdgeWidth);
+            StylePropertyAdjuster.adjustPropertyControl(node, mBorderWidthMatchesEdgeWidth);
+            if(mSetBorderWidthMatchesEdgeWidth.isEnabled())
+                enableOrDisableBorderWidthControls();
+        }
 	}
 	
 	private class BorderWidthListener extends ControlGroupChangeListener {
@@ -96,8 +105,15 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 			final Quantity<LengthUnit> viewWidth = styleController.getBorderWidth(node);
 			mSetBorderWidth.setValue(width != null);
 			mBorderWidth.setQuantifiedValue(viewWidth);
-			enableOrDisableBorderWidthControls();
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderWidth);
+            StylePropertyAdjuster.adjustPropertyControl(node, mBorderWidth);
+            if(!MapStyleModel.isStyleNode(node) || mSetBorderWidth.isEnabled())
+                enableOrDisableBorderWidthControls();
+        }
 	}
 	
 	@Override

@@ -41,7 +41,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class FontSizeControlGroup implements ControlGroup {
-	private static final String NODE_FONT_SIZE = "nodefontsize";
+	static final String NODE_FONT_SIZE = "nodefontsize";
 
 	private RevertingProperty mSetNodeFontSize;
 	private ComboProperty mNodeFontSize;
@@ -73,6 +73,12 @@ public class FontSizeControlGroup implements ControlGroup {
 			mSetNodeFontSize.setValue(fontSize != null);
 			mNodeFontSize.setValue(viewfontSize.toString());
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFontSize);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeFontSize);
+        }
 	}
 
 	@Override

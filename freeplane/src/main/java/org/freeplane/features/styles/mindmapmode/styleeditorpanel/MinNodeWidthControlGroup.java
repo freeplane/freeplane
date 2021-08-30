@@ -66,6 +66,12 @@ class MinNodeWidthControlGroup implements ControlGroup {
 			mSetMinNodeWidth.setValue(width != null);
 			mMinNodeWidth.setQuantifiedValue(viewWidth);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetMinNodeWidth);
+            StylePropertyAdjuster.adjustPropertyControl(node, mMinNodeWidth);
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {

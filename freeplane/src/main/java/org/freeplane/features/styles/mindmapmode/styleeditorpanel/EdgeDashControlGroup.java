@@ -68,6 +68,12 @@ public class EdgeDashControlGroup implements ControlGroup {
 				mEdgeDash.setValue(viewDash.name());
 			}
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetEdgeDash);
+            StylePropertyAdjuster.adjustPropertyControl(node, mEdgeDash);
+        }
 	}
 
 	@Override

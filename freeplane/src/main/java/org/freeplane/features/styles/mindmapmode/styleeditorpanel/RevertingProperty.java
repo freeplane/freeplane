@@ -57,10 +57,13 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 	
 
 
-	/**
-	 */
-	public RevertingProperty() {
-		super(NAME);
+	
+	RevertingProperty() {
+        this(NAME);
+	}
+	
+	RevertingProperty(String name) {
+		super(name);
 		revertButton = new JButton("\ue900");
 		revertButton.setFont(FONT);
 		revertButton.setBorder(BORDER);
@@ -68,8 +71,7 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 		revertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                revertButton.setVisible(! getBooleanValue());
-				firePropertyChangeEvent();
+                setValue(! getBooleanValue());
 			}
 		});
 	}
@@ -86,6 +88,10 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 	public void setEnabled(final boolean pEnabled) {
 		revertButton.setEnabled(pEnabled);
 	}
+	
+	public boolean isEnabled() {
+	    return revertButton.isEnabled();
+	}
 
 	@Override
 	public void setValue(final String value) {
@@ -94,7 +100,10 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void setValue(final boolean booleanValue) {
-		revertButton.setVisible(booleanValue);
+	    if(revertButton.isVisible() != booleanValue) {
+	        revertButton.setVisible(booleanValue);
+	        firePropertyChangeEvent();
+	    }
 	}
 
 	public boolean getBooleanValue() {

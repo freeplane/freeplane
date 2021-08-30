@@ -57,18 +57,27 @@ public class FormatControlGroup implements ControlGroup {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
 				    .getExtension(NodeStyleController.class);
-				styleController.setNodeFormat(node, enabled ? mNodeFormat.getSelectedPattern() : null);
+				String selectedPattern = mNodeFormat.getSelectedPattern();
+                styleController.setNodeFormat(node, enabled ? selectedPattern != null ? selectedPattern : styleController.getNodeFormat(node) : null);
 		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			String nodeFormat = NodeStyleModel.getNodeFormat(node);
-			String viewNodeFormat = TextController.getController().getNodeFormat(node);
+            final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
+                    .getExtension(NodeStyleController.class);
+			String viewNodeFormat = styleController.getNodeFormat(node);
 			mSetNodeFormat.setValue(nodeFormat != null);
 			if (viewNodeFormat == null && node.getUserObject() instanceof IFormattedObject)
 				viewNodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
 			mNodeFormat.setValue(viewNodeFormat);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFormat);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeFormat);
+        }
 	}
 
 	@Override

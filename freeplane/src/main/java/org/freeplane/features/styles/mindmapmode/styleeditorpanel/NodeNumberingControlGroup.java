@@ -63,6 +63,12 @@ public class NodeNumberingControlGroup implements ControlGroup {
 			mSetNodeNumbering.setValue(nodeNumbering != null);
 			mNodeNumbering.setValue(viewNodeNumbering);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeNumbering);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeNumbering);
+        }
 	}
 
 	@Override

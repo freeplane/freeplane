@@ -67,6 +67,12 @@ public class EdgeWidthControlGroup implements ControlGroup {
 				mEdgeWidth.setValue(Integer.toString(viewWidth));
 			}
 		}
+	       
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetEdgeWidth);
+            StylePropertyAdjuster.adjustPropertyControl(node, mEdgeWidth);
+        }
 	}
 
 	@Override

@@ -63,6 +63,12 @@ class NodeFontHyperLinkControlGroup implements ControlGroup {
 			mSetNodeFontHyperlink.setValue(hyperlink != null);
 			mNodeFontHyperlink.setValue(viewhyperlink);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFontHyperlink);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeFontHyperlink);
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {

@@ -44,8 +44,9 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 17, 2016
  */
 public class CloudColorShapeControlGroup implements ControlGroup {
-	private static final String CLOUD_COLOR = "cloudcolor";
-	private static final String CLOUD_SHAPE = "cloudshape";
+	static final String REVERT_CLOUD = "revert-cloud";
+    static final String CLOUD_COLOR = "cloudcolor";
+	static final String CLOUD_SHAPE = "cloudshape";
 
 	final private RevertingProperty mSetCloud;
 	final private ColorProperty mCloudColor;
@@ -53,7 +54,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	final private CloudColorChangeListener mPropertyListener;
 	
 	public CloudColorShapeControlGroup() {
-		mSetCloud = new RevertingProperty();
+		mSetCloud = new RevertingProperty(REVERT_CLOUD);
 		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
 		mCloudShape = ComboProperty.of(CLOUD_SHAPE, CloudShape.class);
@@ -104,6 +105,13 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 			final CloudShape viewCloudShape = cloudController.getShape(node);
 			mCloudShape.setValue(viewCloudShape.name());
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetCloud);
+            StylePropertyAdjuster.adjustPropertyControl(node, mCloudColor);
+            StylePropertyAdjuster.adjustPropertyControl(node, mCloudShape);
+        }
 	}
 	
 	@Override

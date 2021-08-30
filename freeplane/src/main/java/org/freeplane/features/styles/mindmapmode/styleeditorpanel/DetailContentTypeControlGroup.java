@@ -36,7 +36,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class DetailContentTypeControlGroup implements ControlGroup {
-	private static final String NAME = "detailsContentType";
+	static final String NAME = "detailsContentType";
 
 	private RevertingProperty mSetContentType;
 	private ComboProperty mContentType;
@@ -61,6 +61,12 @@ public class DetailContentTypeControlGroup implements ControlGroup {
 			mSetContentType.setValue(contentType != null);
 			mContentType.setValue(viewContentType);
 		}
+        
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetContentType);
+            StylePropertyAdjuster.adjustPropertyControl(node, mContentType);
+        }
 	}
 
 	@Override

@@ -36,7 +36,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class FontItalicControlGroup implements ControlGroup {
-	private static final String NODE_FONT_ITALIC = "nodefontitalic";
+	static final String NODE_FONT_ITALIC = "nodefontitalic";
 
 	private RevertingProperty mSetNodeFontItalic;
 	private BooleanProperty mNodeFontItalic;
@@ -64,6 +64,12 @@ public class FontItalicControlGroup implements ControlGroup {
 			mSetNodeFontItalic.setValue(italic != null);
 			mNodeFontItalic.setValue(viewitalic);
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeFontItalic);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeFontItalic);
+        }
 	}
 
 	@Override

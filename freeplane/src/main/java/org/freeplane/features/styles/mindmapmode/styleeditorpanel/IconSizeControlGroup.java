@@ -31,7 +31,12 @@ class IconSizeControlGroup implements ControlGroup{
 			mSetIconSize.setValue(iconSize != null);
 			mIconSize.setQuantifiedValue(viewedIconSize);
 		}
-		
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetIconSize);
+            StylePropertyAdjuster.adjustPropertyControl(node, mIconSize);
+        }
 	}
 	private static final String ICON_SIZE = "icon_size";
 	private QuantityProperty<LengthUnit> mIconSize;

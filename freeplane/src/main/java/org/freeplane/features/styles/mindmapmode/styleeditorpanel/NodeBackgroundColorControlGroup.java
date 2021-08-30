@@ -39,7 +39,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class NodeBackgroundColorControlGroup implements ControlGroup {
-	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
+	static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 
 	private RevertingProperty mSetNodeBackgroundColor;
 	private ColorProperty mNodeBackgroundColor;
@@ -67,6 +67,12 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 			mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
 			    .getMapViewManager().getBackgroundColor(node));
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeBackgroundColor);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeBackgroundColor);
+        }
 	}
 
 	@Override

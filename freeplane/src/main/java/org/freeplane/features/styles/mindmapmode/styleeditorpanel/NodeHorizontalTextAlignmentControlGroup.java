@@ -41,7 +41,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Nov 27, 2016
  */
 class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
-	private static final String TEXT_ALIGNMENT = "textalignment";
+	static final String TEXT_ALIGNMENT = "textalignment";
 	
 	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(HorizontalTextAlignment.class);
 	private RevertingProperty mSetNodeTextAlignment;
@@ -69,6 +69,12 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 			mSetNodeTextAlignment.setValue(style != null);
 			mNodeTextAlignment.setValue(viewStyle.toString());
 		}
+
+        @Override
+        void adjustForStyle(NodeModel node) {
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeTextAlignment);
+            StylePropertyAdjuster.adjustPropertyControl(node, mNodeTextAlignment);
+        }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
