@@ -118,6 +118,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 
 	public void setEnabled(final boolean pEnabled) {
 		mComboBox.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

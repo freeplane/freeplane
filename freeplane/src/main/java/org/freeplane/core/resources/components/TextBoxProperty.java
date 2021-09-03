@@ -49,6 +49,7 @@ public class TextBoxProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		mTextArea.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

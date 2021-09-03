@@ -160,6 +160,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 			selectButton.setEnabled(enabled);
 		if (filenameField != null)
 			filenameField.setEnabled(enabled);
+		super.setEnabled(enabled);
 	}
 
 	@Override

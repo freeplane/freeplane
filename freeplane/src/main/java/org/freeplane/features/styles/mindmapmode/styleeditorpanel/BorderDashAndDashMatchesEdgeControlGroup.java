@@ -79,7 +79,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderDash);
             StylePropertyAdjuster.adjustPropertyControl(node, mBorderDash);
-            if(!MapStyleModel.isStyleNode(node) || mSetBorderDash.isEnabled())
+            if(!MapStyleModel.isStyleNode(node) || mBorderDash.isEnabled())
                 enableOrDisableBorderDashControls();
         }
 	}

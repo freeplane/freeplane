@@ -80,6 +80,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	private void setIcon(final MindIcon actualIcon) {

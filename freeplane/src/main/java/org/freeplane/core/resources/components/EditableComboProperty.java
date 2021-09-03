@@ -74,6 +74,7 @@ public abstract class EditableComboProperty<T> extends PropertyBean implements I
 
 	public void setEnabled(final boolean pEnabled) {
 		comboBox.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

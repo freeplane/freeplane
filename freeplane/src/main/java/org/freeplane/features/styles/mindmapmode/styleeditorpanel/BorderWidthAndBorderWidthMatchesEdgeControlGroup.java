@@ -80,7 +80,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderWidthMatchesEdgeWidth);
             StylePropertyAdjuster.adjustPropertyControl(node, mBorderWidthMatchesEdgeWidth);
-            if(mSetBorderWidthMatchesEdgeWidth.isEnabled())
+            if(!MapStyleModel.isStyleNode(node) || mBorderWidthMatchesEdgeWidth.isEnabled())
                 enableOrDisableBorderWidthControls();
         }
 	}
@@ -111,7 +111,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderWidth);
             StylePropertyAdjuster.adjustPropertyControl(node, mBorderWidth);
-            if(!MapStyleModel.isStyleNode(node) || mSetBorderWidth.isEnabled())
+            if(!MapStyleModel.isStyleNode(node) || mBorderWidth.isEnabled())
                 enableOrDisableBorderWidthControls();
         }
 	}

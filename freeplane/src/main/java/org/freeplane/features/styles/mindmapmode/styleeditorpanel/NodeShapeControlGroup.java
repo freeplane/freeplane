@@ -34,6 +34,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.MapStyleModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -102,7 +103,7 @@ class NodeShapeControlGroup implements ControlGroup {
             StylePropertyAdjuster.adjustPropertyControl(node, mShapeHorizontalMargin);
             StylePropertyAdjuster.adjustPropertyControl(node, mShapeVerticalMargin);
             StylePropertyAdjuster.adjustPropertyControl(node, mUniformShape);
-            if(mSetNodeShape.isEnabled())
+            if(!MapStyleModel.isStyleNode(node) || mNodeShape.isEnabled())
                 enableShapeConfigurationProperties(NodeStyleModel.getShape(node) != null, NodeStyleModel.getShape(node));
         }
 	}

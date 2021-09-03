@@ -129,6 +129,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

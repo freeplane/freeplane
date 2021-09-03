@@ -79,8 +79,18 @@ public class PropertyAdapter {
 	    this.tooltip = name + ".tooltip";
 	}
 	
+	public void setEnabled(final boolean pEnabled) {
+	    if(labelComponent != null)
+	        labelComponent.setEnabled(pEnabled);
+	}
+
+	public boolean isEnabled() {
+	    return labelComponent == null || labelComponent.isEnabled();
+	}
+
+
 	protected void appendToForm(DefaultFormBuilder builder, JComponent component){
-		final String labelKey = getLabel();
+	    final String labelKey = getLabel();
 		final String optionalText = TextUtils.getOptionalText(labelKey);
 		labelComponent = builder.append(optionalText, component);
 		if(optionalText != null)

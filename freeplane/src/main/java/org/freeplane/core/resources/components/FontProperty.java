@@ -59,6 +59,7 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		mFontComboBox.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

@@ -101,6 +101,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	public void setIcon(final Icon icon) {

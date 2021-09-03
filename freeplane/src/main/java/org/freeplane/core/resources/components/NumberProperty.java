@@ -71,6 +71,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		spinner.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

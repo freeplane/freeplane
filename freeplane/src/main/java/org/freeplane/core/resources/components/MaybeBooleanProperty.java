@@ -77,6 +77,7 @@ public class MaybeBooleanProperty extends PropertyBean implements IPropertyContr
 	@Override
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	/**

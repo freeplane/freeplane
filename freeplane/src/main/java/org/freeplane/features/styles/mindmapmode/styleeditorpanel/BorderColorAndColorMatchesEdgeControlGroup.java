@@ -81,7 +81,7 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderColor);
             StylePropertyAdjuster.adjustPropertyControl(node, mBorderColor);
-            if(!MapStyleModel.isStyleNode(node) || mSetBorderColor.isEnabled())
+            if(!MapStyleModel.isStyleNode(node) || mBorderColor.isEnabled())
                 enableOrDisableBorderColorControls();
         }
 	}

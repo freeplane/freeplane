@@ -58,6 +58,7 @@ public class NumberSliderProperty extends PropertyBean implements IPropertyContr
 
 	public void setEnabled(final boolean pEnabled) {
 		transparencySlider.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

@@ -101,6 +101,7 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 	public void setEnabled(final boolean pEnabled) {
 		numberSpinner.setEnabled(pEnabled);
 		unitBox.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	public void setQuantifiedValue(Quantity<U> quantity){

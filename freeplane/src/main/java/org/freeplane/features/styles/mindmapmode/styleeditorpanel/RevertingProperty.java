@@ -87,6 +87,7 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		revertButton.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 	
 	public boolean isEnabled() {

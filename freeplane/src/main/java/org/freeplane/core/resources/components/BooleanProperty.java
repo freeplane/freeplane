@@ -63,6 +63,7 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		mCheckBox.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override

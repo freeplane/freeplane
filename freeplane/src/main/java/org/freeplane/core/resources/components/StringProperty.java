@@ -52,6 +52,7 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 
 	public void setEnabled(final boolean pEnabled) {
 		mTextField.setEnabled(pEnabled);
+		super.setEnabled(pEnabled);
 	}
 
 	@Override
