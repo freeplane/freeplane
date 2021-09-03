@@ -35,7 +35,6 @@ import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Objects;
@@ -73,9 +72,10 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -350,7 +350,7 @@ public class MainView extends ZoomableLabel {
     }
 
     public Color getPaintedBackground() {
-    	return getNodeView().getPaintedBackground();
+    	return getNodeView().getTextBackground();
 	}
 
 	@Override
@@ -387,7 +387,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public void updateFont(final NodeView node) {
-		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel());
+		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
 		setFont(UITools.scale(font));
 	}
 
@@ -395,36 +395,31 @@ public class MainView extends ZoomableLabel {
 	    final MultipleImage iconImages = new MultipleImage();
 	    final NodeModel model = node.getModel();
 		if(node.getMap().showsIcons()) {
-		    //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
+		    StyleOption styleOption = node.getStyleOption();
+            //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		    /* fc, 06.10.2003: images? */
-		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
+		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model, styleOption);
 		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }
 		    final ModeController modeController = getNodeView().getMap().getModeController();
-		    final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model);
+		    final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model, styleOption);
 		    for (final NamedIcon myIcon : icons) {
 		        iconImages.addIcon(myIcon, iconHeight);
 		    }
 		}
-        addOwnIcons(iconImages, model);
+        addOwnIcons(iconImages, model, getNodeView().getStyleOption());
         setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
 
-	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
+	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model, StyleOption option) {
 		getNodeView().getMap()
-		        .getModeController().getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model);
+		        .getModeController().getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, option);
 	}
 
 	void updateTextColor(final NodeView node) {
 		Color newForeground = unselectedForeground = NodeStyleController.getController(node.getMap().getModeController()).getColor(
-				node.getModel());
-		if(node.useSelectionColors()) {
-			Color selectionTextColor = node.getSelectionTextColor();
-			if(selectionTextColor != null) {
-				newForeground = selectionTextColor;
-			}
-		}
+				node.getModel(), node.getStyleOption());
 		if(! Objects.equals(getForeground(), newForeground)) {
 			setForeground(newForeground);
 			revalidate();
@@ -434,7 +429,9 @@ public class MainView extends ZoomableLabel {
 
 
 	void updateHorizontalTextAlignment(NodeView node) {
-		final HorizontalTextAlignment textAlignment = NodeStyleController.getController(node.getMap().getModeController()).getHorizontalTextAlignment(node.getModel());
+		final HorizontalTextAlignment textAlignment = NodeStyleController
+		        .getController(node.getMap().getModeController())
+		        .getHorizontalTextAlignment(node.getModel(), node.getStyleOption());
 		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.isRoot();
 		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
@@ -726,23 +723,24 @@ public class MainView extends ZoomableLabel {
 	public void updateBorder(NodeView nodeView) {
 		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
 		final NodeModel node = nodeView.getModel();
-		final Boolean borderWidthMatchesEdgeWidth = controller.getBorderWidthMatchesEdgeWidth(node);
+		StyleOption styleOption = nodeView.getStyleOption();
+        final Boolean borderWidthMatchesEdgeWidth = controller.getBorderWidthMatchesEdgeWidth(node, styleOption);
 		if(borderWidthMatchesEdgeWidth)
 			unzoomedBorderWidth = getUnzoomedEdgeWidth();
 		else
-			unzoomedBorderWidth = (float) controller.getBorderWidth(node).toBaseUnits();
+			unzoomedBorderWidth = (float) controller.getBorderWidth(node, styleOption).toBaseUnits();
 
-		final Boolean borderDashMatchesEdgeDash = controller.getBorderDashMatchesEdgeDash(node);
+		final Boolean borderDashMatchesEdgeDash = controller.getBorderDashMatchesEdgeDash(node, styleOption);
 		if(borderDashMatchesEdgeDash)
 			dash = nodeView.getEdgeDash();
 		else
-			dash = controller.getBorderDash(node);
+			dash = controller.getBorderDash(node, styleOption);
 
-		borderColorMatchesEdgeColor = controller.getBorderColorMatchesEdgeColor(node);
+		borderColorMatchesEdgeColor = controller.getBorderColorMatchesEdgeColor(node, styleOption);
 		if(borderColorMatchesEdgeColor)
 			borderColor = null;
 		else
-			borderColor = controller.getBorderColor(node);
+			borderColor = controller.getBorderColor(node, styleOption);
 	}
 
 	void paintComponentDefault(final Graphics graphics) {

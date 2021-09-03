@@ -35,6 +35,7 @@ import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 
 /**
@@ -69,16 +70,16 @@ public class LocationController implements IExtension {
 		locationBuilder.registerBy(readManager, writeManager);
 		childGapHandlers = new ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel>();
 		addChildGapGetter(IPropertyHandler.STYLE, new IPropertyHandler<Quantity<LengthUnit>, NodeModel>() {
-			public Quantity<LengthUnit> getProperty(final NodeModel node, final Quantity<LengthUnit> currentValue) {
+			public Quantity<LengthUnit> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Quantity<LengthUnit> currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final Collection<IStyle> style = styleController.getStyles(node);
+				final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 				final Quantity<LengthUnit> returnedGap = getStyleChildGap(map, style);
 				return returnedGap;
 			}
 		});
 		addChildGapGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Quantity<LengthUnit>, NodeModel>() {
-			public Quantity<LengthUnit> getProperty(final NodeModel node, final Quantity<LengthUnit> currentValue) {
+			public Quantity<LengthUnit> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Quantity<LengthUnit> currentValue) {
 				return LocationModel.DEFAULT_VGAP;
 			}
 		});
@@ -118,6 +119,6 @@ public class LocationController implements IExtension {
 	}
 
 	public Quantity<LengthUnit> getMinimalDistanceBetweenChildren(NodeModel node){
-		return childGapHandlers.getProperty(node);
+		return childGapHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 }

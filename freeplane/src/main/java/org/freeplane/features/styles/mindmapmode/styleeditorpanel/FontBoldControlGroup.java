@@ -28,6 +28,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -59,7 +60,7 @@ public class FontBoldControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Boolean bold = NodeStyleModel.isBold(node);
-			final Boolean viewbold = styleController.isBold(node);
+			final Boolean viewbold = styleController.isBold(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeFontBold.setValue(bold != null);
 			mNodeFontBold.setValue(viewbold);
 		}

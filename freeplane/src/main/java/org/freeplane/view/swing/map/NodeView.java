@@ -81,6 +81,7 @@ import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleShape;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -314,7 +315,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (byChildren) {
 				final ModeController modeController = getMap().getModeController();
 				final CloudController cloudController = CloudController.getController(modeController);
-				final CloudModel cloud = cloudController.getCloud(getModel());
+				final CloudModel cloud = cloudController.getCloud(getModel(), getStyleOption());
 				if (cloud != null) {
 					additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(cloud, this) / 5;
 				}
@@ -706,14 +707,6 @@ public class NodeView extends JComponent implements INodeView {
 		return right;
 	}
 
-    Color getSelectionTextColor() {
-        return getMap().getStandardSelectionTextColor();
-    }
-
-    public Color getSelectionBackgroundColor() {
-        return getMap().getStandardSelectionBackgroundColor();
-    }
-
 	/**
 		 * @return Returns the sHIFT.s
 		 */
@@ -729,19 +722,8 @@ public class NodeView extends JComponent implements INodeView {
 		return getBackgroundColor();
 	}
 
-	public Color getPaintedBackground() {
-		final Color color;
-		if (useSelectionColors()) {
-			color = getSelectionBackgroundColor();
-		}
-		else {
-			color = getTextBackground();
-		}
-		return color;
-	}
-
 	public Color getTextColor() {
-		final Color color = NodeStyleController.getController(getMap().getModeController()).getColor(model);
+		final Color color = NodeStyleController.getController(getMap().getModeController()).getColor(model, getStyleOption());
 		return color;
 	}
 
@@ -941,7 +923,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(wasFolded != isFolded || force) {
 			treeStructureChanged();
 			getMap().selectIfSelectionIsEmpty(this);
-			NodeStyleShape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+			NodeStyleShape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model, getStyleOption());
 			if (shape.equals(NodeStyleShape.combined))
 				update();
 		}
@@ -1415,8 +1397,9 @@ public class NodeView extends JComponent implements INodeView {
         MapView map = getMap();
 		final ModeController modeController = map.getModeController();
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
-        final int minNodeWidth = map.getZoomed(nsc.getMinWidth(getModel()).toBaseUnits());
-        final int maxNodeWidth = Math.max(map.getLayoutSpecificMaxNodeWidth(), map.getZoomed(nsc.getMaxWidth(getModel()).toBaseUnits()));
+        StyleOption styleOption = getStyleOption();
+        final int minNodeWidth = map.getZoomed(nsc.getMinWidth(getModel(), styleOption).toBaseUnits());
+        final int maxNodeWidth = Math.max(map.getLayoutSpecificMaxNodeWidth(), map.getZoomed(nsc.getMaxWidth(getModel(), styleOption).toBaseUnits()));
         mainView.setMinimumWidth(minNodeWidth);
         mainView.setMaximumWidth(maxNodeWidth);
 
@@ -1443,7 +1426,7 @@ public class NodeView extends JComponent implements INodeView {
 		updateShortener(getModel(), textShortened);
 		mainView.updateIcons(this);
 		mainView.updateText(getModel());
-		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
+		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model, getStyleOption());
 		revalidate();
 		repaint();
 	}
@@ -1457,11 +1440,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateEdge() {
         final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
-		this.edgeStyle = edgeController.getStyle(model, false);
+		this.edgeStyle = edgeController.getStyle(model, getStyleOption(), false);
 		final NodeModel realNode = SummaryNode.getRealNode(model);
-		this.edgeWidth = edgeController.getWidth(realNode, false);
-		this.edgeDash = edgeController.getDash(realNode, false);
-		final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode);
+		this.edgeWidth = edgeController.getWidth(realNode, getStyleOption(), false);
+		this.edgeDash = edgeController.getDash(realNode, getStyleOption(), false);
+		final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode, getStyleOption());
 		this.edgeColor = newColor;
 		final NodeModel parentNode = model.getParentNode();
 		if(parentNode != null && SummaryNode.isSummaryNode(parentNode))
@@ -1533,7 +1516,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	private void updateCloud() {
-		final CloudModel cloudModel = CloudController.getController(getMap().getModeController()).getCloud(model);
+		final CloudModel cloudModel = CloudController.getController(getMap().getModeController()).getCloud(model, getStyleOption());
 		putClientProperty(CloudModel.class, cloudModel);
     }
 
@@ -1754,6 +1737,10 @@ public class NodeView extends JComponent implements INodeView {
             innerBounds.height = getHeight() - 2 * spaceAround;
             return innerBounds;
         }
+    }
+
+    public StyleOption getStyleOption() {
+        return useSelectionColors() ? StyleOption.FOR_SELECTED_NODE : StyleOption.FOR_UNSELECTED_NODE; 
     }
 
 

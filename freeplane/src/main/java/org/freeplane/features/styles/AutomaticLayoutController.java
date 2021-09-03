@@ -43,7 +43,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		super();
 		LogicalStyleController.getController().addStyleGetter(IPropertyHandler.AUTO, new IPropertyHandler<Collection<IStyle>, NodeModel>() {
 			@Override
-			public Collection<IStyle> getProperty(NodeModel model, Collection<IStyle> currentValue) {
+			public Collection<IStyle> getProperty(NodeModel model, LogicalStyleController.StyleOption option, Collection<IStyle> currentValue) {
 				AutomaticLayout layout = model.getMap().getRootNode().getExtension(AutomaticLayout.class);
 				final IStyle autoStyle = getStyle(model, layout);
 				if(autoStyle != null){

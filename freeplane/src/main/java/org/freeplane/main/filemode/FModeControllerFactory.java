@@ -78,7 +78,7 @@ public class FModeControllerFactory {
 		NodeStyleController.getController().addShapeGetter(new Integer(0),
 		    new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 			    @Override
-				public NodeGeometryModel getProperty(final NodeModel node, final NodeGeometryModel currentValue) {
+				public NodeGeometryModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final NodeGeometryModel currentValue) {
 				    return NodeGeometryModel.FORK;
 			    }
 		    });

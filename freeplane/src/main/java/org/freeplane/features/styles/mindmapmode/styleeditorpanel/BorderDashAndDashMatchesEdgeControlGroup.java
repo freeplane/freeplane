@@ -32,6 +32,7 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -70,7 +71,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final DashVariant dash = nodeBorderModel != null ? nodeBorderModel.getBorderDash() : null;
-			final DashVariant viewDash = styleController.getBorderDash(node);
+			final DashVariant viewDash = styleController.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderDash.setValue(dash != null);
 			mBorderDash.setValue(viewDash.name());
 		}
@@ -101,7 +102,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderDashMatchesEdgeDash() : null;
-			final Boolean viewMatch = styleController.getBorderDashMatchesEdgeDash(node);
+			final Boolean viewMatch = styleController.getBorderDashMatchesEdgeDash(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderDashMatchesEdgeDash.setValue(match != null);
 			mBorderDashMatchesEdgeDash.setValue(viewMatch);
 		}

@@ -11,6 +11,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class NoteStyleAccessor {
 	final private String rule;
@@ -24,10 +25,10 @@ public class NoteStyleAccessor {
 			final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
 			final NodeStyleController style = Controller.getCurrentModeController().getExtension(
 				NodeStyleController.class);
-			final Font noteFont = style.getFont(noteStyleNode);
-			this.noteBackground = style.getBackgroundColor(noteStyleNode);
-			this.noteForeground = style.getColor(noteStyleNode);
-			final int alignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
+			final Font noteFont = style.getFont(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+			this.noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+			this.noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+			final int alignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
 			final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
 			if(asHtmlFragment)
 				cssRuleBuilder.withHTMLFont(noteFont);
@@ -38,7 +39,7 @@ public class NoteStyleAccessor {
 				controller.getMapViewManager().getMapViewComponent().getBackground()))
 			.withAlignment(alignment);
 			if(asHtmlFragment)
-				cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
+				cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE));
 			this.rule = cssRuleBuilder.toString();
 		}
 		else {

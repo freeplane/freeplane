@@ -35,6 +35,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -79,7 +80,7 @@ class NodeShapeControlGroup implements ControlGroup {
 			else {
 				styleController.setShapeConfiguration(node, NodeGeometryModel.NULL_SHAPE);
 			}
-			final NodeStyleShape shape = styleController.getShape(node);
+			final NodeStyleShape shape = styleController.getShape(node, StyleOption.FOR_UNSELECTED_NODE);
 			enableShapeConfigurationProperties(enabled, shape);
 		}
 
@@ -89,7 +90,7 @@ class NodeShapeControlGroup implements ControlGroup {
 			final NodeStyleShape shape = NodeStyleModel.getShape(node);
 			final boolean enabled = shape != null;
 			mSetNodeShape.setValue(enabled);
-			NodeGeometryModel viewShape = styleController.getShapeConfiguration(node);
+			NodeGeometryModel viewShape = styleController.getShapeConfiguration(node, StyleOption.FOR_UNSELECTED_NODE);
 			mNodeShape.setValue(viewShape.getShape().toString());
 			mShapeHorizontalMargin.setQuantifiedValue(viewShape.getHorizontalMargin());
 			mShapeVerticalMargin.setQuantifiedValue(viewShape.getVerticalMargin());

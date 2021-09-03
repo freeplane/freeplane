@@ -97,6 +97,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
@@ -967,10 +968,10 @@ public class LinkController extends SelectionController implements IExtension {
 
 	}
 
-	public void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model) {
+	public void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model, StyleOption option) {
 	    final Hyperlink link = NodeLinks.getLink(model);
 	    if (link != null) {
-	        addIconsBasedOnLinkType(link, iconImages, model);
+	        addIconsBasedOnLinkType(link, iconImages, model, option);
 	    }
 	}
 
@@ -987,7 +988,7 @@ public class LinkController extends SelectionController implements IExtension {
         return iconsForLink.stream().map(name -> "links/" + name).anyMatch(iconName::equals);
 	    
 	}
-	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImage iconImages, NodeModel node)
+	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImage iconImages, NodeModel node, StyleOption option)
 	{
 	    try {
 	        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
@@ -995,17 +996,17 @@ public class LinkController extends SelectionController implements IExtension {
 	        if(iconsForLink.isEmpty()) {
 	            Icon linkIcon = getLinkIcon(link,  node);
 	            if(linkIcon != null)
-	                iconImages.addLinkIcon(linkIcon, node);
+	                iconImages.addLinkIcon(linkIcon, node, option);
 	        }
 	        else {
 	            final LinkType linkType = getLinkType(link, node);
 	            if(linkType != null && linkType.decoratedIcon != null) 
-	                iconImages.addLinkIcon(linkType.decoratedIcon, node);
+	                iconImages.addLinkIcon(linkType.decoratedIcon, node, option);
 	            for(String iconName : iconsForLink) {
 	                MindIcon icon = IconStoreFactory.ICON_STORE.getMindIcon("links/" + iconName);
 	                final IconRegistry iconRegistry = node.getMap().getIconRegistry();
                     iconRegistry.addIcon(icon);
-                    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node);
+                    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node, option);
                     iconImages.addIcon(icon, iconHeight);
 	            }
 	        }
@@ -1050,7 +1051,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final Boolean ownFlag = ownFormatNodeAsHyperlink(node);
 		if(ownFlag != null)
 			return ownFlag;
-		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 		final MapStyleModel mapStyles = MapStyleModel.getExtension(node.getMap());
 		for(IStyle styleKey : collection){
 			final NodeModel styleNode = mapStyles.getStyleNode(styleKey);

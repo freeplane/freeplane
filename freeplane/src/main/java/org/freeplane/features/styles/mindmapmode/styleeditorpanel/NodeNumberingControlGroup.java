@@ -36,7 +36,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class NodeNumberingControlGroup implements ControlGroup {
-	private static final String NODE_NUMBERING = "nodenumbering";
+	static final String NODE_NUMBERING = "nodenumbering";
 
 	private RevertingProperty mSetNodeNumbering;
 	private BooleanProperty mNodeNumbering;

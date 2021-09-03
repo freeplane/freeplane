@@ -22,6 +22,9 @@ package org.freeplane.features.mode;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+
 public class CombinedPropertyChain<V, T> {
 	final private boolean reversed;
 	public CombinedPropertyChain(boolean reversed) {
@@ -39,11 +42,11 @@ public class CombinedPropertyChain<V, T> {
 	    return reversed ? -key : key;
     }
 
-	public V getProperty(final T node, V property) {
+	public V getProperty(final T node, StyleOption option, V property) {
 		final Iterator<IPropertyHandler<V, T>> iterator = handlers.values().iterator();
 		while (iterator.hasNext()) {
 			final IPropertyHandler<V, T> getter = iterator.next();
-			property = getter.getProperty(node, property);
+			property = getter.getProperty(node, option, property);
 		}
 		return property;
 	}

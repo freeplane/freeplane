@@ -35,6 +35,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class MultipleImage implements Icon {
 	final private List<Icon> mIcons = new ArrayList<>();
@@ -57,9 +58,9 @@ public class MultipleImage implements Icon {
 		mUIIcons.add(uiIcon);
 	}
 
-	public void addLinkIcon(Icon icon, NodeModel node) {
+	public void addLinkIcon(Icon icon, NodeModel node, StyleOption option) {
 	    Objects.requireNonNull(icon);
-		final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node);
+		final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node, option);
 		final IconFactory iconFactory = IconFactory.getInstance();
 		final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
 		mIcons.add(scaledIcon);

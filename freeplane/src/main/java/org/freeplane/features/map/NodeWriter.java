@@ -37,6 +37,7 @@ import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.MapWriter.WriterHint;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeWriter implements IElementWriter, IAttributeWriter {
@@ -155,7 +156,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		Quantity<LengthUnit> iconSize = null;
 		if (forceFormatting) {
 			final IconController iconController = IconController.getController();
-			iconSize = iconController.getIconSize(node);
+			iconSize = iconController.getIconSize(node, StyleOption.FOR_UNSELECTED_NODE);
 		} else
 			iconSize = node.getSharedData().getIcons().getIconSize();
 		if (iconSize != null) {

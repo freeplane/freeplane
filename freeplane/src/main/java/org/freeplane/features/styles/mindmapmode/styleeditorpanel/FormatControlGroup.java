@@ -41,7 +41,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class FormatControlGroup implements ControlGroup {
-	private static final String NODE_FORMAT = "nodeformat";
+	static final String NODE_FORMAT = "nodeformat";
 
 	private RevertingProperty mSetNodeFormat;
 	private EditablePatternComboProperty mNodeFormat;

@@ -6,6 +6,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class StyleContainsCondition extends ASelectableCondition {
@@ -17,7 +18,7 @@ public class StyleContainsCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(node);
+		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 		return styles.contains(value);
 	}
 

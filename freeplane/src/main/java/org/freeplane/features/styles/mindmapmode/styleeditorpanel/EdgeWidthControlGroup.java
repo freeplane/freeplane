@@ -29,6 +29,7 @@ import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -62,7 +63,7 @@ public class EdgeWidthControlGroup implements ControlGroup {
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{
 				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.AUTO_WIDTH;
-				final int viewWidth = edgeController.getWidth(node);
+				final int viewWidth = edgeController.getWidth(node, StyleOption.FOR_UNSELECTED_NODE);
 				mSetEdgeWidth.setValue(width != EdgeModel.AUTO_WIDTH);
 				mEdgeWidth.setValue(Integer.toString(viewWidth));
 			}

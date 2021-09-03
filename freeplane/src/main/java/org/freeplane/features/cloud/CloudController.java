@@ -37,6 +37,7 @@ import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 
 /**
@@ -78,8 +79,8 @@ public class CloudController implements IExtension {
 //		this.modeController = modeController;
 		cloudHandlers = new ExclusivePropertyChain<CloudModel, NodeModel>();
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
-			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
-				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
+			public CloudModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final CloudModel currentValue) {
+				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 			}
 		});
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
@@ -109,8 +110,8 @@ public class CloudController implements IExtension {
 		return cloudHandlers.addGetter(key, getter);
 	}
 
-	public Color getColor(final NodeModel node) {
-		final CloudModel cloud = getCloud(node);
+	public Color getColor(final NodeModel node, StyleOption option) {
+		final CloudModel cloud = getCloud(node, option);
 		return cloud != null ? cloud.getColor() : null;
 	}
 
@@ -122,12 +123,12 @@ public class CloudController implements IExtension {
 		return cloudHandlers.removeGetter(key);
 	}
 
-	public CloudModel getCloud(final NodeModel model) {
-		return cloudHandlers.getProperty(model);
+	public CloudModel getCloud(final NodeModel model, StyleOption option) {
+		return cloudHandlers.getProperty(model, option);
 	}
 
-	public CloudShape getShape(NodeModel node) {
-		final CloudModel cloud = getCloud(node);
+	public CloudShape getShape(NodeModel node, StyleOption option) {
+		final CloudModel cloud = getCloud(node, option);
 		return cloud != null ? cloud.getShape() : getStandardShape();
     }
 }

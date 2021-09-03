@@ -32,7 +32,7 @@ abstract class DrawableShape implements Drawable{
 	}
 	abstract Shape getShape(Rectangle r);
 	protected Color getFillColor(NodeView nodeView) {
-		return nodeView.getPaintedBackground();
+		return nodeView.getTextBackground();
 	}
 }
 

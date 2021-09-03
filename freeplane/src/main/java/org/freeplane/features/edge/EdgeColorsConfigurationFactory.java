@@ -11,6 +11,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class EdgeColorsConfigurationFactory {
 	public static final String EDGE_COLOR_CONFIGURATION_PROPERTY = "edgeColorConfiguration";
@@ -43,7 +44,7 @@ public class EdgeColorsConfigurationFactory {
 			NodeModel styleNode = automaticLayoutController.getStyleNode(map, levelStyleCounter);
 			if(styleNode == null)
 				break;
-			colors.add(edgeController.getColor(styleNode));
+			colors.add(edgeController.getColor(styleNode, StyleOption.FOR_UNSELECTED_NODE));
 		}
 		return new EdgeColorConfiguration(colors);
 	}

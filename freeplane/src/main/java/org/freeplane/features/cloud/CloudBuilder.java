@@ -35,6 +35,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
@@ -129,7 +130,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter, IElem
 
 	private void writeContentImpl(final ITreeWriter writer, final NodeModel node, final IExtension extension)
 	        throws IOException {
-		final CloudModel model = extension != null ? (CloudModel) extension : cc.getCloud(node);
+		final CloudModel model = extension != null ? (CloudModel) extension : cc.getCloud(node, StyleOption.FOR_UNSELECTED_NODE);
 		if (model == null) {
 			return;
 		}

@@ -33,6 +33,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -65,7 +66,7 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final HorizontalTextAlignment style = NodeStyleModel.getHorizontalTextAlignment(node);
-			final HorizontalTextAlignment viewStyle = styleController.getHorizontalTextAlignment(node);
+			final HorizontalTextAlignment viewStyle = styleController.getHorizontalTextAlignment(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeTextAlignment.setValue(style != null);
 			mNodeTextAlignment.setValue(viewStyle.toString());
 		}

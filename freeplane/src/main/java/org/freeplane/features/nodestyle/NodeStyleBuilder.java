@@ -43,6 +43,7 @@ import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
@@ -395,15 +396,15 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeStyleModel style,
 	                             final boolean forceFormatting) {
-		final Color color = forceFormatting ? nsc.getColor(node) : style.getColor();
+		final Color color = forceFormatting ? nsc.getColor(node, StyleOption.FOR_UNSELECTED_NODE) : style.getColor();
 		if (color != null) {
 			ColorUtils.addColorAttributes(writer, "COLOR", "ALPHA", color);
 		}
-		final Color backgroundColor = forceFormatting ? nsc.getBackgroundColor(node) : style.getBackgroundColor();
+		final Color backgroundColor = forceFormatting ? nsc.getBackgroundColor(node, StyleOption.FOR_UNSELECTED_NODE) : style.getBackgroundColor();
 		if (backgroundColor != null) {
 			ColorUtils.addColorAttributes(writer, "BACKGROUND_COLOR", "BACKGROUND_ALPHA", backgroundColor);
 		}
-		final NodeGeometryModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
+		final NodeGeometryModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node, StyleOption.FOR_UNSELECTED_NODE) : style.getShapeConfiguration();
 		final NodeStyleShape shape = shapeConfiguration.getShape();
 		if (shape != null) {
 			writer.addAttribute("STYLE", shape.toString());
@@ -428,7 +429,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (format != null) {
 			writer.addAttribute("FORMAT", format);
 		}
-		final HorizontalTextAlignment textAlignment = forceFormatting ? nsc.getHorizontalTextAlignment(node) : style.getHorizontalTextAlignment();
+		final HorizontalTextAlignment textAlignment = forceFormatting ? 
+		        nsc.getHorizontalTextAlignment(node, StyleOption.FOR_UNSELECTED_NODE) : style.getHorizontalTextAlignment();
 		if (textAlignment != null) {
 			writer.addAttribute("TEXT_ALIGN", textAlignment.toString());
 		}
@@ -437,12 +439,12 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeSizeModel size,
 	                             final boolean forceFormatting) {
-		final Quantity<LengthUnit> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node) : size.getMaxNodeWidth();
+		final Quantity<LengthUnit> maxTextWidth = forceFormatting ? nsc.getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE) : size.getMaxNodeWidth();
 		if (maxTextWidth != null) {
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MAX_WIDTH", maxTextWidth);
 		}
 
-		final Quantity<LengthUnit> minTextWidth = forceFormatting ? nsc.getMinWidth(node) : size.getMinNodeWidth();
+		final Quantity<LengthUnit> minTextWidth = forceFormatting ? nsc.getMinWidth(node, StyleOption.FOR_UNSELECTED_NODE) : size.getMinNodeWidth();
 		if (minTextWidth != null) {
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MIN_WIDTH", minTextWidth);
 		}
@@ -450,27 +452,27 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeBorderModel border,
 			final boolean forceFormatting) {
-		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node) : border.getBorderWidthMatchesEdgeWidth();
+		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderWidthMatchesEdgeWidth();
 		if (borderWidthMatchesEdgeWidth != null) {
 			writer.addAttribute("BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidth.toString());
 		}
-		final Quantity<LengthUnit> borderWidth = forceFormatting ? nsc.getBorderWidth(node) : border.getBorderWidth();
+		final Quantity<LengthUnit> borderWidth = forceFormatting ? nsc.getBorderWidth(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderWidth();
 		if (borderWidth != null) {
 			writer.addAttribute("BORDER_WIDTH", borderWidth.toString());
 		}
-		final Boolean borderColorMatchesEdgeColor = forceFormatting ? nsc.getBorderColorMatchesEdgeColor(node) : border.getBorderColorMatchesEdgeColor();
+		final Boolean borderColorMatchesEdgeColor = forceFormatting ? nsc.getBorderColorMatchesEdgeColor(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderColorMatchesEdgeColor();
 		if (borderColorMatchesEdgeColor != null) {
 			writer.addAttribute("BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColor.toString());
 		}
-		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
+		final Color borderColor = forceFormatting ? nsc.getBorderColor(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderColor();
 		if (borderColor != null) {
 			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
 		}
-		final Boolean borderDashMatchesEdgeDash = forceFormatting ? nsc.getBorderDashMatchesEdgeDash(node) : border.getBorderDashMatchesEdgeDash();
+		final Boolean borderDashMatchesEdgeDash = forceFormatting ? nsc.getBorderDashMatchesEdgeDash(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderDashMatchesEdgeDash();
 		if (borderDashMatchesEdgeDash != null) {
 			writer.addAttribute("BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDash.toString());
 		}
-		DashVariant borderDash = forceFormatting ? nsc.getBorderDash(node) : border.getBorderDash();
+		DashVariant borderDash = forceFormatting ? nsc.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderDash();
 		if (borderDash != null) {
 			writer.addAttribute("BORDER_DASH", borderDash.name());
 		}
@@ -503,27 +505,27 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			final XMLElement fontElement = new XMLElement();
 			fontElement.setName("font");
 			boolean isRelevant = forceFormatting;
-			final String fontFamilyName = forceFormatting ? nsc.getFontFamilyName(node) : style.getFontFamilyName();
+			final String fontFamilyName = forceFormatting ? nsc.getFontFamilyName(node, StyleOption.FOR_UNSELECTED_NODE) : style.getFontFamilyName();
 			if (fontFamilyName != null) {
 				fontElement.setAttribute("NAME", fontFamilyName);
 				isRelevant = true;
 			}
-			final Integer fontSize = forceFormatting ? Integer.valueOf(nsc.getFontSize(node)) : style.getFontSize();
+			final Integer fontSize = forceFormatting ? Integer.valueOf(nsc.getFontSize(node, StyleOption.FOR_UNSELECTED_NODE)) : style.getFontSize();
 			if (fontSize != null) {
 				fontElement.setAttribute("SIZE", Integer.toString(fontSize));
 				isRelevant = true;
 			}
-			final Boolean bold = forceFormatting ? Boolean.valueOf(nsc.isBold(node)) : style.isBold();
+			final Boolean bold = forceFormatting ? Boolean.valueOf(nsc.isBold(node, StyleOption.FOR_UNSELECTED_NODE)) : style.isBold();
 			if (bold != null) {
 				fontElement.setAttribute("BOLD", bold ? "true" : "false");
 				isRelevant = true;
 			}
-			final Boolean strikedThrough = forceFormatting ? Boolean.valueOf(nsc.isStrikedThrough(node)) : style.isStrikedThrough();
+			final Boolean strikedThrough = forceFormatting ? Boolean.valueOf(nsc.isStrikedThrough(node, StyleOption.FOR_UNSELECTED_NODE)) : style.isStrikedThrough();
 			if (strikedThrough != null) {
 				fontElement.setAttribute("STRIKETHROUGH", strikedThrough ? "true" : "false");
 				isRelevant = true;
 			}
-			final Boolean italic = forceFormatting ? Boolean.valueOf(nsc.isItalic(node)) : style.isItalic();
+			final Boolean italic = forceFormatting ? Boolean.valueOf(nsc.isItalic(node, StyleOption.FOR_UNSELECTED_NODE)) : style.isItalic();
 			if (italic != null) {
 				fontElement.setAttribute("ITALIC", italic ? "true" : "false");
 				isRelevant = true;

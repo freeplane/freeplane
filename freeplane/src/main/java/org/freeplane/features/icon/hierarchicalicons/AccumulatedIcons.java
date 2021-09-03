@@ -29,6 +29,7 @@ import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 /**
  * @author Dimitry Polivaev
@@ -52,7 +53,7 @@ class AccumulatedIcons  implements IExtension{
 	 */
 	private void addAccumulatedIconsToTreeSet(final NodeModel child) {
 		final IconController iconController = IconController.getController();
-		childIcons.addAll(iconController.getIcons(child));
+		childIcons.addAll(iconController.getIcons(child, StyleOption.FOR_UNSELECTED_NODE));
 		final AccumulatedIcons icons = child.getExtension(AccumulatedIcons.class);
 		if (icons == null) {
 			return;
@@ -61,7 +62,7 @@ class AccumulatedIcons  implements IExtension{
 	}
 
 	static boolean setStyleCheckForChange(final NodeModel node, Mode mode) {
-		final Collection<NamedIcon> ownIcons = IconController.getController().getIcons(node);
+		final Collection<NamedIcon> ownIcons = IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE);
 		final AccumulatedIcons iconSet = new AccumulatedIcons(ownIcons);
 		boolean first = true;
 		for (final NodeModel child : node.getChildren()) {

@@ -46,7 +46,9 @@ class StylePropertyAdjuster {
             else if(style.equals(MapStyleModel.SELECTION_STYLE)
                     || style.equals(MapStyleModel.FLOATING_STYLE)) {
                 enable = ! (propertyName.equals(NoteContentTypeControlGroup.NAME)
-                        || propertyName.equals(DetailContentTypeControlGroup.NAME));
+                        || propertyName.equals(DetailContentTypeControlGroup.NAME)
+                        || propertyName.equals(FormatControlGroup.NODE_FORMAT)
+                        || propertyName.equals(NodeNumberingControlGroup.NODE_NUMBERING));
             }
             else 
                 enable = true;

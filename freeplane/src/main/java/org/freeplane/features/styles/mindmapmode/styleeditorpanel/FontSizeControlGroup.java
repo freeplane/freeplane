@@ -32,6 +32,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -69,7 +70,7 @@ public class FontSizeControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Integer fontSize = NodeStyleModel.getFontSize(node);
-			final Integer viewfontSize = styleController.getFontSize(node);
+			final Integer viewfontSize = styleController.getFontSize(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeFontSize.setValue(fontSize != null);
 			mNodeFontSize.setValue(viewfontSize.toString());
 		}

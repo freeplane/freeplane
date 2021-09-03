@@ -35,6 +35,7 @@ import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IElementWriter {
@@ -145,11 +146,11 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 
 	private void writeContent(final ITreeWriter writer, final NodeModel node, final EdgeModel model,
 	                          final boolean forceFormatting) throws IOException {
-		final EdgeStyle styleObj = forceFormatting ? ec.getStyle(node) : model.getStyle();
+		final EdgeStyle styleObj = forceFormatting ? ec.getStyle(node, StyleOption.FOR_UNSELECTED_NODE) : model.getStyle();
 		final String style = EdgeStyle.toString(styleObj);
-		final Color color = forceFormatting ? ec.getColor(node) : model.getColor();
-		final int width = forceFormatting ? ec.getWidth(node) : model.getWidth();
-		final DashVariant dash = forceFormatting ? ec.getDash(node) : model.getDash();
+		final Color color = forceFormatting ? ec.getColor(node, StyleOption.FOR_UNSELECTED_NODE) : model.getColor();
+		final int width = forceFormatting ? ec.getWidth(node, StyleOption.FOR_UNSELECTED_NODE) : model.getWidth();
+		final DashVariant dash = forceFormatting ? ec.getDash(node, StyleOption.FOR_UNSELECTED_NODE) : model.getDash();
 		if (forceFormatting || style != null || color != null || width != EdgeModel.AUTO_WIDTH || dash != null) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");

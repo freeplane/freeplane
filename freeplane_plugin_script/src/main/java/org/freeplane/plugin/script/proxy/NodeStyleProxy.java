@@ -17,6 +17,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleFactory;
@@ -45,7 +46,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	public Color getBackgroundColor() {
-		return getStyleController().getBackgroundColor(getDelegate());
+		return getStyleController().getBackgroundColor(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	public String getBackgroundColorCode() {
@@ -61,7 +62,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	public Color getTextColor() {
-		return getStyleController().getColor(getDelegate());
+		return getStyleController().getColor(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Deprecated
@@ -82,7 +83,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
     }
 
 	public Quantity<LengthUnit> getMinNodeWidthQuantity() {
-		return getStyleController().getMinWidth(getDelegate());
+		return getStyleController().getMinWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
     public int getMaxNodeWidth() {
@@ -90,7 +91,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
     }
 
 	public Quantity<LengthUnit> getMaxNodeWidthQuantity() {
-		return getStyleController().getMaxWidth(getDelegate());
+		return getStyleController().getMaxWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	private MLogicalStyleController getLogicalStyleController() {
@@ -167,7 +168,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
     }
 
 	public static boolean hasStyle(NodeModel nodeModel, String styleName) {
-		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(nodeModel);
+		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(nodeModel, StyleOption.FOR_UNSELECTED_NODE);
 		for (IStyle style : styles) {
 			if (StyleTranslatedObject.toKeyString(style).equals(styleName))
 				return true;

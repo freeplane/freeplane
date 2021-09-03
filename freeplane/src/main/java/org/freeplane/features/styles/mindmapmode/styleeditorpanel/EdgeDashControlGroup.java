@@ -30,6 +30,7 @@ import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -63,7 +64,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{
 				final DashVariant dash = edgeModel != null ? edgeModel.getDash() : null;
-				final DashVariant viewDash = edgeController.getDash(node);
+				final DashVariant viewDash = edgeController.getDash(node, StyleOption.FOR_UNSELECTED_NODE);
 				mSetEdgeDash.setValue(dash != null);
 				mEdgeDash.setValue(viewDash.name());
 			}

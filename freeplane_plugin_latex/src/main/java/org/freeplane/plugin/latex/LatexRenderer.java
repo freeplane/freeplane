@@ -18,6 +18,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
@@ -57,10 +58,10 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		if (latext == null)
 			return content;
 		final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
-		int widthWithInsets = ncs.getMaxWidth(node).toBaseUnitsRounded();
+		int widthWithInsets = ncs.getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE).toBaseUnitsRounded();
 		final int maxWidth = Math.max(0, widthWithInsets - 4);
 		TeXText teXt = new TeXText(latext);
-		int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
+		int fontSize = Math.round(ncs.getFontSize(node, StyleOption.FOR_UNSELECTED_NODE) * UITools.FONT_SCALE_FACTOR);
 		TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
 		int insetSize = (widthWithInsets - maxWidth) / 2;
 		icon.setInsets(new Insets(insetSize, insetSize, insetSize, insetSize));

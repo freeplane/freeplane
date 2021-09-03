@@ -28,6 +28,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -56,7 +57,7 @@ public class FontStrikeThroughControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Boolean strikeThrough = NodeStyleModel.isStrikedThrough(node);
-			final Boolean viewstrikeThrough = styleController.isStrikedThrough(node);
+			final Boolean viewstrikeThrough = styleController.isStrikedThrough(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeFontStrikeThrough.setValue(strikeThrough != null);
 			mNodeFontStrikeThrough.setValue(viewstrikeThrough);
 		}

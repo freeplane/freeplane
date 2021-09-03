@@ -50,6 +50,7 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener,
         IMapSelectionListener, IExtension {
@@ -155,8 +156,8 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		final Controller controller = Controller.getCurrentController();
 		final MNodeStyleController styleController = (MNodeStyleController) controller.getModeController()
 		    .getExtension(NodeStyleController.class);
-		selectFontSize(Integer.toString(styleController.getFontSize(node)));
-		selectFontName(styleController.getFontFamilyName(node));
+		selectFontSize(Integer.toString(styleController.getFontSize(node, StyleOption.FOR_UNSELECTED_NODE)));
+		selectFontName(styleController.getFontFamilyName(node, StyleOption.FOR_UNSELECTED_NODE));
 		final LogicalStyleController logicalStyleController = LogicalStyleController.getController();
 		ignoreChangeEvent = true;
  		styles.setSelectedItem(logicalStyleController.getFirstStyle(node));

@@ -31,6 +31,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -62,7 +63,7 @@ class MinNodeWidthControlGroup implements ControlGroup {
 			final NodeSizeModel nodeSizeModel = NodeSizeModel.getModel(node);
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Quantity<LengthUnit> width = nodeSizeModel != null ? nodeSizeModel.getMinNodeWidth() : null;
-			final Quantity<LengthUnit> viewWidth = styleController.getMinWidth(node);
+			final Quantity<LengthUnit> viewWidth = styleController.getMinWidth(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetMinNodeWidth.setValue(width != null);
 			mMinNodeWidth.setQuantifiedValue(viewWidth);
 		}

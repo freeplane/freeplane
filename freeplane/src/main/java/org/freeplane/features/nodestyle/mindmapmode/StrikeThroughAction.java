@@ -26,6 +26,7 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 @SelectableAction(checkOnNodeChange = true)
 class StrikeThroughAction extends AMultipleNodeAction {
@@ -54,7 +55,7 @@ class StrikeThroughAction extends AMultipleNodeAction {
 
 	boolean isStrikedThrough() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		return NodeStyleController.getController().isStrikedThrough(node);
+		return NodeStyleController.getController().isStrikedThrough(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override

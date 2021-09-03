@@ -43,6 +43,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 /**
  * @author Dimitry Polivaev
@@ -147,7 +148,7 @@ public class MEdgeController extends EdgeController {
         }
 
 		private ObjectRule<Color, Rules> getColorRule (NodeModel node) {
-			return modeController.getExtension(EdgeController.class).getColorRule(node);
+			return modeController.getExtension(EdgeController.class).getColorRule(node, StyleOption.FOR_UNSELECTED_NODE);
 		}
 
 		private void resolveWidth(NodeModel to) {
@@ -163,7 +164,7 @@ public class MEdgeController extends EdgeController {
         }
 
 		private Integer getWidth(NodeModel node) {
-			return modeController.getExtension(EdgeController.class).getWidth(node, false);
+			return modeController.getExtension(EdgeController.class).getWidth(node, StyleOption.FOR_UNSELECTED_NODE, false);
 		}
 
 		private void resolveDash(NodeModel to) {
@@ -179,7 +180,7 @@ public class MEdgeController extends EdgeController {
         }
 
 		private DashVariant getDash(NodeModel node) {
-			return modeController.getExtension(EdgeController.class).getDash(node, false);
+			return modeController.getExtension(EdgeController.class).getDash(node, StyleOption.FOR_UNSELECTED_NODE, false);
 		}
 
 		private void resolveStyle(NodeModel to) {
@@ -194,7 +195,7 @@ public class MEdgeController extends EdgeController {
 			}
         }
 		private EdgeStyle getStyle(NodeModel node) {
-			return modeController.getExtension(EdgeController.class).getStyle(node, false);
+			return modeController.getExtension(EdgeController.class).getStyle(node, StyleOption.FOR_UNSELECTED_NODE, false);
 		}
 
 	}

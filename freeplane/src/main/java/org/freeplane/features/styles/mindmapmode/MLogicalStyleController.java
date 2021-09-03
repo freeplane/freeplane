@@ -591,7 +591,7 @@ public class MLogicalStyleController extends LogicalStyleController {
     	newNode.setUserObject(newStyle);
     	if(copyStyleFromSelected) {
             NodeModel styleSourceNode = Controller.getCurrentController().getSelection().getSelected();
-    	    final ArrayList<IStyle> styles = new ArrayList<IStyle>(getStyles(styleSourceNode));
+    	    final ArrayList<IStyle> styles = new ArrayList<IStyle>(getStyles(styleSourceNode, StyleOption.FOR_UNSELECTED_NODE));
     	    for(int i = styles.size() - 1; i >= 0; i--){
     	        IStyle style = styles.get(i);
     	        if(MapStyleModel.DEFAULT_STYLE.equals(style)){

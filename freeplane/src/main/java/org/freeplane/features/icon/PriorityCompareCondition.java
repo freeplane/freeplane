@@ -34,6 +34,7 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class PriorityCompareCondition extends CompareConditionAdapter {
@@ -75,7 +76,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
     }
 
 	public boolean checkNode(final NodeModel node) {
-		final Collection<NamedIcon> icons = IconController.getController().getIcons(node);
+		final Collection<NamedIcon> icons = IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE);
 		for (final NamedIcon icon : icons) {
 			final String iconName = icon.getName();
 			if (iconName.length() != 6) {

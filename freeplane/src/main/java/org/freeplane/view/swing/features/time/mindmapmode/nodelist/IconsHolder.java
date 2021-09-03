@@ -27,6 +27,7 @@ import java.util.List;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 /**
  * @author Dimitry Polivaev
  * 03.10.2013
@@ -38,7 +39,7 @@ class IconsHolder implements Comparable<IconsHolder> {
 	private List<NamedIcon> icons = new ArrayList<>();
 
 	public IconsHolder(final NodeModel node) {
-		icons.addAll(IconController.getController().getIcons(node));
+		icons.addAll(IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE));
 		if (icons.size() > 0) {
 			final List<NamedIcon> toSort = new ArrayList<>(icons);
 			Collections.sort(toSort, ICON_COMPARATOR);

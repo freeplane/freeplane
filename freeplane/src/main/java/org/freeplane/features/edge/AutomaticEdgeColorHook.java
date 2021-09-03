@@ -36,6 +36,7 @@ import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -71,7 +72,8 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 			else{
 				final MEdgeController controller = (MEdgeController) EdgeController.getController();
 				controller.setColor(child, null);
-				final boolean edgeStylesEquals = controller.getColor(child).equals(controller.getColor(parent));
+				final boolean edgeStylesEquals = controller.getColor(child, StyleOption.FOR_UNSELECTED_NODE)
+				        .equals(controller.getColor(parent, StyleOption.FOR_UNSELECTED_NODE));
 				if(! edgeStylesEquals){
 					OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
 					    "ignore_edge_format_by_style", MessageType.ONLY_OK_SELECTION_IS_SHOWN);

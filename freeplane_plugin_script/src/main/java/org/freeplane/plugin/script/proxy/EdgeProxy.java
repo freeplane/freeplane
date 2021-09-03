@@ -10,6 +10,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.plugin.script.ScriptContext;
 
 class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
@@ -19,7 +20,7 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 
 	@Override
 	public Color getColor() {
-		return getEdgeController().getColor(getDelegate());
+		return getEdgeController().getColor(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override
@@ -33,12 +34,12 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 
 	@Override
 	public EdgeStyle getType() {
-		return getEdgeController().getStyle(getDelegate());
+		return getEdgeController().getStyle(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override
 	public int getWidth() {
-		return getEdgeController().getWidth(getDelegate());
+		return getEdgeController().getWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override

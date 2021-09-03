@@ -23,6 +23,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class IconExistsCondition extends ASelectableCondition {
@@ -36,7 +37,7 @@ public class IconExistsCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return IconController.getController().getIcons(node).size() > 0;
+		return IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE).size() > 0;
 	}
 
 

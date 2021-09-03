@@ -34,6 +34,7 @@ import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconBuilder implements IElementDOMHandler, IElementWriter {
@@ -96,7 +97,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		final NodeModel node = (NodeModel) element;
 		final IconController iconController = IconController.getController();
-		final Collection<NamedIcon> icons = forceFormatting ? iconController.getIcons(node)
+		final Collection<NamedIcon> icons = forceFormatting ? iconController.getIcons(node, StyleOption.FOR_UNSELECTED_NODE)
 		        : node.getIcons();
 		for (NamedIcon icon : icons) {
 			final XMLElement iconElement = new XMLElement();
@@ -109,7 +110,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
                     iconFile = new URI(null, mindIcon.getFile(), null).toString();
                     iconElement.setAttribute("src", iconFile);
                     iconElement.setAttribute("height",
-                            Integer.toString(iconController.getIconSize(node).toBaseUnitsRounded()));
+                            Integer.toString(iconController.getIconSize(node, StyleOption.FOR_UNSELECTED_NODE).toBaseUnitsRounded()));
                 } catch (Exception e) {
                     LogUtils.severe(e);
                 }

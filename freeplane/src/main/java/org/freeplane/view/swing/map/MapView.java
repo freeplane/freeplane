@@ -103,11 +103,10 @@ import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.print.FitMap;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
@@ -573,7 +572,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
-	private Color standardSelectionBackgroundColor;
 	private Color standardSelectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
@@ -611,7 +609,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
-    private Color standardSelectionTextColor;
     public static final String SPOTLIGHT_ENABLED = "spotlight";
 
 	static {
@@ -827,7 +824,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void onSelectionChange(final NodeView node) {
 		if(! node.isShowing())
 			return;
-		node.getMainView().updateTextColor(node);
+		if(! standardDrawRectangleForSelection)
+		node.update();
 		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors)
 			repaint(getVisibleRect());
 		else
@@ -1416,16 +1414,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         final MapModel map = getModel();
         final MapStyleModel model = MapStyleModel.getExtension(map);
         final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
-        detailFont = UITools.scale(style.getFont(detailStyleNode));
-        detailBackground = style.getBackgroundColor(detailStyleNode);
-        detailForeground = style.getColor(detailStyleNode);
-        detailHorizontalAlignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
+        detailFont = UITools.scale(style.getFont(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE));
+        detailBackground = style.getBackgroundColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        detailForeground = style.getColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        detailHorizontalAlignment = style.getHorizontalTextAlignment(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
 
         final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
-        noteFont = UITools.scale(style.getFont(noteStyleNode));
-        noteBackground = style.getBackgroundColor(noteStyleNode);
-        noteForeground = style.getColor(noteStyleNode);
-        noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
+        noteFont = UITools.scale(style.getFont(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE));
+        noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
         updateSelectionColors();
     }
 
@@ -1848,23 +1846,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void updateSelectionColors() {
 	    ResourceController resourceController = ResourceController.getResourceController();
-	    standardSelectionBackgroundColor = ColorUtils.stringToColor(resourceController.getProperty(
-	            MapView.RESOURCES_SELECTED_NODE_COLOR));
 	    standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
 	            MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
-	    MapStyleModel styles = MapStyleModel.getExtension(model);
-	    NodeModel selectionStyle = styles.getStyleNode(MapStyleModel.SELECTION_STYLE);
-	    if(selectionStyle == null)
-	        return;
-	    Color styleBackgroundColor = NodeStyleModel.getBackgroundColor(selectionStyle);
-	    if(styleBackgroundColor != null)
-	        standardSelectionBackgroundColor = styleBackgroundColor;
-	    standardSelectionTextColor = NodeStyleModel.getColor(selectionStyle);
-	    if(styleBackgroundColor != null)
-	        standardSelectionBackgroundColor = styleBackgroundColor;
-	    Color styleBorderColor = NodeBorderModel.getBorderColor(selectionStyle);
-	    if(styleBorderColor != null)
-	        standardSelectionRectangleColor = styleBorderColor;
 	}
 
 	private RoundRectangle2D.Float getRoundRectangleAround(final NodeView selected, int gap, final int arcw) {
@@ -2409,14 +2392,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public Filter getFilter() {
         return filter;
-    }
-
-    Color getStandardSelectionBackgroundColor() {
-        return standardSelectionBackgroundColor;
-    }
-
-    Color getStandardSelectionTextColor() {
-        return standardSelectionTextColor;
     }
 
     Color getStandardSelectionRectangleColor() {

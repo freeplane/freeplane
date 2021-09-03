@@ -7,6 +7,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.plugin.script.ScriptContext;
 
 class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
@@ -15,11 +16,11 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 	}
 
 	public String getName() {
-		return getStyleController().getFontFamilyName(getDelegate());
+		return getStyleController().getFontFamilyName(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	public int getSize() {
-		return getStyleController().getFontSize(getDelegate());
+		return getStyleController().getFontSize(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	private MNodeStyleController getStyleController() {
@@ -27,7 +28,7 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 	}
 
 	public boolean isBold() {
-		return getStyleController().isBold(getDelegate());
+		return getStyleController().isBold(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	public boolean isBoldSet() {
@@ -35,7 +36,7 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 	}
 
 	public boolean isItalic() {
-		return getStyleController().isItalic(getDelegate());
+		return getStyleController().isItalic(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	public boolean isItalicSet() {
@@ -44,7 +45,7 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 
 	@Override
 	public boolean isStrikedThrough() {
-		return getStyleController().isStrikedThrough(getDelegate());
+		return getStyleController().isStrikedThrough(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override

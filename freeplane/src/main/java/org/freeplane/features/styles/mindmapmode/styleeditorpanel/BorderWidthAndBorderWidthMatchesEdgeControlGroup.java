@@ -33,6 +33,7 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -71,7 +72,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderWidthMatchesEdgeWidth() : null;
-			final Boolean viewMatch = styleController.getBorderWidthMatchesEdgeWidth(node);
+			final Boolean viewMatch = styleController.getBorderWidthMatchesEdgeWidth(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderWidthMatchesEdgeWidth.setValue(match != null);
 			mBorderWidthMatchesEdgeWidth.setValue(viewMatch);
 		}
@@ -102,7 +103,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final Quantity<LengthUnit> width = nodeBorderModel != null ? nodeBorderModel.getBorderWidth() : null;
-			final Quantity<LengthUnit> viewWidth = styleController.getBorderWidth(node);
+			final Quantity<LengthUnit> viewWidth = styleController.getBorderWidth(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderWidth.setValue(width != null);
 			mBorderWidth.setQuantifiedValue(viewWidth);
 		}

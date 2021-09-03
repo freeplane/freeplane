@@ -41,6 +41,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 /**
  * @author Dimitry Polivaev
@@ -211,7 +212,7 @@ public class MNodeStyleController extends NodeStyleController {
         }
 
 		private NodeStyleShape getShape(NodeModel node) {
-			return modeController.getExtension(NodeStyleController.class).getShape(node);
+			return modeController.getExtension(NodeStyleController.class).getShape(node, StyleOption.FOR_UNSELECTED_NODE);
 		}
 
 	}
@@ -359,7 +360,7 @@ public class MNodeStyleController extends NodeStyleController {
 	*
 	*/
 	public void increaseFontSize(final NodeModel node, final int increment) {
-		final int newSize = getFontSize(node) + increment;
+		final int newSize = getFontSize(node, StyleOption.FOR_UNSELECTED_NODE) + increment;
 		if (newSize > 0) {
 			setFontSize(node, newSize);
 		}
@@ -703,7 +704,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
-		final Quantity<LengthUnit> maxNodeWidth = getMaxWidth(node);
+		final Quantity<LengthUnit> maxNodeWidth = getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE);
 		if(maxNodeWidth != null && minNodeWidth != null && maxNodeWidth.toBaseUnits() < minNodeWidth.toBaseUnits()){
 			setMaxNodeWidth(node, minNodeWidth);
 		}
@@ -734,7 +735,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
-		final Quantity<LengthUnit> minNodeWidth = getMinWidth(node);
+		final Quantity<LengthUnit> minNodeWidth = getMinWidth(node, StyleOption.FOR_UNSELECTED_NODE);
 		if(maxNodeWidth != null && minNodeWidth != null && maxNodeWidth.toBaseUnitsRounded() < minNodeWidth.toBaseUnitsRounded()){
 			setMinNodeWidth(node, maxNodeWidth);
 		}

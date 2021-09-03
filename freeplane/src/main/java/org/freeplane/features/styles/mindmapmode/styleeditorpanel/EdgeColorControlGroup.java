@@ -30,6 +30,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -60,7 +61,7 @@ class EdgeColorControlGroup implements ControlGroup {
 		    final EdgeModel edgeModel = EdgeModel.getModel(node);
 		    final EdgeController edgeController = EdgeController.getController();
 		    final Color edgeColor = edgeModel != null ? edgeModel.getColor() : null;
-		    final Color viewColor = edgeController.getColor(node);
+		    final Color viewColor = edgeController.getColor(node, StyleOption.FOR_UNSELECTED_NODE);
 		    mSetEdgeColor.setValue(edgeColor != null);
 		    mEdgeColor.setColorValue(viewColor);
 		}

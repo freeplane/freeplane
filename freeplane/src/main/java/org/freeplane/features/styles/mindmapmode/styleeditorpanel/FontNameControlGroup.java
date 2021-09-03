@@ -29,6 +29,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -61,7 +62,7 @@ public class FontNameControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final String fontFamilyName = NodeStyleModel.getFontFamilyName(node);
-			final String viewFontFamilyName = styleController.getFontFamilyName(node);
+			final String viewFontFamilyName = styleController.getFontFamilyName(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeFontName.setValue(fontFamilyName != null);
 			mNodeFontName.setValue(viewFontFamilyName);
 		}

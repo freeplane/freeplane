@@ -28,6 +28,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -60,7 +61,7 @@ public class FontItalicControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Boolean italic = NodeStyleModel.isItalic(node);
-			final Boolean viewitalic = styleController.isItalic(node);
+			final Boolean viewitalic = styleController.isItalic(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeFontItalic.setValue(italic != null);
 			mNodeFontItalic.setValue(viewitalic);
 		}

@@ -22,7 +22,6 @@ package org.freeplane.features.text;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -54,6 +53,7 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.IContentTransformer.Mode;
 import org.freeplane.view.swing.map.MainView;
@@ -306,7 +306,7 @@ public class TextController implements IExtension {
 	}
 
 	public String getDetailsContentType(NodeModel node) {
-	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 	    final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 	    for(IStyle styleKey : collection){
 	        final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -351,10 +351,10 @@ public class TextController implements IExtension {
 				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 				final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
-				Font detailFont = style.getFont(detailStyleNode);
-				Color detailBackground = style.getBackgroundColor(detailStyleNode);
-				Color detailForeground = style.getColor(detailStyleNode);
-				final int alignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
+				Font detailFont = style.getFont(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+				Color detailBackground = style.getBackgroundColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+				Color detailForeground = style.getColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+				final int alignment = style.getHorizontalTextAlignment(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
 				float zoom = view.getNodeView().getMap().getZoom();
 				final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 				    .append(new CssRuleBuilder()
@@ -363,7 +363,7 @@ public class TextController implements IExtension {
 				        .withBackground(detailBackground)
 				        .withAlignment(alignment)
 				        .withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(detailStyleNode),
-				            style.getMaxWidth(node)))
+				            style.getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE)))
 				    .append("\">");
 				String data = details.getText();
 				String text;
@@ -397,14 +397,14 @@ public class TextController implements IExtension {
 					return null;
 				}
 				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
-				final Font font = style.getFont(node);
+				final Font font = style.getFont(node, StyleOption.FOR_UNSELECTED_NODE);
 				float zoom = view.getNodeView().getMap().getZoom();
 				final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 				    .append(new CssRuleBuilder().withHTMLFont(font)
 				        .withColor(view.getUnselectedForeground())
 				        .withBackground(view.getNodeView().getTextBackground())
 				        .withAlignment(view.getHorizontalAlignment())
-				        .withMaxWidthAsPt(zoom, style.getMaxWidth(node)));
+				        .withMaxWidthAsPt(zoom, style.getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE)));
 				final Object data = node.getUserObject();
 				String text;
 				try {

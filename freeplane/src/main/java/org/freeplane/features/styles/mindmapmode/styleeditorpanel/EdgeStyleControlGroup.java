@@ -30,6 +30,7 @@ import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -65,7 +66,7 @@ public class EdgeStyleControlGroup implements ControlGroup {
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{
 				final EdgeStyle style = edgeModel != null ? edgeModel.getStyle() : null;
-				final EdgeStyle viewStyle = edgeController.getStyle(node);
+				final EdgeStyle viewStyle = edgeController.getStyle(node, StyleOption.FOR_UNSELECTED_NODE);
 				mSetEdgeStyle.setValue(style != null);
 				mEdgeStyle.setValue(viewStyle.toString());
 			}

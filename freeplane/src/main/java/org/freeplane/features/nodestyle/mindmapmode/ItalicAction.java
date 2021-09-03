@@ -26,6 +26,7 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 @SelectableAction(checkOnNodeChange = true)
 class ItalicAction extends AMultipleNodeAction {
@@ -54,7 +55,7 @@ class ItalicAction extends AMultipleNodeAction {
 
 	boolean isItalic() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		return NodeStyleController.getController().isItalic(node);
+		return NodeStyleController.getController().isItalic(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override

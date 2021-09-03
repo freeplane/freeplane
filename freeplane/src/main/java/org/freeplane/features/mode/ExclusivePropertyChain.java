@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+
 public class ExclusivePropertyChain<V, T> {
 	final private Map<Integer, IPropertyHandler<V, T>> map = new TreeMap<Integer, IPropertyHandler<V, T>>();
 
@@ -30,11 +32,11 @@ public class ExclusivePropertyChain<V, T> {
 		return map.put(key, getter);
 	}
 
-	public V getProperty(final T node) {
+	public V getProperty(final T node, StyleOption option) {
 		final Iterator<IPropertyHandler<V, T>> iterator = map.values().iterator();
 		while (iterator.hasNext()) {
 			IPropertyHandler<V, T> handler = iterator.next();
-			final V property = handler.getProperty(node, null);
+			final V property = handler.getProperty(node, option, null);
 			if (property != null) {
 				return property;
 			}

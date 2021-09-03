@@ -49,6 +49,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.TextController;
 import org.freeplane.core.util.Hyperlink;
 /**
@@ -184,12 +185,12 @@ public class AttributeController implements IExtension {
 				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
 		        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 		        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
-		        final Font font = style.getFont(attributeStyleNode);
+		        final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 		        final StringBuilder tooltip = new StringBuilder();
 				tooltip.append("<html><body><table style='border: 1px solid;");
 				tooltip.append( new CssRuleBuilder().withHTMLFont(font)
-						.withBackground(style.getBackgroundColor(attributeStyleNode))
-						.withColor(style.getColor(attributeStyleNode))
+						.withBackground(style.getBackgroundColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE))
+						.withColor(style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE))
 						);
 				tooltip.append(" ' width='100%' cellspacing='0' cellpadding='2' ");
 				final int currentRowCount = attributes.getRowCount();

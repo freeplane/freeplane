@@ -40,6 +40,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
@@ -92,7 +93,7 @@ public class NoteController implements IExtension {
 	}
 	
 	public String getNoteContentType(NodeModel node) {
-	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 	    final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 	    for(IStyle styleKey : collection){
 	        final NodeModel styleNode = model.getStyleNode(styleKey);

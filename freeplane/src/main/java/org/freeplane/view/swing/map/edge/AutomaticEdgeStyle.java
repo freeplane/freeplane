@@ -13,6 +13,7 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -50,7 +51,7 @@ public class AutomaticEdgeStyle {
 			}
 			final NodeModel defaultStyleNode = mapStyleNodes.getDefaultStyleNode();
 			final NodeStyleController nodeStyleController = modeController.getExtension(NodeStyleController.class);
-			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode).toBaseUnitsRounded() + LocationModel.DEFAULT_HGAP_PX);
+			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode, StyleOption.FOR_UNSELECTED_NODE).toBaseUnitsRounded() + LocationModel.DEFAULT_HGAP_PX);
 		}
 		int level = (int) ((float)distance / nodeColumnWidth + 0.5);
 		if(SummaryNode.isHidden(node.getModel()))

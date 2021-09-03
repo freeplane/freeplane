@@ -35,6 +35,7 @@ import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -99,10 +100,10 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final CloudController cloudController = CloudController.getController();
 			final CloudModel cloudModel = CloudModel.getModel(node);
-			final Color viewCloudColor = cloudController.getColor(node);
+			final Color viewCloudColor = cloudController.getColor(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetCloud.setValue(cloudModel != null);
 			mCloudColor.setColorValue(viewCloudColor);
-			final CloudShape viewCloudShape = cloudController.getShape(node);
+			final CloudShape viewCloudShape = cloudController.getShape(node, StyleOption.FOR_UNSELECTED_NODE);
 			mCloudShape.setValue(viewCloudShape.name());
 		}
         

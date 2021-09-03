@@ -33,6 +33,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -72,7 +73,7 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final Color color = nodeBorderModel != null ? nodeBorderModel.getBorderColor() : null;
-			final Color viewColor = styleController.getBorderColor(node);
+			final Color viewColor = styleController.getBorderColor(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderColor.setValue(color != null);
 			mBorderColor.setColorValue(viewColor);
 		}
@@ -103,7 +104,7 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderColorMatchesEdgeColor() : null;
-			final Boolean viewMatch = styleController.getBorderColorMatchesEdgeColor(node);
+			final Boolean viewMatch = styleController.getBorderColorMatchesEdgeColor(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderColorMatchesEdgeColor.setValue(match != null);
 			mBorderColorMatchesEdgeColor.setValue(viewMatch);
 		}

@@ -40,6 +40,7 @@ import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleNode;
 
@@ -95,9 +96,9 @@ public class IconController implements IExtension {
 		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.ICON_STORE);
 		textBuilder.registerBy(readManager, writeManager);
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<NamedIcon>, NodeModel>() {
-			public Collection<NamedIcon> getProperty(final NodeModel node, final Collection<NamedIcon> currentValue) {
+			public Collection<NamedIcon> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Collection<NamedIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-				final Collection<IStyle> styleKeys = LogicalStyleController.getController(modeController).getStyles(node);
+				final Collection<IStyle> styleKeys = LogicalStyleController.getController(modeController).getStyles(node, option);
 				for(IStyle styleKey : styleKeys){
 					final NodeModel styleNode = model.getStyleNode(styleKey);
 					if (styleNode == null || node == styleNode && !(styleKey instanceof StyleNode)) {
@@ -126,8 +127,8 @@ public class IconController implements IExtension {
 	}
 
 
-	public Collection<NamedIcon> getIcons(final NodeModel node) {
-		final Collection<NamedIcon> icons = iconHandlers.getProperty(node, new LinkedList<NamedIcon>());
+	public Collection<NamedIcon> getIcons(final NodeModel node, StyleOption option) {
+		final Collection<NamedIcon> icons = iconHandlers.getProperty(node, option, new LinkedList<NamedIcon>());
 		return icons;
 	}
 	
@@ -173,12 +174,12 @@ public class IconController implements IExtension {
 		return DEFAULT_ICON_SIZE;
 	}
 
-	public Quantity<LengthUnit> getIconSize(NodeModel node)
+	public Quantity<LengthUnit> getIconSize(NodeModel node, StyleOption option)
 	{
 		final MapModel map = node.getMap();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-		final Collection<IStyle> styles = styleController.getStyles(node);
+		final Collection<IStyle> styles = styleController.getStyles(node, option);
 		final Quantity<LengthUnit> size = getStyleIconSize(map, styles);
 		return size;
 	}

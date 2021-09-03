@@ -100,6 +100,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -568,7 +569,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
 			final NodeStyleController nsc = NodeStyleController.getController(modeController);
-			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel()).toBaseUnits()), dimension.width);
+			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{
@@ -928,7 +929,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
         final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
-        final Font font = style.getFont(attributeStyleNode);
+        final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));
         if(! SwingUtilities.isDescendingFrom(this, nodeView)) {
         	return;
@@ -941,7 +942,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			c.setBackground(nodeView.getBackgroundColor());
 			c.setOpaque(false);
 		}
-        c.setForeground(style.getColor(attributeStyleNode));
+        c.setForeground(style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE));
     }
 
 	private void updateRowHeights() {

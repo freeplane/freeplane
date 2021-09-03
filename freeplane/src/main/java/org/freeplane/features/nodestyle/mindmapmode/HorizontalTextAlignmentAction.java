@@ -27,6 +27,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 @SelectableAction(checkOnNodeChange = true)
 class HorizontalTextAlignmentAction extends AMultipleNodeAction {
@@ -57,7 +58,7 @@ class HorizontalTextAlignmentAction extends AMultipleNodeAction {
 
 	boolean isHorizontalTextAlignmentSet() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		return textAlignment.equals(NodeStyleController.getController().getHorizontalTextAlignment(node));
+		return textAlignment.equals(NodeStyleController.getController().getHorizontalTextAlignment(node, StyleOption.FOR_UNSELECTED_NODE));
 	}
 
 	@Override

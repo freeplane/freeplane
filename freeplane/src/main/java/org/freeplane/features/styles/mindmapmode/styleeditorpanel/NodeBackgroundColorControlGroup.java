@@ -31,6 +31,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -62,7 +63,7 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final Color color = NodeStyleModel.getBackgroundColor(node);
-			final Color viewColor = styleController.getBackgroundColor(node);
+			final Color viewColor = styleController.getBackgroundColor(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeBackgroundColor.setValue(color != null);
 			mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
 			    .getMapViewManager().getBackgroundColor(node));

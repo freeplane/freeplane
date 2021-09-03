@@ -10,6 +10,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.plugin.script.ScriptContext;
 
 class NodeGeometryProxy extends AbstractProxy<NodeModel> implements Proxy.NodeGeometry {
@@ -26,22 +27,22 @@ class NodeGeometryProxy extends AbstractProxy<NodeModel> implements Proxy.NodeGe
 
     @Override
     public NodeShape getShape() {
-        return NODE_SHAPES[getStyleController().getShape(getDelegate()).ordinal()];
+        return NODE_SHAPES[getStyleController().getShape(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).ordinal()];
     }
 
     @Override
     public Quantity<LengthUnit> getHorizontalMargin() {
-        return getStyleController().getShapeConfiguration(getDelegate()).getHorizontalMargin();
+        return getStyleController().getShapeConfiguration(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).getHorizontalMargin();
     }
 
     @Override
     public Quantity<LengthUnit> getVerticalMargin() {
-        return getStyleController().getShapeConfiguration(getDelegate()).getVerticalMargin();
+        return getStyleController().getShapeConfiguration(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).getVerticalMargin();
     }
 
     @Override
     public boolean getIsUniform() {
-        return getStyleController().getShapeConfiguration(getDelegate()).isUniform();
+        return getStyleController().getShapeConfiguration(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).isUniform();
     }
 
     @Override

@@ -31,6 +31,7 @@ import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class IconContainedCondition extends ASelectableCondition {
@@ -59,7 +60,7 @@ public class IconContainedCondition extends ASelectableCondition {
 	}
 
 	private int iconFirstIndex(final NodeModel node) {
-		final Collection<NamedIcon> icons = IconController.getController().getIcons(node);
+		final Collection<NamedIcon> icons = IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE);
 		int i = 0;
 		for (NamedIcon nextIcon : icons) {
 			if (iconName.equals(nextIcon.getName())) {

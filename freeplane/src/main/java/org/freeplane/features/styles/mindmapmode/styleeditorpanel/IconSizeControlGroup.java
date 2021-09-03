@@ -10,6 +10,7 @@ import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -27,7 +28,7 @@ class IconSizeControlGroup implements ControlGroup{
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			final Quantity<LengthUnit> iconSize = node.getSharedData().getIcons().getIconSize();
-			final Quantity<LengthUnit> viewedIconSize = IconController.getController().getIconSize(node);
+			final Quantity<LengthUnit> viewedIconSize = IconController.getController().getIconSize(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetIconSize.setValue(iconSize != null);
 			mIconSize.setQuantifiedValue(viewedIconSize);
 		}

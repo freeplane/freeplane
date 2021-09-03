@@ -51,6 +51,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
@@ -238,8 +239,8 @@ class MindMapHTMLWriter {
 	private void setDefaultsFrom(MapModel map) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		final NodeModel styleNode = model.getDefaultStyleNode();
-		defaultFont = nodeStyleController.getFont(styleNode);
-		defaultColor = writesColors ? nodeStyleController.getColor(styleNode) : null;
+		defaultFont = nodeStyleController.getFont(styleNode, StyleOption.FOR_UNSELECTED_NODE);
+		defaultColor = writesColors ? nodeStyleController.getColor(styleNode, StyleOption.FOR_UNSELECTED_NODE) : null;
 	}
 
 	void writeHTML(final List<NodeModel> branchRootNodes) throws IOException {
@@ -308,7 +309,7 @@ class MindMapHTMLWriter {
 	private Color getCloudColor(NodeModel node, boolean considerAncestors) {
 		if(node == null)
 			return null;
-		Color color = clouds.getColor(node);
+		Color color = clouds.getColor(node, StyleOption.FOR_UNSELECTED_NODE);
 		if(color != null)
 			return color;
 		if(considerAncestors)
@@ -321,7 +322,7 @@ class MindMapHTMLWriter {
 			return null;
 		if (node == null)
 			return null;
-		Color color = clouds.getColor(node);
+		Color color = clouds.getColor(node, StyleOption.FOR_UNSELECTED_NODE);
 		if(color != null)
 			return color;
 		return ancestorCloudColor;
@@ -330,7 +331,7 @@ class MindMapHTMLWriter {
 	private Color getWrittenBackgroundColor(NodeModel node) {
 		if(! writesColors)
 			return null;
-		Color color = nodeStyleController.getBackgroundColor(node);
+		Color color = nodeStyleController.getBackgroundColor(node, StyleOption.FOR_UNSELECTED_NODE);
 		return color;
 	}
 
@@ -383,7 +384,8 @@ class MindMapHTMLWriter {
 				localParentID = parentID + "_" + lastChildNumber;
 				writeFoldingButtons(localParentID);
 			}
-			final String fontStyle = fontStyle(writesColors ? nodeStyleController.getColor(node) : null, nodeStyleController.getFont(node));
+			final String fontStyle = fontStyle(writesColors ? nodeStyleController.getColor(node, StyleOption.FOR_UNSELECTED_NODE) : null, 
+			        nodeStyleController.getFont(node, StyleOption.FOR_UNSELECTED_NODE));
 			boolean shouldOutputFontStyle = !fontStyle.equals("");
 			if (shouldOutputFontStyle) {
 				writer.write("<span style=\"" + fontStyle + "\">");
@@ -475,14 +477,14 @@ class MindMapHTMLWriter {
 
 	private void writeIcons(final NodeModel model) throws IOException {
 		final IconController iconController = IconController.getController();
-		final Collection<NamedIcon> icons = iconController.getIcons(model);
+		final Collection<NamedIcon> icons = iconController.getIcons(model, StyleOption.FOR_UNSELECTED_NODE);
 		for (NamedIcon icon : icons) {
 			if(icon instanceof MindIcon) {
 				MindIcon mindIcon = (MindIcon) icon;
 				try {
                     final String iconFile =  new URI(null, mindIcon.getFile(), null).toString();
                     writer.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
-                    final Quantity<LengthUnit> iconSize = iconController.getIconSize(model);
+                    final Quantity<LengthUnit> iconSize = iconController.getIconSize(model, StyleOption.FOR_UNSELECTED_NODE);
                     writer.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
                     writer.write(">");
                 } catch (Exception e) {
