@@ -35,7 +35,7 @@ public class TextLine implements IPropertyControl {
 
 	@Override
 	public String getTooltip() {
-		return null;
+		return label + ".tooltip";
 	}
 
 	public String getLabel() {
@@ -51,7 +51,7 @@ public class TextLine implements IPropertyControl {
 	public void appendToForm(final DefaultFormBuilder builder) {
 		if(builder.getColumn() != 1)
 			builder.nextLine();
-		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())));
+		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())), builder.getColumnCount());
 		builder.nextLine();
 	}
 
