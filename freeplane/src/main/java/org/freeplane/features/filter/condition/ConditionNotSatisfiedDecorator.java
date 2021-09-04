@@ -19,89 +19,27 @@
  */
 package org.freeplane.features.filter.condition;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Vector;
-
-import javax.swing.JComponent;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
-public class ConditionNotSatisfiedDecorator extends ASelectableCondition implements ICombinedCondition{
-	static final String NAME = "negate_condition";
+public class ConditionNotSatisfiedDecorator extends DecoratedCondition implements ICombinedCondition{
+	private static final String DECORATOR_KEY = "filter_not";
+    static final String NAME = "negate_condition";
 
 	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
-		final Vector<XMLElement> children = element.getChildren();
-		final ASelectableCondition cond = conditionFactory.loadCondition(children.get(0));
-		if(cond == null){
-			return null;
-		}
-		return new ConditionNotSatisfiedDecorator(cond);
+		final ASelectableCondition cond = DecoratedCondition.loadOriginalCondition(conditionFactory, element);
+		return cond == null ? null : new ConditionNotSatisfiedDecorator(cond);
 	}
 
-	final private ASelectableCondition originalCondition;
-
-	/**
-	 *
-	 */
 	public ConditionNotSatisfiedDecorator(final ASelectableCondition originalCondition) {
-		super();
-		assert originalCondition != null;
-		this.originalCondition = originalCondition;
+		super(originalCondition, NAME, DECORATOR_KEY);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
-	 * .MindMapNode)
-	 */
 	public boolean checkNode(final NodeModel node) {
 		return !originalCondition.checkNode(node);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
-	 * ()
-	 */
-	protected JComponent createRendererComponent() {
-		final JCondition component = new JCondition();
-		final String not = TextUtils.getText("filter_not");
-		final String text = not + ' ';
-		component.add(ConditionFactory.createConditionLabel(text));
-		originalCondition.getUserName();
-		final JComponent renderer = originalCondition.createShortRendererComponent();
-		component.add(renderer);
-		return component;
-	}
-
-	@Override
-    public boolean canBePersisted() {
-        return originalCondition.canBePersisted();
-    }
-
-    public void fillXML(final XMLElement child) {
-		originalCondition.toXml(child);
-	}
-
-	@Override
-    protected String createDescription() {
-	    return NAME;
-    }
-
-	@Override
-    protected String getName() {
-	    return NAME;
-    }
-	
-	public Collection<ASelectableCondition> split() {
-	    return Arrays.asList(new ASelectableCondition[]{originalCondition});
-    }
 
 }
