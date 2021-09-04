@@ -1,6 +1,7 @@
 package org.freeplane.api;
 
 import java.awt.Color;
+import java.util.List;
 
 
 
@@ -12,6 +13,16 @@ public interface NodeStyleRO {
 	 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
 	 * @since 1.2.2 */
 	String getName();
+	
+	/**
+	 * 
+	 * Returns all style names/translation keys active for the node.
+	 * 
+	 * @see getName()
+	 * 
+	 * @since 1.9.8
+	 */
+	List<String> getAllActiveStyles();
 
 	Node getStyleNode();
 

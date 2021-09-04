@@ -5,12 +5,15 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -27,6 +30,37 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
+    static IStyle styleByName(org.freeplane.api.MindMap map, String styleName) {
+        return styleByName(((MapProxy)map).getDelegate(), styleName);
+    }
+
+    static IStyle styleByName(MapModel map, String styleName) {
+        final MapStyleModel sourceStyleModel = MapStyleModel.getExtension(map);
+        IStyle sourceStyle = null;
+        // actually styles is a HashSet so lookup is fast
+        final Set<IStyle> styles = sourceStyleModel.getStyles();
+        // search for user defined styles
+        final IStyle styleString = StyleFactory.create(styleName);
+        if (styles.contains(styleString)) {
+            sourceStyle = styleString;
+        }
+        else {
+            // search for predefined styles by key
+            final IStyle styleNamedObject = StyleFactory.create(new TranslatedObject(styleName));
+            if (styles.contains(styleNamedObject)) {
+                sourceStyle = styleNamedObject;
+            }
+            // search for predefined styles by their translated name (style.toString())
+            else for (IStyle style : styles) {
+                if (style.toString().equals(styleName)) {
+                    sourceStyle = style;
+                    break;
+                }
+            }
+        }
+        return sourceStyle;
+    }
+
 	NodeStyleProxy(final NodeModel delegate, final ScriptContext scriptContext) {
 		super(delegate, scriptContext);
 	}
@@ -35,9 +69,15 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return LogicalStyleModel.getStyle(getDelegate());
 	}
 
-	public String getName() {
-	    final IStyle style = getStyle();
-		return style == null ? null : StyleTranslatedObject.toKeyString(style);
+	public List<String> getAllActiveStyles() {
+        return getLogicalStyleController().getStyles(getDelegate(), StyleOption.STYLES_ONLY)
+        .stream().map(StyleTranslatedObject::toKeyString)
+        .collect(Collectors.toList());
+    }
+
+    public String getName() {
+        final IStyle style = getStyle();
+        return style == null ? null : StyleTranslatedObject.toKeyString(style);
     }
 
 	public Node getStyleNode() {
@@ -111,29 +151,11 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 			setStyle(null);
 		}
 		else {
-			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(getDelegate().getMap());
-			// actually styles is a HashSet so lookup is fast
-			final Set<IStyle> styles = mapStyleModel.getStyles();
-			// search for user defined styles
-			final IStyle styleString = StyleFactory.create(styleName);
-			if (styles.contains(styleString)) {
-				setStyle(styleString);
-				return;
-			}
-			// search for predefined styles by key
-			final IStyle styleNamedObject = StyleFactory.create(new TranslatedObject(styleName));
-			if (styles.contains(styleNamedObject)) {
-				setStyle(styleNamedObject);
-				return;
-			}
-			// search for predefined styles by their translated name (style.toString())
-			for (IStyle style : styles) {
-				if (style.toString().equals(styleName)) {
-					setStyle(style);
-					return;
-				}
-			}
-			throw new IllegalArgumentException("style '" + styleName + "' not found");
+		    IStyle style = styleByName(getDelegate().getMap(), styleName);
+		    if(style == null)
+                throw new IllegalArgumentException("style '" + styleName + "' not found");
+            else
+                setStyle(style);
 		}
 	}
 
