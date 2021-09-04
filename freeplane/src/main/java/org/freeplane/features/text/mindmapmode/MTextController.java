@@ -161,7 +161,7 @@ public class MTextController extends TextController {
 		@Override
 		public boolean test(ICondition condition) {
 			return condition instanceof NodeItemRelation &&
-			        FILTER_PARENT.equals(((NodeItemRelation) condition).getNodeItem());
+			        FILTER_PARENT_TEXT.equals(((NodeItemRelation) condition).getNodeItem());
 		}
 	};
 

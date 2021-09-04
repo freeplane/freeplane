@@ -59,7 +59,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		}
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(TextController.FILTER_NODE)
-		|| namedObject.objectEquals(TextController.FILTER_PARENT)
+		|| namedObject.objectEquals(TextController.FILTER_PARENT_TEXT)
 		|| namedObject.objectEquals(TextController.FILTER_DETAILS)
 		|| namedObject.objectEquals(TextController.FILTER_NOTE)
 		|| namedObject.objectEquals(TextController.FILTER_ANYTEXT);
@@ -131,7 +131,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NODE));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_DETAILS));
 		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_NOTE));
-		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT));
+		list.addElement(TextUtils.createTranslatedString(TextController.FILTER_PARENT_TEXT));
 		return list;
 	}
 
@@ -192,7 +192,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 		if(nodeItem.equals(TextController.FILTER_NODE)){
 			result = transformedObject(node);
 		}
-		else if(nodeItem.equals(TextController.FILTER_PARENT)){
+		else if(nodeItem.equals(TextController.FILTER_PARENT_TEXT)){
 			final NodeModel parentNode = node.getParentNode();
 			if(parentNode == null)
 				result = null;
