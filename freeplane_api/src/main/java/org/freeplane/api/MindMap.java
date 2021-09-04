@@ -136,4 +136,24 @@ public interface MindMap extends MindMapRO {
 	void addListener(NodeChangeListener listener);
 	
 	void removeListener(NodeChangeListener listener);
+	
+    /**
+     * 
+     * Returns all style names/translation keys active for the node.
+     * 
+     * @see getName()
+     * 
+     * @since 1.9.8
+     */
+	void copyStyleFrom(MindMap source, String styleName);
+
+    /**
+     * 
+     * Returns all style names/translation keys active for the node.
+     * 
+     * @see getName()
+     * 
+     * @since 1.9.8
+     */
+    void copyStyleConditionsFrom(MindMap source, String styleName);
 }

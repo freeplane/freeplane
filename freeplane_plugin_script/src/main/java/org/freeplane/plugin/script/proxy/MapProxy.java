@@ -11,8 +11,13 @@ import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.ConditionalStyleModel;
+import org.freeplane.features.styles.ConditionalStyleModel.Item;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.script.FormulaUtils;
@@ -23,6 +28,7 @@ import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import java.awt.*;
 import java.io.File;
+import java.util.List;
 import java.util.Map.Entry;
 
 public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
@@ -282,4 +288,44 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	public void removeListener(NodeChangeListener listener) {
 		NodeChangeListeners.of(Controller.getCurrentModeController(), getDelegate()).remove(listener);
 	}
+
+	@Override
+	public void copyStyleFrom(org.freeplane.api.MindMap source, String styleName) {
+	    IStyle style = NodeStyleProxy.styleByName(source, styleName);
+	    if(style == null)
+	        throw new IllegalArgumentException("Style " + styleName +" not found");
+	    final MapStyleModel sourceStyleModel = MapStyleModel.getExtension(((MapProxy)source).getDelegate());
+	    NodeModel sourceNode = sourceStyleModel.getStyleNode(style);
+	    MapStyle styles = getModeController().getExtension(MapStyle.class);
+	    styles.undoableCopyStyle(style, sourceNode, getDelegate());
+	}
+
+    @Override
+    public void copyStyleConditionsFrom(org.freeplane.api.MindMap source, String styleName) {
+        IStyle style = NodeStyleProxy.styleByName(source, styleName);
+        if(style == null)
+            throw new IllegalArgumentException("Style " + styleName +" not found");
+        IStyle ownStyle = NodeStyleProxy.styleByName(getDelegate(), styleName);
+        if(ownStyle == null)
+            copyStyleFrom(source, styleName);
+        final MapStyleModel ownStyleModel = MapStyleModel.getExtension(getDelegate());
+        ConditionalStyleModel ownConditionalStyleModel = ownStyleModel.getConditionalStyleModel();
+        MLogicalStyleController controller = (MLogicalStyleController) getModeController().getExtension(LogicalStyleController.class);
+        List<Item> ownConditionalStyles = ownConditionalStyleModel.getStyles();
+        for(int i = ownConditionalStyles.size() - 1; i >= 0; i-- ) {
+            Item item = ownConditionalStyles.get(i);
+            if (item.getStyle().equals(style)) {
+                controller.removeConditionalStyle(getDelegate(), ownConditionalStyleModel, i);
+            }
+        }
+        final MapStyleModel sourceStyleModel = MapStyleModel.getExtension(((MapProxy)source).getDelegate());
+        ConditionalStyleModel sourceConditionalStyleModel = sourceStyleModel.getConditionalStyleModel();
+        List<Item> sourceConditionalStyles = sourceConditionalStyleModel.getStyles();
+        for(int i = 0; i < sourceConditionalStyles.size(); i++ ) {
+            Item item = ownConditionalStyles.get(i);
+            if (item.getStyle().equals(style)) {
+                controller.addConditionalStyle(getDelegate(), ownConditionalStyleModel, item.isActive(), item.getCondition(), style, item.isLast());
+            }
+        }
+    }
 }

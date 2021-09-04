@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
@@ -64,12 +65,12 @@ import org.freeplane.features.styles.ConditionalStyleModel.Item;
 public class LogicalStyleController implements IExtension {
 // 	final private ModeController modeController;
 
-	public static enum StyleOption{FOR_SELECTED_NODE, FOR_UNSELECTED_NODE}
+	public static enum StyleOption{FOR_SELECTED_NODE, FOR_UNSELECTED_NODE, STYLES_ONLY}
 
     private static final int STYLE_TOOLTIP = 0;
 	private WeakReference<NodeModel> cachedNode;
     private Collection<IStyle>  cachedStyles;
-    private Collection<IStyle>  cachedStylesForSeletedNode;
+    private List<IStyle>  cachedStylesForSeletedNode;
 	final private CombinedPropertyChain<Collection<IStyle>, NodeModel> styleHandlers;
 
 	public LogicalStyleController(ModeController modeController) {
@@ -312,7 +313,9 @@ public class LogicalStyleController implements IExtension {
 		    cachedStylesForSeletedNode.add(MapStyleModel.SELECTION_STYLE);
 		    cachedStylesForSeletedNode.addAll(cachedStyles);
 		}
-		return option == StyleOption.FOR_SELECTED_NODE ? cachedStylesForSeletedNode : cachedStyles;
+		return option == StyleOption.FOR_SELECTED_NODE ? cachedStylesForSeletedNode :
+		    option == StyleOption.FOR_UNSELECTED_NODE ? cachedStyles :
+		        cachedStylesForSeletedNode.subList(2, cachedStylesForSeletedNode.size())    ;
 	}
 
 	public void moveConditionalStyleDown(final ConditionalStyleModel conditionalStyleModel, int index) {

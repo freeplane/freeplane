@@ -506,40 +506,46 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         ModeController modeController = Controller.getCurrentModeController();
         MMapModel loadedMap = ((MMapController) modeController.getMapController()).getMap(url);
         if(loadedMap != null) {
-            MapStyleModel targetStyles = MapStyleModel.getExtension(loadedMap);
-            Optional<NodeModel> oldNode = Optional.ofNullable(targetStyles.getStyleNode(styleKey)).map(node -> node.duplicate(false));
-            oldNode.ifPresent(node -> node.setMap(null));
-            IActor actor = new IActor() {
-
-                @Override
-                public void act() {
-                    copy(Optional.of(copiedStyleNode));
-                }
-
-                @Override
-                public String getDescription() {
-                    return "copyStyleToLoadedMap";
-                }
-
-                @Override
-                public void undo() {
-                    copy(oldNode);
-                }
-
-                private void copy(Optional<NodeModel> sourceNode) {
-                    if(sourceNode.isPresent())
-                        targetStyles.copyStyle(sourceNode.get(), styleKey);
-                    else {
-                        NodeModel targetNode = targetStyles.getStyleNode(styleKey);
-                        targetNode.getParentNode().remove(targetNode.getIndex());
-                        targetStyles.removeStyleNode(targetNode);
-                    }
-                    modeController.getMapController().fireMapChanged(
-                            new MapChangeEvent(this, loadedMap, MapStyle.MAP_STYLES, null, null));
-                    loadedMap.updateLastKnownFileModificationTime();                }
-            };
-            modeController.execute(actor, loadedMap);
+            undoableCopyStyle(styleKey, copiedStyleNode, loadedMap);
         }   
+    }
+
+    public void undoableCopyStyle(IStyle styleKey, NodeModel copiedStyleNode,
+            MapModel targetMap) {
+        ModeController modeController = Controller.getCurrentModeController();
+        MapStyleModel targetStyles = MapStyleModel.getExtension(targetMap);
+        Optional<NodeModel> oldNode = Optional.ofNullable(targetStyles.getStyleNode(styleKey)).map(node -> node.duplicate(false));
+        oldNode.ifPresent(node -> node.setMap(null));
+        IActor actor = new IActor() {
+
+            @Override
+            public void act() {
+                copy(Optional.of(copiedStyleNode));
+            }
+
+            @Override
+            public String getDescription() {
+                return "copyStyleToLoadedMap";
+            }
+
+            @Override
+            public void undo() {
+                copy(oldNode);
+            }
+
+            private void copy(Optional<NodeModel> sourceNode) {
+                if(sourceNode.isPresent())
+                    targetStyles.copyStyle(sourceNode.get(), styleKey);
+                else {
+                    NodeModel targetNode = targetStyles.getStyleNode(styleKey);
+                    targetNode.getParentNode().remove(targetNode.getIndex());
+                    targetStyles.removeStyleNode(targetNode);
+                }
+                modeController.getMapController().fireMapChanged(
+                        new MapChangeEvent(this, targetMap, MapStyle.MAP_STYLES, null, null));
+                targetMap.updateLastKnownFileModificationTime();                }
+        };
+        modeController.execute(actor, targetMap);
     }
 
     private void undoableCopyStyleToTargetFile(MapModel map, IStyle styleKey,

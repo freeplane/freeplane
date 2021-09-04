@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.swing.table.AbstractTableModel;
@@ -138,7 +139,17 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 	}
 	
-	void addCondition(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
+	
+	
+	public List<Item> getStyles() {
+        return styles;
+    }
+
+    public void setStyles(ArrayList<Item> styles) {
+        this.styles = styles;
+    }
+
+    void addCondition(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
 		styles.add(new Item(isActive, condition, style, isLast));
 		if(table == null){
 			return;
