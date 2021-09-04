@@ -35,6 +35,7 @@ import javax.swing.event.AncestorListener;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.IMapSelection;
@@ -64,7 +65,7 @@ class FindAction extends AFreeplaneAction {
 		}
 		final NodeModel start = selection.getSelected();
 		if (editor == null) {
-			editor = new FilterConditionEditor(FilterController.getCurrentFilterController());
+			editor = new FilterConditionEditor(FilterController.getCurrentFilterController(), Variant.SEARCH_DIALOG);
 			editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 
 		}

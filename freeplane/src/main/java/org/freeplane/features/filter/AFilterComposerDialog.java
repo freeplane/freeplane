@@ -61,6 +61,7 @@ import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.ConjunctConditions;
@@ -535,7 +536,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	public AFilterComposerDialog(String title, boolean modal) {
 		super(UITools.getCurrentFrame(), title, modal);
 		filterController = FilterController.getCurrentFilterController();
-		editor = new FilterConditionEditor(filterController);
+		editor = new FilterConditionEditor(filterController, Variant.FILTER_COMPOSER);
 		editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 		    BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		//		this.controller = controller;

@@ -54,6 +54,8 @@ public class ConditionFactory {
 	public static final String FILTER_LE = "<=";
 	public static final String FILTER_LT = "<";
 	public static final String FILTER_REGEXP = "filter_regexp_matches";
+	
+	private static final DecoratedConditionFactory DECORATED_CONDITION_FACTORY = new DecoratedConditionFactory();
 
 	static public JComponent createCellRendererComponent(final String description) {
 		final JCondition component = new JCondition();
@@ -127,7 +129,7 @@ public class ConditionFactory {
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
-		final ASelectableCondition condition = loadCondition2(element);
+		final ASelectableCondition condition = loadAnonymousCondition(element);
 		if(condition != null){
 		    final String userName = element.getAttribute("user_name", null);
 		    condition.setUserName(userName);
@@ -135,9 +137,10 @@ public class ConditionFactory {
 		return condition;
 	}
 
-	private ASelectableCondition loadCondition2(final XMLElement element) {
-	    if (element.getName().equalsIgnoreCase(ConditionNotSatisfiedDecorator.NAME)) {
-			return ConditionNotSatisfiedDecorator.load(this, element);
+	private ASelectableCondition loadAnonymousCondition(final XMLElement element) {
+	    ASelectableCondition decoratorCondition = DECORATED_CONDITION_FACTORY.createRelativeCondition(this, element);
+	    if (decoratorCondition != null) {
+			return decoratorCondition;
 		}
 		if (element.getName().equalsIgnoreCase(ConjunctConditions.NAME)) {
 			return ConjunctConditions.load(this, element);

@@ -72,6 +72,7 @@ import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.ConditionSnapshotFactory;
@@ -286,7 +287,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		controller.getMapViewManager().addMapViewChangeListener(this);
 		
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
-		quickEditor = new FilterConditionEditor(this, 0, true);
+		quickEditor = new FilterConditionEditor(this, 0, Variant.FILTER_TOOLBAR);
 		quickEditor.setEnterKeyActionListener( new ActionListener()  {
 
 			@Override

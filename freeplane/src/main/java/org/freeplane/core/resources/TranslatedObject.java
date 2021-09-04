@@ -39,11 +39,11 @@ public class TranslatedObject {
 		result.translation = literal;
 		return result;
 	}
+	private static ListCellRenderer listCellRenderer;
 
 	private String translation;
 	private Object object;
 	private Icon icon;
-	private static ListCellRenderer listCellRenderer;
 
 	private TranslatedObject() {
 	}

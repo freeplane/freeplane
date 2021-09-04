@@ -54,6 +54,7 @@ import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
+import org.freeplane.features.filter.condition.DecoratedConditionFactory;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
@@ -62,6 +63,9 @@ import org.freeplane.features.mode.Controller;
  * 23.05.2009
  */
 public class FilterConditionEditor extends JComponent {
+    
+    public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, SEARCH_DIALOG }
+    
 	private class ElementaryConditionChangeListener implements ItemListener {
 		@Override
 		public void itemStateChanged(final ItemEvent e) {
@@ -151,9 +155,13 @@ public class FilterConditionEditor extends JComponent {
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
 	private static final String PROPERTY_FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
+	
+	private static final DecoratedConditionFactory DECORATED_CONDITION_FACTORY = new DecoratedConditionFactory();
+	
 	final private JToggleButton caseSensitive;
 	final private JToggleButton approximateMatching;
 	final private JToggleButton ignoreDiacritics;
+	final private JComboBox filterTargetSelector;
 	final private JComboBox elementaryConditions;
 	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
@@ -162,10 +170,10 @@ public class FilterConditionEditor extends JComponent {
 	final private JComboBox values;
 	private ActionListener enterKeyActionListener;
 	final private JCheckBox btnDeny;
-	public FilterConditionEditor(final FilterController filterController) {
-		this(filterController, 5, false);
+	public FilterConditionEditor(final FilterController filterController, final Variant variant) {
+		this(filterController, 5, variant);
 	}
-	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final boolean horizontal) {
+	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final Variant variant) {
 		super();
 		setLayout(new GridBagLayout());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -181,9 +189,20 @@ public class FilterConditionEditor extends JComponent {
 		add(Box.createHorizontalGlue(), gridBagConstraints);
 		gridBagConstraints.gridx++;
 
-		btnDeny = TranslatedElementFactory.createCheckBox("filter_deny");
-		add(btnDeny, gridBagConstraints);
-		gridBagConstraints.gridx++;
+        btnDeny = TranslatedElementFactory.createCheckBox("filter_deny");
+        add(btnDeny, gridBagConstraints);
+        gridBagConstraints.gridx++;
+
+        if(variant == Variant.FILTER_COMPOSER) {
+            filterTargetSelector = new JComboBoxWithBorder();
+            filterTargetSelector.setEditable(false);
+            filterTargetSelector.setModel(new DefaultComboBoxModel(DECORATED_CONDITION_FACTORY.getKeys()));
+            add(filterTargetSelector, gridBagConstraints);
+            gridBagConstraints.gridx++;
+        }
+        else {
+            filterTargetSelector = null;
+        }
 
 		filteredPropertiesComponent = new JComboBoxWithBorder();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
@@ -193,7 +212,7 @@ public class FilterConditionEditor extends JComponent {
 		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
 		add(filteredPropertiesComponent, gridBagConstraints);
 		gridBagConstraints.gridx++;
-
+		
 		//Search condition
 		elementaryConditions = new JComboBoxWithBorder();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
@@ -206,7 +225,7 @@ public class FilterConditionEditor extends JComponent {
 		values.setPreferredSize(new Dimension(240,20));
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		add(values, gridBagConstraints);
-		if(horizontal){
+		if(variant == Variant.FILTER_TOOLBAR){
 			gridBagConstraints.gridx++;
 		}
 		else{
@@ -303,11 +322,18 @@ public class FilterConditionEditor extends JComponent {
 				}
 			}
 		}
-		if (newCond != null && btnDeny.isSelected())
-			return new ConditionNotSatisfiedDecorator(newCond);
-		else
-			return newCond;
+		return decorate(newCond);
 	}
+
+    private ASelectableCondition decorate(ASelectableCondition decoratedCondition) {
+        if (decoratedCondition == null)
+            return decoratedCondition;
+        if(filterTargetSelector != null)
+            decoratedCondition = DECORATED_CONDITION_FACTORY.createRelativeCondition((TranslatedObject) filterTargetSelector.getSelectedItem(), decoratedCondition);
+        if (btnDeny.isSelected())
+            decoratedCondition = new ConditionNotSatisfiedDecorator(decoratedCondition);
+        return decoratedCondition;
+    }
 
 	/**
 	 */
