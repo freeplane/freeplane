@@ -5,6 +5,10 @@ Rework formatting panel UI
 Make changes in templates from formatting panel
 Apply all selected node style properties to selected nodes
 Add filter conditions targets (Own, Parent's, Any child's, Any ancestor's, For all children, For all descendants)
+Apply all selected node style settings to selected nodes
+Revert rectangular selection to take its color from user preferences
+Default style setting can not be removed by user
+Assigned and conditional style formatting options override level style options
 
 ===============================
 1.9.7
