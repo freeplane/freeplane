@@ -322,10 +322,11 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
         ConditionalStyleModel sourceConditionalStyleModel = sourceStyleModel.getConditionalStyleModel();
         List<Item> sourceConditionalStyles = sourceConditionalStyleModel.getStyles();
         for(int i = 0; i < sourceConditionalStyles.size(); i++ ) {
-            Item item = ownConditionalStyles.get(i);
+            Item item = sourceConditionalStyles.get(i);
             if (item.getStyle().equals(style)) {
                 controller.addConditionalStyle(getDelegate(), ownConditionalStyleModel, item.isActive(), item.getCondition(), style, item.isLast());
             }
         }
+        controller.refreshMap(getDelegate());
     }
 }
