@@ -301,7 +301,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	}
 
     @Override
-    public void copyStyleConditionsFrom(org.freeplane.api.MindMap source, String styleName) {
+    public void copyConditionalStylesFrom(org.freeplane.api.MindMap source, String styleName) {
         IStyle style = NodeStyleProxy.styleByName(source, styleName);
         if(style == null)
             throw new IllegalArgumentException("Style " + styleName +" not found");

@@ -155,5 +155,5 @@ public interface MindMap extends MindMapRO {
      * 
      * @since 1.9.8
      */
-    void copyStyleConditionsFrom(MindMap source, String styleName);
+    void copyConditionalStylesFrom(MindMap source, String styleName);
 }
