@@ -175,15 +175,16 @@ class StyleControlGroup implements ControlGroup{
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		if (addStyleBox) {
-			addAutomaticLayout(formBuilder);
-			addStyleBox(formBuilder);
-		}
+        if (addStyleBox) {
+            addStyleBox(formBuilder);
+        }
 		mNodeStyleButton = addButton(formBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
 		if (addStyleBox) {
 			mMapStyleButton = addButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
 
-			redefinesStyleForCurrentMapOnly = new JRadioButton();
+            addAutomaticLayout(formBuilder);
+
+            redefinesStyleForCurrentMapOnly = new JRadioButton();
             redefinesStyleForCurrentMapOnly.setSelected(true);
             redefinesStyleForCurrentMapOnly.setText(TextUtils.getRawText(FOR_THIS_MAP));
             redefinesStyleForCurrentMapOnly.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -324,11 +325,11 @@ class StyleControlGroup implements ControlGroup{
 		formBuilder.nextLine();
 	}
 	private void addAutomaticLayout(final DefaultFormBuilder formBuilder) {
-		addStyleControls(formBuilder);
+		addAutomaticLayoutControls(formBuilder);
 		addEdgeColoringControls(formBuilder);
 	}
 
-	private void addStyleControls(final DefaultFormBuilder formBuilder) {
+	private void addAutomaticLayoutControls(final DefaultFormBuilder formBuilder) {
 		TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticLayout.class);
 		mAutomaticLayoutComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
 		DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();

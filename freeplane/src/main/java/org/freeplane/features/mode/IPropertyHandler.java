@@ -24,8 +24,8 @@ import org.freeplane.features.styles.LogicalStyleController;
 public interface IPropertyHandler<V, M> {
     
     final static public Integer DEFAULT = 1 << 8;
-	final static public Integer STYLE = 1 << 7;
-	final static public Integer AUTO = 1 << 6;
+    final static public Integer AUTO = 1 << 7;
+	final static public Integer STYLE = 1 << 6;
 	final static public Integer NODE = 1 << 5;
 
 	V getProperty(M model, LogicalStyleController.StyleOption option, V currentValue);

@@ -38,6 +38,7 @@ import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
@@ -659,6 +660,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                     {
                         new StyleExchange(styleMapContainer, targetMap).copyMapStylesNoUndoNoRefresh();
                         UITools.showMessage(TextUtils.format("stylesUpdated", targetMap.getTitle(), followedMapPath), JOptionPane.INFORMATION_MESSAGE);
+                        SwingUtilities.invokeLater(() -> targetMap.setSaved(false));
                     });
                 }
                 if(sourceLastModificationTime != lastUpdateTime)
