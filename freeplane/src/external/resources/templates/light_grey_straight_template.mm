@@ -26,7 +26,7 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#ffffff" BACKGROUND_COLOR="#3333ff" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#3333ff"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#ffffff" BACKGROUND_COLOR="#3333ff" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#3333ff"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="styles.important" ID="ID_334768726" COLOR="#443333" BACKGROUND_COLOR="#dddddd" BORDER_WIDTH="3 px" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#cc0033">
