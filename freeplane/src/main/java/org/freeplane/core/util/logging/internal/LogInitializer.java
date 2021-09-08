@@ -65,18 +65,38 @@ public class LogInitializer {
 			}
 		}
 		if(consoleHandlerRemoved) {
-			final StreamHandler stdConsoleHandler = new StreamHandler(System.out, new StdFormatter()) {
-				{
-					setLevel(Level.INFO);
-				}
-				@Override
-				public void publish(LogRecord record) {
-					super.publish(record);
-					flush();
-				}
-			};
+            final StreamHandler stdErrConsoleHandler = new StreamHandler(System.err, new StdFormatter()) {
+                {
+                    setLevel(Level.SEVERE);
+                }
+                @Override
+                public void publish(LogRecord record) {
+                    super.publish(record);
+                    flush();
+                }
+            };
+            final StreamHandler stdOutConsoleHandler = new StreamHandler(System.out, new StdFormatter()) {
+                {
+                    setLevel(Level.INFO);
+                }
+                
+                @Override
+                public boolean isLoggable(LogRecord record) {
+                    if (stdErrConsoleHandler.isLoggable(record)) {
+                        return false;
+                    }
+                    return super.isLoggable(record);
+                }
+                
+                @Override
+                public void publish(LogRecord record) {
+                    super.publish(record);
+                    flush();
+                }
+            };
 
-			getRootLogger().addHandler(stdConsoleHandler);
+            getRootLogger().addHandler(stdErrConsoleHandler);
+            getRootLogger().addHandler(stdOutConsoleHandler);
 		}
 
 	}
