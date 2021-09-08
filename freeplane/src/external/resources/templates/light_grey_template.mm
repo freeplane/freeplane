@@ -1,4 +1,4 @@
-<map version="freeplane 1.9.0">
+<map version="freeplane 1.9.8">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node LOCALIZED_TEXT="new_mindmap" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="ID_1090958577" CREATED="1409300609620" MODIFIED="1606696799705">
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>

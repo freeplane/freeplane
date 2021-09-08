@@ -66,13 +66,15 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
+import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.view.swing.map.MapView;
-
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 /**
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
 public class MapStyleModel implements IExtension {
+    private static final int FREEPLANE_VERSION_WITH_RICH_SELECTION_STYLE = 14;
 	public static final String STYLES_PREDEFINED = "styles.predefined";
     public static final String STYLES_USER_DEFINED = "styles.user-defined";
     private static final StyleTranslatedObject STYLE_USER_DEFINED_TRANSLATED_OBJECT = new StyleTranslatedObject(STYLES_USER_DEFINED);
@@ -237,19 +239,22 @@ public class MapStyleModel implements IExtension {
 				predefinedStyleParentNode.insert(newNode, 4);
 				addStyleNode(newNode);
 			}
-            if (styleNodes.get(SELECTION_STYLE) == null) {
-                final NodeModel selectionStyleNode = new NodeModel(SELECTION_STYLE, styleMap);
+            NodeModel selectionStyleNode = styleNodes.get(SELECTION_STYLE);
+            if (selectionStyleNode == null) {
+                selectionStyleNode = new NodeModel(SELECTION_STYLE, styleMap);
                 ResourceController resourceController = ResourceController.getResourceController();
                 Color standardSelectionBackgroundColor = ColorUtils.stringToColor(resourceController.getProperty(
                         MapView.RESOURCES_SELECTED_NODE_COLOR));
                 Color standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
                         MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
-                NodeStyleModel.setShape(selectionStyleNode, NodeStyleShape.bubble);
                 NodeStyleModel.setBackgroundColor(selectionStyleNode, standardSelectionBackgroundColor);
                 NodeBorderModel.setBorderColor(selectionStyleNode, standardSelectionRectangleColor);
                 NodeBorderModel.setBorderColorMatchesEdgeColor(selectionStyleNode, false);
                 predefinedStyleParentNode.insert(selectionStyleNode, 5);
                 addStyleNode(selectionStyleNode);
+            }
+            else if (MapVersionInterpreter.isOlderThan(parentMap, FREEPLANE_VERSION_WITH_RICH_SELECTION_STYLE)) {
+                NodeStyleModel.setShapeConfiguration(selectionStyleNode, NodeGeometryModel.NULL_SHAPE);
             }
 		}
 		catch (Exception e) {

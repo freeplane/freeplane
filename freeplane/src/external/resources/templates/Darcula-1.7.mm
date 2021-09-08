@@ -1,4 +1,4 @@
-<map version="freeplane 1.6.0">
+<map version="freeplane 1.9.8">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node LOCALIZED_TEXT="new_mindmap" STYLE="oval">
 <font SIZE="18"/>

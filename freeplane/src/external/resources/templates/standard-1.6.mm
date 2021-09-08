@@ -1,4 +1,4 @@
-<map version="freeplane 1.9.0">
+<map version="freeplane 1.9.8">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node LOCALIZED_TEXT="new_mindmap" FOLDED="false" ID="ID_696401721" CREATED="1610381621824" MODIFIED="1610381621824" STYLE="oval">
 <font SIZE="18"/>
