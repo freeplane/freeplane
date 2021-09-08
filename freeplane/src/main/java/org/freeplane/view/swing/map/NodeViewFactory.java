@@ -38,6 +38,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
@@ -68,7 +69,7 @@ class NodeViewFactory {
 
 	MainView newMainView(final NodeView node) {
 		final MainView view = new MainView();
-		NodeGeometryModel shapeConfiguration = shapeConfiguration(node);
+		NodeGeometryModel shapeConfiguration = shapeConfiguration(node, node.getStyleOption());
 		final MainView oldView = node.getMainView();
 		if(oldView != null && oldView.getShapeConfiguration().equals(shapeConfiguration))
 			return oldView;
@@ -82,7 +83,7 @@ class NodeViewFactory {
 	}
 
 	void updateViewPainter(final NodeView node) {
-		NodeGeometryModel shapeConfiguration = shapeConfiguration(node);
+		NodeGeometryModel shapeConfiguration = shapeConfiguration(node, node.getStyleOption());
 		final MainView mainView = node.getMainView();
 		final MainViewPainter painter = createViewPainter(mainView, shapeConfiguration);
 		mainView.setPainter(painter);
@@ -117,10 +118,10 @@ class NodeViewFactory {
 		return shape;
 	}
 
-	private NodeGeometryModel shapeConfiguration(NodeView node) {
+	private NodeGeometryModel shapeConfiguration(NodeView node, StyleOption styleOption) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		NodeGeometryModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model, node.getStyleOption());
+		NodeGeometryModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model, styleOption);
 		if (shapeConfiguration.getShape().equals(NodeStyleShape.combined)) {
 			if (node.isFolded()) {
 				shapeConfiguration= shapeConfiguration.withShape(NodeStyleShape.bubble);
@@ -136,7 +137,11 @@ class NodeViewFactory {
 			else if (parent.getParentView() == null)
 				shapeConfiguration = NodeGeometryModel.FORK;
 			else
-				shapeConfiguration = parent.getMainView().getShapeConfiguration();
+			    if(parent.isSelected()) {
+			        shapeConfiguration = shapeConfiguration(parent, StyleOption.FOR_UNSELECTED_NODE);
+			    }
+			    else
+			        shapeConfiguration = parent.getMainView().getShapeConfiguration();
 		}
 		return shapeConfiguration;
 	}
