@@ -35,6 +35,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -132,15 +133,22 @@ public class EditStylesAction extends AFreeplaneAction {
 				final MapModel map = mapViewManager.getModel();
 				final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 				final boolean stylesChanged = modeController.getStatus() == JOptionPane.OK_OPTION && undoHandler.canUndo();
-				if(stylesChanged) {
-					commit();
-				}
-				else {
-					rollback();
-				}
+				Exception loggedException = null;
+				try {
+                    if(stylesChanged) {
+                    	commit();
+                    }
+                    else {
+                    	rollback();
+                    }
+                } catch (Exception ex) {
+                    loggedException = ex;
+                }
 				super.componentHidden(e);
 				modeController.getMapController().closeWithoutSaving(map);
 				Controller.setCurrentController(mainController);
+				if(loggedException != null)
+				    LogUtils.severe(loggedException);
 				mainController.getMapViewManager().changeToMapView(currentMapView);
 				currentMapView = null;
 				currentMap = null;
