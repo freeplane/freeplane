@@ -198,8 +198,12 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		if (!getViewController().quit()) {
 			return false;
 		}
-		ResourceController.getResourceController().saveProperties();
-		extensionContainer.getExtensions().clear();
+		try {
+            ResourceController.getResourceController().saveProperties();
+            extensionContainer.getExtensions().clear();
+        } catch (Exception e) {
+            LogUtils.severe(e);
+        }
 		return true;
 	}
 
