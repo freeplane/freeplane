@@ -7,6 +7,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.security.AccessControlException;
 
+import org.freeplane.core.ui.components.SafeRunner;
 import org.freeplane.core.util.LogUtils;
 
 public class ClipboardAccessor{
@@ -59,15 +60,17 @@ public class ClipboardAccessor{
 	/**
 	 */
 	public void setClipboardContents(final Transferable t) {
-		if (clipboard != null) {
-			clipboard.setContents(t, null);
-		}
-		if (selection != null) {
-			selection.setContents(t, null);
-		}
+	    if (clipboard != null) {
+	        SafeRunner.run(5, () ->
+	            clipboard.setContents(t, null));
+	    }
+	    if (selection != null) {
+	        SafeRunner.run(5, () ->
+	            selection.setContents(t, null));
+	    }
 	}
 
-    /** copies a string to the system clipboard. */
+	/** copies a string to the system clipboard. */
     public void setClipboardContents(final String string) {
         setClipboardContents(new StringSelection(string));
     }
