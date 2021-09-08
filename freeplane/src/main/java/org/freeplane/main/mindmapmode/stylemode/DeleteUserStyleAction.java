@@ -63,7 +63,6 @@ public class DeleteUserStyleAction extends AFreeplaneAction {
             return;
         }
 		final MMapController mapController = (MMapController) modeController.getMapController();
-		mapController.deleteNode(selected);
 		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.addStyleNode(selected);
@@ -78,5 +77,6 @@ public class DeleteUserStyleAction extends AFreeplaneAction {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
+        mapController.deleteNode(selected);
 	}
 }

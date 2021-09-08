@@ -62,7 +62,6 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 		final IStyle styleObject = StyleFactory.create(TranslatedObject.format(styleName));
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel node = styleModel.getStyleNode(styleObject);
-		mapController.deleteNode(node);
 		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.addStyleNode(node);
@@ -77,5 +76,6 @@ public class DeleteLevelStyleAction extends AFreeplaneAction {
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, map);
+        mapController.deleteNode(node);
 	}
 }
