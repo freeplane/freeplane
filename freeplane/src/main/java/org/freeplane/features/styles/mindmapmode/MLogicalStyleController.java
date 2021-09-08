@@ -328,7 +328,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    return;
 			}
 			actions.clear();
-			final NodeModel rootNode = mapStyleModel.getStyleMap().getRootNode();
 			AssignStyleAction resetAction = new AssignStyleAction(null);
 			final AssignStyleAction addedResetAction =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(resetAction);
 			if(resetAction == addedResetAction)
