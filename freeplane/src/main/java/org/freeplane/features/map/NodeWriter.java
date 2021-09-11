@@ -76,7 +76,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
 		for (final NodeModel child: node.getChildren()) {
-		if (writeInvisible || child.isVisible(FilterController.getFilter(node.getMap()))) {
+		if (writeInvisible || child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writer.setHint(WriterHint.ALREADY_WRITTEN, isAlreadyWritten(child));
 				writer.addElement(child, nodeTag);
 			}
