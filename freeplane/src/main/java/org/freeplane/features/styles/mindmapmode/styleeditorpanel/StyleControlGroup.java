@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
@@ -74,7 +75,7 @@ class StyleControlGroup implements ControlGroup{
 	private JButton mMapStyleButton;
 	private JRadioButton redefinesStyleForCurrentMapOnly;
     private JRadioButton redefinesStyleForCurrentMapAndTemplate;
-    private JTextField redefinedTemplate;
+    private JTextArea redefinedTemplate;
     private JButton associateTemplateButton;
 	private final boolean addStyleBox;
 	private JComboBox mAutomaticLayoutComboBox;
@@ -193,7 +194,10 @@ class StyleControlGroup implements ControlGroup{
             redefinesStyleForCurrentMapAndTemplate.setText(TextUtils.getText(FOR_TEMPLATE));
             redefinesStyleForCurrentMapAndTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
             
-            redefinedTemplate= new JTextField(80);
+            redefinedTemplate= new JTextArea();
+            redefinedTemplate.setColumns(80);
+            redefinedTemplate.setLineWrap(true);
+            redefinedTemplate.setWrapStyleWord(false);
             redefinedTemplate.setBorder(BorderFactory.createEmptyBorder(0, LEFT_MARGIN, GAP, 0));
             redefinedTemplate.setFont(redefinedTemplate.getFont().deriveFont(Font.ITALIC));
             redefinedTemplate.setEditable(false);
