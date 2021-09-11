@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.freeplane.core.resources.components.OptionPanel;
+import org.freeplane.core.resources.components.OptionPanelConstants;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.ModeController;
@@ -129,7 +129,7 @@ public class PresentationEditorController {
 		
 		AFreeplaneAction configureAction = modeController.getAction("ShowPreferencesAction");
 		JButton btnConfigure = new JButton(configureAction);
-		btnConfigure.setActionCommand(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + "Presentation");
+		btnConfigure.setActionCommand(OptionPanelConstants.OPTION_PANEL_RESOURCE_PREFIX + "Presentation");
 		btnConfigure.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		controlButtons.add(btnConfigure);
 		

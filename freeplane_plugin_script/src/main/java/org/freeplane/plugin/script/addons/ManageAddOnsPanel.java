@@ -204,7 +204,7 @@ public class ManageAddOnsPanel extends JPanel {
 				else {
 					OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
 					optionPanelBuilder.load(new StringReader(addOn.getPreferencesXml()));
-					MModeController.createShowPreferencesAction(optionPanelBuilder).actionPerformed(e);
+					MModeController.createShowPreferencesAction(optionPanelBuilder, false).actionPerformed(e);
 				}
 			}
 		};

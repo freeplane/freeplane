@@ -130,17 +130,18 @@ public class MModeController extends ModeController {
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
-		getController().addAction(createShowPreferencesAction(optionPanelBuilder));
+		getController().addAction(createShowPreferencesAction(optionPanelBuilder, true));
 	}
 
-	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder)
+	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder, boolean arePropertyValidatorsEnabled)
 	{
-		return createShowPreferencesAction(optionPanelBuilder, null);
+		return createShowPreferencesAction(optionPanelBuilder, arePropertyValidatorsEnabled, null);
 	}
 
 	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder,
-																	String selectedProperty) {
-		return new ShowPreferencesAction(optionPanelBuilder.getRoot(), selectedProperty);
+	        boolean arePropertyValidatorsEnabled, String selectedProperty) {
+		return new ShowPreferencesAction(optionPanelBuilder.getRoot(), selectedProperty,
+		        arePropertyValidatorsEnabled);
     }
 
     private static void addCurrentLookAndFeelIfNecessary(Vector<String> lafNames, Vector<String> translatedLafNames) {

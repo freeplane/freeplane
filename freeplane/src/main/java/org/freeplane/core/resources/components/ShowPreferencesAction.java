@@ -57,16 +57,19 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	public static final String KEY = "ShowPreferencesAction";
 	private final DefaultMutableTreeNode controls;
 	private String selectedProperty;
+    private boolean arePropertyValidatorsEnabled;
 
 	/**
 	 * @param controls
 	 *
 	 */
-	public ShowPreferencesAction( final DefaultMutableTreeNode controls, String selectedProperty) {
+	public ShowPreferencesAction( final DefaultMutableTreeNode controls, String selectedProperty,
+	        boolean arePropertyValidatorsEnabled) {
 		super(KEY);
 
 		this.controls = controls;
 		this.selectedProperty = selectedProperty;
+        this.arePropertyValidatorsEnabled = arePropertyValidatorsEnabled;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -100,14 +103,15 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 				}
 			}
 		});
-
+		if(arePropertyValidatorsEnabled)
+		    options.enablePropertyValidators();
 
 		final String marshalled = ResourceController.getResourceController().getProperty(
 		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
 		    marshalled, dialog);
 		final String actionCommand = e != null ?  e.getActionCommand() : null;
-		if(actionCommand != null && actionCommand.startsWith(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX))
+		if(actionCommand != null && actionCommand.startsWith(OptionPanelConstants.OPTION_PANEL_RESOURCE_PREFIX))
 			options.setSelectedPanel(actionCommand);
 		else if (storage != null) {
 			options.setSelectedPanel(storage.getPanel());

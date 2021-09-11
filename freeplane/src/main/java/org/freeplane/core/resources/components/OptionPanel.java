@@ -71,14 +71,13 @@ import org.freeplane.features.mode.Controller;
 import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.factories.Borders;
 
-public class OptionPanel {
+class OptionPanel {
 	private static final String FILE_EXTENSION = "freeplaneoptions";
 
-	public interface IOptionPanelFeedback {
+	interface IOptionPanelFeedback {
 		void writeProperties(Properties props);
 	}
 
-	public final static String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
 	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
@@ -87,24 +86,34 @@ public class OptionPanel {
 	private String selectedPanel;
 	final private JDialog topDialog;
 	private JFileChooser fileChooser;
+	private boolean arePropertyValidatorsEnabled;
 
 	/**
 	 * @throws IOException
 	 */
-	public OptionPanel(final JDialog d, final IOptionPanelFeedback feedback) {
+	OptionPanel(final JDialog d, final IOptionPanelFeedback feedback) {
 		super();
 		topDialog = d;
+		this.arePropertyValidatorsEnabled = false;
 		this.feedback = feedback;
 		new OptionPanelBuilder();
 	}
+	
+	
 
-	/**
+	void enablePropertyValidators() {
+        this.arePropertyValidatorsEnabled = true;
+    }
+
+
+
+    /**
 	 * Builds and returns a right aligned button bar with the given buttons.
 	 *
 	 * @param buttons  an array of buttons to add
 	 * @return a right aligned button bar with the given buttons
 	 */
-	public static JPanel buildRightAlignedBar(JButton... buttons) {
+	private static JPanel buildRightAlignedBar(JButton... buttons) {
 		ButtonBarBuilder builder = new ButtonBarBuilder();
 		builder.addGlue();
 		builder.addButton(buttons);
@@ -321,6 +330,8 @@ public class OptionPanel {
 	}
 
 	private boolean validate(final Properties properties) {
+	    if(! arePropertyValidatorsEnabled)
+	        return true;
 		final ValidationResult result = new ValidationResult();
 		for (final IValidator validator : Controller.getCurrentController().getOptionValidators()) {
 			result.add(validator.validate(properties));
@@ -373,7 +384,7 @@ public class OptionPanel {
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
-		storage.setPanel(OPTION_PANEL_RESOURCE_PREFIX + selectedPanel);
+		storage.setPanel(OptionPanelConstants.OPTION_PANEL_RESOURCE_PREFIX + selectedPanel);
 		storage.storeDialogPositions(topDialog, OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
@@ -405,8 +416,8 @@ public class OptionPanel {
 	}
 
 	void setSelectedPanel(final String panel) {
-		if (panel.startsWith(OPTION_PANEL_RESOURCE_PREFIX)) {
-			selectedPanel = panel.substring(OPTION_PANEL_RESOURCE_PREFIX.length());
+		if (panel.startsWith(OptionPanelConstants.OPTION_PANEL_RESOURCE_PREFIX)) {
+			selectedPanel = panel.substring(OptionPanelConstants.OPTION_PANEL_RESOURCE_PREFIX.length());
 		}
 	}
 }
