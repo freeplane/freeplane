@@ -42,9 +42,13 @@ import org.freeplane.features.styles.StyleTranslatedObject;
  * @author Dimitry Polivaev
  * 02.10.2009
  */
-public class NewUserStyleFromSelectionAction extends AFreeplaneAction {
-	public NewUserStyleFromSelectionAction() {
-		super("NewUserStyleFromSelectionAction");
+public class NewUserStyleAction extends AFreeplaneAction {
+
+    private final boolean copySelectionStyle;
+
+    public NewUserStyleAction(boolean copySelectionStyle) {
+		super(copySelectionStyle ? "NewUserStyleFromSelectionAction" : "NewUserStyleAction");
+        this.copySelectionStyle = copySelectionStyle;
 	}
 
 	/**
@@ -68,9 +72,11 @@ public class NewUserStyleFromSelectionAction extends AFreeplaneAction {
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel newNode = new NodeModel(map);
-		newNode.setUserObject(style);
-		Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
-		Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
+        newNode.setUserObject(style);
+        if(copySelectionStyle) {
+            Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, selectedNode, newNode);
+            Controller.getCurrentModeController().copyExtensions(Keys.ICONS, selectedNode, newNode);
+        }
 		NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(map, MapStyleModel.STYLES_USER_DEFINED);
 		if(userStyleParentNode == null){
 			userStyleParentNode = new NodeModel(map);

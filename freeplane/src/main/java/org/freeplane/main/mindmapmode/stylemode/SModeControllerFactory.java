@@ -122,7 +122,8 @@ public class SModeControllerFactory {
 		modeController = new SModeController(controller);
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
-		modeController.addAction(new NewUserStyleFromSelectionAction());
+        modeController.addAction(new NewUserStyleAction(false));
+        modeController.addAction(new NewUserStyleAction(true));
 		modeController.addAction(new DeleteUserStyleAction());
 		modeController.addAction(new NewLevelStyleAction());
 		modeController.addAction(new DeleteLevelStyleAction());
