@@ -2,10 +2,12 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
 
+import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
@@ -18,7 +20,8 @@ import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 
 public class MenuActionComponentProvider implements ComponentProvider {
 
-	private IAcceleratorMap accelerators;
+    private static final Icon SELECTABLE_ICON = ResourceController.getResourceController().getIcon("/images/selectable.svg");
+    private IAcceleratorMap accelerators;
 	private AcceleratebleActionProvider acceleratebleActionProvider;
 	private EntryAccessor entryAccessor;
 
@@ -38,7 +41,8 @@ public class MenuActionComponentProvider implements ComponentProvider {
 		if(action != null){
 			final JMenuItem actionComponent;
 			IFreeplaneAction wrappedAction = acceleratebleActionProvider.wrap(action);
-			if (action.isSelectable()) {
+			boolean isActionSelectable = action.isSelectable();
+            if (isActionSelectable) {
 				actionComponent = new JAutoCheckBoxMenuItem(wrappedAction);
 			}
 			else {
@@ -46,10 +50,13 @@ public class MenuActionComponentProvider implements ComponentProvider {
 			}
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
-			if(entryAccessor.shouldRemoveMenuIcon(entry))
+			boolean shouldRemoveMenuIcon = entryAccessor.shouldRemoveMenuIcon(entry);
+            if(shouldRemoveMenuIcon && ! isActionSelectable)
 			    actionComponent.setIcon(null);
-			else
-			    IconReplacer.replaceByScaledImageIcon(actionComponent);
+            else if(isActionSelectable && (shouldRemoveMenuIcon || actionComponent.getIcon() == null)) {
+			    actionComponent.setIcon(SELECTABLE_ICON);
+			}
+			IconReplacer.replaceByScaledImageIcon(actionComponent);
 			return actionComponent;
 		}
 		else if(entry.builders().contains("separator")){
