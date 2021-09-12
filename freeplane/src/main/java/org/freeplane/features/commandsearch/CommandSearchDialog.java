@@ -186,6 +186,7 @@ public class CommandSearchDialog extends JDialog
 
         JPanel scopePanel = new JPanel();
         searchMenus = createScopeButton(Scope.MENUS);
+        searchMenus.setToolTipText(TextUtils.getRawText(Scope.MENUS.labelName() + ".tooltip"));      
         searchPrefs = createScopeButton(Scope.PREFERENCES);
         searchIcons = createScopeButton(Scope.ICONS);
         scopePanel.add(searchMenus);
