@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -761,16 +762,18 @@ abstract public class FrameController implements ViewController {
 
 	private static void scaleDefaultUIFonts(double scalingFactor) {
 		Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
+		Set<Font> scaledFonts = new HashSet<>();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
 		final UIDefaults uiDefaults = UIManager.getDefaults();
 		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
 		for (Object key : keys) {
 			if (isFontKey(key)) {
 				Font font = uiDefaults.getFont(key);
-				if (font != null) {
+				if (font != null && ! scaledFonts.contains(font)) {
 					font = UITools.scaleFontInt(font, scalingFactor);
 					UIManager.put(key, font);
 					lookAndFeelDefaults.put(key, font);
+					scaledFonts.add(font);
 				}
 			}
 		}
