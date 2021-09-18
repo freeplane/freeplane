@@ -139,7 +139,7 @@ public class MapModel {
 	 * Change this to always return null if your model doesn't support files.
 	 */
 	public File getFile() {
-			return url != null && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
+			return url != null ? Compat.urlToFile(url) : null;
 	}
 
 	public IconRegistry getIconRegistry() {
