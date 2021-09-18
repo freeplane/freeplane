@@ -18,7 +18,6 @@ import java.security.PrivilegedExceptionAction;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -263,22 +262,20 @@ public class MapLoader{
 
     private void setFollowedMapProperties(final MMapModel map) {
         if(sourceLocation != null && ! sourceLocation.equals(newMapLocation)) {
-			MapStyleModel properties = MapStyleModel.getExtension(map);
-			try {
-				URI sourceUri = sourceLocation.toURI();
-                String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(sourceUri).toString();
-                properties.setProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
-                if(followSourceMap) {
-                    properties.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
-                    if(sourceUri.getScheme().equalsIgnoreCase("file")) {
-                        File file = Paths.get(sourceUri).toFile();
-                        properties.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(file.lastModified()));
-                    }
+            File sourceFile = Compat.urlToFile(sourceLocation);
+            if(sourceFile ==  null)
+                return;
+            MapStyleModel properties = MapStyleModel.getExtension(map);
+            URI sourceUri = sourceFile.toURI();
+            String normalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(sourceUri).toString();
+            properties.setProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
+            if(followSourceMap) {
+                properties.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,normalizedLocation);
+                if(sourceUri.getScheme().equalsIgnoreCase("file")) {
+                    File file = Paths.get(sourceUri).toFile();
+                    properties.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(file.lastModified()));
                 }
-			}
-			catch (URISyntaxException e) {
-				LogUtils.severe(e);
-			}
+            }
 		}
     }
 
