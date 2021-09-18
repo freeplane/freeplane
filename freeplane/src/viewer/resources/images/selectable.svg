@@ -5,11 +5,11 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg9"
+   width="60"
+   height="60"
+   viewBox="0 -6 60 60"
    version="1.1"
-   viewBox="0 -6 40 40"
-   height="40px"
-   width="40px">
+   id="svg9">
   <metadata
      id="metadata15">
     <rdf:RDF>
@@ -25,26 +25,25 @@
   <defs
      id="defs13" />
   <rect
-     y="0"
-     x="0"
-     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:10"
-     id="rect2"
-     rx="14"
-     height="28"
-     width="40" />
-  <rect
-     style="fill:#ffffff;fill-opacity:1;stroke:#505064;stroke-width:4;stroke-miterlimit:10;stroke-opacity:1"
-     id="rect4"
-     rx="12"
-     height="24"
+     x="12"
+     y="12"
      width="36"
-     y="2"
-     x="2" />
+     height="24"
+     rx="12"
+     id="rect4"
+     style="opacity:0.5;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-miterlimit:10;stroke-opacity:1;paint-order:fill markers stroke" />
   <circle
-     id="Ellipse_15"
-     data-name="Ellipse 15"
-     cx="14"
-     cy="14"
+     style="opacity:1;fill:#000000;fill-opacity:0.68627451;stroke:none;stroke-opacity:1"
      r="6"
-     style="fill:#505064;fill-opacity:1;stroke:none" />
+     cy="24"
+     cx="23.999996"
+     data-name="Ellipse 15"
+     id="Ellipse_15" />
+  <rect
+     y="-4.7017555"
+     x="1.2982427"
+     height="57.403515"
+     width="57.403515"
+     id="rect6222"
+     style="opacity:0.001;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:2.59648538;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke" />
 </svg>
