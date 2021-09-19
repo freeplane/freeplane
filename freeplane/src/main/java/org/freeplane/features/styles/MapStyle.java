@@ -469,19 +469,20 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                 return;
             }
             source = file.toURI();
+            templateLocationPropertyValue = TemplateManager.INSTANCE.normalizeTemplateLocation(source).toString();
             MapStyle.getController().setProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
-                    TemplateManager.INSTANCE.normalizeTemplateLocation(source).toString());
+                    templateLocationPropertyValue);
 
         }
         File target = templateManager.writeableTemplateFile(templateLocationPropertyValue);
-        if(target != null && !target.isDirectory() && target.canWrite() || ! target.exists()) {
+        if(target != null && (!target.isDirectory() && target.canWrite() || ! target.exists())) {
             try {
                 undoableCopyStyleToExternalMap(map, styleKey, source, target);
             } catch (MalformedURLException e) {
                 LogUtils.severe(e);
             }
         } else {
-              UITools.errorMessage(TextUtils.format("file_not_accessible", String.valueOf(target)));
+              UITools.errorMessage(TextUtils.format("file_not_accessible", String.valueOf(templateLocationPropertyValue)));
         }
 
     }
