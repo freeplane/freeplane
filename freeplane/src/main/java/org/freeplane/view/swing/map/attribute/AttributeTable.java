@@ -61,6 +61,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JToolTip;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
@@ -72,6 +73,8 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.TextUI;
+import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -531,6 +534,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 			};
 			comboBox.setRenderer(new TypedListCellRenderer());
+			Component editorComponent = comboBox.getEditor().getEditorComponent();
+			if(editorComponent instanceof JTextField) {
+			    TextUI textFieldUI = new BasicTextFieldUI();
+                ((JTextField) editorComponent).setUI(textFieldUI );
+			}
 			dce = new DefaultCellEditor(comboBox) {
 		        @Override
 				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int col) {
@@ -936,11 +944,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
         }
         final Color backgroundColor = NodeStyleModel.getBackgroundColor(attributeStyleNode);
         if(backgroundColor!= null) {
-        	c.setOpaque(true);
 			c.setBackground(backgroundColor);
 		} else {
 			c.setBackground(nodeView.getBackgroundColor());
-			c.setOpaque(false);
 		}
         c.setForeground(style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE));
     }

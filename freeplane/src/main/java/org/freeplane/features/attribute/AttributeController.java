@@ -19,9 +19,12 @@
  */
 package org.freeplane.features.attribute;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.net.URI;
+
+import javax.swing.SwingUtilities;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -30,6 +33,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.clipboard.AttributeClipboardController;
@@ -46,12 +50,13 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
-import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.TextController;
-import org.freeplane.core.util.Hyperlink;
+import org.freeplane.view.swing.map.NodeView;
 /**
  * @author Dimitry Polivaev 22.11.2008
  */
@@ -187,10 +192,24 @@ public class AttributeController implements IExtension {
 		        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
 		        final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 		        final StringBuilder tooltip = new StringBuilder();
+		        Color backgroundColor = NodeStyleModel.getBackgroundColor(attributeStyleNode);
+		        if(backgroundColor == null) {
+		            NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, view);
+		            if(nodeView != null)
+		                backgroundColor = nodeView.getBackgroundColor();
+		        }
+		        Color textColor;
+		        if(backgroundColor != null) {
+		            textColor = style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+		        }
+		        else {
+		            backgroundColor = Color.WHITE;
+		            textColor = Color.BLACK;
+		        }
 				tooltip.append("<html><body><table style='border: 1px solid;");
-				tooltip.append( new CssRuleBuilder().withHTMLFont(font)
-						.withBackground(style.getBackgroundColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE))
-						.withColor(style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE))
+                tooltip.append( new CssRuleBuilder().withHTMLFont(font)
+						.withBackground(backgroundColor)
+						.withColor(textColor)
 						);
 				tooltip.append(" ' width='100%' cellspacing='0' cellpadding='2' ");
 				final int currentRowCount = attributes.getRowCount();
