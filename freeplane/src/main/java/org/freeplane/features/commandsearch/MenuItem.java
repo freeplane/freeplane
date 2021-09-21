@@ -26,7 +26,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
-class MenuItem extends SearchItem {
+public class MenuItem extends SearchItem {
 
     private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController
             .getResourceController().getIcon("/images/menu_items.svg"));
@@ -48,12 +48,12 @@ class MenuItem extends SearchItem {
     }
 
     @Override
-    Icon getTypeIcon() {
+    public Icon getTypeIcon() {
         return menuIcon;
     }
 
     @Override
-    String getDisplayedText() {
+    public String getDisplayedText() {
         String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
         return accelerator != null ? this.path + " (" + accelerator + ")" : this.path;
     }
@@ -64,7 +64,7 @@ class MenuItem extends SearchItem {
     }
 
     @Override
-    String getTooltip() {
+    public String getTooltip() {
         return tooltip;
     }
 
@@ -90,12 +90,12 @@ class MenuItem extends SearchItem {
     }
 
     @Override
-    String getComparedText() {
+    public String getComparedText() {
         return path;
     }
     
     @Override
-    String getCopiedText() {
+    public String getCopiedText() {
         return getDisplayedText();
     }
 

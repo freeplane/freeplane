@@ -6,7 +6,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.condition.StringTransformer;
 
-abstract class SearchItem implements Comparable<SearchItem> {
+abstract public class SearchItem implements Comparable<SearchItem> {
     static final String ITEM_PATH_SEPARATOR = "->";
     
     static String normalizeText(String text) {
@@ -15,13 +15,13 @@ abstract class SearchItem implements Comparable<SearchItem> {
 
     abstract int getItemTypeRank();
 
-    abstract String getComparedText();
+    public abstract String getComparedText();
 
-    abstract Icon getTypeIcon();
+    public abstract Icon getTypeIcon();
 
-    abstract String getDisplayedText();
+    public abstract String getDisplayedText();
 
-    abstract String getTooltip();
+    public abstract String getTooltip();
 
     abstract void execute();
     abstract void assignNewAccelerator();
@@ -50,5 +50,5 @@ abstract class SearchItem implements Comparable<SearchItem> {
 
     abstract protected boolean checkAndMatch(final String searchTerm, ItemChecker textChecker);
 
-    abstract String getCopiedText();
+    public abstract String getCopiedText();
 }

@@ -33,20 +33,20 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-class PreferencesIndexer
+public class PreferencesIndexer
 {
     private final List<String> path;
 
     private final List<PreferencesItem> prefs;
 
-    PreferencesIndexer()
+    public PreferencesIndexer()
     {
     	prefs = new LinkedList<>();
     	path = new ArrayList<>(2);
         load();
     }
 
-    List<PreferencesItem> getPrefs()
+    public List<PreferencesItem> getPrefs()
     {
         return prefs;
     }

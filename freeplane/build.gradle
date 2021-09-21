@@ -116,6 +116,7 @@ ext.bundleExports = """\
                     org.freeplane.features.clipboard.mindmapmode,
                     org.freeplane.features.cloud,
                     org.freeplane.features.cloud.mindmapmode,
+                    org.freeplane.features.commandsearch,
                     org.freeplane.features.edge,
                     org.freeplane.features.edge.mindmapmode,
                     org.freeplane.features.encrypt,

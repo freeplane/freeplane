@@ -31,7 +31,7 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 
-class IconIndexer {
+public class IconIndexer {
     private List<IconItem> iconItems;
 
     IconIndexer()
@@ -40,7 +40,7 @@ class IconIndexer {
         load();
     }
 
-    List<IconItem> getIconItems()
+    public List<IconItem> getIconItems()
     {
         return iconItems;
     }

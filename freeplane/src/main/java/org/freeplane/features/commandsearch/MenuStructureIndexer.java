@@ -30,17 +30,17 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-class MenuStructureIndexer {
+public class MenuStructureIndexer {
     private EntryAccessor entryAccessor;
 
     private List<MenuItem> menuItems;
 
-    MenuStructureIndexer()
+    public MenuStructureIndexer()
     {
         loadMenuItems();
     }
 
-    List<MenuItem> getMenuItems()
+    public List<MenuItem> getMenuItems()
     {
         return menuItems;
     }

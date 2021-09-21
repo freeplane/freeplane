@@ -25,7 +25,7 @@ import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
 
-class PreferencesItem extends SearchItem {
+public class PreferencesItem extends SearchItem {
 
     private static final ImageIcon PREFERENCES_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
     private static final String PREFERENCES_PATH =  TextUtils.getText(ShowPreferencesAction.KEY + ".text") + ITEM_PATH_SEPARATOR;
@@ -51,22 +51,22 @@ class PreferencesItem extends SearchItem {
     }
 
     @Override
-    String getComparedText() {
+    public String getComparedText() {
         return displayedText;
     }
 
     @Override
-    Icon getTypeIcon() {
+    public Icon getTypeIcon() {
         return PREFERENCES_ICON;
     }
 
     @Override
-    String getDisplayedText() {
+    public String getDisplayedText() {
         return displayedText;
     }
 
     @Override
-    String getTooltip() {
+    public String getTooltip() {
         return tooltip;
     }
 

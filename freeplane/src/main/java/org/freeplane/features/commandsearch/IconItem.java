@@ -28,17 +28,17 @@ public class IconItem extends SearchItem {
     }
 
     @Override
-    Icon getTypeIcon() {
+    public Icon getTypeIcon() {
         return icon;
     }
 
     @Override
-    String getDisplayedText() {
+    public String getDisplayedText() {
         return getTextWithAccelerator(iconDescription);
     }
 
     @Override
-    String getCopiedText() {
+    public String getCopiedText() {
         return getTextWithAccelerator(ICONS_PATH + comparedText);
     }
 
@@ -53,7 +53,7 @@ public class IconItem extends SearchItem {
     }
 
     @Override
-    String getTooltip() {
+    public String getTooltip() {
         return null;
     }
 
@@ -78,7 +78,7 @@ public class IconItem extends SearchItem {
     }
 
     @Override
-    String getComparedText() {
+    public String getComparedText() {
         return comparedText;
     }
 

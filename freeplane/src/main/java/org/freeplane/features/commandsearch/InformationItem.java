@@ -22,22 +22,22 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    String getComparedText() {
+    public String getComparedText() {
         return message;
     }
 
     @Override
-    Icon getTypeIcon() {
+    public Icon getTypeIcon() {
         return icon;
     }
 
     @Override
-    String getDisplayedText() {
+    public String getDisplayedText() {
         return message;
     }
 
     @Override
-    String getTooltip() {
+    public String getTooltip() {
         return null;
     }
 
@@ -60,7 +60,7 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    String getCopiedText() {
+    public String getCopiedText() {
         return getDisplayedText();
     }
 }
