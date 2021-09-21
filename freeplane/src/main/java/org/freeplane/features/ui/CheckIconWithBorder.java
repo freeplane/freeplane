@@ -2,7 +2,6 @@ package org.freeplane.features.ui;
 
 import java.awt.BasicStroke;
 import java.awt.Component;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,11 +10,11 @@ import javax.swing.Icon;
 import javax.swing.JMenuItem;
 
 import com.bulenkov.iconloader.util.GraphicsConfig;
-import com.bulenkov.iconloader.util.Gray;
-import com.bulenkov.iconloader.util.UIUtil;
 
 class CheckIconWithBorder implements Icon {
     
+    private static final int SIZE = 13;
+    private static final int GAP = 7;
     static CheckIconWithBorder INSTANCE = new CheckIconWithBorder();
 
     @Override
@@ -29,7 +28,7 @@ class CheckIconWithBorder implements Icon {
 
         g.translate(x+2, y+2);
 
-        final int sz = 13;
+        final int sz = SIZE;
 
 
         if (((JMenuItem)c).isSelected()) {
@@ -51,12 +50,11 @@ class CheckIconWithBorder implements Icon {
 
     @Override
     public int getIconWidth() {
-        return 13;
+        return SIZE + GAP;
     }
 
     @Override
     public int getIconHeight() {
-        // TODO Auto-generated method stub
-        return 13;
+        return SIZE;
     }
 }
