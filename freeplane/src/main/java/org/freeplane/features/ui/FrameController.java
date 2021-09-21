@@ -638,8 +638,11 @@ abstract public class FrameController implements ViewController {
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-		UIManager.getDefaults().remove("CheckBoxMenuItem.checkIcon");
-		UIManager.put("CheckBoxMenuItem.checkIcon", CheckIconWithBorder.INSTANCE);
+		Object checkIcon =  UIManager.getDefaults().get("CheckBoxMenuItem.checkIcon");
+		if(checkIcon instanceof Icon) {
+			UIManager.getDefaults().remove("CheckBoxMenuItem.checkIcon");
+			UIManager.put("CheckBoxMenuItem.checkIcon", new CheckIconWithBorder((Icon)checkIcon));
+		}
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
 			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {

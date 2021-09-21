@@ -15,12 +15,22 @@ class CheckIconWithBorder implements Icon {
     
     private static final int SIZE = 13;
     private static final int GAP = 7;
-    static CheckIconWithBorder INSTANCE = new CheckIconWithBorder();
+	private final Icon fallbackIcon;
+	private final int width;
+	private final int height;
 
-    @Override
+    public CheckIconWithBorder(Icon fallbackIcon) {
+		this.fallbackIcon = fallbackIcon;
+        width = Math.max(fallbackIcon.getIconWidth(), SIZE + GAP);
+        height = Math.max(fallbackIcon.getIconHeight(), SIZE);
+	}
+
+	@Override
     public void paintIcon(Component c, Graphics g2, int x, int y) {
-        if(! (c instanceof JMenuItem))
-            return;
+        if(! (c instanceof JMenuItem)) {
+        	fallbackIcon.paintIcon(c, g2, x, y);
+			return;
+		}
         Graphics2D g = (Graphics2D) g2;
         final GraphicsConfig config = new GraphicsConfig(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -31,7 +41,7 @@ class CheckIconWithBorder implements Icon {
         final int sz = SIZE;
 
 
-        if (((JMenuItem)c).isSelected()) {
+        if (c == null || ((JMenuItem)c).isSelected()) {
           g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
           g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
           g.drawLine(4, 7, 7, 10);
@@ -50,11 +60,11 @@ class CheckIconWithBorder implements Icon {
 
     @Override
     public int getIconWidth() {
-        return SIZE + GAP;
+		return width;
     }
 
     @Override
     public int getIconHeight() {
-        return SIZE;
+		return height;
     }
 }
