@@ -40,7 +40,9 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class NodeBackgroundColorControlGroup implements ControlGroup {
-	static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
+	private static final String REVERT_BACKGROUND = "revert-node-background";
+
+    static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 
 	private RevertingProperty mSetNodeBackgroundColor;
 	private ColorProperty mNodeBackgroundColor;
@@ -65,8 +67,7 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 			final Color color = NodeStyleModel.getBackgroundColor(node);
 			final Color viewColor = styleController.getBackgroundColor(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeBackgroundColor.setValue(color != null);
-			mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
-			    .getMapViewManager().getBackgroundColor(node));
+			mNodeBackgroundColor.setColorValue(viewColor);
 		}
 
         @Override
@@ -83,7 +84,7 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetNodeBackgroundColor = new RevertingProperty();
+		mSetNodeBackgroundColor = new RevertingProperty(REVERT_BACKGROUND);
 		mNodeBackgroundColor = new ColorProperty(NODE_BACKGROUND_COLOR, ResourceController
 		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		propertyChangeListener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);

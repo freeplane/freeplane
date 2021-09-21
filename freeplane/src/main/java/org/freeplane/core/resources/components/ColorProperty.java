@@ -63,7 +63,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 			}
 		};
 		mButton.addActionListener(this);
-		color = Color.BLACK;
+		color = null;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
@@ -84,7 +84,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	@Override
 	public String getValue() {
 		final Color colorValue = getColorValue();
-		return ColorUtils.colorToRGBAString(colorValue);
+		return colorValue == null ? null : ColorUtils.colorToRGBAString(colorValue);
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {
@@ -116,15 +116,19 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	/**
 	 */
 	public void setColorValue(Color input) {
-		color = input;
-		if (input == null) {
-			input = Color.WHITE;
-		}
-		final Color nonTransparent = ColorUtils.makeNonTransparent(input);
-		mButton.setBackground(nonTransparent);
-		final Color textColor = UITools.getTextColorForBackground(nonTransparent);
-		mButton.setForeground(textColor);
-		mButton.setText(ColorUtils.colorToString(input));
+	    color = input;
+	    if (input == null) {
+            mButton.setBackground(null);
+            mButton.setForeground(null);
+            mButton.setText(" ");
+	    }
+	    else {
+	        final Color nonTransparent = ColorUtils.makeNonTransparent(input);
+	        mButton.setBackground(nonTransparent);
+	        final Color textColor = UITools.getTextColorForBackground(nonTransparent);
+	        mButton.setForeground(textColor);
+	        mButton.setText(ColorUtils.colorToString(input));
+	    }
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -134,6 +138,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public void setValue(final String value) {
-		setColorValue(ColorUtils.stringToColor(value));
+		setColorValue(value == null ? null : ColorUtils.stringToColor(value));
 	}
 }

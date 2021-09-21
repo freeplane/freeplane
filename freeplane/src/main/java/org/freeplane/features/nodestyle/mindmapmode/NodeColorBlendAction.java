@@ -27,7 +27,7 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.ui.IMapViewManager;
 
 /**
@@ -57,13 +57,11 @@ class NodeColorBlendAction extends AMultipleNodeAction {
 		final IMapViewManager viewController = Controller.getCurrentController().getMapViewManager();
 		final Component mapView = viewController.getMapViewComponent();
 		final Color mapColor = mapView.getBackground();
-		Color nodeColor = NodeStyleModel.getColor(node);
 		final MNodeStyleController mNodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
-		if (nodeColor == null) {
-			nodeColor = viewController.getBackgroundColor(node);
-		}
-		mNodeStyleController.setColor(node, new Color((3 * mapColor.getRed() + nodeColor.getRed()) / 4, (3 * mapColor
-		    .getGreen() + nodeColor.getGreen()) / 4, (3 * mapColor.getBlue() + nodeColor.getBlue()) / 4));
+		Color nodeColor = mNodeStyleController.getColor(node, StyleOption.FOR_UNSELECTED_NODE);
+		if(nodeColor != null)
+		    mNodeStyleController.setColor(node, new Color((3 * mapColor.getRed() + nodeColor.getRed()) / 4, (3 * mapColor
+		            .getGreen() + nodeColor.getGreen()) / 4, (3 * mapColor.getBlue() + nodeColor.getBlue()) / 4));
 	}
 }
