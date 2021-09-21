@@ -638,6 +638,7 @@ abstract public class FrameController implements ViewController {
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+		UIManager.put("CheckBoxMenuItem.checkIcon", CheckIconWithBorder.INSTANCE);
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
 			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {
