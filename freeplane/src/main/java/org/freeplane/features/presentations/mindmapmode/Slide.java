@@ -365,6 +365,8 @@ public class Slide implements NamedElement<Slide>{
 		if (selectedNodeIds.isEmpty())
 			return;
 		ArrayList<NodeModel> selectedNodes = getSelectedNodes(true);
+        if (selectedNodes.isEmpty())
+            return;
 		final boolean displaysAllSlideNodes = displaysAllSlideNodes();
 		final boolean selectsAllVisibleNodes = displaysAllSlideNodes && showsOnlySpecificNodes && mapViewManager.isSpotlightEnabled();
 		final boolean replacesSelectionBySelectedNodes = ! (selectsAllVisibleNodes || showsOnlySpecificNodes || selectedNodes.isEmpty());
