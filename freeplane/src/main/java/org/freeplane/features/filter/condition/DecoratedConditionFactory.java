@@ -23,7 +23,7 @@ public class DecoratedConditionFactory {
         byDescription.put(TextUtils.createTranslatedString(AnyAncestorConditionDecorator.DESCRIPTION), AnyAncestorConditionDecorator::new);
         byDescription.put(TextUtils.createTranslatedString(AnyChildConditionDecorator.DESCRIPTION), AnyChildConditionDecorator::new);
         byDescription.put(TextUtils.createTranslatedString(AllChildrenConditionDecorator.DESCRIPTION), AllChildrenConditionDecorator::new);
-        byDescription.put(TextUtils.createTranslatedString(AnyAncestorConditionDecorator.DESCRIPTION), AnyAncestorConditionDecorator::new);
+        byDescription.put(TextUtils.createTranslatedString(AnyDescendantConditionDecorator.DESCRIPTION), AnyDescendantConditionDecorator::new);
         byDescription.put(TextUtils.createTranslatedString(AllDescendantsConditionDecorator.DESCRIPTION), AllDescendantsConditionDecorator::new);
         
         keys = new Vector<>(byDescription.size());
@@ -35,7 +35,7 @@ public class DecoratedConditionFactory {
         byName.put(AnyAncestorConditionDecorator.NAME.toLowerCase(), AnyAncestorConditionDecorator::load);
         byName.put(AnyChildConditionDecorator.NAME.toLowerCase(), AnyChildConditionDecorator::load);
         byName.put(AllChildrenConditionDecorator.NAME.toLowerCase(), AllChildrenConditionDecorator::load);
-        byName.put(AnyAncestorConditionDecorator.NAME.toLowerCase(), AnyAncestorConditionDecorator::load);
+        byName.put(AnyDescendantConditionDecorator.NAME.toLowerCase(), AnyDescendantConditionDecorator::load);
         byName.put(AllDescendantsConditionDecorator.NAME.toLowerCase(), AllDescendantsConditionDecorator::load);
     }
     
