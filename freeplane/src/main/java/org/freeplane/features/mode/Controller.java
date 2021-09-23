@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.awt.Component;
 
 import org.apache.commons.io.IOExceptionWithCause;
 import org.freeplane.core.extension.ExtensionContainer;
@@ -171,10 +172,11 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		if (oldModeController != null) {
 			oldModeController.shutdown();
 		}
+		mapViewManager.changeToMapView((Component)null);
 		LogUtils.info("requesting mode: " + newModeController.getModeName());
 		modeController = newModeController;
 		viewController.selectMode(oldModeController, newModeController);
-		getMapViewManager().changeToMode(newModeController.getModeName());
+		mapViewManager.changeToMode(newModeController.getModeName());
 		newModeController.startup();
 	}
 
