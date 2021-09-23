@@ -40,6 +40,7 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 /**
  * @author Dimitry Polivaev
@@ -106,8 +107,6 @@ public interface IMapViewManager {
 	public MapModel getModel(Component mapView);
 
 	public Component getSelectedComponent();
-
-	public Color getTextColor(NodeModel node);
 
 	public float getZoom();
 

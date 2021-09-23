@@ -73,8 +73,10 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
@@ -603,22 +605,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public Component getSelectedComponent() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : mapView.getSelected().getMainView();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.freeplane.core.frame.IMapViewController#getTextColor(org.freeplane.core.model.NodeModel)
-	 */
-	@Override
-	public Color getTextColor(final NodeModel node) {
-		final MapView mapView = getMapView();
-		if (mapView == null) {
-			return null;
-		}
-		final NodeView nodeView = mapView.getNodeView(node);
-		if (nodeView == null) {
-			return null;
-		}
-		return nodeView.getTextColor();
 	}
 
 	/* (non-Javadoc)

@@ -7,6 +7,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+
 interface Drawable{
 	void draw(Graphics2D g, NodeView nodeView, Rectangle r);
 }
