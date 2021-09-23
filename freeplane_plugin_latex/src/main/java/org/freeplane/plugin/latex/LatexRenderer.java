@@ -36,7 +36,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 	private static final String LATEX_EDITOR_FONT_SIZE = "latex_editor_font_size";
 	private static final String LATEX_EDITOR_FONT = "latex_editor_font";
-	private static final String LATEX_EDITOR_DISABLE = "latex_disable_editor";
+	private static final String LATEX_EDITOR_DISABLE_INLINE = "latex_disable_editor";
 	private static final String LATEX = "\\latex";
 	private static final String UNPARSED_LATEX = "\\unparsedlatex";
 	static final String LATEX_CONTENT_TYPE = "latex";
@@ -75,7 +75,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
         final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
         scrollPane.setMinimumSize(new Dimension(0, 60));
-        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content);
+        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content, ! editLong);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
     
@@ -88,9 +88,9 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
     @Override
     public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
-            Object content) {
+            Object content, boolean editInline) {
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
-		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
+		if (editInline && ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE_INLINE))
 			return null;
         String latexText = getText(node, nodeProperty, content, Target.EDITOR, MTextController.getController());
         if(latexText == null)

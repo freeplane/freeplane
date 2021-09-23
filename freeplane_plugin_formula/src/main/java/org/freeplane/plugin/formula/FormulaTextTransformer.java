@@ -74,7 +74,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content);
+        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content, ! editLong);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
 
@@ -86,7 +86,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
     @Override
     public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
-            Object content) {
+            Object content, boolean editInline) {
         String text = getEditedText(node, nodeProperty, content, MTextController.getController());
         if(text == null)
             return null;

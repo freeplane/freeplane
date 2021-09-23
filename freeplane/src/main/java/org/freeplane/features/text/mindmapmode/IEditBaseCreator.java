@@ -13,5 +13,5 @@ public interface IEditBaseCreator{
 	public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
 	                                 Object content, final EditNodeBase.IEditControl editControl, final boolean  editLong);
 	public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
-            Object content);
+            Object content, boolean editInline);
 }

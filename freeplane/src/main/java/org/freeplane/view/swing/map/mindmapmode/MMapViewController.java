@@ -155,7 +155,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     }
 
     @Override
-    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content) {
+    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content, boolean editInline) {
         return null;
     }
 

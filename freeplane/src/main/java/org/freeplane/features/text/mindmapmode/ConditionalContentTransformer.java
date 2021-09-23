@@ -98,9 +98,9 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 	}
 
     @Override
-    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content) {
+    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content, boolean editInline) {
         if (target instanceof IEditBaseCreator && isTransformationActive())
-            return ((IEditBaseCreator)target).createTextEditorPane(scrollPaneSupplier, node, nodeProperty, content);
+            return ((IEditBaseCreator)target).createTextEditorPane(scrollPaneSupplier, node, nodeProperty, content, editInline);
         else
             return null;
     }

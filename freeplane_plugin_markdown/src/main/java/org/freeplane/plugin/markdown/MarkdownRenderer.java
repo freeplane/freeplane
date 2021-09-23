@@ -34,7 +34,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
 	private static final String MARKDOWN_EDITOR_FONT_SIZE = "markdown_editor_font_size";
 	private static final String MARKDOWN_EDITOR_FONT = "markdown_editor_font";
-	private static final String MARKDOWN_EDITOR_DISABLE = "markdown_disable_editor";
+	private static final String MARKDOWN_EDITOR_DISABLE_INLINE = "markdown_disable_editor";
 	static final String MARKDOWN_CONTENT_TYPE = "markdown";
 	static final String MARKDOWN_FORMAT = "markdownPatternFormat";
     private final Options options;
@@ -75,7 +75,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content);
+        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content, ! editLong);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
 
@@ -87,11 +87,11 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
     @Override
     public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
-            Object content) {
+            Object content, boolean editInline) {
 		String text = getText(node, nodeProperty, content, MTextController.getController());
         if(text == null)
             return null;
-        if (ResourceController.getResourceController().getBooleanProperty(MARKDOWN_EDITOR_DISABLE))
+        if (editInline && ResourceController.getResourceController().getBooleanProperty(MARKDOWN_EDITOR_DISABLE_INLINE))
         	return null;
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		JEditorPane textEditor = new JEditorPane();

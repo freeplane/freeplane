@@ -1188,7 +1188,7 @@ public class MTextController extends TextController {
 	    final List<IContentTransformer> textTransformers = getTextTransformers();
 	    for (IContentTransformer t : textTransformers) {
 	        if (t instanceof IEditBaseCreator) {
-	            final JEditorPane pane = ((IEditBaseCreator) t).createTextEditorPane(scrollPaneSupplier, nodeModel, nodeProperty, content);
+	            final JEditorPane pane = ((IEditBaseCreator) t).createTextEditorPane(scrollPaneSupplier, nodeModel, nodeProperty, content, false);
 	            if (pane != null) {
 	                return pane;
 	            }
