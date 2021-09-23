@@ -606,7 +606,7 @@ public class MTextController extends TextController {
 		}
 
 		DetailModel detail = DetailModel.getDetail(nodeModel);
-		final boolean addsNewDetailsUsingInlineEditor = detail == null && ! editInDialog;
+		final boolean addsNewDetailsUsingInlineEditor = detail == null || detail.getText() == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
