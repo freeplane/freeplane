@@ -25,6 +25,7 @@ import javax.swing.JToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.filter.FilterComposerDialog;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
@@ -282,7 +283,7 @@ class SlideEditorController{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if( filterComposerDialog == null)
-					filterComposerDialog = new FilterComposerDialog();
+					filterComposerDialog = new FilterComposerDialog(Variant.FILTER_COMPOSER);
 				ASelectableCondition oldCondition = slide.getFilterCondition();
 				if(oldCondition != null) {
 					filterComposerDialog.addCondition(oldCondition);

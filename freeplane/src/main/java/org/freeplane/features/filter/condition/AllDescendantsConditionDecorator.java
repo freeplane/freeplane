@@ -43,4 +43,11 @@ public class AllDescendantsConditionDecorator extends DecoratedCondition impleme
 	        originalCondition.checkNode(child) && checkNode(child));
 	}
 
+    @Override
+    public boolean checksDescendants() {
+        return true;
+    }
+	
+	
+
 }

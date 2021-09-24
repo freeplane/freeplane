@@ -22,6 +22,7 @@ import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterComposerDialog;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.styles.IStyle;
@@ -36,6 +37,7 @@ class ConditionalStyleTable extends JTable {
 	private MapStyleModel styleModel;
 	private DefaultConditionRenderer conditionRenderer;
     private FilterComposerDialog filterComposerDialog;
+    private Variant filterComposerVariant;
 	
 	@SuppressWarnings("serial")
     private class ConditionEditor extends AbstractCellEditor
@@ -81,10 +83,11 @@ class ConditionalStyleTable extends JTable {
 			return true;
 		}
 	}
-
-	ConditionalStyleTable(MapStyleModel styleModel, TableModel tableModel) {
+	
+	ConditionalStyleTable(MapStyleModel styleModel, TableModel tableModel, Variant filterComposerVariant) {
 	    super(tableModel);
 	    this.styleModel = styleModel;
+        this.filterComposerVariant = filterComposerVariant;
 	    setCellSelectionEnabled(false);
 	    setRowSelectionAllowed(true);
 	    final TableColumnModel columnModel = getColumnModel();
@@ -137,7 +140,7 @@ class ConditionalStyleTable extends JTable {
     }
 
     private FilterComposerDialog createFilterComposer() {
-        FilterComposerDialog filterComposerDialog = new FilterComposerDialog();
+        FilterComposerDialog filterComposerDialog = new FilterComposerDialog(filterComposerVariant);
         filterComposerDialog.addCondition(null);
         filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
         for(int i = 0; i < getRowCount(); i++){

@@ -258,7 +258,7 @@ public class MIconController extends IconController {
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
 				if(event.getProperty().equals(NodeModel.NODE_ICON)
-						&& LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_ICON)){
+						&& LogicalStyleController.getController().conditionalStylesOf(node).dependsOnConditionRecursively(DEPENDS_ON_ICON)){
 					modeController.getMapController().delayedNodeRefresh(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 				}
 			}

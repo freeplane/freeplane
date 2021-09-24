@@ -157,14 +157,6 @@ public class MTextController extends TextController {
 			}
 		});
 	}
-	private static final ConditionPredicate DEPENDS_ON_PARENT = new ConditionPredicate() {
-		@Override
-		public boolean test(ICondition condition) {
-			return condition instanceof NodeItemRelation &&
-			        FILTER_PARENT_TEXT.equals(((NodeItemRelation) condition).getNodeItem());
-		}
-	};
-
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
 	}
@@ -252,25 +244,6 @@ public class MTextController extends TextController {
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
-			}
-		});
-	}
-
-	@Override
-	public void install(final ModeController modeController) {
-		super.install(modeController);
-		modeController.getMapController().addUINodeChangeListener(new INodeChangeListener() {
-			@Override
-			public void nodeChanged(NodeChangeEvent event) {
-				if (event.getProperty().equals(NodeModel.NODE_TEXT)) {
-					NodeModel node = event.getNode();
-					if (LogicalStyleController.getController().conditionalStylesOf(node)
-					    .dependOnCondition(DEPENDS_ON_PARENT)) {
-						for (NodeModel child : node.getChildren())
-							modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY,
-							    null, null);
-					}
-				}
 			}
 		});
 	}

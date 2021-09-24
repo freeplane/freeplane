@@ -26,6 +26,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -60,7 +61,7 @@ class EditFilterAction extends AFreeplaneAction {
 	    private static final long serialVersionUID = 1L;
 
 		public FilterComposerDialog() {
-	        super(TextUtils.getText("filter_dialog"), false);
+	        super(TextUtils.getText("filter_dialog"), false, Variant.FILTER_COMPOSER);
         }
 
 		protected DefaultComboBoxModel createModel() {

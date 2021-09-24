@@ -533,10 +533,10 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	private DefaultComboBoxModel internalConditionsModel;
 	private Box conditionButtonBox;
 
-	public AFilterComposerDialog(String title, boolean modal) {
+	public AFilterComposerDialog(String title, boolean modal, Variant variant) {
 		super(UITools.getCurrentFrame(), title, modal);
 		filterController = FilterController.getCurrentFilterController();
-		editor = new FilterConditionEditor(filterController, Variant.FILTER_COMPOSER);
+		editor = new FilterConditionEditor(filterController, variant);
 		editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 		    BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		//		this.controller = controller;

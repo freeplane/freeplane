@@ -43,4 +43,11 @@ public class ParentConditionDecorator extends DecoratedCondition implements ICom
         return parentNode != null && originalCondition.checkNode(parentNode);
 	}
 
+    @Override
+    public boolean checksParent() {
+        return true;
+    }
+	
+	
+
 }

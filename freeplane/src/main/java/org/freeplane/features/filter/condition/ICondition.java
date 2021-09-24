@@ -23,4 +23,20 @@ import org.freeplane.features.map.NodeModel;
 
 public interface ICondition {
 	boolean checkNode(NodeModel node);
+
+    default boolean checksParent() {
+        return false;
+    }
+
+    default boolean checksAncestors() {
+        return false;
+    }
+
+    default boolean checksChildren() {
+        return false;
+    }
+
+    default boolean checksDescendants() {
+        return false;
+    }
 }

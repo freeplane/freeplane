@@ -42,4 +42,8 @@ public class AllChildrenConditionDecorator extends DecoratedCondition implements
         return node.hasChildren() && node.getChildren().stream().allMatch(originalCondition::checkNode);
 	}
 
+    @Override
+    public boolean checksChildren() {
+        return true;
+    }
 }

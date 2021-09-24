@@ -42,6 +42,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
@@ -83,6 +84,7 @@ import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
  * 28.09.2009
  */
 public class MLogicalStyleController extends LogicalStyleController {
+    public enum NodeProperty{CONDITIONAL_STYLES};
 	private static final String STYLE_ACTIONS = "styleActions";
 
 	private final class RemoveConditionalStyleActor implements IActor {
@@ -216,11 +218,62 @@ public class MLogicalStyleController extends LogicalStyleController {
         }
 	}
 
-// 	private final ModeController modeController;
 	final private List<AssignStyleAction> actions;
+    private final ModeController modeController;
 
 	public MLogicalStyleController(ModeController modeController) {
-		super(modeController);
+	    super(modeController);
+        this.modeController = modeController;
+	    modeController.getMapController().addUINodeChangeListener(new INodeChangeListener() {
+	        @Override
+	        public void nodeChanged(NodeChangeEvent event) {
+	            if(event.getProperty() == NodeProperty.CONDITIONAL_STYLES)
+                    return;
+	            NodeModel node = event.getNode();
+	            ConditionalStyleModel mapStyles = MapStyleModel.getExtension(node.getMap()).getConditionalStyleModel();
+	            if(mapStyles.dependsOnCondition(ICondition::checksDescendants)) {
+	                
+	            }
+	            else if (mapStyles.dependsOnCondition(ICondition::checksChildren)) {
+                    delayedRefreshParent(node, false);
+
+	            }
+	            if(mapStyles.dependsOnCondition(ICondition::checksAncestors)) {
+
+	            }
+	            else if (mapStyles.dependsOnCondition(ICondition::checksParent)) {
+                    delayedRefreshChildren(node, false);
+	            }
+	            else {
+	                for (NodeModel child : node.getChildren()) {
+	                    ConditionalStyleModel nodeStyles = node.getExtension(ConditionalStyleModel.class);
+	                    if(nodeStyles != null && nodeStyles.dependsOnCondition(ICondition::checksParent))
+	                        modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
+	                                null, null);
+	                }
+                }
+	        }
+
+            private void delayedRefreshChildren(NodeModel node, boolean withDescendants) {
+                for (NodeModel child : node.getChildren()) {
+                    MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
+                            null, null);
+                    if(withDescendants)
+                        delayedRefreshChildren(node, true);
+                }
+            }
+
+            private void delayedRefreshParent(NodeModel node, boolean withAncestors) {
+                NodeModel parent =  node.getParentNode();
+                if(parent != null) {
+                    if(withAncestors)
+                        delayedRefreshParent(node, true);
+                    MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(parent, NodeProperty.CONDITIONAL_STYLES,
+                        null, null);
+                }
+            }
+	    });
+
 //		this.modeController = modeController;
 		actions = new LinkedList<AssignStyleAction>();
 	}

@@ -98,4 +98,22 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
 	    return Arrays.asList(new ASelectableCondition[]{originalCondition});
     }
 
+    public boolean checksParent() {
+        return originalCondition.checksParent();
+    }
+
+    public boolean checksAncestors() {
+        return originalCondition.checksAncestors();
+    }
+
+    public boolean checksChildren() {
+        return originalCondition.checksChildren();
+    }
+
+    public boolean checksDescendants() {
+        return originalCondition.checksDescendants();
+    }
+	
+	
+
 }

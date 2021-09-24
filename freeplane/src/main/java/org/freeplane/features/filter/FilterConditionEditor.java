@@ -64,7 +64,7 @@ import org.freeplane.features.mode.Controller;
  */
 public class FilterConditionEditor extends JComponent {
     
-    public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, SEARCH_DIALOG }
+    public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, NODE_CONDITION, SEARCH_DIALOG }
     
 	private class ElementaryConditionChangeListener implements ItemListener {
 		@Override

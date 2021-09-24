@@ -41,5 +41,7 @@ public class ConditionNotSatisfiedDecorator extends DecoratedCondition implement
 	public boolean checkNode(final NodeModel node) {
 		return !originalCondition.checkNode(node);
 	}
+	
+	
 
 }

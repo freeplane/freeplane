@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -52,7 +53,7 @@ public class ManageNodeConditionalStylesAction extends AManageConditionalStylesA
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
-		Component pane = createConditionalStylePane(map, conditionalStyleModel);
+		Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.NODE_CONDITION);
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.startTransaction();
 		try{

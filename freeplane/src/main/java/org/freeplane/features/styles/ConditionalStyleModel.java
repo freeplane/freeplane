@@ -81,18 +81,22 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 
 		}
 
-		boolean dependOnCondition(ConditionPredicate predicate) {
+        boolean dependsOnCondition(ConditionPredicate predicate) {
+            return isActive() && predicate.test(condition);
+        }
+        
+		boolean dependsOnConditionRecursively(ConditionPredicate predicate) {
 			if (isActive())
-				return dependOnConditionRecursively(condition, predicate);
+				return dependsOnConditionRecursively(condition, predicate);
 			else
 				return false;
 		}
 
-		private boolean dependOnConditionRecursively(ASelectableCondition condition, ConditionPredicate predicate) {
+		private boolean dependsOnConditionRecursively(ASelectableCondition condition, ConditionPredicate predicate) {
 			if(condition instanceof ICombinedCondition){
 				final Collection<ASelectableCondition> conditions = ((ICombinedCondition)condition).split();
 				for(ASelectableCondition c : conditions)
-					if(dependOnConditionRecursively(c, predicate))
+					if(dependsOnConditionRecursively(c, predicate))
 						return true;
 				return false;
 			}
@@ -307,13 +311,13 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		return conditionalStyleModel;
 	}
 
-	boolean dependOnCondition(ConditionPredicate predicate) {
-		for(Item item : styles){
-			if(item.dependOnCondition(predicate))
-				return true;
-		}
-		return false;
-	}
+    boolean dependsOnConditionRecursively(ConditionPredicate predicate) {
+        return styles.stream().anyMatch(item -> item.dependsOnConditionRecursively(predicate));
+    }
+
+    public boolean dependsOnCondition(ConditionPredicate predicate) {
+        return styles.stream().anyMatch(item -> item.dependsOnCondition(predicate));
+    }
 
     void addDifferentConditions(ConditionalStyleModel source) {
         Item[] differentConditions = source.styles.stream().filter(i1 -> !contains(i1)).toArray(Item[]::new);

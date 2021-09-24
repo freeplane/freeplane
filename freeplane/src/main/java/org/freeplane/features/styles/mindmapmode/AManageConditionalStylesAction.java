@@ -17,6 +17,7 @@ import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterComposerDialog;
+import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.styles.ConditionalStyleModel;
@@ -36,11 +37,11 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 
 	abstract public ConditionalStyleModel getConditionalStyleModel();
 
-	protected Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
+	protected Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel, Variant variant) {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
 		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map, conditionalStyleModel);
-		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, tableModel);
+		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, tableModel, variant);
 		if(conditionalStyleTable.getRowCount() > 0){
 			conditionalStyleTable.setRowSelectionInterval(0, 0);
 		}

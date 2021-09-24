@@ -42,4 +42,11 @@ public class AnyChildConditionDecorator extends DecoratedCondition implements IC
 		return node.getChildren().stream().anyMatch(originalCondition::checkNode);
 	}
 
+    @Override
+    public boolean checksChildren() {
+        return true;
+    }
+	
+	
+
 }

@@ -51,6 +51,8 @@ public class NodeModel{
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
+	
+	public enum NodeProperty{UNKNOWN_PROPERTY};
 
 	public enum CloneType{TREE, CONTENT}
 	final static int TREE_CLONE_INDEX = CloneType.TREE.ordinal();
@@ -62,7 +64,7 @@ public class NodeModel{
 	public static final String NOTE_TEXT = "note_text";
 	public final static int RIGHT_POSITION = 1;
 	public final static int UNKNOWN_POSITION = 0;
-	static public final Object UNKNOWN_PROPERTY = new Object();
+	static public final Object UNKNOWN_PROPERTY = NodeProperty.UNKNOWN_PROPERTY;
 	public static final String NODE_ICON = "icon";
 	public static final String NODE_ICON_SIZE = "icon_size";
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";

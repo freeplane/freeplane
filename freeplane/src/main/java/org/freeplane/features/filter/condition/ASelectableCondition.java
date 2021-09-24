@@ -142,5 +142,4 @@ public abstract class ASelectableCondition  implements ICondition{
     public boolean canBePersisted() {
         return true;
     }
-
 }

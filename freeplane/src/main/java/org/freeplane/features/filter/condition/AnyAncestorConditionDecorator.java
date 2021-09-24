@@ -47,4 +47,11 @@ public class AnyAncestorConditionDecorator extends DecoratedCondition implements
         return checkNode(parentNode);
 	}
 
+    @Override
+    public boolean checksAncestors() {
+        return true;
+    }
+	
+	
+
 }
