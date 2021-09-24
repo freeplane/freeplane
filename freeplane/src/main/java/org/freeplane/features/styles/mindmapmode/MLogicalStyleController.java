@@ -232,14 +232,14 @@ public class MLogicalStyleController extends LogicalStyleController {
 	            NodeModel node = event.getNode();
 	            ConditionalStyleModel mapStyles = MapStyleModel.getExtension(node.getMap()).getConditionalStyleModel();
 	            if(mapStyles.dependsOnCondition(ICondition::checksDescendants)) {
-	                
+	                delayedRefreshParent(node, true);
 	            }
 	            else if (mapStyles.dependsOnCondition(ICondition::checksChildren)) {
                     delayedRefreshParent(node, false);
 
 	            }
 	            if(mapStyles.dependsOnCondition(ICondition::checksAncestors)) {
-
+	                delayedRefreshChildren(node, true);
 	            }
 	            else if (mapStyles.dependsOnCondition(ICondition::checksParent)) {
                     delayedRefreshChildren(node, false);
@@ -259,7 +259,7 @@ public class MLogicalStyleController extends LogicalStyleController {
                     MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
                             null, null);
                     if(withDescendants)
-                        delayedRefreshChildren(node, true);
+                        delayedRefreshChildren(child, true);
                 }
             }
 
@@ -267,7 +267,7 @@ public class MLogicalStyleController extends LogicalStyleController {
                 NodeModel parent =  node.getParentNode();
                 if(parent != null) {
                     if(withAncestors)
-                        delayedRefreshParent(node, true);
+                        delayedRefreshParent(parent, true);
                     MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(parent, NodeProperty.CONDITIONAL_STYLES,
                         null, null);
                 }
