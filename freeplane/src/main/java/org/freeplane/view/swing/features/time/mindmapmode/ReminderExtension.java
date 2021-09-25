@@ -272,8 +272,11 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
 
     @Override
     public void onRemove(MapModel map) {
-        MapController mapController = this.reminderController.getModeController().getMapController();
-        mapController.removeMapChangeListener(this);
-        mapController.removeMapLifeCycleListener(this);
+        if(node.getMap() == map) {
+            deactivateTimer();
+            MapController mapController = this.reminderController.getModeController().getMapController();
+            mapController.removeMapChangeListener(this);
+            mapController.removeMapLifeCycleListener(this);
+        }
     }
 }
