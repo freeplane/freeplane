@@ -77,7 +77,7 @@ public class LogInitializer {
             };
             final StreamHandler stdOutConsoleHandler = new StreamHandler(System.out, new StdFormatter()) {
                 {
-                    setLevel(Level.INFO);
+                    setLevel(Level.ALL);
                 }
                 
                 @Override
