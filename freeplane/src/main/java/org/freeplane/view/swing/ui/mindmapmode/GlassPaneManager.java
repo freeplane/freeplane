@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Window;
 
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
@@ -47,7 +48,11 @@ public class GlassPaneManager implements AncestorListener {
     	glassPane.removeMouseListener(mouseListener);
     	glassPane.removeMouseMotionListener(mouseListener);
     	glassPane.setVisible(false);
-    	SwingUtilities.getWindowAncestor(rootPane).setFocusableWindowState(true);
+    	Window windowAncestor = SwingUtilities.getWindowAncestor(rootPane);
+        windowAncestor.setFocusableWindowState(true);
+        Component mostRecentFocusOwner = windowAncestor.getMostRecentFocusOwner();
+        if(mostRecentFocusOwner != null)
+            mostRecentFocusOwner.requestFocus();
     }
 
     public void ancestorMoved(AncestorEvent event) {
