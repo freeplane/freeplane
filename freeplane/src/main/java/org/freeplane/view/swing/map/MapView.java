@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -492,9 +493,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             		removeSelectionForHooks(selectedNode);
             	selectedNode = newSelection[0];
             }
-            for(final NodeView view : newSelection)
-                if (!selectedSet.contains(view))
-                	onSelectionChange(view);
+            NodeView[] nodesAddedToSelection = Stream.of(newSelection)
+                .filter(view -> ! selectedSet.contains(view))
+                .toArray(NodeView[]::new);
             final NodeView[] oldSelection = selectedSet.toArray(new NodeView[selectedSet.size()]);
             selectedSet.clear();
             selectedList.clear();
@@ -506,6 +507,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else if (!selectedSet.contains(selectionEnd))
 				selectionEnd = selectionStart;
 
+            for(final NodeView view : nodesAddedToSelection)
+                onSelectionChange(view);
             if (selectedChanges) {
                 addSelectionForHooks(selectedNode);
             }
