@@ -158,6 +158,8 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
     }
 
     private void remind(ActionEvent e) {
+        if(node.getMap().getNodeForID(node.getID()) != node)
+            return;
         if(! alreadyExecuted && remindUserAt > System.currentTimeMillis()) {
             scheduleTimer();
             return;
