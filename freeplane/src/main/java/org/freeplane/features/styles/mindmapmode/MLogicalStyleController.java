@@ -254,12 +254,14 @@ public class MLogicalStyleController extends LogicalStyleController {
                 }
 	        }
 
-            private void delayedRefreshChildren(NodeModel node, boolean withDescendants) {
-                for (NodeModel child : node.getChildren()) {
-                    MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
-                            null, null);
-                    if(withDescendants)
-                        delayedRefreshChildren(child, true);
+	        private void delayedRefreshChildren(NodeModel node, boolean withDescendants) {
+	            for (NodeModel child : node.getChildren()) {
+	                if(child.hasViewers()) {
+	                    MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
+	                            null, null);
+	                    if(withDescendants)
+	                        delayedRefreshChildren(child, true);
+	                }
                 }
             }
 
@@ -268,8 +270,9 @@ public class MLogicalStyleController extends LogicalStyleController {
                 if(parent != null) {
                     if(withAncestors)
                         delayedRefreshParent(parent, true);
-                    MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(parent, NodeProperty.CONDITIONAL_STYLES,
-                        null, null);
+                    if(parent.hasViewers())
+                        MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(parent, NodeProperty.CONDITIONAL_STYLES,
+                                null, null);
                 }
             }
 	    });

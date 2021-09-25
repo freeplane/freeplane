@@ -326,6 +326,12 @@ public class NodeModel{
 		}
 		return views;
 	}
+	
+
+    public boolean hasViewers() {
+        return views != null && ! views.isEmpty();
+    }
+
 
 	public final String getXmlText() {
 		return sharedData.getXmlText();
@@ -738,6 +744,5 @@ public class NodeModel{
     public NodeModel duplicate(boolean withChildren) {
         return map.duplicate(this, withChildren);
     }
-    
     
 }
