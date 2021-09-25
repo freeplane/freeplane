@@ -219,7 +219,8 @@ public class StyleEditorPanel extends JPanel {
 
 	private void setComponentsEnabled(boolean enabled) {
 		final Container panel = (Container) getComponent(0);
-		setComponentsEnabled(panel, enabled);
+		if(panel.isEnabled() != enabled)
+		    setComponentsEnabled(panel, enabled);
 	}
 
 	private void setComponentsEnabled(final Container container, boolean enabled) {
@@ -243,7 +244,7 @@ public class StyleEditorPanel extends JPanel {
 				if (selection == null) {
 					return;
 				}
-				if (selection.size() == 1) {
+				if (selection.size() >= 1) {
 					if(modeController.canEdit(selection.getSelected().getMap()))
 						setComponentsEnabled(true);
 					setStyle(node);
