@@ -225,16 +225,16 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		selectedMapView = newMapView;
 		if(oldMapView != null)
 			oldMapView.repaint();
-		if (selectedMapView != null) {
-			selectedMapView.revalidateSelecteds();
-			final ModeController modeController = selectedMapView.getModeController();
+		if (newMapView != null) {
+		    newMapView.revalidateSelecteds();
+			final ModeController modeController = newMapView.getModeController();
 			lastModeName = modeController.getModeName();
-			final float mapViewZoom = selectedMapView.getZoom();
+			final float mapViewZoom = newMapView.getZoom();
 			if (zoom != mapViewZoom) {
 				setZoom(mapViewZoom);
 			}
 			modeController.getController().selectMode(modeController);
-			selectedMapView.repaint();
+			newMapView.repaint();
 		}
 		mapViewChangeListeners.afterMapViewChange(oldMapView, newMapView);
 		return true;
