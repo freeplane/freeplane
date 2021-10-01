@@ -248,6 +248,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+				    if(! isDragActive())
+				        return;
 					final Rectangle r = mainView.getBounds();
 					UITools.convertRectangleToAncestor(mainView.getParent(), r, mapView);
 					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
