@@ -82,7 +82,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 
         boolean dependsOnCondition(ConditionPredicate predicate) {
-            return isActive() && predicate.test(condition);
+            return condition != null && isActive() && predicate.test(condition);
         }
         
 		boolean dependsOnConditionRecursively(ConditionPredicate predicate) {
