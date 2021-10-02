@@ -1,5 +1,5 @@
 <map version="freeplane 1.9.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="Basic Freeplane&#xa;Functions" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1620564178204" BACKGROUND_COLOR="#00ff99">
 <icon BUILTIN="bee"/>
 <font BOLD="true"/>

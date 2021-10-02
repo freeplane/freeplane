@@ -48,7 +48,8 @@ import org.freeplane.main.addons.AddOnsController;
  * @author robert ladstaetter
  */
 class UpdateCheckAction extends AFreeplaneAction {
-	private static final int VISIBLE_ADDON_ROWS = 8;
+	private static final String UPDATE_URL = "https://sourceforge.net/projects/freeplane/files/freeplane%20stable/";
+    private static final int VISIBLE_ADDON_ROWS = 8;
     private static boolean autorunEnabled = true;
 	private static Timer autorunTimer = null;
 	private static final int CHECK_TIME = 30 * 1000;
@@ -363,7 +364,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		
 		updateButton = new JButton(TextUtils.getText("updater.goToDownload"));
 		updateButton.addActionListener(openUrlListener);
-		updateButton.setActionCommand("http://freeplane.sourceforge.net");
+		updateButton.setActionCommand(UPDATE_URL);
 
 		Boolean needsUpdate = Boolean.FALSE;
 		if (freeplaneLatestVersion != null) {

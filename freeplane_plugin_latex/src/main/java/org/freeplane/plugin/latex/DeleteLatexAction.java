@@ -31,7 +31,7 @@ import org.freeplane.features.mode.Controller;
  * @author Stefan Ott
  * 
  * This class is called when a (legacy!) LaTeX formula is deleted
- * @see http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane
+ * @see https://www.freeplane.org/wiki/index.php/LaTeX_in_Freeplane
  */
 @EnabledAction(checkOnNodeChange = true)
 public class DeleteLatexAction extends AMultipleNodeAction {

@@ -312,11 +312,11 @@ bundle.getKeys().toList()
     }
 icons.folded = true
 
-def web = createChild(newMap.root, WEB_NODE, 'http://freeplane.sourceforge.net/wiki/index.php/Scripting')
+def web = createChild(newMap.root, WEB_NODE, 'https://www.freeplane.org/wiki/index.php/Scripting')
 initHeading(web)
 createChild(web, 'Groovy tutorials (Codehaus)', 'http://groovy.codehaus.org/Beginners+Tutorial')
-createChild(web, 'Example scripts', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_Example_scripts')
-createChild(web, 'Scripting API changes', 'http://freeplane.sourceforge.net/wiki/index.php/Scripting:_API_Changes')
+createChild(web, 'Example scripts', 'https://www.freeplane.org/wiki/index.php/Scripting:_Example_scripts')
+createChild(web, 'Scripting API changes', 'https://www.freeplane.org/wiki/index.php/Scripting:_API_Changes')
 
 def legend = newMap.root.createChild(LEGEND_NODE)
 initHeading(legend)

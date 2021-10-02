@@ -38,7 +38,7 @@ import org.freeplane.plugin.script.proxy.Proxy
 //
 dialogTitle = textUtils.getText('addons.installer.title')
 installationbase = c.userDirectory
-addonsUrl = "http://freeplane.sourceforge.net/addons"
+addonsUrl = "https://www.freeplane.org/addons"
 
 // parse result
 configMap = [:]

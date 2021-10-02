@@ -1,5 +1,5 @@
 <map version="freeplane 1.9.8">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node LOCALIZED_TEXT="new_mindmap" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="Freemind_Link_1513112588" CREATED="1153430895318" MODIFIED="1610373882324" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="10 pt" SHAPE_VERTICAL_MARGIN="10 pt">
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
 <hook NAME="MapStyle" background="#ffffff">

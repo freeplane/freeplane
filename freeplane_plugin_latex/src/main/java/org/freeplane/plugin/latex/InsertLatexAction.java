@@ -43,7 +43,7 @@ import org.freeplane.features.mode.Controller;
  *
  *This class is called when a (legacy!) LaTeX formula is inserted into
  * (added to) a node
- * @see http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane
+ * @see https://www.freeplane.org/wiki/index.php/LaTeX_in_Freeplane
  */
 @EnabledAction(checkOnNodeChange = true)
 public class InsertLatexAction extends AFreeplaneAction {

@@ -1,5 +1,5 @@
 <map version="freeplane 1.9.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="Latest Freeplane features" STYLE_REF="Introduction" FOLDED="false" ID="ID_1286342769" CREATED="1541847389542" MODIFIED="1620561021647" BACKGROUND_COLOR="#99ccff" TEXT_ALIGN="RIGHT" MIN_WIDTH="0 cm">
 <edge DASH="SOLID"/>
 <hook NAME="MapStyle" background="#ffcccc">

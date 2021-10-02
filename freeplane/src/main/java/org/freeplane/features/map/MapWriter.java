@@ -45,7 +45,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		FORCE_FORMATTING, ALREADY_WRITTEN
 	}
 	private static final String USAGE_COMMENT = "<!--To view this file,"
-	        + " download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->"
+	        + " download free mind mapping software Freeplane from https://www.freeplane.org -->"
 	        + System.getProperty("line.separator");
 
 	public enum Hint {
