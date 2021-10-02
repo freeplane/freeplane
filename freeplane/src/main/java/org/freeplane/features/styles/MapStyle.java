@@ -491,7 +491,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
 	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
 	    Objects.requireNonNull(copiedStyleNode);
-	    if(! sourceLocation.equals(map.getFile().toURI())) {
+	    File mapFile = map.getFile();
+        if(mapFile == null || ! sourceLocation.equals(mapFile.toURI())) {
 	        final URL url = sourceLocation.toURL();
             loadStyleMapContainer(url).ifPresent(styleMapTarget ->
             {
