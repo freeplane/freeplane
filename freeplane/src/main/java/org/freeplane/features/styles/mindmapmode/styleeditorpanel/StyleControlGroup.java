@@ -2,6 +2,7 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,9 +21,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.TranslatedObject;
@@ -60,7 +59,6 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormSpecs;
-
 class StyleControlGroup implements ControlGroup{
     private static final int LEFT_MARGIN = (int) (15 * UITools.FONT_SCALE_FACTOR);
     private static final int GAP = (int) (6 * UITools.FONT_SCALE_FACTOR);
@@ -73,6 +71,7 @@ class StyleControlGroup implements ControlGroup{
 	private RevertingProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
+	private JLabel styleName;
 	private JRadioButton redefinesStyleForCurrentMapOnly;
     private JRadioButton redefinesStyleForCurrentMapAndTemplate;
     private JTextArea redefinedTemplate;
@@ -87,7 +86,6 @@ class StyleControlGroup implements ControlGroup{
 	private final ModeController modeController;
 	
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
-    private TitledBorder redefineStyleBtnBorder;
 
 	
 	private class StyleChangeListener implements PropertyChangeListener{
@@ -130,8 +128,7 @@ class StyleControlGroup implements ControlGroup{
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
-	            final String labelText = TextUtils.format(REDEFINE_STYLE, firstStyle);
-	            redefineStyleBtnBorder.setTitle(labelText);
+	            styleName.setText(firstStyle.toString());
 	            updateTemplateName(node.getMap());
 
 			}
@@ -185,6 +182,9 @@ class StyleControlGroup implements ControlGroup{
 
             addAutomaticLayout(formBuilder);
 
+            styleName = new JLabel();
+            styleName.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
             redefinesStyleForCurrentMapOnly = new JRadioButton();
             redefinesStyleForCurrentMapOnly.setSelected(true);
             redefinesStyleForCurrentMapOnly.setText(TextUtils.getRawText(FOR_THIS_MAP));
@@ -245,7 +245,9 @@ class StyleControlGroup implements ControlGroup{
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapOnly);
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapAndTemplate);
             
+            Box styleAndButtonBox = Box.createVerticalBox();
             Box buttonBox = Box.createHorizontalBox();
+            buttonBox.setAlignmentX(Component.CENTER_ALIGNMENT);
             Box radioButtonBox = Box.createVerticalBox();
             radioButtonBox.add(redefinesStyleForCurrentMapOnly);
             radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
@@ -268,8 +270,10 @@ class StyleControlGroup implements ControlGroup{
             redefineStyleBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
             buttonBox.add(redefineStyleBtn);
 
-            redefineStyleBtnBorder = UITools.addTitledBorder(buttonBox, "", StyleEditorPanel.FONT_SIZE);
-            formBuilder.append(buttonBox, formBuilder.getColumnCount());
+            styleAndButtonBox.add(styleName);
+            styleAndButtonBox.add(buttonBox);
+            UITools.addTitledBorder(styleAndButtonBox, TextUtils.format(REDEFINE_STYLE, ""), StyleEditorPanel.FONT_SIZE);
+            formBuilder.append(styleAndButtonBox, formBuilder.getColumnCount());
             formBuilder.nextLine();
 
             MapController mapController = Controller.getCurrentModeController().getMapController();
