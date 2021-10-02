@@ -18,6 +18,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -25,6 +27,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+import java.awt.event.InputEvent;
 
 public class MenuItem extends SearchItem {
 
@@ -69,9 +72,9 @@ public class MenuItem extends SearchItem {
     }
 
     @Override
-    void execute() {
+    void execute(InputEvent event) {
         if(action.isEnabled())
-            action.actionPerformed(null);
+            action.actionPerformed(new ActionEvent(event.getSource(), ActionEvent.ACTION_PERFORMED, (String) action.getValue(Action.NAME)));
     }
     
     @Override

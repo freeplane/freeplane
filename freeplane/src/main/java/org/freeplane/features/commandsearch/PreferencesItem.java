@@ -24,6 +24,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
+import java.awt.event.InputEvent;
 
 public class PreferencesItem extends SearchItem {
 
@@ -71,7 +72,7 @@ public class PreferencesItem extends SearchItem {
     }
 
     @Override
-    void execute() {
+    void execute(InputEvent event) {
         new ShowPreferenceItemAction(this).actionPerformed(null);
     }
     

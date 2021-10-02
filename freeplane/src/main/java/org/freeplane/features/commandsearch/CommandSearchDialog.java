@@ -398,7 +398,7 @@ public class CommandSearchDialog extends JDialog
         }
         else {
 
-            item.execute();
+            item.execute(event);
 
             if (closeAfterExecute.isSelected())
             {

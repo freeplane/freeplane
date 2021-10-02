@@ -4,6 +4,7 @@ import javax.swing.Icon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
+import java.awt.event.InputEvent;
 
 public class IconItem extends SearchItem {
     private static final String ICONS_PATH =  TextUtils.getText("icons") + ITEM_PATH_SEPARATOR;
@@ -58,7 +59,7 @@ public class IconItem extends SearchItem {
     }
 
     @Override
-    void execute() {
+    void execute(InputEvent event) {
         action.actionPerformed(null);
     }
     

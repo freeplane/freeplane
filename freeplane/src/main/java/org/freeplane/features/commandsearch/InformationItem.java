@@ -1,6 +1,7 @@
 package org.freeplane.features.commandsearch;
 
 import javax.swing.Icon;
+import java.awt.event.InputEvent;
 
 public class InformationItem extends SearchItem {
 
@@ -42,7 +43,7 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    void execute() {
+    void execute(InputEvent event) {
     }
     
     @Override
