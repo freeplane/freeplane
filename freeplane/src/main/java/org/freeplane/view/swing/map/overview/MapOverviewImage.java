@@ -73,7 +73,7 @@ class MapOverviewImage extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         Rectangle overviewBounds = getBounds();
-        Rectangle mapInnerBounds = mapView.getInnerBounds();
+        Rectangle mapInnerBounds = mapView.getRoot().getBounds();
         Graphics2D g2d = (Graphics2D) g;
         final AffineTransform transform = g2d.getTransform();
         double scaleX = transform.getScaleX();
