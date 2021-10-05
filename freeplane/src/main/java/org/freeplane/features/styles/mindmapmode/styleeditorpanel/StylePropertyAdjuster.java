@@ -20,7 +20,8 @@ class StylePropertyAdjuster {
                 } else
                     enable = ! propertyName.contains("cloud");
             }
-            else if(propertyName.equals(RevertingProperty.NAME)) {
+            else if(propertyName.equals(RevertingProperty.NAME)
+                    || propertyName.equals(NodeBackgroundColorControlGroup.REVERT_BACKGROUND)) {
                 enable = true;
             }
             else if(style.equals(MapStyleModel.DETAILS_STYLE)

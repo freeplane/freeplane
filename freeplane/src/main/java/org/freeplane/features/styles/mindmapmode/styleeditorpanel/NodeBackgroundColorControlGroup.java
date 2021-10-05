@@ -40,7 +40,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class NodeBackgroundColorControlGroup implements ControlGroup {
-	private static final String REVERT_BACKGROUND = "revert-node-background";
+	static final String REVERT_BACKGROUND = "revert-node-background";
 
     static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 
