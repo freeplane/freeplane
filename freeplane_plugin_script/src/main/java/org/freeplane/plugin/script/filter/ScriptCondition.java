@@ -60,25 +60,6 @@ public class ScriptCondition extends ASelectableCondition {
 		this.scriptRunner = new ScriptRunner(new GroovyScript(script, formulaPermissions));
 	}
 
-	@Override
-    public boolean checkNode(final NodeModel node) {
-		final Object result;
-        try (final PrintStream printStream = new PrintStream(new ByteArrayOutputStream())){
-			result = scriptRunner.setOutStream(printStream).execute(node);
-			if(result instanceof Boolean)
-				return (Boolean) result;
-			if(result instanceof Number)
-				return ((Number) result).doubleValue() != 0;
-	        printStream.println(this + ": got '" + result + "' for " + node);
-            final String info = createErrorDescription(node, String.valueOf(result), SCRIPT_FILTER_ERROR_RESOURCE);
-	        setErrorStatus(info);
-        }
-        catch (ExecuteScriptException e) {
-			final String info = createErrorDescription(node, String.valueOf(e.getMessage()), SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE);
-			setErrorStatus(info);
-        }
-        return false;
-	}
 
     private String createErrorDescription(final NodeModel node, String message, String template) {
         final String info = TextUtils.format(template, !errorReported ?  createDescription() : "...",
@@ -88,15 +69,29 @@ public class ScriptCondition extends ASelectableCondition {
     }
 
 	@Override
-	public boolean checkNodeInFormulaContext(NodeModel node){
+	public boolean checkNode(NodeModel node){
 		NodeScript nodeScript = new NodeScript(node, source);
 		final ScriptContext scriptContext = new ScriptContext(nodeScript);
 		if (! FormulaThreadLocalStacks.INSTANCE.push(scriptContext))
 			return false;
 		scriptRunner.setScriptContext(scriptContext);
 		try {
-			final boolean checkNode = checkNode(node);
-			return checkNode;
+	        final Object result;
+	        try (final PrintStream printStream = new PrintStream(new ByteArrayOutputStream())){
+	            result = scriptRunner.setOutStream(printStream).execute(node);
+	            if(result instanceof Boolean)
+	                return (Boolean) result;
+	            if(result instanceof Number)
+	                return ((Number) result).doubleValue() != 0;
+	            printStream.println(this + ": got '" + result + "' for " + node);
+	            final String info = createErrorDescription(node, String.valueOf(result), SCRIPT_FILTER_ERROR_RESOURCE);
+	            setErrorStatus(info);
+	        }
+	        catch (ExecuteScriptException e) {
+	            final String info = createErrorDescription(node, String.valueOf(e.getMessage()), SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE);
+	            setErrorStatus(info);
+	        }
+	        return false;
 		}
 		finally {
 			FormulaThreadLocalStacks.INSTANCE.pop();

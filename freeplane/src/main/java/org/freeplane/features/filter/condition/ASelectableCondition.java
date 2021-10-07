@@ -69,10 +69,6 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 	protected abstract String createDescription();
 	
-	public boolean checkNodeInFormulaContext(NodeModel node){
-		return checkNode(node);
-	}
-	
 	final public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
 			this.renderer = createGraphicComponent();
