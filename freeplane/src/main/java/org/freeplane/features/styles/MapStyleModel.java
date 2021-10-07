@@ -295,7 +295,7 @@ public class MapStyleModel implements IExtension {
             return;
 		}
         final IStyle style = (IStyle) userObject;
-		if (null == styleNodes.put(style, node) && isUserStyleNode(node))
+		if (null == styleNodes.put(style, node) && ! isPredefinedStyleNode(node))
 			stylesComboBoxModel.addElement(style);
 		if(style.equals(DEFAULT_STYLE))
 		    defaultStyleNode = node;
@@ -309,6 +309,10 @@ public class MapStyleModel implements IExtension {
 		if(userStyleParentNode != null)
 		    for (NodeModel userStyleNode: userStyleParentNode.getChildren())
 		        stylesComboBoxModel.addElement(userStyleNode.getUserObject());
+        NodeModel levelStyleParentNode = getStyleNodeGroup(styleMap, MapStyleModel.STYLES_AUTOMATIC_LAYOUT);
+        if(levelStyleParentNode != null)
+            for (NodeModel userStyleNode: levelStyleParentNode.getChildren())
+                stylesComboBoxModel.addElement(userStyleNode.getUserObject());
 	}
 
 	public void removeStyleNode(final NodeModel node) {
@@ -353,13 +357,17 @@ public class MapStyleModel implements IExtension {
 
     public List<IStyle> getNodeStyles() {
         NodeModel userStyles = getStyleNodeGroup(styleMap, STYLES_USER_DEFINED);
-        ArrayList<IStyle> styles = new ArrayList<IStyle>(2 + userStyles.getChildCount());
+        NodeModel levelStyles = getStyleNodeGroup(styleMap, STYLES_AUTOMATIC_LAYOUT);
+        ArrayList<IStyle> styles = new ArrayList<IStyle>(2 + userStyles.getChildCount() + levelStyles.getChildCount());
         styles.add(DEFAULT_STYLE);
         styles.add(FLOATING_STYLE);
         for(NodeModel styleNode : userStyles.getChildren()) {
             IStyle style = (IStyle) styleNode.getUserObject();
             styles.add(style);
-           
+        }
+        for(NodeModel styleNode : levelStyles.getChildren()) {
+            IStyle style = (IStyle) styleNode.getUserObject();
+            styles.add(style);
         }
 
         return styles;
