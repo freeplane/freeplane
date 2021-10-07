@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -171,7 +172,8 @@ class StyleControlGroup implements ControlGroup{
 		btn.setText(text);
     }
 
-	@Override
+	
+    @Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
         if (addStyleBox) {
             addStyleBox(formBuilder);
@@ -194,7 +196,12 @@ class StyleControlGroup implements ControlGroup{
             redefinesStyleForCurrentMapAndTemplate.setText(TextUtils.getText(FOR_TEMPLATE));
             redefinesStyleForCurrentMapAndTemplate.setAlignmentX(Component.LEFT_ALIGNMENT);
             
-            redefinedTemplate= new JTextArea();
+            redefinedTemplate= new JTextArea() {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public void scrollRectToVisible(Rectangle aRect) {/**/}
+            };
             redefinedTemplate.setColumns(80);
             redefinedTemplate.setLineWrap(true);
             redefinedTemplate.setWrapStyleWord(false);
