@@ -226,4 +226,34 @@ public class Filter implements IExtension {
 	public FilterInfo getFilterInfo(final NodeModel node) {
 		return accessor.getFilterInfo(node);
 	}
+
+    public void showAsMatched(NodeModel node) {
+        FilterInfo filterInfo = getFilterInfo(node);
+        if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_MATCHED)) {
+            filterInfo.add(FilterInfo.FILTER_SHOW_AS_MATCHED);
+            if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_ANCESTOR))
+                showAncestors(node);
+            if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_DESCENDANT))
+                showDescendants(node);
+        }
+    }
+
+    private void showAncestors(NodeModel node) {
+        NodeModel parent = node.getParentNode();
+        if(parent == null)
+            return;
+        FilterInfo filterInfo = getFilterInfo(parent);
+        if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_ANCESTOR)) {
+            filterInfo.add(FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+            showAncestors(parent);
+        }
+    }
+
+    private void showDescendants(NodeModel node) {
+        for (NodeModel child : node.getChildren()) {
+            FilterInfo filterInfo = getFilterInfo(child);
+            filterInfo.add(FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+            showAncestors(child);
+        }
+    }
 }

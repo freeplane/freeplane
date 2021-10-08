@@ -56,6 +56,7 @@ import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
@@ -590,13 +591,14 @@ implements IExtension, NodeChangeAnnouncer{
 	 * link actions).
 	 */
 	public void displayNode(final NodeModel node, final ArrayList<NodeModel> nodesUnfoldedByDisplay) {
-	    IMapSelection selection = Controller.getCurrentController().getSelection();
+	    Controller controller = modeController.getController();
+        IMapSelection selection = controller.getSelection();
 	    if(node.getMap() != selection.getSelected().getMap())
 	        return;
 	    Filter filter = selection.getFilter();
 		if (!node.hasVisibleContent(filter)) {
-		    filter.getFilterInfo(node).reset();
-			nodeRefresh(node);
+		    filter.showAsMatched(node);
+		    modeController.getMapController().fireMapChanged(new MapChangeEvent(this, node.getMap(), Filter.class, null, this, false));
 		}
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
@@ -605,7 +607,7 @@ implements IExtension, NodeChangeAnnouncer{
             	nodesUnfoldedByDisplay.add(nodeOnPath);
             }
 		}
-		modeController.getController().getMapViewManager().displayOnCurrentView(node);
+		controller.getMapViewManager().displayOnCurrentView(node);
 	}
 
 	public void fireMapChanged(final MapChangeEvent event) {
