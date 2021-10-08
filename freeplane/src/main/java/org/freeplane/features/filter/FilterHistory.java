@@ -41,7 +41,7 @@ public class FilterHistory {
 
 	void add(final Filter filter) {
 		final Filter currentFilter = getCurrentFilter();
-		if (isConditionStronger(currentFilter, filter)) {
+		if (filter.canUseFilterResultsFrom(currentFilter)) {
 			filters.previous();
 			filters.remove();
 		}
@@ -65,10 +65,6 @@ public class FilterHistory {
 		final List<Filter> list = new LinkedList<Filter>();
 		filters = list.listIterator();
 		filters.add(Filter.createTransparentFilter());
-	}
-
-	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
-		return newFilter.canUseFilterResultsFrom(oldFilter);
 	}
 
 	void redo() {

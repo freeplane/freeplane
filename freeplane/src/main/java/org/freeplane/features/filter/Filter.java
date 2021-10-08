@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter;
 
+import java.util.Objects;
 import java.util.WeakHashMap;
 
 import javax.swing.Icon;
@@ -39,7 +40,7 @@ public class Filter implements IExtension {
     
     public static Filter createTransparentFilter() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), null);
+		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false, null);
 	}
 
 	static class FilterInfoAccessor {
@@ -52,8 +53,8 @@ public class Filter implements IExtension {
 	}
 
 	static public Filter createFilter(final ICondition condition, final boolean areAncestorsShown,
-            final boolean areDescendantsShown, Filter baseFilter) {
-		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, baseFilter);
+            final boolean areDescendantsShown, final boolean appliesToVisibleNodesOnly, Filter baseFilter) {
+		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, appliesToVisibleNodesOnly, baseFilter);
 	}
 
 	final private ICondition condition;
@@ -61,13 +62,15 @@ public class Filter implements IExtension {
 
 	private FilterInfoAccessor accessor;
     private final boolean hidesMatchingNodes;
+    private final boolean appliesToVisibleNodesOnly;
     private final Filter baseFilter;
 
 	public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
-	              final boolean areDescendantsShown, Filter baseFilter) {
+	              final boolean areDescendantsShown, final boolean appliesToVisibleNodesOnly, Filter baseFilter) {
 		super();
 		this.condition = condition;
         this.hidesMatchingNodes = hidesMatchingNodes;
+        this.appliesToVisibleNodesOnly = appliesToVisibleNodesOnly;
 		this.accessor = new FilterInfoAccessor();
 
 		int options = FilterInfo.FILTER_SHOW_AS_MATCHED;
@@ -86,7 +89,7 @@ public class Filter implements IExtension {
 	}
 
 	protected boolean appliesToVisibleNodesOnly() {
-		return baseFilter != null;
+		return appliesToVisibleNodesOnly;
 	}
 
 	static private Icon filterIcon;
@@ -194,8 +197,8 @@ public class Filter implements IExtension {
 	}
 
 	public boolean canUseFilterResultsFrom(final Filter oldFilter) {
-		return baseFilter == oldFilter && (condition != null && condition.equals(baseFilter.getCondition()) || condition == null
-		                && baseFilter.getCondition() == null);
+		return (! oldFilter.appliesToVisibleNodesOnly || appliesToVisibleNodesOnly)
+		        && Objects.equals(condition, oldFilter.getCondition());
 	}
 
 

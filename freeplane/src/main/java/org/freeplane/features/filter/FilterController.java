@@ -408,7 +408,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	    }
 	    else {
             final Filter filter = new Filter(NO_FILTERING, hideMatchingNodes.isSelected(), showAncestors.isSelected(),
-                    showDescendants.isSelected(), null);
+                    showDescendants.isSelected(), false, null);
             map.putExtension(Filter.class, filter);
             filter.calculateFilterResults(map);
 	    }
@@ -503,15 +503,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		else {
 			filterCondition = selectedCondition;
 		}
-		final Filter baseFilter;
-		if (applyToVisibleNodeOnly.isSelected()) {
-		    baseFilter = Controller.getCurrentController().getSelection().getFilter();
-		}
-		else {
-		    baseFilter = null;
-		}
+		final Filter baseFilter = Controller.getCurrentController().getSelection().getFilter();
         final Filter filter = new Filter(filterCondition, hideMatchingNodes.isSelected(), showAncestors.isSelected(), showDescendants
-		    .isSelected(), baseFilter);
+		    .isSelected(), applyToVisibleNodeOnly.isSelected(), baseFilter);
 		return filter;
 	}
 
