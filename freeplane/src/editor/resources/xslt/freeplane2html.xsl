@@ -322,6 +322,9 @@
 <!-- replace ASCII line breaks through HTML line breaks (br) -->
 <xsl:template name="format_text">
 	<xsl:param name="nodetext" />
+	<xsl:if test="string-length($nodetext) = 0">
+		<xsl:text> </xsl:text>
+	</xsl:if>
 	<xsl:if test="string-length(substring-after($nodetext,'&#xa;')) = 0">
 		<xsl:value-of select="$nodetext" />
 	</xsl:if>
@@ -392,7 +395,7 @@
 		<xsl:for-each select="icon">
 			<xsl:element name="img">
 				<xsl:attribute name="src">
-					<xsl:value-of select="$destination_dir"/>icons/<xsl:value-of select="@BUILTIN" />.png</xsl:attribute>
+					<xsl:value-of select="$destination_dir"/>icons/<xsl:value-of select="@BUILTIN" />.svg</xsl:attribute>
 				<xsl:attribute name="alt">
 					<xsl:value-of select="@BUILTIN" />
 				</xsl:attribute>
