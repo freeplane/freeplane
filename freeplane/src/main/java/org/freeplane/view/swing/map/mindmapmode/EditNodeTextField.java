@@ -724,7 +724,7 @@ public class EditNodeTextField extends EditNodeBase {
 		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
 		final int textFieldBorderWidth = 2;
-		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeView.getBackgroundColor()));
+		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeTextColor));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
 		textFieldMinimumSize.width = 1 + textFieldMinimumSize.width * 21 / 20;
         if(textFieldMinimumSize.width < extraWidth)
@@ -790,6 +790,7 @@ public class EditNodeTextField extends EditNodeBase {
 		parent.setPreferredSize(newParentSize);
 		parent.setText("");
         parent.setHorizontalAlignment(JLabel.LEFT);
+        nodeView.setTextBackground(getBackground());
 
 		if(! layoutMapOnTextChange) {
 			mapView.doLayout();

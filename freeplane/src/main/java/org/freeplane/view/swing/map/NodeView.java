@@ -722,6 +722,10 @@ public class NodeView extends JComponent implements INodeView {
         return getBackgroundColor();
     }
 
+    public void setTextBackground(Color textBackground) {
+        modelBackgroundColor = textBackground;
+    }
+
     public Color getTextBackground(StyleOption styleOption) {
         Color modelBackgroundColor = styleController().getBackgroundColor(model, styleOption);
         if (modelBackgroundColor != null) {
