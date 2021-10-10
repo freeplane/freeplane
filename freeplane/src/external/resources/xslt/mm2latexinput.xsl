@@ -83,9 +83,17 @@
 </xsl:when>
 
 <!-- treat a node as latex when '\latex[ \n]' prefix is present -->
-<xsl:when test="starts-with(@TEXT, '\latex ') or starts-with(@TEXT, '\latex&#10;')">
+<xsl:when test="starts-with(@TEXT, '\latex ') or starts-with(@TEXT, '\latex&#10;') or starts-with(richcontent/text, '\latex ') or starts-with(richcontent/latex, '\latex&#10;')">
 
-  <xsl:value-of select="substring-after(@TEXT, '\latex')"/>
+  <xsl:choose>
+	  <xsl:when test="@TEXT">
+		  <xsl:value-of select="substring-after(@TEXT, '\latex')"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+		  <xsl:value-of select="substring-after(richcontent/text, '\latex')"/>
+	  </xsl:otherwise>
+  </xsl:choose>
+  
   <xsl:text>
 
 </xsl:text>    
@@ -103,7 +111,17 @@
 <!-- treat a node as latex with format=(LaTeX|Unparsed LaTeX) -->
 <xsl:when test="@FORMAT='latexPatternFormat' or @FORMAT='unparsedLatexPatternFormat'">
   <!--<xsl:apply-templates select="@TEXT|richcontent"  mode="rawLatex"/>-->
-  <xsl:value-of select="@TEXT"/>
+  
+  <xsl:choose>
+	  <xsl:when test="@TEXT">
+		  <xsl:value-of select="@TEXT"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+		  <xsl:value-of select="richcontent/text"/>
+	  </xsl:otherwise>
+  </xsl:choose>
+  
+  <!--<xsl:value-of select="@TEXT"/>-->
   <xsl:text>
 
   </xsl:text>    
