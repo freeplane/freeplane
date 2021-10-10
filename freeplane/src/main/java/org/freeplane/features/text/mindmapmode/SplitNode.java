@@ -37,6 +37,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.text.TextController;
 
 import com.lightdev.app.shtm.SHTMLWriter;
@@ -106,6 +108,7 @@ public class SplitNode extends AFreeplaneAction {
 			}
 			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.isLeft());
 			((MTextController) TextController.getController()).setNodeText(lowerNode, part);
+			MLogicalStyleController.getController().setStyle(lowerNode, LogicalStyleModel.getStyle(node));
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 			    .getController();
 			nodeStyleController.copyStyle(node, lowerNode);

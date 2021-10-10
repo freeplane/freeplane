@@ -101,6 +101,8 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.NodeItemRelation;
@@ -558,6 +560,7 @@ public class MTextController extends TextController {
 		    parent.getIndex(node) + 1, node.isLeft());
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
+		MLogicalStyleController.getController().setStyle(lowerNode, LogicalStyleModel.getStyle(node));
 		nodeStyleController.copyStyle(node, lowerNode);
 		setNodeObject(lowerNode, newLowerContent);
 	}
