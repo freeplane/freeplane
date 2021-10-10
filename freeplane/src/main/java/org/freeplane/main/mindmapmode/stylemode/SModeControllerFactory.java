@@ -23,6 +23,8 @@ import java.awt.EventQueue;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -34,6 +36,7 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
@@ -166,6 +169,15 @@ public class SModeControllerFactory {
 		    .getController()).getIconToolBarScrollPane());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController()
 		    .getStatusBar());
+		Box closingButtons = Box.createHorizontalBox();
+		closingButtons.add(Box.createHorizontalGlue());
+		JButton okButton = TranslatedElementFactory.createButton(controller.getAction("styledialog.ok"), "styledialog.ok.text");
+		closingButtons.add(okButton);
+		closingButtons.add(Box.createHorizontalStrut(10));
+		JButton cancelButton = TranslatedElementFactory.createButton(controller.getAction("styledialog.cancel"), "styledialog.cancel.text");
+		closingButtons.add(cancelButton);
+		closingButtons.add(Box.createHorizontalGlue());
+		userInputListenerFactory.addToolBar("/closingbuttons", ViewController.BOTTOM, closingButtons);
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));
 		MapStyle.install(false);
 		controller.addModeController(modeController);

@@ -412,8 +412,8 @@ abstract public class FrameController implements ViewController {
 					UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of(toolBar);
 					if (dispatcher != null) {
 						dispatcher.resetVisible();
-						toolbarPanel[j].add(toolBar, i++);
 					}
+					toolbarPanel[j].add(toolBar, i++);
 				}
 				toolbarPanel[j].revalidate();
 				toolbarPanel[j].repaint();
