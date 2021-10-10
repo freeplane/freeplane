@@ -1,6 +1,8 @@
 ===============================
 1.9.11
 ===============================
+Apply ancestor/descendant filter flags to revealed nodes (e.g. goto connector)
+Activate undo / redo in inline editor (hot keys control+Z/control+Y)
 Bug fixes
 ==============================
 1.9.10
