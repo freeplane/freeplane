@@ -204,8 +204,7 @@ public class ResourceBundles extends ResourceBundle {
 	}
 
 	private void removeUserDefinedString(final String key) {
-		if (userLanguageResources.contains(key)) {
-			userLanguageResources.remove(key);
+		if (userLanguageResources.remove(key) != null) {
 			userResourcesHaveChanged = true;
 		}
 	}
