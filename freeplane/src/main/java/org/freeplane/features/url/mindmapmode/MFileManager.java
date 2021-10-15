@@ -261,11 +261,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public MFileManager() {
-		super();
-		setLastCurrentDir(new File(getDefaultSaveDirFromPrefs()));
+		super(new File(getDefaultSaveDirFromPrefs()));
 	}
 
-	private String getDefaultSaveDirFromPrefs() {
+	private static String getDefaultSaveDirFromPrefs() {
 		return ResourceController.getResourceController().getProperty(DEFAULT_SAVE_DIR_PROPERTY);
 	}
 
@@ -440,7 +439,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return null;
 		}
 		final File input = chooser.getSelectedFile();
-		setLastCurrentDir(input.getParentFile());
 		return LinkController.toLinkTypeDependantURI(file, input);
 	}
 
@@ -617,7 +615,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		for (int i = 0; i < selectedFiles.length; i++) {
 			final File theFile = selectedFiles[i];
 			try {
-				setLastCurrentDir(theFile.getParentFile());
 				Controller.getCurrentModeController().getMapController().openMap(Compat.fileToUrl(theFile));
 			}
 			catch (final Exception ex) {
@@ -771,13 +768,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getMindMapFileChooser();
-		if (getMapsParentFile(map) == null) {
+		File mapFile = map.getFile();
+        if (mapFile == null || mapFile.getParentFile() == null) {
 			File defaultFile = new File(getFileNameProposal(map)
 			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 			chooser.setSelectedFile(defaultFile);
 		}
 		else {
-			chooser.setSelectedFile(map.getFile());
+			chooser.setSelectedFile(mapFile);
 		}
 		chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
 		final int returnVal = chooser
@@ -786,7 +784,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return false;
 		}
 		File f = chooser.getSelectedFile();
-		setLastCurrentDir(f.getParentFile());
 		final String ext = FileUtils.getExtension(f.getName());
 		if (!ext.equals(org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
@@ -801,7 +798,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		// extra backup in this case.
-		File oldFile = map.getFile();
+		File oldFile = mapFile;
 		if (oldFile != null) {
 			oldFile = oldFile.getAbsoluteFile();
 		}

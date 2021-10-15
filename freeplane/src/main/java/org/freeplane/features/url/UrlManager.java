@@ -22,6 +22,8 @@ package org.freeplane.features.url;
 import static java.util.Arrays.asList;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -125,7 +127,12 @@ public class UrlManager implements IExtension {
 		});
 	}
 
-	protected void init() {
+	protected UrlManager(File file) {
+        this();
+        lastCurrentDir = file;
+    }
+
+    protected void init() {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		createActions();
@@ -159,6 +166,12 @@ public class UrlManager implements IExtension {
                     });
             };
             chooser.addCustomizer(closeDialogCustomizer);
+            chooser.addHierarchyListener(new  HierarchyListener() {
+                @Override
+                public void hierarchyChanged(HierarchyEvent e) {
+                    if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) && ! chooser.isShowing()) {
+                        setLastCurrentDir(chooser.getCurrentDirectory());
+                    }}});
             return chooser;
         });
 
@@ -182,18 +195,17 @@ public class UrlManager implements IExtension {
 	private void updateLastDirectoryFromMap(final MapModel map) {
 	    if(map == null || map.containsExtension(DocuMapAttribute.class))
 	        return;
-		final File parentFile = getMapsParentFile(map);
-		if (parentFile != null) {
-			this.lastCurrentDir = parentFile;
+		final File lastChoosenDir = LastChoosenDirectory.get(map);
+		if (lastChoosenDir != null) {
+			this.lastCurrentDir = lastChoosenDir;
 		}
 	}
 
-	protected File getMapsParentFile(final MapModel map) {
-		if ((map != null) && (map.getFile() != null) && (map.getFile().getParentFile() != null)) {
-			return map.getFile().getParentFile();
-		}
-		return null;
-	}
+    private void updateLastDirectory(final MapModel map, final File lastChoosenDir) {
+        if(map == null || lastChoosenDir == null || map.containsExtension(DocuMapAttribute.class))
+            return;
+        LastChoosenDirectory.set(map, lastChoosenDir);
+    }
 
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
@@ -517,8 +529,9 @@ public class UrlManager implements IExtension {
 		return url;
 	}
 
-	public void setLastCurrentDir(final File lastCurrentDir) {
-		this.lastCurrentDir = lastCurrentDir;
+	private void setLastCurrentDir(final File lastChoosenDir) {
+		this.lastCurrentDir = lastChoosenDir;
+		updateLastDirectory(Controller.getCurrentController().getMap(), lastChoosenDir);
 	}
 
 	protected void setURL(final MapModel map, final URL url) {
