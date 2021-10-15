@@ -19,17 +19,26 @@
  */
 package org.freeplane.features.mode.mindmapmode;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.FocusRequestor;
+import org.freeplane.core.ui.components.InfoArea;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -49,11 +58,11 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String keyset = JOptionPane.showInputDialog(TextUtils.getText("enter_keyset_name"));
+	    final File acceleratorsUserDirectory = LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory();
+	    String keyset = inputPresetName(acceleratorsUserDirectory);
 		if (keyset == null || keyset.equals("")) {
 			return;
 		}
-		final File acceleratorsUserDirectory = LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory();
 		final File keysetFile = new File(acceleratorsUserDirectory, keyset + ".properties");
 		if (keysetFile.exists()) {
 			final int confirm = JOptionPane.showConfirmDialog(UITools.getMenuComponent(), TextUtils
@@ -75,4 +84,29 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("can_not_save_key_set"));
 		}
 	}
+
+    private String inputPresetName(final File acceleratorsUserDirectory) {
+        JTextArea info= new InfoArea();
+        info.setColumns(40);
+        info.setLineWrap(true);
+        info.setWrapStyleWord(false);
+        info.setFont(info.getFont().deriveFont(Font.ITALIC));
+        info.setAlignmentX(Component.CENTER_ALIGNMENT);
+        info.setText(TextUtils.format("loadHotKeysHelp", acceleratorsUserDirectory.getAbsolutePath()));
+
+        JTextField inputField = new JTextField(40);
+        inputField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        Box dialogComponents = Box.createVerticalBox();
+        dialogComponents.add(inputField);
+        dialogComponents.add(info);
+        
+        
+        FocusRequestor.requestFocus(inputField);
+        int result = JOptionPane.showConfirmDialog(UITools.getMenuComponent(), dialogComponents, 
+                TextUtils.getText("enter_keyset_name"), 
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        String presetName = result == JOptionPane.OK_OPTION ? inputField.getText() : "";
+        return presetName;
+    }
 }
