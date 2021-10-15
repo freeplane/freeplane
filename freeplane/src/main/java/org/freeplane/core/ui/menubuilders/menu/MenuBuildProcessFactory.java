@@ -87,6 +87,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		uiBuilder.addBuilderPair("radio_button_group", //
 			    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
 			        resourceAccessor), JRadioButtonGroupComponentRemover.INSTANCE);
+		uiBuilder.addBuilderPair("noActions", new EmptyMenuItemBuilder(resourceAccessor), destroyer);
 
         final RecursiveMenuStructureProcessor menuItemBuilder = new RecursiveMenuStructureProcessor();
         menuItemBuilder.setDefaultBuilderPair(menuBuilder, destroyer);

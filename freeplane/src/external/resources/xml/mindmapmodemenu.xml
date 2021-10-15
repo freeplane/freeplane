@@ -268,7 +268,6 @@
               </Entry>
             </Entry>
           </Entry>
-          <Entry builder="noActions" />
         </Entry>
 		<Entry name="view">
 			<Entry name="NewMapViewAction" />
@@ -423,6 +422,7 @@
             </Entry>
 				<Entry name="styleActions" textKey="menu_applyStyle">
 					<Entry builder="style_actions" />
+					<Entry builder="noActions" />
 				</Entry>
 				<Entry name="automatic_layout">
 					<Entry name="AutomaticLayoutControllerAction.HEADINGS" />
@@ -447,7 +447,6 @@
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewChild" />
 			</Entry>
-			<Entry builder="noActions" />
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB" />

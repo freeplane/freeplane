@@ -126,6 +126,7 @@ public class MIconController extends IconController {
 			if (isEmoji && ! areEmojisAvailbleFromMenu())
 				return;
 		    final Entry item = new Entry();
+		    item.setName("icons");
 		    EntryAccessor entryAccessor = new EntryAccessor();
 		    entryAccessor.drawMenuIconAlways(item);
 		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
@@ -133,7 +134,8 @@ public class MIconController extends IconController {
 		    if(isEmoji)
 		    	entryAccessor.processUiOnPopup(item);
 		    target.addChild(item);
-		    for (final IconGroup childGroup : group.getGroups()) {
+		    List<IconGroup> childGroups = group.getGroups();
+            for (final IconGroup childGroup : childGroups) {
 		        if(childGroup.isLeaf()) {
 		            MindIcon icon = childGroup.getGroupIcon();
 		            Entry actionItem = entryAccessor.addChildAction(item, iconActions.get(icon.getName()));
@@ -142,6 +144,11 @@ public class MIconController extends IconController {
 		        else
 		            addIconGroup(item, childGroup, isEmoji);
 		    }
+            if(childGroups.isEmpty()) {
+                Entry noActions = new Entry();
+                noActions.setBuilders("noActions");
+                item.addChild(noActions );
+            }
 		}
 
 		@Override
