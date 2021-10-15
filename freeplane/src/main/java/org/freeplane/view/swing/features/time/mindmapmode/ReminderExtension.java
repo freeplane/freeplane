@@ -218,7 +218,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
     }
 
     private void updateStateIcon(final NodeModel parent, final ClockState state) {
-        if (alreadyExecuted || !isAncestorNode(parent)) {
+        if (state != null && alreadyExecuted || !isAncestorNode(parent)) {
             return;
         }
         if(state != null)
