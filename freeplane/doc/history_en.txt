@@ -3,6 +3,7 @@
 ===============================
 Apply ancestor/descendant filter flags to revealed nodes (e.g. goto connector)
 Activate undo / redo in inline editor (hot keys control+Z/control+Y)
+Outline view should always create new child node as the first child
 Bug fixes
 ==============================
 1.9.10
