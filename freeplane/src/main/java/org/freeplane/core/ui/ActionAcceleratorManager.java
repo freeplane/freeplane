@@ -171,7 +171,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	public void setDefaultAccelerator(final AFreeplaneAction action, String accelerator) {
 		final String shortcutKey = getPropertyKey(action.getKey());
-		if (null == getShortcut(shortcutKey)) {
+		String registeredAccelerator = getShortcut(shortcutKey);
+        if (null == registeredAccelerator) {
 			if(overwritttenDefaultProps.containsKey(shortcutKey))
 				accelerator = overwritttenDefaultProps.getProperty(shortcutKey);
 			accelerator = replaceModifiersForMac(accelerator);
@@ -179,6 +180,10 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			KeyStroke ks = KeyStroke.getKeyStroke(accelerator);
 			setAccelerator(action, ks);
 		}
+        else if(getAccelerator(action) == null) {
+            KeyStroke ks = KeyStroke.getKeyStroke(registeredAccelerator);
+            setAccelerator(action, ks);
+        }
 	}
 
 	@Override
