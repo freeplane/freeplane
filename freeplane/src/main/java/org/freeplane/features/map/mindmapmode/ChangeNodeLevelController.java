@@ -19,7 +19,9 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -28,9 +30,12 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.ui.IMapViewManager;
 
 /**
@@ -179,9 +184,35 @@ public class ChangeNodeLevelController {
 			selectedParent = grandParent;
 			changeSide = false;
 		}
+        final MapStyleModel mapStyleModel = MapStyleModel.getExtension(selectedParent.getMap());
+        MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
+		List<List<NodeModel>> movedChildren = layoutType == MapViewLayout.OUTLINE ? findMovedChildren(selectedNode.getParentNode(), selectedNodes) : Collections.emptyList();
 		for (final NodeModel node : selectedNodes)
 			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 		mapController.moveNodes(selectedNodes, selectedParent, position, leftSide, changeSide);
+		if(layoutType == MapViewLayout.OUTLINE) {
+		    for(int i = 0; i < selectedNodes.size(); i++) {
+		        mapController.moveNodes(movedChildren.get(i), selectedNodes.get(i), 0, leftSide, false);
+		    }
+		}
 		mapController.selectMultipleNodes(selectedNode, selectedNodes);
 	}
+
+    private List<List<NodeModel>> findMovedChildren(NodeModel parent, List<NodeModel> movedNodes) {
+        List<List<NodeModel>> movedChildren = new ArrayList<>(movedNodes.size());
+        int movedNodeCounter = 0;
+        List<NodeModel> children = parent.getChildren();
+        for(NodeModel node : children) {
+            if(movedNodeCounter < movedNodes.size() && node == movedNodes.get(movedNodeCounter)) {
+                movedNodeCounter++;
+                movedChildren.add(new ArrayList<>());
+            }
+            else if(movedNodeCounter > 0) {
+                List<NodeModel> list = movedChildren.get(movedNodeCounter - 1);
+                if(list.size() > 0 || ! SummaryNode.isSummaryNode(node))
+                    list.add(node);
+            }
+        }
+        return movedChildren;
+    }
 }
