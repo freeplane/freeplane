@@ -39,9 +39,13 @@ public class AllDescendantsConditionDecorator extends DecoratedCondition impleme
 	}
 
 	public boolean checkNode(final NodeModel node) {
-	    return node.hasChildren() && node.getChildren().stream().allMatch(child -> 
-	        originalCondition.checkNode(child) && checkNode(child));
+	    return  node.hasChildren() && checkDescentants(node);
 	}
+
+    private boolean checkDescentants(final NodeModel node) {
+        return node.getChildren().stream().allMatch(child -> 
+	        originalCondition.checkNode(child) && checkDescentants(child));
+    }
 
     @Override
     public boolean checksDescendants() {
