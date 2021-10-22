@@ -64,11 +64,11 @@ class QuickHighlightAction extends AFreeplaneAction {
 		final boolean isSelected = ! isModelSelected();
 		filterController.getHighlightNodes().setSelected(isSelected);
 		if(isSelected){
-			filterController.setHighlightCondition(condition);
+			filterController.setHighlightCondition(condition, null);
 		}
 		else{
 			setSelected(false);
-			filterController.setHighlightCondition(null);
+			filterController.setHighlightCondition(null, null);
 		}
 	}
 	private boolean isModelSelected() {

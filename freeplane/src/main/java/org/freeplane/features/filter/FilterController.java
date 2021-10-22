@@ -90,6 +90,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
@@ -249,6 +250,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	private final ButtonModel showDescendants;
 	private final ButtonModel highlightNodes;
 	private ASelectableCondition highlightCondition;
+	private ConditionalStyleModel highlightedConditionContext;
 	private JComboBox activeFilterConditionComboBox;
 	private final FilterConditionEditor quickEditor;
 
@@ -294,7 +296,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 			public void actionPerformed(ActionEvent e) {
 				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
 				if(getHighlightNodes().isSelected()){
-					setHighlightCondition( quickEditor.getCondition());
+					setHighlightCondition( quickEditor.getCondition(), null);
 				}
 			}
 
@@ -672,11 +674,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		return highlightNodes;
 	}
 
-	public ASelectableCondition getHighlightCondition() {
-    	return highlightCondition;
-    }
-
-	void setHighlightCondition(final ASelectableCondition condition) {
+	void setHighlightCondition(final ASelectableCondition condition, ConditionalStyleModel highlightedConditionContext) {
+		this.highlightedConditionContext = highlightedConditionContext;
 		if(condition != null){
 			this.highlightCondition = condition;
 			getHighlightNodes().setSelected(true);
@@ -840,8 +839,16 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		updateSettingsFromHistory();
     }
 
-	public boolean isNodeHighlighted(NodeModel node) {
-		return highlightCondition != null && highlightCondition.checkNode(node);
+	private boolean isNodeHighlighted(NodeModel node) {
+		try {
+			if(highlightedConditionContext != null) 
+				highlightedConditionContext.setDisabled(true);
+			return highlightCondition != null && highlightCondition.checkNode(node);
+		}
+		finally {
+			if(highlightedConditionContext != null) 
+				highlightedConditionContext.setDisabled(false);
+		}
     }
 
 	public ButtonModel getApproximateMatchingButtonModel() {

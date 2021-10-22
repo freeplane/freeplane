@@ -41,7 +41,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
 		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map, conditionalStyleModel);
-		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, tableModel, variant);
+		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, conditionalStyleModel, tableModel, variant);
 		if(conditionalStyleTable.getRowCount() > 0){
 			conditionalStyleTable.setRowSelectionInterval(0, 0);
 		}

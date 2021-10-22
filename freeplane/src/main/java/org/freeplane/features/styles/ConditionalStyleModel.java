@@ -118,14 +118,23 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		for (Item style : prototypeStyles)
 			styles.add(new Item(style));
 	}
-	private boolean isGetStylesCalled;
+	private boolean isDisabled;
 	
+	
+	public boolean isDisabled() {
+		return isDisabled;
+	}
+
+	public void setDisabled(boolean isDisabled) {
+		this.isDisabled = isDisabled;
+	}
+
 	public Collection<IStyle> getStyles(NodeModel node){
-		if(isGetStylesCalled){
+		if(isDisabled){
 			return Collections.emptyList();
 		}
 		try{
-			isGetStylesCalled = true;
+			isDisabled = true;
 			Collection<IStyle> matchingStyles = new LinkedHashSet<IStyle>();
 			for(Item item : styles){
 				final ASelectableCondition condition = item.getCondition();
@@ -139,7 +148,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			return matchingStyles;
 		}
 		finally{
-			isGetStylesCalled = false;
+			isDisabled = false;
 		}
 	}
 	

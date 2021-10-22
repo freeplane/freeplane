@@ -61,7 +61,7 @@ class EditFilterAction extends AFreeplaneAction {
 	    private static final long serialVersionUID = 1L;
 
 		public FilterComposerDialog() {
-	        super(TextUtils.getText("filter_dialog"), false, Variant.FILTER_COMPOSER);
+	        super(TextUtils.getText("filter_dialog"), false, Variant.FILTER_COMPOSER, null);
         }
 
 		protected DefaultComboBoxModel createModel() {

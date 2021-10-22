@@ -25,6 +25,7 @@ import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
+import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
 
@@ -38,6 +39,7 @@ class ConditionalStyleTable extends JTable {
 	private DefaultConditionRenderer conditionRenderer;
     private FilterComposerDialog filterComposerDialog;
     private Variant filterComposerVariant;
+	private ConditionalStyleModel conditionalStyleModel;
 	
 	@SuppressWarnings("serial")
     private class ConditionEditor extends AbstractCellEditor
@@ -84,9 +86,10 @@ class ConditionalStyleTable extends JTable {
 		}
 	}
 	
-	ConditionalStyleTable(MapStyleModel styleModel, TableModel tableModel, Variant filterComposerVariant) {
+	ConditionalStyleTable(MapStyleModel styleModel, ConditionalStyleModel conditionalStyleModel, TableModel tableModel, Variant filterComposerVariant) {
 	    super(tableModel);
 	    this.styleModel = styleModel;
+		this.conditionalStyleModel = conditionalStyleModel;
         this.filterComposerVariant = filterComposerVariant;
 	    setCellSelectionEnabled(false);
 	    setRowSelectionAllowed(true);
@@ -140,7 +143,7 @@ class ConditionalStyleTable extends JTable {
     }
 
     private FilterComposerDialog createFilterComposer() {
-        FilterComposerDialog filterComposerDialog = new FilterComposerDialog(filterComposerVariant);
+        FilterComposerDialog filterComposerDialog = new FilterComposerDialog(filterComposerVariant, conditionalStyleModel);
         filterComposerDialog.addCondition(null);
         filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
         for(int i = 0; i < getRowCount(); i++){
