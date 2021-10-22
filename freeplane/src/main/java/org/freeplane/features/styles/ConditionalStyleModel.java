@@ -3,7 +3,6 @@ package org.freeplane.features.styles;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICombinedCondition;
@@ -120,17 +118,14 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		for (Item style : prototypeStyles)
 			styles.add(new Item(style));
 	}
-	private final ThreadLocal<HashSet<NodeModel>> checkedNodes = ThreadLocal.withInitial(() -> new HashSet<>());
+	private boolean isGetStylesCalled;
 	
 	public Collection<IStyle> getStyles(NodeModel node){
-		HashSet<NodeModel> threadNodes = checkedNodes.get();
-        if(threadNodes.size() > 10){
-            LogUtils.warn(new StackOverflowError("Too many checked nodes"));
-			return Collections.emptyList();
-		} else if (! threadNodes.add(node)) {
+		if(isGetStylesCalled){
 			return Collections.emptyList();
 		}
 		try{
+			isGetStylesCalled = true;
 			Collection<IStyle> matchingStyles = new LinkedHashSet<IStyle>();
 			for(Item item : styles){
 				final ASelectableCondition condition = item.getCondition();
@@ -144,7 +139,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			return matchingStyles;
 		}
 		finally{
-		    threadNodes.remove(node);
+			isGetStylesCalled = false;
 		}
 	}
 	
