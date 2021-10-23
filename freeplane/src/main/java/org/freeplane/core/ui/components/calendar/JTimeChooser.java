@@ -50,9 +50,6 @@ public class JTimeChooser extends Box{
     	minuteChooser.setValue(calendar.get(Calendar.MINUTE));
     }
 
-	/**
-	 * Default JCalendar constructor.
-	 */
 	public JTimeChooser() {
 		super(BoxLayout.X_AXIS);
 		setName("JTimeChooser");
