@@ -574,8 +574,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	};
 
 	private static final long serialVersionUID = 1L;
-	static boolean standardDrawRectangleForSelection;
-	private Color standardSelectionRectangleColor;
+	static private boolean drawsRectangleForSelection;
+	static private Color selectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
@@ -618,7 +618,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    final ResourceController resourceController = ResourceController.getResourceController();
 	    final String drawCircle = resourceController.getProperty(
 	            ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
-	    MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
+	    MapView.drawsRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
 	    final String printOnWhite = resourceController
 	            .getProperty("printonwhitebackground");
 	    MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
@@ -762,7 +762,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					return;
 				}
 				if (propertyName.equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
-					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
+					MapView.drawsRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					mapView.repaintSelecteds();
 					return;
 				}
@@ -1830,12 +1830,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelecteds(final Graphics2D g) {
-		if (!MapView.standardDrawRectangleForSelection || isPrinting()) {
+		if (!MapView.drawsRectangleForSelection || isPrinting()) {
 			return;
 		}
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
-		g.setColor(getStandardSelectionRectangleColor());
+		g.setColor(getSelectionRectangleColor());
 		g.setStroke(NodeHighlighter.DEFAULT_STROKE);
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
@@ -1848,7 +1848,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void updateSelectionColors() {
 	    ResourceController resourceController = ResourceController.getResourceController();
-	    standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
+	    selectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
 	            MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
 	}
 
@@ -1873,7 +1873,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void highlightSelected(final Graphics2D g, final NodeView selected, final PaintingMode[] paintedModes) {
 		final java.awt.Shape highlightClip;
-		if (MapView.standardDrawRectangleForSelection)
+		if (MapView.drawsRectangleForSelection)
 			highlightClip = getRoundRectangleAround(selected, 4, 15);
 		else
 			highlightClip = getRoundRectangleAround(selected, 4, 2);
@@ -2396,8 +2396,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         return filter;
     }
 
-    Color getStandardSelectionRectangleColor() {
-        return standardSelectionRectangleColor;
+    static public Color getSelectionRectangleColor() {
+        return selectionRectangleColor;
     }
 
+    static public boolean drawsRectangleForSelection() {
+        return drawsRectangleForSelection;
+    }
 }

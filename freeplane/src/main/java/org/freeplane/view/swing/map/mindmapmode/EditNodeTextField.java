@@ -731,7 +731,8 @@ public class EditNodeTextField extends EditNodeBase {
 		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
 		final int textFieldBorderWidth = 2;
-		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeTextColor));
+		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, 
+				MapView.drawsRectangleForSelection() ? MapView.getSelectionRectangleColor() : nodeView.getTextBackground()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
 		textFieldMinimumSize.width = 1 + textFieldMinimumSize.width * 21 / 20;
         if(textFieldMinimumSize.width < extraWidth)

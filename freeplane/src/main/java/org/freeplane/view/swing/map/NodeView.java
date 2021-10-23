@@ -1586,7 +1586,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	boolean useSelectionColors() {
-		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isPrinting();
+		return isSelected() && !MapView.drawsRectangleForSelection() && !map.isPrinting();
 	}
 
 	@Override
