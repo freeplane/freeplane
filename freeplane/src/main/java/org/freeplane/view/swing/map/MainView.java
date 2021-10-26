@@ -418,8 +418,10 @@ public class MainView extends ZoomableLabel {
 	}
 
 	void updateTextColor(final NodeView node) {
-		Color newForeground = unselectedForeground = NodeStyleController.getController(node.getMap().getModeController()).getColor(
-				node.getModel(), node.getStyleOption());
+		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
+		Color newForeground = styleController.getColor(node.getModel(), node.getStyleOption());
+		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE) 
+				: newForeground;
 		if(! Objects.equals(getForeground(), newForeground)) {
 			setForeground(newForeground);
 			revalidate();
