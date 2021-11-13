@@ -798,7 +798,8 @@ public class EditNodeTextField extends EditNodeBase {
 		parent.setPreferredSize(newParentSize);
 		parent.setText("");
         parent.setHorizontalAlignment(JLabel.LEFT);
-        nodeView.setTextBackground(getBackground());
+        if(getEditControl().getEditType() == EditedComponent.TEXT)
+        	nodeView.setTextBackground(getBackground());
 
 		if(! layoutMapOnTextChange) {
 			mapView.doLayout();
