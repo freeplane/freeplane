@@ -345,9 +345,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 
 	public Color getBackground(final MapModel map) {
-		MapStyleModel styleModel = map.getExtension(MapStyleModel.class);
-		if(styleModel == null)
-		    styleModel = map.getRootNode().getExtension(MapStyleModel.class);
+		MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final Color backgroundColor = styleModel != null ? styleModel.getBackgroundColor() : null;
 		if (backgroundColor != null) {
 			return backgroundColor;
@@ -359,7 +357,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	public URI getBackgroundImage(MapModel map) {
-	    MapStyleModel styleModel = map.getRootNode().getExtension(MapStyleModel.class);
+		MapStyleModel styleModel = MapStyleModel.getExtension(map);
 	    String uriString = styleModel.getProperty(MapStyle.RESOURCES_BACKGROUND_IMAGE);
 	    if(uriString != null) {
 	        try {

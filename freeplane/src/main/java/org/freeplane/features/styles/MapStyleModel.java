@@ -117,7 +117,9 @@ public class MapStyleModel implements IExtension {
 	}
 
 	public static MapStyleModel getExtension(final MapModel map) {
-		final MapStyleModel model = MapStyleModel.getExtension(map.getRootNode());
+		MapStyleModel model = map.getRootNode().getExtension(MapStyleModel.class);
+		if(model == null)
+			model = map.getExtension(MapStyleModel.class);
 		return Objects.requireNonNull(model);
 	}
 
@@ -126,7 +128,7 @@ public class MapStyleModel implements IExtension {
 	}
 
 	static MapStyleModel getExtension(final NodeModel node) {
-		return node.getExtension(MapStyleModel.class);
+		return getExtension(node.getMap());
 	}
 
 	private Color backgroundColor;
@@ -148,11 +150,7 @@ public class MapStyleModel implements IExtension {
 		final NodeModel rootNode = styleMap.getRootNode();
 		createNodeStyleMap(rootNode);
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
-		final MapStyleModel defaultStyleModel = new MapStyleModel();
-		defaultStyleModel.styleNodes = styleNodes;
-		defaultStyleModel.defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 		initStylesComboBoxModel();
-		rootNode.putExtension(defaultStyleModel);
 	}
 
 	public void refreshStyles() {
