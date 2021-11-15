@@ -48,6 +48,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
@@ -224,7 +225,12 @@ public class UrlManager implements IExtension {
 		}
 		else {
 			LogUtils.severe(ex);
-			UITools.errorMessage(ex);
+			if (ExceptionUtils.getRootCause(ex) instanceof FileNotFoundException) {
+				UITools.errorMessage(ExceptionUtils.getRootCauseMessage(ex));
+				System.out.println(ExceptionUtils.getRootCauseMessage(ex));
+			} else {
+				UITools.errorMessage(ex);
+			}
 		}
 	}
 
