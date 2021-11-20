@@ -109,7 +109,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				@Override
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 					final NodeModel node = (NodeModel) parent;
-					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+					final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 					if(mapStyleModel != null)
 						loadConditionalStyles(mapStyleModel.getConditionalStyleModel(), dom);
 				}
@@ -158,7 +158,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					if(isContentEmpty(content))
 						return;
 					final NodeModel node = (NodeModel) userObject;
-					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+					final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 					if (mapStyleModel == null) {
 						return;
 					}
@@ -237,7 +237,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				return;
 			}
 			NodeModel node = (NodeModel) userObject;
-			loadMapStyleProperties(MapStyleModel.getExtension(node), xml);
+			MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
+			Objects.requireNonNull(mapStyleModel);
+			loadMapStyleProperties(mapStyleModel, xml);
        }
 
 		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
@@ -381,7 +383,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	public void onCreate(final MapModel map) {
 	    final NodeModel rootNode = map.getRootNode();
-	    final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
+	    final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(rootNode);
 	    if (mapStyleModel != null && mapStyleModel.getStyleMap() != null) {
 	        copyMapStylesNoUndoNoRefresh(map);
 	    }

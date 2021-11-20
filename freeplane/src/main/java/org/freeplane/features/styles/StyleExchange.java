@@ -90,7 +90,7 @@ class StyleExchange {
     	final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
     	source.getStyleMap().putExtension(IUndoHandler.class, undoHandler);
     	final NodeModel targetRoot = targetMap.getRootNode();
-    	final MapStyleModel target = MapStyleModel.getExtension(targetRoot);
+    	final MapStyleModel target = MapStyleModel.getExtensionOrNull(targetRoot);
     	if(target == null){
     		targetRoot.addExtension(source);
     	}

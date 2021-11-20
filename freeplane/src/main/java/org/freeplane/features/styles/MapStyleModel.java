@@ -127,8 +127,8 @@ public class MapStyleModel implements IExtension {
 		return styleMap;
 	}
 
-	static MapStyleModel getExtension(final NodeModel node) {
-		return getExtension(node.getMap());
+	static MapStyleModel getExtensionOrNull(final NodeModel node) {
+		return node.getExtension(MapStyleModel.class);
 	}
 
 	private Color backgroundColor;
