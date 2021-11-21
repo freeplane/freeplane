@@ -198,7 +198,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		newOrChangedMapView.setName((key + extension));
 		newOrChangedMapView.setName((key + extension));
 		if (!mapViewVector.contains(newOrChangedMapView)) {
-			mapViewVector.add(newOrChangedMapView);
+			int index = selectedMapView != null ? mapViewVector.indexOf(selectedMapView) + 1 : mapViewVector.size();
+			mapViewVector.add(index, newOrChangedMapView);
 		}
 	}
 
@@ -359,10 +360,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			changeToMapView((MapView) null);
 		}
 		else if(mapView == selectedMapView){
-			if (index >= mapViewVector.size() || index < 0) {
-				index = mapViewVector.size() - 1;
+			if (index > mapViewVector.size()) {
+				index = mapViewVector.size();
+			} else if (index <= 0) {
+				index = 1;
 			}
-			changeToMapView((mapViewVector.get(index)));
+			changeToMapView((mapViewVector.get(index - 1)));
 		}
 		mapViewChangeListeners.afterMapViewClose(mapView);
 	}
