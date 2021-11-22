@@ -489,16 +489,25 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 			openMapAction.putValue(Action.NAME, restorable);
 
 		String key = restorable.substring(0, separatorIndex);
-		String fileName = restorable.substring(separatorIndex);
+		String filePath = restorable.substring(separatorIndex);
 		String keyName = TextUtils.getText("open_as" + key, key);
 		openMapAction.putValue(Action.SHORT_DESCRIPTION, keyName);
-		openMapAction.putValue(Action.DEFAULT, fileName);
-		if(fileName.startsWith("::"))
-			fileName = fileName.substring(2);
+		openMapAction.putValue(Action.DEFAULT, filePath);
+		if(filePath.startsWith("::"))
+			filePath = filePath.substring(2);
 		else
-			fileName = fileName.substring(1);
-
-		openMapAction.putValue(Action.NAME, keyName + " " + fileName);
+			filePath = filePath.substring(1);
+		final int fileSeparatorIndex = filePath.lastIndexOf('/');
+		String actionName;
+		if(fileSeparatorIndex == -1) {
+			actionName = keyName + " "+ filePath;
+		}
+		else {
+			String fileName = filePath.substring(fileSeparatorIndex + 1);
+			String folderPath = filePath.substring(0, fileSeparatorIndex);
+			actionName = keyName + " " + fileName + " (" + folderPath + ")";
+		}
+		openMapAction.putValue(Action.NAME, actionName);
 
     }
 
