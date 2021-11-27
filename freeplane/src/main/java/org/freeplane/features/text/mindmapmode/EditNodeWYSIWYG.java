@@ -46,10 +46,12 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
+import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
@@ -63,7 +65,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
-		private StyleSheet customStyleSheet = new StyleSheet();
+		private StyleSheet ownStyleSheet = new StyleSheet();
 
 		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
 			super(base, title, frame);
@@ -115,7 +117,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void cancel() {
 			super.cancel();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			styleSheet.removeStyleSheet(customStyleSheet);
+			StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
 			getBase().getEditControl().cancel();
 		}
 
@@ -161,7 +163,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void split() {
 			super.split();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			styleSheet.removeStyleSheet(customStyleSheet);
+			StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
 			getBase().getEditControl().split(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 		}
@@ -173,7 +175,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		@Override
 		protected void submit() {
 			super.submit();
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyleSheet(customStyleSheet);
+			StyleSheetConfigurer.resetLinkedStyleSheets(htmlEditorPanel.getDocument().getStyleSheet(), 1);
 			if (htmlEditorPanel.needsSaving()) {
 				getBase().getEditControl().ok(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
@@ -187,12 +189,13 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	        splitButton.setVisible(enableSplit);
         }
 
-		public void updateStyleSheet(String rule) {
+		public void updateStyleSheet(String rule, StyleSheet customStyleSheet) {
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			styleSheet.removeStyleSheet(customStyleSheet);
-			customStyleSheet.removeStyle("body");
-			customStyleSheet.removeStyle("p");
-			customStyleSheet.addRule(rule);
+			StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
+			ownStyleSheet.removeStyle("body");
+			ownStyleSheet.removeStyle("p");
+			ownStyleSheet.addRule(rule);
+			styleSheet.addStyleSheet(ownStyleSheet);
 			styleSheet.addStyleSheet(customStyleSheet);
 		}
 	}
@@ -202,6 +205,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private String title;
 
 	private Font font;
+	
+	private StyleSheet customStyleSheet = NodeCss.EMPTY.getStyleSheet();
+	
 	private Color textColor = Color.BLACK;
 	private Dimension preferredContentSize = PREFERRED_CONTENT_SIZE;
 
@@ -230,6 +236,14 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	public void setTextColor(Color textColor) {
     	this.textColor = textColor;
     }
+	
+	public StyleSheet getCustomStyleSheet() {
+		return customStyleSheet;
+	}
+
+	public void setCustomStyleSheet(StyleSheet customStyleSheet) {
+		this.customStyleSheet = customStyleSheet;
+	}
 
 	public Dimension getPreferredContentSize() {
     	return preferredContentSize;
@@ -270,7 +284,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				editorPane.setForeground(textColor);
 				editorPane.setCaretColor(textColor);
 			}
-			htmlEditorWindow.updateStyleSheet(ruleBuilder.toString());
+			htmlEditorWindow.updateStyleSheet(ruleBuilder.toString(), customStyleSheet);
 			final URL url = node.getMap().getURL();
 			if (url != null) {
 				document.setBase(url);

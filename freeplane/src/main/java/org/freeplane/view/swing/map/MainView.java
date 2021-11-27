@@ -72,6 +72,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
@@ -426,8 +427,14 @@ public class MainView extends ZoomableLabel {
 			setForeground(newForeground);
 			revalidate();
 		}
-	
 	}
+	
+	void updateCss(NodeView node) {
+		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
+		NodeCss newCss = styleController.getStyleSheet(node.getModel(), node.getStyleOption());
+		setStyleSheet(newCss.css, newCss.getStyleSheet());
+	}
+
 
 
 	void updateHorizontalTextAlignment(NodeView node) {
@@ -838,4 +845,5 @@ public class MainView extends ZoomableLabel {
 			repaint();
 		}
 	}
+
 }

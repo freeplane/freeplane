@@ -41,6 +41,8 @@ public class ZoomableLabel extends JLabel {
 
 	private int minimumWidth;
 	private int maximumWidth;
+	private String css = "";
+
 
 	public int getZoomedIconWidth() {
 		final Icon icon = getIcon();
@@ -173,10 +175,17 @@ public class ZoomableLabel extends JLabel {
 		}
     }
 	
-	public void setStyleSheet(StyleSheet styleSheet) {
-		StyleSheet old = (StyleSheet) getClientProperty(StyleSheet.class);
-		putClientProperty(StyleSheet.class, styleSheet);
-		firePropertyChange(CUSTOM_CSS, old, styleSheet);
+	public void setStyleSheet(String css, StyleSheet styleSheet) {
+		if(! this.css.equals(css)) {
+			StyleSheet old = (StyleSheet) getClientProperty(StyleSheet.class);
+			putClientProperty(StyleSheet.class, styleSheet);
+			this.css = css;
+			if(HtmlUtils.isHtml(getText())) {
+				firePropertyChange(CUSTOM_CSS, old, styleSheet);
+				revalidate();
+				repaint();
+			}
+		}
 	}
 	
 	protected boolean areInsetsFixed() {

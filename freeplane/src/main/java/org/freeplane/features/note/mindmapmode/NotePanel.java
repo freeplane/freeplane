@@ -36,6 +36,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
+import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
@@ -67,7 +68,7 @@ class NotePanel extends JPanel {
 	private final NoteDocumentListener noteDocumentListener;
 
     private final NoteManager noteManager;
-    private final StyleSheet customStyleSheet;
+    private final StyleSheet ownStyleSheet;
 
     private FocusListener sourcePanelFocusListener;
     
@@ -79,7 +80,7 @@ class NotePanel extends JPanel {
 		this.noteDocumentListener = noteDocumentListener;
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		this.htmlEditorPanel = createHtmlEditorComponent(noteManager);
-		this.customStyleSheet = new StyleSheet();
+		this.ownStyleSheet = new StyleSheet();
 		this.defaultCaretColor = htmlEditorPanel.getEditorPane().getCaretColor();
 		htmlEditorPanel.setVisible(false);
 		add(htmlEditorPanel);
@@ -314,12 +315,14 @@ class NotePanel extends JPanel {
 	    editorPane.setBackground(noteBackground);
 	}
 
-	void updateStyleSheet(String rule) {
-		StyleSheet styleSheet = getDocument().getStyleSheet();
-		styleSheet.removeStyleSheet(customStyleSheet);
-		customStyleSheet.removeStyle("body");
-		customStyleSheet.removeStyle("p");
-		customStyleSheet.addRule(rule);
+	void updateStyleSheet(String ownRule, StyleSheet customStyleSheet) {
+		HTMLDocument document = getDocument();
+		StyleSheet styleSheet = document.getStyleSheet();
+		StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
+		ownStyleSheet.removeStyle("body");
+		ownStyleSheet.removeStyle("p");
+		ownStyleSheet.addRule(ownRule);
+		styleSheet.addStyleSheet(ownStyleSheet);
 		styleSheet.addStyleSheet(customStyleSheet);
 	}
 

@@ -3,11 +3,14 @@ package org.freeplane.features.note;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.text.html.StyleSheet;
+
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -16,6 +19,7 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 public class NoteStyleAccessor {
 	final private String rule;
 	final private Color noteForeground;
+	final private NodeCss noteCss;
 	private Color noteBackground;
 	public NoteStyleAccessor(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
 		final Controller controller = modeController.getController();
@@ -28,6 +32,7 @@ public class NoteStyleAccessor {
 			final Font noteFont = style.getFont(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			this.noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			this.noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+			this.noteCss = style.getStyleSheet(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			final int alignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
 			final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
 			if(asHtmlFragment)
@@ -46,12 +51,18 @@ public class NoteStyleAccessor {
 			this.rule = "";
 			this.noteForeground = null;
 			this.noteBackground = null;
+			this.noteCss = NodeCss.EMPTY;
 		}
 
 	}
 	public String getNoteCSSStyle() {
 		return rule;
 	}
+	
+	public StyleSheet getNoteStyleSheet() {
+		return noteCss.getStyleSheet();
+	}
+	
 	public Color getNoteForeground() {
 		return noteForeground;
 	}

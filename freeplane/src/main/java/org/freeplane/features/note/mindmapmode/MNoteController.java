@@ -243,7 +243,7 @@ public class MNoteController extends NoteController {
 			cssBuilder.append("p {margin-top:0;}\n");
 		}
 	    
-	    notePanel.updateStyleSheet(cssBuilder.toString());;
+	    notePanel.updateStyleSheet(cssBuilder.toString(), noteStyleAccessor.getNoteStyleSheet());
 	}
 
 	boolean isEditing() {
