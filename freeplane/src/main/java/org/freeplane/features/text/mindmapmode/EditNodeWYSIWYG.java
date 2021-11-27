@@ -63,6 +63,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
+		private StyleSheet customStyleSheet = new StyleSheet();
 
 		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
 			super(base, title, frame);
@@ -114,8 +115,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void cancel() {
 			super.cancel();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("BODY");
+			styleSheet.removeStyleSheet(customStyleSheet);
 			getBase().getEditControl().cancel();
 		}
 
@@ -161,8 +161,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void split() {
 			super.split();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("body");
+			styleSheet.removeStyleSheet(customStyleSheet);
 			getBase().getEditControl().split(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 		}
@@ -174,8 +173,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		@Override
 		protected void submit() {
 			super.submit();
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("p");
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
+			htmlEditorPanel.getDocument().getStyleSheet().removeStyleSheet(customStyleSheet);
 			if (htmlEditorPanel.needsSaving()) {
 				getBase().getEditControl().ok(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
@@ -188,6 +186,15 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			splitButton.setEnabled(enableSplit);
 	        splitButton.setVisible(enableSplit);
         }
+
+		public void updateStyleSheet(String rule) {
+			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
+			styleSheet.removeStyleSheet(customStyleSheet);
+			customStyleSheet.removeStyle("body");
+			customStyleSheet.removeStyle("p");
+			customStyleSheet.addRule(rule);
+			styleSheet.addStyleSheet(customStyleSheet);
+		}
 	}
 	private static final Dimension PREFERRED_CONTENT_SIZE = new Dimension(600, 400);
 
@@ -263,10 +270,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				editorPane.setForeground(textColor);
 				editorPane.setCaretColor(textColor);
 			}
-			final StyleSheet styleSheet = document.getStyleSheet();
-			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("body");
-			styleSheet.addRule(ruleBuilder.toString());
+			htmlEditorWindow.updateStyleSheet(ruleBuilder.toString());
 			final URL url = node.getMap().getURL();
 			if (url != null) {
 				document.setBase(url);

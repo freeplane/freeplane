@@ -67,6 +67,7 @@ class NotePanel extends JPanel {
 	private final NoteDocumentListener noteDocumentListener;
 
     private final NoteManager noteManager;
+    private final StyleSheet customStyleSheet;
 
     private FocusListener sourcePanelFocusListener;
     
@@ -78,6 +79,7 @@ class NotePanel extends JPanel {
 		this.noteDocumentListener = noteDocumentListener;
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		this.htmlEditorPanel = createHtmlEditorComponent(noteManager);
+		this.customStyleSheet = new StyleSheet();
 		this.defaultCaretColor = htmlEditorPanel.getEditorPane().getCaretColor();
 		htmlEditorPanel.setVisible(false);
 		add(htmlEditorPanel);
@@ -312,8 +314,13 @@ class NotePanel extends JPanel {
 	    editorPane.setBackground(noteBackground);
 	}
 
-	StyleSheet getStyleSheet() {
-		return getDocument().getStyleSheet();
+	void updateStyleSheet(String rule) {
+		StyleSheet styleSheet = getDocument().getStyleSheet();
+		styleSheet.removeStyleSheet(customStyleSheet);
+		customStyleSheet.removeStyle("body");
+		customStyleSheet.removeStyle("p");
+		customStyleSheet.addRule(rule);
+		styleSheet.addStyleSheet(customStyleSheet);
 	}
 
 	void removeDocumentListener() {

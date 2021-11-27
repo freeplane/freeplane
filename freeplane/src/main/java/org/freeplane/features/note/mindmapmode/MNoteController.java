@@ -232,25 +232,18 @@ public class MNoteController extends NoteController {
 	}
 
 	void setDefaultStyle(NodeModel node) {
-	    final StyleSheet styleSheet = notePanel.getStyleSheet();
-	    styleSheet.removeStyle("body");
-	    styleSheet.removeStyle("p");
 	    // set default font for notes:
 	    final ModeController modeController = Controller.getCurrentModeController();
 	    final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
 		String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
 		notePanel.updateColors(noteStyleAccessor.getNoteForeground(), noteStyleAccessor.getNoteBackground());
-		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
-		styleSheet.addRule(bodyRule);
+		StringBuilder cssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
 	    if (ResourceController.getResourceController().getBooleanProperty(
 	        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
-			/* this is used for paragraph spacing. I put it here, too, as
-			 * the tooltip display uses the same spacing. But it is to be discussed.
-			 * fc, 23.3.2009.
-			 */
-			String paragraphtRule = "p {margin-top:0;}\n";
-			styleSheet.addRule(paragraphtRule);
+			cssBuilder.append("p {margin-top:0;}\n");
 		}
+	    
+	    notePanel.updateStyleSheet(cssBuilder.toString());;
 	}
 
 	boolean isEditing() {

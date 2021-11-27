@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
@@ -28,6 +29,8 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 
 @SuppressWarnings("serial")
 public class ZoomableLabel extends JLabel {
+	public static final String CUSTOM_CSS = "customCss";
+
 	private static final String TEXT_RENDERING_ICON = "TextRenderingIcon";
 
 	protected static final Graphics2D fmg;
@@ -169,6 +172,12 @@ public class ZoomableLabel extends JLabel {
 			setText(nodeText);
 		}
     }
+	
+	public void setStyleSheet(StyleSheet styleSheet) {
+		StyleSheet old = (StyleSheet) getClientProperty(StyleSheet.class);
+		putClientProperty(StyleSheet.class, styleSheet);
+		firePropertyChange(CUSTOM_CSS, old, styleSheet);
+	}
 	
 	protected boolean areInsetsFixed() {
 		return true;
