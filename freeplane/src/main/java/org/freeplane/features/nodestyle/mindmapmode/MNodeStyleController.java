@@ -466,6 +466,8 @@ public class MNodeStyleController extends NodeStyleController {
 
 	
 	public void setStyleSheet(NodeModel node, String css) {
+		if(css != null)
+			css = css.trim();
 		NodeCss old = node.getExtension(NodeCss.class);
 		if((old == null || old.css.isEmpty()) && (css == null || css.isEmpty()) 
 				|| old != null && old.css.equals(css))
