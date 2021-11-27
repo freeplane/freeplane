@@ -75,13 +75,12 @@ public class FModeControllerFactory {
 		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);
-		NodeStyleController.getController().addShapeGetter(new Integer(0),
-		    new IPropertyHandler<NodeGeometryModel, NodeModel>() {
-			    @Override
-				public NodeGeometryModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final NodeGeometryModel currentValue) {
-				    return NodeGeometryModel.FORK;
-			    }
-		    });
+		NodeStyleController.getController().shapeHandlers.addGetter(new Integer(0), new IPropertyHandler<NodeGeometryModel, NodeModel>() {
+		    @Override
+			public NodeGeometryModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final NodeGeometryModel currentValue) {
+			    return NodeGeometryModel.FORK;
+		    }
+		});
 		modeController.addAction(new CenterAction());
 		modeController.addAction(new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());

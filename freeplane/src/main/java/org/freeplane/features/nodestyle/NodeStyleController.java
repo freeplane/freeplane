@@ -24,6 +24,8 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Collection;
 
+import javax.swing.text.html.StyleSheet;
+
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
@@ -71,7 +73,7 @@ public class NodeStyleController implements IExtension {
 // // //	final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
  	final private ModeController modeController;
-	final private ExclusivePropertyChain<NodeGeometryModel, NodeModel> shapeHandlers;
+	final public ExclusivePropertyChain<NodeGeometryModel, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	final private ExclusivePropertyChain<HorizontalTextAlignment, NodeModel> horizontalTextAlignmentHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
@@ -81,41 +83,42 @@ public class NodeStyleController implements IExtension {
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
+		new NodeCssHook();
 //		controller = modeController.getController();
-		fontHandlers = new CombinedPropertyChain<Font, NodeModel>(true);
-		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
-		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
-		shapeHandlers = new ExclusivePropertyChain<NodeGeometryModel, NodeModel>();
-		horizontalTextAlignmentHandlers = new ExclusivePropertyChain<HorizontalTextAlignment, NodeModel>();
-		
-		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
+		fontHandlers = new CombinedPropertyChain<>(true);
+		fontHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Font currentValue) {
 				final Font defaultFont = NodeStyleController.getDefaultFont();
 				return defaultFont;
 			}
 		});
-		addFontGetter(IPropertyHandler.STYLE, new IPropertyHandler<Font, NodeModel>() {
+		fontHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Font currentValue) {
 				final Font defaultFont = getStyleFont(currentValue, node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 				return defaultFont;
 			}
 		});
-		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
+		textColorHandlers = new ExclusivePropertyChain<>();
+		textColorHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Color currentValue) {
 				return standardNodeTextColor;
 			}
 		});
-		addColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
+		textColorHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Color currentValue) {
 				return getStyleTextColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 			}
 		});
-		addBackgroundColorGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
+
+		backgroundColorHandlers = new ExclusivePropertyChain<>();
+		backgroundColorHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Color currentValue) {
 				return getStyleBackgroundColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 			}
 		});
-		addShapeGetter(IPropertyHandler.STYLE, new IPropertyHandler<NodeGeometryModel, NodeModel>() {
+
+		shapeHandlers = new ExclusivePropertyChain<>();
+		shapeHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 			public NodeGeometryModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final NodeGeometryModel currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
@@ -124,19 +127,20 @@ public class NodeStyleController implements IExtension {
 				return returnedShape;
 			}
 		});
-		addShapeGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<NodeGeometryModel, NodeModel>() {
+		shapeHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 			public NodeGeometryModel getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final NodeGeometryModel currentValue) {
 				return NodeGeometryModel.AS_PARENT;
 			}
 		});
 		
-		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
+		horizontalTextAlignmentHandlers = new ExclusivePropertyChain<>();
+		horizontalTextAlignmentHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
 			public HorizontalTextAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final HorizontalTextAlignment currentValue) {
 				return HorizontalTextAlignment.DEFAULT;
 			}
 		});
 		
-		addTextAlignGetter(IPropertyHandler.STYLE, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
+		horizontalTextAlignmentHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
 			public HorizontalTextAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final HorizontalTextAlignment currentValue) {
 				return getHorizontalTextAlignment(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 			}
@@ -148,31 +152,27 @@ public class NodeStyleController implements IExtension {
 		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder(this);
 		styleBuilder.registerBy(readManager, writeManager);
 	}
-
-	public IPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key,
-	                                                                   final IPropertyHandler<Color, NodeModel> getter) {
-		return backgroundColorHandlers.addGetter(key, getter);
+	
+	public NodeCss getStyleSheet(NodeModel node, LogicalStyleController.StyleOption option) {
+		return getStyleSheet(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
+	}
+	
+	 private NodeCss getStyleSheet(final MapModel map, final Collection<IStyle> style) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : style){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeCss nodeCss = styleNode.getExtension(NodeCss.class);
+			if (nodeCss == null) {
+				continue;
+			}
+			return nodeCss;
+		}
+		return NodeCss.EMPTY;
 	}
 
-	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-            final IPropertyHandler<Color, NodeModel> getter) {
-		return textColorHandlers.addGetter(key, getter);
-	}
-
-	public IPropertyHandler<HorizontalTextAlignment, NodeModel> addTextAlignGetter(final Integer key,
-            final IPropertyHandler<HorizontalTextAlignment, NodeModel> getter) {
-		return horizontalTextAlignmentHandlers.addGetter(key, getter);
-	}
-
-	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
-	                                                       final IPropertyHandler<Font, NodeModel> getter) {
-		return fontHandlers.addGetter(key, getter);
-	}
-
-	public IPropertyHandler<NodeGeometryModel, NodeModel> addShapeGetter(final Integer key,
-	                                                          final IPropertyHandler<NodeGeometryModel, NodeModel> getter) {
-		return shapeHandlers.addGetter(key, getter);
-	}
 
 	public Color getBackgroundColor(final NodeModel node, StyleOption option) {
 		return backgroundColorHandlers.getProperty(node, option);
@@ -364,7 +364,7 @@ public class NodeStyleController implements IExtension {
 		return EdgeController.STANDARD_EDGE_COLOR;
 	}
 	
-	public static Font getDefaultFont() {
+	private static Font getDefaultFont() {
 		final int fontSize = NodeStyleController.getDefaultFontSize();
 		final int fontStyle = NodeStyleController.getDefaultFontStyle();
 		final String fontFamily = NodeStyleController.getDefaultFontFamilyName();
@@ -383,12 +383,6 @@ public class NodeStyleController implements IExtension {
 
 	private static int getDefaultFontSize() {
 		return ResourceController.getResourceController().getIntProperty("defaultfontsize", 10);
-	}
-
-	public Font getDefaultFont(final MapModel map, final IStyle style) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNodeSafe(style);
-		return getFont(styleNode, StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	private Font getStyleFont(final Font baseFont, final MapModel map, final Collection<IStyle> collection) {
