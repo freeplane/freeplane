@@ -21,6 +21,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FocusRequestor;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.UndoEnabler;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
 import org.freeplane.core.util.LogUtils;
@@ -53,6 +54,7 @@ class CssEditor {
 	
 	CssEditor(){
 		editor = new JTextArea();
+		UndoEnabler.addUndoRedoFunctionality(editor);
 		FocusRequestor.requestFocus(editor);
 		kit = ScaledEditorKit.create();
 
