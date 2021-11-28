@@ -53,6 +53,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
@@ -277,7 +278,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 					.withBackground(getBackground())
 					.withAlignment(horizontalAlignment));
 			ruleBuilder.append("}\n");
-			ruleBuilder.append("p {margin-top:0;}\n");
+			if(getEditControl().getEditType() != EditedComponent.NOTE 
+					|| ResourceController.getResourceController().getBooleanProperty(
+			        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES))
+				ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 			if(textColor != null){
