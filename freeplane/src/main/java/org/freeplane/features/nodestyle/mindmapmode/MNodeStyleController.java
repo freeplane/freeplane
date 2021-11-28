@@ -24,22 +24,15 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.components.FocusRequestor;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeCss;
@@ -980,15 +973,8 @@ public class MNodeStyleController extends NodeStyleController {
 
 	void editCss(final NodeModel selectedNode) {
 		String css = getStyleSheet(selectedNode, StyleOption.FOR_UNSELECTED_NODE).css;
-		JTextArea inputField = new JTextArea(css, 30, 60);
-		FocusRequestor.requestFocus(inputField);
-	
-		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(), 
-				new JScrollPane(inputField, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS), 
-				TextUtils.getText("EditNodeCss"), JOptionPane.OK_CANCEL_OPTION);
-		String newCss = inputField.getText();
-		if (result == JOptionPane.OK_OPTION && ! css.equals(newCss)) {
-			setStyleSheet(selectedNode, newCss);
-		}
+		CssEditor cssEditor = new CssEditor();
+		if (cssEditor.editCss(css) == JOptionPane.OK_OPTION)
+			setStyleSheet(selectedNode, cssEditor.getNewCss());
 	}
 }

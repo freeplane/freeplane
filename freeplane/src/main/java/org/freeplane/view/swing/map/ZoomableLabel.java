@@ -25,6 +25,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleController;
 
 @SuppressWarnings("serial")
@@ -186,6 +187,11 @@ public class ZoomableLabel extends JLabel {
 				repaint();
 			}
 		}
+	}
+	
+	public StyleSheet getStyleSheet() {
+		StyleSheet s = (StyleSheet) getClientProperty(StyleSheet.class);
+		return s != null ? s : NodeCss.EMPTY.getStyleSheet();
 	}
 	
 	protected boolean areInsetsFixed() {
