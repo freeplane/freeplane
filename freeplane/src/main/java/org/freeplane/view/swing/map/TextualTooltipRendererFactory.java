@@ -88,9 +88,9 @@ class TextualTooltipRendererFactory {
 			tip.setEditorKit(kit);
 			final HTMLDocument document = (HTMLDocument) tip.getDocument();
 			final StyleSheet styleSheet = document.getStyleSheet();
-			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("body");
-			styleSheet.addRule("p {margin-top:0;}\n");
+			styleSheet.addRule("p {margin-top:0;}");
+			styleSheet.addRule("table {border: 0; border-spacing: 0;}");
+			styleSheet.addRule("th, td {border: 1px solid;}");
 		}
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));

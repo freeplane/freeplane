@@ -12,4 +12,11 @@ public class StyleSheetConfigurer {
 			}
 		}
 	}
+	
+	public static StyleSheet createDefaultStyleSheet() {
+		StyleSheet styleSheet = new StyleSheet();
+		styleSheet.addRule("table {border: 0; border-spacing: 0;}");
+		styleSheet.addRule("th, td {border: 1px solid;}");
+		return styleSheet;
+	}
 }

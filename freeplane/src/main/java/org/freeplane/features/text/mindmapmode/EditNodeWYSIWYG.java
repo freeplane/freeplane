@@ -65,7 +65,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		private SHTMLPanel htmlEditorPanel;
 		private JButton splitButton;
-		private StyleSheet ownStyleSheet = new StyleSheet();
+		private StyleSheet ownStyleSheet = StyleSheetConfigurer.createDefaultStyleSheet();
 
 		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
 			super(base, title, frame);

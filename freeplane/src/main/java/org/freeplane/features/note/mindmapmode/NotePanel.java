@@ -80,7 +80,7 @@ class NotePanel extends JPanel {
 		this.noteDocumentListener = noteDocumentListener;
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		this.htmlEditorPanel = createHtmlEditorComponent(noteManager);
-		this.ownStyleSheet = new StyleSheet();
+		this.ownStyleSheet = StyleSheetConfigurer.createDefaultStyleSheet();
 		this.defaultCaretColor = htmlEditorPanel.getEditorPane().getCaretColor();
 		htmlEditorPanel.setVisible(false);
 		add(htmlEditorPanel);
