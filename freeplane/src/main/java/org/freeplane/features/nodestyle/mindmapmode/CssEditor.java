@@ -28,7 +28,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 class CssEditor {
-	private static final Dimension PREFERRED_SCROLL_PANE_SIZE = new Dimension((int) (UITools.FONT_SCALE_FACTOR * 400), (int )(UITools.FONT_SCALE_FACTOR * 200));
+	private static final int PREFERRED_SCROLL_PANE_HEIGHT = (int )(UITools.FONT_SCALE_FACTOR * 200);
+	private static final Dimension PREFERRED_SCROLL_PANE_SIZE = new Dimension(2 * PREFERRED_SCROLL_PANE_HEIGHT, 
+			PREFERRED_SCROLL_PANE_HEIGHT);
 	private String newCss;
 	private static final String previewHtml = loadPreview();
 	private static String loadPreview() {
