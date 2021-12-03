@@ -78,7 +78,7 @@ public class MNodeStyleController extends NodeStyleController {
 			if (fromBorder != null) {
 				fromBorder.copyTo(NodeBorderModel.createNodeBorderModel(to));
 			}
-
+			copyCss(from, to);
 		}
 
 		@Override
@@ -89,6 +89,7 @@ public class MNodeStyleController extends NodeStyleController {
 			from.removeExtension(NodeStyleModel.class);
 			from.removeExtension(NodeSizeModel.class);
 			from.removeExtension(NodeBorderModel.class);
+			from.removeExtension(NodeCss.class);
 		}
 
 		@Override
@@ -99,6 +100,7 @@ public class MNodeStyleController extends NodeStyleController {
 			removeStyleData(key, from, which);
 			removeSizeData(key, from, which);
 			removeBorderData(key, from, which);
+			removeCssData(key, from, which);
 		}
 
 		private void removeSizeData(Object key, NodeModel from, NodeModel which) {
@@ -191,6 +193,12 @@ public class MNodeStyleController extends NodeStyleController {
 			}
        }
 
+		private void removeCssData(Object key, NodeModel from, NodeModel which) {
+			if (null != which.getExtension(NodeCss.class)) {
+				from.removeExtension(NodeCss.class);
+			}
+		}
+
 		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
@@ -265,9 +273,16 @@ public class MNodeStyleController extends NodeStyleController {
 		copyStyleModel(source, target);
 		copySizeModel(source, target);
 		copyBorderModel(source, target);
+		copyCss(source, target);
 	}
 
-	protected void copyStyleModel(final NodeModel source, final NodeModel target) {
+	private static void copyCss(NodeModel source, NodeModel target) {
+		NodeCss nodeCss = source.getExtension(NodeCss.class);
+		if(nodeCss != null)
+			target.putExtension(nodeCss);
+	}
+
+	private void copyStyleModel(final NodeModel source, final NodeModel target) {
 	    final NodeStyleModel sourceStyleModel = NodeStyleModel.getModel(source);
 		if (sourceStyleModel != null) {
 			setColor(target, sourceStyleModel.getColor());
