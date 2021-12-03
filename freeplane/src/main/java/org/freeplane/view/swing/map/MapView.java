@@ -104,6 +104,7 @@ import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.print.FitMap;
@@ -597,9 +598,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int detailHorizontalAlignment;
     private Color detailForeground;
     private Color detailBackground;
+    private NodeCss detailCss;
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
+    private NodeCss noteCss;
 	private static String showConnectorsPropertyValue;
 	private static boolean hideSingleEndConnectorsPropertyValue;
 	private String showConnectors;
@@ -1420,12 +1423,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         detailBackground = style.getBackgroundColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailForeground = style.getColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailHorizontalAlignment = style.getHorizontalTextAlignment(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+        detailCss = style.getStyleSheet(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 
         final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
         noteFont = UITools.scale(style.getFont(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE));
         noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+        noteCss = style.getStyleSheet(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         updateSelectionColors();
     }
 
@@ -2274,6 +2279,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public Color getNoteBackground() {
         return noteBackground;
     }
+    
+    
+
+	public NodeCss getDetailCss() {
+		return detailCss;
+	}
+
+	public NodeCss getNoteCss() {
+		return noteCss;
+	}
 
 	public int getNoteHorizontalAlignment() {
 		return noteHorizontalAlignment;

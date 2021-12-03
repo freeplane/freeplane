@@ -19,15 +19,19 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleController;
 
 @SuppressWarnings("serial")
 public class ZoomableLabel extends JLabel {
+	public static final String CUSTOM_CSS = "customCss";
+
 	private static final String TEXT_RENDERING_ICON = "TextRenderingIcon";
 
 	protected static final Graphics2D fmg;
@@ -38,6 +42,8 @@ public class ZoomableLabel extends JLabel {
 
 	private int minimumWidth;
 	private int maximumWidth;
+	private String css = "";
+
 
 	public int getZoomedIconWidth() {
 		final Icon icon = getIcon();
@@ -169,6 +175,24 @@ public class ZoomableLabel extends JLabel {
 			setText(nodeText);
 		}
     }
+	
+	public void setStyleSheet(String css, StyleSheet styleSheet) {
+		if(! this.css.equals(css)) {
+			StyleSheet old = (StyleSheet) getClientProperty(StyleSheet.class);
+			putClientProperty(StyleSheet.class, styleSheet);
+			this.css = css;
+			if(HtmlUtils.isHtml(getText())) {
+				firePropertyChange(CUSTOM_CSS, old, styleSheet);
+				revalidate();
+				repaint();
+			}
+		}
+	}
+	
+	public StyleSheet getStyleSheet() {
+		StyleSheet s = (StyleSheet) getClientProperty(StyleSheet.class);
+		return s != null ? s : NodeCss.EMPTY.getStyleSheet();
+	}
 	
 	protected boolean areInsetsFixed() {
 		return true;

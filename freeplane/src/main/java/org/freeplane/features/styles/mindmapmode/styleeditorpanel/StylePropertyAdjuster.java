@@ -33,7 +33,9 @@ class StylePropertyAdjuster {
                         || propertyName.equals(FontStrikeThroughControlGroup.NODE_FONT_STRIKE_THROUGH)
                         || propertyName.equals(FontNameControlGroup.NODE_FONT_NAME)
                         || propertyName.equals(FontSizeControlGroup.NODE_FONT_SIZE)
-                        || propertyName.equals(NodeHorizontalTextAlignmentControlGroup.TEXT_ALIGNMENT);
+                        || propertyName.equals(NodeHorizontalTextAlignmentControlGroup.TEXT_ALIGNMENT)
+                        || propertyName.equals(CssControlGroup.CSS)
+                        || propertyName.equals(CssControlGroup.REVERT_CSS);
             }
             else if(style.equals(MapStyleModel.ATTRIBUTE_STYLE)) {
                 enable = propertyName.equals(NodeBackgroundColorControlGroup.NODE_BACKGROUND_COLOR)

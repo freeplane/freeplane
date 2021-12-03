@@ -62,10 +62,6 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
         String markdown = text;
         String html = "<html>"
-        		+ "<style>"
-        		+ "table {border: 0; border-spacing: 0;}"
-        		+ "th, td {border: 1px solid;}"
-        		+ "</style>"
         		+ "<body>" 
         		+ Marked.marked(markdown, options) 
         		+ "</body></html>";

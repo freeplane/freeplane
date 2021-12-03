@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.AttributedCharacterIterator;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
@@ -58,8 +57,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.DefaultEditorKit.PasteAction;
@@ -77,14 +74,13 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
 import javax.swing.text.html.StyleSheet;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.UndoEnabler;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
+import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -701,10 +697,13 @@ public class EditNodeTextField extends EditNodeBase {
 		ruleBuilder.append("}\n");
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
-		styleSheet.addRule(ruleBuilder.toString());
+		StyleSheet ownStyleSheet =StyleSheetConfigurer.createDefaultStyleSheet();
+		ownStyleSheet.addRule(ruleBuilder.toString());
+		styleSheet.addStyleSheet(ownStyleSheet);
+		styleSheet.addStyleSheet(parent.getStyleSheet());
 		MapElementRemovingWorkaround.removeAllMapElements(document);
 		textfield.setText(getText());
-		addUndoRedoFunctionality(textfield);
+		UndoEnabler.addUndoRedoFunctionality(textfield);
 		final MapView mapView = nodeView.getMap();
 		if(! mapView.isValid())
 			mapView.validate();
@@ -830,50 +829,6 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.repaint();
 		textfield.requestFocusInWindow();
 	}
-
-    static private void addUndoRedoFunctionality(JEditorPane textfield) {
-        final UndoManager undo = new UndoManager();
-		Document doc = textfield.getDocument();
-
-		// Listen for undo and redo events
-		doc.addUndoableEditListener(new UndoableEditListener() {
-		    public void undoableEditHappened(UndoableEditEvent evt) {
-		        undo.addEdit(evt.getEdit());
-		    }
-		});
-
-		// Create an undo action and add it to the text component
-		textfield.getActionMap().put("Undo",
-		    new AbstractAction("Undo") {
-		        public void actionPerformed(ActionEvent evt) {
-		            try {
-		                if (undo.canUndo()) {
-		                    undo.undo();
-		                }
-		            } catch (CannotUndoException e) {
-		            }
-		        }
-		   });
-
-		// Bind the undo action to ctl-Z
-		textfield.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
-
-		// Create a redo action and add it to the text component
-		textfield.getActionMap().put("Redo",
-		    new AbstractAction("Redo") {
-		        public void actionPerformed(ActionEvent evt) {
-		            try {
-		                if (undo.canRedo()) {
-		                    undo.redo();
-		                }
-		            } catch (CannotRedoException e) {
-		            }
-		        }
-		    });
-
-		// Bind the redo action to ctl-Y
-		textfield.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
-    }
 
 	private void preserveRootNodeLocationOnScreen() {
 	    nodeView.getMap().preserveRootNodeLocationOnScreen();

@@ -56,4 +56,7 @@ public interface NodeStyleRO {
 
     /** @since 1.3.8 */
     boolean isNumberingEnabled();
+    
+    /** @since 1.9.12 */
+    String getCss();
 }

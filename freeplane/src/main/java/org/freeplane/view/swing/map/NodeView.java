@@ -1407,6 +1407,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		mainView.setVisible(true);
 		mainView.updateTextColor(this);
+		mainView.updateCss(this);
 		mainView.updateFont(this);
 		mainView.updateHorizontalTextAlignment(this);
 		mainView.updateBorder(this);

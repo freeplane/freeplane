@@ -82,17 +82,22 @@ public class ScaledEditorKit extends HTMLEditorKit {
 	private static ScaledEditorKit kit;
 
 	public Document createDefaultDocument(JLabel c) {
+		StyleSheet defaultstyles = getStyleSheet();
+		StyleSheet ss = new ScaledStyleSheet();
+		ss.addStyleSheet(defaultstyles);
 		Font font = c.getFont();
 		Color foreground = c.getForeground();
-		StyleSheet styles = getStyleSheet();
-		StyleSheet ss = new ScaledStyleSheet();
-		ss.addStyleSheet(styles);
+		StyleSheet ownStyles = new StyleSheet();
+		ownStyles.addRule(new StringBuffer("body {").append(new CssRuleBuilder()
+				.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
+				.withColor(foreground)
+				.withAlignment(c.getHorizontalAlignment())).append("}").toString());
+		ss.addStyleSheet(ownStyles);
+		StyleSheet customStyleSheet = (StyleSheet) c.getClientProperty(StyleSheet.class);
+		if(customStyleSheet != null)
+			ss.addStyleSheet(customStyleSheet);
 		HTMLDocument doc = new HTMLDocument(ss);
 		doc.setPreservesUnknownTags(false);
-		doc.getStyleSheet().addRule(new StringBuffer("body {").append(new CssRuleBuilder()
-		.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
-		.withColor(foreground)
-		.withAlignment(c.getHorizontalAlignment())).append("}").toString());
 		doc.setParser(getParser());
 		doc.setAsynchronousLoadPriority(Integer.MAX_VALUE);
 		doc.setPreservesUnknownTags(false);

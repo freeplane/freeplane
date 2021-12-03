@@ -107,6 +107,7 @@
 				<Entry name="NodeShapeAction.fork" />
 				<Entry name="NodeShapeAction.bubble" />
 				<Entry builder="separator" />
+				<Entry name="EditNodeCssAction"/>
 				<Entry name="RemoveFormatAction" />
 			</Entry>
 			<Entry name="CloudColorAction" />

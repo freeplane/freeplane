@@ -38,8 +38,9 @@ import javax.swing.text.Position;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 
-import org.freeplane.view.swing.map.ZoomableLabel;
+import org.freeplane.core.util.HtmlUtils;
 
 public class ScaledHTML extends BasicHTML{
 
@@ -81,6 +82,9 @@ public class ScaledHTML extends BasicHTML{
     	View oldValue = (View)c.getClientProperty(propertyKey);
     	if (isHTMLString(text)) {
     		value = ScaledHTML.createHTMLView(c, text);
+    	}
+    	else if (c.getClientProperty(StyleSheet.class) != null) {
+    		value = ScaledHTML.createHTMLView(c, HtmlUtils.plainToHTML(text));
     	}
     	if (value != oldValue && oldValue != null) {
     		for (int i = 0; i < oldValue.getViewCount(); i++) {

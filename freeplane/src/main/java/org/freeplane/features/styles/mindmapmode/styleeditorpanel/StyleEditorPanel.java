@@ -138,6 +138,7 @@ public class StyleEditorPanel extends JPanel {
                 new NodeHorizontalTextAlignmentControlGroup(),
                 new NodeFontHyperLinkControlGroup(),
                 new NextLineControlGroup(),
+                new CssControlGroup(modeController),
                 
                 new GroupSeparator("OptionPanel.separator.IconControls"),
                 new IconSizeControlGroup(),

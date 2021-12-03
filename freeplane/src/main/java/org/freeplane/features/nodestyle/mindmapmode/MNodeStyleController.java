@@ -23,25 +23,29 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeBorderModel;
+import org.freeplane.features.nodestyle.NodeCss;
+import org.freeplane.features.nodestyle.NodeCssHook;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleShape;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
-import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
@@ -75,7 +79,7 @@ public class MNodeStyleController extends NodeStyleController {
 			if (fromBorder != null) {
 				fromBorder.copyTo(NodeBorderModel.createNodeBorderModel(to));
 			}
-
+			copyCss(from, to);
 		}
 
 		@Override
@@ -86,6 +90,7 @@ public class MNodeStyleController extends NodeStyleController {
 			from.removeExtension(NodeStyleModel.class);
 			from.removeExtension(NodeSizeModel.class);
 			from.removeExtension(NodeBorderModel.class);
+			from.removeExtension(NodeCss.class);
 		}
 
 		@Override
@@ -96,6 +101,7 @@ public class MNodeStyleController extends NodeStyleController {
 			removeStyleData(key, from, which);
 			removeSizeData(key, from, which);
 			removeBorderData(key, from, which);
+			removeCssData(key, from, which);
 		}
 
 		private void removeSizeData(Object key, NodeModel from, NodeModel which) {
@@ -188,6 +194,12 @@ public class MNodeStyleController extends NodeStyleController {
 			}
        }
 
+		private void removeCssData(Object key, NodeModel from, NodeModel which) {
+			if (null != which.getExtension(NodeCss.class)) {
+				from.removeExtension(NodeCss.class);
+			}
+		}
+
 		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
@@ -250,6 +262,7 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeColorAction());
 		modeController.addAction(new NodeColorBlendAction());
 		modeController.addAction(new NodeBackgroundColorAction());
+		modeController.addAction(new EditNodeCssAction());
 		for(NodeStyleShape shape : NodeStyleShape.values()){
 			if(shape.equals(NodeStyleShape.as_parent))
 				break;
@@ -261,9 +274,16 @@ public class MNodeStyleController extends NodeStyleController {
 		copyStyleModel(source, target);
 		copySizeModel(source, target);
 		copyBorderModel(source, target);
+		copyCss(source, target);
 	}
 
-	protected void copyStyleModel(final NodeModel source, final NodeModel target) {
+	private static void copyCss(NodeModel source, NodeModel target) {
+		NodeCss nodeCss = source.getExtension(NodeCss.class);
+		if(nodeCss != null)
+			target.putExtension(nodeCss);
+	}
+
+	private void copyStyleModel(final NodeModel source, final NodeModel target) {
 	    final NodeStyleModel sourceStyleModel = NodeStyleModel.getModel(source);
 		if (sourceStyleModel != null) {
 			setColor(target, sourceStyleModel.getColor());
@@ -307,7 +327,7 @@ public class MNodeStyleController extends NodeStyleController {
 				return styleModel;
 			}
 		}
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -335,7 +355,7 @@ public class MNodeStyleController extends NodeStyleController {
 				return sizeModel;
 			}
 		}
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -367,7 +387,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setBackgroundColor(final NodeModel node, final Color color) {
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final Color oldColor = NodeStyleModel.getBackgroundColor(node);
 		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
@@ -376,7 +396,7 @@ public class MNodeStyleController extends NodeStyleController {
 			@Override
 			public void act() {
 				NodeStyleModel.setBackgroundColor(node, color);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -387,7 +407,7 @@ public class MNodeStyleController extends NodeStyleController {
 			@Override
 			public void undo() {
 				NodeStyleModel.setBackgroundColor(node, oldColor);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
@@ -402,13 +422,13 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnStyleModel(node);
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setBold(bold);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -420,14 +440,14 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setBold(oldBold);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final Color oldColor = NodeStyleModel.getColor(node);
 		if (oldColor == color || oldColor != null && oldColor.equals(color)) {
 			return;
@@ -436,7 +456,7 @@ public class MNodeStyleController extends NodeStyleController {
 			@Override
 			public void act() {
 				NodeStyleModel.setColor(node, color);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -447,12 +467,26 @@ public class MNodeStyleController extends NodeStyleController {
 			@Override
 			public void undo() {
 				NodeStyleModel.setColor(node, oldColor);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
 	}
 
+	
+	public void setStyleSheet(NodeModel node, String css) {
+		if(css != null)
+			css = css.trim();
+		NodeCss old = node.getExtension(NodeCss.class);
+		if((old == null || old.css.isEmpty()) && (css == null || css.isEmpty()) 
+				|| old != null && old.css.equals(css))
+			return;
+		NodeCssHook controller = getModeController().getExtension(NodeCssHook.class);
+		controller.undoableDeactivateHook(node);
+		if(css != null && ! css.isEmpty())
+			controller.undoableActivateHook(node, new NodeCss(css));
+	}
+	
 	/**
 	 * @param fontFamily
 	 */
@@ -462,13 +496,13 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnStyleModel(node);
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setFontFamilyName(fontFamily);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -480,20 +514,20 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setFontFamilyName(oldFontFamily);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
 	}
 
 	public void setFontFamily(final String fontFamily) {
-		for (final NodeModel selected : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {
+		for (final NodeModel selected : getModeController().getMapController().getSelectedNodes()) {
 			setFontFamily(selected, fontFamily);
 		}
 	}
 
 	public void setFontSize(final int size) {
-		final Collection<NodeModel> selectedNodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final Collection<NodeModel> selectedNodes = getModeController().getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
 			setFontSize(selected, size);
 		}
@@ -508,13 +542,13 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnStyleModel(node);
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setFontSize(fontSize);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -526,7 +560,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setFontSize(oldFontSize);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
@@ -541,13 +575,13 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnStyleModel(node);
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setItalic(italic);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -559,14 +593,14 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setItalic(oldItalic);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
 	}
 
 	public void setNodeNumbering(final NodeModel node, final Boolean enableNodeNumbering) {
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final Boolean oldValue = NodeStyleModel.getNodeNumbering(node);
 		final IActor actor = new IActor() {
 			@Override
@@ -594,7 +628,7 @@ public class MNodeStyleController extends NodeStyleController {
     }
 
 	public void setNodeFormat(final NodeModel node, final String format) {
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final String oldFormat = NodeStyleModel.getNodeFormat(node);
 		final IActor actor = new IActor() {
 			@Override
@@ -643,7 +677,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 
 	public void setShapeConfiguration(final NodeModel node, final NodeGeometryModel shape) {
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		final IActor actor = new IActor() {
 			@Override
@@ -929,13 +963,13 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnStyleModel(node);
-		final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = getModeController();
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setStrikedThrough(strikedThrough);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -947,9 +981,24 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
 				styleModel.setStrikedThrough(oldStrikedThrough);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor, node.getMap());
+	}
+
+	void editCss(final NodeModel selectedNode) {
+		String css = getStyleSheet(selectedNode, StyleOption.FOR_UNSELECTED_NODE).css;
+		final StringBuilder ruleBuilder = new StringBuilder(100);
+		ruleBuilder.append("body {");
+		ruleBuilder.append(new CssRuleBuilder()
+				.withCSSFont(getFont(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
+				.withColor(getColor(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
+				.withBackground(getBackgroundColor(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
+				.withAlignment(getHorizontalTextAlignment(selectedNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant));
+		ruleBuilder.append("}\n");
+		CssEditor cssEditor = new CssEditor(ruleBuilder.toString());
+		if (cssEditor.editCss(css) == JOptionPane.OK_OPTION)
+			setStyleSheet(selectedNode, cssEditor.getNewCss());
 	}
 }

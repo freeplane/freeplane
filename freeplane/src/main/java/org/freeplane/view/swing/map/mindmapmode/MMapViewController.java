@@ -88,6 +88,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
 				editNodeWYSIWYG.setTextAlignment(mainView.getHorizontalAlignment());
+				editNodeWYSIWYG.setCustomStyleSheet(mainView.getStyleSheet());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
@@ -97,6 +98,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     			final Color detailBackground = map.getDetailBackground();
                 editNodeWYSIWYG.setBackground (detailBackground != null ? detailBackground : nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
                 editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
+                editNodeWYSIWYG.setCustomStyleSheet(map.getDetailCss().getStyleSheet());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
 			    final MapView map = nodeView.getMap();
@@ -106,6 +108,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
                 final Color noteBackground = map.getNoteBackground();
 				editNodeWYSIWYG.setBackground (noteBackground != null ? noteBackground : map.getBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
+                editNodeWYSIWYG.setCustomStyleSheet(map.getNoteCss().getStyleSheet());
 			}
 			return editNodeWYSIWYG;
 		}
