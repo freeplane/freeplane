@@ -236,4 +236,17 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
     public void setNumberingEnabled(boolean enabled) {
         getStyleController().setNodeNumbering(getDelegate(), enabled);
     }
+
+	@Override
+	public void setCss(String css) {
+		getStyleController().setStyleSheet(getDelegate(), css);
+	}
+
+	@Override
+	public String getCss() {
+		String css = getStyleController().getStyleSheet(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).css;
+		return css;
+	}
+    
+    
 }
