@@ -27,6 +27,7 @@ import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.mindmapmode.styleeditorpanel.IconFont;
 
 class CssEditor {
 	private static final int PREFERRED_SCROLL_PANE_HEIGHT = (int )(UITools.FONT_SCALE_FACTOR * 200);
@@ -82,7 +83,9 @@ class CssEditor {
 		previewScrollPane.setBorder(previewBorder);
 		box = Box.createHorizontalBox();
 		box.add(editorScrollPane);
-		JButton previewButton = new JButton("->");
+		JButton previewButton = new JButton("\ue900");
+		previewButton.setFont(IconFont.FONT.deriveFont(16 * UITools.FONT_SCALE_FACTOR));
+		previewButton.setToolTipText(TextUtils.getRawText("EditNodeCssRefresh.tooltip"));
 		previewButton.addActionListener(x -> updateDocument());
 		box.add(previewButton);
 		box.add(previewScrollPane);
