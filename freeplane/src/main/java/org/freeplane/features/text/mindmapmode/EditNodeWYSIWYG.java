@@ -118,7 +118,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void cancel() {
 			super.cancel();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
+			StyleSheetConfigurer.resetStyles(styleSheet, 1);
 			getBase().getEditControl().cancel();
 		}
 
@@ -164,7 +164,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void split() {
 			super.split();
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
+			StyleSheetConfigurer.resetStyles(styleSheet, 1);
 			getBase().getEditControl().split(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 		}
@@ -176,7 +176,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		@Override
 		protected void submit() {
 			super.submit();
-			StyleSheetConfigurer.resetLinkedStyleSheets(htmlEditorPanel.getDocument().getStyleSheet(), 1);
+			StyleSheetConfigurer.resetStyles(htmlEditorPanel.getDocument().getStyleSheet(), 1);
 			if (htmlEditorPanel.needsSaving()) {
 				getBase().getEditControl().ok(HtmlUtils.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
@@ -192,7 +192,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		public void updateStyleSheet(String rule, StyleSheet customStyleSheet) {
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
-			StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
+			StyleSheetConfigurer.resetStyles(styleSheet, 1);
 			ownStyleSheet.removeStyle("body");
 			ownStyleSheet.removeStyle("p");
 			ownStyleSheet.addRule(rule);

@@ -318,7 +318,7 @@ class NotePanel extends JPanel {
 	void updateStyleSheet(String ownRule, StyleSheet customStyleSheet) {
 		HTMLDocument document = getDocument();
 		StyleSheet styleSheet = document.getStyleSheet();
-		StyleSheetConfigurer.resetLinkedStyleSheets(styleSheet, 1);
+		StyleSheetConfigurer.resetStyles(styleSheet, 1);
 		ownStyleSheet.removeStyle("body");
 		ownStyleSheet.removeStyle("p");
 		ownStyleSheet.addRule(ownRule);

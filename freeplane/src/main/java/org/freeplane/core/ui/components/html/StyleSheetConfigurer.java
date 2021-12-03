@@ -1,9 +1,15 @@
 package org.freeplane.core.ui.components.html;
 
+import java.util.Enumeration;
+
 import javax.swing.text.html.StyleSheet;
 
 public class StyleSheetConfigurer {
-	public static void resetLinkedStyleSheets(StyleSheet parent,  int keptChildCount) {
+	public static void resetStyles(StyleSheet parent,  int keptChildCount) {
+		Enumeration<?> styleNames = parent.getStyleNames();
+		while(styleNames.hasMoreElements()) {
+			parent.removeStyle((String) styleNames.nextElement());
+		}
 		StyleSheet[] styleSheets = parent.getStyleSheets();
 		if(styleSheets != null) {
 			int removedSheetsCount = styleSheets.length - keptChildCount;
