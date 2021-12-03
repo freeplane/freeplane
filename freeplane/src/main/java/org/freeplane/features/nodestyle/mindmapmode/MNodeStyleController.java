@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
@@ -37,14 +38,14 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeCssHook;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleShape;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
-import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
@@ -988,7 +989,15 @@ public class MNodeStyleController extends NodeStyleController {
 
 	void editCss(final NodeModel selectedNode) {
 		String css = getStyleSheet(selectedNode, StyleOption.FOR_UNSELECTED_NODE).css;
-		CssEditor cssEditor = new CssEditor();
+		final StringBuilder ruleBuilder = new StringBuilder(100);
+		ruleBuilder.append("body {");
+		ruleBuilder.append(new CssRuleBuilder()
+				.withCSSFont(getFont(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
+				.withColor(getColor(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
+				.withBackground(getBackgroundColor(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
+				.withAlignment(getHorizontalTextAlignment(selectedNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant));
+		ruleBuilder.append("}\n");
+		CssEditor cssEditor = new CssEditor(ruleBuilder.toString());
 		if (cssEditor.editCss(css) == JOptionPane.OK_OPTION)
 			setStyleSheet(selectedNode, cssEditor.getNewCss());
 	}

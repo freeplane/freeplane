@@ -53,7 +53,7 @@ class CssEditor {
 	private StyleSheet cssSheet;
 	private StyleSheet documentSheet;
 	
-	CssEditor(){
+	CssEditor(String cssByFormatting){
 		editor = new JTextArea();
 		UndoEnabler.addUndoRedoFunctionality(editor);
 		FocusRequestor.requestFocus(editor);
@@ -74,7 +74,8 @@ class CssEditor {
 		HTMLDocument document = (HTMLDocument) preview.getDocument();
 		documentSheet = document.getStyleSheet();
 		StyleSheet defaultSheet = StyleSheetConfigurer.createDefaultStyleSheet();
-		defaultSheet.addRule("body {font-size: 10pt;} p {margin-top:0;}");
+		defaultSheet.addRule(cssByFormatting);
+		defaultSheet.addRule("p {margin-top:0;}");
 		documentSheet.addStyleSheet(defaultSheet);
 	    JScrollPane previewScrollPane = new JScrollPane(preview, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		previewScrollPane.setPreferredSize(PREFERRED_SCROLL_PANE_SIZE);
