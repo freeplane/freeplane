@@ -2,13 +2,16 @@ package org.freeplane.core.ui.components.html;
 
 import java.util.Enumeration;
 
+import javax.swing.text.StyleContext;
 import javax.swing.text.html.StyleSheet;
 
 public class StyleSheetConfigurer {
 	public static void resetStyles(StyleSheet parent,  int keptChildCount) {
 		Enumeration<?> styleNames = parent.getStyleNames();
 		while(styleNames.hasMoreElements()) {
-			parent.removeStyle((String) styleNames.nextElement());
+			String ruleName = (String) styleNames.nextElement();
+			 if (!ruleName.equalsIgnoreCase(StyleContext.DEFAULT_STYLE))
+				 parent.removeStyle(ruleName);
 		}
 		StyleSheet[] styleSheets = parent.getStyleSheets();
 		if(styleSheets != null) {
