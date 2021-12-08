@@ -227,7 +227,6 @@ public class UrlManager implements IExtension {
 			LogUtils.severe(ex);
 			if (ExceptionUtils.getRootCause(ex) instanceof FileNotFoundException) {
 				UITools.errorMessage(ExceptionUtils.getRootCauseMessage(ex));
-				System.out.println(ExceptionUtils.getRootCauseMessage(ex));
 			} else {
 				UITools.errorMessage(ex);
 			}
