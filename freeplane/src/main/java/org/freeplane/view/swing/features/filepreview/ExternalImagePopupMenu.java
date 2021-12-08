@@ -19,12 +19,19 @@
  */
 package org.freeplane.view.swing.features.filepreview;
 
-import java.awt.Component;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -52,6 +59,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	private JMenuItem change = null;
 	private JMenuItem open = null;
 	private JMenuItem resetZoom = null;
+	private JMenuItem copy = null;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
@@ -84,6 +92,66 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 		return remove;
 	}
 
+	static private class ImageSelection implements Transferable
+	{
+		private Image image;
+
+		public ImageSelection(Image image)
+		{
+			this.image = image;
+		}
+
+		// Returns supported flavors
+		public DataFlavor[] getTransferDataFlavors()
+		{
+			return new DataFlavor[] { DataFlavor.imageFlavor };
+		}
+
+		// Returns true if flavor is supported
+		public boolean isDataFlavorSupported(DataFlavor flavor)
+		{
+			return DataFlavor.imageFlavor.equals(flavor);
+		}
+
+		// Returns image
+		public Object getTransferData(DataFlavor flavor)
+				throws UnsupportedFlavorException, IOException
+		{
+			if (!DataFlavor.imageFlavor.equals(flavor))
+			{
+				throw new UnsupportedFlavorException(flavor);
+			}
+			return image;
+		}
+	}
+
+	/**
+	 * @return Returns the copy image item.
+	 */
+	private JMenuItem getCopyImage() {
+		// This class is used to hold an image while on the clipboard.
+
+		if (copy == null) {
+			copy = new JMenuItem(TextUtils.getText("ExternalImage_popupMenu_Copy"));
+			copy.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e) {
+					final ExternalResource extRes = node.getExtension(ExternalResource.class);
+					URL url;
+					try {
+						url = extRes.getAbsoluteUri(node.getMap()).toURL();
+						Image image = ImageIO.read(url);
+						ImageSelection imgSel = new ImageSelection(image);
+						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(imgSel, null);
+					} catch (IOException ioException) {
+						ioException.printStackTrace();
+					}
+
+
+				}
+			});
+		}
+		return copy;
+	}
 	/**
 	 * @return Returns the open menu item.
 	 */
@@ -156,6 +224,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 			removeAll();
 			add(getOpen());
 			add(getResetZoom());
+			add(getCopyImage());
 		}
 		else {
 			removeAll();
@@ -163,6 +232,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 			add(getChange());
 			add(getOpen());
 			add(getResetZoom());
+			add(getCopyImage());
 		}
 	}
 
