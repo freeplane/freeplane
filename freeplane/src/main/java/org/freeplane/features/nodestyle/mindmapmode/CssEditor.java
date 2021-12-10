@@ -114,11 +114,7 @@ class CssEditor {
 				box, 
 				TextUtils.getText("EditNodeCss"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		newCss = editor.getText();
-		if (result == JOptionPane.OK_OPTION && ! css.equals(newCss)) {
-			return JOptionPane.OK_OPTION;
-		}
-		else
-			return JOptionPane.CANCEL_OPTION;
+		return result;
 	}
 
 	public String getNewCss() {

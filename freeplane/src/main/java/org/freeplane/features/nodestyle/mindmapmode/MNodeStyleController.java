@@ -478,13 +478,16 @@ public class MNodeStyleController extends NodeStyleController {
 		if(css != null)
 			css = css.trim();
 		NodeCss old = node.getExtension(NodeCss.class);
-		if((old == null || old.css.isEmpty()) && (css == null || css.isEmpty()) 
-				|| old != null && old.css.equals(css))
+		if(old == null && css == null || old != null && old.css.equals(css))
 			return;
 		NodeCssHook controller = getModeController().getExtension(NodeCssHook.class);
 		controller.undoableDeactivateHook(node);
-		if(css != null && ! css.isEmpty())
-			controller.undoableActivateHook(node, new NodeCss(css));
+		if(css != null) {
+			if (css.isEmpty())
+				controller.undoableActivateHook(node, NodeCss.EMPTY);
+			else
+				controller.undoableActivateHook(node, new NodeCss(css));
+		}
 	}
 	
 	/**
