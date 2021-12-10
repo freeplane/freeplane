@@ -222,7 +222,7 @@ public class JCalendar extends JPanel implements PropertyChangeListener, MouseLi
 	 *            the new locale
 	 */
 	public JCalendar(final Locale locale) {
-		this(null, locale, true, true, false);
+		this(null, locale, true, true, true);
 	}
 
 	/**
