@@ -20,6 +20,7 @@
 package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -109,7 +110,9 @@ public class EditStylesAction extends AFreeplaneAction {
 			Controller.setCurrentController ((Controller) dialog.getRootPane().getClientProperty(Controller.class));
 			return;
 		}
-		dialog = new JDialog(UITools.getCurrentFrame());
+		Frame parentFrame = UITools.getCurrentFrame();
+		dialog = new JDialog(parentFrame);
+		dialog.applyComponentOrientation(parentFrame.getComponentOrientation());
 		final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
 		windowConfigurationStorage.restoreDialogPositions(dialog);
 		dialog.setModal(true);

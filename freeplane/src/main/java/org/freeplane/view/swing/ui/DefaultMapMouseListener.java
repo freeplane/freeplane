@@ -99,7 +99,9 @@ public class DefaultMapMouseListener implements IMouseListener {
 						optionComponent = scrollPane;
 					}
 					JOptionPane pane = new JOptionPane(optionComponent);
-					final JDialog d = pane.createDialog(UITools.getMenuComponent(), popup.getName());
+					Component menuComponent = UITools.getMenuComponent();
+					final JDialog d = pane.createDialog(menuComponent, popup.getName());
+					d.getRootPane().applyComponentOrientation(menuComponent.getComponentOrientation());
 					final Window frame = d.getOwner();
                     d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     d.setModal(false);

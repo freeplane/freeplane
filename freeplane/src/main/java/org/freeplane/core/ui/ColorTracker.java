@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -115,7 +116,7 @@ public class ColorTracker implements ActionListener, Serializable {
 	        throws HeadlessException {
 		Controller controller = Controller.getCurrentController();
 		final Component component = controller.getMapViewManager().getComponent(nodeModel);
-		return ColorTracker.showCommonJColorChooserDialog(component, title, initialColor, defaultColor);
+		return ColorTracker.showCommonJColorChooserDialog(SwingUtilities.getRootPane(component), title, initialColor, defaultColor);
 	}
 
 	final private JColorChooser chooser;

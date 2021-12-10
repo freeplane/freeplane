@@ -157,14 +157,17 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	}
 
 	private JDialog createDialog(final Window window) {
+		JDialog dialog;
 		if(window instanceof Dialog){
-			return new JDialog((Dialog)window, true /* modal */);
+			dialog =  new JDialog((Dialog)window, true /* modal */);
 		}
 		else if(window instanceof Frame){
-			return new JDialog((Frame)window, true /* modal */);
+			dialog = new JDialog((Frame)window, true /* modal */);
 		}
 		else
 			return null;
+		dialog.applyComponentOrientation(window.getComponentOrientation());
+		return dialog;
 	}
 
 	@Override
