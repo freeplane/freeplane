@@ -500,12 +500,12 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		final int fileSeparatorIndex = filePath.lastIndexOf('/');
 		String actionName;
 		if(fileSeparatorIndex == -1) {
-			actionName = keyName + " "+ filePath;
+			actionName = filePath;
 		}
 		else {
 			String fileName = filePath.substring(fileSeparatorIndex + 1);
 			String folderPath = filePath.substring(0, fileSeparatorIndex);
-			actionName = keyName + " " + fileName + " (" + folderPath + ")";
+			actionName = fileName + " (" + folderPath + ")";
 		}
 		openMapAction.putValue(Action.NAME, actionName);
 
