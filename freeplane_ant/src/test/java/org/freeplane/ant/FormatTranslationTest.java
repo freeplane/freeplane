@@ -15,6 +15,7 @@
  */
 package org.freeplane.ant;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +26,6 @@ import java.util.Arrays;
 
 import org.apache.tools.ant.Project;
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -170,18 +170,18 @@ public class FormatTranslationTest {
 	@Test
 	public void convertsUnicodeToUpperCase(){
 		final FormatTranslation formatTranslation = new FormatTranslation();
-		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("u"), CoreMatchers.equalTo("u"));
-		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\Uabcde"), CoreMatchers.equalTo("\\uABCDe"));
-		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\uabcde"), CoreMatchers.equalTo("\\uABCDe"));
-		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("1\\Uabcde"), CoreMatchers.equalTo("1\\uABCDe"));
+		assertThat(formatTranslation.convertUnicodeCharacterRepresentation("u"), CoreMatchers.equalTo("u"));
+		assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\Uabcde"), CoreMatchers.equalTo("\\uABCDe"));
+		assertThat(formatTranslation.convertUnicodeCharacterRepresentation("\\uabcde"), CoreMatchers.equalTo("\\uABCDe"));
+		assertThat(formatTranslation.convertUnicodeCharacterRepresentation("1\\Uabcde"), CoreMatchers.equalTo("1\\uABCDe"));
 	}
 
 	@Test
 	public void convertsLatin1toUnicode() {
 		final FormatTranslation formatTranslation = new FormatTranslation();
-		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("ä"),
+		assertThat(formatTranslation.convertUnicodeCharacterRepresentation("ä"),
 		    CoreMatchers.equalTo("\\u00E4"));
-		Assert.assertThat(formatTranslation.convertUnicodeCharacterRepresentation("ä1"),
+		assertThat(formatTranslation.convertUnicodeCharacterRepresentation("ä1"),
 		    CoreMatchers.equalTo("\\u00E41"));
 	}
 }

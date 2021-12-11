@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.Container;
 
@@ -12,7 +13,6 @@ import javax.swing.JPanel;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.junit.Assert;
 import org.junit.Test;
 
 
@@ -27,7 +27,7 @@ public class JComponentRemoverTest {
 		new EntryAccessor().setComponent(entry, entryComponent);
 		componentRemover.visit(entry);
 		
-		Assert.assertThat(entryComponent.getParent(), nullValue(Container.class));
+		assertThat(entryComponent.getParent(), nullValue(Container.class));
 	}
 
 	@Test
@@ -48,6 +48,6 @@ public class JComponentRemoverTest {
 		menuSplitter.addMenuComponent(parent, entryComponent);
 		new EntryAccessor().setComponent(entry, entryComponent);
 		componentRemover.visit(entry);
-		Assert.assertThat(parent.getPopupMenu().getComponentCount(), equalTo(1));
+		assertThat(parent.getPopupMenu().getComponentCount(), equalTo(1));
 	}
 }

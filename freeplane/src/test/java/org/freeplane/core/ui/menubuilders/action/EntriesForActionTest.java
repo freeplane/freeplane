@@ -2,7 +2,7 @@ package org.freeplane.core.ui.menubuilders.action;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.Collection;
@@ -27,7 +27,7 @@ public class EntriesForActionTest {
 		final Entry actionEntry = new Entry();
 		entriesForAction.registerEntry(action, actionEntry);
 		Collection<Entry> entries = entriesForAction.entries(action);
-		assertThat(entries, equalTo((Collection<Entry>) asList(actionEntry)));
+		assertThat(entries, equalTo(asList(actionEntry)));
 	}
 
 	@Test
@@ -39,7 +39,7 @@ public class EntriesForActionTest {
 		entriesForAction.registerEntry(action, actionEntry1);
 		entriesForAction.registerEntry(action, actionEntry2);
 		Collection<Entry> entries = entriesForAction.entries(action);
-		assertThat(entries, equalTo((Collection<Entry>) asList(actionEntry1, actionEntry2)));
+		assertThat(entries, equalTo(asList(actionEntry1, actionEntry2)));
 	}
 
 	@Test
