@@ -615,6 +615,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
+	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
 
 	static {
@@ -1869,7 +1870,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelectionRectangle(final Graphics2D g, final NodeView selected) {
-		if (selected.getMainView().isEdited()) {
+		if (Boolean.TRUE.equals(selected.getMainView().getClientProperty("inline_editor_active"))) {
 			return;
 		}
 		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 4, 15);
@@ -2418,4 +2419,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     static public boolean drawsRectangleForSelection() {
         return drawsRectangleForSelection;
     }
+
+    public void onEditingStarted(ZoomableLabel label) {
+    	if(label instanceof MainView) {
+    		label.putClientProperty(MapView.INLINE_EDITOR_ACTIVE, Boolean.TRUE);
+			if (MapView.drawsRectangleForSelection) {
+				repaintSelecteds();
+			}
+		}
+    }
+
+	public void onEditingFinished(ZoomableLabel label) {
+    	if(label instanceof MainView) {
+    		label.putClientProperty(MapView.INLINE_EDITOR_ACTIVE, null);
+			if (MapView.drawsRectangleForSelection) {
+				repaintSelecteds();
+			}
+		}
+	}
 }

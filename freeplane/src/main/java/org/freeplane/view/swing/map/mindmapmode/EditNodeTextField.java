@@ -579,6 +579,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final MapView mapView = nodeView.getMap();
 		UITools.convertPointToAncestor(textfield, textFieldCoordinate, mapView);
 		textfield.getParent().remove(textfield);
+		mapView.onEditingFinished(parent);
 		parent.revalidate();
 		parent.repaint();
 		mapView.repaint(textFieldCoordinate.x, textFieldCoordinate.y, textFieldSize.width, textFieldSize.height);
@@ -797,6 +798,7 @@ public class EditNodeTextField extends EditNodeBase {
 		parent.setPreferredSize(newParentSize);
 		parent.setText("");
         parent.setHorizontalAlignment(JLabel.LEFT);
+        mapView.onEditingStarted(parent);
         if(getEditControl().getEditType() == EditedComponent.TEXT)
         	nodeView.setTextBackground(getBackground());
 

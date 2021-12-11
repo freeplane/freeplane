@@ -46,7 +46,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.text.JTextComponent;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -445,10 +444,6 @@ public class MainView extends ZoomableLabel {
 		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
-
-	public boolean isEdited() {
-		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
-	}
 
 	static enum TextModificationState{NONE, HIGHLIGHT, FAILURE};
 
