@@ -61,7 +61,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 		dialog.setLocationRelativeTo(JOptionPane.getFrameForComponent((Component) e.getSource()));
 		dialog.setModal(true);
 		dialog.setVisible(true);
-		final int result = dialog.getResult();
+		final int result = dialog.getIconIndex();
 		if (result >= 0) {
 			final MindIcon icon = mIcons.get(result);
 			setValue(icon.getName());
