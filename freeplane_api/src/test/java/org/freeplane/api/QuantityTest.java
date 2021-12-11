@@ -1,9 +1,8 @@
 package org.freeplane.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.freeplane.api.LengthUnit.cm;
 import static org.freeplane.api.LengthUnit.pt;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -28,35 +27,35 @@ public class QuantityTest {
     @Test
     public void calculateValueInBaseUnits() throws Exception {
         Quantity<Metrics> quantity = new Quantity<Metrics>(1, Metrics.cm);
-        assertThat(quantity.toBaseUnits(), equalTo(0.01));
+        assertThat(quantity.toBaseUnits()).isEqualTo(0.01);
     }
 
 
     @Test
     public void returnNumericValue() throws Exception {
         Quantity<Metrics> quantity = new Quantity<Metrics>(1, Metrics.cm);
-        assertThat(quantity.value, equalTo(1d));
+        assertThat(quantity.value).isEqualTo(1d);
     }
 
 
     @Test
     public void returnUnit() throws Exception {
         Quantity<Metrics> quantity = new Quantity<Metrics>(1, Metrics.cm);
-        assertThat(quantity.unit, equalTo(Metrics.cm));
+        assertThat(quantity.unit).isEqualTo(Metrics.cm);
     }
     
 
     @Test
     public void calculateRoundedDownValueInBaseUnits() throws Exception {
         Quantity<Metrics> quantity = new Quantity<Metrics>(49, Metrics.cm);
-        assertThat(quantity.toBaseUnitsRounded(), equalTo(0));
+        assertThat(quantity.toBaseUnitsRounded()).isEqualTo(0);
     }
 
 
     @Test
     public void calculateRoundedUpValueInBaseUnits() throws Exception {
         Quantity<Metrics> quantity = new Quantity<Metrics>(51, Metrics.cm);
-        assertThat(quantity.toBaseUnitsRounded(), equalTo(1));
+        assertThat(quantity.toBaseUnitsRounded()).isEqualTo(1);
     }
     
     @Test
@@ -99,33 +98,33 @@ public class QuantityTest {
     public void convertUnits() throws Exception {
         Quantity<Metrics> quantityInMeters = new Quantity<Metrics>(1, Metrics.m);
         Quantity<Metrics> quantityInCm = quantityInMeters.in(Metrics.cm);
-        assertThat(quantityInCm, equalTo(new Quantity<Metrics>(100, Metrics.cm)));
+        assertThat(quantityInCm).isEqualTo(new Quantity<Metrics>(100, Metrics.cm));
     }
     
     @Test
     public void addQuantitiesInSameUnits() throws Exception {
         Quantity<Metrics> first = new Quantity<Metrics>(1, Metrics.m);
         Quantity<Metrics> second = new Quantity<Metrics>(2, Metrics.m);
-        assertThat(first.add(second), equalTo(new Quantity<Metrics>(3, Metrics.m)));
+        assertThat(first.add(second)).isEqualTo(new Quantity<Metrics>(3, Metrics.m));
     }
     
     @Test
     public void addQuantitiesInDifferentUnits() throws Exception {
         Quantity<Metrics> first = new Quantity<Metrics>(100, Metrics.cm);
         Quantity<Metrics> second = new Quantity<Metrics>(2, Metrics.m);
-        assertThat(first.add(second), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
+        assertThat(first.add(second)).isEqualTo(new Quantity<Metrics>(300, Metrics.cm));
     }
 
     
     @Test
     public void zoomQuantity() throws Exception {
         Quantity<Metrics> q = new Quantity<Metrics>(100, Metrics.cm);
-        assertThat(q.zoomBy(0.5), equalTo(new Quantity<Metrics>(50, Metrics.cm)));
+        assertThat(q.zoomBy(0.5)).isEqualTo(new Quantity<Metrics>(50, Metrics.cm));
     }
     @Test
     public void addQuantitiesGivenAsPrimitives() throws Exception {
         Quantity<Metrics> first = new Quantity<Metrics>(100, Metrics.cm);
-        assertThat(first.add(2, Metrics.m), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
+        assertThat(first.add(2, Metrics.m)).isEqualTo(new Quantity<Metrics>(300, Metrics.cm));
     }
     
     @Test(expected=IllegalStateException.class)
@@ -147,16 +146,16 @@ public class QuantityTest {
     
     @Test
     public void rounds4cm_WhenConvertsToString() throws Exception {
-        assertThat(new Quantity<>(4, cm).toString(), equalTo("4 cm"));
-        assertThat(new Quantity<>(4, cm).in(pt).toString(), equalTo("113.38583 pt"));
-        assertThat(Quantity.fromString("113.38583 pt", cm).toString(), equalTo("113.38583 pt"));
-        assertThat(Quantity.fromString("113.38583 pt", cm).in(cm).toString(), equalTo("4 cm"));
+        assertThat(new Quantity<>(4, cm).toString()).isEqualTo("4 cm");
+        assertThat(new Quantity<>(4, cm).in(pt).toString()).isEqualTo("113.38583 pt");
+        assertThat(Quantity.fromString("113.38583 pt", cm).toString()).isEqualTo("113.38583 pt");
+        assertThat(Quantity.fromString("113.38583 pt", cm).in(cm).toString()).isEqualTo("4 cm");
     }
     @Test
     public void rounds40cm_WhenConvertsToString() throws Exception {
-        assertThat(new Quantity<>(40, cm).toString(), equalTo("40 cm"));
-        assertThat(new Quantity<>(40, cm).in(pt).toString(), equalTo("1133.85827 pt"));
-        assertThat(Quantity.fromString("1133.85827 pt", cm).toString(), equalTo("1133.85827 pt"));
-        assertThat(Quantity.fromString("1133.85827 pt", cm).in(cm).toString(), equalTo("40 cm"));
+        assertThat(new Quantity<>(40, cm).toString()).isEqualTo("40 cm");
+        assertThat(new Quantity<>(40, cm).in(pt).toString()).isEqualTo("1133.85827 pt");
+        assertThat(Quantity.fromString("1133.85827 pt", cm).toString()).isEqualTo("1133.85827 pt");
+        assertThat(Quantity.fromString("1133.85827 pt", cm).in(cm).toString()).isEqualTo("40 cm");
     }
 }
