@@ -59,4 +59,7 @@ public interface NodeStyleRO {
     
     /** @since 1.9.12 */
     String getCss();
+    
+    /** @since 1.9.12 */
+    boolean isCssSet();
 }

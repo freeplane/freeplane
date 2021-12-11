@@ -15,6 +15,7 @@ import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
@@ -247,6 +248,9 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		String css = getStyleController().getStyleSheet(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).css;
 		return css;
 	}
-    
-    
+
+	@Override
+	public boolean isCssSet() {
+		return getDelegate().getExtension(NodeCss.class) != null;
+	}
 }
