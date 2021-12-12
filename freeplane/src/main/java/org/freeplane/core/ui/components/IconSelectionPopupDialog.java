@@ -369,10 +369,6 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 		return selectedIconIndex;
 	}
 
-    private JLabel findLabel(final Point location) {
-        return iconLabels.get(findIndex(location));
-    }
-
     private void highlightSelected() {
         selected.setBorder(HIGHLIGHTED);
         scrollToSelected();
