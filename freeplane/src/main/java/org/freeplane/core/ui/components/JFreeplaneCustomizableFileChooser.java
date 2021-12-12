@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.ui.FrameController;
 
@@ -153,7 +154,7 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
     public Consumer<JDialog> getCustomizer() {
         return customizer;
     }
-
+    private static final String WINDOW_CONFIG_PROPERTY = "file_chooser_window_configuration";
     @Override
     protected JDialog createDialog(Component parent) throws HeadlessException {
         final JDialog dialog = super.createDialog(parent);
@@ -167,9 +168,8 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
             optionComponents.forEach(optionBox::add);
             dialog.getContentPane().add(optionBox, BorderLayout.SOUTH);
         }
-        if(!dialog.getContentPane().isValid())
-            dialog.pack();
-
+        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        windowConfigurationStorage.setBounds(dialog);
         if(Compat.isMacOsX()) {
             ActionMap am = getActionMap();
             InputMap globalInputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);

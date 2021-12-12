@@ -1,5 +1,7 @@
 package org.freeplane.core.resources;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -9,6 +11,7 @@ import javax.swing.JDialog;
 import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.commandsearch.CommandSearchDialog;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -95,13 +98,29 @@ public class WindowConfigurationStorage {
 		ResourceController.getResourceController().setProperty(window_preference_storage_property, marshalled);
 	}
 
-	public XMLElement restoreDialogPositions(final JDialog dialog) {
-		return restoreDialogPositions(dialog, name);
+	public void setBounds(JDialog dialog) {
+		if (ResourceController.getResourceController().getProperty(name) != null) {
+            restoreDialogPositions(dialog);
+        } else
+        {
+        	dialog.pack();
+        	dialog.setLocationByPlatform(true);
+        }
+
+
+		dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                storeDialogPositions(dialog);
+            }
+        });
 	}
-	public XMLElement restoreDialogPositions(final JDialog dialog, final String window_preference_storage_property) {
-		String marshalled = ResourceController.getResourceController().getProperty(window_preference_storage_property);
+
+	public XMLElement restoreDialogPositions(final JDialog dialog) {
+		String marshalled = ResourceController.getResourceController().getProperty(name);
 		return unmarschall(marshalled, dialog);
 	}
+	
 	protected XMLElement unmarschall(final String marshalled, final JDialog dialog) {
 		if (marshalled != null) {
 			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();

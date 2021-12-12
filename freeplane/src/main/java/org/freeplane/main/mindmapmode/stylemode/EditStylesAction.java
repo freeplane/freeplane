@@ -86,7 +86,6 @@ public class EditStylesAction extends AFreeplaneAction {
 		Controller controller = modeController.getController();
 		Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
 		((DialogController) controller.getViewController()).setMapView(mapViewComponent);
-		dialog.setLocationRelativeTo(currentController.getViewController().getCurrentRootComponent());
 		dialog.setVisible(true);
 	}
 
@@ -113,6 +112,7 @@ public class EditStylesAction extends AFreeplaneAction {
 		Frame parentFrame = UITools.getCurrentFrame();
 		dialog = new JDialog(parentFrame);
 		dialog.applyComponentOrientation(parentFrame.getComponentOrientation());
+		dialog.setLocationRelativeTo(mainController.getViewController().getCurrentRootComponent());
 		final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
 		windowConfigurationStorage.restoreDialogPositions(dialog);
 		dialog.setModal(true);

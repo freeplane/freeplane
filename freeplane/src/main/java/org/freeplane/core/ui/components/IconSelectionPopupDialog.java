@@ -59,13 +59,17 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.commandsearch.CommandSearchDialog;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements MouseListener {
+	
+	private static final String WINDOW_CONFIG_PROPERTY = "icon_selection_window_configuration";
 
     private static int BORDER_THICKNESS = 2;
     
@@ -141,7 +145,8 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 		contentPane.add(descriptionLabel, BorderLayout.SOUTH);
 		selected = iconLabels.get(0);
         highlightSelected();
-		pack();
+        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        windowConfigurationStorage.setBounds(this);
         filterTimer = new Timer(300, this::filterIcons);
         filterTimer.setRepeats(false);
 
