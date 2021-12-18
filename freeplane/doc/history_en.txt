@@ -4,6 +4,8 @@
 Bug fixes
 CSS support
 Switch between paragraphs and headings in rich editors
+Keep icon selection dialog open after icon is chosen
+
 ===============================
 1.9.11
 ===============================
