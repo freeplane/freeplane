@@ -55,7 +55,11 @@ public class NodeCssHook extends PersistentNodeHook implements IExtension{
 
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		return new NodeCss(element.getContent());
+		String content = element.getContent();
+		if(content == null || content.trim().isEmpty())
+			return NodeCss.EMPTY;
+		else
+			return new NodeCss(content);
 	}
 
 	@Override
