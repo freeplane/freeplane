@@ -168,7 +168,8 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
             optionComponents.forEach(optionBox::add);
             dialog.getContentPane().add(optionBox, BorderLayout.SOUTH);
         }
-        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        String windowConfigurationPropertyName = windowConfigurationPropertyName();
+		final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(windowConfigurationPropertyName);
         windowConfigurationStorage.setBounds(dialog);
         if(Compat.isMacOsX()) {
             ActionMap am = getActionMap();
@@ -188,6 +189,16 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
         return dialog;
     }
+
+	private String windowConfigurationPropertyName() {
+		JComponent accessory = getAccessory();
+		if (accessory == null)
+			return WINDOW_CONFIG_PROPERTY;
+		else {
+			Dimension preferredSize = accessory.getPreferredSize();
+			return WINDOW_CONFIG_PROPERTY + "_" + preferredSize.width + "." +preferredSize.height;
+		}
+	}
 
     public void addOptionComponent(final JComponent component) {
         optionComponents.add(component);
