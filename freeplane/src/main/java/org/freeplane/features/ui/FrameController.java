@@ -91,6 +91,7 @@ import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatLaf;
 
 /**
  * @author Dimitry Polivaev
@@ -685,7 +686,15 @@ abstract public class FrameController implements ViewController {
     private static void fixLookAndFeelUI(){
         LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
         addHotKeysToMotifInputMaps(lookAndFeel);
+        addTableLinesToFlatLookAndFeel(lookAndFeel);
     }
+
+	private static void addTableLinesToFlatLookAndFeel(LookAndFeel lookAndFeel) {
+        if(lookAndFeel instanceof FlatLaf) {
+        	UIManager.put("Table.showHorizontalLines", true);
+        	UIManager.put("Table.showVerticalLines", true);
+         }
+	}
 
 	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
         if(lookAndFeel.getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
