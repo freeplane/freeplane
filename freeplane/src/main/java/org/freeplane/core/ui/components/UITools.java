@@ -669,7 +669,7 @@ public class UITools {
         }
 		FONT_SCALE_FACTOR = factor;
 	}
-	private static final JTabbedPane FREEPLANE_TABBED_PANEL = new JTabbedPane();
+	private static JTabbedPane FREEPLANE_TABBED_PANEL;
 
 	private static float getScaleFactor() {
 			final ResourceController resourceController = ResourceController.getResourceController();
@@ -799,6 +799,8 @@ public class UITools {
     }
 
     public static JTabbedPane getFreeplaneTabbedPanel() {
+    	if(FREEPLANE_TABBED_PANEL == null)
+    		FREEPLANE_TABBED_PANEL = new JTabbedPane();
         return FREEPLANE_TABBED_PANEL;
     }
 

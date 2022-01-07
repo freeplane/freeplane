@@ -47,7 +47,6 @@ import org.w3c.dom.Document;
  */
 abstract class ExportVectorGraphic implements IExportEngine {
 
-	private static final String DARCULA_LAF = "com.bulenkov.darcula.DarculaLaf";
 	private static final LookAndFeel CROSS_PLATTFORM_LOOK_AND_FEEL;
 	static {
 		try {
@@ -107,8 +106,7 @@ abstract class ExportVectorGraphic implements IExportEngine {
 	private void setLnF(final MapView view, final LookAndFeel newLookAndFeel)
 	{
 		String currentLookAndFeelClassName = currentLookAndFeelClassName();
-		if(currentLookAndFeelClassName.equals(DARCULA_LAF) 
-				||currentLookAndFeelClassName.equals(newLookAndFeel.getClass().getName())) {
+		if(currentLookAndFeelClassName.equals(newLookAndFeel.getClass().getName())) {
 			return;
 		}
 		try {

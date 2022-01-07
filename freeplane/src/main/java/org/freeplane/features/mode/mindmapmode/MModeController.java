@@ -43,7 +43,8 @@ import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 
-import com.bulenkov.darcula.DarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class MModeController extends ModeController {
 	private static final String LOOKANDFEEL_PROPERTY = "lookandfeel";
@@ -125,8 +126,10 @@ public class MModeController extends ModeController {
 			lafNames.add(className);
 			translatedLafNames.add(info.getName());
 		}
-		lafNames.add(DarculaLaf.class.getName());
-		translatedLafNames.add("Darcula");
+		lafNames.add(FlatLightLaf.class.getName());
+		translatedLafNames.add("Flat Light");
+		lafNames.add(FlatDarkLaf.class.getName());
+		translatedLafNames.add("Flat Darcula");
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
