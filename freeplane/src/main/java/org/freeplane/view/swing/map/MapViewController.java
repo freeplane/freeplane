@@ -1016,7 +1016,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-		if (propertyName.equals(ModeController.VIEW_MODE_PROPERTY)) {
+		if (propertyName.equals(ModeController.VIEW_MODE_PROPERTY)
+				|| propertyName.equals("workspaceTitle")) {
 			setFrameTitle();
 			return;
 		}
@@ -1039,18 +1040,25 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		if (modeController != null) {
 			final Object[] messageArguments = { TextUtils.getText(("mode_" + modeController.getModeName())) };
 			final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
-			String frameTitle = formatter.format(messageArguments);
+			String modeName = formatter.format(messageArguments);
 			String viewName = "";
 			final MapModel model = getModel();
+			String frameTitle;
+			String workspaceTitle = ResourceController.getResourceController().getProperty("workspaceTitle");
 			if (model != null) {
 				viewName = getMapViewComponent().getName();
-				frameTitle = viewName + ((model.isSaved() || model.isReadOnly()) ? "" : "*") + " - " + frameTitle
+				frameTitle = (workspaceTitle.isEmpty() ? "" : workspaceTitle + " - ") 
+						+ viewName 
+						+ ((model.isSaved() || model.isReadOnly()) ? "" : "*") 
+						+ " - " + modeName
 						+ (modeController.isEditingLocked() ? format("OptionPanel.view_mode.true") :
 							model.isReadOnly() ? format("read_only") : "");
 				final File file = model.getFile();
 				if (file != null) {
 					frameTitle += " " + file.getAbsolutePath();
 				}
+			} else {
+				frameTitle = (workspaceTitle.isEmpty() ? "" : workspaceTitle + " - ") + modeName;
 			}
 			controller.getViewController().setTitle(frameTitle);
 		}
