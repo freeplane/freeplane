@@ -40,7 +40,7 @@ class BubblePainter extends RectanglePainter {
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRoundRect(0, 0, mainView.getWidth() - 1, mainView.getHeight() - 1, 10, 10);
+		graphics.fillRoundRect(0, 0, mainView.getWidth(), mainView.getHeight(), 10, 10);
 	}
 
 }

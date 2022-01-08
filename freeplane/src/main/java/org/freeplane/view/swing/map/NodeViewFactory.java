@@ -103,6 +103,7 @@ class NodeViewFactory {
 			shape =  new OvalPainter(view, shapeConfiguration);
 			break;
 		case rectangle:
+		case invisible:
 			shape =  new RectanglePainter(view, shapeConfiguration);
 			break;
 		case wide_hexagon:
