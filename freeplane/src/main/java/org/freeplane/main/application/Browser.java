@@ -1,7 +1,6 @@
 package org.freeplane.main.application;
 
 import java.io.IOException;
-import java.net.URI;
 import java.text.MessageFormat;
 
 import org.freeplane.core.resources.ResourceController;

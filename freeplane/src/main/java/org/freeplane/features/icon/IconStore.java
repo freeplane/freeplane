@@ -25,8 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.stream.MemoryCacheImageInputStream;
-
 /**
  *
  * Stores all kinds of icons used in Freeplane.

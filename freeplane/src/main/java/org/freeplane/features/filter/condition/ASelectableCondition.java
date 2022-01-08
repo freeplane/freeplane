@@ -8,7 +8,6 @@ import java.security.PrivilegedExceptionAction;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 

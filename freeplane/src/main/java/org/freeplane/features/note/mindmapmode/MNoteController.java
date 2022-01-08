@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.util.LinkedHashSet;
@@ -28,8 +27,6 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.html.StyleSheet;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.IMapSelection;

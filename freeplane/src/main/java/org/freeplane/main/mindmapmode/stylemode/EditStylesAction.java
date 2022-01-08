@@ -29,12 +29,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;

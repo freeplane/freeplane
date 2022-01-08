@@ -28,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;

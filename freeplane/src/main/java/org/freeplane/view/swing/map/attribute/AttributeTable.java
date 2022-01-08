@@ -37,7 +37,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.EventObject;
 import java.util.Set;

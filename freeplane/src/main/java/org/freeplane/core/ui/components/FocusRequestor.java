@@ -7,7 +7,6 @@ import java.awt.event.HierarchyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class FocusRequestor implements HierarchyListener {

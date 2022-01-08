@@ -21,11 +21,9 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;

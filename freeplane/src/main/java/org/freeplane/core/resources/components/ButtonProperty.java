@@ -20,8 +20,6 @@
 package org.freeplane.core.resources.components;
 
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ButtonProperty extends PropertyBean implements IPropertyControl {

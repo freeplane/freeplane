@@ -63,7 +63,6 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.commandsearch.CommandSearchDialog;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
 

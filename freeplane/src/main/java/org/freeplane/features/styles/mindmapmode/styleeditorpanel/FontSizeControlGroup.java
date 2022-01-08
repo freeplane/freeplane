@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.map.NodeModel;

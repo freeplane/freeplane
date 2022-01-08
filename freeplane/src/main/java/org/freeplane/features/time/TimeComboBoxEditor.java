@@ -27,8 +27,6 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;

@@ -24,8 +24,6 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Collection;
 
-import javax.swing.text.html.StyleSheet;
-
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;

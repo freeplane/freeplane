@@ -11,7 +11,6 @@ import javax.swing.JDialog;
 import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.commandsearch.CommandSearchDialog;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;

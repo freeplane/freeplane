@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.icon.IconController;

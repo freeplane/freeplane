@@ -21,12 +21,8 @@ package org.freeplane.core.resources.components;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.text.NumberFormat;
-import java.util.AbstractMap;
 import java.util.Collections;
-import java.util.Map;
 
-import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -34,14 +30,11 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.NavigationFilter;
 
 import org.freeplane.api.PhysicalUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
-import org.omg.CORBA.portable.Delegate;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

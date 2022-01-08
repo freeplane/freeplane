@@ -38,7 +38,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;

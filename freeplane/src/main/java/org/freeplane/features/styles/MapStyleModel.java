@@ -68,7 +68,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
 /**
  * @author Dimitry Polivaev
  * Mar 12, 2009

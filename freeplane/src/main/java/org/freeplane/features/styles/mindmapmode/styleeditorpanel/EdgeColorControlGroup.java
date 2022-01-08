@@ -22,7 +22,6 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.ColorUtils;
