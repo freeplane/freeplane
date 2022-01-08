@@ -3,6 +3,8 @@
 ===============================
 Bug fixes
 Replace Darcula by supported Flat Darcula Look and Feel and add some other Flat Look and Feels
+Add user configurable workspace title to window title bar
+Add new node shape "invisible" for nodes with invisible node border, therefore map xml version number is incremented
  
 ==============================
 1.9.12
