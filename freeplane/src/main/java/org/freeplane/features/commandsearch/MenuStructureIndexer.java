@@ -75,7 +75,7 @@ public class MenuStructureIndexer {
     }
 
     private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevel, int depth) {
-        if (menuEntry.getName().equals("icons"))
+        if (menuEntry.getName().equals("menu_iconByCategory"))
         {
             return;
         }
