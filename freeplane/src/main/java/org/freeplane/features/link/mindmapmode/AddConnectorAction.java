@@ -20,20 +20,26 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.*;
 
 /**
  * @author foltin
  */
 class AddConnectorAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -49,13 +55,40 @@ class AddConnectorAction extends AFreeplaneAction {
 		final int size = selecteds.size();
 		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final NodeModel target = selecteds.get(size-1);
+		final List<IStyle> stylesWithConnector = getStylesWithConnector(target.getMap());
 		if (selecteds.size() < 2) {
-			linkController.addConnector(target, target);
+			ConnectorModel connector = linkController.addConnector(target, target);
+			setConnectorStyleSameAsNodeStyleIfAvailable(connector, target, stylesWithConnector, linkController);
 			return;
 		}
 		for (NodeModel node : selecteds) {
-			if(node != target)
-				linkController.addConnector(node, target);
+			if(node != target) {
+				ConnectorModel connector = linkController.addConnector(node, target);
+				boolean nodeStyleWasSetToConnector = setConnectorStyleSameAsNodeStyleIfAvailable(connector, node, stylesWithConnector, linkController);
+				if (!nodeStyleWasSetToConnector)
+					setConnectorStyleSameAsNodeStyleIfAvailable(connector, target, stylesWithConnector, linkController);
+			}
 		}
+	}
+
+	private List<IStyle> getStylesWithConnector(MapModel mapModel) {
+		MapStyleModel mapStyleModel = MapStyleModel.getExtension(mapModel);
+		return mapStyleModel.getStyles().stream().filter(key ->
+				NodeLinks.getSelfConnector(mapStyleModel.getStyleNode(key)).isPresent()).collect(Collectors.toList());
+	}
+
+	private boolean setConnectorStyleSameAsNodeStyleIfAvailable(ConnectorModel connector, NodeModel node, List<IStyle> stylesWithConnector, MLinkController linkController) {
+		IStyle styleExplicitlyAssigned = LogicalStyleModel.getStyle(node);
+		IStyle style = styleExplicitlyAssigned != null ? styleExplicitlyAssigned : getActiveStyle(node);
+		// set the connector's style to "default" only if the style is explicitly assigned to the node
+		if ((styleExplicitlyAssigned != null || style != MapStyleModel.DEFAULT_STYLE) && stylesWithConnector.contains(style)) {
+			linkController.setConnectorStyle(connector, style);
+			return true;
+		}
+		return false;
+	}
+
+	private IStyle getActiveStyle(NodeModel node) {
+		return new ArrayList<>(LogicalStyleController.getController().getStyles(node, LogicalStyleController.StyleOption.STYLES_ONLY)).get(0);
 	}
 }
