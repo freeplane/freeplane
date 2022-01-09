@@ -48,9 +48,8 @@ final class ColorIcon implements Icon {
 		}
 		
 		public void setColor(Color color) {
+			this.color = color;
 		    if (color != null) {
-		        final Color nonTransparent = ColorUtils.makeNonTransparent(color);
-		        this.color = nonTransparent;
 		        this.text = ColorUtils.colorToString(color);
 		    }
 		    else {
@@ -58,7 +57,7 @@ final class ColorIcon implements Icon {
 		    }
 		    textHeight = 0;
 		    textWidth = 0;
-
+		    c.repaint();
 		}
 
 		@Override
