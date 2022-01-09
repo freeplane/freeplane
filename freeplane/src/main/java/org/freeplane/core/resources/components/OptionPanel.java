@@ -42,10 +42,12 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -245,9 +247,23 @@ class OptionPanel {
 				final PropertyAdapter property = (PropertyAdapter) control;
 				if (property.getName().equals(selectedProperty))
 				{
-					property.getLabelComponent().setForeground(Color.BLUE);
-					final JViewport viewPort = (JViewport) property.getLabelComponent().getParent().getParent();
-					Rectangle bounds = property.getLabelComponent().getBounds();
+					JLabel label = property.getLabelComponent();
+					Color textColor = label.getForeground();
+					int red = textColor.getRed();
+					int green = textColor.getGreen();
+					int blue = textColor.getBlue();
+					if(blue <= 127) {
+						blue = 255;
+						red = Math.min(200, red * 8 / 5);
+						green = Math.min(200, green * 8 / 5);
+					} else {
+						red = red * 5 / 8;
+						green = green * 5 / 8;
+					}
+					Color markerColor = new Color(red, green, blue, textColor.getAlpha());
+					label.setBorder(BorderFactory.createLineBorder(markerColor, 3, true));
+					final JViewport viewPort = (JViewport) label.getParent().getParent();
+					Rectangle bounds = label.getBounds();
 					// make sure the whole label is visible!
 					bounds.setBounds(bounds.getLocation().x, bounds.getLocation().y, bounds.getSize().width, bounds.getSize().height * 3);
 					viewPort.scrollRectToVisible(bounds);
