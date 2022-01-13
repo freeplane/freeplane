@@ -50,7 +50,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 		super(name);
 		this.defaultColor = defaultColor;
 		mButton = new JButton();
-		mButton.setIcon(new ColorIcon(mButton));
+		mButton.setIcon(new ColorIcon(mButton, null));
 		mButton.addActionListener(this);
 		color = null;
 	}
@@ -104,9 +104,9 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	/**
 	 */
-	public void setColorValue(Color input) {
-	    color = input;
-	    ((ColorIcon)mButton.getIcon()).setColor(input);;
+	public void setColorValue(Color color) {
+	    this.color = color;
+	    mButton.setIcon(new ColorIcon(mButton, color));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

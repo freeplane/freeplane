@@ -13,7 +13,7 @@ import org.freeplane.core.util.ColorUtils;
 
 final class ColorIcon implements Icon {
 		
-		private static final int COLOR_ICON_BORDER_SIZE = (int) (10 * UITools.FONT_SCALE_FACTOR);
+		private static final int COLOR_ICON_BORDER_SIZE = (int) (2 * UITools.FONT_SCALE_FACTOR);
 		private Color color;
 		private String text;
 		private final Component c;
@@ -21,11 +21,17 @@ final class ColorIcon implements Icon {
 		int textWidth;
 		int textHeight;
 
-		public ColorIcon(Component c) {
+		public ColorIcon(Component c, Color color) {
 			super();
 			this.c = c;
-			this.color = null;
-			this.text = " ";
+			this.color = color;
+		    if (color != null) {
+		        this.text = ColorUtils.colorToString(color);
+		    }
+		    else {
+		    	this.text = " ";
+		    }
+
 			this.textWidth = this.textHeight = 0;
 		}
 
@@ -35,35 +41,23 @@ final class ColorIcon implements Icon {
 		    	calculateTextSize();
 		        final Color backgroundColor = ColorUtils.makeNonTransparent(color);
 		        g.setColor(backgroundColor);
-		        g.fillRoundRect(COLOR_ICON_BORDER_SIZE, 
+		        g.fillRoundRect(x + COLOR_ICON_BORDER_SIZE / 2, 
 		        		y + COLOR_ICON_BORDER_SIZE / 2, 
-		        		c.getWidth() - COLOR_ICON_BORDER_SIZE * 2, 
+		        		getIconWidth() - COLOR_ICON_BORDER_SIZE, 
 		        		getIconHeight() - COLOR_ICON_BORDER_SIZE, 5, 5);
 		        final Color textColor = UITools.getTextColorForBackground(color);
 		        g.setColor(textColor);
 		        Graphics2D g2 = (Graphics2D) g;
-				g2.drawString(text, x + COLOR_ICON_BORDER_SIZE , y + COLOR_ICON_BORDER_SIZE + textHeight);
+				int xText = x + (getIconWidth() - textWidth) / 2;
+				int yText = y + textHeight;
+				g2.drawString(text, xText, yText);
 		        
 		    }
-		}
-		
-		public void setColor(Color color) {
-			this.color = color;
-		    if (color != null) {
-		        this.text = ColorUtils.colorToString(color);
-		    }
-		    else {
-		    	this.text = " ";
-		    }
-		    textHeight = 0;
-		    textWidth = 0;
-		    c.repaint();
 		}
 
 		@Override
 		public int getIconWidth() {
-			calculateTextSize();
-			return textWidth + COLOR_ICON_BORDER_SIZE*2;
+			return COLOR_ICON_BORDER_SIZE*100;
 		}
 
 		@Override
