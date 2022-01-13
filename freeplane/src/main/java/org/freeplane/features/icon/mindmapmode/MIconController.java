@@ -174,7 +174,8 @@ public class MIconController extends IconController {
 
 		private void copyIconSize(NodeModel from, NodeModel to) {
 		    Quantity<LengthUnit> iconSize = from.getSharedData().getIcons().getIconSize();
-		    to.getSharedData().getIcons().setIconSize(iconSize);
+		    if(iconSize != null)
+		    	to.getSharedData().getIcons().setIconSize(iconSize);
             
         }
 

@@ -25,15 +25,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -52,16 +49,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	public ColorProperty(final String name, final String defaultColor) {
 		super(name);
 		this.defaultColor = defaultColor;
-		mButton = new JButton() {
-			/**
-			 *
-			 */
-			private static final long serialVersionUID = 1L;
-			{
-				setBorder(BorderFactory.createEtchedBorder());
-				setUI(BasicButtonUI.createUI(this));
-			}
-		};
+		mButton = new JButton();
+		mButton.setIcon(new ColorIcon(mButton));
 		mButton.addActionListener(this);
 		color = null;
 	}
@@ -117,18 +106,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	 */
 	public void setColorValue(Color input) {
 	    color = input;
-	    if (input == null) {
-            mButton.setBackground(null);
-            mButton.setForeground(null);
-            mButton.setText(" ");
-	    }
-	    else {
-	        final Color nonTransparent = ColorUtils.makeNonTransparent(input);
-	        mButton.setBackground(nonTransparent);
-	        final Color textColor = UITools.getTextColorForBackground(nonTransparent);
-	        mButton.setForeground(textColor);
-	        mButton.setText(ColorUtils.colorToString(input));
-	    }
+	    ((ColorIcon)mButton.getIcon()).setColor(input);;
 	}
 
 	public void setEnabled(final boolean pEnabled) {

@@ -529,7 +529,7 @@ public class UITools {
 		final int red = color.getRed();
 		final int blue = color.getBlue();
 		final int green = color.getGreen();
-		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
+		return red*red+blue*blue+green*green > 0x80*0x80*3 ? Color.BLACK : Color.WHITE;
 	}
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);

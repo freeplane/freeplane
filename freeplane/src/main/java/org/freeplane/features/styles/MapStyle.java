@@ -50,6 +50,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -835,15 +836,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     public void redefineStyle(final NodeModel node, boolean copyToExternalTemplate) {
         final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
-        final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+        MapModel map = node.getMap();
+		final MapStyleModel extension = MapStyleModel.getExtension(map);
         final NodeModel styleNode = extension.getStyleNode(style);
         if(styleNode == null)
             return;
+        styleNode.getMap().putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
         Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
         Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
-        LogicalStyleController.getController().refreshMap(node.getMap());
+        LogicalStyleController.getController().refreshMap(map);
         if(copyToExternalTemplate)
-            undoableCopyStyleToAssociatedExternalTemplate(node.getMap(), style);
+            undoableCopyStyleToAssociatedExternalTemplate(map, style);
     }
 
 }
