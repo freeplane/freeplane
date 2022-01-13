@@ -36,7 +36,7 @@ class CheckIconWithBorder implements Icon {
         g.translate(x+2, y+2);
 
         final int sz = SIZE;
-
+        g.setColor(c.getForeground());
 
         if (c == null || ((JMenuItem)c).isSelected()) {
           g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
