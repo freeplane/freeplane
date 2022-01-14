@@ -11,6 +11,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 class CssControlGroup implements ControlGroup{
@@ -46,6 +47,10 @@ class CssControlGroup implements ControlGroup{
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			mSetCss.setValue(node.getExtension(NodeCss.class) != null);
+			final NodeStyleController styleController = Controller
+					.getCurrentModeController().getExtension(NodeStyleController.class);
+			NodeCss styleSheet = styleController.getStyleSheet(node, StyleOption.FOR_UNSELECTED_NODE);
+			mCssButton.setToolTipText(styleSheet.css);
 		}
         
         @Override

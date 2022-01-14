@@ -49,4 +49,8 @@ public class ButtonProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public void setValue(final String value) {
 	}
+
+	public void setToolTipText(String text) {
+		mButton.setToolTipText(text);
+	}
 }
