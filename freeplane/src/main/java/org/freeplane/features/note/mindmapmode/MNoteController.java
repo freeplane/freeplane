@@ -27,8 +27,10 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -38,6 +40,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
+import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.TextController;
@@ -46,6 +49,56 @@ import org.freeplane.features.text.TextController;
  * @author Dimitry Polivaev
  */
 public class MNoteController extends NoteController {
+	private static class ExtensionCopier implements IExtensionCopier {
+
+		@Override
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+	        NoteModel fromNote = NoteModel.getNote(from);
+	        if(fromNote == null)
+	        	return;
+			String contentType = fromNote.getContentType();
+			if (contentType == null)
+				return;
+	        
+	        NoteModel oldNote = NoteModel.getNote(to);
+	        NoteModel newNote = oldNote == null ? new NoteModel() :  oldNote.copy();
+	        newNote.setContentType(contentType);
+	        to.putExtension(newNote);
+		}
+
+		@Override
+		public void remove(Object key, NodeModel from) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+	        NoteModel fromNote = NoteModel.getNote(from);
+	        if(fromNote == null)
+	        	return;
+			String contentType = fromNote.getContentType();
+			if (contentType == null)
+				return;
+	        
+	        NoteModel newNote = fromNote.copy();
+	        newNote.setContentType(null);
+	        from.putExtension(newNote);
+			
+		}
+
+		@Override
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+	        NoteModel whichNote = NoteModel.getNote(which);
+	        if(whichNote == null || whichNote.getContentType() == null)
+				return;
+	        remove(key, from);
+		}
+	}
+
 	final class NoteDocumentListener implements DocumentListener {
 		@Override
 		public void changedUpdate(final DocumentEvent arg0) {
@@ -96,6 +149,7 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(ModeController modeController) {
 		super();
+		modeController.registerExtensionCopier(new ExtensionCopier());
 		noteManager = new NoteManager(this);
         noteContentTypes = new LinkedHashSet<>();
         noteContentTypes.add(TextController.CONTENT_TYPE_AUTO);
