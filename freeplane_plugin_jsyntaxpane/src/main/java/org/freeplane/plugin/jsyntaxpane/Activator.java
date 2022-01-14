@@ -1,8 +1,12 @@
 package org.freeplane.plugin.jsyntaxpane;
 
+import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.util.stream.Stream;
+
+import javax.swing.JEditorPane;
 
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -14,6 +18,7 @@ import de.sciss.syntaxpane.DefaultSyntaxKit;
 import de.sciss.syntaxpane.syntaxkits.GroovySyntaxKit;
 import de.sciss.syntaxpane.syntaxkits.JavaSyntaxKit;
 import de.sciss.syntaxpane.util.Configuration;
+import de.sciss.syntaxpane.util.JarServiceProvider;
 
 public class Activator implements BundleActivator {
 	/*
@@ -24,33 +29,53 @@ public class Activator implements BundleActivator {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
-		    new IModeControllerExtensionProvider() {
-			    public void installExtension(ModeController modeController) {
-			    	if(! GraphicsEnvironment.isHeadless())
-			    		initJSyntaxPane(context);
-				    //new ScriptingRegistration(modeController);
-			    }
-		    }, props);
+				new IModeControllerExtensionProvider() {
+			public void installExtension(ModeController modeController) {
+				if(! GraphicsEnvironment.isHeadless())
+					initJSyntaxPane(context);
+				//new ScriptingRegistration(modeController);
+			}
+		}, props);
+	}
+
+	private void initJSyntaxPane(BundleContext context) {
+		final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
+			DefaultSyntaxKit.initKit();
+			if(hasDarkBackground())
+				configureDarkTheme();
+			Configuration javaSyntaxKitConfig = DefaultSyntaxKit.getConfig(JavaSyntaxKit.class);
+			Stream.of("Action.insert-date", "Action.insert-date.Function","Script.insert-date.URL")//
+			.forEach(javaSyntaxKitConfig::remove);
+			final String components = "de.sciss.syntaxpane.components.PairsMarker" //
+					+ ", de.sciss.syntaxpane.components.LineNumbersRuler" //
+					+ ", de.sciss.syntaxpane.components.TokenMarker" //
+					+ ", org.freeplane.plugin.jsyntaxpane.NodeIdHighLighter";
+			DefaultSyntaxKit.getConfig(GroovySyntaxKit.class).put("Components", components);
+		}
+		finally {
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
+		}
+	}
+
+	private void configureDarkTheme() {
+        String url = DefaultSyntaxKit.class.getName().replace(".", "/") + "/dark";
+        Properties p = JarServiceProvider.readProperties(url);
+        Configuration config = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
+        p.forEach((x, y) -> config.put((String)x, (String)y));        
 	}
 	
-	private void initJSyntaxPane(BundleContext context) {
-	    final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-	    try {
-            Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
-            DefaultSyntaxKit.initKit();
-            Configuration javaSyntaxKitConfig = new JavaSyntaxKit().getConfig();
-            Stream.of("Action.insert-date", "Action.insert-date.Function","Script.insert-date.URL")//
-                .forEach(javaSyntaxKitConfig::remove);
-            final String components = "de.sciss.syntaxpane.components.PairsMarker" //
-            		+ ", de.sciss.syntaxpane.components.LineNumbersRuler" //
-            		+ ", de.sciss.syntaxpane.components.TokenMarker" //
-            		+ ", org.freeplane.plugin.jsyntaxpane.NodeIdHighLighter";
-            	new GroovySyntaxKit().setProperty("Components", components);
-        }
-        finally {
-        	Thread.currentThread().setContextClassLoader(contextClassLoader);
-        }
-}
+    private boolean hasDarkBackground() {
+		Color background = new JEditorPane().getBackground();
+		if(background == null)
+			return false;
+		int r = background.getRed();
+		int g = background.getGreen();
+		int b = background.getBlue();
+		return r*r+g*g+b*b < 0x80*0x80*3;
+	}
+
 
 	/*
 	 * (non-Javadoc)
