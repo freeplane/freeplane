@@ -211,10 +211,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			from.removeExtension(fromStyle);
 		}
-
-		@Override
-		public void resolveParentExtensions(Object key, NodeModel to) {
-        }
 	}
 
 	final private List<AssignStyleAction> actions;

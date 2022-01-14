@@ -228,10 +228,6 @@ public class MIconController extends IconController {
 				targetIconIterator.remove();
 			}
         }
-		@Override
-		public void resolveParentExtensions(Object key, NodeModel to) {
-		    //
-        }
 	}
 
 	private final Map<String, AFreeplaneAction> iconActions = new LinkedHashMap<>();

@@ -121,9 +121,6 @@ public class MLinkController extends LinkController {
 	        if(NodeLinks.formatNodeAsHyperlink(which) != null)
 	        	remove(key, from);
         }
-		@Override
-		public void resolveParentExtensions(Object key, NodeModel to) {
-        }
 	}
 	private final class AddArrowLinkActor implements IActor {
 		private final ConnectorModel arrowLink;

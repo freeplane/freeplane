@@ -8,5 +8,5 @@ public interface IExtensionCopier {
 
 	void remove(Object key, NodeModel from, NodeModel which);
 	
-	void resolveParentExtensions(Object key, NodeModel to);
+	default void resolveParentExtensions(Object key, NodeModel to) {}
 }
