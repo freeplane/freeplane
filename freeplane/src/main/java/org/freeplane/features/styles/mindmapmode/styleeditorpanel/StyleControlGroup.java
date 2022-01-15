@@ -84,6 +84,7 @@ class StyleControlGroup implements ControlGroup{
 	
 	private final MUIFactory uiFactory;
 	private final ModeController modeController;
+	private final float fontSize;
 	
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
@@ -111,11 +112,12 @@ class StyleControlGroup implements ControlGroup{
 	}
 
 	
-	public StyleControlGroup(boolean addStyleBox, MUIFactory uiFactory, ModeController modeController) {
+	public StyleControlGroup(boolean addStyleBox, MUIFactory uiFactory, ModeController modeController, float fontSize) {
 		super();
 		this.addStyleBox = addStyleBox;
 		this.uiFactory = uiFactory;
 		this.modeController = modeController;
+		this.fontSize = fontSize;
 	}
 
 	@Override
@@ -272,7 +274,7 @@ class StyleControlGroup implements ControlGroup{
 
             styleAndButtonBox.add(styleName);
             styleAndButtonBox.add(buttonBox);
-            UITools.addTitledBorder(styleAndButtonBox, TextUtils.format(REDEFINE_STYLE, ""), StyleEditorPanel.FONT_SIZE);
+            UITools.addTitledBorder(styleAndButtonBox, TextUtils.format(REDEFINE_STYLE, ""), fontSize);
             formBuilder.append(styleAndButtonBox, formBuilder.getColumnCount());
             formBuilder.nextLine();
 
@@ -305,7 +307,7 @@ class StyleControlGroup implements ControlGroup{
 	    final JButton button = addButton(formBuilder, action);
 		TranslatedElement.BORDER.setKey(button, label);
 		final String labelText = TextUtils.getText(label);
-		UITools.addTitledBorder(button, labelText, StyleEditorPanel.FONT_SIZE);
+		UITools.addTitledBorder(button, labelText, fontSize);
 		return button;
     }
 
