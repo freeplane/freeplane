@@ -45,16 +45,16 @@ public class Activator implements BundleActivator {
 		try {
 			Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
 			DefaultSyntaxKit.initKit();
-			Configuration config = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
 			if(hasDarkBackground()) {
+				Configuration config = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
 				configureDarkTheme(config);
 			}
-	        Color selectionColor = new JTextField().getSelectionColor();
-	        if(selectionColor !=  null) {
-	        	config.put("SelectionColor",  ColorUtils.colorToString(selectionColor));
-	        }
 
 			Configuration javaSyntaxKitConfig = DefaultSyntaxKit.getConfig(JavaSyntaxKit.class);
+	        Color selectionColor = new JTextField().getSelectionColor();
+	        if(selectionColor !=  null) {
+	        	javaSyntaxKitConfig.put("SelectionColor",  ColorUtils.colorToString(selectionColor));
+	        }
 			Stream.of("Action.insert-date", "Action.insert-date.Function","Script.insert-date.URL")//
 			.forEach(javaSyntaxKitConfig::remove);
 			final String components = "de.sciss.syntaxpane.components.PairsMarker" //
