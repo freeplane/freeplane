@@ -7,7 +7,9 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 import javax.swing.JEditorPane;
+import javax.swing.JTextField;
 
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -43,8 +45,15 @@ public class Activator implements BundleActivator {
 		try {
 			Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
 			DefaultSyntaxKit.initKit();
-			if(hasDarkBackground())
-				configureDarkTheme();
+			Configuration config = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
+			if(hasDarkBackground()) {
+				configureDarkTheme(config);
+			}
+	        Color selectionColor = new JTextField().getSelectionColor();
+	        if(selectionColor !=  null) {
+	        	config.put("SelectionColor",  ColorUtils.colorToString(selectionColor));
+	        }
+
 			Configuration javaSyntaxKitConfig = DefaultSyntaxKit.getConfig(JavaSyntaxKit.class);
 			Stream.of("Action.insert-date", "Action.insert-date.Function","Script.insert-date.URL")//
 			.forEach(javaSyntaxKitConfig::remove);
@@ -59,11 +68,10 @@ public class Activator implements BundleActivator {
 		}
 	}
 
-	private void configureDarkTheme() {
-        String url = DefaultSyntaxKit.class.getName().replace(".", "/") + "/dark";
+	private void configureDarkTheme(Configuration config) {
+		String url = DefaultSyntaxKit.class.getName().replace(".", "/") + "/dark";
         Properties p = JarServiceProvider.readProperties(url);
-        Configuration config = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
-        p.forEach((x, y) -> config.put((String)x, (String)y));        
+        p.forEach((x, y) -> config.put((String)x, (String)y));
 	}
 	
     private boolean hasDarkBackground() {
