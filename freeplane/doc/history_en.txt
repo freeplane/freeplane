@@ -6,7 +6,9 @@ Replace Darcula by supported Flat Darcula Look and Feel and add some other Flat 
 Add user configurable workspace title to window title bar
 Add new node shape "invisible" for nodes with invisible node border, therefore map xml version number is incremented
 Add copy/paste color actions to color property pop-up menu
- 
+Add option to configure size of formatting panel UI elements (big or small)
+Support dark mode in code editors (groovy, markdown, latex)
+
 ==============================
 1.9.12
 ===============================
