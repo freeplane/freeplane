@@ -10,3 +10,4 @@ Categories=Office;
 GenericName=Freeplane
 Comment=A free tool to structure and organise your information with mind mapping
 Keywords=Mindmaps; Knowledge management; Organize information; Brainstorming; ...;
+StartupWMClass=org-knopflerfish-framework-BundleThread
