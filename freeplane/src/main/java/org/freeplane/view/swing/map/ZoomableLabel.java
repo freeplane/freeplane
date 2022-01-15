@@ -181,14 +181,12 @@ public class ZoomableLabel extends JLabel {
 			StyleSheet old = (StyleSheet) getClientProperty(StyleSheet.class);
 			putClientProperty(StyleSheet.class, styleSheet);
 			this.css = css;
-			if(HtmlUtils.isHtml(getText())) {
-				firePropertyChange(CUSTOM_CSS, old, styleSheet);
-				revalidate();
-				repaint();
-			}
+			firePropertyChange(CUSTOM_CSS, old, styleSheet);
+			revalidate();
+			repaint();
 		}
 	}
-	
+
 	public StyleSheet getStyleSheet() {
 		StyleSheet s = (StyleSheet) getClientProperty(StyleSheet.class);
 		return s != null ? s : NodeCss.EMPTY.getStyleSheet();
