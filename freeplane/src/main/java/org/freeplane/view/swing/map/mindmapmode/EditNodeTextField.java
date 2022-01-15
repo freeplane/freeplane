@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -38,6 +39,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.AttributedCharacterIterator;
@@ -98,6 +101,7 @@ import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
@@ -341,6 +345,24 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 			if (e.isTemporary() && e.getOppositeComponent() == null) {
 				return;
+			}
+			Window myWindow = SwingUtilities.getWindowAncestor(e.getComponent());
+			if (SwingUtilities.getWindowAncestor(e.getOppositeComponent()) 
+					!= myWindow) {
+				myWindow.addWindowFocusListener(new WindowFocusListener() {
+					
+					@Override
+					public void windowLostFocus(WindowEvent e) {
+					}
+					
+					@Override
+					public void windowGainedFocus(WindowEvent e) {
+						myWindow.removeWindowFocusListener(this);
+						MainView mainView = nodeView.getMainView();
+						if(mainView != null)
+							mainView.requestFocusInWindow();
+					}
+				});
 			}
 			submitText();
 			hideMe();
