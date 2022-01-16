@@ -206,7 +206,7 @@ public class AttributeController implements IExtension {
 		            backgroundColor = Color.WHITE;
 		            textColor = Color.BLACK;
 		        }
-				tooltip.append("<html><body><table style='border: 1px solid;");
+				tooltip.append("<html><body><table");
                 tooltip.append( new CssRuleBuilder().withHTMLFont(font)
 						.withBackground(backgroundColor)
 						.withColor(textColor)
@@ -214,9 +214,9 @@ public class AttributeController implements IExtension {
 				tooltip.append(" ' width='100%' cellspacing='0' cellpadding='2' ");
 				final int currentRowCount = attributes.getRowCount();
 				for (int i = 0; i < currentRowCount; i++) {
-					tooltip.append("<tr><td style='border: 1px solid;'>");
+					tooltip.append("<tr><td>");
 					tooltip.append(attributes.getValueAt(i, 0));
-					tooltip.append("</td><td style='border: 1px solid;'>");
+					tooltip.append("</td><td>");
 					final Object object = attributes.getValueAt(i, 1);
 					final String text = getTransformedValue(node, attributes, textController, object);
 					if(object instanceof Hyperlink || object instanceof URI){

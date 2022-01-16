@@ -10,7 +10,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.net.URI;
 import java.net.URL;
 import java.security.AccessControlException;
 
@@ -27,7 +26,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
@@ -90,9 +88,9 @@ class TextualTooltipRendererFactory {
 			tip.setEditorKit(kit);
 			final HTMLDocument document = (HTMLDocument) tip.getDocument();
 			final StyleSheet styleSheet = document.getStyleSheet();
-			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("body");
-			styleSheet.addRule("p {margin-top:0;}\n");
+			styleSheet.addRule("p {margin-top:0;}");
+			styleSheet.addRule("table {border: 0; border-spacing: 0;}");
+			styleSheet.addRule("th, td {border: 1px solid;}");
 		}
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));

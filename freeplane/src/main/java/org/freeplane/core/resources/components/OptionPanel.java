@@ -42,14 +42,18 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -79,6 +83,8 @@ class OptionPanel {
 	}
 
 	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
+	private static JTextField selectionColorCheckingTextFieldComponent;
+
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
 	final private HashMap<String, Integer> tabStringToIndexMap = new HashMap<String, Integer>();
@@ -245,15 +251,41 @@ class OptionPanel {
 				final PropertyAdapter property = (PropertyAdapter) control;
 				if (property.getName().equals(selectedProperty))
 				{
-					property.getLabelComponent().setForeground(Color.BLUE);
-					final JViewport viewPort = (JViewport) property.getLabelComponent().getParent().getParent();
-					Rectangle bounds = property.getLabelComponent().getBounds();
+					JLabel label = property.getLabelComponent();
+					Color markerColor = getMarkerColor(label);
+					label.setBorder(BorderFactory.createLineBorder(markerColor, 3, true));
+					final JViewport viewPort = (JViewport) label.getParent().getParent();
+					Rectangle bounds = label.getBounds();
 					// make sure the whole label is visible!
 					bounds.setBounds(bounds.getLocation().x, bounds.getLocation().y, bounds.getSize().width, bounds.getSize().height * 3);
 					viewPort.scrollRectToVisible(bounds);
 				}
 			}
 		}
+	}
+
+
+
+	private Color getMarkerColor(JLabel label) {
+		if(selectionColorCheckingTextFieldComponent == null)
+			selectionColorCheckingTextFieldComponent = new JTextField();
+		Color textFieldSelectionColor = selectionColorCheckingTextFieldComponent.getSelectionColor();
+		if(textFieldSelectionColor != null)
+			return textFieldSelectionColor;
+		Color textColor = label.getForeground();
+		int red = textColor.getRed();
+		int green = textColor.getGreen();
+		int blue = textColor.getBlue();
+		if(blue <= 127) {
+			blue = 255;
+			red = Math.min(200, red * 8 / 5);
+			green = Math.min(200, green * 8 / 5);
+		} else {
+			red = red * 5 / 8;
+			green = green * 5 / 8;
+		}
+		Color markerColor = new Color(red, green, blue, textColor.getAlpha());
+		return markerColor;
 	}
 
 	private void saveOptionsToFile() {

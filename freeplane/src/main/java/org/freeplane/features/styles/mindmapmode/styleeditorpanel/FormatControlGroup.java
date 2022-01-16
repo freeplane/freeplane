@@ -21,7 +21,6 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
@@ -32,8 +31,6 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.mindmapmode.EditablePatternComboProperty;
-import org.freeplane.features.text.TextController;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 /**

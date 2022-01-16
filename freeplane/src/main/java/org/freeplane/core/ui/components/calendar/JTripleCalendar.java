@@ -20,6 +20,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -83,7 +84,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 	public static void main(final String[] args) {
 		final JFrame frame = new JFrame("JTripleCalendar");
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		final JTripleCalendar jcalendar = new JTripleCalendar();
+		final JTripleCalendar jcalendar = new JTripleCalendar(Locale.getDefault());
 		frame.getContentPane().add(jcalendar);
 		frame.pack();
 		frame.setVisible(true);
@@ -93,7 +94,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 	final private JInfoPanel leftPanel;
 	final private JInfoPanel rightPanel;
 
-	public JTripleCalendar() {
+	public JTripleCalendar(Locale locale) {
 		this.setName("JTripleCalendar");
 		final GridLayout gridLayout = new GridLayout(1, 3);
 		gridLayout.setVgap(10);
@@ -101,7 +102,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 		leftPanel = createInfoPanel();
 		rightPanel = createInfoPanel();
 		add(leftPanel);
-		calendarWidget = new JCalendar();
+		calendarWidget = new JCalendar(locale);
 		calendarWidget.addPropertyChangeListener(this);
 		add(calendarWidget);
 		add(rightPanel);

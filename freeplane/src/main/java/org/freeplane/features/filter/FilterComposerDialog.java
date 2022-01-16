@@ -7,6 +7,7 @@ import javax.swing.DefaultComboBoxModel;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.styles.ConditionalStyleModel;
 
 @SuppressWarnings("serial")
 public class FilterComposerDialog extends AFilterComposerDialog{
@@ -15,9 +16,14 @@ public class FilterComposerDialog extends AFilterComposerDialog{
 	private DefaultComboBoxModel model;
 	
 	public FilterComposerDialog(Variant variant) {
-        super(TextUtils.getText("filter_dialog"), true, variant);
-        conditions = new LinkedList<ASelectableCondition>();
+		this(variant, null);
     }
+
+	public FilterComposerDialog(Variant variant,
+			ConditionalStyleModel context) {
+        super(TextUtils.getText("filter_dialog"), true, variant, context);
+        conditions = new LinkedList<ASelectableCondition>();
+	}
 
 	protected DefaultComboBoxModel createModel() {
 		conditions.clear();
@@ -68,5 +74,4 @@ public class FilterComposerDialog extends AFilterComposerDialog{
 	    	return conditions.isEmpty() ? null : conditions.get(0);
 	    return value;
 	}
-
 }

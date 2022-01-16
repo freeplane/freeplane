@@ -20,6 +20,7 @@
 package org.freeplane.main.mindmapmode.stylemode;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -28,12 +29,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -85,7 +83,6 @@ public class EditStylesAction extends AFreeplaneAction {
 		Controller controller = modeController.getController();
 		Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
 		((DialogController) controller.getViewController()).setMapView(mapViewComponent);
-		dialog.setLocationRelativeTo(currentController.getViewController().getCurrentRootComponent());
 		dialog.setVisible(true);
 	}
 
@@ -109,7 +106,10 @@ public class EditStylesAction extends AFreeplaneAction {
 			Controller.setCurrentController ((Controller) dialog.getRootPane().getClientProperty(Controller.class));
 			return;
 		}
-		dialog = new JDialog(UITools.getCurrentFrame());
+		Frame parentFrame = UITools.getCurrentFrame();
+		dialog = new JDialog(parentFrame);
+		dialog.applyComponentOrientation(parentFrame.getComponentOrientation());
+		dialog.setLocationRelativeTo(mainController.getViewController().getCurrentRootComponent());
 		final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
 		windowConfigurationStorage.restoreDialogPositions(dialog);
 		dialog.setModal(true);

@@ -22,7 +22,6 @@ package org.freeplane.features.mode;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class CombinedPropertyChain<V, T> {

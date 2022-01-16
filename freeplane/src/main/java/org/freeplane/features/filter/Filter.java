@@ -255,8 +255,8 @@ public class Filter implements IExtension {
     private void showDescendants(NodeModel node) {
         for (NodeModel child : node.getChildren()) {
             FilterInfo filterInfo = getFilterInfo(child);
-            filterInfo.add(FilterInfo.FILTER_SHOW_AS_ANCESTOR);
-            showAncestors(child);
+            filterInfo.add(FilterInfo.FILTER_SHOW_AS_DESCENDANT);
+            showDescendants(child);
         }
     }
 }

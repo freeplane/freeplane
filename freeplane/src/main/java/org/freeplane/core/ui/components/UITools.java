@@ -529,7 +529,7 @@ public class UITools {
 		final int red = color.getRed();
 		final int blue = color.getBlue();
 		final int green = color.getGreen();
-		return red > 0x80 && blue > 0x80 && green > 0x80 ? Color.BLACK : Color.WHITE;
+		return red*red+blue*blue+green*green > 0x80*0x80*3 ? Color.BLACK : Color.WHITE;
 	}
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
@@ -669,7 +669,7 @@ public class UITools {
         }
 		FONT_SCALE_FACTOR = factor;
 	}
-	private static final JTabbedPane FREEPLANE_TABBED_PANEL = new JTabbedPane();
+	private static JTabbedPane FREEPLANE_TABBED_PANEL;
 
 	private static float getScaleFactor() {
 			final ResourceController resourceController = ResourceController.getResourceController();
@@ -799,6 +799,8 @@ public class UITools {
     }
 
     public static JTabbedPane getFreeplaneTabbedPanel() {
+    	if(FREEPLANE_TABBED_PANEL == null)
+    		FREEPLANE_TABBED_PANEL = new JTabbedPane();
         return FREEPLANE_TABBED_PANEL;
     }
 

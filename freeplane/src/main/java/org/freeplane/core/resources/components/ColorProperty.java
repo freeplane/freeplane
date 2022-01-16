@@ -20,30 +20,33 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Color;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.Optional;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.components.JFreeplaneMenuItem;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardAccessor;
 
+import com.jgoodies.common.base.Objects;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	Color color;
-	final private String defaultColor;
+	final private Color defaultColor;
 	JButton mButton;
-	final JPopupMenu menu = new JPopupMenu();
 
 	/**
 	 * @param name
@@ -51,24 +54,16 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	 */
 	public ColorProperty(final String name, final String defaultColor) {
 		super(name);
-		this.defaultColor = defaultColor;
-		mButton = new JButton() {
-			/**
-			 *
-			 */
-			private static final long serialVersionUID = 1L;
-			{
-				setBorder(BorderFactory.createEtchedBorder());
-				setUI(BasicButtonUI.createUI(this));
-			}
-		};
+		this.defaultColor = ColorUtils.stringToColor(defaultColor);
+		mButton = new JButton();
+		mButton.setIcon(new ColorIcon(mButton, null));
 		mButton.addActionListener(this);
 		color = null;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), TextUtils
-		    .getOptionalText(getLabel()), getColorValue(), ColorUtils.stringToColor(defaultColor));
+		    .getOptionalText(getLabel()), getColorValue(), defaultColor);
 		if(result != null){
 			setColorValue(result);
 			firePropertyChangeEvent();
@@ -89,46 +84,74 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	public void appendToForm(final DefaultFormBuilder builder) {
 		appendToForm(builder, mButton);
-		final JMenuItem item = new JFreeplaneMenuItem(TextUtils.getOptionalText("ColorProperty.ResetColor"));
-		item.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent e) {
-				setValue(defaultColor);
-			}
-		});
-		menu.add(item);
 		mButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(final MouseEvent evt) {
 				if (evt.isPopupTrigger()) {
-					menu.show(evt.getComponent(), evt.getX(), evt.getY());
+					showPopupMenu(evt);
 				}
 			}
 
 			@Override
 			public void mouseReleased(final MouseEvent evt) {
 				if (evt.isPopupTrigger()) {
-					menu.show(evt.getComponent(), evt.getX(), evt.getY());
+					showPopupMenu(evt);
+				}
+			}
+			private void showPopupMenu(final MouseEvent evt) {
+				final JPopupMenu menu = new JPopupMenu();
+				copyColorItem().ifPresent(menu::add);
+				pasteColorItem().ifPresent(menu::add);
+				resetColorItem().ifPresent(menu::add);
+				menu.show(evt.getComponent(), evt.getX(), evt.getY());
+			}
+
+			private Optional<JMenuItem> resetColorItem() {
+				if(defaultColor == null || defaultColor.equals(color))
+					return Optional.empty();
+				final JMenuItem item = new JFreeplaneMenuItem(TextUtils.getText("ColorProperty.ResetColor"));
+				item.addActionListener(e -> {
+					setColorValue(defaultColor);
+					firePropertyChangeEvent();
+				});
+				return Optional.of(item);
+			}
+			
+			private Optional<JMenuItem> copyColorItem (){
+				return Optional.ofNullable(getValue()).map(this::copyColorItem);
+			}
+			
+			private JMenuItem copyColorItem (String value){
+				final JMenuItem item = new JFreeplaneMenuItem(TextUtils.getText("ColorProperty.CopyColor"));
+				item.addActionListener(e -> ClipboardAccessor.getInstance().setClipboardContents(value));
+				return item;
+			}
+
+			private Optional<JMenuItem> pasteColorItem (){
+				try {
+					Transferable t = ClipboardAccessor.getInstance().getClipboardContents();
+					if (t == null || !t.isDataFlavorSupported(DataFlavor.stringFlavor))
+						return Optional.empty();
+					String content = t.getTransferData(DataFlavor.stringFlavor).toString().trim();
+					Color color = ColorUtils.stringToColor(content);
+					final JMenuItem item = new JFreeplaneMenuItem(TextUtils.getText("ColorProperty.PasteColor"));
+					item.addActionListener(e -> {
+						setColorValue(color);
+						firePropertyChangeEvent();
+					});
+					return Optional.of(item);
+				} catch (NumberFormatException | UnsupportedFlavorException | IOException e) {
+					return Optional.empty();
 				}
 			}
 		});
-	}
+		}
 
 	/**
 	 */
-	public void setColorValue(Color input) {
-	    color = input;
-	    if (input == null) {
-            mButton.setBackground(null);
-            mButton.setForeground(null);
-            mButton.setText(" ");
-	    }
-	    else {
-	        final Color nonTransparent = ColorUtils.makeNonTransparent(input);
-	        mButton.setBackground(nonTransparent);
-	        final Color textColor = UITools.getTextColorForBackground(nonTransparent);
-	        mButton.setForeground(textColor);
-	        mButton.setText(ColorUtils.colorToString(input));
-	    }
+	public void setColorValue(Color color) {
+	    this.color = color;
+	    mButton.setIcon(new ColorIcon(mButton, color));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

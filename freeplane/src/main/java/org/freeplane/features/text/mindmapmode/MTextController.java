@@ -74,7 +74,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.OptionalReference;
 import org.freeplane.features.filter.StringMatchingStrategy;
-import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
@@ -85,8 +84,8 @@ import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -99,13 +98,11 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.features.styles.ConditionPredicate;
-import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.IContentTransformer;
-import org.freeplane.features.text.NodeItemRelation;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -125,6 +122,58 @@ import com.lightdev.app.shtm.UIResources;
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
+	
+	private static class ExtensionCopier implements IExtensionCopier {
+
+		@Override
+		public void copy(Object key, NodeModel from, NodeModel to) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+	        DetailModel fromDetails = DetailModel.getDetail(from);
+	        if(fromDetails == null)
+	        	return;
+			String contentType = fromDetails.getContentType();
+			if (contentType == null)
+				return;
+	        
+	        DetailModel oldDetails = DetailModel.getDetail(to);
+	        DetailModel newDetails = oldDetails == null ? new DetailModel(false) :  oldDetails.copy();
+	        newDetails.setContentType(contentType);
+	        to.putExtension(newDetails);
+		}
+
+		@Override
+		public void remove(Object key, NodeModel from) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+	        DetailModel fromDetails = DetailModel.getDetail(from);
+	        if(fromDetails == null)
+	        	return;
+			String contentType = fromDetails.getContentType();
+			if (contentType == null)
+				return;
+	        
+	        DetailModel newDetails = fromDetails.copy();
+	        newDetails.setContentType(null);
+	        from.putExtension(newDetails);
+			
+		}
+
+		@Override
+		public void remove(Object key, NodeModel from, NodeModel which) {
+			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
+				return;
+			}
+	        DetailModel whichDetails = DetailModel.getDetail(which);
+	        if(whichDetails == null || whichDetails.getContentType() == null)
+				return;
+	        remove(key, from);
+		}
+	}
+	
+	
     private static final String PARSE_DATA_PROPERTY = "parse_data";
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
@@ -165,6 +214,7 @@ public class MTextController extends TextController {
 
 	public MTextController(ModeController modeController) {
 		super(modeController);
+		modeController.registerExtensionCopier(new ExtensionCopier());
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
         detailContentTypes = new LinkedHashSet<>();
@@ -769,9 +819,9 @@ public class MTextController extends TextController {
 		}
 	}
 
-	public boolean containsFormatting(final String text) {
+	private boolean containsFormatting(final String text) {
 		if (FORMATTING_PATTERN == null) {
-			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)",
+			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)|&lt;(?:html|table)&gt;",
 			    Pattern.CASE_INSENSITIVE);
 		}
 		final Matcher matcher = FORMATTING_PATTERN.matcher(text);
@@ -1135,6 +1185,7 @@ public class MTextController extends TextController {
 			}
 		});
 		final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
+		shtmlPanel.applyComponentOrientation(UITools.getMenuComponent().getComponentOrientation());
 		final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
 		sourceEditorPane.setOpaque(true);
 		shtmlPanel.getSourceEditorPane().setOpaque(true);

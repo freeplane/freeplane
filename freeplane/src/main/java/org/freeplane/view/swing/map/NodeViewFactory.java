@@ -33,6 +33,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleShape;
@@ -102,6 +103,7 @@ class NodeViewFactory {
 			shape =  new OvalPainter(view, shapeConfiguration);
 			break;
 		case rectangle:
+		case invisible:
 			shape =  new RectanglePainter(view, shapeConfiguration);
 			break;
 		case wide_hexagon:
@@ -249,6 +251,8 @@ class NodeViewFactory {
 		noteView.setTextRenderingIcon(newIcon);
 		noteView.setMinimumWidth(minNodeWidth);
 		noteView.setMaximumWidth(maxNodeWidth);
+		NodeCss noteCss = map.getNoteCss();
+		noteView.setStyleSheet(noteCss.css, noteCss.getStyleSheet());
 		noteView.revalidate();
 		map.repaint();
 
@@ -296,6 +300,8 @@ class NodeViewFactory {
 		detailContent.setBackground(map.getDetailBackground());
 		detailContent.setMinimumWidth(minNodeWidth);
 		detailContent.setMaximumWidth(maxNodeWidth);
+		NodeCss detailCss = map.getDetailCss();
+		detailContent.setStyleSheet(detailCss.css, detailCss.getStyleSheet());
 		detailContent.revalidate();
 		map.repaint();
 	}

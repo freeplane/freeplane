@@ -67,21 +67,17 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
-import org.freeplane.core.ui.components.FixDarculaToggleButtonUI;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
-import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
@@ -94,6 +90,9 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatLaf;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -103,7 +102,7 @@ abstract public class FrameController implements ViewController {
     private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
     private static final String MOTIF_LAF__CLASS_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
-
+	
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
 		 *
@@ -583,6 +582,10 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
+		if(DARCULA_LAF_CLASS_NAME.equals(lookAndFeel)) {
+			setLookAndFeel(FlatDarculaLaf.class.getName(), supportHidpi);
+			return;
+		}
 		try {
             if (Compat.isMacOsX()) {
                 try {
@@ -595,7 +598,6 @@ abstract public class FrameController implements ViewController {
 			    boolean lookAndFeelSet = false;
 			    if(! lookAndFeelSet) {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-			        fixDarculaNPE(lookAndFeelClassName);
 			        UIManager.setLookAndFeel(lookAndFeelClassName);
 			        fixLookAndFeelUI();
 			    }
@@ -606,7 +608,6 @@ abstract public class FrameController implements ViewController {
 				for (LookAndFeelInfo lafInfo : lafInfos) {
 					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)) {
 						String lookAndFeelClassName = lafInfo.getClassName();
-						fixDarculaNPE(lookAndFeelClassName);
 						lookAndFeelSet = tryToSetLookAndFeel(lookAndFeelClassName);
 						fixLookAndFeelUI();
 						break;
@@ -616,7 +617,6 @@ abstract public class FrameController implements ViewController {
 					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
 					try {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
-						fixDarculaNPE(lookAndFeel);
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						fixLookAndFeelUI();
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
@@ -683,16 +683,18 @@ abstract public class FrameController implements ViewController {
         return lookAndFeelSet;
     }
 
-	private static void fixDarculaNPE(String lookAndFeelClassName) throws UnsupportedLookAndFeelException {
-		if(lookAndFeelClassName.equals(DARCULA_LAF_CLASS_NAME))
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
-	}
-
     private static void fixLookAndFeelUI(){
         LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
-        fixDarculaButtonUI(lookAndFeel);
         addHotKeysToMotifInputMaps(lookAndFeel);
+        addTableLinesToFlatLookAndFeel(lookAndFeel);
     }
+
+	private static void addTableLinesToFlatLookAndFeel(LookAndFeel lookAndFeel) {
+        if(lookAndFeel instanceof FlatLaf) {
+        	UIManager.put("Table.showHorizontalLines", true);
+        	UIManager.put("Table.showVerticalLines", true);
+         }
+	}
 
 	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
         if(lookAndFeel.getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
@@ -731,14 +733,6 @@ abstract public class FrameController implements ViewController {
            }
         };
     }
-
-    private static void fixDarculaButtonUI(LookAndFeel lookAndFeel){
-        if(lookAndFeel.getClass().getName().equals(DARCULA_LAF_CLASS_NAME)) {
-			UIManager.put("ToggleButtonUI", FixDarculaToggleButtonUI.class.getName());
-			UIManager.put("Button.darcula.selection.color1", ColorUtils.rgbStringToColor("#687f88"));
-			UIManager.put("Button.darcula.selection.color2", ColorUtils.rgbStringToColor("#436188"));
-		}
-	}
 
 	private static int getLookAndFeelDefaultMenuItemFontSize() {
 		int lookAndFeelDefaultMenuItemFontSize = 10;

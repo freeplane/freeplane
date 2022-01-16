@@ -18,6 +18,8 @@ public class SynchronousScaledEditorKit extends ScaledEditorKit {
 			synchronousFactory = new HTMLEditorKit.HTMLFactory(){
 				public View create(Element elem) {
 					View view = super.create(elem);
+					if(elem.getName().equals("br"))
+						return view;
                     if(view instanceof InlineView){ 
                         return new InlineView(elem){ 
                             public View breakView(int axis, int p0, float pos, float len) { 

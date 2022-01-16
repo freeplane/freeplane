@@ -25,7 +25,6 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -34,7 +33,6 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -99,13 +97,16 @@ class NodeShapeControlGroup implements ControlGroup {
 
         @Override
         void adjustForStyle(NodeModel node) {
+			final NodeStyleController styleController = Controller.getCurrentModeController()
+					.getExtension(NodeStyleController.class);
+			NodeStyleShape shape = styleController.getShape(node, StyleOption.FOR_UNSELECTED_NODE);
             StylePropertyAdjuster.adjustPropertyControl(node, mSetNodeShape);
             StylePropertyAdjuster.adjustPropertyControl(node, mNodeShape);
             StylePropertyAdjuster.adjustPropertyControl(node, mShapeHorizontalMargin);
             StylePropertyAdjuster.adjustPropertyControl(node, mShapeVerticalMargin);
             StylePropertyAdjuster.adjustPropertyControl(node, mUniformShape);
-            if(!MapStyleModel.isStyleNode(node) || mNodeShape.isEnabled())
-                enableShapeConfigurationProperties(NodeStyleModel.getShape(node) != null, NodeStyleModel.getShape(node));
+            if(mNodeShape.isEnabled())
+                enableShapeConfigurationProperties(true, shape);
         }
 	}
 	

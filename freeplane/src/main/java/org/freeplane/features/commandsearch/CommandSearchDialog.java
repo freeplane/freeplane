@@ -237,23 +237,15 @@ public class CommandSearchDialog extends JDialog
         resultList.setVisibleRowCount(20);
 
         final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
-        if (ResourceController.getResourceController().getProperty(WINDOW_CONFIG_PROPERTY) != null) {
-            windowConfigurationStorage.restoreDialogPositions(this);
-        } else
-        {
-            pack();
-        }
-
-        input.getDocument().addDocumentListener(this);
-
-        this.addWindowListener(new WindowAdapter() {
+        windowConfigurationStorage.setBounds(this);
+		addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 controller.getMapViewManager().removeMapSelectionListener(CommandSearchDialog.this);
-                windowConfigurationStorage.storeDialogPositions(CommandSearchDialog.this);
             }
         });
 
+        input.getDocument().addDocumentListener(this);
         this.addWindowFocusListener(new WindowFocusListener() {
 
 			@Override
@@ -269,8 +261,6 @@ public class CommandSearchDialog extends JDialog
 
         setVisible(true);
     }
-
-
 
     @Override
     public void afterMapChange(MapModel oldMap, MapModel newMap) {

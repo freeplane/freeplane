@@ -250,7 +250,9 @@ public class EdgeController implements IExtension {
 			}
 			if (node != styleNode && map.getRootNode().containsExtension(AutomaticEdgeColor.class)) {
 				AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
-				if (automaticLayoutController != null && automaticLayoutController.isAutomaticLevelStyle(styleNode)) {
+				if (automaticLayoutController != null &&
+						(MapStyleModel.DEFAULT_STYLE.equals(styleKey) ||
+						automaticLayoutController.isAutomaticLevelStyle(styleNode))) {
 					continue;
 				}
 			}

@@ -72,14 +72,16 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);
 		final NodeModel selected = controller.getSelection().getSelected();
 		controller.getMapViewManager().scrollNodeToVisible(selected);
-		selectionDialog.pack();
-		UITools.setDialogLocationRelativeTo(selectionDialog, selected);
-		selectionDialog.setModal(true);
+		selectionDialog.setModal(false);
+		selectionDialog.setActionListener(evt -> {
+			final int result = selectionDialog.getIconIndex();
+			if (result >= 0) {
+				final Action action = (Action) actions.get(result);
+				if(action.isEnabled())
+					action.actionPerformed(new ActionEvent(action, 0, NodeModel.NODE_ICON, selectionDialog.getModifiers()));
+			}
+
+		});
 		selectionDialog.show();
-		final int result = selectionDialog.getResult();
-		if (result >= 0) {
-			final Action action = (Action) actions.get(result);
-			action.actionPerformed(new ActionEvent(action, 0, NodeModel.NODE_ICON, selectionDialog.getModifiers()));
-		}
 	}
 }

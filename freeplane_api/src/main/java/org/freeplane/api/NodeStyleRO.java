@@ -56,4 +56,19 @@ public interface NodeStyleRO {
 
     /** @since 1.3.8 */
     boolean isNumberingEnabled();
+    
+    /** @since 1.9.12 */
+    String getCss();
+    
+    /** @since 1.9.12 */
+    boolean isCssSet();
+    
+    /** @since 1.9.12 */
+    boolean isBackgroundColorSet();
+    /** @since 1.9.12 */
+    boolean isTextColorSet();
+    /** @since 1.9.12 */
+    boolean isMinNodeWidthSet();
+    /** @since 1.9.12 */
+    boolean isMaxNodeWidthSet();
 }

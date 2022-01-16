@@ -48,6 +48,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
@@ -208,23 +209,24 @@ public class UrlManager implements IExtension {
     }
 
 	public void handleLoadingException(final Exception ex) {
-		final String exceptionType = ex.getClass().getName();
+		Throwable rootCause = ExceptionUtils.getRootCause(ex);
+		if(rootCause == null)
+			rootCause = ex;
+		String rootCauseMessage = ExceptionUtils.getMessage(rootCause);
+		final String exceptionType = rootCause.getClass().getName();
 		if (exceptionType.equals(XMLParseException.class.getName())) {
 			final int showDetail = JOptionPane.showConfirmDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent(),
 			    TextUtils.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
-				UITools.errorMessage(ex);
+				UITools.errorMessage(rootCauseMessage);
 			}
 		}
 		else if (exceptionType.equals(FileNotFoundException.class.getName())) {
-			UITools.errorMessage(ex.getMessage());
-		}
-		else if (exceptionType.equals("org.freeplane.features.url.mindmapmode.SkipException")) {
-			return;
+			UITools.errorMessage(rootCauseMessage);
 		}
 		else {
 			LogUtils.severe(ex);
-			UITools.errorMessage(ex);
+			UITools.errorMessage(rootCauseMessage);
 		}
 	}
 

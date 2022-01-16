@@ -15,6 +15,8 @@ import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.NodeCss;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
@@ -236,4 +238,40 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
     public void setNumberingEnabled(boolean enabled) {
         getStyleController().setNodeNumbering(getDelegate(), enabled);
     }
+
+	@Override
+	public void setCss(String css) {
+		getStyleController().setStyleSheet(getDelegate(), css);
+	}
+
+	@Override
+	public String getCss() {
+		String css = getStyleController().getStyleSheet(getDelegate(), StyleOption.FOR_UNSELECTED_NODE).css;
+		return css;
+	}
+
+	@Override
+	public boolean isCssSet() {
+		return getDelegate().getExtension(NodeCss.class) != null;
+	}
+
+	@Override
+	public boolean isBackgroundColorSet() {
+		return NodeStyleModel.getBackgroundColor(getDelegate()) != null;
+	}
+
+	@Override
+	public boolean isTextColorSet() {
+		return NodeStyleModel.getColor(getDelegate()) != null;
+	}
+
+	@Override
+	public boolean isMinNodeWidthSet() {
+		return NodeSizeModel.getMinNodeWidth(getDelegate()) != null;
+	}
+
+	@Override
+	public boolean isMaxNodeWidthSet() {
+		return NodeSizeModel.getMaxNodeWidth(getDelegate()) != null;
+	}
 }

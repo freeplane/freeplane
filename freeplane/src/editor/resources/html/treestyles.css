@@ -1,7 +1,5 @@
 
 body {
-	background-color: #eeeeee;
-  	color: #000000;
 	font-family:sans-serif;
 }
 
@@ -11,9 +9,8 @@ a:active { color: #0000ff; text-decoration:none;}
 a:hover {color: #0000ff; text-decoration:underline; }
 
 div.basetext {
-    background-color:#ffffff;
-        margin-top:11px;
-        margin-bottom:11px;
+    margin-top:11px;
+    margin-bottom:11px;
 	margin-left:1%;
 	margin-right:1%;
 	padding-top:11px;

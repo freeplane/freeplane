@@ -168,6 +168,8 @@ public class NodeBorderModel implements IExtension {
 	    	to.setBorderDashMatchesEdgeDash(borderDashMatchesEdgeDash);
 	    if(borderWidth != null)
 	    	to.setBorderWidth(borderWidth);
+	    if(borderDash != null)
+	    	to.setBorderDash(borderDash);
 	    if(borderColorMatchesEdgeColor != null)
 	    	to.setBorderColorMatchesEdgeColor(borderColorMatchesEdgeColor);
 	    if(borderColor != null)

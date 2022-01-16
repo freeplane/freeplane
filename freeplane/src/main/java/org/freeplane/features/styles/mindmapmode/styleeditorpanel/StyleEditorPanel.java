@@ -56,6 +56,15 @@ import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.forms.util.LayoutStyle;
 
 public class StyleEditorPanel extends JPanel {
+	public enum StyleEditorPanelSize{SMALL(0.8f), BIG(1f);
+		final float fontSize;
+		final ConstantSize paragraphGapSize;
+		private StyleEditorPanelSize(float scalingFactor) {
+			this.fontSize = UITools.getUIFontSize(scalingFactor);
+			this.paragraphGapSize = Sizes.pixel((int) (2.5 * scalingFactor * fontSize));
+		}
+		
+	}
 
     private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
 		private final Controller controller;
@@ -89,9 +98,6 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
-	static final float FONT_SIZE = UITools.getUIFontSize(1);
-	private static final ConstantSize PARAGRAPH_GAP_SIZE = Sizes.pixel((int) (2.5 * FONT_SIZE));
-
 	/**
 	*
 	*/
@@ -102,12 +108,15 @@ public class StyleEditorPanel extends JPanel {
 
 	private PanelEnabler panelEnabler;
 
+	private final StyleEditorPanelSize panelConfiguration;
+
 	/**
 	 * @throws HeadlessException
 	 */
 	public StyleEditorPanel(final ModeController modeController, final MUIFactory uiFactory,
 	                        final boolean addStyleBox) throws HeadlessException {
 		super();
+		panelConfiguration = ResourceController.getResourceController().getEnumProperty("styleEditorPanelSize", StyleEditorPanelSize.BIG);
 		controlGroups = createControlGroups(modeController, uiFactory, addStyleBox);
 		addHierarchyListener(new HierarchyListener() {
 
@@ -123,7 +132,7 @@ public class StyleEditorPanel extends JPanel {
 
 	private ControlGroup[] createControlGroups(ModeController modeController, MUIFactory uiFactory, boolean addStyleBox) {
 		return new ControlGroup[]{
-				new StyleControlGroup(addStyleBox, uiFactory, modeController),
+				new StyleControlGroup(addStyleBox, uiFactory, modeController, panelConfiguration.fontSize),
 				
 				new GroupSeparator("OptionPanel.separator.NodeColors"),
 				new NodeColorControlGroup(),
@@ -138,6 +147,7 @@ public class StyleEditorPanel extends JPanel {
                 new NodeHorizontalTextAlignmentControlGroup(),
                 new NodeFontHyperLinkControlGroup(),
                 new NextLineControlGroup(),
+                new CssControlGroup(modeController),
                 
                 new GroupSeparator("OptionPanel.separator.IconControls"),
                 new IconSizeControlGroup(),
@@ -182,7 +192,7 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
 		formBuilder.lineGapSize(LayoutStyle.getCurrent().getNarrowLinePad());
-		formBuilder.paragraphGapSize(PARAGRAPH_GAP_SIZE);
+		formBuilder.paragraphGapSize(panelConfiguration.paragraphGapSize);
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").appendToForm(formBuilder);
 
 		for (ControlGroup controlGroup :controlGroups) {
@@ -191,7 +201,7 @@ public class StyleEditorPanel extends JPanel {
 		formBuilder.getLayout().setHonorsVisibility(false);
 		add(formBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners();
-		setFont(this, FONT_SIZE);
+		setFont(this, panelConfiguration.fontSize);
 	}
 
 	private void setFont(Container c, float size) {

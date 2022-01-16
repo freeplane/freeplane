@@ -46,7 +46,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.text.JTextComponent;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -72,6 +71,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
@@ -418,14 +418,22 @@ public class MainView extends ZoomableLabel {
 	}
 
 	void updateTextColor(final NodeView node) {
-		Color newForeground = unselectedForeground = NodeStyleController.getController(node.getMap().getModeController()).getColor(
-				node.getModel(), node.getStyleOption());
+		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
+		Color newForeground = styleController.getColor(node.getModel(), node.getStyleOption());
+		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE) 
+				: newForeground;
 		if(! Objects.equals(getForeground(), newForeground)) {
 			setForeground(newForeground);
 			revalidate();
 		}
-	
 	}
+	
+	void updateCss(NodeView node) {
+		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
+		NodeCss newCss = styleController.getStyleSheet(node.getModel(), node.getStyleOption());
+		setStyleSheet(newCss.css, newCss.getStyleSheet());
+	}
+
 
 
 	void updateHorizontalTextAlignment(NodeView node) {
@@ -436,10 +444,6 @@ public class MainView extends ZoomableLabel {
 		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
-
-	public boolean isEdited() {
-		return getComponentCount() == 1 && getComponent(0) instanceof JTextComponent;
-	}
 
 	static enum TextModificationState{NONE, HIGHLIGHT, FAILURE};
 
@@ -836,4 +840,5 @@ public class MainView extends ZoomableLabel {
 			repaint();
 		}
 	}
+
 }

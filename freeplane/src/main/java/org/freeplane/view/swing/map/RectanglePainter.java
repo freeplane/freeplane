@@ -41,7 +41,7 @@ class RectanglePainter extends ShapedPainter {
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, mainView.getWidth() - 1, mainView.getHeight() - 1);
+		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight());
 	}
 
 

@@ -25,14 +25,11 @@ package org.freeplane.view.swing.ui;
  */
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
-import java.net.URI;
-
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;

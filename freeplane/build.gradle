@@ -19,7 +19,7 @@ dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	lib ':kitfox-svg-salamander-1.1.1-p1'
 	lib 'com.github.robtimus:data-url:2.0'
-	lib 'org.freeplane.bulenkov:darcula:2021.7'
+	lib 'com.formdev:flatlaf:2.0-rc1'
 	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.6.4'
 
     lib project(':JOrtho_0.4_freeplane')
@@ -31,7 +31,7 @@ dependencies {
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
-	lib  ('org.freeplane.lightdev:simplyhtml:0.18.5') {
+	lib  ('org.freeplane.lightdev:simplyhtml:0.18.8') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}

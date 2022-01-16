@@ -29,6 +29,7 @@ import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -58,6 +59,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
@@ -65,6 +67,8 @@ import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements MouseListener {
+	
+	private static final String WINDOW_CONFIG_PROPERTY = "icon_selection_window_configuration";
 
     private static int BORDER_THICKNESS = 2;
     
@@ -82,9 +86,11 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	private final JTextField filterTextField;
 	private int mModifiers;
 	final private int numOfIcons;
-	private int result;
+	private int selectedIconIndex;
 	private JLabel selected;
     private Timer filterTimer;
+
+	private ActionListener listener;
 
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
@@ -138,7 +144,8 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 		contentPane.add(descriptionLabel, BorderLayout.SOUTH);
 		selected = iconLabels.get(0);
         highlightSelected();
-		pack();
+        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        windowConfigurationStorage.setBounds(this);
         filterTimer = new Timer(300, this::filterIcons);
         filterTimer.setRepeats(false);
 
@@ -247,9 +254,16 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
         }
 
 	private void addIcon(final int pModifiers) {
-		result =  iconLabels.indexOf(selected);
+		addIcon(iconLabels.indexOf(selected), pModifiers);
+	}
+
+	private void addIcon(int iconIndex, final int pModifiers) {
+		selectedIconIndex =  iconIndex;
 		mModifiers = pModifiers;
-		this.dispose();
+		if(listener != null)
+			listener.actionPerformed(new ActionEvent(this, selectedIconIndex, "", System.currentTimeMillis(), mModifiers));
+		else
+			dispose();
 	}
 
 	private int findIndex(final Point location) {
@@ -262,9 +276,9 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	}
 
 	private void close() {
-		result = -1;
+		selectedIconIndex = -1;
 		mModifiers = 0;
-		this.dispose();
+		dispose();
 	}
 
 	private void cursorDown() {
@@ -350,13 +364,9 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 		return m;
 	}
 
-	public int getResult() {
-		return result;
+	public int getIconIndex() {
+		return selectedIconIndex;
 	}
-
-    private JLabel findLabel(final Point location) {
-        return iconLabels.get(findIndex(location));
-    }
 
     private void highlightSelected() {
         selected.setBorder(HIGHLIGHTED);
@@ -395,15 +405,15 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 			case KeyEvent.VK_SPACE:
 				keyEvent.consume();
 				addIcon(keyEvent.getModifiers());
+				if(listener != null && keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
+					dispose();
 				return;
 		}
 		if(keyEvent.isControlDown() || keyEvent.isMetaDown()) {
 		    final int index = findIndexByKeyEvent(keyEvent);
 		    if (index != -1) {
-		        result = index;
-		        mModifiers = keyEvent.getModifiers();
-		        keyEvent.consume();
-		        this.dispose();
+		    	keyEvent.consume();
+		        addIcon(index, keyEvent.getModifiers());
 		    }
 		}
 	}
@@ -509,5 +519,9 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	private void unhighlightSelected() {
 	    if(selected != null)
 	        selected.setBorder(USUAL);
+	}
+
+	public void setActionListener(ActionListener listener) {
+		this.listener = listener;
 	}
 }

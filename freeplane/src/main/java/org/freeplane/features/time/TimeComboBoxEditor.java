@@ -27,14 +27,13 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.calendar.JCalendar;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.IFormattedObject;
@@ -60,7 +59,8 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	public TimeComboBoxEditor(boolean timeVisible) {
 		showEditorBtn = new JButton();
 		showEditorBtn.addActionListener(new ShowCalendarAction());
-		calenderComponent = new JCalendar(new Date(), Locale.getDefault(), true, true, timeVisible);
+		calenderComponent = new JCalendar(new Date(), ResourceController.getResourceController().getSystemLocale(),
+				true, true, timeVisible);
 		calenderComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {

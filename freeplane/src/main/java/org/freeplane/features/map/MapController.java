@@ -56,7 +56,6 @@ import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;

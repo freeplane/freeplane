@@ -20,10 +20,11 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Collections;
 
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NumberProperty;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
@@ -38,6 +39,8 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class EdgeWidthControlGroup implements ControlGroup {
+	private static final String THINNEST_TEXT = TextUtils.getText("thinnest");
+
 	private static final String EDGE_WIDTH = "edgewidth";
 
 	private RevertingProperty mSetEdgeWidth;
@@ -80,6 +83,7 @@ public class EdgeWidthControlGroup implements ControlGroup {
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetEdgeWidth = new RevertingProperty();
 		mEdgeWidth = new NumberProperty(EDGE_WIDTH, 0, 100, 1);
+		mEdgeWidth.configureNames(Collections.singletonMap(THINNEST_TEXT, 0));
 		propertyChangeListener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(propertyChangeListener);
 		mEdgeWidth.addPropertyChangeListener(propertyChangeListener);

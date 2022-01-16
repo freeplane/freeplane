@@ -25,18 +25,22 @@
         <style>
           body{
           font-size:10pt;
-          color:rgb(0,0,0);
-          backgound-color:rgb(255,255,255);
           font-family:sans-serif;
           }
           p.info{
           font-size:8pt;
           text-align:right;
-          color:rgb(127,127,127);
           }
         </style>
       </head>
       <body>
+		  <xsl:if test="map/node/hook[@NAME='MapStyle' and @background]">
+		    <xsl:attribute name="style">
+		    <xsl:text>background-color: </xsl:text>
+		    <xsl:value-of select="map/node/hook[@NAME='MapStyle']/@background" />
+		    <xsl:text>;</xsl:text>
+		    </xsl:attribute>
+		  </xsl:if>
 
         <xsl:apply-templates/>
 

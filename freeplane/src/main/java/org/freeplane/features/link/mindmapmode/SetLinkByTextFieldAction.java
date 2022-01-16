@@ -83,6 +83,8 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 
 		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(), inputField,  TextUtils.getText("edit_link_manually"), JOptionPane.OK_CANCEL_OPTION);
 		String inputValue = inputField.getText();
+		if(inputValue.length() >= 2 && inputValue.startsWith("\"") && inputValue.endsWith("\""))
+			inputValue = inputValue.substring(1, inputValue.length() - 1);
 		if (result == JOptionPane.OK_OPTION && ! inputValue.matches("\\w+://")) {
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			if (inputValue.equals("")) {

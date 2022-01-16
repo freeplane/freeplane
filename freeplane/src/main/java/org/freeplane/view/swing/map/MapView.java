@@ -104,6 +104,7 @@ import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.print.FitMap;
@@ -574,8 +575,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	};
 
 	private static final long serialVersionUID = 1L;
-	static boolean standardDrawRectangleForSelection;
-	private Color standardSelectionRectangleColor;
+	static private boolean drawsRectangleForSelection;
+	static private Color selectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
@@ -597,9 +598,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int detailHorizontalAlignment;
     private Color detailForeground;
     private Color detailBackground;
+    private NodeCss detailCss;
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
+    private NodeCss noteCss;
 	private static String showConnectorsPropertyValue;
 	private static boolean hideSingleEndConnectorsPropertyValue;
 	private String showConnectors;
@@ -612,13 +615,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
+	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 	    final String drawCircle = resourceController.getProperty(
 	            ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
-	    MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
+	    MapView.drawsRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
 	    final String printOnWhite = resourceController
 	            .getProperty("printonwhitebackground");
 	    MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
@@ -762,7 +766,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					return;
 				}
 				if (propertyName.equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
-					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
+					MapView.drawsRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					mapView.repaintSelecteds();
 					return;
 				}
@@ -1335,16 +1339,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final URI uri = mapStyle.getBackgroundImage(model);
 		if (uri != null) {
 			final ViewerController vc = getModeController().getExtension(ViewerController.class);
-			final IViewerFactory factory = vc.getViewerFactory();
-			if (uri != null) {
+			if(vc != null) {
+				final IViewerFactory factory = vc.getViewerFactory();
 				assignViewerToBackgroundComponent(factory, uri);
 			}
 		}
 		repaint();
-	}
+    }
 
-	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
-		try {
+    private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
+    	try {
 			if (fitToViewport) {
 			    final JViewport vp = (JViewport) getParent();
 			    final Dimension viewPortSize = vp.getVisibleRect().getSize();
@@ -1420,12 +1424,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         detailBackground = style.getBackgroundColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailForeground = style.getColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailHorizontalAlignment = style.getHorizontalTextAlignment(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+        detailCss = style.getStyleSheet(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 
         final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
         noteFont = UITools.scale(style.getFont(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE));
         noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+        noteCss = style.getStyleSheet(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         updateSelectionColors();
     }
 
@@ -1830,12 +1836,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelecteds(final Graphics2D g) {
-		if (!MapView.standardDrawRectangleForSelection || isPrinting()) {
+		if (!MapView.drawsRectangleForSelection || isPrinting()) {
 			return;
 		}
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
-		g.setColor(getStandardSelectionRectangleColor());
+		g.setColor(getSelectionRectangleColor());
 		g.setStroke(NodeHighlighter.DEFAULT_STROKE);
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
@@ -1848,7 +1854,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void updateSelectionColors() {
 	    ResourceController resourceController = ResourceController.getResourceController();
-	    standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
+	    selectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
 	            MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
 	}
 
@@ -1864,7 +1870,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelectionRectangle(final Graphics2D g, final NodeView selected) {
-		if (selected.getMainView().isEdited()) {
+		if (Boolean.TRUE.equals(selected.getMainView().getClientProperty("inline_editor_active"))) {
 			return;
 		}
 		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 4, 15);
@@ -1873,7 +1879,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void highlightSelected(final Graphics2D g, final NodeView selected, final PaintingMode[] paintedModes) {
 		final java.awt.Shape highlightClip;
-		if (MapView.standardDrawRectangleForSelection)
+		if (MapView.drawsRectangleForSelection)
 			highlightClip = getRoundRectangleAround(selected, 4, 15);
 		else
 			highlightClip = getRoundRectangleAround(selected, 4, 2);
@@ -2274,6 +2280,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public Color getNoteBackground() {
         return noteBackground;
     }
+    
+    
+
+	public NodeCss getDetailCss() {
+		return detailCss;
+	}
+
+	public NodeCss getNoteCss() {
+		return noteCss;
+	}
 
 	public int getNoteHorizontalAlignment() {
 		return noteHorizontalAlignment;
@@ -2396,8 +2412,29 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         return filter;
     }
 
-    Color getStandardSelectionRectangleColor() {
-        return standardSelectionRectangleColor;
+    static public Color getSelectionRectangleColor() {
+        return selectionRectangleColor;
     }
 
+    static public boolean drawsRectangleForSelection() {
+        return drawsRectangleForSelection;
+    }
+
+    public void onEditingStarted(ZoomableLabel label) {
+    	if(label instanceof MainView) {
+    		label.putClientProperty(MapView.INLINE_EDITOR_ACTIVE, Boolean.TRUE);
+			if (MapView.drawsRectangleForSelection) {
+				repaintSelecteds();
+			}
+		}
+    }
+
+	public void onEditingFinished(ZoomableLabel label) {
+    	if(label instanceof MainView) {
+    		label.putClientProperty(MapView.INLINE_EDITOR_ACTIVE, null);
+			if (MapView.drawsRectangleForSelection) {
+				repaintSelecteds();
+			}
+		}
+	}
 }

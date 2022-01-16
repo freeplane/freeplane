@@ -90,6 +90,13 @@ Todo:
 </head>
 
 <body>
+  <xsl:if test="map/node/hook[@NAME='MapStyle'and @background]">
+    <xsl:attribute name="style">
+    <xsl:text>background-color: </xsl:text>
+    <xsl:value-of select="map/node/hook[@NAME='MapStyle']/@background" />
+    <xsl:text>;</xsl:text>
+    </xsl:attribute>
+  </xsl:if>
 
 <div class="basetop">
 <a href="#" onclick="expandAll(document.getElementById('base'))">Expand</a> -

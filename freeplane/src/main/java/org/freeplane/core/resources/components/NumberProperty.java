@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.util.Map;
+
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -37,9 +39,6 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 	 */
 	public NumberProperty(final String name, final int min, final int max, final int step) {
 		super(name);
-//		this.min = min;
-//		this.max = max;
-//		this.step = step;
 		spinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
 		spinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent pE) {
@@ -65,6 +64,10 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		return spinner.getValue().toString();
 	}
 
+	public void configureNames(Map<String, Comparable> names) {
+		FormatterFactoryWithPredefinedNames.installFactory(spinner, names);
+	}
+	
 	public void appendToForm(final DefaultFormBuilder builder) {
 		appendToForm(builder, spinner);
 	}

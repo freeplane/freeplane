@@ -9,8 +9,6 @@ import java.awt.RenderingHints;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 
-import com.bulenkov.iconloader.util.GraphicsConfig;
-
 class CheckIconWithBorder implements Icon {
     
     private static final int SIZE = 13;
@@ -31,15 +29,14 @@ class CheckIconWithBorder implements Icon {
         	fallbackIcon.paintIcon(c, g2, x, y);
 			return;
 		}
-        Graphics2D g = (Graphics2D) g2;
-        final GraphicsConfig config = new GraphicsConfig(g);
+        Graphics2D g = (Graphics2D) g2.create();;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 
         g.translate(x+2, y+2);
 
         final int sz = SIZE;
-
+        g.setColor(c.getForeground());
 
         if (c == null || ((JMenuItem)c).isSelected()) {
           g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -53,9 +50,7 @@ class CheckIconWithBorder implements Icon {
             g.drawRoundRect(0, 0, sz, sz - 1, 4, 4);
             g.drawRoundRect(0, 0, sz, sz - 1, 4, 4);
         }
-
-        g.translate(-x-2, -y-2);
-        config.restore();
+        g.dispose();
     }
 
     @Override

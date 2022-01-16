@@ -27,6 +27,7 @@ import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.QuantityProperty;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
@@ -44,6 +45,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements ControlGroup {
 	private static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
 	private static final String BORDER_WIDTH = "border_width";
+	private static final String THINNEST_TEXT = TextUtils.getText("thinnest");
 	
 	private RevertingProperty mSetBorderWidthMatchesEdgeWidth;
 	private BooleanProperty mBorderWidthMatchesEdgeWidth;
@@ -122,10 +124,10 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 		addBorderWidthControl(formBuilder);
 		addBorderWidthMatchesEdgeWidthControl(formBuilder);
 	}
-	
 	private void addBorderWidthControl(DefaultFormBuilder formBuilder) {
 		mSetBorderWidth = new RevertingProperty();
 		mBorderWidth = new QuantityProperty<LengthUnit>(BORDER_WIDTH, 0, 100000, 0.1, LengthUnit.px);
+		mBorderWidth.configureMinimumName(THINNEST_TEXT);
 		borderWidthListener = new BorderWidthListener(mSetBorderWidth, mBorderWidth);
 		mSetBorderWidth.addPropertyChangeListener(borderWidthListener);
 		mBorderWidth.addPropertyChangeListener(borderWidthListener);

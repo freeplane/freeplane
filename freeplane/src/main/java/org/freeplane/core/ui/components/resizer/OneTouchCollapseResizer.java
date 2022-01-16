@@ -18,6 +18,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
@@ -32,7 +33,7 @@ public class OneTouchCollapseResizer extends JResizer {
 
 	protected boolean expanded = true;
 	private JPanel hotspot;
-	private final int inset = 2;
+	private final int INSET = 2;
 	private final Direction direction;
 	private Integer resizeComponentIndex;
 
@@ -50,7 +51,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	public OneTouchCollapseResizer(final Direction d) {
 		super(d);
 		direction = d;
-		this.setDividerSize(7);
+		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 10 + 0.5));
 
 		MouseListener listener = new MouseListener() {
 			private void resetCursor() {
@@ -132,15 +133,15 @@ public class OneTouchCollapseResizer extends JResizer {
 	public void setDividerSize(int size) {
 		final int w;
 		final int h;
-		if(direction.equals(Direction.RIGHT)){
+		if(direction == Direction.RIGHT){
 			w = size;
 			h = 0;
 		}
-		else if(direction.equals(Direction.LEFT)){
+		else if(direction == Direction.LEFT){
 			h = 0;
 			w = size;
 		}
-		else if(direction.equals(Direction.UP)){
+		else if(direction == Direction.UP){
 			h = size;
 			w = 0;
 		}
@@ -152,7 +153,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	}
 
 	public int getDividerSize() {
-		if(direction.equals(Direction.RIGHT) || direction.equals(Direction.LEFT)){
+		if(direction == Direction.RIGHT || direction == Direction.LEFT){
 			return getPreferredSize().width;
 		}
 		else /*Direction.DOWN || Direction.UP*/ {
@@ -206,22 +207,22 @@ public class OneTouchCollapseResizer extends JResizer {
 		}
 		putClientProperty(ALREADY_IN_PAINT, "true");
 		super.paint(g);
-		if((direction.equals(Direction.RIGHT) || direction.equals(Direction.LEFT))) {
+		if((direction == Direction.RIGHT || direction == Direction.LEFT)) {
 			int center_y = getHeight()/2;
 			int divSize = getDividerSize();
-			getHotSpot().setBounds(0, center_y-15, divSize, 30);
+			getHotSpot().setBounds(0, center_y-divSize, divSize, 2 * divSize);
 		}
 		else {
 			int center_x = getWidth()/2;
 			int divSize = getDividerSize();
-			getHotSpot().setBounds(center_x-15, 0, 30, divSize);
+			getHotSpot().setBounds(center_x-divSize, 0, 2 * divSize, divSize);
 		}
 		Dimension size = getResizedComponent().getPreferredSize();
-		if((direction.equals(Direction.RIGHT) || direction.equals(Direction.LEFT)) && size.width <= getDividerSize()) {
+		if((direction == Direction.RIGHT || direction == Direction.LEFT) && size.width <= getDividerSize()) {
 			setExpanded(false);
 
 		}
-		else if((direction.equals(Direction.UP) || direction.equals(Direction.DOWN)) && size.height <= getDividerSize()){
+		else if((direction == Direction.UP || direction == Direction.DOWN) && size.height <= getDividerSize()){
 			setExpanded(false);
 		}
 		else {
@@ -241,12 +242,7 @@ public class OneTouchCollapseResizer extends JResizer {
 
 				@Override
                 public void paint(Graphics g) {
-					if (isExpanded()) {
-						drawCollapseLabel(g);
-					}
-					else {
-						drawExpandLabel(g);
-					}
+					drawControlArrow(g);
 				}
 
 				@Override
@@ -263,55 +259,28 @@ public class OneTouchCollapseResizer extends JResizer {
 		return hotspot;
 	}
 
-	private void drawCollapseLabel(Graphics g) {
+
+	private void drawControlArrow(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
-		int half_length = Math.round(size.height*0.2f);
+		int half_length = (size.height-(INSET*6))/2;
 		int center_y = size.height / 2;
 
-		int half_width = Math.round(size.width*0.2f);
+		int half_width = (size.width-(INSET*6))/2;
 		int center_x = size.width / 2;
 
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		//g.setColor();
-		if(this.direction.equals(Direction.LEFT)) {
-			arrowLeft(g, half_length, center_y);
-		}
-		else if(this.direction.equals(Direction.RIGHT)) {
+		if(expanded && direction == Direction.RIGHT || ! expanded && direction == Direction.LEFT) {
 			arrowRight(g, half_length, center_y);
 		}
-		else if(this.direction.equals(Direction.UP)) {
-			arrowUp(g, half_width, center_x);
-		}
-		else if(this.direction.equals(Direction.DOWN)) {
-			arrowDown(g, half_width, center_x);
-		}
-	}
-
-
-
-	private void drawExpandLabel(Graphics g) {
-		Dimension size = g.getClipBounds().getSize();
-		int half_length = (size.height-(inset*6))/2;
-		int center_y = size.height / 2;
-
-		int half_width = (size.width-(inset*6))/2;
-		int center_x = size.width / 2;
-
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
-
-		if(this.direction.equals(Direction.LEFT)) {
-			arrowRight(g, half_length, center_y);
-		}
-		else if(this.direction.equals(Direction.RIGHT)) {
+		else if(expanded && direction == Direction.LEFT || ! expanded && direction == Direction.RIGHT) {
 			arrowLeft(g, half_length, center_y);
 		}
-		else if(this.direction.equals(Direction.UP)) {
+		else if(expanded && direction == Direction.DOWN || ! expanded && direction == Direction.UP) {
 			arrowDown(g, half_width, center_x);
 		}
-		else if(this.direction.equals(Direction.DOWN)) {
+		else if(expanded && direction == Direction.UP || ! expanded && direction == Direction.DOWN) {
 			arrowUp(g, half_width, center_x);
 		}
 	}
@@ -323,16 +292,16 @@ public class OneTouchCollapseResizer extends JResizer {
 	 * @param center_y
 	 */
 	private void arrowLeft(Graphics g, int half_length, int center_y) {
-		int[] x = new int[]{inset, getSize().width - inset, getSize().width - inset};
+		int[] x = new int[]{INSET, getSize().width - INSET, getSize().width - INSET};
 		int[] y = new int[]{center_y, center_y-half_length, center_y + half_length};
 		g.setColor(Color.DARK_GRAY);
 		g.fillPolygon(x, y, 3);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(inset, center_y, getSize().width - inset, center_y - half_length);
+		g.drawLine(INSET, center_y, getSize().width - INSET, center_y - half_length);
 		g.setColor(Color.GRAY);
-		g.drawLine( getSize().width - inset, center_y + half_length, inset, center_y);
+		g.drawLine( getSize().width - INSET, center_y + half_length, INSET, center_y);
 		g.setColor(Color.GRAY);
-		g.drawLine( getSize().width - inset, center_y - half_length, getSize().width - inset, center_y + half_length);
+		g.drawLine( getSize().width - INSET, center_y - half_length, getSize().width - INSET, center_y + half_length);
 	}
 
 	/**
@@ -341,64 +310,64 @@ public class OneTouchCollapseResizer extends JResizer {
 	 * @param center_y
 	 */
 	private void arrowRight(Graphics g, int half_length, int center_y) {
-		int[] x = new int[]{inset, inset, getSize().width - inset};
+		int[] x = new int[]{INSET, INSET, getSize().width - INSET};
 		int[] y = new int[]{center_y+half_length, center_y-half_length, center_y};
 
 		g.setColor( Color.DARK_GRAY);
 		g.fillPolygon(x,y,3);
 		g.setColor( Color.DARK_GRAY);
-		g.drawLine( inset, center_y + half_length, inset, center_y - half_length);
+		g.drawLine( INSET, center_y + half_length, INSET, center_y - half_length);
 		g.setColor(Color.GRAY);
-		g.drawLine( inset, center_y - half_length, getSize().width - inset, center_y);
+		g.drawLine( INSET, center_y - half_length, getSize().width - INSET, center_y);
 		g.setColor( Color.LIGHT_GRAY);
-		g.drawLine( getSize().width - inset, center_y, inset, center_y + half_length);
+		g.drawLine( getSize().width - INSET, center_y, INSET, center_y + half_length);
 	}
 
 	private void arrowUp(Graphics g, int half_length, int center_x) {
-		int[] y = new int[]{inset, getSize().height - inset, getSize().height - inset};
+		int[] y = new int[]{INSET, getSize().height - INSET, getSize().height - INSET};
 		int[] x = new int[]{center_x, center_x-half_length, center_x + half_length};
 
 		g.setColor(Color.DARK_GRAY);
 		g.fillPolygon(x, y, 3);
 
 		g.setColor(Color.GRAY);
-		g.drawLine(center_x + half_length, getSize().height - inset, center_x, inset);
+		g.drawLine(center_x + half_length, getSize().height - INSET, center_x, INSET);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(center_x, inset, center_x - half_length, getSize().height - inset);
+		g.drawLine(center_x, INSET, center_x - half_length, getSize().height - INSET);
 		g.setColor(Color.LIGHT_GRAY);
-		g.drawLine(center_x - half_length, getSize().height - inset, center_x + half_length, getSize().height - inset);
+		g.drawLine(center_x - half_length, getSize().height - INSET, center_x + half_length, getSize().height - INSET);
 
 	}
 
 	private void arrowDown(Graphics g, int half_length, int center_x) {
-		int[] y = new int[]{inset, inset, getSize().height - inset};
+		int[] y = new int[]{INSET, INSET, getSize().height - INSET};
 		int[] x = new int[]{center_x+half_length, center_x-half_length, center_x};
 
 		g.setColor( Color.DARK_GRAY);
 		g.fillPolygon(x,y,3);
 
 		g.setColor(Color.GRAY);
-		g.drawLine( center_x - half_length, inset, center_x, getSize().height- inset);
+		g.drawLine( center_x - half_length, INSET, center_x, getSize().height- INSET);
 		g.setColor( Color.DARK_GRAY);
-		g.drawLine( center_x + half_length, inset, center_x - half_length, inset);
+		g.drawLine( center_x + half_length, INSET, center_x - half_length, INSET);
 		g.setColor( Color.LIGHT_GRAY);
-		g.drawLine(center_x,  getSize().height - inset, center_x + half_length, inset);
+		g.drawLine(center_x,  getSize().height - INSET, center_x + half_length, INSET);
 	}
 
 	private int getIndex() {
 		final Container parent = getParent();
 		for(int i = 0; i < parent.getComponentCount(); i++ ){
 			if(OneTouchCollapseResizer.this.equals(parent.getComponent(i))){
-				if(direction.equals(Direction.RIGHT)){
+				if(direction == Direction.RIGHT){
 					return i + 1;
 				}
-				else if(direction.equals(Direction.LEFT)){
+				else if(direction == Direction.LEFT){
 					return i - 1;
 				}
-				else if(direction.equals(Direction.UP)){
+				else if(direction == Direction.UP){
 					return i - 1;
 				}
-				else if(direction.equals(Direction.DOWN)){
+				else if(direction == Direction.DOWN){
 					return i + 1;
 				}
 			}

@@ -68,10 +68,6 @@ public class MLocationController extends LocationController {
 				remove(key, from);
 			}
 		}
-
-		@Override
-		public void resolveParentExtensions(Object key, NodeModel to) {
-		}
 	}
 	
 	public MLocationController() {

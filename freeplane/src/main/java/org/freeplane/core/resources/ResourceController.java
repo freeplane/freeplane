@@ -136,8 +136,8 @@ public abstract class ResourceController {
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T> defaultValue) {
 		try {
-			final String cacheProptertyValue = getProperty(propertyName).toUpperCase(Locale.ENGLISH);
-			defaultValue = Enum.valueOf(defaultValue.getClass(), cacheProptertyValue);
+			final String propertyValue = getProperty(propertyName);
+			defaultValue = Enum.valueOf(defaultValue.getClass(), propertyValue.toUpperCase(Locale.ENGLISH));
 		}
 		catch (Exception e) {
 			LogUtils.severe(e);

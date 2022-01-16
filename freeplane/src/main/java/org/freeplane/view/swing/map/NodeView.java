@@ -1407,6 +1407,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		mainView.setVisible(true);
 		mainView.updateTextColor(this);
+		mainView.updateCss(this);
 		mainView.updateFont(this);
 		mainView.updateHorizontalTextAlignment(this);
 		mainView.updateBorder(this);
@@ -1586,7 +1587,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	boolean useSelectionColors() {
-		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isPrinting();
+		return isSelected() && !MapView.drawsRectangleForSelection() && !map.isPrinting();
 	}
 
 	@Override

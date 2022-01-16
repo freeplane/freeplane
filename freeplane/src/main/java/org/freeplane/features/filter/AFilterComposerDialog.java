@@ -30,9 +30,6 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.Collection;
 
@@ -68,6 +65,7 @@ import org.freeplane.features.filter.condition.ConjunctConditions;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICombinedCondition;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -170,7 +168,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 				btnName.setEnabled(false);
 				btnUp.setEnabled(false);
 				btnDown.setEnabled(false);
-				filterController.setHighlightCondition(null);
+				filterController.setHighlightCondition(null, null);
 			}
             else {
             	btnUp.setEnabled(true);
@@ -185,10 +183,10 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 				btnOr.setEnabled(! oneElementChosen && areValuesOnlySelected);
 				btnSplit.setEnabled(oneElementChosen && elementaryConditionList.getSelectedValue() instanceof ICombinedCondition);
 				if(oneElementChosen) {
-					filterController.setHighlightCondition((ASelectableCondition) elementaryConditionList.getSelectedValue());
+					filterController.setHighlightCondition((ASelectableCondition) elementaryConditionList.getSelectedValue(), context);
 				}
 				else {
-					filterController.setHighlightCondition(null);
+					filterController.setHighlightCondition(null, null);
 				}
             }
 		}
@@ -532,9 +530,11 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	final private FilterController filterController;
 	private DefaultComboBoxModel internalConditionsModel;
 	private Box conditionButtonBox;
+	private final ConditionalStyleModel context;
 
-	public AFilterComposerDialog(String title, boolean modal, Variant variant) {
+	public AFilterComposerDialog(String title, boolean modal, Variant variant, ConditionalStyleModel context) {
 		super(UITools.getCurrentFrame(), title, modal);
+		this.context = context;
 		filterController = FilterController.getCurrentFilterController();
 		editor = new FilterConditionEditor(filterController, variant);
 		editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
@@ -623,7 +623,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 			@Override
 			public void hierarchyChanged(HierarchyEvent e) {
 				if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0  && ! isShowing())
-				filterController.setHighlightCondition(null);
+				filterController.setHighlightCondition(null, null);
 			}
 		});
 		pack();

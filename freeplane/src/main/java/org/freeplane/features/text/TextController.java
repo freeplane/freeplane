@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.swing.Icon;
 
@@ -254,14 +255,19 @@ public class TextController implements IExtension {
 	}
 
 	public String getPlainTransformedTextWithoutNodeNumber(NodeModel node) {
+		return withNodeNumbering( false, () -> getPlainTransformedText(node));
+	}
+	
+	public <T> T withNodeNumbering(boolean isEnabled, Supplier<T> supplier) {
 		final boolean nodeNumberingWasEnabled = nodeNumberingEnabled;
-		nodeNumberingEnabled = false;
+		nodeNumberingEnabled = isEnabled;
 		try {
-			return getPlainTransformedText(node);
+			return supplier.get();
 		}
 		finally {
 			nodeNumberingEnabled = nodeNumberingWasEnabled;
 		}
+		
 	}
 
 	public String getTransformedTextNoThrow(NodeModel nodeModel) {

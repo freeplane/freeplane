@@ -417,7 +417,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
     public void propertyChange(PropertyChangeEvent e) {
 	    	String name = e.getPropertyName();
 	    	if (name == "text" || "font" == name || "foreground" == name
-	    			|| "ancestor" == name || "graphicsConfiguration" == name) {
+	    			|| "ancestor" == name || "graphicsConfiguration" == name
+	    			|| ZoomableLabel.CUSTOM_CSS == name) {
 	    		ZoomableLabel lbl = ((ZoomableLabel) e.getSource());
 	    		if(lbl.getTextRenderingIcon() !=  null){
 	    			ScaledHTML.updateRenderer(lbl, "");

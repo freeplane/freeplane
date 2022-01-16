@@ -21,6 +21,7 @@ package org.freeplane.core.resources.components;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -52,7 +53,11 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 		unitBox = new JComboBoxWithBorder(units);
 		addChangeListeners();
 	}
-
+	
+	public void configureMinimumName(String name) {
+		FormatterFactoryWithPredefinedNames.installFactory(numberSpinner, Collections.singletonMap(name, ((SpinnerNumberModel)numberSpinner.getModel()).getMinimum()));
+	}
+	
 	private void addChangeListeners() {
 		numberSpinner.addChangeListener(new ChangeListener() {
 			@Override

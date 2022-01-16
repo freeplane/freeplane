@@ -50,6 +50,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -109,7 +110,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				@Override
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 					final NodeModel node = (NodeModel) parent;
-					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+					final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 					if(mapStyleModel != null)
 						loadConditionalStyles(mapStyleModel.getConditionalStyleModel(), dom);
 				}
@@ -158,7 +159,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					if(isContentEmpty(content))
 						return;
 					final NodeModel node = (NodeModel) userObject;
-					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
+					final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 					if (mapStyleModel == null) {
 						return;
 					}
@@ -237,7 +238,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				return;
 			}
 			NodeModel node = (NodeModel) userObject;
-			loadMapStyleProperties(MapStyleModel.getExtension(node), xml);
+			MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
+			Objects.requireNonNull(mapStyleModel);
+			loadMapStyleProperties(mapStyleModel, xml);
        }
 
 		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
@@ -345,9 +348,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 
 	public Color getBackground(final MapModel map) {
-		MapStyleModel styleModel = map.getExtension(MapStyleModel.class);
-		if(styleModel == null)
-		    styleModel = map.getRootNode().getExtension(MapStyleModel.class);
+		MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final Color backgroundColor = styleModel != null ? styleModel.getBackgroundColor() : null;
 		if (backgroundColor != null) {
 			return backgroundColor;
@@ -359,7 +360,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	public URI getBackgroundImage(MapModel map) {
-	    MapStyleModel styleModel = map.getRootNode().getExtension(MapStyleModel.class);
+		MapStyleModel styleModel = MapStyleModel.getExtension(map);
 	    String uriString = styleModel.getProperty(MapStyle.RESOURCES_BACKGROUND_IMAGE);
 	    if(uriString != null) {
 	        try {
@@ -383,7 +384,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
 	public void onCreate(final MapModel map) {
 	    final NodeModel rootNode = map.getRootNode();
-	    final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
+	    final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(rootNode);
 	    if (mapStyleModel != null && mapStyleModel.getStyleMap() != null) {
 	        copyMapStylesNoUndoNoRefresh(map);
 	    }
@@ -835,15 +836,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     public void redefineStyle(final NodeModel node, boolean copyToExternalTemplate) {
         final IStyle style = LogicalStyleController.getController().getFirstStyle(node);
-        final MapStyleModel extension = MapStyleModel.getExtension(node.getMap());
+        MapModel map = node.getMap();
+		final MapStyleModel extension = MapStyleModel.getExtension(map);
         final NodeModel styleNode = extension.getStyleNode(style);
         if(styleNode == null)
             return;
+        styleNode.getMap().putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
         Controller.getCurrentModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
         Controller.getCurrentModeController().undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
-        LogicalStyleController.getController().refreshMap(node.getMap());
+        LogicalStyleController.getController().refreshMap(map);
         if(copyToExternalTemplate)
-            undoableCopyStyleToAssociatedExternalTemplate(node.getMap(), style);
+            undoableCopyStyleToAssociatedExternalTemplate(map, style);
     }
 
 }

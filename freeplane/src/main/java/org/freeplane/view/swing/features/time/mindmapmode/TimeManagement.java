@@ -38,6 +38,7 @@ import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -133,13 +134,14 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 
 		private void init(boolean useTriple, int colCount) {
 			final JComponent calendarContainer;
+			Locale systemLocale = ResourceController.getResourceController().getSystemLocale();
 			if (useTriple) {
-				final JTripleCalendar trippleCalendar = new JTripleCalendar();
+				final JTripleCalendar trippleCalendar = new JTripleCalendar(systemLocale);
 				calendarComponent = trippleCalendar.getCalendar();
 				calendarContainer = trippleCalendar;
 			}
 			else {
-				calendarComponent = new JCalendar();
+				calendarComponent = new JCalendar(systemLocale);
 				calendarContainer = calendarComponent;
 			}
 			calendarComponent.setCalendar(TimeManagement.this.calendar);
