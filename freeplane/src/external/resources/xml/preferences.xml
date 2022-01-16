@@ -166,6 +166,7 @@
 				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudShape"/>
 			</separator>
 			<separator name="connectors">
+				<boolean name="assignsNodeDependantStylesToNewConnectors"/>
 				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
 				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
 				<color name="connector_color" />

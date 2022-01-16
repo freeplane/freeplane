@@ -35,10 +35,12 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -53,6 +55,7 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.RenderedContent;
@@ -82,7 +85,9 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 
 /**
@@ -1135,5 +1140,29 @@ public class MLinkController extends LinkController {
 			};
 			modeController.execute(actor, map);
 		}
+	}
+
+	public void addConnectorWithNodeDependantStyle(final NodeModel target, NodeModel node) {
+		ConnectorModel connector = addConnector(node, target);
+		if(ResourceController.getResourceController().getBooleanProperty("assignsNodeDependantStylesToNewConnectors")) {
+			boolean nodeStyleWasSetToConnector = setConnectorStyleSameAsNodeStyleIfAvailable(connector, node);
+			if (!nodeStyleWasSetToConnector && node != target)
+				setConnectorStyleSameAsNodeStyleIfAvailable(connector, target);
+		}
+	}
+
+	private boolean setConnectorStyleSameAsNodeStyleIfAvailable(ConnectorModel connector, NodeModel node) {
+		IStyle styleExplicitlyAssigned = LogicalStyleModel.getStyle(node);
+		IStyle style = styleExplicitlyAssigned != null ? styleExplicitlyAssigned : LogicalStyleController.getController().getFirstStyle(node);
+		if(MapStyleModel.DEFAULT_STYLE.equals(style))
+			return false;
+		MapModel map = node.getMap();
+		MapStyleModel mapStyles = MapStyleModel.getExtension(map);
+		NodeModel styleNode = mapStyles.getStyleNode(style);
+		if(NodeLinks.getSelfConnector(styleNode).isPresent()) {
+			setConnectorStyle(connector, style);
+			return true;
+		}
+		return false;
 	}
 }
