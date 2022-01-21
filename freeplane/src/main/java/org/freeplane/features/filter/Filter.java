@@ -110,15 +110,16 @@ public class Filter implements IExtension {
 	    this.accessor = new FilterInfoAccessor();
 		final NodeModel root = map.getRootNode();
 		resetFilter(root);
-		checkNode(root);
-		if (filterChildren(root, false, false)) {
+		boolean rootSatisfiesFilter = checkNode(root);
+		if (filterChildren(root, rootSatisfiesFilter, false)) {
 			addFilterResult(root, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 		}
 	}
 
 	public void calculateFilterResults(final NodeModel root) {
 	    this.accessor = new FilterInfoAccessor();
-	    applyFilter(root, false, false, false);
+	    if(applyFilter(root, false, false, false))
+	    	addFilterResult(root, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 	}
 
 	private boolean applyFilter(final NodeModel node,
