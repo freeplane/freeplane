@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -40,13 +39,12 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 
-import com.jgoodies.common.base.Objects;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	Color color;
 	final private Color defaultColor;
-	JButton mButton;
+	JColorButton mButton;
 
 	/**
 	 * @param name
@@ -55,8 +53,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	public ColorProperty(final String name, final String defaultColor) {
 		super(name);
 		this.defaultColor = ColorUtils.stringToColor(defaultColor);
-		mButton = new JButton();
-		mButton.setIcon(new ColorIcon(mButton, null));
+		mButton = new JColorButton();
 		mButton.addActionListener(this);
 		color = null;
 	}
@@ -151,7 +148,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	 */
 	public void setColorValue(Color color) {
 	    this.color = color;
-	    mButton.setIcon(new ColorIcon(mButton, color));
+	    mButton.setColor(color);
 	}
 
 	public void setEnabled(final boolean pEnabled) {
