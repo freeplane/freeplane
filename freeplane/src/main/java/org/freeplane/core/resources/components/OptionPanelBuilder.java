@@ -38,7 +38,6 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.api.LengthUnit;
-import org.freeplane.api.Quantity;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -78,8 +77,6 @@ public class OptionPanelBuilder {
 		public IPropertyControl createControl() {
 			@SuppressWarnings("unchecked")
 			final ComboProperty comboProperty = enumClass != null ? ComboProperty.of(name, enumClass) : new ComboProperty(name, choices, displayedItems);
-			if(verticalMargin > 0)
-				comboProperty.setVerticalMargin(verticalMargin);
 			return comboProperty;
 		}
 
@@ -135,8 +132,7 @@ public class OptionPanelBuilder {
 				addChoicesAndDisplayedItems(data, choices, displayedItems);
 				comboProperty = createComboProperty(name, choices, displayedItems);
 			}
-			final int verticalMargin = Quantity.fromString(data.getAttribute("vertical_margin", "0"), LengthUnit.pt).toBaseUnitsRounded();
-			return comboProperty.withVerticalMargin(verticalMargin);
+			return comboProperty;
 		}
 
 		private void addChoicesAndDisplayedItems(final XMLElement data, final Vector<String> choices,

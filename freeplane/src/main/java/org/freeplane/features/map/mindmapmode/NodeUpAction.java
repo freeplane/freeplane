@@ -20,6 +20,7 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.event.ActionEvent;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mode.Controller;
 

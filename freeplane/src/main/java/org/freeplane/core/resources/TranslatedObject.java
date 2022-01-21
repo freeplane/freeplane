@@ -20,6 +20,7 @@
 package org.freeplane.core.resources;
 
 import java.awt.Component;
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;

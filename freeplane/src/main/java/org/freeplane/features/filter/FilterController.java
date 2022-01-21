@@ -66,7 +66,6 @@ import org.freeplane.core.ui.ButtonModelStateChangeListenerForProperty;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -530,7 +529,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"),
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
-		activeFilterConditionComboBox = new JComboBoxWithBorder(getFilterConditions()){
+		activeFilterConditionComboBox = new JComboBox(getFilterConditions()){
+				{
+					setMaximumRowCount(10);
+				}
 		    public String getToolTipText() {
 		        return "tooltip";    
 		    }

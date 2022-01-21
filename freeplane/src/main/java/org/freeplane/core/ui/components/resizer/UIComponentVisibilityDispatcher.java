@@ -20,8 +20,10 @@
 package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Container;
+
 import javax.swing.JComponent;
 import javax.swing.JRootPane;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;

@@ -28,7 +28,7 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -47,7 +47,7 @@ public abstract class EditableComboProperty<T> extends PropertyBean implements I
 	}
 
     private JComboBox createFormatChooser(final List<? extends T> list) {
-    	final JComboBox formatChooser = new JComboBoxWithBorder(new Vector<T>(list));
+    	final JComboBox formatChooser = JComboBoxFactory.create(new Vector<T>(list));
     	formatChooser.setEditable(true);
     	formatChooser.addItemListener(new ItemListener() {
     		public void itemStateChanged(final ItemEvent e) {

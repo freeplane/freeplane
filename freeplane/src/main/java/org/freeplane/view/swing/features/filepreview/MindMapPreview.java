@@ -3,6 +3,7 @@ package org.freeplane.view.swing.features.filepreview;
 import java.awt.Dimension;
 import java.io.File;
 import java.net.URI;
+
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.resources.ResourceController;

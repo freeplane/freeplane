@@ -21,6 +21,7 @@ package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;

@@ -26,12 +26,19 @@
 // $Id: RotatableLabelUI.java,v 1.11 2005/12/04 13:46:04 jesper Exp $
 package net.infonode.gui;
 
-import net.infonode.util.Direction;
-
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicLabelUI;
-import java.awt.*;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.plaf.basic.BasicLabelUI;
+
+import net.infonode.util.Direction;
 
 public class RotatableLabelUI extends BasicLabelUI {
   // Optimization

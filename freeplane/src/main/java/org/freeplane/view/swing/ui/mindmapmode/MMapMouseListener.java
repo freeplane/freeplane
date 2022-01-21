@@ -21,7 +21,9 @@ package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;

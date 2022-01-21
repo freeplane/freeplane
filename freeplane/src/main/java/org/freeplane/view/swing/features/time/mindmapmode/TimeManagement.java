@@ -58,7 +58,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.calendar.JCalendar;
 import org.freeplane.core.ui.components.calendar.JDayChooser;
@@ -469,7 +469,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		if (!datePatterns.isEmpty()){
 			dateFormat = datePatterns.get(selectedIndex);
 		}
-		final JComboBox dateFormatChooser = new JComboBoxWithBorder(values);
+		final JComboBox dateFormatChooser = JComboBoxFactory.create(values);
 		dateFormatChooser.setFocusable(false);
 		if (!datePatterns.isEmpty()){
 			dateFormatChooser.setSelectedIndex(selectedIndex);

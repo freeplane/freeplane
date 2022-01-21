@@ -1,12 +1,12 @@
 package org.freeplane.features.export.mindmapmode;
 
-import org.freeplane.features.map.MapWriter;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+
+import org.freeplane.features.map.MapWriter;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 class BranchXmlWriter{
 	private final List<NodeModel> branches;

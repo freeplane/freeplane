@@ -1,21 +1,28 @@
 package org.freeplane.features.export.mindmapmode;
 
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapWriter.Mode;
-import org.freeplane.features.map.NodeModel;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilePermission;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.security.Permission;
+import java.security.Policy;
+import java.security.ProtectionDomain;
+import java.util.List;
+
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.security.Permission;
-import java.security.Policy;
-import java.security.ProtectionDomain;
-import java.util.List;
+
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 
 public class XsltExportEngine implements IExportEngine {
 	

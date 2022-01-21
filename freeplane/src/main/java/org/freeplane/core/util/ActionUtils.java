@@ -1,7 +1,9 @@
 package org.freeplane.core.util;
 
 import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public abstract class ActionUtils {

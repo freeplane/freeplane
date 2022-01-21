@@ -19,6 +19,7 @@
 package org.freeplane.features.commandsearch;
 
 import java.awt.event.ActionEvent;
+
 import javax.swing.AbstractAction;
 
 import org.freeplane.core.resources.components.OptionPanelBuilder;

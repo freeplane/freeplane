@@ -19,7 +19,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -61,7 +61,7 @@ class NodeListWithReplacement extends NodeList{
 				}
 			}
 		});
-		mFilterTextReplaceField = new JComboBoxWithBorder();
+		mFilterTextReplaceField = JComboBoxFactory.create();
 		mFilterTextReplaceField.setEditable(true);
 		mFilterTextReplaceField.addKeyListener(new KeyAdapter() {
 			@Override

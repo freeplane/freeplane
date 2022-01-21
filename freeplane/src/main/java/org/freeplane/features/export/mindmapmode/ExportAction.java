@@ -17,13 +17,13 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-
-import java.awt.event.ActionEvent;
-import java.util.Collections;
 
 /**
  * @author foltin To change the template for this generated type comment go to

@@ -49,7 +49,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -359,7 +359,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		final Dimension comboBoxMaximumSize = patternLabel.getPreferredSize();
 		comboBoxMaximumSize.width += 4;
 		comboBoxMaximumSize.height += 10;
-		attributeNames = new JComboBoxWithBorder();
+		attributeNames = JComboBoxFactory.create();
 		attributeNames.setMaximumSize(comboBoxMaximumSize);
 		attributeNames.setPreferredSize(comboBoxMaximumSize);
 		attributeNames.addItemListener(new ItemListener() {
@@ -368,11 +368,11 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 				selectedAttributeChanged(e.getItem(), attributeValues);
 			}
 		});
-		attributeValues = new JComboBoxWithBorder();
+		attributeValues = JComboBoxFactory.create();
 		attributeValues.setRenderer(new TypedListCellRenderer());
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		attributeValues.setPreferredSize(comboBoxMaximumSize);
-		replacingAttributeNames = new JComboBoxWithBorder();
+		replacingAttributeNames = JComboBoxFactory.create();
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeNames.setPreferredSize(comboBoxMaximumSize);
 		replacingAttributeNames.addItemListener(new ItemListener() {
@@ -381,7 +381,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 				selectedAttributeChanged(e.getItem(), replacingAttributeValues);
 			}
 		});
-		replacingAttributeValues = new JComboBoxWithBorder();
+		replacingAttributeValues = JComboBoxFactory.create();
 		replacingAttributeValues.setRenderer(new TypedListCellRenderer());
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setPreferredSize(comboBoxMaximumSize);

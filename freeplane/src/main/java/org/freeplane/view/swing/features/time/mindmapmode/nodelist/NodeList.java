@@ -64,7 +64,7 @@ import javax.swing.text.JTextComponent;
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.core.util.TextUtils;
@@ -348,7 +348,7 @@ class NodeList {
 //		controller = modeController.getController();
 		this.modal = false;
 		this.searchInAllMaps = searchInAllMaps;
-		mFilterTextSearchField = new JComboBoxWithBorder();
+		mFilterTextSearchField = JComboBoxFactory.create();
 		mFilterTextSearchField.setEditable(true);
 		final FilterTextDocumentListener listener = new FilterTextDocumentListener();
 		mFilterTextSearchField.addActionListener(listener);

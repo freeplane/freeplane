@@ -30,7 +30,7 @@ import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -48,9 +48,9 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class MUIFactory implements INodeSelectionListener, INodeChangeListener, IMapChangeListener,
         IMapSelectionListener, IExtension {
@@ -200,14 +200,14 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public Container createStyleBox() {
-		final JComboBox stylesBox = new JComboBoxWithBorder(styles);
+		final JComboBox stylesBox = JComboBoxFactory.create(styles);
 		stylesBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
 		stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
 		return stylesBox;
 	}
 
 	public Container createSizeBox() {
-		final JComboBox sizeBox = new JComboBoxWithBorder(size);
+		final JComboBox sizeBox = JComboBoxFactory.create(size);
 		sizeBox.setPrototypeDisplayValue("88888");
 		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
@@ -216,7 +216,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public Container createFontBox() {
-		final JComboBox fontsBox = new JComboBoxWithBorder();
+		final JComboBox fontsBox = JComboBoxFactory.create();
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
 		fontsBox.setModel(fonts);
 		return fontsBox;

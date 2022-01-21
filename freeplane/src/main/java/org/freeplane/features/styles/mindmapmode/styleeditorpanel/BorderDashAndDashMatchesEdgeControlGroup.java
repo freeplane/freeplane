@@ -31,8 +31,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.MapStyleModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

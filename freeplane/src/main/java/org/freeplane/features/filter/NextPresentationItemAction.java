@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 

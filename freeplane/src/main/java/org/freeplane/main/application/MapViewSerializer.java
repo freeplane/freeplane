@@ -29,9 +29,6 @@ import java.util.Collection;
 
 import javax.swing.JPanel;
 
-import net.infonode.docking.View;
-import net.infonode.docking.ViewSerializer;
-
 import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.mode.Controller;
@@ -40,6 +37,9 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewScrollPane;
 import org.freeplane.view.swing.map.overview.MapViewPane;
+
+import net.infonode.docking.View;
+import net.infonode.docking.ViewSerializer;
 
 /**
  * @author Dimitry Polivaev

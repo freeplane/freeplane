@@ -19,14 +19,16 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.mode.Controller;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 /**
  * @author Dimitry Polivaev

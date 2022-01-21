@@ -20,6 +20,7 @@
 package org.freeplane.core.ui.components.html;
 
 import java.awt.Font;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.html.CSS;
 import javax.swing.text.html.StyleSheet;

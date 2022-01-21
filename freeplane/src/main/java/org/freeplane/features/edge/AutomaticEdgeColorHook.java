@@ -34,9 +34,9 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

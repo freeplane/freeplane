@@ -29,6 +29,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;

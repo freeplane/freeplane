@@ -31,6 +31,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.mindmapmode.EditablePatternComboProperty;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 /**

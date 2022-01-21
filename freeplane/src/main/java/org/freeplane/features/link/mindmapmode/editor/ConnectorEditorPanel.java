@@ -38,6 +38,7 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleString;
 import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;

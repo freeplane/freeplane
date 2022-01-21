@@ -3,6 +3,7 @@ package org.freeplane.view.swing.features.progress.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.NodeModel;

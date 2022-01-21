@@ -35,7 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.IMapSelection;

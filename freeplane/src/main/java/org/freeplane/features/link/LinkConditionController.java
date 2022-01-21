@@ -25,6 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;

@@ -48,13 +48,13 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
-import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.filter.condition.DecoratedConditionFactory;
+import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
@@ -194,7 +194,7 @@ public class FilterConditionEditor extends JComponent {
         gridBagConstraints.gridx++;
 
         if(variant == Variant.FILTER_COMPOSER) {
-            filterTargetSelector = new JComboBoxWithBorder();
+            filterTargetSelector = JComboBoxFactory.create();
             filterTargetSelector.setEditable(false);
             filterTargetSelector.setModel(new DefaultComboBoxModel(DECORATED_CONDITION_FACTORY.getKeys()));
             add(filterTargetSelector, gridBagConstraints);
@@ -204,7 +204,7 @@ public class FilterConditionEditor extends JComponent {
             filterTargetSelector = null;
         }
 
-		filteredPropertiesComponent = new JComboBoxWithBorder();
+		filteredPropertiesComponent = JComboBoxFactory.create();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
 		filteredPropertiesComponent.setModel(filteredPropertiesModel);
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
@@ -214,14 +214,14 @@ public class FilterConditionEditor extends JComponent {
 		gridBagConstraints.gridx++;
 		
 		//Search condition
-		elementaryConditions = new JComboBoxWithBorder();
+		elementaryConditions = JComboBoxFactory.create();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
 		elementaryConditions.setAlignmentY(Component.TOP_ALIGNMENT);
 		add(elementaryConditions, gridBagConstraints);
 		gridBagConstraints.gridx++;
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
-		values = new JComboBoxWithBorder();
+		values = JComboBoxFactory.create();
 		values.setPreferredSize(new Dimension(240,20));
 		gridBagConstraints.anchor = GridBagConstraints.WEST;
 		add(values, gridBagConstraints);

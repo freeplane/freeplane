@@ -1,5 +1,17 @@
 package org.freeplane.features.export.mindmapmode;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+
+import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.ResourceController;
@@ -13,11 +25,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-
-import javax.swing.filechooser.FileFilter;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.*;
 
 /**
  * A registry of all XSLT scripts that are available to transform a .mm file into another format.

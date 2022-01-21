@@ -29,12 +29,13 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
+
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.main.application.Browser;
-import org.freeplane.features.ui.FrameController;
 import org.freeplane.view.swing.map.MapViewScrollPane;
 
 class DialogController extends FrameController {

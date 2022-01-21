@@ -60,7 +60,7 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.svgicons.GraphicsHints;
 import org.freeplane.core.util.TextUtils;
@@ -913,7 +913,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public JComboBox createZoomBox() {
 		if(zoomBox == null) {
-			zoomBox = new JComboBoxWithBorder(zoomModel);
+			zoomBox = JComboBoxFactory.create(zoomModel);
 		}
 		return zoomBox;
 	}

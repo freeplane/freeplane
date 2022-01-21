@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 

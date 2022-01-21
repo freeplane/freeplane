@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.JComponent;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;

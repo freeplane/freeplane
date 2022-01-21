@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
-import javax.swing.JSpinner;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFormattedTextField.AbstractFormatterFactory;
+import javax.swing.JSpinner;
 import javax.swing.JSpinner.NumberEditor;
 import javax.swing.text.NumberFormatter;
 

@@ -21,7 +21,6 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -81,7 +80,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.api.LengthUnit;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Hyperlink;
@@ -100,9 +98,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -498,8 +495,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final JComboBox comboBox;
 		if (dce == null) {
-			comboBox = new JComboBoxWithBorder(){
-
+			comboBox = new JComboBox(){
+				{
+					setMaximumRowCount(10);
+				}
 				// Workaround for bug introduced in Java 8: they use wrong component in DefaultCellEditor.EditorDelegate
 				@Override
 				public void actionPerformed(ActionEvent e) {

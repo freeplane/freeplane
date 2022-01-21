@@ -1,17 +1,18 @@
 package org.freeplane.features.link;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.swing.Action;
+
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
-import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-
-import javax.swing.Action;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 class LinkMenuBuilder implements EntryVisitor {
 	private final ModeController modeController;

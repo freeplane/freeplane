@@ -6,8 +6,8 @@ import java.util.Set;
 
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.IMapSelection.NodePosition;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 

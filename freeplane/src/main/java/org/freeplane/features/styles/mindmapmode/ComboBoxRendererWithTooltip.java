@@ -21,6 +21,7 @@ package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.Component;
 import java.awt.Container;
+
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;

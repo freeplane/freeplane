@@ -19,6 +19,12 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
@@ -30,11 +36,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
-
-import javax.swing.filechooser.FileFilter;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 class ExportToHTML implements IExportEngine {
 	public ExportToHTML() {

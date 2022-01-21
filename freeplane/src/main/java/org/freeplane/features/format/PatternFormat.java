@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.format;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -21,6 +21,7 @@ package org.freeplane.features.icon;
 
 import java.awt.Color;
 import java.util.Collection;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 

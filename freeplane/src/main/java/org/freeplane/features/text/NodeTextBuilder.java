@@ -41,8 +41,8 @@ import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.styles.StyleFactory;
-import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.styles.StyleString;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter, IExtensionElementWriter, IExtensionAttributeWriter {

@@ -26,8 +26,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+
 import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 
 /**
  * @author Dimitry Polivaev
@@ -40,7 +41,7 @@ class PeriodPanel extends JPanel {
 	PeriodPanel(){
 		SpinnerNumberModel periodModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 		periodComponent = new  JSpinner(periodModel);
-		periodUnitBox = new JComboBoxWithBorder(TranslatedObject.fromEnum(PeriodUnit.class));
+		periodUnitBox = JComboBoxFactory.create(TranslatedObject.fromEnum(PeriodUnit.class));
 		periodUnitBox.setEditable(false);
 		periodUnitBox.setSelectedIndex(PeriodUnit.DAY.ordinal());
 		add(periodComponent);

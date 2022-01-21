@@ -54,7 +54,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -507,8 +507,8 @@ public class MLinkController extends LinkController {
     }
 
     @SuppressWarnings("serial")
-    protected JComboBoxWithBorder createActionBox(AFreeplaneAction[] items) {
-        final JComboBoxWithBorder box = new JComboBoxWithBorder();
+    protected JComboBox createActionBox(AFreeplaneAction[] items) {
+        final JComboBox box = JComboBoxFactory.create();
         box.setEditable(false);
         Vector<RenderedContent<AFreeplaneAction>> renderedContent = RenderedContent.of(items);
 		box.setModel(new DefaultComboBoxModel<>(renderedContent));

@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.InfoArea;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
@@ -131,7 +131,7 @@ class StyleControlGroup implements ControlGroup{
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
-	            styleName.setText(TextUtils.format("FOR_ALL_NODES_OF_STYLE", firstStyle.toString()));
+	            styleName.setText(TextUtils.format(FOR_ALL_NODES_OF_STYLE, firstStyle.toString()));
 	            updateTemplateName(node.getMap());
 
 			}
@@ -339,7 +339,7 @@ class StyleControlGroup implements ControlGroup{
 
 	private void addAutomaticLayoutControls(final DefaultFormBuilder formBuilder) {
 		TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticLayout.class);
-		mAutomaticLayoutComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
+		mAutomaticLayoutComboBox = JComboBoxFactory.create(automaticLayoutTypes);
 		DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
 		automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
 		automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
@@ -361,7 +361,7 @@ class StyleControlGroup implements ControlGroup{
 
 	private void addEdgeColoringControls(final DefaultFormBuilder formBuilder) {
 		TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
-		mAutomaticEdgeColorComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
+		mAutomaticEdgeColorComboBox = JComboBoxFactory.create(automaticLayoutTypes);
 		DefaultComboBoxModel automaticEdgeColorComboBoxModel = (DefaultComboBoxModel) mAutomaticEdgeColorComboBox.getModel();
 		automaticEdgeColorComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
 		automaticEdgeColorComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);

@@ -22,6 +22,7 @@ package org.freeplane.features.styles.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;

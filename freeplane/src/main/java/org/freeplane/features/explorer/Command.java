@@ -1,8 +1,8 @@
 package org.freeplane.features.explorer;
 
-import org.freeplane.features.map.NodeModel;
-
 import java.util.Collection;
+
+import org.freeplane.features.map.NodeModel;
 
 class Command {
 	private final ExploringStep operator;

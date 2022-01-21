@@ -21,6 +21,7 @@ package org.freeplane.core.resources.components;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class TextBoxProperty extends PropertyBean implements IPropertyControl {

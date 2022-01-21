@@ -13,8 +13,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.MapStyleModel;
 
 public class NoteStyleAccessor {
 	final private String rule;

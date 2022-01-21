@@ -1,11 +1,12 @@
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
+
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.condition.StringTransformer;
-import java.awt.event.InputEvent;
 
 abstract public class SearchItem implements Comparable<SearchItem> {
     static final String ITEM_PATH_SEPARATOR = "->";

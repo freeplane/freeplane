@@ -34,7 +34,7 @@ import javax.swing.event.ChangeListener;
 import org.freeplane.api.PhysicalUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -50,7 +50,7 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 		this.defaultUnit = defaultUnit;
 		numberSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
 		TranslatedObject[] units = TranslatedObject.fromEnum(defaultUnit.getDeclaringClass());
-		unitBox = new JComboBoxWithBorder(units);
+		unitBox = JComboBoxFactory.create(units);
 		addChangeListeners();
 	}
 	

@@ -22,6 +22,7 @@ package org.freeplane.main.osgi;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 
 public class DelegatingUrlHandlerService extends AbstractURLStreamHandlerService{

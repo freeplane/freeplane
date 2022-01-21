@@ -29,6 +29,7 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ConnectorShapeControlGroup implements ControlGroup {

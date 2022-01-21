@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;

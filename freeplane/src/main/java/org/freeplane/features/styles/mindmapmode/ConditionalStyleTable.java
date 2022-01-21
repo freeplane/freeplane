@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.EventObject;
+
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
@@ -18,7 +19,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterComposerDialog;
@@ -100,7 +101,7 @@ class ConditionalStyleTable extends JTable {
 		conditionRenderer = createConditionRenderer();
 		columnModel.getColumn(1).setCellRenderer(conditionRenderer);
 		columnModel.getColumn(1).setCellEditor(new ConditionEditor());
-		final JComboBox styleBox = new JComboBoxWithBorder();
+		final JComboBox styleBox = JComboBoxFactory.create();
 		styleBox.setEditable(false);
 		columnModel.getColumn(2).setCellEditor(new DefaultCellEditor(styleBox){
 

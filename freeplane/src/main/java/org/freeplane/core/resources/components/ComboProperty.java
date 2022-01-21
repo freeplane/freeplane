@@ -27,9 +27,10 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.ListCellRenderer;
 
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.util.LogUtils;
@@ -50,14 +51,14 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		return displayedItems;
 	}
 
-	final JComboBoxWithBorder mComboBox;
+	final JComboBox mComboBox;
 	private Vector<String> possibleValues;
 
 	public ComboProperty(final String name, final Collection<String> possibles,
 	                     final Collection<?> displayedItems) {
 		super(name);
 		fillPossibleValues(possibles);
-		mComboBox = new JComboBoxWithBorder();
+		mComboBox = JComboBoxFactory.create();
 		mComboBox.setModel(new DefaultComboBoxModel(new Vector<Object>(displayedItems)));
 		mComboBox.addActionListener(this);
 	}
@@ -89,11 +90,6 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		comboProperty.setRenderer(RenderedContent.createRenderer());
 		return comboProperty;
 	}
-
-	public void setVerticalMargin(int verticalMargin) {
-		mComboBox.setVerticalMargin(verticalMargin);
-	}
-
 	/**
 	 */
 	private void fillPossibleValues(final Collection<String> possibles) {

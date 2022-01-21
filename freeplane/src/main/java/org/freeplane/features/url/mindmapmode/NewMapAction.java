@@ -20,6 +20,7 @@
 package org.freeplane.features.url.mindmapmode;
 
 import java.awt.event.ActionEvent;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;

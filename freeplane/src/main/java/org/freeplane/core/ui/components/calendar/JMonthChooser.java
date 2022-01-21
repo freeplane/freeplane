@@ -34,7 +34,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JComboBoxFactory;
 
 /**
  * JMonthChooser is a bean for choosing a month.
@@ -93,7 +93,7 @@ public class JMonthChooser extends JPanel implements ItemListener, ChangeListene
 		setName("JMonthChooser");
 		this.hasSpinner = hasSpinner;
 		setLayout(new BorderLayout());
-		comboBox = new JComboBoxWithBorder();
+		comboBox = JComboBoxFactory.create();
 		comboBox.addItemListener(this);
 		locale = Locale.getDefault();
 		initNames();

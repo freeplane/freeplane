@@ -17,6 +17,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -24,7 +26,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
-import java.awt.event.InputEvent;
 
 public class PreferencesItem extends SearchItem {
 

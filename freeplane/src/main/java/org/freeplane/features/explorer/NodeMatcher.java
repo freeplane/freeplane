@@ -1,12 +1,12 @@
 package org.freeplane.features.explorer;
 
-import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.map.NodeModel;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.map.NodeModel;
 
 class NodeMatcher {
 	private enum MatchedElement{
