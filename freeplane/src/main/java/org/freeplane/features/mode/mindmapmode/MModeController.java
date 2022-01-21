@@ -30,6 +30,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.flatlaf.FlatAtomOneDarkContrastIJTheme;
+import org.freeplane.core.ui.flatlaf.FlatSolarizedLightIJTheme;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
@@ -132,10 +134,14 @@ public class MModeController extends ModeController {
 		translatedLafNames.add("Flat Light");
 		lafNames.add(FlatIntelliJLaf.class.getName());
 		translatedLafNames.add("Flat IntelliJ");
+		lafNames.add(FlatSolarizedLightIJTheme.class.getName());
+		translatedLafNames.add("Flat Solarized Light");
 		lafNames.add(FlatDarkLaf.class.getName());
 		translatedLafNames.add("Flat Dark");
 		lafNames.add(FlatDarculaLaf.class.getName());
 		translatedLafNames.add("Flat Darcula");
+		lafNames.add(FlatAtomOneDarkContrastIJTheme.class.getName());
+		translatedLafNames.add("Atom One Dark Contrast (Material)");
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
