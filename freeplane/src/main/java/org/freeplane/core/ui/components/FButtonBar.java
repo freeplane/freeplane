@@ -23,7 +23,6 @@ import static org.freeplane.core.ui.svgicons.FreeplaneIconFactory.toImageIcon;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
@@ -36,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
