@@ -22,6 +22,7 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -116,6 +117,7 @@ public class StyleEditorPanel extends JPanel {
 	public StyleEditorPanel(final ModeController modeController, final MUIFactory uiFactory,
 	                        final boolean addStyleBox) throws HeadlessException {
 		super();
+		setLayout(new BorderLayout());
 		panelConfiguration = ResourceController.getResourceController().getEnumProperty("styleEditorPanelSize", StyleEditorPanelSize.BIG);
 		controlGroups = createControlGroups(modeController, uiFactory, addStyleBox);
 		addHierarchyListener(new HierarchyListener() {
@@ -187,7 +189,7 @@ public class StyleEditorPanel extends JPanel {
 	 * @param modeController
 	 */
 	private void init() {
-        final String form = "right:max(20dlu;p), 4dlu, 60dlu, 4dlu, max(10dlu;p)";
+        final String form = "right:max(20dlu;p), 4dlu, 40dlu:grow, 4dlu, max(10dlu;p)";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
@@ -202,6 +204,15 @@ public class StyleEditorPanel extends JPanel {
 		add(formBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners();
 		setFont(this, panelConfiguration.fontSize);
+	}
+	
+	
+
+	@Override
+	public Dimension getPreferredSize() {
+		Dimension preferredSize = super.getPreferredSize();
+		return new Dimension((int) (100*UITools.FONT_SCALE_FACTOR), preferredSize.height);
+
 	}
 
 	private void setFont(Container c, float size) {
