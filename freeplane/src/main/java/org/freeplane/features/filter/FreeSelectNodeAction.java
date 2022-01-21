@@ -59,9 +59,9 @@ public class FreeSelectNodeAction extends AFreeplaneAction {
 
     private final Direction direction;
 
-    public FreeSelectNodeAction(final Direction driection) {
-        super("FreeSelectNodeAction." + driection.name());
-        this.direction = driection;
+    public FreeSelectNodeAction(final Direction direction) {
+        super("FreeSelectNodeAction." + direction.name());
+        this.direction = direction;
     }
 
     public void actionPerformed(final ActionEvent e) {
