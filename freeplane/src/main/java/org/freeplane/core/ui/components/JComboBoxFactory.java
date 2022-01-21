@@ -14,19 +14,19 @@ public class JComboBoxFactory{
 		return c;
 	}
 
-	public static <T> JComboBox create(ComboBoxModel aModel) {
+	public static <T> JComboBox<T> create(ComboBoxModel aModel) {
 		JComboBox<T> c = new JComboBox<T>(aModel);
 		c.setMaximumRowCount(MAXIMUM_ROW_COUNT);
 		return c;
 	}
 
-	public static <T> JComboBox create(T[] items) {
+	public static <T> JComboBox<T> create(T[] items) {
 		JComboBox<T> c = new JComboBox<T>(items);
 		c.setMaximumRowCount(MAXIMUM_ROW_COUNT);
 		return c;
 	}
 
-	public static <T> JComboBox create(Vector<T> items) {
+	public static <T> JComboBox<T> create(Vector<T> items) {
 		JComboBox<T> c = new JComboBox<T>(items);
 		c.setMaximumRowCount(MAXIMUM_ROW_COUNT);
 		return c;
