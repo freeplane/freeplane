@@ -800,8 +800,14 @@ public class UITools {
 
     public static JTabbedPane getFreeplaneTabbedPanel() {
     	if(FREEPLANE_TABBED_PANEL == null)
-    		FREEPLANE_TABBED_PANEL = new JTabbedPane();
+    		FREEPLANE_TABBED_PANEL = createTabbedPane();
         return FREEPLANE_TABBED_PANEL;
     }
+
+	private static JTabbedPane createTabbedPane() {
+		JTabbedPane pane = new JTabbedPane();
+		pane.setBorder(BorderFactory.createEmptyBorder((int) (10 * FONT_SCALE_FACTOR), 0, 0, 0));
+		return pane;
+	}
 
 }
