@@ -141,10 +141,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			final Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			final Container mapView = SwingUtilities.getAncestorOfClass(MapView.class, table);
-			if(mapView != null)
-				c.setBackground(mapView.getBackground());
-			final int height = (int) (((AttributeTable)table).getZoom() * 6);
+			AttributeTable attributeTable = (AttributeTable)table;
+			attributeTable.updateComponentFontAndColors(c);
+			final int height = (int) (attributeTable.getZoom() * UITools.FONT_SCALE_FACTOR * 6);
 			final Dimension preferredSize = new Dimension(1, height);
 			c.setPreferredSize(preferredSize);
 			return c;
@@ -929,7 +928,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateComponentFontAndColors(final JComponent c) {
+	private void updateComponentFontAndColors(final Component c) {
 		final NodeView nodeView = attributeView.getNodeView();
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
@@ -941,12 +940,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
         if(! SwingUtilities.isDescendingFrom(this, nodeView)) {
         	return;
         }
-        final Color backgroundColor = NodeStyleModel.getBackgroundColor(attributeStyleNode);
-        if(backgroundColor!= null) {
-			c.setBackground(backgroundColor);
-		} else {
-			c.setBackground(nodeView.getBackgroundColor());
-		}
+		c.setBackground(style.getBackgroundColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE));
         c.setForeground(style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE));
     }
 
