@@ -61,7 +61,6 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  */
 public class FButtonBar extends JComponent implements IAcceleratorChangeListener, KeyEventDispatcher,
         WindowFocusListener, IKeyStrokeProcessor {
-	private static final Font BUTTON_FONT = new JButton().getFont().deriveFont(UITools.getUIFontSize(1.1));
 	private static final int BUTTON_NUMBER = 12;
 	/**
 	 *
@@ -140,12 +139,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 				protected void configurePropertiesFromAction(final Action a) {
 				}
 			};
-			button.setFont(BUTTON_FONT);
 			button.setFocusable(false);
-			button.setBorder(BorderFactory.createEtchedBorder());
-			if (System.getProperty("os.name").startsWith("Mac OS")) {
-				button.setBorderPainted(false);
-			}
             KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i, modifiers);
             setAcceleratorAction(button, ks);
 
