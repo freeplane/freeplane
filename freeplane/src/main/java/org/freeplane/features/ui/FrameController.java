@@ -686,14 +686,15 @@ abstract public class FrameController implements ViewController {
     private static void fixLookAndFeelUI(){
         LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
         addHotKeysToMotifInputMaps(lookAndFeel);
-        configureTableForFlatLookAndFeel(lookAndFeel);
+        configureFlatLookAndFeel(lookAndFeel);
     }
 
-	private static void configureTableForFlatLookAndFeel(LookAndFeel lookAndFeel) {
+	private static void configureFlatLookAndFeel(LookAndFeel lookAndFeel) {
         if(lookAndFeel instanceof FlatLaf) {
         	UIManager.put("TableHeader.height", 2);
         	UIManager.put("Table.showHorizontalLines", true);
         	UIManager.put("Table.showVerticalLines", true);
+        	UIManager.put("ComboBox.minimumWidth", 2);
          }
 	}
 

@@ -63,7 +63,8 @@ class StyleControlGroup implements ControlGroup{
     private static final int LEFT_MARGIN = (int) (15 * UITools.FONT_SCALE_FACTOR);
     private static final int GAP = (int) (6 * UITools.FONT_SCALE_FACTOR);
     private static final String CHOOSE_TEMPLATE = "choose_template";
-    private static final String REDEFINE_STYLE = "change_style";
+    private static final String MAKE_FORMATTING_DEFAULT = "make_formatting_default";
+    private static final String FOR_ALL_NODES_OF_STYLE = "for_all_nodes_of_style";
     private static final String FOR_THIS_MAP = "changes_style_for_this_map";
     private static final String FOR_TEMPLATE = "changes_template_style";
     private static final String FOR_TEMPLATE_TOOLTIP =FOR_TEMPLATE + ".tooltip";
@@ -130,7 +131,7 @@ class StyleControlGroup implements ControlGroup{
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
-	            styleName.setText(firstStyle.toString());
+	            styleName.setText(TextUtils.format("FOR_ALL_NODES_OF_STYLE", firstStyle.toString()));
 	            updateTemplateName(node.getMap());
 
 			}
@@ -248,8 +249,6 @@ class StyleControlGroup implements ControlGroup{
             redefineStyleButtonGroup.add(redefinesStyleForCurrentMapAndTemplate);
             
             Box styleAndButtonBox = Box.createVerticalBox();
-            Box buttonBox = Box.createHorizontalBox();
-            buttonBox.setAlignmentX(Component.CENTER_ALIGNMENT);
             Box radioButtonBox = Box.createVerticalBox();
             radioButtonBox.add(redefinesStyleForCurrentMapOnly);
             radioButtonBox.add(redefinesStyleForCurrentMapAndTemplate);
@@ -261,7 +260,6 @@ class StyleControlGroup implements ControlGroup{
             radioButtonBox.add(associateTemplateButtonBox);
             radioButtonBox.setAlignmentX(Component.LEFT_ALIGNMENT);
             radioButtonBox.setBorder(BorderFactory.createEmptyBorder(0, 0, GAP, 0));
-            buttonBox.add(radioButtonBox);
             
             JButton redefineStyleBtn = TranslatedElementFactory.createButton("ApplyAction.text");
             redefineStyleBtn.addActionListener(e -> {
@@ -270,11 +268,11 @@ class StyleControlGroup implements ControlGroup{
 
             });
             redefineStyleBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
-            buttonBox.add(redefineStyleBtn);
 
             styleAndButtonBox.add(styleName);
-            styleAndButtonBox.add(buttonBox);
-            UITools.addTitledBorder(styleAndButtonBox, TextUtils.format(REDEFINE_STYLE, ""), fontSize);
+            styleAndButtonBox.add(redefineStyleBtn);
+            styleAndButtonBox.add(radioButtonBox);
+            UITools.addTitledBorder(styleAndButtonBox, TextUtils.getRawText(MAKE_FORMATTING_DEFAULT), fontSize);
             formBuilder.append(styleAndButtonBox, formBuilder.getColumnCount());
             formBuilder.nextLine();
 
