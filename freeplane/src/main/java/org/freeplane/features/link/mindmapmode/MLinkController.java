@@ -35,12 +35,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Vector;
-import java.util.stream.Collectors;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -1142,11 +1140,11 @@ public class MLinkController extends LinkController {
 		}
 	}
 
-	public void addConnectorWithNodeDependantStyle(final NodeModel target, NodeModel node) {
-		ConnectorModel connector = addConnector(node, target);
+	public void addConnectorWithNodeDependantStyle(NodeModel source, final NodeModel target) {
+		ConnectorModel connector = addConnector(source, target);
 		if(ResourceController.getResourceController().getBooleanProperty("assignsNodeDependantStylesToNewConnectors")) {
-			boolean nodeStyleWasSetToConnector = setConnectorStyleSameAsNodeStyleIfAvailable(connector, node);
-			if (!nodeStyleWasSetToConnector && node != target)
+			boolean nodeStyleWasSetToConnector = setConnectorStyleSameAsNodeStyleIfAvailable(connector, source);
+			if (!nodeStyleWasSetToConnector && source != target)
 				setConnectorStyleSameAsNodeStyleIfAvailable(connector, target);
 		}
 	}

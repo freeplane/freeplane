@@ -61,7 +61,7 @@ class AddConnectorAction extends AFreeplaneAction {
 		else  {
 			for (NodeModel node : selecteds) {
 				if(node != target) {
-					linkController.addConnectorWithNodeDependantStyle(target, node);
+					linkController.addConnectorWithNodeDependantStyle(node, target);
 				}
 			}
 		}
