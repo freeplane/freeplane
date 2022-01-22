@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JButton;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+
+import com.formdev.flatlaf.util.HiDPIUtils;
 
 class JColorButton extends JButton {
 
@@ -65,19 +68,20 @@ class JColorButton extends JButton {
 	        		getWidth() - COLOR_ICON_BORDER_SIZE*2, 
 	        		getHeight() - COLOR_ICON_BORDER_SIZE*2);
 	        Graphics2D g2 = (Graphics2D) g;
+	        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			int xText = (getWidth() - textWidth) / 2;
 			int yText = (getHeight() + textHeight - COLOR_ICON_BORDER_SIZE) / 2;
 	        /* Draw the Text */
 	        if(! getModel().isEnabled()) {
 	            g.setColor(color.brighter());
-	            g2.drawString(text, xText, yText);
+	            HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
 	            g.setColor(color.darker());
-	            g2.drawString(text, xText - 1, yText - 1);
+	            HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText - 1, yText - 1);
 	        } else {
 	            /*** paint the text normally */
 		        final Color textColor = UITools.getTextColorForBackground(color);
 		        g.setColor(textColor);
-	            g2.drawString(text, xText, yText);
+		        HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
 	        }
 
 	        
