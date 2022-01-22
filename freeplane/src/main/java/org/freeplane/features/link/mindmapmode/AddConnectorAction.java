@@ -55,40 +55,17 @@ class AddConnectorAction extends AFreeplaneAction {
 		final int size = selecteds.size();
 		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final NodeModel target = selecteds.get(size-1);
-		final List<IStyle> stylesWithConnector = getStylesWithConnector(target.getMap());
 		if (selecteds.size() < 2) {
-			ConnectorModel connector = linkController.addConnector(target, target);
-			setConnectorStyleSameAsNodeStyleIfAvailable(connector, target, stylesWithConnector, linkController);
-			return;
+			linkController.addConnectorWithNodeDependantStyle(target, target);
 		}
-		for (NodeModel node : selecteds) {
-			if(node != target) {
-				ConnectorModel connector = linkController.addConnector(node, target);
-				boolean nodeStyleWasSetToConnector = setConnectorStyleSameAsNodeStyleIfAvailable(connector, node, stylesWithConnector, linkController);
-				if (!nodeStyleWasSetToConnector)
-					setConnectorStyleSameAsNodeStyleIfAvailable(connector, target, stylesWithConnector, linkController);
+		else  {
+			for (NodeModel node : selecteds) {
+				if(node != target) {
+					linkController.addConnectorWithNodeDependantStyle(node, target);
+				}
 			}
 		}
 	}
 
-	private List<IStyle> getStylesWithConnector(MapModel mapModel) {
-		MapStyleModel mapStyleModel = MapStyleModel.getExtension(mapModel);
-		return mapStyleModel.getStyles().stream().filter(key ->
-				NodeLinks.getSelfConnector(mapStyleModel.getStyleNode(key)).isPresent()).collect(Collectors.toList());
-	}
 
-	private boolean setConnectorStyleSameAsNodeStyleIfAvailable(ConnectorModel connector, NodeModel node, List<IStyle> stylesWithConnector, MLinkController linkController) {
-		IStyle styleExplicitlyAssigned = LogicalStyleModel.getStyle(node);
-		IStyle style = styleExplicitlyAssigned != null ? styleExplicitlyAssigned : getActiveStyle(node);
-		// set the connector's style to "default" only if the style is explicitly assigned to the node
-		if ((styleExplicitlyAssigned != null || style != MapStyleModel.DEFAULT_STYLE) && stylesWithConnector.contains(style)) {
-			linkController.setConnectorStyle(connector, style);
-			return true;
-		}
-		return false;
-	}
-
-	private IStyle getActiveStyle(NodeModel node) {
-		return new ArrayList<>(LogicalStyleController.getController().getStyles(node, LogicalStyleController.StyleOption.STYLES_ONLY)).get(0);
-	}
 }
