@@ -2,7 +2,6 @@
 <FreeplaneUIEntries>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
         <Entry builder="separator" />
-        <Entry name="update" builder="main_toolbar_update" />
         <Entry name="main">
           <Entry name="NavigationPreviousMapAction" />
           <Entry name="NavigationNextMapAction" />

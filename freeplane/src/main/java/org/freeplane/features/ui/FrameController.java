@@ -360,9 +360,20 @@ abstract public class FrameController implements ViewController {
 			statusPanel.add(component, statusPanel.getComponentCount() - 1);
 		}
 		else {
-			final int index = UITools.getComponentIndex(component);
+			final int index = UITools.getComponentIndex(oldComponent);
+			transferFocusFrom(oldComponent);
 			statusPanel.remove(index);
 			statusPanel.add(component, index);
+		}
+		statusPanel.revalidate();
+		statusPanel.repaint();
+	}
+
+	private void transferFocusFrom(Component oldComponent) {
+		if(oldComponent.hasFocus()) {
+			Component selectedComponent = mapViewManager.getSelectedComponent();
+			if(selectedComponent != null)
+				selectedComponent.requestFocusInWindow();
 		}
 	}
 
@@ -372,7 +383,10 @@ abstract public class FrameController implements ViewController {
 		if (oldComponent == null) {
 			return;
 		}
+		transferFocusFrom(oldComponent);
 		statusPanel.remove(oldComponent);
+		statusPanel.revalidate();
+		statusPanel.repaint();
 	}
 
 	/**

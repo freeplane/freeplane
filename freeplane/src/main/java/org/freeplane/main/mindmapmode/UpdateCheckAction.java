@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,15 +31,14 @@ import javax.swing.border.Border;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.menubuilders.generic.Entry;
-import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
-import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnsController;
 
@@ -48,6 +48,7 @@ import org.freeplane.main.addons.AddOnsController;
  * @author robert ladstaetter
  */
 class UpdateCheckAction extends AFreeplaneAction {
+	private static final String UPDATE_AVAILABLE_COMPONENT_KEY = "updateAvailable";
 	private static final String UPDATE_URL = "https://sourceforge.net/projects/freeplane/files/freeplane%20stable/";
     private static final int VISIBLE_ADDON_ROWS = 8;
     private static boolean autorunEnabled = true;
@@ -61,19 +62,18 @@ class UpdateCheckAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final int ONE_DAY = 1 * 24 * 60 * 60 * 1000;
-	private static final String UPDATE_BUTTON_LOCATION = "main_toolbar_update";
 	/**
 	 * the url to check the local version against
 	 */
 	private static final String WEB_UPDATE_LOCATION_KEY = "webUpdateLocation";
-	protected Entry entry;
+	private final Controller controller;
 
 	/**
 	 * the client which asks a remote repository for the current version of the program.
 	 */
-	public UpdateCheckAction() {
+	public UpdateCheckAction(final Controller controller) {
 		super("UpdateCheckAction");
-		final Controller controller = Controller.getCurrentController();
+		this.controller = controller;
 		controller.getMapViewManager().addMapViewChangeListener(new IMapViewChangeListener() {
 			public void afterViewChange(final Component oldView, final Component newView) {
 				if (newView == null) {
@@ -91,19 +91,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
 		});
-		controller.getModeController().addUiBuilder(Phase.ACTIONS, UPDATE_BUTTON_LOCATION,
-		    new EntryVisitor() {
-			@Override
-			public void visit(Entry target) {
-				entry = target;
-				new EntryAccessor().setAction(target, UpdateCheckAction.this);
-			}
-
-			@Override
-			public boolean shouldSkipChildren(Entry entry) {
-				return false;
-			}
-		});
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -112,6 +99,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			autorunTimer.stop();
 			autorunTimer = null;
 		}
+		setEnabled(false);
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -122,28 +110,32 @@ class UpdateCheckAction extends AFreeplaneAction {
 			}
 		}, "checkForUpdates").start();
 	}
+	
+	
+
+	@Override
+	public void afterMapChange(UserRole userRole) {
+	}
 
 	private void updateButton(final FreeplaneVersion lastVersion) {
-		if (entry != null) {
-			Controller controller = Controller.getCurrentController();
-			final Component component = (Component) new EntryAccessor().getComponent(entry);
-			if (component != null) {
-				final Dimension preferredSize = component.getPreferredSize();
-				if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
-					ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
-					component.setPreferredSize(new Dimension(0, preferredSize.height));
-					component.setVisible(false);
-				}
-				else {
-					ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
-					final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
-					controller.getViewController().out(updateAvailable);
-					putValue(SHORT_DESCRIPTION, updateAvailable);
-					putValue(LONG_DESCRIPTION, updateAvailable);
-					component.setPreferredSize(new Dimension(preferredSize.height, preferredSize.height));
-					component.setVisible(true);
-				}
-			}
+		if (lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion()) <= 0) {
+			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
+			ViewController viewController = controller.getViewController();
+			viewController.removeStatus(UPDATE_AVAILABLE_COMPONENT_KEY);
+		}
+		else {
+			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
+			final String updateAvailable = TextUtils.format("new_version_available", lastVersion.toString());
+			putValue(SHORT_DESCRIPTION, updateAvailable);
+			putValue(LONG_DESCRIPTION, updateAvailable);
+			JButton newVersionButton = new JButton(updateAvailable, getIcon());
+			newVersionButton.addActionListener(openUrlListener);
+			newVersionButton.setActionCommand(UPDATE_URL);
+			ViewController viewController = controller.getViewController();
+			viewController.addStatusComponent(UPDATE_AVAILABLE_COMPONENT_KEY, newVersionButton);
+			final JComponent statusBar = viewController.getStatusBar();
+			if (!statusBar.isVisible())
+				UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
 		}
 	}
 
@@ -190,14 +182,18 @@ class UpdateCheckAction extends AFreeplaneAction {
 			connectionStatus = translatedVersionClient.isSuccessful()  ? ConnectionStatus.DEFAULT : ConnectionStatus.FAILURE;
 		}
 		
-		checkForAddonsUpdates();
-		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
+		if (! autoRun)
+			checkForAddonsUpdates();
+		controller.getViewController().invokeLater(new Runnable() {
 			public void run() {
-				updateButton(lastVersion);
 				if (autoRun) {
-					return;
+					updateButton(lastVersion);
 				}
-				showUpdateDialog(connectionStatus.statusKey, lastVersion, history, connectionStatus.language);
+				else {
+					showUpdateDialog(connectionStatus.statusKey, lastVersion, history, connectionStatus.language);
+					updateButton(lastVersion);
+				}
+				setEnabled(true);
 			}
 		});
 	}
