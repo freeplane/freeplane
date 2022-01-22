@@ -20,20 +20,26 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.*;
 
 /**
  * @author foltin
  */
 class AddConnectorAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -50,12 +56,16 @@ class AddConnectorAction extends AFreeplaneAction {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final NodeModel target = selecteds.get(size-1);
 		if (selecteds.size() < 2) {
-			linkController.addConnector(target, target);
-			return;
+			linkController.addConnectorWithNodeDependantStyle(target, target);
 		}
-		for (NodeModel node : selecteds) {
-			if(node != target)
-				linkController.addConnector(node, target);
+		else  {
+			for (NodeModel node : selecteds) {
+				if(node != target) {
+					linkController.addConnectorWithNodeDependantStyle(node, target);
+				}
+			}
 		}
 	}
+
+
 }
