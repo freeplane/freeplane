@@ -25,12 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * Action that executes a script defined by filename.
@@ -70,7 +74,9 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getCurrentController().getViewController().setWaitingCursor(true);
+		ViewController viewController = Controller.getCurrentController().getViewController();
+		viewController.setWaitingCursor(true);
+		IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		try {
 			if(scriptRunner == null) {
 				final IScript script = ScriptingEngine.createScript(this.scriptFile, permissions, true);
@@ -79,13 +85,19 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			MapModel map = selection.getMap();
             if (mode == ExecutionMode.ON_SINGLE_NODE) {
 				nodes.add(selection.getSelected());
 			}
 			else {
 				nodes.addAll(selection.getSelection());
 			}
+			IMapSelectionListener transactionRestarter = new IMapSelectionListener() {
+				@Override
+				public void afterMapChange(MapModel oldMap, MapModel newMap) {
+					restartTransaction(oldMap, newMap);
+				}
+			};
+			mapViewManager.addMapSelectionListener(transactionRestarter);
 			final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 			modeController.startTransaction();
 			for (final NodeModel node : nodes) {
@@ -118,16 +130,37 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						cause = ex.toString();
 					}
 					LogUtils.warn("error executing script " + scriptFile + " - giving up\n" + cause);
-					modeController.delayedRollback(map);
+					mapViewManager.removeMapSelectionListener(transactionRestarter);
+					MapModel map = Controller.getCurrentController().getMap();
+					if(map != null)
+						modeController.delayedRollback(map);
 					ScriptingEngine.showScriptExceptionErrorMessage(ex);
 					return;
 				}
 			}
-			modeController.delayedCommit(map);
+			mapViewManager.removeMapSelectionListener(transactionRestarter);
+			MapModel map = Controller.getCurrentController().getMap();
+			if(map != null)
+				modeController.delayedCommit(map);
 		}
 		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+			viewController.setWaitingCursor(false);
 		}
+	}
+	private void restartTransaction(final MapModel oldMap, final MapModel newNap) {
+		if(oldMap != null) {
+			final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
+			if(oldUndoHandler.getTransactionLevel() == 1){
+				oldUndoHandler.commit();
+			}
+		}
+		if(newNap != null) {
+			final IUndoHandler newUndoHandler = newNap.getExtension(IUndoHandler.class);
+			if(newUndoHandler.getTransactionLevel() == 0){
+				newUndoHandler.startTransaction();
+			}
+		}
+
 	}
 
 	private void executeScriptRecursive(final NodeModel node) {

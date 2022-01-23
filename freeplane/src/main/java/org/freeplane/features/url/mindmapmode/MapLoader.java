@@ -149,8 +149,6 @@ public class MapLoader{
 			if (withView) {
 				selectNode();
 			}
-			if(withView)
-				restartTransaction(oldMap, map);
 			return map;
 		}
 		catch (RuntimeException e) {
@@ -371,16 +369,4 @@ public class MapLoader{
 			throw new IllegalStateException("can not create map inside transaction");
 	}
 
-	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
-		if(oldMap == null)
-			return;
-		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
-		final IUndoHandler newUndoHandler = newmap.getExtension(IUndoHandler.class);
-		final int transactionLevel = oldUndoHandler.getTransactionLevel();
-		if(transactionLevel == 1){
-		    oldUndoHandler.commit();
-		    newUndoHandler.startTransaction();
-		    return;
-		}
-	}
 }
