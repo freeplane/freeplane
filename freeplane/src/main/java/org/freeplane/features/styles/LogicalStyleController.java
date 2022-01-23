@@ -294,6 +294,9 @@ public class LogicalStyleController implements IExtension {
 	}
 
 	public IStyle getFirstStyle(final NodeModel node){
+		IStyle styleExplicitlyAssigned = LogicalStyleModel.getStyle(node);
+		if(styleExplicitlyAssigned != null)
+			return styleExplicitlyAssigned;
 		final Collection<IStyle> styles = getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 		boolean found = false;
 		for(IStyle style:styles){
