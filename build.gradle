@@ -86,6 +86,10 @@ subprojects {
     tasks.withType(JavaCompile) {
       options.encoding = "UTF-8"
     }
+    tasks.withType(AbstractArchiveTask).configureEach {
+      preserveFileTimestamps = false
+      reproducibleFileOrder = true
+    }
     javadoc {
       options.encoding = "UTF-8"
       options.docEncoding = "UTF-8"
