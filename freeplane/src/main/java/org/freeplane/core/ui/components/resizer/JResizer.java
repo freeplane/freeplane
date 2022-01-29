@@ -24,7 +24,6 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -40,14 +39,14 @@ import javax.swing.SwingUtilities;
  * @author Dimitry Polivaev
  * Jan 24, 2011
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
 public class JResizer extends JComponent {
 	private static final int CONTROL_SIZE = 5;
 	protected boolean sliderLock = false;
-	protected Point point;
+	private Point point;
 	private int index;
 	public enum Direction {RIGHT, LEFT, UP, DOWN;
-		public Box createBox() {
+		Box createBox() {
 			switch (this) {
 				case RIGHT:
 				case LEFT:
@@ -57,7 +56,7 @@ public class JResizer extends JComponent {
 			}
 		}
 
-		public int getPreferredSize(final Component component) {
+		int getPreferredSize(final Component component) {
 			final Dimension preferredSize = component.getPreferredSize();
 			switch (this) {
 				case RIGHT:
@@ -68,7 +67,7 @@ public class JResizer extends JComponent {
 			}
 		}
 
-		public void setPreferredSize(Component component, int size) {
+		void setPreferredSize(Component component, int size) {
 			switch (this) {
 				case RIGHT:
 				case LEFT:
@@ -103,7 +102,7 @@ public class JResizer extends JComponent {
 
 	private final Set<ResizerListener> resizeListener = new LinkedHashSet<ResizerListener>();
 
-	public JResizer(final Direction d) {
+	JResizer(final Direction d) {
 		setOpaque(true);
 		final int w;
 		final int h;
@@ -207,7 +206,7 @@ public class JResizer extends JComponent {
 		});
     }
 
-	public void addResizerListener(ResizerListener listener) {
+	void addResizerListener(ResizerListener listener) {
 		if(listener == null) return;
 
 		synchronized (resizeListener) {
@@ -216,13 +215,7 @@ public class JResizer extends JComponent {
 
 	}
 
-	public void removeResizerListener(ComponentListener listener) {
-		if(listener == null) return;
-
-		synchronized (resizeListener) {
-			resizeListener.remove(listener);
-		}
-	}
+	
 
 	public void setSliderLocked(boolean enabled) {
 		this.sliderLock = enabled;

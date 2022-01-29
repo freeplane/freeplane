@@ -26,12 +26,12 @@ import org.freeplane.features.ui.IMapViewManager;
 /**
  *
  */
-public class OneTouchCollapseResizer extends JResizer {
+class OneTouchCollapseResizer extends JResizer {
 	private static final long serialVersionUID = 3836146387249880446L;
-	public static final String COLLAPSED = OneTouchCollapseResizer.class.getPackage().getName()+".collapsed";
+	private static final String COLLAPSED = OneTouchCollapseResizer.class.getPackage().getName()+".collapsed";
 	private static final String ALREADY_IN_PAINT = OneTouchCollapseResizer.class.getPackage().getName()+".ALREADY_PAINTING";
 
-	protected boolean expanded = true;
+	private boolean expanded = true;
 	private JPanel hotspot;
 	private final int INSET = 2;
 	private final Direction direction;
@@ -48,7 +48,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	/**
 	 * @param d
 	 */
-	public OneTouchCollapseResizer(final Direction d) {
+	OneTouchCollapseResizer(final Direction d) {
 		super(d);
 		direction = d;
 		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 10 + 0.5));
@@ -375,7 +375,7 @@ public class OneTouchCollapseResizer extends JResizer {
 		return -1;
     }
 
-	public void addCollapseListener(ComponentCollapseListener listener) {
+	void addCollapseListener(ComponentCollapseListener listener) {
 		if(listener == null) return;
 
 		synchronized (collapseListener) {
@@ -384,15 +384,9 @@ public class OneTouchCollapseResizer extends JResizer {
 
 	}
 
-	public void removeCollapseListener(ComponentCollapseListener listener) {
-		if(listener == null) return;
+	
 
-		synchronized (collapseListener) {
-			collapseListener.remove(listener);
-		}
-	}
-
-	protected void fireCollapseStateChanged(Component resizedComponent, boolean expanded) {
+	private void fireCollapseStateChanged(Component resizedComponent, boolean expanded) {
 		ResizeEvent event = new ResizeEvent(this, resizedComponent);
 		synchronized (this.collapseListener) {
 			for(ComponentCollapseListener listener : collapseListener) {
@@ -412,27 +406,14 @@ public class OneTouchCollapseResizer extends JResizer {
 
 	}
 
-	public static OneTouchCollapseResizer findResizerFor(Component component) {
-				if(component instanceof Container) {
-					Component[] children = ((Container) component).getComponents();
-					for (Component child : children) {
-						if(child instanceof OneTouchCollapseResizer) {
-							return (OneTouchCollapseResizer) child;
-						}
-					}
-				}
-				if(component == null)
-					return null;
-				Component parent = component.getParent();
-				return findResizerFor(parent);
-	}
+	
 
-	public interface ComponentCollapseListener {
+	interface ComponentCollapseListener {
 		public void componentCollapsed(ResizeEvent event);
 		public void componentExpanded(ResizeEvent event);
 	}
 
-	public void recalibrate() {
+	private void recalibrate() {
 		if(getClientProperty(ALREADY_IN_PAINT) == null) {
 			final JComponent parent = (JComponent) getParent();
 			if(parent != null) {

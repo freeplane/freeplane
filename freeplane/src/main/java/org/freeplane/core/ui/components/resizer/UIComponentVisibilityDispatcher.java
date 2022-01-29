@@ -56,7 +56,7 @@ public class UIComponentVisibilityDispatcher {
 		this.key = key;
     }
 
-	public String completeVisiblePropertyKey() {
+	private String completeVisiblePropertyKey() {
 		final String completeKeyString;
 		if (isContainedInFullScreenWindow()) {
 			completeKeyString = key + ".fullscreen";
