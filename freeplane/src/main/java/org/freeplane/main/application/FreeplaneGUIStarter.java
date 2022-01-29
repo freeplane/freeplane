@@ -177,8 +177,22 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			applicationResourceController.init();
 			LogInitializer.createLogger();
 			ApplicationResourceController.showSysInfo();
-			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
-			    .getProperty("lookandfeel"));
+			final String systemPropertyLookandfeel = System.getProperty("lookandfeel");
+			final String lookandfeel;
+			if(systemPropertyLookandfeel == null) {
+				lookandfeel =  applicationResourceController.getProperty("lookandfeel");
+				applicationResourceController.addPropertyChangeListener((propertyName, newValue, oldValue) -> {
+					boolean supportHidpi = UITools.shouldScaleUIFonts();
+					if("lookandfeel".equals(propertyName)) {
+						FrameController.setLookAndFeel(newValue, supportHidpi );
+					} else if ("lookandfeel.scaleuifonts".equals(propertyName)) {
+						FrameController.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"), supportHidpi);
+					}
+					SwingUtilities.updateComponentTreeUI(UITools.getFrame());
+				});
+			}
+			else
+				lookandfeel = systemPropertyLookandfeel;
 			final boolean supportHidpi = UITools.shouldScaleUIFonts();
 			FrameController.setLookAndFeel(lookandfeel, supportHidpi);
 			SwingUtilities.invokeAndWait(new Runnable() {
