@@ -12,7 +12,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -38,22 +37,20 @@ class OneTouchCollapseResizer extends JResizer {
 
 	private Dimension lastPreferredSize = null;
 
-	private final ComponentListener sizeChangeListener;
-
-
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
 	 **********************************************************************************/
 	/**
 	 * @param d
+	 * @param component 
 	 */
-	OneTouchCollapseResizer(final Direction d) {
+	OneTouchCollapseResizer(final Direction d, Component component) {
 		super(d);
 		direction = d;
 		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 10 + 0.5));
 		
-		this.sizeChangeListener = new ComponentAdapter() {
+		ComponentAdapter sizeChangeListener = new ComponentAdapter() {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -61,6 +58,8 @@ class OneTouchCollapseResizer extends JResizer {
 			}
 			
 		};
+		
+		component.addComponentListener(sizeChangeListener);
 
 
 		MouseListener listener = new MouseListener() {
@@ -131,26 +130,6 @@ class OneTouchCollapseResizer extends JResizer {
 
 		add(hotspot);
 	}
-	
-	
-
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		if(isValid())
-			setHotspotBounds();
-		getResizedComponent().addComponentListener(sizeChangeListener);
-	}
-
-
-
-	@Override
-	public void removeNotify() {
-		getResizedComponent().removeComponentListener(sizeChangeListener);
-		super.removeNotify();
-	}
-
-
 
 	/***********************************************************************************
 	 * METHODS
