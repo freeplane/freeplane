@@ -27,8 +27,6 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -100,23 +98,21 @@ public class JResizer extends JComponent {
 		}
 	}
 
-	private final Set<ResizerListener> resizeListener = new LinkedHashSet<ResizerListener>();
-
-	JResizer(final Direction d) {
+	JResizer(final Direction direction) {
 		setOpaque(true);
 		final int w;
 		final int h;
-		if(d.equals(Direction.RIGHT)){
+		if(direction.equals(Direction.RIGHT)){
 			w = CONTROL_SIZE;
 			h = 0;
 			setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
 		}
-		else if(d.equals(Direction.LEFT)){
+		else if(direction.equals(Direction.LEFT)){
 			h = CONTROL_SIZE;
 			w = 0;
 			setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
 		}
-		else if(d.equals(Direction.UP)){
+		else if(direction.equals(Direction.UP)){
 			h = 0;
 			w = CONTROL_SIZE;
 			setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
@@ -149,16 +145,16 @@ public class JResizer extends JComponent {
 				final Container parent = getParent();
 				for(int i = 0; i < parent.getComponentCount(); i++ ){
 					if(JResizer.this.equals(parent.getComponent(i))){
-						if(d.equals(Direction.RIGHT)){
+						if(direction.equals(Direction.RIGHT)){
 							return i + 1;
 						}
-						else if(d.equals(Direction.LEFT)){
+						else if(direction.equals(Direction.LEFT)){
 							return i - 1;
 						}
-						else if(d.equals(Direction.UP)){
+						else if(direction.equals(Direction.UP)){
 							return i - 1;
 						}
-						else if(d.equals(Direction.DOWN)){
+						else if(direction.equals(Direction.DOWN)){
 							return i + 1;
 						}
 					}
@@ -179,16 +175,16 @@ public class JResizer extends JComponent {
 					JRootPane rootPane = getRootPane();
 					final Component resizedComponent = parent.getComponent(index);
 					final Dimension size = new Dimension(resizedComponent.getPreferredSize());
-					if(d.equals(Direction.RIGHT)){
+					if(direction.equals(Direction.RIGHT)){
 						size.width -= (point2.x - point.x);
 					}
-					else if(d.equals(Direction.LEFT)){
+					else if(direction.equals(Direction.LEFT)){
 						size.width += (point2.x - point.x);
 					}
-					else if(d.equals(Direction.UP)){
+					else if(direction.equals(Direction.UP)){
 						size.height += (point2.y - point.y);
 					}
-					else if(d.equals(Direction.DOWN)){
+					else if(direction.equals(Direction.DOWN)){
 						size.height -= (point2.y - point.y);
 					}
                     size.width = Math.min(size.width, rootPane.getWidth() * 9 / 10 - CONTROL_SIZE);
@@ -206,17 +202,6 @@ public class JResizer extends JComponent {
 		});
     }
 
-	void addResizerListener(ResizerListener listener) {
-		if(listener == null) return;
-
-		synchronized (resizeListener) {
-			resizeListener.add(listener);
-		}
-
-	}
-
-	
-
 	public void setSliderLocked(boolean enabled) {
 		this.sliderLock = enabled;
 	}
@@ -225,14 +210,6 @@ public class JResizer extends JComponent {
 		return this.sliderLock;
 	}
 
-	private void fireSizeChanged(Component resizedComponent) {
-		ResizeEvent event = new ResizeEvent(this, resizedComponent);
-		synchronized (this.resizeListener) {
-			for(ResizerListener listener : resizeListener) {
-				listener.componentResized(event);
-			}
-		}
-
-	}
+	void fireSizeChanged(Component resizedComponent) {/**/}
 
 }

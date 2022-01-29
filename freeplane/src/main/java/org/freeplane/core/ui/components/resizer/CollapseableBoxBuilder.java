@@ -25,7 +25,6 @@ import javax.swing.Box;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
-import org.freeplane.core.ui.components.resizer.OneTouchCollapseResizer.ComponentCollapseListener;
 
 /**
  * @author Dimitry Polivaev
@@ -66,43 +65,14 @@ public class CollapseableBoxBuilder {
 				break;
 		}
 		if(resizeable){
-			try {
-				int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, 0);
-				if(size > resizer.getDividerSize()) {
-					direction.setPreferredSize(component, size);
-				}
+			int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, 0);
+			if(size > resizer.getDividerSize()) {
+				direction.setPreferredSize(component, size);
 			}
-			catch (Exception e) {
-				// blindly accept
-			}
-			resizer.addResizerListener(new ResizerListener() {
-				@Override
-				public void componentResized(ResizeEvent event) {
-					if(event.getComponent().equals(component)) {
-						ResourceController.getResourceController().setProperty(sizePropertyName, String.valueOf(direction.getPreferredSize(component)));
-					}
-				}
-
-			});
 		}
 		else
 			resizer.setSliderLocked(true);
-		resizer.addCollapseListener(new ComponentCollapseListener() {
-			@Override
-			public void componentCollapsed(ResizeEvent event) {
-				if(event.getComponent().equals(component)) {
-					dispatcher.setProperty(false);
-				}
-			}
-
-			@Override
-			public void componentExpanded(ResizeEvent event) {
-				if(event.getComponent().equals(component)) {
-					dispatcher.setProperty(true);
-				}
-			}
-		});
 		resizer.setExpanded(expanded);
-	    return resizerBox;
+		return resizerBox;
     }
 }

@@ -12,12 +12,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -37,7 +36,6 @@ class OneTouchCollapseResizer extends JResizer {
 	private final Direction direction;
 	private Integer resizeComponentIndex;
 
-	private final Set<ComponentCollapseListener> collapseListener = new LinkedHashSet<ComponentCollapseListener>();
 	private Dimension lastPreferredSize = null;
 
 
@@ -375,42 +373,8 @@ class OneTouchCollapseResizer extends JResizer {
 		return -1;
     }
 
-	void addCollapseListener(ComponentCollapseListener listener) {
-		if(listener == null) return;
-
-		synchronized (collapseListener) {
-			collapseListener.add(listener);
-		}
-
-	}
-
-	
-
 	private void fireCollapseStateChanged(Component resizedComponent, boolean expanded) {
-		ResizeEvent event = new ResizeEvent(this, resizedComponent);
-		synchronized (this.collapseListener) {
-			for(ComponentCollapseListener listener : collapseListener) {
-				try {
-					if(expanded) {
-						listener.componentExpanded(event);
-					}
-					else {
-						listener.componentCollapsed(event);
-					}
-				}
-				catch (Exception e) {
-					LogUtils.severe(e);
-				}
-			}
-		}
-
-	}
-
-	
-
-	interface ComponentCollapseListener {
-		public void componentCollapsed(ResizeEvent event);
-		public void componentExpanded(ResizeEvent event);
+		UIComponentVisibilityDispatcher.of((JComponent) resizedComponent.getParent()).setProperty(expanded);
 	}
 
 	private void recalibrate() {
@@ -421,5 +385,10 @@ class OneTouchCollapseResizer extends JResizer {
 				parent.repaint();
 			}
 		}
+	}
+	void fireSizeChanged(Component resizedComponent) {
+		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of((JComponent) resizedComponent.getParent());
+		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
+		ResourceController.getResourceController().setProperty(sizePropertyName, String.valueOf(direction.getPreferredSize(resizedComponent)));
 	}
 }
