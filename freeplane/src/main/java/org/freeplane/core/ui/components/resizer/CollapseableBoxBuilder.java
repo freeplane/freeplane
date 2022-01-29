@@ -48,7 +48,7 @@ public class CollapseableBoxBuilder {
 		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		final boolean expanded = dispatcher.isVisible();
 
-		OneTouchCollapseResizer resizer = new OneTouchCollapseResizer(direction, component);
+		OneTouchCollapseResizer resizer = new OneTouchCollapseResizer(direction);
 		dispatcher.setResizer(resizer);
 		switch(direction){
 			case RIGHT:

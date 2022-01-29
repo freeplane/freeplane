@@ -45,7 +45,7 @@ class OneTouchCollapseResizer extends JResizer {
 	 * @param d
 	 * @param component 
 	 */
-	OneTouchCollapseResizer(final Direction d, Component component) {
+	OneTouchCollapseResizer(final Direction d) {
 		super(d);
 		direction = d;
 		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 10 + 0.5));
@@ -59,7 +59,7 @@ class OneTouchCollapseResizer extends JResizer {
 			
 		};
 		
-		component.addComponentListener(sizeChangeListener);
+		addComponentListener(sizeChangeListener);
 
 
 		MouseListener listener = new MouseListener() {
