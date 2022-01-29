@@ -46,9 +46,9 @@ public class CollapseableBoxBuilder {
 	    return this;
     }
 	public Box createBox(final Component component, final Direction direction) {
-	    Box resisableComponent = direction.createBox();
-		UIComponentVisibilityDispatcher.install(resisableComponent, propertyNameBase);
-		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of(resisableComponent);
+	    Box resizerBox = direction.createBox();
+		UIComponentVisibilityDispatcher.install(resizerBox, propertyNameBase);
+		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of(resizerBox);
 		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		final boolean expanded = dispatcher.isVisible();
 
@@ -57,12 +57,12 @@ public class CollapseableBoxBuilder {
 		switch(direction){
 			case RIGHT:
 			case DOWN:
-				resisableComponent.add(resizer);
-				resisableComponent.add(component);
+				resizerBox.add(resizer);
+				resizerBox.add(component);
 				break;
 			default:
-				resisableComponent.add(component);
-				resisableComponent.add(resizer);
+				resizerBox.add(component);
+				resizerBox.add(resizer);
 				break;
 		}
 		if(resizeable){
@@ -103,6 +103,6 @@ public class CollapseableBoxBuilder {
 			}
 		});
 		resizer.setExpanded(expanded);
-	    return resisableComponent;
+	    return resizerBox;
     }
 }
