@@ -8,6 +8,8 @@ Add new node shape "invisible" for nodes with invisible node border, therefore m
 Add copy/paste color actions to color property pop-up menu
 Add option to configure size of formatting panel UI elements (big or small)
 Support dark mode in code editors (groovy, markdown, latex)
+Instantly update look and feel after preference change
+Improve version update notification
 
 ==============================
 1.9.12
