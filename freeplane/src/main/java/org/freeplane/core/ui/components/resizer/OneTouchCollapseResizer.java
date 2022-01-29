@@ -10,11 +10,13 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -26,17 +28,17 @@ import org.freeplane.features.ui.IMapViewManager;
  *
  */
 class OneTouchCollapseResizer extends JResizer {
-	private static final long serialVersionUID = 3836146387249880446L;
-	private static final String COLLAPSED = OneTouchCollapseResizer.class.getPackage().getName()+".collapsed";
-	private static final String ALREADY_IN_PAINT = OneTouchCollapseResizer.class.getPackage().getName()+".ALREADY_PAINTING";
+	private static final long serialVersionUID = 1;
 
 	private boolean expanded = true;
-	private JPanel hotspot;
+	private final JComponent hotspot;
 	private final int INSET = 2;
 	private final Direction direction;
 	private Integer resizeComponentIndex;
 
 	private Dimension lastPreferredSize = null;
+
+	private final ComponentListener sizeChangeListener;
 
 
 
@@ -50,6 +52,16 @@ class OneTouchCollapseResizer extends JResizer {
 		super(d);
 		direction = d;
 		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 10 + 0.5));
+		
+		this.sizeChangeListener = new ComponentAdapter() {
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				setHotspotBounds();
+			}
+			
+		};
+
 
 		MouseListener listener = new MouseListener() {
 			private void resetCursor() {
@@ -77,30 +89,25 @@ class OneTouchCollapseResizer extends JResizer {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				if(e.getComponent() == getHotSpot()) {
-					resetCursor();
-				}
-				if(isExpanded()) {
-					resetCursor();
-				}
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				if(e.getComponent() == getHotSpot()) {
-					getHotSpot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				}
-				if(!isExpanded() || sliderLock) {
-					e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				if(e.getComponent() == OneTouchCollapseResizer.this) {
+					if(!isExpanded() || sliderLock) {
+						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					}
+					else
+						resetCursor();
 				}
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if((e.getComponent() == getHotSpot()) || sliderLock) {
+				if((e.getComponent() == hotspot) || sliderLock) {
 
 					if (isExpanded()) {
-						getHotSpot().setEnabled(true);
+						hotspot.setEnabled(true);
 						setExpanded(false);
 					}
 					else {
@@ -114,11 +121,36 @@ class OneTouchCollapseResizer extends JResizer {
 				}
 			}
 		};
-		getHotSpot().addMouseListener(listener);
+		hotspot = new JComponent(){
+			private static final long serialVersionUID = 1L;
+		};
+		hotspot.setOpaque(false);
+		hotspot.addMouseListener(listener);
+		hotspot.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		addMouseListener(listener);
 
-		add(getHotSpot());
+		add(hotspot);
 	}
+	
+	
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if(isValid())
+			setHotspotBounds();
+		getResizedComponent().addComponentListener(sizeChangeListener);
+	}
+
+
+
+	@Override
+	public void removeNotify() {
+		getResizedComponent().removeComponentListener(sizeChangeListener);
+		super.removeNotify();
+	}
+
+
 
 	/***********************************************************************************
 	 * METHODS
@@ -164,9 +196,6 @@ class OneTouchCollapseResizer extends JResizer {
 			this.expanded = expanded;
 			try {
 				Component resizedComponent = getResizedComponent();
-				if(resizedComponent instanceof JComponent) {
-					((JComponent) resizedComponent).putClientProperty(COLLAPSED, (expanded ? null : "true"));
-				}
 				if(expanded) {
 					resizedComponent.setPreferredSize(lastPreferredSize);
 				}
@@ -181,7 +210,11 @@ class OneTouchCollapseResizer extends JResizer {
 
 				fireCollapseStateChanged(resizedComponent, expanded);
 
-				recalibrate();
+				final JComponent parent = (JComponent) getParent();
+				if(parent != null) {
+					parent.revalidate();
+					parent.repaint();
+				}
 			}
 			catch (Exception e) {
 				LogUtils.warn("Exception in org.freeplane.core.ui.components.OneTouchCollapseResizer.setExpanded(enabled): "+e);
@@ -199,64 +232,13 @@ class OneTouchCollapseResizer extends JResizer {
 	}
 
 	@Override
-    public void paint(Graphics g) {
-		if(getClientProperty(ALREADY_IN_PAINT) != null) {
-			return;
-		}
-		putClientProperty(ALREADY_IN_PAINT, "true");
-		super.paint(g);
-		if((direction == Direction.RIGHT || direction == Direction.LEFT)) {
-			int center_y = getHeight()/2;
-			int divSize = getDividerSize();
-			getHotSpot().setBounds(0, center_y-divSize, divSize, 2 * divSize);
-		}
-		else {
-			int center_x = getWidth()/2;
-			int divSize = getDividerSize();
-			getHotSpot().setBounds(center_x-divSize, 0, 2 * divSize, divSize);
-		}
-		Dimension size = getResizedComponent().getPreferredSize();
-		if((direction == Direction.RIGHT || direction == Direction.LEFT) && size.width <= getDividerSize()) {
-			setExpanded(false);
-
-		}
-		else if((direction == Direction.UP || direction == Direction.DOWN) && size.height <= getDividerSize()){
-			setExpanded(false);
-		}
-		else {
-			setExpanded(true);
-		}
-		if(getResizedComponent() instanceof JComponent) {
-			((JComponent) getResizedComponent()).putClientProperty(COLLAPSED, (isExpanded() ? null : "true"));
-		}
-		getHotSpot().paint(g.create(getHotSpot().getLocation().x, getHotSpot().getLocation().y, getHotSpot().getWidth(), getHotSpot().getHeight()));
-		putClientProperty(ALREADY_IN_PAINT, null);
+    public void paintComponent(Graphics g) {
+		g.setColor(getBackground());
+		g.fillRect(0, 0, getWidth(), getHeight());
+		Graphics arrowGraphics = g.create(hotspot.getX(), hotspot.getY(), hotspot.getWidth(), hotspot.getHeight());
+		drawControlArrow(arrowGraphics);
+		arrowGraphics.dispose();
 	}
-
-	private Component getHotSpot() {
-		if(hotspot == null) {
-			hotspot = new JPanel() {
-				private static final long serialVersionUID = -5321517835206976034L;
-
-				@Override
-                public void paint(Graphics g) {
-					drawControlArrow(g);
-				}
-
-				@Override
-                public void updateUI() {
-					try {
-						super.updateUI();
-					}
-					catch (Exception e) {
-					}
-				}
-			};
-			hotspot.setBackground(Color.BLUE);
-		}
-		return hotspot;
-	}
-
 
 	private void drawControlArrow(Graphics g) {
 		Dimension size = g.getClipBounds().getSize();
@@ -265,9 +247,6 @@ class OneTouchCollapseResizer extends JResizer {
 
 		int half_width = (size.width-(INSET*6))/2;
 		int center_x = size.width / 2;
-
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
 
 		if(expanded && direction == Direction.RIGHT || ! expanded && direction == Direction.LEFT) {
 			arrowRight(g, half_length, center_y);
@@ -377,18 +356,36 @@ class OneTouchCollapseResizer extends JResizer {
 		UIComponentVisibilityDispatcher.of((JComponent) resizedComponent.getParent()).setProperty(expanded);
 	}
 
-	private void recalibrate() {
-		if(getClientProperty(ALREADY_IN_PAINT) == null) {
-			final JComponent parent = (JComponent) getParent();
-			if(parent != null) {
-				parent.revalidate();
-				parent.repaint();
-			}
-		}
-	}
-	void fireSizeChanged(Component resizedComponent) {
+	@Override
+	void onSizeChanged(Component resizedComponent) {
 		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of((JComponent) resizedComponent.getParent());
 		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		ResourceController.getResourceController().setProperty(sizePropertyName, String.valueOf(direction.getPreferredSize(resizedComponent)));
+	}
+
+
+
+	private void setHotspotBounds() {
+		if((direction == Direction.RIGHT || direction == Direction.LEFT)) {
+			int center_y = getHeight()/2;
+			int divSize = getDividerSize();
+			hotspot.setBounds(0, center_y-divSize, divSize, 2 * divSize);
+		}
+		else {
+			int center_x = getWidth()/2;
+			int divSize = getDividerSize();
+			hotspot.setBounds(center_x-divSize, 0, 2 * divSize, divSize);
+		}
+		Dimension size = getResizedComponent().getPreferredSize();
+		if((direction == Direction.RIGHT || direction == Direction.LEFT) && size.width <= getDividerSize()) {
+			setExpanded(false);
+
+		}
+		else if((direction == Direction.UP || direction == Direction.DOWN) && size.height <= getDividerSize()){
+			setExpanded(false);
+		}
+		else {
+			setExpanded(true);
+		}
 	}
 }

@@ -37,8 +37,8 @@ import javax.swing.SwingUtilities;
  * @author Dimitry Polivaev
  * Jan 24, 2011
  */
-@SuppressWarnings("serial") 
 public class JResizer extends JComponent {
+	private static final long serialVersionUID = 1L;
 	private static final int CONTROL_SIZE = 5;
 	protected boolean sliderLock = false;
 	private Point point;
@@ -192,7 +192,7 @@ public class JResizer extends JComponent {
 					resizedComponent.setPreferredSize(new Dimension(Math.max(size.width, 0), Math.max(size.height, 0)));
 					parent.revalidate();
 					parent.repaint();
-					fireSizeChanged(resizedComponent);
+					onSizeChanged(resizedComponent);
 				}
 				else{
 					index = getIndex();
@@ -210,6 +210,6 @@ public class JResizer extends JComponent {
 		return this.sliderLock;
 	}
 
-	void fireSizeChanged(Component resizedComponent) {/**/}
+	void onSizeChanged(Component resizedComponent) {/**/}
 
 }
