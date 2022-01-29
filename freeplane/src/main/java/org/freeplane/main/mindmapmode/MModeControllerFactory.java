@@ -275,7 +275,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, frameController
 		    .getStatusBar());
 		final JTabbedPane formattingPanel = UITools.getFreeplaneTabbedPanel();
-		Box resisableTabs = new CollapseableBoxBuilder().setPropertyNameBase("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
+		Box resisableTabs = new CollapseableBoxBuilder("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		final JRootPane rootPane = ((RootPaneContainer)frameController.getMenuComponent()).getRootPane();
 		final FButtonBar fButtonToolBar = new FButtonBar(rootPane);

@@ -33,17 +33,14 @@ import org.freeplane.core.ui.components.resizer.JResizer.Direction;
 public class CollapseableBoxBuilder {
 	private String propertyNameBase;
 	private boolean resizeable = true;
-	public CollapseableBoxBuilder setResizeable(boolean resizeable) {
-		this.resizeable = resizeable;
+	public CollapseableBoxBuilder disableResizer() {
+		this.resizeable = false;
 		return this;
 	}
-	public CollapseableBoxBuilder(){
+	public CollapseableBoxBuilder(String propertyNameBase){
+		this.propertyNameBase = propertyNameBase;
 
 	}
-	public CollapseableBoxBuilder setPropertyNameBase(String name) {
-	    this.propertyNameBase = name;
-	    return this;
-    }
 	public Box createBox(final Component component, final Direction direction) {
 	    Box resizerBox = direction.createBox();
 		UIComponentVisibilityDispatcher.install(resizerBox, propertyNameBase);

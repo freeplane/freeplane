@@ -238,7 +238,7 @@ public class SModeControllerFactory {
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
-		Box resisableTabs = new CollapseableBoxBuilder().setPropertyNameBase("dialog_styleScrollPaneVisible").createBox(styleScrollPane, Direction.RIGHT);
+		Box resisableTabs = new CollapseableBoxBuilder("dialog_styleScrollPaneVisible").createBox(styleScrollPane, Direction.RIGHT);
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		modeController.addExtension(MUIFactory.class, new MUIFactory());
 		final Set<String> emptySet = Collections.emptySet();
