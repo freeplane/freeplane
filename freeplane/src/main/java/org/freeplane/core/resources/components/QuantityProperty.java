@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Collections;
@@ -27,6 +28,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
+import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -49,8 +51,18 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 		super(name);
 		this.defaultUnit = defaultUnit;
 		numberSpinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
+		((NumberEditor)numberSpinner.getEditor()).getTextField().setColumns(3);
 		TranslatedObject[] units = TranslatedObject.fromEnum(defaultUnit.getDeclaringClass());
-		unitBox = JComboBoxFactory.create(units);
+		JComboBox<TranslatedObject> c = new JComboBox<TranslatedObject>(units) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Dimension getMaximumSize() {
+				return super.getPreferredSize();
+			}
+		};
+		c.setMaximumRowCount(JComboBoxFactory.MAXIMUM_ROW_COUNT);
+		unitBox = c;
 		addChangeListeners();
 	}
 	
