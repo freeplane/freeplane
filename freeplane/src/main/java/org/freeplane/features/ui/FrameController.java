@@ -631,12 +631,12 @@ abstract public class FrameController implements ViewController {
 					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
 					try {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
+						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
+						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						fixLookAndFeelUI();
-						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
-						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
 					}
 					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
 						LogUtils.warn("Error while setting Look&Feel" + lookAndFeel + ", reverted to default");
