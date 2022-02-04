@@ -57,7 +57,7 @@ import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.forms.util.LayoutStyle;
 
 public class StyleEditorPanel extends JPanel {
-	public enum StyleEditorPanelSize{SMALL(0.8f), BIG(1f);
+	public enum StyleEditorPanelSize{SMALL(0.6f), MIDDLE(0.8f), BIG(1f);
 		final float fontSize;
 		final ConstantSize paragraphGapSize;
 		private StyleEditorPanelSize(float scalingFactor) {
