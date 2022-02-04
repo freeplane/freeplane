@@ -231,14 +231,14 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (mapController.isFolded(node) || !node.hasChildren()) {
 			return depth(node);
 		}
-		int k = 0;
+		int maxDepth = 0;
 		for (final NodeModel child : node.getChildren()) {
-			final int l = getMaxDepth(child);
-			if (l > k) {
-				k = l;
+			final int childMaxDepth = getMaxDepth(child);
+			if (childMaxDepth > maxDepth) {
+				maxDepth = childMaxDepth;
 			}
 		}
-		return k;
+		return maxDepth;
 	}
 
 	private int getMinDepth(final NodeModel node) {
@@ -247,20 +247,26 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			return Integer.MAX_VALUE;
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if (mapController.isFolded(node)) {
-			return depth(node);
-		}
-		if (!node.hasChildren()||AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
+		Filter filter = Controller.getCurrentController().getSelection().getFilter();
+		if (!node.hasChildren()) {
 			return Integer.MAX_VALUE;
-		}
-		int k = Integer.MAX_VALUE;
-		for (final NodeModel child : node.getChildren()) {
-			final int l = getMinDepth(child);
-			if (l < k) {
-				k = l;
+		} 
+		if(node.hasVisibleContent(filter)) {
+			if (mapController.isFolded(node)) {
+				return depth(node);
+			}
+			if (AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
+				return Integer.MAX_VALUE;
 			}
 		}
-		return k;
+		int minDepth = Integer.MAX_VALUE;
+		for (final NodeModel child : node.getChildren()) {
+			final int childMinDepth = getMinDepth(child);
+			if (childMinDepth < minDepth) {
+				minDepth = childMinDepth;
+			}
+		}
+		return minDepth;
 	}
 
 	public boolean handleMouseWheelEvent(final MouseWheelEvent e) {
