@@ -39,7 +39,7 @@ dependencies {
     lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
     
-    maclib 'org.violetlib:vaqua:9'
+    maclib 'org.violetlib:vaqua:10'
 
     runtimeOnly files("${project.buildDir}/emoji/xml")
     runtimeOnly files("${project.buildDir}/emoji/resources")
