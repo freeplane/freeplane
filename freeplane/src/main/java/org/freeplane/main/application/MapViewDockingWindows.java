@@ -47,6 +47,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -72,11 +73,15 @@ import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
+import net.infonode.docking.theme.ClassicDockingTheme;
 import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.LookAndFeelDockingTheme;
 import net.infonode.docking.util.DockingUtil;
+import net.infonode.gui.DynamicUIManager;
+import net.infonode.gui.DynamicUIManagerListener;
 import net.infonode.gui.icon.button.DropDownIcon;
 import net.infonode.properties.gui.util.ComponentProperties;
+import net.infonode.tabbedpanel.TabAreaComponentsProperties;
 import net.infonode.tabbedpanel.TabAreaProperties;
 import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
@@ -97,6 +102,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private boolean loadingLayoutFromObjectInpusStream;
 	private byte[] emptyConfigurations;
 	private final MapViewSerializer viewSerializer;
+	private DockingWindowsTheme theme;
 
 	public MapViewDockingWindows() {
 		viewSerializer = new MapViewSerializer();
@@ -206,8 +212,42 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private void configureDefaultDockingWindowProperties() {
 
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
-		final DockingWindowsTheme theme = new LookAndFeelDockingTheme();
-
+		String lf = UIManager.getLookAndFeel().getID();
+		if(lf.endsWith("Aqua")) {
+			theme = createClassicTheme();
+		} else {
+			theme = new LookAndFeelDockingTheme();
+		}
+		DynamicUIManager.getInstance().addListener(new DynamicUIManagerListener() {
+			
+			@Override
+			public void propertiesChanging() {
+			}
+			
+			@Override
+			public void propertiesChanged() {
+			}
+			
+			@Override
+			public void lookAndFeelChanging() {
+				String lf = UIManager.getLookAndFeel().getID();
+				DockingWindowsTheme newTheme;
+				if(lf.endsWith("Aqua") && (theme instanceof LookAndFeelDockingTheme)) {
+					((LookAndFeelDockingTheme)theme).dispose();
+					newTheme = createClassicTheme();
+				} else if (!(theme instanceof LookAndFeelDockingTheme)){
+					newTheme = new LookAndFeelDockingTheme();
+				}
+				else 
+					return;
+				rootWindowProperties.replaceSuperObject(theme.getRootWindowProperties(), newTheme.getRootWindowProperties());
+				theme = newTheme;
+			}
+			
+			@Override
+			public void lookAndFeelChanged() {
+			}
+		});
 		rootWindowProperties.addSuperObject(theme.getRootWindowProperties());
 
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
@@ -510,5 +550,18 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		else
 			for (int windowIndex = 0; windowIndex < window.getChildWindowCount(); windowIndex++)
 				addMapViews(orderedMapViews, window.getChildWindow(windowIndex));
+	}
+
+	private ClassicDockingTheme createClassicTheme() {
+		ClassicDockingTheme classicDockingTheme = new ClassicDockingTheme();
+		RootWindowProperties rootWindowProperties = classicDockingTheme.getRootWindowProperties();
+		final ComponentProperties windowAreaProperties = rootWindowProperties.getWindowAreaProperties();
+		TabbedPanelProperties tabbedPanelProperties = rootWindowProperties.getTabWindowProperties().getTabbedPanelProperties();
+		windowAreaProperties.setBackgroundColor(null);
+		windowAreaProperties.setForegroundColor(null);
+		TabAreaComponentsProperties tabAreaComponentsProperties = tabbedPanelProperties.getTabAreaComponentsProperties();
+		tabAreaComponentsProperties.getComponentProperties().setBackgroundColor(null);
+		tabAreaComponentsProperties.getComponentProperties().setForegroundColor(null);
+		return classicDockingTheme;
 	}
 }
