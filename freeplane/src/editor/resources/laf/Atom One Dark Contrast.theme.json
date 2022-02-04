@@ -752,7 +752,6 @@
       "tabHeight": 32,
       "tabInsets": "5,10,5,10",
       "tabSelectionHeight": 2,
-      "tabsOverlapBorder": true,
       "underlineColor": "accent"
     },
     "TabbedPane.mt.tab.background": "hc",

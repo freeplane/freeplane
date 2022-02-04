@@ -47,7 +47,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -57,7 +56,6 @@ import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.DroppedMindMapOpener;
 import org.freeplane.view.swing.map.MapView;
@@ -74,11 +72,11 @@ import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
-import net.infonode.docking.theme.BlueHighlightDockingTheme;
+import net.infonode.docking.theme.DockingWindowsTheme;
+import net.infonode.docking.theme.LookAndFeelDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.gui.icon.button.DropDownIcon;
 import net.infonode.properties.gui.util.ComponentProperties;
-import net.infonode.tabbedpanel.TabAreaComponentsProperties;
 import net.infonode.tabbedpanel.TabAreaProperties;
 import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
@@ -86,6 +84,7 @@ import net.infonode.tabbedpanel.TabLayoutPolicy;
 import net.infonode.tabbedpanel.TabbedPanelProperties;
 import net.infonode.tabbedpanel.TabbedUIDefaults;
 import net.infonode.tabbedpanel.titledtab.TitledTabProperties;
+import net.infonode.tabbedpanel.titledtab.TitledTabSizePolicy;
 import net.infonode.util.Direction;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
@@ -207,16 +206,13 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private void configureDefaultDockingWindowProperties() {
 
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
-		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
+		final DockingWindowsTheme theme = new LookAndFeelDockingTheme();
+
+		rootWindowProperties.addSuperObject(theme.getRootWindowProperties());
 
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
 
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
-
-		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
-		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
-		windowAreaProperties.setInsets(null);
-		windowAreaProperties.setBorder(null);
 
 		TabbedPanelProperties tabbedPanelProperties = overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties();
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
@@ -225,23 +221,14 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabbedPanelProperties.getButtonProperties().getTabDropDownListButtonProperties()
 			.setIcon(new DropDownIcon(TabbedUIDefaults.getButtonIconSize(), Direction.DOWN));
 
-		if(FrameController.VAQUA_LAF_NAME.equals(UIManager.getLookAndFeel().getName())) {
-			windowAreaProperties.setBackgroundColor(null);
-			windowAreaProperties.setForegroundColor(null);
-			TabAreaComponentsProperties tabAreaComponentsProperties = tabbedPanelProperties.getTabAreaComponentsProperties();
-			tabAreaComponentsProperties.getComponentProperties().setBackgroundColor(null);
-			tabAreaComponentsProperties.getComponentProperties().setForegroundColor(null);
-		}
-
-		final ComponentProperties contentPaneComponentProperties = tabbedPanelProperties.getContentPanelProperties().getComponentProperties();
-		contentPaneComponentProperties.setInsets(null);
-		contentPaneComponentProperties.setBorder(null);
-
 		Font tabFont = new Font(Font.DIALOG, 0, 10);
 		tabFont = UITools.scaleFontInt(tabFont, 0.8);
 		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
-		titledTabProperties.getHighlightedProperties().getComponentProperties().setFont(tabFont);
-		titledTabProperties.getNormalProperties().getComponentProperties().setFont(tabFont);
+		titledTabProperties.setSizePolicy(TitledTabSizePolicy.INDIVIDUAL_SIZE);
+		ComponentProperties highlightedProperties = titledTabProperties.getHighlightedProperties().getComponentProperties();
+		highlightedProperties.setFont(tabFont);
+		ComponentProperties normalProperties = titledTabProperties.getNormalProperties().getComponentProperties();
+		normalProperties.setFont(tabFont);
 		rootWindowProperties.addSuperObject(overwrittenProperties);
 	}
 

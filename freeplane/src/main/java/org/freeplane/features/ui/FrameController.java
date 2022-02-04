@@ -709,6 +709,7 @@ abstract public class FrameController implements ViewController {
         	UIManager.put("Table.showHorizontalLines", true);
         	UIManager.put("Table.showVerticalLines", true);
         	UIManager.put("ComboBox.minimumWidth", 2);
+        	UIManager.put("TabbedPane.tabsOverlapBorder", false);
          }
 	}
 
