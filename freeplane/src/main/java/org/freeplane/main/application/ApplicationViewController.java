@@ -84,12 +84,12 @@ class ApplicationViewController extends FrameController {
 	private String mLocationPreferenceValue;
 	/** Contains the Note Window Component */
 	private JComponent mMindMapComponent;
-	final private JSplitPane mSplitPane;
+	private JSplitPane mSplitPane;
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ApplicationResourceController resourceController;
-	final private JComponent mapPane;
-	final private MapViewDockingWindows mapViewWindows;
+	private JComponent mapPane;
+	private MapViewDockingWindows mapViewWindows;
 	@SuppressWarnings("serial")
     public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
@@ -101,26 +101,6 @@ class ApplicationViewController extends FrameController {
 		controller.addAction(navigationNextMap);
 		resourceController = (ApplicationResourceController) ResourceController.getResourceController();
 		this.frame = frame;
-		frame.getContentPane().setLayout(new BorderLayout());
-		// --- Set Note Window Location ---
-		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
-		// disable all hotkeys for JSplitPane
-		mSplitPane = new JSplitPane(){
-			@Override
-			protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed){
-				return false;
-			}
-		};
-		mSplitPane.setResizeWeight(1.0d);
-		setSplitPaneLayoutManager();
-		mapViewWindows = new MapViewDockingWindows();
-		mapPane = mapViewWindows.getMapPane();
-		Container contentPane = frame.getContentPane();
-		contentPane.setLayout(new BorderLayoutWithVisibleCenterComponent());
-        contentPane.add(mSplitPane, BorderLayout.CENTER);
-		mSplitPane.setLeftComponent(mapPane);
-		mSplitPane.setRightComponent(null);
-		initFrame(frame);
 	}
 
 	/**
@@ -348,8 +328,35 @@ class ApplicationViewController extends FrameController {
 		navigationPreviousMap.setEnabled(number > 1);
 		navigationNextMap.setEnabled(number > 1);
 	}
+	
+	
 
-	public void initFrame(final JFrame frame) {
+	@Override
+	public void init(Controller controller) {
+		frame.getContentPane().setLayout(new BorderLayout());
+		// --- Set Note Window Location ---
+		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
+		// disable all hotkeys for JSplitPane
+		mSplitPane = new JSplitPane(){
+			@Override
+			protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed){
+				return false;
+			}
+		};
+		mSplitPane.setResizeWeight(1.0d);
+		setSplitPaneLayoutManager();
+		mapViewWindows = new MapViewDockingWindows();
+		mapPane = mapViewWindows.getMapPane();
+		Container contentPane = frame.getContentPane();
+		contentPane.setLayout(new BorderLayoutWithVisibleCenterComponent());
+        contentPane.add(mSplitPane, BorderLayout.CENTER);
+		mSplitPane.setLeftComponent(mapPane);
+		mSplitPane.setRightComponent(null);
+		initFrame(frame);
+		super.init(controller);
+	}
+
+	private void initFrame(final JFrame frame) {
 		// Preserve the existing icon image under Mac OS X
 		if (!Compat.isMacOsX()) {
 			    frame.setIconImages(Arrays.asList(
