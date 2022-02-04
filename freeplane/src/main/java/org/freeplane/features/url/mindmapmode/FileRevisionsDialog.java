@@ -21,6 +21,7 @@ package org.freeplane.features.url.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -45,6 +46,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -173,6 +175,8 @@ class FileRevisionsDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final static String ALL_KEY_BASE = "FileRevisionsDialog";
 	private final static String AUTOSAVE_KEY_BASE = "NewerFileRevisionsFoundDialog";
+	private final static int SIDE_BORDER = (int) (UITools.FONT_SCALE_FACTOR * 20);
+
 	private String keyBase;
 	private JButton btnRestore;
 	private JButton btnSkip;
@@ -209,19 +213,22 @@ class FileRevisionsDialog extends JDialog {
 		UITools.backOtherWindows();
 		this.selectedFile = this.file = file;
 		setBackground(Color.white);
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		JComponent contentPane = (JComponent) getContentPane();
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		contentPane.setBorder(BorderFactory.createEmptyBorder(SIDE_BORDER/2, SIDE_BORDER, 0, SIDE_BORDER));
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.getViewport().setBackground(Color.white);
 		final Dimension tablePreferredSize = table.getPreferredSize();
 		int maxHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 2 / 3;
 		scrollPane.getViewport().setPreferredSize(new Dimension(tablePreferredSize.width, Math.min(maxHeight, tablePreferredSize.height)));
-		add(scrollPane);
-		add(createQuestion());
-		add(createButtonBar());
-		getRootPane().setDefaultButton(btnRestore);
-		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
-		getRootPane().getActionMap().put("up", new AbstractAction() {
+		contentPane.add(scrollPane);
+		contentPane.add(createQuestion());
+		contentPane.add(createButtonBar());
+		JRootPane rootPane = getRootPane();
+		rootPane.setDefaultButton(btnRestore);
+		rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
+		rootPane.getActionMap().put("up", new AbstractAction() {
 			
 			public void actionPerformed(ActionEvent e) {
 				int newSelectedRow = table.getSelectedRow() - 1;
@@ -230,8 +237,8 @@ class FileRevisionsDialog extends JDialog {
 				
 			}
 		});
-		getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
-		getRootPane().getActionMap().put("down", new AbstractAction() {
+		rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+		rootPane.getActionMap().put("down", new AbstractAction() {
 			
 			public void actionPerformed(ActionEvent e) {
 				int newSelectedRow = table.getSelectedRow() + 1;
@@ -253,7 +260,7 @@ class FileRevisionsDialog extends JDialog {
 		final JLabel textArea = new JLabel(html);
 		textArea.setAlignmentX(0.5f);
 		textArea.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
-		textArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		textArea.setBorder(BorderFactory.createEmptyBorder(SIDE_BORDER/4, SIDE_BORDER, SIDE_BORDER/4, 0));
 		return textArea;
 	}
 
