@@ -113,9 +113,24 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 	</xsl:template>
 
 	<!-- Insert newline for html breaks, paras, etc. -->
-	<xsl:template match="p|br|div|li|pre">
+	<xsl:template match="p|br|div|pre|ol|ul">
 		<xsl:if test="preceding-sibling::*">
 			<xsl:text>&#xA;</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates/>
+		<xsl:text>&#xA;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="li">
+		<xsl:if test="preceding-sibling::*">
+			<xsl:text>&#xA;</xsl:text>
+		</xsl:if>
+		<xsl:if test="parent::ol">
+		    <xsl:number/>
+			<xsl:text>. </xsl:text>
+		</xsl:if>
+		<xsl:if test="parent::ul">
+			<xsl:text>- </xsl:text>
 		</xsl:if>
 		<xsl:apply-templates/>
 	</xsl:template>
