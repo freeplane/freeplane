@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import javax.swing.JEditorPane;
 import javax.swing.JTextField;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -76,12 +77,7 @@ public class Activator implements BundleActivator {
 	
     private boolean hasDarkBackground() {
 		Color background = new JEditorPane().getBackground();
-		if(background == null)
-			return false;
-		int r = background.getRed();
-		int g = background.getGreen();
-		int b = background.getBlue();
-		return r*r+g*g+b*b < 0x80*0x80*3;
+		return ! UITools.isLight(background);
 	}
 
 

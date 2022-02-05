@@ -526,10 +526,16 @@ public class UITools {
 	}
 
 	public static Color getTextColorForBackground(final Color color) {
+		return isLight(color) ? Color.BLACK : Color.WHITE;
+	}
+
+	public static boolean isLight(final Color color) {
+		if(color == null)
+			return true;
 		final int red = color.getRed();
 		final int blue = color.getBlue();
 		final int green = color.getGreen();
-		return red*red+blue*blue+green*green > 0x80*0x80*3 ? Color.BLACK : Color.WHITE;
+		return red*red+blue*blue+green*green >= 0x80*0x80*3;
 	}
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
@@ -808,6 +814,10 @@ public class UITools {
 		JTabbedPane pane = new JTabbedPane();
 		pane.setBorder(BorderFactory.createEmptyBorder((int) (10 * FONT_SCALE_FACTOR), 0, 0, 0));
 		return pane;
+	}
+
+	public static boolean isLightLookAndFeelInstalled() {
+		return isLight(UIManager.getColor("Panel.background"));
 	}
 
 }

@@ -5,11 +5,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.Icon;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
@@ -18,6 +22,14 @@ import com.kitfox.svg.app.beans.SVGIcon;
 
 class SVGIconCreator {
 
+	private static final String ACCENT_COLOR_REPLACEMENTS_PROPERTY = "accentColorReplacements";
+	private static final String FOR_DARK_LOOK_AND_FEELS = "ForDarkLookAndFeels";
+	private static final String FOR_LIGHT_LOOK_AND_FEELS = "ForLightLookAndFeels";
+	private static String accentColorReplacements = null;
+	private static void initializeAccentRolorReplacements() {
+		accentColorReplacements = ResourceController.getResourceController().getProperty(ACCENT_COLOR_REPLACEMENTS_PROPERTY +
+				(UITools.isLightLookAndFeelInstalled() ? FOR_LIGHT_LOOK_AND_FEELS : FOR_DARK_LOOK_AND_FEELS));
+	}
 	private final URL url;
     private int heightPixels = -1;
     private int widthPixels = -1;
@@ -85,19 +97,37 @@ class SVGIconCreator {
     }
 
     private void load(SVGUniverse svgUniverse) throws IOException {
-        try {
-            svgUri = new URI(url.toString());
-            diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
-            if(! diagramWasAlreadyLoaded)
-                svgUniverse.loadSVG(url);
-        }
-        catch (URISyntaxException ex) {
-            svgUri = svgUniverse.getStreamBuiltURI(url.getPath());
-            diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
-            if(! diagramWasAlreadyLoaded)
-                svgUniverse.loadSVG(url.openStream(), url.getPath());
-        }
+    	if(url.getQuery() == null) {
+    		try {
+    			svgUri = new URI(url.toString());
+    			diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
+    			if(! diagramWasAlreadyLoaded)
+    				svgUniverse.loadSVG(url);
+    			return;
+    		}
+    		catch (URISyntaxException ex) {
+    		}
+    	}
+    	String internalUri = getInternalUri();
+		svgUri = svgUniverse.getStreamBuiltURI(internalUri);
+        diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
+        if(! diagramWasAlreadyLoaded)
+            svgUniverse.loadSVG(openStream(), internalUri);
     }
+
+	private String getInternalUri() {
+		String query = url.getQuery();
+		return query == null ? url.getPath() :  url.getPath() + "?" + url.getQuery();
+	}
+
+	private InputStream openStream() throws IOException {
+		InputStream stream = url.openStream();
+		initializeAccentRolorReplacements();
+		if(!accentColorReplacements.isEmpty() && url.getQuery().equals(ResourceController.USE_ACCENT_COLOR))
+			return ReplacingInputStream.replace(stream, accentColorReplacements);
+		else
+			return stream;
+	}
 
 	SVGIconCreator setHeight(final int heightPixels) {
 		this.heightPixels = heightPixels;

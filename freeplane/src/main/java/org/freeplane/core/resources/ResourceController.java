@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,6 +55,8 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  */
 public abstract class ResourceController {
+	public static final String USE_ACCENT_COLOR = "useAccentColor=true";
+	private static final String USE_ACCENT_COLOR_QUERY = "?" + USE_ACCENT_COLOR;
 	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
 	public static final String LOCAL_PROPERTIES = "LocalProperties.";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
@@ -371,15 +374,32 @@ public abstract class ResourceController {
 
 	private Icon loadIcon(final String resourcePath) {
 		if (resourcePath != null) {
-			URL url = getResource(resourcePath);
+			final String urlPath;
+			boolean usesAccentColor = resourcePath.endsWith(USE_ACCENT_COLOR_QUERY);
+			if(usesAccentColor)
+				urlPath = resourcePath.substring(0, resourcePath.length() - USE_ACCENT_COLOR_QUERY.length());
+			else
+				urlPath = resourcePath;
+			URL url = getResource(urlPath);
 			if (url != null) {
-				return IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH);
+				return IconFactory.getInstance().getIcon(usesAccentColor 
+						? withAccentColorQuery(url) 
+						: url, IconFactory.DEFAULT_UI_ICON_HEIGTH);
 			}
 			else {
 				LogUtils.severe("can not load icon '" + resourcePath + "'");
 			}
 		}
 		return null;
+	}
+
+	private URL withAccentColorQuery(URL url){
+		try {
+			return new URL(url.toString() + USE_ACCENT_COLOR_QUERY);
+		} catch (MalformedURLException e) {
+			LogUtils.severe(e);
+			return url;
+		}
 	}
 
 	public Icon getImageIcon(String iconKey) {
