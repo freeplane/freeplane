@@ -356,7 +356,7 @@ class StyleControlGroup implements ControlGroup{
 				}
 			}
 		});
-		appendLabeledComponent(formBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
+		appendLabeledComponent(formBuilder, "automatic_layout", mAutomaticLayoutComboBox);
 	}
 
 	private void addEdgeColoringControls(final DefaultFormBuilder formBuilder) {
