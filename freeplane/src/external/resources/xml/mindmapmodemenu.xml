@@ -433,7 +433,6 @@
 					<Entry name="NewUserStyleFromSelectionAction" />
 					<Entry name="RedefineStyleAction" accelerator="alt shift R" />
 					<Entry name="RedefineStyleUpdateTemplateAction" />
-					<Entry name="RemoveFormatAction" />
 					<Entry name="ManageConditionalStylesAction" />
 					<Entry name="ManageNodeConditionalStylesAction" />
 					<Entry builder="separator" />
@@ -444,6 +443,7 @@
 				</Entry>
 				<Entry name="FormatCopy" accelerator="alt shift C" />
 				<Entry name="FormatPaste" accelerator="alt shift V" />
+				<Entry name="RemoveFormatAction" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewChild" />
 			</Entry>

@@ -89,6 +89,7 @@
 			</Entry>
 			<Entry accelerator="alt shift C" name="FormatCopy" />
 			<Entry accelerator="alt shift V" name="FormatPaste" />
+			<Entry name="RemoveFormatAction" />
 			<Entry name="menu_coreFormat">
 				<Entry accelerator="control B" name="BoldAction" />
 				<Entry accelerator="control I" name="ItalicAction" />
@@ -108,7 +109,6 @@
 				<Entry name="NodeShapeAction.bubble" />
 				<Entry builder="separator" />
 				<Entry name="EditNodeCssAction"/>
-				<Entry name="RemoveFormatAction" />
 			</Entry>
 			<Entry name="CloudColorAction" />
 			<Entry name="EdgeProperties">
