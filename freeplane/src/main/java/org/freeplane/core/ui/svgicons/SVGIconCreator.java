@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -121,12 +122,19 @@ class SVGIconCreator {
 	}
 
 	private InputStream openStream() throws IOException {
-		InputStream stream = url.openStream();
 		initializeAccentRolorReplacements();
-		if(!accentColorReplacements.isEmpty() && url.getQuery().equals(ResourceController.USE_ACCENT_COLOR))
+		boolean urlContainsAccentColorReplacementQuery = url.getQuery().equals(ResourceController.USE_ACCENT_COLOR);
+		InputStream stream = (urlContainsAccentColorReplacementQuery ? urlWithoutQuery() : url).openStream();
+		if(!accentColorReplacements.isEmpty() && urlContainsAccentColorReplacementQuery)
 			return ReplacingInputStream.replace(stream, accentColorReplacements);
 		else
 			return stream;
+	}
+
+	private URL urlWithoutQuery() throws MalformedURLException {
+		String urlString = url.toString();
+		int queryIndex = urlString.lastIndexOf('?');
+		return new URL(urlString.substring(0, queryIndex));
 	}
 
 	SVGIconCreator setHeight(final int heightPixels) {
