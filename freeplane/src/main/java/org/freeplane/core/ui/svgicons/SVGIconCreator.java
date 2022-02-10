@@ -123,7 +123,7 @@ class SVGIconCreator {
 
 	private InputStream openStream() throws IOException {
 		initializeAccentRolorReplacements();
-		boolean urlContainsAccentColorReplacementQuery = url.getQuery().equals(ResourceController.USE_ACCENT_COLOR);
+		boolean urlContainsAccentColorReplacementQuery = ResourceController.USE_ACCENT_COLOR.equals(url.getQuery());
 		InputStream stream = (urlContainsAccentColorReplacementQuery ? urlWithoutQuery() : url).openStream();
 		if(!accentColorReplacements.isEmpty() && urlContainsAccentColorReplacementQuery)
 			return ReplacingInputStream.replace(stream, accentColorReplacements);
