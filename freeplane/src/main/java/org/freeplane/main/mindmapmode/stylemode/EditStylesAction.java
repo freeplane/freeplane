@@ -146,6 +146,7 @@ public class EditStylesAction extends AFreeplaneAction {
                     loggedException = ex;
                 }
 				super.componentHidden(e);
+				map.setSaved(true);
 				modeController.getMapController().closeWithoutSaving(map);
 				Controller.setCurrentController(mainController);
 				if(loggedException != null)
