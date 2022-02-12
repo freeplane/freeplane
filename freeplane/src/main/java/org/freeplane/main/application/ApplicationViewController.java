@@ -90,7 +90,6 @@ class ApplicationViewController extends FrameController {
 	final private ApplicationResourceController resourceController;
 	private JComponent mapPane;
 	private MapViewDockingWindows mapViewWindows;
-	@SuppressWarnings("serial")
     public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
 		super(controller, mapViewController, "");
@@ -152,7 +151,6 @@ class ApplicationViewController extends FrameController {
 		}
 		mSplitPane.setContinuousLayout(true);
 		mSplitPane.setOneTouchExpandable(false);
-		setSplitPaneLayoutManager();
 		SwingUtilities.invokeLater(this::resetDividerLocation);
 
 	}
@@ -229,7 +227,6 @@ class ApplicationViewController extends FrameController {
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
 		mSplitPane.setLeftComponent(mapPane);
-		setSplitPaneLayoutManager();
 		final Controller controller = Controller.getCurrentModeController().getController();
 		final IMapSelection selection = controller.getSelection();
 		if(selection == null){
@@ -246,14 +243,6 @@ class ApplicationViewController extends FrameController {
 			}
 		});
 	}
-
-	private void setSplitPaneLayoutManager() {
-	    final LayoutManager layout = mSplitPane.getLayout();
-	    if(layout instanceof SplitPaneLayoutManagerDecorator){
-	    	return;
-	    }
-		mSplitPane.setLayout(new SplitPaneLayoutManagerDecorator(layout));
-    }
 
 	@Override
 	public void saveProperties() {
@@ -338,13 +327,23 @@ class ApplicationViewController extends FrameController {
 		mLocationPreferenceValue = resourceController.getProperty("note_location", "bottom");
 		// disable all hotkeys for JSplitPane
 		mSplitPane = new JSplitPane(){
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed){
 				return false;
 			}
+			
+			@Override
+			public void setLayout(LayoutManager layout) {
+				if(layout == null || layout instanceof SplitPaneLayoutManagerDecorator)
+					super.setLayout(layout);
+				else
+					super.setLayout(new SplitPaneLayoutManagerDecorator(layout));
+			}
+
 		};
 		mSplitPane.setResizeWeight(1.0d);
-		setSplitPaneLayoutManager();
 		mapViewWindows = new MapViewDockingWindows();
 		mapPane = mapViewWindows.getMapPane();
 		Container contentPane = frame.getContentPane();
