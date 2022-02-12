@@ -414,6 +414,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 		    if (index != -1) {
 		    	keyEvent.consume();
 		        addIcon(index, keyEvent.getModifiers());
+		        dispose();
 		    }
 		}
 	}
