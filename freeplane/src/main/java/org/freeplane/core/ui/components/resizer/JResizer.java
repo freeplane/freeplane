@@ -66,14 +66,18 @@ public class JResizer extends JComponent {
 		}
 
 		void setPreferredSize(Component component, int size) {
-			switch (this) {
-				case RIGHT:
-				case LEFT:
-					component.setPreferredSize(new Dimension(size, 1));
-					return;
-				default:
-					component.setPreferredSize(new Dimension(1, size));
+			if(size >= 0) {
+				switch (this) {
+					case RIGHT:
+					case LEFT:
+						component.setPreferredSize(new Dimension(size, 1));
+						return;
+					default:
+						component.setPreferredSize(new Dimension(1, size));
+				}
 			}
+			else
+				component.setPreferredSize(null);
         }
 
 		public Box createBox(Component resizedComponent) {
