@@ -33,7 +33,7 @@ class AttributeViewScrollPane extends JScrollPane {
 	/**
 	 */
 	AttributeViewScrollPane(final AttributeTable attributeTable) {
-		super(attributeTable);
+		super(attributeTable, VERTICAL_SCROLLBAR_NEVER, HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		setOpaque(false);
 		getViewport().setOpaque(false);
