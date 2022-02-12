@@ -48,7 +48,7 @@ class OneTouchCollapseResizer extends JResizer {
 	OneTouchCollapseResizer(final Direction d) {
 		super(d);
 		direction = d;
-		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 10 + 0.5));
+		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 5 + 0.5));
 		
 		ComponentAdapter sizeChangeListener = new ComponentAdapter() {
 
@@ -144,19 +144,19 @@ class OneTouchCollapseResizer extends JResizer {
 		final int h;
 		if(direction == Direction.RIGHT){
 			w = size;
-			h = 0;
+			h = size * 2;
 		}
 		else if(direction == Direction.LEFT){
-			h = 0;
+			h = size * 2;
 			w = size;
 		}
 		else if(direction == Direction.UP){
 			h = size;
-			w = 0;
+			w = size * 2;
 		}
 		else /*Direction.DOWN*/ {
 			h = size;
-			w = 0;
+			w = size * 2;
 		}
 		setPreferredSize(new Dimension(w, h));
 	}
@@ -215,6 +215,7 @@ class OneTouchCollapseResizer extends JResizer {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		Graphics arrowGraphics = g.create(hotspot.getX(), hotspot.getY(), hotspot.getWidth(), hotspot.getHeight());
+		arrowGraphics.setColor(getForeground());
 		drawControlArrow(arrowGraphics);
 		arrowGraphics.dispose();
 	}
@@ -250,13 +251,9 @@ class OneTouchCollapseResizer extends JResizer {
 	private void arrowLeft(Graphics g, int half_length, int center_y) {
 		int[] x = new int[]{INSET, getSize().width - INSET, getSize().width - INSET};
 		int[] y = new int[]{center_y, center_y-half_length, center_y + half_length};
-		g.setColor(Color.DARK_GRAY);
 		g.fillPolygon(x, y, 3);
-		g.setColor(Color.DARK_GRAY);
 		g.drawLine(INSET, center_y, getSize().width - INSET, center_y - half_length);
-		g.setColor(Color.GRAY);
 		g.drawLine( getSize().width - INSET, center_y + half_length, INSET, center_y);
-		g.setColor(Color.GRAY);
 		g.drawLine( getSize().width - INSET, center_y - half_length, getSize().width - INSET, center_y + half_length);
 	}
 
@@ -269,13 +266,9 @@ class OneTouchCollapseResizer extends JResizer {
 		int[] x = new int[]{INSET, INSET, getSize().width - INSET};
 		int[] y = new int[]{center_y+half_length, center_y-half_length, center_y};
 
-		g.setColor( Color.DARK_GRAY);
 		g.fillPolygon(x,y,3);
-		g.setColor( Color.DARK_GRAY);
 		g.drawLine( INSET, center_y + half_length, INSET, center_y - half_length);
-		g.setColor(Color.GRAY);
 		g.drawLine( INSET, center_y - half_length, getSize().width - INSET, center_y);
-		g.setColor( Color.LIGHT_GRAY);
 		g.drawLine( getSize().width - INSET, center_y, INSET, center_y + half_length);
 	}
 
@@ -283,14 +276,9 @@ class OneTouchCollapseResizer extends JResizer {
 		int[] y = new int[]{INSET, getSize().height - INSET, getSize().height - INSET};
 		int[] x = new int[]{center_x, center_x-half_length, center_x + half_length};
 
-		g.setColor(Color.DARK_GRAY);
 		g.fillPolygon(x, y, 3);
-
-		g.setColor(Color.GRAY);
 		g.drawLine(center_x + half_length, getSize().height - INSET, center_x, INSET);
-		g.setColor(Color.DARK_GRAY);
 		g.drawLine(center_x, INSET, center_x - half_length, getSize().height - INSET);
-		g.setColor(Color.LIGHT_GRAY);
 		g.drawLine(center_x - half_length, getSize().height - INSET, center_x + half_length, getSize().height - INSET);
 
 	}
@@ -299,14 +287,9 @@ class OneTouchCollapseResizer extends JResizer {
 		int[] y = new int[]{INSET, INSET, getSize().height - INSET};
 		int[] x = new int[]{center_x+half_length, center_x-half_length, center_x};
 
-		g.setColor( Color.DARK_GRAY);
 		g.fillPolygon(x,y,3);
-
-		g.setColor(Color.GRAY);
 		g.drawLine( center_x - half_length, INSET, center_x, getSize().height- INSET);
-		g.setColor( Color.DARK_GRAY);
 		g.drawLine( center_x + half_length, INSET, center_x - half_length, INSET);
-		g.setColor( Color.LIGHT_GRAY);
 		g.drawLine(center_x,  getSize().height - INSET, center_x + half_length, INSET);
 	}
 
@@ -348,12 +331,12 @@ class OneTouchCollapseResizer extends JResizer {
 		if((direction == Direction.RIGHT || direction == Direction.LEFT)) {
 			int center_y = getHeight()/2;
 			int divSize = getDividerSize();
-			hotspot.setBounds(0, center_y-divSize, divSize, 2 * divSize);
+			hotspot.setBounds(0, center_y-divSize, divSize, 2 * 2 * divSize);
 		}
 		else {
 			int center_x = getWidth()/2;
 			int divSize = getDividerSize();
-			hotspot.setBounds(center_x-divSize, 0, 2 * divSize, divSize);
+			hotspot.setBounds(center_x-divSize, 0, 2 * 2 * divSize, divSize);
 		}
 		Dimension size = getResizedComponent().getPreferredSize();
 		if((direction == Direction.RIGHT || direction == Direction.LEFT) && size.width <= getDividerSize()) {
