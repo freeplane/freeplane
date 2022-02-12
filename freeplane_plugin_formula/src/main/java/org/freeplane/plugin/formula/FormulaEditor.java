@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.RootPaneContainer;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
 import org.freeplane.features.explorer.MapExplorerController;
@@ -54,18 +55,40 @@ import de.sciss.syntaxpane.TokenType;
  * Nov 20, 2010
  */
 class FormulaEditor extends EditNodeDialog implements INodeSelector {
+	
+	private static final String PASSED_WIDTH_PROPERTY = "formulaDialog.passed.width";
+    private static final String PASSED_HEIGHT_PROPERTY = "formulaDialog.passed.height";
+    private static final String FAILED_WIDTH_PROPERTY = "formulaDialog.failed.width";
+    private static final String FAILED_HEIGHT_PROPERTY = "formulaDialog.failed.height";
+	
+	static enum EvaluationStatus{
+		
+		PASSED(PASSED_WIDTH_PROPERTY, PASSED_HEIGHT_PROPERTY), 
+		FAILED(FAILED_WIDTH_PROPERTY, FAILED_HEIGHT_PROPERTY);
+		
+		
+		public final String heightPropertyName;
+		public final String widthPropertyName;
+		private EvaluationStatus(String widthPropertyName, String heightPropertyName) {
+			this.heightPropertyName = heightPropertyName;
+			this.widthPropertyName = widthPropertyName;
+		}
+		
+	}
 
 	static final String GROOVY_EDITOR_FONT = "groovy_editor_font";
 	static final String GROOVY_EDITOR_FONT_SIZE = "groovy_editor_font_size";
 
 	private JEditorPane textEditor;
 	private MapExplorerController mapExplorer;
+	private EvaluationStatus evaluationStatus;
 
 	FormulaEditor(MapExplorerController mapExplorer, NodeModel nodeModel, KeyEvent firstEvent, IEditControl editControl,
                           boolean enableSplit, JEditorPane textEditor) {
 	    super(nodeModel, firstEvent, true, editControl, enableSplit, textEditor);
 		this.mapExplorer = mapExplorer;
 	    this.textEditor = textEditor;
+	    this.evaluationStatus = EvaluationStatus.PASSED;
     }
 
 	@Override
@@ -84,6 +107,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 		String content = getText();
 		try {
 			FormulaUtils.evalIfScript(getNode(), content);
+			evaluationStatus = EvaluationStatus.PASSED;
 		}
 		catch (ExecuteScriptException e) {
 			final StringWriter out = new StringWriter();
@@ -101,9 +125,11 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			final Dimension maximumSize = new Dimension(availableScreenBounds.width * 3 / 4, Integer.MAX_VALUE);
 			final Dimension preferredSize = scrollPane.getPreferredSize();
 			preferredSize.width = Math.min(preferredSize.width, maximumSize.width);
+			preferredSize.height = 0;
 			scrollPane.setPreferredSize(preferredSize);
 			final Box resisablePreview = Direction.RIGHT.createBox(scrollPane);
 			dialog.add(resisablePreview, BorderLayout.EAST);
+			evaluationStatus = EvaluationStatus.FAILED;
 		}
 	}
 
@@ -146,4 +172,19 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 		final boolean caretInsideStringToken = TokenType.isString(token);
 		return caretInsideStringToken;
 	}
+	
+    protected void saveDialogSize(final JDialog dialog) {
+        ResourceController resourceController = ResourceController.getResourceController();
+        resourceController.setProperty(evaluationStatus.widthPropertyName, dialog.getWidth());
+        resourceController.setProperty(evaluationStatus.heightPropertyName, dialog.getHeight());
+    }
+
+	protected void restoreDialogSize(final JDialog dialog) {
+        Dimension preferredSize = dialog.getPreferredSize();
+        ResourceController resourceController = ResourceController.getResourceController();
+        preferredSize.width = Math.max(preferredSize.width, resourceController.getIntProperty(evaluationStatus.widthPropertyName, 0));
+        preferredSize.height = Math.max(preferredSize.height, resourceController.getIntProperty(evaluationStatus.heightPropertyName, 0));
+        dialog.setPreferredSize(preferredSize);
+    }
+
 }
