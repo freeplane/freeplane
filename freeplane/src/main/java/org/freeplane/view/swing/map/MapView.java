@@ -2361,7 +2361,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void preserveSelectedNodeLocation() {
-        preserveNodeLocationOnScreen(getSelected());
+		if(selectedsValid) 
+			preserveNodeLocationOnScreen(getSelected());
     }
 
     public void preserveNodeLocationOnScreen(NodeView nodeView) {

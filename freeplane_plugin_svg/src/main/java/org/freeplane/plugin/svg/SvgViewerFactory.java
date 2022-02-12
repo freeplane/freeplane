@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.function.Consumer;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.batik.bridge.ViewBox;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
@@ -19,6 +21,7 @@ import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerLayoutManager;
+import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.svg.SVGDocument;
 import org.w3c.dom.svg.SVGLength;
 import org.w3c.dom.svg.SVGSVGElement;
@@ -59,6 +62,10 @@ public class SvgViewerFactory implements IViewerFactory {
                     } else {
                         float[] vb= ViewBox.parseViewBoxAttribute(svgElt, svgViewboxAttribute, bridgeContext);
                         originalSize = new Dimension((int) vb[2], (int) vb[3]);
+                    }
+                    MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, ViewerComponent.this);
+                    if (mapView != null) {
+                    	mapView.preserveSelectedNodeLocation();
                     }
                     initializer.accept(ViewerComponent.this);
                     revalidate();
