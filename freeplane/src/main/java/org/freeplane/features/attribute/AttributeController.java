@@ -50,7 +50,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
@@ -192,7 +191,7 @@ public class AttributeController implements IExtension {
 		        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
 		        final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 		        final StringBuilder tooltip = new StringBuilder();
-		        Color backgroundColor = NodeStyleModel.getBackgroundColor(attributeStyleNode);
+		        Color backgroundColor = style.getBackgroundColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 		        if(backgroundColor == null) {
 		            NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, view);
 		            if(nodeView != null)
