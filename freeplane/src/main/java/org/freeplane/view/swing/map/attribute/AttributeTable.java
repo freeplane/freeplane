@@ -817,10 +817,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	 */
 	public void setOptimalColumnWidths() {
 		Component comp = null;
-		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
+		int minimumCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
 		int rowCount = getRowCount();
 		if(rowCount > 0) {
 			for (int col = 0; col < 2; col++) {
+				int maxCellWidth = minimumCellWidth;
 				for (int row = 0; row < rowCount; row++) {
 					comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
 							col);
