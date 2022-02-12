@@ -939,7 +939,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
         if(! SwingUtilities.isDescendingFrom(this, nodeView)) {
         	return;
         }
-		c.setBackground(style.getBackgroundColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE));
+        final Color backgroundColor = style.getBackgroundColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        if(backgroundColor!= null) {
+			c.setBackground(backgroundColor);
+		} else {
+			c.setBackground(nodeView.getBackgroundColor());
+		}
         c.setForeground(style.getColor(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE));
     }
 
