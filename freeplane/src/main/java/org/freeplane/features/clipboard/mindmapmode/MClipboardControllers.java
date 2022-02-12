@@ -1,6 +1,7 @@
 package org.freeplane.features.clipboard.mindmapmode;
 
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -46,11 +47,11 @@ public class MClipboardControllers extends ClipboardControllers{
 			.findFirst().ifPresent(MClipboardController::cut);
 	}
 
-	public void paste() {
+	public void paste(final ActionEvent e) {
 		final Transferable t = ClipboardAccessor.getInstance().getClipboardContents();
 		if(t != null) {
 			controllers.stream().filter(c -> c.canPaste(t))
-				.findFirst().ifPresent(c -> c.paste(t));
+				.findFirst().ifPresent(c -> c.paste(e, t));
 		}
 	}
 

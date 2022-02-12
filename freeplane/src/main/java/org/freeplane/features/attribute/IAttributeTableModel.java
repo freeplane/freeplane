@@ -33,4 +33,6 @@ public interface IAttributeTableModel {
 	Object getValueAt(int row, int col);
 
 	Attribute getAttribute(int row);
+	
+	int targetRow(final int row) ;
 }

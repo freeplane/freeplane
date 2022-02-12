@@ -190,7 +190,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	static private AttributeTableCellRenderer dtcr = new AttributeTableCellRenderer();
 	private static final int EXTRA_HEIGHT = 4;
 	static private CursorUpdater cursorUpdater = new CursorUpdater();
-	private static final int MAX_HEIGTH = 300;
+	private static final int MAX_HEIGTH = 600;
 	private static final long serialVersionUID = 1L;
 	private static final int CURSOR_WIDTH = 2;
 	public static AttributeTable getSelectedTable(){

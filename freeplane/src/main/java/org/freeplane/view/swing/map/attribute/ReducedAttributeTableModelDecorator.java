@@ -60,7 +60,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModel {
 		return getRowCount() != 0;
 	}
 
-	private int calcRow(final int row) {
+	public int targetRow(final int row) {
 		return index.get(row).intValue();
 	}
 
@@ -80,14 +80,14 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModel {
 	public Object getValueAt(final int row, final int col) {
 		if(index == null)
 			return null;
-		return getNodeAttributeModel().getValueAt(calcRow(row), col);
+		return getNodeAttributeModel().getValueAt(targetRow(row), col);
 	}
 
 	@Override
 	public Attribute getAttribute(final int row) {
 		if(index == null)
 			return null;
-		return getNodeAttributeModel().getAttribute(calcRow(row));
+		return getNodeAttributeModel().getAttribute(targetRow(row));
 	}
 	/*
 	 * (non-Javadoc)
@@ -131,7 +131,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModel {
 
 	@Override
 	public void setValueAt(final Object o, final int row, final int col) {
-		getAttributeController().performSetValueAt(getNode(), getNodeAttributeModel(), o, calcRow(row), col);
+		getAttributeController().performSetValueAt(getNode(), getNodeAttributeModel(), o, targetRow(row), col);
 		fireTableCellUpdated(row, col);
 	}
 

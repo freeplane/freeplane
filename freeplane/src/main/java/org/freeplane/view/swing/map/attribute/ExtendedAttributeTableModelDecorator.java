@@ -158,4 +158,11 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModel {
 		return getNodeAttributeModel().getAttribute(row);
 
 	}
+	
+
+	@Override
+	public int targetRow(int row) {
+		return row;
+	}
+
 }

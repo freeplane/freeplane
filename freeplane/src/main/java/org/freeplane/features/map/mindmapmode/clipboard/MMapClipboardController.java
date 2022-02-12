@@ -24,6 +24,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -1004,7 +1005,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	@Override
-	public void paste(Transferable t) {
+	public void paste(ActionEvent event, Transferable t) {
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		if(parent != null)
 			paste(t, parent, false, parent.isNewChildLeft());

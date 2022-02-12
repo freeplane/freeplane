@@ -245,4 +245,9 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		}
 	}
 
+	@Override
+	public int targetRow(int row) {
+		return row;
+	}
+
 }

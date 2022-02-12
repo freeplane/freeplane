@@ -578,6 +578,14 @@ public class MAttributeController extends AttributeController {
 		return rowCount;
 	}
 
+	public int insertAttribute(final NodeModel node, int row, final Attribute pAttribute) {
+		createAttributeTableModel(node);
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+		int actualRow = Math.min(row, attributes.getRowCount());
+		performInsertRow(node, attributes, actualRow, pAttribute.getName(), pAttribute.getValue());
+		return actualRow;
+	}
+
 	@Override
 	protected void registerAttributeClipboardController(final ModeController modeController) {
 		final MClipboardControllers controllers = (MClipboardControllers) modeController.getExtension(ClipboardControllers.class);

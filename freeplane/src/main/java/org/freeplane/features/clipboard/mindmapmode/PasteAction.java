@@ -35,6 +35,6 @@ class PasteAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final MClipboardControllers clipboardController = (MClipboardControllers) ClipboardControllers
 		    .getController();
-		clipboardController.paste();
+		clipboardController.paste(e);
 	}
 }
