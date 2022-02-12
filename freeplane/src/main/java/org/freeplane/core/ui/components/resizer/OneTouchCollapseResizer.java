@@ -4,7 +4,6 @@
  */
 package org.freeplane.core.ui.components.resizer;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -37,6 +36,8 @@ class OneTouchCollapseResizer extends JResizer {
 
 	private Dimension lastPreferredSize = null;
 
+	private final ComponentAdapter sizeChangeListener;
+
 
 	/***********************************************************************************
 	 * CONSTRUCTORS
@@ -50,7 +51,7 @@ class OneTouchCollapseResizer extends JResizer {
 		direction = d;
 		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 5 + 0.5));
 		
-		ComponentAdapter sizeChangeListener = new ComponentAdapter() {
+		sizeChangeListener = new ComponentAdapter() {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -59,9 +60,6 @@ class OneTouchCollapseResizer extends JResizer {
 			
 		};
 		
-		addComponentListener(sizeChangeListener);
-
-
 		MouseListener listener = new MouseListener() {
 			private void resetCursor() {
 				if(d.equals(Direction.RIGHT)){
@@ -131,9 +129,19 @@ class OneTouchCollapseResizer extends JResizer {
 		add(hotspot);
 	}
 
-	/***********************************************************************************
-	 * METHODS
-	 **********************************************************************************/
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		getParent().addComponentListener(sizeChangeListener);
+	}
+
+	@Override
+	public void removeNotify() {
+		getParent().removeComponentListener(sizeChangeListener);
+		super.removeNotify();
+	}
+
+
 
 	public boolean isExpanded() {
 		return this.expanded;
@@ -179,8 +187,13 @@ class OneTouchCollapseResizer extends JResizer {
 					resizedComponent.setPreferredSize(lastPreferredSize);
 				}
 				else {
-					lastPreferredSize = resizedComponent.isPreferredSizeSet() 
-					        && direction.getPreferredSize(resizedComponent) > getDividerSize() ?  resizedComponent.getPreferredSize() : null;
+					if (resizedComponent.isPreferredSizeSet()) {
+						int minimumExpandedSize = 2 * minimumExpandedSize();
+						lastPreferredSize = resizedComponent.getPreferredSize();
+						lastPreferredSize.width = Math.max(lastPreferredSize.width, minimumExpandedSize);
+						lastPreferredSize.height = Math.max(lastPreferredSize.height, minimumExpandedSize);
+					} else
+						lastPreferredSize = null;
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
 				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
@@ -200,6 +213,10 @@ class OneTouchCollapseResizer extends JResizer {
 			}
 		}
 
+	}
+
+	public int minimumExpandedSize() {
+		return 4 * getDividerSize();
 	}
 
 	private Component getResizedComponent() {
@@ -338,12 +355,7 @@ class OneTouchCollapseResizer extends JResizer {
 			int divSize = getDividerSize();
 			hotspot.setBounds(center_x-divSize, 0, 2 * 2 * divSize, divSize);
 		}
-		Dimension size = getResizedComponent().getPreferredSize();
-		if((direction == Direction.RIGHT || direction == Direction.LEFT) && size.width <= getDividerSize()) {
-			setExpanded(false);
-
-		}
-		else if((direction == Direction.UP || direction == Direction.DOWN) && size.height <= getDividerSize()){
+		if(direction.getPreferredSize(getResizedComponent()) < minimumExpandedSize()) {
 			setExpanded(false);
 		}
 		else {
