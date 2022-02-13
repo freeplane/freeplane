@@ -31,6 +31,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -338,6 +339,8 @@ class ApplicationViewController extends FrameController {
 			public void setLayout(LayoutManager layout) {
 				if(layout == null || layout instanceof SplitPaneLayoutManagerDecorator)
 					super.setLayout(layout);
+				else if(layout instanceof LayoutManager2)
+					super.setLayout(new SplitPaneLayoutManager2Decorator((LayoutManager2) layout));
 				else
 					super.setLayout(new SplitPaneLayoutManagerDecorator(layout));
 			}
