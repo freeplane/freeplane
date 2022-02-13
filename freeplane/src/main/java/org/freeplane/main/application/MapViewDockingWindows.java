@@ -232,14 +232,15 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			public void lookAndFeelChanging() {
 				String lf = UIManager.getLookAndFeel().getID();
 				DockingWindowsTheme newTheme;
-				if(lf.endsWith("Aqua") && (theme instanceof LookAndFeelDockingTheme)) {
+				boolean existingDockingThemeMatchesLookAndFeel = lf.endsWith("Aqua") != (theme instanceof LookAndFeelDockingTheme);
+				if(existingDockingThemeMatchesLookAndFeel)
+					return;
+				if(theme instanceof LookAndFeelDockingTheme) {
 					((LookAndFeelDockingTheme)theme).dispose();
 					newTheme = createClassicTheme();
-				} else if (!(theme instanceof LookAndFeelDockingTheme)){
+				} else {
 					newTheme = new LookAndFeelDockingTheme();
 				}
-				else 
-					return;
 				rootWindowProperties.replaceSuperObject(theme.getRootWindowProperties(), newTheme.getRootWindowProperties());
 				theme = newTheme;
 			}
