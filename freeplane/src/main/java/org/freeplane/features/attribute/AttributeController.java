@@ -205,12 +205,12 @@ public class AttributeController implements IExtension {
 		            backgroundColor = Color.WHITE;
 		            textColor = Color.BLACK;
 		        }
-				tooltip.append("<html><body><table");
+				tooltip.append("<html><body><table style=\"");
                 tooltip.append( new CssRuleBuilder().withHTMLFont(font)
 						.withBackground(backgroundColor)
 						.withColor(textColor)
 						);
-				tooltip.append(" ' width='100%' cellspacing='0' cellpadding='2' ");
+				tooltip.append(" \" width=\"100%\" cellspacing=\"0\" cellpadding=\"2\" ");
 				final int currentRowCount = attributes.getRowCount();
 				for (int i = 0; i < currentRowCount; i++) {
 					tooltip.append("<tr><td>");

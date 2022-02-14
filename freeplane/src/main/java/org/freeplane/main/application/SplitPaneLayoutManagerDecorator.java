@@ -1,6 +1,6 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2010 dimitry
+ *  Copyright (C) 2022 dimitry
  *
  *  This file author is dimitry
  *
@@ -30,7 +30,7 @@ import javax.swing.JSplitPane;
  * @author Dimitry Polivaev
  * Dec 26, 2010
  */
-final class SplitPaneLayoutManagerDecorator implements LayoutManager {
+class SplitPaneLayoutManagerDecorator implements LayoutManager {
     private final LayoutManager lm;
 
     SplitPaneLayoutManagerDecorator(LayoutManager lm) {
@@ -73,7 +73,7 @@ final class SplitPaneLayoutManagerDecorator implements LayoutManager {
     	}
     }
 
-	private boolean isDividerRequired(final JSplitPane splitPane) {
+	boolean isDividerRequired(final JSplitPane splitPane) {
         final Component rightComponent = splitPane.getRightComponent();
     	final boolean rightComponentVisible = rightComponent != null&& rightComponent.isVisible();
     	return rightComponentVisible;
