@@ -78,6 +78,13 @@ class OneTouchCollapseResizer extends JResizer {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				Component resizedComponent = getResizedComponent();
+				if (resizedComponent.isPreferredSizeSet()) {
+					int preferredSize = direction.getPreferredSize(resizedComponent);
+					if (preferredSize>= minimumExpandedSize()) {
+						lastPreferredSize = preferredSize;
+					}
+				}
 			}
 
 			@Override
@@ -187,11 +194,6 @@ class OneTouchCollapseResizer extends JResizer {
 					direction.setPreferredSize(resizedComponent, lastPreferredSize);
 				}
 				else {
-					if (resizedComponent.isPreferredSizeSet()) {
-						int minimumExpandedSize = 2 * minimumExpandedSize();
-						lastPreferredSize = Math.max(direction.getPreferredSize(resizedComponent), minimumExpandedSize);
-					} else
-						lastPreferredSize = -1;
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
 				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
