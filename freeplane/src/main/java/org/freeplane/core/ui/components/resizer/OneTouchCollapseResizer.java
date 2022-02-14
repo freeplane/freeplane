@@ -5,16 +5,17 @@
 package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.JComponent;
+import javax.swing.Box;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -28,15 +29,13 @@ import org.freeplane.features.ui.IMapViewManager;
 class OneTouchCollapseResizer extends JResizer {
 	private static final long serialVersionUID = 1;
 
-	private boolean expanded = true;
-	private final JComponent hotspot;
+	private boolean expanded = false;
 	private final int INSET = 2;
-	private final Direction direction;
-	private Integer resizeComponentIndex;
-
-	private int lastPreferredSize = -1;
-
+	private final String sizePropertyName;
 	private final ComponentAdapter sizeChangeListener;
+
+
+
 
 
 	/***********************************************************************************
@@ -45,10 +44,11 @@ class OneTouchCollapseResizer extends JResizer {
 	/**
 	 * @param d
 	 * @param component 
+	 * @param component 
 	 */
-	OneTouchCollapseResizer(final Direction d) {
-		super(d);
-		direction = d;
+	OneTouchCollapseResizer(final Direction d, Component resizedComponent, String propertyNameBase) {
+		super(d, resizedComponent);
+		this.sizePropertyName = propertyNameBase + ".size";
 		this.setDividerSize((int)(UITools.FONT_SCALE_FACTOR * 5 + 0.5));
 		
 		sizeChangeListener = new ComponentAdapter() {
@@ -60,101 +60,50 @@ class OneTouchCollapseResizer extends JResizer {
 			
 		};
 		
-		MouseListener listener = new MouseListener() {
-			private void resetCursor() {
-				if(d.equals(Direction.RIGHT)){
-					setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
-				}
-				else if(d.equals(Direction.LEFT)){
-					setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-				}
-				else if(d.equals(Direction.UP)){
-					setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-				}
-				else /*Direction.DOWN*/ {
-					setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
-				}
-			}
-
+		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				Component resizedComponent = getResizedComponent();
 				if (resizedComponent.isPreferredSizeSet()) {
 					int preferredSize = direction.getPreferredSize(resizedComponent);
-					if (preferredSize>= minimumExpandedSize()) {
-						lastPreferredSize = preferredSize;
+					if (preferredSize>= minimumCollapseSize()) {
+						ResourceController.getResourceController().setProperty(sizePropertyName, preferredSize);
 					}
 				}
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if(e.getComponent() == OneTouchCollapseResizer.this) {
-					if(!isExpanded() || sliderLock) {
-						e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-					}
-					else
-						resetCursor();
-				}
-			}
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if((e.getComponent() == hotspot) || sliderLock) {
-
-					if (isExpanded()) {
-						hotspot.setEnabled(true);
-						setExpanded(false);
-					}
-					else {
-						setExpanded(true);
-					}
+				if (expanded) {
+					setExpanded(false);
 				}
 				else {
-					if (!isExpanded()) {
-						setExpanded(true);
-					}
+					setExpanded(true);
 				}
 			}
-		};
-		hotspot = new JComponent(){
-			private static final long serialVersionUID = 1L;
-		};
-		hotspot.setOpaque(false);
-		hotspot.addMouseListener(listener);
-		hotspot.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		addMouseListener(listener);
+		});
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+               	if(sliderLock || !expanded)
+					setExpanded(true);
+            }
+		});
+		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.install(parentBox, propertyNameBase);
+		dispatcher.setResizer(this);
+		expanded = ! dispatcher.isVisible();
+		setExpanded(! expanded);
+		parentBox.addComponentListener(sizeChangeListener);
 
-		add(hotspot);
 	}
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		getParent().addComponentListener(sizeChangeListener);
+	Box getParentBox() {
+		return parentBox;
 	}
 
-	@Override
-	public void removeNotify() {
-		getParent().removeComponentListener(sizeChangeListener);
-		super.removeNotify();
-	}
-
-
-
-	public boolean isExpanded() {
-		return this.expanded;
-	}
-
-	public void setDividerSize(int size) {
+	private void setDividerSize(int size) {
 		final int w;
 		final int h;
 		if(direction == Direction.RIGHT){
@@ -176,7 +125,7 @@ class OneTouchCollapseResizer extends JResizer {
 		setPreferredSize(new Dimension(w, h));
 	}
 
-	public int getDividerSize() {
+	private int getDividerSize() {
 		if(direction == Direction.RIGHT || direction == Direction.LEFT){
 			return getPreferredSize().width;
 		}
@@ -185,28 +134,33 @@ class OneTouchCollapseResizer extends JResizer {
 		}
 	}
 
-	public void setExpanded(boolean expanded) {
+	void setExpanded(boolean expanded) {
 		if(this.expanded != expanded) {
 			this.expanded = expanded;
 			try {
 				Component resizedComponent = getResizedComponent();
 				if(expanded) {
-					direction.setPreferredSize(resizedComponent, lastPreferredSize);
+					if(!sliderLock){
+						int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, 0);
+						if(size >= minimumCollapseSize()) {
+							direction.setPreferredSize(resizedComponent, size);
+						}
+						else
+							resizedComponent.setPreferredSize(null);
+					}
 				}
 				else {
 					resizedComponent.setPreferredSize(new Dimension(0,0));
+					IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+					mapViewManager.moveFocusFromDescendantToSelection(resizedComponent);
 				}
-				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-				mapViewManager.moveFocusFromDescendantToSelection(resizedComponent);
+
 				resizedComponent.setVisible(expanded);
 
-				fireCollapseStateChanged(resizedComponent, expanded);
+				UIComponentVisibilityDispatcher.of(parentBox).setProperty(expanded);
 
-				final JComponent parent = (JComponent) getParent();
-				if(parent != null) {
-					parent.revalidate();
-					parent.repaint();
-				}
+				parentBox.revalidate();
+				parentBox.repaint();
 			}
 			catch (Exception e) {
 				LogUtils.warn("Exception in org.freeplane.core.ui.components.OneTouchCollapseResizer.setExpanded(enabled): "+e);
@@ -215,23 +169,39 @@ class OneTouchCollapseResizer extends JResizer {
 
 	}
 
-	public int minimumExpandedSize() {
-		return 4 * getDividerSize();
+	private int minimumCollapseSize() {
+		return 3 * getDividerSize();
 	}
 
 	private Component getResizedComponent() {
-		final JComponent parent = (JComponent) getParent();
-		if(parent != null && resizeComponentIndex == null) {
-			resizeComponentIndex = getIndex();
-		}
-		return parent.getComponent(resizeComponentIndex);
+		return resizedComponent;
 	}
 
 	@Override
     public void paintComponent(Graphics g) {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
-		Graphics arrowGraphics = g.create(hotspot.getX(), hotspot.getY(), hotspot.getWidth(), hotspot.getHeight());
+		int hotspotX;
+		int hotspotY;
+		int hotspotWidth;
+		int hotspotHeight;
+		int dividerSize = getDividerSize();
+		if((direction == Direction.RIGHT || direction == Direction.LEFT)) {
+			int centerY = getHeight()/2;
+			hotspotX =0;
+			hotspotY = centerY-dividerSize;
+			hotspotWidth = dividerSize;
+			hotspotHeight = 2 * 2 * dividerSize;
+		}
+		else {
+			int centerX = getWidth()/2;
+			hotspotX =centerX-dividerSize;
+			hotspotY = 0;
+			hotspotWidth = 2 * 2 * dividerSize;
+			hotspotHeight = dividerSize;
+		}
+
+		Graphics arrowGraphics = g.create(hotspotX, hotspotY, hotspotWidth, hotspotHeight);
 		arrowGraphics.setColor(getForeground());
 		drawControlArrow(arrowGraphics);
 		arrowGraphics.dispose();
@@ -310,56 +280,9 @@ class OneTouchCollapseResizer extends JResizer {
 		g.drawLine(center_x,  getSize().height - INSET, center_x + half_length, INSET);
 	}
 
-	private int getIndex() {
-		final Container parent = getParent();
-		for(int i = 0; i < parent.getComponentCount(); i++ ){
-			if(OneTouchCollapseResizer.this.equals(parent.getComponent(i))){
-				if(direction == Direction.RIGHT){
-					return i + 1;
-				}
-				else if(direction == Direction.LEFT){
-					return i - 1;
-				}
-				else if(direction == Direction.UP){
-					return i - 1;
-				}
-				else if(direction == Direction.DOWN){
-					return i + 1;
-				}
-			}
-		}
-		return -1;
-    }
-
-	private void fireCollapseStateChanged(Component resizedComponent, boolean expanded) {
-		UIComponentVisibilityDispatcher.of((JComponent) resizedComponent.getParent()).setProperty(expanded);
-	}
-
-	@Override
-	void onSizeChanged(Component resizedComponent) {
-		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of((JComponent) resizedComponent.getParent());
-		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
-		ResourceController.getResourceController().setProperty(sizePropertyName, String.valueOf(direction.getPreferredSize(resizedComponent)));
-	}
-
-
-
 	private void setHotspotBounds() {
-		if((direction == Direction.RIGHT || direction == Direction.LEFT)) {
-			int center_y = getHeight()/2;
-			int divSize = getDividerSize();
-			hotspot.setBounds(0, center_y-divSize, divSize, 2 * 2 * divSize);
-		}
-		else {
-			int center_x = getWidth()/2;
-			int divSize = getDividerSize();
-			hotspot.setBounds(center_x-divSize, 0, 2 * 2 * divSize, divSize);
-		}
-		if(direction.getPreferredSize(getResizedComponent()) < minimumExpandedSize()) {
+		if(direction.getPreferredSize(getResizedComponent()) < minimumCollapseSize()) {
 			setExpanded(false);
-		}
-		else {
-			setExpanded(true);
 		}
 	}
 }

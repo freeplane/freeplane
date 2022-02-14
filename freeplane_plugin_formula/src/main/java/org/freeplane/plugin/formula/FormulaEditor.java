@@ -37,7 +37,6 @@ import javax.swing.RootPaneContainer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.components.resizer.JResizer.Direction;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
@@ -127,7 +126,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			preferredSize.width = Math.min(preferredSize.width, maximumSize.width);
 			preferredSize.height = 0;
 			scrollPane.setPreferredSize(preferredSize);
-			final Box resisablePreview = Direction.RIGHT.createBox(scrollPane);
+			final Box resisablePreview = Box.createHorizontalBox();
 			dialog.add(resisablePreview, BorderLayout.EAST);
 			evaluationStatus = EvaluationStatus.FAILED;
 		}

@@ -34,8 +34,8 @@ import org.freeplane.features.ui.ViewController;
  * 01.02.2014
  */
 public class UIComponentVisibilityDispatcher {
-	private static String KEY = UIComponentVisibilityDispatcher.class.getName() + ".KEY";
-	private final String key;
+	private static String DISPATCHER_CLIENT_PROPERTY_NAME = UIComponentVisibilityDispatcher.class.getName() + ".KEY";
+	private final String propertyBaseName;
 	private final JComponent component;
 	private OneTouchCollapseResizer resizer;
 
@@ -43,26 +43,32 @@ public class UIComponentVisibilityDispatcher {
 		this.resizer = resizer;
 	}
 
-	public static void install(JComponent component, String key){
-		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(component, key));
+	public static UIComponentVisibilityDispatcher install(JComponent component, String propertyBaseName){
+		UIComponentVisibilityDispatcher dispatcher = new UIComponentVisibilityDispatcher(component, propertyBaseName);
+		component.putClientProperty(DISPATCHER_CLIENT_PROPERTY_NAME, dispatcher);
+		return dispatcher;
+	}
+	
+	public static void uninstall(JComponent component){
+		component.putClientProperty(DISPATCHER_CLIENT_PROPERTY_NAME, null);
 	}
 
 	static public UIComponentVisibilityDispatcher of(JComponent component) {
-		return ((UIComponentVisibilityDispatcher)component.getClientProperty(KEY));
+		return ((UIComponentVisibilityDispatcher)component.getClientProperty(DISPATCHER_CLIENT_PROPERTY_NAME));
 	}
 
-	private UIComponentVisibilityDispatcher(JComponent component, String key) {
+	private UIComponentVisibilityDispatcher(JComponent component, String propertyBaseName) {
 		this.component = component;
-		this.key = key;
+		this.propertyBaseName = propertyBaseName;
     }
 
-	private String completeVisiblePropertyKey() {
+	private String completeVisiblePropertyName() {
 		final String completeKeyString;
 		if (isContainedInFullScreenWindow()) {
-			completeKeyString = key + ".fullscreen";
+			completeKeyString = propertyBaseName + ".fullscreen";
 		}
 		else {
-			completeKeyString = key;
+			completeKeyString = propertyBaseName;
 		}
 		return completeKeyString;
 	}
@@ -91,7 +97,7 @@ public class UIComponentVisibilityDispatcher {
 
     }
 
-	public void setProperty(final boolean visible) {
+	void setProperty(final boolean visible) {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 	    resourceController.setProperty(getPropertyName(), visible);
     }
@@ -108,12 +114,15 @@ public class UIComponentVisibilityDispatcher {
     }
 
 	public String getPropertyName() {
-		final String propertyName = completeVisiblePropertyKey();
-		return propertyName;
+		return completeVisiblePropertyName();
+	}
+	
+	public String getPropertyBaseName() {
+		return propertyBaseName;
 	}
 
 	public boolean isVisible() {
-		final String completeKeyString = completeVisiblePropertyKey();
+		final String completeKeyString = completeVisiblePropertyName();
 		if (completeKeyString == null) {
 			return true;
 		}

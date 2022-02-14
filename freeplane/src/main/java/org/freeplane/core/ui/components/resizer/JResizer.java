@@ -20,7 +20,6 @@
 package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -42,9 +41,11 @@ public class JResizer extends JComponent {
 	private static final int CONTROL_SIZE = 5;
 	protected boolean sliderLock = false;
 	private Point point;
-	private int index;
+	protected final Direction direction;
+	protected final Box parentBox;
+	protected final Component resizedComponent;
 	public enum Direction {RIGHT, LEFT, UP, DOWN;
-		Box createBox() {
+		private Box createBox() {
 			switch (this) {
 				case RIGHT:
 				case LEFT:
@@ -80,29 +81,25 @@ public class JResizer extends JComponent {
 				component.setPreferredSize(null);
         }
 
-		public Box createBox(Component resizedComponent) {
-			final Box box = createBox();
-			final JResizer resizer = createResizer();
-			switch (this) {
-				case RIGHT:
-				case DOWN:
-					box.add(resizer);
-					box.add(resizedComponent);
-					break;
-				default:
-					box.add(resizedComponent);
-					box.add(resizer);
-			}
-			return box;
-
-		}
-
-		protected JResizer createResizer() {
-			return new JResizer(this);
-		}
 	}
 
-	JResizer(final Direction direction) {
+	JResizer(final Direction direction, Component resizedComponent) {
+		this.direction = direction;
+		this.resizedComponent = resizedComponent;
+		Box resizerBox = direction.createBox();
+		switch(direction){
+		case RIGHT:
+		case DOWN:
+			resizerBox.add(this);
+			resizerBox.add(resizedComponent);
+			break;
+		default:
+			resizerBox.add(resizedComponent);
+			resizerBox.add(this);
+			break;
+		}
+
+		this.parentBox = resizerBox;
 		setOpaque(true);
 		final int w;
 		final int h;
@@ -144,29 +141,6 @@ public class JResizer extends JComponent {
 
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
-
-			private int getIndex() {
-				final Container parent = getParent();
-				for(int i = 0; i < parent.getComponentCount(); i++ ){
-					if(JResizer.this.equals(parent.getComponent(i))){
-						if(direction.equals(Direction.RIGHT)){
-							return i + 1;
-						}
-						else if(direction.equals(Direction.LEFT)){
-							return i - 1;
-						}
-						else if(direction.equals(Direction.UP)){
-							return i - 1;
-						}
-						else if(direction.equals(Direction.DOWN)){
-							return i + 1;
-						}
-					}
-				}
-				return -1;
-            }
-
-
             @Override
             public void mouseDragged(MouseEvent e) {
             	if(sliderLock) {
@@ -174,10 +148,8 @@ public class JResizer extends JComponent {
             	}
 				final Point point2 = e.getPoint();
 				SwingUtilities.convertPointToScreen(point2, e.getComponent());
-				if(point != null){
-					final JComponent parent = (JComponent) getParent();
+				if(point != null &&  resizedComponent.isVisible()){
 					JRootPane rootPane = getRootPane();
-					final Component resizedComponent = parent.getComponent(index);
 					final Dimension size = new Dimension(resizedComponent.getPreferredSize());
 					if(direction.equals(Direction.RIGHT)){
 						size.width -= (point2.x - point.x);
@@ -194,12 +166,8 @@ public class JResizer extends JComponent {
                     size.width = Math.min(size.width, rootPane.getWidth() * 9 / 10 - CONTROL_SIZE);
                     size.height = Math.min(size.height, rootPane.getHeight() * 9 / 10 - CONTROL_SIZE);
 					resizedComponent.setPreferredSize(new Dimension(Math.max(size.width, 0), Math.max(size.height, 0)));
-					parent.revalidate();
-					parent.repaint();
-					onSizeChanged(resizedComponent);
-				}
-				else{
-					index = getIndex();
+					parentBox.revalidate();
+					parentBox.repaint();
 				}
 				point = point2;
             }
@@ -213,7 +181,5 @@ public class JResizer extends JComponent {
 	public boolean isSliderLocked() {
 		return this.sliderLock;
 	}
-
-	void onSizeChanged(Component resizedComponent) {/**/}
 
 }
