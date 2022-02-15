@@ -20,6 +20,7 @@ package org.freeplane.core.resources.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.dnd.DropTarget;
@@ -56,6 +57,7 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -251,8 +253,7 @@ class OptionPanel {
 				if (property.getName().equals(selectedProperty))
 				{
 					JLabel label = property.getLabelComponent();
-					Color markerColor = getMarkerColor(label);
-					label.setBorder(BorderFactory.createLineBorder(markerColor, 3, true));
+					highlight(label);
 					final JViewport viewPort = (JViewport) label.getParent().getParent();
 					Rectangle bounds = label.getBounds();
 					// make sure the whole label is visible!
@@ -263,28 +264,26 @@ class OptionPanel {
 		}
 	}
 
-
-
-	private Color getMarkerColor(JLabel label) {
+	private void highlight(JLabel label) {
 		if(selectionColorCheckingTextFieldComponent == null)
 			selectionColorCheckingTextFieldComponent = new JTextField();
-		Color textFieldSelectionColor = selectionColorCheckingTextFieldComponent.getSelectionColor();
-		if(textFieldSelectionColor != null)
-			return textFieldSelectionColor;
-		Color textColor = label.getForeground();
-		int red = textColor.getRed();
-		int green = textColor.getGreen();
-		int blue = textColor.getBlue();
-		if(blue <= 127) {
-			blue = 255;
-			red = Math.min(200, red * 8 / 5);
-			green = Math.min(200, green * 8 / 5);
-		} else {
-			red = red * 5 / 8;
-			green = green * 5 / 8;
+		Color selectionColor = selectionColorCheckingTextFieldComponent.getSelectionColor();
+		Color selectedTextColor = selectionColorCheckingTextFieldComponent.getSelectedTextColor();
+		if(selectionColor == null || selectedTextColor == null) {
+			selectionColor = label.getForeground();
+			selectedTextColor = label.getBackground();
 		}
-		Color markerColor = new Color(red, green, blue, textColor.getAlpha());
-		return markerColor;
+		if(selectionColor == null || selectedTextColor == null) {
+			selectionColor = Color.BLUE;
+			selectedTextColor = Color.WHITE;
+		}
+		Font font = label.getFont();
+		label.setUI(new BasicLabelUI());
+		label.setOpaque(true);
+		label.setFont(font);
+		label.setForeground(selectedTextColor);
+		label.setBackground(selectionColor);
+		label.setBorder(BorderFactory.createLineBorder(selectionColor, 3, true));
 	}
 
 	private void saveOptionsToFile() {
