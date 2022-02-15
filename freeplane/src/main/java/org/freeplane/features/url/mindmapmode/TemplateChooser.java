@@ -32,11 +32,6 @@ class TemplateChooser {
 		final TreeSet<String> availableMapTemplates = templateManager.collectAvailableMapTemplates();
 		availableMapTemplates.add(standardTemplatePath);
 		verticalBox = Box.createVerticalBox();
-		follow = new JCheckBox();
-		LabelAndMnemonicSetter.setLabelAndMnemonic(follow, TextUtils.getRawText("followMindMap"));
-		follow.setAlignmentX(Component.LEFT_ALIGNMENT);
-		follow.setSelected(false);
-		verticalBox.add(follow);
 
 		MindMapPreview mindMapPreview = new MindMapPreview();
 		templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
@@ -54,6 +49,13 @@ class TemplateChooser {
 		verticalBox.add(templateComboBox);
 		mindMapPreview.setAlignmentX(0f);
 		verticalBox.add(mindMapPreview);
+
+		follow = new JCheckBox();
+		LabelAndMnemonicSetter.setLabelAndMnemonic(follow, TextUtils.getRawText("followMindMap"));
+		follow.setAlignmentX(Component.LEFT_ALIGNMENT);
+		follow.setSelected(false);
+		verticalBox.add(follow);
+		
 		final String checkBoxText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.rememberMyDescision");
 		mDontShowAgainBox = new JCheckBox();
 		mDontShowAgainBox.setAlignmentX(0f);
