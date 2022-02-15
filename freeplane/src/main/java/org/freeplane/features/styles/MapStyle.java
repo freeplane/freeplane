@@ -89,6 +89,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	public static final String FIT_TO_VIEWPORT = "fit_to_viewport";
+	
+	private static final ThreadLocal<Boolean> followedStyleUpdateActive = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 	public static void install(boolean persistent){
 		new MapStyle(persistent);
@@ -386,7 +388,14 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    final NodeModel rootNode = map.getRootNode();
 	    final MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(rootNode);
 	    if (mapStyleModel != null && mapStyleModel.getStyleMap() != null) {
-	        copyMapStylesNoUndoNoRefresh(map);
+	    	if(! followedStyleUpdateActive.get()) {
+	    		followedStyleUpdateActive.set(Boolean.TRUE);
+				try {
+					copyMapStylesNoUndoNoRefresh(map);
+				} finally {
+		    		followedStyleUpdateActive.set(Boolean.FALSE);
+				}
+			}
 	    }
 	    else {
 	        createDefaultStyleMap(map);
@@ -477,11 +486,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         }
         File target = templateManager.writeableTemplateFile(templateLocationPropertyValue);
         if(target != null && (!target.isDirectory() && target.canWrite() || ! target.exists())) {
-            try {
-                undoableCopyStyleToExternalMap(map, styleKey, source, target);
-            } catch (MalformedURLException e) {
-                LogUtils.severe(e);
-            }
+        	if(areDifferent(map.getFile(), target)) {
+        		try {
+        			undoableCopyStyleToExternalMap(map, styleKey, source, target);
+        		} catch (MalformedURLException e) {
+        			LogUtils.severe(e);
+        		}
+        	}
         } else {
               UITools.errorMessage(TextUtils.format("file_not_accessible", String.valueOf(templateLocationPropertyValue)));
         }
@@ -650,6 +661,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                 long sourceLastModificationTime ;
                 if(source.getScheme().equalsIgnoreCase("file")) {
                     File file = Paths.get(source).toFile();
+                    if(! areDifferent(targetMap.getFile(), file))
+                    	return;
                     sourceLastModificationTime = file.lastModified();
                     shouldUpdate = sourceLastModificationTime > lastUpdateTime;
                     followedMapPath = file.getAbsolutePath();
@@ -675,6 +688,14 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
         }
     }
+
+	private static boolean areDifferent(final File x, File y) {
+		try {
+			return x == null || y == null || !x.getCanonicalPath().equals(y.getCanonicalPath());
+		} catch (IOException e) {
+			return false;
+		}
+	}
 
     private String followedTemplate(MapStyleModel mapStyleModel) {
         normalizeOldFormatTemplateLocation(mapStyleModel);
