@@ -36,6 +36,36 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class PresentationBuilder {
+	
+	private enum NodePositionMap {
+		WEST(NodePosition.LEFT), 
+		CENTER(NodePosition.CENTER), 
+		EAST(NodePosition.RIGHT), 
+		NORTH(NodePosition.TOP), 
+		SOUTH(NodePosition.BOTTOM),
+		NORTHWEST(NodePosition.TOP_LEFT), 
+		NORTHEAST(NodePosition.TOP_RIGHT), 
+		SOUTHWEST(NodePosition.BOTTOM_LEFT), 
+		SOUTHEAST(NodePosition.BOTTOM_RIGHT);
+		
+		static private NodePosition nodePositionOf(final String nodePosition) {
+			try {
+				return NodePosition.valueOf(nodePosition);
+			} catch (IllegalArgumentException e) {
+				return NodePositionMap.valueOf(nodePosition).nodePosition;
+			}
+		}
+
+		
+		public final NodePosition nodePosition;
+
+		private NodePositionMap(NodePosition nodePosition) {
+			this.nodePosition = nodePosition;
+		}
+		
+	}
+
+
 
 	static final String PRESENTATIONS = "presentations";
 	static final String NODE_ON_SLIDE = "NodeOnSlide";
@@ -114,7 +144,7 @@ class PresentationBuilder {
 					s.setPlacedNodeId(placedNodeId);
 				}
 				final String nodePosition = xmlSlide.getAttribute(PLACED_NODE_POSITION, NodePosition.CENTER.name());
-				s.setPlacedNodePosition(NodePosition.valueOf(nodePosition));
+				s.setPlacedNodePosition(NodePositionMap.nodePositionOf(nodePosition));
 				s.setZoom(toFloat(xmlSlide, ZOOM));
 				Enumeration<XMLElement> childAttributes = xmlSlide.enumerateChildren();
 				while(childAttributes.hasMoreElements()) {

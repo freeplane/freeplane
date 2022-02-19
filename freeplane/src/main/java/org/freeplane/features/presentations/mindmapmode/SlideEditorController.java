@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -80,7 +79,6 @@ class SlideEditorController{
 		btnRemoveSelectedNodes = createRemoveSelectedNodeButton();
 		btnSelectNodes = createSelectNodesButton();
 		tglBtnPlaceSelectedNode = createPlacesSelectedNodeToggleButton();
-		nodePositions = new ButtonGroup();
 		btnOnTheLeft = createNodePositionToggleButton("slide.on_the_left", NodePosition.LEFT);
 		btnAtCenter = createNodePositionToggleButton("slide.at_center", NodePosition.CENTER);
 		btnOnTheRight = createNodePositionToggleButton("slide.on_the_right", NodePosition.RIGHT);
@@ -132,6 +130,7 @@ class SlideEditorController{
 
 	private JToggleButton createNodePositionToggleButton(String key, final NodePosition position) {
 		final JToggleButton btn = TranslatedElementFactory.createToggleButtonWithIcon(key + ".icon", key + ".tooltip");
+		btn.putClientProperty(NodePosition.class, position);
 		btn.addActionListener(new ActionListener() {
 
 			@Override
@@ -139,7 +138,6 @@ class SlideEditorController{
 				UndoableSlide.of(slide).setPlacedNodePosition(position);
 			}
 		});
-		nodePositions.add(btn);
 		return btn;
 	}
 
@@ -272,7 +270,6 @@ class SlideEditorController{
 
 	private FilterComposerDialog filterComposerDialog = null;
 
-	private final ButtonGroup nodePositions;
 	private final JToggleButton[] positionButtons;
 
 	private JToggleButton createSetFilterToggleButton() {
@@ -450,11 +447,9 @@ class SlideEditorController{
 	}
 
 	private void setNodePlacementControlsEnabled(boolean placesSelectedNode, NodePosition nodePosition) {
-		for(JToggleButton btn : positionButtons)
+		for(JToggleButton btn : positionButtons) {
 			btn.setEnabled(placesSelectedNode);
-		if(placesSelectedNode)
-			positionButtons[nodePosition.ordinal()].setSelected(true);
-		else
-			nodePositions.clearSelection();
+			btn.setSelected(placesSelectedNode  && nodePosition == btn.getClientProperty(NodePosition.class));
+		}
 	}
 }
