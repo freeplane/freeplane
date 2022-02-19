@@ -127,7 +127,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler shapeHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeStyleModel.setShape(node, value);
+				NodeStyleModel.setShape(node, replacingInvisibleByRectangle(value));
+			}
+
+			private String replacingInvisibleByRectangle(final String value) {
+				return "invisible".equals(value) ? NodeStyleShape.rectangle.name() : value;
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", shapeHandler);

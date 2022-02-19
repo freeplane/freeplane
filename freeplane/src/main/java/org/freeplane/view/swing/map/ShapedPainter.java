@@ -11,7 +11,6 @@ import java.awt.Stroke;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
-import org.freeplane.features.nodestyle.NodeStyleShape;
 
 abstract class ShapedPainter extends MainViewPainter {
 
@@ -53,7 +52,7 @@ abstract class ShapedPainter extends MainViewPainter {
 		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
 		mainView.paintBackgound(g);
 		mainView.paintDragOver(g);
-		if(shapeConfiguration.getShape() != NodeStyleShape.invisible) {
+		if(mainView.getBorderColor().getAlpha() != 0) {
 			paintNodeShapeConfiguringGraphics(g);
 		}
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
