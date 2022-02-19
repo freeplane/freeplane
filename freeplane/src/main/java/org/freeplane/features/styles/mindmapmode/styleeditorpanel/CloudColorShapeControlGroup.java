@@ -57,7 +57,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	public CloudColorShapeControlGroup() {
 		mSetCloud = new RevertingProperty(REVERT_CLOUD);
 		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
+		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR), false);
 		mCloudShape = ComboProperty.of(CLOUD_SHAPE, CloudShape.class);
 		mPropertyListener = new CloudColorChangeListener(mSetCloud, mCloudColor, mCloudShape);
 		mSetCloud.addPropertyChangeListener(mPropertyListener);

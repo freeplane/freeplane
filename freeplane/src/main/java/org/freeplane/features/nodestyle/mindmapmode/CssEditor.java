@@ -84,7 +84,7 @@ class CssEditor {
 		previewScrollPane.setBorder(previewBorder);
 		box = Box.createHorizontalBox();
 		box.add(editorScrollPane);
-		JButton previewButton = new JButton("\ue900");
+		JButton previewButton = new JButton(IconFont.REFRESH_CHARACTER);
 		previewButton.setFont(IconFont.FONT.deriveFont(16 * UITools.FONT_SCALE_FACTOR));
 		previewButton.setToolTipText(TextUtils.getRawText("EditNodeCssRefresh.tooltip"));
 		previewButton.addActionListener(x -> updateDocument());

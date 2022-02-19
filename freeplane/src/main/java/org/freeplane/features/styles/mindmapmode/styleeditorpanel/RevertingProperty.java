@@ -48,10 +48,10 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 	
 	RevertingProperty(String name) {
 		super(name);
-		revertButton = new JButton("\ue901");
-		revertButton.setFont(IconFont.FONT);
-		revertButton.setBorder(BORDER);
+		revertButton = IconFont.createIconButton();
+		revertButton.setText(IconFont.REVERT_CHARACTER);
 		revertButton.setToolTipText(TEXT);
+		revertButton.setBorder(BORDER);
 		revertButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

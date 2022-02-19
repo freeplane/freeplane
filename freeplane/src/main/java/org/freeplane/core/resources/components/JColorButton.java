@@ -71,13 +71,13 @@ class JColorButton extends JButton {
 			int yText = (getHeight() + textHeight - COLOR_ICON_BORDER_SIZE) / 2;
 	        /* Draw the Text */
 	        if(! getModel().isEnabled()) {
-	            g.setColor(color.brighter());
+	            g.setColor(backgroundColor.brighter());
 	            HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
-	            g.setColor(color.darker());
+	            g.setColor(backgroundColor.darker());
 	            HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText - 1, yText - 1);
 	        } else {
 	            /*** paint the text normally */
-		        final Color textColor = UITools.getTextColorForBackground(color);
+		        final Color textColor = UITools.getTextColorForBackground(backgroundColor);
 		        g.setColor(textColor);
 		        HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
 	        }

@@ -102,12 +102,12 @@
 				<boolean name="display_node_id" />
 			</separator>
 			<separator name="default_colors">
-				<color name="revision_color" />
+				<color name="revision_color" supports_transparent_color="false"/>
 				<boolean name="printonwhitebackground" />
 			</separator>
 			<separator name="spotlight" text="OptionPanel.spotlight">
 				<boolean name="activateSpotlightByDefault"/>
-				<color name= "spotlight_background_color"/>
+				<color name= "spotlight_background_color" supports_transparent_color="false"/>
 			</separator>
 			<separator name="root_node_appearance">
 				<boolean name="use_common_out_point_for_root_node" />
@@ -162,14 +162,14 @@
 		</tab>
 		<tab name="Defaults">
 			<separator name="cloud">
-				<color name="standardcloudcolor" />
+				<color name="standardcloudcolor" supports_transparent_color="false"/>
 				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudShape"/>
 			</separator>
 			<separator name="connectors">
 				<boolean name="assignsNodeDependantStylesToNewConnectors"/>
 				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
 				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
-				<color name="connector_color" />
+				<color name="connector_color" supports_transparent_color="false"/>
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
 				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorShape"/>
@@ -187,8 +187,8 @@
 			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />
-				<color name="standardselectednoderectanglecolor" />
-				<color name="standardselectednodecolor" />
+				<color name="standardselectednoderectanglecolor" supports_transparent_color="false"/>
+				<color name="standardselectednodecolor" supports_transparent_color="false"/>
 			</separator>
 			<separator name="cmdsearch">
                 <number name="cmdsearch_item_limit" min="10"/>

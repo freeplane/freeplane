@@ -72,7 +72,7 @@ class ConnectorColorControlGroup implements ControlGroup {
     public void addControlGroup(DefaultFormBuilder formBuilder) {
 		setColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		color = new ColorProperty(ConnectorColorControlGroup.CONNECTOR_COLOR, 
-		        ResourceController.getResourceController().getProperty(LinkController.RESOURCES_LINK_COLOR));
+		        ResourceController.getResourceController().getProperty(LinkController.RESOURCES_LINK_COLOR), false);
 		propertyChangeListener = new ConnectorColorChangeListener(setColor, color);
 		setColor.addPropertyChangeListener(propertyChangeListener);
 		color.addPropertyChangeListener(propertyChangeListener);

@@ -62,7 +62,6 @@ public class OptionPanelBuilder {
 		private final Vector<String> choices;
 		private final Vector<?> displayedItems;
 		private final String name;
-		private int verticalMargin;
 		@SuppressWarnings("rawtypes")
 		private Class enumClass;
 
@@ -70,7 +69,6 @@ public class OptionPanelBuilder {
 			this.choices = choices;
 			this.displayedItems = displayedItems;
 			this.name = name;
-			verticalMargin = 0;
 		}
 
 		@Override
@@ -78,11 +76,6 @@ public class OptionPanelBuilder {
 			@SuppressWarnings("unchecked")
 			final ComboProperty comboProperty = enumClass != null ? ComboProperty.of(name, enumClass) : new ComboProperty(name, choices, displayedItems);
 			return comboProperty;
-		}
-
-		public ComboPropertyCreator withVerticalMargin(int verticalMargin) {
-			this.verticalMargin = verticalMargin;
-			return this;
 		}
 
 		public ComboPropertyCreator withEnum(Class<?> enumClass) {
@@ -106,7 +99,8 @@ public class OptionPanelBuilder {
 	private class ColorOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			return createColorOptionCreator(name);
+			final String supportsTransparentColor = data.getAttribute("supports_transparent_color", null);
+			return createColorOptionCreator(name, supportsTransparentColor == null || Boolean.parseBoolean(supportsTransparentColor));
 		}
 	}
 
@@ -533,8 +527,12 @@ public class OptionPanelBuilder {
 		addCreator(path, createBooleanOptionCreator(name), name, position);
 	}
 
+	public void addColorProperty(final String path, final String name, final int position, boolean supportsTransparentColor) {
+		addCreator(path, createColorOptionCreator(name, supportsTransparentColor), name, position);
+	}
+
 	public void addColorProperty(final String path, final String name, final int position) {
-		addCreator(path, createColorOptionCreator(name), name, position);
+		addColorProperty(path, name, position, true);		
 	}
 
 	public void addComboProperty(final String path, final String name, final Vector<String> choices,
@@ -608,11 +606,11 @@ public class OptionPanelBuilder {
 		};
 	}
 
-	private IPropertyControlCreator createColorOptionCreator(final String name) {
+	private IPropertyControlCreator createColorOptionCreator(final String name, boolean supportsTransparentColor) {
 		return new IPropertyControlCreator() {
 			@Override
 			public IPropertyControl createControl() {
-				return new ColorProperty(name, ResourceController.getResourceController().getDefaultProperty(name));
+				return new ColorProperty(name, ResourceController.getResourceController().getDefaultProperty(name), supportsTransparentColor);
 			}
 
 			@Override

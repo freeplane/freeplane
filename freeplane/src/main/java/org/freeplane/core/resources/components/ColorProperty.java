@@ -20,16 +20,18 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -38,27 +40,48 @@ import org.freeplane.core.ui.components.JFreeplaneMenuItem;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
+import org.freeplane.features.styles.mindmapmode.styleeditorpanel.IconFont;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
+public class ColorProperty extends PropertyBean implements IPropertyControl {
+	private static final Color TRANSPARENT_COLOR = new Color(0, 0, 0, 0);
 	Color color;
 	final private Color defaultColor;
 	JColorButton mButton;
+	private final JButton transparentButton;
+	private final JButton copyButton;
+	private final JButton pasteButton;
 
-	/**
-	 * @param name
-	 * @param defaultColor
-	 */
 	public ColorProperty(final String name, final String defaultColor) {
+		this(name, defaultColor, true);
+	}
+	
+	public ColorProperty(final String name, final String defaultColor, boolean supportsTransparentColor) {
 		super(name);
 		this.defaultColor = ColorUtils.stringToColor(defaultColor);
 		mButton = new JColorButton();
-		mButton.addActionListener(this);
+		mButton.addActionListener(this::chooseColor);
 		color = null;
+
+		if(supportsTransparentColor) {
+			transparentButton = IconFont.createIconButton();
+			transparentButton.setText(IconFont.TRANSPARENT_CHARACTER);
+			transparentButton.setToolTipText(TextUtils.getText("ColorProperty.MakeTransparent"));
+		}
+		else
+			transparentButton = null;
+		
+		copyButton = IconFont.createIconButton();
+		copyButton.setText(IconFont.COPY_CHARACTER);
+		copyButton.setToolTipText(TextUtils.getText("ColorProperty.CopyColor"));
+		
+		pasteButton = IconFont.createIconButton();
+		pasteButton.setText(IconFont.PASTE_CHARACTER);
+		pasteButton.setToolTipText(TextUtils.getText("ColorProperty.PasteColor"));
 	}
 
-	public void actionPerformed(final ActionEvent arg0) {
+	private void chooseColor(final ActionEvent arg0) {
 		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), TextUtils
 		    .getOptionalText(getLabel()), getColorValue(), defaultColor);
 		if(result != null){
@@ -80,7 +103,21 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {
-		appendToForm(builder, mButton);
+		Box buttons = Box.createHorizontalBox();
+		mButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		buttons.add(mButton);
+
+		if(transparentButton != null) {
+			buttons.add(transparentButton);
+			transparentButton.addActionListener(e -> setTransparentColor());
+		}
+		buttons.add(copyButton);
+		copyButton.addActionListener(e -> copyColorToClipboard());
+
+		buttons.add(pasteButton);
+		pasteButton.addActionListener(e -> pasteColorFromClipboard());
+
+		appendToForm(builder, buttons);
 		mButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(final MouseEvent evt) {
@@ -142,7 +179,30 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 				}
 			}
 		});
-		}
+	}
+
+	private void pasteColorFromClipboard() {
+		try {
+			Transferable t = ClipboardAccessor.getInstance().getClipboardContents();
+			if (t == null || !t.isDataFlavorSupported(DataFlavor.stringFlavor))
+				return ;
+			String content = t.getTransferData(DataFlavor.stringFlavor).toString().trim();
+			Color color = ColorUtils.stringToColor(content);
+			setColorValue(color);
+			firePropertyChangeEvent();
+		} catch (NumberFormatException | UnsupportedFlavorException | IOException e) {/**/}
+	}
+ 
+	private void copyColorToClipboard() {
+		String value = getValue();
+		if(value != null)
+			ClipboardAccessor.getInstance().setClipboardContents(value);
+	}
+
+	private void setTransparentColor() {
+		setColorValue(TRANSPARENT_COLOR);
+		firePropertyChangeEvent();
+	}
 
 	/**
 	 */
@@ -153,6 +213,10 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
+		if(transparentButton != null)
+			transparentButton.setEnabled(pEnabled);
+		copyButton.setEnabled(pEnabled);
+		pasteButton.setEnabled(pEnabled);
 		super.setEnabled(pEnabled);
 	}
 
