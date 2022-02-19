@@ -30,7 +30,7 @@ class JColorButton extends JButton {
 	void setColor(Color color) {
 		this.color = color;
 	    if (color != null) {
-	        this.text = ColorUtils.colorToString(color);
+	        this.text = ColorUtils.colorToRGBPercentString(color);
 	    }
 	    else {
 	    	this.text = " ";
@@ -39,8 +39,6 @@ class JColorButton extends JButton {
 		this.textWidth = this.textHeight = 0;
 		repaint();
 	}
-	
-	
 	
 	@Override
 	public Dimension getPreferredSize() {

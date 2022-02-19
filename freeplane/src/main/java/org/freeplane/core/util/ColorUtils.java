@@ -20,6 +20,15 @@ public class ColorUtils {
 		}
 		return String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
 	}
+	public static String colorToRGBPercentString(final Color col) {
+		if (col == null) {
+			return null;
+		}
+		if(col.getAlpha() == 255)
+			return String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
+		else
+			return String.format("#%02x%02x%02x, %2d%%", col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha() * 100 / 255);
+	}
 
 	public static String colorToRGBAString(final Color col) {
 		if (col == null) {
