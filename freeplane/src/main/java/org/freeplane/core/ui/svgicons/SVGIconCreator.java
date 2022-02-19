@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.svgicons;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -10,11 +11,14 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.regex.Matcher;
 
 import javax.swing.Icon;
+import javax.swing.UIManager;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ColorUtils;
 
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
@@ -23,13 +27,36 @@ import com.kitfox.svg.app.beans.SVGIcon;
 
 class SVGIconCreator {
 
-	private static final String ACCENT_COLOR_REPLACEMENTS_PROPERTY = "accentColorReplacements";
-	private static final String FOR_DARK_LOOK_AND_FEELS = "ForDarkLookAndFeels";
-	private static final String FOR_LIGHT_LOOK_AND_FEELS = "ForLightLookAndFeels";
+	private static final String ACCENT_COLOR_PLACEHOLDER = "@accentColor";
+	private static final String ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR = "accentColorReplacementsFor";
+	private static final String DARK_LOOK_AND_FEELS = "DarkLookAndFeels";
+	private static final String LIGHT_LOOK_AND_FEELS = "LightLookAndFeels";
 	private static String accentColorReplacements = null;
-	private static void initializeAccentRolorReplacements() {
-		accentColorReplacements = ResourceController.getResourceController().getProperty(ACCENT_COLOR_REPLACEMENTS_PROPERTY +
-				(UITools.isLightLookAndFeelInstalled() ? FOR_LIGHT_LOOK_AND_FEELS : FOR_DARK_LOOK_AND_FEELS));
+	private static void initializeAccentColorReplacements() {
+		if(accentColorReplacements == null) {
+			String lookAndFeelId = UIManager.getLookAndFeel().getName().replaceAll("\\W+", "");
+			String specialReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR + lookAndFeelId;
+			String specialReplacementPropertyValue = ResourceController.getResourceController().getProperty(specialReplacementPropertyName, null);
+			String accentColorReplacementsWithPlaceholder;
+			if(specialReplacementPropertyValue != null)
+			{
+				accentColorReplacementsWithPlaceholder = specialReplacementPropertyValue;
+			}
+			else {
+				String defaultReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR +
+						(UITools.isLightLookAndFeelInstalled() ? LIGHT_LOOK_AND_FEELS : DARK_LOOK_AND_FEELS);
+				String defaultReplacementPropertyValue = ResourceController.getResourceController().getProperty(defaultReplacementPropertyName);
+				accentColorReplacementsWithPlaceholder = defaultReplacementPropertyValue;
+			}
+			if(accentColorReplacementsWithPlaceholder.contains(ACCENT_COLOR_PLACEHOLDER)) {
+				Color accentColor = UIManager.getColor("Component.accentColor");
+				if(accentColor == null)
+					accentColor = Color.BLUE;
+				accentColorReplacements = accentColorReplacementsWithPlaceholder.replaceAll(Matcher.quoteReplacement(ACCENT_COLOR_PLACEHOLDER), ColorUtils.colorToString(accentColor));
+			}
+			else
+				accentColorReplacements = accentColorReplacementsWithPlaceholder;
+		}
 	}
 	private final URL url;
     private int heightPixels = -1;
@@ -122,7 +149,7 @@ class SVGIconCreator {
 	}
 
 	private InputStream openStream() throws IOException {
-		initializeAccentRolorReplacements();
+		initializeAccentColorReplacements();
 		boolean urlContainsAccentColorReplacementQuery = ResourceController.USE_ACCENT_COLOR.equals(url.getQuery());
 		InputStream stream = (urlContainsAccentColorReplacementQuery ? urlWithoutQuery() : url).openStream();
 		if(!accentColorReplacements.isEmpty() && urlContainsAccentColorReplacementQuery)
