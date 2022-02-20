@@ -38,9 +38,12 @@ public class SynchronousScaledEditorKit extends ScaledEditorKit {
                               } 
                           }; 
                     } 
-                    else if (view instanceof ParagraphView) { 
+                    else 
+					if (view instanceof ParagraphView) { 
                         return new ParagraphView(elem) { 
-                            protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) { 
+                            protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
+                            	if(isContainedInTableCell(elem) )
+                            		return super.calculateMinorAxisRequirements(axis, r);
                                 if (r == null) { 
                                       r = new SizeRequirements(); 
                                 } 
@@ -52,11 +55,20 @@ public class SynchronousScaledEditorKit extends ScaledEditorKit {
                                   r.maximum = Integer.MAX_VALUE; 
                                   r.alignment = 0.5f; 
                                 return r; 
-                              } 
+                              }
+
+							private boolean isContainedInTableCell(Element elem) {
+								Element parentElement = elem.getParentElement();
+								if(parentElement == null)
+									return false;
+								String name = parentElement.getName();
+								return name.equals("td") || name.equals("th");
+							} 
 
                           }; 
                       } 
-                    else if (view instanceof ImageView) {
+                    else 
+                    	if (view instanceof ImageView) {
 						((ImageView)view).setLoadsSynchronously(true);
 					}
 					return view;
