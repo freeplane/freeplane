@@ -24,7 +24,7 @@ class JColorButton extends JButton {
 	private static final int COLOR_ICON_BORDER_SIZE = (int) (4 * UITools.FONT_SCALE_FACTOR);
 	private static final Paint TEXTURE = createTexture();
 	private static TexturePaint createTexture() {
-		int cellSize = COLOR_ICON_BORDER_SIZE;
+		int cellSize = (int) (6 * UITools.FONT_SCALE_FACTOR);
 		BufferedImage image = new BufferedImage(cellSize, cellSize, BufferedImage.TYPE_INT_RGB);
 		Graphics graphics = image.getGraphics();
 		graphics.setColor(Color.WHITE);
