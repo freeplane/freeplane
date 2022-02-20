@@ -68,6 +68,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 			transparentButton = IconFont.createIconButton();
 			transparentButton.setText(IconFont.TRANSPARENT_CHARACTER);
 			transparentButton.setToolTipText(TextUtils.getText("ColorProperty.MakeTransparent"));
+			transparentButton.addActionListener(e -> setTransparentColor());
 		}
 		else
 			transparentButton = null;
@@ -79,6 +80,9 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 		pasteButton = IconFont.createIconButton();
 		pasteButton.setText(IconFont.PASTE_CHARACTER);
 		pasteButton.setToolTipText(TextUtils.getText("ColorProperty.PasteColor"));
+		copyButton.addActionListener(e -> copyColorToClipboard());
+
+		pasteButton.addActionListener(e -> pasteColorFromClipboard());
 	}
 
 	private void chooseColor(final ActionEvent arg0) {
@@ -106,16 +110,11 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 		Box buttons = Box.createHorizontalBox();
 		mButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 		buttons.add(mButton);
-
 		if(transparentButton != null) {
 			buttons.add(transparentButton);
-			transparentButton.addActionListener(e -> setTransparentColor());
 		}
 		buttons.add(copyButton);
-		copyButton.addActionListener(e -> copyColorToClipboard());
-
 		buttons.add(pasteButton);
-		pasteButton.addActionListener(e -> pasteColorFromClipboard());
 
 		appendToForm(builder, buttons);
 		mButton.addMouseListener(new MouseAdapter() {
@@ -200,7 +199,18 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	private void setTransparentColor() {
-		setColorValue(TRANSPARENT_COLOR);
+		Color colorValue = getColorValue();
+		if(colorValue == null)
+			setColorValue(TRANSPARENT_COLOR);
+		else {
+			int red = colorValue.getRed();
+			int green = colorValue.getGreen();
+			int blue = colorValue.getBlue();
+			if(colorValue.getAlpha() >= 0x80)
+				setColorValue(new Color(red, green, blue, 0));
+			else
+				setColorValue(new Color(red, green, blue, 0xff));
+		}
 		firePropertyChangeEvent();
 	}
 
