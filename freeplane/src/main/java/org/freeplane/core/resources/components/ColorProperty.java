@@ -50,8 +50,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 	final private Color defaultColor;
 	JColorButton mButton;
 	private final JButton transparentButton;
-	private final JButton copyButton;
-	private final JButton pasteButton;
 
 	public ColorProperty(final String name, final String defaultColor) {
 		this(name, defaultColor, true);
@@ -72,17 +70,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 		}
 		else
 			transparentButton = null;
-		
-		copyButton = IconFont.createIconButton();
-		copyButton.setText(IconFont.COPY_CHARACTER);
-		copyButton.setToolTipText(TextUtils.getText("ColorProperty.CopyColor"));
-		
-		pasteButton = IconFont.createIconButton();
-		pasteButton.setText(IconFont.PASTE_CHARACTER);
-		pasteButton.setToolTipText(TextUtils.getText("ColorProperty.PasteColor"));
-		copyButton.addActionListener(e -> copyColorToClipboard());
-
-		pasteButton.addActionListener(e -> pasteColorFromClipboard());
 	}
 
 	private void chooseColor(final ActionEvent arg0) {
@@ -113,8 +100,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 		if(transparentButton != null) {
 			buttons.add(transparentButton);
 		}
-		buttons.add(copyButton);
-		buttons.add(pasteButton);
 
 		appendToForm(builder, buttons);
 		mButton.addMouseListener(new MouseAdapter() {
@@ -180,24 +165,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 		});
 	}
 
-	private void pasteColorFromClipboard() {
-		try {
-			Transferable t = ClipboardAccessor.getInstance().getClipboardContents();
-			if (t == null || !t.isDataFlavorSupported(DataFlavor.stringFlavor))
-				return ;
-			String content = t.getTransferData(DataFlavor.stringFlavor).toString().trim();
-			Color color = ColorUtils.stringToColor(content);
-			setColorValue(color);
-			firePropertyChangeEvent();
-		} catch (NumberFormatException | UnsupportedFlavorException | IOException e) {/**/}
-	}
- 
-	private void copyColorToClipboard() {
-		String value = getValue();
-		if(value != null)
-			ClipboardAccessor.getInstance().setClipboardContents(value);
-	}
-
 	private void setTransparentColor() {
 		Color colorValue = getColorValue();
 		if(colorValue == null)
@@ -225,8 +192,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 		mButton.setEnabled(pEnabled);
 		if(transparentButton != null)
 			transparentButton.setEnabled(pEnabled);
-		copyButton.setEnabled(pEnabled);
-		pasteButton.setEnabled(pEnabled);
 		super.setEnabled(pEnabled);
 	}
 
