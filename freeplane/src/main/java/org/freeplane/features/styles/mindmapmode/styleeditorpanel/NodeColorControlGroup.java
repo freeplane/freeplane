@@ -78,7 +78,7 @@ class NodeColorControlGroup implements ControlGroup {
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeColor = new RevertingProperty();
 		mNodeColor = new ColorProperty(NODE_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(NODE_TEXT_COLOR), false);
+		    .getDefaultProperty(NODE_TEXT_COLOR));
 		propertyChangeListener = new NodeColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(propertyChangeListener);
 		mNodeColor.addPropertyChangeListener(propertyChangeListener);
