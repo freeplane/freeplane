@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 import javax.swing.UIManager;
@@ -19,6 +20,7 @@ import javax.swing.UIManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.LogUtils;
 
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
@@ -27,7 +29,7 @@ import com.kitfox.svg.app.beans.SVGIcon;
 
 class SVGIconCreator {
 
-	private static final String ACCENT_COLOR_PLACEHOLDER = "@accentColor";
+	private static final Pattern PROPERTY_REFERENCE = Pattern.compile("\\$\\{[\\w.]+\\}");
 	private static final String ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR = "accentColorReplacementsFor";
 	private static final String DARK_LOOK_AND_FEELS = "DarkLookAndFeels";
 	private static final String LIGHT_LOOK_AND_FEELS = "LightLookAndFeels";
@@ -48,15 +50,33 @@ class SVGIconCreator {
 				String defaultReplacementPropertyValue = ResourceController.getResourceController().getProperty(defaultReplacementPropertyName);
 				accentColorReplacementsWithPlaceholder = defaultReplacementPropertyValue;
 			}
-			if(accentColorReplacementsWithPlaceholder.contains(ACCENT_COLOR_PLACEHOLDER)) {
-				Color accentColor = UIManager.getColor("Component.accentColor");
-				if(accentColor == null)
-					accentColor = Color.BLUE;
-				accentColorReplacements = accentColorReplacementsWithPlaceholder.replaceAll(Matcher.quoteReplacement(ACCENT_COLOR_PLACEHOLDER), ColorUtils.colorToString(accentColor));
-			}
-			else
-				accentColorReplacements = accentColorReplacementsWithPlaceholder;
+			accentColorReplacements = replacePropertyReferences(accentColorReplacementsWithPlaceholder);
 		}
+	}
+
+	private static String replacePropertyReferences(String accentColorReplacementsWithPlaceholder) {
+		Matcher matcher = PROPERTY_REFERENCE.matcher(accentColorReplacementsWithPlaceholder);
+		matcher.reset();
+		boolean result = matcher.find();
+		if (result) {
+		    StringBuffer sb = new StringBuffer();
+		    do {
+				String match = matcher.group();
+				String propertyName = match.substring(2, match.length() - 1);
+				Color accentColor = UIManager.getColor(propertyName);
+				if(accentColor == null) {
+					accentColor = Color.BLUE;
+					LogUtils.severe("Color property " + propertyName 
+							+ " required by replacement " + accentColorReplacementsWithPlaceholder 
+							+ " is not defined, " + accentColor + " is used");
+				}
+		        matcher.appendReplacement(sb, ColorUtils.colorToString(accentColor));
+		        result = matcher.find();
+		    } while (result);
+		    matcher.appendTail(sb);
+		    return sb.toString();
+		}
+		return accentColorReplacementsWithPlaceholder;
 	}
 	private final URL url;
     private int heightPixels = -1;
