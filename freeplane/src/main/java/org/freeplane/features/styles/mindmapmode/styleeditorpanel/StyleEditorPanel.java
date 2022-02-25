@@ -57,7 +57,9 @@ import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.forms.util.LayoutStyle;
 
 public class StyleEditorPanel extends JPanel {
-	public enum StyleEditorPanelSize{SMALL(0.6f), MIDDLE(0.8f), BIG(1f);
+	private static final String STYLE_EDITOR_PANEL_SIZE_PROPERTY = "styleEditorPanelSize";
+
+	public enum StyleEditorPanelSize{SMALL(0.6f), MEDIUM(0.8f), BIG(1f);
 		final float fontSize;
 		final ConstantSize paragraphGapSize;
 		private StyleEditorPanelSize(float scalingFactor) {
@@ -118,7 +120,10 @@ public class StyleEditorPanel extends JPanel {
 	                        final boolean addStyleBox) throws HeadlessException {
 		super();
 		setLayout(new BorderLayout());
-		panelConfiguration = ResourceController.getResourceController().getEnumProperty("styleEditorPanelSize", StyleEditorPanelSize.BIG);
+		ResourceController resourceController = ResourceController.getResourceController();
+		if("MIDDLE".equals(resourceController.getProperty(STYLE_EDITOR_PANEL_SIZE_PROPERTY, null)))
+			resourceController.setProperty(STYLE_EDITOR_PANEL_SIZE_PROPERTY, StyleEditorPanelSize.MEDIUM.name());
+		panelConfiguration = resourceController.getEnumProperty(STYLE_EDITOR_PANEL_SIZE_PROPERTY, StyleEditorPanelSize.MEDIUM);
 		controlGroups = createControlGroups(modeController, uiFactory, addStyleBox);
 		addHierarchyListener(new HierarchyListener() {
 
