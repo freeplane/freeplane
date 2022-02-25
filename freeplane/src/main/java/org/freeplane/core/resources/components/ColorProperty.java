@@ -167,18 +167,16 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 
 	private void setTransparentColor() {
 		Color colorValue = getColorValue();
-		if(colorValue == null)
+		if(colorValue == null) {
 			setColorValue(TRANSPARENT_COLOR);
-		else {
+			firePropertyChangeEvent();
+		} else if(colorValue.getAlpha() > 0) {
 			int red = colorValue.getRed();
 			int green = colorValue.getGreen();
 			int blue = colorValue.getBlue();
-			if(colorValue.getAlpha() >= 0x80)
-				setColorValue(new Color(red, green, blue, 0));
-			else
-				setColorValue(new Color(red, green, blue, 0xff));
+			setColorValue(new Color(red, green, blue, 0));
+			firePropertyChangeEvent();
 		}
-		firePropertyChangeEvent();
 	}
 
 	/**
@@ -186,12 +184,17 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 	public void setColorValue(Color color) {
 	    this.color = color;
 	    mButton.setColor(color);
+	    updateTransparentButtonEnabledStatus();
+	}
+
+	private void updateTransparentButtonEnabledStatus() {
+		if(transparentButton != null && mButton.isEnabled())
+	    	transparentButton.setEnabled(color == null || color.getAlpha() > 0);
 	}
 
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
-		if(transparentButton != null)
-			transparentButton.setEnabled(pEnabled);
+		updateTransparentButtonEnabledStatus();
 		super.setEnabled(pEnabled);
 	}
 
