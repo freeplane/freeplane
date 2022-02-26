@@ -688,6 +688,10 @@ public class NodeModel{
 	public boolean isCloneTreeNode(){
 		return parent != null && clones[TREE_CLONE_INDEX].size() > 1 && parent.clones[TREE_CLONE_INDEX].size() == clones[TREE_CLONE_INDEX].size();
 	}
+	
+	public boolean isCloneNode() {
+		return clones[TREE_CLONE_INDEX].size() > 1 || clones[CONTENT_CLONE_INDEX].size() > 1;
+	}
 
 	public int nextNodeIndex(int index, final boolean leftSide) {
 		return nextNodeIndex(index, leftSide, +1);

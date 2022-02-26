@@ -274,12 +274,12 @@ public class MainView extends ZoomableLabel {
 		return resourceController.getBooleanProperty("markClones") || nodeView.isSelected() && resourceController.getBooleanProperty("markSelectedClones");
 	}
 
-	Rectangle decorationMarkBounds(final NodeView nodeView, double widthFactor, double heightFactor) {
+	Rectangle decorationMarkBounds(final NodeView nodeView, double shiftYFactor, double widthFactor, double heightFactor) {
 		final int size = nodeView.getZoomedStateSymbolHalfWidth();
 		int width = (int) (size * widthFactor);
 		int x = nodeView.isLeft() ? getWidth() : 0 - width;
 		int height = (int) (size * heightFactor);
-		int y = (getHeight() - height) / 2;
+		int y = (getHeight() - height) / 2 + (int)(height * shiftYFactor);
 		Rectangle decorationMarkBounds = new Rectangle(x, y, width, height);
 		return decorationMarkBounds;
 	}
