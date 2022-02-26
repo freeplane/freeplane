@@ -21,8 +21,11 @@ abstract class DrawableShape implements Drawable{
 		final Color color = g.getColor(); 
 		final Color edgeColor = nodeView.getMainView().getBorderColor();
 		final Shape shape = getShape(r);
-		g.setColor(getFillColor(nodeView));
-		g.fill(shape);
+		Color fillColor = getFillColor(nodeView);
+		if(fillColor != null) {
+			g.setColor(fillColor);
+			g.fill(shape);
+		}
 		g.setColor(edgeColor);
 		drawShape(g, shape, r, nodeView);
 		g.setColor(color);
