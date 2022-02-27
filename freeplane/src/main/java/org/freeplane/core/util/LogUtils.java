@@ -112,6 +112,6 @@ public class LogUtils {
 
     private static final Pattern EXCEPTION_START = Pattern.compile("[\\w.]+?(?:Exception|Error)(?::.*)?");
     static boolean matchesExceptionMessage(String message) {
-        return EXCEPTION_START.matcher(message).matches();
+        return message != null && EXCEPTION_START.matcher(message).matches();
     }
 }
