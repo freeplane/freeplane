@@ -343,11 +343,12 @@ public class EditNodeTextField extends EditNodeBase {
 				eventSource = CANCEL;
 				return;
 			}
-			if (e.isTemporary() && e.getOppositeComponent() == null) {
+			Component oppositeComponent = e.getOppositeComponent();
+			if (e.isTemporary() && oppositeComponent == null) {
 				return;
 			}
 			Window myWindow = SwingUtilities.getWindowAncestor(e.getComponent());
-			if (SwingUtilities.getWindowAncestor(e.getOppositeComponent()) 
+			if (oppositeComponent != null && SwingUtilities.getWindowAncestor(oppositeComponent) 
 					!= myWindow) {
 				myWindow.addWindowFocusListener(new WindowFocusListener() {
 					
