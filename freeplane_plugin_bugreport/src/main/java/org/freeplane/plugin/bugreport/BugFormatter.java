@@ -23,24 +23,27 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import java.util.regex.Pattern;
 
 /**
  * @author Dimitry Polivaev
  * 13.06.2009
  */
 public class BugFormatter extends Formatter {
+	private static final Pattern FILE_NOT_FOUND = Pattern.compile("(?<=java\\.io\\.FileNotFoundException:).*");
 	@Override
 	public String format(final LogRecord record) {
 		final String message = record.getMessage();
 		final StringBuilder sb = new StringBuilder();
-		sb.append(message);
+		sb.append(FILE_NOT_FOUND.matcher(message).replaceAll("---"));
 		sb.append('\n');
 		if (record.getThrown() != null) {
 			try (final StringWriter sw = new StringWriter();
                 final PrintWriter pw = new PrintWriter(sw);
 			){
 				record.getThrown().printStackTrace(pw);
-				sb.append(sw.toString());
+				String stackTrace = sw.toString();
+				sb.append(FILE_NOT_FOUND.matcher(stackTrace).replaceAll("---"));
 			}
 			catch (final Exception ex) {/**/}
 		}
