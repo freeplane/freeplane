@@ -282,7 +282,8 @@ public class ReportGenerator extends StreamHandler {
 	}
 
     private boolean isExcluded(LogRecord record) {
-    	if(record.getMessage().contains("\tat org.codehaus.groovy.runtime"))
+    	String message = record.getMessage();
+		if(message != null && message.contains("\tat org.codehaus.groovy.runtime"))
     		return true;
     	Throwable thrown = record.getThrown();
     	if(thrown == null)
