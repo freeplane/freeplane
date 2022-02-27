@@ -237,6 +237,9 @@ public class ReportGenerator extends StreamHandler {
 	        if(looksLikeDebugMessagePrintedToSystemStandardErrorStream(record)) {
 	            return;
 	        }
+	        if(isExcluded(record)) {
+	        	return;
+	        }
 			isReportGenerationInProgress = true;
 			viewController.invokeLater(new Runnable() {
 				@Override
@@ -278,7 +281,21 @@ public class ReportGenerator extends StreamHandler {
 			super.publish(record);
 	}
 
-    private boolean looksLikeDebugMessagePrintedToSystemStandardErrorStream(final LogRecord record) {
+    private boolean isExcluded(LogRecord record) {
+    	if(record.getMessage().contains("\tat org.codehaus.groovy.runtime"))
+    		return true;
+    	Throwable thrown = record.getThrown();
+    	if(thrown == null)
+    		return false;
+    	StackTraceElement[] stackTrace = thrown.getStackTrace();
+    	if(stackTrace == null || stackTrace.length == 0)
+    		return false;
+    	StackTraceElement stackTraceElement = stackTrace[0];
+    	String className = stackTraceElement.getClassName();
+		return className.startsWith("org.codehaus.groovy.runtime");
+	}
+
+	private boolean looksLikeDebugMessagePrintedToSystemStandardErrorStream(final LogRecord record) {
         return Compat.isMacOsX() && ! LogUtils.isLikelyToStartErrorLog(record);
     }
 
