@@ -26,7 +26,7 @@ java {
 } 
 
 task(run, dependsOn: 'classes', type: JavaExec) {
-    main ='org.freeplane.launcher.Launcher'
+    mainClass ='org.freeplane.launcher.Launcher'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = ['-Xmx512m',
     "-Dorg.freeplane.basedirectory=$globalBin",
@@ -40,13 +40,13 @@ task(run, dependsOn: 'classes', type: JavaExec) {
 }
 
 task(debug, dependsOn: 'classes', type: JavaExec) {
-    main = run.main
+    mainClass = run.mainClass
     jvmArgs = run.allJvmArgs    
     debug = true
 }
 
 task(runDist, dependsOn: 'classes', type: JavaExec) {
-	main ='org.freeplane.launcher.Launcher'
+	mainClass ='org.freeplane.launcher.Launcher'
 	classpath = fileTree(dir: globalBin, include: '*.jar')
 	jvmArgs = ['-Xmx512m',
 			   "-Dorg.freeplane.basedirectory=$globalBin",
@@ -57,7 +57,7 @@ task(runDist, dependsOn: 'classes', type: JavaExec) {
 }
 
 task(debugDist, dependsOn: 'classes', type: JavaExec) {
-	main = runDist.main
+	mainClass = runDist.mainClass
 	jvmArgs = run.allJvmArgs
 	debug = true
 }
