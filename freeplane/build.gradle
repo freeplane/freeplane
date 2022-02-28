@@ -236,17 +236,16 @@ task generateIconGroupProperties {
 }
 
 task copyOSGiJars(type: Copy) {
-        from ("$buildDir/libs") {
-          include("*.jar")
-		  exclude('freeplane-*.jar')
-        }
-     from (configurations.lib) {
-          include("*.jar")
-		  
-     }
-	 from (project(':freeplane_mac').jar.outputs.files)
-	 from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
-     into(globalBin + '/core/' + pluginid + '/lib/')
+    from ("$buildDir/libs") {
+        include("*.jar")
+        exclude('freeplane-*.jar')
+    }
+    from (configurations.lib) {
+        include("*.jar")  
+    }
+    from (project(':freeplane_mac').jar.outputs.files)
+    from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
+    into(globalBin + '/core/' + pluginid + '/lib/')
 }
 copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
 copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
