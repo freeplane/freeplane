@@ -34,6 +34,7 @@ task freeplanelauncherJar(type: Jar) {
 }
 
 jar.dependsOn freeplanelauncherJar
+freeplanelauncherJar.dependsOn (':freeplane_api:jar')
 
 task copyFreeplaneShellScript(type: Copy) {
      from('script/') {

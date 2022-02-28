@@ -258,6 +258,7 @@ configure(subprojects.findAll {it.name =~ /plugin/}) {
     // jar must execute after pluginJar so that the OSGi manifest can still be
     // picked up from build/manifest
     jar.dependsOn pluginJar
+    copyOSGiJars.dependsOn pluginJar
 }
 
 apply plugin: 'base' // necessary to get the global 'clean' task
