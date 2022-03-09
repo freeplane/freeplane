@@ -68,6 +68,7 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.plaf.basic.BasicEditorPaneUI;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
@@ -77,6 +78,7 @@ import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.flatlaf.NonSelectingFlatEditorPaneUI;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.Hyperlink;
@@ -710,7 +712,11 @@ abstract public class FrameController implements ViewController {
         	UIManager.put("Table.showVerticalLines", true);
         	UIManager.put("ComboBox.minimumWidth", 2);
         	UIManager.put("TabbedPane.tabsOverlapBorder", false);
+        	UIManager.put("EditorPaneUI", NonSelectingFlatEditorPaneUI.class.getName());
          }
+        else if(NonSelectingFlatEditorPaneUI.class.getName().equals(UIManager.get("EditorPaneUI"))){
+        	UIManager.put("EditorPaneUI", BasicEditorPaneUI.class.getName());
+        }
 	}
 
 	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
