@@ -252,9 +252,9 @@ public class MapLoader{
 		else {
 			map.setSaved(actualSourceLocation != null && actualSourceLocation.equals(newMapLocation));
 		}
-		setFollowedMapProperties(map);
 		mapController().addLoadedMap(map);
 		mapController().fireMapCreated(map);
+		setFollowedMapProperties(map);
 		return map;
 	}
 
