@@ -1397,6 +1397,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void update() {
+		if(! isDisplayable())
+			return;
 		invalidate();
 		updateShape();
 		updateEdge();
