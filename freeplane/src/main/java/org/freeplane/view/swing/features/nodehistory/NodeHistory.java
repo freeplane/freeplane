@@ -29,6 +29,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author foltin
@@ -186,9 +187,9 @@ public class NodeHistory implements IExtension {
 	}
 
 	private void onNodeSelect(final NodeModel pNode) {
-		if (currentNodeHolder != null
-		        && currentNodeHolder.isIdentical(((MapView) controller.getMapViewManager().getMapViewComponent())
-		            .getNodeView(pNode))) {
+		NodeView nodeView = ((MapView) controller.getMapViewManager().getMapViewComponent())
+		    .getNodeView(pNode);
+		if (nodeView == null || currentNodeHolder != null && currentNodeHolder.isIdentical(nodeView)) {
 			return;
 		}
 		while (canGoForward()) {
@@ -199,7 +200,7 @@ public class NodeHistory implements IExtension {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(((MapView) controller.getMapViewManager().getMapViewComponent()).getNodeView(pNode));
+		currentNodeHolder = new NodeHolder(nodeView);
 		nodeIterator.add(currentNodeHolder);
 	}
 }
