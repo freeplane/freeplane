@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -86,9 +88,44 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 
 	public void setValue(final boolean booleanValue) {
 	    if(revertButton.isVisible() != booleanValue) {
+	    	if(booleanValue == false && revertButton.isFocusOwner()) {
+	    		moveFocusToPreviousFocusableComponent();
+	    	}
 	        revertButton.setVisible(booleanValue);
 	        firePropertyChangeEvent();
 	    }
+	}
+
+	private void moveFocusToPreviousFocusableComponent() {
+		Container parent = revertButton.getParent();
+		int i = parent.getComponentCount() - 1;
+		for (; i >= 0 ; i--) {
+			Component component = parent.getComponent(i);
+			if (revertButton == component)
+					break;
+		}
+		for (i--; i >= 0 ; i--) {
+			Component component = parent.getComponent(i);
+			if(requestFocusInWindow(component)) {
+				break;
+			}
+		}
+	}
+
+	private boolean requestFocusInWindow(Component component) {
+		if(!(component instanceof Container) || ((Container) component).getComponentCount() == 0) {
+			boolean isFocusable = component.isFocusable();
+			if(isFocusable)
+				component.requestFocusInWindow();
+			return isFocusable;
+		}
+		Container container = (Container) component;
+		int i = container.getComponentCount() - 1;
+		for (; i >= 0 ; i--) {
+			if(requestFocusInWindow(container.getComponent(i)))
+				return true;
+		}
+		return false;
 	}
 
 	public boolean getBooleanValue() {
