@@ -204,6 +204,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	        to.setFontSize(fontSize);
 	    if(isItalic != null)
 	        to.setItalic(isItalic);
+	    if(isStrikedThrough != null)
+	        to.setStrikedThrough(isStrikedThrough);
 	    if(shapeConfiguration != NodeGeometryModel.NULL_SHAPE)
 	    	to.setShapeConfiguration(shapeConfiguration);
 	    if(nodeFormat != null)

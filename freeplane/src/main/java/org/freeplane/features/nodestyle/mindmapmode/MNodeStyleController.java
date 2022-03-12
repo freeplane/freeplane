@@ -162,11 +162,11 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.isBold()) {
 				fromStyle.setBold(null);
 			}
-			if (null != whichStyle.isStrikedThrough()) {
-				fromStyle.setStrikedThrough(null);
-			}
 			if (null != whichStyle.isItalic()) {
 				fromStyle.setItalic(null);
+			}
+			if (null != whichStyle.isStrikedThrough()) {
+				fromStyle.setStrikedThrough(null);
 			}
 			if (null != whichStyle.getFontFamilyName()) {
 				fromStyle.setFontFamilyName(null);
