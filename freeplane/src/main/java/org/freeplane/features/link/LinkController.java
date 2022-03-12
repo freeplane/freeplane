@@ -525,12 +525,12 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
-	public static final String RESOURCES_LINK_COLOR = "connector_color";
-	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape";
-	private static final String RESOURCES_CONNECTOR_ARROWS = "connector_arrows";
-	private static final String RESOURCES_DASH_VARIANT = "connector_dash";
-	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha";
-	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
+	public static final String RESOURCES_LINK_COLOR = "connector_color_default";
+	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape_default";
+	private static final String RESOURCES_CONNECTOR_ARROWS = "connector_arrows_default";
+	private static final String RESOURCES_DASH_VARIANT = "connector_dash_default";
+	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha_default";
+	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width_default";
 
 	public void loadLink(final NodeModel node, String link) {
 		NodeLinks links = NodeLinks.getLinkExtension(node);
@@ -914,11 +914,11 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public int getStandardLabelFontSize() {
-		return ResourceController.getResourceController().getIntProperty("label_font_size", 12);
+		return ResourceController.getResourceController().getIntProperty("connector_label_font_size_default", 12);
     }
 
 	public String getStandardLabelFontFamily() {
-	    return ResourceController.getResourceController().getProperty("label_font_family");
+	    return ResourceController.getResourceController().getProperty("connector_label_font_family_default");
     }
 
     private static final String MENUITEM_ICON = "menuitem_icon";

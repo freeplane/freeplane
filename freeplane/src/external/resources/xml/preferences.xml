@@ -167,16 +167,6 @@
 			</separator>
 			<separator name="connectors">
 				<boolean name="assignsNodeDependantStylesToNewConnectors"/>
-				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
-				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
-				<color name="connector_color" supports_transparent_color="false"/>
-				<number name="connector_alpha" text="edit_transparency_label"
-					min="20" max="255" />
-				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorShape"/>
-				<number name="connector_width" text="edit_width_label" min="1"
-					max="32" />
-				<font name="label_font_family" />
-				<number name="label_font_size" min="4" max="216" />
 				<combo name="show_connectors" >
 					<choice value="true" text="OptionPanel.show_connectors.true" />
 					<choice value="false" text="OptionPanel.show_connectors.false" />
