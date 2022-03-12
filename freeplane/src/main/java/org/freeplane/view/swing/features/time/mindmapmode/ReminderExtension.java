@@ -217,16 +217,6 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
             deactivateTimer();
     }
 
-    private void updateStateIcon(final NodeModel parent, final ClockState state) {
-        if (state != null && alreadyExecuted || !isAncestorNode(parent)) {
-            return;
-        }
-        if(state != null)
-            displayStateIcon(state, parent, true);
-        else
-            removeStateIcon(parent);
-    }
-
     private static void displayStateIcon(final ClockState stateAdded, final NodeModel pNode,
             final boolean recurse) {
         pNode.putExtension(stateAdded);
@@ -253,23 +243,13 @@ public class ReminderExtension implements IExtension, IMapChangeListener, IMapLi
     }
 
     @Override
-    public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-        updateStateIcon(parent, ClockState.CLOCK_VISIBLE);
-    }
-
-    @Override
-    public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-        updateStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
-    }
-
-    @Override
     public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-        updateStateIcon(nodeDeletionEvent.parent, null);
+        removeStateIcon(nodeDeletionEvent.parent);
     }
 
     @Override
     public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-        updateStateIcon(nodeMoveEvent.oldParent, null);
+        removeStateIcon(nodeMoveEvent.oldParent);
     }
 
     @Override
