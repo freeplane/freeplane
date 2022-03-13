@@ -128,7 +128,7 @@ class ScriptEditor extends AFreeplaneAction {
 		}
 
 		public ScriptHolder getScript(final int pIndex) {
-			final Attribute attribute = ((AttributeHolder) mScripts.get(pIndex)).mAttribute;
+			final Attribute attribute = mScripts.get(pIndex).mAttribute;
 			return new ScriptHolder(attribute.getName(), attribute.getValue().toString());
 		}
 
@@ -137,7 +137,7 @@ class ScriptEditor extends AFreeplaneAction {
 		}
 
 		public void setScript(final int pIndex, final ScriptHolder pScript) {
-			final AttributeHolder oldHolder = (AttributeHolder) mScripts.get(pIndex);
+			final AttributeHolder oldHolder = mScripts.get(pIndex);
 			if (!pScript.mScriptName.equals(oldHolder.mAttribute.getName())) {
 				isDirty = true;
 			}

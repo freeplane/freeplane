@@ -20,7 +20,7 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
     }
 
     private ExternalResource getExternalObjectModel() {
-        return (ExternalResource) getDelegate().getExtension(ExternalResource.class);
+        return getDelegate().getExtension(ExternalResource.class);
     }
 
     public String getUri() {

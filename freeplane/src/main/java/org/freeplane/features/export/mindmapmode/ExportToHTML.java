@@ -53,7 +53,7 @@ class ExportToHTML implements IExportEngine {
 				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons")
 				    .getAbsolutePath());
 			}
-			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
+			Controller.getCurrentModeController().getExtension(UrlManager.class)
 			    .loadHyperlink(new Hyperlink(file.toURI()));
 		}
 		catch (final IOException ex) {

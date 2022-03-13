@@ -125,7 +125,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	}
 
 	public static FormatController getController(Controller controller) {
-		return (FormatController) controller.getExtension(FormatController.class);
+		return controller.getExtension(FormatController.class);
 	}
 	
 	public static void install(final FormatController formatController) {
@@ -466,8 +466,8 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	public DecimalFormat getDecimalFormat(final String pattern) {
 		DecimalFormat format = numberFormatCache.get(pattern);
 		if (format == null) {
-			format = (DecimalFormat) ((pattern == null) ? getDefaultNumberFormat()
-			        : new DecimalFormat(pattern, new DecimalFormatSymbols(FormatUtils.getFormatLocaleFromResources())));
+			format = (pattern == null) ? getDefaultNumberFormat()
+			        : new DecimalFormat(pattern, new DecimalFormatSymbols(FormatUtils.getFormatLocaleFromResources()));
 			numberFormatCache.put(pattern, format);
 		}
 		return format;

@@ -45,8 +45,8 @@ public class RemoveExternalImageAction extends AMultipleNodeAction {
 	@Override
 	public void actionPerformed(final ActionEvent arg0, final NodeModel node) {
 		final ProgressUtilities progUtil = new ProgressUtilities();
-		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
-		    .getExtension(ViewerController.class));
+		final ViewerController vc = Controller.getCurrentController().getModeController()
+		    .getExtension(ViewerController.class);
 		if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 			vc.undoableDeactivateHook(node);
 		}

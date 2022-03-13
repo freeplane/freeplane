@@ -65,7 +65,7 @@ public class StdXMLReader implements IXMLReader {
 		final StdXMLReader r = new StdXMLReader(new FileInputStream(filename));
 		r.setSystemID(filename);
 		for (int i = 0; i < r.readers.size(); i++) {
-			final StackedReader sr = (StackedReader) r.readers.elementAt(i);
+			final StackedReader sr = r.readers.elementAt(i);
 			sr.systemId = r.currentReader.systemId;
 		}
 		return r;
@@ -186,7 +186,7 @@ public class StdXMLReader implements IXMLReader {
 				return true;
 			}
 			currentReader.pbReader.close();
-			currentReader = (StackedReader) readers.pop();
+			currentReader = readers.pop();
 			ch = readImpl();
 		}
 		unread(ch);
@@ -277,7 +277,7 @@ public class StdXMLReader implements IXMLReader {
 	 */
 	public int getLineNr() {
 		if (currentReader.lineReader == null) {
-			final StackedReader sr = (StackedReader) readers.peek();
+			final StackedReader sr = readers.peek();
 			if (sr.lineReader == null) {
 				return 0;
 			}
@@ -365,7 +365,7 @@ public class StdXMLReader implements IXMLReader {
 				throw new IOException("Unexpected EOF at line " + getLineNr());
 			}
 			currentReader.pbReader.close();
-			currentReader = (StackedReader) readers.pop();
+			currentReader = readers.pop();
 			ch = readImpl();
 		}
 		return (char) ch;

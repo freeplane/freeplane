@@ -441,7 +441,7 @@ public class NodeModel{
 				preferredChild = (getChildrenInternal().get(index + 1));
 			}
 			else {
-				preferredChild = (index > 0) ? (NodeModel) (getChildrenInternal().get(index - 1)) : null;
+				preferredChild = (index > 0) ? (getChildrenInternal().get(index - 1)) : null;
 			}
 		}
 		child.setParent(null);

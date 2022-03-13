@@ -67,7 +67,7 @@ public class CloudController implements IExtension {
 	}
 
 	public static CloudController getController(ModeController modeController) {
-		return (CloudController) modeController.getExtension(CloudController.class);
+		return modeController.getExtension(CloudController.class);
 	}
 	public static void install( final CloudController cloudController) {
 		Controller.getCurrentModeController().addExtension(CloudController.class, cloudController);

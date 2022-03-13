@@ -85,7 +85,7 @@ public class ManageNodeConditionalStylesAction extends AManageConditionalStylesA
 	public ConditionalStyleModel getConditionalStyleModel() {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel node = controller.getSelection().getSelected();
-		ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) node.getExtension(ConditionalStyleModel.class);
+		ConditionalStyleModel conditionalStyleModel = node.getExtension(ConditionalStyleModel.class);
 		if(conditionalStyleModel == null){
 			conditionalStyleModel = new ConditionalStyleModel();
 			node.addExtension(conditionalStyleModel);

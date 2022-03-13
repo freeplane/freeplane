@@ -26,11 +26,11 @@ import org.freeplane.features.map.NodeModel;
 
 public class CloudModel implements IExtension {
 	public static CloudModel getModel(final NodeModel node) {
-		return (CloudModel) node.getExtension(CloudModel.class);
+		return node.getExtension(CloudModel.class);
 	}
 
 	public static CloudModel createModel(final NodeModel node) {
-		final CloudModel extension = (CloudModel) node.getExtension(CloudModel.class);
+		final CloudModel extension = node.getExtension(CloudModel.class);
 		if (extension != null) {
 			return extension;
 		}

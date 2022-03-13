@@ -33,7 +33,7 @@ public class EdgeModel implements IExtension {
 	public static final int STANDARD_WIDTH = 1;
 
 	public static EdgeModel createEdgeModel(final NodeModel node) {
-		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
+		EdgeModel edge = node.getExtension(EdgeModel.class);
 		if (edge == null) {
 			edge = new EdgeModel();
 			node.addExtension(edge);
@@ -42,7 +42,7 @@ public class EdgeModel implements IExtension {
 	}
 
 	public static EdgeModel getModel(final NodeModel node) {
-		return (EdgeModel) node.getExtension(EdgeModel.class);
+		return node.getExtension(EdgeModel.class);
 	}
 
 	public static void setModel(final NodeModel node, final EdgeModel edge) {

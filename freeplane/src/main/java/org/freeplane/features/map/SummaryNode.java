@@ -90,7 +90,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 		final boolean isleft = node.isLeft();
 		int level = 1;
 		for(int i =  index - 1; i > 0; i--){
-			final NodeModel child = (NodeModel) parentNode.getChildAt(i);
+			final NodeModel child = parentNode.getChildAt(i);
 			if(isleft == child.isLeft()){
 				if( isSummaryNode(child))
 					level++;

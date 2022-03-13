@@ -38,7 +38,7 @@ public class LogicalStyleModel implements IExtension {
 	}
 
 	static public LogicalStyleModel getExtension(final NodeModel node) {
-		return (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
+		return node.getExtension(LogicalStyleModel.class);
 	}
 
 	static public IStyle getStyle(final NodeModel node) {
@@ -51,7 +51,7 @@ public class LogicalStyleModel implements IExtension {
 	}
 
 	static public LogicalStyleModel createExtension(final NodeModel node) {
-		LogicalStyleModel extension = (LogicalStyleModel) node.getExtension(LogicalStyleModel.class);
+		LogicalStyleModel extension = node.getExtension(LogicalStyleModel.class);
 		if (extension == null) {
 			extension = new LogicalStyleModel();
 			node.addExtension(extension);

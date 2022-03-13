@@ -118,28 +118,28 @@ class ConvexHull {
 		Point t;
 		min = 0;
 		for (i = 1; i < p.size(); ++i) {
-			if (((Point) p.get(i)).y < ((Point) p.get(min)).y) {
+			if (p.get(i).y < p.get(min).y) {
 				min = i;
 			}
 		}
 		for (i = 0; i < p.size(); ++i) {
-			if ((((Point) p.get(i)).y == ((Point) p.get(min)).y) && (((Point) p.get(i)).x > ((Point) p.get(min)).x)) {
+			if ((p.get(i).y == p.get(min).y) && (p.get(i).x > p.get(min).x)) {
 				min = i;
 			}
 		}
 		t = p.get(0);
 		p.set(0, p.get(min));
 		p.set(min, t);
-		final thetaComparator comp = new thetaComparator((Point) p.get(0));
+		final thetaComparator comp = new thetaComparator(p.get(0));
 		Collections.sort(p, comp);
-		p.add(0, new Point((Point) p.get(p.size() - 1)));
+		p.add(0, new Point(p.get(p.size() - 1)));
 		m = 3;
 		for (i = 4; i < p.size(); ++i) {
-			while (m > 0 && ccw((Point) p.get(m), (Point) p.get(m - 1), (Point) p.get(i)) >= 0) {
+			while (m > 0 && ccw(p.get(m), p.get(m - 1), p.get(i)) >= 0) {
 				m--;
 			}
 			m++;
-			t = (Point) p.get(m);
+			t = p.get(m);
 			p.set(m, p.get(i));
 			p.set(i, t);
 		}

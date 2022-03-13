@@ -34,8 +34,8 @@ class RemoveProgressAction extends AMultipleNodeAction {
 		}
 		//remove extended progress icon
 		if (progUtil.hasExtendedProgressIcon(node)) {
-			final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
-			    .getExtension(ViewerController.class));
+			final ViewerController vc = Controller.getCurrentController().getModeController()
+			    .getExtension(ViewerController.class);
 			vc.undoableDeactivateHook(node);
 		}
 	}

@@ -37,7 +37,7 @@ public class DetailModel extends RichTextModel implements IExtension {
     }
 
     public static DetailModel getDetail(final NodeModel node) {
-        final DetailModel extension = (DetailModel) node.getExtension(DetailModel.class);
+        final DetailModel extension = node.getExtension(DetailModel.class);
         return extension;
     }
 

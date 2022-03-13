@@ -99,7 +99,7 @@ public class SModeController extends MModeController {
 	void tryToCloseDialog() {
 	    final IMapViewManager mapViewManager = getController().getMapViewManager();
 	    final MapModel map = mapViewManager.getModel();
-	    final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+	    final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 	    final Window dialog = ((DialogController) getController().getViewController()).getDialog();
 	    if (! undoHandler.canUndo()){
 	    	dialog.setVisible(false);

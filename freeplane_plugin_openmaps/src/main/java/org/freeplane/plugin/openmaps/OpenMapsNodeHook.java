@@ -38,7 +38,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	
 	public void removeLocationFromCurrentlySelectedNode() {
 		final NodeModel node = getCurrentlySelectedNode();
-		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
+		OpenMapsExtension openMapsExtension = node.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension != null) {
 			super.undoableToggleHook(node, openMapsExtension);
@@ -59,9 +59,9 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	public void viewCurrentlySelectedLocation(final NodeModel targetNode) {
 		OpenMapsExtension openMapsExtension;
 		if (targetNode == null)
-			openMapsExtension = (OpenMapsExtension) getCurrentlySelectedNode().getExtension(OpenMapsExtension.class);
+			openMapsExtension = getCurrentlySelectedNode().getExtension(OpenMapsExtension.class);
 		else
-			openMapsExtension = (OpenMapsExtension) targetNode.getExtension(OpenMapsExtension.class);
+			openMapsExtension = targetNode.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension != null) {
 			map = new OpenMapsDialog();
@@ -80,7 +80,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final OpenMapsExtension extension = new OpenMapsExtension();
 		loadLocationFromXML(element, extension);
-		return (IExtension) extension;
+		return extension;
 	}
 	
 	@Override
@@ -109,7 +109,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 	
 	private void addChoosenLocationToSelectedNode(ICoordinate locationChoosen, int zoom) {
 		final NodeModel node = getCurrentlySelectedNode();
-		OpenMapsExtension openMapsExtension = (OpenMapsExtension) node.getExtension(OpenMapsExtension.class);
+		OpenMapsExtension openMapsExtension = node.getExtension(OpenMapsExtension.class);
 		
 		if (openMapsExtension == null) {
 			openMapsExtension = new OpenMapsExtension();

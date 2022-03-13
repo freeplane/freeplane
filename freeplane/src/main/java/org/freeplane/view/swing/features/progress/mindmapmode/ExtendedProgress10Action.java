@@ -29,8 +29,8 @@ class ExtendedProgress10Action extends AMultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final ViewerController vc = ((ViewerController) Controller.getCurrentController().getModeController()
-		    .getExtension(ViewerController.class));
+		final ViewerController vc = Controller.getCurrentController().getModeController()
+		    .getExtension(ViewerController.class);
 		try {
 	        URI uri = new URI(ResourceController.FREEPLANE_RESOURCE_URL_PROTOCOL, null, "/images/svg/Progress_tenth_00.svg", null);
 			vc.paste(uri, node);

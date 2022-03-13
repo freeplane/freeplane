@@ -84,7 +84,7 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
 	}
 
 	public static ScannerController getController(Controller controller) {
-		return (ScannerController) controller.getExtension(ScannerController.class);
+		return controller.getExtension(ScannerController.class);
 	}
 	
 	public static void install(final ScannerController scannerController) {

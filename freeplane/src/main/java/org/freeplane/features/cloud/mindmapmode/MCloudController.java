@@ -45,7 +45,7 @@ public class MCloudController extends CloudController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final CloudModel fromStyle = (CloudModel) from.getExtension(CloudModel.class);
+			final CloudModel fromStyle = from.getExtension(CloudModel.class);
 			if (fromStyle == null) {
 				return;
 			}
@@ -69,11 +69,11 @@ public class MCloudController extends CloudController {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
-			final CloudModel whichStyle = (CloudModel) which.getExtension(CloudModel.class);
+			final CloudModel whichStyle = which.getExtension(CloudModel.class);
 			if (whichStyle == null) {
 				return;
 			}
-			final CloudModel fromStyle = (CloudModel) from.getExtension(CloudModel.class);
+			final CloudModel fromStyle = from.getExtension(CloudModel.class);
 			if (fromStyle == null) {
 				return;
 			}

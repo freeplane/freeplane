@@ -89,7 +89,7 @@ public class NonValidator implements IXMLValidator {
 	 */
 	public void elementAttributesProcessed(final String name, final Properties extraAttributes, final String systemId,
 	                                       final int lineNr) {
-		final Properties props = (Properties) currentElements.pop();
+		final Properties props = currentElements.pop();
 		final Enumeration<Object> enumeration = props.keys();
 		while (enumeration.hasMoreElements()) {
 			final String key = (String) enumeration.nextElement();
@@ -121,7 +121,7 @@ public class NonValidator implements IXMLValidator {
 	 *            the line number in the XML data of the element.
 	 */
 	public void elementStarted(final String name, final String systemId, final int lineNr) {
-		Properties attribs = (Properties) attributeDefaultValues.get(name);
+		Properties attribs = attributeDefaultValues.get(name);
 		if (attribs == null) {
 			attribs = new Properties();
 		}

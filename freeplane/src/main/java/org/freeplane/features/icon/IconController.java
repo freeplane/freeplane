@@ -57,7 +57,7 @@ public class IconController implements IExtension {
 		return getController(modeController);
 	}
 	public static IconController getController(ModeController modeController) {
-		return (IconController) modeController.getExtension(IconController.class);
+		return modeController.getExtension(IconController.class);
     }
 
 	public static void installConditionControllers() {

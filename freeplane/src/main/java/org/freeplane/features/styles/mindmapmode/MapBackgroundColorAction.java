@@ -50,7 +50,7 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
-		MapStyle mapStyle = (MapStyle) controller.getModeController().getExtension(MapStyle.class);
+		MapStyle mapStyle = controller.getModeController().getExtension(MapStyle.class);
 		final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook(controller.getMap());
 		final Color oldBackgroundColor;
 		final String colorPropertyString = ResourceController.getResourceController().getProperty(

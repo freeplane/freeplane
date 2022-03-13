@@ -580,7 +580,7 @@ public class XMLElement implements Serializable {
 	 *             if the index is out of bounds.
 	 */
 	public XMLElement getChildAtIndex(final int index) throws ArrayIndexOutOfBoundsException {
-		return (XMLElement) children.elementAt(index);
+		return children.elementAt(index);
 	}
 
 	/**
@@ -634,7 +634,7 @@ public class XMLElement implements Serializable {
 		final Vector<XMLElement> result = new Vector<XMLElement>(children.size());
 		final Enumeration<XMLElement> enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final XMLElement child = (XMLElement) enumeration.nextElement();
+			final XMLElement child = enumeration.nextElement();
 			String str = child.getName();
 			boolean found = (str != null) && (str.equals(name));
 			str = child.getNamespace();
@@ -809,7 +809,7 @@ public class XMLElement implements Serializable {
 			throw new IllegalArgumentException("child must not be null");
 		}
 		if ((child.getName() == null) && (!children.isEmpty())) {
-			final XMLElement lastChild = (XMLElement) children.lastElement();
+			final XMLElement lastChild = children.lastElement();
 			if (lastChild.getName() == null) {
 				lastChild.setContent(lastChild.getContent() + child.getContent());
 				return;

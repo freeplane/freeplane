@@ -34,7 +34,7 @@ public class ModelessAttributeController implements IExtension {
 
 	public static ModelessAttributeController getController() {
 		Controller controller = Controller.getCurrentController();
-		return (ModelessAttributeController) controller.getExtension(ModelessAttributeController.class);
+		return controller.getExtension(ModelessAttributeController.class);
 	}
 
 	public static void install() {

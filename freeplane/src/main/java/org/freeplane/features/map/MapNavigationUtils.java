@@ -7,7 +7,7 @@ public class MapNavigationUtils {
 
     public static NodeModel findNext(final Direction direction, NodeModel current, final NodeModel end) {
     	if (current.getChildCount() != 0) {
-    		final NodeModel next = (NodeModel) current.getChildAt(0);
+    		final NodeModel next = current.getChildAt(0);
     		if (atEnd(next, end)) {
     			return null;
     		}
@@ -24,7 +24,7 @@ public class MapNavigationUtils {
     			Controller.getCurrentModeController().getMapController().fold(current);
     		}
     		if (index < childCount) {
-    			final NodeModel next = (NodeModel) parentNode.getChildAt(index);
+    			final NodeModel next = parentNode.getChildAt(index);
     			if (atEnd(next, end)) {
     				return null;
     			}
@@ -60,7 +60,7 @@ public class MapNavigationUtils {
     			}
     			return parentNode;
     		}
-    		current = (NodeModel) parentNode.getChildAt(index);
+    		current = parentNode.getChildAt(index);
     		if (atEnd(current, end)) {
     			return null;
     		}
@@ -73,7 +73,7 @@ public class MapNavigationUtils {
     			}
     			return current;
     		}
-    		current = (NodeModel) current.getChildAt(current.getChildCount() - 1);
+    		current = current.getChildAt(current.getChildCount() - 1);
     	}
     }
 }

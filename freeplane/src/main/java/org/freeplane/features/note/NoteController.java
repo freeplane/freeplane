@@ -148,7 +148,7 @@ public class NoteController implements IExtension {
 				}
 				String text;
 				try {
-					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, NoteModel.getNote(node), data);
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow(node, NoteModel.getNote(node), data);
 					text = HtmlUtils.objectToHtml(transformed);
 				}
 				catch (Exception e) {

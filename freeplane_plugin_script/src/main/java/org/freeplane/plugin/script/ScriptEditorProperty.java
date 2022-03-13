@@ -48,7 +48,7 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final IScriptEditorStarter plugin = (IScriptEditorStarter) Controller
+		final IScriptEditorStarter plugin = Controller
 				.getCurrentModeController().getExtension(
 						IScriptEditorStarter.class);
 		if (plugin != null) {
