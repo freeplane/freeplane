@@ -152,7 +152,7 @@ class XMLWriter {
 			}
 			Enumeration<String> enumAttributeNames = xml.enumerateAttributeNames();
 			while (enumAttributeNames.hasMoreElements()) {
-				final String key = (String) enumAttributeNames.nextElement();
+				final String key = enumAttributeNames.nextElement();
 				final int index = key.indexOf(':');
 				if (index >= 0) {
 					final String namespace = xml.getAttributeNamespace(key);
@@ -168,7 +168,7 @@ class XMLWriter {
 			}
 			enumAttributeNames = xml.enumerateAttributeNames();
 			while (enumAttributeNames.hasMoreElements()) {
-				final String key = (String) enumAttributeNames.nextElement();
+				final String key = enumAttributeNames.nextElement();
 				final String value = xml.getAttribute(key, null);
 				writer.print(" " + key + "=\"");
 				this.writeEncoded(value, true, false);

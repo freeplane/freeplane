@@ -59,7 +59,7 @@ public class ViewLayoutTypeAction extends AFreeplaneAction {
 			map.setLayoutType(layoutType);
 			setSelected(true);
 		}
-		final MapStyle mapStyle = (MapStyle) map.getModeController().getExtension(MapStyle.class);
+		final MapStyle mapStyle = map.getModeController().getExtension(MapStyle.class);
 		mapStyle.setMapViewLayout(map.getModel(), map.getLayoutType());
 		map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getModel(), 0.5f, 0.5f);
 		final NodeView root = map.getRoot();

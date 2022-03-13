@@ -17,7 +17,7 @@ public class Quantity <U extends Enum<U> & PhysicalUnit >{
 		if(separatorPosition >= 0){
 			numberString = valueString.substring(0, separatorPosition);
 			String unitString = valueString.substring(separatorPosition + 1);
-			final Class<U> unitClass = (Class<U>)defaultUnit.getDeclaringClass();
+			final Class<U> unitClass = defaultUnit.getDeclaringClass();
 			unit = Enum.valueOf(unitClass, unitString);
 		}
 		else {

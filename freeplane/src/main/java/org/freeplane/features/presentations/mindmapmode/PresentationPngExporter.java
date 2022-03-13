@@ -132,7 +132,7 @@ class PresentationPngExporter {
 		this.zoom = Controller.getCurrentController().getMapViewManager().getZoom();
 		final List<NodeModel> selection = Controller.getCurrentController().getSelection().getOrderedSelection();
 		this.selection = selection.toArray(new NodeModel[selection.size()]);
-		mapViewComponent = (JComponent) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 	}
 
 	private void exportAllPresentations() {

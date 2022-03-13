@@ -151,13 +151,13 @@ abstract public class CloudView {
         final Vector<Point> res = hull.calculateHull(coordinates);
         Point lastPt = null;
         for (int i = 0; i < res.size(); ++i) {
-            final Point pt = (Point) res.get(i);
+            final Point pt = res.get(i);
             if(!pt.equals(lastPt)){
                 p.addPoint(pt.x, pt.y);
                 lastPt = pt;
             }
         }
-        final Point pt = (Point) res.get(0);
+        final Point pt = res.get(0);
         p.addPoint(pt.x, pt.y);
         return p;
 	}

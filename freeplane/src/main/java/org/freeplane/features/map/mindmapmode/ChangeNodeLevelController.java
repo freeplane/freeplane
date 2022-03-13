@@ -127,7 +127,7 @@ public class ChangeNodeLevelController {
 		final int ownPosition = selectedParent.getIndex(selectedNode);
 		NodeModel directSibling = null;
 		for (int i = ownPosition - 1; i >= 0; --i) {
-			final NodeModel targetCandidate = (NodeModel) selectedParent.getChildAt(i);
+			final NodeModel targetCandidate = selectedParent.getChildAt(i);
 			if (canMoveTo(selectedNode, selectedNodes, targetCandidate)) {
 				directSibling = targetCandidate;
 				break;
@@ -135,7 +135,7 @@ public class ChangeNodeLevelController {
 		}
 		if (directSibling == null) {
 			for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
-				final NodeModel targetCandidate = (NodeModel) selectedParent.getChildAt(i);
+				final NodeModel targetCandidate = selectedParent.getChildAt(i);
 				if (canMoveTo(selectedNode, selectedNodes, targetCandidate)) {
 					directSibling = targetCandidate;
 					break;
@@ -144,7 +144,7 @@ public class ChangeNodeLevelController {
 		}
 		if (directSibling != null) {
 			for (final NodeModel node : selectedNodes) {
-				((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
+				(Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 			}
 			mapController.moveNodes(selectedNodes, directSibling, directSibling.getChildCount());
 			Controller.getCurrentModeController().getMapController().selectMultipleNodes(selectedNode, selectedNodes);
@@ -188,7 +188,7 @@ public class ChangeNodeLevelController {
         MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
 		List<List<NodeModel>> movedChildren = layoutType == MapViewLayout.OUTLINE ? findMovedChildren(selectedNode.getParentNode(), selectedNodes) : Collections.emptyList();
 		for (final NodeModel node : selectedNodes)
-			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
+			(Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 		mapController.moveNodes(selectedNodes, selectedParent, position, leftSide, changeSide);
 		if(layoutType == MapViewLayout.OUTLINE) {
 		    for(int i = 0; i < selectedNodes.size(); i++) {

@@ -83,7 +83,7 @@ class MapOverviewImage extends JComponent {
         Dimension source = mapInnerBounds.getSize();
         Dimension target = overviewBounds.getSize();
         double scale = getBestScale(source, target);
-        if (image == null || image.getWidth() != (int) overviewBounds.width * scaleX) {
+        if (image == null || image.getWidth() != overviewBounds.width * scaleX) {
             image = createOverviewImage(mapInnerBounds, overviewBounds, scale);
         }
         double overviewImageX = (target.getWidth() - source.getWidth() * scale) / 2;

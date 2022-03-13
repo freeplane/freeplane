@@ -66,7 +66,7 @@ class NoteDialogStarter{
 
 	private void setHtmlText(final NodeModel node, final String newText) {
 		final String body = HTML_HEAD.matcher(newText).replaceFirst("");
-		final MNoteController noteController = (MNoteController) MNoteController.getController();
+		final MNoteController noteController = MNoteController.getController();
 		final String trimmed = body.replaceFirst("\\s+$", "");
 		if(HtmlUtils.isEmpty(trimmed))
 			noteController.setNoteText(node, null);

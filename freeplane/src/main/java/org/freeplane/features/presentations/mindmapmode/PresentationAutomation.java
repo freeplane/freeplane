@@ -49,7 +49,7 @@ class PresentationAutomation implements PresentationStateChangeListener{
 	}
 
 	private JComponent getMapViewComponent() {
-		final JComponent mapViewComponent = (JComponent) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		final JComponent mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		return mapViewComponent;
 	}
 

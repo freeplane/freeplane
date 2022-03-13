@@ -149,7 +149,7 @@ public class ExportController implements IExtension{
     }
 
 	public static ExportController getController(ModeController modeController) {
-		return (ExportController) modeController.getExtension(ExportController.class);
+		return modeController.getExtension(ExportController.class);
     }
 
 	public boolean checkCurrentMap(MapModel map) {

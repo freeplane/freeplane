@@ -1807,7 +1807,7 @@ public class Scalr {
 
 		// Create our target image we will render the rotated result to.
 		BufferedImage result = createOptimalImage(src, newWidth, newHeight);
-		Graphics2D g2d = (Graphics2D) result.createGraphics();
+		Graphics2D g2d = result.createGraphics();
 
 		/*
 		 * Render the resultant image to our new rotatedImage buffer, applying

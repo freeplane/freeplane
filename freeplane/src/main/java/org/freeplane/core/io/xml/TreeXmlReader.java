@@ -173,7 +173,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			}
 			final Enumeration<String> attributeNames = lastBuiltElement.enumerateAttributeNames();
 			while (attributeNames.hasMoreElements()) {
-				final String atName = (String) attributeNames.nextElement();
+				final String atName = attributeNames.nextElement();
 				if (addAttribute(atName, lastBuiltElement.getAttribute(atName, null))) {
 					lastBuiltElement.removeAttribute(atName);
 				}
@@ -224,7 +224,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			final int lastChildIndex = top.getChildrenCount() - 1;
 			top.removeChildAtIndex(lastChildIndex);
 		}
-		nodeCreator = (IElementHandler) nodeCreatorStack.removeLast();
+		nodeCreator = nodeCreatorStack.removeLast();
 		elementContentAsString = null;
 	}
 

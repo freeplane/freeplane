@@ -43,7 +43,7 @@ class ExportBranchesToHTML implements IExportEngine {
 	public void export(List<NodeModel> branches, File file) {
 		try {
 			MapClipboardController.getController().saveHTML(branches, file);
-			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
+			Controller.getCurrentModeController().getExtension(UrlManager.class)
 			    .loadHyperlink(new Hyperlink(file.toURI()));
 		}
 		catch (final IOException ex) {

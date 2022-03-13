@@ -374,7 +374,7 @@ public class TextController implements IExtension {
 				String data = details.getText();
 				String text;
 				try {
-					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, details, data);
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow(node, details, data);
 					text = HtmlUtils.objectToHtml(transformed);
 				}
 				catch (Exception e) {
@@ -414,7 +414,7 @@ public class TextController implements IExtension {
 				final Object data = node.getUserObject();
 				String text;
 				try {
-					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, node, data);
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow(node, node, data);
 					text = HtmlUtils.objectToHtml(transformed);
 					if (text.equals(getShortText(text)))
 						return null;

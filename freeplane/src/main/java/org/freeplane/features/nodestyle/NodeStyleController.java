@@ -60,7 +60,7 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public static NodeStyleController getController(ModeController modeController) {
-		return (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+		return modeController.getExtension(NodeStyleController.class);
 	}
 	public static void install( final NodeStyleController styleController) {
 		final ModeController modeController = Controller.getCurrentModeController();

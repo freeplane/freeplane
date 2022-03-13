@@ -41,7 +41,7 @@ public class ShortenedTextModel implements IExtension {
 	}
 
 	public static ShortenedTextModel getShortenedTextModel(final NodeModel node) {
-		final ShortenedTextModel extension = (ShortenedTextModel) node.getExtension(ShortenedTextModel.class);
+		final ShortenedTextModel extension = node.getExtension(ShortenedTextModel.class);
 		return extension;
 	}
 	

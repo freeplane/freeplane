@@ -32,7 +32,7 @@ public class CopyIDAction extends AFreeplaneAction {
 			sb.append(node.createID());
 		}
 		final String idString = sb.toString();
-		final MapClipboardController clipboardController = (MapClipboardController) Controller.getCurrentModeController().getExtension(
+		final MapClipboardController clipboardController = Controller.getCurrentModeController().getExtension(
 		    MapClipboardController.class);
 		clipboardController.setClipboardContents(new StringSelection(idString));
 		controller.getViewController().out(idString);

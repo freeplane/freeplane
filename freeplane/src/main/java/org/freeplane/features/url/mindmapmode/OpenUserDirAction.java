@@ -44,7 +44,7 @@ class OpenUserDirAction extends AFreeplaneAction {
 
 	private UrlManager getURLManager() {
 		ModeController modeController = Controller.getCurrentModeController();
-		return (UrlManager) modeController.getExtension(UrlManager.class);
+		return modeController.getExtension(UrlManager.class);
 	}
 
 	@Override

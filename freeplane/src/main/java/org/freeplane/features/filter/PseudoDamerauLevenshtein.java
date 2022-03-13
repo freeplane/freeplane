@@ -216,13 +216,13 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 		matrix = new int[searchTerm.length()+1][searchText.length()+1]; // [row][col]
 		
 		 // first column: start-gap penalties for searchTerm
-		for (int i = 0; i <= (int)searchTerm.length(); i++)
+		for (int i = 0; i <= searchTerm.length(); i++)
 			matrix[i][0] = i*costIndel;
 		
 		// first row: start-gap penalties for searchText
 		if (type == Type.Global)
 		{
-			for (int j = 1; j <= (int)searchText.length(); j++)
+			for (int j = 1; j <= searchText.length(); j++)
 				matrix[0][j] = j*costIndel;
 		}
 		else if (type == Type.SemiGlobal)

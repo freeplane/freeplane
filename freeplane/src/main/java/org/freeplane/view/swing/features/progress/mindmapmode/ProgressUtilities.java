@@ -20,7 +20,7 @@ public class ProgressUtilities {
 	 * @return : true if the node has an external resource attached.
 	 */
 	public boolean hasExternalResource(final NodeModel node) {
-		final ExternalResource extResource = (ExternalResource) node.getExtension(ExternalResource.class);
+		final ExternalResource extResource = node.getExtension(ExternalResource.class);
 		if (extResource == null) {
 			return false;
 		}
@@ -34,7 +34,7 @@ public class ProgressUtilities {
 	 * @return : true if the node has an extended progress icon attached.
 	 */
 	public boolean hasExtendedProgressIcon(final NodeModel node) {
-		final ExternalResource extResource = (ExternalResource) node.getExtension(ExternalResource.class);
+		final ExternalResource extResource = node.getExtension(ExternalResource.class);
 		if (extResource == null) {
 			return false;
 		}

@@ -289,7 +289,7 @@ public class AddOnProperties {
             else if (updateUrl instanceof URI)
                 return ((URI) updateUrl).toURL();
 			else
-				return new URL((String) updateUrl.toString());
+				return new URL(updateUrl.toString());
 		}
 		catch (MalformedURLException e) {
 			throw new IllegalArgumentException(e);

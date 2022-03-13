@@ -45,7 +45,7 @@ public class DeleteLatexAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final LatexExtension latexExtension = (LatexExtension) node.getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = node.getExtension(LatexExtension.class);
 		if (latexExtension != null) {
 			nodeHook.undoableDeactivateHook(node);
 			Controller.getCurrentModeController().getMapController()
@@ -57,6 +57,6 @@ public class DeleteLatexAction extends AMultipleNodeAction {
 	@Override
 	public void setEnabled() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		setEnabled(node != null && (LatexExtension) node.getExtension(LatexExtension.class) != null);
+		setEnabled(node != null && node.getExtension(LatexExtension.class) != null);
 	}
 }

@@ -66,7 +66,7 @@ public class LocationModel implements IExtension {
 	}
 
 	public static LocationModel createLocationModel(final NodeModel node) {
-		LocationModel location = (LocationModel) node.getExtension(LocationModel.class);
+		LocationModel location = node.getExtension(LocationModel.class);
 		if (location == null) {
 			location = new LocationModel();
 			node.addExtension(location);
@@ -75,7 +75,7 @@ public class LocationModel implements IExtension {
 	}
 
 	public static LocationModel getModel(final NodeModel node) {
-		final LocationModel location = (LocationModel) node.getExtension(LocationModel.class);
+		final LocationModel location = node.getExtension(LocationModel.class);
 		return location != null ? location : LocationModel.NULL_LOCATION;
 	}
 

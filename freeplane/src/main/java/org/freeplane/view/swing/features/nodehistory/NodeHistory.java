@@ -41,7 +41,7 @@ public class NodeHistory implements IExtension {
 
 	static public void install(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		final NodeHistory history = (NodeHistory) controller.getExtension(NodeHistory.class);
+		final NodeHistory history = controller.getExtension(NodeHistory.class);
 		modeController.getMapController().addNodeSelectionListener(history.getMapSelectionListener());
 		LinkController.getController(modeController).addNodeSelectionListener(history.getLinkSelectionListener());
 		history.backAction = new BackAction(controller, history);

@@ -119,7 +119,7 @@ public class UndoHandler implements IUndoHandler {
 		}
 		if ((actorList.size() > 0)
 		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
-			CompoundActor compoundActor = (CompoundActor) actorIterator.previous();
+			CompoundActor compoundActor = actorIterator.previous();
 			compoundActor.add(actor);
 			actorIterator.next();
 		}

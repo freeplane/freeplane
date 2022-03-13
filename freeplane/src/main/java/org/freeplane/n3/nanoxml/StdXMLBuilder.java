@@ -88,7 +88,7 @@ class StdXMLBuilder implements IXMLBuilder {
 		if (nsPrefix != null) {
 			fullName = nsPrefix + ':' + key;
 		}
-		final XMLElement top = (XMLElement) stack.peek();
+		final XMLElement top = stack.peek();
 		if (top.hasAttribute(fullName)) {
 			throw new XMLParseException(top.getSystemID(), top.getLineNr(), "Duplicate attribute: " + key);
 		}
@@ -146,7 +146,7 @@ class StdXMLBuilder implements IXMLBuilder {
 		final XMLElement elt = prototype.createElement(null, systemID, lineNr);
 		elt.setContent(str.toString());
 		if (!stack.empty()) {
-			final XMLElement top = (XMLElement) stack.peek();
+			final XMLElement top = stack.peek();
 			top.addChild(elt);
 		}
 	}
@@ -185,7 +185,7 @@ class StdXMLBuilder implements IXMLBuilder {
 	 *            parameter is null.
 	 */
 	public void endElement(final String name, final String nsPrefix, final String nsURI) {
-		final XMLElement elt = (XMLElement) stack.pop();
+		final XMLElement elt = stack.pop();
 		if (elt.getChildrenCount() == 1) {
 			final XMLElement child = elt.getChildAtIndex(0);
 			if (child.getName() == null) {
@@ -274,7 +274,7 @@ class StdXMLBuilder implements IXMLBuilder {
 			root = elt;
 		}
 		else {
-			final XMLElement top = (XMLElement) stack.peek();
+			final XMLElement top = stack.peek();
 			top.addChild(elt);
 		}
 		stack.push(elt);

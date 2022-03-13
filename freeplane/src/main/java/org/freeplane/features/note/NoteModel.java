@@ -39,7 +39,7 @@ public class NoteModel extends RichTextModel implements IExtension {
 	}
 
 	public static NoteModel getNote(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+		final NoteModel extension = node.getExtension(NoteModel.class);
 		return extension;
 	}
 

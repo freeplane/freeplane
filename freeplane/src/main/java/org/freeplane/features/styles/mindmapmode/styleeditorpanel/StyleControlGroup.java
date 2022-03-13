@@ -147,7 +147,7 @@ class StyleControlGroup implements ControlGroup{
 			}
 			if(mAutomaticEdgeColorComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
-				AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
+				AutomaticEdgeColorHook al = modeController.getExtension(AutomaticEdgeColorHook.class);
 				final AutomaticEdgeColor extension = (AutomaticEdgeColor) al.getExtension(node);
 				if(extension == null) {
 					mAutomaticEdgeColorComboBox.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);

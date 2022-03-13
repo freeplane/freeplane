@@ -59,7 +59,7 @@ public class SetBooleanMapViewPropertyAction extends AFreeplaneAction{
     }
 
 	private JComponent getMapViewComponent() {
-		final JComponent mapViewComponent = (JComponent) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		final JComponent mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		return mapViewComponent;
 	}
 

@@ -104,7 +104,7 @@ class NewSummaryAction extends AFreeplaneAction {
 			return false;
 		int level = summaryLevel;
 		for(int i = start+1; i < end; i++){
-			NodeModel node = (NodeModel) parentNode.getChildAt(i);
+			NodeModel node = parentNode.getChildAt(i);
 			if(isLeft != node.isLeft())
 				continue;
 			if(SummaryNode.isSummaryNode(node))

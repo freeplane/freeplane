@@ -55,7 +55,7 @@ public class EdgeController implements IExtension {
 	}
 	
 	public static EdgeController getController(ModeController modeController) {
-		return (EdgeController) modeController.getExtension(EdgeController.class);
+		return modeController.getExtension(EdgeController.class);
 	}
 	public static void install( final EdgeController edgeController) {
 		Controller.getCurrentModeController().addExtension(EdgeController.class, edgeController);
