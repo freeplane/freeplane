@@ -36,7 +36,8 @@ task(run, dependsOn: 'classes', type: JavaExec) {
     '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
     '-Dorg.freeplane.main.application.FreeplaneStarter.headless=false',
     '-Dorg.osgi.framework.bundle.parent=app',
-    '-Dorg.freeplane.nosplash=false']
+    '-Dorg.freeplane.nosplash=false',
+    '--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED']
 }
 
 task(debug, dependsOn: 'classes', type: JavaExec) {
@@ -53,7 +54,8 @@ task(runDist, dependsOn: 'classes', type: JavaExec) {
 			   "-Djava.security.policy=$projectDir/security/freeplane.policy",
 			   '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
 			   '-Dorg.freeplane.main.application.FreeplaneStarter.headless=false',
-			   '-Dorg.freeplane.nosplash=false']
+			   '-Dorg.freeplane.nosplash=false',
+			   '--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED']
 }
 
 task(debugDist, dependsOn: 'classes', type: JavaExec) {

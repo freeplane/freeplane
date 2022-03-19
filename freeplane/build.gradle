@@ -19,14 +19,14 @@ dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	lib ':kitfox-svg-salamander-1.1.1-p1'
 	lib 'com.github.robtimus:data-url:2.0'
-	lib 'com.formdev:flatlaf:2.0-rc1'
-	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.6.4'
+	lib 'com.formdev:flatlaf:2.1'
+	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.8.2'
 
     lib project(':JOrtho_0.4_freeplane')
     api project(':freeplane_api')
 	
     lib 'commons-lang:commons-lang:2.6',
-            'commons-io:commons-io:2.8.0',
+            'commons-io:commons-io:2.11.0',
             'commons-codec:commons-codec:1.15',
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
@@ -51,6 +51,9 @@ test {
  		sourceSets.editor.resources.sourceDirectories +
  		sourceSets.external.resources.sourceDirectories
 }
+
+targetCompatibility=JavaVersion.VERSION_1_8
+sourceCompatibility=JavaVersion.VERSION_1_8
 /*
 compileJava {
     options.compilerArgs << '--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED'

@@ -9,6 +9,9 @@ dependencies {
     ant_tasks project(':freeplane_ant')
 }
 
+targetCompatibility=JavaVersion.VERSION_1_8
+sourceCompatibility=JavaVersion.VERSION_1_8
+
 jar {
     dependsOn 'check_translation'
     archiveBaseName = 'jortho'

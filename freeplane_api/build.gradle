@@ -1,9 +1,12 @@
 dependencies {
 	testImplementation 'junit:junit:4.13.2',
 			'org.hamcrest:hamcrest-all:1.3',
-			'org.mockito:mockito-core:3.9.0',
-		 	'org.assertj:assertj-core:3.15.0'
+			'org.mockito:mockito-core:4.4.0',
+		 	'org.assertj:assertj-core:3.22.0'
 }
+
+targetCompatibility=JavaVersion.VERSION_1_8
+sourceCompatibility=JavaVersion.VERSION_1_8
 
 task viewerApiJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!

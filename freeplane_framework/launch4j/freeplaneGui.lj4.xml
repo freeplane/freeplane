@@ -18,10 +18,11 @@
     <path>%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>1.8.0</minVersion>
-    <maxVersion>15</maxVersion>
+    <minVersion>17</minVersion>
+    <maxVersion>17</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
+    <opt>--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED</opt>
   </jre>
 </launch4jConfig>

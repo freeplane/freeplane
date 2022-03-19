@@ -13,5 +13,6 @@ dependencies {
 configurations.all {
     exclude module: 'jython' 
     exclude module: 'rhino' 
-	exclude module: 'xalan' 
+	exclude module: 'xalan'
+	exclude module: 'xml-apis' 
 }
