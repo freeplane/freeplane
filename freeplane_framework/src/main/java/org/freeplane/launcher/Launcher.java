@@ -90,11 +90,6 @@ public class Launcher {
 
 	private static void checkForCompatibleJavaVersion() {
 	    exitOnNonCompatibleJavaVersion("10");
-		if(OS_NAME.startsWith("Windows")) {
-            exitOnNonCompatibleJavaVersion("16");
-            exitOnNonCompatibleJavaVersion("17");
-            exitOnNonCompatibleJavaVersion("18");
-		};
 	}
 
     private static void exitOnNonCompatibleJavaVersion(String version) {

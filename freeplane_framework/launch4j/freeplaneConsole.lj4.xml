@@ -24,5 +24,6 @@
     <runtimeBits>64/32</runtimeBits>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
     <opt>--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED</opt>
+    <opt>--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED</opt>
   </jre>
 </launch4jConfig>
