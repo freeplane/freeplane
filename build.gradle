@@ -83,8 +83,8 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
-	targetCompatibility=JavaVersion.VERSION_17
-	sourceCompatibility=JavaVersion.VERSION_17
+	targetCompatibility=JavaVersion.VERSION_15
+	sourceCompatibility=JavaVersion.VERSION_15
 	
 
     tasks.withType(JavaCompile) {
@@ -193,7 +193,6 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         'Bundle-Vendor': 'Freeplane Project',
         'Import-Package': bundleImports.replaceAll("\\s+", ""),
         'Bundle-Activator': bundleActivator,
-        'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
         'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
         ]
         if (project.name =~ /plugin/) {

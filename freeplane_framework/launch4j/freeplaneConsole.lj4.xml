@@ -18,7 +18,7 @@
     <path>%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>17</minVersion>
+    <minVersion>15</minVersion>
     <maxVersion>17</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>

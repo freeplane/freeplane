@@ -59,11 +59,11 @@ findjava() {
 
 	JAVA_VERSION=$(${JAVACMD} -version |& grep -E "[[:alnum:]]+ version" | awk '{print $3}' | tr -d '"')
 	JAVA_MAJOR_VERSION=$(echo $JAVA_VERSION | awk -F. '{print $1}')
-	if [ $JAVA_MAJOR_VERSION -ne 17 ]; then
+	if [ $JAVA_MAJOR_VERSION -lt 15 ] || [ $JAVA_MAJOR_VERSION -gt 17 ]; then
 		if [ -z "${FREEPLANE_USE_UNSUPPORTED_JAVA_VERSION}" ]; then
 			_error "Found $JAVACMD in $JAVA_SOURCE."
 			_error "It has version $JAVA_VERSION"
-			_error "Currently, freeplane requires java version 17"
+			_error "Currently, freeplane requires java version 15, 16 or 17"
 			_error ""
 			_error "Select a supported java version"
 			_error "by setting FREEPLANE_JAVA_HOME to a valid java location"
@@ -195,6 +195,7 @@ if [ $JAVA_MAJOR_VERSION -ge 11 ]; then
 	JAVA_OPTS="--add-exports java.desktop/sun.swing=ALL-UNNAMED $JAVA_OPTS"
 	JAVA_OPTS="--add-opens java.desktop/sun.awt.X11=ALL-UNNAMED $JAVA_OPTS"
 	JAVA_OPTS="--add-opens java.desktop/javax.swing.text.html=ALL-UNNAMED $JAVA_OPTS"
+	JAVA_OPTS="-Dorg.osgi.framework.system.capabilities=osgi.ee;osgi.ee=\"JavaSE\";version:List=\"1.8,15\" $JAVA_OPTS"
 fi
 
 # enable this in order to turn off the splash screen:

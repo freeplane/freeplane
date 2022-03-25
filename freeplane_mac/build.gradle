@@ -1,5 +1,5 @@
-targetCompatibility=JavaVersion.VERSION_17
-sourceCompatibility=JavaVersion.VERSION_17
+targetCompatibility=JavaVersion.VERSION_15
+sourceCompatibility=JavaVersion.VERSION_15
 
 if(System.env['JDK_11_HOME'] != null){
     compileJava.options.fork = true
