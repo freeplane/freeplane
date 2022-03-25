@@ -17,7 +17,7 @@
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
 #define MyAppExeName "freeplane.exe"
-#define ConfigurationDirectory 'Freeplane\1.9.x'
+#define ConfigurationDirectory 'Freeplane\1.10.x'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
