@@ -54,7 +54,7 @@ public class UserPropertiesUpdater {
                 }
                 String value = userProp.getProperty("single_backup_directory_path");
                 String previousPropertyDirectoryPath = previousPropertyDirectory.getPath();
-                if (value.startsWith(previousPropertyDirectoryPath)) {
+                if (value != null && value.startsWith(previousPropertyDirectoryPath)) {
                     value = "{freeplaneuserdir}" + value.substring(previousPropertyDirectoryPath.length());
                     userProp.setProperty("single_backup_directory_path", value);
                 }
