@@ -33,6 +33,7 @@ import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.text.TextController;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 
@@ -152,6 +153,11 @@ class ScriptEditor extends AFreeplaneAction {
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
 			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
+		}
+
+		@Override
+		public String getTitle() {
+			return Controller.getCurrentModeController().getExtension(TextController.class).getShortPlainText(mNode);
 		}
 	}
 
