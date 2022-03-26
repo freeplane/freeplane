@@ -199,7 +199,7 @@
 		</Entry>
         <Entry name="insert">
           <Entry usedBy = "EDITOR" >
-            <Entry name="menu_newNode" icon="/images/idea.svg">
+            <Entry name="menu_newNode" >
               <Entry name="NewChildAction" accelerator="INSERT" />
               <Entry name="NewSiblingAction" accelerator="ENTER" />
               <Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
@@ -209,7 +209,7 @@
               <Entry builder="separator" />
               <Entry name="DeleteAction" accelerator="DELETE" />
             </Entry>
-            <Entry name="menu_cloud" icon="/images/Cloud24.svg" >
+            <Entry name="menu_cloud" >
               <Entry builder="radio_button_group">
                 <Entry name="CloudShapeAction.ARC" accelerator="control shift B" />
                 <Entry name="CloudShapeAction.STAR" />
@@ -222,7 +222,7 @@
               <Entry name="RemoveCloudAction"/>
             </Entry>
             <Entry name="AddConnectorAction" accelerator="control L" />
-            <Entry name="links" icon="/images/SetLinkByFileChooserAction.svg" >
+            <Entry name="links" >
               <Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
               <Entry name="SetLinkByTextFieldAction" accelerator="control K" />
               <Entry builder="separator"/>
@@ -238,12 +238,12 @@
               <Entry name="MakeLinkToAnchorAction" />
               <Entry name="ClearLinkAnchorAction" />
             </Entry>
-            <Entry name="menu_image" icon="/images/ExternalImageAddAction.svg">
+            <Entry name="menu_image" >
               <Entry name="ExternalImageAddAction" />
               <Entry builder="separator" />
               <Entry name="ExternalImageRemoveAction" />
             </Entry>
-            <Entry name="icons" icon="/images/kalzium.svg">
+            <Entry name="icons" >
               <Entry name="IconSelectionPlugin" accelerator="control F2" />
               <Entry name="menu_iconByCategory">
                 <Entry builder="icon_actions" />
@@ -260,7 +260,7 @@
               <Entry name="IconUnionHierarchyAction" />
               <Entry name="IconIntersectionHierarchyAction" />
               <Entry builder="separator" />
-              <Entry name="menu_remove_icons" icon="/images/icon_trash.svg" >
+              <Entry name="menu_remove_icons" >
                 <Entry name="RemoveIcon_0_Action" />
                 <Entry name="RemoveIconAction" />
                 <Entry name="RemoveAllIconsAction" />
@@ -631,7 +631,7 @@
 		<Entry name="SetShortenerStateAction" />
           <Entry builder="separator" />
           <Entry usedBy = "EDITOR" >
-            <Entry name="menu_add_newNode" icon="/images/idea.svg">
+            <Entry name="menu_add_newNode" >
               <Entry name="NewChildAction" />
               <Entry name="NewSiblingAction" />
               <Entry name="NewPreviousSiblingAction" />
@@ -641,12 +641,12 @@
               <Entry builder="separator" />
               <Entry name="DeleteAction" />
             </Entry>
-            <Entry name="menu_add_image" icon="/images/ExternalImageAddAction.svg">
+            <Entry name="menu_add_image" >
               <Entry name="ExternalImageAddAction" />
               <Entry builder="separator" />
               <Entry name="ExternalImageRemoveAction" />
             </Entry>
-            <Entry name="menu_add_link" icon="/images/SetLinkByFileChooserAction.svg" >
+            <Entry name="menu_add_link" >
               <Entry name="SetLinkByFileChooserAction" />
               <Entry name="SetLinkByTextFieldAction" />
               <Entry builder="separator"/>

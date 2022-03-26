@@ -132,6 +132,8 @@ class ScriptEditorPanel extends JDialog {
 
 		void storeDialogPositions(ScriptEditorPanel pPanel, ScriptEditorWindowConfigurationStorage pStorage,
 		                          String pWindow_preference_storage_property);
+		
+		String getTitle();
 	}
 
 	final private class NewScriptAction extends AbstractAction {
@@ -302,9 +304,11 @@ class ScriptEditorPanel extends JDialog {
 
 	public ScriptEditorPanel( final IScriptModel pScriptModel,
 	                         final boolean pHasNewScriptFunctionality) {
-		super(UITools.getCurrentFrame(), true /* modal */);
+		super(UITools.getCurrentFrame(), false /* non modal */);
 		mScriptModel = pScriptModel;
-		this.setTitle(TextUtils.getText("plugins/ScriptEditor/window.title"));
+		String scriptTitle = pScriptModel.getTitle();
+		this.setTitle(TextUtils.getText("plugins/ScriptEditor/window.title") + 
+				(scriptTitle.isEmpty() ? "" : " [" + scriptTitle + "]"));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
