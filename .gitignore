@@ -12,6 +12,8 @@
 /build/
 /BIN*/
 
+/java-runtime/
+
 #Ignore everything form IntelliJ
 .idea/
 

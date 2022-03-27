@@ -15,7 +15,7 @@
   <manifest></manifest>
   <icon></icon>
   <jre>
-    <path>%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
+    <path>runtime;%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>15</minVersion>

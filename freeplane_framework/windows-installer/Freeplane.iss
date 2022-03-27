@@ -76,6 +76,10 @@ Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescri
 Source: "..\..\BIN\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs; Excludes: "\*.l4j.ini"
 Source: "..\..\BIN\*.l4j.ini"; DestDir: "{app}"; Flags: ignoreversion onlyifdoesntexist
 
+#ifdef includeJavaRuntime
+Source: "..\..\java-runtime\*"; DestDir: "{app}\runtime"; Flags: ignoreversion createallsubdirs recursesubdirs
+#endif
+
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: 
 Name: {group}\Uninstall Freeplane; Filename: {uninstallexe}; Tasks: 

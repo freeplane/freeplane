@@ -33,6 +33,7 @@ task dist {
     dependsOn srcTarGz
     dependsOn srcpureTarGz
     dependsOn windowsInstaller
+    dependsOn windowsInstallerWithJava
     dependsOn windowsPortableInstaller
     dependsOn gitinfoDist
     dependsOn historyDist

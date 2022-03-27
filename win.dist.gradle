@@ -7,9 +7,26 @@ task windowsInstaller(type: Exec) {
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework/windows-installer'
 
-    commandLine 'cmd.exe', '/c', 'ISCC.exe /Q Freeplane_without_Java.iss'
+    commandLine 'cmd.exe', '/c', 'ISCC.exe /Q Freeplane.iss'
 	doLast {
          new File(workingDir, 'Freeplane-Setup.exe').renameTo(new File(globalDist, "Freeplane-Setup-${distVersion}.exe"))
+	}
+
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+}
+
+task windowsInstallerWithJava(type: Exec) {
+    onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) && new File(rootDir.path + '/java-runtime').isDirectory() }
+    runAfter windowsInstaller
+
+    ignoreExitValue = true
+    workingDir = rootDir.path + '/freeplane_framework/windows-installer'
+
+    commandLine 'cmd.exe', '/c', 'ISCC.exe /DincludeJavaRuntime /Q Freeplane.iss'
+	doLast {
+         new File(workingDir, 'Freeplane-Setup.exe').renameTo(new File(globalDist, "Freeplane-Setup-with-Java-${distVersion}.exe"))
 	}
 
     for (p in subprojects) {
