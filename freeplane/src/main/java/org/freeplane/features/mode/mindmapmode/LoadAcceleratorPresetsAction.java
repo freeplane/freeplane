@@ -101,7 +101,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 						final String key = "LoadAcceleratorPresetsAction." + propName;
 							final String title = TextUtils.getText(key + ".text", propName);
 							final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
-							    prop.toURL(), key, title);
+							    prop.toURI().toURL(), key, title);
 						modeController.addActionIfNotAlreadySet(loadAcceleratorPresetsAction);
 						new EntryAccessor().addChildAction(target, loadAcceleratorPresetsAction);
 					}

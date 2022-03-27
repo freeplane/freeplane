@@ -197,7 +197,7 @@ public class ReportGenerator extends StreamHandler {
 			if (file.isDirectory()) {
 				final ViewController viewController = Controller.getCurrentController().getViewController();
 				try {
-					viewController.openDocument(file.toURL());
+					viewController.openDocument(file.toURI().toURL());
 				}
 				catch (Exception ex) {
 				}

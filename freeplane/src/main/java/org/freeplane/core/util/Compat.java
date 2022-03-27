@@ -49,7 +49,7 @@ public class Compat {
 	}
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {
-		return pFile.toURL();
+		return pFile.toURI().toURL();
 	}
 
 	public static boolean isLowerJdk(final String version) {

@@ -207,7 +207,7 @@ abstract public class EditNodeBase {
 		}
 
 		public void show() {
-	        dialog.show();
+	        dialog.setVisible(true);;
         }
 
 		public void dispose() {

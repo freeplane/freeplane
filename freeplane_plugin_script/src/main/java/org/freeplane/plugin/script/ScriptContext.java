@@ -49,7 +49,7 @@ public class ScriptContext implements AccessedNodes{
 		try {
 			File file = new File(path);
 			if(file.isAbsolute()) {
-				return file.getCanonicalFile().toURL();
+				return file.getCanonicalFile().toURI().toURL();
 			}
 			else  {
 				URL baseUrl = getBaseUrl();
@@ -57,7 +57,7 @@ public class ScriptContext implements AccessedNodes{
 					return new URL(baseUrl, path);
 				}
 				else
-					return file.getCanonicalFile().toURL();
+					return file.getCanonicalFile().toURI().toURL();
 			}
 		}
 		catch (IOException e) {

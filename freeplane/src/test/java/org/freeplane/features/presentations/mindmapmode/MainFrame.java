@@ -36,6 +36,6 @@ public class MainFrame {
 		presentationEditorController.setPresentations(new NamedElementCollection<>(presentationFactory));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
-		frame.show();
+		frame.setVisible(true);
 	}
 }

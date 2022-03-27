@@ -82,6 +82,6 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 			}
 
 		});
-		selectionDialog.show();
+		selectionDialog.setVisible(true);
 	}
 }

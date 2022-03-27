@@ -971,7 +971,7 @@ public class MMapController extends MapController {
             return;
         }
         try {
-            final URL endUrl = localFile.toURL();
+            final URL endUrl = localFile.toURI().toURL();
             try {
                 if (endUrl.getFile().endsWith(".mm")) {
                     Controller.getCurrentController().selectMode(MModeController.MODENAME);

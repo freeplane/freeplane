@@ -82,7 +82,7 @@ public abstract class PersistentNodeHook {
         private static final long serialVersionUID = 1L;
         final Enum<?> value;
         public SelectableEnumAction(String key, final Enum<?> value) {
-            super(key + "." + String.valueOf(value));
+            super(key + "." + value);
             this.value = value;
         }
 

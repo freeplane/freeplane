@@ -95,7 +95,7 @@ public class SurveyStarterShould {
 		try (final FileOutputStream propertyStream = new FileOutputStream(configFile)){
 			configProperties.store(propertyStream, "");
 		}
-		final URL configurationUrl = configFile.toURL();
+		final URL configurationUrl = configFile.toURI().toURL();
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mock(FreeplaneSurveyProperties.class);
 		when(freeplaneSurveyProperties.openRemoteConfiguration()).thenAnswer(new Answer<InputStream>() {
 
