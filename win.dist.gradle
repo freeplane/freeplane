@@ -19,7 +19,7 @@ task windowsInstaller(type: Exec) {
 
 task windowsInstallerWithJava(type: Exec) {
     onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) && new File(rootDir.path + '/java-runtime').isDirectory() }
-    runAfter windowsInstaller
+    mustRunAfter windowsInstaller
 
     ignoreExitValue = true
     workingDir = rootDir.path + '/freeplane_framework/windows-installer'
