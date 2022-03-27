@@ -300,7 +300,7 @@ public class Launcher {
 	}
 
 	private void setDefines() {
-		Utils.setDefine("org.osgi.framework.system.capabilities", "osgi.ee; osgi.ee=\"JavaSE\";version:List=\"1.8,15\"");
+		// Utils.setDefine("org.osgi.framework.system.capabilities", "osgi.ee; osgi.ee=\"JavaSE\";version:List=\"1.8,15\"");
 		Utils.setDefine("org.knopflerfish.framework.readonly", "true");
 		Utils.setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
 		Utils.setDefine("org.freeplane.user.dir", System.getProperty("user.dir"));

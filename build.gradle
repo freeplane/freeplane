@@ -83,9 +83,8 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
-	targetCompatibility=JavaVersion.VERSION_15
-	sourceCompatibility=JavaVersion.VERSION_15
-	
+	targetCompatibility=JavaVersion.VERSION_1_8
+	sourceCompatibility=JavaVersion.VERSION_1_8
 
     tasks.withType(JavaCompile) {
       options.encoding = "UTF-8"
