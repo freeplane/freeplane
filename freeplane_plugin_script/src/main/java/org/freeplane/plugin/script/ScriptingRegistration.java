@@ -133,6 +133,11 @@ class ScriptingRegistration {
 		                                 final String pWindow_preference_storage_property) {
 			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
 		}
+
+		@Override
+		public String getTitle() {
+			return "";
+		}
 	}
 
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();

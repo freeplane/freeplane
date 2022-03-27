@@ -873,12 +873,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		isPreparedForPrinting = false;
 		isPrinting = false;
-		if (zoom == 1f) {
-			getRoot().updateAll();
-			synchronized (getTreeLock()) {
-				validateTree();
-			}
-		}
+		updatePrintedNodes();
 		if (MapView.printOnWhiteBackground) {
 			setBackground(background);
 		}
@@ -1908,12 +1903,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void preparePrinting() {
 		isPrinting = true;
 		if (!isPreparedForPrinting) {
-			if (zoom == 1f) {
-				getRoot().updateAll();
-				synchronized (getTreeLock()) {
-					validateTree();
-				}
-			}
+			updatePrintedNodes();
 			if (MapView.printOnWhiteBackground) {
 				background = getBackground();
 				setBackground(Color.WHITE);
@@ -1926,6 +1916,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				boundingRectangle = getInnerBounds();
 			}
 			isPreparedForPrinting = true;
+		}
+	}
+
+	private void updatePrintedNodes() {
+		if (zoom == 1f) {
+			getRoot().updateAll();
+			synchronized (getTreeLock()) {
+				validateTree();
+			}
+		}
+		else if(drawsRectangleForSelection){
+			selection.selectedSet.forEach(NodeView::update);
+			synchronized (getTreeLock()) {
+				validateTree();
+			}
 		}
 	}
 
