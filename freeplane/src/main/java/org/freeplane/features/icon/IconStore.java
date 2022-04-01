@@ -59,7 +59,7 @@ public class IconStore {
     }
 
  	public void addUIIcon(final UIIcon uiIcon) {
-		uiIcons.put(uiIcon.getFile(), uiIcon);
+		uiIcons.put(uiIcon.getName(), uiIcon);
 	}
 
 	/**
