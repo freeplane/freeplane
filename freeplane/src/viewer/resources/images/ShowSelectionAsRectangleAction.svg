@@ -1,83 +1,106 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="16"
-   width="16.014999"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
    version="1.1"
-   id="svg3201"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="showselectionasrectangleaction.svg">
+   id="svg10437"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   sodipodi:docname="ShowSelectionAsRectangleAction.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
-     id="defs3215" />
+     id="defs10431" />
   <sodipodi:namedview
+     id="base"
      pagecolor="#ffffff"
      bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:window-width="640"
-     inkscape:window-height="480"
-     id="namedview3213"
-     showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:zoom="0.22424933"
-     inkscape:cx="343.51001"
-     inkscape:cy="-330.74003"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg3201" />
+     inkscape:zoom="10.987155"
+     inkscape:cx="-2.0023382"
+     inkscape:cy="22.207751"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:pagecheckerboard="0"
+     showgrid="true"
+     units="px"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-page="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-center="true"
+     inkscape:snap-intersection-paths="true">
+    <sodipodi:guide
+       position="0,22"
+       orientation="0,1"
+       id="guide10894"
+       inkscape:label=""
+       inkscape:locked="false"
+       inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="22,24"
+       orientation="-1,0"
+       id="guide10978"
+       inkscape:label=""
+       inkscape:locked="false"
+       inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="11.065513,2"
+       orientation="0,1"
+       id="guide10982"
+       inkscape:label=""
+       inkscape:locked="false"
+       inkscape:color="rgb(0,0,255)" />
+    <sodipodi:guide
+       position="2,22"
+       orientation="-1,0"
+       id="guide10986"
+       inkscape:label=""
+       inkscape:locked="false"
+       inkscape:color="rgb(0,0,255)" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid3536" />
+  </sodipodi:namedview>
   <metadata
-     id="metadata3203">
+     id="metadata10434">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(-132.125,-726.97998)"
-     id="g3205">
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
     <rect
-       style="opacity:0.92510998;color:#000000;fill:none"
-       rx="0.070384003"
-       ry="0.092563003"
-       height="16"
-       width="16"
-       y="726.97998"
-       x="132.14"
-       id="rect3207" />
-    <rect
-       height="7.3909001"
-       rx="1.7122"
-       ry="1.6299"
-       width="15.142"
-       y="731.28003"
-       x="132.56"
-       id="rect3209"
-       style="fill:#ffffff;fill-rule:evenodd;stroke:#000080;stroke-width:0.85776001;stroke-linejoin:round" />
-    <rect
-       style="color:#000000;fill:none"
-       height="16"
-       width="16"
-       y="726.97998"
-       x="132.14"
-       id="rect3211" />
+       style="fill:none;stroke:#0071bc;stroke-width:1.99999;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers stroke fill;stop-color:#000000"
+       id="rect3824"
+       width="18.000004"
+       height="10.00001"
+       x="2.9999981"
+       y="6.9999952"
+       ry="2.7272756" />
   </g>
 </svg>
