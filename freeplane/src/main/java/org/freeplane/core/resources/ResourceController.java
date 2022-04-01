@@ -56,7 +56,7 @@ import org.freeplane.features.mode.Controller;
  */
 public abstract class ResourceController {
 	public static final String USE_ACCENT_COLOR = "useAccentColor=true";
-	private static final String USE_ACCENT_COLOR_QUERY = "?" + USE_ACCENT_COLOR;
+	public static final String USE_ACCENT_COLOR_QUERY = "?" + USE_ACCENT_COLOR;
 	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
 	public static final String LOCAL_PROPERTIES = "LocalProperties.";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";

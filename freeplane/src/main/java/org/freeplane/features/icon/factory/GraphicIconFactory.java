@@ -13,6 +13,8 @@ import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.features.icon.UIIcon;
 
 class GraphicIconFactory implements IconFactory {
+	private static final String SVG_EXT = ".svg";
+	private static final String SVG_EXT_WITH_QUERY = SVG_EXT + ResourceController.USE_ACCENT_COLOR_QUERY;
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	static final IconFactory FACTORY = new GraphicIconFactory();
 	private static final Icon ICON_NOT_FOUND = FACTORY.getIcon(ResourceController.getResourceController()
@@ -55,7 +57,8 @@ class GraphicIconFactory implements IconFactory {
 				result = ICON_CACHE.get(cacheKey);
 			}
 			else {
-				if (url.getPath().toLowerCase(Locale.ENGLISH).endsWith(".svg")) {
+				String path = url.getPath();
+				if (path.endsWith(SVG_EXT) || path.endsWith(SVG_EXT_WITH_QUERY)) {
 					result = FreeplaneIconFactory.createSVGIcon(url, heightPixels);
 					ICON_URLS.put(result, url);
 				}
