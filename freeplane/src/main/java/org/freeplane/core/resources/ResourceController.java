@@ -372,7 +372,7 @@ public abstract class ResourceController {
 		return icon;
 	}
 
-	private Icon loadIcon(final String resourcePath) {
+	public URL getIconResource(String resourcePath) {
 		if (resourcePath != null) {
 			final String urlPath;
 			boolean usesAccentColor = resourcePath.endsWith(USE_ACCENT_COLOR_QUERY);
@@ -382,13 +382,24 @@ public abstract class ResourceController {
 				urlPath = resourcePath;
 			URL url = getResource(urlPath);
 			if (url != null) {
-				return IconFactory.getInstance().getIcon(usesAccentColor 
-						? withAccentColorQuery(url) 
-						: url, IconFactory.DEFAULT_UI_ICON_HEIGTH);
+				return usesAccentColor
+						? withAccentColorQuery(url)
+						: url;
 			}
-			else {
-				LogUtils.severe("can not load icon '" + resourcePath + "'");
-			}
+		}
+		return null;
+	}
+
+
+	private Icon loadIcon(final String resourcePath) {
+		if(resourcePath == null)
+			return null;
+		URL url = getIconResource(resourcePath);
+		if (url != null) {
+			return IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH);
+		}
+		else {
+			LogUtils.severe("can not load icon '" + resourcePath + "'");
 		}
 		return null;
 	}
@@ -412,9 +423,8 @@ public abstract class ResourceController {
 
     public String[] getArrayProperty(String key, String separator) {
         String joinedValues = getProperty(key);
-        final String[] groupNames = joinedValues != null 
+        final String[] groupNames = joinedValues != null
                 ? joinedValues.split(separator)  : new String[] {};
         return groupNames;
     }
-
 }

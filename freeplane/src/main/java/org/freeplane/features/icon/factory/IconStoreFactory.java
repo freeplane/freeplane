@@ -135,7 +135,7 @@ public class IconStoreFactory {
     private void createStateIcons() {
         final String[] stateIconNames = RESOURCE_CONTROLLER.getProperty(STATE_ICON_NAMES_KEY).split(SEPARATOR);
 		for(String name : stateIconNames) {
-		    UIIcon icon = new UIIcon(name, name, order++);
+		    UIIcon icon = new UIIcon(name, RESOURCE_CONTROLLER.getProperty("stateIcon." + name, name), order++);
 		    iconStore.addUIIcon(icon);
 		}
     }
