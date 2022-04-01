@@ -145,7 +145,8 @@ class SVGIconCreator {
     }
 
     private void load(SVGUniverse svgUniverse) throws IOException {
-    	if(url.getQuery() == null) {
+    	boolean urlContainsAccentColorReplacementQuery = url.toString().endsWith(ResourceController.USE_ACCENT_COLOR_QUERY);
+		if(! urlContainsAccentColorReplacementQuery) {
     		try {
     			svgUri = new URI(url.toString());
     			diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
@@ -160,7 +161,7 @@ class SVGIconCreator {
 		svgUri = svgUniverse.getStreamBuiltURI(internalUri);
         diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
         if(! diagramWasAlreadyLoaded)
-            svgUniverse.loadSVG(openStream(), internalUri);
+            svgUniverse.loadSVG(openStream(urlContainsAccentColorReplacementQuery), internalUri);
     }
 
 	private String getInternalUri() {
@@ -168,9 +169,8 @@ class SVGIconCreator {
 		return query == null ? url.getPath() :  url.getPath() + "?" + url.getQuery();
 	}
 
-	private InputStream openStream() throws IOException {
+	private InputStream openStream(boolean urlContainsAccentColorReplacementQuery) throws IOException {
 		initializeAccentColorReplacements();
-		boolean urlContainsAccentColorReplacementQuery = ResourceController.USE_ACCENT_COLOR.equals(url.getQuery());
 		InputStream stream = (urlContainsAccentColorReplacementQuery ? urlWithoutQuery() : url).openStream();
 		if(!accentColorReplacements.isEmpty() && urlContainsAccentColorReplacementQuery)
 			return ReplacingInputStream.replace(stream, accentColorReplacements);
