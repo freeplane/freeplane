@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Icon;
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 import org.freeplane.core.resources.ResourceController;
@@ -22,6 +23,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGUniverse;
@@ -33,18 +35,28 @@ class SVGIconCreator {
 	private static final String ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR = "accentColorReplacementsFor";
 	private static final String DARK_LOOK_AND_FEELS = "DarkLookAndFeels";
 	private static final String LIGHT_LOOK_AND_FEELS = "LightLookAndFeels";
+	private static final String FLAT_LOOK_AND_FEELS = "FlatLookAndFeels";
 	private static String accentColorReplacements = null;
 	private static void initializeAccentColorReplacements() {
 		if(accentColorReplacements == null) {
-			String lookAndFeelId = UIManager.getLookAndFeel().getName().replaceAll("\\W+", "");
-			String specialReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR + lookAndFeelId;
-			String specialReplacementPropertyValue = ResourceController.getResourceController().getProperty(specialReplacementPropertyName, null);
-			String accentColorReplacementsWithPlaceholder;
-			if(specialReplacementPropertyValue != null)
+			LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
+			String lookAndFeelId = lookAndFeel.getName().replaceAll("\\W+", "");
+			String lafSpecificReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR + lookAndFeelId;
+			String lafSpecificReplacementPropertyValue = ResourceController.getResourceController().getProperty(lafSpecificReplacementPropertyName, null);
+			String accentColorReplacementsWithPlaceholder = null;
+			if(lafSpecificReplacementPropertyValue != null && ! lafSpecificReplacementPropertyValue.isEmpty())
 			{
-				accentColorReplacementsWithPlaceholder = specialReplacementPropertyValue;
+				accentColorReplacementsWithPlaceholder = lafSpecificReplacementPropertyValue;
 			}
-			else {
+			else if(lookAndFeel instanceof FlatLaf) {
+				String flatReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR + FLAT_LOOK_AND_FEELS;
+				String flatReplacementPropertyValue = ResourceController.getResourceController().getProperty(flatReplacementPropertyName, null);
+				if(flatReplacementPropertyValue != null && ! flatReplacementPropertyValue.isEmpty())
+				{
+					accentColorReplacementsWithPlaceholder = flatReplacementPropertyValue;
+				}
+			}
+			if(accentColorReplacementsWithPlaceholder == null) {
 				String defaultReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR +
 						(UITools.isLightLookAndFeelInstalled() ? LIGHT_LOOK_AND_FEELS : DARK_LOOK_AND_FEELS);
 				String defaultReplacementPropertyValue = ResourceController.getResourceController().getProperty(defaultReplacementPropertyName);
