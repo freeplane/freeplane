@@ -265,14 +265,4 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
   </g>
-  <style
-     id="s0">
-.success { fill:#009909; }
-.warning { fill:#FF1990; }
-.error { fill:#00AAFF; }
-</style>
-  <style
-     id="s2">
-@import '../../highlights.css';
-</style>
 </svg>
