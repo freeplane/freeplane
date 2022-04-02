@@ -32,42 +32,42 @@ import com.kitfox.svg.app.beans.SVGIcon;
 class SVGIconCreator {
 
 	private static final Pattern PROPERTY_REFERENCE = Pattern.compile("\\$\\{[\\w.]+\\}");
-	private static final String ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR = "accentColorReplacementsFor";
+	private static final String UI_COLOR_REPLACEMENTS_PROPERTY_FOR = "uiColorReplacementsFor";
 	private static final String DARK_LOOK_AND_FEELS = "DarkLookAndFeels";
 	private static final String LIGHT_LOOK_AND_FEELS = "LightLookAndFeels";
 	private static final String FLAT_LOOK_AND_FEELS = "FlatLookAndFeels";
-	private static String accentColorReplacements = null;
+	private static String uiColorReplacements = null;
 	private static void initializeAccentColorReplacements() {
-		if(accentColorReplacements == null) {
+		if(uiColorReplacements == null) {
 			LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
 			String lookAndFeelId = lookAndFeel.getName().replaceAll("\\W+", "");
-			String lafSpecificReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR + lookAndFeelId;
+			String lafSpecificReplacementPropertyName = UI_COLOR_REPLACEMENTS_PROPERTY_FOR + lookAndFeelId;
 			String lafSpecificReplacementPropertyValue = ResourceController.getResourceController().getProperty(lafSpecificReplacementPropertyName, null);
-			String accentColorReplacementsWithPlaceholder = null;
+			String uiColorReplacementsWithPlaceholder = null;
 			if(lafSpecificReplacementPropertyValue != null && ! lafSpecificReplacementPropertyValue.isEmpty())
 			{
-				accentColorReplacementsWithPlaceholder = lafSpecificReplacementPropertyValue;
+				uiColorReplacementsWithPlaceholder = lafSpecificReplacementPropertyValue;
 			}
 			else if(lookAndFeel instanceof FlatLaf) {
-				String flatReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR + FLAT_LOOK_AND_FEELS;
+				String flatReplacementPropertyName = UI_COLOR_REPLACEMENTS_PROPERTY_FOR + FLAT_LOOK_AND_FEELS;
 				String flatReplacementPropertyValue = ResourceController.getResourceController().getProperty(flatReplacementPropertyName, null);
 				if(flatReplacementPropertyValue != null && ! flatReplacementPropertyValue.isEmpty())
 				{
-					accentColorReplacementsWithPlaceholder = flatReplacementPropertyValue;
+					uiColorReplacementsWithPlaceholder = flatReplacementPropertyValue;
 				}
 			}
-			if(accentColorReplacementsWithPlaceholder == null) {
-				String defaultReplacementPropertyName = ACCENT_COLOR_REPLACEMENTS_PROPERTY_FOR +
+			if(uiColorReplacementsWithPlaceholder == null) {
+				String defaultReplacementPropertyName = UI_COLOR_REPLACEMENTS_PROPERTY_FOR +
 						(UITools.isLightLookAndFeelInstalled() ? LIGHT_LOOK_AND_FEELS : DARK_LOOK_AND_FEELS);
 				String defaultReplacementPropertyValue = ResourceController.getResourceController().getProperty(defaultReplacementPropertyName);
-				accentColorReplacementsWithPlaceholder = defaultReplacementPropertyValue;
+				uiColorReplacementsWithPlaceholder = defaultReplacementPropertyValue;
 			}
-			accentColorReplacements = replacePropertyReferences(accentColorReplacementsWithPlaceholder);
+			uiColorReplacements = replacePropertyReferences(uiColorReplacementsWithPlaceholder);
 		}
 	}
 
-	private static String replacePropertyReferences(String accentColorReplacementsWithPlaceholder) {
-		Matcher matcher = PROPERTY_REFERENCE.matcher(accentColorReplacementsWithPlaceholder);
+	private static String replacePropertyReferences(String uiColorReplacementsWithPlaceholder) {
+		Matcher matcher = PROPERTY_REFERENCE.matcher(uiColorReplacementsWithPlaceholder);
 		matcher.reset();
 		boolean result = matcher.find();
 		if (result) {
@@ -79,7 +79,7 @@ class SVGIconCreator {
 				if(accentColor == null) {
 					accentColor = Color.BLUE;
 					LogUtils.severe("Color property " + propertyName 
-							+ " required by replacement " + accentColorReplacementsWithPlaceholder 
+							+ " required by replacement " + uiColorReplacementsWithPlaceholder 
 							+ " is not defined, " + accentColor + " is used");
 				}
 		        matcher.appendReplacement(sb, ColorUtils.colorToString(accentColor));
@@ -88,7 +88,7 @@ class SVGIconCreator {
 		    matcher.appendTail(sb);
 		    return sb.toString();
 		}
-		return accentColorReplacementsWithPlaceholder;
+		return uiColorReplacementsWithPlaceholder;
 	}
 	private final URL url;
     private int heightPixels = -1;
@@ -184,8 +184,8 @@ class SVGIconCreator {
 	private InputStream openStream(boolean urlContainsAccentColorReplacementQuery) throws IOException {
 		initializeAccentColorReplacements();
 		InputStream stream = (urlContainsAccentColorReplacementQuery ? urlWithoutQuery() : url).openStream();
-		if(!accentColorReplacements.isEmpty() && urlContainsAccentColorReplacementQuery)
-			return ReplacingInputStream.replace(stream, accentColorReplacements);
+		if(!uiColorReplacements.isEmpty() && urlContainsAccentColorReplacementQuery)
+			return ReplacingInputStream.replace(stream, uiColorReplacements);
 		else
 			return stream;
 	}
