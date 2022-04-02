@@ -14,6 +14,7 @@
    inkscape:export-ydpi="300"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -61,6 +62,63 @@
          offset="1"
          id="stop4889" />
     </linearGradient>
+    <linearGradient
+       id="linearGradient6369">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0"
+         id="stop6371" />
+      <stop
+         id="stop6387"
+         offset="1"
+         style="stop-color:#f7f7f7;stop-opacity:0.96862745;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6335">
+      <stop
+         style="stop-color:#800080;stop-opacity:1;"
+         offset="0"
+         id="stop6337" />
+      <stop
+         id="stop6349"
+         offset="0.25"
+         style="stop-color:#800080;stop-opacity:0.74901961;" />
+      <stop
+         id="stop6347"
+         offset="0.5"
+         style="stop-color:#800080;stop-opacity:0.49803922;" />
+      <stop
+         style="stop-color:#800080;stop-opacity:0;"
+         offset="1"
+         id="stop6339" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6429-0"
+       id="radialGradient6435-8"
+       cx="38.93148"
+       cy="43.321198"
+       fx="38.93148"
+       fy="43.321198"
+       r="15.090909"
+       gradientTransform="matrix(0.98881461,1.48232,-1.2392904,0.92929832,53.784006,-56.118238)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6429-0">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop6431-7" />
+      <stop
+         id="stop6437-7"
+         offset="0.99891293"
+         style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop6433-3" />
+    </linearGradient>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -69,9 +127,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.987155"
-     inkscape:cx="30.763196"
-     inkscape:cy="33.766703"
+     inkscape:zoom="5.4935775"
+     inkscape:cx="28.669842"
+     inkscape:cy="55.519377"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:pagecheckerboard="0"
@@ -158,11 +216,11 @@
          dx="0 -1.33">50%</tspan></text>
     <path
        id="path8534"
-       style="fill:#0071bc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
        d="M 47.480468,30.998046 H 61.980469 C 61.462334,15.22638 48.770332,2.5423775 32.998047,2.0253902 V 16.533198 c 7.770784,0.495956 13.986364,6.695365 14.482421,14.464848 z" />
     <path
        id="path31247"
-       style="fill:#0071bc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
        d="M 32.998047,47.480467 V 61.982419 C 48.77104,61.466391 61.464133,48.77441 61.982421,33.00195 H 47.482422 c -0.495838,7.772313 -6.711774,13.984599 -14.484375,14.478517 z" />
     <path
        id="path31393"

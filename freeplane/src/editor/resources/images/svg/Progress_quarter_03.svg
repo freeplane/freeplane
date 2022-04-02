@@ -7,7 +7,7 @@
    viewBox="0 0 64 64"
    version="1.1"
    id="svg10437"
-   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   inkscape:version="1.2-alpha1 (b6a15bbbed, 2022-02-23)"
    sodipodi:docname="Progress_quarter_03.svg"
    inkscape:export-filename="C:\Users\Aron\My Drive\Freeplane\Freeplane_icons\InProgress\Predrag\svg\bitmap.svg"
    inkscape:export-xdpi="300"
@@ -70,7 +70,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="10.987155"
-     inkscape:cx="30.763196"
+     inkscape:cx="27.668673"
      inkscape:cy="33.766703"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -158,15 +158,15 @@
          dx="0 -1.75">75%</tspan></text>
     <path
        id="path8534"
-       style="fill:#0071bc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
        d="M 47.480468,30.998046 H 61.980469 C 61.462334,15.22638 48.770332,2.5423775 32.998047,2.0253902 V 16.533198 c 7.770784,0.495956 13.986364,6.695365 14.482421,14.464848 z" />
     <path
        id="path31247"
-       style="fill:#0071bc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
        d="M 32.998047,47.480467 V 61.982419 C 48.77104,61.466391 61.464133,48.77441 61.982421,33.00195 H 47.482422 c -0.495838,7.772313 -6.711774,13.984599 -14.484375,14.478517 z" />
     <path
        id="path31393"
-       style="fill:#0071bc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
+       style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:round;paint-order:markers stroke fill;stop-color:#000000"
        d="M 16.519531,33.00195 H 2.0195313 C 2.5376468,48.77435 15.229056,61.46615 31.001953,61.982419 V 47.482424 C 23.229187,46.988496 17.015441,40.773921 16.519531,33.00195 Z" />
     <path
        id="path31445"
