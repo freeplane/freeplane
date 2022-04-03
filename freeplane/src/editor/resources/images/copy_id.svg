@@ -25,15 +25,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="12.617454"
-     inkscape:cx="11.09574"
-     inkscape:cy="-4.4382962"
+     inkscape:zoom="25.234908"
+     inkscape:cx="14.206511"
+     inkscape:cy="12.680847"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:pagecheckerboard="0"
      showgrid="true"
      units="px"
-     showguides="true"
+     showguides="false"
      inkscape:guide-bbox="true"
      inkscape:snap-global="true"
      inkscape:snap-bbox="true"
@@ -109,7 +109,7 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25.6642px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.999999"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:25.6642px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.999999;fill:#333333"
        x="-0.2932519"
        y="21.122822"
        id="text5121"><tspan
@@ -117,6 +117,6 @@
          id="tspan5119"
          x="-0.2932519"
          y="21.122822"
-         style="stroke-width:0.999999">ID</tspan></text>
+         style="stroke-width:0.999999;fill:#333333">ID</tspan></text>
   </g>
 </svg>

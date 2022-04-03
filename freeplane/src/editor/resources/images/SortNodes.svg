@@ -44,7 +44,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="9.828297"
-     inkscape:cx="2.3401816"
+     inkscape:cx="2.3910551"
      inkscape:cy="-3.5611459"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -139,7 +139,7 @@
          id="tspan841"
          style="fill:#0071bc;fill-opacity:1;stroke:#0071bc;stroke-width:0.500001;stroke-opacity:1">A</tspan></text>
     <text
-       style="font-size:12.4506px;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;stroke:#000000;stroke-width:0.500001"
+       style="font-size:12.4506px;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#333333;stroke:#333333;stroke-width:0.500001"
        line-height="125%"
        y="21.887207"
        x="2.6286998"
@@ -150,21 +150,21 @@
          x="2.6286998"
          stroke-width="0.29281"
          id="tspan845"
-         style="stroke-width:0.500001">Z</tspan></text>
+         style="stroke-width:0.500001;fill:#333333;stroke:#333333">Z</tspan></text>
     <g
        id="g7253"
        transform="translate(1.5)"
-       style="stroke-width:1">
+       style="stroke-width:1;fill:#333333">
       <rect
          x="14.5"
          y="4"
          width="1.9999999"
          height="11"
          id="rect6869"
-         style="stroke-width:1" />
+         style="stroke-width:1;fill:#333333" />
       <path
          id="polyline6871"
-         style="stroke-width:0.870235"
+         style="stroke-width:0.870235;fill:#333333"
          transform="matrix(1,0,0,1.320472,9.0000001,5.0771671)"
          d="m 10.5,6.0695549 -4,3.7865248 -4,-3.7865248"
          sodipodi:nodetypes="ccc" />
