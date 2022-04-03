@@ -7,7 +7,7 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg10437"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
    sodipodi:docname="editpaste.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -25,51 +25,47 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.4439939"
-     inkscape:cx="-25.073503"
-     inkscape:cy="-4.5922168"
+     inkscape:zoom="15.538184"
+     inkscape:cx="-14.480457"
+     inkscape:cy="14.351742"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:pagecheckerboard="0"
      showgrid="true"
      units="px"
-     showguides="false"
+     showguides="true"
      inkscape:guide-bbox="true"
      inkscape:snap-global="true"
      inkscape:snap-bbox="true"
      inkscape:snap-page="true"
-     inkscape:window-width="1411"
-     inkscape:window-height="1001"
-     inkscape:window-x="72"
-     inkscape:window-y="7"
-     inkscape:window-maximized="0"
-     inkscape:snap-nodes="true"
-     inkscape:snap-grids="true"
-     inkscape:snap-others="false"
-     inkscape:snap-intersection-paths="true">
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
     <sodipodi:guide
-       position="-1.7376549,23.002457"
+       position="0,22"
        orientation="0,1"
        id="guide10894"
        inkscape:label=""
        inkscape:locked="false"
        inkscape:color="rgb(0,0,255)" />
     <sodipodi:guide
-       position="23.007837,20.782121"
+       position="22,24"
        orientation="-1,0"
        id="guide10978"
        inkscape:label=""
        inkscape:locked="false"
        inkscape:color="rgb(0,0,255)" />
     <sodipodi:guide
-       position="26.193538,1.0243414"
+       position="11.065513,2"
        orientation="0,1"
        id="guide10982"
        inkscape:label=""
        inkscape:locked="false"
        inkscape:color="rgb(0,0,255)" />
     <sodipodi:guide
-       position="0.9975426,19.72022"
+       position="2,22"
        orientation="-1,0"
        id="guide10986"
        inkscape:label=""
@@ -77,56 +73,7 @@
        inkscape:color="rgb(0,0,255)" />
     <inkscape:grid
        type="xygrid"
-       id="grid834" />
-    <sodipodi:guide
-       position="0,23.002457"
-       orientation="0,-1"
-       id="guide1767" />
-    <sodipodi:guide
-       position="16,19"
-       orientation="1,0"
-       id="guide4238" />
-    <sodipodi:guide
-       position="18,19"
-       orientation="1,0"
-       id="guide4240" />
-    <sodipodi:guide
-       position="21.548961,13.451039"
-       orientation="1,0"
-       id="guide4242" />
-    <sodipodi:guide
-       position="21.548961,18.999411"
-       orientation="0.70710678,-0.70710678"
-       id="guide4244" />
-    <sodipodi:guide
-       position="21.548961,13.451039"
-       orientation="0,-1"
-       id="guide4322" />
-    <sodipodi:guide
-       position="21.548961,15.451039"
-       orientation="0,1"
-       id="guide4324"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="26,3"
-       orientation="0,1"
-       id="guide4809"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="19.548961,13.451039"
-       orientation="-1,0"
-       id="guide4868"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="7,21"
-       orientation="1,0"
-       id="guide19475" />
+       id="grid826" />
   </sodipodi:namedview>
   <metadata
      id="metadata10434">
@@ -143,13 +90,9 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <path
-       inkscape:connector-curvature="0"
-       id="rect27708"
-       d="m -18.640291,0.25862968 h 16 V 16.196423 h -16 z"
-       style="opacity:0;fill:none;stroke-width:1" />
     <g
-       id="g21009">
+       id="g21009"
+       transform="translate(0,1.002457)">
       <path
          id="path4983"
          style="fill:#333333;stroke-width:1.44747"
