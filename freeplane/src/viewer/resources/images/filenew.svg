@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,1.89586,0)">
-        <g id="g1043">
-            <path id="path826" d="M18.104,8L18.104,21L11.994,21C13.337,19.684 14.095,17.881 14.095,16C14.095,12.163 10.941,9.005 7.104,9C6.066,8.997 5.04,9.23 4.104,9.68L4.104,2L12.104,2L12.104,8L18.104,8Z" style="fill:rgb(51,51,51);fill-rule:nonzero;"/>
-            <g id="polygon828" transform="matrix(1,0,0,1,-0.895859,-1)">
-                <path d="M15,3L19,7L15,7L15,3Z" style="fill:rgb(51,51,51);fill-rule:nonzero;"/>
-            </g>
-            <path id="path832" d="M7.104,11C6.022,10.996 4.967,11.347 4.104,12C2.846,12.944 2.104,14.427 2.104,16C2.104,17.573 2.846,19.056 4.104,20C4.967,20.653 6.022,21.004 7.104,21C9.847,21 12.104,18.743 12.104,16C12.104,13.257 9.847,11 7.104,11ZM10.104,17L8.104,17L8.104,19L6.104,19L6.104,17L4.104,17L4.104,15L6.104,15L6.104,13L8.104,13L8.104,15L10.104,15L10.104,17Z" style="fill:rgb(0,113,188);fill-rule:nonzero;"/>
-        </g>
-    </g>
-</svg>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,9V22H12.89A7,7,0,0,0,8,10a6.88,6.88,0,0,0-3,.68V3h8V9Z" style="fill:#333"/><polygon points="19 7 15 7 15 3 19 7"/><polygon points="19 7 15 7 15 3 19 7" style="fill:#333"/><path d="M8,12a4.94,4.94,0,0,0-3,1,5,5,0,0,0,0,8,4.94,4.94,0,0,0,3,1A5,5,0,0,0,8,12Zm3,6H9v2H7V18H5V16H7V14H9v2h2Z" style="fill:#0071bc"/></svg>
