@@ -1,7 +1,6 @@
 package org.freeplane.features.icon.factory;
 
 import java.net.URL;
-import java.util.Locale;
 import java.util.WeakHashMap;
 
 import javax.swing.Icon;
