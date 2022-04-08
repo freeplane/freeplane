@@ -7,7 +7,7 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg10437"
-   inkscape:version="1.2-alpha (0bd5040e63, 2022-02-05)"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
    sodipodi:docname="outline_view.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -117,14 +117,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="31.375423"
-     inkscape:cx="10.103449"
+     inkscape:cx="10.119385"
      inkscape:cy="12.079518"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:pagecheckerboard="0"
      showgrid="true"
      units="px"
-     showguides="true"
+     showguides="false"
      inkscape:guide-bbox="true"
      inkscape:snap-global="true"
      inkscape:snap-bbox="true"
@@ -194,41 +194,37 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <path
-       style="fill:none;stroke:#333333;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 7,8 V 20"
-       id="path17406" />
-    <rect
-       x="2"
-       y="0.99999952"
-       width="14"
-       height="7.0000005"
-       rx="1.757"
-       style="fill:#0071bc;stroke-width:0.999997"
-       id="rect17193" />
-    <path
-       style="fill:none;stroke:#333333;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 6,12 H 20"
-       id="path17634" />
-    <rect
-       x="12"
-       y="9"
-       width="10"
-       height="6"
-       rx="1.2549999"
-       style="fill:#999999;fill-opacity:1;stroke-width:0.999995"
-       id="rect17636" />
-    <path
-       style="fill:none;stroke:#333333;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 6.5,19 h 9"
-       id="path8285" />
-    <rect
-       x="12"
-       y="16"
-       width="10"
-       height="6"
-       rx="1.2549999"
-       style="fill:#0071bc;fill-opacity:1;stroke-width:0.999995"
-       id="rect4777" />
+    <g
+       id="g4042">
+      <path
+         id="path17406"
+         style="color:#000000;fill:#333333;-inkscape-stroke:none"
+         d="m 6,8 v 3 2 7 H 6.5 8 12.918361 V 18 H 8 v -5 h 4.988142 V 11 H 8 V 8 Z"
+         sodipodi:nodetypes="ccccccccccccccc" />
+      <rect
+         x="2"
+         y="0.99999952"
+         width="14"
+         height="7.0000005"
+         rx="1.757"
+         style="fill:#0071bc;stroke-width:0.999997"
+         id="rect17193" />
+      <rect
+         x="12"
+         y="9"
+         width="10"
+         height="6"
+         rx="1.2549999"
+         style="fill:#999999;fill-opacity:1;stroke-width:0.999995"
+         id="rect17636" />
+      <rect
+         x="12"
+         y="16"
+         width="10"
+         height="6"
+         rx="1.2549999"
+         style="fill:#0071bc;fill-opacity:1;stroke-width:0.999995"
+         id="rect4777" />
+    </g>
   </g>
 </svg>
