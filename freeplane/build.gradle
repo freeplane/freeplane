@@ -3,6 +3,8 @@ import org.gradle.util.GradleVersion
 import org.gradle.plugins.ide.eclipse.model.AccessRule
 
 configurations{
+	emoji
+	lib.extendsFrom emoji
 	mergedViewerDependencies
 	api.extendsFrom mergedViewerDependencies
 }
@@ -42,7 +44,7 @@ dependencies {
     maclib 'org.violetlib:vaqua:10'
 
     runtimeOnly files("${project.buildDir}/emoji/xml")
-    runtimeOnly files("${project.buildDir}/emoji/resources")
+    emoji 'org.freeplane.emoji:twemoji:12.1.4'
 }
 
 test {
@@ -72,9 +74,6 @@ eclipse {
 	}
 }
 
-processTestResources.dependsOn createEmojiList
-
-
 ext.bundleDeps = configurations.lib.files.collect {
     externalizeJar(it)
 }
@@ -86,7 +85,6 @@ bundleDeps.add(0, "lib/freeplaneosgi-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplane_mac-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneeditor-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneviewer.jar")
-bundleDeps.add("lib/${emojiJar.archiveFile.get().asFile.name}")
 
 ext.bundleExports = """\
                     com.inet.jortho,
@@ -249,7 +247,6 @@ task copyOSGiJars(type: Copy) {
 }
 copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
 copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
-copyOSGiJars.dependsOn emojiJar
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/manifest/") {
