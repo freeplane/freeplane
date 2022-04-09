@@ -1926,7 +1926,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				validateTree();
 			}
 		}
-		else if(drawsRectangleForSelection){
+		else if(! drawsRectangleForSelection){
 			selection.selectedSet.forEach(NodeView::update);
 			synchronized (getTreeLock()) {
 				validateTree();
