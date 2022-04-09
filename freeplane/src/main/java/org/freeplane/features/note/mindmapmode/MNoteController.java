@@ -37,6 +37,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
@@ -143,12 +144,14 @@ public class MNoteController extends NoteController {
 	
 	private final NoteManager noteManager;
     private final Set<String> noteContentTypes;
+	private MModeController modeController;
 
 	/**
 	 * @param modeController
 	 */
-	public MNoteController(ModeController modeController) {
+	public MNoteController(MModeController modeController) {
 		super();
+		this.modeController = modeController;
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		noteManager = new NoteManager(this);
         noteContentTypes = new LinkedHashSet<>();
@@ -297,12 +300,19 @@ public class MNoteController extends NoteController {
 	    notePanel.updateStyleSheet(cssBuilder.toString(), noteStyleAccessor.getNoteStyleSheet());
 	}
 
+	public void stopEditing() {
+		if(isEditing()) {
+			noteManager.saveNote();
+			modeController.forceNewTransaction();
+		}
+	}
+
 	boolean isEditing() {
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
         return focusOwner != null && notePanel != null && SwingUtilities.isDescendingFrom(focusOwner, notePanel);
 	}
 
-	void setFocusToMap() {
+	 void setFocusToMap() {
 		final Controller controller = Controller.getCurrentModeController().getController();
 		final NodeModel node = controller.getSelection().getSelected();
 		controller.getMapViewManager().getComponent(node).requestFocusInWindow();
@@ -346,4 +356,5 @@ public class MNoteController extends NoteController {
 	NotePanel getNotePanel() {
 		return notePanel;
 	}
+
 }

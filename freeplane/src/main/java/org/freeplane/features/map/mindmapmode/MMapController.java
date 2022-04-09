@@ -90,6 +90,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
@@ -279,6 +281,10 @@ public class MMapController extends MapController {
         final TextController textController = TextController.getController();
         if (textController instanceof MTextController) {
             ((MTextController) textController).stopInlineEditing();
+        }
+        NoteController noteController = NoteController.getController();
+        if (noteController instanceof MNoteController) {
+            ((MNoteController) noteController).stopEditing();
         }
     }
 
