@@ -8,6 +8,8 @@ import javax.swing.JScrollPane;
 @SuppressWarnings("serial")
 public class JRestrictedSizeScrollPane extends JScrollPane {
 
+	private static final int MAX_HEIGHT = 100000;
+
 	public JRestrictedSizeScrollPane() {
 	    super();
     }
@@ -35,5 +37,27 @@ public class JRestrictedSizeScrollPane extends JScrollPane {
 		}
 		return preferredSize;
     }
-	
+
+    @Override
+    public void doLayout() {
+    	fixRowHeaderSize();
+    	super.doLayout();
+    }
+
+	private void fixRowHeaderSize() {
+   		if(rowHeader == null)
+			return;
+		Component rowHeaderView = rowHeader.getView();
+		if(rowHeaderView == null)
+			return;
+		int rowHeaderViewHeight = rowHeaderView.getHeight();
+		if(rowHeaderViewHeight > MAX_HEIGHT)
+			rowHeaderView.setSize(rowHeaderView.getWidth(), MAX_HEIGHT);
+		if(!rowHeaderView.isPreferredSizeSet())
+			return;
+		Dimension preferredSize = rowHeaderView.getPreferredSize();
+		if(preferredSize.height > MAX_HEIGHT) {
+			rowHeaderView.setPreferredSize(new Dimension(preferredSize.width, MAX_HEIGHT));
+		}
+	}
 }
