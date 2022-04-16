@@ -251,22 +251,19 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeView nodeView) {
-		final NodeModel node = nodeView.getModel();
-		if (nodeView.isFolded()) {
-			return FoldingMark.ITSELF_FOLDED;
+		if (nodeView.isFolded() || nodeView.hasHiddenChildren()) {
+			return FoldingMark.FOLDING_CIRCLE_FOLDED;
 		}
 		Filter filter = nodeView.getMap().getFilter();
-		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent(filter) && nodeView.isChildHidden(child)) {
-				return FoldingMark.ITSELF_FOLDED;
-			}
-		}
 		for (final NodeView childView : nodeView.getChildrenViews()) {
-			if (!childView.getModel().hasVisibleContent(filter) && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, childView))) {
-				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
+			if (!childView.getModel().hasVisibleContent(filter) 
+					&& !FoldingMark.FOLDING_CIRCLE_UNFOLDED.equals(foldingMarkType(mapController, childView))) {
+				return FoldingMark.FOLDING_CIRCLE_FOLDED;
 			}
 		}
-		return FoldingMark.UNFOLDED;
+		if(nodeView.isRoot())
+			return FoldingMark.INVISIBLE;
+		return FoldingMark.FOLDING_CIRCLE_UNFOLDED;
 	}
 
 	boolean shouldPaintCloneMarker(final NodeView nodeView) {
@@ -657,7 +654,7 @@ public class MainView extends ZoomableLabel {
 				height = getHeight();
 				y = 0;
 			}
-			height += zoomedFoldingSymbolHalfWidth;
+			height += width/2;
 			final Rectangle foldingRectangle = new Rectangle(x-4, y-4, width+8, height+8);
 			final MapView map = nodeView.getMap();
 			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
@@ -724,6 +721,27 @@ public class MainView extends ZoomableLabel {
 		return borderColorMatchesEdgeColor ? getNodeView().getEdgeColor() : borderColor;
 	}
 
+	public Color getFoldingCircleBorderColor() {
+		Color borderColor = getBorderColor();
+		if(borderColor.getAlpha() >= 100)
+			return borderColor;
+		else
+			return new Color(borderColor.getRed(), borderColor.getGreen(), borderColor.getGreen(), 100);
+	}
+
+	public Color getFoldingCircleFillColor() {
+		Color fillColor = getNodeView().getTextBackground();
+		Color foldingCircleBorderColor = getFoldingCircleBorderColor();
+		if(foldingCircleBorderColor.equals(fillColor)) {
+			if(UITools.isLight(fillColor))
+				fillColor = fillColor.darker();
+			else
+				fillColor = fillColor.brighter();
+		}
+
+		return fillColor;
+	}
+	
 	public void updateBorder(NodeView nodeView) {
 		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
 		final NodeModel node = nodeView.getModel();

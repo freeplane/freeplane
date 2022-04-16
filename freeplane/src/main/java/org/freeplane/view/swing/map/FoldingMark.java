@@ -1,11 +1,14 @@
 package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+
+import org.freeplane.core.ui.components.UITools;
 
 interface Drawable{
 	void draw(Graphics2D g, NodeView nodeView, Rectangle r);
@@ -18,7 +21,7 @@ class DrawableNothing implements Drawable{
 abstract class DrawableShape implements Drawable{
 
 	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
-		final Color color = g.getColor(); 
+		final Color color = g.getColor();
 		final Color edgeColor = nodeView.getMainView().getBorderColor();
 		final Shape shape = getShape(r);
 		Color fillColor = getFillColor(nodeView);
@@ -48,40 +51,27 @@ class DrawableEllipse extends DrawableShape{
 	}
 }
 
-class FoldingCircle extends DrawableEllipse{
+class FoldingCircle implements Drawable{
+	private static final BasicStroke BORDER_STROKE = new BasicStroke(UITools.FONT_SCALE_FACTOR * 1f);
 	final private boolean folded;
-	final private boolean hiddenChild;
 
-	public FoldingCircle(boolean folded, boolean hiddenChild) {
+	public FoldingCircle(boolean folded) {
 		super();
 		this.folded  = folded;
-		this.hiddenChild =hiddenChild;
 	}
 
 	@Override
-	protected void drawShape(Graphics2D g, Shape shape, Rectangle r, NodeView nodeView) {
-		super.drawShape(g, shape, r, nodeView);
-		if(nodeView.isRoot() & ! folded)
-			return;
+	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
 		final MainView mainView = nodeView.getMainView();
-		if(! mainView.getMouseArea().equals(MouseArea.FOLDING))
-			g.setColor(mainView.getBorderColor());
-		else
-			g.setColor(super.getFillColor(nodeView));
-		if(! hiddenChild)
-			g.drawLine(r.x + r.width / 4, r.y + r.height / 2, r.x + r.width * 3/ 4, r.y + r.height / 2);
-		if(folded || hiddenChild)
-			g.drawLine(r.x + r.width / 2, r.y + r.height / 4, r.x + r.width / 2, r.y + r.height * 3 / 4);
+		Color borderColor = mainView.getFoldingCircleBorderColor();
+		Color fillColor = folded ? borderColor : mainView.getFoldingCircleFillColor();
+		g.setColor(fillColor);
+		g.fillOval(r.x, r.y, r.width , r.height);
+		g.setColor(borderColor);
+		g.setStroke(BORDER_STROKE);
+		g.drawOval(r.x, r.y, r.width , r.height);
 	}
 
-	@Override
-	protected Color getFillColor(NodeView nodeView) {
-		if(nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING)){
-			return Color.GRAY;
-		}
-		return super.getFillColor(nodeView);
-	}
-	
 }
 
 class DrawableTriangle extends DrawableShape{
@@ -119,17 +109,17 @@ class DrawableRectangle extends DrawableShape{
 	}
 }
 public enum FoldingMark implements Drawable{
-	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse()), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse()), 
-	SHORTENED(new DrawableTriangle()), 
-	CLONE(new DrawableRectangle()), 
-	FOLDING_CIRCLE_FOLDED(new FoldingCircle(true, false)), FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(false, false)),
-	FOLDING_CIRCLE_HIDDEN_CHILD(new FoldingCircle(false, true));
+	INVISIBLE(new DrawableNothing()),
+	SHORTENED(new DrawableTriangle()),
+	CLONE(new DrawableRectangle()),
+	FOLDING_CIRCLE_FOLDED(new FoldingCircle(true)),
+	FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(false));
 	final Drawable drawable;
 
 	FoldingMark(Drawable drawable){
 		this.drawable = drawable;
 	}
-	
+
 	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
 		drawable.draw(g, nodeView, r);
 	}

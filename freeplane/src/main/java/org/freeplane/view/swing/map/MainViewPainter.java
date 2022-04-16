@@ -55,13 +55,18 @@ abstract class MainViewPainter{
 	}
 
     Point getConnectorPoint(Point relativeLocation) {
-        if(relativeLocation.x > mainView.getWidth())
-            return getRightPoint();
-        if(relativeLocation.x < 0)
-            return getLeftPoint();
+    	NodeView nodeView = mainView.getNodeView();
+        if(relativeLocation.x > mainView.getWidth()) {
+			Point rightPoint = getRightPoint();
+			return rightPoint;
+		}
+		if(relativeLocation.x < 0) {
+			Point leftPoint = getLeftPoint();
+			return leftPoint;
+		}
         if(relativeLocation.y > mainView.getHeight()){
             final Point bottomPoint = mainView.getBottomPoint();
-            bottomPoint.y = mainView.getNodeView().getContent().getHeight();
+            bottomPoint.y = nodeView.getContent().getHeight();
 			return bottomPoint;
         }
         if(relativeLocation.y <0)
@@ -108,38 +113,20 @@ abstract class MainViewPainter{
 		final MapView map = mainView.getMap();
 		final MapController mapController = map.getModeController().getMapController();
 		final FoldingMark markType = mainView.foldingMarkType(mapController, nodeView);
-		if(mainView.getMouseArea() != MouseArea.OUT && ! map.isPrinting()){
-			final int width = Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2);
-			final Point p = mainView.getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
-			if(p.y + width/2 > mainView.getHeight())
-				p.y = mainView.getHeight() - width;
-			else
-				p.y -= width/2;
-			if(nodeView.isLeft())
-				p.x -= width;
-			final FoldingMark foldingCircle;
-			if(markType.equals(FoldingMark.UNFOLDED)) {
-				if(nodeView.hasHiddenChildren())
-					foldingCircle = FoldingMark.FOLDING_CIRCLE_HIDDEN_CHILD;
-				else
-					foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;
-            }
-			else{
-				foldingCircle = FoldingMark.FOLDING_CIRCLE_FOLDED;
-			}
-            foldingCircle.draw(g, nodeView, new Rectangle(p.x, p.y, width, width));
+		boolean drawsControls = (mainView.getMouseArea() != MouseArea.OUT || nodeView.isSelected()) && ! map.isPrinting();
+		if(markType == FoldingMark.FOLDING_CIRCLE_UNFOLDED && ! drawsControls)
+			return;
+		final Point p = mainView.getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
+		final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
+		final int halfWidth = width / 2;
+		if (p.x <= 0) {
+			p.x -= halfWidth;
 		}
-		else{
-			final int halfWidth = mainView.getZoomedFoldingSymbolHalfWidth();
-			final Point p = mainView.getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
-			if (p.x <= 0) {
-				p.x -= halfWidth;
-			}
-			else {
-				p.x += halfWidth;
-			}
-			markType.draw(g, nodeView, new Rectangle(p.x - halfWidth, p.y-halfWidth, halfWidth*2, halfWidth*2));
+		else {
+			p.x += halfWidth;
 		}
+		(drawsControls || markType != FoldingMark.FOLDING_CIRCLE_FOLDED ? markType : FoldingMark.FOLDING_CIRCLE_UNFOLDED)
+			.draw(g, nodeView, new Rectangle(p.x - halfWidth, p.y-halfWidth, halfWidth*2, halfWidth*2));
 	}
 
 	boolean areInsetsFixed() {

@@ -468,13 +468,6 @@ public class NodeView extends JComponent implements INodeView {
 		return mainView;
 	}
 
-    public Point getMainViewConnectorPoint(NodeView target) {
-        final Point relativeLocation = getRelativeLocation(target);
-        relativeLocation.x += target.getMainView().getWidth()/2;
-        relativeLocation.y += target.getMainView().getHeight()/2;
-        return mainView.getConnectorPoint(relativeLocation);
-    }
-
     public Point getRelativeLocation(NodeView target) {
         Component component;
         int targetX = 0;
@@ -842,6 +835,11 @@ public class NodeView extends JComponent implements INodeView {
 			return false;
 		}
 		return getModel().isLeft();
+	}
+
+
+	public boolean isRight() {
+		return ! isLeft() && ! isRoot();
 	}
 
 	public boolean isParentHidden() {
@@ -1762,8 +1760,6 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     public StyleOption getStyleOption() {
-        return useSelectionColors() ? StyleOption.FOR_SELECTED_NODE : StyleOption.FOR_UNSELECTED_NODE; 
+        return useSelectionColors() ? StyleOption.FOR_SELECTED_NODE : StyleOption.FOR_UNSELECTED_NODE;
     }
-
-
 }
