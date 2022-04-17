@@ -74,7 +74,6 @@ public class Launcher {
 	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
 	private static final String BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
 	private static final String JAVA_VERSION = System.getProperty("java.version");
-	private static final String OS_NAME =  System.getProperty("os.name");
 	private final File freeplaneInstallationDirectory;
 	private int argCount;
 	private boolean disableSecurityManager;
