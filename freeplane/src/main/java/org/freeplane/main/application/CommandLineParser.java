@@ -7,18 +7,20 @@ import java.util.List;
 import org.freeplane.core.util.Compat;
 
 public class CommandLineParser {
-    public static class Options {
+    private static class CommandLineParserOptions implements CommandLineOptions {
         private static final String HELP_MESSAGE = //
                 "\nUsage:\n\tfreeplane.bat [options] [file1 [file2 ...]]\n" //
-                + "\n -X<menukey>   : execute menu item with key <menukey>." //
+                + "\n -X<menukey>   : execute menu item with key <menukey> (ignored in non interactive mode)." //
                 + "\n                 hint: use devtools add-on to find appropriate menu keys" //
-                + "\n -S            : stop after executing menu items" //
+                + "\n -R<file>      : execute script by path <file>." //
+                + "\n -S            : stop after executing menu items and scripts" //
                 + "\n -N            : set the 'nonInteractive' system property to 'true'" //
                 + "\n -U<userdir>   : set the freeplane user config directory (default: "
                 + Compat.getDefaultFreeplaneUserDirectory() + ")" //
                 + "\n -h , --help   : print this help text";
         private List<String> filesToOpen = new ArrayList<String>();
         private List<String> menuItemsToExecute = new ArrayList<String>();
+        private List<String> scriptsToExecute = new ArrayList<String>();
         private boolean stopAfterLaunch;
         private boolean nonInteractive;
         private boolean helpRequested = false;
@@ -27,7 +29,7 @@ public class CommandLineParser {
             this.filesToOpen = Arrays.asList(filesToOpen);
         }
 
-        boolean shouldStopAfterLaunch() {
+        public boolean shouldStopAfterLaunch() {
             return stopAfterLaunch;
         }
 
@@ -35,16 +37,20 @@ public class CommandLineParser {
             this.stopAfterLaunch = stopAfterLaunch;
         }
 
-        String[] getFilesToOpenAsArray() {
+        public String[] getFilesToOpenAsArray() {
             return filesToOpen.toArray(new String[filesToOpen.size()]);
         }
 
-        List<String> getMenuItemsToExecute() {
+        public List<String> getMenuItemsToExecute() {
             return menuItemsToExecute;
         }
 
-        boolean hasMenuItemsToExecute() {
-            return !menuItemsToExecute.isEmpty();
+        public List<String> getScriptsToExecute() {
+			return scriptsToExecute;
+		}
+
+		public boolean hasItemsToExecute() {
+            return !menuItemsToExecute.isEmpty() || !scriptsToExecute.isEmpty();
         }
 
         private void addFilesToOpen(String file) {
@@ -53,6 +59,10 @@ public class CommandLineParser {
 
         private void addMenuItemToExecute(String item) {
             menuItemsToExecute.add(item);
+        }
+
+        private void addScriptToExecute(String item) {
+        	scriptsToExecute.add(item);
         }
 
         public boolean isNonInteractive() {
@@ -69,7 +79,8 @@ public class CommandLineParser {
 
         @Override
         public String toString() {
-            return "Options(files: " + filesToOpen + ", menuItems: " + menuItemsToExecute + ", stopAfterLaunch: "
+            return "Options(files: " + filesToOpen + ", menuItems: " + menuItemsToExecute + 
+            		", scripts: " + scriptsToExecute + ", stopAfterLaunch: "
                     + stopAfterLaunch + ", nonInteractive: " + nonInteractive + ")";
         }
 
@@ -78,8 +89,8 @@ public class CommandLineParser {
         }
     }
 
-    public static CommandLineParser.Options parse(String[] args) {
-        CommandLineParser.Options result = new CommandLineParser.Options();
+    public static CommandLineOptions parse(String... args) {
+        CommandLineParser.CommandLineParserOptions result = new CommandLineParser.CommandLineParserOptions();
         if (args == null || args.length == 0 || !args[0].startsWith("-")) {
             result.setFilesToOpen(args);
             return result;
@@ -111,6 +122,12 @@ public class CommandLineParser {
                     result.addMenuItemToExecute(arg.substring(2));
                 else if (args.length > i + 1)
                     result.addMenuItemToExecute(args[++i]);
+            }
+            else if (arg.startsWith("-R")) {
+                if (arg.length() > 2)
+                    result.addScriptToExecute(arg.substring(2));
+                else if (args.length > i + 1)
+                    result.addScriptToExecute(args[++i]);
             }
             else if (arg.startsWith("-U")) {
                 String userdir = null;

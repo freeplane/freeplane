@@ -38,8 +38,8 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.application.ApplicationResourceController;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.application.CommandLineParser;
-import org.freeplane.main.application.CommandLineParser.Options;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
@@ -172,7 +172,7 @@ class ActivatorImpl implements BundleActivator {
 			}
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
-		Options options = CommandLineParser.parse(getCallParameters());
+		CommandLineOptions options = CommandLineParser.parse(getCallParameters());
 		if(options.isNonInteractive())
 			System.setProperty(JAVA_HEADLESS_PROPERTY, "true");
 
@@ -189,7 +189,7 @@ class ActivatorImpl implements BundleActivator {
 		loadPlugins(context);
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
-		installControllerExtensions(context, controller);
+		installControllerExtensions(context, controller, options);
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 			controller.getViewController().invokeLater(new Runnable() {
 				@Override
@@ -218,10 +218,12 @@ class ActivatorImpl implements BundleActivator {
 
 	private static class OsgiExtentionInstaller implements ExtensionInstaller{
 		private final BundleContext context;
+		private final CommandLineOptions options;
 
-		public OsgiExtentionInstaller(BundleContext context) {
+		public OsgiExtentionInstaller(BundleContext context, CommandLineOptions options) {
 			super();
 			this.context = context;
+			this.options = options;
 		}
 
 		@Override
@@ -234,7 +236,7 @@ class ActivatorImpl implements BundleActivator {
 						final ServiceReference controllerProvider = controllerProviders[i];
 						final IControllerExtensionProvider service = (IControllerExtensionProvider) context
 						    .getService(controllerProvider);
-						service.installExtension(controller);
+						service.installExtension(controller, options);
 						context.ungetService(controllerProvider);
 					}
 				}
@@ -254,7 +256,7 @@ class ActivatorImpl implements BundleActivator {
 							final ServiceReference modeControllerProvider = modeControllerProviders[i];
 							final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
 							    .getService(modeControllerProvider);
-							service.installExtension(modeController);
+							service.installExtension(modeController, options);
 							context.ungetService(modeControllerProvider);
 						}
 					}
@@ -267,16 +269,16 @@ class ActivatorImpl implements BundleActivator {
 
 	}
 
-	private void installControllerExtensions(final BundleContext context, final Controller controller) {
-		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context);
+	private void installControllerExtensions(final BundleContext context, final Controller controller, CommandLineOptions options) {
+		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context, options);
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
 		osgiExtentionInstaller.installExtensions(controller);
 	}
 	
 
-	public FreeplaneStarter createStarter(Options options) {
+	public FreeplaneStarter createStarter(CommandLineOptions options) {
 		if(GraphicsEnvironment.isHeadless()) {
-			return new FreeplaneHeadlessStarter();
+			return new FreeplaneHeadlessStarter(options);
 		} else {
 			return new FreeplaneGUIStarter(options);
 		}

@@ -7,6 +7,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.osgi.framework.BundleActivator;
@@ -26,7 +27,7 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(ModeController modeController) {
+			    public void installExtension(ModeController modeController, CommandLineOptions options) {
 			    	final ExportController exportController = ExportController.getController(modeController);
 			    	exportController.addMapExportEngine(new CaseSensitiveFileNameExtensionFilter("pdf", TextUtils.getText("export_pdf_text")), new ExportPdf());
 			    	exportController.addMapExportEngine(new CaseSensitiveFileNameExtensionFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());

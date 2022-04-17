@@ -80,7 +80,6 @@ import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.mindmapmode.ExternalMapChangeMonitor;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
-import org.freeplane.main.application.CommandLineParser.Options;
 import org.freeplane.main.application.survey.FreeplaneSurveyProperties;
 import org.freeplane.main.application.survey.SurveyRunner;
 import org.freeplane.main.application.survey.SurveyStarter;
@@ -108,7 +107,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private boolean dontLoadLastMaps;
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
-	final private Options options;
+	final private CommandLineOptions options;
 	
 	private final UserPropertiesStatus userPropertiesStatus;
 
@@ -152,7 +151,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
     }
 
-	public FreeplaneGUIStarter(Options options) {
+	public FreeplaneGUIStarter(CommandLineOptions options) {
 		super();
 		this.options = options;
 		userPropertiesStatus = new UserPropertiesUpdater().importOldProperties();

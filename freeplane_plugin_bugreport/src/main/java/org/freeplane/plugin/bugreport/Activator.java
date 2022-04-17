@@ -2,6 +2,7 @@ package org.freeplane.plugin.bugreport;
 
 import org.freeplane.core.util.logging.LogHandlers;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -19,7 +20,7 @@ public class Activator implements BundleActivator {
 		LogHandlers.addHandler(handler);
 		context.registerService(IControllerExtensionProvider.class.getName(), new IControllerExtensionProvider() {
 			@Override
-			public void installExtension(Controller controller) {
+			public void installExtension(Controller controller, CommandLineOptions options) {
 				handler.setBugReportListener(new ManualBugReporter());
 			}
 		}, null);

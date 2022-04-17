@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import org.freeplane.api.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.plugin.script.proxy.ScriptUtils;
 import org.osgi.framework.BundleActivator;
@@ -22,8 +23,8 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    @Override
-				public void installExtension(ModeController modeController) {
-				    new ScriptingRegistration(modeController);
+				public void installExtension(ModeController modeController, CommandLineOptions options) {
+				    new ScriptingRegistration().register(modeController, options);
 			    }
 		    }, props);
 		context.registerService(Controller.class.getName(), ScriptUtils.c(), new Hashtable<String, String[]>());

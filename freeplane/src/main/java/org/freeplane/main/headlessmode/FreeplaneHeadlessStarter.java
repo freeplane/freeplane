@@ -40,17 +40,21 @@ import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.main.application.ApplicationResourceController;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 
 public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 
-	private ApplicationResourceController applicationResourceController;
+	private final ApplicationResourceController applicationResourceController;
 	private HeadlessUIController viewController;
+	private final CommandLineOptions options;
 // // 	private Controller controller;
-	/** allows to disable loadLastMap(s) if there already is a second instance running. */
-	public FreeplaneHeadlessStarter() {
+	/** allows to disable loadLastMap(s) if there already is a second instance running. 
+	 * @param options */
+	public FreeplaneHeadlessStarter(CommandLineOptions options) {
 		super();
+		this.options = options;
 		applicationResourceController = new ApplicationResourceController();
 	}
 
@@ -111,6 +115,11 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
 		Controller.getCurrentController().fireStartupFinished();
+		if(options.shouldStopAfterLaunch()) {
+			stop();
+			System.exit(0);
+		}
+
 	}
 
 	@Override

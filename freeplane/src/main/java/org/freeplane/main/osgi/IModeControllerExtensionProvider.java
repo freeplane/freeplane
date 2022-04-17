@@ -20,11 +20,12 @@
 package org.freeplane.main.osgi;
 
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.application.CommandLineOptions;
 
 /**
  * @author Dimitry Polivaev
  * Feb 22, 2009
  */
 public interface IModeControllerExtensionProvider {
-	void installExtension(ModeController modeController);
+	void installExtension(ModeController modeController, CommandLineOptions options);
 }

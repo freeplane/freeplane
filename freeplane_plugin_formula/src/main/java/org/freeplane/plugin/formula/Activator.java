@@ -10,6 +10,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.plugin.formula.dependencies.ActionFactory;
 import org.osgi.framework.BundleActivator;
@@ -27,7 +28,7 @@ public class Activator implements BundleActivator {
 		private static final String PREFERENCES_RESOURCE = "preferences.xml";
 
 		@Override
-		public void installExtension(ModeController modeController) {
+		public void installExtension(ModeController modeController, CommandLineOptions options) {
 			addPluginDefaults();
 			addPreferencesToOptionPanel();
 			final boolean disablePluginProperty = ResourceController.getResourceController().getBooleanProperty(

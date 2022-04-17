@@ -36,8 +36,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.script.ScriptEngineFactory;
-
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
@@ -154,8 +152,6 @@ class ScriptingGuiConfiguration {
 
 	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
-	private List<IScript> initScripts;
-	private List<File> initScriptFiles;
 
 	ScriptingGuiConfiguration() {
 		addPluginDefaults();
@@ -182,26 +178,11 @@ class ScriptingGuiConfiguration {
     }
 
     private void addNonAddOnScripts(final Map<File, Script> addOnScriptMap) {
-        final FilenameFilter scriptFilenameFilter = createFilenameFilter(createScriptRegExp());
+        final FilenameFilter scriptFilenameFilter = ScriptingRegistration.createFilenameFilter(ScriptingRegistration.createScriptRegExp());
 		for (File dir : getScriptDirs()) {
             addNonAddOnScripts(dir, addOnScriptMap, scriptFilenameFilter);
 		}
-		findInitScripts(scriptFilenameFilter);
     }
-
-	private void findInitScripts(final FilenameFilter scriptFilenameFilter) {
-		initScripts = new ArrayList<>(0);
-		initScriptFiles = new ArrayList<>(0);
-		if (ScriptResources.getInitScriptsDir().isDirectory()) {
-			ScriptingPermissions standardPermissions = null;
-			File[] list = ScriptResources.getInitScriptsDir().listFiles(scriptFilenameFilter);
-			for (File file : list) {
-				final IScript script = ScriptingEngine.createScript(file, standardPermissions, true);
-				initScripts.add(script);
-				initScriptFiles.add(file);
-			}
-		}
-	}
 
 	private Map<File, Script> createAddOnScriptMap() {
 		Map<File, Script> result = new LinkedHashMap<File, Script>();
@@ -286,27 +267,7 @@ class ScriptingGuiConfiguration {
         }
     }
 
-    private String createScriptRegExp() {
-        final ArrayList<String> extensions = new ArrayList<String>();
-//        extensions.add("clj");
-		for (ScriptEngineFactory scriptEngineFactory : GenericScript.createScriptEngineFactories()) {
-            extensions.addAll(scriptEngineFactory.getExtensions());
-        }
-        LogUtils.info("looking for scripts with the following endings: " + extensions);
-        return ".+\\.(" + StringUtils.join(extensions, "|") + ")$";
-    }
-
-	private FilenameFilter createFilenameFilter(final String regexp) {
-		final FilenameFilter filter = new FilenameFilter() {
-			@Override
-			public boolean accept(final File dir, final String name) {
-				return name.matches(regexp);
-			}
-		};
-		return filter;
-	}
-
-	private void addScript(final File file, final Map<File, Script> addOnScriptMap) {
+    private void addScript(final File file, final Map<File, Script> addOnScriptMap) {
 		final Script scriptConfig = addOnScriptMap.get(file);
 		if (scriptConfig != null && !scriptConfig.active) {
 			LogUtils.info("skipping deactivated " + scriptConfig);
@@ -389,13 +350,5 @@ class ScriptingGuiConfiguration {
 
 	public static String getScriptsLocation(String parentKey) {
 		return  parentKey + "/scripts";
-	}
-
-	public List<IScript> getInitScripts() {
-		return initScripts;
-	}
-
-	public List<File> getInitScriptFiles() {
-		return initScriptFiles;
 	}
 }

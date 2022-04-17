@@ -3,6 +3,7 @@ package org.freeplane.plugin.openmaps;
 import java.util.Hashtable;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -15,7 +16,7 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		bundleContext.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(ModeController modeController) {
+			    public void installExtension(ModeController modeController, CommandLineOptions options) {
 				    new OpenMapsRegistration(modeController);
 			    }
 		    }, getProperties());

@@ -20,11 +20,12 @@
 package org.freeplane.main.osgi;
 
 import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.CommandLineOptions;
 
 /**
  * @author Dimitry Polivaev
  * Feb 22, 2009
  */
 public interface IControllerExtensionProvider {
-	void installExtension(Controller controller);
+	void installExtension(Controller controller, CommandLineOptions options);
 }

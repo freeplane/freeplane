@@ -3,11 +3,12 @@ package org.freeplane.core.ui.menubuilders;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.CommandLineParser;
 import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
 
 public class HeadlessFreeplaneRunner {
 	static {
-		FreeplaneHeadlessStarter starter = new FreeplaneHeadlessStarter();
+		FreeplaneHeadlessStarter starter = new FreeplaneHeadlessStarter(CommandLineParser.parse());
 		try {
 			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 				System.setProperty("org.freeplane.core.dir.lib", "/lib/");

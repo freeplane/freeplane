@@ -15,7 +15,6 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.main.application.CommandLineParser.Options;
 
 public class SingleInstanceManager {
 	private File lockFile = new File(Compat.getApplicationUserDirectory(), "single_instance.lock");
@@ -33,9 +32,9 @@ public class SingleInstanceManager {
 		isSingleInstanceForceMode =!runsHeadless && resourceController.getBooleanProperty("single_instance_force");
 	}
 
-	public void start(final Options options) {
+	public void start(final CommandLineOptions options) {
         final String[] filesToLoad = options.getFilesToOpenAsArray();
-		if (isSingleInstanceMode && !options.hasMenuItemsToExecute()) {
+		if (isSingleInstanceMode && !options.hasItemsToExecute()) {
 			initLockFile();
 			if (filesToLoad.length == 0 && !isSingleInstanceForceMode && checkIsMasterPresent()) {
 				isMasterPresent = true;

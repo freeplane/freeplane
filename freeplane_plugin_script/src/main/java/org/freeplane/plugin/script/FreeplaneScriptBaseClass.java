@@ -123,9 +123,11 @@ public abstract class FreeplaneScriptBaseClass extends Script {
         if(binding.hasVariable("node") && binding.hasVariable("c")) {
             Object nodeProxy = binding.getVariable("node");
             Object controllerProxy = binding.getVariable("c");
-            if (nodeProxy instanceof NodeRO && controllerProxy instanceof ControllerRO) {
-                boundVariables = binding.getVariables();
+            boundVariables = binding.getVariables();
+            if (nodeProxy instanceof NodeRO || nodeProxy == null) {
                 node = (NodeRO) nodeProxy;
+            }
+            if (controllerProxy instanceof ControllerRO || controllerProxy == null) {
                 controller = (ControllerRO) controllerProxy;
             }
         }
@@ -182,14 +184,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 			if (boundValue != null) {
 				return boundValue;
 			}
-			else {
+			else if(node != null){
 				try {
 					return nodeMetaClass.getProperty(node, property);
 				}
-				catch (MissingPropertyException e) {
-					return super.getProperty(property);
-				}
+				catch (MissingPropertyException e) {/**/}
 			}
+			return super.getProperty(property);
 		}
 	}
 

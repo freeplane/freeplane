@@ -13,6 +13,7 @@ import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.mindmapmode.stylemode.SModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
@@ -38,7 +39,7 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    @Override
-				public void installExtension(final ModeController modeController) {
+				public void installExtension(final ModeController modeController, CommandLineOptions options) {
 					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
                     textController.addTextTransformer(//
 							new ConditionalContentTransformer(new MarkdownRenderer(), Activator.TOGGLE_PARSE_MARKDOWN));

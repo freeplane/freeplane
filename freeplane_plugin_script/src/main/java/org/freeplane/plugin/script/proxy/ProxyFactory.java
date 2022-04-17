@@ -12,7 +12,7 @@ public class ProxyFactory {
 	}
 
 	static public Proxy.Node createNode(final NodeModel node, final ScriptContext scriptContext) {
-		return new NodeProxy(node, scriptContext);
+		return node != null ? new NodeProxy(node, scriptContext) : null;
 	}
 
 	static List<Proxy.Node> createNodeList(final List<NodeModel> list, final ScriptContext scriptContext) {

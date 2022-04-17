@@ -28,10 +28,12 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.PrintStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import javax.script.ScriptEngineFactory;
 import javax.swing.ComboBoxEditor;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,6 +54,7 @@ import org.freeplane.features.script.IScriptStarter;
 import org.freeplane.main.addons.AddOnInstaller;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.ApplicationLifecycleListener;
+import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -142,15 +145,14 @@ class ScriptingRegistration {
 
 	final private HashMap<String, Object> mScriptCookies = new HashMap<String, Object>();
 
-	public ScriptingRegistration(ModeController modeController) {
-		register(modeController);
+	public ScriptingRegistration() {
 	}
 
 	public HashMap<String, Object> getScriptCookies() {
 		return mScriptCookies;
 	}
 
-	private void register(ModeController modeController) {
+	void register(ModeController modeController, CommandLineOptions options) {
 		modeController.addExtension(IScriptEditorStarter.class, new IScriptEditorStarter() {
 			@Override
             public String startEditor(final String pScriptInput) {
@@ -184,6 +186,7 @@ class ScriptingRegistration {
 			createInitScriptsDirectory();
 			createUserLibDirectory();
 		}
+		registerInitScripts(options.getScriptsToExecute());
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(200,
 			new ScriptConditionController());
 		ScriptingPolicy.installRestrictingPolicy();
@@ -208,7 +211,6 @@ class ScriptingRegistration {
         });
         ScriptingGuiConfiguration configuration = new ScriptingGuiConfiguration();
 		updateMenus(modeController, configuration);
-		registerInitScripts(configuration);
     }
 
     private void addPropertiesToOptionPanel() {
@@ -268,23 +270,42 @@ class ScriptingRegistration {
 		}
 	}
 
-	private void registerInitScripts(ScriptingGuiConfiguration configuration) {
-		final List<IScript> initScripts = configuration.getInitScripts();
-		final List<File> initScriptFiles = configuration.getInitScriptFiles();
-		if (!initScripts.isEmpty())
-		Controller.getCurrentController().addApplicationLifecycleListener(new ApplicationLifecycleListener() {
-			@Override
-			public void onStartupFinished() {
-				for (int i = 0; i < initScriptFiles.size(); i++) {
-					LogUtils.info("running init script " + initScriptFiles.get(i));
-					new ScriptRunner(initScripts.get(i)).execute(null);
-				}
-			}
+	private void registerInitScripts(List<String> scripts) {
+		FilenameFilter scriptFilenameFilter = createFilenameFilter(createScriptRegExp());
+		final File[] initScriptFiles;
+		if (ScriptResources.getInitScriptsDir().isDirectory()) {
+			initScriptFiles = ScriptResources.getInitScriptsDir().listFiles(scriptFilenameFilter);
+		} else {
+			initScriptFiles = new File[] {};
+		}
+		if (initScriptFiles.length > 0 || scripts.size() > 0) {
+			Controller.getCurrentController().addApplicationLifecycleListener(
+					new ApplicationLifecycleListener() {
+						@Override
+						public void onStartupFinished() {
+							for (File scriptFile : initScriptFiles) {
+								LogUtils.info("running init script " + scriptFile);
+								try {
+									ScriptingEngine.executeScript(null, scriptFile, null);
+								} catch (Exception e) {
+									LogUtils.warn(e);
+								}
+							}
+							for (String scriptFile : scripts) {
+								LogUtils.info("running init script " + scriptFile);
+								try {
+									ScriptingEngine.executeScript(null, new File(scriptFile), ScriptingPermissions.getPermissiveScriptingPermissions());
+								} catch (Exception e) {
+									LogUtils.warn(e);
+								}
+							}
+						}
 
-			@Override
-			public void onApplicationStopped() {
-			}
-		});
+						@Override
+						public void onApplicationStopped() {
+						}
+					});
+		}
 	}
 
 	private void createUserScriptsDirectory() {
@@ -308,5 +329,26 @@ class ScriptingRegistration {
 			LogUtils.info("creating user lib directory " + libDir);
 			libDir.mkdirs();
 		}
+	}
+
+	static FilenameFilter createFilenameFilter(final String regexp) {
+		final FilenameFilter filter = new FilenameFilter() {
+			@Override
+			public boolean accept(final File dir, final String name) {
+				return name.matches(regexp);
+			}
+		};
+		return filter;
+	}
+
+	static String createScriptRegExp() {
+		final ArrayList<String> extensions = new ArrayList<String>();
+		// extensions.add("clj");
+		for (ScriptEngineFactory scriptEngineFactory : GenericScript
+				.createScriptEngineFactories()) {
+			extensions.addAll(scriptEngineFactory.getExtensions());
+		}
+		LogUtils.info("looking for scripts with the following endings: " + extensions);
+		return ".+\\.(" + StringUtils.join(extensions, "|") + ")$";
 	}
 }
