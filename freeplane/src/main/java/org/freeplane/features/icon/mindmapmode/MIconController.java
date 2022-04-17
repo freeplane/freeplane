@@ -49,7 +49,6 @@ import javax.swing.plaf.basic.BasicIconFactory;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -248,7 +247,6 @@ public class MIconController extends IconController {
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
 		iconBox = new CollapseableBoxBuilder("leftToolbarVisible").createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
-		createPreferences();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
 	}
@@ -355,16 +353,6 @@ public class MIconController extends IconController {
 			modeController.addActionIfNotAlreadySet(myAction);
 			iconActions.put(icon.getName(), myAction);
 		}
-	}
-
-	private void createPreferences() {
-		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
-		final List<AFreeplaneAction> actions = new ArrayList<AFreeplaneAction>();
-		actions.addAll(areEmojisAvailbleFromMenu() ? getIconActions() : getIconActions(icon -> ! (icon instanceof EmojiIcon)));
-		actions.add(modeController.getAction("RemoveIcon_0_Action"));
-		actions.add(modeController.getAction("RemoveIconAction"));
-		actions.add(modeController.getAction("RemoveAllIconsAction"));
 	}
 
 	public Collection<AFreeplaneAction> getIconActions() {

@@ -696,7 +696,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				try {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
 					    .getMapController();
-					final Controller controller = Controller.getCurrentController();
 					final MapModel map = mapController.newMap(Compat.fileToUrl(file), follow);
 					return map;
 				}

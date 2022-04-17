@@ -33,6 +33,6 @@ public class CommandSearchAction extends AFreeplaneAction {
     @Override
     public void actionPerformed(final ActionEvent e)
     {
-        CommandSearchDialog commandSearchDialog = new CommandSearchDialog(UITools.getCurrentFrame());
+        new CommandSearchDialog(UITools.getCurrentFrame());
     }
 }

@@ -237,7 +237,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	private final FilterMenuBuilder filterMenuBuilder;
 	private JToolBar filterToolbar;
 	private final FilterHistory history;
-	private Filter inactiveFilter;
 	final private String pathToFilterFile;
 	private ASelectableCondition selectedViewCondition;
 	private ASelectableCondition cloneOfSelectedViewCondition;

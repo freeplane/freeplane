@@ -213,7 +213,6 @@ class NodeTextConditionController implements IElementaryConditionController {
     }
 
 	private static Object transformedObject(final NodeModel node) {
-		final Object userObject = node.getUserObject();
 		return TextController.getController().getPlainTransformedTextWithoutNodeNumber(node);
 	}
 
