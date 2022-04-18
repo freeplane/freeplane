@@ -58,16 +58,10 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	}
 
 	public boolean dispatchKeyEvent(final KeyEvent ke) {
-		if(ke.equals(dispatchedEvent)){
+		if(ke.equals(dispatchedEvent) || events.isEmpty() && ke.getID() != KeyEvent.KEY_PRESSED){
 			return false;
 		}
-		if(textComponent != null){
-			KeyEvent newEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
-			events.add(newEvent);
-		}
-        else {
-	        events.add(ke);
-        }
+		addKeyEvent(ke);
 		
 		// Prevent Freeplane freeze
 		if(ke.getKeyCode() == KeyEvent.VK_ESCAPE 
@@ -80,6 +74,15 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 		}
 		ke.consume();
 		return true;
+	}
+	private void addKeyEvent(final KeyEvent ke) {
+		if(textComponent != null){
+			KeyEvent newEvent = new KeyEvent(textComponent, ke.getID(), ke.getWhen(), ke.getModifiers(), ke.getKeyCode(), ke.getKeyChar(), ke.getKeyLocation());
+			events.add(newEvent);
+		}
+        else {
+	        events.add(ke);
+        }
 	}
 	
 	public void focusGained(final FocusEvent e) {
@@ -124,7 +127,7 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	public void activate(InputEvent e) {
 		activate();
 		if(e instanceof KeyEvent)
-			dispatchKeyEvent((KeyEvent) e);
+			addKeyEvent((KeyEvent) e);
 		else if(e instanceof MouseEvent)
 			setFirstEvent(e);
 	}
@@ -135,7 +138,7 @@ public class EventBuffer implements KeyEventDispatcher, FocusListener {
 	public KeyEvent getFirstEvent(){
 		if(firstEvent instanceof KeyEvent)
 			return (KeyEvent) firstEvent;
-		if(events.size() == 0)
+		if(events.isEmpty())
 			return null;
 		return events.get(0);
 	}
