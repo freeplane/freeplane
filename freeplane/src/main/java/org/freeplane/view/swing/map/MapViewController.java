@@ -727,11 +727,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		final MapModel map = mapView.getModel();
 		final MapStyle mapStyle = mapView.getModeController().getExtension(MapStyle.class);
-		if(mapView.getZoom() == zoom){
+		if(mapView.getZoom() != zoom){
+			mapView.setZoom(zoom);
+		}
+		if(mapStyle.getZoom(map) == zoom){
 			return;
 		}
 		mapStyle.setZoom(map, zoom);
-		mapView.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
 		final String stringResult = TextUtils.format("user_defined_zoom_status_bar", messageArguments);
