@@ -113,7 +113,7 @@ abstract class MainViewPainter{
 		final MapView map = mainView.getMap();
 		final MapController mapController = map.getModeController().getMapController();
 		final FoldingMark markType = mainView.foldingMarkType(mapController, nodeView);
-		boolean drawsControls = (mainView.getMouseArea() != MouseArea.OUT || nodeView.isSelected()) && ! map.isPrinting();
+		boolean drawsControls = mainView.getMouseArea() != MouseArea.OUT && ! map.isPrinting();
 		if(markType == FoldingMark.FOLDING_CIRCLE_UNFOLDED && ! drawsControls)
 			return;
 		final Point p = mainView.getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
