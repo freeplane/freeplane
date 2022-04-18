@@ -755,6 +755,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		mapStyleModel.setZoom(zoom);
 		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
+	
+	public float getZoom(final MapModel map) {
+		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
+		return mapStyleModel.getZoom();
+	}
 
 
 	public void setMapViewLayout(final MapModel map, final MapViewLayout layout) {
