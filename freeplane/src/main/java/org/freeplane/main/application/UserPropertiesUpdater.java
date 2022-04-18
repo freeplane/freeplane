@@ -83,7 +83,7 @@ public class UserPropertiesUpdater {
 	            parentDirectory.mkdirs();
 	            org.apache.commons.io.FileUtils.copyDirectory(previousPropertyDirectory,
 	                    canonicalTargetDirectory,
-	                    file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts", "compiledscripts2")
+	                    file -> ! Stream.of("logs", /*"templates",*/ ".backup", "compiledscripts", "compiledscripts2")
 	                    .map(name -> new File(previousPropertyDirectory, name))
 	                    .anyMatch(file::equals),
 	                    true);
