@@ -72,7 +72,8 @@ class FoldingCircle implements Drawable{
 		g.setColor(fillColor);
 		g.fillOval(r.x, r.y, r.width , r.height);
 		g.setColor(borderColor);
-		g.setStroke(BORDER_STROKE);
+		float minimumStroke = r.height / 8f;
+		g.setStroke(minimumStroke > UITools.FONT_SCALE_FACTOR * 1f ? new BasicStroke(minimumStroke) : BORDER_STROKE);
 		g.drawOval(r.x, r.y, r.width , r.height);
 	}
 

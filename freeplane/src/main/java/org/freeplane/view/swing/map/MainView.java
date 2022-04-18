@@ -733,10 +733,11 @@ public class MainView extends ZoomableLabel {
 		Color fillColor = getNodeView().getTextBackground();
 		Color foldingCircleBorderColor = getFoldingCircleBorderColor();
 		if(foldingCircleBorderColor.equals(fillColor)) {
-			if(UITools.isLight(fillColor))
+			final Color color = fillColor;
+			if(UITools.isLighter(color, 0x60))
 				fillColor = fillColor.darker();
 			else
-				fillColor = fillColor.brighter();
+				fillColor = fillColor.brighter().brighter();
 		}
 
 		return fillColor;

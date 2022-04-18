@@ -530,12 +530,16 @@ public class UITools {
 	}
 
 	public static boolean isLight(final Color color) {
+		return isLighter(color, 0x80);
+	}
+
+	public static boolean isLighter(final Color color, int minimum) {
 		if(color == null)
 			return true;
 		final int red = color.getRed();
 		final int blue = color.getBlue();
 		final int green = color.getGreen();
-		return red*red+blue*blue+green*green >= 0x80*0x80*3;
+		return red*red+blue*blue+green*green >= minimum*minimum*3;
 	}
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
