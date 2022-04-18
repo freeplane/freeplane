@@ -723,10 +723,10 @@ public class MainView extends ZoomableLabel {
 
 	public Color getFoldingCircleBorderColor() {
 		Color borderColor = getBorderColor();
-		if(borderColor.getAlpha() >= 100)
+		if(borderColor.getAlpha() == 255)
 			return borderColor;
 		else
-			return new Color(borderColor.getRed(), borderColor.getGreen(), borderColor.getGreen(), 100);
+			return new Color(borderColor.getRed(), borderColor.getGreen(), borderColor.getGreen(), 255);
 	}
 
 	public Color getFoldingCircleFillColor() {

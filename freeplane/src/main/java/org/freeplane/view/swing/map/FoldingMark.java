@@ -65,6 +65,10 @@ class FoldingCircle implements Drawable{
 		final MainView mainView = nodeView.getMainView();
 		Color borderColor = mainView.getFoldingCircleBorderColor();
 		Color fillColor = folded ? borderColor : mainView.getFoldingCircleFillColor();
+		if(fillColor.getAlpha() != 255) {
+			g.setColor(nodeView.getBackgroundColor());
+			g.fillOval(r.x, r.y, r.width , r.height);
+		}
 		g.setColor(fillColor);
 		g.fillOval(r.x, r.y, r.width , r.height);
 		g.setColor(borderColor);
