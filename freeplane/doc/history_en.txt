@@ -3,6 +3,9 @@
 ===============================
 Java 17 support
 Groovy 4
+New UI icons (created by Rexel and Predrag)
+Command line option -R to run groovy scripts on start-up
+Support command line options -R and -S in non interactive mode
 
 ===============================
 1.9.15
