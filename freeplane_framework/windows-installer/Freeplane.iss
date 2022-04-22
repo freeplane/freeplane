@@ -109,11 +109,12 @@ Root: "HKCR"; Subkey: "FreeplaneApplication\Shell\Open\Command"; ValueType: stri
 Root: "HKCR"; Subkey: "FreeplaneApplication\DefaultIcon"; ValueType: string; ValueData: "{app}\freeplaneIcons.dll,0"; Flags: uninsdeletevalue; Tasks: associate
 
 [InstallDelete]
-Name: {app}\core; Type: filesandordirs
-Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages: 
-
+Type: filesandordirs; Name: "{app}\core"
+Type: filesandordirs; Name: "{app}\plugins"
+Type: filesandordirs; Name: "{app}\runtime"
 
 [UninstallDelete]
+Type: filesandordirs; Name: "{app}"
 
 [Dirs]
 Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 
