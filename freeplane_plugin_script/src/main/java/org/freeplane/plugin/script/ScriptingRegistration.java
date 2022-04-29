@@ -179,7 +179,12 @@ class ScriptingRegistration {
 		registerScriptAddOns();
 		new ScriptingConfiguration();
 		ClasspathScriptCompiler scriptCompiler = new ClasspathScriptCompiler();
+		boolean isSecurityManagerEnabled = System.getSecurityManager() != null;
+		if(isSecurityManagerEnabled)
+			System.setSecurityManager(null);
         scriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
+		if(isSecurityManagerEnabled)
+			System.setSecurityManager(new InternationalizedSecurityManager());
 		if(! GraphicsEnvironment.isHeadless()){
 			registerGuiStuff(modeController);
 			createUserScriptsDirectory();
@@ -190,8 +195,6 @@ class ScriptingRegistration {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(200,
 			new ScriptConditionController());
 		ScriptingPolicy.installRestrictingPolicy();
-		if(System.getSecurityManager() != null)
-			System.setSecurityManager(new InternationalizedSecurityManager());
 	}
 
 	private void registerGuiStuff(ModeController modeController) {
