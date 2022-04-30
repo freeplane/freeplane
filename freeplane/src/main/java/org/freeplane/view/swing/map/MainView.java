@@ -676,7 +676,7 @@ public class MainView extends ZoomableLabel {
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if(! visible)
-			setMouseArea(MouseArea.DEFAULT);
+			setMouseArea(MouseArea.OUT);
 	}
 
 	private int getDraggingWidth() {
