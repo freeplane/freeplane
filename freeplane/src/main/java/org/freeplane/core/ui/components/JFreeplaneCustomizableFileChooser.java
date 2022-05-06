@@ -29,6 +29,7 @@ import javax.swing.filechooser.FileSystemView;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.ui.FrameController;
 
 public class JFreeplaneCustomizableFileChooser extends JFileChooser{
@@ -99,9 +100,12 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 		if(dir != null && ! areSpecialFoldersShown && Compat.isWindowsOS() && dir.getClass().equals(File.class)) {
 			try {
 				setDirectoryBehavingLikeShellFolder(dir);
-			return;
+				return;
 			}
 			catch (IOException e) {
+			}
+			catch(IllegalAccessError e) {
+				LogUtils.severe(e);
 			}
 		}
 		if(UIManager.getLookAndFeel().getName().equals(FrameController.VAQUA_LAF_NAME)) {
