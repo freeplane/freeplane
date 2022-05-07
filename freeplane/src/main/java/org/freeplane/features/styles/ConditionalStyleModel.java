@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import javax.swing.table.AbstractTableModel;
@@ -334,6 +335,6 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
     }
 
     private boolean contains(Item item) {
-        return styles.stream().anyMatch(own -> item.style.equals(own.style) && item.condition.equals(own.condition));
+        return styles.stream().anyMatch(own -> item.style.equals(own.style) && Objects.equals(item.condition, own.condition));
     }
 }
