@@ -45,7 +45,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 public class ConnectorEditorPanel extends JPanel {
 
-	static final float FONT_SIZE = UITools.getUIFontSize(0.8);
+	static final float FONT_SIZE = UITools.getUIFontSize(0.8f);
 
 	/**
 	*

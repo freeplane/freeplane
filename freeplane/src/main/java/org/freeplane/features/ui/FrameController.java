@@ -57,6 +57,7 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -104,6 +105,8 @@ abstract public class FrameController implements ViewController {
     private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
     private static final String MOTIF_LAF__CLASS_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
+	private static final String MENU_ITEM_FONT_SIZE_PROPERTY = "menuItemFontSize";
+
 	
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
@@ -662,15 +665,16 @@ abstract public class FrameController implements ViewController {
 		}
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
-			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {
-				resourceController.getProperties().remove(UITools.MENU_ITEM_FONT_SIZE_PROPERTY);
+			if ("100".equals(resourceController.getProperties().get(MENU_ITEM_FONT_SIZE_PROPERTY))) {
+				resourceController.getProperties().remove(MENU_ITEM_FONT_SIZE_PROPERTY);
 			}
 			resourceController.setProperty("hugeFontsFixed", true);
 		}
-		int lookAndFeelDefaultMenuItemFontSize = getLookAndFeelDefaultMenuItemFontSize();
-		final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
-		resourceController.setDefaultProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
-		double scalingFactor = calculateFontSizeScalingFactor(lookAndFeelDefaultMenuItemFontSize);
+		int lookAndFeelDefaultMenuItemFontSize = new JMenuItem().getFont().getSize();
+		final int defaultMenuItemSize = (int) Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
+		resourceController.setDefaultProperty(MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
+		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, defaultMenuItemSize);
+		final double scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
 		scaleDefaultUIFonts(scalingFactor);
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8134828
 		// Scrollbar thumb disappears with Nimbus L&F
@@ -758,31 +762,6 @@ abstract public class FrameController implements ViewController {
            }
         };
     }
-
-	private static int getLookAndFeelDefaultMenuItemFontSize() {
-		int lookAndFeelDefaultMenuItemFontSize = 10;
-		Font uiDefaultMenuItemFont = UIManager.getDefaults().getFont("MenuItem.font");
-		if (uiDefaultMenuItemFont != null) {
-			lookAndFeelDefaultMenuItemFontSize = uiDefaultMenuItemFont.getSize();
-		}
-		return lookAndFeelDefaultMenuItemFontSize;
-	}
-
-	final private static int UNKNOWN = -1;
-
-	private static double calculateFontSizeScalingFactor(int lookAndFeelDefaultMenuItemFontSize) {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY,
-		    UNKNOWN);
-		final double scalingFactor;
-		if (userDefinedMenuItemFontSize == UNKNOWN) {
-			scalingFactor = DEFAULT_SCALING_FACTOR;
-		}
-		else {
-			scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
-		}
-		return scalingFactor;
-	}
 
 	private static void scaleDefaultUIFonts(double scalingFactor) {
 		Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();

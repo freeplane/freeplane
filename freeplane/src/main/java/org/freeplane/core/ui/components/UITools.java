@@ -54,6 +54,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -98,7 +99,7 @@ public class UITools {
 	public static class Defaults {
 		public static float DEFAULT_FONT_SCALING_FACTOR = 1f;
 	}
-	public static final String MENU_ITEM_FONT_SIZE_PROPERTY = "menuItemFontSize";
+
 	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
 	@SuppressWarnings("serial")
@@ -668,7 +669,7 @@ public class UITools {
 	}
 
 	public static final float FONT_SCALE_FACTOR;
-    
+
 	static {
 		float factor = Defaults.DEFAULT_FONT_SCALING_FACTOR;
 		try {
@@ -782,10 +783,24 @@ public class UITools {
 			runnable.run();
 	}
 
-	public static float getUIFontSize(double scalingFactor) {
-		return (int)Math.round(FONT_SCALE_FACTOR*scalingFactor * ResourceController.getResourceController().getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, 10));
+	public static int getUIFontSize(double scalingFactor) {
+		return getUIFontSize((float) scalingFactor);
 	}
-	
+
+	public static int getUIFontSize(float scalingFactor) {
+		Font font = getUIFont();
+		return (int)Math.round(font.getSize() * scalingFactor);
+	}
+
+	public static Font getUIFont(float scalingFactor) {
+		Font uiFont = getUIFont();
+		return uiFont.deriveFont(uiFont.getSize2D() * scalingFactor);
+	}
+
+	public static Font getUIFont() {
+		return new JMenuItem().getFont();
+	}
+
 	public static Font getDefaultLabelFont() {
 		return UIManager.getDefaults().getFont("Label.font");
 	}

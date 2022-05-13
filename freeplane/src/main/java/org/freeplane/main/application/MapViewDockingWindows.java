@@ -262,8 +262,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabbedPanelProperties.getButtonProperties().getTabDropDownListButtonProperties()
 			.setIcon(new DropDownIcon(TabbedUIDefaults.getButtonIconSize(), Direction.DOWN));
 
-		Font tabFont = new Font(Font.DIALOG, 0, 10);
-		tabFont = UITools.scaleFontInt(tabFont, 0.8);
+		Font tabFont = UITools.getUIFont();
 		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
 		titledTabProperties.setSizePolicy(TitledTabSizePolicy.INDIVIDUAL_SIZE);
 		ComponentProperties highlightedProperties = titledTabProperties.getHighlightedProperties().getComponentProperties();
