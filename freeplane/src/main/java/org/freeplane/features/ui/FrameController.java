@@ -622,7 +622,8 @@ abstract public class FrameController implements ViewController {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
 				boolean lookAndFeelSet = false;
 				for (LookAndFeelInfo lafInfo : lafInfos) {
-					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)) {
+					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)
+							|| lafInfo.getClassName().equalsIgnoreCase(lookAndFeel)) {
 						String lookAndFeelClassName = lafInfo.getClassName();
 						lookAndFeelSet = tryToSetLookAndFeel(lookAndFeelClassName);
 						fixLookAndFeelUI();
@@ -685,16 +686,19 @@ abstract public class FrameController implements ViewController {
 	}
 
     private static boolean tryToSetLookAndFeel(String lafClassName) {
-        boolean lookAndFeelSet;
+        try {
+            UIManager.setLookAndFeel(lafClassName);
+            return true;
+        } catch (Exception e) {
+        }
         try {
             Class<?> lookAndFeelClass = FrameController.class.getClassLoader().loadClass(lafClassName);
-            LookAndFeel aquaLookAndFeelInstance = (LookAndFeel) lookAndFeelClass.getDeclaredConstructor().newInstance();
-            UIManager.setLookAndFeel(aquaLookAndFeelInstance);
-            lookAndFeelSet = true;
+            LookAndFeel lookAndFeelInstance = (LookAndFeel) lookAndFeelClass.getDeclaredConstructor().newInstance();
+            UIManager.setLookAndFeel(lookAndFeelInstance);
+            return true;
         } catch (Exception e) {
-            lookAndFeelSet = false;
         }
-        return lookAndFeelSet;
+        return false;
     }
 
     private static void fixLookAndFeelUI(){
