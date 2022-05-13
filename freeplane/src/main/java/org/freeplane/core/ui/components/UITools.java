@@ -723,10 +723,7 @@ public class UITools {
 	}
 
 	public static Font scaleUI(Font font) {
-		if(shouldScaleUIFonts())
-			return scale(font);
-		else
-			return font;
+		return scale(font);
 	}
 
 	public static Font scaleFontInt(Font font, double additionalFactor) {
@@ -791,13 +788,6 @@ public class UITools {
 	
 	public static Font getDefaultLabelFont() {
 		return UIManager.getDefaults().getFont("Label.font");
-	}
-
-	public static boolean shouldScaleUIFonts() {
-		final String configuredValue = ResourceController.getResourceController()
-			    .getProperty("lookandfeel.scaleuifonts");
-		final boolean supportHidpi = Boolean.valueOf(System.getProperty("lookandfeel.scaleuifonts", configuredValue));
-		return supportHidpi;
 	}
 
     public static JFileChooser newFileChooser() {

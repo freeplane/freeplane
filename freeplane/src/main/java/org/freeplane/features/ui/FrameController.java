@@ -584,7 +584,7 @@ abstract public class FrameController implements ViewController {
 		if (!window.isVisible())
 			return Collections.emptyList();
 		Window[] ownedWindows = window.getOwnedWindows();
-		ArrayList<Window> visibleWindows = new ArrayList(ownedWindows.length + 1);
+		ArrayList<Window> visibleWindows = new ArrayList<>(ownedWindows.length + 1);
 		visibleWindows.add(window);
 		for (Window child : ownedWindows) {
 			visibleWindows.addAll(collectVisibleFrames(child));
@@ -597,9 +597,9 @@ abstract public class FrameController implements ViewController {
 			child.setVisible(true);
 	}
 
-	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
+	public static void setLookAndFeel(final String lookAndFeel) {
 		if(DARCULA_LAF_CLASS_NAME.equals(lookAndFeel)) {
-			setLookAndFeel(FlatDarculaLaf.class.getName(), supportHidpi);
+			setLookAndFeel(FlatDarculaLaf.class.getName());
 			return;
 		}
 		try {
@@ -669,10 +669,8 @@ abstract public class FrameController implements ViewController {
 		int lookAndFeelDefaultMenuItemFontSize = getLookAndFeelDefaultMenuItemFontSize();
 		final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
 		resourceController.setDefaultProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
-		if (supportHidpi) {
-			double scalingFactor = calculateFontSizeScalingFactor(lookAndFeelDefaultMenuItemFontSize);
-			scaleDefaultUIFonts(scalingFactor);
-		}
+		double scalingFactor = calculateFontSizeScalingFactor(lookAndFeelDefaultMenuItemFontSize);
+		scaleDefaultUIFonts(scalingFactor);
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8134828
 		// Scrollbar thumb disappears with Nimbus L&F
 		// http://stackoverflow.com/questions/32857372/jscrollbar-dont-show-thumb-in-nimbus-lf

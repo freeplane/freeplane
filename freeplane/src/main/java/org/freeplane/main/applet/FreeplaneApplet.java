@@ -232,7 +232,7 @@ public class FreeplaneApplet extends JApplet {
 		String lookAndFeel = "";
 		setPropertyByParameter(appletResourceController, "lookandfeel");
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
-		FrameController.setLookAndFeel(lookAndFeel, true);
+		FrameController.setLookAndFeel(lookAndFeel);
 	}
 
 	@Override
