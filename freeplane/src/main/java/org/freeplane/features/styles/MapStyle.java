@@ -84,7 +84,7 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
  */
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
-	public static final String ALLOWS_NODE_OVERLAP = "allow_node_overlap";
+	public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
@@ -379,10 +379,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    return null;
 	}
 
-	public boolean allowsNodeOverlap(MapModel map) {
+	public boolean allowsCompactLayout(MapModel map) {
 		MapStyleModel styleModel = MapStyleModel.getExtension(map);
-	    String allowsNodeOverlapString = styleModel.getProperty(ALLOWS_NODE_OVERLAP);
-	    return Boolean.parseBoolean(allowsNodeOverlapString);
+	    String allowsCompactLayout = styleModel.getProperty(ALLOW_COMPACT_LAYOUT);
+	    return Boolean.parseBoolean(allowsCompactLayout);
 	}
 	
 	@Override

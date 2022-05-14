@@ -51,9 +51,9 @@ class VerticalNodeViewLayoutStrategy {
 	private boolean rightSideCoordinatesAreSet;
 	private boolean leftSideCoordinaresAreSet;
 
-	final private boolean allowsNodeOverlap;
+	final private boolean allowsCompactLayout;
 
-	public VerticalNodeViewLayoutStrategy(NodeView view, boolean allowsNodeOverlap) {
+	public VerticalNodeViewLayoutStrategy(NodeView view, boolean allowsCompactLayout) {
 		this.view = view;
 		childViewCount = view.getComponentCount() - 1;
 		layoutChildViews(view);
@@ -66,7 +66,7 @@ class VerticalNodeViewLayoutStrategy {
 		this.yCoordinates = new int[childViewCount];
 		this.isChildFreeNode = new boolean[childViewCount];
 		spaceAround = view.getSpaceAround();
-		this.allowsNodeOverlap = allowsNodeOverlap;
+		this.allowsCompactLayout = allowsCompactLayout;
 	}
 
 	private void layoutChildViews(NodeView view) {
@@ -153,12 +153,12 @@ class VerticalNodeViewLayoutStrategy {
 							if (visibleChildCounter > 0)
 								childContentHeightSum += vGap;
 						}
-						if (childShiftY < 0 && !allowsNodeOverlap || visibleChildCounter == 0)
+						if (childShiftY < 0 && !allowsCompactLayout || visibleChildCounter == 0)
 							top += childShiftY;
 
 						top += - childContentShift + child.getTopOverlap();
 						y -= child.getTopOverlap();
-						if (childShiftY < 0 && !allowsNodeOverlap) {
+						if (childShiftY < 0 && !allowsCompactLayout) {
 							this.yCoordinates[childViewIndex] = y;
 							y -= childShiftY;
 						} else {
