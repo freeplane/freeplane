@@ -39,7 +39,8 @@ public class NodeViewLayout implements INodeViewLayout{
     public void layoutContainer(final Container c) {
         NodeView view = (NodeView) c;
  		if(view.getContent() != null){
-        	final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view);
+        	boolean allowsNodeOverlap = view.getMap().allowsNodeOverlap();
+			final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view, allowsNodeOverlap);
         	layoutData.calculateLayoutData();
         }
     }

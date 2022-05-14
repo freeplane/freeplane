@@ -615,6 +615,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
+	private boolean allowsNodeOverlap;
 	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
 
@@ -680,9 +681,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 			}
 		};
-		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
-		    MapStyle.FIT_TO_VIEWPORT);
+		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+		final String fitToViewportAsString = mapStyle.getPropertySetDefault(model, MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
+		allowsNodeOverlap = mapStyle.allowsNodeOverlap(model);
 		connectorChangeListener = new INodeChangeListener() {
 			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
@@ -1309,6 +1311,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			    MapStyle.FIT_TO_VIEWPORT);
 			setFitToViewport(Boolean.parseBoolean(fitToViewportAsString));
 			loadBackgroundImage();
+		}
+		if (property.equals(MapStyle.ALLOWS_NODE_OVERLAP)) {
+			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+			allowsNodeOverlap = mapStyle.allowsNodeOverlap(model);
+			getRoot().updateAll();
+			revalidate();
+			repaint();
 		}
 		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
 			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
@@ -2442,5 +2451,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				repaintSelecteds();
 			}
 		}
+	}
+
+	boolean allowsNodeOverlap() {
+		return allowsNodeOverlap;
 	}
 }
