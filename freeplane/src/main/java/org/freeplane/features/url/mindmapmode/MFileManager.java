@@ -348,7 +348,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public JFreeplaneCustomizableFileChooser getMindMapFileChooser() {
 
-	    final JFreeplaneCustomizableFileChooser fileChooser = super.getFileChooser();
+	    final JFreeplaneCustomizableFileChooser fileChooser = super.getFileChooserNotFollowingDirectoryChanges();
         final File mapsDirectory = fileChooser.getCurrentDirectory();
         final File templateDir = TemplateManager.INSTANCE.defaultStandardTemplateDir();
         final File userTemplateDir = TemplateManager.INSTANCE.defaultUserTemplateDir();

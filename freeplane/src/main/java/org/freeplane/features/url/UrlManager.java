@@ -149,9 +149,21 @@ public class UrlManager implements IExtension {
 	 * Creates a file chooser with the last selected directory as default.
 	 * @param useDirectorySelector
 	 */
-	@SuppressWarnings("serial")
     public JFreeplaneCustomizableFileChooser getFileChooser() {
-        return AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
+		JFreeplaneCustomizableFileChooser choosery = getFileChooserNotFollowingDirectoryChanges();
+		choosery.addHierarchyListener(new  HierarchyListener() {
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+                if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) && ! choosery.isShowing()) {
+                    setLastCurrentDir(choosery.getCurrentDirectory());
+                }}});
+		return choosery;
+
+	}
+
+    @SuppressWarnings("serial")
+	protected JFreeplaneCustomizableFileChooser getFileChooserNotFollowingDirectoryChanges() {
+		JFreeplaneCustomizableFileChooser choosery = AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
             final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser(getLastCurrentDir());
             Customizer closeDialogCustomizer = dialog -> {
                     InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -167,15 +179,9 @@ public class UrlManager implements IExtension {
                     });
             };
             chooser.addCustomizer(closeDialogCustomizer);
-            chooser.addHierarchyListener(new  HierarchyListener() {
-                @Override
-                public void hierarchyChanged(HierarchyEvent e) {
-                    if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) && ! chooser.isShowing()) {
-                        setLastCurrentDir(chooser.getCurrentDirectory());
-                    }}});
             return chooser;
         });
-
+		return choosery;
 	}
     public JFreeplaneCustomizableFileChooser getFileChooser(final FileFilter filter) {
         JFreeplaneCustomizableFileChooser chooser = getFileChooser();
