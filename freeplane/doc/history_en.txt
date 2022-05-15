@@ -1,6 +1,8 @@
 ==============================
 1.10.3
 ===============================
+Compact map layout
+Search & Replace dialog improvements
 Bug fixes
 
 ==============================
