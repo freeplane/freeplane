@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -34,18 +36,23 @@ public class NodeListAction extends AFreeplaneAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private final NodeList nodeList;
 
 	public NodeListAction() {
 		super("NodeListAction");
-		nodeList = new NodeListWithReplacement(NodeList.REMINDER_TEXT_WINDOW_TITLE_ALL_NODES,
-			false,
-			"nodelistwindow.configuration");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-        Filter filter = Controller.getCurrentController().getSelection().getFilter();
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        MapModel map = selection.getMap();
+		Filter filter = selection.getFilter();
+		NodeListWithReplacement nodeList = map.getExtension(NodeListWithReplacement.class);
+		if(nodeList == null) {
+			nodeList = new NodeListWithReplacement("searchAndReplace",
+					false,
+					"nodelistwindow.configuration");
+			map.addExtension(nodeList);
+		}
 		nodeList.startup((node, reminder) -> node.hasVisibleContent(filter));
 	}
 }

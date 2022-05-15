@@ -37,7 +37,7 @@ public class AllMapsNodeListAction extends AFreeplaneAction {
 
 	public AllMapsNodeListAction() {
 		super("AllMapsNodeListAction");
-		nodeList = new NodeListWithReplacement(NodeList.REMINDER_TEXT_WINDOW_TITLE_ALL_NODES,
+		nodeList = new NodeListWithReplacement("searchAndReplaceInAllMaps",
 			true,
 			"allmapsnodelistwindow.configuration");
 	}

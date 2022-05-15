@@ -34,11 +34,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -62,14 +64,16 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.JTextComponent;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -91,8 +95,8 @@ import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
 /**
  * @author foltin
  */
-class NodeList {
-	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapSelectionListener {
+class NodeList implements IExtension {
+	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapLifeCycleListener {
 		public MapChangeListener() {
 			super();
 			this.runner = new DelayedRunner(new Runnable() {
@@ -142,8 +146,15 @@ class NodeList {
         }
 
 		@Override
-		public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-			disposeDialog();
+		public void onRemove(MapModel map) {
+			if(listedMaps.contains(map))
+				disposeDialog();
+        }
+
+		@Override
+		public void onCreate(MapModel map) {
+			if(searchInAllMaps)
+				disposeDialog();
         }
     }
 
@@ -274,7 +285,7 @@ class NodeList {
 				final Point p = e.getPoint();
 				final int row = tableView.rowAtPoint(p);
 				selectNodes(row, new int[] { row });
-				if (!(e.isControlDown() || e.isMetaDown()))
+				if (closeAfterSelect.isSelected())
 					disposeDialog();
 			}
 		}
@@ -291,7 +302,6 @@ class NodeList {
 	private static final String REMINDER_TEXT_CLOSE = "reminder.closeButton";
 	private static final String REMINDER_TEXT_FIND = "reminder.Find";
 	static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle";
-	public static final String REMINDER_TEXT_WINDOW_TITLE_ALL_NODES = "reminder.WindowTitle_All_Nodes";
 
 	private static String COLUMN_MODIFIED = TextUtils.getText(REMINDER_TEXT_MODIFIED);
 	private static String COLUMN_CREATED = TextUtils.getText(REMINDER_TEXT_CREATED);
@@ -315,6 +325,7 @@ class NodeList {
 	private JDialog dialog;
 	private final IconsRenderer iconsRenderer;
 	protected final JComboBox mFilterTextSearchField;
+	private final JCheckBox closeAfterSelect;
 	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 	private final JTextField mNodePath;
 	private final TextRenderer textRenderer;
@@ -332,6 +343,8 @@ class NodeList {
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 	protected static final String PAST_REMINDERS_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
+	
+	private Set<MapModel> listedMaps = Collections.emptySet();
 
 	NodeList( final String windowTitle, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		this.windowTitle = windowTitle;
@@ -366,7 +379,8 @@ class NodeList {
 		tableView = new FlatNodeTable();
 		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
-
+		closeAfterSelect = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(closeAfterSelect, TextUtils.getRawText("nodelist_close_after_select"));
 	}
 
 	/**
@@ -376,6 +390,7 @@ class NodeList {
     	if(dialog == null || !dialog.isVisible()){
     		return;
     	}
+    	listedMaps = Collections.emptySet();
 		final TimeWindowConfigurationStorage storage = new TimeWindowConfigurationStorage();
 		for (int i = 0; i < tableView.getColumnCount(); i++) {
 			final TimeWindowColumnSetting setting = new TimeWindowColumnSetting();
@@ -393,7 +408,7 @@ class NodeList {
 		mapController.removeMapChangeListener(mapChangeListener);
 		mapController.removeNodeChangeListener(mapChangeListener);
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		mapViewManager.removeMapSelectionListener(mapChangeListener);
+		mapController.addMapLifeCycleListener(mapChangeListener);
 		if(dialogWasFocused) {
 			final Component selectedComponent = mapViewManager.getSelectedComponent();
 			if(selectedComponent != null)
@@ -444,6 +459,8 @@ class NodeList {
 			}
 			selectMap(map);
 			Controller.getCurrentModeController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
+			if (closeAfterSelect.isSelected())
+				disposeDialog();
 		}
 	}
 
@@ -472,7 +489,8 @@ class NodeList {
 		final DefaultTableModel model = createTableModel();
 		fillTableModel(model, nodeFilter);
 		tableModel = model;
-		initializeUI();
+		String mapTitle = Controller.getCurrentController().getSelection().getMap().getTitle();
+		initializeUI(mapTitle);
 	}
 
 	public void startup(List<NodeModel> nodes) {
@@ -483,18 +501,18 @@ class NodeList {
 		final DefaultTableModel model = createTableModel();
 		fillTableModel(model, nodes);
 		tableModel = model;
-		initializeUI();
+		initializeUI("");
 	}
 
 
-	private void initializeUI() {
+	private void initializeUI(String mapTitle) {
 		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
 			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
 		);
 
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
-		dialog.setTitle(TextUtils.getText(windowTitle));
+		dialog.setTitle(TextUtils.format(windowTitle, mapTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final WindowAdapter windowListener = new WindowAdapter() {
 
@@ -613,12 +631,20 @@ class NodeList {
 		/* Initial State */
 		gotoAction.setEnabled(false);
 		exportAction.setEnabled(false);
+        closeAfterSelect.setSelected(ResourceController.getResourceController().getBooleanProperty("nodelist_close_after_select"));
+        closeAfterSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ResourceController.getResourceController().setProperty("nodelist_close_after_select", closeAfterSelect.isSelected());
+            }
+        });
 		final Box bar = Box.createHorizontalBox();
 		bar.add(Box.createHorizontalGlue());
 		bar.add(cancelButton);
 		bar.add(exportButton);
 		createSpecificButtons(bar);
 		bar.add(gotoButton);
+		bar.add(closeAfterSelect);
 		bar.add(Box.createHorizontalGlue());
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(bar), layoutConstraints);
@@ -680,7 +706,7 @@ class NodeList {
 		final MapController mapController = modeController.getMapController();
 		mapController.addUIMapChangeListener(mapChangeListener);
 		mapController.addUINodeChangeListener(mapChangeListener);
-		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(mapChangeListener);
+		mapController.addMapLifeCycleListener(mapChangeListener);
 		dialog.setVisible(true);
 	}
 
@@ -704,13 +730,16 @@ class NodeList {
 		if (searchInAllMaps == false) {
 			final MapModel map = Controller.getCurrentController().getMap();
 			if(map != null) {
+				listedMaps = Collections.singleton(map);
 				final NodeModel node = map.getRootNode();
 				fillModel(model, node, nodeFilter);
 			}
 		}
 		else {
+			listedMaps = new HashSet<>();
 			final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps(MModeController.MODENAME);
 			for (final MapModel map : maps.values()) {
+				listedMaps.add(map);
 				final NodeModel node = map.getRootNode();
 				fillModel(model, node, nodeFilter);
 			}
@@ -794,7 +823,6 @@ class NodeList {
 	static private HashSet<Object> changeableProperties = new HashSet<Object>(
 			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailModel.class, NodeModel.NOTE_TEXT)
 			);
-
 	private boolean hasTableFieldValueChanged(Object property) {
 		return changeableProperties.contains(property);
 	}
