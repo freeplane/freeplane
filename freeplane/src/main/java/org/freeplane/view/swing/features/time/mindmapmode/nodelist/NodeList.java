@@ -285,7 +285,7 @@ class NodeList implements IExtension {
 				final Point p = e.getPoint();
 				final int row = tableView.rowAtPoint(p);
 				selectNodes(row, new int[] { row });
-				if (closeAfterSelect.isSelected())
+				if (closeAfterSelection.isSelected())
 					disposeDialog();
 			}
 		}
@@ -325,7 +325,7 @@ class NodeList implements IExtension {
 	private JDialog dialog;
 	private final IconsRenderer iconsRenderer;
 	protected final JComboBox mFilterTextSearchField;
-	private final JCheckBox closeAfterSelect;
+	private final JCheckBox closeAfterSelection;
 	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 	private final JTextField mNodePath;
 	private final TextRenderer textRenderer;
@@ -379,8 +379,8 @@ class NodeList implements IExtension {
 		tableView = new FlatNodeTable();
 		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
-		closeAfterSelect = new JCheckBox();
-        LabelAndMnemonicSetter.setLabelAndMnemonic(closeAfterSelect, TextUtils.getRawText("nodelist_close_after_select"));
+		closeAfterSelection = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(closeAfterSelection, TextUtils.getRawText("nodelist_close_after_selection"));
 	}
 
 	/**
@@ -459,7 +459,7 @@ class NodeList implements IExtension {
 			}
 			selectMap(map);
 			Controller.getCurrentModeController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
-			if (closeAfterSelect.isSelected())
+			if (closeAfterSelection.isSelected())
 				disposeDialog();
 		}
 	}
@@ -631,11 +631,11 @@ class NodeList implements IExtension {
 		/* Initial State */
 		gotoAction.setEnabled(false);
 		exportAction.setEnabled(false);
-        closeAfterSelect.setSelected(ResourceController.getResourceController().getBooleanProperty("nodelist_close_after_select"));
-        closeAfterSelect.addActionListener(new ActionListener() {
+        closeAfterSelection.setSelected(ResourceController.getResourceController().getBooleanProperty("nodelist_close_after_selection"));
+        closeAfterSelection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                ResourceController.getResourceController().setProperty("nodelist_close_after_select", closeAfterSelect.isSelected());
+                ResourceController.getResourceController().setProperty("nodelist_close_after_selection", closeAfterSelection.isSelected());
             }
         });
 		final Box bar = Box.createHorizontalBox();
@@ -644,7 +644,7 @@ class NodeList implements IExtension {
 		bar.add(exportButton);
 		createSpecificButtons(bar);
 		bar.add(gotoButton);
-		bar.add(closeAfterSelect);
+		bar.add(closeAfterSelection);
 		bar.add(Box.createHorizontalGlue());
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(bar), layoutConstraints);
