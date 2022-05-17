@@ -96,6 +96,7 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
  * TreeCellRenderer).
  */
 public class NodeView extends JComponent implements INodeView {
+	static final String DEBUG_INFO_PROPERTY = "debugInfo";
 	private static final int HIGHLIGHTED_NODE_ARC_MARGIN = 4;
 	final static int ALIGN_BOTTOM = -1;
 	final static int ALIGN_CENTER = 0;
@@ -110,15 +111,15 @@ public class NodeView extends JComponent implements INodeView {
 	static final int SPACE_AROUND = 50;
 	public static final int MAIN_VIEWER_POSITION = 1;
 	public static final int NOTE_VIEWER_POSITION = 10;
-	final static boolean PAINT_DEBUG_BORDER;
+	final static boolean PAINT_DEBUG_INFO;
 	static {
-		boolean paintDebugBorder = false;
+		boolean paintDebugInfo = false;
 		try{
-			paintDebugBorder = Boolean.getBoolean("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_BORDER");
+			paintDebugInfo = Boolean.getBoolean("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_INFO");
 		}
 		catch(Exception e){
 		}
-		PAINT_DEBUG_BORDER = paintDebugBorder;
+		PAINT_DEBUG_INFO = paintDebugInfo;
 	}
 	static private int maxToolTipWidth;
 	private AttributeView attributeView;
@@ -1062,10 +1063,14 @@ public class NodeView extends JComponent implements INodeView {
 		default:
 		    break;
 		}
-		if (PAINT_DEBUG_BORDER && isSelected() && paintingMode.equals(PaintingMode.SELECTED_NODES)){
+		if (PAINT_DEBUG_INFO && isSelected() && paintingMode.equals(PaintingMode.SELECTED_NODES)){
 			final int spaceAround = getZoomed(SPACE_AROUND);
+			g.setColor(UITools.getTextColorForBackground(getBackgroundColor()));
 			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 			g.drawRect(spaceAround - 1, spaceAround - 1, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
+			Object debugInfo = getClientProperty(DEBUG_INFO_PROPERTY);
+			if(debugInfo != null)
+				g.drawString(debugInfo.toString(), 0, spaceAround);
 		}
 	}
 
