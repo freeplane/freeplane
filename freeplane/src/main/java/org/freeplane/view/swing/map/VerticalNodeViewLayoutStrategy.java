@@ -143,9 +143,9 @@ class VerticalNodeViewLayoutStrategy {
 				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 				final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
 				final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
-				final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
 
 				if (isItem) {
+					final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
 					if (isFreeNode)
 						this.yCoordinates[childViewIndex] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
 					else {
@@ -153,7 +153,7 @@ class VerticalNodeViewLayoutStrategy {
 							if (visibleChildCounter > 0)
 								childContentHeightSum += vGap;
 						}
-						if (childShiftY < 0 && !allowsCompactLayout || visibleChildCounter == 0)
+						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
 
 						top += - childContentShift + child.getTopOverlap();
@@ -162,7 +162,7 @@ class VerticalNodeViewLayoutStrategy {
 							this.yCoordinates[childViewIndex] = y;
 							y -= childShiftY;
 						} else {
-							if (visibleChildCounter > 0)
+							if (visibleChildCounter > 0 || allowsCompactLayout)
 								y += childShiftY;
 							this.yCoordinates[childViewIndex] = y;
 						}
