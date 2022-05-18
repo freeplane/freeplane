@@ -11,6 +11,7 @@
 			</Entry>
 			<Entry name="icons">
 				<Entry name="menu_remove_icons">
+					<Entry name="SetBooleanPropertyAction.iconActionRemovesIconIfExists"/>
 					<Entry name="RemoveIcon_0_Action" />
 					<Entry name="RemoveIconAction" />
 					<Entry name="RemoveAllIconsAction" />

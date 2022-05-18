@@ -33,9 +33,10 @@ import org.freeplane.core.util.TextUtils;
 @SelectableAction
 public class SetBooleanPropertyAction extends AFreeplaneAction{
 
+	public static final String ACTION_KEY_PREFIX = "SetBooleanPropertyAction.";
 	private String propertyName;
 	public SetBooleanPropertyAction(String propertyName) {
-	    super("SetBooleanPropertyAction." + propertyName, 
+	    super(ACTION_KEY_PREFIX + propertyName, 
 	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;

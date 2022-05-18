@@ -3,6 +3,7 @@
 ===============================
 Compact map layout
 Search & Replace dialog improvements
+Add option to remove icon if exists when icon action is triggered
 Bug fixes
 
 ==============================

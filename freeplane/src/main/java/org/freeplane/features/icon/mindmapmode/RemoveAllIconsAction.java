@@ -37,7 +37,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IconDescriptio
 	private static final long serialVersionUID = 1L;
 
 	public RemoveAllIconsAction() {
-		super("RemoveAllIconsAction");
+		super(MIconController.REMOVE_ALL_ICONS_ACTION);
 		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
 	}
 

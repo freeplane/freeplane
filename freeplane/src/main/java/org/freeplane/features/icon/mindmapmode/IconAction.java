@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import javax.swing.Icon;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
 import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
@@ -37,6 +38,9 @@ import org.freeplane.features.map.NodeModel;
 public class IconAction extends AMultipleNodeAction implements IconDescription {
 
     private static final long serialVersionUID = 1L;
+    public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY = "iconActionRemovesIconIfExists";
+    private static boolean removesIconsIfExists;
+
     final private MindIcon mindIcon;
 
     public IconAction( final MindIcon mindIcon) {
@@ -47,10 +51,21 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
         putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
         addConstraint(UserRoleConstraint.EDITOR);
     }
+    
+    
 
     @Override
+	public void actionPerformed(ActionEvent e) {
+    	removesIconsIfExists = ResourceController.getResourceController().getBooleanProperty(ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY);
+		super.actionPerformed(e);
+	}
+
+	@Override
     public void actionPerformed(final ActionEvent e, final NodeModel node) {
-        ((MIconController) IconController.getController()).addIconByUserAction(node, this);
+        MIconController iconController = (MIconController) IconController.getController();
+        if(! removesIconsIfExists || ! iconController.removeIcon(node, mindIcon)) {
+        	iconController.addIconByUserAction(node, this);
+        }
     }
     
     public String getDescriptionTranslationKey() {

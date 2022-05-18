@@ -24,7 +24,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -49,10 +48,12 @@ import javax.swing.plaf.basic.BasicIconFactory;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
@@ -77,7 +78,6 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
@@ -86,7 +86,12 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-    private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.ACTION_KEY_PREFIX 
+			+ IconAction.ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY;
+	public static final String REMOVE_FIRST_ICON_ACTION = "RemoveIcon_0_Action";
+	public static final String REMOVE_LAST_ICON_ACTION = "RemoveIconAction";
+	public static final String REMOVE_ALL_ICONS_ACTION = "RemoveAllIconsAction";
+	private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
     private static final String ADD_EMOJIS_TO_MENU = "add_emojis_to_menu";
     private static final String ADD_EMOJIS_TO_ICON_TOOLBAR = "add_emojis_to_icon_toolbar";
     private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
@@ -348,6 +353,7 @@ public class MIconController extends IconController {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
+		modeController.addAction(new IconActionRemovesIconIfExistsPropertyAction());
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(icon);
 			modeController.addActionIfNotAlreadySet(myAction);
@@ -497,6 +503,18 @@ public class MIconController extends IconController {
 		return removeIcon(node, -1);
 	}
 
+	public boolean removeIcon(final NodeModel node, NamedIcon removedIcon) {
+		List<NamedIcon> icons = node.getIcons();
+		int iconCount = icons.size();
+		for(int i = 0; i < iconCount; i++) {
+			if(removedIcon.getName().equals(icons.get(i).getName())) {
+				removeIcon(node, i);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public int removeIcon(final NodeModel node, final int position) {
 		final int size = node.getIcons().size();
 		final int index = position >= 0 ? position : size + position;
@@ -529,11 +547,14 @@ public class MIconController extends IconController {
 
 	private void updateIconToolbar(ModeController modeController) {
 		iconToolBar.removeAll();
-		iconToolBar.add(modeController.getAction("RemoveIcon_0_Action"))
+		JAutoToggleButton removesIconButton = new JAutoToggleButton(modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION));
+		removesIconButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconToolBar.add(removesIconButton);
+		iconToolBar.add(modeController.getAction(REMOVE_FIRST_ICON_ACTION))
 		    .setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(modeController.getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(modeController.getAction("RemoveAllIconsAction")).setAlignmentX(
-		    JComponent.CENTER_ALIGNMENT);
+		iconToolBar.add(modeController.getAction(REMOVE_LAST_ICON_ACTION)).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconToolBar.add(modeController.getAction(REMOVE_ALL_ICONS_ACTION)).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		
         iconToolBar.addSeparator();
         recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
         recentlyUsedIcons.addPanelTo(iconToolBar);

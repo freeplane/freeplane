@@ -57,9 +57,9 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		
 		final Controller controller = Controller.getCurrentController();
 
-		actions.add((IconDescription) modeController.getAction("RemoveIcon_0_Action"));
-		actions.add((IconDescription) modeController.getAction("RemoveIconAction"));
-		actions.add((IconDescription) modeController.getAction("RemoveAllIconsAction"));
+		actions.add((IconDescription) modeController.getAction(MIconController.REMOVE_FIRST_ICON_ACTION));
+		actions.add((IconDescription) modeController.getAction(MIconController.REMOVE_LAST_ICON_ACTION));
+		actions.add((IconDescription) modeController.getAction(MIconController.REMOVE_ALL_ICONS_ACTION));
 
 		final MIconController mIconController = (MIconController) IconController.getController();
 		Collection<AFreeplaneAction> iconActions =areEmojisAvailbleFromIconSelector() ? 
