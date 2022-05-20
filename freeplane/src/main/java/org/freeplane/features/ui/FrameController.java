@@ -670,7 +670,7 @@ abstract public class FrameController implements ViewController {
 			}
 			resourceController.setProperty("hugeFontsFixed", true);
 		}
-		int lookAndFeelDefaultMenuItemFontSize = new JMenuItem().getFont().getSize();
+		int lookAndFeelDefaultMenuItemFontSize = obtainLookAndFeelDefaultMenuItemFontSize();
 		final int defaultMenuItemSize = (int) Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
 		resourceController.setDefaultProperty(MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
 		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, defaultMenuItemSize);
@@ -687,6 +687,16 @@ abstract public class FrameController implements ViewController {
 		final Color color = UIManager.getColor("control");
 		if (color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
+	}
+
+	private static int obtainLookAndFeelDefaultMenuItemFontSize() {
+		int[] lookAndFeelDefaultMenuItemFontSizeHolder = {0};
+		try {
+			StaticInvoker.invokeAndWait(() -> lookAndFeelDefaultMenuItemFontSizeHolder[0] = new JMenuItem().getFont().getSize());
+		} catch (InvocationTargetException | InterruptedException e) {
+		}
+		int lookAndFeelDefaultMenuItemFontSize = lookAndFeelDefaultMenuItemFontSizeHolder[0];
+		return lookAndFeelDefaultMenuItemFontSize;
 	}
 
     private static boolean tryToSetLookAndFeel(String lafClassName) {
@@ -901,10 +911,16 @@ abstract public class FrameController implements ViewController {
 
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
-		if(isDispatchThread())
-			runnable.run();
-		else
-			EventQueue.invokeAndWait(runnable);
+		StaticInvoker.invokeAndWait(runnable);
+	}
+	
+	static private class StaticInvoker {
+		private static void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
+			if(EventQueue.isDispatchThread())
+				runnable.run();
+			else
+				EventQueue.invokeAndWait(runnable);
+		}
 	}
 
 	@Override
