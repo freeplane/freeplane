@@ -32,12 +32,14 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.icon.factory.IconFactory;
 
 /**
  * @author Stefan Zechmeister
  */
 public class FreeplaneToolBar extends JToolBar {
-	private static final Dimension MAC_OS_BUTTON_SIZE = new Dimension(22, 22);
+	private static final int TOOLBAR_BUTTON_SIZE_1D = IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded() + 2;
+	private static final Dimension DEFAULT_TOOLBAR_BUTTON_SIZE = new Dimension(TOOLBAR_BUTTON_SIZE_1D, TOOLBAR_BUTTON_SIZE_1D);
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
 	/**
 	 *
@@ -139,7 +141,7 @@ public class FreeplaneToolBar extends JToolBar {
 		if (Compat.isMacOsX()) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmentedGradient");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");
-			final Dimension buttonSize = MAC_OS_BUTTON_SIZE;
+			final Dimension buttonSize = DEFAULT_TOOLBAR_BUTTON_SIZE;
 			abstractButton.setPreferredSize(buttonSize);
 			abstractButton.setFocusPainted(false);
 		}
