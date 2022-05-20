@@ -64,12 +64,7 @@ class KeyEventTranslator {
 		}
 	}
 
-	static int c, a, m, s;
 	private static Map<Key, Key> transMap = new HashMap<Key, Key>();
-	static {
-		KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK, InputEvent.ALT_MASK, InputEvent.META_MASK,
-		    InputEvent.SHIFT_MASK);
-	}
 
 	/**
 	 * Returns a string containing symbolic modifier names set in the specified
@@ -86,6 +81,9 @@ class KeyEventTranslator {
 		}
 		if (evt.isAltDown()) {
 			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.ALT_MASK));
+		}
+		if (evt.isAltGraphDown()) {
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.ALT_GRAPH_MASK));
 		}
 		if (evt.isMetaDown()) {
 			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.META_MASK));
@@ -105,16 +103,19 @@ class KeyEventTranslator {
 	 * @since jEdit 4.2pre3
 	 */
 	public static String getSymbolicModifierName(final int mod) {
-		if ((mod & KeyEventTranslator.c) != 0) {
+		if ((mod & InputEvent.CTRL_MASK) != 0) {
 			return "control";
 		}
-		else if ((mod & KeyEventTranslator.a) != 0) {
+		else if ((mod & InputEvent.ALT_MASK) != 0) {
 			return "alt";
 		}
-		else if ((mod & KeyEventTranslator.m) != 0) {
+		else if ((mod & InputEvent.ALT_GRAPH_MASK) != 0) {
+			return "altGraph";
+		}
+		else if ((mod & InputEvent.META_MASK) != 0) {
 			return "meta";
 		}
-		else if ((mod & KeyEventTranslator.s) != 0) {
+		else if ((mod & InputEvent.SHIFT_MASK) != 0) {
 			return "shift";
 		}
 		else {
@@ -136,6 +137,15 @@ class KeyEventTranslator {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
 			}
 			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.ALT_MASK));
+		}
+		if ((mods & InputEvent.ALT_GRAPH_MASK) != 0) {
+			if (buf == null) {
+				buf = new StringBuilder();
+			}
+			else {
+				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
+			}
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.ALT_GRAPH_MASK));
 		}
 		if ((mods & InputEvent.META_MASK) != 0) {
 			if (buf == null) {
@@ -161,52 +171,6 @@ class KeyEventTranslator {
 		else {
 			return buf.toString();
 		}
-	}
-
-	/**
-	 * Changes the mapping between symbolic modifier key names (<code>C</code>,
-	 * <code>A</code>, <code>M</code>, <code>S</code>) and Java modifier flags.
-	 * You can map more than one Java modifier to a symbolic modifier, for
-	 * example :
-	 * <p>
-	 * <code><pre>
-	 * 	setModifierMapping(
-	 * 		InputEvent.CTRL_MASK,
-	 * 		InputEvent.ALT_MASK | InputEvent.META_MASK,
-	 * 		0,
-	 * 		InputEvent.SHIFT_MASK);
-	 * <pre></code>
-	 * </p>
-	 * You cannot map a Java modifer to more than one symbolic modifier.
-	 *
-	 * @param c
-	 *            The modifier(s) to map the <code>C</code> modifier to
-	 * @param a
-	 *            The modifier(s) to map the <code>A</code> modifier to
-	 * @param m
-	 *            The modifier(s) to map the <code>M</code> modifier to
-	 * @param s
-	 *            The modifier(s) to map the <code>S</code> modifier to
-	 * @since jEdit 4.2pre3
-	 */
-	public static void setModifierMapping(final int c, final int a, final int m, final int s) {
-		final int duplicateMapping = ((c & a) | (c & m) | (c & s) | (a & m) | (a & s) | (m & s));
-		if ((duplicateMapping & InputEvent.CTRL_MASK) != 0) {
-			throw new IllegalArgumentException("CTRL is mapped to more than one modifier");
-		}
-		if ((duplicateMapping & InputEvent.ALT_MASK) != 0) {
-			throw new IllegalArgumentException("ALT is mapped to more than one modifier");
-		}
-		if ((duplicateMapping & InputEvent.META_MASK) != 0) {
-			throw new IllegalArgumentException("META is mapped to more than one modifier");
-		}
-		if ((duplicateMapping & InputEvent.SHIFT_MASK) != 0) {
-			throw new IllegalArgumentException("SHIFT is mapped to more than one modifier");
-		}
-		KeyEventTranslator.c = c;
-		KeyEventTranslator.a = a;
-		KeyEventTranslator.m = m;
-		KeyEventTranslator.s = s;
 	}
 
 	/**
