@@ -2,7 +2,7 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2001, 2002 Slava Pestov
  *  Copyright (C) 2009 Dimitry Polivaev
- *  
+ *
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 
@@ -49,6 +48,7 @@ import org.freeplane.core.util.TextUtils;
  */
 public class GrabKeyDialog extends JDialog {
 	class ActionHandler implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
 				if (shortcut.keyChar == null) {
@@ -73,13 +73,13 @@ public class GrabKeyDialog extends JDialog {
 
 	class InputPane extends JTextField {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
 		 * Makes the tab key work in Java 1.4.
-		 * 
+		 *
 		 * @since jEdit 3.2pre4
 		 */
 		@Override
@@ -137,28 +137,12 @@ public class GrabKeyDialog extends JDialog {
 					}
 					break;
 				case KeyEvent.VK_ALT:
-					KeyEventTranslator.modifiers |= InputEvent.ALT_MASK;
-					return;
 				case KeyEvent.VK_ALT_GRAPH:
-					KeyEventTranslator.modifiers |= InputEvent.ALT_GRAPH_MASK;
-					return;
 				case KeyEvent.VK_CONTROL:
-					KeyEventTranslator.modifiers |= InputEvent.CTRL_MASK;
-					return;
 				case KeyEvent.VK_SHIFT:
-					KeyEventTranslator.modifiers |= InputEvent.SHIFT_MASK;
-					return;
 				case KeyEvent.VK_META:
-					KeyEventTranslator.modifiers |= InputEvent.META_MASK;
 					return;
 				default:
-					if (KeyEventTranslator.ALT_KEY_PRESSED_DISABLED) {
-						/* we don't handle key pressed A+ */
-						/* they're too troublesome */
-						if ((KeyEventTranslator.modifiers & InputEvent.ALT_MASK) != 0) {
-							return;
-						}
-					}
 					break;
 			}
 			evt.consume();
@@ -195,7 +179,7 @@ public class GrabKeyDialog extends JDialog {
 
 	/**
 	 * Create and show a new modal dialog.
-	 * 
+	 *
 	 * @param parent
 	 *            center dialog on this component.
 	 * @param binding
@@ -208,12 +192,12 @@ public class GrabKeyDialog extends JDialog {
 	 */
 	/**
 	 * A jEdit action or macro with its two possible shortcuts.
-	 * 
+	 *
 	 * @since jEdit 3.2pre8
 	 */
 	public final static String MODIFIER_SEPARATOR = " ";
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -273,7 +257,7 @@ public class GrabKeyDialog extends JDialog {
 
 	/**
 	 * Makes the tab key work in Java 1.4.
-	 * 
+	 *
 	 * @since jEdit 3.2pre4
 	 */
 	@Override
@@ -331,13 +315,13 @@ public class GrabKeyDialog extends JDialog {
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 		final JPanel content = new JPanel(new GridLayout(0, 1, 0, 6)) {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
 			/**
 			 * Makes the tab key work in Java 1.4.
-			 * 
+			 *
 			 * @since jEdit 3.2pre4
 			 */
 			@Override
@@ -397,7 +381,7 @@ public class GrabKeyDialog extends JDialog {
 
 	/**
 	 * Returns true, if the dialog has not been cancelled.
-	 * 
+	 *
 	 * @since jEdit 3.2pre9
 	 */
 	public boolean isOK() {

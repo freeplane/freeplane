@@ -219,7 +219,4 @@ class KeyEventTranslator {
 			return trans;
 		}
 	}
-
-	public static final boolean ALT_KEY_PRESSED_DISABLED = false;
-	static int modifiers;
 }
