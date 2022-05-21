@@ -57,6 +57,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -350,7 +351,7 @@ class ScriptEditorPanel extends JDialog {
 		SourceTextEditorUIConfigurator.configureColors(editorPane);
 		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);
-		JScrollPane scriptScrollPane = new JScrollPane(mScriptTextField);
+		JScrollPane scriptScrollPane = new JRestrictedSizeScrollPane(mScriptTextField);
 		UITools.setScrollbarIncrement(scriptScrollPane);
 		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, scriptScrollPane);
 		try {
