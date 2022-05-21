@@ -223,6 +223,9 @@ public class KeyEventTranslator {
 	}
 	private static final int WINDOWS_ALT_GRAPH_ADDED_MASK = InputEvent.ALT_MASK | InputEvent.CTRL_MASK
 			| InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK;
+	
+	private static final int MAC_ALT_GRAPH_ADDED_MASK = InputEvent.ALT_MASK
+			| InputEvent.ALT_DOWN_MASK;
 
 
 	private static int getModifiers(final KeyEvent evt) {
@@ -232,6 +235,9 @@ public class KeyEventTranslator {
 	public static int getCompatibleModifiers(int modifiers) {
 		if(Compat.isWindowsOS() && (0 != (modifiers & InputEvent.ALT_GRAPH_MASK))){
 			return modifiers & ~ WINDOWS_ALT_GRAPH_ADDED_MASK;
+		}
+		if(Compat.isMacOsX() && (0 != (modifiers & InputEvent.ALT_GRAPH_MASK))){
+			return modifiers & ~ MAC_ALT_GRAPH_ADDED_MASK;
 		}
 		return modifiers;
 	}
