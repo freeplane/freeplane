@@ -87,10 +87,6 @@ public class GrabKeyDialog extends JDialog {
 			return false;
 		}
 
-		private int getModifierMask() {
-			return modifierMask;
-		}
-
 		private Character keyChar = null;
 
 		@Override
@@ -98,8 +94,8 @@ public class GrabKeyDialog extends JDialog {
 			if (KeyEvent.KEY_PRESSED != evt.getID()) {
 				return;
 			}
-			if ((getModifierMask() & evt.getModifiers()) != 0) {
-				final KeyEvent evt2 = new KeyEvent(evt.getComponent(), evt.getID(), evt.getWhen(), ~getModifierMask()
+			if ((modifierMask & evt.getModifiers()) != 0) {
+				final KeyEvent evt2 = new KeyEvent(evt.getComponent(), evt.getID(), evt.getWhen(), ~modifierMask
 				        & evt.getModifiers(), evt.getKeyCode(), evt.getKeyChar(), evt.getKeyLocation());
 				processKeyEvent(evt2);
 				if (evt2.isConsumed()) {
