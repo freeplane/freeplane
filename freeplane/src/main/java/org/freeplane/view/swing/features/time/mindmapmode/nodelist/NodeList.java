@@ -89,6 +89,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
 
@@ -486,11 +487,18 @@ class NodeList implements IExtension {
 			dialog.toFront();
 			return;
 		}
-		final DefaultTableModel model = createTableModel();
-		fillTableModel(model, nodeFilter);
-		tableModel = model;
-		String mapTitle = Controller.getCurrentController().getSelection().getMap().getTitle();
-		initializeUI(mapTitle);
+		ViewController viewController = Controller.getCurrentController().getViewController();
+		viewController.setWaitingCursor(true);
+		try {
+			final DefaultTableModel model = createTableModel();
+			fillTableModel(model, nodeFilter);
+			tableModel = model;
+			String mapTitle = Controller.getCurrentController().getSelection().getMap().getTitle();
+			initializeUI(mapTitle);
+		}
+		finally {
+			viewController.setWaitingCursor(false);
+		}
 	}
 
 	public void startup(List<NodeModel> nodes) {
@@ -498,10 +506,17 @@ class NodeList implements IExtension {
 			dialog.toFront();
 			return;
 		}
-		final DefaultTableModel model = createTableModel();
-		fillTableModel(model, nodes);
-		tableModel = model;
-		initializeUI("");
+		ViewController viewController = Controller.getCurrentController().getViewController();
+		viewController.setWaitingCursor(true);
+		try {
+			final DefaultTableModel model = createTableModel();
+			fillTableModel(model, nodes);
+			tableModel = model;
+			initializeUI("");
+		}
+		finally {
+			viewController.setWaitingCursor(false);
+		}
 	}
 
 
