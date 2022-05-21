@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MapView;
 
 class FreeScrollAction extends AFreeplaneAction {
     private static final long serialVersionUID = 1L;
-    private static final String WHEEL_VELOCITY = "wheel_velocity";
 
     public enum Direction {
         LEFT {
@@ -65,8 +65,9 @@ class FreeScrollAction extends AFreeplaneAction {
         this.direction = direction;
     }
 
-    public void actionPerformed(final ActionEvent e) {
+    @Override
+	public void actionPerformed(final ActionEvent e) {
         final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-        direction.scroll(mapView, ResourceController.getResourceController().getIntProperty(WHEEL_VELOCITY, 80));
+        direction.scroll(mapView, ResourceController.getResourceController().getIntProperty(UITools.SCROLLBAR_INCREMENT, 80));
     }
 }
