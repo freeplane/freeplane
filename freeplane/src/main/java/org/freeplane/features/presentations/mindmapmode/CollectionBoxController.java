@@ -23,6 +23,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.JComboBoxFactory;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 
@@ -41,7 +42,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private final CollectionChangeListener<T> collectionChangeListener;
 	private JComponent collectionComponent;
 	private JLabel lblElementCounter;
-	
+
 	public JComponent createCollectionBox() {
 		collectionComponent = Box.createVerticalBox();
 		final Box names = Box.createHorizontalBox();
@@ -53,7 +54,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		collectionButtons.add(btnNewElement);
 		collectionButtons.add(btnDeleteElement);
 		collectionButtons.add(btnMoveUp);
-		collectionButtons.add(btnMoveDown);                       
+		collectionButtons.add(btnMoveDown);
 		collectionButtons.add(btnMove);
 		collectionButtons.add(btnCopy);
 		collectionButtons.add(Box.createHorizontalGlue());
@@ -69,7 +70,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		comboBoxCollectionNames.setMaximumRowCount(resourceController.getIntProperty(PRESENTATION_MAX_DROP_BOX_ROW_COUNT_PROPERTY, 9));
 		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			
+
 			@Override
 			public void propertyChanged(String propertyName, String newValue, String oldValue) {
 				if(PRESENTATION_MAX_DROP_BOX_ROW_COUNT_PROPERTY.equals(propertyName))
@@ -101,7 +102,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			}
 		};
 	}
-	
+
 	public void setCollection(NamedElementCollection<T> newCollection) {
 		if(collection == newCollection)
 			return;
@@ -160,7 +161,9 @@ class CollectionBoxController <T extends NamedElement<T>> {
 				JList<String> targets = new JList<>(elements);
 				targets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				final String title = TextUtils.getText("collection.moveTo");
-				if (JOptionPane.showConfirmDialog(collectionComponent, new JAutoScrollBarPane(targets), title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) 
+				JAutoScrollBarPane scrollPane = new JAutoScrollBarPane(targets);
+				UITools.setScrollbarIncrement(scrollPane);
+				if (JOptionPane.showConfirmDialog(collectionComponent, scrollPane, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE)
 						== JOptionPane.OK_OPTION)
 					UndoableNamedElementCollection.of(collection).moveCurrentElementTo(targets.getSelectedIndex());
 			}
@@ -200,7 +203,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private JButton createNewElementButton(final String elementName) {
 		final JButton btnNewElement = TranslatedElementFactory.createButtonWithIcon(elementName + ".new.icon", "collection.new." + elementName);
 		btnNewElement.addActionListener(new ActionListener() {
-			
+
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -217,7 +220,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private JButton createCopyButton(final String elementName) {
 		final JButton btnCopyElement = TranslatedElementFactory.createButtonWithIcon(elementName + ".copy.icon", "collection.copy." + elementName);
 		btnCopyElement.addActionListener(new ActionListener() {
-			
+
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -239,5 +242,5 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		if (collection != null)
 			enableUiElements();
 	}
-	
+
 }

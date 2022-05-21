@@ -80,6 +80,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
     private JRestrictedSizeScrollPane createScrollPane() {
         final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        UITools.setScrollbarIncrement(scrollPane);
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }

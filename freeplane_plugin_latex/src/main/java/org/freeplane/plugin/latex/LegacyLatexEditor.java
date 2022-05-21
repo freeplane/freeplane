@@ -41,7 +41,7 @@ import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 
 /**
  * @author Stefan Ott
- * 
+ *
  * This class has only one static method to show the editor for _legacy_ Latex-fomulas
  * (deprecated!)
  */
@@ -59,6 +59,7 @@ public class LegacyLatexEditor {
 	        this.dialog = dialog;
         }
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			closed = true;
 			dialog.dispose();
@@ -67,15 +68,16 @@ public class LegacyLatexEditor {
 
 	/**
 	 * This method shows the Latex editor and sets the equation to be rendered from Latex
-	 * 
+	 *
 	 * @param oldEquation: previous equation
 	 * @param node: the node that is edited (is used to position editor window)
-	 * 
+	 *
 	 */
 	public static String editLatex(final String oldEquation, final NodeModel node) {
 		final JEditorPane textArea = new JEditorPane();
 		SourceTextEditorUIConfigurator.configureColors(textArea);
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
+		UITools.setScrollbarIncrement(editorScrollPane);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(700, 200));
 		final JOptionPane editPane = new JOptionPane(editorScrollPane, JOptionPane.PLAIN_MESSAGE,

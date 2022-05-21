@@ -456,6 +456,7 @@ public class UITools {
 		infoPane.setText(message);
 		infoPane.setColumns(60);
 		JScrollPane scrollPane = new JScrollPane(infoPane);
+		UITools.setScrollbarIncrement(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
 		JOptionPane.showMessageDialog(getCurrentRootComponent(), scrollPane, "Freeplane", messageType);
 	}
@@ -789,7 +790,7 @@ public class UITools {
 
 	public static int getUIFontSize(float scalingFactor) {
 		Font font = getUIFont();
-		return (int)Math.round(font.getSize() * scalingFactor);
+		return Math.round(font.getSize() * scalingFactor);
 	}
 
 	public static Font getUIFont(float scalingFactor) {

@@ -62,8 +62,8 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
         String markdown = text;
         String html = "<html>"
-        		+ "<body>" 
-        		+ Marked.marked(markdown, options) 
+        		+ "<body>"
+        		+ Marked.marked(markdown, options)
         		+ "</body></html>";
         return html;
 	}
@@ -77,6 +77,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
     private JRestrictedSizeScrollPane createScrollPane() {
         final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        UITools.setScrollbarIncrement(scrollPane);
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }

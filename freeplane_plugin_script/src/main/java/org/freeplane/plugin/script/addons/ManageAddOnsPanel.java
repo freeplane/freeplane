@@ -44,14 +44,17 @@ public class ManageAddOnsPanel extends JPanel {
 			this.addOns = new ArrayList<AddOnProperties>(addOns);
 		}
 
+		@Override
 		public int getRowCount() {
 			return addOns.size();
 		}
 
+		@Override
 		public int getColumnCount() {
 			return buttonsColumn + 1;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			AddOnProperties addOn = addOns.get(row);
 			switch (col) {
@@ -76,7 +79,8 @@ public class ManageAddOnsPanel extends JPanel {
 	        return icon;
 	    }
 
-        public Class<?> getColumnClass(int col) {
+        @Override
+		public Class<?> getColumnClass(int col) {
 		    if (col == 0) {
 		        return ImageIcon.class;
 		    } else {
@@ -84,10 +88,12 @@ public class ManageAddOnsPanel extends JPanel {
 		    }
 		}
 
+		@Override
 		public boolean isCellEditable(int row, int column) {
 			return column == buttonsColumn;
 		}
 
+		@Override
 		public void setValueAt(Object aValue, int row, int column) {
 			fireTableCellUpdated(row, column);
 		}
@@ -95,7 +101,7 @@ public class ManageAddOnsPanel extends JPanel {
 		public AddOnProperties getAddOnAt(int row) {
 			return addOns.get(row);
 		}
-		
+
 		public void addAddOn(final AddOnProperties addOn) {
 			final int row = addOns.size();
 			addOns.add(addOn);
@@ -125,13 +131,16 @@ public class ManageAddOnsPanel extends JPanel {
 		final JTable jTable = createTable(tableModel);
 		JScrollPane tableScrollPane = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		UITools.setScrollbarIncrement(tableScrollPane);
 		tableScrollPane.getViewport().setBackground(Color.white);
-		
+
 		final JPanel emptyPanel = new JPanel();
 		emptyPanel.setOpaque(false);
 		final JScrollPane descriptionScrollPane = new JScrollPane(emptyPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		UITools.setScrollbarIncrement(descriptionScrollPane);
 		descriptionScrollPane.getViewport().setBackground(Color.white);
 		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if(jTable.getSelectedRowCount() != 1){
 					descriptionScrollPane.setViewportView(emptyPanel);
@@ -145,7 +154,7 @@ public class ManageAddOnsPanel extends JPanel {
 				}
 			}
 		});
-		
+
 		panel.add(tableScrollPane);
 		panel.add(descriptionScrollPane);
     }
@@ -195,7 +204,8 @@ public class ManageAddOnsPanel extends JPanel {
 
 	private AbstractAction createConfigureAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
-		    public void actionPerformed(ActionEvent e) {
+		    @Override
+			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
 				if (!addOn.supportsOperation(AddOnProperties.OP_CONFIGURE)) {
@@ -212,6 +222,7 @@ public class ManageAddOnsPanel extends JPanel {
 
 	private AbstractAction createDeactivateAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
@@ -229,6 +240,7 @@ public class ManageAddOnsPanel extends JPanel {
 
 	private AbstractAction createActivateAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);
@@ -246,6 +258,7 @@ public class ManageAddOnsPanel extends JPanel {
 
 	private AbstractAction createDeinstallAction(final AddOnTableModel tableModel) {
 		return new AbstractAction() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int row = Integer.parseInt(e.getActionCommand());
 				final AddOnProperties addOn = tableModel.getAddOnAt(row);

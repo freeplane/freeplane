@@ -344,7 +344,7 @@ class NodeList implements IExtension {
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 	protected static final String PAST_REMINDERS_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
-	
+
 	private Set<MapModel> listedMaps = Collections.emptySet();
 
 	NodeList( final String windowTitle, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
@@ -592,21 +592,22 @@ class NodeList implements IExtension {
 		sorter.setColumnComparator(NodeModel.class, TableSorter.LEXICAL_COMPARATOR);
 		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMPARATOR);
 		sorter.setSortingStatus(nodeReminderColumn, TableSorter.ASCENDING);
-		final JScrollPane pane = new JScrollPane(tableView);
-		UITools.setScrollbarIncrement(pane);
+		final JScrollPane nodeContentScrollPane = new JScrollPane(tableView);
+		UITools.setScrollbarIncrement(nodeContentScrollPane);
 		layoutConstraints.gridy++;
 		GridBagConstraints tableConstraints = (GridBagConstraints) layoutConstraints.clone();
 		tableConstraints.weightx = 1;
 		tableConstraints.weighty = 10;
 		tableConstraints.fill = GridBagConstraints.BOTH;
-		contentPane.add(pane, tableConstraints);
+		contentPane.add(nodeContentScrollPane, tableConstraints);
 		mNodePath.setEditable(false);
 		layoutConstraints.gridy++;
 		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
 		treeConstraints.fill = GridBagConstraints.BOTH;
 		@SuppressWarnings("serial")
-		JScrollPane scrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		contentPane.add(scrollPane, treeConstraints);
+		JScrollPane nodePathScrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		UITools.setScrollbarIncrement(nodePathScrollPane);
+		contentPane.add(nodePathScrollPane, treeConstraints);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("reminder.Export")) {
 			/**
 			     *

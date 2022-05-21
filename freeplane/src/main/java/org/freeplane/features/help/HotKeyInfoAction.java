@@ -50,7 +50,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
     }
 
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 	// ==========================================================================
@@ -115,6 +115,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		return HtmlUtils.element(name, content);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
 		final DefaultMutableTreeNode menuEntryTree = MenuUtils.createAcceleratebleMenuEntryTree("main_menu");
@@ -126,6 +127,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		refPane.setEditable(false);
 		final Dimension preferredSize = refPane.getPreferredSize();
 		JScrollPane scrollPane = new JScrollPane(refPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		UITools.setScrollbarIncrement(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(preferredSize.width, 600));
 		JOptionPane pane = new JOptionPane(scrollPane, JOptionPane.INFORMATION_MESSAGE);
 		JDialog dialog = pane.createDialog(UITools.getMenuComponent(), title);

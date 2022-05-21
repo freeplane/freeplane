@@ -140,7 +140,7 @@ class NodeListWithReplacement extends NodeList{
 		layoutConstraints.weightx = 1.0;
 		layoutConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		layoutConstraints.gridy++;
-		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), layoutConstraints);
+		contentPane.add(mFilterTextReplaceField, layoutConstraints);
 	}
 	@Override
 	protected void createSpecificButtons(final Container container) {

@@ -54,25 +54,25 @@ import de.sciss.syntaxpane.TokenType;
  * Nov 20, 2010
  */
 class FormulaEditor extends EditNodeDialog implements INodeSelector {
-	
+
 	private static final String PASSED_WIDTH_PROPERTY = "formulaDialog.passed.width";
     private static final String PASSED_HEIGHT_PROPERTY = "formulaDialog.passed.height";
     private static final String FAILED_WIDTH_PROPERTY = "formulaDialog.failed.width";
     private static final String FAILED_HEIGHT_PROPERTY = "formulaDialog.failed.height";
-	
+
 	static enum EvaluationStatus{
-		
-		PASSED(PASSED_WIDTH_PROPERTY, PASSED_HEIGHT_PROPERTY), 
+
+		PASSED(PASSED_WIDTH_PROPERTY, PASSED_HEIGHT_PROPERTY),
 		FAILED(FAILED_WIDTH_PROPERTY, FAILED_HEIGHT_PROPERTY);
-		
-		
+
+
 		public final String heightPropertyName;
 		public final String widthPropertyName;
 		private EvaluationStatus(String widthPropertyName, String heightPropertyName) {
 			this.heightPropertyName = heightPropertyName;
 			this.widthPropertyName = widthPropertyName;
 		}
-		
+
 	}
 
 	static final String GROOVY_EDITOR_FONT = "groovy_editor_font";
@@ -120,6 +120,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			exceptionView.setFont(font.deriveFont(font.getSize2D() * 0.8f));
 			exceptionView.setEditable(false);
 			final JScrollPane scrollPane = new JScrollPane(exceptionView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			UITools.setScrollbarIncrement(scrollPane);
 			final Rectangle availableScreenBounds = UITools.getAvailableScreenBounds(UITools.getCurrentRootComponent());
 			final Dimension maximumSize = new Dimension(availableScreenBounds.width * 3 / 4, Integer.MAX_VALUE);
 			final Dimension preferredSize = scrollPane.getPreferredSize();
@@ -171,13 +172,15 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 		final boolean caretInsideStringToken = TokenType.isString(token);
 		return caretInsideStringToken;
 	}
-	
-    protected void saveDialogSize(final JDialog dialog) {
+
+    @Override
+	protected void saveDialogSize(final JDialog dialog) {
         ResourceController resourceController = ResourceController.getResourceController();
         resourceController.setProperty(evaluationStatus.widthPropertyName, dialog.getWidth());
         resourceController.setProperty(evaluationStatus.heightPropertyName, dialog.getHeight());
     }
 
+	@Override
 	protected void restoreDialogSize(final JDialog dialog) {
         Dimension preferredSize = dialog.getPreferredSize();
         ResourceController resourceController = ResourceController.getResourceController();

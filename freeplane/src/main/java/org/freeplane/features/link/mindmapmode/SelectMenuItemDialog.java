@@ -53,7 +53,7 @@ import org.freeplane.features.mode.Controller;
 
 /**
  * Presents the menu bar as a tree.
- * 
+ *
  * Only allows the selection of leaf nodes unless {@link #enableNonLeafNodes()} is invoked.
  *
  * @author vboerchers
@@ -69,6 +69,7 @@ public class SelectMenuItemDialog extends JDialog {
 	private MenuEntry menuItem;
 
 	private class CloseAction implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
 			if (source == btnOK) {
@@ -124,12 +125,14 @@ public class SelectMenuItemDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		UITools.addEscapeActionToDialog(this);
 		tree = createTree();
-		getContentPane().add(new JScrollPane(tree));
+		JScrollPane scrollPane = new JScrollPane(tree);
+		UITools.setScrollbarIncrement(scrollPane);
+		getContentPane().add(scrollPane);
 		getContentPane().add(createButtonBar(), BorderLayout.SOUTH);
 		getRootPane().setDefaultButton(btnOK);
 		setVisible(true);
 	}
-	
+
 	/** Opens a dialog with only leaf nodes are selectable. */
 	public SelectMenuItemDialog(final NodeModel node) {
 		this(node, false);
@@ -170,12 +173,14 @@ public class SelectMenuItemDialog extends JDialog {
 		// replace the standard icons
 		jTree.setCellRenderer(new MenuIconRenderer());
 		jTree.addTreeSelectionListener(new TreeSelectionListener() {
+			@Override
 			public void valueChanged(final TreeSelectionEvent e) {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				btnOK.setEnabled(node != null && nodeIsSelectable(node));
 			}
 		});
 		jTree.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() >= 2) {
 					if (btnOK.isEnabled())

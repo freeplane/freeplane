@@ -57,6 +57,7 @@ import javax.swing.event.DocumentListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -168,7 +169,7 @@ public class CommandSearchDialog extends JDialog
                     copySelectedItemToClipboard();
                 }
             }
-            
+
         };
         input.setColumns(40);
         input.addKeyListener(handler);
@@ -182,11 +183,12 @@ public class CommandSearchDialog extends JDialog
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
+		UITools.setScrollbarIncrement(resultListScrollPane);
         getContentPane().add(panel);
 
         JPanel scopePanel = new JPanel();
         searchMenus = createScopeButton(Scope.MENUS);
-        searchMenus.setToolTipText(TextUtils.getRawText(Scope.MENUS.labelName() + ".tooltip"));      
+        searchMenus.setToolTipText(TextUtils.getRawText(Scope.MENUS.labelName() + ".tooltip"));
         searchPrefs = createScopeButton(Scope.PREFERENCES);
         searchIcons = createScopeButton(Scope.ICONS);
         scopePanel.add(searchMenus);
@@ -345,7 +347,7 @@ public class CommandSearchDialog extends JDialog
             matches.add(new InformationItem(LIMIT_EXCEEDED_MESSAGE, WARNING_ICON, LIMIT_EXCEEDED_RANK));
         }
         UpdateableListModel<SearchItem> model = new UpdateableListModel<>(matches);
-        
+
         SearchItem selectedItem = resultList.getSelectedValue();
         resultList.setModel(model);
         if (resultList.getModel().getSize() > 0) {

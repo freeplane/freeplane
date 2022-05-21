@@ -73,14 +73,13 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
-        scrollPane.setMinimumSize(new Dimension(0, 60));
         JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content, ! editLong);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
-    
+
     private JRestrictedSizeScrollPane createScrollPane() {
         final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        UITools.setScrollbarIncrement(scrollPane);
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }
