@@ -41,6 +41,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -312,20 +313,13 @@ class NodeList implements IExtension {
 	private static String COLUMN_DETAILS= TextUtils.getText(REMINDER_TEXT_DETAILS);
 	private static String COLUMN_REMINDER = TextUtils.getText(REMINDER_TEXT_REMINDER);
 	private static String COLUMN_NOTES = TextUtils.getText(REMINDER_TEXT_NOTES);
-	private final int nodeMapColumn;
-	final int nodeTextColumn;
-	private final int nodeIconColumn;
-	final int nodeDetailsColumn;
-	final int nodeNotesColumn;
-	protected final int nodeReminderColumn;
-	private final int nodeCreatedColumn;
-	private final int nodeModifiedColumn;
-	private final String windowPreferenceStorageProperty;
+
+    private final String windowPreferenceStorageProperty;
 
 	private final DateRenderer dateRenderer;
 	private JDialog dialog;
 	private final IconsRenderer iconsRenderer;
-	protected final JComboBox mFilterTextSearchField;
+	protected final JComboBox<Object> mFilterTextSearchField;
 	private final JCheckBox closeAfterSelection;
 	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 	private final JTextField mNodePath;
@@ -346,17 +340,19 @@ class NodeList implements IExtension {
 	protected static final String PAST_REMINDERS_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 	
 	private Set<MapModel> listedMaps = Collections.emptySet();
+	
+	private boolean showsStyleIcons = false;
+	private int nodeMapColumn = -1;
+	int nodeTextColumn = -1;
+	private int nodeIconColumn = -1;
+	int nodeDetailsColumn = -1;
+	int nodeNotesColumn = -1;
+	int nodeReminderColumn = -1;
+	private int nodeCreatedColumn = -1;
+	private int nodeModifiedColumn = -1;
 
 	NodeList( final String windowTitle, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		this.windowTitle = windowTitle;
-		nodeMapColumn = searchInAllMaps ? 0 : -1;
-		nodeTextColumn = nodeMapColumn + 1;
-		nodeIconColumn = nodeTextColumn + 1;
-		nodeDetailsColumn = nodeIconColumn + 1;
-		nodeNotesColumn = nodeDetailsColumn + 1;
-		nodeReminderColumn = nodeNotesColumn + 1;
-		nodeCreatedColumn = nodeReminderColumn + 1;
-		nodeModifiedColumn = nodeCreatedColumn + 1;
 
 //		this.modeController = modeController;
 //		controller = modeController.getController();
@@ -519,7 +515,6 @@ class NodeList implements IExtension {
 		}
 	}
 
-
 	private void initializeUI(String mapTitle) {
 		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
 			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
@@ -604,7 +599,6 @@ class NodeList implements IExtension {
 		layoutConstraints.gridy++;
 		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
 		treeConstraints.fill = GridBagConstraints.BOTH;
-		@SuppressWarnings("serial")
 		JScrollPane scrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		contentPane.add(scrollPane, treeConstraints);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("reminder.Export")) {
@@ -736,7 +730,7 @@ class NodeList implements IExtension {
 	private void fillTableModel(DefaultTableModel model, List<NodeModel> nodes) {
 		for(NodeModel node : nodes) {
 			final ReminderExtension hook = ReminderExtension.getExtension(node);
-			final Object[] row = createTableRowData(node, hook);
+			final Vector<?> row = createTableRowData(node, hook);
 			model.addRow(row);
 		}
 	}
@@ -762,6 +756,15 @@ class NodeList implements IExtension {
 	}
 
 	private DefaultTableModel createTableModel() {
+		showsStyleIcons = ResourceController.getResourceController().getBooleanProperty("nodelist_shows_style_icons");
+		nodeMapColumn = searchInAllMaps ? 0 : -1;
+		nodeTextColumn = nodeMapColumn + 1;
+		nodeIconColumn = nodeTextColumn + 1;
+		nodeDetailsColumn = nodeIconColumn + 1;
+		nodeNotesColumn = nodeDetailsColumn + 1;
+		nodeReminderColumn = nodeNotesColumn + 1;
+		nodeCreatedColumn = nodeReminderColumn + 1;
+		nodeModifiedColumn = nodeCreatedColumn + 1;
 		final DefaultTableModel model = new DefaultTableModel() {
 			/**
 			 *
@@ -791,7 +794,7 @@ class NodeList implements IExtension {
 				}
 			}
 		};
-		if(nodeMapColumn >= 0)
+		if(searchInAllMaps)
 			model.addColumn(COLUMN_MAP);
 		model.addColumn(COLUMN_TEXT);
 		model.addColumn(COLUMN_ICONS);
@@ -806,7 +809,7 @@ class NodeList implements IExtension {
 	private void fillModel(final DefaultTableModel model, final NodeModel node, NodeFilter nodeFilter) {
 		final ReminderExtension hook = ReminderExtension.getExtension(node);
 		if (nodeFilter.showsNode(node, hook)) {
-			final Object[] row = createTableRowData(node, hook);
+			final Vector<?> row = createTableRowData(node, hook);
 			model.addRow(row);
 		}
 		for (final NodeModel child : node.getChildren()) {
@@ -814,25 +817,22 @@ class NodeList implements IExtension {
 		}
 	}
 
-	private Object[] createTableRowData(final NodeModel node, final ReminderExtension hook) {
+	private Vector<?> createTableRowData(final NodeModel node, final ReminderExtension hook) {
 		final Date date = hook != null ? new Date(hook.getRemindUserAt()) : null;
-		final Object[] row = searchInAllMaps ? new Object[] {
-				node.getMap().getTitle(),
-				new TextHolder(new CoreTextAccessor(node)),
-				new IconsHolder(node),
-				new TextHolder(new DetailTextAccessor(node)) ,
-				new TextHolder(new NoteTextAccessor(node)),
-				date,
-				node.getHistoryInformation().getCreatedAt(),
-				node.getHistoryInformation().getLastModifiedAt()} :
-					new Object[] {
-							new TextHolder(new CoreTextAccessor(node)),
-							new IconsHolder(node),
-							new TextHolder(new DetailTextAccessor(node)) ,
-							new TextHolder(new NoteTextAccessor(node)),
-				date,
-				node.getHistoryInformation().getCreatedAt(),
-				node.getHistoryInformation().getLastModifiedAt()};
+		int columnNumber = 7;
+		if (searchInAllMaps)
+			columnNumber++;
+		columnNumber++;
+		final Vector<Object> row = new Vector<>(columnNumber);
+		if (searchInAllMaps)
+			row.add(node.getMap().getTitle());
+		row.add(new TextHolder(new CoreTextAccessor(node)));
+		row.add(new IconsHolder(node, showsStyleIcons));
+		row.add(new TextHolder(new DetailTextAccessor(node)) );
+		row.add(new TextHolder(new NoteTextAccessor(node)));
+		row.add(date);
+		row.add(node.getHistoryInformation().getCreatedAt());
+		row.add(node.getHistoryInformation().getLastModifiedAt());
 		return row;
 	}
 	static private HashSet<Object> changeableProperties = new HashSet<Object>(

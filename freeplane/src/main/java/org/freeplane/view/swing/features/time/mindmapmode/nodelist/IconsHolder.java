@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -38,8 +39,11 @@ class IconsHolder implements Comparable<IconsHolder> {
     final private String iconNames;
 	private List<NamedIcon> icons = new ArrayList<>();
 
-	public IconsHolder(final NodeModel node) {
-		icons.addAll(IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE));
+	public IconsHolder(final NodeModel node, boolean showsStyleIcons) {
+		Collection<NamedIcon> nodeIcons = showsStyleIcons 
+				? IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE)
+				: node.getIcons();
+		icons.addAll(nodeIcons);
 		if (icons.size() > 0) {
 			final List<NamedIcon> toSort = new ArrayList<>(icons);
 			Collections.sort(toSort, ICON_COMPARATOR);
