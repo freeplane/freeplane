@@ -97,11 +97,28 @@ public class HtmlUtils {
 	public static HtmlUtils getInstance() {
 		return HtmlUtils.sInstance;
 	}
+	
+	static class CachedStringTransformationResult{
+		public final String input;
+		public final String output;
+		CachedStringTransformationResult(String input, String output) {
+			super();
+			this.input = input;
+			this.output = output;
+		}
+	}
+	
+	static private ThreadLocal<CachedStringTransformationResult> cachedHtmlToPlain = ThreadLocal.withInitial(() -> new CachedStringTransformationResult("", ""));
 
 	/** equivalent to htmlToPlain(text, strictHTMLOnly=true, removeNewLines=true)
 	 * @see #htmlToPlain(String, boolean, boolean) */
 	public static String htmlToPlain(final String text) {
-		return HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true, /* removeNewLines= */true);
+		CachedStringTransformationResult threadLocalCachedHtmlToPlain = cachedHtmlToPlain.get();
+		if(threadLocalCachedHtmlToPlain.input.equals(text))
+			return threadLocalCachedHtmlToPlain.output;
+		String output = HtmlUtils.htmlToPlain(text, /* strictHTMLOnly= */true, /* removeNewLines= */true);
+		cachedHtmlToPlain.set(new CachedStringTransformationResult(text, output));
+		return output;
 	}
 
 	/** equivalent to htmlToPlain(text, strictHTMLOnly, removeNewLines=true)
