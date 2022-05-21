@@ -44,6 +44,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.resources.components.KeyEventTranslator;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
 import org.freeplane.core.ui.IKeyStrokeProcessor;
@@ -311,6 +312,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			return;
 		}
 		nextModifiers |= modifiers;
+		nextModifiers = KeyEventTranslator.getCompatibleModifiers(nextModifiers);
 		onModifierChange();
 	}
 
