@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -50,6 +51,11 @@ public class NumberSliderProperty extends PropertyBean implements IPropertyContr
 	@Override
 	public String getValue() {
 		return Integer.toString(transparencySlider.getValue());
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return transparencySlider;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

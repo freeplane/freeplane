@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -64,6 +65,11 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 	@Override
 	public String getValue() {
 		return script;
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mButton;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

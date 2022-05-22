@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.util.LogUtils;
@@ -51,6 +52,11 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public String getValue() {
 		return mAvailableFontFamilyNames[mFontComboBox.getSelectedIndex()];
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mFontComboBox;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

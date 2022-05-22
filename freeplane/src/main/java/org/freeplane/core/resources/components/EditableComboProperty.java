@@ -27,19 +27,20 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.JComboBoxFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public abstract class EditableComboProperty<T> extends PropertyBean implements IPropertyControl {
-	final JComboBox comboBox;
+	private final JComboBox mComboBox;
 	private T selected;
 
 	public EditableComboProperty(final String name, final List<? extends T> values) {
 		super(name);
-		comboBox = createFormatChooser(values);
-		comboBox.addActionListener(new ActionListener() {
+		mComboBox = createFormatChooser(values);
+		mComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				firePropertyChangeEvent();
 			}
@@ -64,26 +65,31 @@ public abstract class EditableComboProperty<T> extends PropertyBean implements I
 		return selected == null ? null : selected.toString();
 	}
 
+	@Override
+	public JComponent getValueComponent() {
+		return mComboBox;
+	}
+
     public T getSelected() {
         return selected;
     }
 
 	public void appendToForm(final DefaultFormBuilder builder) {
-		appendToForm(builder, comboBox);
+		appendToForm(builder, mComboBox);
 	}
 
 	public void setEnabled(final boolean pEnabled) {
-		comboBox.setEnabled(pEnabled);
+		mComboBox.setEnabled(pEnabled);
 		super.setEnabled(pEnabled);
 	}
 
 	@Override
 	public void setValue(final String value) {
-		comboBox.setSelectedItem(value == null ? null : toValueObject(value));
+		mComboBox.setSelectedItem(value == null ? null : toValueObject(value));
 	}
 
     public void setToolTipText(String text) {
-	    comboBox.setToolTipText(text);
+	    mComboBox.setToolTipText(text);
     }
 
     abstract public T toValueObject(Object value);

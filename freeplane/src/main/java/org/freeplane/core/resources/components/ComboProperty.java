@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.ui.components.JComboBoxFactory;
@@ -66,7 +67,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	public ComboProperty(final String name, final String[] strings) {
 		this(name, Arrays.asList(strings), ComboProperty.translate(strings));
 	}
-	
+
 
 	public static <T extends Enum<T>> ComboProperty of(String name, Class<T> enumClass) {
 		T[] enumConstants = enumClass.getEnumConstants();
@@ -102,6 +103,11 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		if(mComboBox.getSelectedIndex() == -1)
 			return mComboBox.getSelectedItem().toString();
 		return possibleValues.get(mComboBox.getSelectedIndex());
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mComboBox;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

@@ -22,6 +22,7 @@ package org.freeplane.core.resources.components;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -44,6 +45,11 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public String getValue() {
 		return mTextField.getText();
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mTextField;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

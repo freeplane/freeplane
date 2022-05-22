@@ -4,6 +4,8 @@
 Compact map layout
 Search & Replace dialog improvements
 Add option to remove icon if exists when icon action is triggered
+Allow to use AltGr for user defined short cuts
+Style icons are not displayed in node search dialog by default (there is a new option)
 Bug fixes
 
 ==============================

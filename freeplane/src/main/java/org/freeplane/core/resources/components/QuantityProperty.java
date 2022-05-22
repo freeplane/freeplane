@@ -27,6 +27,7 @@ import java.util.Collections;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
@@ -65,11 +66,11 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 		unitBox = c;
 		addChangeListeners();
 	}
-	
+
 	public void configureMinimumName(String name) {
 		FormatterFactoryWithPredefinedNames.installFactory(numberSpinner, Collections.singletonMap(name, ((SpinnerNumberModel)numberSpinner.getModel()).getMinimum()));
 	}
-	
+
 	private void addChangeListeners() {
 		numberSpinner.addChangeListener(new ChangeListener() {
 			@Override
@@ -97,6 +98,11 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 	@Override
 	public String getValue() {
 		return getQuantifiedValue().toString();
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return numberSpinner;
 	}
 
 	@Override

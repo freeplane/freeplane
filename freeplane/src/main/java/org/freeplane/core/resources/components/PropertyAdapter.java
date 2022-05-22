@@ -31,7 +31,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * @author Dimitry Polivaev
  * 26.12.2008
  */
-public class PropertyAdapter {
+abstract public class PropertyAdapter {
 	private String tooltip;
 	private String label;
 
@@ -41,6 +41,8 @@ public class PropertyAdapter {
 	public JLabel getLabelComponent() {
 		return labelComponent;
 	}
+	
+	public abstract JComponent getValueComponent();
 	
 	protected void setLabelComponent(JLabel labelComponent) {
 		this.labelComponent = labelComponent;

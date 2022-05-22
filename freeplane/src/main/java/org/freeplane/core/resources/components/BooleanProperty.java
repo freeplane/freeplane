@@ -27,6 +27,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -49,6 +50,11 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 		return mCheckBox.isSelected() ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
 	}
 
+	@Override
+	public JComponent getValueComponent() {
+		return mCheckBox;
+	}
+
 	public void appendToForm(final DefaultFormBuilder builder) {
 		appendToForm(builder, mCheckBox);
 		getLabelComponent().addMouseListener(new MouseAdapter() {
@@ -57,7 +63,7 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 			public void mouseClicked(MouseEvent e) {
 				mCheckBox.setSelected(! getBooleanValue());
 			}
-			
+
 		});
 	}
 

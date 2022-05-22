@@ -20,6 +20,7 @@
 package org.freeplane.core.resources.components;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -36,6 +37,11 @@ public class ButtonProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public String getValue() {
 		return "";
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mButton;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

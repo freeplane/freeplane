@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.util.TextUtils;
@@ -62,6 +63,11 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public String getValue() {
 		return mButton.getText();
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mButton;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

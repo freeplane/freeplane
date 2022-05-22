@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
 
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -43,11 +44,11 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
     private final static String REVERT_RESOURCE = "reset_property_text";
     private static final String TEXT = TextUtils.getText(REVERT_RESOURCE);
     private final JButton revertButton;
-	
+
 	RevertingProperty() {
         this(NAME);
 	}
-	
+
 	RevertingProperty(String name) {
 		super(name);
 		revertButton = IconFont.createIconButton();
@@ -67,6 +68,11 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 		return revertButton.isVisible() ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
 	}
 
+	@Override
+	public JComponent getValueComponent() {
+		return revertButton;
+	}
+
 	public void appendToForm(final DefaultFormBuilder builder) {
 	    builder.append(revertButton);
 	}
@@ -75,7 +81,7 @@ class RevertingProperty extends PropertyBean implements IPropertyControl {
 		revertButton.setEnabled(pEnabled);
 		super.setEnabled(pEnabled);
 	}
-	
+
 	public boolean isEnabled() {
 	    return revertButton.isEnabled();
 	}

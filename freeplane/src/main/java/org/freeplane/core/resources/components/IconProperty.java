@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
@@ -72,6 +73,11 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	@Override
 	public String getValue() {
 		return mActualIcon.getName();
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mButton;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

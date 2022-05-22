@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.components;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -39,6 +40,11 @@ public class TextBoxProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public String getValue() {
 		return mTextArea.getText();
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mTextArea;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {

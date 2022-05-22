@@ -259,6 +259,7 @@ class OptionPanel {
 					// make sure the whole label is visible!
 					bounds.setBounds(bounds.getLocation().x, bounds.getLocation().y, bounds.getSize().width, bounds.getSize().height * 3);
 					viewPort.scrollRectToVisible(bounds);
+					property.getValueComponent().requestFocusInWindow();
 				}
 			}
 		}

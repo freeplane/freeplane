@@ -21,6 +21,7 @@ package org.freeplane.core.resources.components;
 
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -64,10 +65,15 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		return spinner.getValue().toString();
 	}
 
+	@Override
+	public JComponent getValueComponent() {
+		return spinner;
+	}
+
 	public void configureNames(Map<String, Comparable> names) {
 		FormatterFactoryWithPredefinedNames.installFactory(spinner, names);
 	}
-	
+
 	public void appendToForm(final DefaultFormBuilder builder) {
 		appendToForm(builder, spinner);
 	}

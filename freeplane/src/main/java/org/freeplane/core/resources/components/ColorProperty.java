@@ -32,6 +32,7 @@ import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -54,7 +55,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 	public ColorProperty(final String name, final String defaultColor) {
 		this(name, defaultColor, true);
 	}
-	
+
 	public ColorProperty(final String name, final String defaultColor, boolean supportsTransparentColor) {
 		super(name);
 		this.defaultColor = ColorUtils.stringToColor(defaultColor);
@@ -91,6 +92,11 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 	public String getValue() {
 		final Color colorValue = getColorValue();
 		return colorValue == null ? null : ColorUtils.colorToRGBAString(colorValue);
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mButton;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {
@@ -134,11 +140,11 @@ public class ColorProperty extends PropertyBean implements IPropertyControl {
 				});
 				return Optional.of(item);
 			}
-			
+
 			private Optional<JMenuItem> copyColorItem (){
 				return Optional.ofNullable(getValue()).map(this::copyColorItem);
 			}
-			
+
 			private JMenuItem copyColorItem (String value){
 				final JMenuItem item = new JFreeplaneMenuItem(TextUtils.getText("ColorProperty.CopyColor"));
 				item.addActionListener(e -> ClipboardAccessor.getInstance().setClipboardContents(value));

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 import org.freeplane.core.util.TextUtils;
 
@@ -72,6 +73,11 @@ public class MaybeBooleanProperty extends PropertyBean implements IPropertyContr
 	@Override
 	public void appendToForm(final DefaultFormBuilder builder) {
 		appendToForm(builder, mButton);
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return mButton;
 	}
 
 	@Override

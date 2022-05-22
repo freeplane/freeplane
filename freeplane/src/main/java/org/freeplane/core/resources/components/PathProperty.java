@@ -29,6 +29,7 @@ import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -124,6 +125,11 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
     @Override
 	public String getValue() {
 		return value;
+	}
+
+	@Override
+	public JComponent getValueComponent() {
+		return selectButton;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {
