@@ -49,6 +49,7 @@ import org.freeplane.features.ui.ViewController;
  * 10.01.2009
  */
 public class MapViewScrollPane extends JScrollPane implements IFreeplanePropertyListener {
+	private static final Dimension INVISIBLE = new Dimension(0,  0);
 	public static final Rectangle EMPTY_RECTANGLE = new Rectangle();
 	public interface ViewportHiddenAreaSupplier {
 		Rectangle getHiddenArea(); 
@@ -244,7 +245,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	final private Border defaultBorder;
 
 	public MapViewScrollPane() {
-		super();
+		super(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);
 		setViewport(new MapViewPort());
 		defaultBorder = getBorder();
 		
@@ -290,10 +291,18 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	private void setScrollbarsVisiblilty() {
 	    final ViewController viewController = Controller.getCurrentController().getViewController();
 		boolean areScrollbarsVisible = viewController.areScrollbarsVisible();
-	    setHorizontalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS : JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	    setVerticalScrollBarPolicy(areScrollbarsVisible ? JScrollPane.VERTICAL_SCROLLBAR_ALWAYS : JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		if(areScrollbarsVisible) {
+			getVerticalScrollBar().setPreferredSize(null);
+			getHorizontalScrollBar().setPreferredSize(null);
+		}
+		else {
+			getVerticalScrollBar().setPreferredSize(INVISIBLE);
+			getHorizontalScrollBar().setPreferredSize(INVISIBLE);
+		}
 	    final boolean isFullScreenEnabled = ! UITools.getCurrentFrame().isResizable();
 	    setBorder(isFullScreenEnabled && ! areScrollbarsVisible ? null : defaultBorder);
+		revalidate();
+		repaint();
     }
 	
 	public void setViewportHiddenAreaSupplier(ViewportHiddenAreaSupplier hiddenAreaSupplier) {
