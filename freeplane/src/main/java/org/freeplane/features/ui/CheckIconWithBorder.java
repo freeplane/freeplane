@@ -11,8 +11,8 @@ import javax.swing.JMenuItem;
 
 class CheckIconWithBorder implements Icon {
     
-    private static final int SIZE = 13;
-    private static final int GAP = 7;
+    private static final int SIZE = 14;
+    private static final int GAP = 3;
 	private final Icon fallbackIcon;
 	private final int width;
 	private final int height;
@@ -33,22 +33,22 @@ class CheckIconWithBorder implements Icon {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 
-        g.translate(x+2, y+2);
+        final int l = SIZE;
+        g.translate(x + Math.max((width - GAP - l)/2, 0), y + Math.max((height - l)/2, 0));
 
-        final int sz = SIZE;
         g.setColor(c.getForeground());
 
         if (c == null || ((JMenuItem)c).isSelected()) {
           g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
           g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
-          g.drawLine(4, 7, 7, 10);
-          g.drawLine(7, 10, sz, 2);
-          g.drawLine(4, 5, 7, 8);
-          g.drawLine(7, 8, sz, 0);
+          g.drawLine(3, 7, 6, 10);
+          g.drawLine(6, 10, l-2, 4);
+          g.drawLine(3, 5, 6, 8);
+          g.drawLine(6, 8, l-2, 2);
         }
         else {
-            g.drawRoundRect(0, 0, sz, sz - 1, 4, 4);
-            g.drawRoundRect(0, 0, sz, sz - 1, 4, 4);
+          g.drawRoundRect(0, 0, l, l - 1, 4, 4);
+          g.drawRoundRect(0, 0, l, l - 1, 4, 4);
         }
         g.dispose();
     }
