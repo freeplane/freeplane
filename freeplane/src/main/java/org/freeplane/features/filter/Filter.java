@@ -96,7 +96,7 @@ public class Filter implements IExtension {
 
 	void displayFilterStatus() {
 		if (filterIcon == null) {
-			filterIcon = ResourceController.getResourceController().getIcon("/images/filter.svg");
+			filterIcon = ResourceController.getResourceController().getIcon("ShowFilterToolbarAction.icon");
 		}
 		if (getCondition() != null) {
 			Controller.getCurrentController().getViewController().addStatusInfo("filter", null, filterIcon);
