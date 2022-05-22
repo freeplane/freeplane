@@ -46,10 +46,8 @@ class CheckIconWithBorder implements Icon {
           g.drawLine(3, 5, 6, 8);
           g.drawLine(6, 8, l-2, 2);
         }
-        else {
-          g.drawRoundRect(0, 0, l, l - 1, 4, 4);
-          g.drawRoundRect(0, 0, l, l - 1, 4, 4);
-        }
+        g.drawRoundRect(0, 0, l, l - 1, 4, 4);
+        g.drawRoundRect(0, 0, l, l - 1, 4, 4);
         g.dispose();
     }
 
