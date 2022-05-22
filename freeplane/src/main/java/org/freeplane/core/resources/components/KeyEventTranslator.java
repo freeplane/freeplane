@@ -24,12 +24,14 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.core.util.Compat;
+
 /**
  * In conjunction with the <code>KeyEventWorkaround</code>, hides some warts in
  * the AWT key event API.
  *
  */
-class KeyEventTranslator {
+public class KeyEventTranslator {
 	static class Key {
 		final public char input;
 		final public int key;
@@ -180,7 +182,7 @@ class KeyEventTranslator {
 	 * @since jEdit 4.2pre3
 	 */
 	public static Key translateKeyEvent(final KeyEvent evt) {
-		final int modifiers = evt.getModifiers();
+		final int modifiers = getModifiers(evt);
 		Key returnValue = null;
 		switch (evt.getID()) {
 			case KeyEvent.KEY_PRESSED:
@@ -219,7 +221,24 @@ class KeyEventTranslator {
 			return trans;
 		}
 	}
+	private static final int WINDOWS_ALT_GRAPH_ADDED_MASK = InputEvent.ALT_MASK | InputEvent.CTRL_MASK
+			| InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK;
+	
+	private static final int MAC_ALT_GRAPH_ADDED_MASK = InputEvent.ALT_MASK
+			| InputEvent.ALT_DOWN_MASK;
 
-	public static final boolean ALT_KEY_PRESSED_DISABLED = false;
-	static int modifiers;
+
+	private static int getModifiers(final KeyEvent evt) {
+		return getCompatibleModifiers(evt.getModifiers());
+	}
+
+	public static int getCompatibleModifiers(int modifiers) {
+		if(Compat.isWindowsOS() && (0 != (modifiers & InputEvent.ALT_GRAPH_MASK))){
+			return modifiers & ~ WINDOWS_ALT_GRAPH_ADDED_MASK;
+		}
+		if(Compat.isMacOsX() && (0 != (modifiers & InputEvent.ALT_GRAPH_MASK))){
+			return modifiers & ~ MAC_ALT_GRAPH_ADDED_MASK;
+		}
+		return modifiers;
+	}
 }

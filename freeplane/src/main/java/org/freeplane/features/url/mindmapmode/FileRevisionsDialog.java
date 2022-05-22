@@ -100,6 +100,7 @@ class FileRevisionsDialog extends JDialog {
 			setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			setRowSelectionInterval(selectedRow, selectedRow);
 			getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				@Override
 				public void valueChanged(final ListSelectionEvent event) {
 					// Update the word field if a suggestion is click
 					if (!event.getValueIsAdjusting()) {
@@ -122,6 +123,7 @@ class FileRevisionsDialog extends JDialog {
 				}
 			});
 			addMouseListener(new MouseAdapter() {
+				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() >= 2) {
 						final FileWrapper fileWrapper = (FileWrapper) getModel().getValueAt(getSelectedRow(), 0);
@@ -186,6 +188,7 @@ class FileRevisionsDialog extends JDialog {
 	private final NumberFormat fileSizeFormat = NumberFormat.getIntegerInstance();
 
 	private class CloseAction implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
 			cancelled = (source == btnSkip);
@@ -196,12 +199,13 @@ class FileRevisionsDialog extends JDialog {
 
 	@SuppressWarnings("serial")
 	private class EscapeAction extends AbstractAction {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			cancelled = true;
 			dispose();
 		}
 	}
-	
+
 	public FileRevisionsDialog(final File file, final File[] revisions, AlternativeFileMode mode) {
 		super((Frame) UITools.getMenuComponent(), true);
 		if(mode == AlternativeFileMode.ALL)
@@ -217,6 +221,7 @@ class FileRevisionsDialog extends JDialog {
 		contentPane.setBorder(BorderFactory.createEmptyBorder(SIDE_BORDER/2, SIDE_BORDER, 0, SIDE_BORDER));
 		final JTable table = createTable(revisions);
 		final JScrollPane scrollPane = new JScrollPane(table);
+		UITools.setScrollbarIncrement(scrollPane);
 		scrollPane.getViewport().setBackground(Color.white);
 		final Dimension tablePreferredSize = table.getPreferredSize();
 		int maxHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 2 / 3;
@@ -228,17 +233,19 @@ class FileRevisionsDialog extends JDialog {
 		rootPane.setDefaultButton(btnRestore);
 		rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		rootPane.getActionMap().put("up", new AbstractAction() {
-			
+
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int newSelectedRow = table.getSelectedRow() - 1;
 				if(newSelectedRow >= 0)
 					table.setRowSelectionInterval(newSelectedRow, newSelectedRow);
-				
+
 			}
 		});
 		rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		rootPane.getActionMap().put("down", new AbstractAction() {
-			
+
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int newSelectedRow = table.getSelectedRow() + 1;
 				if(newSelectedRow < table.getRowCount())
@@ -269,6 +276,7 @@ class FileRevisionsDialog extends JDialog {
 
 	private JTable createTable(final File[] revisions) {
 		final TreeSet<File> sortedRevisions = new TreeSet<File>(new Comparator<File>() {
+			@Override
 			public int compare(final File f1, final File f2) {
 				final long diff = f1.lastModified() - f2.lastModified();
 				if (diff == 0)
@@ -321,7 +329,7 @@ class FileRevisionsDialog extends JDialog {
 			button.setToolTipText(TextUtils.format(tooltipKey, file.getName(), selectedFileName));
 		return button;
 	}
-	
+
 	/** returns null on cancel */
 	public File getSelectedFile() {
 		if(cancelled)

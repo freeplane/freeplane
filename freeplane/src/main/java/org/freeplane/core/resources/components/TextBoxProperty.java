@@ -23,6 +23,8 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.freeplane.core.ui.components.UITools;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class TextBoxProperty extends PropertyBean implements IPropertyControl {
@@ -49,11 +51,13 @@ public class TextBoxProperty extends PropertyBean implements IPropertyControl {
 
 	public void appendToForm(final DefaultFormBuilder builder) {
 		JScrollPane scrollPane = new JScrollPane(mTextArea);
+		UITools.setScrollbarIncrement(scrollPane);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		appendToForm(builder, scrollPane);
 	}
 
+	@Override
 	public void setEnabled(final boolean pEnabled) {
 		mTextArea.setEnabled(pEnabled);
 		super.setEnabled(pEnabled);

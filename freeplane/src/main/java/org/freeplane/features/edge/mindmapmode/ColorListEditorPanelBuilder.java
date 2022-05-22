@@ -35,7 +35,7 @@ public class ColorListEditorPanelBuilder {
 	private final FormLayout formlayout;
 	private final List<Color> colors;
 	private final List<RowButtons> buttons;
-	
+
 	private final static Font BUTTON_FONT;
 	private final static String MOVE_DOWN = "2";
 	private final static String MOVE_UP = "1";
@@ -49,7 +49,7 @@ public class ColorListEditorPanelBuilder {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private class ColorAdder implements ActionListener {
 		private final int index;
 		public ColorAdder(int index) {
@@ -69,7 +69,7 @@ public class ColorListEditorPanelBuilder {
 			for(int i = index; i < colors.size() - 1; i++) {
 				RowButtons r = buttons.get(i);
 				r.updatePickColorButton();
-				
+
 			}
 			if(colors.size() >= 2)
 				buttons.get(colors.size() - 2).updateMoveColorDownButton();
@@ -123,7 +123,7 @@ public class ColorListEditorPanelBuilder {
 			this.index = index;
 			initialize();
 		}
-		
+
 		private void initialize() {
 			rowNumber.setName("rowNumber");
 			initializePickColorButton();
@@ -138,7 +138,7 @@ public class ColorListEditorPanelBuilder {
 		private void initializePickColorButton() {
 			pickColor.setName("pickColor");
 			pickColor.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					final Color newColor = ColorTracker.showCommonJColorChooserDialog(pickColor, "Pick color", colors.get(index), null);
@@ -181,7 +181,7 @@ public class ColorListEditorPanelBuilder {
 			deleteColor.setFont(BUTTON_FONT);
 			deleteColor.setText(DELETE);
 			deleteColor.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					colors.remove(index);
@@ -198,7 +198,7 @@ public class ColorListEditorPanelBuilder {
 					buttons.remove(lastButtonRowIndex);
 					panel.repaint();
 					SwingUtilities.invokeLater(new Runnable() {
-						
+
 						@Override
 						public void run() {
 						}
@@ -227,7 +227,7 @@ public class ColorListEditorPanelBuilder {
 		private int getFormRow() {
 			return index * 2 + 3;
 		}
-		
+
 		private void updateMoveColorDownButton() {
 			moveColorDown.setVisible(index < colors.size() -1);
 		}
@@ -261,12 +261,13 @@ public class ColorListEditorPanelBuilder {
 			colorList.add(Color.WHITE);
 		final JComponent panel = new ColorListEditorPanelBuilder(colorList).getPanel();
 		JScrollPane jscrollpane = new JRestrictedSizeScrollPane(panel);
+		UITools.setScrollbarIncrement(jscrollpane);
 		jscrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		jscrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jscrollpane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 600));
 		JOptionPane.showConfirmDialog(null, jscrollpane);
 	}
-	
+
 	public ColorListEditorPanelBuilder(List<Color> colors) {
 		super();
 		this.colors = new ArrayList<>();

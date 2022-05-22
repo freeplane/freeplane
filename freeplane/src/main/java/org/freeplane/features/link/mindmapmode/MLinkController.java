@@ -579,6 +579,7 @@ public class MLinkController extends LinkController {
 
 
 		final JScrollPane scrollPane = new JScrollPane(editor, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		UITools.setScrollbarIncrement(scrollPane);
 		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
 	}
 

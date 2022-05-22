@@ -31,7 +31,7 @@ import org.freeplane.features.styles.mindmapmode.styleeditorpanel.IconFont;
 
 class CssEditor {
 	private static final int PREFERRED_SCROLL_PANE_HEIGHT = (int )(UITools.FONT_SCALE_FACTOR * 200);
-	private static final Dimension PREFERRED_SCROLL_PANE_SIZE = new Dimension(2 * PREFERRED_SCROLL_PANE_HEIGHT, 
+	private static final Dimension PREFERRED_SCROLL_PANE_SIZE = new Dimension(2 * PREFERRED_SCROLL_PANE_HEIGHT,
 			PREFERRED_SCROLL_PANE_HEIGHT);
 	private String newCss;
 	private static final String previewHtml = loadPreview();
@@ -45,14 +45,14 @@ class CssEditor {
 		}
 	}
 
-	
+
 	private final JTextArea editor;
 	private final Box box;
 	private ScaledEditorKit kit;
 	private JEditorPane preview;
 	private StyleSheet cssSheet;
 	private StyleSheet documentSheet;
-	
+
 	CssEditor(String cssByFormatting){
 		editor = new JTextArea();
 		UndoEnabler.addUndoRedoFunctionality(editor);
@@ -60,11 +60,12 @@ class CssEditor {
 		kit = ScaledEditorKit.create();
 
 		JScrollPane editorScrollPane = new JScrollPane(editor, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		UITools.setScrollbarIncrement(editorScrollPane);
 		TitledBorder editorBorder = BorderFactory.createTitledBorder(editorScrollPane.getBorder());
 		editorBorder.setTitle(TextUtils.getText("EditNodeCss"));
 		editorScrollPane.setBorder(editorBorder);
 		editorScrollPane.setPreferredSize(PREFERRED_SCROLL_PANE_SIZE);
-		
+
 		preview = new JEditorPane();
 		preview.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.FALSE);
 		preview.setOpaque(true);
@@ -78,6 +79,7 @@ class CssEditor {
 		defaultSheet.addRule("p {margin-top:0;}");
 		documentSheet.addStyleSheet(defaultSheet);
 	    JScrollPane previewScrollPane = new JScrollPane(preview, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    UITools.setScrollbarIncrement(previewScrollPane);
 		previewScrollPane.setPreferredSize(PREFERRED_SCROLL_PANE_SIZE);
 		TitledBorder previewBorder = BorderFactory.createTitledBorder(previewScrollPane.getBorder());
 		previewBorder.setTitle(TextUtils.getText("simplyhtml.previewLabel"));
@@ -109,9 +111,9 @@ class CssEditor {
 		updateDocument();
 		editor.setCaretPosition(0);
 		preview.setCaretPosition(0);
-		
-		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(), 
-				box, 
+
+		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(),
+				box,
 				TextUtils.getText("EditNodeCss"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		newCss = editor.getText();
 		return result;
@@ -120,6 +122,6 @@ class CssEditor {
 	public String getNewCss() {
 		return newCss;
 	}
-	
-	
+
+
 }

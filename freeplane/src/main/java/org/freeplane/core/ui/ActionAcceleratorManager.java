@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.GrabKeyDialog;
 import org.freeplane.core.resources.components.IKeystrokeValidator;
+import org.freeplane.core.resources.components.KeyEventTranslator;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
@@ -169,6 +170,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 	}
 
+	@Override
 	public void setDefaultAccelerator(final AFreeplaneAction action, String accelerator) {
 		final String shortcutKey = getPropertyKey(action.getKey());
 		String registeredAccelerator = getShortcut(shortcutKey);
@@ -221,7 +223,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		return SHORTCUT_PROPERTY_PREFIX + modeController.getModeName() + "/" + key;
 	}
 
- 	public KeyStroke getAccelerator(AFreeplaneAction action) {
+ 	@Override
+	public KeyStroke getAccelerator(AFreeplaneAction action) {
 		final String actionKey = action.getKey();
 		return getAccelerator(actionKey);
  	}
@@ -231,6 +234,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  		return ks;
 	}
 
+	@Override
 	public void addAcceleratorChangeListener(FreeplaneActions freeplaneActions, IAcceleratorChangeListener changeListener) {
 		synchronized (changeListenersForActionCollection) {
 			Collection<IAcceleratorChangeListener> changeListeners = changeListenersForActionCollection.get(freeplaneActions);
@@ -334,7 +338,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		}
 	}
 
- 	final static Pattern oldKeyFormatPattern = Pattern.compile("\\$(.*?)\\$0$"); 
+ 	final static Pattern oldKeyFormatPattern = Pattern.compile("\\$(.*?)\\$0$");
 	String updateShortcutKey(final String shortcutKey) {
 		String updatedShortcutKey = shortcutKey;
 		final int dotPosition = "acceleratorFor".length();
@@ -427,9 +431,19 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	private AFreeplaneAction actionForAccelerator(KeyStroke ks) {
-		return accelerators.get(key(ks));
+		int modifiers = ks.getModifiers();
+		int updatedModifiers = KeyEventTranslator.getCompatibleModifiers(modifiers);
+		if(modifiers != updatedModifiers){
+			final KeyStroke updatedKs = ks.getKeyEventType() == KeyEvent.KEY_TYPED
+					? KeyStroke.getKeyStroke(ks.getKeyChar(), updatedModifiers)
+					: KeyStroke.getKeyStroke(ks.getKeyCode(), updatedModifiers, ks.isOnKeyRelease());
+			return accelerators.get(key(updatedKs));
+		}
+		else
+			return accelerators.get(key(ks));
 	}
 
+	@Override
 	public boolean processKeyBinding(KeyStroke ks, KeyEvent event) {
 		AFreeplaneAction action = actionForAccelerator(ks);
 		if(action == null) {
@@ -470,6 +484,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			}
 		}
 
+		@Override
 		public boolean isValid(final KeyStroke keystroke, final Character keyChar) {
 		    if (keystroke == null) {
 				return true;
@@ -494,7 +509,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private static String replaceModifiersForMac(String accelerator) {
 		if (Compat.isMacOsX()) {
-			if(accelerator.startsWith("alt ") 
+			if(accelerator.startsWith("alt ")
 			        && accelerator.charAt(accelerator.length() - 2) == ' ')
 				accelerator = "control " + accelerator;
 			else

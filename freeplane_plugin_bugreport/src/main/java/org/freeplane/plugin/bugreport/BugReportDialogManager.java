@@ -29,6 +29,7 @@ class BugReportDialogManager {
 		final JTextArea historyArea = new JTextArea(log);
 		historyArea.setEditable(false);
 		final JScrollPane historyPane = new JScrollPane(historyArea);
+		UITools.setScrollbarIncrement(historyPane);
 		historyPane.setPreferredSize(new Dimension(500, 300));
 		historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(historyPane);

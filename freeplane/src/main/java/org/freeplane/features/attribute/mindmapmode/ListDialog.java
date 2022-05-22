@@ -69,6 +69,7 @@ class ListDialog extends JDialog {
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			data.add(getCurrentText());
 			addButton.setEnabled(false);
@@ -83,6 +84,7 @@ class ListDialog extends JDialog {
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			ListDialog.dialog.dispose();
 		}
@@ -95,6 +97,7 @@ class ListDialog extends JDialog {
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final Object[] selectedValues = list.getSelectedValues();
 			for (int i = 0; i < selectedValues.length; i++) {
@@ -114,6 +117,7 @@ class ListDialog extends JDialog {
 		 * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.
 		 * event.ListSelectionEvent)
 		 */
+		@Override
 		public void valueChanged(final ListSelectionEvent e) {
 			final int minIndex = list.getMinSelectionIndex();
 			final int maxIndex = list.getMaxSelectionIndex();
@@ -132,6 +136,7 @@ class ListDialog extends JDialog {
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final Object[] selectedValues = list.getSelectedValues();
 			for (int i = 0; i < selectedValues.length; i++) {
@@ -146,14 +151,17 @@ class ListDialog extends JDialog {
 	}
 
 	final private class TextChangeListener implements DocumentListener {
+		@Override
 		public void changedUpdate(final DocumentEvent e) {
 			update();
 		}
 
+		@Override
 		public void insertUpdate(final DocumentEvent e) {
 			update();
 		}
 
+		@Override
 		public void removeUpdate(final DocumentEvent e) {
 			update();
 		}
@@ -165,7 +173,7 @@ class ListDialog extends JDialog {
 
 	private static ListDialog dialog;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -223,7 +231,7 @@ class ListDialog extends JDialog {
 		textField.getDocument().addDocumentListener(new TextChangeListener());
 		list = new JList(data) {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
@@ -265,6 +273,7 @@ class ListDialog extends JDialog {
 		list.setModel(data);
 		list.addListSelectionListener(new ListSelectionChangeListener());
 		final JScrollPane listScroller = new JScrollPane(list);
+		UITools.setScrollbarIncrement(listScroller);
 		listScroller.setPreferredSize(new Dimension(250, 80));
 		listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 		final JPanel listPane = new JPanel();

@@ -208,6 +208,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		view.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		view.getTableHeader().setReorderingAllowed(false);
 		final JScrollPane scrollPane = new JScrollPane(view);
+		UITools.setScrollbarIncrement(scrollPane);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 		final Box southButtons = Box.createHorizontalBox();
 		southButtons.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -95,6 +95,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 			    		optionComponent = popup;
 					else {
 						final JAutoScrollBarPane scrollPane = new JAutoScrollBarPane(popup);
+						UITools.setScrollbarIncrement(scrollPane);
 						scrollPane.setBorder( BorderFactory.createEmptyBorder() );
 						optionComponent = scrollPane;
 					}
@@ -107,15 +108,19 @@ public class DefaultMapMouseListener implements IMouseListener {
                     d.setModal(false);
                     d.pack();
                     d.addWindowFocusListener(new WindowFocusListener() {
-                        public void windowLostFocus(WindowEvent e) {
+                        @Override
+						public void windowLostFocus(WindowEvent e) {
                         }
-                        
-                        public void windowGainedFocus(WindowEvent e) {
+
+                        @Override
+						public void windowGainedFocus(WindowEvent e) {
                             frame.addWindowFocusListener(new WindowFocusListener() {
-                                public void windowLostFocus(WindowEvent e) {
+                                @Override
+								public void windowLostFocus(WindowEvent e) {
                                 }
-                                
-                                public void windowGainedFocus(WindowEvent e) {
+
+                                @Override
+								public void windowGainedFocus(WindowEvent e) {
                                     d.setVisible(false);
                                     frame.removeWindowFocusListener(this);
                                 }
@@ -130,7 +135,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 			    UITools.setBounds(window, eventLocation.x, eventLocation.y, window.getWidth(), window.getHeight());
 			    window.setVisible(true);
 			}
-			
+
 		}
 	}
 
@@ -138,6 +143,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		return mapView != null && mapView.getClientProperty(Connectors.class) == null;
 	}
 
+	@Override
 	public void mouseClicked(final MouseEvent e) {
 		final Object source = e.getSource();
 		if(! (source instanceof MapView))
@@ -152,15 +158,19 @@ public class DefaultMapMouseListener implements IMouseListener {
 		}
 	}
 
+	@Override
 	public void mouseEntered(final MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(final MouseEvent e) {
 	}
 
+	@Override
 	public void mouseMoved(final MouseEvent e) {
 	}
 
+	@Override
 	public void mousePressed(final MouseEvent e) {
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		if(mapView != null)
@@ -178,6 +188,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		e.consume();
 	}
 
+	@Override
 	public void mouseReleased(final MouseEvent e) {
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		if(mapView != null)
@@ -194,6 +205,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 	/**
 	 *
 	 */
+	@Override
 	public void mouseDragged(final MouseEvent e) {
 		final JComponent component = (JComponent) e.getComponent();
 		final MapView mapView = MapView.getMapView(component);

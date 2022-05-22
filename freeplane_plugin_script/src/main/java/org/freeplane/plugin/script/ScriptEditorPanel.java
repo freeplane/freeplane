@@ -57,6 +57,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -75,7 +76,7 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class CancelAction extends AbstractAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -83,6 +84,7 @@ class ScriptEditorPanel extends JDialog {
 			super(pArg0);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			disposeDialog(true);
 		}
@@ -90,7 +92,7 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class ExitAction extends AbstractAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -98,6 +100,7 @@ class ScriptEditorPanel extends JDialog {
 			super(pArg0);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			storeCurrent();
 			disposeDialog(false);
@@ -132,13 +135,13 @@ class ScriptEditorPanel extends JDialog {
 
 		void storeDialogPositions(ScriptEditorPanel pPanel, ScriptEditorWindowConfigurationStorage pStorage,
 		                          String pWindow_preference_storage_property);
-		
+
 		String getTitle();
 	}
 
 	final private class NewScriptAction extends AbstractAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -146,6 +149,7 @@ class ScriptEditorPanel extends JDialog {
 			super(pArg0);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			storeCurrent();
 			mLastSelected = null;
@@ -187,7 +191,7 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class RunAction extends AbstractAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -195,6 +199,7 @@ class ScriptEditorPanel extends JDialog {
 			super(pArg0);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			storeCurrent();
 			if (!mScriptList.isSelectionEmpty()) {
@@ -259,7 +264,7 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class SignAction extends AbstractAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 // // 		final private Controller controller;
@@ -269,6 +274,7 @@ class ScriptEditorPanel extends JDialog {
 //			this.controller = controller;
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			storeCurrent();
 			if (!mScriptList.isSelectionEmpty()) {
@@ -283,7 +289,7 @@ class ScriptEditorPanel extends JDialog {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
@@ -307,7 +313,7 @@ class ScriptEditorPanel extends JDialog {
 		super(UITools.getCurrentFrame(), false /* non modal */);
 		mScriptModel = pScriptModel;
 		String scriptTitle = pScriptModel.getTitle();
-		this.setTitle(TextUtils.getText("plugins/ScriptEditor/window.title") + 
+		this.setTitle(TextUtils.getText("plugins/ScriptEditor/window.title") +
 				(scriptTitle.isEmpty() ? "" : " [" + scriptTitle + "]"));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
@@ -318,10 +324,11 @@ class ScriptEditorPanel extends JDialog {
 		});
 		UITools.addEscapeActionToDialog(this, new AbstractAction() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog(true);
 			}
@@ -332,6 +339,7 @@ class ScriptEditorPanel extends JDialog {
 		mScriptList = new JList(mListModel);
 		mScriptList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mScriptList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(final ListSelectionEvent pEvent) {
 				if (pEvent.getValueIsAdjusting()) {
 					return;
@@ -343,7 +351,9 @@ class ScriptEditorPanel extends JDialog {
 		SourceTextEditorUIConfigurator.configureColors(editorPane);
 		mScriptTextField = editorPane;
 		mScriptTextField.setEnabled(false);
-		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, new JScrollPane(mScriptTextField));
+		JScrollPane scriptScrollPane = new JRestrictedSizeScrollPane(mScriptTextField);
+		UITools.setScrollbarIncrement(scriptScrollPane);
+		mCentralUpperPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mScriptList, scriptScrollPane);
 		try {
 			editorPane.setContentType("text/groovy");
 
@@ -360,14 +370,16 @@ class ScriptEditorPanel extends JDialog {
 		mScriptResultField = new JTextArea();
 		mScriptResultField.setEditable(false);
 		mScriptResultField.setWrapStyleWord(true);
-		mCentralPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mCentralUpperPanel, new JScrollPane(
-		    mScriptResultField));
+		JScrollPane resultScrollPane = new JScrollPane(mScriptResultField);
+		UITools.setScrollbarIncrement(resultScrollPane);
+		mCentralPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mCentralUpperPanel, resultScrollPane);
 		mCentralPanel.setDividerLocation(0.8);
 		mCentralPanel.setContinuousLayout(true);
 		contentPane.add(mCentralPanel, BorderLayout.CENTER);
 		mStatus = new JLabel();
 		contentPane.add(mStatus, BorderLayout.SOUTH);
 		mScriptTextField.addCaretListener(new CaretListener() {
+			@Override
 			public void caretUpdate(final CaretEvent arg0) {
 				final int caretPosition = mScriptTextField.getCaretPosition();
 				try {
@@ -443,6 +455,7 @@ class ScriptEditorPanel extends JDialog {
 
 	IFreeplaneScriptErrorHandler getErrorHandler() {
 		return new IFreeplaneScriptErrorHandler() {
+			@Override
 			public void gotoLine(final int pLineNumber) {
 				ActionUtils.setCaretPosition(mScriptTextField, pLineNumber, 1);
 			}

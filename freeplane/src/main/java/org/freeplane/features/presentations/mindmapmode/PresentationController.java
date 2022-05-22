@@ -218,7 +218,9 @@ public class PresentationController implements IExtension{
 
 			}
 		});
-		return new JAutoScrollBarPane(presentationEditor);
+		JAutoScrollBarPane scrollPane = new JAutoScrollBarPane(presentationEditor);
+		UITools.setScrollbarIncrement(scrollPane);
+		return scrollPane;
 	}
 
 	private void repaintMap() {

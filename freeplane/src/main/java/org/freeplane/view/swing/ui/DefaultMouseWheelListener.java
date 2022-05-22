@@ -1,13 +1,17 @@
 package org.freeplane.view.swing.ui;
 
+import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Set;
 
-import org.freeplane.core.resources.IFreeplanePropertyListener;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
@@ -17,10 +21,6 @@ import org.freeplane.view.swing.map.MapView;
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
 	private static final String ZOOM_AROUND_SELECTED_NODE_PROPERTY = "zoomAroundSelectedNode";
-    private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK | InputEvent.BUTTON1_MASK
-	        | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
-	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
-	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
 // // 	final private Controller controller;
 
@@ -29,16 +29,6 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	 */
 	public DefaultMouseWheelListener() {
 		super();
-//		this.controller = controller;
-		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(DefaultMouseWheelListener.RESOURCES_WHEEL_VELOCITY)) {
-					DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
-				}
-			}
-		});
-		DefaultMouseWheelListener.SCROLL_SKIPS = ResourceController.getResourceController().getIntProperty(
-		    DefaultMouseWheelListener.RESOURCES_WHEEL_VELOCITY, 8);
 	}
 
 	/*
@@ -47,6 +37,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	 * freeplane.modes.ModeController.MouseWheelEventHandler#handleMouseWheelEvent
 	 * (java.awt.event.MouseWheelEvent)
 	 */
+	@Override
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		final MapView mapView = (MapView) e.getSource();
 		final ModeController mController = mapView.getModeController();
@@ -61,8 +52,8 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			}
 		}
 		if ((e.getModifiers() & DefaultMouseWheelListener.ZOOM_MASK) != 0) {
-			float newZoomFactor = 1f + Math.abs((float) e.getWheelRotation()) / 10f;
-			if (e.getWheelRotation() < 0) {
+			float newZoomFactor = 1f + Math.abs((float) e.getUnitsToScroll()) / 10f;
+			if (e.getUnitsToScroll() < 0) {
 				newZoomFactor = 1 / newZoomFactor;
 			}
 			final float oldZoom = ((MapView) e.getComponent()).getZoom();
@@ -76,11 +67,18 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 				Controller.getCurrentController().getMapViewManager().setZoom(newZoom);
 			}
 		}
-		else if ((e.getModifiers() & DefaultMouseWheelListener.HORIZONTAL_SCROLL_MASK) != 0) {
-			((MapView) e.getComponent()).scrollBy(DefaultMouseWheelListener.SCROLL_SKIPS * e.getWheelRotation(), 0);
-		}
 		else {
-			((MapView) e.getComponent()).scrollBy(0, DefaultMouseWheelListener.SCROLL_SKIPS * e.getWheelRotation());
+			JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, mapView);
+			final Point location = new Point(e.getX(), e.getY());
+			UITools.convertPointToAncestor(mapView, location, scrollPane);
+			final MouseWheelEvent mapWheelEvent = new MouseWheelEvent(scrollPane, e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
+					location.x, location.y, e.getXOnScreen(), e.getYOnScreen(),
+					e.getClickCount(), e.isPopupTrigger(), e.getScrollType(),
+					e.getScrollAmount(), e.getWheelRotation());
+			if(scrollPane != null) {
+				for (MouseWheelListener l : scrollPane.getMouseWheelListeners())
+					l.mouseWheelMoved(mapWheelEvent);
+			}
 		}
 	}
 }
