@@ -5,7 +5,6 @@
 package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
@@ -58,8 +57,6 @@ class OneTouchCollapseResizer extends JResizer {
 			}
 			
 		};
-		
-		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		addMouseListener(new MouseAdapter() {
 			@Override

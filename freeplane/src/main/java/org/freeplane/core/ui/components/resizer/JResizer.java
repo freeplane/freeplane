@@ -106,22 +106,22 @@ public class JResizer extends JComponent {
 		if(direction.equals(Direction.RIGHT)){
 			w = CONTROL_SIZE;
 			h = 0;
-			setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+			setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
 		}
 		else if(direction.equals(Direction.LEFT)){
 			h = CONTROL_SIZE;
 			w = 0;
-			setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+			setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
 		}
 		else if(direction.equals(Direction.UP)){
 			h = 0;
 			w = CONTROL_SIZE;
-			setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+			setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
 		}
 		else /*Direction.DOWN*/ {
 			h = 0;
 			w = CONTROL_SIZE;
-			setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+			setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
 		}
 
 		setPreferredSize(new Dimension(w, h));
