@@ -43,21 +43,21 @@
     </rdf:RDF>
   </metadata>
   <path
-     style="fill:url(#a);stroke:#d45500;stroke-width:1.99174309;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.81395"
+     style="fill:none;stroke:#333333;stroke-width:1.99174309;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
      id="path11"
      d="M 31.0044,26.78881 C 30.398506,27.814589 1.6252901,27.668301 1.0320062,26.63618 0.43902394,25.604276 14.981098,0.98527815 16.180029,0.99149076 17.378898,0.99760485 31.610153,25.762836 31.004342,26.788847 Z" />
   <text
-     style="font-size:26px;font-family:'Arial Rounded MT Bold';fill:#333333"
+     style="font-size:26px;font-family:'Arial Rounded MT Bold';fill:#0071bc;fill-opacity:1"
      id="text15"
      x="10.808742"
-     y="25.580587"
+     y="25.339237"
      space="preserve"
      font-size="26px">
     <tspan
-       style="font-size:26px;font-family:'Arial Rounded MT Bold';fill:#333333"
+       style="font-size:26px;font-family:'Arial Rounded MT Bold';fill:#0071bc;fill-opacity:1"
        id="tspan13"
        x="10.808742"
-       y="25.580587"
+       y="25.339237"
        font-size="26px">!</tspan>
   </text>
 </svg>

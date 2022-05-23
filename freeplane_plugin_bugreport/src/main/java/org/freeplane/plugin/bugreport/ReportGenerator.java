@@ -250,7 +250,7 @@ public class ReportGenerator extends StreamHandler {
 						if (TextUtils.getRawText("internal_error.tooltip", null) != null) {
 							if (logButton == null) {
 								final Icon errorIcon = ResourceController.getResourceController()
-								    .getIcon("messagebox_warning_icon");
+								    .getIcon("warning_icon");
 								logButton = new JButton();
 								logButton.addActionListener(new LogOpener());
 								logButton.setIcon(errorIcon);
