@@ -34,6 +34,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -442,8 +443,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		if (mapViewVector == null) {
 			return;
 		}
+		final List<? extends Component> sortedMapViewVector = new ArrayList<>(mapViewVector);
+		Collections.sort(sortedMapViewVector, Comparator.comparing(c -> c.getName().toLowerCase()));
 		EntryAccessor entryAccessor = new EntryAccessor();
-		for (final Component mapView : mapViewVector) {
+		for (final Component mapView : sortedMapViewVector) {
 			final String displayName = mapView.getName();
 			Entry actionEntry = new Entry();
 			final MapsMenuAction action = new MapsMenuAction(displayName);
