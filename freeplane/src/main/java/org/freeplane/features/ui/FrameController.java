@@ -71,6 +71,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicEditorPaneUI;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
@@ -658,11 +660,6 @@ abstract public class FrameController implements ViewController {
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-		Object checkIcon =  UIManager.getDefaults().get("CheckBoxMenuItem.checkIcon");
-		if(checkIcon instanceof Icon) {
-			UIManager.getDefaults().remove("CheckBoxMenuItem.checkIcon");
-			UIManager.put("CheckBoxMenuItem.checkIcon", new CheckIconWithBorder((Icon)checkIcon));
-		}
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
 			if ("100".equals(resourceController.getProperties().get(MENU_ITEM_FONT_SIZE_PROPERTY))) {
@@ -676,6 +673,12 @@ abstract public class FrameController implements ViewController {
 		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, defaultMenuItemSize);
 		final double scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
 		scaleDefaultUIFonts(scalingFactor);
+		Object checkIcon =  UIManager.getDefaults().get("CheckBoxMenuItem.checkIcon");
+		if(checkIcon instanceof Icon) {
+			int checkIconHeight = new Quantity<>(userDefinedMenuItemFontSize * 2 / 3, LengthUnit.pt).toBaseUnitsRounded();
+			UIManager.getDefaults().remove("CheckBoxMenuItem.checkIcon");
+			UIManager.put("CheckBoxMenuItem.checkIcon", new CheckIconWithBorder((Icon)checkIcon, checkIconHeight, (int) (0.5 + 1.5 * UITools.FONT_SCALE_FACTOR)));
+		}
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8134828
 		// Scrollbar thumb disappears with Nimbus L&F
 		// http://stackoverflow.com/questions/32857372/jscrollbar-dont-show-thumb-in-nimbus-lf

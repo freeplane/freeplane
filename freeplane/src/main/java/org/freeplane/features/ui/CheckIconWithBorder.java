@@ -9,18 +9,22 @@ import java.awt.RenderingHints;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 
+import org.freeplane.core.ui.components.UITools;
+
 class CheckIconWithBorder implements Icon {
     
-    private static final int SIZE = 14;
-    private static final int GAP = 3;
+	private static final BasicStroke CHECK_STROKE = new BasicStroke(Math.max(1f, UITools.FONT_SCALE_FACTOR), BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
+	private static final BasicStroke BOX_STROKE = new BasicStroke(1f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 	private final Icon fallbackIcon;
 	private final int width;
 	private final int height;
+	private final int checkBoxHeight;
 
-    public CheckIconWithBorder(Icon fallbackIcon) {
+    public CheckIconWithBorder(Icon fallbackIcon, int checkBoxHeight, int gap) {
 		this.fallbackIcon = fallbackIcon;
-        width = Math.max(fallbackIcon.getIconWidth(), SIZE + GAP);
-        height = Math.max(fallbackIcon.getIconHeight(), SIZE);
+		this.checkBoxHeight = checkBoxHeight;
+        width = Math.max(fallbackIcon.getIconWidth(), checkBoxHeight + gap);
+        height = Math.max(fallbackIcon.getIconHeight(), checkBoxHeight);
 	}
 
 	@Override
@@ -33,19 +37,21 @@ class CheckIconWithBorder implements Icon {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 
-        final int l = SIZE;
-        g.translate(x + Math.max((width - GAP - l)/2, 0), y + Math.max((height - l)/2, 0));
+        final int l = checkBoxHeight;
+        int margin = Math.max((height - l)/2, 0);
+		g.translate(x + margin, y + margin);
 
         g.setColor(c.getForeground());
 
         if (c == null || ((JMenuItem)c).isSelected()) {
           g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-          g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+          g.setStroke(CHECK_STROKE);
           g.drawLine(3, 7, 6, 10);
           g.drawLine(6, 10, l-2, 4);
           g.drawLine(3, 5, 6, 8);
           g.drawLine(6, 8, l-2, 2);
         }
+        g.setStroke(BOX_STROKE);
         g.drawRoundRect(0, 0, l, l - 1, 4, 4);
         g.drawRoundRect(0, 0, l, l - 1, 4, 4);
         g.dispose();
