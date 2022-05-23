@@ -36,14 +36,23 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 class IconsHolder implements Comparable<IconsHolder> {
 	private static final Comparator<NamedIcon> ICON_COMPARATOR 
 	    = Comparator.comparing(NamedIcon::getOrder).thenComparing(NamedIcon::getName);
-    final private String iconNames;
-	private List<NamedIcon> icons = new ArrayList<>();
+    private String iconNames = null;
+	private List<NamedIcon> icons = null;
+	private final NodeModel node;
+	private boolean showsStyleIcons;
 
 	public IconsHolder(final NodeModel node, boolean showsStyleIcons) {
+		this.node = node;
+		this.showsStyleIcons = showsStyleIcons;
+	}
+
+	private void initialize() {
+		if(icons != null)
+			return;
 		Collection<NamedIcon> nodeIcons = showsStyleIcons 
 				? IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE)
 				: node.getIcons();
-		icons.addAll(nodeIcons);
+		icons = nodeIcons.isEmpty() ? Collections.emptyList() :  new ArrayList<>(nodeIcons);
 		if (icons.size() > 0) {
 			final List<NamedIcon> toSort = new ArrayList<>(icons);
 			Collections.sort(toSort, ICON_COMPARATOR);
@@ -59,16 +68,22 @@ class IconsHolder implements Comparable<IconsHolder> {
 	}
 
 	public int compareTo(final IconsHolder compareToObject) {
-		return toString().compareTo(compareToObject.toString());
+		return getIconNames().compareTo(compareToObject.getIconNames());
 	}
 
 	public List<NamedIcon> getIcons() {
+		initialize();
 		return icons;
 	}
 
 	/** Returns a sorted list of icon names. */
 	@Override
 	public String toString() {
+		return getIconNames();
+	}
+
+	private String getIconNames() {
+		initialize();
 		return iconNames;
 	}
 }
