@@ -52,8 +52,8 @@ class IconsHolder implements Comparable<IconsHolder> {
 		Collection<NamedIcon> nodeIcons = showsStyleIcons 
 				? IconController.getController().getIcons(node, StyleOption.FOR_UNSELECTED_NODE)
 				: node.getIcons();
-		icons = nodeIcons.isEmpty() ? Collections.emptyList() :  new ArrayList<>(nodeIcons);
-		if (icons.size() > 0) {
+		if (! nodeIcons.isEmpty()) {
+			icons = new ArrayList<>(nodeIcons);
 			final List<NamedIcon> toSort = new ArrayList<>(icons);
 			Collections.sort(toSort, ICON_COMPARATOR);
 			final StringBuilder builder = new StringBuilder();
@@ -63,6 +63,7 @@ class IconsHolder implements Comparable<IconsHolder> {
 			iconNames = builder.toString();
 		}
 		else {
+			icons = Collections.emptyList();
 			iconNames = "";
 		}
 	}
