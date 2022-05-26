@@ -84,7 +84,13 @@ public class Launcher {
 	public static void main(String[] args) {
 		checkForCompatibleJavaVersion();
 		workAroundForDataFlavorComparator_JDK8130242();
+		disableUiScalingIfNotMacOs();
 		new Launcher().launchWithoutUICheck(args);
+	}
+
+	private static void disableUiScalingIfNotMacOs() {
+		if (!System.getProperty("os.name").startsWith("Mac"))
+			System.setProperty("sun.java2d.uiScale","1");
 	}
 
 	private static void checkForCompatibleJavaVersion() {
