@@ -20,10 +20,7 @@ class EventQueueExecutorServiceAdapter extends AbstractExecutorService {
 	}
 
 	@Override
-	public void shutdown() {
-		throw new IllegalStateException(
-				"Manual shutdown not supported - ExecutorServiceAdapter is dependent on an external lifecycle");
-	}
+	public void shutdown() {/**/}
 
 	@Override
 	public List<Runnable> shutdownNow() {
