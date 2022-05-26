@@ -34,6 +34,8 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -46,6 +48,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
@@ -57,7 +60,6 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
@@ -620,7 +622,7 @@ abstract public class FrameController implements ViewController {
 			    if(! lookAndFeelSet) {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			        UIManager.setLookAndFeel(lookAndFeelClassName);
-			        fixLookAndFeelUI();
+			        
 			    }
 			}
 			else {
@@ -631,7 +633,6 @@ abstract public class FrameController implements ViewController {
 							|| lafInfo.getClassName().equalsIgnoreCase(lookAndFeel)) {
 						String lookAndFeelClassName = lafInfo.getClassName();
 						lookAndFeelSet = tryToSetLookAndFeel(lookAndFeelClassName);
-						fixLookAndFeelUI();
 						break;
 					}
 				}
@@ -642,7 +643,6 @@ abstract public class FrameController implements ViewController {
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
 						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
-						fixLookAndFeelUI();
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
 					}
@@ -658,6 +658,21 @@ abstract public class FrameController implements ViewController {
 			ex.printStackTrace();
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
+	}
+	
+	static {
+	    UIManager.addPropertyChangeListener(new PropertyChangeListener() {
+	        public void propertyChange(PropertyChangeEvent event) {
+	          if (event.getPropertyName().equals("lookAndFeel")) {
+	        	  fixLookAndFeelUI((LookAndFeel) event.getNewValue());
+	          }
+	        }
+	      });
+
+	}
+    private static void fixLookAndFeelUI(LookAndFeel lookAndFeel){
+    	addHotKeysToMotifInputMaps(lookAndFeel);
+    	configureFlatLookAndFeel(lookAndFeel);
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -667,12 +682,12 @@ abstract public class FrameController implements ViewController {
 			}
 			resourceController.setProperty("hugeFontsFixed", true);
 		}
-		int lookAndFeelDefaultMenuItemFontSize = obtainLookAndFeelDefaultMenuItemFontSize();
+		int lookAndFeelDefaultMenuItemFontSize = obtainLookAndFeelDefaultMenuItemFontSize(UIManager.getLookAndFeel());
 		final int defaultMenuItemSize = (int) Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
 		resourceController.setDefaultProperty(MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
 		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, defaultMenuItemSize);
 		final double scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
-		scaleDefaultUIFonts(scalingFactor);
+		scaleDefaultUIFonts(scalingFactor, UIManager.getLookAndFeel());
 		Object checkIcon =  UIManager.getDefaults().get("CheckBoxMenuItem.checkIcon");
 		if(checkIcon instanceof Icon) {
 			int checkIconHeight = new Quantity<>(userDefinedMenuItemFontSize * 2 / 3, LengthUnit.pt).toBaseUnitsRounded();
@@ -692,14 +707,15 @@ abstract public class FrameController implements ViewController {
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
 
-	private static int obtainLookAndFeelDefaultMenuItemFontSize() {
-		int[] lookAndFeelDefaultMenuItemFontSizeHolder = {0};
-		try {
-			StaticInvoker.invokeAndWait(() -> lookAndFeelDefaultMenuItemFontSizeHolder[0] = new JMenuItem().getFont().getSize());
-		} catch (InvocationTargetException | InterruptedException e) {
+	private static int obtainLookAndFeelDefaultMenuItemFontSize(LookAndFeel lookAndFeel) {
+		String[] fontsProperties = {"MenuItem.font", "defaultFont"};
+		for(String fontProperty : fontsProperties) {
+			Font font = lookAndFeel.getDefaults().getFont(fontProperty);
+			if (font != null) {
+				return font.getSize();
+			}
 		}
-		int lookAndFeelDefaultMenuItemFontSize = lookAndFeelDefaultMenuItemFontSizeHolder[0];
-		return lookAndFeelDefaultMenuItemFontSize;
+		return 12;
 	}
 
     private static boolean tryToSetLookAndFeel(String lafClassName) {
@@ -716,12 +732,6 @@ abstract public class FrameController implements ViewController {
         } catch (Exception e) {
         }
         return false;
-    }
-
-    private static void fixLookAndFeelUI(){
-        LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
-        addHotKeysToMotifInputMaps(lookAndFeel);
-        configureFlatLookAndFeel(lookAndFeel);
     }
 
 	private static void configureFlatLookAndFeel(LookAndFeel lookAndFeel) {
@@ -776,18 +786,16 @@ abstract public class FrameController implements ViewController {
         };
     }
 
-	private static void scaleDefaultUIFonts(double scalingFactor) {
-		Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
+	private static void scaleDefaultUIFonts(double scalingFactor, LookAndFeel lookAndFeel) {
+		final UIDefaults lookAndFeelDefaults = lookAndFeel.getDefaults();
+		Set<Object> keySet = lookAndFeelDefaults.keySet();
 		Set<Font> scaledFonts = new HashSet<>();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
-		final UIDefaults uiDefaults = UIManager.getDefaults();
-		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
 		for (Object key : keys) {
 			if (isFontKey(key)) {
-				Font font = uiDefaults.getFont(key);
+				Font font = lookAndFeelDefaults.getFont(key);
 				if (font != null && ! scaledFonts.contains(font)) {
 					font = UITools.scaleFontInt(font, scalingFactor);
-					UIManager.put(key, font);
 					lookAndFeelDefaults.put(key, font);
 					scaledFonts.add(font);
 				}
