@@ -188,21 +188,17 @@ class ActivatorImpl implements BundleActivator {
 		}
 		loadPlugins(context);
 		final Controller controller = starter.createController();
-		starter.createModeControllers(controller);
-		installControllerExtensions(context, controller, options);
-		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
-			controller.getViewController().invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					Controller.getCurrentController().fireStartupFinished();
-					System.exit(0);
-				}
-			});
-			return;
-		}
 		controller.getViewController().invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				starter.createModeControllers(controller);
+				installControllerExtensions(context, controller, options);
+				if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
+					controller.fireStartupFinished();
+					controller.getViewController().getMainThreadExecutorService().shutdown();
+					System.exit(0);
+					return;
+				}
 				final Bundle[] bundles = context.getBundles();
 				final HashSet<String> plugins = new HashSet<String>();
 				for(Bundle bundle:bundles){

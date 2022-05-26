@@ -220,38 +220,40 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					}
 				});
 			}
-			controller.addExtension(HighlightController.class, new HighlightController());
-			FilterController.install();
-			PrintController.install();
-			FormatController.install(new FormatController());
-	        final ScannerController scannerController = new ScannerController();
-	        ScannerController.install(scannerController);
-	        scannerController.addParsersForStandardFormats();
-			ModelessAttributeController.install();
-			TextController.install();
-			TimeController.install();
-			LinkController.install();
-			IconController.installConditionControllers();
-			HelpController.install();
-			controller.addAction(new NextNodeAction(Direction.FORWARD));
-			controller.addAction(new NextNodeAction(Direction.BACK));
-			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
-			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
-			Arrays.stream(FreeSelectNodeAction.Direction.values())
-					 .forEach(d -> controller.addAction(new FreeSelectNodeAction(d)));
-			controller.addAction(NextPresentationItemAction.createFoldingAction());
-			controller.addAction(NextPresentationItemAction.createNotFoldingAction());
-			controller.addAction(new ShowSelectionAsRectangleAction());
-			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
-			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
-			    new LogicalStyleFilterController());
-			MapController.install();
-			NodeHistory.install(controller);
-			MapExplorerConditionController.installFilterConditions();
-			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
-			if(ARE_SURVEYS_ENABLED && freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
-				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
-			}
+			viewController.invokeAndWait(() -> {
+				controller.addExtension(HighlightController.class, new HighlightController());
+				FilterController.install();
+				PrintController.install();
+				FormatController.install(new FormatController());
+		        final ScannerController scannerController = new ScannerController();
+		        ScannerController.install(scannerController);
+		        scannerController.addParsersForStandardFormats();
+				ModelessAttributeController.install();
+				TextController.install();
+				TimeController.install();
+				LinkController.install();
+				IconController.installConditionControllers();
+				HelpController.install();
+				controller.addAction(new NextNodeAction(Direction.FORWARD));
+				controller.addAction(new NextNodeAction(Direction.BACK));
+				controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
+				controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+				Arrays.stream(FreeSelectNodeAction.Direction.values())
+						 .forEach(d -> controller.addAction(new FreeSelectNodeAction(d)));
+				controller.addAction(NextPresentationItemAction.createFoldingAction());
+				controller.addAction(NextPresentationItemAction.createNotFoldingAction());
+				controller.addAction(new ShowSelectionAsRectangleAction());
+				controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
+				FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
+				    new LogicalStyleFilterController());
+				MapController.install();
+				NodeHistory.install(controller);
+				MapExplorerConditionController.installFilterConditions();
+				final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
+				if(ARE_SURVEYS_ENABLED && freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
+					controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
+				}
+			});
 			return controller;
 		}
 		catch (final Exception e) {

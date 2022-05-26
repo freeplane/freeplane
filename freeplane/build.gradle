@@ -41,7 +41,13 @@ dependencies {
     lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
     
-    maclib 'org.violetlib:vaqua:10'
+    maclib ('org.violetlib:vaqua:10') {
+        transitive = false
+    }
+    
+    runtimeOnly 'org.violetlib:jnr:11'
+    runtimeOnly 'org.violetlib:vappearances:3'
+    runtimeOnly 'org.violetlib:vappearances:3'
 
     runtimeOnly files("${project.buildDir}/emoji/xml")
     emoji 'org.freeplane.emoji:twemoji:12.1.4'
