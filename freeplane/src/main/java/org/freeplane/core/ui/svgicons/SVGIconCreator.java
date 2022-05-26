@@ -132,7 +132,7 @@ class SVGIconCreator {
 
     private SVGIcon createSvgIcon() {
         SVGUniverse svgUniverse = SVGCache.getSVGUniverse();
-        SVGIcon icon = new SVGIcon();
+        SVGIcon icon = new ScalingSVGIcon();
         try {
             load(svgUniverse);
             final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
