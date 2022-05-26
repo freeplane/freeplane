@@ -12,12 +12,16 @@ import com.kitfox.svg.app.beans.SVGIcon;
 class ScalingSVGIcon extends SVGIcon {
 
 	private static final long serialVersionUID = 1L;
-	private static final AffineTransform defaultTransform = GraphicsEnvironment.getLocalGraphicsEnvironment()
+	private static final double scaleX;
+	private static final double scaleY;
+	static {
+		AffineTransform defaultTransform = GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getDefaultScreenDevice().getDefaultConfiguration().getDefaultTransform();
+		scaleX = defaultTransform.getScaleX();
+		scaleY = defaultTransform.getScaleY();
+	}
 	@Override
 	public Image getImage() {
-		double scaleX = defaultTransform.getScaleX();
-		double scaleY = defaultTransform.getScaleY();
 		BufferedImage bi = new BufferedImage(
 				(int)(getIconWidth() * scaleX),
 				(int)(getIconHeight() * scaleY), 
