@@ -3,7 +3,6 @@ package org.freeplane.core.ui.svgicons;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -133,7 +132,7 @@ class SVGIconCreator {
 
     private SVGIcon createSvgIcon() {
         SVGUniverse svgUniverse = SVGCache.getSVGUniverse();
-        SVGIcon icon = GraphicsEnvironment.isHeadless() ? new SVGIcon() : new ScalingSVGIcon();
+        SVGIcon icon = new SVGIcon();
         try {
             load(svgUniverse);
             final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
