@@ -380,6 +380,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 
 	
     public void processKeyEvent(final KeyEvent keyEvent) {
+		boolean areClosingModifiersDown = keyEvent.isControlDown() || keyEvent.isMetaDown();
 		switch (keyEvent.getKeyCode()) {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
@@ -403,13 +404,16 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 				return;
 			case KeyEvent.VK_ENTER:
 			case KeyEvent.VK_SPACE:
-				keyEvent.consume();
-				addIcon(keyEvent.getModifiers());
-				if(listener != null && keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
-					dispose();
-				return;
+				if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER || areClosingModifiersDown) {
+					keyEvent.consume();
+					addIcon(keyEvent.getModifiers());
+					if(listener != null && areClosingModifiersDown)
+						dispose();
+					return;
+				}
+				break;
 		}
-		if(keyEvent.isControlDown() || keyEvent.isMetaDown()) {
+		if(areClosingModifiersDown) {
 		    final int index = findIndexByKeyEvent(keyEvent);
 		    if (index != -1) {
 		    	keyEvent.consume();
