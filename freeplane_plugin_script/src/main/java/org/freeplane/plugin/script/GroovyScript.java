@@ -26,6 +26,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -107,12 +108,14 @@ public class GroovyScript implements IScript {
 					public FreeplaneScriptBaseClass run() {
 						return compiledScript.withBinding(node, scriptContext);
 					}
-				}); 
-                System.setOut(outStream);
+				});
+                if(oldOut != outStream)
+                	System.setOut(outStream);
 				final Object result = scriptWithBinding.run();
 				return result;
             } finally {
-                System.setOut(oldOut);
+                if(oldOut != outStream)
+                	System.setOut(oldOut);
                 Thread.currentThread().setContextClassLoader(contextClassLoader);
             }
         } catch (final GroovyRuntimeException e) {
@@ -211,6 +214,9 @@ public class GroovyScript implements IScript {
     private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
         binding.setVariable("script", script);
+		for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
+			binding.setVariable(entry.getKey(), entry.getValue());
+		}
         return binding;
     }
 

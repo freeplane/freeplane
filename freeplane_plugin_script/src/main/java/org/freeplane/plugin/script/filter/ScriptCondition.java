@@ -77,13 +77,12 @@ public class ScriptCondition extends ASelectableCondition {
 		scriptRunner.setScriptContext(scriptContext);
 		try {
 	        final Object result;
-	        try (final PrintStream printStream = new PrintStream(new ByteArrayOutputStream())){
-	            result = scriptRunner.setOutStream(printStream).execute(node);
+	        try {
+	            result = scriptRunner.execute(node);
 	            if(result instanceof Boolean)
 	                return (Boolean) result;
 	            if(result instanceof Number)
 	                return ((Number) result).doubleValue() != 0;
-	            printStream.println(this + ": got '" + result + "' for " + node);
 	            final String info = createErrorDescription(node, String.valueOf(result), SCRIPT_FILTER_ERROR_RESOURCE);
 	            setErrorStatus(info);
 	        }

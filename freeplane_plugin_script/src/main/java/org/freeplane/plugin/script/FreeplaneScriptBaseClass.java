@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -14,9 +13,14 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.api.ControllerRO;
 import org.freeplane.api.NodeRO;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
@@ -154,9 +158,6 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 
     protected Binding createBinding(NodeRO nodeProxy, ControllerRO controllerProxy) {
         Binding binding = new Binding(new LinkedHashMap(getBinding().getVariables()));
-		for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
-			binding.setProperty(entry.getKey(), entry.getValue());
-		}
 		binding.setVariable("c", controllerProxy);
 		binding.setVariable("node", nodeProxy);
         return binding;
