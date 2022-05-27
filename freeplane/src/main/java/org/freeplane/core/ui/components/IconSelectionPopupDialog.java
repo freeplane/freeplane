@@ -403,15 +403,11 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 				close();
 				return;
 			case KeyEvent.VK_ENTER:
-			case KeyEvent.VK_SPACE:
-				if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER || areClosingModifiersDown) {
-					keyEvent.consume();
-					addIcon(keyEvent.getModifiers());
-					if(listener != null && areClosingModifiersDown)
-						dispose();
-					return;
-				}
-				break;
+				keyEvent.consume();
+				addIcon(keyEvent.getModifiers());
+				if(listener != null && areClosingModifiersDown)
+					dispose();
+				return;
 		}
 		if(areClosingModifiersDown) {
 		    final int index = findIndexByKeyEvent(keyEvent);
