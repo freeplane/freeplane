@@ -525,4 +525,12 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	public void setActionListener(ActionListener listener) {
 		this.listener = listener;
 	}
+
+	public void addActionPanel(JPanel actionPanel) {
+		Container contentPane = getContentPane();
+		JPanel newContentPane = new JPanel(new BorderLayout());
+		setContentPane(newContentPane);
+		newContentPane.add(contentPane, BorderLayout.CENTER);
+		newContentPane.add(actionPanel, BorderLayout.NORTH);
+	}
 }

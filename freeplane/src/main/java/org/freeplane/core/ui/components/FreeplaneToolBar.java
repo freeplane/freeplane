@@ -121,8 +121,13 @@ public class FreeplaneToolBar extends JToolBar {
 
 
 
-	public static void configureToolbarButton(final AbstractButton abstractButton) {
-        final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
+	public static void configureToolbarButton(AbstractButton abstractButton) {
+		configureToolbarButtonText(abstractButton);
+		configureToolbarButtonSize(abstractButton);
+	}
+
+	private static void configureToolbarButtonText(final AbstractButton abstractButton) {
+		final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
 		abstractButton.setName(actionName);
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
@@ -134,10 +139,9 @@ public class FreeplaneToolBar extends JToolBar {
 				abstractButton.setText(null);
 			}
 		}
-		configureToolbarButtonSize(abstractButton);
-    }
+	}
 
-	public static void configureToolbarButtonSize(final AbstractButton abstractButton) {
+	private static void configureToolbarButtonSize(final AbstractButton abstractButton) {
 		if (Compat.isMacOsX()) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmentedGradient");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");

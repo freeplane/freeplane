@@ -39,6 +39,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.event.MenuEvent;
@@ -557,7 +558,7 @@ public class MIconController extends IconController {
 		
         iconToolBar.addSeparator();
         recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
-        recentlyUsedIcons.addPanelTo(iconToolBar);
+        iconToolBar.add(recentlyUsedIcons.createActionPanel());
         boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
 		if (! isStructured && areEmojisAvailbleOnIconToolbar())
 		    iconToolBar.addSeparator();
@@ -577,5 +578,18 @@ public class MIconController extends IconController {
         String initializer = recentlyUsedIcons.getInitializer();
         ResourceController.getResourceController().setProperty(RECENTLY_USED_ICONS_PROPERTY, initializer);
     }
+
+	public JPanel createActionPanelWithControlActions() {
+		final ModeController modeController = Controller.getCurrentModeController();
+		return recentlyUsedIcons.createActionPanel(
+				modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION),
+				modeController.getAction(REMOVE_FIRST_ICON_ACTION),
+				modeController.getAction(REMOVE_LAST_ICON_ACTION),
+				modeController.getAction(REMOVE_ALL_ICONS_ACTION));
+	}
+
+	public JPanel createActionPanel() {
+		return recentlyUsedIcons.createActionPanel();
+	}
 
 }
