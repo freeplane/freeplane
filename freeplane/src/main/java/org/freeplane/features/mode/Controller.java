@@ -173,8 +173,8 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		LogUtils.info("requesting mode: " + newModeController.getModeName());
 		modeController = newModeController;
 		viewController.selectMode(oldModeController, newModeController);
-		getMapViewManager().changeToMode(newModeController.getModeName());
 		newModeController.startup();
+		getMapViewManager().changeToMode(newModeController.getModeName());
 	}
 
 	public void selectMode(final String modeName) {

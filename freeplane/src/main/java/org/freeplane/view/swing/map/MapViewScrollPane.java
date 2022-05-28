@@ -34,6 +34,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
@@ -177,7 +178,9 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 					slowSetViewPosition(p, scrollingDelay);
 				} else {
 					stopTimer();
+					layoutInProgress = true;
 					super.setViewPosition(p);
+					layoutInProgress = false;
 					MapView view = (MapView)getView();
 					if (view != null) {
 						view.setAnchorContentLocation();
@@ -185,6 +188,28 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 				}
 			}
         }
+
+    	@Override
+    	public void setBounds(int x, int y, int width, int height) {
+    		boolean layoutWasInProgress = layoutInProgress;
+    		if(getWidth() == 0)
+    			SwingUtilities.invokeLater(((MapView) getView())::scrollView);
+    		layoutInProgress = true;
+    		try {
+    			int dX = (width - getWidth())/2;
+    			int dY = (height - getHeight())/2;
+    			if(dX != 0 || dY != 0) {
+    				Point viewPosition = getViewPosition();
+    				viewPosition.x += dX;
+    				viewPosition.y += dY;
+    				super.setViewPosition(viewPosition);
+    		}
+    			super.setBounds(x, y, width, height);
+    		}
+    		finally {
+    			layoutInProgress = layoutWasInProgress;
+    		}
+    	}
 
 		@Override
         public void setViewSize(Dimension newSize) {
@@ -319,17 +344,6 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		}
         super.doLayout();
     }
-
-	@Override
-	protected void validateTree() {
-		super.validateTree();
-		if(viewport != null){
-			MapView view = (MapView) viewport.getView();
-			if(view != null) {
-				view.scrollView();
-			}
-		}
-	}
 
 	@Override
 	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {

@@ -302,18 +302,14 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 
 			@Override
 			public void run() {
+				viewController.init(Controller.getCurrentController());
+				controller.selectMode(MModeController.MODENAME);
 				showFrame();
-				EventQueue.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						loadMaps();
-						finishStartup();
-					}
-				});
+				loadMaps();
+				finishStartup();
 			}
 
 			private void showFrame() {
-				viewController.init(Controller.getCurrentController());
 				splash.toBack();
 				frame = (JFrame) viewController.getMenuComponent();
 				final int extendedState = frame.getExtendedState();
