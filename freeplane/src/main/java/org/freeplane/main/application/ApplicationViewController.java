@@ -68,10 +68,6 @@ class ApplicationViewController extends FrameController {
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
 	private static final String SPLIT_PANE_LAST_RIGHT_POSITION = "split_pane_last_right_position";
 	private static final String SPLIT_PANE_LAST_TOP_POSITION = "split_pane_last_top_position";
-	private static final String SPLIT_PANE_LEFT_POSITION = "split_pane_left_position";
-	private static final String SPLIT_PANE_POSITION = "split_pane_position";
-	private static final String SPLIT_PANE_RIGHT_POSITION = "split_pane_right_position";
-	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
 
 
     private static Image frameIcon(String size) {
@@ -156,32 +152,25 @@ class ApplicationViewController extends FrameController {
 
 	}
 	private void resetDividerLocation() {
-		int splitPanePosition = -1;
 		int lastSplitPanePosition = -1;
 		if ("right".equals(mLocationPreferenceValue)) {
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
 		}
 		else if ("left".equals(mLocationPreferenceValue)) {
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
 		}
 		else if ("top".equals(mLocationPreferenceValue)) {
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
 		}
 		else if ("bottom".equals(mLocationPreferenceValue)) {
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
 			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
 		}
 
-		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
-			mSplitPane.setDividerLocation(splitPanePosition);
-			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
+		if (lastSplitPanePosition != -1) {
+			mSplitPane.setDividerLocation(lastSplitPanePosition);
 		}
 		else {
 			mSplitPane.setDividerLocation(0.5);
-			mSplitPane.setLastDividerLocation(mSplitPane.getDividerLocation());
 		}
 	}
 
@@ -269,19 +258,15 @@ class ApplicationViewController extends FrameController {
 			return;
 		}
 		if ("right".equals(mLocationPreferenceValue)) {
-			resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
 		}
 		else if ("left".equals(mLocationPreferenceValue)) {
-			resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());
 		}
 		else if ("top".equals(mLocationPreferenceValue)) {
-			resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
 		}
 		else { // "bottom".equals(mLocationPreferenceValue) also covered
-			resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
 		}
 	}
