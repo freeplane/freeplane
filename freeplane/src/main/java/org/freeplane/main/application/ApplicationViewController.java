@@ -168,8 +168,10 @@ class ApplicationViewController extends FrameController {
 
 		if (lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(lastSplitPanePosition);
+			mSplitPane.setDividerLocation(lastSplitPanePosition);
 		}
 		else {
+			mSplitPane.setDividerLocation(0.5);
 			mSplitPane.setDividerLocation(0.5);
 		}
 	}
