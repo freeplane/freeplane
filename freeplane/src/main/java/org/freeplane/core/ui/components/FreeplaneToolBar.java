@@ -28,9 +28,11 @@ import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.icon.factory.IconFactory;
 
@@ -117,6 +119,20 @@ public class FreeplaneToolBar extends JToolBar {
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
 		configureToolbarButton(abstractButton);
+	}
+
+
+
+	public static AbstractButton createButton(AFreeplaneAction action) {
+		AbstractButton button = new JButton(action);
+		if (action.isSelectable()) {
+			button = new JAutoToggleButton(action);
+		}
+		else {
+			button = new JButton(action);
+		}
+	    configureToolbarButton(button);
+	    return button;
 	}
 
 

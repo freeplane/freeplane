@@ -32,7 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -54,7 +56,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
-import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.ResizablePanel;
+import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
@@ -548,14 +551,16 @@ public class MIconController extends IconController {
 
 	private void updateIconToolbar(ModeController modeController) {
 		iconToolBar.removeAll();
-		JAutoToggleButton removesIconButton = new JAutoToggleButton(modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION));
-		removesIconButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(removesIconButton);
-		iconToolBar.add(modeController.getAction(REMOVE_FIRST_ICON_ACTION))
-		    .setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(modeController.getAction(REMOVE_LAST_ICON_ACTION)).setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(modeController.getAction(REMOVE_ALL_ICONS_ACTION)).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
+		AbstractButton[] buttons = {
+				FreeplaneToolBar.createButton(modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION)),
+				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_FIRST_ICON_ACTION)),
+				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_LAST_ICON_ACTION)),
+				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_ALL_ICONS_ACTION)),
+		};
+		ResizablePanel actionPanel = new ResizablePanel(ToolbarLayout.vertical());
+		Stream.of(buttons).forEach(actionPanel::add);
+		iconToolBar.add(actionPanel);
         iconToolBar.addSeparator();
         recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
         iconToolBar.add(recentlyUsedIcons.createActionPanel());
@@ -587,9 +592,4 @@ public class MIconController extends IconController {
 				modeController.getAction(REMOVE_LAST_ICON_ACTION),
 				modeController.getAction(REMOVE_ALL_ICONS_ACTION));
 	}
-
-	public JPanel createActionPanel() {
-		return recentlyUsedIcons.createActionPanel();
-	}
-
 }

@@ -1,14 +1,10 @@
 package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.Component;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.LayoutManager;
 import java.util.stream.Stream;
 
-import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -16,13 +12,70 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
-import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.ResizablePanel;
 import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.features.mode.ModeController;
 
 class FastAccessableIcons {
      
-    private static final String FAST_ACCESS_ICON_NUMBER_PROPERTY = "fast_access_icon_number";
+    private class ActionPanel extends ResizablePanel {
+		private final AFreeplaneAction[] controlActions;
+
+		private static final long serialVersionUID = 1L;
+
+		ListDataListener l;
+
+		private ActionPanel(LayoutManager layout, AFreeplaneAction[] controlActions) {
+			super(layout);
+			this.controlActions = controlActions;
+			l = new ListDataListener() {
+				
+				@Override
+				public void intervalRemoved(ListDataEvent e) {
+					int index0 = e.getIndex0();
+					for(int i = index0; i <= e.getIndex1(); i++)
+						remove(controlActions.length + index0);
+					revalidate();
+					repaint();
+				}
+				
+				@Override
+				public void intervalAdded(ListDataEvent e) {
+					for(int i = e.getIndex0(); i <= e.getIndex1(); i++)
+						add(FreeplaneToolBar.createButton(actions.elementAt(i)), controlActions.length + i);
+					revalidate();
+					repaint();
+				}
+				
+				@Override
+				public void contentsChanged(ListDataEvent e) {
+					intervalRemoved(e);
+					intervalAdded(e);
+				}
+	    	};
+		}
+
+		@Override
+		public void addNotify() {
+			for(int i = 0; i < controlActions.length; i++) {
+				Component button = createButton(controlActions[i]);
+				add(button);
+			}
+			for(int i = 0; i < actions.size(); i++) {
+				add(createButton(actions.elementAt(i)));
+			}
+			actions.addListDataListener(l);
+			super.addNotify();
+		}
+
+		@Override
+		public void removeNotify() {
+			super.removeNotify();
+			actions.removeListDataListener(l);
+			removeAll();
+		}
+	}
+	private static final String FAST_ACCESS_ICON_NUMBER_PROPERTY = "fast_access_icon_number";
     private final DefaultListModel<AFreeplaneAction> actions;
     private final ModeController modeController;
 
@@ -64,78 +117,13 @@ class FastAccessableIcons {
     }
     
     public JPanel createActionPanel(AFreeplaneAction... controlActions) {
-		JPanel panel = new JPanel(ToolbarLayout.vertical()) {
-	    	private static final long serialVersionUID = 1L;
-			ListDataListener l = new ListDataListener() {
-				
-				@Override
-				public void intervalRemoved(ListDataEvent e) {
-					int index0 = e.getIndex0();
-					for(int i = index0; i <= e.getIndex1(); i++)
-						remove(controlActions.length + index0);
-					revalidate();
-					repaint();
-				}
-				
-				@Override
-				public void intervalAdded(ListDataEvent e) {
-					for(int i = e.getIndex0(); i <= e.getIndex1(); i++)
-						add(createButton(actions.elementAt(i)), controlActions.length + i);
-					revalidate();
-					repaint();
-				}
-				
-				@Override
-				public void contentsChanged(ListDataEvent e) {
-					intervalRemoved(e);
-					intervalAdded(e);
-				}
-	    	};
-	    	ComponentListener parentListener = new ComponentAdapter() {
-	    		@Override
-	    		public void componentResized(ComponentEvent e) {
-	    			revalidate();
-	    			repaint();
-	    		}
-	    	};
-  			@Override
-			public void addNotify() {
-            	for(int i = 0; i < controlActions.length; i++) {
-            		Component button = createButton(controlActions[i]);
-					add(button);
-            	}
-            	for(int i = 0; i < actions.size(); i++) {
-            		add(createButton(actions.elementAt(i)));
-            	}
-				actions.addListDataListener(l);
-				getParent().addComponentListener(parentListener);
-				super.addNotify();
-			}
-
-			@Override
-			public void removeNotify() {
-				super.removeNotify();
-				actions.removeListDataListener(l);
-				getParent().removeComponentListener(parentListener);
-				removeAll();
-			}
-			
-		};
-
+		JPanel panel = new ActionPanel(ToolbarLayout.vertical(), controlActions);
 		return panel;
 	}
     
-    private Component createButton(AFreeplaneAction action) {
-    	AbstractButton button = new JButton(action);
-		if (action.isSelectable()) {
-			button = new JAutoToggleButton(action);
-		}
-		else {
-			button = new JButton(action);
-		}
-        FreeplaneToolBar.configureToolbarButton(button);
-        button.setFocusable(true);
-        return button;
-    }
+	static private Component createButton(AFreeplaneAction action) {
+		Component button = FreeplaneToolBar.createButton(action);
+		return button;
+	}
 
 }
