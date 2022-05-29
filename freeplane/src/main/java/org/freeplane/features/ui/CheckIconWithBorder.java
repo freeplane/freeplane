@@ -13,6 +13,7 @@ import org.freeplane.core.ui.components.UITools;
 
 class CheckIconWithBorder implements Icon {
     
+	private static final int BOX_SIZE = 14;
 	private static final BasicStroke CHECK_STROKE = new BasicStroke(Math.max(1f, UITools.FONT_SCALE_FACTOR), BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 	private static final BasicStroke BOX_STROKE = new BasicStroke(1f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 	private final Icon fallbackIcon;
@@ -37,9 +38,10 @@ class CheckIconWithBorder implements Icon {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 
-        final int l = checkBoxHeight;
-        int margin = Math.max((height - l)/2, 0);
+        int margin = Math.max((height - BOX_SIZE)/2, 0);
 		g.translate(x + margin, y + margin);
+		double f = ((double)checkBoxHeight) / BOX_SIZE;
+		g.scale(f, f);
 
         g.setColor(c.getForeground());
 
@@ -47,13 +49,13 @@ class CheckIconWithBorder implements Icon {
           g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
           g.setStroke(CHECK_STROKE);
           g.drawLine(3, 7, 6, 10);
-          g.drawLine(6, 10, l-2, 4);
+          g.drawLine(6, 10, BOX_SIZE-2, 4);
           g.drawLine(3, 5, 6, 8);
-          g.drawLine(6, 8, l-2, 2);
+          g.drawLine(6, 8, BOX_SIZE-2, 2);
         }
         g.setStroke(BOX_STROKE);
-        g.drawRoundRect(0, 0, l, l - 1, 4, 4);
-        g.drawRoundRect(0, 0, l, l - 1, 4, 4);
+        g.drawRoundRect(0, 0, BOX_SIZE, BOX_SIZE - 1, 4, 4);
+        g.drawRoundRect(0, 0, BOX_SIZE, BOX_SIZE - 1, 4, 4);
         g.dispose();
     }
 
