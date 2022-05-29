@@ -181,8 +181,7 @@ class MapScroller {
 	}
 
 	void setAnchorView(final NodeView view) {
-	    if(anchor != view)
-	        anchor = view;
+		anchor = view;
 	}
 
 	private Point getAnchorCenterPoint() {

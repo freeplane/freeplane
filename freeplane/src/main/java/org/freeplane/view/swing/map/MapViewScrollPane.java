@@ -67,10 +67,14 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
 		@Override
         public void doLayout() {
+			int oldWidth = getWidth();
+			int oldHeight = getHeight();
 	        final Component view = getView();
 	        layoutInProgress = view != null && ! view.isValid();
 	        super.doLayout();
 	        layoutInProgress = false;
+	        if(oldWidth == getWidth() && oldHeight == getHeight())
+	        	((MapView) view).scrollView();
         }
 
 		private Timer timer;
@@ -218,9 +222,9 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	            Dimension oldSize = view.getSize();
 	            if (newSize.equals(oldSize)) {
 	            	view.setSize(newSize);
-	            }
-	            else
-	            	super.setViewSize(newSize);
+	            } else {
+					super.setViewSize(newSize);
+				}
 	        }
         }
 
