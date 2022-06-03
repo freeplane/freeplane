@@ -71,6 +71,7 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
@@ -376,8 +377,7 @@ class NodeList implements IExtension {
 		tableView = new FlatNodeTable();
 		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
-		closeAfterSelection = new JCheckBox();
-        LabelAndMnemonicSetter.setLabelAndMnemonic(closeAfterSelection, TextUtils.getRawText("nodelist_close_after_selection"));
+		closeAfterSelection = TranslatedElementFactory.createPropertyCheckbox("nodelist_close_after_selection", "close_after_selection");
 	}
 
 	/**
@@ -641,13 +641,6 @@ class NodeList implements IExtension {
 		/* Initial State */
 		gotoAction.setEnabled(false);
 		exportAction.setEnabled(false);
-        closeAfterSelection.setSelected(ResourceController.getResourceController().getBooleanProperty("nodelist_close_after_selection"));
-        closeAfterSelection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                ResourceController.getResourceController().setProperty("nodelist_close_after_selection", closeAfterSelection.isSelected());
-            }
-        });
 		final Box bar = Box.createHorizontalBox();
 		bar.add(Box.createHorizontalGlue());
 		bar.add(cancelButton);

@@ -30,6 +30,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconDescription;
+import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -70,7 +71,8 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 			actions.add((IconDescription) aFreeplaneAction);
 		
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);
-		selectionDialog.addActionPanel(mIconController.createActionPanelWithControlActions());
+		ActionPanel controls = mIconController.createActionPanelWithControlActions();
+		selectionDialog.addActionPanel(controls);
 		final NodeModel selected = controller.getSelection().getSelected();
 		controller.getMapViewManager().scrollNodeToVisible(selected);
 		selectionDialog.setModal(false);

@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -43,7 +44,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -61,10 +65,12 @@ import javax.swing.event.DocumentListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.resources.components.GrabKeyDialog;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
 
 public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	
@@ -79,7 +85,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static String lastSearchText = "";
-	final private JLabel descriptionLabel;
+	private final JLabel descriptionLabel;
 	final private List<JLabel> iconLabels;
 	final private JPanel iconPanel = new JPanel();
 	final private List<? extends IconDescription> icons;
@@ -91,7 +97,31 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
     private Timer filterTimer;
 
 	private ActionListener listener;
+	private JCheckBox closeAfterSelection;
 
+	private Box statusPanel;
+	
+	private final MouseListener focusRequester = new MouseAdapter() {
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			e.getComponent().requestFocusInWindow();
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			filterTextField.requestFocusInWindow();
+		}
+	};
+
+	private final ActionListener actionPanelActionListener = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(closeAfterSelection != null && closeAfterSelection.isSelected())
+				dispose();
+		}
+	};
+	
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
 		Container contentPane = getContentPane();
@@ -141,7 +171,10 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
         contentPane.add(filterTextField, BorderLayout.NORTH);
         contentPane.add(scrollPane, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
-		contentPane.add(descriptionLabel, BorderLayout.SOUTH);
+		statusPanel = Box.createHorizontalBox();
+		statusPanel.add(descriptionLabel);
+		statusPanel.add(Box.createHorizontalGlue());
+		contentPane.add(statusPanel, BorderLayout.SOUTH);
 		selected = iconLabels.get(0);
         highlightSelected();
         final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
@@ -150,8 +183,8 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
         filterTimer.setRepeats(false);
 
 	}
-	
-	   private JTextField setupFilterTextField_and_KeyListener() {
+
+	private JTextField setupFilterTextField_and_KeyListener() {
 	        JTextField filterTextField = new JTextField();
 	        filterTextField.setText(lastSearchText);
 	        filterTextField.getDocument().addDocumentListener(new DocumentListener() {
@@ -260,9 +293,11 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	private void addIcon(int iconIndex, final int pModifiers) {
 		selectedIconIndex =  iconIndex;
 		mModifiers = pModifiers;
-		if(listener != null)
+		if(listener != null) {
 			listener.actionPerformed(new ActionEvent(this, selectedIconIndex, "", System.currentTimeMillis(), mModifiers));
-		else
+			if(closeAfterSelection.isSelected())
+				dispose();
+		} else
 			dispose();
 	}
 
@@ -380,7 +415,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 
 	
     public void processKeyEvent(final KeyEvent keyEvent) {
-		boolean areClosingModifiersDown = keyEvent.isControlDown() || keyEvent.isMetaDown();
+		boolean areModifiersDown = keyEvent.isControlDown() || keyEvent.isMetaDown();
 		switch (keyEvent.getKeyCode()) {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
@@ -405,16 +440,17 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 			case KeyEvent.VK_ENTER:
 				keyEvent.consume();
 				addIcon(keyEvent.getModifiers());
-				if(listener != null && areClosingModifiersDown)
+				if(listener != null && closeAfterSelection.isSelected())
 					dispose();
 				return;
 		}
-		if(areClosingModifiersDown) {
+		if(areModifiersDown) {
 		    final int index = findIndexByKeyEvent(keyEvent);
 		    if (index != -1) {
 		    	keyEvent.consume();
 		        addIcon(index, keyEvent.getModifiers());
-		        dispose();
+		        if(listener != null && closeAfterSelection.isSelected())
+		        	dispose();
 		    }
 		}
 	}
@@ -524,13 +560,24 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 
 	public void setActionListener(ActionListener listener) {
 		this.listener = listener;
+		closeAfterSelection = TranslatedElementFactory.createPropertyCheckbox("icon_selection_close_after_selection", "close_after_selection");
+		statusPanel.add(closeAfterSelection);
 	}
 
-	public void addActionPanel(JPanel actionPanel) {
+	public void addActionPanel(ActionPanel actionPanel) {
+		
+		actionPanel.setButtonConfigurer(this::configureButton);
+		
 		Container contentPane = getContentPane();
 		JPanel newContentPane = new JPanel(new BorderLayout());
 		setContentPane(newContentPane);
 		newContentPane.add(contentPane, BorderLayout.CENTER);
 		newContentPane.add(actionPanel, BorderLayout.NORTH);
+	}
+
+	private void configureButton(AbstractButton b) {
+		b.addMouseListener(focusRequester);
+		b.setFocusable(true);
+		b.addActionListener(actionPanelActionListener);
 	}
 }

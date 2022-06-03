@@ -41,7 +41,6 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.event.MenuEvent;
@@ -76,6 +75,7 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.NodeChangeEvent;
@@ -584,7 +584,7 @@ public class MIconController extends IconController {
         ResourceController.getResourceController().setProperty(RECENTLY_USED_ICONS_PROPERTY, initializer);
     }
 
-	public JPanel createActionPanelWithControlActions() {
+	public ActionPanel createActionPanelWithControlActions() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return recentlyUsedIcons.createActionPanel(
 				modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION),

@@ -1,5 +1,8 @@
 package org.freeplane.core.ui.textchanger;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -47,6 +50,18 @@ public class TranslatedElementFactory {
 		return component;
 	}
 
+	public static JCheckBox createPropertyCheckbox(String propertyName, String labelKey) {
+		JCheckBox component = createCheckBox(labelKey);
+        component.setSelected(ResourceController.getResourceController().getBooleanProperty(propertyName));
+        component.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ResourceController.getResourceController().setProperty(propertyName, component.isSelected());
+            }
+        });
+        return component;
+	}
+	
 	public static void createTitledBorder(JComponent component, String labelKey) {
 		final String text = TextUtils.getText(labelKey);
 		component.setBorder(BorderFactory.createTitledBorder(text));
