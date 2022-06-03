@@ -17,7 +17,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="plain/auto"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
-<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#fbf1c7">
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" >
 <font SIZE="9"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note" TEXT_ALIGN="LEFT"/>

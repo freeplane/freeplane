@@ -20,7 +20,7 @@
 <stylenode LOCALIZED_TEXT="defaultstyle.details" COLOR="#fdf6e3" BACKGROUND_COLOR="#073642">
 <font SIZE="10"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#fdf6e3">
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" >
 <font SIZE="10"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#2aa198" TEXT_ALIGN="LEFT">

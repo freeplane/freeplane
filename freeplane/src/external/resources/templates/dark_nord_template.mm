@@ -17,7 +17,7 @@
 <stylenode LOCALIZED_TEXT="defaultstyle.details" BORDER_WIDTH="1.9 px">
 <edge STYLE="bezier" COLOR="#81a1c1" WIDTH="3"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#eceff4">
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" >
 <font SIZE="10"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#ebcb8b">
