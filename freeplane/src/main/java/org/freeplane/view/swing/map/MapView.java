@@ -618,6 +618,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean allowsCompactLayout;
 	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
+	private boolean scrollsViewAfterLayout = false;
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -2157,6 +2158,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public void setZoom(final float zoom) {
         if(this.zoom != zoom) {
             this.zoom = zoom;
+            scrollsViewAfterLayout = true;
             mapScroller.anchorToNode(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
             getRoot().updateAll();
             adjustBackgroundComponentScale();
@@ -2174,6 +2176,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             UITools.convertPointToAncestor(mainView, mainViewLocation, this);
             float x = referenceWidth > 0 ? (keptPoint.x - mainViewLocation.x) / referenceWidth : 0;
             float y = referenceHeight > 0 ? (keptPoint.y - mainViewLocation.y) / referenceHeight : 0;
+            scrollsViewAfterLayout = true;
             mapScroller.anchorToNode(selected, x, y);
             getRoot().updateAll();
             adjustBackgroundComponentScale();
@@ -2353,6 +2356,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
     }
 
+	void scrollViewAfterLayout() {
+        if(scrollsViewAfterLayout ) {
+        	scrollsViewAfterLayout  = false;
+			scrollView();
+		}
+	}
 	void scrollView() {
 		if(isDisplayable())
 			mapScroller.scrollView();
