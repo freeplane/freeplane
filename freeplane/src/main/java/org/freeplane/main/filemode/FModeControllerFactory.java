@@ -19,11 +19,17 @@
  */
 package org.freeplane.main.filemode;
 
+import java.awt.Component;
+
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.edge.EdgeController;
@@ -89,6 +95,14 @@ public class FModeControllerFactory {
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getCurrentFilterController().getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController().getStatusBar());
+		modeController.addUiBuilder(Phase.UI, "main_toolbar_zoom", new JToolbarComponentBuilder(
+			    new ComponentProvider() {
+				    @Override
+				    public Component createComponent(Entry entry) {
+					    return controller.getMapViewManager().createZoomBox();
+				    }
+			    }));
+
 		NodeHistory.install(modeController);
 		return modeController;
 	}

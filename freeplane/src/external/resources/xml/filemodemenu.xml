@@ -139,13 +139,9 @@
 		<Entry name="CenterAction" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
-		<Entry name="CenterAction" />
-		<Entry name="NavigationPreviousMapAction" />
-		<Entry name="NavigationNextMapAction" />
-		<Entry builder="main_toolbar_zoom" name="zoom"/>
-		<Entry name="open">
-			<Entry name="PrintAction" />
-			<Entry name="CloseAction" />
-		</Entry>
+		<Entry builder="separator" />
+		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
+		<Entry name="PrintAction" row="2"/>
+		<Entry name="CloseAction" row="2"/>
 	</Entry>
 </FreeplaneUIEntries>
