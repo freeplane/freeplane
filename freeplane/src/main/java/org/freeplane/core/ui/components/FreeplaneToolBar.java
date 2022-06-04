@@ -29,7 +29,6 @@ import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
-import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
@@ -50,6 +49,7 @@ public class FreeplaneToolBar extends JToolBar {
 	private static final GridBagConstraints separatorConstraints = new GridBagConstraints();
 	
 	static {
+		separatorConstraints.gridy = 0;
 		separatorConstraints.fill = GridBagConstraints.VERTICAL;
 		separatorConstraints.gridheight = GridBagConstraints.REMAINDER;
 	}
@@ -170,8 +170,6 @@ public class FreeplaneToolBar extends JToolBar {
 	}
 
 	private static void configureToolbarButtonText(final AbstractButton abstractButton) {
-		final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
-		abstractButton.setName(actionName);
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
 			final String toolTipText = abstractButton.getToolTipText();

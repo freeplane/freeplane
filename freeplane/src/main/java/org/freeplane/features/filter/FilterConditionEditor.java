@@ -32,6 +32,7 @@ import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -40,6 +41,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
 import javax.swing.border.Border;
@@ -148,10 +150,6 @@ public class FilterConditionEditor {
         ignoreDiacritics.setEnabled(canSelectValues
                 && conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
 	}
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
 	private static final String PROPERTY_FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
@@ -171,7 +169,7 @@ public class FilterConditionEditor {
 	private ActionListener enterKeyActionListener;
 	final private JCheckBox btnDeny;
 	private final JComponent panel;
-	private final JPanel optionPanel;
+	private final JToolBar optionPanel;
 	public FilterConditionEditor(final FilterController filterController, final Variant variant) {
 		this(filterController, 5, variant);
 	}
@@ -224,11 +222,16 @@ public class FilterConditionEditor {
 		values.setEditable(true);
 		setValuesEnterKeyListener();
 
-		optionPanel = new JPanel();
+		optionPanel = new JToolBar();
+		optionPanel.setFloatable(false);
+		optionPanel.setRollover(true);
+		optionPanel.setBorder(BorderFactory.createEmptyBorder());
+
 		optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		// Ignore case checkbox
 		caseSensitive = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_MATCH_CASE + ".icon", PROPERTY_FILTER_MATCH_CASE + ".tooltip");
+		caseSensitive.setFocusable(false);
 		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
 		optionPanel.add(caseSensitive);
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
@@ -378,7 +381,7 @@ public class FilterConditionEditor {
 	
 	
 
-	public JPanel getOptionPanel() {
+	public JComponent getOptionPanel() {
 		return optionPanel;
 	}
 
