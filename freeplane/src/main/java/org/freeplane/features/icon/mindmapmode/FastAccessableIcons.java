@@ -30,7 +30,7 @@ public class FastAccessableIcons {
 		}
 
 		private ActionPanel(AFreeplaneAction[] controlActions) {
-			super(JToolBar.VERTICAL);
+			super();
 			this.controlActions = controlActions;
 			l = new ListDataListener() {
 				

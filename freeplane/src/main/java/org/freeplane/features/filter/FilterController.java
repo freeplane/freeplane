@@ -596,14 +596,14 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		filterToolbar.addSeparator();
 		constraints.gridheight = 2;
 		filterToolbar.add(quickEditor.getPanel(), constraints);
-		JComponent optionPanel = quickEditor.getOptionPanel();
-		optionPanel.add(applyQuickHighlightBtn);
-		optionPanel.add(applyFindPreviousBtn);
-		optionPanel.add(applyFindNextBtn);
-		optionPanel.add(applyQuickSelectBtn);
-		optionPanel.add(applyQuickFilterBtn);
-		optionPanel.add(applyAndFilterBtn);
-		optionPanel.add(applyOrFilterBtn);
+		JComponent searchOptionPanel = quickEditor.getOptionPanel();
+		searchOptionPanel.add(applyQuickHighlightBtn);
+		searchOptionPanel.add(applyFindPreviousBtn);
+		searchOptionPanel.add(applyFindNextBtn);
+		searchOptionPanel.add(applyQuickSelectBtn);
+		searchOptionPanel.add(applyQuickFilterBtn);
+		searchOptionPanel.add(applyAndFilterBtn);
+		searchOptionPanel.add(applyOrFilterBtn);
 
 		filterToolbar.addSeparator();
 
@@ -611,20 +611,26 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		constraints.gridheight = 1;
 		constraints.gridy = 0;
 		filterToolbar.add(activeFilterConditionComboBox, constraints);
+		
+		JComponent filterOptionPanel = new FreeplaneToolBar();
+		filterOptionPanel.add(hideMatchingNodesBox);
+		filterOptionPanel.add(showAncestorsBox);
+		filterOptionPanel.add(showDescendantsBox);
+		filterOptionPanel.add(applyToVisibleBox);
+		
+		filterOptionPanel.add(undoBtn);
+		filterOptionPanel.add(redoBtn);
+		filterOptionPanel.add(reapplyFilterBtn);
+		filterOptionPanel.add(selectFilteredNodesBtn);
+		filterOptionPanel.add(filterSelectedBtn);
+		filterOptionPanel.add(noFilteringBtn);
+		filterOptionPanel.add(btnEdit);
+		
 		constraints.gridwidth = 1;
 		constraints.gridy = 1;
-		filterToolbar.add(hideMatchingNodesBox, constraints);
-		filterToolbar.add(showAncestorsBox, constraints);
-		filterToolbar.add(showDescendantsBox, constraints);
-		filterToolbar.add(applyToVisibleBox, constraints);
-
-		filterToolbar.add(undoBtn, constraints);
-		filterToolbar.add(redoBtn, constraints);
-		filterToolbar.add(reapplyFilterBtn, constraints);
-		filterToolbar.add(selectFilteredNodesBtn, constraints);
-		filterToolbar.add(filterSelectedBtn, constraints);
-		filterToolbar.add(noFilteringBtn, constraints);
-		filterToolbar.add(btnEdit, constraints);
+		constraints.anchor = GridBagConstraints.NORTHEAST;
+		filterToolbar.add(filterOptionPanel, constraints);
+		
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
 		return filterToolbar;

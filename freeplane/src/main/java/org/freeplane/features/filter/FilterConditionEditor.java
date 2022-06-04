@@ -223,7 +223,7 @@ public class FilterConditionEditor {
 		values.setEditable(true);
 		setValuesEnterKeyListener();
 
-		optionPanel = new FreeplaneToolBar(JToolBar.VERTICAL);
+		optionPanel = new FreeplaneToolBar();
 
 		optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 

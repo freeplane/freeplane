@@ -556,7 +556,7 @@ public class MIconController extends IconController {
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_LAST_ICON_ACTION)),
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_ALL_ICONS_ACTION)),
 		};
-		FreeplaneToolBar actionPanel = new FreeplaneToolBar(JToolBar.VERTICAL);
+		FreeplaneToolBar actionPanel = new FreeplaneToolBar();
 		Stream.of(buttons).forEach(actionPanel::add);
 		iconToolBar.add(actionPanel);
         iconToolBar.addSeparator();
