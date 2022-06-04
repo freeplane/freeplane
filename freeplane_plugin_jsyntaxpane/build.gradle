@@ -9,7 +9,7 @@ dependencies {
     // from flatDir "localGitDepsRepository":
     // from the Debian "libjsyntaxpane-java" package:
     // https://anonscm.debian.org/cgit/pkg-java/libjsyntaxpane-java.git
-    lib 'de.sciss:syntaxpane:1.2.0'
+    lib 'de.sciss:syntaxpane:1.2.1'
 }
 
 ext.bundleExports = """\
