@@ -540,7 +540,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 		editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 		    BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 		//		this.controller = controller;
-		getContentPane().add(editor, BorderLayout.NORTH);
+		getContentPane().add(editor.getPanel(), BorderLayout.NORTH);
 		conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);

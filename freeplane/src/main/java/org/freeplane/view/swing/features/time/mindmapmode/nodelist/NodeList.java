@@ -68,7 +68,6 @@ import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
-import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;

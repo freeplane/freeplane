@@ -21,6 +21,7 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
@@ -29,6 +30,7 @@ import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -44,6 +46,14 @@ public class FreeplaneToolBar extends JToolBar {
 	private static final int TOOLBAR_BUTTON_SIZE_1D = IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded() + 2;
 	private static final Dimension DEFAULT_TOOLBAR_BUTTON_SIZE = new Dimension(TOOLBAR_BUTTON_SIZE_1D, TOOLBAR_BUTTON_SIZE_1D);
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
+	
+	private static final GridBagConstraints separatorConstraints = new GridBagConstraints();
+	
+	static {
+		separatorConstraints.fill = GridBagConstraints.VERTICAL;
+		separatorConstraints.gridheight = GridBagConstraints.REMAINDER;
+	}
+
 	/**
 	 *
 	 */
@@ -114,6 +124,21 @@ public class FreeplaneToolBar extends JToolBar {
 		configureComponent(comp);
 		return comp;
 	}
+	
+	
+
+	@Override
+	public void addSeparator() {
+		if(getOrientation() == SwingConstants.VERTICAL) {
+			super.addSeparator();
+		}
+		else {
+			JToolBar.Separator s = new JToolBar.Separator();
+			add(s, separatorConstraints);
+		}
+	}
+
+
 
 	protected void configureComponent(final Component comp) {
 		if (!(comp instanceof AbstractButton)) {
@@ -169,5 +194,14 @@ public class FreeplaneToolBar extends JToolBar {
 		}
 		abstractButton.setFocusable(false);
 		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
+	}
+
+
+
+	public static AbstractButton createButton(AFreeplaneAction action,
+			ButtonModel hideMatchingNodes) {
+		JAutoToggleButton button = new JAutoToggleButton(action, hideMatchingNodes);
+		configureToolbarButton(button);
+	    return button;
 	}
 }

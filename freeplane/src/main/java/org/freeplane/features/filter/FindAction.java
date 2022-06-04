@@ -72,7 +72,7 @@ class FindAction extends AFreeplaneAction {
 		else {
 			editor.filterChanged(selection.getFilter());
 		}
-		editor.addAncestorListener(new AncestorListener() {
+		editor.getPanel().addAncestorListener(new AncestorListener() {
 			@Override
 			public void ancestorAdded(final AncestorEvent event) {
 				final Component component = event.getComponent();
@@ -93,7 +93,7 @@ class FindAction extends AFreeplaneAction {
 					});
 					windowAncestor.toFront();
 				}
-				editor.removeAncestorListener(this);
+				editor.getPanel().removeAncestorListener(this);
 			}
 
 			@Override
@@ -106,9 +106,9 @@ class FindAction extends AFreeplaneAction {
 		});
 		final int run = UITools.showConfirmDialog(start, editor, TextUtils.getText("FindAction.text"),
 		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-		final Container parent = editor.getParent();
+		final Container parent = editor.getPanel().getParent();
 		if (parent != null) {
-			parent.remove(editor);
+			parent.remove(editor.getPanel());
 		}
 		if (run != JOptionPane.OK_OPTION) {
 			return;

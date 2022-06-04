@@ -32,7 +32,6 @@ import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
-import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -43,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
+import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
@@ -62,7 +62,7 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  * 23.05.2009
  */
-public class FilterConditionEditor extends JComponent {
+public class FilterConditionEditor {
     
     public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, NODE_CONDITION, SEARCH_DIALOG }
     
@@ -107,14 +107,14 @@ public class FilterConditionEditor extends JComponent {
 
 	public void setSearchingBusyCursor()
 	{
-		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		RootPaneContainer root = (RootPaneContainer)panel.getTopLevelAncestor();
 		root.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		root.getGlassPane().setVisible(true);
 	}
 
 	public void setSearchingDefaultCursor()
 	{
-		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
+		RootPaneContainer root = (RootPaneContainer)panel.getTopLevelAncestor();
 		root.getGlassPane().setCursor(Cursor.getDefaultCursor());
 		root.getGlassPane().setVisible(false);
 	}
@@ -170,35 +170,36 @@ public class FilterConditionEditor extends JComponent {
 	final private JComboBox values;
 	private ActionListener enterKeyActionListener;
 	final private JCheckBox btnDeny;
+	private final JComponent panel;
+	private final JPanel optionPanel;
 	public FilterConditionEditor(final FilterController filterController, final Variant variant) {
 		this(filterController, 5, variant);
 	}
 	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final Variant variant) {
+		this(filterController, borderWidth, variant, new JPanel(new GridBagLayout()));
+	}
+	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final Variant variant,
+			JComponent panel) {
 		super();
-		setLayout(new GridBagLayout());
+		this.panel = panel;
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridx = -1;
+		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
 		gridBagConstraints.gridy = 0;
-		gridBagConstraints.anchor = GridBagConstraints.NORTH;
+		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
 		gridBagConstraints.insets = new Insets(0, borderWidth, 0, borderWidth);
 		this.filterController = filterController;
 		//Basic layout
 		//Item to search for
 
-		add(Box.createHorizontalGlue(), gridBagConstraints);
-		gridBagConstraints.gridx++;
-
-        btnDeny = TranslatedElementFactory.createCheckBox("filter_deny");
-        add(btnDeny, gridBagConstraints);
-        gridBagConstraints.gridx++;
-
         if(variant == Variant.FILTER_COMPOSER) {
             filterTargetSelector = JComboBoxFactory.create();
             filterTargetSelector.setEditable(false);
             filterTargetSelector.setModel(new DefaultComboBoxModel(DECORATED_CONDITION_FACTORY.getKeys()));
-            add(filterTargetSelector, gridBagConstraints);
-            gridBagConstraints.gridx++;
+            GridBagConstraints constraintVariant = (GridBagConstraints) gridBagConstraints.clone();
+            constraintVariant.fill = GridBagConstraints.HORIZONTAL;
+            constraintVariant.gridheight = 2;
+            panel.add(filterTargetSelector, constraintVariant);
         }
         else {
             filterTargetSelector = null;
@@ -208,39 +209,28 @@ public class FilterConditionEditor extends JComponent {
 		filteredPropertiesModel = new ExtendedComboBoxModel();
 		filteredPropertiesComponent.setModel(filteredPropertiesModel);
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
-		filteredPropertiesComponent.setAlignmentY(Component.TOP_ALIGNMENT);
 		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
-		add(filteredPropertiesComponent, gridBagConstraints);
-		gridBagConstraints.gridx++;
-		
+		panel.add(filteredPropertiesComponent, gridBagConstraints);
+        
 		//Search condition
 		elementaryConditions = JComboBoxFactory.create();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
-		elementaryConditions.setAlignmentY(Component.TOP_ALIGNMENT);
-		add(elementaryConditions, gridBagConstraints);
-		gridBagConstraints.gridx++;
+		panel.add(elementaryConditions, gridBagConstraints);
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
 		values = JComboBoxFactory.create();
 		values.setPreferredSize(new Dimension(240,20));
-		gridBagConstraints.anchor = GridBagConstraints.WEST;
-		add(values, gridBagConstraints);
-		if(variant == Variant.FILTER_TOOLBAR){
-			gridBagConstraints.gridx++;
-		}
-		else{
-			gridBagConstraints.gridy++;
-		}
+		panel.add(values, gridBagConstraints);
 		values.setEditable(true);
 		setValuesEnterKeyListener();
 
-		JPanel ignoreCaseAndApproximateMatchingPanel = new JPanel();
-		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		optionPanel = new JPanel();
+		optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		// Ignore case checkbox
 		caseSensitive = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_MATCH_CASE + ".icon", PROPERTY_FILTER_MATCH_CASE + ".tooltip");
 		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
-		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
+		optionPanel.add(caseSensitive);
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
 
@@ -248,7 +238,7 @@ public class FilterConditionEditor extends JComponent {
 		approximateMatching = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_APPROXIMATE_MATCH + ".icon", PROPERTY_FILTER_APPROXIMATE_MATCH+ ".tooltip");
 		approximateMatching.setModel(filterController.getApproximateMatchingButtonModel());
 		//add(approximateMatching, gridBagConstraints);
-		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
+		optionPanel.add(approximateMatching);
 		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
 			    PROPERTY_FILTER_APPROXIMATE_MATCH));
 		
@@ -256,13 +246,24 @@ public class FilterConditionEditor extends JComponent {
 		ignoreDiacritics = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_IGNORE_DIACRITICS + ".icon", PROPERTY_FILTER_IGNORE_DIACRITICS+ ".tooltip");
 		ignoreDiacritics.setModel(filterController.getIgnoreDiacriticsButtonModel());
         //add(approximateMatching, gridBagConstraints);
-        ignoreCaseAndApproximateMatchingPanel.add(ignoreDiacritics);
+        optionPanel.add(ignoreDiacritics);
         ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
                 PROPERTY_FILTER_IGNORE_DIACRITICS));
+
+        btnDeny = TranslatedElementFactory.createCheckBox("filter_deny");
+        optionPanel.add(btnDeny, gridBagConstraints);
+
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        panel.add(optionPanel, gridBagConstraints);
+        
+		Dimension preferredSize = values.getPreferredSize();
+		preferredSize.height = Math.max(preferredSize.height, ignoreDiacritics.getPreferredSize().height);
+		values.setPreferredSize(preferredSize);
+
+
 		IMapSelection selection = Controller.getCurrentController().getSelection();
         filterChanged(selection != null ? selection.getFilter() : null);
-
-		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
 
 	}
 
@@ -371,17 +372,28 @@ public class FilterConditionEditor extends JComponent {
 		values.getEditor().addActionListener(enterKeyActionListener);
 	}
 
-	@Override
+	public JComponent getPanel() {
+		return panel;
+	}
+	
+	
+
+	public JPanel getOptionPanel() {
+		return optionPanel;
+	}
+
+	public void setBorder(Border border) {
+		panel.setBorder(border);
+	}
+	
     public void setEnabled(boolean enabled) {
-	    super.setEnabled(enabled);
-	    for(int i = 0; i < getComponentCount(); i++){
-	    	Component c = getComponent(i);
+	    panel.setEnabled(enabled);
+	    for(int i = 0; i < panel.getComponentCount(); i++){
+	    	Component c = panel.getComponent(i);
 	    	c.setEnabled(enabled);
 	    	if (c instanceof JComboBox)
 	    		((JComboBox)c).getEditor().getEditorComponent().setEnabled(enabled);
 	    }
     }
-
-
 
 }

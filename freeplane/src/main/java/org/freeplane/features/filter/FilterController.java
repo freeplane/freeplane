@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,12 +41,14 @@ import java.security.AccessControlException;
 import java.util.Collection;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JToolTip;
@@ -127,11 +130,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		}
 
 	    private void changeFocusWhenVisibilityChanges(final JComponent toolBar) {
-	    	quickEditor.addAncestorListener(new AncestorListener() {
+	    	JComponent editorPanel = quickEditor.getPanel();
+			editorPanel.addAncestorListener(new AncestorListener() {
 	    		@Override
 				public void ancestorAdded(final AncestorEvent event) {
 	    			quickEditor.focusInputField(true);
-	    			quickEditor.removeAncestorListener(this);
+	    			editorPanel.removeAncestorListener(this);
 	    		}
 	    		@Override
 				public void ancestorMoved(final AncestorEvent event) {
@@ -141,7 +145,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	    			final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
 	    			if(selectedComponent != null)
 	    				selectedComponent.requestFocusInWindow();
-	    			quickEditor.removeAncestorListener(this);
+	    			editorPanel.removeAncestorListener(this);
 	    		}
 	    	});
 	    }
@@ -515,19 +519,19 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		    .getBooleanProperty("filter_toolbar_visible"));
 		Controller controller = Controller.getCurrentController();
 		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
-		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
-		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
-        final JToggleButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"),
+		final AbstractButton undoBtn = FreeplaneToolBar.createButton(controller.getAction("UndoFilterAction"));
+		final AbstractButton redoBtn = FreeplaneToolBar.createButton(controller.getAction("RedoFilterAction"));
+        final AbstractButton hideMatchingNodesBox = FreeplaneToolBar.createButton(controller.getAction("HideMatchingNodesAction"),
                 hideMatchingNodes);
         hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
-        final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),
+        final AbstractButton showAncestorsBox = FreeplaneToolBar.createButton(controller.getAction("ShowAncestorsAction"),
                 showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
-		final JToggleButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"),
+		final AbstractButton showDescendantsBox = FreeplaneToolBar.createButton(controller.getAction("ShowDescendantsAction"),
 		    showDescendants);
-		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"),
+		final AbstractButton applyToVisibleBox = FreeplaneToolBar.createButton(controller.getAction("ApplyToVisibleAction"),
 		    applyToVisibleNodeOnly);
-		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
+		final AbstractButton btnEdit = FreeplaneToolBar.createButton(controller.getAction("EditFilterAction"));
 		activeFilterConditionComboBox = new JComboBox(getFilterConditions()){
 				{
 					setMaximumRowCount(10);
@@ -578,40 +582,55 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		};
 		ToolTipManager.sharedInstance().registerComponent(activeFilterConditionComboBox);
 		activeFilterConditionComboBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		final JButton reapplyFilterBtn = new JButton(controller.getAction("ReapplyFilterAction"));
-		final JButton selectFilteredNodesBtn = new JButton(controller.getAction("SelectFilteredNodesAction"));
-		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
-		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
-		final JButton applyFindPreviousBtn = new JButton(controller.getAction("QuickFindAction.BACK"));
-		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
-		final JAutoToggleButton applyQuickFilterBtn = new JAutoToggleButton(controller.getAction("QuickFilterAction"));
-        final JButton applyAndFilterBtn = new JButton(controller.getAction("QuickAndFilterAction"));
-        final JButton applyOrFilterBtn = new JButton(controller.getAction("QuickOrFilterAction"));
-        final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
-		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));
+		final AbstractButton reapplyFilterBtn = FreeplaneToolBar.createButton(controller.getAction("ReapplyFilterAction"));
+		Dimension preferredSize = activeFilterConditionComboBox.getPreferredSize();
+		preferredSize.height = Math.max(preferredSize.height, reapplyFilterBtn.getPreferredSize().height);
+		activeFilterConditionComboBox.setPreferredSize(preferredSize);
+		final AbstractButton selectFilteredNodesBtn = FreeplaneToolBar.createButton(controller.getAction("SelectFilteredNodesAction"));
+		final AbstractButton filterSelectedBtn = FreeplaneToolBar.createButton(controller.getAction("ApplySelectedViewConditionAction"));
+		final AbstractButton noFilteringBtn = FreeplaneToolBar.createButton(controller.getAction("ApplyNoFilteringAction"));
+		final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK"));
+		final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD"));
+		final AbstractButton applyQuickFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFilterAction"));
+        final AbstractButton applyAndFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickAndFilterAction"));
+        final AbstractButton applyOrFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickOrFilterAction"));
+        final AbstractButton applyQuickSelectBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAllAction"));
+		final AbstractButton applyQuickHighlightBtn = FreeplaneToolBar.createButton(controller.getAction("QuickHighlightAction"));
+
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+		filterToolbar.addSeparator();
+		constraints.gridheight = 2;
+		filterToolbar.add(quickEditor.getPanel(), constraints);
+		JPanel optionPanel = quickEditor.getOptionPanel();
+		optionPanel.add(applyQuickHighlightBtn);
+		optionPanel.add(applyFindPreviousBtn);
+		optionPanel.add(applyFindNextBtn);
+		optionPanel.add(applyQuickSelectBtn);
+		optionPanel.add(applyQuickFilterBtn);
+		optionPanel.add(applyAndFilterBtn);
+		optionPanel.add(applyOrFilterBtn);
 
 		filterToolbar.addSeparator();
-		filterToolbar.add(undoBtn);
-		filterToolbar.add(redoBtn);
-        filterToolbar.add(hideMatchingNodesBox);
-        filterToolbar.add(showAncestorsBox);
-		filterToolbar.add(showDescendantsBox);
-		filterToolbar.add(applyToVisibleBox);
-		filterToolbar.add(activeFilterConditionComboBox);
-		filterToolbar.add(reapplyFilterBtn);
-		filterToolbar.add(selectFilteredNodesBtn);
-		filterToolbar.add(filterSelectedBtn);
-		filterToolbar.add(noFilteringBtn);
-		filterToolbar.add(btnEdit);
-		filterToolbar.addSeparator();
-		filterToolbar.add(quickEditor);
-		filterToolbar.add(applyFindPreviousBtn);
-		filterToolbar.add(applyFindNextBtn);
-		filterToolbar.add(applyQuickSelectBtn);
-        filterToolbar.add(applyQuickFilterBtn);
-        filterToolbar.add(applyAndFilterBtn);
-        filterToolbar.add(applyOrFilterBtn);
-		filterToolbar.add(applyQuickHighlightBtn);
+
+		constraints.gridwidth = GridBagConstraints.REMAINDER;
+		constraints.gridheight = 1;
+		constraints.gridy = 0;
+		filterToolbar.add(activeFilterConditionComboBox, constraints);
+		constraints.gridwidth = 1;
+		constraints.gridy = 1;
+		filterToolbar.add(hideMatchingNodesBox, constraints);
+		filterToolbar.add(showAncestorsBox, constraints);
+		filterToolbar.add(showDescendantsBox, constraints);
+		filterToolbar.add(applyToVisibleBox, constraints);
+
+		filterToolbar.add(undoBtn, constraints);
+		filterToolbar.add(redoBtn, constraints);
+		filterToolbar.add(reapplyFilterBtn, constraints);
+		filterToolbar.add(selectFilteredNodesBtn, constraints);
+		filterToolbar.add(filterSelectedBtn, constraints);
+		filterToolbar.add(noFilteringBtn, constraints);
+		filterToolbar.add(btnEdit, constraints);
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
 		return filterToolbar;

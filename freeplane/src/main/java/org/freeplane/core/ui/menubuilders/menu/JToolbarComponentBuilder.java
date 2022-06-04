@@ -58,12 +58,12 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 				gridHeight = 1;
 			}
 			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = -1;
+			constraints.gridx = GridBagConstraints.RELATIVE;
 			constraints.gridy = row;
 			constraints.gridwidth = gridWidth;
 			constraints.gridheight = gridHeight;
 			constraints.fill = GridBagConstraints.VERTICAL;
-			constraints.anchor = GridBagConstraints.LINE_START;
+			constraints.anchor = GridBagConstraints.NORTHWEST;
 			container.add(component, constraints);
 		}
 	}
