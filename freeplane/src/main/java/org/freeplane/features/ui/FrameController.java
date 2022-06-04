@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -110,7 +110,7 @@ abstract public class FrameController implements ViewController {
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 	private static final String MENU_ITEM_FONT_SIZE_PROPERTY = "menuItemFontSize";
 
-	
+
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
 		 *
@@ -621,11 +621,12 @@ abstract public class FrameController implements ViewController {
 			    if(! lookAndFeelSet) {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			        UIManager.setLookAndFeel(lookAndFeelClassName);
-			        
+
 			    }
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
+				fixLookAndFeelUIEnabled = true;
 				boolean lookAndFeelSet = false;
 				for (LookAndFeelInfo lafInfo : lafInfos) {
 					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)
@@ -658,20 +659,21 @@ abstract public class FrameController implements ViewController {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 	}
-	
+	private static boolean fixLookAndFeelUIEnabled = false;
 	static {
 	    UIManager.addPropertyChangeListener(new PropertyChangeListener() {
-	        public void propertyChange(PropertyChangeEvent event) {
-	          if (event.getPropertyName().equals("lookAndFeel")) {
-	        	  fixLookAndFeelUI((LookAndFeel) event.getNewValue());
+	        @Override
+			public void propertyChange(PropertyChangeEvent event) {
+	          if (fixLookAndFeelUIEnabled && event.getPropertyName().equals("lookAndFeel")) {
+	        	  fixLookAndFeelUI();
 	          }
 	        }
 	      });
 
 	}
-    private static void fixLookAndFeelUI(LookAndFeel lookAndFeel){
-    	addHotKeysToMotifInputMaps(lookAndFeel);
-    	configureFlatLookAndFeel(lookAndFeel);
+    private static void fixLookAndFeelUI(){
+    	addHotKeysToMotifInputMaps();
+    	configureFlatLookAndFeel();
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -681,12 +683,12 @@ abstract public class FrameController implements ViewController {
 			}
 			resourceController.setProperty("hugeFontsFixed", true);
 		}
-		int lookAndFeelDefaultMenuItemFontSize = obtainLookAndFeelDefaultMenuItemFontSize(UIManager.getLookAndFeel());
+		int lookAndFeelDefaultMenuItemFontSize = obtainLookAndFeelDefaultMenuItemFontSize();
 		final int defaultMenuItemSize = (int) Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
 		resourceController.setDefaultProperty(MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
 		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, defaultMenuItemSize);
 		final double scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
-		scaleDefaultUIFonts(scalingFactor, UIManager.getLookAndFeel());
+		scaleDefaultUIFonts(scalingFactor);
 		Object checkIcon =  UIManager.getDefaults().get("CheckBoxMenuItem.checkIcon");
 		if(checkIcon instanceof Icon) {
 			int checkIconHeight = new Quantity<>(userDefinedMenuItemFontSize * 2 / 3, LengthUnit.pt).toBaseUnitsRounded();
@@ -697,7 +699,7 @@ abstract public class FrameController implements ViewController {
 		// Scrollbar thumb disappears with Nimbus L&F
 		// http://stackoverflow.com/questions/32857372/jscrollbar-dont-show-thumb-in-nimbus-lf
 		final Dimension minimumThumbSize = new Dimension(30, 30);
-		UIManager.getLookAndFeelDefaults().put("ScrollBar.minimumThumbSize", minimumThumbSize);
+		UIManager.getDefaults().put("ScrollBar.minimumThumbSize", minimumThumbSize);
 		UIManager.put("ScrollBar.minimumThumbSize", minimumThumbSize);
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8179014
 		UIManager.put("FileChooser.useSystemExtensionHiding", false);
@@ -706,10 +708,11 @@ abstract public class FrameController implements ViewController {
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
 
-	private static int obtainLookAndFeelDefaultMenuItemFontSize(LookAndFeel lookAndFeel) {
+	private static int obtainLookAndFeelDefaultMenuItemFontSize() {
 		String[] fontsProperties = {"MenuItem.font", "defaultFont"};
 		for(String fontProperty : fontsProperties) {
-			Font font = lookAndFeel.getDefaults().getFont(fontProperty);
+			UIManager.put(fontProperty, null);
+			Font font = UIManager.getDefaults().getFont(fontProperty);
 			if (font != null) {
 				return font.getSize();
 			}
@@ -733,8 +736,8 @@ abstract public class FrameController implements ViewController {
         return false;
     }
 
-	private static void configureFlatLookAndFeel(LookAndFeel lookAndFeel) {
-        if(lookAndFeel instanceof FlatLaf) {
+	private static void configureFlatLookAndFeel() {
+        if(UIManager.getLookAndFeel() instanceof FlatLaf) {
         	UIManager.put("TableHeader.height", 2);
         	UIManager.put("Table.showHorizontalLines", true);
         	UIManager.put("Table.showVerticalLines", true);
@@ -747,9 +750,9 @@ abstract public class FrameController implements ViewController {
         }
 	}
 
-	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
-        if(lookAndFeel.getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
-            UIDefaults uiDefaults = UIManager.getLookAndFeelDefaults();
+	private static void addHotKeysToMotifInputMaps() {
+        if(UIManager.getLookAndFeel().getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
+            UIDefaults uiDefaults = UIManager.getDefaults();
             uiDefaults.replaceAll((k, v) -> replaceMotifLazyInputMaps(k, v));
          }
     }
@@ -785,18 +788,22 @@ abstract public class FrameController implements ViewController {
         };
     }
 
-	private static void scaleDefaultUIFonts(double scalingFactor, LookAndFeel lookAndFeel) {
-		final UIDefaults lookAndFeelDefaults = lookAndFeel.getDefaults();
-		Set<Object> keySet = lookAndFeelDefaults.keySet();
-		Set<Font> scaledFonts = new HashSet<>();
+	private static void scaleDefaultUIFonts(double scalingFactor) {
+		final UIDefaults uiDefaults = UIManager.getDefaults();
+		UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
+		Set<Object> keySet = uiDefaults.keySet();
+		Map<Font, Void> scaledFonts = new IdentityHashMap<>();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
 		for (Object key : keys) {
 			if (isFontKey(key)) {
-				Font font = lookAndFeelDefaults.getFont(key);
-				if (font != null && ! scaledFonts.contains(font)) {
+				UIManager.put(key, null);
+				Font font = uiDefaults.getFont(key);
+				if (font != null && ! scaledFonts.containsKey(font)) {
 					font = UITools.scaleFontInt(font, scalingFactor);
 					lookAndFeelDefaults.put(key, font);
-					scaledFonts.add(font);
+					uiDefaults.put(key, font);
+					UIManager.put(key, font);
+					scaledFonts.put(font, null);
 				}
 			}
 		}
@@ -923,7 +930,7 @@ abstract public class FrameController implements ViewController {
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		StaticInvoker.invokeAndWait(runnable);
 	}
-	
+
 	static private class StaticInvoker {
 		private static void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 			if(EventQueue.isDispatchThread())

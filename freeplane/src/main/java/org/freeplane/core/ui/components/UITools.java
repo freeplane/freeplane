@@ -68,6 +68,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.api.LengthUnit;
@@ -729,7 +730,11 @@ public class UITools {
 	}
 
 	public static Font scaleFontInt(Font font, double additionalFactor) {
-		return font.deriveFont(font.getStyle(), Math.round(font.getSize2D()*UITools.FONT_SCALE_FACTOR * additionalFactor));
+		Font derivedFont = font.deriveFont(font.getStyle(), Math.round(font.getSize2D()*UITools.FONT_SCALE_FACTOR * additionalFactor));
+		if(font instanceof FontUIResource && ! (derivedFont instanceof FontUIResource))
+			return new FontUIResource(derivedFont);
+		else
+			return derivedFont;
 	}
 
 
