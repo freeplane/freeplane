@@ -66,7 +66,7 @@ import org.freeplane.features.mode.Controller;
  */
 public class FilterConditionEditor {
     
-    public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, NODE_CONDITION, SEARCH_DIALOG }
+	public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, NODE_CONDITION, SEARCH_DIALOG }
     
 	private class ElementaryConditionChangeListener implements ItemListener {
 		@Override
@@ -153,6 +153,7 @@ public class FilterConditionEditor {
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
 	private static final String PROPERTY_FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
+	private static final String PROPERTY_FILTER_DENY = "filter_deny";
 	
 	private static final DecoratedConditionFactory DECORATED_CONDITION_FACTORY = new DecoratedConditionFactory();
 	
@@ -167,7 +168,7 @@ public class FilterConditionEditor {
 	private WeakReference<Filter> lastFilter;
 	final private JComboBox values;
 	private ActionListener enterKeyActionListener;
-	final private JCheckBox btnDeny;
+	final private JToggleButton btnDeny;
 	private final JComponent panel;
 	private final JToolBar optionPanel;
 	public FilterConditionEditor(final FilterController filterController, final Variant variant) {
@@ -250,7 +251,7 @@ public class FilterConditionEditor {
         ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
                 PROPERTY_FILTER_IGNORE_DIACRITICS));
 
-        btnDeny = TranslatedElementFactory.createCheckBox("filter_deny");
+        btnDeny = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_DENY + ".icon", PROPERTY_FILTER_DENY);
         optionPanel.add(btnDeny, gridBagConstraints);
 
         gridBagConstraints.gridy = 1;
