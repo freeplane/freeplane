@@ -66,6 +66,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ButtonModelStateChangeListenerForProperty;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -518,16 +519,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
 		final AbstractButton undoBtn = FreeplaneToolBar.createButton(controller.getAction("UndoFilterAction"));
 		final AbstractButton redoBtn = FreeplaneToolBar.createButton(controller.getAction("RedoFilterAction"));
-        final AbstractButton hideMatchingNodesBox = FreeplaneToolBar.createButton(controller.getAction("HideMatchingNodesAction"),
-                hideMatchingNodes);
+        final AbstractButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"), hideMatchingNodes);
         hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
-        final AbstractButton showAncestorsBox = FreeplaneToolBar.createButton(controller.getAction("ShowAncestorsAction"),
-                showAncestors);
+        final AbstractButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"), showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
-		final AbstractButton showDescendantsBox = FreeplaneToolBar.createButton(controller.getAction("ShowDescendantsAction"),
-		    showDescendants);
-		final AbstractButton applyToVisibleBox = FreeplaneToolBar.createButton(controller.getAction("ApplyToVisibleAction"),
-		    applyToVisibleNodeOnly);
+		final AbstractButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"), showDescendants);
+		final AbstractButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"), applyToVisibleNodeOnly);
 		final AbstractButton btnEdit = FreeplaneToolBar.createButton(controller.getAction("EditFilterAction"));
 		activeFilterConditionComboBox = new JComboBox(getFilterConditions()){
 				{

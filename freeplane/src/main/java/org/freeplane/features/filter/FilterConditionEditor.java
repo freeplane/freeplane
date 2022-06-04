@@ -32,7 +32,6 @@ import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
-import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -50,6 +49,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
@@ -222,10 +222,7 @@ public class FilterConditionEditor {
 		values.setEditable(true);
 		setValuesEnterKeyListener();
 
-		optionPanel = new JToolBar();
-		optionPanel.setFloatable(false);
-		optionPanel.setRollover(true);
-		optionPanel.setBorder(BorderFactory.createEmptyBorder());
+		optionPanel = new FreeplaneToolBar(JToolBar.VERTICAL);
 
 		optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
@@ -258,6 +255,7 @@ public class FilterConditionEditor {
 
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
         panel.add(optionPanel, gridBagConstraints);
         
 		Dimension preferredSize = values.getPreferredSize();

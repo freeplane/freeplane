@@ -1,24 +1,22 @@
 package org.freeplane.features.icon.mindmapmode;
 
-import java.awt.LayoutManager;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
+import javax.swing.JToolBar;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
-import org.freeplane.core.ui.components.ResizablePanel;
-import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.features.mode.ModeController;
 
 public class FastAccessableIcons {
      
-	public class ActionPanel extends ResizablePanel {
+	public class ActionPanel extends FreeplaneToolBar {
 		private final AFreeplaneAction[] controlActions;
 
 		private static final long serialVersionUID = 1L;
@@ -31,8 +29,8 @@ public class FastAccessableIcons {
 			this.buttonConfigurer = buttonConfigurer;
 		}
 
-		private ActionPanel(LayoutManager layout, AFreeplaneAction[] controlActions) {
-			super(layout);
+		private ActionPanel(AFreeplaneAction[] controlActions) {
+			super(JToolBar.VERTICAL);
 			this.controlActions = controlActions;
 			l = new ListDataListener() {
 				
@@ -48,7 +46,7 @@ public class FastAccessableIcons {
 				@Override
 				public void intervalAdded(ListDataEvent e) {
 					for(int i = e.getIndex0(); i <= e.getIndex1(); i++) {
-						AbstractButton button = createButton(actions.elementAt(i));
+						AbstractButton button = createAndConfigureButton(actions.elementAt(i));
 						add(button, controlActions.length + i);
 					}
 					revalidate();
@@ -66,18 +64,18 @@ public class FastAccessableIcons {
 		@Override
 		public void addNotify() {
 			for(int i = 0; i < controlActions.length; i++) {
-				AbstractButton button = createButton(controlActions[i]);
+				AbstractButton button = createAndConfigureButton(controlActions[i]);
 				add(button);
 			}
 			for(int i = 0; i < actions.size(); i++) {
-				AbstractButton button = createButton(actions.elementAt(i));
+				AbstractButton button = createAndConfigureButton(actions.elementAt(i));
 				add(button);
 			}
 			actions.addListDataListener(l);
 			super.addNotify();
 		}
 
-		private AbstractButton createButton(AFreeplaneAction action) {
+		private AbstractButton createAndConfigureButton(AFreeplaneAction action) {
 			AbstractButton button = FreeplaneToolBar.createButton(action);
 			if(buttonConfigurer !=  null)
 				buttonConfigurer.accept(button);
@@ -133,7 +131,7 @@ public class FastAccessableIcons {
     }
     
     public ActionPanel createActionPanel(AFreeplaneAction... controlActions) {
-    	ActionPanel panel = new ActionPanel(ToolbarLayout.vertical(), controlActions);
+    	ActionPanel panel = new ActionPanel(controlActions);
 		return panel;
 	}
 

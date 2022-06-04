@@ -55,8 +55,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
-import org.freeplane.core.ui.components.ResizablePanel;
-import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
@@ -558,7 +556,7 @@ public class MIconController extends IconController {
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_LAST_ICON_ACTION)),
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_ALL_ICONS_ACTION)),
 		};
-		ResizablePanel actionPanel = new ResizablePanel(ToolbarLayout.vertical());
+		FreeplaneToolBar actionPanel = new FreeplaneToolBar(JToolBar.VERTICAL);
 		Stream.of(buttons).forEach(actionPanel::add);
 		iconToolBar.add(actionPanel);
         iconToolBar.addSeparator();

@@ -58,11 +58,16 @@ public class FreeplaneToolBar extends JToolBar {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	private boolean disablesFocus;
 
+	public FreeplaneToolBar(int orientation) {
+		this(null, orientation);
+	}
 	/**
 	 */
 	public FreeplaneToolBar(final String name, final int orientation) {
 		super(name, orientation);
+		this.disablesFocus = true;
 		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
@@ -84,7 +89,12 @@ public class FreeplaneToolBar extends JToolBar {
 		});
 	}
 
-
+	public boolean disablesFocus() {
+		return disablesFocus;
+	}
+	public void setDisablesFocus(boolean disablesFocus) {
+		this.disablesFocus = disablesFocus;
+	}
 
 	@Override
     public void setLayout(LayoutManager mgr) {
@@ -158,18 +168,18 @@ public class FreeplaneToolBar extends JToolBar {
 		else {
 			button = new JButton(action);
 		}
-	    configureToolbarButton(button);
 	    return button;
 	}
 
-
-
-	public static void configureToolbarButton(AbstractButton abstractButton) {
+	private void configureToolbarButton(AbstractButton abstractButton) {
 		configureToolbarButtonText(abstractButton);
 		configureToolbarButtonSize(abstractButton);
+		if(disablesFocus)
+			abstractButton.setFocusable(false);
+
 	}
 
-	private static void configureToolbarButtonText(final AbstractButton abstractButton) {
+	private void configureToolbarButtonText(final AbstractButton abstractButton) {
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
 			final String toolTipText = abstractButton.getToolTipText();
@@ -182,7 +192,7 @@ public class FreeplaneToolBar extends JToolBar {
 		}
 	}
 
-	private static void configureToolbarButtonSize(final AbstractButton abstractButton) {
+	private void configureToolbarButtonSize(final AbstractButton abstractButton) {
 		if (Compat.isMacOsX()) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmentedGradient");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");
@@ -190,16 +200,6 @@ public class FreeplaneToolBar extends JToolBar {
 			abstractButton.setPreferredSize(buttonSize);
 			abstractButton.setFocusPainted(false);
 		}
-		abstractButton.setFocusable(false);
 		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
-	}
-
-
-
-	public static AbstractButton createButton(AFreeplaneAction action,
-			ButtonModel hideMatchingNodes) {
-		JAutoToggleButton button = new JAutoToggleButton(action, hideMatchingNodes);
-		configureToolbarButton(button);
-	    return button;
 	}
 }

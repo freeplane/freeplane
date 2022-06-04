@@ -565,7 +565,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	}
 
 	public void addActionPanel(ActionPanel actionPanel) {
-		
+		actionPanel.setDisablesFocus(false);
 		actionPanel.setButtonConfigurer(this::configureButton);
 		
 		Container contentPane = getContentPane();
@@ -577,7 +577,6 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 
 	private void configureButton(AbstractButton b) {
 		b.addMouseListener(focusRequester);
-		b.setFocusable(true);
 		b.addActionListener(actionPanelActionListener);
 	}
 }
