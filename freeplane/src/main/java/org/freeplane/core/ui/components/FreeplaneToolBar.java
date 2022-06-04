@@ -21,6 +21,7 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.HierarchyBoundsListener;
@@ -55,9 +56,10 @@ public class FreeplaneToolBar extends JToolBar {
 		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
-		if(orientation == SwingConstants.HORIZONTAL)
-			super.setLayout(ToolbarLayout.horizontal());
-		else
+		if(orientation == SwingConstants.HORIZONTAL) {
+			GridBagLayout gridBagLayout = new GridBagLayout();
+			super.setLayout(gridBagLayout);
+		} else
 			super.setLayout(ToolbarLayout.vertical());
 		addHierarchyBoundsListener(new HierarchyBoundsListener() {
 			@Override

@@ -1,10 +1,10 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.GridBagConstraints;
 
+import javax.swing.JSeparator;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionEnabler;
@@ -13,7 +13,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JToolbarComponentBuilder implements EntryVisitor {
-
 	private final ComponentProvider componentProvider;
 
 	public JToolbarComponentBuilder(ComponentProvider componentProvider) {
@@ -24,7 +23,6 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 	public JToolbarComponentBuilder() {
 		this(new ToolbarComponentProvider());
 	}
-
 
 	@Override
 	public void visit(Entry entry) {
@@ -38,16 +36,42 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 				action.addPropertyChangeListener(actionEnabler);
 				entry.setAttribute(actionEnabler.getClass(), actionEnabler);
 			}
-			final Container container = (Container) new EntryAccessor().getAncestorComponent(entry);
-			if (container instanceof JToolBar)
-				container.add(component);
+			final JToolBar container = (JToolBar) new EntryAccessor().getAncestorComponent(entry);
+			final int gridWidth;
+			final int gridHeight;
+			String rowSpec = (String) entry.getAttribute("row");
+			if(rowSpec == null)
+				rowSpec = (String) entry.getParent().getAttribute("row");
+			final int row;
+			if ("2".equals(rowSpec))
+				row = 1;
 			else
-				SwingUtilities.getAncestorOfClass(JToolBar.class, container).add(component);
+				row = 0;
+			String widthSpec =(String)entry.getAttribute("width");
+			if(widthSpec != null)
+				gridWidth = Integer.valueOf(widthSpec);
+			else
+				gridWidth = 1;
+			if(rowSpec == null || component instanceof JSeparator) {
+				gridHeight = 2;
+			} else {
+				gridHeight = 1;
+			}
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = -1;
+			constraints.gridy = row;
+			constraints.gridwidth = gridWidth;
+			constraints.gridheight = gridHeight;
+			constraints.fill = GridBagConstraints.VERTICAL;
+			constraints.anchor = GridBagConstraints.LINE_START;
+			container.add(component, constraints);
 		}
 	}
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return false;
+		final EntryAccessor entryAccessor = new EntryAccessor();
+		AFreeplaneAction action = entryAccessor.getAction(entry);
+		return action != null;
 	}
 }
