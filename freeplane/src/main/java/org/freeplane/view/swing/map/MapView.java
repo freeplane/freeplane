@@ -2352,7 +2352,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final boolean sizeChanged = getWidth() != width || getHeight() != height;
 		if(sizeChanged) {
 			super.setSize(width, height);
-			scrollsViewAfterLayout = true;
 			validate();
 		}
     }
@@ -2466,4 +2465,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	boolean allowsCompactLayout() {
 		return allowsCompactLayout;
 	}
+
+	@Override
+	public void invalidate() {
+		if(! rootView.isValid())
+			scrollsViewAfterLayout = true;
+		super.invalidate();
+	}
+	
+	
 }
