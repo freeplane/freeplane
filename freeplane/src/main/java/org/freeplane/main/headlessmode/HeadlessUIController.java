@@ -103,11 +103,6 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	@Override
-	public boolean isApplet() {
-		return false;
-	}
-
-	@Override
 	public boolean isMenubarVisible() {
 		throw methodNotImplementedException();
 	}
@@ -206,7 +201,7 @@ public class HeadlessUIController extends FrameController {
 	public ExecutorService getMainThreadExecutorService() {
 		return executorService;
 	}
-	
+
 	@Override
 	public void invokeLater(Runnable runnable) {
 		executorService.execute(runnable);

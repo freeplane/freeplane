@@ -48,7 +48,7 @@ class DialogController extends FrameController {
 	private JScrollPane mapViewScrollPane = null;
 
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
-	/** Contains the Note Window Component 
+	/** Contains the Note Window Component
 	 * @param controller */
 	public DialogController(Controller controller, final IMapViewManager mapViewController, final JDialog dialog) {
 		super(controller, mapViewController, "dialog_");
@@ -74,11 +74,6 @@ class DialogController extends FrameController {
 	@Override
 	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean isApplet() {
-		return false;
 	}
 
 	@Override
@@ -130,10 +125,12 @@ class DialogController extends FrameController {
 	    mapViewScrollPane.getViewport().setView(mapViewComponent);
     }
 
+	@Override
 	public void previousMapView() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void nextMapView() {
 		throw new RuntimeException("Method not implemented");
 	}

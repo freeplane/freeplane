@@ -60,7 +60,7 @@ import org.osgi.service.url.URLStreamHandlerService;
  * 05.01.2009
  */
 class ActivatorImpl implements BundleActivator {
-	
+
 	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
 
 	private FreeplaneStarter starter;
@@ -176,6 +176,7 @@ class ActivatorImpl implements BundleActivator {
 		if(options.isNonInteractive())
 			System.setProperty(JAVA_HEADLESS_PROPERTY, "true");
 
+		Compat.setIsApplet(false);
 		starter =  createStarter(options);
 		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, GraphicsEnvironment.isHeadless());
 		singleInstanceManager.start(options);
@@ -270,7 +271,7 @@ class ActivatorImpl implements BundleActivator {
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
 		osgiExtentionInstaller.installExtensions(controller);
 	}
-	
+
 
 	public FreeplaneStarter createStarter(CommandLineOptions options) {
 		if(GraphicsEnvironment.isHeadless()) {

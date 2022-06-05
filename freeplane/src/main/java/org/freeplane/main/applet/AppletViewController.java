@@ -78,22 +78,6 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		mapContentBox.add(scrollPane, BorderLayout.CENTER);
 		applet.getContentPane().add(mapContentBox, BorderLayout.CENTER);
 		super.init(controller);
-		SwingUtilities.updateComponentTreeUI(applet);
-		if (!EventQueue.isDispatchThread()) {
-			try {
-				EventQueue.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-					};
-				});
-			}
-			catch (final InterruptedException e) {
-				LogUtils.severe(e);
-			}
-			catch (final InvocationTargetException e) {
-				LogUtils.severe(e);
-			}
-		}
 		getController().selectMode(BModeController.MODENAME);
 		String initialMapName = ResourceController.getResourceController().getProperty("browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
@@ -131,11 +115,6 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		mComponentInSplitPane = pMindMapComponent;
 		mapContentBox.add(pMindMapComponent, BorderLayout.SOUTH);
 		mapContentBox.revalidate();
-	}
-
-	@Override
-	public boolean isApplet() {
-		return true;
 	}
 
 	@Override

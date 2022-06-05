@@ -618,7 +618,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean allowsCompactLayout;
 	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
-	private boolean scrollsViewAfterLayout = false;
+	private boolean scrollsViewAfterLayout = true;
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -2297,8 +2297,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public Color getNoteBackground() {
         return noteBackground;
     }
-    
-    
+
+
 
 	public NodeCss getDetailCss() {
 		return detailCss;
@@ -2384,7 +2384,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void preserveSelectedNodeLocation() {
-		if(selectedsValid) 
+		if(selectedsValid)
 			preserveNodeLocationOnScreen(getSelected());
     }
 

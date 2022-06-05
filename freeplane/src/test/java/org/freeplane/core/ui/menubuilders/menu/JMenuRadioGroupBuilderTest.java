@@ -13,6 +13,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.util.Compat;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -39,12 +40,8 @@ public class JMenuRadioGroupBuilderTest {
 		when(resourceAccessorMock.getRawText(anyString())).thenReturn("");
 		when(resourceAccessorMock.getRawText("menu")).thenReturn("menu");
 		accelerators = mock(IAcceleratorMap.class);
-		acceleratebleActionProvider = new AcceleratebleActionProvider() {
-			@Override
-			protected boolean isApplet() {
-				return false;
-			}
-		};
+		Compat.setIsApplet(false);
+		acceleratebleActionProvider = new AcceleratebleActionProvider();
 		radioGroupBuilder = new JMenuRadioGroupBuilder(popupListener, accelerators, acceleratebleActionProvider,
 		    resourceAccessorMock);
 	}

@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.menubuilders.HeadlessFreeplaneRunner;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.hamcrest.CoreMatchers;
@@ -21,6 +22,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class JToolbarComponentBuilderTest {
+	static{
+		new HeadlessFreeplaneRunner();
+	}
 	@Test
 	public void createsToolbarButtonWithAction() {
 		Entry actionEntry = new Entry();
@@ -31,7 +35,7 @@ public class JToolbarComponentBuilderTest {
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
-		
+
 		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
 		toolbarActionGroupBuilder.visit(actionEntry);
 
@@ -40,7 +44,7 @@ public class JToolbarComponentBuilderTest {
 		assertThat(button.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
 	}
-	
+
 	@Test
 	public void createsToolbarButtonWithSelectableAction() {
 		Entry actionEntry = new Entry();
@@ -52,7 +56,7 @@ public class JToolbarComponentBuilderTest {
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
-		
+
 		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
 		toolbarActionGroupBuilder.visit(actionEntry);
 
@@ -61,7 +65,7 @@ public class JToolbarComponentBuilderTest {
 		assertThat(button.getAction(), CoreMatchers.<Action>equalTo(action));
 		assertThat(button.getParent(), CoreMatchers.equalTo((Container)toolbar));
 	}
-	
+
 	@Test
 	public void createsVerticalToolbarSeparator() {
 		Entry separatorEntry = new Entry();
@@ -71,7 +75,7 @@ public class JToolbarComponentBuilderTest {
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("toolbar", SwingConstants.HORIZONTAL);
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(separatorEntry);
-		
+
 		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
 		toolbarActionGroupBuilder.visit(separatorEntry);
 

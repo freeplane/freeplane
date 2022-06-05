@@ -46,6 +46,7 @@ import javax.swing.text.html.parser.ParserDelegator;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.FilterController;
@@ -138,6 +139,7 @@ public class FreeplaneApplet extends JApplet {
 							setDefaultDTD();
 						}
 					};
+					Compat.setIsApplet(true);
 					controller = new Controller(appletResourceController);
 					updateLookAndFeel(appletResourceController);
 					Controller.setCurrentController(controller);

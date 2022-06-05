@@ -183,7 +183,6 @@ abstract public class FrameController implements ViewController {
 		}
 	}
 	private final IMapViewManager mapViewManager;
-
 	public FrameController(Controller controller, final IMapViewManager mapViewManager,
 	                       final String propertyKeyPrefix) {
 		super();
@@ -263,9 +262,6 @@ abstract public class FrameController implements ViewController {
 
 	@Override
 	abstract public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
-
-	@Override
-	abstract public boolean isApplet();
 
 	@Override
 	public boolean isMenubarVisible() {
@@ -737,6 +733,8 @@ abstract public class FrameController implements ViewController {
     }
 
 	private static void configureFlatLookAndFeel() {
+		if(Compat.isApplet())
+			return;
         if(UIManager.getLookAndFeel() instanceof FlatLaf) {
         	UIManager.put("TableHeader.height", 2);
         	UIManager.put("Table.showHorizontalLines", true);

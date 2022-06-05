@@ -65,8 +65,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.mindmapmode.MMapController;
-import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
@@ -90,7 +88,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	public static final String FIT_TO_VIEWPORT = "fit_to_viewport";
-	
+
 	private static final ThreadLocal<Boolean> followedStyleUpdateActive = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 	public static void install(boolean persistent){
@@ -384,7 +382,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    String allowsCompactLayout = styleModel.getProperty(ALLOW_COMPACT_LAYOUT);
 	    return Boolean.parseBoolean(allowsCompactLayout);
 	}
-	
+
 	@Override
 	protected Class<MapStyleModel> getExtensionClass() {
 	    return MapStyleModel.class;
@@ -459,7 +457,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         URI uri = file.toURI();
         replaceStyles(uri, targetMap, shouldFollow, shouldAssociate);
 	}
-	
+
 	public void replaceStyles(URI uri, MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException{
 		final URL url = uri.toURL();
 	    loadStyleMapContainer(url).ifPresent(styleMapContainer ->
@@ -468,7 +466,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				updateFollowProperties(targetMap, uri, shouldFollow, shouldAssociate);
 	        });
 	}
-	
+
     private void undoableCopyStyleToAssociatedExternalTemplate(MapModel map, IStyle styleKey){
         final TemplateManager templateManager = TemplateManager.INSTANCE;
         String templateLocationPropertyValue = getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
@@ -505,7 +503,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         }
 
     }
-    
+
     private void undoableCopyStyleToExternalMap(MapModel map, IStyle styleKey, URI sourceLocation, File targetFile) throws MalformedURLException {
 	    MapStyleModel sourceStyles = MapStyleModel.getExtension(map);
 	    NodeModel copiedStyleNode = sourceStyles.getStyleNode(styleKey);
@@ -526,10 +524,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     private void undoableCopyStyleToLoadedMap(IStyle styleKey, NodeModel copiedStyleNode,
             final URL url) {
         ModeController modeController = Controller.getCurrentModeController();
-        MMapModel loadedMap = ((MMapController) modeController.getMapController()).getMap(url);
+        MapModel loadedMap = modeController.getMapController().getMap(url);
         if(loadedMap != null) {
             undoableCopyStyle(styleKey, copiedStyleNode, loadedMap);
-        }   
+        }
     }
 
     public void undoableCopyStyle(IStyle styleKey, NodeModel copiedStyleNode,
@@ -617,7 +615,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         if(shouldFollow) {
 			setProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, normalizedLocation);
 			updateLastModificationTime(map, uri);
-			
+
 		}
 		else {
 			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
@@ -639,7 +637,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			lastModified = null;
 		setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, lastModified);
 	}
-	
+
 
 	public void copyStyles(URI uri, MapModel targetMap, boolean shouldFollow, boolean shouldAssociate) throws MalformedURLException {
 		final URL url = uri.toURL();
@@ -660,7 +658,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         String followedTemplate = followedTemplate(mapStyleModel);
         String lastUpdateTimeString = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME);
         long lastUpdateTime = lastUpdateTimeString != null ? Long.parseLong(lastUpdateTimeString) : 0;
-        String followedMapPath; 
+        String followedMapPath;
         if(followedTemplate != null) {
             try {
                 URI source = TemplateManager.INSTANCE.expandTemplateLocation(new URI(followedTemplate));
@@ -705,6 +703,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
     private String followedTemplate(MapStyleModel mapStyleModel) {
+    	if(Compat.isApplet())
+    		return null;
         normalizeOldFormatTemplateLocation(mapStyleModel);
         return mapStyleModel.getProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
     }
@@ -715,7 +715,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         if(oldPropertyLocation != null) {
             mapStyleModel.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, null);
             try {
-                mapStyleModel.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, 
+                mapStyleModel.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
                         templateManager.normalizeTemplateLocation(new URI(oldPropertyLocation)).toString());
             } catch (URISyntaxException e) {
                 LogUtils.severe(e);
@@ -762,7 +762,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		mapStyleModel.setZoom(zoom);
 		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
-	
+
 	public float getZoom(final MapModel map) {
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		return mapStyleModel.getZoom();

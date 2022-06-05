@@ -22,6 +22,7 @@ package org.freeplane.features.icon;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 
 public class EmojiIcon extends MindIcon {
@@ -29,7 +30,7 @@ public class EmojiIcon extends MindIcon {
     private static final String RESOURCE_IMAGE_PATH = "/images/emoji";
     private static final String REMOTE_IMAGE_PATH = "https://twemoji.maxcdn.com/v/" + VERSION + "/svg/";
 
-    private static final boolean areResourcesAvailable = ! Controller.getCurrentController().getViewController().isApplet();
+    private static final boolean areResourcesAvailable = ! Compat.isApplet();
 
     final String emoji;
 
