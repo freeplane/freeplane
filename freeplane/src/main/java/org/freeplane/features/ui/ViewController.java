@@ -62,8 +62,6 @@ public interface ViewController {
 
 	public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
-	public boolean isApplet();
-
 	public boolean isMenubarVisible();
 
 	public void openDocument(Hyperlink link) throws IOException;
@@ -112,9 +110,9 @@ public interface ViewController {
 	public boolean quit();
 
 	public boolean isDispatchThread();
-	
+
 	public void invokeLater(Runnable runnable);
-	
+
 	public ExecutorService getMainThreadExecutorService();
 
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException;

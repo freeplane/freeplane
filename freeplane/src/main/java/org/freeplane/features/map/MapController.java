@@ -1122,4 +1122,9 @@ implements IExtension, NodeChangeAnnouncer{
 		select(getNodeFromID_(nodeReference));
 	}
 
+
+	public MapModel getMap(URL url) {
+		throw new RuntimeException("Method not implemented");
+	}
+
 }

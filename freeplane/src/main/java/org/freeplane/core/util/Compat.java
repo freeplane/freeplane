@@ -128,7 +128,7 @@ public class Compat {
 			return;
 		}
 		try {
-			final String lookandfeel = System.getProperty("lookandfeel", 
+			final String lookandfeel = System.getProperty("lookandfeel",
 					ResourceController.getResourceController().getProperty("lookandfeel"));
 			if (lookandfeel.equals(FrameController.VAQUA_LAF_NAME)
 					|| lookandfeel.equals(FrameController.VAQUA_LAF_CLASS_NAME)) {
@@ -162,6 +162,7 @@ public class Compat {
 
 
 	private static String userFpDir = null;
+	private static Boolean isApplet = null;
 
 
 	/** the directory *including* the version directory. */
@@ -239,4 +240,19 @@ public class Compat {
         final int modifiers = getModifiers(e);
         return modifiers == InputEvent.SHIFT_DOWN_MASK;
     }
+
+	static public boolean isApplet() {
+		if(Compat.isApplet == null)
+			throw new IllegalStateException("Not set");
+		return isApplet.booleanValue();
+	}
+
+	static public void setIsApplet(boolean isApplet) {
+		if(Compat.isApplet != null) {
+			if (isApplet != Compat.isApplet.booleanValue())
+				throw new IllegalStateException("Already set");
+		}
+		else
+			Compat.isApplet = isApplet;
+	}
 }

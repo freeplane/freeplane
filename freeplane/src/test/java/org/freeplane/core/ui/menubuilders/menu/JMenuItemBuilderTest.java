@@ -37,7 +37,7 @@ public class JMenuItemBuilderTest {
 	static{
 		new HeadlessFreeplaneRunner();
 	}
-	
+
 	private Entry actionEntry;
 	private AFreeplaneAction action;
 	private Entry menuEntry;
@@ -73,16 +73,12 @@ public class JMenuItemBuilderTest {
 		when(resourceAccessorMock.getRawText(anyString())).thenReturn("");
 		when(resourceAccessorMock.getRawText("menu")).thenReturn("menu");
 		accelerators = mock(IAcceleratorMap.class);
-		acceleratebleActionProvider = new AcceleratebleActionProvider() {
-			@Override
-			protected boolean isApplet() {
-				return false;
-			}
-		};
+		Compat.setIsApplet(false);
+		acceleratebleActionProvider = new AcceleratebleActionProvider();
 		menuActionGroupBuilder = new JMenuItemBuilder(popupListener, accelerators, acceleratebleActionProvider,
 		    resourceAccessorMock);
 	}
-	
+
 	@Test
 	public void createsMenuButtonWithAction() {
 		new EntryAccessor().setComponent(menuEntry, menu);
@@ -120,14 +116,14 @@ public class JMenuItemBuilderTest {
 		assertThat(itemAction.getOriginalAction(), CoreMatchers.<Action> equalTo(action));
 		assertThat(item.getParent(), CoreMatchers.equalTo(menu.getPopupMenu()));
 	}
-	
+
 	@Test
 	public void createsMenuSeparator() {
 		new EntryAccessor().setComponent(menuEntry, menu);
 		Entry separatorEntry = new Entry();
 		separatorEntry.setBuilders(Collections.singletonList("separator"));
 		menuEntry.addChild(separatorEntry);
-		
+
 		menuActionGroupBuilder.visit(separatorEntry);
 
 		JPopupMenu.Separator separator = (JPopupMenu.Separator)new EntryAccessor().getComponent(separatorEntry);
@@ -142,7 +138,7 @@ public class JMenuItemBuilderTest {
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
-		
+
 		menuActionGroupBuilder.visit(menuEntry);
 
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
@@ -156,7 +152,7 @@ public class JMenuItemBuilderTest {
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
-		
+
 		menuActionGroupBuilder.visit(menuEntry);
 
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
@@ -172,7 +168,7 @@ public class JMenuItemBuilderTest {
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
 		new EntryAccessor().setAction(menuEntry, action);
-		
+
 		menuActionGroupBuilder.visit(menuEntry);
 
 		final JMenuItem menuItem = getFirstSubMenuItem(menuEntry);
@@ -196,13 +192,13 @@ public class JMenuItemBuilderTest {
 	    final AccelerateableAction itemAction = (AccelerateableAction) menuItem.getAction();
 		assertThat(itemAction.getOriginalAction(), CoreMatchers.<Action> equalTo(action));
     }
-	
+
 	@Test
 	public void whenPopupMenuBecomesVisible_itsOwnPopupListenerIsCalled() {
 		if(Compat.isMacOsX())
 			return;
 		menuEntry.addChild(actionEntry);
-		
+
 		menuActionGroupBuilder.visit(menuEntry);
 
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
@@ -210,7 +206,7 @@ public class JMenuItemBuilderTest {
 		verify(popupListener).childEntriesWillBecomeVisible(menuEntry);
 	}
 
-	
+
 	@Test
 	public void whenPopupMenuBecomesVisible_itsChildActionPopupListenerIsCalled() {
 		if(Compat.isMacOsX())
@@ -248,7 +244,7 @@ public class JMenuItemBuilderTest {
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
 		parentMenuEntry.addChild(menuEntry);
 		menuEntry.addChild(actionEntry);
-		
+
 		menuActionGroupBuilder.visit(menuEntry);
 
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
@@ -260,7 +256,7 @@ public class JMenuItemBuilderTest {
 			public void run() {
 			}
 		});
-		
+
 		verify(popupListener).childEntriesHidden(menuEntry);
 	}
 }

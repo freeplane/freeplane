@@ -38,6 +38,7 @@ import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
@@ -132,7 +133,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		final Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController();
 		modeController.addAction(new CopySingleAction());
-		if(!controller.getViewController().isApplet())
+		if(!Compat.isApplet())
 			modeController.addAction(new CopyIDAction());
 		modeController.addAction(new CopyNodeURIAction());
 	}

@@ -21,6 +21,7 @@ import javax.swing.UIManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 
 import com.formdev.flatlaf.FlatLaf;
@@ -48,7 +49,7 @@ class SVGIconCreator {
 			{
 				uiColorReplacementsWithPlaceholder = lafSpecificReplacementPropertyValue;
 			}
-			else if(lookAndFeel instanceof FlatLaf) {
+			else if(! Compat.isApplet() && lookAndFeel instanceof FlatLaf) {
 				String flatReplacementPropertyName = UI_COLOR_REPLACEMENTS_PROPERTY_FOR + FLAT_LOOK_AND_FEELS;
 				String flatReplacementPropertyValue = ResourceController.getResourceController().getProperty(flatReplacementPropertyName, null);
 				if(flatReplacementPropertyValue != null && ! flatReplacementPropertyValue.isEmpty())
@@ -78,8 +79,8 @@ class SVGIconCreator {
 				Color accentColor = UIManager.getColor(propertyName);
 				if(accentColor == null) {
 					accentColor = Color.BLUE;
-					LogUtils.severe("Color property " + propertyName 
-							+ " required by replacement " + uiColorReplacementsWithPlaceholder 
+					LogUtils.severe("Color property " + propertyName
+							+ " required by replacement " + uiColorReplacementsWithPlaceholder
 							+ " is not defined, " + accentColor + " is used");
 				}
 		        matcher.appendReplacement(sb, ColorUtils.colorToString(accentColor));

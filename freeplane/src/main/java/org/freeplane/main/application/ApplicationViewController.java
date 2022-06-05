@@ -176,12 +176,6 @@ class ApplicationViewController extends FrameController {
 		}
 	}
 
-
-	@Override
-	public boolean isApplet() {
-		return false;
-	}
-
 	@Override
 	public void openDocument(final Hyperlink link) throws IOException {
 		new Browser().openDocument(link);
@@ -305,8 +299,8 @@ class ApplicationViewController extends FrameController {
 		navigationPreviousMap.setEnabled(number > 1);
 		navigationNextMap.setEnabled(number > 1);
 	}
-	
-	
+
+
 
 	@Override
 	public void init(Controller controller) {
@@ -321,7 +315,7 @@ class ApplicationViewController extends FrameController {
 			protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed){
 				return false;
 			}
-			
+
 			@Override
 			public void setLayout(LayoutManager layout) {
 				if(layout == null || layout instanceof SplitPaneLayoutManagerDecorator)

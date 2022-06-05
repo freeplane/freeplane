@@ -53,13 +53,13 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	private static final Dimension INVISIBLE = new Dimension(0,  0);
 	public static final Rectangle EMPTY_RECTANGLE = new Rectangle();
 	public interface ViewportHiddenAreaSupplier {
-		Rectangle getHiddenArea(); 
+		Rectangle getHiddenArea();
 	}
 	@SuppressWarnings("serial")
     static class MapViewPort extends JViewport{
 		private ViewportHiddenAreaSupplier hiddenAreaSupplier = () -> EMPTY_RECTANGLE;
 		private boolean layoutInProgress = false;
-		
+
 		void setHiddenAreaSupplier(ViewportHiddenAreaSupplier hiddenAreaSupplier) {
 			this.hiddenAreaSupplier = hiddenAreaSupplier;
 		}
@@ -71,11 +71,12 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	        layoutInProgress = view != null && ! view.isValid();
 	        super.doLayout();
 	        layoutInProgress = false;
-	        ((MapView) view).scrollViewAfterLayout();
+	        if(view != null)
+	        	((MapView) view).scrollViewAfterLayout();
         }
 
 		private Timer timer;
-		
+
 		private JComponent backgroundComponent;
 
         public void setBackgroundComponent(JComponent backgroundComponent) {
@@ -103,7 +104,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         			int dy = positionAdjustment(getHeight(), newContentRectangle.height, newContentRectangle.y);
         			final boolean overlapsOnXAxis = newContentRectangle.x + dx < hiddenArea.x + hiddenArea.width
         					&& newContentRectangle.x + dx + newContentRectangle.width > hiddenArea.x;
-        			final boolean overlapsOnYAxis = newContentRectangle.y + dy < hiddenArea.y + hiddenArea.height 
+        			final boolean overlapsOnYAxis = newContentRectangle.y + dy < hiddenArea.y + hiddenArea.height
         				&& newContentRectangle.y + dy + newContentRectangle.height > hiddenArea.y;
 					if (overlapsOnYAxis && overlapsOnXAxis) {
         				final boolean isWidthSufficient = hiddenArea.width + newContentRectangle.width < getWidth();
@@ -133,7 +134,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         			return;
 
         		}
-        	} 
+        	}
         	super.scrollRectToVisible(newContentRectangle);
         }
         private int positionAdjustment(int parentWidth, int childWidth, int childAt)    {
@@ -144,7 +145,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
             if (childAt >= 0 && childWidth + childAt <= parentWidth)    {
                 return 0;
             }
-  
+
             //   +-----+          +-----+
             //   |   ----    ->   | ----|
             //   +-----+          +-----+
@@ -193,9 +194,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
     	@Override
     	public void setBounds(int x, int y, int width, int height) {
     		boolean layoutWasInProgress = layoutInProgress;
-    		if(getWidth() == 0)
-    			SwingUtilities.invokeLater(((MapView) getView())::scrollView);
-    		layoutInProgress = true;
+     		layoutInProgress = true;
     		try {
     			int dX = (width - getWidth())/2;
     			int dY = (height - getHeight())/2;
@@ -237,6 +236,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	        if(slowDx == dx && slowDy == dy)
 	            return;
 	        timer = new Timer(delay, new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					timer = null;
 					MapViewPort.this.slowSetViewPosition(p, delay);
@@ -274,9 +274,9 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		super(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);
 		setViewport(new MapViewPort());
 		defaultBorder = getBorder();
-		
+
 		addHierarchyListener(new HierarchyListener() {
-            
+
             @Override
             public void hierarchyChanged(HierarchyEvent e) {
                 if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing() && ! isValid()) {
@@ -301,6 +301,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		ResourceController.getResourceController().removePropertyChangeListener(MapViewScrollPane.this);
     }
 
+	@Override
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if(ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
 				|| propertyName.startsWith("scrollbarsVisible")){
@@ -330,7 +331,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		revalidate();
 		repaint();
     }
-	
+
 	public void setViewportHiddenAreaSupplier(ViewportHiddenAreaSupplier hiddenAreaSupplier) {
 		((MapViewPort)getViewport()).setHiddenAreaSupplier(hiddenAreaSupplier);
 	}
@@ -356,6 +357,6 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		return super.processKeyBinding(ks, e, condition, pressed);
 	}
 
-	
+
 
 }

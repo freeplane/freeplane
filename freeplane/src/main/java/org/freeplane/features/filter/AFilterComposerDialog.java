@@ -55,6 +55,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -582,8 +583,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnCancel);
 		controllerBox.add(Box.createHorizontalGlue());
-		Controller controller = Controller.getCurrentController();
-		if (!controller.getViewController().isApplet()) {
+		if (!Compat.isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
 			LabelAndMnemonicSetter.setLabelAndMnemonic(btnSave, TextUtils.getRawText("save"));
@@ -619,7 +619,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);
 		addHierarchyListener(new HierarchyListener() {
-			
+
 			@Override
 			public void hierarchyChanged(HierarchyEvent e) {
 				if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0  && ! isShowing())
@@ -645,7 +645,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	    return button;
     }
 
-	
+
 	@Override
     public void afterViewChange(Component oldView, Component newView) {
 	    editor.filterChanged(newView  != null ? Controller.getCurrentController().getSelection().getFilter() : null);
