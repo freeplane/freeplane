@@ -77,29 +77,29 @@ class MapOverviewImage extends JComponent {
         Graphics2D g2d = (Graphics2D) g;
         final AffineTransform transform = g2d.getTransform();
         double scaleX = transform.getScaleX();
-        AffineTransform overviewTransform = AffineTransform.getScaleInstance(transform.getScaleX(),
-                transform.getScaleY());
+        double scaleY = transform.getScaleX();
+        AffineTransform overviewTransform = AffineTransform.getScaleInstance(scaleX, scaleY);
         overviewBounds = overviewTransform.createTransformedShape(overviewBounds).getBounds();
         Dimension source = mapInnerBounds.getSize();
         Dimension target = overviewBounds.getSize();
         double scale = getBestScale(source, target);
-        if (image == null || image.getWidth() != overviewBounds.width * scaleX) {
+        if (image == null || image.getWidth() != overviewBounds.width) {
             image = createOverviewImage(mapInnerBounds, overviewBounds, scale);
         }
         double overviewImageX = (target.getWidth() - source.getWidth() * scale) / 2;
         double overviewImageY = (target.getHeight() - source.getHeight() * scale) / 2;
-        if (scaleX == 1) {
+        if (scaleX == 1 && scaleY == 1) {
             g2d.drawImage(image, (int)overviewImageX, (int)overviewImageY, this);
         } 
         else {
             AffineTransform newTransform = AffineTransform.getTranslateInstance(transform.getTranslateX(),
                     transform.getTranslateY());
             g2d.setTransform(newTransform);
-            g2d.drawImage(image, (int)(overviewImageX*scaleX), (int)(overviewImageY*scaleX), this);
+            g2d.drawImage(image, (int)(overviewImageX), (int)(overviewImageY), this);
             g2d.setTransform(transform);
         }
 
-        highlightViewport(g2d, mapInnerBounds, scale,(int)overviewImageX, (int)overviewImageY);
+        highlightViewport(g2d, mapInnerBounds, scale,(int)(overviewImageX/scaleX), (int)(overviewImageY/scaleY));
         drawZoomLevel(g2d);
     }
 
