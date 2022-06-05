@@ -27,6 +27,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
@@ -72,7 +73,8 @@ class FindAction extends AFreeplaneAction {
 		else {
 			editor.filterChanged(selection.getFilter());
 		}
-		editor.getPanel().addAncestorListener(new AncestorListener() {
+		JComponent editorPanel = editor.getPanel();
+		editorPanel.addAncestorListener(new AncestorListener() {
 			@Override
 			public void ancestorAdded(final AncestorEvent event) {
 				final Component component = event.getComponent();
@@ -93,7 +95,7 @@ class FindAction extends AFreeplaneAction {
 					});
 					windowAncestor.toFront();
 				}
-				editor.getPanel().removeAncestorListener(this);
+				editorPanel.removeAncestorListener(this);
 			}
 
 			@Override
@@ -104,11 +106,11 @@ class FindAction extends AFreeplaneAction {
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
-		final int run = UITools.showConfirmDialog(start, editor, TextUtils.getText("FindAction.text"),
+		final int run = UITools.showConfirmDialog(start, editorPanel, TextUtils.getText("FindAction.text"),
 		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-		final Container parent = editor.getPanel().getParent();
+		final Container parent = editorPanel.getParent();
 		if (parent != null) {
-			parent.remove(editor.getPanel());
+			parent.remove(editorPanel);
 		}
 		if (run != JOptionPane.OK_OPTION) {
 			return;
