@@ -60,8 +60,8 @@ public class FreeplaneToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	private boolean disablesFocus;
 
-	public FreeplaneToolBar() {
-		this(null, VERTICAL);
+	public FreeplaneToolBar(int orientation) {
+		this(null, orientation);
 	}
 	
 	public FreeplaneToolBar(final String name, final int orientation) {

@@ -65,9 +65,9 @@ import org.freeplane.features.mode.Controller;
  * 23.05.2009
  */
 public class FilterConditionEditor {
-    
+
 	public enum Variant{ FILTER_TOOLBAR, FILTER_COMPOSER, NODE_CONDITION, SEARCH_DIALOG }
-    
+
 	private class ElementaryConditionChangeListener implements ItemListener {
 		@Override
 		public void itemStateChanged(final ItemEvent e) {
@@ -154,9 +154,9 @@ public class FilterConditionEditor {
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
 	private static final String PROPERTY_FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
 	private static final String PROPERTY_FILTER_DENY = "filter_deny";
-	
+
 	private static final DecoratedConditionFactory DECORATED_CONDITION_FACTORY = new DecoratedConditionFactory();
-	
+
 	final private JToggleButton caseSensitive;
 	final private JToggleButton approximateMatching;
 	final private JToggleButton ignoreDiacritics;
@@ -210,7 +210,7 @@ public class FilterConditionEditor {
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
 		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
 		panel.add(filteredPropertiesComponent, gridBagConstraints);
-        
+
 		//Search condition
 		elementaryConditions = JComboBoxFactory.create();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
@@ -223,7 +223,7 @@ public class FilterConditionEditor {
 		values.setEditable(true);
 		setValuesEnterKeyListener();
 
-		optionPanel = new FreeplaneToolBar();
+		optionPanel = new FreeplaneToolBar(JToolBar.HORIZONTAL);
 
 		optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
@@ -242,8 +242,8 @@ public class FilterConditionEditor {
 		optionPanel.add(approximateMatching);
 		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
 			    PROPERTY_FILTER_APPROXIMATE_MATCH));
-		
-		
+
+
 		ignoreDiacritics = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_IGNORE_DIACRITICS + ".icon", PROPERTY_FILTER_IGNORE_DIACRITICS+ ".tooltip");
 		ignoreDiacritics.setModel(filterController.getIgnoreDiacriticsButtonModel());
         //add(approximateMatching, gridBagConstraints);
@@ -258,7 +258,7 @@ public class FilterConditionEditor {
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
         panel.add(optionPanel, gridBagConstraints);
-        
+
 		Dimension preferredSize = values.getPreferredSize();
 		preferredSize.height = Math.max(preferredSize.height, ignoreDiacritics.getPreferredSize().height);
 		values.setPreferredSize(preferredSize);
@@ -377,8 +377,8 @@ public class FilterConditionEditor {
 	public JComponent getPanel() {
 		return panel;
 	}
-	
-	
+
+
 
 	public JComponent getOptionPanel() {
 		return optionPanel;
@@ -387,7 +387,7 @@ public class FilterConditionEditor {
 	public void setBorder(Border border) {
 		panel.setBorder(border);
 	}
-	
+
     public void setEnabled(boolean enabled) {
 	    panel.setEnabled(enabled);
 	    for(int i = 0; i < panel.getComponentCount(); i++){

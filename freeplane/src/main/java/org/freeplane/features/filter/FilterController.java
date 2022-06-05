@@ -190,7 +190,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	public static FilterController getCurrentFilterController() {
 		return getController(Controller.getCurrentController());
 	}
-	
+
     public static Filter getFilter(MapModel map) {
         IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection != null && selection.getMap() == map) {
@@ -208,7 +208,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection != null && selection.getMap() == map)
             selection.setFilter(filter);
-        else 
+        else
             map.putExtension(Filter.class, filter);
     }
 
@@ -287,7 +287,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		caseSensitiveButtonModel.setSelected(false);
 
 		controller.getMapViewManager().addMapViewChangeListener(this);
-		
+
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, Variant.FILTER_TOOLBAR);
 		quickEditor.setEnterKeyActionListener( new ActionListener()  {
@@ -530,10 +530,11 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 				{
 					setMaximumRowCount(10);
 				}
-		    public String getToolTipText() {
-		        return "tooltip";    
+		    @Override
+			public String getToolTipText() {
+		        return "tooltip";
 		    }
-		    
+
             @Override
             public JToolTip createToolTip() {
                 JToolTip tip = new JToolTip() {
@@ -571,8 +572,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 int position = getHeight() / 5;
                 return new Point(position, position);
             }
-            
-            
+
+
 		};
 		ToolTipManager.sharedInstance().registerComponent(activeFilterConditionComboBox);
 		activeFilterConditionComboBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -611,13 +612,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		constraints.gridheight = 1;
 		constraints.gridy = 0;
 		filterToolbar.add(activeFilterConditionComboBox, constraints);
-		
-		JComponent filterOptionPanel = new FreeplaneToolBar();
+
+		JComponent filterOptionPanel = new FreeplaneToolBar(JToolBar.HORIZONTAL);
 		filterOptionPanel.add(hideMatchingNodesBox);
 		filterOptionPanel.add(showAncestorsBox);
 		filterOptionPanel.add(showDescendantsBox);
 		filterOptionPanel.add(applyToVisibleBox);
-		
+
 		filterOptionPanel.add(undoBtn);
 		filterOptionPanel.add(redoBtn);
 		filterOptionPanel.add(reapplyFilterBtn);
@@ -625,12 +626,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		filterOptionPanel.add(filterSelectedBtn);
 		filterOptionPanel.add(noFilteringBtn);
 		filterOptionPanel.add(btnEdit);
-		
+
 		constraints.gridwidth = 1;
 		constraints.gridy = 1;
 		constraints.anchor = GridBagConstraints.NORTHEAST;
 		filterToolbar.add(filterOptionPanel, constraints);
-		
+
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
 		return filterToolbar;
@@ -861,12 +862,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 	private boolean isNodeHighlighted(NodeModel node) {
 		try {
-			if(highlightedConditionContext != null) 
+			if(highlightedConditionContext != null)
 				highlightedConditionContext.setDisabled(true);
 			return highlightCondition != null && highlightCondition.checkNode(node);
 		}
 		finally {
-			if(highlightedConditionContext != null) 
+			if(highlightedConditionContext != null)
 				highlightedConditionContext.setDisabled(false);
 		}
     }
@@ -874,7 +875,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	public ButtonModel getApproximateMatchingButtonModel() {
 		return approximateMatchingButtonModel;
 	}
-	
+
     public ButtonModel getIgnoreDiacriticsButtonModel() {
         return ignoreDiacriticsButtonModel;
     }

@@ -88,7 +88,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.ACTION_KEY_PREFIX 
+	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.ACTION_KEY_PREFIX
 			+ IconAction.ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY;
 	public static final String REMOVE_FIRST_ICON_ACTION = "RemoveIcon_0_Action";
 	public static final String REMOVE_LAST_ICON_ACTION = "RemoveIconAction";
@@ -182,7 +182,7 @@ public class MIconController extends IconController {
 		    Quantity<LengthUnit> iconSize = from.getSharedData().getIcons().getIconSize();
 		    if(iconSize != null)
 		    	to.getSharedData().getIcons().setIconSize(iconSize);
-            
+
         }
 
         private void copyIcons(final NodeModel from, final NodeModel to) {
@@ -549,14 +549,14 @@ public class MIconController extends IconController {
 
 	private void updateIconToolbar(ModeController modeController) {
 		iconToolBar.removeAll();
-		
+
 		AbstractButton[] buttons = {
 				FreeplaneToolBar.createButton(modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION)),
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_FIRST_ICON_ACTION)),
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_LAST_ICON_ACTION)),
 				FreeplaneToolBar.createButton(modeController.getAction(REMOVE_ALL_ICONS_ACTION)),
 		};
-		FreeplaneToolBar actionPanel = new FreeplaneToolBar();
+		FreeplaneToolBar actionPanel = new FreeplaneToolBar(JToolBar.VERTICAL);
 		Stream.of(buttons).forEach(actionPanel::add);
 		iconToolBar.add(actionPanel);
         iconToolBar.addSeparator();
