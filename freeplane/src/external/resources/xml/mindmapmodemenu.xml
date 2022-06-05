@@ -11,15 +11,16 @@
 			<Entry name="RedoAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="SetBooleanPropertyAction.view_mode"/>
-		<Entry name="newNode" usedBy="EDITOR">
-			<Entry name="NewChildAction">
+		<Entry name="zoom" builder="main_toolbar_zoom"  row="1" width = "3"/>
+		<Entry name="SetBooleanPropertyAction.view_mode" row = "2"/>
+		<Entry name="newNode" usedBy="EDITOR" >
+			<Entry name="NewChildAction" row = "2" >
 				  <Entry name="NewPreviousSiblingAction" />
 	              <Entry name="NewParentNode" />
 	              <Entry name="NewFreeNodeAction" />
 	              <Entry name="NewSummaryAction"/>
 			</Entry>
-			<Entry name="NewSiblingAction" />
+			<Entry name="NewSiblingAction" row = "2"/>
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
@@ -39,8 +40,7 @@
 			<Entry name="FindPreviousAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="4"/>
-		<Entry name="zoom" builder="main_toolbar_zoom"  row="2"/>
+		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="3"/>
 		<Entry usedBy="EDITOR" row="2">
 			<Entry name="CloudAction" />
 			<Entry name="CloudColorAction" />
