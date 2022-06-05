@@ -25,6 +25,7 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapModel;
@@ -32,6 +33,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.PersistentNodeHook;
+import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.features.url.UrlManager;
 
 class ImportBranchAction extends AFreeplaneAction {
@@ -53,19 +55,24 @@ class ImportBranchAction extends AFreeplaneAction {
 		final FileFilter fileFilter = ((MFileManager) UrlManager.getController()).getFileFilter();
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
+			chooser.setFileFilter(fileFilter);
 		}
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			final MapModel map = parent.getMap();
+			final URL url = map.getURL();
+			IExtension ownVersion = map.removeExtension(MapVersionInterpreter.class);
 			try {
-				final MapModel map = parent.getMap();
-				final URL url = map.getURL();
 				final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, chooser.getSelectedFile());
-				map.setURL(url);
 				PersistentNodeHook.removeMapExtensions(node);
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {
 				UrlManager.getController().handleLoadingException(ex);
+			}
+			finally {
+				map.putExtension(MapVersionInterpreter.class, ownVersion);
+				map.setURL(url);
 			}
 		}
 	}
