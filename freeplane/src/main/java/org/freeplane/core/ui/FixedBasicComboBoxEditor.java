@@ -20,6 +20,8 @@
 package org.freeplane.core.ui;
 
 import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
@@ -30,16 +32,20 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
  * @author Felix Natter
  *
  */
-public class FixedBasicComboBoxEditor extends BasicComboBoxEditor {
-	public FixedBasicComboBoxEditor()
-	{
-		// don't change the background color to grey, it would be harder to use :-(
-		//Color c = UIManager.getLookAndFeelDefaults().getColor("ComboBox.background");
-		//editor.setBackground(new Color(c.getRed(), c.getGreen(), c.getBlue()));
-		
-		// add left padding to the embedded JTextField:
-		// this border-hack was proposed by John B. Matthews on comp.lang.java.gui
-		editor.setBorder(BorderFactory.createCompoundBorder(
-				editor.getBorder(), new EmptyBorder(0, 4, 0, 0))); 
+public class FixedBasicComboBoxEditor extends BasicComboBoxEditor.UIResource {
+
+	private static final EmptyBorder INSIDE_BORDER = new EmptyBorder(0, 4, 0, 0);
+
+	@Override
+	protected JTextField createEditorComponent() {
+		JTextField editor = super.createEditorComponent();
+		Border border = editor.getBorder();
+		if(border != null)
+			editor.setBorder(BorderFactory.createCompoundBorder(
+				border, INSIDE_BORDER));
+		else
+			editor.setBorder(INSIDE_BORDER);
+		return editor;
 	}
+	
 }

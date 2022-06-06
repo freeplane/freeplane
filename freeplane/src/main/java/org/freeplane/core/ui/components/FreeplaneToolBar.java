@@ -29,12 +29,12 @@ import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.menu.UnitGridBagLayout;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.icon.factory.IconFactory;
 
@@ -71,7 +71,7 @@ public class FreeplaneToolBar extends JToolBar {
 		setFloatable(false);
 		setRollover(true);
 		if(orientation == SwingConstants.HORIZONTAL) {
-			GridBagLayout gridBagLayout = new GridBagLayout();
+			GridBagLayout gridBagLayout = new UnitGridBagLayout();
 			super.setLayout(gridBagLayout);
 		} else
 			super.setLayout(ToolbarLayout.vertical());

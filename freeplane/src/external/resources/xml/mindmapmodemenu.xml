@@ -40,13 +40,14 @@
 			<Entry name="FindPreviousAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="3"/>
+		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="4"/>
 		<Entry usedBy="EDITOR" row="2">
 			<Entry name="CloudAction" />
 			<Entry name="CloudColorAction" />
 			<Entry name="NodeBackgroundColorAction" />
+			<Entry builder="panel" />
 		</Entry>
-		<Entry builder="main_toolbar_font_name" usedBy="EDITOR" row="1"  width="5"/>
+		<Entry builder="main_toolbar_font_name" usedBy="EDITOR" row="1"  width="6"/>
 		<Entry name="font" usedBy="EDITOR" row="2">
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />

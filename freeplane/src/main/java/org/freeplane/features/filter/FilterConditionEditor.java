@@ -218,7 +218,7 @@ public class FilterConditionEditor {
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
 		values = JComboBoxFactory.create();
-		values.setPreferredSize(new Dimension(240,20));
+		values.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		panel.add(values, gridBagConstraints);
 		values.setEditable(true);
 		setValuesEnterKeyListener();
@@ -251,18 +251,13 @@ public class FilterConditionEditor {
         ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
                 PROPERTY_FILTER_IGNORE_DIACRITICS));
 
-        btnDeny = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_DENY + ".icon", PROPERTY_FILTER_DENY);
+        btnDeny = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_DENY + ".icon", PROPERTY_FILTER_DENY+ ".tooltip");
         optionPanel.add(btnDeny, gridBagConstraints);
 
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
         panel.add(optionPanel, gridBagConstraints);
-
-		Dimension preferredSize = values.getPreferredSize();
-		preferredSize.height = Math.max(preferredSize.height, ignoreDiacritics.getPreferredSize().height);
-		values.setPreferredSize(preferredSize);
-
 
 		IMapSelection selection = Controller.getCurrentController().getSelection();
         filterChanged(selection != null ? selection.getFilter() : null);
