@@ -214,11 +214,13 @@ public class FilterConditionEditor {
 		//Search condition
 		elementaryConditions = JComboBoxFactory.create();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
+		gridBagConstraints.gridy = 1;
 		panel.add(elementaryConditions, gridBagConstraints);
 		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		//Search value
 		values = JComboBoxFactory.create();
 		values.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		gridBagConstraints.gridy = 0;
 		panel.add(values, gridBagConstraints);
 		values.setEditable(true);
 		setValuesEnterKeyListener();
