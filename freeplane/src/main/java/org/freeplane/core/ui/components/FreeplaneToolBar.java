@@ -29,6 +29,7 @@ import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -73,6 +74,7 @@ public class FreeplaneToolBar extends JToolBar {
 		if(orientation == SwingConstants.HORIZONTAL) {
 			GridBagLayout gridBagLayout = new UnitGridBagLayout();
 			super.setLayout(gridBagLayout);
+			setBorder(BorderFactory.createEmptyBorder());
 		} else
 			super.setLayout(ToolbarLayout.vertical());
 		addHierarchyBoundsListener(new HierarchyBoundsListener() {
