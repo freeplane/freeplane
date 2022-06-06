@@ -1624,7 +1624,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void paintOverview(Graphics2D g) {
 		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.FALSE);
+		isPrinting = true;
+		updatePrintedSelectedNodes();
+		isPreparedForPrinting = true;
 		super.print(g);
+		isPreparedForPrinting = false;
+		isPrinting = false;
+		updatePrintedSelectedNodes();
 	}
 
 	@Override
@@ -1935,8 +1941,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			synchronized (getTreeLock()) {
 				validateTree();
 			}
-		}
-		else if(! drawsRectangleForSelection){
+		} else
+			updatePrintedSelectedNodes();
+	}
+
+	private void updatePrintedSelectedNodes() {
+		if(! drawsRectangleForSelection){
 			selection.selectedSet.forEach(NodeView::update);
 			synchronized (getTreeLock()) {
 				validateTree();
