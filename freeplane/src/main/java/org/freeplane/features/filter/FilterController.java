@@ -70,6 +70,7 @@ import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.menu.JUnitPanel;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
@@ -589,19 +590,27 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         final AbstractButton applyQuickSelectBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAllAction"));
 		final AbstractButton applyQuickHighlightBtn = FreeplaneToolBar.createButton(controller.getAction("QuickHighlightAction"));
 
+		JComponent searchOptionPanel = quickEditor.getOptionPanel();
+		searchOptionPanel.add(applyQuickHighlightBtn);
+		searchOptionPanel.add(new JUnitPanel());
+		searchOptionPanel.add(new JUnitPanel());
+		searchOptionPanel.add(applyQuickSelectBtn);
+		searchOptionPanel.add(applyQuickFilterBtn);
+
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		filterToolbar.addSeparator();
 		constraints.gridheight = 2;
 		filterToolbar.add(quickEditor.getPanel(), constraints);
-		JComponent searchOptionPanel = quickEditor.getOptionPanel();
-		searchOptionPanel.add(applyQuickHighlightBtn);
-		searchOptionPanel.add(applyFindPreviousBtn);
-		searchOptionPanel.add(applyFindNextBtn);
-		searchOptionPanel.add(applyQuickSelectBtn);
-		searchOptionPanel.add(applyQuickFilterBtn);
-		searchOptionPanel.add(applyAndFilterBtn);
-		searchOptionPanel.add(applyOrFilterBtn);
+
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		constraints.gridy = 0;
+		filterToolbar.add(applyFindPreviousBtn, constraints);
+		filterToolbar.add(applyFindNextBtn, constraints);
+		constraints.gridy = 1;
+		filterToolbar.add(applyAndFilterBtn, constraints);
+		filterToolbar.add(applyOrFilterBtn, constraints);
 
 		filterToolbar.addSeparator();
 
