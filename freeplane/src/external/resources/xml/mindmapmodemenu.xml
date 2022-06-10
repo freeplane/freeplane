@@ -195,12 +195,12 @@
         <Entry name="insert">
           <Entry usedBy = "EDITOR" >
             <Entry name="menu_newNode" >
-              <Entry name="NewChildAction" accelerator="INSERT" />
+              <Entry name="NewChildAction" accelerator="TAB" />
               <Entry name="NewSiblingAction" accelerator="ENTER" />
               <Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
-              <Entry name="NewParentNode" accelerator="shift INSERT" />
+              <Entry name="NewParentNode" accelerator="shift TAB" />
               <Entry name="NewFreeNodeAction" />
-              <Entry name="NewSummaryAction" accelerator="alt shift INSERT"/>
+              <Entry name="NewSummaryAction" accelerator="alt shift TAB"/>
               <Entry builder="separator" />
               <Entry name="DeleteAction" accelerator="DELETE" />
             </Entry>
