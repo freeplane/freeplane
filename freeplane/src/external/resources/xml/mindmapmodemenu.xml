@@ -31,14 +31,8 @@
 			<Entry name="FoldOneLevelAction" />
 			<Entry name="FoldAllAction" />
 		</Entry>
-		<Entry row="1">
-			<Entry name="FindAction" />
-			<Entry name="FindNextAction" />
-		</Entry>
-		<Entry name="find" row="2">
-			<Entry name="NodeListAction" />
-			<Entry name="FindPreviousAction" />
-		</Entry>
+		<Entry name="FindAction" row="1"/>
+		<Entry name="NodeListAction" row="2"/>
 		<Entry builder="separator" />
 		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="4"/>
 		<Entry usedBy="EDITOR" row="2">
