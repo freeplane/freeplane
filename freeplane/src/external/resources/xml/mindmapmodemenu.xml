@@ -13,14 +13,15 @@
 		<Entry builder="separator" />
 		<Entry name="zoom" builder="main_toolbar_zoom"  row="1" width = "3"/>
 		<Entry name="SetBooleanPropertyAction.view_mode" row = "2"/>
-		<Entry name="newNode" usedBy="EDITOR" >
-			<Entry name="NewChildAction" row = "2" >
-				  <Entry name="NewPreviousSiblingAction" />
-	              <Entry name="NewParentNode" />
-	              <Entry name="NewFreeNodeAction" />
-	              <Entry name="NewSummaryAction"/>
-			</Entry>
+		<Entry name="FindAction" row="2"/>
+		<Entry name="NodeListAction" row="2"/>
+		<Entry usedBy="EDITOR" >
+			<Entry name="NewChildAction" row = "1" />
 			<Entry name="NewSiblingAction" row = "2"/>
+			<Entry name="CutAction" row = "1" />
+			<Entry name="DeleteAction" row = "2" />
+			<Entry name="CopyAction" row = "1" />
+			<Entry name="PasteAction" row = "2" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
@@ -31,8 +32,6 @@
 			<Entry name="FoldOneLevelAction" />
 			<Entry name="FoldAllAction" />
 		</Entry>
-		<Entry name="FindAction" row="1"/>
-		<Entry name="NodeListAction" row="2"/>
 		<Entry builder="separator" />
 		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="4"/>
 		<Entry usedBy="EDITOR" row="2">
