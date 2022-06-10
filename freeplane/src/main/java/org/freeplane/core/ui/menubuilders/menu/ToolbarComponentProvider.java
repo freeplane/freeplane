@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JToolBar.Separator;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -23,7 +24,7 @@ public class ToolbarComponentProvider implements ComponentProvider {
 		if (existingComponent != null)
 			return (Component) existingComponent;
 		final AFreeplaneAction action = entryAccessor.getAction(entry);
-		Component component;
+		JComponent component;
 		if(action != null){
 		    AbstractButton actionComponent;
 			if (action.isSelectable()) {
@@ -37,6 +38,9 @@ public class ToolbarComponentProvider implements ComponentProvider {
 		}
 		else if(entry.builders().contains("separator")){
 			component = new Separator();
+		}
+		else if(entry.builders().contains("panel")){
+			component = new JUnitPanel();
 		}
 		else
 			component = null;

@@ -914,9 +914,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public JComboBox createZoomBox() {
-		if(zoomBox == null) {
-			zoomBox = JComboBoxFactory.create(zoomModel);
-		}
+		JComboBox<Object> zoomBox = JComboBoxFactory.create(zoomModel);
+		zoomBox.setPrototypeDisplayValue("1000%");
 		return zoomBox;
 	}
 
@@ -950,7 +949,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
-	private JComboBox zoomBox;
 	private boolean getAntialiasAll() {
 		return antialiasAll;
 	}

@@ -27,6 +27,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
@@ -201,22 +202,23 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createStyleBox() {
 		final JComboBox stylesBox = JComboBoxFactory.create(styles);
-		stylesBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
+		stylesBox.setPrototypeDisplayValue("Floating node");
 		stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
 		return stylesBox;
 	}
 
 	public Container createSizeBox() {
 		final JComboBox sizeBox = JComboBoxFactory.create(size);
-		sizeBox.setPrototypeDisplayValue("88888");
-		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
+		sizeBox.setPrototypeDisplayValue("100");
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
+		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
 		sizeBox.setEditable(true);
 		return sizeBox;
 	}
 
-	public Container createFontBox() {
+	public JComboBox createFontBox() {
 		final JComboBox fontsBox = JComboBoxFactory.create();
+		fontsBox.setPrototypeDisplayValue("Times New Roman");
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
 		fontsBox.setModel(fonts);
 		return fontsBox;

@@ -576,11 +576,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 		};
 		ToolTipManager.sharedInstance().registerComponent(activeFilterConditionComboBox);
-		activeFilterConditionComboBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		activeFilterConditionComboBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		final AbstractButton reapplyFilterBtn = FreeplaneToolBar.createButton(controller.getAction("ReapplyFilterAction"));
-		Dimension preferredSize = activeFilterConditionComboBox.getPreferredSize();
-		preferredSize.height = Math.max(preferredSize.height, reapplyFilterBtn.getPreferredSize().height);
-		activeFilterConditionComboBox.setPreferredSize(preferredSize);
 		final AbstractButton selectFilteredNodesBtn = FreeplaneToolBar.createButton(controller.getAction("SelectFilteredNodesAction"));
 		final AbstractButton filterSelectedBtn = FreeplaneToolBar.createButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final AbstractButton noFilteringBtn = FreeplaneToolBar.createButton(controller.getAction("ApplyNoFilteringAction"));
