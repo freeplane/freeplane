@@ -171,9 +171,9 @@ public class MEdgeController extends EdgeController {
 	        if (null != getDash(to))
 				return;
 			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
-				final DashVariant width = getDash(source);
-				if(width != null){
-					EdgeModel.createEdgeModel(to).setDash(width);
+				final DashVariant dash = getDash(source);
+				if(dash != null){
+					EdgeModel.createEdgeModel(to).setDash(dash);
 					return;
 				}
 			}
