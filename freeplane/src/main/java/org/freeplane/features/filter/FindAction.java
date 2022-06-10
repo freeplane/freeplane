@@ -21,19 +21,25 @@ package org.freeplane.features.filter;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
@@ -66,9 +72,18 @@ class FindAction extends AFreeplaneAction {
 		}
 		final NodeModel start = selection.getSelected();
 		if (editor == null) {
-			editor = new FilterConditionEditor(FilterController.getCurrentFilterController(), Variant.SEARCH_DIALOG);
+			editor = new FilterConditionEditor(FilterController.getCurrentFilterController(), 5, Variant.SEARCH_DIALOG, new FreeplaneToolBar(JToolBar.HORIZONTAL));
 			editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(5, 0, 5, 0)));
-
+			JComponent editorPanel = editor.getPanel();
+			final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(findPreviousAction);
+			final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(findNextAction);
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.anchor = GridBagConstraints.NORTHWEST;
+			constraints.gridwidth = 1;
+			constraints.gridheight = 1;
+			constraints.gridy = 0;
+			editorPanel.add(applyFindPreviousBtn, constraints);
+			editorPanel.add(applyFindNextBtn, constraints);
 		}
 		else {
 			editor.filterChanged(selection.getFilter());
