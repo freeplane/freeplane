@@ -53,7 +53,7 @@
 <font SIZE="8"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note"/>
-<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#ccffff" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#002080"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#afd3f7" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#002080"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000">
@@ -107,7 +107,7 @@
 <font BOLD="true"/>
 <edge COLOR="#009900"/>
 </stylenode>
-<stylenode TEXT="Notes and explanations" BACKGROUND_COLOR="#ccffff" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
+<stylenode TEXT="Notes and explanations" BACKGROUND_COLOR="#afd3f7" TEXT_ALIGN="CENTER" MAX_WIDTH="110 pt" MIN_WIDTH="110 pt">
 <font BOLD="true"/>
 <edge COLOR="#0066ff"/>
 </stylenode>

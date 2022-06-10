@@ -23,7 +23,7 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#4e85f8" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#4e85f8"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#afd3f7" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#afd3f7"/>
 <stylenode LOCALIZED_TEXT="styles.ok">
 <icon BUILTIN="button_ok"/>
 </stylenode>

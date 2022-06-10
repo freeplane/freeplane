@@ -31,6 +31,7 @@
 		<edge STYLE="hide_edge"/>
 		<cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 		</stylenode>
+		<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#afd3f7" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#afd3f7"/>
 		</stylenode>
 		<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right">
 		<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
