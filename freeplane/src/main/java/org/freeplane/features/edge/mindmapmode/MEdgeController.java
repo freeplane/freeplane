@@ -79,6 +79,9 @@ public class MEdgeController extends EdgeController {
 			final int width = fromStyle.getWidth();
 			if(width  != EdgeModel.AUTO_WIDTH)
 			    toStyle.setWidth(width);
+			final DashVariant dash = fromStyle.getDash();
+			if (dash != null)
+				toStyle.setDash(dash);
 		}
 
 		@Override
