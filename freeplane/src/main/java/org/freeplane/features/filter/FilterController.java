@@ -596,6 +596,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		searchOptionPanel.add(new JUnitPanel());
 		searchOptionPanel.add(applyQuickSelectBtn);
 		searchOptionPanel.add(applyQuickFilterBtn);
+		searchOptionPanel.add(new JUnitPanel());
 
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.NORTHWEST;
@@ -614,7 +615,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 		filterToolbar.addSeparator();
 
-		constraints.gridwidth = GridBagConstraints.REMAINDER;
+		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		constraints.gridy = 0;
 		filterToolbar.add(activeFilterConditionComboBox, constraints);
@@ -625,19 +626,26 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		filterOptionPanel.add(showDescendantsBox);
 		filterOptionPanel.add(applyToVisibleBox);
 
-		filterOptionPanel.add(undoBtn);
-		filterOptionPanel.add(redoBtn);
+		filterOptionPanel.add(new JUnitPanel());
+		filterOptionPanel.add(new JUnitPanel());
 		filterOptionPanel.add(reapplyFilterBtn);
 		filterOptionPanel.add(selectFilteredNodesBtn);
 		filterOptionPanel.add(filterSelectedBtn);
-		filterOptionPanel.add(noFilteringBtn);
-		filterOptionPanel.add(btnEdit);
+		filterOptionPanel.add(new JUnitPanel());
 
 		constraints.gridwidth = 1;
 		constraints.gridy = 1;
 		constraints.anchor = GridBagConstraints.NORTHEAST;
 		filterToolbar.add(filterOptionPanel, constraints);
 
+		constraints.gridy = 0;
+		filterToolbar.add(undoBtn, constraints);
+		filterToolbar.add(redoBtn, constraints);
+		constraints.gridy = 1;
+		filterToolbar.add(noFilteringBtn, constraints);
+		filterToolbar.add(btnEdit, constraints);
+
+		
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
 		return filterToolbar;
