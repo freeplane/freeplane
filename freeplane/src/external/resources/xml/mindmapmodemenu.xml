@@ -162,6 +162,7 @@
 				<Entry name="PasteAction" accelerator="control V" />
 				<Entry name="SelectedPasteAction" accelerator="control shift V"/>
 				<Entry name="PasteAttributes" />
+				<Entry name="DeleteAction" accelerator="DELETE" />
 				<Entry name="MoveAction" />
 				<Entry name="CloneAction" accelerator="control D" />
 				<Entry name="ConvertCloneToIndependentNodeAction" />
@@ -169,9 +170,9 @@
 				<Entry name="menu_moveNode">
 					<Entry name="NodeUpAction" accelerator="control UP" />
 					<Entry name="NodeDownAction" accelerator="control DOWN" />
-					<Entry name="SortNodes" />
 					<Entry name="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
 					<Entry name="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
+					<Entry name="SortNodes" />
 				</Entry>
 				<Entry name="FreeNodeAction" />
 				<Entry name="ResetNodeLocationAction" accelerator="control R" />
@@ -607,20 +608,30 @@
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
         <Entry usedBy = "EDITOR" >
-    		<Entry name="EditLongAction" accelerator="alt ENTER" />
-    		<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
-    		<Entry name="EditDetailsAction" accelerator="F3" />
-            <Entry name="EditNoteInDialogAction" />
-            <Entry name="EditAttributesAction"/>
+			<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
+	        <Entry name="menu_copy">
+	          <Entry name="CopyAction" accelerator="control C" />
+	          <Entry name="CopySingleAction" accelerator="control shift C" />
+	          <Entry name="CopyIDAction" />
+	          <Entry name="CopyNodeURIAction" />
+	          <Entry name="CopyAttributes" />
+	        </Entry>
+			<Entry name="PasteAction" accelerator="control V" usedBy = "EDITOR" />
             <Entry name="menu_remove">
+            	<Entry name="DeleteAction" />
     		    <Entry name="DeleteDetailsAction" />
                 <Entry name="RemoveNoteAction" />
                 <Entry name="attributes_RemoveAllAttributesAction" />
             </Entry>
-        </Entry>
-		<Entry name="SetShortenerStateAction" />
-          <Entry builder="separator" />
-          <Entry usedBy = "EDITOR" >
+			<Entry name="edit">
+	    		<Entry name="EditLongAction" accelerator="alt ENTER" />
+	    		<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
+	    		<Entry name="EditDetailsAction" accelerator="F3" />
+	            <Entry name="EditNoteInDialogAction" />
+	            <Entry name="EditAttributesAction"/>
+				<Entry name="SetNodeAliasAction" />
+	        </Entry>
+          <Entry name = "insert" >
             <Entry name="menu_add_newNode" >
               <Entry name="NewChildAction" />
               <Entry name="NewSiblingAction" />
@@ -636,26 +647,28 @@
               <Entry builder="separator" />
               <Entry name="ExternalImageRemoveAction" />
             </Entry>
-            <Entry name="menu_add_link" >
-              <Entry name="SetLinkByFileChooserAction" />
-              <Entry name="SetLinkByTextFieldAction" />
-              <Entry builder="separator"/>
-              <Entry name="RemoveLinkAction" />
-              <Entry builder="separator"/>
-              <Entry name="ExtractLinkFromTextAction" />
-              <Entry name="AddLocalLinkAction" />
-              <Entry name="AddMenuItemLinkAction" />
-              <Entry name="AddExecutionLinkAction" />
-              <Entry builder="separator" />
-              <Entry name="SetLinkAnchorAction" />
-              <Entry name="MakeLinkFromAnchorAction" />
-              <Entry name="MakeLinkToAnchorAction" />
-              <Entry name="ClearLinkAnchorAction" />
-            </Entry>
+	        <Entry name="menu_add_link" >
+	          <Entry name="SetLinkByFileChooserAction" />
+	          <Entry name="SetLinkByTextFieldAction" />
+	          <Entry builder="separator"/>
+	          <Entry name="RemoveLinkAction" />
+	          <Entry builder="separator"/>
+	          <Entry name="ExtractLinkFromTextAction" />
+	          <Entry name="AddLocalLinkAction" />
+	          <Entry name="AddMenuItemLinkAction" />
+	          <Entry name="AddExecutionLinkAction" />
+	          <Entry builder="separator" />
+	          <Entry name="SetLinkAnchorAction" />
+	          <Entry name="MakeLinkFromAnchorAction" />
+	          <Entry name="MakeLinkToAnchorAction" />
+	          <Entry name="ClearLinkAnchorAction" />
+	        </Entry>
+        </Entry>
+        <Entry name="AddConnectorAction" />
+		<Entry name="SetShortenerStateAction" />
             <Entry name="styleActions" textKey="menu_applyStyle" >
                 <Entry builder="style_actions" />
             </Entry>
-            <Entry name="AddConnectorAction" />
          </Entry>
 		<Entry builder="separator" />
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
@@ -669,17 +682,6 @@
 		<Entry name="EnterPassword" />
 		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
 			builder="userScripts" />
-		<Entry name="SetNodeAliasAction" />
-		<Entry builder="separator" />
-		<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
-        <Entry name="menu_copy">
-          <Entry name="CopyAction" accelerator="control C" />
-          <Entry name="CopySingleAction" accelerator="control shift C" />
-          <Entry name="CopyIDAction" />
-          <Entry name="CopyNodeURIAction" />
-          <Entry name="CopyAttributes" />
-        </Entry>
-		<Entry name="PasteAction" accelerator="control V" usedBy = "EDITOR" />
 		<Entry name="SortNodes" usedBy = "EDITOR" />
 		<Entry name="UndoAction" usedBy = "EDITOR" />
 		<Entry name="RedoAction" usedBy = "EDITOR" />
