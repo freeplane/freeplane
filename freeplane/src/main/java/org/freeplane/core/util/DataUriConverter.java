@@ -28,8 +28,8 @@ public class DataUriConverter {
         // convert the image
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(image, "png", baos);
-        System.out.println("baos.toByteArray() " + baos.toByteArray());
-        System.out.println("baos.toByteArray().length " + baos.toByteArray().length);
+//        System.out.println("baos.toByteArray() " + baos.toByteArray());
+//        System.out.println("baos.toByteArray().length " + baos.toByteArray().length);
         String data = Base64.getEncoder().encodeToString(baos.toByteArray());
         String imageString = "data:image/png;base64," + data;
         String html =

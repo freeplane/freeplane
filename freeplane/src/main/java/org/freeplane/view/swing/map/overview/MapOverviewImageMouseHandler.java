@@ -87,7 +87,6 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
         Rectangle overviewBounds = overview.getBounds();
         Dimension overviewSize = overviewBounds.getSize();
         double scale = overview.getBestScale(mapSize, overviewSize);
-        System.out.println(mapBounds.width + "/" + scale);
         int minimumValidX = (int) ((overviewSize.width  - mapSize.width * scale) / 2);
         if(newCenterPointOnOverview.x < minimumValidX)
             newCenterPointOnOverview.x = minimumValidX;
