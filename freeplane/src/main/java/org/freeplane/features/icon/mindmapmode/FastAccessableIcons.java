@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultListModel;
-import javax.swing.JToolBar;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 

@@ -23,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.freeplane.core.util.Compat;
-import org.freeplane.features.mode.Controller;
 
 public class EmojiIcon extends MindIcon {
     private static final String VERSION = "12.1.4";
