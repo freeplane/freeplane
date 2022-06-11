@@ -9,17 +9,18 @@ import java.awt.LayoutManager;
 
 public class UnitGridBagLayout extends GridBagLayout {
 	private static final long serialVersionUID = 1L;
-	
+
 	private static Component findUnitComponent(Container parent) {
 		LayoutManager layout = parent.getLayout();
 		if(! (layout instanceof UnitGridBagLayout))
 			return null;
 		UnitGridBagLayout unitLayout = (UnitGridBagLayout) layout;
-		for (int i = 0; unitLayout.unit == null 
+		for (int i = 0; unitLayout.unit == null
 				&& i < parent.getComponentCount(); i++) {
 			Component comp = parent.getComponent(i);
 			GridBagConstraints constraints = unitLayout.getConstraints(comp);
-			if (comp.getClass().getSimpleName().endsWith("Button")
+			String className = comp.getClass().getSimpleName();
+			if ((className.equals("JButton") || className.equals("JToggleButton"))
 					&& ((GridBagConstraints)constraints).gridwidth == 1
 					&& ((GridBagConstraints)constraints).gridheight == 1) {
 				unitLayout.unit = comp;
@@ -30,14 +31,15 @@ public class UnitGridBagLayout extends GridBagLayout {
 		}
 		return unitLayout.unit;
 	}
-	
+
 	private Component unit;
-	
+
 	@Override
 	public Dimension preferredLayoutSize(Container parent) {
 		setPreferredSizes(parent);
 		return super.preferredLayoutSize(parent);
 	}
+
 	private void setPreferredSizes(Container parent) {
 		if(unit == null) {
 			unit = findUnitComponent(parent);
@@ -47,14 +49,35 @@ public class UnitGridBagLayout extends GridBagLayout {
 		Dimension unitSize = unit.getPreferredSize();
 		for (int i = 0; i < parent.getComponentCount(); i++) {
 			Component c = parent.getComponent(i);
-			if (c != unit && c.isVisible() && c instanceof JUnitPanel)
-				c.setPreferredSize(unitSize);
+			if (c != unit && c.isVisible()) {
+				if (c.getClass().equals(JUnitPanel.class))
+					c.setPreferredSize(unitSize);
+				else if (c.getClass().equals(JBigButton.class))
+					c.setPreferredSize(new Dimension(unitSize.width * 7/4, unitSize.height));
+			}
 		}
 	}
+
 	@Override
 	public void layoutContainer(Container parent) {
 		setPreferredSizes(parent);
 		super.layoutContainer(parent);
+		changeSpecialButtonSizes(parent);
 	}
-	
+
+	private void changeSpecialButtonSizes(Container parent) {
+		for(int i = parent.getComponentCount() - 1; i> 0; i--) {
+			Component component = parent.getComponent(i);
+			if(! (component  instanceof JButtonWithDropdownMenu)) {
+				continue;
+			}
+			int x = component.getX();
+			int width = component.getWidth();
+			i--;
+			Component previousComponent = parent.getComponent(i);
+			if(previousComponent.getX() == x && previousComponent.getWidth() == width) {
+				previousComponent.setBounds(x, previousComponent.getY(), width, component.getY() - previousComponent.getY());
+			}
+		}
+	}
 }

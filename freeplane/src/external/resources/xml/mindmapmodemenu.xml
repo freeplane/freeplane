@@ -16,8 +16,14 @@
 		<Entry name="FindAction" row="2"/>
 		<Entry name="NodeListAction" row="2"/>
 		<Entry usedBy="EDITOR" >
-			<Entry name="NewChildAction" row = "1" />
-			<Entry name="NewSiblingAction" row = "2"/>
+			<Entry name="NewChildAction" builder="bigIcon" row="1"/>
+			<Entry builder="dropdownMenu" text = "menu_add_newNode" row="2">
+				<Entry name="NewSiblingAction"/>
+	            <Entry name="NewPreviousSiblingAction" />
+	            <Entry name="NewParentNode" />
+	            <Entry name="NewFreeNodeAction" />
+	            <Entry name="NewSummaryAction"/>
+			</Entry>
 			<Entry name="CutAction" row = "1" />
 			<Entry name="DeleteAction" row = "2" />
 			<Entry name="CopyAction" row = "1" />

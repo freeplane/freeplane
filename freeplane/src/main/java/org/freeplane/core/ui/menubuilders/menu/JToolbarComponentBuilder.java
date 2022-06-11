@@ -63,7 +63,7 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 			constraints.gridwidth = gridWidth;
 			constraints.gridheight = gridHeight;
 			constraints.fill = gridHeight == 1 ? GridBagConstraints.HORIZONTAL : GridBagConstraints.BOTH;
-			constraints.anchor = GridBagConstraints.NORTHWEST;
+			constraints.anchor = entry.builders().contains("dropdownMenu") ? GridBagConstraints.SOUTH : GridBagConstraints.NORTHWEST;
 			container.add(component, constraints);
 		}
 	}
@@ -71,7 +71,6 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
 		final EntryAccessor entryAccessor = new EntryAccessor();
-		AFreeplaneAction action = entryAccessor.getAction(entry);
-		return action != null;
+		return entryAccessor.getAction(entry) != null || entry.builders().contains("dropdownMenu");
 	}
 }
