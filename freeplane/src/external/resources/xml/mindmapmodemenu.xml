@@ -22,7 +22,7 @@
 			<Entry name="PasteAction" row = "2" />
 			<Entry name="NewChildAction" row="1" weight = "1"/>
 			<Entry name="NewSiblingAction" row="1" weight = "1"/>
-			<Entry builder="dropdownMenu" text = "menu_add_newNode" width = "2" row="2">
+			<Entry builder="dropdownMenu" icon = "NewChildAction.icon" tooltip = "menu_add_newNode" width = "2" row="2">
 	            <Entry name="NewPreviousSiblingAction" />
 	            <Entry name="NewParentNode" />
 	            <Entry name="NewFreeNodeAction" />

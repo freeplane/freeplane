@@ -10,11 +10,14 @@ import javax.swing.JToolBar.Separator;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+import org.freeplane.core.ui.textchanger.TranslatedElement;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
 
@@ -58,9 +61,15 @@ public class ToolbarComponentProvider implements ComponentProvider {
 			component = new JUnitPanel();
 		}
 		else if(entry.builders().contains("dropdownMenu")){
-			String textLabel = (String) entry.getAttribute("text");
-			String text = textLabel != null ? TextUtils.getRawText(textLabel) +  "..."  :  "...";
-			JButtonWithDropdownMenu buttonWithMenu = new JButtonWithDropdownMenu(text);
+			String textKey = (String) entry.getAttribute("text");
+			String text = textKey != null ? TextUtils.getText(textKey) +  "..."  :  "...";
+			String iconKey = (String) entry.getAttribute("icon");
+			Icon icon = iconKey != null ? ResourceController.getResourceController().getIcon(iconKey) : null;
+			String tooltipKey = (String) entry.getAttribute("tooltip");
+			JButtonWithDropdownMenu buttonWithMenu = new JButtonWithDropdownMenu(text, icon);
+			if(textKey != null)
+				TranslatedElement.TEXT.setKey(buttonWithMenu, textKey);
+			TranslatedElementFactory.createTooltip(buttonWithMenu, tooltipKey);
 			entry.children()
 			.stream()
 			.map(entryAccessor::getAction)

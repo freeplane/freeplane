@@ -35,6 +35,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.menu.JButtonWithDropdownMenu;
 import org.freeplane.core.ui.menubuilders.menu.UnitGridBagLayout;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.icon.factory.IconFactory;
@@ -181,7 +182,7 @@ public class FreeplaneToolBar extends JToolBar {
 	}
 
 	private void configureToolbarButtonText(final AbstractButton abstractButton) {
-		if (null != abstractButton.getIcon()) {
+		if (null != abstractButton.getIcon() && ! (abstractButton instanceof JButtonWithDropdownMenu)) {
 			final String text = abstractButton.getText();
 			final String toolTipText = abstractButton.getToolTipText();
 			if (text != null) {
