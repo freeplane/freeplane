@@ -200,7 +200,6 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createStyleBox() {
 		final JComboBox stylesBox = JComboBoxFactory.create(styles);
-		stylesBox.setPrototypeDisplayValue("Floating node");
 		stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
 		return stylesBox;
 	}
@@ -209,7 +208,6 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		final JComboBox sizeBox = JComboBoxFactory.create(size);
 		sizeBox.setPrototypeDisplayValue("100");
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
-		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
 		sizeBox.setEditable(true);
 		return sizeBox;
 	}
