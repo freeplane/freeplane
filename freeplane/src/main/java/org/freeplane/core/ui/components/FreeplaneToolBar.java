@@ -20,7 +20,6 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -38,14 +37,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.menu.JButtonWithDropdownMenu;
 import org.freeplane.core.ui.menubuilders.menu.UnitGridBagLayout;
 import org.freeplane.core.util.Compat;
-import org.freeplane.features.icon.factory.IconFactory;
 
 /**
  * @author Stefan Zechmeister
  */
 public class FreeplaneToolBar extends JToolBar {
-	private static final int TOOLBAR_BUTTON_SIZE_1D = IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded() + 2;
-	private static final Dimension DEFAULT_TOOLBAR_BUTTON_SIZE = new Dimension(TOOLBAR_BUTTON_SIZE_1D, TOOLBAR_BUTTON_SIZE_1D);
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
 	
 	private static final GridBagConstraints separatorConstraints = new GridBagConstraints();
@@ -198,8 +194,6 @@ public class FreeplaneToolBar extends JToolBar {
 		if (Compat.isMacOsX()) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmentedGradient");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");
-			final Dimension buttonSize = DEFAULT_TOOLBAR_BUTTON_SIZE;
-			abstractButton.setPreferredSize(buttonSize);
 			abstractButton.setFocusPainted(false);
 		}
 		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
