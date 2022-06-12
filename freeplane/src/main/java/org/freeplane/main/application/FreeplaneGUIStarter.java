@@ -179,13 +179,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			final String systemPropertyLookandfeel = System.getProperty("lookandfeel");
 			final String lookandfeel;
 			if(systemPropertyLookandfeel == null) {
-				lookandfeel =  applicationResourceController.getProperty("lookandfeel");
 				applicationResourceController.addPropertyChangeListener((propertyName, newValue, oldValue) -> {
-					if("lookandfeel".equals(propertyName)) {
-						FrameController.setLookAndFeel(applicationResourceController.getProperty("lookandfeel"));
+					if("lookandfeel".equals(propertyName) && ! FrameController.VAQUA_LAF_CLASS_NAME.equals(newValue)) {
+						FrameController.setLookAndFeel(newValue);
 						SwingUtilities.updateComponentTreeUI(UITools.getFrame());
 					}
 				});
+				lookandfeel =  applicationResourceController.getProperty("lookandfeel");
 			}
 			else
 				lookandfeel = systemPropertyLookandfeel;
