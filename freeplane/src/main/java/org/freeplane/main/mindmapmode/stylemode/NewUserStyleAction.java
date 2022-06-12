@@ -57,7 +57,8 @@ public class NewUserStyleAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-		final String styleName = JOptionPane.showInputDialog(TextUtils.getText("enter_new_style_name"));
+		final String styleName = JOptionPane.showInputDialog(UITools.getCurrentRootComponent(),
+				TextUtils.getText("enter_new_style_name"));
 		if (styleName == null) {
 			return;
 		}
