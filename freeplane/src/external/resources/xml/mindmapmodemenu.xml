@@ -16,9 +16,9 @@
 		<Entry name="FindAction" row="2"/>
 		<Entry name="NodeListAction" row="2"/>
 		<Entry usedBy="EDITOR" >
-			<Entry name="NewChildAction" builder="bigIcon" row="1"/>
-			<Entry builder="dropdownMenu" text = "menu_add_newNode" row="2">
-				<Entry name="NewSiblingAction"/>
+			<Entry name="NewChildAction" row="1" weight = "1"/>
+			<Entry name="NewSiblingAction" row="1" weight = "1"/>
+			<Entry builder="dropdownMenu" text = "menu_add_newNode" width = "2" row="2">
 	            <Entry name="NewPreviousSiblingAction" />
 	            <Entry name="NewParentNode" />
 	            <Entry name="NewFreeNodeAction" />

@@ -73,10 +73,10 @@ public class UnitGridBagLayout extends GridBagLayout {
 			}
 			int x = component.getX();
 			int width = component.getWidth();
-			i--;
-			Component previousComponent = parent.getComponent(i);
-			if(previousComponent.getX() == x && previousComponent.getWidth() == width) {
-				previousComponent.setBounds(x, previousComponent.getY(), width, component.getY() - previousComponent.getY());
+			for (Component previousComponent = parent.getComponent(i-1);
+					i > 0 && previousComponent.getX() >= x && previousComponent.getX() + previousComponent.getWidth() <= x + width;
+					previousComponent = parent.getComponent(--i)) {
+				previousComponent.setSize(previousComponent.getWidth(), component.getY() - previousComponent.getY());
 			}
 		}
 	}

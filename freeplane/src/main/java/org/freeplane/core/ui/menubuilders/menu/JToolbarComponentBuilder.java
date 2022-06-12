@@ -62,8 +62,10 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 			constraints.gridy = row;
 			constraints.gridwidth = gridWidth;
 			constraints.gridheight = gridHeight;
+			String weightSpec = (String) entry.getAttribute("weight");
+			constraints.weightx = weightSpec != null ? Integer.parseInt(weightSpec) : 0;
 			constraints.fill = gridHeight == 1 ? GridBagConstraints.HORIZONTAL : GridBagConstraints.BOTH;
-			constraints.anchor = entry.builders().contains("dropdownMenu") ? GridBagConstraints.SOUTH : GridBagConstraints.NORTHWEST;
+			constraints.anchor = entry.builders().contains("dropdownMenu") ? GridBagConstraints.SOUTH : GridBagConstraints.NORTHEAST;
 			container.add(component, constraints);
 		}
 	}
