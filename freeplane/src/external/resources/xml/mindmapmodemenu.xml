@@ -17,9 +17,20 @@
 		<Entry name="NodeListAction" row="2"/>
 		<Entry usedBy="EDITOR" >
 			<Entry name="CutAction" row = "1" />
-			<Entry name="DeleteAction" row = "2" />
 			<Entry name="CopyAction" row = "1" />
-			<Entry name="PasteAction" row = "2" />
+			<Entry name="PasteAction" row = "1" />
+			<Entry builder="dropdownMenu" icon = "CopyAction.icon" tooltip = "edit.tooltip" width = "3" row="2">
+				<Entry name="CopySingleAction" />
+				<Entry name="CopyIDAction" />
+				<Entry name="CopyNodeURIAction" />
+				<Entry name="CopyAttributes" />
+				<Entry name="SelectedPasteAction"/>
+				<Entry name="PasteAttributes" />
+				<Entry name="MoveAction" />
+				<Entry name="CloneAction"/>
+				<Entry name="DeleteAction"/>
+			</Entry>
+			<Entry builder="separator" />
 			<Entry name="NewChildAction" row="1" weight = "1"/>
 			<Entry name="NewSiblingAction" row="1" weight = "1"/>
 			<Entry builder="dropdownMenu" icon = "NewChildAction.icon" tooltip = "menu_add_newNode" width = "2" row="2">
