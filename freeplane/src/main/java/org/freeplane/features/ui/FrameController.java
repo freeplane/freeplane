@@ -93,6 +93,7 @@ import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.StyleString;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
@@ -171,6 +172,7 @@ abstract public class FrameController implements ViewController {
 	private static Icon dateIcon;
 	private static Icon dateTimeIcon;
 	private static Icon linkIcon;
+	private static Icon unknownTypeIcon;
 	static private void initializeUiResources(){
 		if(uiResourcesInitialized == false) {
 			uiResourcesInitialized = true;
@@ -180,6 +182,7 @@ abstract public class FrameController implements ViewController {
 			dateIcon = resourceController.getIcon("date_icon");
 			dateTimeIcon = resourceController.getIcon("date_time_icon");
 			linkIcon = resourceController.getIcon("link_icon");
+			unknownTypeIcon = resourceController.getIcon("unknown_type_icon");
 		}
 	}
 	private final IMapViewManager mapViewManager;
@@ -816,7 +819,7 @@ abstract public class FrameController implements ViewController {
 		if (value instanceof FormattedObject) {
 			value = ((FormattedObject) value).getObject();
 		}
-		if (value instanceof String || value instanceof StyleTranslatedObject) {
+		if (value instanceof String || value instanceof StyleTranslatedObject || value instanceof StyleString) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, textIcon);
 		}
 		else if (value instanceof FormattedDate) {
@@ -835,7 +838,7 @@ abstract public class FrameController implements ViewController {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, linkIcon);
 		}
 		else {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, unknownTypeIcon);
 		}
 	}
 
