@@ -67,6 +67,7 @@ public class ToolbarComponentProvider implements ComponentProvider {
 			Icon icon = iconKey != null ? ResourceController.getResourceController().getIcon(iconKey) : null;
 			String tooltipKey = (String) entry.getAttribute("tooltip");
 			JButtonWithDropdownMenu buttonWithMenu = new JButtonWithDropdownMenu(text, icon);
+			IconReplacer.replaceByScaledImageIcon(buttonWithMenu);
 			if(textKey != null)
 				TranslatedElement.TEXT.setKey(buttonWithMenu, textKey);
 			TranslatedElementFactory.createTooltip(buttonWithMenu, tooltipKey);
