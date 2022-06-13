@@ -32,8 +32,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -180,8 +182,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			final String lookandfeel;
 			if(systemPropertyLookandfeel == null) {
 				applicationResourceController.addPropertyChangeListener((propertyName, newValue, oldValue) -> {
-					if("lookandfeel".equals(propertyName) && ! FrameController.VAQUA_LAF_CLASS_NAME.equals(newValue)) {
+					if("lookandfeel".equals(propertyName)) {
 						FrameController.setLookAndFeel(newValue);
+						if(FrameController.VAQUA_LAF_CLASS_NAME.equals(newValue)) {
+							final Component currentRootComponent = UITools.getMenuComponent();
+							Stream.of(SwingUtilities.getRootPane(currentRootComponent).getComponents())
+							.forEach(SwingUtilities::updateComponentTreeUI);
+						}
 						SwingUtilities.updateComponentTreeUI(UITools.getFrame());
 					}
 				});
