@@ -49,6 +49,7 @@ import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JComboBoxFactory;
+import org.freeplane.core.ui.menubuilders.menu.JUnitPanel;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -225,13 +226,11 @@ public class FilterConditionEditor {
 
 		optionPanel = new FreeplaneToolBar(JToolBar.HORIZONTAL);
 
-		optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
 		// Ignore case checkbox
 		caseSensitive = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_MATCH_CASE + ".icon", PROPERTY_FILTER_MATCH_CASE + ".tooltip");
 		caseSensitive.setFocusable(false);
 		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
-		optionPanel.add(caseSensitive);
+		optionPanel.add(caseSensitive, gridBagConstraints);
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
 
@@ -239,7 +238,7 @@ public class FilterConditionEditor {
 		approximateMatching = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_APPROXIMATE_MATCH + ".icon", PROPERTY_FILTER_APPROXIMATE_MATCH+ ".tooltip");
 		approximateMatching.setModel(filterController.getApproximateMatchingButtonModel());
 		//add(approximateMatching, gridBagConstraints);
-		optionPanel.add(approximateMatching);
+		optionPanel.add(approximateMatching, gridBagConstraints);
 		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
 			    PROPERTY_FILTER_APPROXIMATE_MATCH));
 
@@ -247,16 +246,23 @@ public class FilterConditionEditor {
 		ignoreDiacritics = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_IGNORE_DIACRITICS + ".icon", PROPERTY_FILTER_IGNORE_DIACRITICS+ ".tooltip");
 		ignoreDiacritics.setModel(filterController.getIgnoreDiacriticsButtonModel());
         //add(approximateMatching, gridBagConstraints);
-        optionPanel.add(ignoreDiacritics);
+        optionPanel.add(ignoreDiacritics, gridBagConstraints);
         ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
                 PROPERTY_FILTER_IGNORE_DIACRITICS));
 
         btnDeny = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_DENY + ".icon", PROPERTY_FILTER_DENY+ ".tooltip");
         optionPanel.add(btnDeny, gridBagConstraints);
+        
+        if(variant != Variant.FILTER_TOOLBAR) {
+        	gridBagConstraints.weightx = 1;
+        	optionPanel.add(new JUnitPanel(), gridBagConstraints);
+
+        	gridBagConstraints.weightx = 0;
+        }
+
 
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         panel.add(optionPanel, gridBagConstraints);
 
 		IMapSelection selection = Controller.getCurrentController().getSelection();

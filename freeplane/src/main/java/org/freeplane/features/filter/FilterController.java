@@ -47,6 +47,8 @@ import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JToolTip;
@@ -67,6 +69,7 @@ import org.freeplane.core.ui.ButtonModelStateChangeListenerForProperty;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -238,7 +241,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	final private FilterChangeListener filterChangeListener;
 	private DefaultComboBoxModel filterConditions;
 	private final FilterMenuBuilder filterMenuBuilder;
-	private JToolBar filterToolbar;
+	private JComponent filterToolbar;
 	private final FilterHistory history;
 	final private String pathToFilterFile;
 	private ASelectableCondition selectedViewCondition;
@@ -512,12 +515,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		return filter;
 	}
 
-	private JToolBar createFilterToolbar() {
-		final JToolBar filterToolbar = new FreeplaneToolBar("filter_toolbar", SwingConstants.HORIZONTAL);
-		filterToolbar.setVisible(ResourceController.getResourceController()
-		    .getBooleanProperty("filter_toolbar_visible"));
+	private JComponent createFilterToolbar() {
 		Controller controller = Controller.getCurrentController();
-		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
 		final AbstractButton undoBtn = FreeplaneToolBar.createButton(controller.getAction("UndoFilterAction"));
 		final AbstractButton redoBtn = FreeplaneToolBar.createButton(controller.getAction("RedoFilterAction"));
         final AbstractButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"), hideMatchingNodes);
@@ -590,62 +589,78 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         final AbstractButton applyQuickSelectBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAllAction"));
 		final AbstractButton applyQuickHighlightBtn = FreeplaneToolBar.createButton(controller.getAction("QuickHighlightAction"));
 
-		JComponent searchOptionPanel = quickEditor.getOptionPanel();
-		searchOptionPanel.add(applyQuickHighlightBtn);
-		searchOptionPanel.add(new JUnitPanel());
-		searchOptionPanel.add(new JUnitPanel());
-		searchOptionPanel.add(applyQuickSelectBtn);
-		searchOptionPanel.add(applyQuickFilterBtn);
-
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		filterToolbar.addSeparator();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+
+		JComponent searchOptionPanel = quickEditor.getOptionPanel();
+		
+		constraints.weightx = 1;
+		searchOptionPanel.add(new JUnitPanel(), constraints);
+		
+		constraints.weightx = 0;
+		searchOptionPanel.add(applyQuickHighlightBtn, constraints);
+		searchOptionPanel.add(applyQuickSelectBtn, constraints);
+		searchOptionPanel.add(applyQuickFilterBtn, constraints);
+		
+		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
+
+		constraints.gridwidth = 1;
+		constraints.gridy = 0;
+		filterOptionPanel.add(applyFindPreviousBtn, constraints);
+		filterOptionPanel.add(applyFindNextBtn, constraints);
+		constraints.gridy = 1;
+		filterOptionPanel.add(applyAndFilterBtn, constraints);
+		filterOptionPanel.add(applyOrFilterBtn, constraints);
+
+		constraints.gridy = 0;
 		constraints.gridheight = 2;
-		filterToolbar.add(quickEditor.getPanel(), constraints);
+		filterOptionPanel.add(new JSeparator(JToolBar.HORIZONTAL), constraints);
 
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 8;
 		constraints.gridheight = 1;
-		constraints.gridy = 0;
-		filterToolbar.add(applyFindPreviousBtn, constraints);
-		filterToolbar.add(applyFindNextBtn, constraints);
-		constraints.gridy = 1;
-		filterToolbar.add(applyAndFilterBtn, constraints);
-		filterToolbar.add(applyOrFilterBtn, constraints);
+		filterOptionPanel.add(activeFilterConditionComboBox, constraints);
+		
+		constraints.gridy =1;
+		constraints.gridwidth =1;
+		
+		filterOptionPanel.add(hideMatchingNodesBox, constraints);
+		filterOptionPanel.add(showAncestorsBox, constraints);
+		filterOptionPanel.add(showDescendantsBox, constraints);
+		filterOptionPanel.add(applyToVisibleBox, constraints);
 
-		filterToolbar.addSeparator();
-
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		constraints.gridy = 0;
-		filterToolbar.add(activeFilterConditionComboBox, constraints);
-
-		JComponent filterOptionPanel = new FreeplaneToolBar(JToolBar.HORIZONTAL);
-		filterOptionPanel.add(hideMatchingNodesBox);
-		filterOptionPanel.add(showAncestorsBox);
-		filterOptionPanel.add(showDescendantsBox);
-		filterOptionPanel.add(applyToVisibleBox);
-
-		filterOptionPanel.add(new JUnitPanel());
-		filterOptionPanel.add(new JUnitPanel());
-		filterOptionPanel.add(reapplyFilterBtn);
-		filterOptionPanel.add(selectFilteredNodesBtn);
-		filterOptionPanel.add(filterSelectedBtn);
+		constraints.weightx = 1;
+		filterOptionPanel.add(new JUnitPanel(), constraints);
+		
+		constraints.weightx = 0;
+		filterOptionPanel.add(reapplyFilterBtn, constraints);
+		filterOptionPanel.add(selectFilteredNodesBtn, constraints);
+		filterOptionPanel.add(filterSelectedBtn, constraints);
 
 		constraints.gridwidth = 1;
-		constraints.gridy = 1;
-		constraints.anchor = GridBagConstraints.NORTHEAST;
-		filterToolbar.add(filterOptionPanel, constraints);
 
 		constraints.gridy = 0;
-		filterToolbar.add(undoBtn, constraints);
-		filterToolbar.add(redoBtn, constraints);
+		filterOptionPanel.add(undoBtn, constraints);
+		filterOptionPanel.add(redoBtn, constraints);
 		constraints.gridy = 1;
-		filterToolbar.add(noFilteringBtn, constraints);
-		filterToolbar.add(btnEdit, constraints);
+		filterOptionPanel.add(noFilteringBtn, constraints);
+		filterOptionPanel.add(btnEdit, constraints);
 
 		
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
+		
+		final JPanel filterToolbar = new JPanel();
+		filterToolbar.setLayout(ToolbarLayout.horizontal());
+		filterToolbar.add(new JSeparator());
+		filterToolbar.add(quickEditor.getPanel());
+		filterToolbar.add(new JSeparator());
+		filterToolbar.add(filterOptionPanel);
+
+		filterToolbar.setVisible(ResourceController.getResourceController()
+		    .getBooleanProperty("filter_toolbar_visible"));
+		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
+
 		return filterToolbar;
 	}
 
@@ -676,7 +691,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 	/**
 	 */
-	public JToolBar getFilterToolbar() {
+	public JComponent getFilterToolbar() {
 		if (filterToolbar == null) {
 			filterToolbar = createFilterToolbar();
 		}

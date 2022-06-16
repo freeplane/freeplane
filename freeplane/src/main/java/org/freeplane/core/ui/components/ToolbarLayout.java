@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
-import javax.swing.JToolBar.Separator;
+import javax.swing.JSeparator;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
@@ -45,7 +45,7 @@ public class ToolbarLayout implements LayoutManager {
 		int lastBlockFinish = 0;
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
-			if (component == null || component instanceof Separator || blockEndPosition == BlockEndPosition.ANYWHERE) {
+			if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
 				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maximumWidth) {
 					int x = 0;
 					for (int j = lastBlockStart; j < lastBlockFinish; j++) {
@@ -93,7 +93,7 @@ public class ToolbarLayout implements LayoutManager {
     }
 	private int getPreferredWidth(final Component c, final int maxWidth) {
 		final int width = ! c.isVisible() ? 0 : 
-				c instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : 
+				c instanceof JSeparator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : 
 					c.getPreferredSize().width;
 		return width;
 	}
@@ -114,7 +114,7 @@ public class ToolbarLayout implements LayoutManager {
 		int lastBlockFinish = 0;
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
-			if (component == null || component instanceof Separator || blockEndPosition == BlockEndPosition.ANYWHERE) {
+			if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
 				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth) {
 					heigth += lastBlockHeight;
 					lastBlockWidth = blockWidth;
