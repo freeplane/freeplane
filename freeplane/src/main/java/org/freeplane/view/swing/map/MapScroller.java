@@ -279,9 +279,12 @@ class MapScroller {
 	}
 
 	void setAnchorContentLocation(){
-		anchorContentLocation = getAnchorCenterPoint();
+		if(scrollingDirective != ScrollingDirective.DONE && scrollingDirective != ScrollingDirective.ANCHOR)
+			scrollView();
+		else
+			anchorContentLocation = getAnchorCenterPoint();
 	}
-
+	
 	public void scrollNodeTreeToVisible(NodeView node) {
 		final Rectangle visibleRect = map.getVisibleRect();
 		Rectangle requiredRectangle = new Rectangle(node.getSize());
@@ -318,7 +321,6 @@ class MapScroller {
 		if(! root.equals(anchor))
 			anchorToNode(root, 0, 0);
 	}
-
 }
 
 enum ScrollingDirective {

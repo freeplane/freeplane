@@ -2374,6 +2374,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			else
 				setAnchorContentLocation();
+//				mapScroller.updateAnchorContentLocation();
 		}
 	}
 	public void scrollBy(final int x, final int y) {
