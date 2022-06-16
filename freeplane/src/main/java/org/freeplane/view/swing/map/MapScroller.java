@@ -191,12 +191,10 @@ class MapScroller {
 		final JComponent mainView = anchor.getMainView();
 		final int referenceWidth = mainView.getWidth();
 		final int referenceHeight = mainView.getHeight();
-		final Point anchorCenterPoint = new Point((int) (referenceWidth * anchorHorizontalPoint), (int) (referenceHeight * anchorVerticalPoint));
 		final JViewport viewPort = (JViewport) map.getParent();
-		UITools.convertPointToAncestor(mainView, anchorCenterPoint, map);
-		final Dimension extentSize = viewPort.getExtentSize();
-		anchorCenterPoint.x += (extentSize.width - viewPort.getWidth()) / 2;
-		anchorCenterPoint.y += (extentSize.height - viewPort.getHeight()) / 2;
+		final Point anchorCenterPoint = new Point((int) (referenceWidth * anchorHorizontalPoint) - viewPort.getWidth()/2,
+				(int) (referenceHeight * anchorVerticalPoint) - viewPort.getHeight()/2);
+		UITools.convertPointToAncestor(mainView, anchorCenterPoint, viewPort);
 		return anchorCenterPoint;
 	}
 
@@ -274,7 +272,7 @@ class MapScroller {
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
 		setAnchorView(map.getRoot());
-		anchorHorizontalPoint = anchorVerticalPoint = 0;
+		anchorHorizontalPoint = anchorVerticalPoint = 0.5f;
 		this.anchorContentLocation = getAnchorCenterPoint();
 	}
 
