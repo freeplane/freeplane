@@ -596,7 +596,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		searchOptionPanel.add(new JUnitPanel());
 		searchOptionPanel.add(applyQuickSelectBtn);
 		searchOptionPanel.add(applyQuickFilterBtn);
-		searchOptionPanel.add(new JUnitPanel());
 
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.NORTHWEST;
@@ -631,7 +630,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		filterOptionPanel.add(reapplyFilterBtn);
 		filterOptionPanel.add(selectFilteredNodesBtn);
 		filterOptionPanel.add(filterSelectedBtn);
-		filterOptionPanel.add(new JUnitPanel());
 
 		constraints.gridwidth = 1;
 		constraints.gridy = 1;
