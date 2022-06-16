@@ -196,10 +196,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			}
 			else
 				lookandfeel = systemPropertyLookandfeel;
-			FrameController.setLookAndFeel(lookandfeel);
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
+					FrameController.setLookAndFeel(lookandfeel);
 					final JFrame frame;
 					frame = new JFrame("Freeplane");
 					frame.setContentPane(new JPanel(){
