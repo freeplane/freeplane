@@ -69,7 +69,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.basic.BasicEditorPaneUI;
 
@@ -107,7 +106,6 @@ import com.formdev.flatlaf.FlatLaf;
 abstract public class FrameController implements ViewController {
 	public static final String VAQUA_LAF_NAME = "VAqua";
 	public static final String VAQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
-	public static final String AQUA_LAF_CLASS_NAME = "com.apple.laf.AquaLookAndFeel";
     private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
     private static final String MOTIF_LAF__CLASS_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
@@ -675,7 +673,6 @@ abstract public class FrameController implements ViewController {
     private static void fixLookAndFeelUI(){
     	addHotKeysToMotifInputMaps();
     	configureFlatLookAndFeel();
-    	configureAquaLookAndFeel();
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -709,7 +706,6 @@ abstract public class FrameController implements ViewController {
 		if (color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
-
 
 	private static int obtainLookAndFeelDefaultMenuItemFontSize() {
 		String[] fontsProperties = {"MenuItem.font", "defaultFont"};
@@ -755,17 +751,6 @@ abstract public class FrameController implements ViewController {
         }
 	}
 
-	private static void configureAquaLookAndFeel() {
-		LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
-		if(lookAndFeel.getClass().getName().equals(AQUA_LAF_CLASS_NAME)) {
-			ColorUIResource selectionForeground = new ColorUIResource(0x66, 0, 0);
-			UIManager.getLookAndFeelDefaults().put("MenuItem.selectionForeground", selectionForeground);
-			UIManager.getLookAndFeelDefaults().put("CheckBoxMenuItem.selectionForeground", selectionForeground);
-			UIManager.getLookAndFeelDefaults().put("RadioButtonMenuItem.selectionForeground", selectionForeground);
-			UIManager.getLookAndFeelDefaults().put("Menu.selectionForeground", selectionForeground);
-		}
-		
-	}
 	private static void addHotKeysToMotifInputMaps() {
         if(UIManager.getLookAndFeel().getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
             UIDefaults uiDefaults = UIManager.getDefaults();
