@@ -226,6 +226,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		@Override
+		public NodeModel getSelectionRoot() {
+			final NodeView root = MapView.this.getRoot();
+			return root != null ? root.getModel() : null;
+		}
+
+		@Override
 		public Set<NodeModel> getSelection() {
 			return getSelectedNodes();
 		}

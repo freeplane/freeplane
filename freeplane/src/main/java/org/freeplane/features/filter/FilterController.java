@@ -416,7 +416,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             final Filter filter = new Filter(NO_FILTERING, hideMatchingNodes.isSelected(), showAncestors.isSelected(),
                     showDescendants.isSelected(), false, null);
             map.putExtension(Filter.class, filter);
-			filter.calculateFilterResultsForDescendants(map.getRootNode());
+			filter.calculateFilterResultsForDescendants(selection.getSelectionRoot());
 	    }
 	}
 
@@ -430,7 +430,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         else {
             Filter oldFilter = map.putExtension(Filter.class, filter);
             if (oldFilter == null || force || !filter.canUseFilterResultsFrom(oldFilter)) {
-                filter.calculateFilterResultsForDescendants(map.getRootNode());
+                filter.calculateFilterResultsForDescendants(selection.getSelectionRoot());
             }
         }
     }
@@ -443,14 +443,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             	Controller.getCurrentController().getViewController().setWaitingCursor(true);
             	final Filter oldFilter = selection.getFilter();
             	selection.setFilter(filter);
-            	MapModel map = selection.getSelected().getMap();
                 if (force || !filter.canUseFilterResultsFrom(oldFilter)) {
-            		filter.calculateFilterResultsForDescendants(map.getRootNode());
+            		filter.calculateFilterResultsForDescendants(selection.getSelectionRoot());
             	}
                 else {
                     filter.useFilterResultsFrom(oldFilter);
                 }
-            	refreshMap(this, map);
+            	refreshMap(this, selection.getMap());
             	selectVisibleNodes(selection);
             }
             finally {
