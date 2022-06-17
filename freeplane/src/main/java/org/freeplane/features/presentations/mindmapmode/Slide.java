@@ -159,7 +159,7 @@ public class Slide implements NamedElement<Slide>{
 			MapModel map = getMap();
 			final ICondition condition = getEffectiveFilterCondition();
 			Filter filter = Filter.createFilter(condition, true, showsDescendants, false, null);
-			filter.calculateFilterResults(map);
+			filter.calculateFilterResultsForDescendants(map.getRootNode());
 			return filter;
 		}
 
