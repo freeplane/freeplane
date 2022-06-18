@@ -11,10 +11,9 @@
 			<Entry name="RedoAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="zoom" builder="main_toolbar_zoom"  row="1" width = "3"/>
-		<Entry name="SetBooleanPropertyAction.view_mode" row = "2"/>
-		<Entry name="FindAction" row="2"/>
-		<Entry name="NodeListAction" row="2"/>
+		<Entry name="zoom" builder="main_toolbar_zoom"  row="1" width = "2"/>
+		<Entry name="FindAction" row="2" weight = "1"/>
+		<Entry name="NodeListAction" row="2" weight = "1"/>
 		<Entry usedBy="EDITOR" >
 			<Entry name="CutAction" row = "1" />
 			<Entry name="CopyAction" row = "1" />
