@@ -15,6 +15,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
@@ -22,13 +23,17 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
 
 public class ToolbarComponentProvider implements ComponentProvider {
+    private final EntryAccessor entryAccessor;
+
+	public ToolbarComponentProvider(ResourceAccessor resourceAccessor) {
+		entryAccessor = new EntryAccessor(resourceAccessor);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.ui.menubuilders.menu.ComponentProvider#createComponent(org.freeplane.core.ui.menubuilders.generic.Entry)
 	 */
 	@Override
     public Component createComponent(Entry entry) {
-	    final EntryAccessor entryAccessor = new EntryAccessor();
 		final Object existingComponent = entryAccessor.getComponent(entry);
 		if (existingComponent != null)
 			return (Component) existingComponent;
@@ -38,7 +43,7 @@ public class ToolbarComponentProvider implements ComponentProvider {
 		    AbstractButton actionComponent;
 			if (action.isSelectable()) {
 				actionComponent = new JAutoToggleButton(action);
-				IconReplacer.replaceByImageIcon(actionComponent);
+				IconReplacer.replaceByImageIcon(entry, actionComponent, entryAccessor);
 			}
 			else if(entry.builders().contains("bigIcon")) {
 				actionComponent = new JBigButton(action);
@@ -48,7 +53,7 @@ public class ToolbarComponentProvider implements ComponentProvider {
 			}
 			else {
 				actionComponent = new JButton(action);
-				IconReplacer.replaceByImageIcon(actionComponent);
+				IconReplacer.replaceByImageIcon(entry, actionComponent, entryAccessor);
 			}
 
 

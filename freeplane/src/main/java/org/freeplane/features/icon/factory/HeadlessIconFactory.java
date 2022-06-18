@@ -43,5 +43,8 @@ class HeadlessIconFactory implements IconFactory {
 	public Icon getIcon(URL url, Quantity<LengthUnit> defaultUiIconHeight) {
 		return EMPTY_ICON;
 	}
+
+	@Override
+	public void registerIcon(Icon icon, URL url) {/**/}
 	
 }

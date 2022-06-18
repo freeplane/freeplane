@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.awt.Container;
@@ -17,6 +18,7 @@ import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.menubuilders.HeadlessFreeplaneRunner;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -25,6 +27,8 @@ public class JToolbarComponentBuilderTest {
 	static{
 		new HeadlessFreeplaneRunner();
 	}
+	
+	ResourceAccessor resourceAccessorMock = mock(ResourceAccessor.class);
 	@Test
 	public void createsToolbarButtonWithAction() {
 		Entry actionEntry = new Entry();
@@ -36,7 +40,7 @@ public class JToolbarComponentBuilderTest {
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
 
-		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
+		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder(resourceAccessorMock);
 		toolbarActionGroupBuilder.visit(actionEntry);
 
 		JButton button = (JButton)new EntryAccessor().getComponent(actionEntry);
@@ -57,7 +61,7 @@ public class JToolbarComponentBuilderTest {
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(actionEntry);
 
-		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
+		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder(resourceAccessorMock);
 		toolbarActionGroupBuilder.visit(actionEntry);
 
 		JAutoToggleButton button = (JAutoToggleButton)new EntryAccessor().getComponent(actionEntry);
@@ -76,7 +80,7 @@ public class JToolbarComponentBuilderTest {
 		new EntryAccessor().setComponent(toolbarEntry, toolbar);
 		toolbarEntry.addChild(separatorEntry);
 
-		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder();
+		final JToolbarComponentBuilder toolbarActionGroupBuilder = new JToolbarComponentBuilder(resourceAccessorMock);
 		toolbarActionGroupBuilder.visit(separatorEntry);
 
 		JToolBar.Separator separator = (JToolBar.Separator)new EntryAccessor().getComponent(separatorEntry);

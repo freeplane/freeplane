@@ -69,7 +69,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 
 		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
+		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder(resourceAccessor));
 
 		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
         uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu");

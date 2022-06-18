@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.LayoutManager;
 
+import javax.swing.AbstractButton;
+
 public class UnitGridBagLayout extends GridBagLayout {
 	private static final long serialVersionUID = 1L;
 
@@ -75,8 +77,14 @@ public class UnitGridBagLayout extends GridBagLayout {
 			int width = component.getWidth();
 			for (Component previousComponent = parent.getComponent(i-1);
 					i > 0 && previousComponent.getX() >= x && previousComponent.getX() + previousComponent.getWidth() <= x + width;
-					previousComponent = parent.getComponent(--i)) {
+					previousComponent = parent.getComponent(--i-1)) {
 				previousComponent.setSize(previousComponent.getWidth(), component.getY() - previousComponent.getY());
+				if(previousComponent instanceof AbstractButton) {
+					if(! previousComponent.isPreferredSizeSet()) {
+						previousComponent.setPreferredSize(previousComponent.getPreferredSize());
+						IconReplacer.replaceByScaledImageIcon((AbstractButton) previousComponent);
+					}
+				}
 			}
 		}
 	}

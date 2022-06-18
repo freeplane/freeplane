@@ -11,6 +11,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.features.icon.UIIcon;
 
+import com.kitfox.svg.app.beans.SVGIcon;
+
 class GraphicIconFactory implements IconFactory {
 	private static final String SVG_EXT = ".svg";
 	private static final String SVG_EXT_WITH_QUERY = SVG_EXT + ResourceController.USE_ACCENT_COLOR_QUERY;
@@ -59,17 +61,23 @@ class GraphicIconFactory implements IconFactory {
 				String path = url.getPath();
 				if (path.endsWith(SVG_EXT) || path.endsWith(SVG_EXT_WITH_QUERY)) {
 					result = FreeplaneIconFactory.createSVGIcon(url, heightPixels);
-					ICON_URLS.put(result, url);
 				}
 				else {
 					result = FreeplaneIconFactory.createIconPrivileged(url);
 				}
 				ICON_CACHE.put(cacheKey, result);
-				ICON_URLS.put(result, url);
-				ICON_URLS.put(result, url);
+				registerIcon(result, url);
 			}
 		}
 		return result;
+	}
+	
+	
+
+	@Override
+	public void registerIcon(Icon icon, URL url) {
+		ICON_URLS.put(icon, url);
+		
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.icon.factory.IconFactory;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.kitfox.svg.SVGCache;
@@ -154,6 +155,7 @@ class SVGIconCreator {
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+        IconFactory.getInstance().registerIcon(icon, url);
         return icon;
     }
 

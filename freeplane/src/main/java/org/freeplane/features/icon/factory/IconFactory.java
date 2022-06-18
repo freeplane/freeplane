@@ -53,4 +53,5 @@ public interface IconFactory {
 	Icon getIcon(UIIcon icon);
 	Icon getIcon(UIIcon uiIcon, Quantity<LengthUnit> iconHeight);
 	Icon getIcon(URL url, Quantity<LengthUnit> defaultUiIconHeight);
+	void registerIcon(Icon icon, URL url);
 }
