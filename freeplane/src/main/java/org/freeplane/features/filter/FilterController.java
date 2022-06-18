@@ -603,20 +603,19 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		searchOptionPanel.add(applyQuickSelectBtn, constraints);
 		searchOptionPanel.add(applyQuickFilterBtn, constraints);
 		
-		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
-
+		JComponent searchPanel = new FreeplaneToolBar("searchPanel", JToolBar.HORIZONTAL);
+		
 		constraints.gridwidth = 1;
 		constraints.gridy = 0;
-		filterOptionPanel.add(applyFindPreviousBtn, constraints);
-		filterOptionPanel.add(applyFindNextBtn, constraints);
+		searchPanel.add(applyFindPreviousBtn, constraints);
+		searchPanel.add(applyFindNextBtn, constraints);
 		constraints.gridy = 1;
-		filterOptionPanel.add(applyAndFilterBtn, constraints);
-		filterOptionPanel.add(applyOrFilterBtn, constraints);
+		searchPanel.add(applyAndFilterBtn, constraints);
+		searchPanel.add(applyOrFilterBtn, constraints);
+
+		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
 
 		constraints.gridy = 0;
-		constraints.gridheight = 2;
-		filterOptionPanel.add(new JSeparator(JToolBar.HORIZONTAL), constraints);
-
 		constraints.gridwidth = 8;
 		constraints.gridheight = 1;
 		filterOptionPanel.add(activeFilterConditionComboBox, constraints);
@@ -652,9 +651,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		
 		final JPanel filterToolbar = new JPanel();
 		filterToolbar.setLayout(ToolbarLayout.horizontal());
-		filterToolbar.add(new JSeparator());
+		filterToolbar.add(new JSeparator(SwingConstants.VERTICAL));
 		filterToolbar.add(quickEditor.getPanel());
-		filterToolbar.add(new JSeparator());
+		filterToolbar.add(searchPanel);
+		filterToolbar.add(new JSeparator(SwingConstants.VERTICAL));
 		filterToolbar.add(filterOptionPanel);
 
 		filterToolbar.setVisible(ResourceController.getResourceController()
