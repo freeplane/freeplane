@@ -31,7 +31,7 @@ class MapScroller {
 
 	public MapScroller(MapView map) {
 		this.map = map;
-		this.anchorContentLocation = new Point();
+		this.anchorContentLocation = null;
 	}
 
 	void anchorToNode(final NodeView view, final float horizontalPoint, final float verticalPoint) {
@@ -186,7 +186,7 @@ class MapScroller {
 
 	private Point getAnchorCenterPoint() {
 		if (! map.isDisplayable()) {
-			return new Point();
+			return null;
 		}
 		final JComponent mainView = anchor.getMainView();
 		final int referenceWidth = mainView.getWidth();
@@ -250,7 +250,7 @@ class MapScroller {
 			scrollNode(scrolledNode, scrollingDirective, slowScroll);
 			return;
 		}
-		if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
+		if (anchorContentLocation == null) {
 			return;
 		}
 		final JViewport vp = (JViewport) map.getParent();
@@ -277,7 +277,7 @@ class MapScroller {
 	}
 
 	void setAnchorContentLocation(){
-		if(scrollingDirective.ordinal() <= ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION.ordinal())
+		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION)
 			scrollView();
 		else
 			anchorContentLocation = getAnchorCenterPoint();
