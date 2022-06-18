@@ -69,7 +69,7 @@ public class ToolbarComponentProvider implements ComponentProvider {
 			String textKey = (String) entry.getAttribute("text");
 			String text = textKey != null ? TextUtils.getText(textKey) +  "..."  :  "...";
 			String iconKey = (String) entry.getAttribute("icon");
-			Icon icon = iconKey != null ? ResourceController.getResourceController().getIcon(iconKey) : null;
+			Icon icon = ResourceController.getResourceController().getIcon(iconKey != null ? iconKey : "arrowDown.icon");
 			String tooltipKey = (String) entry.getAttribute("tooltip");
 			JButtonWithDropdownMenu buttonWithMenu = new JButtonWithDropdownMenu(text, icon);
 			IconReplacer.replaceByScaledImageIcon(buttonWithMenu);
