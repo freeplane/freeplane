@@ -277,7 +277,7 @@ class MapScroller {
 	}
 
 	void setAnchorContentLocation(){
-		if(scrollingDirective != ScrollingDirective.DONE && scrollingDirective != ScrollingDirective.ANCHOR)
+		if(scrollingDirective.ordinal() <= ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION.ordinal())
 			scrollView();
 		else
 			anchorContentLocation = getAnchorCenterPoint();
@@ -331,7 +331,8 @@ enum ScrollingDirective {
 	SCROLL_NODE_TO_TOP_RIGHT_CORNER(NodePosition.TOP_RIGHT),
 	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER(NodePosition.BOTTOM_LEFT),
 	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER(NodePosition.BOTTOM_RIGHT),
-	SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR;
+	SCROLL_TO_BEST_ROOT_POSITION, 
+	MAKE_NODE_VISIBLE, DONE, ANCHOR;
 	static private class CompanionObject{
 		private static final ScrollingDirective positionDirectiveMapping[] = new ScrollingDirective[NodePosition.values().length];
 	}
