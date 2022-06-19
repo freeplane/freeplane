@@ -76,8 +76,8 @@ public class UnitGridBagLayout extends GridBagLayout {
 			int x = component.getX();
 			int width = component.getWidth();
 			for (Component previousComponent = parent.getComponent(i-1);
-					i > 0 && previousComponent.getX() >= x && previousComponent.getX() + previousComponent.getWidth() <= x + width;
-					previousComponent = parent.getComponent(--i-1)) {
+					previousComponent.getX() >= x && previousComponent.getX() + previousComponent.getWidth() <= x + width;
+					previousComponent = parent.getComponent(i-1)) {
 				previousComponent.setSize(previousComponent.getWidth(), component.getY() - previousComponent.getY());
 				if(previousComponent instanceof AbstractButton) {
 					if(! previousComponent.isPreferredSizeSet()) {
@@ -85,6 +85,10 @@ public class UnitGridBagLayout extends GridBagLayout {
 						IconReplacer.replaceByScaledImageIcon((AbstractButton) previousComponent);
 					}
 				}
+				if(i > 1)
+					i--;
+				else
+					break;
 			}
 		}
 	}
