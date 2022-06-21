@@ -623,9 +623,16 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void fireMapCreated(final MapModel map) {
-		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
-		for (final IMapLifeCycleListener next : list) {
-			next.onCreate(map);
+		boolean readOnly = map.isReadOnly();
+		try {
+			map.setReadOnly(false);
+			final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(
+					new IMapLifeCycleListener[] {});
+			for (final IMapLifeCycleListener next : list) {
+				next.onCreate(map);
+			} 
+		} finally {
+			map.setReadOnly(readOnly);
 		}
 	}
 
