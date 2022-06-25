@@ -79,15 +79,15 @@
 					<Entry name="HideAllAttributesAction" />
 				</Entry>
 			</Entry>
+		<Entry name="menu_manageStyles">
+			<Entry accelerator="" name="DeleteUserStyleAction" />
+			<Entry name="NewLevelStyleAction" accelerator="control shift N" />
+			<Entry name="DeleteLevelStyleAction" />
+			<Entry name="NewUserStyleAction" />
+			<Entry name="NewUserStyleFromSelectionAction" />
+			<Entry name="ManageNodeConditionalStylesAction" />
+		</Entry>
 		<Entry name="format">
-			<Entry name="menu_manageStyles">
-				<Entry accelerator="" name="DeleteUserStyleAction" />
-				<Entry name="NewLevelStyleAction" accelerator="control shift N" />
-				<Entry name="DeleteLevelStyleAction" />
-				<Entry name="NewUserStyleAction" />
-				<Entry name="NewUserStyleFromSelectionAction" />
-				<Entry name="ManageNodeConditionalStylesAction" />
-			</Entry>
 			<Entry accelerator="alt shift C" name="FormatCopy" />
 			<Entry accelerator="alt shift V" name="FormatPaste" />
 			<Entry name="RemoveFormatAction" />
