@@ -159,4 +159,6 @@ public interface IMapViewManager {
 	public boolean showHiddenNode(NodeModel child);
 
 	public boolean isSpotlightEnabled();
+
+	public void setViewRoot(NodeModel node);
 }

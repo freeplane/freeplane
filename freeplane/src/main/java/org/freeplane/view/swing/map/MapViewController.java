@@ -203,6 +203,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void changeToMap(MapModel map) {
+		if(selectedMapView != null || selectedMapView.getModel().equals(map))
+			return;
 		for (final MapView view : mapViewVector) {
 			if (view.getModel().equals(map)) {
 				changeToMapView(view);
@@ -1163,5 +1165,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public boolean isSpotlightEnabled() {
 		return selectedMapView != null && selectedMapView.isSpotlightEnabled();
 	}
+
+	@Override
+	public void setViewRoot(NodeModel node) {
+		changeToMap(node.getMap());
+		if(selectedMapView == null)
+			return;
+		selectedMapView.setRootNode(node);
+	}
+	
+	
 
 }

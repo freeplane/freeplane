@@ -75,6 +75,7 @@ import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -730,10 +731,10 @@ class NodeList implements IExtension {
 
 	private void fillTableModel(final DefaultTableModel model, NodeFilter nodeFilter) {
 		if (searchInAllMaps == false) {
-			final MapModel map = Controller.getCurrentController().getMap();
-			if(map != null) {
-				listedMaps = Collections.singleton(map);
-				final NodeModel node = map.getRootNode();
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			if(selection != null) {
+				listedMaps = Collections.singleton(selection.getMap());
+				final NodeModel node = selection.getSelectionRoot();
 				fillModel(model, node, nodeFilter);
 			}
 		}

@@ -277,6 +277,8 @@
         </Entry>
 		<Entry name="view">
 			<Entry name="NewMapViewAction" />
+			<Entry name="JumpInAction" />
+			<Entry name="JumpOutAction" />
 			<Entry name="zoom">
 				<Entry name="ZoomInAction" accelerator="alt UP" />
 				<Entry name="ZoomOutAction" accelerator="alt DOWN" />

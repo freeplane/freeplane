@@ -14,7 +14,6 @@ import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.InputEvent;
 
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 import org.freeplane.features.mode.Controller;
@@ -39,8 +38,7 @@ public class MNodeDragListener implements DragGestureListener {
 			return;
 		final int dragActionType = e.getDragAction();
 		if (dragActionType == DnDConstants.ACTION_MOVE) {
-			final NodeModel node = nodeView.getModel();
-			if (node.isRoot()) {
+			if (nodeView.isRoot()) {
 				if(! isLinkDragEvent(e))
 					return;
 			}

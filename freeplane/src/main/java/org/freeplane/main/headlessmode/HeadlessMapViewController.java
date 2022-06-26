@@ -389,4 +389,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public boolean isSpotlightEnabled() {
 		return false;
 	}
+
+	@Override
+	public void setViewRoot(NodeModel node) {
+		throw new RuntimeException("Method not implemented");
+	}
 }

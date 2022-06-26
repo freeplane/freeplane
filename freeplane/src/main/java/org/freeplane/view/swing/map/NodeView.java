@@ -858,7 +858,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public boolean isRoot() {
-		return getModel().isRoot();
+		return map.isRoot(this);
 	}
 
 	public boolean isSelected() {
@@ -923,8 +923,11 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		update();
-		if (!isRoot())
-			getParentView().numberingChanged(node.getParentNode().getIndex(node) + 1);
+		NodeView parentView = getParentView();
+		NodeModel parentNode = node.getParentNode();
+		if (parentNode != null && parentView != null) {
+			parentView.numberingChanged(parentNode.getIndex(node) + 1);
+		}
 	}
 
 	public void setFolded(boolean folded) {
