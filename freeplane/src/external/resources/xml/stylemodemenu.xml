@@ -79,15 +79,16 @@
 					<Entry name="HideAllAttributesAction" />
 				</Entry>
 			</Entry>
+		<Entry name="menu_manageStyles">
+			<Entry name="DeleteUserStyleAction" />
+			<Entry name="NewLevelStyleAction" accelerator="control shift N" />
+			<Entry name="DeleteLevelStyleAction" />
+			<Entry name="NewUserStyleAction" />
+			<Entry name="NewUserStyleFromSelectionAction" />
+			<Entry name="ManageNodeConditionalStylesAction" />
+			<Entry name="AddSelfConnectorAction" />
+		</Entry>
 		<Entry name="format">
-			<Entry name="menu_manageStyles">
-				<Entry accelerator="" name="DeleteUserStyleAction" />
-				<Entry name="NewLevelStyleAction" accelerator="control shift N" />
-				<Entry name="DeleteLevelStyleAction" />
-				<Entry name="NewUserStyleAction" />
-				<Entry name="NewUserStyleFromSelectionAction" />
-				<Entry name="ManageNodeConditionalStylesAction" />
-			</Entry>
 			<Entry accelerator="alt shift C" name="FormatCopy" />
 			<Entry accelerator="alt shift V" name="FormatPaste" />
 			<Entry name="RemoveFormatAction" />
@@ -157,12 +158,12 @@
 	<Entry name="node_popup"  builder="node_popup">
 		<Entry accelerator="alt shift C" name="FormatCopy" />
 		<Entry accelerator="alt shift V" name="FormatPaste" />
-		<Entry name="AddSelfConnectorAction" />
 		<Entry name="NewUserStyleAction" />
 		<Entry name="NewUserStyleFromSelectionAction" />
 		<Entry name="DeleteUserStyleAction" />
 		<Entry name="NewLevelStyleAction" />
 		<Entry name="DeleteLevelStyleAction" />
+		<Entry name="AddSelfConnectorAction" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
 		<Entry name="undo">
@@ -170,13 +171,16 @@
 			<Entry name="RedoAction" />
 		</Entry>
 		<Entry name="toolbar_styles" builder="main_toolbar_style" />
-		<Entry builder="main_toolbar_font" name="font">
-			<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
-			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
-			<Entry name="BoldAction" />
-			<Entry name="ItalicAction" />
-			<Entry name="StrikeThroughAction"/>
-		</Entry>
+		<Entry name="NewUserStyleAction" />
+		<Entry name="NewUserStyleFromSelectionAction" />
+		<Entry name="DeleteUserStyleAction" />
+		<Entry name="NewLevelStyleAction" accelerator="control shift N" />
+		<Entry name="DeleteLevelStyleAction" />
+		<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
+		<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
+		<Entry name="BoldAction" />
+		<Entry name="ItalicAction" />
+		<Entry name="StrikeThroughAction"/>
 		<Entry builder="separator" />
 		<Entry>
 			<Entry name="TextAlignAction.LEFT" />

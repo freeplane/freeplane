@@ -11,15 +11,14 @@
 			<Entry name="RedoAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="zoom" builder="main_toolbar_zoom"  row="1" width = "3"/>
-		<Entry name="SetBooleanPropertyAction.view_mode" row = "2"/>
-		<Entry name="FindAction" row="2"/>
-		<Entry name="NodeListAction" row="2"/>
+		<Entry name="zoom" builder="main_toolbar_zoom"  row="1" width = "2"/>
+		<Entry name="FindAction" row="2" weight = "1"/>
+		<Entry name="NodeListAction" row="2" weight = "1"/>
 		<Entry usedBy="EDITOR" >
 			<Entry name="CutAction" row = "1" />
 			<Entry name="CopyAction" row = "1" />
 			<Entry name="PasteAction" row = "1" />
-			<Entry builder="dropdownMenu" icon = "CopyAction.icon" text = "edit.tooltip" width = "3" row="2">
+			<Entry builder="dropdownMenu" text = "edit.tooltip" width = "3" row="2">
 				<Entry name="CopySingleAction" />
 				<Entry name="CopyIDAction" />
 				<Entry name="CopyNodeURIAction" />
@@ -31,9 +30,9 @@
 				<Entry name="DeleteAction"/>
 			</Entry>
 			<Entry builder="separator" />
-			<Entry name="NewChildAction" row="1" weight = "1"/>
+			<Entry name="NewChildAction" icon="NewChildToolbar.icon" row="1" weight = "1"/>
 			<Entry name="NewSiblingAction" row="1" weight = "1"/>
-			<Entry builder="dropdownMenu" icon = "NewChildAction.icon" text = "menu_add_newNode" width = "2" row="2">
+			<Entry builder="dropdownMenu" text = "menu_add_newNode" width = "2" row="2">
 	            <Entry name="NewPreviousSiblingAction" />
 	            <Entry name="NewParentNode" />
 	            <Entry name="NewFreeNodeAction" />

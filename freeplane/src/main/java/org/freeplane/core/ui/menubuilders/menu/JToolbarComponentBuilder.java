@@ -11,6 +11,7 @@ import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 
 public class JToolbarComponentBuilder implements EntryVisitor {
 	private final ComponentProvider componentProvider;
@@ -20,8 +21,8 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 		this.componentProvider = componentProvider;
 	}
 
-	public JToolbarComponentBuilder() {
-		this(new ToolbarComponentProvider());
+	public JToolbarComponentBuilder(ResourceAccessor resourceAccessor) {
+		this(new ToolbarComponentProvider(resourceAccessor));
 	}
 
 	@Override

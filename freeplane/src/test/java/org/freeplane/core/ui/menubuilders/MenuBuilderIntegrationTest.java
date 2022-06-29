@@ -21,6 +21,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.core.ui.menubuilders.menu.JToolbarBuilder;
 import org.freeplane.features.mode.FreeplaneActions;
@@ -53,7 +54,8 @@ public class MenuBuilderIntegrationTest {
 		when(userInputListenerFactory.getToolBar("/main_toolbar")).thenReturn(toolbar);
 		recursiveMenuStructureBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
-		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarComponentBuilder(), null));
+		ResourceAccessor resourceAccessorMock = mock(ResourceAccessor.class);
+		recursiveMenuStructureBuilder.addBuilderPair("toolbar.action", new BuilderDestroyerPair(new JToolbarComponentBuilder(resourceAccessorMock), null));
 	}
 
 	@Test
