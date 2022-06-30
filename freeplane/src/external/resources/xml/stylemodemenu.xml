@@ -163,6 +163,7 @@
 		<Entry name="DeleteUserStyleAction" />
 		<Entry name="NewLevelStyleAction" />
 		<Entry name="DeleteLevelStyleAction" />
+		<Entry name="ManageNodeConditionalStylesAction" />
 		<Entry name="AddSelfConnectorAction" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
@@ -176,6 +177,8 @@
 		<Entry name="DeleteUserStyleAction" />
 		<Entry name="NewLevelStyleAction" accelerator="control shift N" />
 		<Entry name="DeleteLevelStyleAction" />
+		<Entry name="ManageNodeConditionalStylesAction" />
+		<Entry name="AddSelfConnectorAction" />
 		<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
 		<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
 		<Entry name="BoldAction" />
