@@ -949,6 +949,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+		NodeModel mapRootNode = map.getRoot().getModel();
+		if(mapRootNode == nodeDeletionEvent.node)
+			map.restoreRootNode(nodeDeletionEvent.index);
+		else if (mapRootNode.isDescendantOf(nodeDeletionEvent.node))
+			map.restoreRootNode();
 		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
@@ -1225,7 +1230,8 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	void remove() {
 		for (final ListIterator<NodeView> e = getChildrenViews().listIterator(); e.hasNext();) {
-			e.next().remove();
+			NodeView child = e.next();
+			child.remove();
 		}
 		getModeController().onViewRemoved(this);
 		removeFromMap();

@@ -152,7 +152,7 @@ class NodeViewFactory {
 	 */
 	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
 		final NodeView newView = new NodeView(model, map, parent);
-		parent.add(newView, index);
+		parent.add(newView, map.calculateComponentIndex(parent, index));
 		newView.setMainView(newMainView(newView));
 		if(map.isDisplayable())
 			updateNewView(newView);

@@ -96,9 +96,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
-import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
@@ -596,6 +594,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	final private MapModel model;
 
 	private NodeView currentRootView = null;
+	private NodeView currentRootParentView = null;
 	private NodeView mapRootView = null;
 
 	private boolean selectedsValid = true;
@@ -628,6 +627,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
 	private boolean scrollsViewAfterLayout = true;
+	
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -1566,30 +1566,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selectSibling(continious, true, false);
     }
 
-	private void jumpOutIfNeeded(NodeModel deletedNode) {
-		NodeModel viewRootNode = currentRootView.getModel();
-		MapModel map = viewRootNode.getMap();
-		if(map != deletedNode.getMap() || viewRootNode == map.getRootNode())
-			return;
-		if(viewRootNode == deletedNode || viewRootNode.isDescendantOf(deletedNode)) {
-			setRootNode(mapRootView);
-		}
-	}
-
-	@Override
-	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-	}
-
-	@Override
-	public void onPreNodeMoved(final NodeMoveEvent nodeMoveEvent) {
-		jumpOutIfNeeded(nodeMoveEvent.child);
-	}
-
-	@Override
-	public void onPreNodeDelete(final NodeDeletionEvent nodeDeletionEvent) {
-		jumpOutIfNeeded(nodeDeletionEvent.node);
-	}
-
 	/*****************************************************************
 	 ** P A I N T I N G **
 	 *****************************************************************/
@@ -2421,6 +2397,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	public void display(final NodeModel node) {
+		if(! node.isDescendantOf(currentRootView.getModel()))
+			restoreRootNode();
 		final NodeView nodeView = getNodeView(node);
 		if(nodeView != null)
 			return;
@@ -2506,18 +2484,38 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setRootNode(nodeView);
 	}
 
-	private void restoreRootNode() {
+	void restoreRootNode() {
+		restoreRootNode(-1);
+	}
+
+
+	int calculateComponentIndex(Container parent, int index) {
+		if(parent == currentRootParentView 
+				&& index >= calculateCurrentRootNodePosition())
+			return index - 1;
+		else
+			return index;
+	}
+
+	private int calculateCurrentRootNodePosition() {
+		NodeModel currentRoot = currentRootView.getModel();
+		NodeModel currentParent = currentRootParentView.getModel();
+		return currentParent.getIndex(currentRoot);
+	}
+
+	void restoreRootNode(int index) {
 		if(currentRootView == mapRootView)
 			return;
 		remove(ROOT_NODE_COMPONENT_INDEX);
-		NodeModel currentRoot = currentRootView.getModel();
-		NodeModel parentNode = currentRoot.getParentNode();
 		add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
-		NodeView parentView = getNodeView(parentNode);
-		parentView.add(currentRootView, parentNode.getIndex(currentRoot));
+		if(! currentRootParentView.isFolded()) {
+			currentRootParentView.add(currentRootView, 
+					index >= 0 ? index : calculateCurrentRootNodePosition());
+		}
 		currentRootView = mapRootView;
+		currentRootParentView = null;
 	}
-
+	
 	private void setRootNode(NodeView newRootView) {
 		if(currentRootView == newRootView)
 			return;
@@ -2527,9 +2525,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			preserveNodeLocationOnScreen(newRootView);
 		restoreRootNode();
 		if(currentRootView != newRootView) {
+			currentRootView = newRootView;
+			currentRootParentView = newRootView.getParentView();
 			remove(ROOT_NODE_COMPONENT_INDEX);
 			add(newRootView, ROOT_NODE_COMPONENT_INDEX);
-			currentRootView = newRootView;
 		}
 		revalidate();
 		repaint();
