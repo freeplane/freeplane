@@ -106,8 +106,9 @@ public class Filter implements IExtension {
 		}
 	}
 
-	public void calculateFilterResultsForDescendants(final NodeModel root) {
-		this.accessor = new FilterInfoAccessor();
+	public void calculateFilterResults(final MapModel map) {
+	    this.accessor = new FilterInfoAccessor();
+		final NodeModel root = map.getRootNode();
 		resetFilter(root);
 		boolean rootSatisfiesFilter = checkNode(root);
 		if (filterChildren(root, rootSatisfiesFilter, false)) {
