@@ -944,6 +944,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return nodeView;
     }
 
+	private NodeView getDisplayedNodeView(NodeModel node) {
+		NodeView nodeView = getNodeView(node);
+		return currentRootView == mapRootView 
+				||  nodeView != null && isAncestorOf(nodeView) ? nodeView : null;
+	}
+
 	public NodeView getNodeView(final NodeModel node) {
 		if (node == null) {
 			return null;
@@ -1755,10 +1761,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 						continue;
 					}
 					final NodeModel source = ref.getSource();
-					final NodeView sourceView = getNodeView(source);
-					final NodeView targetView = getNodeView(target);
+					final NodeView sourceView = getDisplayedNodeView(source);
+					final NodeView targetView = getDisplayedNodeView(target);
 					final ILinkView arrowLink;
-					final boolean areBothNodesVisible = sourceView != null && targetView != null && source.hasVisibleContent(filter) && target.hasVisibleContent(filter);
+					final boolean areBothNodesVisible = sourceView != null && targetView != null
+							&& source.hasVisibleContent(filter) && target.hasVisibleContent(filter);
 					final boolean showConnector = SHOW_CONNECTOR_LINES == showConnectors
 							|| HIDE_CONNECTOR_LINES == showConnectors
 							|| SHOW_CONNECTORS_FOR_SELECTION == showConnectors && (sourceView != null && sourceView.isSelected()
