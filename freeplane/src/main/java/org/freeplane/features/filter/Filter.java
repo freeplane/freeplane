@@ -29,6 +29,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.hidden.NodeVisibility;
 import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
