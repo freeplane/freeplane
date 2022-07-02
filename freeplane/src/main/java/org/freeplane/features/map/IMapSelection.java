@@ -46,6 +46,8 @@ public interface IMapSelection {
 
 	public NodeModel getSelected();
 
+	public NodeModel getSelectionRoot();
+
 	public Set<NodeModel> getSelection();
 
 	public List<String> getOrderedSelectionIds();

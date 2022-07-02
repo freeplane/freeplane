@@ -223,7 +223,7 @@ public class Filter implements IExtension {
         return filterInfo.isNotChecked() || filterInfo.matches(this.options) != hidesMatchingNodes;
 	}
 
-	private void resetFilter(final NodeModel node) {
+	void resetFilter(final NodeModel node) {
 		getFilterInfo(node).reset();
 	}
 

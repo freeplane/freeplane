@@ -431,6 +431,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             Filter oldFilter = map.putExtension(Filter.class, filter);
             if (oldFilter == null || force || !filter.canUseFilterResultsFrom(oldFilter)) {
                 filter.calculateFilterResults(map);
+        		NodeModel selectionRoot = selection.getSelectionRoot();
+				if(! selectionRoot.isRoot())
+        			filter.resetFilter(selectionRoot);
             }
         }
     }
@@ -446,6 +449,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             	MapModel map = selection.getSelected().getMap();
                 if (force || !filter.canUseFilterResultsFrom(oldFilter)) {
             		filter.calculateFilterResults(map);
+            		NodeModel selectionRoot = selection.getSelectionRoot();
+					if(! selectionRoot.isRoot())
+            			filter.resetFilter(selectionRoot);
             	}
                 else {
                     filter.useFilterResultsFrom(oldFilter);
