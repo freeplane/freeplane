@@ -529,7 +529,7 @@ public class NodeView extends JComponent implements INodeView {
 	NodeView getNextVisibleSibling() {
 		NodeView sibling;
 		NodeView lastSibling = this;
-		for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
+		for (sibling = this; sibling != map.getRoot(); sibling = sibling.getParentView()) {
 			lastSibling = sibling;
 			sibling = sibling.getNextSiblingSingle();
 			if (sibling != lastSibling) {
@@ -667,7 +667,7 @@ public class NodeView extends JComponent implements INodeView {
 	NodeView getPreviousVisibleSibling() {
 		NodeView sibling;
 		NodeView previousSibling = this;
-		for (sibling = this; !sibling.getModel().isRoot(); sibling = sibling.getParentView()) {
+		for (sibling = this; sibling != map.getRoot(); sibling = sibling.getParentView()) {
 			previousSibling = sibling;
 			sibling = sibling.getPreviousSiblingSingle();
 			if (sibling != previousSibling) {
