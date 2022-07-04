@@ -2531,13 +2531,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			preserveNodeLocationOnScreen(currentRootView);
 		else
 			preserveNodeLocationOnScreen(newRootView);
+		
+		NodeView lastSelectedNode;
+		if(currentRootView != newRootView)
+			lastSelectedNode = newRootView;
+		else
+			lastSelectedNode = selection.selectedNode;
 		restoreRootNode();
 		if(currentRootView != newRootView) {
 			currentRootView = newRootView;
 			currentRootParentView = newRootView.getParentView();
+			selectAsTheOnlyOneSelected(newRootView);
 			remove(ROOT_NODE_COMPONENT_INDEX);
 			add(newRootView, ROOT_NODE_COMPONENT_INDEX);
 		}
+		lastSelectedNode.requestFocusInWindow();
 		revalidate();
 		repaint();
 	}
