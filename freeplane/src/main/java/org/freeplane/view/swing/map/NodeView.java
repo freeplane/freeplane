@@ -840,7 +840,7 @@ public class NodeView extends JComponent implements INodeView {
 
 
 	public boolean isRight() {
-		return ! isLeft() && ! isRoot();
+		return ! isLeft() && ! getModel().isRoot();
 	}
 
 	public boolean isParentHidden() {
@@ -1123,8 +1123,9 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     private void paintEdges(final Graphics2D g, NodeView source) {
-    	SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot() ? true : isLeft());
-    	SummaryEdgePainter rightSummaryEdgePainter =  isRoot() ? new SummaryEdgePainter(this, false) : null;
+    	boolean isRoot = getModel().isRoot();
+		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot ? true : isLeft());
+    	SummaryEdgePainter rightSummaryEdgePainter =  isRoot ? new SummaryEdgePainter(this, false) : null;
         final int start;
         final int end;
         final int step;
@@ -1145,7 +1146,7 @@ public class NodeView extends JComponent implements INodeView {
             }
             final NodeView nodeView = (NodeView) component;
         	if (map.getLayoutType() != MapViewLayout.OUTLINE) {
-        		SummaryEdgePainter activePainter = nodeView.isLeft() || !isRoot() ? summaryEdgePainter : rightSummaryEdgePainter;
+        		SummaryEdgePainter activePainter = nodeView.isLeft() || !isRoot ? summaryEdgePainter : rightSummaryEdgePainter;
         		activePainter.addChild(nodeView);
         		if(activePainter.paintSummaryEdge(g, source, nodeView)){
         			if(! nodeView.isContentVisible()){

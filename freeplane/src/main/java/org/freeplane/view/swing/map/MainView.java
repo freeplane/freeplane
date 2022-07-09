@@ -130,7 +130,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
-		if(getNodeView().isRoot())
+		if(getNodeView().getModel().isRoot())
 			return false;
 		if(dropLeft(xCoord))
 		return ! isInVerticalRegion(xCoord, 2. / 3);
@@ -142,7 +142,7 @@ public class MainView extends ZoomableLabel {
 	public boolean dropLeft(final double xCoord) {
 		/* here it is the same as me. */
 		NodeView nodeView = getNodeView();
-		if(getNodeView().isRoot())
+		if(getNodeView().getModel().isRoot())
 			return xCoord < getSize().width * 1 / 2;
 		else
 			return nodeView.isLeft();
@@ -261,7 +261,7 @@ public class MainView extends ZoomableLabel {
 				return FoldingMark.FOLDING_CIRCLE_FOLDED;
 			}
 		}
-		if(nodeView.isRoot())
+		if(nodeView.getModel().isRoot())
 			return FoldingMark.INVISIBLE;
 		return FoldingMark.FOLDING_CIRCLE_UNFOLDED;
 	}
@@ -368,7 +368,7 @@ public class MainView extends ZoomableLabel {
 
 	public void setDraggedOver(final Point p) {
 		final int draggedOver;
-		if(getNodeView().isRoot()) {
+		if(getNodeView().getModel().isRoot()) {
 			if (dropLeft(p.getX()))
 				draggedOver = NodeView.DRAGGED_OVER_SON_LEFT;
 			else
@@ -437,7 +437,7 @@ public class MainView extends ZoomableLabel {
 		final HorizontalTextAlignment textAlignment = NodeStyleController
 		        .getController(node.getMap().getModeController())
 		        .getHorizontalTextAlignment(node.getModel(), node.getStyleOption());
-		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.isRoot();
+		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.getModel().isRoot();
 		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
