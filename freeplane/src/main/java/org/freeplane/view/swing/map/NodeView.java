@@ -1410,7 +1410,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void update() {
-		if(! isDisplayable())
+		if(! map.isDisplayable())
 			return;
 		invalidate();
 		updateShape();
