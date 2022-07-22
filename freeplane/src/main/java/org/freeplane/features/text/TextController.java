@@ -470,7 +470,7 @@ public class TextController implements IExtension {
 
 	public Hyperlink toLink(final Object value, final NodeModel node, Object extension) {
 		final Object transformedObject = getTransformedObjectNoFormattingNoThrow(node, extension, value);
-		return LinkController.toLink(transformedObject);
+		return modeController.getExtension(LinkController.class).toLink(node, transformedObject);
 	}
 
 }

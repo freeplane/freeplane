@@ -134,9 +134,22 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private static final String FILE_PROTOCOL = "file:";
-	public static Hyperlink toLink(Object object) {
+	public Hyperlink toLink(NodeModel node, Object object) {
 		if (object instanceof Hyperlink)
 			return (Hyperlink)object;
+		else if(object instanceof String)
+			try {
+				String string = (String)object;
+				if(string.startsWith("#")) {
+					String reference = string.substring(1);
+			        final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
+			        final NodeModel dest = explorer.getNodeAt(node, reference);
+			        if(dest != null)
+			        	return createHyperlink(string);
+				}
+			} catch (URISyntaxException e) {
+				return null;
+			}
 		return toHyperlink(object);
 	}
 	
@@ -155,11 +168,6 @@ public class LinkController extends SelectionController implements IExtension {
 			} catch (URISyntaxException e) {
 				return null;
 			}
-		}
-		else if (object instanceof String) {
-			objectAsFileReference = (String) object;
-			if(!objectAsFileReference.startsWith(FILE_PROTOCOL))
-				return null;
 		}
 		else
 			return null;
@@ -1078,7 +1086,8 @@ public class LinkController extends SelectionController implements IExtension {
 	public void loadURI(NodeModel node, Hyperlink uri) {
 		final String uriString = uri.toString();
 		if (uriString.startsWith("#")) {
-			UrlManager.getController().selectNode(node, uriString.substring(1));
+			String reference = uriString.substring(1);
+			UrlManager.getController().selectNode(node, reference);
 		}
 		else
 			loadHyperlink(uri);
