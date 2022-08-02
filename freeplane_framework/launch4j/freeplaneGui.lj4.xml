@@ -8,7 +8,7 @@
   <cmdLine></cmdLine>
   <chdir></chdir>
   <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
+  <downloadUrl>https://www.azul.com/downloads/?version=java-15-mts&amp;os=windows&amp;package=jre#download-openjdk</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>true</stayAlive>
   <restartOnCrash>false</restartOnCrash>
