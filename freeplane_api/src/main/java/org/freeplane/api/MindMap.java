@@ -2,6 +2,7 @@ package org.freeplane.api;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.List;
 
 
 /** The map a node belongs to: <code>node.map</code> - read-write. */
@@ -136,6 +137,8 @@ public interface MindMap extends MindMapRO {
 	void addListener(NodeChangeListener listener);
 	
 	void removeListener(NodeChangeListener listener);
+
+	List<NodeChangeListener> getListeners();
 	
     /**
      * 

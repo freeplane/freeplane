@@ -23,5 +23,9 @@ class NodeChangeListenerForScript {
 	void fire(NodeModel node, ChangedElement element) {
 		scriptListener.nodeChanged(new NodeChanged(new NodeProxy(node, context), element));
 	}
+
+	public NodeChangeListener getListener() {
+		return scriptListener;
+	}
 	
 }

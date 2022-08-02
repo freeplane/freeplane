@@ -1,8 +1,6 @@
 package org.freeplane.plugin.script.proxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.freeplane.api.NodeChangeListener;
 import org.freeplane.api.NodeChanged.ChangedElement;
@@ -87,5 +85,9 @@ class NodeChangeListeners implements IExtension{
 			return;
 		ChangedElement element = elements.getOrDefault(event.getProperty(), ChangedElement.UNKNOWN);
 		listeners.forEach(l -> l.fire(event.getNode(), element));
+	}
+
+	public List<NodeChangeListenerForScript> getListeners() {
+		return Collections.unmodifiableList(listeners);
 	}
 }

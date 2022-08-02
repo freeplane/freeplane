@@ -30,6 +30,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	public MapProxy(final MapModel map, final ScriptContext scriptContext) {
@@ -287,6 +288,12 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	@Override
 	public void removeListener(NodeChangeListener listener) {
 		NodeChangeListeners.of(Controller.getCurrentModeController(), getDelegate()).remove(listener);
+	}
+
+	@Override
+	public List<NodeChangeListener> getListeners() {
+		return NodeChangeListeners.of(Controller.getCurrentModeController(), getDelegate())
+				.getListeners().stream().map(NodeChangeListenerForScript::getListener).collect(Collectors.toList());
 	}
 
 	@Override
