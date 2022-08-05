@@ -1,8 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.freeplane.api.NodeChangeListener;
 import org.freeplane.api.NodeChanged.ChangedElement;
@@ -58,7 +57,7 @@ class NodeChangeListeners implements IExtension{
 	private final ArrayList<NodeChangeListenerForScript> listeners = new ArrayList<>();
 	private final MapModel mindmap;
 	
-	public NodeChangeListeners(MapModel mindmap) {
+	NodeChangeListeners(MapModel mindmap) {
 		this.mindmap = mindmap;
 	}
 	private static NodeChangeListeners of(MapModel map) {
@@ -70,22 +69,26 @@ class NodeChangeListeners implements IExtension{
 		return listeners;
 	}
 
-	public void add(ScriptContext context, NodeChangeListener listener) {
+	void add(ScriptContext context, NodeChangeListener listener) {
 		if(mindmap.getExtension(NodeChangeListeners.class) != this)
 			mindmap.addExtension(NodeChangeListeners.class, this);
 		listeners.add(new NodeChangeListenerForScript(listener, context));
 	}
 
-	public void remove(NodeChangeListener listener) {
+	void remove(NodeChangeListener listener) {
 		listeners.removeIf(NodeChangeListenerForScript.contains(listener));
 		if(listeners.isEmpty())
 			mindmap.removeExtension(this);
 	}
 	
-	public void fire(NodeChangeEvent event) {
+	void fire(NodeChangeEvent event) {
 		if (listeners.isEmpty())
 			return;
 		ChangedElement element = elements.getOrDefault(event.getProperty(), ChangedElement.UNKNOWN);
 		listeners.forEach(l -> l.fire(event.getNode(), element));
+	}
+
+	List<NodeChangeListener> getListeners() {
+		return listeners.stream().map(NodeChangeListenerForScript::getListener).collect(Collectors.toList());
 	}
 }

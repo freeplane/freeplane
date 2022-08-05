@@ -15,13 +15,17 @@ class NodeChangeListenerForScript {
 	
 	private final NodeChangeListener scriptListener;
 	private final ScriptContext context;
-	public NodeChangeListenerForScript(NodeChangeListener scriptListener, ScriptContext context) {
+	NodeChangeListenerForScript(NodeChangeListener scriptListener, ScriptContext context) {
 		super();
 		this.scriptListener = scriptListener;
 		this.context = context;
 	}
 	void fire(NodeModel node, ChangedElement element) {
 		scriptListener.nodeChanged(new NodeChanged(new NodeProxy(node, context), element));
+	}
+
+	NodeChangeListener getListener() {
+		return scriptListener;
 	}
 	
 }

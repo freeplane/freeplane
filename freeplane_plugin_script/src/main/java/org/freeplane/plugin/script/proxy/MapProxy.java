@@ -290,6 +290,12 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	}
 
 	@Override
+	public List<NodeChangeListener> getListeners() {
+		return NodeChangeListeners.of(Controller.getCurrentModeController(), getDelegate())
+				.getListeners();
+	}
+
+	@Override
 	public void copyStyleFrom(org.freeplane.api.MindMap source, String styleName) {
 	    IStyle style = NodeStyleProxy.styleByName(source, styleName);
 	    if(style == null)
