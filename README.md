@@ -5,7 +5,7 @@ Freeplane
 
 [Freeplane](http://freeplane.sourceforge.net) is a free and open source software application that supports thinking, sharing information, getting things done at work, in school and at home. It provides you a set of tools for mind mapping (also known as concept mapping or information mapping) and navigating the mapped information. Freeplane is also a more robust and superuser alternative to Xmind, Mindmeister, and similar mind mapping software.
 
-Freeplane is written in Java using OSGi and Java Swing. It runs on any operating system that has a current version of Java installed. It runs locally or can be portable from removable storage like a USB drive. 
+Freeplane is written in Java using OSGi and Java Swing. It runs on any operating system that has a current version of Java installed. It can be installed or can run from removable storage like a USB drive. 
 
 Download and install the latest version over at [Sourceforge](https://sourceforge.net/projects/freeplane/files/). If you would like to report a bug, you can go report it over at [Issues](https://github.com/freeplane/freeplane/issues)
 
