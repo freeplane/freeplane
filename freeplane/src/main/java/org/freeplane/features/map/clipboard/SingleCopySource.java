@@ -35,6 +35,7 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -245,13 +246,8 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public boolean isLeft() {
-	    return delegate.isLeft();
-    }
-
-	@Override
-    public boolean isNewChildLeft() {
-	    return delegate.isNewChildLeft();
+    public boolean isLeft(NodeModel root) {
+	    return delegate.isLeft(root);
     }
 
 	@Override
@@ -318,10 +314,11 @@ class SingleCopySource extends NodeModel {
 		throw new RuntimeException(METHOD_NOT_SUPPORTED);
     }
 
+	
 	@Override
-    public void setLeft(boolean isLeft) {
+	public void setSide(Side position) {
 		   throw new RuntimeException(METHOD_NOT_SUPPORTED);
-    }
+	}
 
 	@Override
     public void setMap(MapModel map) {

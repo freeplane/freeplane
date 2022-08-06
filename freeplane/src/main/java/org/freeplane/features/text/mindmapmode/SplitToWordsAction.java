@@ -129,7 +129,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 					nodeCountInLine = 0;
 					currentNode = node;
 				}
-				currentNode = mapController.addNewNode(currentNode, currentNode.getChildCount(), currentNode.isLeft());
+				currentNode = mapController.addNewNode(currentNode, currentNode.getChildCount(), currentNode.getSide());
 				nodeCountInLine++;
 				currentText = "";
 			}

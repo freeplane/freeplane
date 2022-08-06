@@ -660,10 +660,10 @@ public class MLogicalStyleController extends LogicalStyleController {
     	if(userStyleParentNode == null){
     		userStyleParentNode = new NodeModel(styleMap);
     		userStyleParentNode.setUserObject(new StyleTranslatedObject(MapStyleModel.STYLES_USER_DEFINED));
-    		mapController.insertNode(userStyleParentNode, styleMap.getRootNode(), false, false, true);
+    		mapController.insertNode(userStyleParentNode, styleMap.getRootNode(), false);
     
     	}
-    	mapController.insertNode(newNode, userStyleParentNode, false, false, true);
+    	mapController.insertNode(newNode, userStyleParentNode, false);
     	mapController.select(newNode);
     	final IActor actor = new IActor() {
     		public void undo() {

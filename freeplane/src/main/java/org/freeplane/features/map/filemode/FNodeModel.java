@@ -71,9 +71,9 @@ class FNodeModel extends NodeModel {
 					int childCount = 0;
 					for (File childFile : files) {
 						if (!childFile.isHidden() || file == null) {
-							final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
+							MapModel map = getMap();
+							final FNodeModel fileNodeModel = new FNodeModel(childFile, map);
 							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(new Hyperlink(childFile.toURI()));
-							fileNodeModel.setLeft(isRoot() ?  (childCount % 2 == 1) : isLeft());
 							super.getChildrenInternal().add(childCount, fileNodeModel);
 							childCount++;
 							fileNodeModel.setParent(this);

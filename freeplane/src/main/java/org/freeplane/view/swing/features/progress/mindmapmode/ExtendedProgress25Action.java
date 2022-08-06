@@ -33,7 +33,7 @@ class ExtendedProgress25Action extends AMultipleNodeAction {
 		    .getExtension(ViewerController.class);
 		try {
 	        URI uri = new URI(ResourceController.FREEPLANE_RESOURCE_URL_PROTOCOL, null, "/images/svg/Progress_quarter_00.svg", null);
-			vc.paste(uri, node);
+			vc.pasteImage(uri, node);
 		} catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		}

@@ -106,7 +106,7 @@ public class SplitNode extends AFreeplaneAction {
 			if (part == null) {
 				continue;
 			}
-			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.isLeft());
+			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.getSide());
 			((MTextController) TextController.getController()).setNodeText(lowerNode, part);
 			MLogicalStyleController.getController().setStyle(lowerNode, LogicalStyleModel.getStyle(node));
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController

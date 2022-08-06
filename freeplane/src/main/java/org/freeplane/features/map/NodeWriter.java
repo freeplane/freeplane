@@ -122,10 +122,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 				writer.addAttribute("FOLDED", "false");
 			}
 		}
-		final NodeModel parentNode = node.getParentNode();
-		if (parentNode != null && parentNode.isRoot()) {
-			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
-		}
+		node.getAssignedSide().ifPresent(side -> writer.addAttribute("POSITION", side.name().toLowerCase()));
 		final boolean shouldCreateId = !mode.equals(Mode.STYLE);
 		final String id = shouldCreateId ? node.createID() : node.getID();
 		if (id != null) {

@@ -32,6 +32,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
@@ -71,14 +72,16 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent, final String link) {
+		NodeModel selectionRoot = Controller.getCurrentController().getSelection().getSelectionRoot();
+		Side side = target.suggestNewChildSide(selectionRoot);
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(target, target
-		    .getChildCount(), target.isNewChildLeft());
+		    .getChildCount(), side);
 		((MTextController) TextController.getController()).setNodeText(node, nodeContent);
 		((MLinkController) LinkController.getController()).setLink(node, link, LinkController.LINK_ABSOLUTE);
 		return node;
 	}
 
-	public void importFolderStructure(final File folder, final NodeModel target, final boolean redisplay)
+	private void importFolderStructure(final File folder, final NodeModel target, final boolean redisplay)
 	        throws MalformedURLException {
 		final File[] list = folder.listFiles();
 		if (list == null) {

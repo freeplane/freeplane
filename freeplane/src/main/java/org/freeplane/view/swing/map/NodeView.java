@@ -74,6 +74,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -835,12 +836,12 @@ public class NodeView extends JComponent implements INodeView {
 		if (map.getLayoutType() == MapViewLayout.OUTLINE) {
 			return false;
 		}
-		return getModel().isLeft();
+		return getModel().isLeft(map.getRoot().getModel());
 	}
 
 
 	public boolean isRight() {
-		return ! isLeft() && ! getModel().isRoot();
+		return ! isLeft() && getModel() != map.getRoot().getModel();
 	}
 
 	public boolean isParentHidden() {
@@ -900,6 +901,12 @@ public class NodeView extends JComponent implements INodeView {
 			parentView.setFolded(parentView.isFolded, true);
             if(event.getNewValue() == NodeVisibility.HIDDEN && isSelected())
                 FilterController.getCurrentFilterController().selectVisibleNodes(map.getMapSelection());
+			return;
+		}
+		
+		if(property == Side.class) {
+			invalidateAll();
+			revalidate();
 			return;
 		}
 
@@ -1123,7 +1130,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     private void paintEdges(final Graphics2D g, NodeView source) {
-    	boolean isRoot = getModel().isRoot();
+    	boolean isRoot  = isRoot();
 		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot ? true : isLeft());
     	SummaryEdgePainter rightSummaryEdgePainter =  isRoot ? new SummaryEdgePainter(this, false) : null;
         final int start;
@@ -1587,6 +1594,14 @@ public class NodeView extends JComponent implements INodeView {
 			child.updateAll();
 		}
 	}
+	private void invalidateAll() {
+		invalidate();
+		for (final NodeView child : getChildrenViews()) {
+			child.invalidate();
+		}
+	}
+	
+	
 
 	private void updateShape() {
 		if(mainView != null) {

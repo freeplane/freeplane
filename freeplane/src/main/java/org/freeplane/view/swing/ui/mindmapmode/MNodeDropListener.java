@@ -238,10 +238,9 @@ private Timer timer;
 					return;
 				}
 			}
-			final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
-				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling, isLeft, dropAction);
+				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling, dropAction);
 				dtde.dropComplete(true);
 				return;
 			}
@@ -265,7 +264,7 @@ private Timer timer;
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(targetNode, selecteds)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
-					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
+					moveNodes(mapController, targetNode, t, dropAsSibling);
 
 					if(dropAsSibling || ! targetNodeView.isFolded())
 					    controller.getSelection().replaceSelection(array);
@@ -273,8 +272,7 @@ private Timer timer;
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
-					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling,
-					    isLeft);
+					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling);
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 			}
@@ -303,14 +301,14 @@ private Timer timer;
 	}
 
 	private void moveNodes(final MMapController mapController, final NodeModel targetNode, Transferable t,
-	                       final boolean dropAsSibling, final boolean isLeft) throws UnsupportedFlavorException,
+	                       final boolean dropAsSibling) throws UnsupportedFlavorException,
 	        IOException {
 		final List<NodeModel> movedNodes = getNodeObjects(t);
 		if (dropAsSibling) {
-			mapController.moveNodesBefore(movedNodes, targetNode, isLeft, true);
+			mapController.moveNodesBefore(movedNodes, targetNode);
 		}
 		else {
-			mapController.moveNodesAsChildren(movedNodes, targetNode, isLeft, true);
+			mapController.moveNodesAsChildren(movedNodes, targetNode);
 		}
 	}
 

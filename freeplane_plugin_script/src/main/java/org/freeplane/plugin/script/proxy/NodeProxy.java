@@ -50,10 +50,12 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
@@ -100,8 +102,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public Node createChild() {
-		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
-		getMapController().insertNode(newNodeModel, getDelegate());
+		NodeModel target = getDelegate();
+		final NodeModel newNodeModel = new NodeModel(target.getMap());
+		newNodeModel.setSide( MapController.suggestNewChildSide(target, false));
+		getMapController().insertNode(newNodeModel, target);
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
 
@@ -120,8 +124,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public Node createChild(final int position) {
-		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
-		getMapController().insertNode(newNodeModel, getDelegate(), position);
+		NodeModel target = getDelegate();
+		final NodeModel newNodeModel = new NodeModel(target.getMap());
+		if(target.isRoot())
+			newNodeModel.setSide(target.suggestNewChildSide(target));
+		getMapController().insertNode(newNodeModel, target, position);
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
 
@@ -142,6 +149,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		NodeModel source = ((NodeProxy) node).getDelegate();
 		NodeModel target = getDelegate();
         final NodeModel newNodeModel = clipboardController.duplicate(source, target.getMap(), withChildren);
+        newNodeModel.setSide(getMapController().suggestNewChildSide(target, false));
         getMapController().insertNode(newNodeModel, target);
 		return new NodeProxy(newNodeModel, getScriptContext());
     }
@@ -558,7 +566,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public boolean isLeft() {
-		return getDelegate().isLeft();
+		NodeModel node = getDelegate();
+		return node.isLeft(node.getMap().getRootNode());
 	}
 
 	// NodeRO: R
@@ -579,9 +588,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public void moveTo(final Node parentNodeProxy) {
 		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
-		final boolean oldSide = movedNode.isLeft();
-		final boolean newSide = parentNode.isRoot() ? oldSide : parentNode.isLeft();
-        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode, newSide, newSide != oldSide);
+        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode);
 	}
 
 	// Node: R/W
@@ -590,9 +597,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(movedNode);
-		final boolean oldSide = movedNode.isLeft();
-		final boolean newSide = parentNode.isRoot() ? oldSide : parentNode.isLeft();
-		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position, newSide, newSide != oldSide);
+		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position);
 	}
 
 	// Node: R/W
@@ -691,7 +696,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void setLeft(final boolean isLeft) {
-		getDelegate().setLeft(isLeft);
+		getDelegate().setSide(isLeft ? Side.LEFT : Side.RIGHT);
 	}
 
 	// NodeRO: R
@@ -1143,7 +1148,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		if (toBeCloned.subtreeContainsCloneOf(target))
 			throw new IllegalArgumentException("can't clone a node which has this node as child");
 		final NodeModel clone = withSubtree ? toBeCloned.cloneTree() : toBeCloned.cloneContent();
-		mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
+		mapController.addNewNode(clone, target, target.getChildCount());
 		return new NodeProxy(clone, getScriptContext());
 	}
 

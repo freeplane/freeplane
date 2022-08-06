@@ -607,7 +607,7 @@ public class MTextController extends TextController {
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent,
-		    parent.getIndex(node) + 1, node.isLeft());
+		    parent.getIndex(node) + 1, node.getSide());
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		MLogicalStyleController.getController().setStyle(lowerNode, LogicalStyleModel.getStyle(node));

@@ -96,4 +96,5 @@ public interface IMapSelection {
         return getSelected().getMap();
     }
 
+
 }

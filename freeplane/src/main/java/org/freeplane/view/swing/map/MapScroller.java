@@ -149,7 +149,7 @@ class MapScroller {
 					if(! children.isEmpty()){
 						scrollToTheLeft = true;
 						for(NodeModel node :children) {
-							if(node.isLeft()){
+							if(node.isLeft(root.getModel())){
 								scrollToTheLeft = false;
 								break;
 							}

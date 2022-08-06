@@ -94,8 +94,10 @@ class VerticalNodeViewLayoutStrategy {
 	}
 	public void calculateLayoutData() {
 		final NodeModel node = view.getModel();
-		Filter filter = view.getMap().getFilter();
-		viewLevels = view.isFolded() ? SummaryLevels.ignoringChildNodes(node, filter) : SummaryLevels.of(node, filter);
+		MapView map = view.getMap();
+		Filter filter = map.getFilter();
+		NodeModel selectionRoot = map.getRoot().getModel();
+		viewLevels = view.isFolded() ? SummaryLevels.ignoringChildNodes(selectionRoot, node, filter) : SummaryLevels.of(selectionRoot, node, filter);
 		for(boolean isLeft : viewLevels.sides)
 			calculateLayoutData(isLeft);
 		applyLayoutToChildComponents();

@@ -1191,7 +1191,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView getVisibleSummaryView(final NodeView node) {
 	    if(isRoot(node))
 	    	return null;
-	    final int currentSummaryLevel = SummaryNode.getSummaryLevel(node.getModel());
+	    final int currentSummaryLevel = SummaryNode.getSummaryLevel(currentRootView.getModel(), node.getModel());
 		int level = currentSummaryLevel;
 		final int requiredSummaryLevel = level + 1;
 	    final NodeView parent = node.getParentView();

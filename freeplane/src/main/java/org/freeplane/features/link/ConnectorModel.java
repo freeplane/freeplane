@@ -158,8 +158,8 @@ public class ConnectorModel extends NodeLinkModel {
 	    connectorProperties.setLabelFontSize(labelFontSize);
     }
 
-	public void changeInclination(int deltaX, int deltaY, NodeModel linkedNodeView, Point changedInclination) {
-	    connectorProperties.changeInclination(deltaX, deltaY, linkedNodeView, changedInclination);
+	public void changeInclination(int deltaX, int deltaY, final NodeModel selectionRoot, NodeModel linkedNodeView, Point changedInclination) {
+	    connectorProperties.changeInclination(deltaX, deltaY, selectionRoot, linkedNodeView, changedInclination);
     }
 
 	@Override

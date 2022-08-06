@@ -36,6 +36,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.INodeView;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -733,6 +734,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		factories.remove(factory);
 	}
 
+	public boolean pasteImage(URI uri, final NodeModel node) {
+		return pasteImage(uri, node, PasteMode.INSIDE);
+	}
+
 	/**
 	 * This method attaches an image to a node, that is referenced with an uri
 	 * @param uri : The image that is to be attached to a node
@@ -759,16 +764,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 	}
 
-	public boolean paste(URI uri, final NodeModel node, final boolean isLeft) {
-		return pasteImage(uri, node, PasteMode.INSIDE, isLeft);
-	}
-
-	public boolean paste(final File file, final NodeModel targetNode, final PasteMode mode, final boolean isLeft) {
+	public boolean paste(final File file, final NodeModel targetNode, final PasteMode mode) {
 		URI uri = uriOf(file);
-		return pasteImage(uri, targetNode, mode, isLeft);
+		return pasteImage(uri, targetNode, mode);
 	}
 
-	public boolean pasteImage(URI uri, final NodeModel targetNode, final PasteMode mode, final boolean isLeft) {
+	public boolean pasteImage(URI uri, final NodeModel targetNode, final PasteMode mode) {
 	    if (uri == null || getViewerFactory(uri) == null) {
 			return false;
 		}
@@ -795,7 +796,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		else {
 			node = mapController.newNode(file.getName(), targetNode.getMap());
-			mapController.insertNode(node, targetNode, mode.equals(PasteMode.AS_SIBLING), isLeft, isLeft);
+			boolean asSibling = mode.equals(PasteMode.AS_SIBLING);
+			node.setSide(MapController.suggestNewChildSide(targetNode, asSibling));
+			mapController.insertNode(node, targetNode, asSibling);
 		}
 		final ExternalResource preview = new ExternalResource(uri);
 		undoableDeactivateHook(node);

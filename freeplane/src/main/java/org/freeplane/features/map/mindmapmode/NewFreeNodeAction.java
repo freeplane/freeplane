@@ -24,6 +24,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
@@ -44,8 +46,9 @@ public class NewFreeNodeAction extends AFreeplaneAction {
         final Controller controller = Controller.getCurrentController();
 		final IMapViewManager viewController = controller.getMapViewManager();
 		final float zoom = viewController.getZoom();
-		final Component component = viewController.getComponent(mapController.getRootNode());
+		NodeModel rootNode = controller.getSelection().getSelectionRoot();
+		final Component component = viewController.getComponent(rootNode);
 		int x = (int)(component.getWidth() / zoom);
-		mapController.addFreeNode(new Point(x, 0), false);
+		mapController.addFreeNode(rootNode, new Point(x, 0), Side.RIGHT);
 	}
 }

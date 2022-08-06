@@ -204,9 +204,9 @@ class ConnectorProperties{
 		return "".equals(label) ? Optional.empty() : Optional.of(label);
 	}
 
-	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,
+	public void changeInclination(int deltaX, final int deltaY, final NodeModel selectionRoot, final NodeModel linkedNodeView,
 	                              final Point changedInclination) {
-		if (linkedNodeView.isLeft()) {
+		if (linkedNodeView.isLeft(selectionRoot)) {
 			deltaX = -deltaX;
 		}
 		changedInclination.translate(deltaX, deltaY);

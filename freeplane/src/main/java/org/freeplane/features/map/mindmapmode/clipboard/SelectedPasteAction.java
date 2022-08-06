@@ -66,7 +66,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 		}
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		final Transferable clipboardContents = clipboardController.getClipboardContents();
-		clipboardController.paste(clipboardContents, selectedHandler, parent, false, parent.isNewChildLeft());
+		clipboardController.paste(clipboardContents, selectedHandler, parent, false);
 		selectedHandler = null;
 	}
 

@@ -55,7 +55,7 @@ public class NewLevelStyleAction extends AFreeplaneAction {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node = new NodeModel(map);
 		node.setUserObject(styleObject);
-		mapController.insertNode(node, levelStyleParentNode, false, false, true);
+		mapController.insertNode(node, levelStyleParentNode, false);
 		mapController.select(node);
 		final IActor actor = new IActor() {
 			public void undo() {

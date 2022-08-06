@@ -28,11 +28,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.FreeNode;
-import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
@@ -53,15 +53,17 @@ public class ChangeNodeLevelController {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ModeController modeController = Controller.getCurrentModeController();
-			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+			Controller controller = Controller.getCurrentController();
+			IMapSelection selection = controller.getSelection();
+			NodeModel selectedNode = selection.getSelected();
+			final IMapViewManager mapViewManager = controller.getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
-			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft()) {
-				moveDownwards(selectedNode);
+			NodeModel selectionRoot = selection.getSelectionRoot();
+			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selectionRoot)) {
+				moveDownwards(selectionRoot, selectedNode);
 			}
 			else {
-				moveUpwards(selectedNode);
+				moveUpwards(selectionRoot, selectedNode);
 			}
 		}
 	}
@@ -77,15 +79,16 @@ public class ChangeNodeLevelController {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final ModeController modeController = Controller.getCurrentModeController();
-			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+			Controller controller = Controller.getCurrentController();
+			IMapSelection selection = controller.getSelection();
+			NodeModel selectedNode = selection.getSelected();
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
-			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft()) {
-				moveUpwards(selectedNode);
+			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selection.getSelectionRoot())) {
+				moveUpwards(selection.getSelectionRoot(), selectedNode);
 			}
 			else {
-				moveDownwards(selectedNode);
+				moveDownwards(selection.getSelectionRoot(), selectedNode);
 			}
 		}
 	};
@@ -99,15 +102,15 @@ public class ChangeNodeLevelController {
 	}
 
 	private boolean checkSelection() {
-		final ModeController currentModeController = Controller.getCurrentModeController();
-		final MapController mapController = currentModeController.getMapController();
-		final NodeModel selectedNode = mapController.getSelectedNode();
+		Controller controller = Controller.getCurrentController();
+		IMapSelection selection = controller.getSelection();
+		NodeModel selectedNode = selection.getSelected();
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		if (selectedParent == null) {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return false;
 		}
-		final Collection<NodeModel> selectedNodes = mapController.getSelectedNodes();
+		final Collection<NodeModel> selectedNodes = selection.getSelection();
 		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
 				UITools.errorMessage(TextUtils.getText("cannot_add_parent_diff_parents"));
@@ -117,7 +120,7 @@ public class ChangeNodeLevelController {
 		return true;
 	}
 
-	private void moveDownwards( final NodeModel selectedNode) {
+	private void moveDownwards(final NodeModel selectionRoot, final NodeModel selectedNode) {
 		if (!checkSelection()) {
 			return;
 		}
@@ -128,7 +131,7 @@ public class ChangeNodeLevelController {
 		NodeModel directSibling = null;
 		for (int i = ownPosition - 1; i >= 0; --i) {
 			final NodeModel targetCandidate = selectedParent.getChildAt(i);
-			if (canMoveTo(selectedNode, selectedNodes, targetCandidate)) {
+			if (canMoveTo(selectionRoot, selectedNode, selectedNodes, targetCandidate)) {
 				directSibling = targetCandidate;
 				break;
 			}
@@ -136,7 +139,7 @@ public class ChangeNodeLevelController {
 		if (directSibling == null) {
 			for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
 				final NodeModel targetCandidate = selectedParent.getChildAt(i);
-				if (canMoveTo(selectedNode, selectedNodes, targetCandidate)) {
+				if (canMoveTo(selectionRoot, selectedNode, selectedNodes, targetCandidate)) {
 					directSibling = targetCandidate;
 					break;
 				}
@@ -151,49 +154,44 @@ public class ChangeNodeLevelController {
 		}
 	}
 
-	private boolean canMoveTo(final NodeModel selectedNode, final List<NodeModel> selectedNodes,
+	private boolean canMoveTo(final NodeModel selectionRoot, final NodeModel selectedNode, final List<NodeModel> selectedNodes,
 			final NodeModel targetCandidate) {
-		return !selectedNodes.contains(targetCandidate) && selectedNode.isLeft() == targetCandidate.isLeft() 
+		return !selectedNodes.contains(targetCandidate) && selectedNode.isLeft(selectionRoot) == targetCandidate.isLeft(selectionRoot) 
 				&& (targetCandidate.hasChildren() || ! targetCandidate.isHiddenSummary());
 	}
 
-	private void moveUpwards( final NodeModel selectedNode) {
+	private void moveUpwards(final NodeModel selectionRoot, NodeModel selectedNode) {
 		if (!checkSelection()) {
 			return;
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		NodeModel selectedParent = selectedNode.getParentNode();
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
-		int position;
-		final boolean changeSide;
-		boolean leftSide = selectedNode.isLeft();
-		if (selectedParent.isRoot()) {
+		if (selectedParent == selectionRoot) {
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
 				return;
 			}
-			changeSide = true;
-			leftSide = ! leftSide;
-			position = selectedParent.getChildCount();
+			Side newSide = selectedNode.isLeft(selectionRoot) ? Side.RIGHT : Side.LEFT;
+			mapController.moveNodes(selectedNodes, newSide);
 		}
 		else {
 			final NodeModel grandParent = selectedParent.getParentNode();
 			final NodeModel childNode = selectedParent;
-			position = grandParent.getIndex(childNode) + 1;
+			int position = grandParent.getIndex(childNode) + 1;
 			selectedParent = grandParent;
-			changeSide = false;
-		}
-        final MapStyleModel mapStyleModel = MapStyleModel.getExtension(selectedParent.getMap());
-        MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
-		List<List<NodeModel>> movedChildren = layoutType == MapViewLayout.OUTLINE ? findMovedChildren(selectedNode.getParentNode(), selectedNodes) : Collections.emptyList();
-		for (final NodeModel node : selectedNodes)
-			(Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
-		mapController.moveNodes(selectedNodes, selectedParent, position, leftSide, changeSide);
-		if(layoutType == MapViewLayout.OUTLINE) {
-		    for(int i = 0; i < selectedNodes.size(); i++) {
-		        mapController.moveNodes(movedChildren.get(i), selectedNodes.get(i), 0, leftSide, false);
-		    }
+			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(selectedParent.getMap());
+			MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
+			List<List<NodeModel>> movedChildren = layoutType == MapViewLayout.OUTLINE ? findMovedChildren(selectedNode.getParentNode(), selectedNodes) : Collections.emptyList();
+			for (final NodeModel node : selectedNodes)
+				(Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
+			mapController.moveNodes(selectedNodes, selectedParent, position);
+			if(layoutType == MapViewLayout.OUTLINE) {
+				for(int i = 0; i < selectedNodes.size(); i++) {
+					mapController.moveNodes(movedChildren.get(i), selectedNodes.get(i), 0);
+				}
+			}
 		}
 		mapController.selectMultipleNodes(selectedNode, selectedNodes);
 	}

@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -52,6 +53,10 @@ public class NodeModel{
 		FOLDING, REFRESH
 	}
 	
+	public enum Side {
+		DEFAULT, LEFT, RIGHT
+	}
+	
 	public enum NodeProperty{UNKNOWN_PROPERTY};
 
 	public enum CloneType{TREE, CONTENT}
@@ -59,11 +64,8 @@ public class NodeModel{
 	final static int CONTENT_CLONE_INDEX = CloneType.CONTENT.ordinal();
 
 	private static final boolean ALLOWSCHILDREN = true;
-	public final static int LEFT_POSITION = -1;
 	public static final String NODE_TEXT = "node_text";
 	public static final String NOTE_TEXT = "note_text";
-	public final static int RIGHT_POSITION = 1;
-	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = NodeProperty.UNKNOWN_PROPERTY;
 	public static final String NODE_ICON = "icon";
 	public static final String NODE_ICON_SIZE = "icon_size";
@@ -73,7 +75,7 @@ public class NodeModel{
 	private NodeModel parent;
 	private String id;
 	private MapModel map = null;
-	private int position = NodeModel.UNKNOWN_POSITION;
+	private Side side;
 	private NodeModel preferredChild;
 	private Collection<INodeView> views = null;
 
@@ -98,6 +100,7 @@ public class NodeModel{
 		this.map = map;
 		children = new ArrayList<NodeModel>();
 		sharedData = new SharedNodeData();
+		side = Side.DEFAULT;
 		init(userObject);
 		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
 	}
@@ -107,6 +110,7 @@ public class NodeModel{
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
+		side = toBeCloned.side;
 	}
 
 	protected void init(final Object userObject) {
@@ -391,27 +395,32 @@ public class NodeModel{
 		return getChildCount() == 0;
 	}
 
-	public boolean isLeft() {
-		if (position == NodeModel.UNKNOWN_POSITION && getParentNode() != null) {
-			setLeft(getParentNode().isLeft());
-		}
-		return position == NodeModel.LEFT_POSITION;
+	public boolean isLeft(NodeModel root) {
+		NodeModel parentNode = getParentNode();
+		if (parentNode == null)
+			return false;
+		else if (parentNode == root)
+			if (side != Side.DEFAULT)
+				return side == Side.LEFT;
+			else
+				return parentNode.isLeft(parentNode.getMap().getRootNode());
+		else
+			return parentNode.isLeft(root);
 	}
 
-	public boolean isNewChildLeft() {
-		if (!isRoot()) {
-			return isLeft();
-		}
+	public Side suggestNewChildSide(NodeModel root) {
+		if(this != root)
+			return Side.DEFAULT;
 		int rightChildrenCount = 0;
 		for (int i = 0; i < getChildCount(); i++) {
-			if (!getChildAt(i).isLeft()) {
+			if (!getChildAt(i).isLeft(this)) {
 				rightChildrenCount++;
 			}
 			if (rightChildrenCount > getChildCount() / 2) {
-				return true;
+				return Side.LEFT;
 			}
 		}
-		return false;
+		return Side.RIGHT;
 	}
 
 	public boolean isRoot() {
@@ -496,15 +505,12 @@ public class NodeModel{
 		getMap().registryID(value, this);
 	}
 
-	public void setLeft(final boolean isLeft) {
-		position = isLeft ? NodeModel.LEFT_POSITION : NodeModel.RIGHT_POSITION;
-		if (!isRoot()) {
-			for (final NodeModel child : children) {
-				if (child.position != position) {
-					child.setLeft(isLeft);
-				}
-			}
-		}
+//	public void setLeft(final boolean isLeft) {
+//		setHorizontalPosition(isLeft ? HorizontalPosition.LEFT : HorizontalPosition.RIGHT);
+//	}
+
+	public void setSide(Side side) {
+		this.side = side;
 	}
 
 	/**
@@ -693,26 +699,26 @@ public class NodeModel{
 		return clones[TREE_CLONE_INDEX].size() > 1 || clones[CONTENT_CLONE_INDEX].size() > 1;
 	}
 
-	public int nextNodeIndex(int index, final boolean leftSide) {
-		return nextNodeIndex(index, leftSide, +1);
+	public int nextNodeIndex(NodeModel root, int index, final boolean leftSide) {
+		return nextNodeIndex(root, index, leftSide, +1);
 	}
 
-	public int previousNodeIndex(int index, final boolean leftSide) {
-		return nextNodeIndex(index, leftSide, -1);
+	public int previousNodeIndex(NodeModel root, int index, final boolean leftSide) {
+		return nextNodeIndex(root, index, leftSide, -1);
 	}
 
-	private int nextNodeIndex(int index, final boolean leftSide, final int step) {
+	private int nextNodeIndex(NodeModel root, int index, final boolean leftSide, final int step) {
 		for(int i = index  + step; i >= 0 && i < getChildCount(); i+=step){
 			final NodeModel followingNode = getChildAt(i);
-			if(followingNode.isLeft() == leftSide) {
+			if(followingNode.isLeft(root) == leftSide) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public NodeModel previousNode(int start, boolean isLeft) {
-		final int previousNodeIndex = previousNodeIndex(start, isLeft);
+	public NodeModel previousNode(NodeModel root, int start, boolean isLeft) {
+		final int previousNodeIndex = previousNodeIndex(root, start, isLeft);
 		return parent.getChildAt(previousNodeIndex);
 	}
 
@@ -748,5 +754,13 @@ public class NodeModel{
     public NodeModel duplicate(boolean withChildren) {
         return map.duplicate(this, withChildren);
     }
+
+	public Optional<Side> getAssignedSide() {
+		return side == Side.DEFAULT ? Optional.empty() : Optional.of(side);
+	}
+
+	public Side getSide() {
+		return side;
+	}
     
 }

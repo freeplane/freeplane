@@ -59,6 +59,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
@@ -780,9 +781,6 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-		if(parent.getParentNode() != null){
-			newNode.setLeft(parent.isLeft());
-		}
 		parent.insert(newNode, index);
 		fireNodeInserted(parent, newNode, index);
 	}
@@ -1132,6 +1130,22 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public MapModel getMap(URL url) {
 		throw new RuntimeException("Method not implemented");
+	}
+
+
+	public static Side suggestNewChildSide(NodeModel target, final boolean asSibling) {
+		final Side side;
+		if (asSibling) {
+			side = target.getSide();
+		}
+		else{
+			IMapSelection selection = Controller.getCurrentController().getSelection();
+			if(target.isRoot() || selection != null && selection.getSelectionRoot() == target)
+				side = target.suggestNewChildSide(target);
+			else
+				side = Side.DEFAULT;
+		}
+		return side;
 	}
 
 }

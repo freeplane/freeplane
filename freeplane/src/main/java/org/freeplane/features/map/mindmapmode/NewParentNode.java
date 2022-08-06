@@ -25,6 +25,7 @@ import java.util.List;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.mode.Controller;
@@ -64,10 +65,11 @@ public class NewParentNode extends AFreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		if(selectedNode == null)
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+		if(selection == null)
 			return;
-		Collection<NodeModel> unmodifyable = Controller.getCurrentModeController().getMapController().getSelectedNodes();
+		final NodeModel selectedNode = selection.getSelected();
+		Collection<NodeModel> unmodifyable =selection.getOrderedSelection();
 		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>(unmodifyable.size());
 		selectedNodes.addAll(unmodifyable);
 		Controller.getCurrentModeController().getMapController().sortNodesByDepth(selectedNodes);
@@ -75,11 +77,11 @@ public class NewParentNode extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("cannot_add_parent_to_root"));
 			return;
 		}
-		final NodeModel newNode = moveToNewParent(selectedNode, selectedNodes);
+		final NodeModel newNode = moveToNewParent(selection.getSelectionRoot(), selectedNode, selectedNodes);
 		if (newNode == null) {
 			return;
 		}
-		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(newNode);
+		selection.selectAsTheOnlyOneSelected(newNode);
 		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				((MTextController) TextController.getController()).edit(newNode, selectedNode, true, false, false);
@@ -88,7 +90,7 @@ public class NewParentNode extends AFreeplaneAction {
 
 	}
 
-	private NodeModel moveToNewParent(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
+	private NodeModel moveToNewParent(final NodeModel selectionRoot, final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
 		final NodeModel oldParent = selectedNode.getParentNode();
         for (final NodeModel node: selectedNodes) {
             if (node.getParentNode() != oldParent) {
@@ -101,7 +103,7 @@ public class NewParentNode extends AFreeplaneAction {
             }
         }
         final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-        final SummaryLevels summaryLevels = new SummaryLevels(oldParent);
+        final SummaryLevels summaryLevels = new SummaryLevels(selectionRoot, oldParent);
         int childPosition = selectedNode.getIndex();
 		final NodeModel summaryNode = summaryLevels.findSummaryNode(childPosition);
         if(summaryNode != null){
@@ -110,8 +112,8 @@ public class NewParentNode extends AFreeplaneAction {
         		childPosition = summaryLevels.findGroupBeginNodeIndex(childPosition);
         	
         }
-		final NodeModel newParent = mapController.addNewNode(oldParent, childPosition, selectedNode.isLeft());
-        mapController.moveNodesAsChildren(selectedNodes, newParent, false, false);
+		final NodeModel newParent = mapController.addNewNode(oldParent, childPosition, selectedNode.getSide());
+        mapController.moveNodesAsChildren(selectedNodes, newParent);
         return newParent;
 	}
 }

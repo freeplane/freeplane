@@ -28,6 +28,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -65,6 +66,7 @@ class ImportBranchAction extends AFreeplaneAction {
 			try {
 				final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, chooser.getSelectedFile());
 				PersistentNodeHook.removeMapExtensions(node);
+				node.setSide(MapController.suggestNewChildSide(parent, false));
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {

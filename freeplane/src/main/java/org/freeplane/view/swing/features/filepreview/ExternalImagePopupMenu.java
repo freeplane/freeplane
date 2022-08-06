@@ -36,6 +36,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressUtilities;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Stefan Ott
@@ -53,6 +54,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 	private JMenuItem change = null;
 	private JMenuItem open = null;
 	private JMenuItem resetZoom = null;
+	private NodeModel selectionRoot;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
@@ -119,7 +121,7 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 						URI uri = extRes.getAbsoluteUri(node.getMap());
 						if (progUtil.hasExternalResource(node) && !progUtil.hasExtendedProgressIcon(node)) {
 							viewer.undoableDeactivateHook(node);
-							viewer.paste(uri, node, node.isLeft());
+							viewer.paste(uri, node);
 						}
 					}
 				}
@@ -173,7 +175,9 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 			for (final Component cmp : e.getComponent().getParent().getComponents()) {
 				if (cmp instanceof MainView) {
 					mv = (MainView) cmp;
-					node = mv.getNodeView().getModel();
+					NodeView nodeView = mv.getNodeView();
+					selectionRoot = nodeView.getMap().getRoot().getModel();
+					node = nodeView.getModel();
 					viewer = (Controller.getCurrentController().getModeController().getExtension(
 					    ViewerController.class));
 					break;

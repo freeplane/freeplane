@@ -23,23 +23,23 @@ public class SummaryNodeMapUpdater implements IMapLifeCycleListener {
 		final MapVersionInterpreter mapXmlVersionInterpreter = map.getExtension(MapVersionInterpreter.class);
 		if(mapXmlVersionInterpreter == null || mapXmlVersionInterpreter.version < 6){
 			modeController.deactivateUndo((MMapModel) map);
-			updateSummaryNodes(map.getRootNode());
+			updateSummaryNodes(map.getRootNode(), map.getRootNode());
 		}
 	}
-	private void updateSummaryNodes(NodeModel parentNode) {
+	private void updateSummaryNodes(NodeModel rootNode, NodeModel parentNode) {
 		final NodeModel[] nodes = parentNode.getChildren().toArray(new NodeModel[]{});
 		for(NodeModel node : nodes){
 			SummaryLevels summaryLevels = null;
 			if(SummaryNode.isFirstGroupNode(node)){
 				if(summaryLevels == null)
-					summaryLevels = new SummaryLevels(parentNode);
+					summaryLevels = new SummaryLevels(rootNode, parentNode);
 				if (summaryLevels.findSummaryNode(node.getIndex()) == null)
 					node.removeExtension(FirstGroupNodeFlag.class);
 			}
 			if(SummaryNode.isSummaryNode(node)) {
 				if(summaryLevels == null)
-					summaryLevels = new SummaryLevels(parentNode);
-				final NodeModel groupBeginNode = summaryLevels.findGroupBeginNode(parentNode.previousNodeIndex(node.getIndex(), node.isLeft()));
+					summaryLevels = new SummaryLevels(rootNode, parentNode);
+				final NodeModel groupBeginNode = summaryLevels.findGroupBeginNode(parentNode.previousNodeIndex(rootNode, node.getIndex(), node.isLeft(rootNode)));
 				if(groupBeginNode == null)
 					node.removeExtension(SummaryNodeFlag.class);
 				else {
@@ -47,28 +47,28 @@ public class SummaryNodeMapUpdater implements IMapLifeCycleListener {
 						if(SummaryNode.isSummaryNode(groupBeginNode))
 							groupBeginNode.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 						else {
-							final NodeModel newFirstGroupNode = mapController.addNewNode(groupBeginNode.getParentNode(), groupBeginNode.getIndex(), groupBeginNode.isLeft());
+							final NodeModel newFirstGroupNode = mapController.addNewNode(groupBeginNode.getParentNode(), groupBeginNode.getIndex(), groupBeginNode.getSide());
 							newFirstGroupNode.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 						}
 					}
 					if (node.isFolded() || !node.hasChildren() || !node.getText().isEmpty()){
 						node.removeExtension(SummaryNodeFlag.class);
-						final NodeModel newParent = mapController.addNewNode(node.getParentNode(), node.getIndex(), node.isLeft());
+						final NodeModel newParent = mapController.addNewNode(node.getParentNode(), node.getIndex(), node.getSide());
 						newParent.addExtension(SummaryNodeFlag.SUMMARY);
 						if(SummaryNode.isFirstGroupNode(node)){
 							node.removeExtension(FirstGroupNodeFlag.class);
 							newParent.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 						}
-						mapController.moveNodeAndItsClones(node, newParent, 0, false, false);
+						mapController.moveNodeAndItsClones(node, newParent, 0);
 					}
 				}
 			}
 			else if(SummaryNode.isFirstGroupNode(node) && (node.hasChildren() || !node.getText().isEmpty())){
-				final NodeModel newFirstGroupNode = mapController.addNewNode(node.getParentNode(), node.getIndex(), node.isLeft());
+				final NodeModel newFirstGroupNode = mapController.addNewNode(node.getParentNode(), node.getIndex(), node.getSide());
 				node.removeExtension(FirstGroupNodeFlag.class);
 				newFirstGroupNode.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 			}
-			updateSummaryNodes(node);
+			updateSummaryNodes(rootNode, node);
 		}
 	}
 }

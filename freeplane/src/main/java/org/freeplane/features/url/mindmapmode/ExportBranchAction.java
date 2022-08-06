@@ -38,8 +38,10 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.MapExtensions;
@@ -67,7 +69,8 @@ class ExportBranchAction extends AFreeplaneAction {
 		final MapModel parentMap = controller.getMap();
 		if(! modeController.canEdit(parentMap))
 			return;
-		final NodeModel existingNode = modeController.getMapController().getSelectedNode();
+		IMapSelection selection = controller.getSelection();
+		final NodeModel existingNode = selection.getSelected();
 		if (parentMap == null || existingNode == null || existingNode.isRoot()) {
 			controller.getViewController().err("Could not export branch.");
 			return;
@@ -116,6 +119,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			 * to the new Map.
 			 */
 			final NodeModel parent = existingNode.getParentNode();
+			Side nodeSide = existingNode.getSide();
 			final File oldFile = parentMap.getFile();
 	
 			final URI newUri = LinkController.toLinkTypeDependantURI(oldFile, chosenFile);
@@ -163,7 +167,7 @@ class ExportBranchAction extends AFreeplaneAction {
 				}
 			}
 			((MFileManager) UrlManager.getController()).save(newMap, chosenFile);
-			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
+			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, nodeSide);
 			((MTextController) TextController.getController()).setNodeText(newNode, existingNode.getText());
 			modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, existingNode, newNode);
 			newMap.getFile();

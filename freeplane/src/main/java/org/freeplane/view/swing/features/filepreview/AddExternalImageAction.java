@@ -44,7 +44,8 @@ public class AddExternalImageAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent event) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final Collection<NodeModel> nodes = mapController.getSelectedNodes();
-		final ViewerController vc = Controller.getCurrentController().getModeController()
+		Controller controller = Controller.getCurrentController();
+		final ViewerController vc = controller.getModeController()
 		    .getExtension(ViewerController.class);
 		final NodeModel selectedNode = mapController.getSelectedNode();
 		if (selectedNode == null)
@@ -56,7 +57,7 @@ public class AddExternalImageAction extends AFreeplaneAction {
 		if (absoluteUri == null)
 			return;
 		for (final NodeModel node : nodes) {
-			vc.paste(absoluteUri, node, node.isLeft());
+			vc.paste(absoluteUri, node);
 		}
 	}
 }

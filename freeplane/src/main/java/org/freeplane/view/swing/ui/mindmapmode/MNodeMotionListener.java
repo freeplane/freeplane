@@ -79,7 +79,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getMapViewManager().getMapViewComponent());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
-		if (node.isLeft()) {
+		if (node.isLeft(mapView.getRoot().getModel())) {
 			hGapChange = -hGapChange;
 		}
 		return hGapChange;

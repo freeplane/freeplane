@@ -34,6 +34,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
@@ -66,13 +67,15 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent) {
+		NodeModel selectionRoot = Controller.getCurrentController().getSelection().getSelectionRoot();
+		Side side = target.suggestNewChildSide(selectionRoot);
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(target, target
-		    .getChildCount(), target.isNewChildLeft());
+		    .getChildCount(), side);
 		((MTextController) TextController.getController()).setNodeText(node, nodeContent);
 		return node;
 	}
 
-	public boolean importExplorerFavorites(final File folder, final NodeModel target, final boolean redisplay) {
+	private boolean importExplorerFavorites(final File folder, final NodeModel target, final boolean redisplay) {
 		boolean favoritesFound = false;
 		final File[] list = folder.listFiles();
 		if (list != null) {

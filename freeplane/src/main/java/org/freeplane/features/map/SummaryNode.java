@@ -82,16 +82,16 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 		return ! nodeModel.isFolded()  && (nodeModel.hasChildren() && isSummaryNode(nodeModel) || isFirstGroupNode(nodeModel))&& nodeModel.getText().isEmpty(); 
 	}
 
-	public static int getSummaryLevel(NodeModel node) {
+	public static int getSummaryLevel(NodeModel root, NodeModel node) {
 		if(node.isRoot() || ! isSummaryNode(node))
 			return 0;
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
-		final boolean isleft = node.isLeft();
+		final boolean isleft = node.isLeft(root);
 		int level = 1;
 		for(int i =  index - 1; i > 0; i--){
 			final NodeModel child = parentNode.getChildAt(i);
-			if(isleft == child.isLeft()){
+			if(isleft == child.isLeft(root)){
 				if( isSummaryNode(child))
 					level++;
 				else

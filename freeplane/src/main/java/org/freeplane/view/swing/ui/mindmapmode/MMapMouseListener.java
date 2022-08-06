@@ -34,6 +34,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -92,12 +93,12 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		}
 		if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
 			final Point changedInclination = connector.getStartInclination();
-			connector.changeInclination(deltaX, deltaY, connector.getSource(), changedInclination);
+			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getModel(), connector.getSource(), changedInclination);
 			connector.setStartInclination(changedInclination);
 		}
 		if ((sourceView == null || targetView != null) && distSqToTarget <= distSqToSource * 2.25) {
 			final Point changedInclination = connector.getEndInclination();
-			connector.changeInclination(deltaX, deltaY, target, changedInclination);
+			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getModel(), target, changedInclination);
 			connector.setEndInclination(changedInclination);
 		}
 		originX = e.getX();
@@ -162,7 +163,8 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			final ModeController modeController = Controller.getCurrentModeController();
 			final IExtension freeNode = modeController.getExtension(FreeNode.class);
 			if(freeNode != null && modeController instanceof MModeController){
-				final JComponent rootContent = mapView.getRoot().getMainView();
+				NodeView root = mapView.getRoot();
+				final JComponent rootContent = root.getMainView();
 				final Point contentPt = new Point();
 				UITools.convertPointToAncestor(rootContent, contentPt, mapView);
 				final float zoom = mapView.getZoom();
@@ -175,7 +177,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 					x = rootContentNormalWidth - x;
 				}
 				final Point pt = new Point(x, y);
-				((MMapController)modeController.getMapController()).addFreeNode(pt, newNodeIsLeft);
+				((MMapController)modeController.getMapController()).addFreeNode(root.getModel(), pt, newNodeIsLeft ? Side.LEFT : Side.RIGHT);
 			}
 		}
 		else

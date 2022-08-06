@@ -56,6 +56,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -265,6 +266,7 @@ public class MapStyleModel implements IExtension {
 		if (predefinedStyleParentNode == null) {
 			predefinedStyleParentNode = new NodeModel(styleMap);
 			predefinedStyleParentNode.setUserObject(new StyleTranslatedObject(groupName));
+			predefinedStyleParentNode.setSide(Side.RIGHT);
 			root.insert(predefinedStyleParentNode);
 		}
 		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleShape.bubble);

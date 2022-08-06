@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.freeplane.core.io.IAttributeHandler;
@@ -32,6 +33,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.CloneType;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
@@ -109,7 +111,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		if (parentObject instanceof NodeModel) {
 			final NodeModel parentNode = (NodeModel) parentObject;
 			if (userObject instanceof NodeModel) {
-				parentNode.insert(node, -1);
+				parentNode.insert(node);
 			}
 			return;
 		}
@@ -233,7 +235,7 @@ public class NodeBuilder implements IElementDOMHandler {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				node.setLeft(value.equals("left"));
+				node.setSide(Side.valueOf(value.toUpperCase(Locale.ENGLISH)));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "POSITION", positionHandler);

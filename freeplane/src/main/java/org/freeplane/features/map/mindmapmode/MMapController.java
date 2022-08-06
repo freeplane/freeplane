@@ -80,6 +80,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryLevels;
@@ -179,7 +180,8 @@ public class MMapController extends MapController {
     public NodeModel addNewNode(int newNodeMode) {
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         stopInlineEditing();
-        final NodeModel targetNode = getSelectedNode();
+        final IMapSelection selection = Controller.getCurrentController().getSelection();
+        final NodeModel targetNode = selection.getSelected();
         final NodeModel newNode;
         switch (newNodeMode) {
             case MMapController.NEW_SIBLING_BEFORE:
@@ -190,7 +192,7 @@ public class MMapController extends MapController {
                     if (newNodeMode == MMapController.NEW_SIBLING_BEHIND) {
                         childPosition++;
                     }
-                    newNode = addNewNode(parent, childPosition, targetNode.isLeft());
+                    newNode = addNewNode(parent, childPosition, targetNode.getSide());
                     if (newNode == null) {
                         return null;
                     }
@@ -225,7 +227,7 @@ public class MMapController extends MapController {
                     ResourceController.getResourceController().getProperty("placenewbranches")
                     .equals("last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) 
                     : 0;
-                newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
+                newNode = addNewNode(targetNode, position, targetNode.suggestNewChildSide(selection.getSelectionRoot()));
                 if (newNode == null) {
                     return null;
                 }
@@ -288,11 +290,11 @@ public class MMapController extends MapController {
         }
     }
 
-    public void addNewSummaryNodeStartEditing(final NodeModel parentNode, final int start, final int end,
-            final int summaryLevel, final boolean isLeft) {
+    public void addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
+            final int end, final int summaryLevel, final boolean isLeft) {
         ModeController modeController = getMModeController();
         stopInlineEditing();
-        final NodeModel newSummaryNode = addNewNode(parentNode, end+1, isLeft);
+        final NodeModel newSummaryNode = addNewNode(parentNode, end+1, parentNode.getChildAt(end).getSide());
         final SummaryNode summary = modeController.getExtension(SummaryNode.class);
         summary.undoableActivateHook(newSummaryNode, SUMMARY);
         AlwaysUnfoldedNode unfolded = modeController.getExtension(AlwaysUnfoldedNode.class);
@@ -302,9 +304,9 @@ public class MMapController extends MapController {
         if(SummaryNode.isSummaryNode(firstNodeInGroup))
             firstGroupNodeHook.undoableActivateHook(firstNodeInGroup, FIRST_GROUP);
         else {
-            final NodeModel previousNode = firstNodeInGroup.previousNode(start, isLeft);
+            final NodeModel previousNode = firstNodeInGroup.previousNode(selectionRoot, start, isLeft);
             if(previousNode == null || SummaryNode.isSummaryNode(previousNode) || !SummaryNode.isFirstGroupNode(previousNode)) {
-                NodeModel newFirstGroup = addNewNode(parentNode, start, isLeft);
+                NodeModel newFirstGroup = addNewNode(parentNode, start, firstNodeInGroup.getSide());
                 firstGroupNodeHook.undoableActivateHook(newFirstGroup, FIRST_GROUP);
             }
             firstGroupNodeHook.undoableDeactivateHook(firstNodeInGroup);
@@ -312,7 +314,7 @@ public class MMapController extends MapController {
         int level = summaryLevel;
         for(int i = start+1; i <= end; i++){
             NodeModel node = parentNode.getChildAt(i);
-            if(isLeft != node.isLeft())
+            if(isLeft != node.isLeft(selectionRoot))
                 continue;
             if(SummaryNode.isSummaryNode(node))
                 level++;
@@ -325,37 +327,37 @@ public class MMapController extends MapController {
                     deleteSingleNodeWithClones(node);
             }
         }
-        final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, isLeft);
+        final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, newSummaryNode.getSide());
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         select(firstSummaryChildNode);
         startEditing(firstSummaryChildNode, currentKeyEvent);
     }
 
-    public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
+    public NodeModel addNewNode(final NodeModel parent, final int index, final Side side) {
         if (!isWriteable(parent)) {
             UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
             return null;
         }
         final NodeModel newNode = newNode("", parent.getMap());
-        if(addNewNode(newNode, parent, index, newNodeIsLeft))
+        newNode.setSide(side);
+        if(addNewNode(newNode, parent, index))
             return newNode;
         else
             return null;
     }
 
-    public boolean addNewNode(final NodeModel newNode, final NodeModel parent, final int index, final boolean newNodeIsLeft) {
+    public boolean addNewNode(final NodeModel newNode, final NodeModel parent, final int index) {
         if (!isWriteable(parent)) {
             UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
             return false;
         }
-        insertNewNode(newNode, parent, index, newNodeIsLeft);
+        insertNewNode(newNode, parent, index);
         return true;
     }
 
-    private void insertNewNode(final NodeModel newNode, final NodeModel parent, final int index,
-                               final boolean newNodeIsLeft) {
+    private void insertNewNode(final NodeModel newNode, final NodeModel parent, final int index) {
         if(index < 0 || index > parent.getChildCount()){
-            insertNewNode(newNode, parent, parent.getChildCount(), newNodeIsLeft);
+            insertNewNode(newNode, parent, parent.getChildCount());
             return;
         }
         if(newNode.subtreeContainsCloneOf(parent)){
@@ -363,19 +365,17 @@ public class MMapController extends MapController {
             return;
         }
         stopInlineEditing();
-        insertSingleNewNode(newNode, parent, index, newNodeIsLeft);
+        insertSingleNewNode(newNode, parent, index);
         for(NodeModel parentClone : parent.subtreeClones()){
             if(parentClone != parent) {
                 final NodeModel childClone = newNode.cloneTree();
-                insertSingleNewNode(childClone, parentClone, index, parentClone.isLeft());
+                insertSingleNewNode(childClone, parentClone, index);
             }
         }
     }
 
-    private void insertSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index,
-                                  final boolean newNodeIsLeft) {
+    private void insertSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index) {
         final MapModel map = parent.getMap();
-        newNode.setLeft(newNodeIsLeft);
         final IActor actor = new IActor() {
             @Override
             public void act() {
@@ -450,7 +450,7 @@ public class MMapController extends MapController {
     }
 
     public void deleteNodes(final List<NodeModel> nodes) {
-        final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
+        final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, nodes).addSummaryEdgeNodes();
         for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
             deleteSingleNodeWithClones(node);
         }
@@ -504,7 +504,7 @@ public class MMapController extends MapController {
 
     private void deleteSingleSummaryNode(NodeModel summarynode) {
         final NodeModel summaryParent = summarynode.getParentNode();
-        final SummaryLevels summaryLevels = new SummaryLevels(summaryParent);
+        final SummaryLevels summaryLevels = new SummaryLevels(summaryParent, summaryParent);
         final int summaryNodeIndex = summarynode.getIndex();
         final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(summaryNodeIndex - 1);
         deleteSingleNode(summaryParent, summaryNodeIndex);
@@ -550,18 +550,13 @@ public class MMapController extends MapController {
         insertNode(node, parent, parent.getChildCount());
     }
 
-    public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
-                           final boolean changeSide) {
+    public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling) {
         NodeModel parent;
         if (asSibling) {
             parent = target.getParentNode();
         }
         else {
             parent = target;
-        }
-        if (changeSide) {
-            node.setParent(parent);
-            node.setLeft(isLeft);
         }
         if (asSibling) {
             insertNode(node, parent, parent.getIndex(target));
@@ -572,7 +567,7 @@ public class MMapController extends MapController {
     }
 
     public void insertNode(final NodeModel node, final NodeModel parentNode, final int index) {
-        insertNewNode(node, parentNode, index, node.isLeft());
+        insertNewNode(node, parentNode, index);
     }
 
     @Override
@@ -593,13 +588,8 @@ public class MMapController extends MapController {
         moveNodes(Arrays.asList(node), node.getParentNode(), newIndex);
     }
 
-    public void moveNodes(final List<NodeModel> children, final NodeModel newParent, final int newIndex) {
-        moveNodes(children, newParent, newIndex, false, false);
-    }
-
-    public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex, final boolean isLeft,
-                         final boolean changeSide) {
-        final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
+    public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex) {
+        final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, movedNodes).addSummaryEdgeNodes();
         int index = newIndex;
         for(NodeModel node : movedNodesWithSummaryGroupIndicators) {
             final NodeModel oldParent = node.getParentNode();
@@ -610,19 +600,50 @@ public class MMapController extends MapController {
                     index--;
                 }
             }
-            moveNodeAndItsClones(node, newParent, index++, isLeft, changeSide && node.isLeft() != isLeft);
+            moveNodeAndItsClones(node, newParent, index++);
         }
     }
 
-    public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, int newIndex, final boolean isLeft,
-            final boolean changeSide) {
+    public void moveNodes(List<NodeModel> movedNodes, Side newSide) {
+    	final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, movedNodes).addSummaryEdgeNodes();
+    	for(NodeModel node : movedNodesWithSummaryGroupIndicators) {
+    		Side oldSide = node.getSide();
+    		if(oldSide != newSide) {
+    			final NodeModel parent = node.getParentNode();
+    			IActor sideChangeActor = new IActor() {
+
+    				@Override
+    				public void act() {
+    					node.setSide(newSide);
+    					delayedNodeRefresh(node, Side.class, oldSide, newSide);
+    				}
+    				@Override
+    				public void undo() {
+    					node.setSide(oldSide);
+    					delayedNodeRefresh(node, Side.class, newSide, oldSide);
+    				}
+
+    				@Override
+    				public String getDescription() {
+    					return "change side";
+    				}
+
+    			};
+    			getModeController().execute(sideChangeActor, node.getMap());
+
+    		}
+    	}
+    }
+
+
+    public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, int newIndex) {
         if(child.subtreeContainsCloneOf(newParent)){
             UITools.errorMessage("not allowed");
             return;
         }
         final NodeModel oldParent = child.getParentNode();
         if(newParent != oldParent && newParent.subtreeClones().contains(oldParent)) {
-            moveNodeAndItsClones(child, oldParent, newIndex, newParent.isLeft(), false);
+            moveNodeAndItsClones(child, oldParent, newIndex);
             return;
         }
 
@@ -631,7 +652,7 @@ public class MMapController extends MapController {
         final int childCount = newParent.getChildCount();
         newIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
 
-        if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
+        if (oldParent != newParent || oldIndex != newIndex) {
             final NodeRelativePath nodeRelativePath = getPathToNearestTargetClone(oldParent, newParent);
 
             final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.subtreeClones().toCollection());
@@ -641,14 +662,13 @@ public class MMapController extends MapController {
             for (NodeModel commonAncestorClone: commonAncestor.subtreeClones()){
                     NodeModel oldParentClone = nodeRelativePath.pathBegin(commonAncestorClone);
                     NodeModel newParentClone = nodeRelativePath.pathEnd(commonAncestorClone);
-                    final boolean isLeftForClone = newParentClone == newParent ? isLeft : newParentClone.isLeft();
-                    moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex, isLeftForClone, changeSide);
+                    moveSingleNode(oldParentClone.getChildAt(oldIndex), newParentClone, newIndex);
                     oldParentClones.remove(oldParentClone);
                     newParentClones.remove(newParentClone);
             }
 
             for(NodeModel newParentClone : newParentClones)
-                insertSingleNewNode(child.cloneTree(), newParentClone, newIndex, newParentClone.isLeft());
+                insertSingleNewNode(child.cloneTree(), newParentClone, newIndex);
 
             for(NodeModel oldParentClone : oldParentClones)
                     deleteSingleNode(oldParentClone, oldIndex);
@@ -674,16 +694,14 @@ public class MMapController extends MapController {
         return shortestPath;
     }
 
-    private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
-                                final boolean isLeft, final boolean changeSide) {
+    private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex) {
         final NodeModel oldParent = child.getParentNode();
         final int oldIndex = oldParent.getIndex(child);
 
-        final boolean wasLeft = child.isLeft();
         final IActor actor = new IActor() {
             @Override
             public void act() {
-                moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
+                moveNodeToWithoutUndo(child, newParent, newIndex);
             }
 
             @Override
@@ -693,14 +711,13 @@ public class MMapController extends MapController {
 
             @Override
             public void undo() {
-                moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
+                moveNodeToWithoutUndo(child, oldParent, oldIndex);
             }
         };
         Controller.getCurrentModeController().execute(actor, newParent.getMap());
     }
 
-    public void moveNodesAsChildren(final List<NodeModel> children, final NodeModel target, final boolean isLeft,
-                                final boolean changeSide) {
+    public void moveNodesAsChildren(final List<NodeModel> children, final NodeModel target) {
         FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
         for(NodeModel node : children){
             final IExtension extension = node.getExtension(FreeNode.class);
@@ -711,21 +728,20 @@ public class MMapController extends MapController {
             }
         }
         int position = target.getChildCount();
-        moveNodes(children, target, position, isLeft, changeSide);
+        moveNodes(children, target, position);
     }
 
-    public void moveNodesBefore(final List<NodeModel> children, final NodeModel target, final boolean isLeft,
-                               final boolean changeSide) {
+    public void moveNodesBefore(final List<NodeModel> children, final NodeModel target) {
         final NodeModel newParent = target.getParentNode();
         int newIndex = newParent.getIndex(target);
         for(NodeModel node : children){
             Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(node);
         }
-        moveNodes(children, newParent, newIndex, isLeft, changeSide);
+        moveNodes(children, newParent, newIndex);
     }
 
-    public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
-        final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
+    public void moveNodesInGivenDirection(NodeModel selectionRoot, NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
+        final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(selectionRoot, movedNodes).addSummaryEdgeNodes();
         final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodesWithEdges);
 
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
@@ -741,7 +757,7 @@ public class MMapController extends MapController {
         final NodeModel oneMovedNode = movedNodeSet.iterator().next();
         final NodeModel parent = oneMovedNode.getParentNode();
         if (parent != null) {
-            final List<NodeModel> sortedChildren = getSiblingsSortedOnSide(parent);
+            final List<NodeModel> sortedChildren = getSiblingsSortedOnSide(selectionRoot, parent);
             final TreeSet<Integer> range = new TreeSet<Integer>(comparator);
             for (final NodeModel node : movedNodeSet) {
                 if (node.getParentNode() != parent) {
@@ -761,7 +777,7 @@ public class MMapController extends MapController {
             Collection<NodeModel> selectedNodes = new ArrayList<NodeModel>(getSelectedNodes());
             for (final Integer position : range) {
                 final NodeModel node = sortedChildren.get(position.intValue());
-                moveSingleNodeInGivenDirection(node, direction);
+                moveSingleNodeInGivenDirection(selectionRoot, node, direction);
             }
             final IMapSelection selection = Controller.getCurrentController().getSelection();
             selection.selectAsTheOnlyOneSelected(selected);
@@ -771,12 +787,12 @@ public class MMapController extends MapController {
         }
     }
 
-    private int moveSingleNodeInGivenDirection(final NodeModel child, final int direction) {
+    private int moveSingleNodeInGivenDirection(NodeModel selectionRoot, final NodeModel child, final int direction) {
         final NodeModel parent = child.getParentNode();
         final int index = parent.getIndex(child);
         int newIndex = index;
         final int maxIndex = parent.getChildCount();
-        final List<NodeModel> sortedOnSideNodes = getSiblingsSortedOnSide(parent);
+        final List<NodeModel> sortedOnSideNodes = getSiblingsSortedOnSide(selectionRoot, parent);
         int newPositionInVector = sortedOnSideNodes.indexOf(child) + direction;
         if (newPositionInVector < 0) {
             newPositionInVector = maxIndex - 1;
@@ -786,13 +802,14 @@ public class MMapController extends MapController {
         }
         final NodeModel destinationNode = sortedOnSideNodes.get(newPositionInVector);
         newIndex = parent.getIndex(destinationNode);
-        moveNodeAndItsClones(child, parent, newIndex, child.isLeft(),false);
+        moveNodeAndItsClones(child, parent, newIndex);
         return newIndex;
     }
     /**
      * Sorts nodes by their left/right status. The left are first.
+     * @param selectionRoot TODO
      */
-    private List<NodeModel> getSiblingsSortedOnSide(final NodeModel node) {
+    private List<NodeModel> getSiblingsSortedOnSide(NodeModel selectionRoot, final NodeModel node) {
         final ArrayList<NodeModel> nodes = new ArrayList<NodeModel>(node.getChildCount());
         for (final NodeModel child : node.getChildren()) {
             nodes.add(child);
@@ -813,8 +830,8 @@ public class MMapController extends MapController {
                     final NodeModel n1 = (NodeModel) o1;
                     if (o2 instanceof NodeModel) {
                         final NodeModel n2 = (NodeModel) o2;
-                        final int b1 = n1.isLeft() ? 0 : 1;
-                        final int b2 = n2.isLeft() ? 0 : 1;
+                        final int b1 = n1.isLeft(selectionRoot) ? 0 : 1;
+                        final int b2 = n2.isLeft(selectionRoot) ? 0 : 1;
                         return b1 - b2;
                     }
                 }
@@ -831,19 +848,12 @@ public class MMapController extends MapController {
      *
      * @return returns the new index.
      */
-    private int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, int newIndex,
-                              final boolean isLeft, final boolean changeSide) {
+    private int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, int newIndex) {
         final NodeModel oldParent = child.getParentNode();
         final int oldIndex = oldParent.getIndex(child);
-        final boolean oldSideLeft = child.isLeft();
-        final boolean newSideLeft = changeSide ? isLeft : oldSideLeft;
-        final NodeMoveEvent nodeMoveEvent = new NodeMoveEvent(oldParent, oldIndex, oldSideLeft, newParent, child, newIndex, newSideLeft);
+        final NodeMoveEvent nodeMoveEvent = new NodeMoveEvent(oldParent, oldIndex, newParent, child, newIndex);
         firePreNodeMoved(nodeMoveEvent);
         oldParent.remove(oldParent.getIndex(child));
-        if (changeSide) {
-            child.setParent(newParent);
-            child.setLeft(isLeft);
-        }
         newParent.insert(child, newIndex);
         fireNodeMoved(nodeMoveEvent);
         setSaved(newParent.getMap(), false);
@@ -881,27 +891,26 @@ public class MMapController extends MapController {
         }
     }
 
-    public NodeModel addFreeNode(final Point pt, final boolean newNodeIsLeft) {
+    public NodeModel addFreeNode(final NodeModel target, final Point pt, final Side side) {
         final ModeController modeController = Controller.getCurrentModeController();
         final TextController textController = TextController.getController();
         if (textController instanceof MTextController) {
             ((MTextController) textController).stopInlineEditing();
                 modeController.forceNewTransaction();
         }
-        final NodeModel target = getRootNode();
-        final NodeModel targetNode = target;
-        final boolean parentFolded = isFolded(targetNode);
+        final boolean parentFolded = isFolded(target);
         if (parentFolded) {
-            unfold(targetNode, modeController.getController().getSelection().getFilter());
+            unfold(target, modeController.getController().getSelection().getFilter());
         }
         if (!isWriteable(target)) {
             UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
             return null;
         }
         final NodeModel newNode = newNode("", target.getMap());
+        newNode.setSide(side);
         LogicalStyleModel.createExtension(newNode).setStyle(MapStyleModel.FLOATING_STYLE);
         newNode.addExtension(modeController.getExtension(FreeNode.class));
-        if(! addNewNode(newNode, target, target.getChildCount(), newNodeIsLeft))
+        if(! addNewNode(newNode, target, target.getChildCount()))
             return null;
         final Quantity<LengthUnit> x = LengthUnit.pixelsInPt(pt.x);
         final Quantity<LengthUnit> y = LengthUnit.pixelsInPt(pt.y);
@@ -917,7 +926,7 @@ public class MMapController extends MapController {
             @Override
             public void focusGained(FocusEvent e) {
                 e.getComponent().removeFocusListener(this);
-                ((MTextController) textController).edit(newNode, targetNode, true, false, false);
+                ((MTextController) textController).edit(newNode, target, true, false, false);
             }
         });
         select(newNode);
