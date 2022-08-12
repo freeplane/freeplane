@@ -68,7 +68,7 @@
 		</Entry>
 		<Entry name="navigate">
 			<Entry name="navigate">
-				<Entry accelerator="control shift TAB" name="NavigationPreviousMapAction" />
+				<Entry name="NavigationPreviousMapAction" />
 				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
 				<Entry name="fold">
 					<Entry accelerator="SPACE" name="ToggleFoldedAction" />

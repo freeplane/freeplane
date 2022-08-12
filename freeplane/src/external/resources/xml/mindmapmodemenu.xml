@@ -210,7 +210,7 @@
               <Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
               <Entry name="NewParentNode" accelerator="shift TAB" />
               <Entry name="NewFreeNodeAction" />
-              <Entry name="NewSummaryAction" accelerator="alt shift TAB"/>
+              <Entry name="NewSummaryAction" accelerator="control shift TAB"/>
               <Entry builder="separator" />
               <Entry name="DeleteAction" accelerator="DELETE" />
             </Entry>
@@ -458,7 +458,7 @@
 			</Entry>
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
-			<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB" />
+			<Entry name="NavigationPreviousMapAction" />
 			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
