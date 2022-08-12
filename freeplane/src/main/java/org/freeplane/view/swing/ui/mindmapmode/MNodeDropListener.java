@@ -42,7 +42,9 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -238,9 +240,12 @@ private Timer timer;
 					return;
 				}
 			}
+			final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
-				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling, dropAction);
+				Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
+				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode,
+						MapController.suggestNewChildSide(targetNode, side), dropAction);
 				dtde.dropComplete(true);
 				return;
 			}
@@ -264,7 +269,7 @@ private Timer timer;
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(targetNode, selecteds)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
-					moveNodes(mapController, targetNode, t, dropAsSibling);
+					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
 
 					if(dropAsSibling || ! targetNodeView.isFolded())
 					    controller.getSelection().replaceSelection(array);
@@ -272,7 +277,9 @@ private Timer timer;
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
-					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling);
+					Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
+					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode,
+							MapController.suggestNewChildSide(targetNode, side));
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 			}
@@ -301,14 +308,16 @@ private Timer timer;
 	}
 
 	private void moveNodes(final MMapController mapController, final NodeModel targetNode, Transferable t,
-	                       final boolean dropAsSibling) throws UnsupportedFlavorException,
+	                       final boolean dropAsSibling, final boolean isLeft) throws UnsupportedFlavorException,
 	        IOException {
 		final List<NodeModel> movedNodes = getNodeObjects(t);
 		if (dropAsSibling) {
 			mapController.moveNodesBefore(movedNodes, targetNode);
+			mapController.moveNodes(movedNodes, targetNode.getSide());
 		}
 		else {
 			mapController.moveNodesAsChildren(movedNodes, targetNode);
+			mapController.moveNodes(movedNodes, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
 		}
 	}
 

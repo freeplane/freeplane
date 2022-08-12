@@ -130,7 +130,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
-		if(getNodeView().getModel().isRoot())
+		if(getNodeView().isRoot())
 			return false;
 		if(dropLeft(xCoord))
 		return ! isInVerticalRegion(xCoord, 2. / 3);
@@ -142,7 +142,7 @@ public class MainView extends ZoomableLabel {
 	public boolean dropLeft(final double xCoord) {
 		/* here it is the same as me. */
 		NodeView nodeView = getNodeView();
-		if(getNodeView().getModel().isRoot())
+		if(getNodeView().isRoot())
 			return xCoord < getSize().width * 1 / 2;
 		else
 			return nodeView.isLeft();
@@ -368,7 +368,7 @@ public class MainView extends ZoomableLabel {
 
 	public void setDraggedOver(final Point p) {
 		final int draggedOver;
-		if(getNodeView().getModel().isRoot()) {
+		if(getNodeView().isRoot()) {
 			if (dropLeft(p.getX()))
 				draggedOver = NodeView.DRAGGED_OVER_SON_LEFT;
 			else

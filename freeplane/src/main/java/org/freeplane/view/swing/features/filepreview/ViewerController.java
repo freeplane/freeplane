@@ -39,6 +39,7 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -762,6 +763,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		public static PasteMode valueOf(boolean asSibling){
 			return asSibling ? AS_SIBLING : AS_CHILD;
 		}
+		public static PasteMode valueOf(Side side){
+			return side == Side.AS_SIBLING ? AS_SIBLING : AS_CHILD;
+		}
 	}
 
 	public boolean paste(final File file, final NodeModel targetNode, final PasteMode mode) {
@@ -797,7 +801,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		else {
 			node = mapController.newNode(file.getName(), targetNode.getMap());
 			boolean asSibling = mode.equals(PasteMode.AS_SIBLING);
-			node.setSide(MapController.suggestNewChildSide(targetNode, asSibling));
+			node.setSide(MapController.suggestNewChildSide(targetNode, asSibling ? Side.AS_SIBLING : Side.DEFAULT));
 			mapController.insertNode(node, targetNode, asSibling);
 		}
 		final ExternalResource preview = new ExternalResource(uri);

@@ -110,12 +110,12 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final String text = cleanHtml(textFromClipboard);
 			final NodeModel node = Controller.getCurrentModeController().getMapController().newNode(text,
 					Controller.getCurrentController().getMap());
-			node.setSide(MapController.suggestNewChildSide(target, false));
+			node.setSide(MapController.suggestNewChildSide(target, Side.DEFAULT));
 			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
 		}
 
 		@Override
-		public void paste(Transferable t, final NodeModel target, final boolean asSibling, int dropAction) {
+		public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
 			paste(target);
 		}
 	}
@@ -129,7 +129,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 
 		@Override
-		public void paste(Transferable t, final NodeModel target, final boolean asSibling, int dropAction) {
+		public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
 			boolean copyFile = dropAction == DnDConstants.ACTION_COPY;
 	        final File mapFile = target.getMap().getFile();
 			if ((copyFile || LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) && mapFile == null) {
@@ -153,19 +153,19 @@ public class MMapClipboardController extends MapClipboardController implements M
 				}
 				else
 					file = sourceFile;
-				if(! pasteImagesFromFiles || dropAction == DnDConstants.ACTION_LINK || !viewerController.paste(file, target, PasteMode.valueOf(asSibling))) {
+				if(! pasteImagesFromFiles || dropAction == DnDConstants.ACTION_LINK || !viewerController.paste(file, target, PasteMode.valueOf(side))) {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 					final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 					((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
-					node.setSide(MapController.suggestNewChildSide(target, asSibling));
-					mapController.insertNode(node, target, asSibling);
+					node.setSide(side == Side.AS_SIBLING ? target.getSide() : side);
+					mapController.insertNode(node, target, side == Side.AS_SIBLING);
 				}
 			}
 		}
 	}
 
 	interface IDataFlavorHandler {
-		void paste(Transferable t, NodeModel target, boolean asSibling, int dropAction);
+		void paste(Transferable t, NodeModel target, Side side, int dropAction);
 	}
 
 	private class MindMapNodesFlavorHandler implements IDataFlavorHandler {
@@ -176,13 +176,13 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 
 		@Override
-		public void paste(Transferable t, final NodeModel target, final boolean asSibling, int dropAction) {
+		public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
 			if (textFromClipboard != null) {
-				paste(textFromClipboard, target, asSibling);
+				paste(textFromClipboard, target, side);
 			}
 		}
 
-		private void paste(final String text, final NodeModel target, final boolean asSibling) {
+		private void paste(final String text, final NodeModel target, final Side side) {
 			final String[] textLines = text.split(MapClipboardController.NODESEPARATOR);
 			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			final MapReader mapReader = mapController.getMapReader();
@@ -193,8 +193,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 					try {
 						final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
 						newModel.removeExtension(FreeNode.class);
-						newModel.setSide(MapController.suggestNewChildSide(target, asSibling));
-						mapController.insertNode(newModel, target, asSibling);
+						newModel.setSide(side);
+						mapController.insertNode(newModel, target, side == Side.AS_SIBLING);
 					}
 					catch (final XMLException e) {
 						LogUtils.severe("error on paste", e);
@@ -248,9 +248,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 
 		@Override
-		public void paste(Transferable t, final NodeModel target, final boolean asSibling, int dropAction) {
+		public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
 			final TextFragment[] textFragments = split(textFromClipboard);
-			pasteStringWithoutRedisplay(textFragments, target, asSibling);
+			pasteStringWithoutRedisplay(textFragments, target, side);
 		}
 
 		private TextFragment[] split(final String textFromClipboard) {
@@ -323,15 +323,15 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 
 		@Override
-		public void paste(Transferable t, final NodeModel target, final boolean asSibling, int dropAction) {
-			pasteHtmlWithoutRedisplay(textFromClipboard, target, asSibling);
+		public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
+			pasteHtmlWithoutRedisplay(textFromClipboard, target, side);
 		}
 
-		private void pasteHtmlWithoutRedisplay(final Object t, final NodeModel parent, final boolean asSibling) {
+		private void pasteHtmlWithoutRedisplay(final Object t, final NodeModel parent, final Side side) {
 			final String textFromClipboard = (String) t;
 			final String cleanedTextFromClipboard = cleanHtml(textFromClipboard);
 			final TextFragment[] htmlFragments = split(cleanedTextFromClipboard);
-			pasteStringWithoutRedisplay(htmlFragments, parent, asSibling);
+			pasteStringWithoutRedisplay(htmlFragments, parent, side);
 		}
 
 		private void split(final HTMLDocument doc, final Element parent, final LinkedList<TextFragment> htmlFragments,
@@ -449,7 +449,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 
         @Override
-		public void paste(Transferable t, NodeModel target, boolean asSibling, int dropAction) {
+		public void paste(Transferable t, NodeModel target, Side side, int dropAction) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
             File mindmapFile = target.getMap().getFile();
@@ -484,9 +484,8 @@ public class MMapClipboardController extends MapClipboardController implements M
             	if(! FileUtils.getExtension(imageFile.getName()).equals(ImageAdder.IMAGE_FORMAT))
             		imageFile = new File(imageFile.getPath() + '.' + ImageAdder.IMAGE_FORMAT);
             	final NodeModel node = mapController.newNode(imageFile.getName(), target.getMap());
-				final boolean asSibling1 = asSibling;
-            	node.setSide(MapController.suggestNewChildSide(target, asSibling1));
-            	mapController.insertNode(node, target, asSibling);
+				node.setSide(side == Side.AS_SIBLING ? target.getSide() : side);
+            	mapController.insertNode(node, target, side == Side.AS_SIBLING);
             	new ImageAdder(image, mapController, mindmapFile, imageFile).attachImageToNode(node);
             }
             catch (IOException e) {
@@ -732,11 +731,11 @@ public class MMapClipboardController extends MapClipboardController implements M
 		return null;
 	}
 
-	public void paste(final Transferable t, final NodeModel target, final boolean asSibling) {
-		paste(t, target, asSibling, DnDConstants.ACTION_NONE);
+	public void paste(final Transferable t, final NodeModel target, final Side side) {
+		paste(t, target, side, DnDConstants.ACTION_NONE);
 	}
 
-	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, int dropAction) {
+	public void paste(final Transferable t, final NodeModel target, final Side side, int dropAction) {
 		if (t == null) {
 			return;
 		}
@@ -747,20 +746,20 @@ public class MMapClipboardController extends MapClipboardController implements M
 //		}
 
 		final IDataFlavorHandler handler = getFlavorHandler(t);
-		paste(t, handler, target, asSibling, dropAction);
+		paste(t, handler, target, side, dropAction);
 	}
 
-	void paste(final Transferable t, final IDataFlavorHandler handler, final NodeModel target, final boolean asSibling) {
-		paste(t, handler, target, asSibling, DnDConstants.ACTION_NONE);
+	void paste(final Transferable t, final IDataFlavorHandler handler, final NodeModel target, final Side side) {
+		paste(t, handler, target, side, DnDConstants.ACTION_NONE);
     }
 
-	void paste(final Transferable t, final IDataFlavorHandler handler, final NodeModel target, final boolean asSibling, int dropAction) {
+	void paste(final Transferable t, final IDataFlavorHandler handler, final NodeModel target, final Side side, int dropAction) {
 		if (handler == null) {
 			return;
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		if (asSibling && !mapController.isWriteable(target.getParentNode()) || !asSibling
-		        && !mapController.isWriteable(target)) {
+		if (side == Side.AS_SIBLING && !mapController.isWriteable(target.getParentNode()) 
+				|| side != Side.AS_SIBLING && !mapController.isWriteable(target)) {
 			final String message = TextUtils.getText("node_is_write_protected");
 			UITools.errorMessage(message);
 			return;
@@ -772,9 +771,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 				newNodes = new LinkedList<NodeModel>();
 			}
 			newNodes.clear();
-			handler.paste(t, target, asSibling, dropAction);
+			handler.paste(t, target, side, dropAction);
 			final ModeController modeController = Controller.getCurrentModeController();
-			if (!asSibling && modeController.getMapController().isFolded(target)
+			if ( side != Side.AS_SIBLING && modeController.getMapController().isFolded(target)
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
 				modeController.getMapController().unfoldAndScroll(target, controller.getSelection().getFilter());
 			}
@@ -788,11 +787,10 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private void pasteStringWithoutRedisplay(final TextFragment[] textFragments, NodeModel target,
-	                                              final boolean asSibling) {
-		final Side side = MapController.suggestNewChildSide(target, asSibling);
+	                                              final Side side) {
 		NodeModel parent;
 		int insertionIndex;
-		if (asSibling) {
+		if (side == Side.AS_SIBLING) {
 			final NodeModel childNode = target;
 			parent = target.getParentNode();
 			insertionIndex = parent.getIndex(childNode);
@@ -816,7 +814,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 				addAttribute(node, textFragment, parent==node);
 			}
 		}
-		insertNewNodes(parent, insertionIndex, side, parentNodes);
+		insertNewNodes(parent, insertionIndex, side == Side.AS_SIBLING ? target.getSide() : side, parentNodes);
 	}
 
 	private void addAttribute(NodeModel node, final TextFragment textFragment, boolean toExistingNode) {
@@ -1016,6 +1014,6 @@ public class MMapClipboardController extends MapClipboardController implements M
 	public void paste(ActionEvent event, Transferable t) {
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		if(parent != null)
-			paste(t, parent, false);
+			paste(t, parent, MapController.suggestNewChildSide(parent, Side.DEFAULT));
 	}
 }

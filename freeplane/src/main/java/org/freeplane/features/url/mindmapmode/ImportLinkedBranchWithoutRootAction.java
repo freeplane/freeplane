@@ -70,7 +70,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			    .getPath()).getFile());
 			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
 			map.setURL(url);
-			Side side = MapController.suggestNewChildSide(selected, false);
+			Side side = MapController.suggestNewChildSide(selected, Side.DEFAULT);
 			for (final NodeModel child : node.getChildren()) {
 				child.setParent(null);
 				child.setSide(side);

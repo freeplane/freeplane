@@ -44,7 +44,7 @@ public class HorizontalEdgeView extends EdgeView {
 
 	@Override
 	protected void createStart() {
-	    if(getSource().getModel().isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
+	    if(getSource().isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
 	        super.createStart();
 	    }
 	    else{
@@ -71,7 +71,7 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setStroke(stroke);
 		int xMiddle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
 		final boolean left = getTarget().isLeft() 
-		    || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().getModel().isRoot()&& start.x > end.x;
+		    || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
         if (left) {
 			xMiddle = -xMiddle;
 		}

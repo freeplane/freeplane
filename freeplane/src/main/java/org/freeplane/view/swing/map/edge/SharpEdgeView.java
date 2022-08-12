@@ -48,7 +48,7 @@ public abstract class SharpEdgeView extends EdgeView {
     protected void createStart() {
              super.createStart();
              final int delta = getMap().getZoomed(getWidth() + 1);
-             if (getSource().getModel().isRoot()) {
+             if (getSource().isRoot()) {
                  final MainView mainView = getSource().getMainView();
                  final double w = mainView.getWidth() / 2;
                  final double x0 = start.x - w;

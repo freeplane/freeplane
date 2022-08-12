@@ -31,6 +31,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.PersistentNodeHook;
@@ -66,7 +67,7 @@ class ImportBranchAction extends AFreeplaneAction {
 			try {
 				final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, chooser.getSelectedFile());
 				PersistentNodeHook.removeMapExtensions(node);
-				node.setSide(MapController.suggestNewChildSide(parent, false));
+				node.setSide(MapController.suggestNewChildSide(parent, Side.DEFAULT));
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {

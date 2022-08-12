@@ -1133,16 +1133,19 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 
-	public static Side suggestNewChildSide(NodeModel target, final boolean asSibling) {
+	public static Side suggestNewChildSide(NodeModel target, final Side sideArgument) {
 		final Side side;
-		if (asSibling) {
+		if (sideArgument == Side.AS_SIBLING) {
 			side = target.getSide();
 		}
 		else{
 			IMapSelection selection = Controller.getCurrentController().getSelection();
-			if(target.isRoot() || selection != null && selection.getSelectionRoot() == target)
-				side = target.suggestNewChildSide(target);
-			else
+			if(target.isRoot() || selection != null && selection.getSelectionRoot() == target) {
+				if (sideArgument == Side.DEFAULT) {
+					side = target.suggestNewChildSide(target);
+				} else
+					side = sideArgument;
+			} else
 				side = Side.DEFAULT;
 		}
 		return side;

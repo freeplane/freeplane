@@ -58,7 +58,7 @@ class OvalPainter extends VariableInsetsPainter {
 	@Override
 	Point getConnectorPoint(Point p) {
 		return getShapeConfiguration().isUniform()
-				|| !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && mainView.getNodeView().getModel().isRoot()
+				|| !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && mainView.getNodeView().isRoot()
 				? getConnectorPointAtTheOvalBorder(p) :
 					super.getConnectorPoint(p);
 	}

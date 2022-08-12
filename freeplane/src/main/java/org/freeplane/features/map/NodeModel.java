@@ -54,7 +54,7 @@ public class NodeModel{
 	}
 	
 	public enum Side {
-		DEFAULT, LEFT, RIGHT
+		DEFAULT, LEFT, RIGHT, AS_SIBLING
 	}
 	
 	public enum NodeProperty{UNKNOWN_PROPERTY};

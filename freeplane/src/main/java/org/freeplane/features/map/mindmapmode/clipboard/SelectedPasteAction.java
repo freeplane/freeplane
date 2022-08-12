@@ -35,7 +35,9 @@ import javax.swing.JRadioButton;
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController.IDataFlavorHandler;
 import org.freeplane.features.mode.Controller;
@@ -66,7 +68,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 		}
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		final Transferable clipboardContents = clipboardController.getClipboardContents();
-		clipboardController.paste(clipboardContents, selectedHandler, parent, false);
+		clipboardController.paste(clipboardContents, selectedHandler, parent, MapController.suggestNewChildSide(parent, Side.DEFAULT));
 		selectedHandler = null;
 	}
 

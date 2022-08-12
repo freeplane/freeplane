@@ -83,7 +83,7 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 	}
 
 	public static int getSummaryLevel(NodeModel root, NodeModel node) {
-		if(node.isRoot() || ! isSummaryNode(node))
+		if(node.isRoot() || node == root || ! isSummaryNode(node))
 			return 0;
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
