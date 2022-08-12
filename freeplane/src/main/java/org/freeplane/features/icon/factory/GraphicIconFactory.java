@@ -11,8 +11,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.features.icon.UIIcon;
 
-import com.kitfox.svg.app.beans.SVGIcon;
-
 class GraphicIconFactory implements IconFactory {
 	private static final String SVG_EXT = ".svg";
 	private static final String SVG_EXT_WITH_QUERY = SVG_EXT + ResourceController.USE_ACCENT_COLOR_QUERY;

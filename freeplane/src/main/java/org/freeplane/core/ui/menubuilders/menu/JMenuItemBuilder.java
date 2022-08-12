@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
@@ -26,7 +25,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
-import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;

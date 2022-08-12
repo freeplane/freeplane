@@ -35,7 +35,6 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
