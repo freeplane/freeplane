@@ -50,7 +50,8 @@ class EdgeColorAction extends AMultipleNodeAction {
 		final Color edgeColor = EdgeController.getController().getColor(model, StyleOption.FOR_UNSELECTED_NODE);
 		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getSelection().getSelected(),
 		    TextUtils.getText("choose_edge_color"), edgeColor, EdgeController.STANDARD_EDGE_COLOR);
-		super.actionPerformed(e);
+		if(actionColor != null)
+			super.actionPerformed(e);
 	}
 
 	/*
