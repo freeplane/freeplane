@@ -615,17 +615,12 @@ abstract public class FrameController implements ViewController {
                 } catch (Exception e) {
                 }
             }
-			if (lookAndFeel.equals("default")) {
-			    boolean lookAndFeelSet = false;
-			    if(! lookAndFeelSet) {
-			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-			        UIManager.setLookAndFeel(lookAndFeelClassName);
-
-			    }
-			}
-			else {
-				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
-				fixLookAndFeelUIEnabled = true;
+            if (lookAndFeel.equals("default")) {
+            	String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+            	UIManager.setLookAndFeel(lookAndFeelClassName);
+            }
+            else {
+            	LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
 				boolean lookAndFeelSet = false;
 				for (LookAndFeelInfo lafInfo : lafInfos) {
 					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)
@@ -658,12 +653,11 @@ abstract public class FrameController implements ViewController {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 	}
-	private static boolean fixLookAndFeelUIEnabled = false;
 	static {
 	    UIManager.addPropertyChangeListener(new PropertyChangeListener() {
 	        @Override
 			public void propertyChange(PropertyChangeEvent event) {
-	          if (fixLookAndFeelUIEnabled && event.getPropertyName().equals("lookAndFeel")) {
+	          if (event.getPropertyName().equals("lookAndFeel")) {
 	        	  fixLookAndFeelUI();
 	          }
 	        }
