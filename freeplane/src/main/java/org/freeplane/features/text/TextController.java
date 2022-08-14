@@ -469,6 +469,8 @@ public class TextController implements IExtension {
 	}
 
 	public Hyperlink toLink(final Object value, final NodeModel node, Object extension) {
+		if(value instanceof Hyperlink)
+			return (Hyperlink) value;
 		final Object transformedObject = getTransformedObjectNoFormattingNoThrow(node, extension, value);
 		return modeController.getExtension(LinkController.class).toLink(node, transformedObject);
 	}
