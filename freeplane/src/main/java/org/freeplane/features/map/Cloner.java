@@ -48,7 +48,7 @@ class Cloner {
 		for (NodeModel childNode : node.getChildrenInternal()){
 			final NodeModel childClone = cloneStructure(childNode);
 			childClone.setParent(clone);
-			childClone.setSide(node.getSide());
+			childClone.setSide(childNode.getSide());
 			cloneChildren.add(childClone);
 		}
 		return clone;

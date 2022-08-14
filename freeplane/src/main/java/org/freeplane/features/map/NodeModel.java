@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -110,7 +109,7 @@ public class NodeModel{
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
 		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
-		side = toBeCloned.side;
+		side = Side.DEFAULT;
 	}
 
 	protected void init(final Object userObject) {
@@ -510,9 +509,21 @@ public class NodeModel{
 //	}
 
 	public void setSide(Side side) {
-		this.side = side;
+		if(isCloneTreeNode()) {
+			for(NodeModel node : clones[TREE.ordinal()]){
+				node.side = side;
+			}
+		}
+		else
+			this.side = side;
 	}
 
+	public void setChildNodeSidesAsNow() {
+		children.forEach(child -> {
+			if(child.getSide() == Side.DEFAULT)
+				child.setSide(child.isLeft(this) ? Side.LEFT : Side.RIGHT);
+		});
+	}
 	/**
 	 */
 	public void setMap(final MapModel map) {
@@ -754,10 +765,6 @@ public class NodeModel{
     public NodeModel duplicate(boolean withChildren) {
         return map.duplicate(this, withChildren);
     }
-
-	public Optional<Side> getAssignedSide() {
-		return side == Side.DEFAULT ? Optional.empty() : Optional.of(side);
-	}
 
 	public Side getSide() {
 		return side;

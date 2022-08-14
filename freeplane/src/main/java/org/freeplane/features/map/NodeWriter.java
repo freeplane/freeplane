@@ -37,6 +37,7 @@ import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.MapWriter.WriterHint;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -122,7 +123,9 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 				writer.addAttribute("FOLDED", "false");
 			}
 		}
-		node.getAssignedSide().ifPresent(side -> writer.addAttribute("POSITION", side.name().toLowerCase()));
+		Side side = node.getSide();
+		if(side != Side.DEFAULT)
+			writer.addAttribute("POSITION", side.name().toLowerCase());
 		final boolean shouldCreateId = !mode.equals(Mode.STYLE);
 		final String id = shouldCreateId ? node.createID() : node.getID();
 		if (id != null) {
