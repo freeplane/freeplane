@@ -425,7 +425,9 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void fold(final NodeModel node) {
-		if (node.getChildCount() == 0|| node.isRoot())
+		if (node.getChildCount() == 0
+				|| node.isRoot()
+				|| isCurrentSelectionRoot(node))
 			return;
 		final boolean hiddenChildShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
@@ -438,6 +440,12 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 		if(hiddenChildShown)
 	        fireNodeUnfold(node);
+	}
+
+
+	private boolean isCurrentSelectionRoot(NodeModel node) {
+		IMapSelection selection = getModeController().getController().getSelection();
+		return selection == null ? false : selection.getSelectionRoot() ==  node;
 	}
 
 
