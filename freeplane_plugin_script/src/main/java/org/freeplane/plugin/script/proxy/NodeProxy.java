@@ -588,7 +588,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public void moveTo(final Node parentNodeProxy) {
 		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
-        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode);
+        getMapController().moveNodesAsChildren(Arrays.asList(movedNode), parentNode, parentNode != movedNode.getParentNode());
 	}
 
 	// Node: R/W
@@ -597,7 +597,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(movedNode);
-		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position);
+		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position, parentNode != movedNode.getParentNode());
 	}
 
 	// Node: R/W

@@ -585,10 +585,10 @@ public class MMapController extends MapController {
     }
 
     public void moveNode(NodeModel node, int newIndex) {
-        moveNodes(Arrays.asList(node), node.getParentNode(), newIndex);
+        moveNodes(Arrays.asList(node), node.getParentNode(), newIndex, false);
     }
 
-    public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex) {
+    public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex, boolean changeSide) {
         final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, movedNodes).addSummaryEdgeNodes();
         int index = newIndex;
         for(NodeModel node : movedNodesWithSummaryGroupIndicators) {
@@ -600,7 +600,7 @@ public class MMapController extends MapController {
                     index--;
                 }
             }
-            moveNodeAndItsClones(node, newParent, index++);
+            moveNodeAndItsClones(node, newParent, index++, changeSide);
         }
     }
 
@@ -636,19 +636,18 @@ public class MMapController extends MapController {
     }
 
 
-    public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, int newIndex) {
+    public void moveNodeAndItsClones(NodeModel child, final NodeModel newParent, int newIndex, boolean changeSide) {
         if(child.subtreeContainsCloneOf(newParent)){
             UITools.errorMessage("not allowed");
             return;
         }
         final NodeModel oldParent = child.getParentNode();
         if(newParent != oldParent && newParent.subtreeClones().contains(oldParent)) {
-            moveNodeAndItsClones(child, oldParent, newIndex);
+            moveNodeAndItsClones(child, oldParent, newIndex, changeSide);
             return;
         }
 
-        final NodeModel childNode = child;
-        final int oldIndex = oldParent.getIndex(childNode);
+        final int oldIndex = oldParent.getIndex(child);
         final int childCount = newParent.getChildCount();
         newIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
 
@@ -673,6 +672,9 @@ public class MMapController extends MapController {
             for(NodeModel oldParentClone : oldParentClones)
                     deleteSingleNode(oldParentClone, oldIndex);
         }
+        
+        if(changeSide)
+        	moveNodes(Collections.singletonList(child), MapController.suggestNewChildSide(newParent, Side.DEFAULT));
     }
 
     private NodeRelativePath getPathToNearestTargetClone(final NodeModel source, final NodeModel target) {
@@ -717,7 +719,7 @@ public class MMapController extends MapController {
         Controller.getCurrentModeController().execute(actor, newParent.getMap());
     }
 
-    public void moveNodesAsChildren(final List<NodeModel> children, final NodeModel target) {
+    public void moveNodesAsChildren(final List<NodeModel> children, final NodeModel target, boolean changeSide) {
         FreeNode r = Controller.getCurrentModeController().getExtension(FreeNode.class);
         for(NodeModel node : children){
             final IExtension extension = node.getExtension(FreeNode.class);
@@ -728,7 +730,7 @@ public class MMapController extends MapController {
             }
         }
         int position = target.getChildCount();
-        moveNodes(children, target, position);
+        moveNodes(children, target, position, changeSide);
     }
 
     public void moveNodesBefore(final List<NodeModel> children, final NodeModel target) {
@@ -737,7 +739,7 @@ public class MMapController extends MapController {
         for(NodeModel node : children){
             Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(node);
         }
-        moveNodes(children, newParent, newIndex);
+        moveNodes(children, newParent, newIndex, false);
     }
 
     public void moveNodesInGivenDirection(NodeModel selectionRoot, NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
@@ -802,7 +804,7 @@ public class MMapController extends MapController {
         }
         final NodeModel destinationNode = sortedOnSideNodes.get(newPositionInVector);
         newIndex = parent.getIndex(destinationNode);
-        moveNodeAndItsClones(child, parent, newIndex);
+        moveNodeAndItsClones(child, parent, newIndex, false);
         return newIndex;
     }
     /**

@@ -59,7 +59,7 @@ public class SummaryNodeMapUpdater implements IMapLifeCycleListener {
 							node.removeExtension(FirstGroupNodeFlag.class);
 							newParent.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 						}
-						mapController.moveNodeAndItsClones(node, newParent, 0);
+						mapController.moveNodeAndItsClones(node, newParent, 0, false);
 					}
 				}
 			}

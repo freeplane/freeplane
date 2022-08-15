@@ -316,7 +316,7 @@ private Timer timer;
 			mapController.moveNodes(movedNodes, targetNode.getSide());
 		}
 		else {
-			mapController.moveNodesAsChildren(movedNodes, targetNode);
+			mapController.moveNodesAsChildren(movedNodes, targetNode, false);
 			mapController.moveNodes(movedNodes, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
 		}
 	}
