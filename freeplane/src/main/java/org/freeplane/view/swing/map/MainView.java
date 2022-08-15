@@ -108,6 +108,7 @@ public class MainView extends ZoomableLabel {
 
 	private MainViewPainter painter;
 	private Color unselectedForeground = null;
+	private static boolean ERROR_LOGGED = false;
 
 	boolean isShortened() {
     	return isShortened;
@@ -571,7 +572,10 @@ public class MainView extends ZoomableLabel {
 				return false;
 			final NodeModel node = nodeView.getModel();
 			if(node.getParentNode() == null ) {
-				LogUtils.severe("Node" + node + " has lost parent");
+				if(! ERROR_LOGGED) {
+					ERROR_LOGGED = true;
+					LogUtils.severe("Node" + node + " has lost parent", new IllegalStateException());
+				}
 				return false;
 			}
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
