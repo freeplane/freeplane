@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class JumpOutAction extends AFreeplaneAction {
@@ -41,7 +42,10 @@ class JumpOutAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		if(selection != null)
-			Controller.getCurrentController().getMapViewManager().setViewRoot(selection.getMap().getRootNode()); 
+		if(selection != null) {
+			NodeModel rootNode = selection.getMap().getRootNode();
+			if(selection.getSelectionRoot() != rootNode)
+				Controller.getCurrentController().getMapViewManager().usePreviousViewRoot();
+		}
 	}
 }

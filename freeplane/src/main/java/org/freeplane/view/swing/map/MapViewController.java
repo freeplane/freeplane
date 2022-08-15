@@ -1173,6 +1173,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return;
 		selectedMapView.setRootNode(node);
 	}
+
+	@Override
+	public void usePreviousViewRoot() {
+		if(selectedMapView == null)
+			return;
+		selectedMapView.usePreviousViewRoot();
+	}
 	
 	
 

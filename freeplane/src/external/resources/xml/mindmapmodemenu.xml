@@ -276,8 +276,6 @@
         </Entry>
 		<Entry name="view">
 			<Entry name="NewMapViewAction" />
-			<Entry name="JumpInAction" />
-			<Entry name="JumpOutAction" />
 			<Entry name="zoom">
 				<Entry name="ZoomInAction" accelerator="alt UP" />
 				<Entry name="ZoomOutAction" accelerator="alt DOWN" />
@@ -490,6 +488,8 @@
 			<Entry builder="separator" />
 			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 			<Entry name="GotoNodeAction" />
+			<Entry name="JumpInAction"  accelerator="shift ESCAPE"/>
+			<Entry name="JumpOutAction"  accelerator="control ESCAPE"/>
 			<Entry name="FreeSelectNodeAction.LEFT" />
 			<Entry name="FreeSelectNodeAction.UP" />
 			<Entry name="FreeSelectNodeAction.RIGHT" />
@@ -623,6 +623,8 @@
 		<Entry name="MoveSelectedNodeAction.CENTER" />
 		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 		<Entry name="GotoNodeAction" />
+		<Entry name="JumpInAction"  accelerator="shift ESCAPE"/>
+		<Entry name="JumpOutAction"  accelerator="control ESCAPE"/>
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
         <Entry usedBy = "EDITOR" >

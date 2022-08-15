@@ -161,4 +161,6 @@ public interface IMapViewManager {
 	public boolean isSpotlightEnabled();
 
 	public void setViewRoot(NodeModel node);
+
+	public void usePreviousViewRoot();
 }

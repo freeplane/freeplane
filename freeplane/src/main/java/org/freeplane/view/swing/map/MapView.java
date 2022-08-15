@@ -596,6 +596,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView currentRootView = null;
 	private NodeView currentRootParentView = null;
 	private NodeView mapRootView = null;
+	private List<NodeView> rootsHistory;
 
 	private boolean selectedsValid = true;
 	final private Selection selection = new Selection();
@@ -653,6 +654,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super();
 		this.model = model;
 		this.modeController = modeController;
+		rootsHistory = new ArrayList<>();
 		mapScroller = new MapScroller(this);
 		filter = Filter.createTransparentFilter();
 		final String name = model.getTitle();
@@ -2486,14 +2488,28 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void setRootNode(NodeModel node) {
-		if(currentRootView.getModel() == node)
+		NodeModel currentRootNode = currentRootView.getModel();
+		if(currentRootNode == node)
 			return;
+		if(! currentRootNode.isRoot() && node.isDescendantOf(currentRootNode)) {
+			rootsHistory.add(currentRootView);
+		}
+		else {
+			rootsHistory.clear();
+		}
 		NodeView nodeView = getNodeView(node);
 		setRootNode(nodeView);
 	}
+	
 
-	void restoreRootNode() {
-		restoreRootNode(-1);
+	public void usePreviousViewRoot() {
+		NodeView newRoot;
+		if(rootsHistory.size() == 0)
+			newRoot = mapRootView;
+		else {
+			newRoot = rootsHistory.remove(rootsHistory.size() - 1);
+		}
+		setRootNode(newRoot);
 	}
 
 
@@ -2511,7 +2527,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return currentParent.getIndex(currentRoot);
 	}
 
+	
+	void restoreRootNode() {
+		restoreRootNode(-1, false);
+	}
+	
+	void restoreRootNodeTemporarily() {
+		restoreRootNode(-1, true);
+	}
+	
 	void restoreRootNode(int index) {
+		restoreRootNode(index, false);
+	}
+	
+	private void restoreRootNode(int index, boolean temporarily) {
 		if(currentRootView == mapRootView)
 			return;
 		remove(ROOT_NODE_COMPONENT_INDEX);
@@ -2522,31 +2551,39 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		currentRootView = mapRootView;
 		currentRootParentView = null;
+		if(! temporarily)
+			rootsHistory.clear();
 	}
 	
 	private void setRootNode(NodeView newRootView) {
 		if(currentRootView == newRootView)
 			return;
-		if(newRootView == mapRootView)
-			preserveNodeLocationOnScreen(currentRootView);
-		else
-			preserveNodeLocationOnScreen(newRootView);
+		boolean jumpsOut = currentRootView.getModel().isDescendantOf(newRootView.getModel());
+		if(jumpsOut) {
+			preserveNodeLocationOnScreen(currentRootView, 0, 0);
+		} else
+			preserveNodeLocationOnScreen(newRootView, 0, 0);
 		
 		NodeView lastSelectedNode;
-		if(currentRootView != newRootView)
-			lastSelectedNode = newRootView;
-		else
+		if(jumpsOut)
 			lastSelectedNode = selection.selectedNode;
-		restoreRootNode();
+		else
+			lastSelectedNode = newRootView;
+		restoreRootNodeTemporarily();
 		if(currentRootView != newRootView) {
 			currentRootView = newRootView;
 			currentRootParentView = newRootView.getParentView();
-			selectAsTheOnlyOneSelected(newRootView);
 			remove(ROOT_NODE_COMPONENT_INDEX);
 			add(newRootView, ROOT_NODE_COMPONENT_INDEX);
 		}
-		lastSelectedNode.requestFocusInWindow();
+		else
+			rootsHistory.clear();
+		if(jumpsOut)
+			lastSelectedNode.requestFocusInWindow();
+		else
+			selectAsTheOnlyOneSelected(lastSelectedNode);
 		revalidate();
 		repaint();
 	}
+
 }

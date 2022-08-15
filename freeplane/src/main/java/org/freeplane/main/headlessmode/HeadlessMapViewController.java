@@ -394,4 +394,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public void setViewRoot(NodeModel node) {
 		throw new RuntimeException("Method not implemented");
 	}
+
+	@Override
+	public void usePreviousViewRoot() {
+		throw new RuntimeException("Method not implemented");
+	}
 }
