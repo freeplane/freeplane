@@ -274,10 +274,12 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties() {
-        MIconController iconController = (MIconController)MModeController.getMModeController().getExtension(IconController.class);
-        if(iconController == null)
-        	return;
-        iconController.saveRecentlyUsedActions();
+		MModeController modeController = MModeController.getMModeController();
+		if(modeController != null) {
+			MIconController iconController = (MIconController)modeController.getExtension(IconController.class);
+			if(iconController != null)
+				iconController.saveRecentlyUsedActions();
+		}
 		try (OutputStream out = new FileOutputStream(autoPropertiesFile)){
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
 			outputStreamWriter.write("#Freeplane ");
@@ -289,7 +291,9 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception ex) {
 		}
-		FilterController.getCurrentFilterController().saveConditions();
+		FilterController filterController = FilterController.getCurrentFilterController();
+		if(filterController != null)
+			filterController.saveConditions();
 	}
 
 	/**
