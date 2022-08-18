@@ -670,11 +670,13 @@ abstract public class FrameController implements ViewController {
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();
-		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
+		if (!resourceController.getBooleanProperty("hugeFontsFixed2", false)) {
+			resourceController.getProperties().remove("hugeFontsFixed");
 			if ("100".equals(resourceController.getProperties().get(MENU_ITEM_FONT_SIZE_PROPERTY))) {
 				resourceController.getProperties().remove(MENU_ITEM_FONT_SIZE_PROPERTY);
 			}
-			resourceController.setProperty("hugeFontsFixed", true);
+			resourceController.setProperty("hugeFontsFixed2", true);
+			resourceController.saveProperties();
 		}
 		int lookAndFeelDefaultMenuItemFontSize = obtainLookAndFeelDefaultMenuItemFontSize();
 		final int defaultMenuItemSize = (int) Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
