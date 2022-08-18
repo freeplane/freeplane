@@ -8,7 +8,7 @@ import java.net.URI;
  * <pre>
  * // a normal href
  * node.link.text = 'http://www.google.com'
- * // create a node to the parent node
+ * // create a link to the parent node
  * node.link.node = node.parent
  * // if you have a URI object
  * node.link.uri = new URI('http://www.google.com')
