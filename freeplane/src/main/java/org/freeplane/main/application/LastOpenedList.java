@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -356,7 +357,15 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 			final String message = TextUtils.format("remove_file_from_list_on_error", recentFile.restorable);
 			UITools.showFrame();
 			final Component frame = UITools.getMenuComponent();
-			final int remove = JOptionPane.showConfirmDialog(frame, message, "Freeplane", JOptionPane.YES_NO_OPTION);
+			JTextArea messageArea = new JTextArea(message);
+			messageArea.setLineWrap(true);
+			messageArea.setWrapStyleWord(true);
+			messageArea.setColumns(Math.min(80, message.length() + 5));
+			messageArea.setEditable(false);
+			messageArea.setSize(messageArea.getPreferredSize());
+			final int remove = JOptionPane.showConfirmDialog(frame, 
+					messageArea, 
+					"Freeplane", JOptionPane.YES_NO_OPTION);
 			if (remove == JOptionPane.YES_OPTION) {
 				lastOpenedList.remove(recentFile);
 				updateMenus();
