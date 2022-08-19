@@ -150,6 +150,7 @@ class MindMapHTMLWriter {
 	private boolean writeFoldingCode;
 	private Font defaultFont;
 	private Color defaultColor;
+	private String charset;
 
 	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
@@ -162,6 +163,11 @@ class MindMapHTMLWriter {
 		basedOnHeadings = getProperty("html_export_folding").equals("html_export_based_on_headings");
 		writesColors = ResourceController.getResourceController().getBooleanProperty("html_export_includes_colors");
 		filter = modeController.getController().getSelection().getFilter();
+	}
+
+
+	public void configureCharset(String charset) {
+		this.charset = charset;
 	}
 
 	private String fontStyle(Color color, Font font) throws IOException {
@@ -258,6 +264,8 @@ class MindMapHTMLWriter {
 		    .write(
 		        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
 		                + lf + "<html>" + lf + "<head>" + lf);
+		if(charset != null)
+			writer.write("<meta charset=\""+ charset + "\">");
 		writer.write("<title>"
 		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(
 		        		textController.getPlainTransformedTextWithoutNodeNumber(branchRootNodes.size() == 1 ?  firstNode : map.getRootNode())

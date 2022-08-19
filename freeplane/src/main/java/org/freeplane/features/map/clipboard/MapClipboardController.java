@@ -193,6 +193,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
 			StandardCharsets.UTF_8));
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
+		htmlWriter.configureCharset("UTF-8");
 		htmlWriter.writeHTML(branchRootNodes);
 	}
 
