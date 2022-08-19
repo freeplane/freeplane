@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MapVersions>
-	<dialect name="FREEPLANE1_9_13" version = "15" versionBegin="freeplane 1.9.13"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_9_8" version = "14" versionBegin="freeplane 1.9.8"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_9_0" version = "13" versionBegin="freeplane 1.9.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_8_0" version = "12" versionBegin="freeplane 1.8.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_7_0" version = "11" versionBegin="freeplane 1.7.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_6_0" version = "10" versionBegin="freeplane 1.6.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_5_9" version = "9" versionBegin="freeplane 1.5.9"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_5_6" version = "8" versionBegin="freeplane 1.5.6"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_5_5" version = "7" versionBegin="freeplane 1.5.5"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_5_3" version = "6" versionBegin="freeplane 1.5.3"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_5_0" version = "5" versionBegin="freeplane 1.5.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_4_0" version = "4" versionBegin="freeplane 1.4.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_3_0" version = "3" versionBegin="freeplane 1.3.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_2_0" version = "2" versionBegin="freeplane 1.2.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
-	<dialect name="FREEPLANE1_1"  version = "1" versionBegin="0.9.0"   needsConversion="false" anotherDialect="false" appName="Freeplane" url="http://www.freeplane.org" />
+	<dialect name="FREEPLANE1_9_13" version = "15" versionBegin="freeplane 1.9.13"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_9_8" version = "14" versionBegin="freeplane 1.9.8"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_9_0" version = "13" versionBegin="freeplane 1.9.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_8_0" version = "12" versionBegin="freeplane 1.8.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_7_0" version = "11" versionBegin="freeplane 1.7.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_6_0" version = "10" versionBegin="freeplane 1.6.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_5_9" version = "9" versionBegin="freeplane 1.5.9"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_5_6" version = "8" versionBegin="freeplane 1.5.6"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_5_5" version = "7" versionBegin="freeplane 1.5.5"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_5_3" version = "6" versionBegin="freeplane 1.5.3"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_5_0" version = "5" versionBegin="freeplane 1.5.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_4_0" version = "4" versionBegin="freeplane 1.4.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_3_0" version = "3" versionBegin="freeplane 1.3.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_2_0" version = "2" versionBegin="freeplane 1.2.0"  needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
+	<dialect name="FREEPLANE1_1"  version = "1" versionBegin="0.9.0"   needsConversion="false" anotherDialect="false" appName="Freeplane" url="https://www.freeplane.org" />
 	<dialect name="FREEPLANE_NEWER" version = "32767" versionBegin="freeplane"  needsConversion="false" anotherDialect="true" appName="Freeplane" url="https://www.freeplane.org" />
 	<dialect name="FREEMIND"  version = "0" versionBegin="0.8"   needsConversion="false" anotherDialect="false" appName="FreeMind" url="http://freemind.sourceforge.net" />
 	<dialect name="FREEMIND_1"   version = "0" versionBegin="1."  needsConversion="false" anotherDialect="true" appName="FreeMind" url="http://freemind.sourceforge.net" />
-	<dialect name="DOCEAR" version = "2" versionBegin="docear "   needsConversion="false" anotherDialect="true" appName="Docear" url="http://www.doc-ear.com" />
+	<dialect name="DOCEAR" version = "2" versionBegin="docear "   needsConversion="false" anotherDialect="true" appName="Docear" url="https://docear.org/" />
 </MapVersions>
