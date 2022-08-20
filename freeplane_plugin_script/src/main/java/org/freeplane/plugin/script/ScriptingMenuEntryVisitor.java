@@ -115,7 +115,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 
 	private Entry createEntry(final String scriptName, final String scriptPath, ExecutionMode executionMode) {
 		final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
-		final String title = scriptNameToMenuItemTitle(scriptName);
+		final String title = ScriptingMenuUtils.getMenuItemTitle(metaData, executionMode);
 		return createEntry(createAction(scriptName, scriptPath, executionMode, metaData, title));
 	}
 
