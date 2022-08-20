@@ -11,6 +11,12 @@ public interface ControllerRO {
 	 * selected node or the selected node for a single node selection. */
 	Node getSelected();
 
+	/**  
+	 * Root node of the current view
+	 * @since 1.10.4 
+	 */
+	Node getViewRoot();
+
 	/** A read-only list of selected nodes. That is you cannot select a node by adding it to the returned list. */
 	List<? extends Node> getSelecteds();
 

@@ -372,13 +372,32 @@ public interface NodeRO {
 
 	boolean isLeft();
 
-	boolean isRoot();
+	/** 
+	 * @since 1.10.4 
+	 */
+	boolean isLeftOnView(NodeRO viewRoot);
 
-	/** if this node is visible or not (due to filtering). Node folding is not considered.
+	boolean isRoot();
+	
+	/** 
+	 * @since 1.10.4 
+	 */
+	ViewSide getViewSide();
+
+	/** 
+	 * if this node is visible or not (due to filtering). Node folding and view roots are not considered.
 	 * See {@link #isFolded()} for folding state. */
 	boolean isVisible();
 
-	/** if this node's text is shortened for display. */
+	/** 
+	 * if this node is visible or not (due to filtering). Node folding is not considered.
+	 * @since 1.10.4 
+	 */
+	boolean isVisibleOnView(NodeRO viewRoot);
+
+	/** 
+	 * if this node's text is shortened for display. 
+	 */
 	boolean isMinimized();
 
 	/** The count of node sharing their content with this node. Use {@code if (node.countNodesSharingContent() > 0)}

@@ -33,6 +33,7 @@ import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -79,7 +80,17 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public Node getSelected() {
 		reportArbitraryNodeAccess();
-		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+		return selection != null ? new NodeProxy(selection.getSelected(), scriptContext) : null;
+	}
+	
+	
+
+	@Override
+	public Node getViewRoot() {
+		reportArbitraryNodeAccess();
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+		return selection != null ? new NodeProxy(selection.getSelectionRoot(), scriptContext) : null;
 	}
 
 	private void reportArbitraryNodeAccess() {

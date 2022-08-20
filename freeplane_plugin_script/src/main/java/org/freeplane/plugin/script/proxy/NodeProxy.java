@@ -29,6 +29,7 @@ import org.freeplane.api.NodeStyle;
 import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
+import org.freeplane.api.ViewSide;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -570,6 +571,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return node.isLeft(node.getMap().getRootNode());
 	}
 
+	@Override
+	public ViewSide getViewSide() {
+		return ViewSide.values()[getDelegate().getSide().ordinal()];
+	}
+
+	// NodeRO: R
+	@Override
+	public boolean isLeftOnView(NodeRO viewRoot) {
+		if(! (viewRoot instanceof NodeProxy))
+			return false;
+        NodeModel node = getDelegate();
+		NodeModel root = ((NodeProxy)viewRoot).getDelegate();
+		return node.isLeft(root);
+	}
+
 	// NodeRO: R
 	@Override
 	public boolean isRoot() {
@@ -581,6 +597,16 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public boolean isVisible() {
         NodeModel node = getDelegate();
 		return getDelegate().hasVisibleContent(FilterController.getFilter(node.getMap()));
+	}
+
+	// NodeRO: R
+	@Override
+	public boolean isVisibleOnView(NodeRO viewRoot) {
+		if(! (viewRoot instanceof NodeProxy))
+			return false;
+        NodeModel node = getDelegate();
+		NodeModel root = ((NodeProxy)viewRoot).getDelegate();
+		return node == root || root.getMap() == node.getMap() && node.isDescendantOf(root) && isVisible();
 	}
 
 	// Node: R/W
@@ -696,7 +722,16 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void setLeft(final boolean isLeft) {
-		getDelegate().setSide(isLeft ? Side.LEFT : Side.RIGHT);
+		setSide(isLeft ? Side.LEFT : Side.RIGHT);
+	}
+
+	@Override
+	public void setViewSide(ViewSide side) {
+		setSide(Side.values()[side.ordinal()]);
+	}
+
+	private void setSide(Side side) {
+		getMapController().setSide(Collections.singletonList(getDelegate()), side);
 	}
 
 	// NodeRO: R
