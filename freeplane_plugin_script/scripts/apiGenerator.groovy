@@ -6,6 +6,19 @@
 // the Free Software Foundation, either version 2 of the License, or
 // (at your option) any later version.
 
+
+import org.freeplane.api.Dependencies
+import org.freeplane.api.LengthUnit
+import org.freeplane.api.NodeChangeListener
+import org.freeplane.api.NodeChanged
+import org.freeplane.api.NodeCondition
+import org.freeplane.api.NodeShape
+import org.freeplane.api.Quantity
+import org.freeplane.core.util.MenuUtils
+import org.freeplane.features.cloud.CloudShape
+import org.freeplane.features.edge.EdgeStyle
+import org.freeplane.features.link.ConnectorShape
+
 import java.lang.reflect.Method
 
 import org.freeplane.api.Script
@@ -25,7 +38,10 @@ URI getApiLink(String path) {
     try {
         def apiBase = path.startsWith('org/freeplane') ? freeplaneApiBase
                 : 'http://docs.groovy-lang.org/latest/html/groovy-jdk'
-        return new URI(apiBase + '/' + path)
+        def uri = new URI(apiBase + '/' + path)
+        if (path.startsWith('org/freeplane') && !new File(uri).exists())
+            return null
+        return uri
     } catch (Exception e) {
         logger.severe("could not create link for class ${path}", e)
         return null
@@ -58,25 +74,32 @@ private static <T> Class<T> wrap(Class<T> clazz) {
 
 def makeApi(Proxy.Node node, Class clazz) {
     def classNode = node.createChild(typeToString(clazz))
-    TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
     classNode.link.uri = getApiLink(clazz)
     classNode.style.font.bold = true
-    clazz.getMethods().findAll {
-        it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
-        it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
-    }.each {
-        if (!addProperty(memberMap, it))
-            addMethod(memberMap, it);
+    int enumSize
+    clazz.getEnumConstants().each {
+        classNode.createChild(it)
+        enumSize++
     }
-    classNode.createChild('Package: ' + clazz.getPackage().name)
+    if (enumSize == 0) { // skip methods and properties for enums
+        TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
+        clazz.getMethods().findAll {
+            it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
+                    it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
+        }.each {
+            if (!addProperty(memberMap, it))
+                addMethod(memberMap, it);
+        }
+        classNode.createChild('Package: ' + clazz.getPackage().name)
+        memberMap.each { k,v ->
+            createMemberNode(k, v, classNode)
+        }
+        // input for freeplane_plugin_script/src-jsyntaxpane/META-INF/services/jsyntaxpane/syntaxkits/groovysyntaxkit/combocompletions.txt
+        boolean printCompletionList = false
+        if (printCompletionList && classNode.to.plain == 'Node')
+            printCompletions(memberMap)
+    }
     classNode.folded = true
-    memberMap.each { k,v ->
-        createMemberNode(k, v, classNode)
-    }
-    // input for freeplane_plugin_script/src-jsyntaxpane/META-INF/services/jsyntaxpane/syntaxkits/groovysyntaxkit/combocompletions.txt
-    boolean printCompletionList = false
-    if (printCompletionList && classNode.to.plain == 'Node')
-        printCompletions(memberMap)
 }
 
 def printCompletions(TreeMap<String, Map<String, Object>> memberMap) {
@@ -164,7 +187,7 @@ def formatProperty(String property, String type, String mode) {
 
 def formatMethodKey(Method method) {
     return method.name +
-        '(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+            '(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
 
 }
 
@@ -194,8 +217,8 @@ def formatReturnType(Class clazz) {
 def formatMethod(Method method) {
     def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
     return '<html><body>' + formatReturnType(method.returnType) +
-    ' <b>' + method.name + '</b>' +
-    '(' + parameters.join(', ') + ')'
+            ' <b>' + method.name + '</b>' +
+            '(' + parameters.join(', ') + ')'
 }
 
 def isGetter(Method method) {
@@ -252,7 +275,7 @@ def allUserTemplates = new File(resourceBaseDir, 'templates');
 def defaultTemplate = new File(allUserTemplates, 'standard-1.6.mm')
 Proxy.Map newMap = defaultTemplate.canRead() ? c.newMapFromTemplate(defaultTemplate) : c.newMap()
 if(newMap == null) {
-	ui.errorMessage('Can not load map template')
+    ui.errorMessage('Can not load map template')
     return
 }
 def oldName = newMap.name
@@ -268,48 +291,63 @@ def proxy = createChild(newMap.root, PROXY_NODE, getApiLink(Proxy.class))
 initHeading(proxy)
 makeApi(proxy, Proxy.Attributes.class)
 makeApi(proxy, Proxy.Cloud.class)
+makeApi(proxy, CloudShape.class)
 makeApi(proxy, Proxy.Connector.class)
+makeApi(proxy, ConnectorShape.class)
 makeApi(proxy, Proxy.Controller.class)
 makeApi(proxy, Proxy.Loader.class)
 makeApi(proxy, Script.class)
 makeApi(proxy, Proxy.Edge.class)
+makeApi(proxy, EdgeStyle.class)
 makeApi(proxy, Proxy.ExternalObject.class)
 makeApi(proxy, Proxy.Font.class)
 makeApi(proxy, Proxy.Icons.class)
 makeApi(proxy, Proxy.Link.class)
-makeApi(proxy, Proxy.Map.class)
+makeApi(proxy, Proxy.MindMap.class)
+makeApi(proxy, NodeChangeListener.class)
+makeApi(proxy, NodeChanged.class)
+makeApi(proxy, NodeChanged.ChangedElement.class)
+makeApi(proxy, NodeCondition.class)
+makeApi(proxy, Proxy.Properties.class)
 makeApi(proxy, Proxy.Node.class)
-makeApi(proxy, Proxy.DependencyLookup.class)
-makeApi(proxy, org.freeplane.api.Dependencies.class)
-makeApi(proxy, Proxy.NodeStyle.class)
 makeApi(proxy, Convertible.class)
+makeApi(proxy, Proxy.NodeStyle.class)
+makeApi(proxy, Proxy.NodeGeometry.class)
+makeApi(proxy, NodeShape.class)
+makeApi(proxy, Quantity.class)
+makeApi(proxy, LengthUnit.class)
+makeApi(proxy, Proxy.Reminder.class)
+makeApi(proxy, Proxy.DependencyLookup.class)
+makeApi(proxy, Dependencies.class)
+makeApi(proxy, ScriptUtils.class)
 
 def utils = createChild(newMap.root, UTILITES_NODE, null)
 initHeading(utils)
 makeApi(utils, FreeplaneScriptBaseClass.class)
-makeApi(proxy, ScriptUtils.class)
 makeApi(utils, UITools.class)
-makeApi(utils, TextUtils.class)
-makeApi(utils, FreeplaneVersion.class)
-makeApi(utils, HtmlUtils.class)
 makeApi(utils, LogUtils.class)
+makeApi(utils, HtmlUtils.class)
+makeApi(utils, TextUtils.class)
+makeApi(utils, MenuUtils.class)
+makeApi(utils, FreeplaneScriptBaseClass.ConfigProperties.class)
+makeApi(utils, FreeplaneVersion.class)
 
 def icons = newMap.root.createChild(ICONS_NODE)
 initHeading(icons)
 def bundle = ResourceController.getResourceController().getResources()
 bundle.getKeys().toList()
-    .findAll{ it.startsWith('icon_') }
-    .collect {
-        def key = it.substring('icon_'.length())
-        def translation = bundle.getResourceString(it, it).replaceAll('[&]', '')
-        translation + '@@@' + key
-    }
-    .sort()
-    .each {
-        def translationAndKey = it.split('@@@')
-        def tnode = icons.createChild(translationAndKey[0])
-        tnode.createChild(translationAndKey[1])
-    }
+        .findAll{ it.startsWith('icon_') }
+        .collect {
+            def key = it.substring('icon_'.length())
+            def translation = bundle.getResourceString(it, it).replaceAll('[&]', '')
+            translation + '@@@' + key
+        }
+        .sort()
+        .each {
+            def translationAndKey = it.split('@@@')
+            def tnode = icons.createChild(translationAndKey[0])
+            tnode.createChild(translationAndKey[1])
+        }
 icons.folded = true
 
 def web = createChild(newMap.root, WEB_NODE, 'https://www.freeplane.org/wiki/index.php/Scripting')

@@ -2,7 +2,7 @@ package org.freeplane.api;
 
 import java.awt.Color;
 
-/** Node's style: <code>node.style</code> - read-write. */
+/** Node's style: <code>node.style</code> - read-only. */
 public interface NodeStyle extends NodeStyleRO {
 	/** Selects a style by name, see menu Styles &rarr; Pre/Userdefined styles for valid style names or use
 	 * {@link #getName()} to display the name of a node's style.
