@@ -965,7 +965,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 			}
 			switch(operation){
 			case MOVE:
-				mapController.moveNodesAsChildren(movedNodes, target, true);
+				mapController.moveNodesAsChildren(movedNodes, target);
 					break;
 			default:
 				break;

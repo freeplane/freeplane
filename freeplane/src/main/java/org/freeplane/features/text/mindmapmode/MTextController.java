@@ -426,7 +426,7 @@ public class MTextController extends TextController {
 			if (node != selectedNode) {
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController()
 				    .getMapController();
-				mapController.moveNodes(node.getChildren(), selectedNode, selectedNode.getChildCount(), false);
+				mapController.moveNodes(node.getChildren(), selectedNode, selectedNode.getChildCount());
 				mapController.deleteNode(node);
 			}
 			isHtml = isHtml || isHtmlNode;

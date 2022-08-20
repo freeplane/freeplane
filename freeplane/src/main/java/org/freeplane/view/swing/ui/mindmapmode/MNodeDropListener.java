@@ -313,11 +313,11 @@ private Timer timer;
 		final List<NodeModel> movedNodes = getNodeObjects(t);
 		if (dropAsSibling) {
 			mapController.moveNodesBefore(movedNodes, targetNode);
-			mapController.moveNodes(movedNodes, targetNode.getSide());
+			mapController.setSide(movedNodes, targetNode.getSide());
 		}
 		else {
-			mapController.moveNodesAsChildren(movedNodes, targetNode, false);
-			mapController.moveNodes(movedNodes, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
+			mapController.moveNodesAsChildren(movedNodes, targetNode);
+			mapController.setSide(movedNodes, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
 		}
 	}
 

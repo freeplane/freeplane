@@ -113,7 +113,7 @@ public class NewParentNode extends AFreeplaneAction {
         	
         }
 		final NodeModel newParent = mapController.addNewNode(oldParent, childPosition, selectedNode.getSide());
-        mapController.moveNodesAsChildren(selectedNodes, newParent, false);
+        mapController.moveNodesAsChildren(selectedNodes, newParent);
         return newParent;
 	}
 }
