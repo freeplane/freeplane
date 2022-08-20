@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -317,7 +318,8 @@ private Timer timer;
 		}
 		else {
 			mapController.moveNodesAsChildren(movedNodes, targetNode);
-			mapController.setSide(movedNodes, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
+			List<NodeModel> nodesChangingParent = movedNodes.stream().filter(node -> targetNode != node.getParentNode()).collect(Collectors.toList());
+			mapController.setSide(nodesChangingParent, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
 		}
 	}
 
