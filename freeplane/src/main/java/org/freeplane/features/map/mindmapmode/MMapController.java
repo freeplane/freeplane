@@ -327,7 +327,7 @@ public class MMapController extends MapController {
                     deleteSingleNodeWithClones(node);
             }
         }
-        final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, newSummaryNode.getSide());
+        final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, Side.DEFAULT);
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         select(firstSummaryChildNode);
         startEditing(firstSummaryChildNode, currentKeyEvent);
@@ -652,8 +652,15 @@ public class MMapController extends MapController {
 
         
         if(oldParent != newParent) {
-			Side oldSide = child.isLeft(oldParent) ? Side.LEFT : Side.RIGHT;
-			setSide(Collections.singletonList(child), MapController.suggestNewChildSide(newParent, oldSide));
+        	Side newSide;
+        	if(oldParent.isHiddenSummary()) {
+        		newSide = oldParent.getSide();
+        	}
+        	else {
+        		Side oldSide = child.isLeft(oldParent) ? Side.LEFT : Side.RIGHT;
+        		newSide = MapController.suggestNewChildSide(newParent, oldSide);
+        	}
+        	setSide(Collections.singletonList(child), newSide);
 		}
 
         if (oldParent != newParent || oldIndex != newIndex) {
