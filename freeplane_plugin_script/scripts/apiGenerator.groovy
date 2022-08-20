@@ -13,6 +13,7 @@ import org.freeplane.api.NodeChangeListener
 import org.freeplane.api.NodeChanged
 import org.freeplane.api.NodeCondition
 import org.freeplane.api.NodeShape
+import org.freeplane.api.ViewSide
 import org.freeplane.api.Quantity
 import org.freeplane.core.util.MenuUtils
 import org.freeplane.features.cloud.CloudShape
@@ -76,12 +77,12 @@ def makeApi(Proxy.Node node, Class clazz) {
     def classNode = node.createChild(typeToString(clazz))
     classNode.link.uri = getApiLink(clazz)
     classNode.style.font.bold = true
-    int enumSize
-    clazz.getEnumConstants().each {
-        classNode.createChild(it)
-        enumSize++
+    if(clazz.isEnum()) {
+	    clazz.getEnumConstants().each {
+	        classNode.createChild(it)
+	    }
     }
-    if (enumSize == 0) { // skip methods and properties for enums
+    else { // skip methods and properties for enums
         TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
         clazz.getMethods().findAll {
             it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
@@ -314,6 +315,7 @@ makeApi(proxy, Convertible.class)
 makeApi(proxy, Proxy.NodeStyle.class)
 makeApi(proxy, Proxy.NodeGeometry.class)
 makeApi(proxy, NodeShape.class)
+makeApi(proxy, ViewSide.class)
 makeApi(proxy, Quantity.class)
 makeApi(proxy, LengthUnit.class)
 makeApi(proxy, Proxy.Reminder.class)
