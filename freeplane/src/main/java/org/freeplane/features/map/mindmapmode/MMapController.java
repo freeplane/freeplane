@@ -818,7 +818,7 @@ public class MMapController extends MapController {
         for (final NodeModel child : node.getChildren()) {
             nodes.add(child);
         }
-        if(! node.isRoot()){
+        if(node != selectionRoot && ! node.isRoot()){
             return nodes;
         }
         final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node.getMap());
