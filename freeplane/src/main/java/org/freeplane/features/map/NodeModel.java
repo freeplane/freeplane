@@ -411,11 +411,16 @@ public class NodeModel{
 		if(this != root)
 			return Side.DEFAULT;
 		int rightChildrenCount = 0;
-		for (int i = 0; i < getChildCount(); i++) {
-			if (!getChildAt(i).isLeft(this)) {
+		int childCount = getChildCount();
+		int childCountInTree = childCount;
+		for (int i = 0; i < childCount; i++) {
+			NodeModel child = getChildAt(i);
+			if(child.isHiddenSummary() || FreeNode.isFreeNode(child))
+				childCountInTree--;
+			else if (!child.isLeft(this)) {
 				rightChildrenCount++;
 			}
-			if (rightChildrenCount > getChildCount() / 2) {
+			if (rightChildrenCount > childCountInTree / 2) {
 				return Side.LEFT;
 			}
 		}
