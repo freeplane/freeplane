@@ -907,7 +907,6 @@ public class NodeView extends JComponent implements INodeView {
 		if(property == Side.class) {
 			invalidateAll();
 			revalidate();
-			return;
 		}
 
 		// is node is not fully initialized, skip the rest.
