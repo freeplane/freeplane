@@ -508,7 +508,15 @@ public class MMapController extends MapController {
         final int summaryNodeIndex = summarynode.getIndex();
         final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(summaryNodeIndex - 1);
         deleteSingleNode(summaryParent, summaryNodeIndex);
-        deleteSingleNode(summaryParent, groupBeginNodeIndex);
+        NodeModel groupBeginNode = summaryParent.getChildAt(groupBeginNodeIndex);
+		if(SummaryNode.isFirstGroupNode(groupBeginNode)) {
+			if(SummaryNode.isSummaryNode(groupBeginNode)) {
+				 final FirstGroupNode firstGroupNodeHook = getModeController().getExtension(FirstGroupNode.class);
+				 firstGroupNodeHook.undoableDeactivateHook(groupBeginNode);
+			}
+			else 
+				deleteSingleNode(summaryParent, groupBeginNodeIndex);
+		}
     }
 
     private void deleteSingleNode(final NodeModel parentNode, final int index) {
