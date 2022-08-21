@@ -665,7 +665,7 @@ public class MMapController extends MapController {
         		newSide = oldParent.getSide();
         	}
         	else {
-        		Side oldSide = child.isLeft(oldParent) ? Side.LEFT : Side.RIGHT;
+        		Side oldSide = child.isLeft(newParent) ? Side.LEFT : Side.RIGHT;
         		newSide = MapController.suggestNewChildSide(newParent, oldSide);
         	}
         	setSide(Collections.singletonList(child), newSide);
