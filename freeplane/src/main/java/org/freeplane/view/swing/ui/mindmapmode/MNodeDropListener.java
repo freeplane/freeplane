@@ -317,8 +317,8 @@ private Timer timer;
 			mapController.setSide(movedNodes, targetNode.getSide());
 		}
 		else {
-			mapController.moveNodesAsChildren(movedNodes, targetNode);
 			List<NodeModel> nodesChangingParent = movedNodes.stream().filter(node -> targetNode != node.getParentNode()).collect(Collectors.toList());
+			mapController.moveNodesAsChildren(movedNodes, targetNode);
 			mapController.setSide(nodesChangingParent, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
 		}
 	}
