@@ -27,10 +27,10 @@ public class SummaryGroupEdgeListAdderShould {
 	}
 
 	@Test
-	public void forGroupBeginNode_returnsGroupBeginNode() throws Exception {
+	public void forGroupBeginNode_returnsNothing() throws Exception {
 		final NodeModel node = mapFake.addGroupBeginNode();
 		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(node));
-		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(node)));
+		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList()));
 	}
 
 	@Test
