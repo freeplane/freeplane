@@ -306,7 +306,7 @@ public class MMapController extends MapController {
         else {
             final NodeModel previousNode = firstNodeInGroup.previousNode(selectionRoot, start, isLeft);
             if(previousNode == null || SummaryNode.isSummaryNode(previousNode) || !SummaryNode.isFirstGroupNode(previousNode)) {
-                NodeModel newFirstGroup = addNewNode(parentNode, start, firstNodeInGroup.getSide());
+                NodeModel newFirstGroup = addNewNode(parentNode, start, newSummaryNode.getSide());
                 firstGroupNodeHook.undoableActivateHook(newFirstGroup, FIRST_GROUP);
             }
             firstGroupNodeHook.undoableDeactivateHook(firstNodeInGroup);
