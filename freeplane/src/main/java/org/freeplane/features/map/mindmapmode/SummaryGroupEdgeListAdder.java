@@ -13,11 +13,9 @@ import org.freeplane.features.map.SummaryNode;
 public class SummaryGroupEdgeListAdder {
 
 	private final Collection<NodeModel> nodes;
-	private final NodeModel selectionRoot;
 	private List<NodeModel> nodesWithSummaryNodes;
 
-	public SummaryGroupEdgeListAdder(NodeModel selectionRoot, Collection<NodeModel> nodes) {
-		this.selectionRoot = selectionRoot;
+	public SummaryGroupEdgeListAdder(Collection<NodeModel> nodes) {
 		this.nodes = nodes;
 	}
 	
@@ -27,7 +25,7 @@ public class SummaryGroupEdgeListAdder {
 		final SummaryLevels summaryLevels;
 		final private NodeModel parentNode;
 		ParentProcessedNodes(NodeModel parent){
-			this.summaryLevels = new SummaryLevels(selectionRoot != null ? selectionRoot :  parent, parent);
+			this.summaryLevels = new SummaryLevels(parent, parent);
 			this.parentNode = parent;
 		}
 		

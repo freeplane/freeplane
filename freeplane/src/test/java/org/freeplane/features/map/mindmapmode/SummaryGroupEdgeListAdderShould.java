@@ -22,35 +22,35 @@ public class SummaryGroupEdgeListAdderShould {
 
 	@Test
 	public void forEmptyList_returnEmptyList() throws Exception {
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Collections.<NodeModel>emptyList());
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Collections.<NodeModel>emptyList());
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Collections.<NodeModel>emptyList()));
 	}
 
 	@Test
 	public void forGroupBeginNode_returnsNothing() throws Exception {
 		final NodeModel node = mapFake.addGroupBeginNode();
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(node));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(node));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList()));
 	}
 
 	@Test
 	public void forSummaryNode_returnSummaryNode() throws Exception {
 		final NodeModel node = mapFake.addSummaryNode();
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(node));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(node));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(node)));
 	}
 
 	@Test
 	public void forListWithoutSummaryNodes_returnSameList() throws Exception {
 		final NodeModel node = mapFake.addNode("1");
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(node));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(node));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(node)));
 	}
 
 	@Test
 	public void forRootNode_returnSameList() throws Exception {
 		final NodeModel root = mapFake.getRoot();
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(root));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(root));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(root)));
 	}
 
@@ -60,7 +60,7 @@ public class SummaryGroupEdgeListAdderShould {
 		final NodeModel summarized = mapFake.addNode("1");
 		final NodeModel summaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized, summaryNode)));
 	}
 
@@ -71,7 +71,7 @@ public class SummaryGroupEdgeListAdderShould {
 		final NodeModel summarized = mapFake.addNode("1");
 		final NodeModel summaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(firstEdge, summarized, summaryNode));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(firstEdge, summarized, summaryNode));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized, summaryNode)));
 	}
 
@@ -82,7 +82,7 @@ public class SummaryGroupEdgeListAdderShould {
 		final NodeModel summarized2 = mapFake.addNode("2");
 		final NodeModel summaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized1, summarized2));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1, summarized2));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized1, summarized2, summaryNode)));
 	}
 
@@ -94,7 +94,7 @@ public class SummaryGroupEdgeListAdderShould {
 		final NodeModel summarized3 = mapFake.addNode("3");
 		final NodeModel summaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized1, summarized2, summarized3));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1, summarized2, summarized3));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized1, summarized2, summarized3, summaryNode)));
 	}
 
@@ -105,7 +105,7 @@ public class SummaryGroupEdgeListAdderShould {
 		mapFake.addNode("2");
 		mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized1));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(summarized1)));
 	}
 
@@ -117,7 +117,7 @@ public class SummaryGroupEdgeListAdderShould {
 		summaryNode.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 		final NodeModel secondLevelSummaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized, summaryNode, secondLevelSummaryNode)));
 	}
 
@@ -132,7 +132,7 @@ public class SummaryGroupEdgeListAdderShould {
 		secondLevelSummaryNode.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 		final NodeModel thirdLevelSummaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized, summaryNode, secondLevelSummaryNode, thirdLevelSummaryNode)));
 	}
 	
@@ -144,7 +144,7 @@ public class SummaryGroupEdgeListAdderShould {
 		leftNode.setSide(Side.LEFT);
 		final NodeModel summaryNode = mapFake.addSummaryNode();
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized1));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(firstEdge, summarized1, summaryNode)));
 	}
 
@@ -167,7 +167,7 @@ public class SummaryGroupEdgeListAdderShould {
 		final NodeModel summary2 = mapFake.createSummaryNode();
 		parent2.insert(summary2);
 		
-		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(mapFake.getRoot(), Arrays.asList(summarized1, summarized2));
+		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1, summarized2));
 		assertThat(summaryEdgeFinder.addSummaryEdgeNodes(), equalTo(Arrays.asList(begin1, summarized1, summary1, begin2, summarized2, summary2)));
 	}
 }

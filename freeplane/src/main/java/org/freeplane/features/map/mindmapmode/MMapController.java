@@ -450,7 +450,7 @@ public class MMapController extends MapController {
     }
 
     public void deleteNodes(final List<NodeModel> nodes) {
-        final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, nodes).addSummaryEdgeNodes();
+        final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
         for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
             deleteSingleNodeWithClones(node);
         }
@@ -597,7 +597,7 @@ public class MMapController extends MapController {
     }
 
     public void moveNodes(final List<NodeModel> movedNodes, final NodeModel newParent, final int newIndex) {
-        final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, movedNodes).addSummaryEdgeNodes();
+        final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
         int index = newIndex;
         for(NodeModel node : movedNodesWithSummaryGroupIndicators) {
             final NodeModel oldParent = node.getParentNode();
@@ -613,7 +613,7 @@ public class MMapController extends MapController {
     }
 
     public void setSide(List<NodeModel> nodes, Side side) {
-    	final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(null, nodes).addSummaryEdgeNodes();
+    	final List<NodeModel> movedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
     	for(NodeModel node : movedNodesWithSummaryGroupIndicators) {
     		Side oldSide = node.getSide();
     		if(oldSide != side) {
@@ -760,7 +760,7 @@ public class MMapController extends MapController {
     }
 
     public void moveNodesInGivenDirection(NodeModel selectionRoot, NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
-        final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(selectionRoot, movedNodes).addSummaryEdgeNodes();
+        final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
         final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodesWithEdges);
 
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
