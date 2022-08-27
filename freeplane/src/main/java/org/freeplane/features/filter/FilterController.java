@@ -854,8 +854,21 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		updateSettingsFromFilter(filter);
 	}
 
+
+	NodeModel findNextInSubtree(final NodeModel start, NodeModel subtreeRoot, Direction direction, 
+			final ICondition condition, Filter filter) {
+		NodeModel next = findNext(start, subtreeRoot, direction, condition, filter);
+		if(next == null && subtreeRoot != null && subtreeRoot != start) {
+			if(condition == null || condition.checkNode(subtreeRoot))
+				next = subtreeRoot;
+			else
+				next = findNext(subtreeRoot, subtreeRoot, direction, condition, filter);
+		}
+		return next;
+	}
+	
 	NodeModel findNext(final NodeModel from, final NodeModel end, final Direction direction,
-	                   final ASelectableCondition condition, Filter filter) {
+	                   final ICondition condition, Filter filter) {
 		NodeModel next = from;
 		for (;;) {
 			do {

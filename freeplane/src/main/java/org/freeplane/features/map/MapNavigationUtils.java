@@ -43,6 +43,8 @@ public class MapNavigationUtils {
 
     public static NodeModel findPrevious(final Direction direction, NodeModel current, final NodeModel end) {
     	for (;;) {
+    		if(current == end)
+    			break;
     		final NodeModel parentNode = current.getParentNode();
     		if (parentNode == null) {
     			break;

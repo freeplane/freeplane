@@ -55,7 +55,8 @@ class FindAction extends AFreeplaneAction {
 	private FilterConditionEditor editor;
 	final private FindNextAction findNextAction;
 	final private AFreeplaneAction findPreviousAction;
-	private NodeModel searchRoot;
+	private NodeModel searchStart;
+	private NodeModel subtreeRoot;
 
 	public FindAction() {
 		super(KEY);
@@ -120,10 +121,11 @@ class FindAction extends AFreeplaneAction {
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
-		searchRoot = Controller.getCurrentController().getSelection().getSelected();
+		searchStart = selection.getSelected();
+		subtreeRoot = selection.getSelectionRoot();
 		UITools.showConfirmDialog(start, editorPanel, TextUtils.getText("FindAction.text"),
 		    JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE);
-		searchRoot = null;
+		searchStart = subtreeRoot = null;
 		final Container parent = editorPanel.getParent();
 		if (parent != null) {
 			parent.remove(editorPanel);
@@ -139,9 +141,9 @@ class FindAction extends AFreeplaneAction {
 		if (condition == null) {
 			return;
 		}
-		final NodeModel next = filterController.findNext(start, null, direction, condition, filter);
+		final NodeModel next = filterController.findNextInSubtree(start, subtreeRoot, direction, condition, filter);
 		if (next == null) {
-			displayNotFoundMessage(searchRoot, condition);
+			displayNotFoundMessage(searchStart, condition);
 			return;
 		}
 	     final MapModel map = controller.getMap();

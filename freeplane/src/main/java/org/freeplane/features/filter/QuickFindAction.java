@@ -66,13 +66,11 @@ final class QuickFindAction extends AFreeplaneAction {
 		if(selection == null){
 			return;
 		}
-		final NodeModel selected = selection.getSelected();
-
 		final NodeModel next;
 		try
 		{
 			filterEditor.setSearchingBusyCursor();
-			next = filterController.findNext(selected, null, direction, condition, selection.getFilter());
+			next = filterController.findNextInSubtree(selection.getSelected(), selection.getSelectionRoot(), direction, condition, selection.getFilter());
 		}
 		finally
 		{
