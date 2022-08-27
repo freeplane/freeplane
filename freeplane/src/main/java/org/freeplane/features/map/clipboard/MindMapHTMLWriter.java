@@ -180,7 +180,7 @@ class MindMapHTMLWriter {
 				fontStyle.append("font-size: ").append(fontSize).append("pt; ");
 			final String fontFamily = font.getFamily();
 			if (defaultFont == null || !fontFamily.equals(defaultFont.getFamily()))
-				fontStyle.append("font-family: \"").append(fontFamily).append("\", sans-serif; ");
+				fontStyle.append("font-family: &quot;").append(fontFamily).append("&quot;, sans-serif; ");
 			if ((defaultFont == null || !defaultFont.isItalic()) && font.isItalic()) {
 				fontStyle.append("font-style: italic; ");
 			}
