@@ -55,6 +55,7 @@ class FindAction extends AFreeplaneAction {
 	private FilterConditionEditor editor;
 	final private FindNextAction findNextAction;
 	final private AFreeplaneAction findPreviousAction;
+	private NodeModel searchRoot;
 
 	public FindAction() {
 		super(KEY);
@@ -119,60 +120,33 @@ class FindAction extends AFreeplaneAction {
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
-		final int run = UITools.showConfirmDialog(start, editorPanel, TextUtils.getText("FindAction.text"),
-		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+		searchRoot = Controller.getCurrentController().getSelection().getSelected();
+		UITools.showConfirmDialog(start, editorPanel, TextUtils.getText("FindAction.text"),
+		    JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE);
+		searchRoot = null;
 		final Container parent = editorPanel.getParent();
 		if (parent != null) {
 			parent.remove(editorPanel);
 		}
-		if (run != JOptionPane.OK_OPTION) {
-			return;
-		}
-		final ASelectableCondition condition = editor.getCondition();
-		findFirst(condition);
 	}
-
-	void findFirst(final ASelectableCondition condition) {
-	    final FoundNodes info = FoundNodes.get(Controller.getCurrentController().getMap());
-		info.condition = condition;
-		if (info.condition == null) {
-			return;
-		}
-		info.rootID = Controller.getCurrentController().getSelection().getSelected().createID();
-		findNext(Direction.FORWARD);
-    }
 
 	void findNext(Direction direction) {
 		Controller controller = Controller.getCurrentController();
-        final MapModel map = controller.getMap();
-        if (map == null) {
-			return;
-		}
-		final FoundNodes info = FoundNodes.get(map);
-		if (info.condition == null) {
-			displayNoPreviousFindMessage();
-			return;
-		}
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final NodeModel start = controller.getSelection().getSelected();
-		final NodeModel root = map.getNodeForID(info.rootID);
-		if (root == null) {
-			info.condition = null;
-			displayNoPreviousFindMessage();
-			return;
-		}
 		Filter filter = controller.getSelection().getFilter();
-		final NodeModel next = filterController.findNext(start, null, direction, info.condition, filter);
-		if (next == null) {
-			displayNotFoundMessage(root, info.condition);
+		ASelectableCondition condition = editor.getCondition();
+		if (condition == null) {
 			return;
 		}
+		final NodeModel next = filterController.findNext(start, null, direction, condition, filter);
+		if (next == null) {
+			displayNotFoundMessage(searchRoot, condition);
+			return;
+		}
+	     final MapModel map = controller.getMap();
+	     final FoundNodes info = FoundNodes.get(map);
 		info.displayFoundNode(next);
-	}
-
-	private void displayNoPreviousFindMessage() {
-		UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(), TextUtils
-		    .getText("no_previous_find"));
 	}
 
 	private void displayNotFoundMessage(final NodeModel start, final ICondition condition) {

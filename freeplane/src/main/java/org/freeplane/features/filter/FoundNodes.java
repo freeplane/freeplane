@@ -10,7 +10,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class FoundNodes implements IExtension {
-	String rootID;
 	final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
 	ASelectableCondition condition;
 
