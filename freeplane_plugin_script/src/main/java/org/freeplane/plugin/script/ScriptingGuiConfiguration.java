@@ -118,9 +118,9 @@ class ScriptingGuiConfiguration {
 			return executionModeLocationMap.get(executionMode);
 		}
 
-		public String getTitleKey(final ExecutionMode executionMode) {
+		String getTitleKey(final ExecutionMode executionMode) {
 			final String key = executionModeTitleKeyMap.get(executionMode);
-			return key == null ? getExecutionModeKey(executionMode) : key;
+			return key;
 		}
 
 		public String getScriptName() {
@@ -333,19 +333,6 @@ class ScriptingGuiConfiguration {
 
 	SortedMap<String, ScriptMetaData> getMenuTitleToMetaDataMap() {
 		return Collections.unmodifiableSortedMap(menuTitleToMetaDataMap);
-	}
-
-    static String getExecutionModeKey(final ExecuteScriptAction.ExecutionMode executionMode) {
-		switch (executionMode) {
-			case ON_SINGLE_NODE:
-				return "ExecuteScriptOnSingleNode.text";
-			case ON_SELECTED_NODE:
-				return "ExecuteScriptOnSelectedNode.text";
-			case ON_SELECTED_NODE_RECURSIVELY:
-				return "ExecuteScriptOnSelectedNodeRecursively.text";
-			default:
-				throw new AssertionError("unknown ExecutionMode " + executionMode);
-		}
 	}
 
 	public static String getScriptsLocation(String parentKey) {

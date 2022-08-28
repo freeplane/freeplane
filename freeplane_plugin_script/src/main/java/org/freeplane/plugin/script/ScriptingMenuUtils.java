@@ -20,7 +20,9 @@ public class ScriptingMenuUtils {
     public static String getMenuItemTitle(ScriptMetaData metaData, ExecutionMode executionMode) {
         final String titleKey = metaData.getTitleKey(executionMode);
         final String scriptName = metaData.getScriptName();
-        final String translation = TextUtils.getText(titleKey, titleKey.replace('_', ' '));
+        final String translation = titleKey != null 
+        		? TextUtils.getText(titleKey, titleKey.replace('_', ' '))
+        		: scriptNameToMenuItemTitle(scriptName);
         return translation.contains("{0}") ? MessageFormat.format(translation, scriptNameToMenuItemTitle(scriptName))
                 : translation;
     }
