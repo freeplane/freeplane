@@ -1,5 +1,5 @@
 package org.freeplane.api;
 
-public enum ViewSide {
+public enum Side {
 	DEFAULT, LEFT, RIGHT;
 }

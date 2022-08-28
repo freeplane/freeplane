@@ -302,7 +302,7 @@ public interface Node extends NodeRO {
 	void setAttributes(java.util.Map<String, Object> attributes);
 
 	/**
-	 * @deprecated since 1.10.4 - use {@link #setViewSide(ViewSide)} instead. 
+	 * @deprecated since 1.10.4 - use {@link #setPreferredSide(ViewSide)} instead. 
 	 * @param isLeft
 	 */
 	void setLeft(boolean isLeft);
@@ -310,7 +310,7 @@ public interface Node extends NodeRO {
 	/** 
 	 * @since 1.10.4 
 	 */
-	void setViewSide(ViewSide side);
+	void setPreferredSide(Side side);
 
 
     /** Returns true if the node is password protected, no matter if currently accessible (password entered) or not.

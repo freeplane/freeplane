@@ -29,7 +29,7 @@ import org.freeplane.api.NodeStyle;
 import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
-import org.freeplane.api.ViewSide;
+import org.freeplane.api.Side;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -56,7 +56,6 @@ import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
@@ -105,7 +104,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public Node createChild() {
 		NodeModel target = getDelegate();
 		final NodeModel newNodeModel = new NodeModel(target.getMap());
-		newNodeModel.setSide( MapController.suggestNewChildSide(target, Side.DEFAULT));
+		newNodeModel.setSide( MapController.suggestNewChildSide(target, NodeModel.Side.DEFAULT));
 		getMapController().insertNode(newNodeModel, target);
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
@@ -150,7 +149,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		NodeModel source = ((NodeProxy) node).getDelegate();
 		NodeModel target = getDelegate();
         final NodeModel newNodeModel = clipboardController.duplicate(source, target.getMap(), withChildren);
-        newNodeModel.setSide(MapController.suggestNewChildSide(target, Side.DEFAULT));
+        newNodeModel.setSide(MapController.suggestNewChildSide(target, NodeModel.Side.DEFAULT));
         getMapController().insertNode(newNodeModel, target);
 		return new NodeProxy(newNodeModel, getScriptContext());
     }
@@ -572,13 +571,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public ViewSide getViewSide() {
-		return ViewSide.values()[getDelegate().getSide().ordinal()];
+	public Side getPreferredSide() {
+		return Side.values()[getDelegate().getSide().ordinal()];
 	}
 
 	// NodeRO: R
 	@Override
-	public boolean isLeftOnView(NodeRO viewRoot) {
+	public boolean isLeftOnViewsWithRoot(NodeRO viewRoot) {
 		if(! (viewRoot instanceof NodeProxy))
 			return false;
         NodeModel node = getDelegate();
@@ -601,7 +600,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// NodeRO: R
 	@Override
-	public boolean isVisibleOnView(NodeRO viewRoot) {
+	public boolean isVisibleOnViewsWithRoot(NodeRO viewRoot) {
 		if(! (viewRoot instanceof NodeProxy))
 			return false;
         NodeModel node = getDelegate();
@@ -722,15 +721,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void setLeft(final boolean isLeft) {
-		setSide(isLeft ? Side.LEFT : Side.RIGHT);
+		setSide(isLeft ? NodeModel.Side.LEFT : NodeModel.Side.RIGHT);
 	}
 
 	@Override
-	public void setViewSide(ViewSide side) {
-		setSide(Side.values()[side.ordinal()]);
+	public void setPreferredSide(Side side) {
+		setSide(NodeModel.Side.values()[side.ordinal()]);
 	}
 
-	private void setSide(Side side) {
+	private void setSide(NodeModel.Side side) {
 		getMapController().setSide(Collections.singletonList(getDelegate()), side);
 	}
 

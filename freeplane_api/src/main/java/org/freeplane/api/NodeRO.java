@@ -375,14 +375,14 @@ public interface NodeRO {
 	/** 
 	 * @since 1.10.4 
 	 */
-	boolean isLeftOnView(NodeRO viewRoot);
+	boolean isLeftOnViewsWithRoot(NodeRO viewRoot);
 
 	boolean isRoot();
 	
 	/** 
 	 * @since 1.10.4 
 	 */
-	ViewSide getViewSide();
+	Side getPreferredSide();
 
 	/** 
 	 * if this node is visible or not (due to filtering). Node folding and view roots are not considered.
@@ -393,7 +393,7 @@ public interface NodeRO {
 	 * if this node is visible or not (due to filtering). Node folding is not considered.
 	 * @since 1.10.4 
 	 */
-	boolean isVisibleOnView(NodeRO viewRoot);
+	boolean isVisibleOnViewsWithRoot(NodeRO viewRoot);
 
 	/** 
 	 * if this node's text is shortened for display. 
