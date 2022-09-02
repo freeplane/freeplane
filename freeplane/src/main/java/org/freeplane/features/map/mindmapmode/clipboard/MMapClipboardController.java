@@ -193,7 +193,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 					try {
 						final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
 						newModel.removeExtension(FreeNode.class);
-						newModel.setSide(side);
+						newModel.setSide(side == Side.AS_SIBLING ? target.getSide() : side);
 						mapController.insertNode(newModel, target, side == Side.AS_SIBLING);
 					}
 					catch (final XMLException e) {

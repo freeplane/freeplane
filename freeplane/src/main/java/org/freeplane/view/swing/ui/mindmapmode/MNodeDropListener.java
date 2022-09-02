@@ -246,7 +246,7 @@ private Timer timer;
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
 				Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
 				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode,
-						MapController.suggestNewChildSide(targetNode, side), dropAction);
+						dropAsSibling ? Side.AS_SIBLING : MapController.suggestNewChildSide(targetNode, side), dropAction);
 				dtde.dropComplete(true);
 				return;
 			}
@@ -280,7 +280,7 @@ private Timer timer;
 				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
 					Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
 					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode,
-							MapController.suggestNewChildSide(targetNode, side));
+							dropAsSibling ? Side.AS_SIBLING : MapController.suggestNewChildSide(targetNode, side));
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 			}
