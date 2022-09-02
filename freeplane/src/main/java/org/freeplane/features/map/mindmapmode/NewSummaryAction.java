@@ -37,9 +37,6 @@ class NewSummaryAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int start;
-	private int end;
-	private int summaryLevel;
 
 	public NewSummaryAction() {
 		super("NewSummaryAction");
@@ -90,33 +87,14 @@ class NewSummaryAction extends AFreeplaneAction {
 		final NodeModel parentNode = firstNode.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final boolean isLeft = firstNode.isLeft(selectionRoot);
-		start = parentNode.getIndex(firstNode);
-		end = parentNode.getIndex(lastNode);
+		int start = parentNode.getIndex(firstNode);
+		int end = parentNode.getIndex(lastNode);
 		if(end < start){
 			int temp = end;
 			end = start;
 			start = temp;
 		}
 		
-		summaryLevel = SummaryNode.getSummaryLevel(selectionRoot, firstNode);
-		
-		// selected nodes have different summary levels
-		if (summaryLevel != SummaryNode.getSummaryLevel(selectionRoot, lastNode))
-			return false;
-		int level = summaryLevel;
-		for(int i = start+1; i < end; i++){
-			NodeModel node = parentNode.getChildAt(i);
-			if(isLeft != node.isLeft(selectionRoot))
-				continue;
-			if(SummaryNode.isSummaryNode(node))
-				level++;
-			else
-				level = 0;
-			// There is a higher summary node between the selected nodes
-			if(level > summaryLevel)
-				return false;
-		}
-		((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(selectionRoot, parentNode, start, end, summaryLevel, isLeft);
-		return true;
+		return ((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(selectionRoot, parentNode, start, end, isLeft);
 	}
 }

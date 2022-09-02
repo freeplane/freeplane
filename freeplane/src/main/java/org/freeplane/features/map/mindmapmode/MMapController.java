@@ -290,8 +290,23 @@ public class MMapController extends MapController {
         }
     }
 
-    public void addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
-            final int end, final int summaryLevel, final boolean isLeft) {
+    public boolean addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
+            final int end, final boolean isLeft) {
+    	SummaryLevels summaryLevels = new SummaryLevels(selectionRoot, parentNode);
+    	int summaryLevel = summaryLevels.summaryLevels[start];
+    	if (summaryLevel != summaryLevels.summaryLevels[end])
+    		return false;
+    	
+        for(int i = start+1; i <= end; i++){
+        	 NodeModel node = parentNode.getChildAt(i);
+             if((summaryLevels.summaryLevels[i] > summaryLevel
+            		 || summaryLevels.summaryLevels[i] == summaryLevel && SummaryNode.isFirstGroupNode(node))
+            		 && isLeft == node.isLeft(selectionRoot))
+            	 return false;
+        }
+        if(summaryLevels.findSummaryNodeIndex(end) != SummaryLevels.NODE_NOT_FOUND)
+        	return false;
+        
         ModeController modeController = getMModeController();
         stopInlineEditing();
         final NodeModel newSummaryNode = addNewNode(parentNode, end+1, parentNode.getChildAt(end).getSide());
@@ -300,37 +315,18 @@ public class MMapController extends MapController {
         AlwaysUnfoldedNode unfolded = modeController.getExtension(AlwaysUnfoldedNode.class);
         unfolded.undoableActivateHook(newSummaryNode, unfolded);
         final FirstGroupNode firstGroupNodeHook = modeController.getExtension(FirstGroupNode.class);
-        final NodeModel firstNodeInGroup = parentNode.getChildAt(start);
-        if(SummaryNode.isSummaryNode(firstNodeInGroup))
-            firstGroupNodeHook.undoableActivateHook(firstNodeInGroup, FIRST_GROUP);
+        final NodeModel startNode = parentNode.getChildAt(start);
+        if(SummaryNode.isSummaryNode(startNode))
+            firstGroupNodeHook.undoableActivateHook(startNode, FIRST_GROUP);
         else {
-            final NodeModel previousNode = firstNodeInGroup.previousNode(selectionRoot, start, isLeft);
-            if(previousNode == null || SummaryNode.isSummaryNode(previousNode) || !SummaryNode.isFirstGroupNode(previousNode)) {
-                NodeModel newFirstGroup = addNewNode(parentNode, start, newSummaryNode.getSide());
-                firstGroupNodeHook.undoableActivateHook(newFirstGroup, FIRST_GROUP);
-            }
-            firstGroupNodeHook.undoableDeactivateHook(firstNodeInGroup);
-        }
-        int level = summaryLevel;
-        for(int i = start+1; i <= end; i++){
-            NodeModel node = parentNode.getChildAt(i);
-            if(isLeft != node.isLeft(selectionRoot))
-                continue;
-            if(SummaryNode.isSummaryNode(node))
-                level++;
-            else
-                level = 0;
-            if(level == summaryLevel && SummaryNode.isFirstGroupNode(node)){
-                if(level > 0)
-                    firstGroupNodeHook.undoableDeactivateHook(node);
-                else
-                    deleteSingleNodeWithClones(node);
-            }
+        	NodeModel newFirstGroup = addNewNode(parentNode, start, newSummaryNode.getSide());
+        	firstGroupNodeHook.undoableActivateHook(newFirstGroup, FIRST_GROUP);
         }
         final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, Side.DEFAULT);
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         select(firstSummaryChildNode);
         startEditing(firstSummaryChildNode, currentKeyEvent);
+        return true;
     }
 
     public NodeModel addNewNode(final NodeModel parent, final int index, final Side side) {
