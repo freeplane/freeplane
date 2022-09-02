@@ -382,7 +382,7 @@ public interface NodeRO {
 	/** 
 	 * @since 1.10.4 
 	 */
-	Side getPreferredSide();
+	Side getSideAtRoot();
 
 	/** 
 	 * if this node is visible or not (due to filtering). Node folding and view roots are not considered.

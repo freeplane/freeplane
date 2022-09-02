@@ -571,7 +571,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public Side getPreferredSide() {
+	public Side getSideAtRoot() {
 		return Side.values()[getDelegate().getSide().ordinal()];
 	}
 
@@ -725,7 +725,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public void setPreferredSide(Side side) {
+	public void setSideAtRoot(Side side) {
 		setSide(NodeModel.Side.values()[side.ordinal()]);
 	}
 

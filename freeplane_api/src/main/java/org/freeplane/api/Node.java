@@ -310,7 +310,7 @@ public interface Node extends NodeRO {
 	/** 
 	 * @since 1.10.4 
 	 */
-	void setPreferredSide(Side side);
+	void setSideAtRoot(Side side);
 
 
     /** Returns true if the node is password protected, no matter if currently accessible (password entered) or not.
