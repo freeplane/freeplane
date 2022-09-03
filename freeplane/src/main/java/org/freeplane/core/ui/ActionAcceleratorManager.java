@@ -509,6 +509,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private static String replaceModifiersForMac(String accelerator) {
 		if (Compat.isMacOsX()) {
+			if(accelerator.endsWith("TAB") || accelerator.endsWith("ESCAPE"))
+				return accelerator;
 			if(accelerator.startsWith("alt ")
 			        && accelerator.charAt(accelerator.length() - 2) == ' ')
 				accelerator = "control " + accelerator;
