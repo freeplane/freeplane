@@ -58,7 +58,7 @@ public class ShowPastRemindersOnce {
 			public void run() {
 				if(! listIsShown){
 					listIsShown = true;
-					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.reminder.showPastRemindersOnStart", "confirmation",
+					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.reminder.showPastRemindersOnStart", 
 					    "reminder.showPastRemindersOnStart",
 					    MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 					if (showResult != JOptionPane.OK_OPTION) {

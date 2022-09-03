@@ -158,7 +158,7 @@ public class ScriptingPermissions {
 
 	public void assertScriptExecutionAllowed() {
 		if (! executeScriptsWithoutAsking()) {
-    		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
+    		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", 
     		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
     		    MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
     		if (showResult != JOptionPane.OK_OPTION) {

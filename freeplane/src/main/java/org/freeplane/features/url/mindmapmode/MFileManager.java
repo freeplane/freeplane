@@ -569,7 +569,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         Reader reader;
         if (versionInterpreter.needsConversion) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
-			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
+			     MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    MessageType.ONLY_OK_SELECTION_IS_STORED);
 			IMapInputStreamConverter isConverter = versionInterpreter.getMapInputStreamConverter();
 			if (showResult != JOptionPane.OK_OPTION || isConverter == null) {

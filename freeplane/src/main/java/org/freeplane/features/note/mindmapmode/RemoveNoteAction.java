@@ -50,7 +50,7 @@ class RemoveNoteAction extends AFreeplaneAction{
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_notes", "confirmation",
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_notes", 
 		    MNoteController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
 		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {

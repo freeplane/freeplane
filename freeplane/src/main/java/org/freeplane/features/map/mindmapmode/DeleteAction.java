@@ -49,7 +49,7 @@ class DeleteAction extends AFreeplaneAction {
 			}
 		}
 		final Controller controller = Controller.getCurrentController();
-		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_node", "confirmation",
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_node", 
 		    MModeController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION,
 		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {

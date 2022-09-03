@@ -75,7 +75,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				final boolean edgeStylesEquals = controller.getColor(child, StyleOption.FOR_UNSELECTED_NODE)
 				        .equals(controller.getColor(parent, StyleOption.FOR_UNSELECTED_NODE));
 				if(! edgeStylesEquals){
-					OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
+					OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", 
 					    "ignore_edge_format_by_style", MessageType.ONLY_OK_SELECTION_IS_SHOWN);
 				}
 			}

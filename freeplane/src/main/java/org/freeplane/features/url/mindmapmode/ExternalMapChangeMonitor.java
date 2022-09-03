@@ -73,7 +73,7 @@ public class ExternalMapChangeMonitor implements IMapSelectionListener{
         if (!map.hasExternalFileChanged()) {
             return;
         }
-        final int shouldReload = OptionalDontShowMeAgainDialog.show("reload_mindmap_after_external_change", "confirmation",
+        final int shouldReload = OptionalDontShowMeAgainDialog.show("reload_mindmap_after_external_change", 
                 MONITOR_EXTERNAL_MIND_MAP_FILE_CHANGES_PROPERTY, MessageType.ONLY_CANCEL_SELECTION_IS_STORED);
         if (shouldReload != JOptionPane.OK_OPTION) {
             map.updateLastKnownFileModificationTime();

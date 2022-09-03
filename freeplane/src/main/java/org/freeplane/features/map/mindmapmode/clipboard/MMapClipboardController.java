@@ -994,7 +994,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 			UITools.errorMessage(TextUtils.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node", "confirmation",
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node", 
 		    MMapClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
 		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
