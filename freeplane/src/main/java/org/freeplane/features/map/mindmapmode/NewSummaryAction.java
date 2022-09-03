@@ -43,12 +43,10 @@ class NewSummaryAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if(! addNewSummaryNodeStartEditing()){
-			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
-		}
+		addNewSummaryNodeStartEditing();
 	}
 
-	private boolean addNewSummaryNodeStartEditing() {
+	private void addNewSummaryNodeStartEditing() {
 	    final ModeController modeController = Controller.getCurrentModeController();
 		final IMapSelection selection = modeController.getController().getSelection();
 
@@ -61,28 +59,35 @@ class NewSummaryAction extends AFreeplaneAction {
 		final boolean isLeft = firstNode.isLeft(selectionRoot);
 		// different sides
 		if(isLeft!=lastNode.isLeft(selectionRoot)){
-			return false;
+			UITools.errorMessage(TextUtils.getText("summary_not_possible")); 
+			return;
 		}
 		final NodeModel parentNode = firstNode.getParentNode();
-		if(parentNode == null)
-			return false;
+		if(parentNode == null) {
+			UITools.errorMessage(TextUtils.getText("summary_not_possible")); 
+			return;
+		}
 		final NodeModel lastParent = lastNode.getParentNode();
-		if(lastParent == null)
-			return false;
+		if(lastParent == null) {
+			UITools.errorMessage(TextUtils.getText("summary_not_possible")); 
+			return;
+		}
 		if(parentNode.equals(lastParent))
-			return addNewSummaryNodeStartEditing(selectionRoot, firstNode, lastNode);
+			addNewSummaryNodeStartEditing(selectionRoot, firstNode, lastNode);
 		else {
 			final NodeRelativePath nodeRelativePath = new NodeRelativePath(firstNode, lastNode);
 			NodeModel commonAncestor = nodeRelativePath.commonAncestor();
-			if (commonAncestor == firstNode || commonAncestor == lastNode)
-				return false;
+			if (commonAncestor == firstNode || commonAncestor == lastNode) {
+				UITools.errorMessage(TextUtils.getText("summary_not_possible")); 
+				return;
+			}
 			final NodeModel newFirstNode = nodeRelativePath.beginPathElement(1);
 			final NodeModel newLastNode = nodeRelativePath.endPathElement(1);
-			return addNewSummaryNodeStartEditing(selectionRoot, newFirstNode, newLastNode);
+			addNewSummaryNodeStartEditing(selectionRoot, newFirstNode, newLastNode);
 		}
     }
 
-	private boolean addNewSummaryNodeStartEditing(final NodeModel selectionRoot, final NodeModel firstNode, final NodeModel lastNode) {
+	private void addNewSummaryNodeStartEditing(final NodeModel selectionRoot, final NodeModel firstNode, final NodeModel lastNode) {
 
 		final NodeModel parentNode = firstNode.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -95,6 +100,6 @@ class NewSummaryAction extends AFreeplaneAction {
 			start = temp;
 		}
 		
-		return ((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(selectionRoot, parentNode, start, end, isLeft);
+		((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(selectionRoot, parentNode, start, end, isLeft);
 	}
 }

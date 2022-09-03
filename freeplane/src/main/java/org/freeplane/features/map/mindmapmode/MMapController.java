@@ -54,6 +54,8 @@ import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
@@ -290,22 +292,36 @@ public class MMapController extends MapController {
         }
     }
 
-    public boolean addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
+    public void addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
             final int end, final boolean isLeft) {
     	SummaryLevels summaryLevels = new SummaryLevels(selectionRoot, parentNode);
     	int summaryLevel = summaryLevels.summaryLevels[start];
-    	if (summaryLevel != summaryLevels.summaryLevels[end])
-    		return false;
+    	if (summaryLevel != summaryLevels.summaryLevels[end]) {
+			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
+			return;
+		}
     	
+    	boolean nodesOnOtherSideFound = false;
         for(int i = start+1; i <= end; i++){
         	 NodeModel node = parentNode.getChildAt(i);
-             if((summaryLevels.summaryLevels[i] > summaryLevel
-            		 || summaryLevels.summaryLevels[i] == summaryLevel && SummaryNode.isFirstGroupNode(node))
-            		 && isLeft == node.isLeft(selectionRoot))
-            	 return false;
+             boolean nodeIsOnTheSameSide = isLeft == node.isLeft(selectionRoot);
+			if(nodeIsOnTheSameSide && 
+            		 (summaryLevels.summaryLevels[i] > summaryLevel
+            		 || summaryLevels.summaryLevels[i] == summaryLevel && SummaryNode.isFirstGroupNode(node))) {
+            	 UITools.errorMessage(TextUtils.getText("summary_not_possible"));
+            	 return;
+             }
+			nodesOnOtherSideFound = nodesOnOtherSideFound || ! nodeIsOnTheSameSide;
         }
-        if(summaryLevels.findSummaryNodeIndex(end) != SummaryLevels.NODE_NOT_FOUND)
-        	return false;
+        if(summaryLevels.findSummaryNodeIndex(end) != SummaryLevels.NODE_NOT_FOUND) {
+        	UITools.errorMessage(TextUtils.getText("summary_not_possible"));
+        	return;
+        }
+        if(nodesOnOtherSideFound
+        		&&
+        	OptionalDontShowMeAgainDialog.show("ignoreNodesOnOtherSide", 
+        			MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) != JOptionPane.OK_OPTION)
+        	return;
         
         ModeController modeController = getMModeController();
         stopInlineEditing();
@@ -326,7 +342,6 @@ public class MMapController extends MapController {
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         select(firstSummaryChildNode);
         startEditing(firstSummaryChildNode, currentKeyEvent);
-        return true;
     }
 
     public NodeModel addNewNode(final NodeModel parent, final int index, final Side side) {
