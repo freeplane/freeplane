@@ -457,7 +457,7 @@ public class UrlManager implements IExtension {
 					urlConnection = (new File(uri.toString())).toURI().toURL().openConnection();
 				}
 				else {
-					urlConnection = UrlManager.getController().getAbsoluteUri(map, uri).toURL().openConnection();
+					urlConnection = UrlManager.getAbsoluteUri(map, uri).toURL().openConnection();
 				}
 			}
 			else {

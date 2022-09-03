@@ -41,8 +41,7 @@ public class ExternalResource implements IExtension {
 
 	public URI getAbsoluteUri(final MapModel map) {
 		try {
-			final UrlManager urlManager = Controller.getCurrentModeController().getExtension(UrlManager.class);
-			final URI absoluteUri = urlManager.getAbsoluteUri(map, uri);
+			final URI absoluteUri = UrlManager.getAbsoluteUri(map, uri);
 			return absoluteUri;
 		}
 		catch (final MalformedURLException e) {
