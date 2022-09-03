@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,6 +48,7 @@ class LinkDecorationConfig {
 	        rules = Collections.emptyList();
 	    }
 	    else if (iniFile != null && (rules == null || rulesFileHasChanged())) {
+	    	AccessController.doPrivileged((PrivilegedAction<?>)this::loadRules);
 			loadRules();
 		}
 		return rules;
@@ -62,7 +65,7 @@ class LinkDecorationConfig {
         return lastLoadedConfigurationTime < lastKnownConfigurationFileModificationTime;
 	}
 
-	private void loadRules() {
+	private Void loadRules() {
         rules = new ArrayList<LinkDecorationRule>();
 		try (BufferedReader inputStream = new BufferedReader(new InputStreamReader(iniFile.openStream()))){
 			while (inputStream.ready()) {
@@ -89,6 +92,7 @@ class LinkDecorationConfig {
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
+		return null;
 	}
 
 	private long lastConfigurationFileModificationTime() {
@@ -102,16 +106,5 @@ class LinkDecorationConfig {
 
 	private boolean isComment(String line) {
 		return line.startsWith("#");
-	}
-
-	private List<String> parseRegexes(String regexesString, LinkDecorationRule rule) {
-		List<String> regexes = new ArrayList<String>();
-		StringTokenizer tokenizer = new StringTokenizer(regexesString, ",");
-		while (tokenizer.hasMoreTokens()) {
-			String regex = tokenizer.nextToken().trim();
-			regex = regex.substring(1, regex.length() - 1);
-			regexes.add(regex);
-		}
-		return regexes;
 	}
 }
