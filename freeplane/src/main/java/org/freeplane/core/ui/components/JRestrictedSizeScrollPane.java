@@ -2,19 +2,36 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 
 @SuppressWarnings("serial")
 public class JRestrictedSizeScrollPane extends JScrollPane {
 
-	public JRestrictedSizeScrollPane() {
+	private static class SizeChanger extends ComponentAdapter {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            JViewport viewport = (JViewport) e.getComponent();
+            Dimension extentSize = viewport.getExtentSize();
+            Component view = viewport.getView();
+            if(view != null && ! view.getSize().equals(extentSize)) {
+                view.setSize(extentSize);
+                viewport.revalidate();
+            }
+        }
+    }
+
+    public JRestrictedSizeScrollPane() {
 	    super();
+	    getViewport().addComponentListener(new SizeChanger());
     }
 
 	public JRestrictedSizeScrollPane(Component view) {
-        super(view);
-        // TODO Auto-generated constructor stub
+	    super(view);
+	    getViewport().addComponentListener(new SizeChanger());
     }
 
     @Override
