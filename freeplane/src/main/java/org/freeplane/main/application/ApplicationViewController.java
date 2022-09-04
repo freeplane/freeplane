@@ -50,6 +50,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -269,7 +270,13 @@ class ApplicationViewController extends FrameController {
 
 	@Override
 	protected void setFreeplaneMenuBar(final FreeplaneMenuBar menuBar) {
-		frame.setJMenuBar(menuBar);
+	    if(Compat.isMacOsX()) {
+	        System.setProperty("apple.laf.useScreenMenuBar", "true");
+            frame.setJMenuBar(menuBar);
+            System.setProperty("apple.laf.useScreenMenuBar", "false");
+        }
+	    else
+	        frame.setJMenuBar(menuBar);
 	}
 
 	/*
