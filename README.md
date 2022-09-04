@@ -47,3 +47,37 @@ Every contributor or team member freely decides what task they are going to work
 Where to Download
 =====================================
 Download and install the latest version over at [Sourceforge](https://sourceforge.net/projects/freeplane/files/).
+
+How to Install in Ubuntu/ Debian
+=====================================
+Freeplan is part of default repositories in 
+[Ubuntu](https://launchpad.net/ubuntu/+source/freeplane) and 
+[Debian](https://packages.debian.org/search?keywords=freeplane).
+
+## Install freeplane Using apt
+from [installati.one](https://installati.one/ubuntu/20.04/freeplane/)
+
+```
+sudo apt update;
+sudo apt -y install freeplane;
+```
+
+## Install freeplane Using apt-get
+from [installati.one](https://installati.one/ubuntu/20.04/freeplane/)
+
+```
+sudo apt-get update;
+sudo apt-get -y install freeplane;
+```
+
+## Install freeplan Using smap
+from [Snapcraft](https://snapcraft.io/install/freeplane-mindmapping/ubuntu)
+
+```
+sudo snap install freeplane-mindmapping;
+```
+
+
+
+
+
