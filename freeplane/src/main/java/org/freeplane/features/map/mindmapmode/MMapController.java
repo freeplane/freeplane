@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 
@@ -100,6 +101,7 @@ import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
+import org.freeplane.features.styles.mindmapmode.NewNodeStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
@@ -194,7 +196,11 @@ public class MMapController extends MapController {
                     if (newNodeMode == MMapController.NEW_SIBLING_BEHIND) {
                         childPosition++;
                     }
-                    newNode = addNewNode(parent, childPosition, targetNode.getSide());
+                    final int index = childPosition;
+                    newNode = addNewNode(parent, index, node -> {
+                        node.setSide(targetNode.getSide());
+                        NewNodeStyle.assignStyleToNewNode(node);
+                    });
                     if (newNode == null) {
                         return null;
                     }
@@ -229,7 +235,12 @@ public class MMapController extends MapController {
                     ResourceController.getResourceController().getProperty("placenewbranches")
                     .equals("last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) 
                     : 0;
-                newNode = addNewNode(targetNode, position, targetNode.suggestNewChildSide(selection.getSelectionRoot()));
+                Side newChildSide = targetNode.suggestNewChildSide(selection.getSelectionRoot());
+                final Side side = newChildSide;
+                newNode = addNewNode(targetNode, position, node -> {
+                    node.setSide(side);
+                    NewNodeStyle.assignStyleToNewNode(node);
+                });
                 if (newNode == null) {
                     return null;
                 }
@@ -325,7 +336,8 @@ public class MMapController extends MapController {
         
         ModeController modeController = getMModeController();
         stopInlineEditing();
-        final NodeModel newSummaryNode = addNewNode(parentNode, end+1, parentNode.getChildAt(end).getSide());
+        Side side = parentNode.getChildAt(end).getSide();
+        final NodeModel newSummaryNode = addNewNode(parentNode, end+1, side);
         final SummaryNode summary = modeController.getExtension(SummaryNode.class);
         summary.undoableActivateHook(newSummaryNode, SUMMARY);
         AlwaysUnfoldedNode unfolded = modeController.getExtension(AlwaysUnfoldedNode.class);
@@ -338,19 +350,26 @@ public class MMapController extends MapController {
         	NodeModel newFirstGroup = addNewNode(parentNode, start, newSummaryNode.getSide());
         	firstGroupNodeHook.undoableActivateHook(newFirstGroup, FIRST_GROUP);
         }
-        final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, Side.DEFAULT);
+        final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, node -> {
+            node.setSide(Side.DEFAULT);
+            NewNodeStyle.assignStyleToNewNode(node);
+        });
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         select(firstSummaryChildNode);
         startEditing(firstSummaryChildNode, currentKeyEvent);
     }
 
     public NodeModel addNewNode(final NodeModel parent, final int index, final Side side) {
+        return addNewNode(parent, index, node -> node.setSide(side));
+    }
+    
+    public NodeModel addNewNode(final NodeModel parent, final int index, Consumer<NodeModel> configurator) {
         if (!isWriteable(parent)) {
             UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
             return null;
         }
         final NodeModel newNode = newNode("", parent.getMap());
-        newNode.setSide(side);
+        configurator.accept(newNode);
         if(addNewNode(newNode, parent, index))
             return newNode;
         else

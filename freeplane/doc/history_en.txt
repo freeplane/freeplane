@@ -2,6 +2,7 @@
 1.10.4
 ===============================
 Jump in selected subtrees
+Preset style assigned to new nodes using Format->Set new node style->...
 
 ==============================
 1.10.3
