@@ -25,11 +25,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
@@ -213,7 +215,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 	}
 
-	final private List<AssignStyleAction> actions;
+	final private List<AFreeplaneAction> actions;
     private final ModeController modeController;
 
 	public MLogicalStyleController(ModeController modeController) {
@@ -273,7 +275,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	    });
 
 //		this.modeController = modeController;
-		actions = new LinkedList<AssignStyleAction>();
+		actions = new LinkedList<AFreeplaneAction>();
 	}
 
 	public void initS() {
@@ -300,7 +302,9 @@ public class MLogicalStyleController extends LogicalStyleController {
             modeController.addAction(new ManageAssociatedMindMapsAction());
 		}
 		if(! GraphicsEnvironment.isHeadless()){
-			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),
+			StyleMenuBuilder styleBuilder = new StyleMenuBuilder(modeController, AssignStyleAction::new);
+			styleBuilder.addStyleAction(new ResetStyleAction());
+            modeController.addUiBuilder(Phase.ACTIONS, "style_actions", styleBuilder,
 			    new ChildActionEntryRemover(modeController));
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
@@ -353,13 +357,25 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 	class StyleMenuBuilder implements EntryVisitor {
 		private final ModeController modeController;
+        private final Function<IStyle, AFreeplaneAction> styleActionFactory;
+        private final List<AFreeplaneAction> additionalActions;
 
-		public StyleMenuBuilder(ModeController modeController) {
+		StyleMenuBuilder(ModeController modeController, Function<IStyle, AFreeplaneAction> actionFactory) {
 			super();
 			this.modeController = modeController;
+            this.styleActionFactory = actionFactory;
+            this.additionalActions = new ArrayList<>();
 		}
+		
+		
 
-		@Override
+		boolean addStyleAction(AFreeplaneAction e) {
+            return additionalActions.add(e);
+        }
+
+
+
+        @Override
 		public void visit(Entry target) {
 			addStyleMenu(target);
 		}
@@ -379,15 +395,16 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    return;
 			}
 			actions.clear();
-			AssignStyleAction resetAction = new AssignStyleAction(null);
-			final AssignStyleAction addedResetAction =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(resetAction);
-			if(resetAction == addedResetAction)
-			    actions.add(resetAction);
 			final EntryAccessor entryAccessor = new EntryAccessor();
-			entryAccessor.addChildAction(target, addedResetAction);
+			for(AFreeplaneAction action : additionalActions) {
+			    final AFreeplaneAction addedAction =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(action);
+			    if(action == addedAction)
+			        actions.add(action);
+			    entryAccessor.addChildAction(target, addedAction);
+			}
 			for (final IStyle style : mapStyleModel.getNodeStyles()) {
-			    AssignStyleAction newAction = new AssignStyleAction(style);
-			    final AssignStyleAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(newAction);
+			    AFreeplaneAction newAction = styleActionFactory.apply(style);
+			    final AFreeplaneAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(newAction);
 			    if(newAction == action)
 			        actions.add(newAction);
 			    entryAccessor.addChildAction(target, action);
@@ -454,7 +471,7 @@ public class MLogicalStyleController extends LogicalStyleController {
     }
 
 	void selectActions() {
-		for (final AssignStyleAction action : actions) {
+		for (final AFreeplaneAction action : actions) {
 			action.setSelected();
 		}
 	}
