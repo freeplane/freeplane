@@ -23,6 +23,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Arrays;
+import java.util.function.ToIntFunction;
 
 import javax.swing.JComponent;
 
@@ -111,7 +112,7 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void calculateLayoutY(final boolean isLeft) {
-		final int minimalDistanceBetweenChildren = view.getChildDistanceContainer().getMinimalDistanceBetweenChildren();
+		final int minimalDistanceBetweenChildren = view.getMinimalDistanceBetweenChildren();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int top = 0;
@@ -144,7 +145,7 @@ class VerticalNodeViewLayoutStrategy {
 
 				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 				final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
-				final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
+				final int childShiftY = calculateShiftY(child);
 
 				if (isItem) {
 					final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
@@ -249,6 +250,23 @@ class VerticalNodeViewLayoutStrategy {
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
 	}
 
+    private int calculateShiftY(final NodeView child) {
+        return calculateDistance(child, NodeView::getShift);
+    }
+
+    private int calculateDistance(final NodeView child, ToIntFunction<NodeView> nodeDistance) {
+        if (!child.isContentVisible())
+            return 0;
+        int shift = nodeDistance.applyAsInt(child);
+        for(NodeView ancestor = child.getParentView(); 
+                ancestor != null && ! ancestor.isContentVisible();
+                ancestor = ancestor.getParentView()) {
+            if(ancestor.isFree())
+                shift += nodeDistance.applyAsInt(ancestor);
+        }
+        return shift;
+    }
+
 	private boolean isNextNodeSummaryNode(int childViewIndex) {
 		return childViewIndex + 1 < viewLevels.summaryLevels.length && viewLevels.summaryLevels[childViewIndex + 1] > 0;
 	}
@@ -274,7 +292,7 @@ class VerticalNodeViewLayoutStrategy {
 				boolean isItem = level == 0;
 				int childHGap;
 				if (child.isContentVisible())
-					childHGap = child.getHGap();
+					childHGap = calculateHGap(child);
 				else if (child.isSummary())
 					childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 				else
@@ -313,6 +331,10 @@ class VerticalNodeViewLayoutStrategy {
 			}
 		}
 	}
+
+    private int calculateHGap(final NodeView child) {
+        return calculateDistance(child, NodeView::getHGap);
+    }
 
 	private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int childContentHeightOnSide,  int topOnSide) {
 		if (! (leftSideCoordinaresAreSet || rightSideCoordinatesAreSet)) {
