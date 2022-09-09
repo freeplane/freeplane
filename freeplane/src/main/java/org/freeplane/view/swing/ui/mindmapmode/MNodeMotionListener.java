@@ -131,7 +131,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				}
 				if (Compat.isCtrlEvent(e)) {
 					final NodeView nodeV = getNodeView(e);
-					NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
+					NodeModel childDistanceContainer = nodeV.getParentView().getModel();
 					locationController.setMinimalDistanceBetweenChildren(childDistanceContainer, LocationModel.DEFAULT_VGAP);
 					return;
 				}
@@ -189,7 +189,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					findGridPoint(point);
 					dragStartingPoint = point;
 					originalAssignedParentVGap = LocationModel.getModel(node.getParentNode()).getVGap();
-					NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
+					NodeModel childDistanceContainer = nodeV.getParentView().getModel();
 					minimalDistanceBetweenChildren = modeController.getExtension(LocationController.class).getMinimalDistanceBetweenChildren(childDistanceContainer);
 					originalHGap = LocationModel.getModel(node).getHGap();
 					originalShiftY = LocationModel.getModel(node).getShiftY();
@@ -234,7 +234,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					return;
 			}
 			else {
-				final NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
+				final NodeModel childDistanceContainer = nodeV.getParentView().getModel();
 				final int vGapChange = getVGapChange(dragNextPoint, childDistanceContainer);
 				int newVGap = Math.max(0, minimalDistanceBetweenChildren.toBaseUnitsRounded() - vGapChange);
 				LocationModel locationModel = LocationModel.createLocationModel(childDistanceContainer);
@@ -287,8 +287,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		MLocationController locationController = (MLocationController) LocationController.getController(controller
 				.getModeController());
 		final NodeView parentView = nodeV.getParentView();
-		final NodeView childDistanceContainerView = parentView.getChildDistanceContainer();
-		NodeModel childDistanceContainer = childDistanceContainerView.getModel();
+		NodeModel childDistanceContainer = parentView.getModel();
 		final Quantity<LengthUnit> parentVGap = locationController.getMinimalDistanceBetweenChildren(childDistanceContainer);
 		Quantity<LengthUnit> hgap = LocationModel.getModel(node).getHGap();
 		final Quantity<LengthUnit> shiftY = LocationModel.getModel(node).getShiftY();
