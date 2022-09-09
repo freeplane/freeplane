@@ -45,6 +45,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -745,6 +746,27 @@ public class NodeView extends JComponent implements INodeView {
 		final double minimalDistanceBetweenChildren = getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(model).toBaseUnits();
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
+	
+	VerticalNodeAlignment getVerticalAlignment() {
+		VerticalNodeAlignment verticalAlignment = getModeController().getExtension(LocationController.class).getVerticalAlignment(model);
+		switch (verticalAlignment) {
+		case UNDEFINED:
+		case AS_PARENT:
+			return getParentViewVerticalAlignment();
+		default:
+			return verticalAlignment;
+		}
+	}
+
+	private VerticalNodeAlignment getParentViewVerticalAlignment() {
+		NodeView parentView = getParentView();
+		if (parentView == null)
+			return VerticalNodeAlignment.CENTER;
+		else if(parentView.isSummary())
+			return parentView.getParentViewVerticalAlignment();
+		else
+			return parentView.getVerticalAlignment();
+	}
 
 	public NodeView getAncestorWithVisibleContent() {
 		final Container parent = getParent();
@@ -882,6 +904,12 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			if(property != EncryptionModel.class)
 				return;
+		}
+		if(property == VerticalNodeAlignment.class) {
+			invalidateAll();
+			revalidate();
+			repaint();
+			return;
 		}
 		if(property == NodeVisibilityConfiguration.class) {
 			updateAll();
@@ -1589,9 +1617,11 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 	private void invalidateAll() {
-		invalidate();
-		for (final NodeView child : getChildrenViews()) {
-			child.invalidate();
+		LinkedList<NodeView> childrenViews = getChildrenViews();
+		if(childrenViews.isEmpty())
+			invalidate();
+		for (final NodeView child : childrenViews) {
+			child.invalidateAll();
 		}
 	}
 	

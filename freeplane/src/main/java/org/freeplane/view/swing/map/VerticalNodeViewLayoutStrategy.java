@@ -27,6 +27,7 @@ import java.util.function.ToIntFunction;
 
 import javax.swing.JComponent;
 
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
@@ -246,7 +247,14 @@ class VerticalNodeViewLayoutStrategy {
 				}
 			}
 		}
-		top += (contentSize.height - childContentHeightSum) / 2;
+		VerticalNodeAlignment verticalAlignment = view.getVerticalAlignment();
+		if (view.isSummary() 
+				|| verticalAlignment == VerticalNodeAlignment.UNDEFINED
+				|| verticalAlignment == VerticalNodeAlignment.CENTER) {
+			top += (contentSize.height - childContentHeightSum)/2;
+		} else if (verticalAlignment == VerticalNodeAlignment.BOTTOM) {
+			top += (contentSize.height - childContentHeightSum);
+		}
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
 	}
 

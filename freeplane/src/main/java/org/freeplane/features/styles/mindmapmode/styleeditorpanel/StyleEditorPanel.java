@@ -171,7 +171,10 @@ public class StyleEditorPanel extends JPanel {
 				new NodeShapeControlGroup(),
 				new MinNodeWidthControlGroup(),
 				new MaxNodeWidthControlGroup(),
+				
+				new GroupSeparator("OptionPanel.separator.NodeLayout"),
 				new ChildDistanceControlGroup(),
+				new VerticalNodeAlignmentControlGroup(),
 				
 				new GroupSeparator("OptionPanel.separator.NodeBorder"),
 				new BorderWidthAndBorderWidthMatchesEdgeControlGroup(),

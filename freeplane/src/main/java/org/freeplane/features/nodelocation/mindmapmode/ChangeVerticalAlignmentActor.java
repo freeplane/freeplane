@@ -19,8 +19,7 @@
  */
 package org.freeplane.features.nodelocation.mindmapmode;
 
-import org.freeplane.api.LengthUnit;
-import org.freeplane.api.Quantity;
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -28,34 +27,36 @@ import org.freeplane.features.nodelocation.LocationModel;
 
 /**
  * @author Dimitry Polivaev
- * 01.03.2014
  */
-class ChangeVGapActor implements IActor {
+class ChangeVerticalAlignmentActor implements IActor {
 	private final NodeModel node;
-	private final Quantity<LengthUnit> oldVgap;
-	private final Quantity<LengthUnit> vGap;
+	private final VerticalNodeAlignment oldAlignment;
+	private final VerticalNodeAlignment newAlignment;
 
-	ChangeVGapActor(final NodeModel node, final Quantity<LengthUnit> vGap){
+	ChangeVerticalAlignmentActor(final NodeModel node, VerticalNodeAlignment newAlignment){
 		final LocationModel locationModel = LocationModel.getModel(node);
-		oldVgap = locationModel.getVGap();
+		oldAlignment = locationModel.getVerticalAlignment();
 		this.node = node;
-		this.vGap = vGap;
+		this.newAlignment = newAlignment;
 	}
 
 	public void act() {
-		setVGap(node, vGap);
+		setAlignment(node, oldAlignment, newAlignment);
 	}
 
 	public String getDescription() {
-		return "changeVGap";
+		return "changeVerticalAlignment";
 	}
 
-	private void setVGap(final NodeModel node, final Quantity<LengthUnit> parentVGap) {
-		LocationModel.createLocationModel(node).setVGap(parentVGap);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);
+	private void setAlignment(final NodeModel node, VerticalNodeAlignment oldAlignment, VerticalNodeAlignment newAlignment) {
+		if(oldAlignment != newAlignment) {
+			LocationModel.createLocationModel(node).setVerticalAlignment(newAlignment);
+			Controller.getCurrentModeController().getMapController()
+			.nodeChanged(node, VerticalNodeAlignment.class, oldAlignment, newAlignment);
+		}
 	}
 
 	public void undo() {
-		setVGap(node, oldVgap);
+		setAlignment(node, newAlignment, oldAlignment);
 	}
 }
