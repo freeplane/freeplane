@@ -20,9 +20,15 @@
 package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.Set;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
  * @author Dimitry Polivaev
@@ -39,8 +45,16 @@ public class NewUserStyleFromSelectionAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public void actionPerformed(final ActionEvent e) {
-	    final MLogicalStyleController styleController = (MLogicalStyleController) LogicalStyleController.getController();
-		styleController.addNewUserStyle(true);
+		final MLogicalStyleController styleController = (MLogicalStyleController) LogicalStyleController.getController();
+		IStyle newStyle = styleController.addNewUserStyle(true);
+		if(newStyle != null) {
+			Set<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
+			for (NodeModel node : nodes) { 
+				ModeController modeController = Controller.getCurrentModeController();
+				modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+				styleController.setStyle(node, newStyle);
+			}
+		}
 	}
 
 }
