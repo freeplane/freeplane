@@ -1,6 +1,9 @@
 Freeplane
 =========
 
+![SourceForge](https://img.shields.io/sourceforge/dt/freeplane?color=green) ![GitHub Repo stars](https://img.shields.io/github/stars/freeplane/freeplane?color=yellow) ![GitHub forks](https://img.shields.io/github/forks/freeplane/freeplane) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/freeplane/freeplane?color=red) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/freeplane/freeplane) ![GitHub contributors](https://img.shields.io/github/contributors/freeplane/freeplane?color=purple) ![welcome](https://img.shields.io/badge/PRs-welcome-brightgreen) ![GitHub last commit](https://img.shields.io/github/last-commit/freeplane/freeplane?color=orange) ![Maintenance](https://img.shields.io/maintenance/yes/2022) ![GitHub watchers](https://img.shields.io/github/watchers/freeplane/freeplane?color=yellowgreen)
+
+
 [Freeplane](http://freeplane.sourceforge.net) is a free and open source software application that supports thinking, sharing information, getting things done at work, in school and at home. It provides you a set of tools for mind mapping (also known as concept mapping or information mapping) and navigating the mapped information. Freeplane is also a more robust and superuser alternative to Xmind, Mindmeister, and similar mind mapping software.
 
 Freeplane is written in Java using OSGi and Java Swing. It runs on any operating system that has a current version of Java installed. It can be installed or can run from removable storage like a USB drive. 
