@@ -6,7 +6,6 @@ Freeplane
 [![GitHub forks](https://img.shields.io/github/forks/freeplane/freeplane)](https://github.com/freeplane/freeplane/network)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/y/freeplane/freeplane?color=red)](https://img.shields.io/github/commit-activity/y/freeplane/freeplane?color=red)
 [![GitHub last commit](https://img.shields.io/github/last-commit/freeplane/freeplane?color=orange)](https://github.com/freeplane/freeplane/commits)
-[![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen)](https://docs.freeplane.org/contribute/contribute.html)
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/freeplane/freeplane)](https://github.com/freeplane/freeplane/pulls)
 [![GitHub contributors](https://img.shields.io/github/contributors/freeplane/freeplane?color=purple)](https://github.com/freeplane/freeplane/graphs/contributors)
 [![GitHub watchers](https://img.shields.io/github/watchers/freeplane/freeplane?color=yellowgreen)](https://img.shields.io/github/watchers/freeplane/freeplane?color=yellowgreen)
