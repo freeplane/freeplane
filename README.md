@@ -25,23 +25,39 @@ Features Rundown
 
 ![student](https://user-images.githubusercontent.com/88552647/170373856-7a636373-a783-4fa0-ba27-2ddb39d8ca3c.png)
 
+-------------
+
 ![slides](https://user-images.githubusercontent.com/88552647/170373905-107a46ce-b8e6-4d6c-bf19-e711bfeb6a20.png)
+
+-------------
 
 ![formatting](https://user-images.githubusercontent.com/88552647/170373875-b2885816-b900-4a2f-9ab4-3293cb148654.png)
 
+-------------
+
 ![UI](https://user-images.githubusercontent.com/88552647/170374143-9e65d981-c7ef-456e-8c84-a43abcae3181.png)
+
+-------------
 
 ![addons](https://user-images.githubusercontent.com/88552647/170373895-f851ddf8-4bc3-4544-a197-9b101c0d986d.png)
 
+-------------
+
 ![command search](https://user-images.githubusercontent.com/88552647/170373890-fdb4ec75-ba95-4a71-ab6e-65f50e72897b.png)
+
+-------------
 
 ![styling](https://user-images.githubusercontent.com/88552647/170373913-7337604c-9a08-4a73-8d7b-2d9d73981fa8.png)
 
+-------------
+
 ![formulas](https://user-images.githubusercontent.com/88552647/170373932-247effb8-3df4-49a8-9158-192d26a752ec.png)
+
+-------------
 
 ![discussions](https://user-images.githubusercontent.com/88552647/170373883-2a34bbeb-5bfe-4544-99bd-435295f46f8f.png)
 
-
+-------------
 
 How to Start Contributing
 =====================================
