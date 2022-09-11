@@ -407,6 +407,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    final AFreeplaneAction addedAction =  modeController.addActionIfNotAlreadySet(action);
 			    if(action == addedAction)
 			        actions.add(action);
+			    addedAction.setEnabled(true);
 			    entryAccessor.addChildAction(target, addedAction);
 			}
 			for (final IStyle style : mapStyleModel.getNodeStyles()) {
@@ -414,6 +415,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    final AFreeplaneAction action =  modeController.addActionIfNotAlreadySet(newAction);
 			    if(newAction == action)
 			        actions.add(newAction);
+			    action.setEnabled(true);
 			    entryAccessor.addChildAction(target, action);
 			}
 		}
