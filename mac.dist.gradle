@@ -128,10 +128,10 @@ def defineMacBuildTasks =  { architecture ->
   def signMacApp= tasks.create ("signMacApp_${architecture}", Exec) {
         onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
  
-        commandLine 'codesign', '--deep', '-f',
-        '-s', 'Developer ID Application: ' + macAppProperties['macapp.codesign.identity'], 
-        '-v', "build/macosapp/app-image-${architecture}/Freeplane.app"
-
+        commandLine 'bash', '-e', '-c', """
+            codesign --deep -f --preserve-metadata=entitlements --force -vvv --options runtime -s "Developer ID Application: ${macAppProperties['macapp.codesign.identity']}" -v build/macosapp/app-image-${architecture}/Freeplane.app/Contents/runtime/Contents/MacOS/libjli.dylib
+            codesign --deep -f --preserve-metadata=entitlements --force -vvv --options runtime -s "Developer ID Application: ${macAppProperties['macapp.codesign.identity']}" -v build/macosapp/app-image-${architecture}/Freeplane.app
+        """
         dependsOn macosapp_makeapp
     }
 
