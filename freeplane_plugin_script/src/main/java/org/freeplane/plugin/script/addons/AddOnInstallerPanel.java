@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.codehaus.groovy.tools.groovydoc.ResourceManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
@@ -103,7 +104,7 @@ public class AddOnInstallerPanel extends JPanel {
 
 	private JButton createVisitAddOnPageButton() {
 		try {
-			final String addOnsUriString = TextUtils.removeTranslateComment(TextUtils.getText("addons.site"));
+			final String addOnsUriString = TextUtils.removeTranslateComment(ResourceController.getResourceController().getProperty("addons.site"));
 			// parse the URI on creation of the dialog to test the URI syntax early
 			final URI addOnsUri = new URI(addOnsUriString);
 			return UITools.createHtmlLinkStyleButton(addOnsUri, getText("visit.addon.page"));
