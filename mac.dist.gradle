@@ -158,6 +158,12 @@ def defineMacBuildTasks =  { architecture ->
       ant.move (file:"$globalDist/Freeplane-${majorVersion}.dmg", tofile:"$globalDist/Freeplane-${distVersion}-${architecture}.dmg")
     }
   }
+  def notarytool = tasks.create ("notarytool_${architecture}", Exec) {
+    commandLine 'bash', '-e', '-c', """
+    xcrun notarytool submit $globalDist/Freeplane-${distVersion}-${architecture}.dmg --keychain-profile ${macAppProperties['macapp.notarytool.keychainprofile']}
+    """
+    mustRunAfter dmg4mac
+  }
 }
 
 if ( Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null) {
