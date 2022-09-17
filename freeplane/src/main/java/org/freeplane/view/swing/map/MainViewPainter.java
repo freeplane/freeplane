@@ -37,7 +37,7 @@ abstract class MainViewPainter{
 		this.mainView = mainView;
 
 	}
-	int getMainViewHeightWithFoldingMark() {
+	int getMainViewHeightWithFoldingMark(@SuppressWarnings("unused") boolean onlyFolded) {
 		return mainView.getHeight();
 	}
 	/** get width including folding symbol */

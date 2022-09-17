@@ -599,7 +599,7 @@ public class MainView extends ZoomableLabel {
     }
 
 	public boolean isInFoldingRegion(Point p) {
-		if (hasChildren() && p.y >= 0 && p.y < getHeight()) {
+		if (hasChildren() && p.y >= 0 && p.y < getMainViewHeightWithFoldingMark(false)) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			if (isLeft) {
@@ -844,8 +844,8 @@ public class MainView extends ZoomableLabel {
 		return painter.getMainViewWidthWithFoldingMark();
 	}
 
-	public int getMainViewHeightWithFoldingMark() {
-		return painter.getMainViewHeightWithFoldingMark();
+	public int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
+		return painter.getMainViewHeightWithFoldingMark(onlyFolded);
 	}
 
 	public int getSingleChildShift() {

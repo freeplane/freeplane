@@ -326,7 +326,7 @@ public class NodeView extends JComponent implements INodeView {
 			final int x = transX + getContent().getX() - getDeltaX();
 			final int y = transY + getContent().getY() - getDeltaY();
 			final int width = mainView.getMainViewWidthWithFoldingMark();
-			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark();
+			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark(true);
 			final int height = Math.max(heightWithFoldingMark, getContent().getHeight());
 			inList.addLast(new Point(-additionalDistanceForConvexHull + x, -additionalDistanceForConvexHull + y));
 			inList
