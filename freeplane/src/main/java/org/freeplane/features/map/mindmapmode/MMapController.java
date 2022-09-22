@@ -306,34 +306,8 @@ public class MMapController extends MapController {
     public void addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
             final int end, final boolean isLeft) {
     	SummaryLevels summaryLevels = new SummaryLevels(selectionRoot, parentNode);
-    	int summaryLevel = summaryLevels.summaryLevels[start];
-    	if (summaryLevel != summaryLevels.summaryLevels[end]) {
-			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
-			return;
-		}
-    	
-    	boolean nodesOnOtherSideFound = false;
-        for(int i = start+1; i <= end; i++){
-        	 NodeModel node = parentNode.getChildAt(i);
-             boolean nodeIsOnTheSameSide = isLeft == node.isLeft(selectionRoot);
-			if(nodeIsOnTheSameSide && 
-            		 (summaryLevels.summaryLevels[i] > summaryLevel
-            		 || summaryLevels.summaryLevels[i] == summaryLevel && SummaryNode.isFirstGroupNode(node))) {
-            	 UITools.errorMessage(TextUtils.getText("summary_not_possible"));
-            	 return;
-             }
-			nodesOnOtherSideFound = nodesOnOtherSideFound || ! nodeIsOnTheSameSide;
-        }
-        if(summaryLevels.findSummaryNodeIndex(end) != SummaryLevels.NODE_NOT_FOUND) {
-        	UITools.errorMessage(TextUtils.getText("summary_not_possible"));
-        	return;
-        }
-        if(nodesOnOtherSideFound
-        		&&
-        	OptionalDontShowMeAgainDialog.show("ignoreNodesOnOtherSide", 
-        			MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) != JOptionPane.OK_OPTION)
-        	return;
-        
+    	if(!summaryLevels.canInsertSummaryNode(start, end, isLeft))
+    		return;
         ModeController modeController = getMModeController();
         stopInlineEditing();
         Side side = parentNode.getChildAt(end).getSide();

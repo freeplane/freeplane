@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.swing.JOptionPane;
+
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 
 public class SummaryLevels{
@@ -146,6 +152,37 @@ public class SummaryLevels{
 				return i;
 		}
 		return index;
+	}
+
+	public boolean canInsertSummaryNode(int start, int end, boolean isLeft) {
+    	int summaryLevel = summaryLevels[start];
+    	if (summaryLevel != summaryLevels[end]) {
+			UITools.errorMessage(TextUtils.getText("summary_not_possible"));
+			return false;
+		}
+    	
+    	boolean nodesOnOtherSideFound = false;
+        for(int i = start+1; i <= end; i++){
+        	 NodeModel node = parentNode.getChildAt(i);
+             boolean nodeIsOnTheSameSide = isLeft == node.isLeft(root);
+			if(nodeIsOnTheSameSide && 
+            		 (summaryLevels[i] > summaryLevel
+            		 || summaryLevels[i] == summaryLevel && SummaryNode.isFirstGroupNode(node))) {
+            	 UITools.errorMessage(TextUtils.getText("summary_not_possible"));
+            	 return false;
+             }
+			nodesOnOtherSideFound = nodesOnOtherSideFound || ! nodeIsOnTheSameSide;
+        }
+        if(findSummaryNodeIndex(end) != NODE_NOT_FOUND) {
+        	UITools.errorMessage(TextUtils.getText("summary_not_possible"));
+        	return false;
+        }
+        if(nodesOnOtherSideFound
+        		&&
+        	OptionalDontShowMeAgainDialog.show("ignoreNodesOnOtherSide", 
+        			MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) != JOptionPane.OK_OPTION)
+        	return false;
+        return true;
 	}
 	
 }
