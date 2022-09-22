@@ -17,6 +17,8 @@ Freeplane is written in Java using OSGi and Java Swing. It runs on any operating
 
 Download and install the latest version over at [Sourceforge](https://sourceforge.net/projects/freeplane/files/). If you would like to report a bug, you can go report it over at [Issues](https://github.com/freeplane/freeplane/issues).
 
+The documentation can be found at [![mdBook Docu](https://img.shields.io/badge/mdBook-Docu-lightblue)](https://docs.freeplane.org/). There, you will find How-To Guides, FAQs, Examples and explanations about the functions of Freeplane.
+
 Hop on to our [Discussions](https://github.com/freeplane/freeplane/discussions) if you have any questions, ideas, or thoughts you'd like to share. Contributors are very much welcome, of course! 
 
 
