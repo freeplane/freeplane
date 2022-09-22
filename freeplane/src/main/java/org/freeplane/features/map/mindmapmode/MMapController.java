@@ -614,6 +614,7 @@ public class MMapController extends MapController {
             }
             moveNodeAndItsClones(node, newParent, index++);
         }
+        removeSuperficiousFirstGroupNodes(newParent);
     }
 
     public void setSide(List<NodeModel> nodes, Side side) {
@@ -644,6 +645,9 @@ public class MMapController extends MapController {
 
     		}
     	}
+    	nodes.stream().map(NodeModel::getParentNode)
+    		.distinct()
+    		.forEach(this::removeSuperficiousFirstGroupNodes);
     }
 
 
@@ -807,6 +811,7 @@ public class MMapController extends MapController {
             for (NodeModel selectedNode : selectedNodes) {
                 selection.makeTheSelected(selectedNode);
             }
+            removeSuperficiousFirstGroupNodes(parent);
         }
     }
 
@@ -881,6 +886,45 @@ public class MMapController extends MapController {
         fireNodeMoved(nodeMoveEvent);
         setSaved(newParent.getMap(), false);
         return newIndex;
+    }
+
+    public void removeSuperficiousFirstGroupNodes(final NodeModel parent) {
+    	boolean isLeftFirstGroupNodeFound = false;
+    	boolean isRightFirstGroupNodeFound = false;
+    	IMapSelection selection = Controller.getCurrentController().getSelection();
+    	boolean shouldConsiderSeparateSides = selection != null && selection.getSelectionRoot() == parent || parent.isRoot();
+    	for(int i = 0; i < parent.getChildCount(); i++) {
+    		NodeModel child = parent.getChildAt(i);
+    		boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(child);
+    		boolean isSummaryNode = SummaryNode.isSummaryNode(child);
+    		if(isFirstGroupNode != isSummaryNode) {
+    			boolean isLeft = shouldConsiderSeparateSides && child.isLeft(parent);
+    			if(isLeft) {
+    				if(isFirstGroupNode) {
+    					if(isLeftFirstGroupNodeFound) {
+    						deleteSingleNodeWithClones(child);
+    						i--;
+    					}
+    					else {
+    						isLeftFirstGroupNodeFound = true;
+    					}
+    				}
+    				else
+    					isLeftFirstGroupNodeFound = false;
+    			}
+    			else if(isFirstGroupNode) {
+    				if(isRightFirstGroupNodeFound) {
+    					deleteSingleNodeWithClones(child);
+    					i--;
+    				}
+    				else {
+    					isRightFirstGroupNodeFound = true;
+    				}
+    			}
+    			else
+    				isRightFirstGroupNodeFound = false;
+    		}
+    	}
     }
 
     public MapModel createModel(NodeModel existingNode) {
