@@ -326,7 +326,7 @@ public class NodeView extends JComponent implements INodeView {
 			final int x = transX + getContent().getX() - getDeltaX();
 			final int y = transY + getContent().getY() - getDeltaY();
 			final int width = mainView.getMainViewWidthWithFoldingMark();
-			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark();
+			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark(true);
 			final int height = Math.max(heightWithFoldingMark, getContent().getHeight());
 			inList.addLast(new Point(-additionalDistanceForConvexHull + x, -additionalDistanceForConvexHull + y));
 			inList
@@ -512,8 +512,12 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView getNextSiblingSingle() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
+		boolean skipUntilSummaryEnd = isSummary();
 		for (int i = index + 1; i < v.size(); i++) {
 			final NodeView nextView = v.get(i);
+			if(skipUntilSummaryEnd && nextView.isSummary())
+				break;
+			skipUntilSummaryEnd = false;
 			final NodeModel node = nextView.getModel();
 			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
@@ -630,8 +634,13 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView getPreviousSiblingSingle() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
+		boolean skipUntilFirstGroupNode = isSummary();
 		for (int i = index - 1; i >= 0; i--) {
 			final NodeView nextView = v.get(i);
+ 			if(skipUntilFirstGroupNode) {
+ 				skipUntilFirstGroupNode = !nextView.isFirstGroupNode();
+ 				continue;
+ 			}
 			final NodeModel node = nextView.getModel();
 			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
@@ -654,14 +663,14 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if (parentView.isRoot()) {
 			if (this.isLeft()) {
-				v = (getParentView()).getLeft(true);
+				v = parentView.getLeft(true);
 			}
 			else {
-				v = (getParentView()).getRight(true);
+				v = parentView.getRight(true);
 			}
 		}
 		else {
-			v = getParentView().getChildrenViews();
+			v = parentView.getChildrenViews();
 		}
 		return v;
 	}

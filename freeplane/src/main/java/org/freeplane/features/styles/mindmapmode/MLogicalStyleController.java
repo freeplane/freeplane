@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 import javax.swing.JOptionPane;
@@ -86,7 +87,8 @@ import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
  */
 public class MLogicalStyleController extends LogicalStyleController {
 
-    public enum NodeProperty{CONDITIONAL_STYLES};
+    public enum NodeProperty{CONDITIONAL_STYLES}
+    
 	private static final String STYLE_ACTIONS = "styleActions";
 	private static final String NEW_NODE_STYLE_ACTIONS = "newNodeStyleActions";
 
@@ -407,6 +409,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    final AFreeplaneAction addedAction =  modeController.addActionIfNotAlreadySet(action);
 			    if(action == addedAction)
 			        actions.add(action);
+			    addedAction.setEnabled(true);
 			    entryAccessor.addChildAction(target, addedAction);
 			}
 			for (final IStyle style : mapStyleModel.getNodeStyles()) {
@@ -414,6 +417,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    final AFreeplaneAction action =  modeController.addActionIfNotAlreadySet(newAction);
 			    if(newAction == action)
 			        actions.add(newAction);
+			    action.setEnabled(true);
 			    entryAccessor.addChildAction(target, action);
 			}
 		}
@@ -490,14 +494,19 @@ public class MLogicalStyleController extends LogicalStyleController {
 		    if(selection == null) {
 		      return;  
 		    }
-		    IStyle newStyle = addNewUserStyle(false);
-		    if(newStyle == null) {
+		    IStyle newStyle = addNewUserStyle(true);
+		    if(newStyle != null) {
+				Set<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
+				for (NodeModel node : nodes) { 
+					modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+				}
+				setStyle(newStyle);
+		    }
+			else {
 		        NodeModel node = selection.getSelected();
 		        final IStyle oldStyle = LogicalStyleModel.getStyle(node);
 		        modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, oldStyle);
 		    }
-		    else 
-		        setStyle(newStyle);
 		    return;
 		}
 		final Collection<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();

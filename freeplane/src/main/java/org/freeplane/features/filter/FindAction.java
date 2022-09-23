@@ -24,19 +24,26 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 import javax.swing.AbstractButton;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.KeystrokeDescriber;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -70,13 +77,17 @@ class FindAction extends AFreeplaneAction {
 		if (selection == null) {
 			return;
 		}
+		KeyStroke keyStrokePrevious = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK);
+		KeyStroke keyStrokeNext = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK);
 		final NodeModel start = selection.getSelected();
 		if (editor == null) {
-			editor = new FilterConditionEditor(FilterController.getCurrentFilterController(), 5, Variant.SEARCH_DIALOG, new FreeplaneToolBar(JToolBar.HORIZONTAL));
+			editor = new FilterConditionEditor(FilterController.getCurrentFilterController(), 5, Variant.SEARCH_DIALOG, new JPanel());
 			editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(5, 0, 5, 0)));
 			JComponent editorPanel = editor.getPanel();
 			final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(findPreviousAction);
+			applyFindPreviousBtn.setToolTipText(KeystrokeDescriber.createKeystrokeDescription(keyStrokePrevious));
 			final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(findNextAction);
+			applyFindNextBtn.setToolTipText(KeystrokeDescriber.createKeystrokeDescription(keyStrokeNext));
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.anchor = GridBagConstraints.NORTHWEST;
 			constraints.gridwidth = 1;
@@ -89,6 +100,12 @@ class FindAction extends AFreeplaneAction {
 			editor.filterChanged(selection.getFilter());
 		}
 		JComponent editorPanel = editor.getPanel();
+		InputMap inputMap = editorPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = editorPanel.getActionMap();
+		inputMap.put(keyStrokeNext, findNextAction);
+		actionMap.put(findNextAction, findNextAction);
+		inputMap.put(keyStrokePrevious, findPreviousAction);
+		actionMap.put(findPreviousAction, findPreviousAction);
 		editorPanel.addAncestorListener(new AncestorListener() {
 			@Override
 			public void ancestorAdded(final AncestorEvent event) {

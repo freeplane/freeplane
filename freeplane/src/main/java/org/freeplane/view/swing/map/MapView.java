@@ -570,6 +570,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
 	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
 	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
+	private static final String DRAGGING_AREA_WIDTH_PROPERTY = "dragging_area_width";
 
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
@@ -621,6 +622,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static Color spotlightBackgroundColor;
 	private static int outlineHGap;
 	private static boolean outlineViewFitsWindowWidth;
+	private static int draggingAreaWidth;
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
@@ -645,6 +647,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    showConnectorsPropertyValue = resourceController.getProperty(SHOW_CONNECTORS_PROPERTY).intern();
 	    showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
 	    outlineHGap = resourceController.getLengthProperty(OUTLINE_HGAP_PROPERTY);
+	    draggingAreaWidth = resourceController.getLengthProperty(DRAGGING_AREA_WIDTH_PROPERTY);
 	    outlineViewFitsWindowWidth = resourceController.getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
 
 	    createPropertyChangeListener();
@@ -822,7 +825,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					}
 					return;
 				}
-
+				if (propertyName.equals(DRAGGING_AREA_WIDTH_PROPERTY)) {
+					MapView.draggingAreaWidth = ResourceController.getResourceController().getLengthProperty(DRAGGING_AREA_WIDTH_PROPERTY);
+					return;
+				}
 				if(propertyName.equals(OUTLINE_VIEW_FITS_WINDOW_WIDTH)) {
 					outlineViewFitsWindowWidth = ResourceController.getResourceController().getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
 					if (mapView.isOutlineLayoutSet()) {
@@ -2585,6 +2591,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		newRootView.setFolded(false);
 		revalidate();
 		repaint();
+	}
+
+	public int getDraggingAreaWidth() {
+		return getZoomed(draggingAreaWidth);
 	}
 
 }

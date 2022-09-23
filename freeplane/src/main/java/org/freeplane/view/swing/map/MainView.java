@@ -100,7 +100,6 @@ public class MainView extends ZoomableLabel {
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
 	final static Stroke DEF_STROKE = new BasicStroke();
-	private static final int DRAG_OVAL_WIDTH = 10;
 	private float unzoomedBorderWidth = 1f;
 	private DashVariant dash = DashVariant.DEFAULT;
 	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
@@ -308,12 +307,12 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public Rectangle getDragRectangle() {
-		final int size = getDraggingWidth();
+		final int size = getDraggingAreaWidth();
 		Rectangle r;
 		if(getNodeView().isLeft())
-			r = new Rectangle(getWidth(), -size, size, getHeight() + size * 2);
+			r = new Rectangle(getWidth(), -size/2, size, getHeight() + size);
 		else
-			r = new Rectangle(-size, -size, size, getHeight() + size * 2);
+			r = new Rectangle(-size, -size/2, size, getHeight() + size);
 		return r;
 	}
 
@@ -580,7 +579,7 @@ public class MainView extends ZoomableLabel {
 			}
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 				return false;
-			final int draggingWidth = getDraggingWidth();
+			final int draggingWidth = getDraggingAreaWidth();
 			if(nodeView.isLeft()){
 				final int width = getWidth();
 				return p.x >= width && p.x < width + draggingWidth;
@@ -599,7 +598,7 @@ public class MainView extends ZoomableLabel {
     }
 
 	public boolean isInFoldingRegion(Point p) {
-		if (hasChildren() && p.y >= 0 && p.y < getHeight()) {
+		if (hasChildren() && p.y >= 0 && p.y < getMainViewHeightWithFoldingMark(false)) {
 			final boolean isLeft = getNodeView().isLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
 			if (isLeft) {
@@ -683,8 +682,8 @@ public class MainView extends ZoomableLabel {
 			setMouseArea(MouseArea.OUT);
 	}
 
-	private int getDraggingWidth() {
-		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
+	private int getDraggingAreaWidth() {
+		return getNodeView().getMap().getDraggingAreaWidth();
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
@@ -844,8 +843,8 @@ public class MainView extends ZoomableLabel {
 		return painter.getMainViewWidthWithFoldingMark();
 	}
 
-	public int getMainViewHeightWithFoldingMark() {
-		return painter.getMainViewHeightWithFoldingMark();
+	public int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
+		return painter.getMainViewHeightWithFoldingMark(onlyFolded);
 	}
 
 	public int getSingleChildShift() {
