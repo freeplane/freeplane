@@ -13,7 +13,7 @@ import javax.swing.JComponent;
 import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.features.map.NodeModel;
 
-class NodeViewAccessor {
+class NodeViewLayoutHelper {
 	static class ContentAccessor {
 
 		private JComponent content;
@@ -56,8 +56,10 @@ class NodeViewAccessor {
 	final static boolean useHorizontalLayout = true;
 
 	private NodeView view;
+	private int topOverlap;
+	private int bottomOverlap;
 
-	NodeViewAccessor(NodeView view) {
+	NodeViewLayoutHelper(NodeView view) {
 		this.view = view;
 	}
 
@@ -78,9 +80,9 @@ class NodeViewAccessor {
 		return view.getComponentCount();
 	}
 
-	NodeViewAccessor getComponent(int n) {
+	NodeViewLayoutHelper getComponent(int n) {
 		Component component = view.getComponent(n);
-		return component instanceof NodeView ? new NodeViewAccessor((NodeView) component) : null;
+		return component instanceof NodeView ? new NodeViewLayoutHelper((NodeView) component) : null;
 	}
 
 	MapView getMap() {
@@ -121,15 +123,6 @@ class NodeViewAccessor {
 		return view.isFirstGroupNode();
 	}
 
-	void setBottomOverlap(int i) {
-		view.setBottomOverlap(i);
-		
-	}
-
-	void setTopOverlap(int topOverlap) {
-		view.setTopOverlap(topOverlap);
-	}
-
 	boolean isLeft() {
 		return view.isLeft();
 	}
@@ -146,17 +139,25 @@ class NodeViewAccessor {
 		return view.isFree();
 	}
 	
-	int getTopOverlap() {
-		return view.getTopOverlap();
+
+ 	int getTopOverlap() {
+		return topOverlap;
+	}
+
+	void setTopOverlap(int topOverlap) {
+		this.topOverlap = topOverlap;
 	}
 
 	int getBottomOverlap() {
-		return view.getBottomOverlap();
+		return bottomOverlap;
 	}
 
-	NodeViewAccessor getParentView() {
+	void setBottomOverlap(int bottomOverlap) {
+		this.bottomOverlap = bottomOverlap;
+	}
+	NodeViewLayoutHelper getParentView() {
 		NodeView parentView = view.getParentView();
-		return parentView != null ? new NodeViewAccessor(parentView) : null;
+		return parentView != null ? new NodeViewLayoutHelper(parentView) : null;
 	}
 
 	int getZoomed(int i) {

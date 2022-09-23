@@ -135,10 +135,9 @@ public class NodeView extends JComponent implements INodeView {
 	private ObjectRule<Color, Rules> edgeColor = null;
 	private Color modelBackgroundColor;
 
-	private int topOverlap;
-	private int bottomOverlap;
 	private boolean isFolded;
 	private DashVariant edgeDash = DashVariant.DEFAULT;
+	private final NodeViewLayoutHelper layoutHelper;
 
 	public static final int DETAIL_VIEWER_POSITION = 2;
 
@@ -147,6 +146,7 @@ public class NodeView extends JComponent implements INodeView {
 		this.model = model;
 		this.map = map;
 		this.isFolded = map.getModeController().getMapController().isFolded(model);
+		this.layoutHelper = new NodeViewLayoutHelper(this);
 	}
 
 	public boolean isFolded(){
@@ -1720,22 +1720,6 @@ public class NodeView extends JComponent implements INodeView {
 		return FreeNode.isFreeNode(getModel());
 	}
 
- 	int getTopOverlap() {
-		return topOverlap;
-	}
-
-	void setTopOverlap(int topOverlap) {
-		this.topOverlap = topOverlap;
-	}
-
-	int getBottomOverlap() {
-		return bottomOverlap;
-	}
-
-	void setBottomOverlap(int bottomOverlap) {
-		this.bottomOverlap = bottomOverlap;
-	}
-
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		Rules rule = edgeColor.getRule();
@@ -1825,4 +1809,8 @@ public class NodeView extends JComponent implements INodeView {
     public StyleOption getStyleOption() {
         return useSelectionColors() ? StyleOption.FOR_SELECTED_NODE : StyleOption.FOR_UNSELECTED_NODE;
     }
+
+	NodeViewLayoutHelper getLayoutHelper() {
+		return layoutHelper;
+	}
 }

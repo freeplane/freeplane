@@ -14,7 +14,7 @@ public class ContentSizeCalculator {
         Dimension contentSize=  content.getPreferredSize();
         return contentSize;
     }
-	public Dimension calculateContentSize(NodeViewAccessor accessor) {
+	public Dimension calculateContentSize(NodeViewLayoutHelper accessor) {
 		return accessor.calculateContentSize();
 	}
 

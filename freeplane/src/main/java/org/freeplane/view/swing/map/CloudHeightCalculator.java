@@ -20,7 +20,7 @@ public class CloudHeightCalculator {
             return 0;
         }
     }
-	public int getAdditionalCloudHeigth(NodeViewAccessor accessor) {
+	public int getAdditionalCloudHeigth(NodeViewLayoutHelper accessor) {
 		return accessor.getAdditionalCloudHeigth();
 	}
 
