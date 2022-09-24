@@ -29,6 +29,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.mindmapmode.NewNodeStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
@@ -112,7 +113,11 @@ public class NewParentNode extends AFreeplaneAction {
         		childPosition = summaryLevels.findGroupBeginNodeIndex(childPosition);
         	
         }
-		final NodeModel newParent = mapController.addNewNode(oldParent, childPosition, selectedNode.getSide());
+        final int index = childPosition;
+		final NodeModel newParent = mapController.addNewNode(oldParent, index, node -> {
+            node.setSide(selectedNode.getSide());
+            NewNodeStyle.assignStyleToNewNode(node);
+        });
         mapController.moveNodesAsChildren(selectedNodes, newParent);
         return newParent;
 	}

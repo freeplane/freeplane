@@ -30,6 +30,7 @@ import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
 import org.freeplane.api.Side;
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -1072,6 +1073,16 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
 		final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(minimalDistanceBetweenChildren, LengthUnit.px);
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+	}
+
+	@Override
+	public void setVerticalNodeAlignment(final VerticalNodeAlignment alignment){
+		((MLocationController) LocationController.getController()).setVerticalAlignment(getDelegate(), alignment);
+	}
+
+	@Override
+	public VerticalNodeAlignment getVerticalNodeAlignment() {
+		return LocationController.getController().getVerticalAlignment(getDelegate());
 	}
 
 	@Override

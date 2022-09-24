@@ -21,6 +21,7 @@ package org.freeplane.features.nodelocation;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;
@@ -54,6 +55,17 @@ class LocationBuilder implements IExtensionAttributeWriter {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP_QUANTITY", vgapHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP", vgapHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP_QUANTITY", vgapHandler);
+		
+		final IAttributeHandler verticalAlignmentHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				LocationModel.createLocationModel(node).setVerticalAlignment(VerticalNodeAlignment.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VERTICAL_ALIGNMENT", verticalAlignmentHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VERTICAL_ALIGNMENT", verticalAlignmentHandler);
+		
+		
 		final IAttributeHandler hgapHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -82,6 +94,10 @@ class LocationBuilder implements IExtensionAttributeWriter {
 		final Quantity<LengthUnit> shiftY = locationModel.getShiftY();
 		if (shiftY != LocationModel.DEFAULT_SHIFT_Y) {
 			writer.addAttribute("VSHIFT_QUANTITY", shiftY.toString());
+		}
+		final VerticalNodeAlignment alignment = locationModel.getVerticalAlignment();
+		if (alignment != LocationModel.DEFAULT_VERTICAL_ALIGNMENT) {
+			writer.addAttribute("VERTICAL_ALIGNMENT", alignment.name());
 		}
 	}
 }

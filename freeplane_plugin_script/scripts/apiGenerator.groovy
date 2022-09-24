@@ -13,7 +13,7 @@ import org.freeplane.api.NodeChangeListener
 import org.freeplane.api.NodeChanged
 import org.freeplane.api.NodeCondition
 import org.freeplane.api.NodeShape
-import org.freeplane.api.ViewSide
+import org.freeplane.api.Side
 import org.freeplane.api.Quantity
 import org.freeplane.core.util.MenuUtils
 import org.freeplane.features.cloud.CloudShape
@@ -78,9 +78,9 @@ def makeApi(Proxy.Node node, Class clazz) {
     classNode.link.uri = getApiLink(clazz)
     classNode.style.font.bold = true
     if(clazz.isEnum()) {
-	    clazz.getEnumConstants().each {
-	        classNode.createChild(it)
-	    }
+        clazz.getEnumConstants().each {
+            classNode.createChild(it)
+        }
     }
     else { // skip methods and properties for enums
         TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
@@ -315,7 +315,7 @@ makeApi(proxy, Convertible.class)
 makeApi(proxy, Proxy.NodeStyle.class)
 makeApi(proxy, Proxy.NodeGeometry.class)
 makeApi(proxy, NodeShape.class)
-makeApi(proxy, ViewSide.class)
+makeApi(proxy, Side.class)
 makeApi(proxy, Quantity.class)
 makeApi(proxy, LengthUnit.class)
 makeApi(proxy, Proxy.Reminder.class)
@@ -352,11 +352,11 @@ bundle.getKeys().toList()
         }
 icons.folded = true
 
-def web = createChild(newMap.root, WEB_NODE, 'https://www.freeplane.org/wiki/index.php/Scripting')
+def web = createChild(newMap.root, WEB_NODE, 'https://docs.freeplane.org/scripting/Scripting.html')
 initHeading(web)
-createChild(web, 'Groovy tutorials (Codehaus)', 'http://groovy.codehaus.org/Beginners+Tutorial')
-createChild(web, 'Example scripts', 'https://www.freeplane.org/wiki/index.php/Scripting:_Example_scripts')
-createChild(web, 'Scripting API changes', 'https://www.freeplane.org/wiki/index.php/Scripting:_API_Changes')
+createChild(web, 'Groovy - learn', 'https://groovy-lang.org/learn.html')
+createChild(web, 'Groovy - learn X in Y minutes', 'https://learnxinyminutes.com/docs/groovy/')
+createChild(web, 'Example scripts', 'https://docs.freeplane.org/scripting/Scripts_collection.html')
 
 def legend = newMap.root.createChild(LEGEND_NODE)
 initHeading(legend)

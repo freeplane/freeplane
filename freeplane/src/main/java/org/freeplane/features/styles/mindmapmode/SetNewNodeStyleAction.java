@@ -21,14 +21,15 @@ package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.StyleTranslatedObject;
 
 /**
@@ -36,10 +37,9 @@ import org.freeplane.features.styles.StyleTranslatedObject;
  * 28.09.2009
  */
 @SelectableAction(checkOnPopup = true)
-public class AssignStyleAction extends AMultipleNodeAction {
+public class SetNewNodeStyleAction extends AFreeplaneAction{
 	final private IStyle style;
-
-	public AssignStyleAction(final IStyle style) {
+    public SetNewNodeStyleAction(final IStyle style) {
 		super(actionName(style), actionText(style), null);
 		this.style = style;
 	}
@@ -49,7 +49,7 @@ public class AssignStyleAction extends AMultipleNodeAction {
     }
 
 	private static String actionName(final IStyle style) {
-			return "AssignStyleAction." + StyleTranslatedObject.toKeyString(style);
+	    return "SetNewNodeStyleAction." + StyleTranslatedObject.toKeyString(style);
     }
 
 	/**
@@ -58,19 +58,28 @@ public class AssignStyleAction extends AMultipleNodeAction {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MLogicalStyleController controller = (MLogicalStyleController) Controller.getCurrentModeController().getExtension(
-		    LogicalStyleController.class);
-		controller.setStyle(node, style);
+    public void actionPerformed(final ActionEvent e) {
+        final Controller controller = Controller.getCurrentController();
+        final NodeModel node = controller.getSelection().getSelected();
+        final ModeController modeController = controller.getModeController();
+        final MapStyle mapStyleController = MapStyle.getController(modeController);
+        final MapModel map = node.getMap();
+        String propertyValue = NewNodeStyle.propertyValue(style);
+        mapStyleController.setProperty(map, NewNodeStyle.NEW_NODE_STYLE_PROPERTY_NAME, propertyValue);
 	}
 
 	@Override
 	public void setSelected() {
 		IMapSelection selection = Controller.getCurrentController().getSelection();
 		if(selection != null){
-			NodeModel node= selection.getSelected();
-			final IStyle style = LogicalStyleModel.getStyle(node);
-			setSelected(this.style.equals(style));
+	        final Controller controller = Controller.getCurrentController();
+	        final NodeModel node = controller.getSelection().getSelected();
+	        final ModeController modeController = controller.getModeController();
+	        final MapStyle mapStyleController = MapStyle.getController(modeController);
+	        final MapModel map = node.getMap();
+	        final String propertyValue = mapStyleController.getPropertySetDefault(map, NewNodeStyle.NEW_NODE_STYLE_PROPERTY_NAME);
+	        String ownValue = NewNodeStyle.propertyValue(style);
+	        setSelected(ownValue.equals(propertyValue));
 		}
 		else
 			setSelected(false);

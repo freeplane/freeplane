@@ -319,7 +319,8 @@ private Timer timer;
 		else {
 			List<NodeModel> nodesChangingParent = movedNodes.stream().filter(node -> targetNode != node.getParentNode()).collect(Collectors.toList());
 			mapController.moveNodesAsChildren(movedNodes, targetNode);
-			mapController.setSide(nodesChangingParent, MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT));
+			Side side = MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT);
+			mapController.setSide(side == Side.DEFAULT ? nodesChangingParent : movedNodes, side);
 		}
 	}
 

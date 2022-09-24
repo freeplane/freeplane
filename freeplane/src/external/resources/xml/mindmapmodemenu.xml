@@ -451,6 +451,10 @@
 				<Entry name="FormatCopy" accelerator="alt shift C" />
 				<Entry name="FormatPaste" accelerator="alt shift V" />
 				<Entry name="RemoveFormatAction" />
+				<Entry name="newNodeStyleActions" textKey="menu_setNewNodeStyle">
+					<Entry builder="new_node_style_actions" />
+					<Entry builder="noActions" />
+				</Entry>
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewChild" />
 			</Entry>

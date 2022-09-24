@@ -29,28 +29,17 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
-import org.freeplane.features.styles.StyleTranslatedObject;
 
 /**
  * @author Dimitry Polivaev
  * 28.09.2009
  */
 @SelectableAction(checkOnPopup = true)
-public class AssignStyleAction extends AMultipleNodeAction {
-	final private IStyle style;
+public class ResetStyleAction extends AMultipleNodeAction {
 
-	public AssignStyleAction(final IStyle style) {
-		super(actionName(style), actionText(style), null);
-		this.style = style;
+	public ResetStyleAction() {
+		super("ResetStyleAction");
 	}
-
-	private static String actionText(final IStyle style) {
-	    return style.toString();
-    }
-
-	private static String actionName(final IStyle style) {
-			return "AssignStyleAction." + StyleTranslatedObject.toKeyString(style);
-    }
 
 	/**
 	 * 
@@ -61,7 +50,7 @@ public class AssignStyleAction extends AMultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final MLogicalStyleController controller = (MLogicalStyleController) Controller.getCurrentModeController().getExtension(
 		    LogicalStyleController.class);
-		controller.setStyle(node, style);
+		controller.setStyle(node, null);
 	}
 
 	@Override
@@ -70,7 +59,7 @@ public class AssignStyleAction extends AMultipleNodeAction {
 		if(selection != null){
 			NodeModel node= selection.getSelected();
 			final IStyle style = LogicalStyleModel.getStyle(node);
-			setSelected(this.style.equals(style));
+			setSelected(null == style);
 		}
 		else
 			setSelected(false);

@@ -202,6 +202,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 				}
 				nodeTreeCreator.finish(target);
 			}
+			mapController.removeSuperficiousFirstGroupNodes(target);
 		}
 	}
 

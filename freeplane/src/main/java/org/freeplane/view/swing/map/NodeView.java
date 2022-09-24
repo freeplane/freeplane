@@ -45,6 +45,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -325,7 +326,7 @@ public class NodeView extends JComponent implements INodeView {
 			final int x = transX + getContent().getX() - getDeltaX();
 			final int y = transY + getContent().getY() - getDeltaY();
 			final int width = mainView.getMainViewWidthWithFoldingMark();
-			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark();
+			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark(true);
 			final int height = Math.max(heightWithFoldingMark, getContent().getHeight());
 			inList.addLast(new Point(-additionalDistanceForConvexHull + x, -additionalDistanceForConvexHull + y));
 			inList
@@ -511,8 +512,12 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView getNextSiblingSingle() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
+		boolean skipUntilSummaryEnd = isSummary();
 		for (int i = index + 1; i < v.size(); i++) {
 			final NodeView nextView = v.get(i);
+			if(skipUntilSummaryEnd && nextView.isSummary())
+				break;
+			skipUntilSummaryEnd = false;
 			final NodeModel node = nextView.getModel();
 			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
@@ -629,8 +634,13 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView getPreviousSiblingSingle() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
+		boolean skipUntilFirstGroupNode = isSummary();
 		for (int i = index - 1; i >= 0; i--) {
 			final NodeView nextView = v.get(i);
+ 			if(skipUntilFirstGroupNode) {
+ 				skipUntilFirstGroupNode = !nextView.isFirstGroupNode();
+ 				continue;
+ 			}
 			final NodeModel node = nextView.getModel();
 			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
@@ -653,14 +663,14 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if (parentView.isRoot()) {
 			if (this.isLeft()) {
-				v = (getParentView()).getLeft(true);
+				v = parentView.getLeft(true);
 			}
 			else {
-				v = (getParentView()).getRight(true);
+				v = parentView.getRight(true);
 			}
 		}
 		else {
-			v = getParentView().getChildrenViews();
+			v = parentView.getChildrenViews();
 		}
 		return v;
 	}
@@ -745,6 +755,27 @@ public class NodeView extends JComponent implements INodeView {
 		final double minimalDistanceBetweenChildren = getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(model).toBaseUnits();
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
+	
+	VerticalNodeAlignment getVerticalAlignment() {
+		VerticalNodeAlignment verticalAlignment = getModeController().getExtension(LocationController.class).getVerticalAlignment(model);
+		switch (verticalAlignment) {
+		case UNDEFINED:
+		case AS_PARENT:
+			return getParentViewVerticalAlignment();
+		default:
+			return verticalAlignment;
+		}
+	}
+
+	private VerticalNodeAlignment getParentViewVerticalAlignment() {
+		NodeView parentView = getParentView();
+		if (parentView == null)
+			return VerticalNodeAlignment.CENTER;
+		else if(parentView.isSummary())
+			return parentView.getParentViewVerticalAlignment();
+		else
+			return parentView.getVerticalAlignment();
+	}
 
 	public NodeView getAncestorWithVisibleContent() {
 		final Container parent = getParent();
@@ -756,11 +787,6 @@ public class NodeView extends JComponent implements INodeView {
 			return parentView;
 		}
 		return parentView.getAncestorWithVisibleContent();
-	}
-
-	public NodeView getChildDistanceContainer(){
-		return this;
-
 	}
 
 	public NodeView getVisibleSummarizedOrParentView() {
@@ -887,6 +913,12 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			if(property != EncryptionModel.class)
 				return;
+		}
+		if(property == VerticalNodeAlignment.class) {
+			invalidateAll();
+			revalidate();
+			repaint();
+			return;
 		}
 		if(property == NodeVisibilityConfiguration.class) {
 			updateAll();
@@ -1594,9 +1626,11 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 	private void invalidateAll() {
-		invalidate();
-		for (final NodeView child : getChildrenViews()) {
-			child.invalidate();
+		LinkedList<NodeView> childrenViews = getChildrenViews();
+		if(childrenViews.isEmpty())
+			invalidate();
+		for (final NodeView child : childrenViews) {
+			child.invalidateAll();
 		}
 	}
 	

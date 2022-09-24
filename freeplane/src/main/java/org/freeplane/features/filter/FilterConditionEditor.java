@@ -168,17 +168,17 @@ public class FilterConditionEditor {
 	private ActionListener enterKeyActionListener;
 	final private JToggleButton btnDeny;
 	private final JComponent panel;
-	private final JToolBar optionPanel;
+	private final JComponent optionPanel;
 	public FilterConditionEditor(final FilterController filterController, final Variant variant) {
 		this(filterController, 5, variant);
 	}
 	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final Variant variant) {
-		this(filterController, borderWidth, variant, new JPanel(new GridBagLayout()));
+		this(filterController, borderWidth, variant, new FreeplaneToolBar(JToolBar.HORIZONTAL));
 	}
 	public FilterConditionEditor(final FilterController filterController, final int borderWidth, final Variant variant,
-			JComponent panel) {
+			JComponent optionPanel) {
 		super();
-		this.panel = panel;
+		this.panel = new JPanel(new GridBagLayout());
 		final GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.gridx = -1;
 		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
@@ -223,11 +223,10 @@ public class FilterConditionEditor {
 		values.setEditable(true);
 		setValuesEnterKeyListener();
 
-		optionPanel = new FreeplaneToolBar(JToolBar.HORIZONTAL);
+		this.optionPanel = optionPanel;
 
 		// Ignore case checkbox
 		caseSensitive = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_MATCH_CASE + ".icon", PROPERTY_FILTER_MATCH_CASE + ".tooltip");
-		caseSensitive.setFocusable(false);
 		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
 		optionPanel.add(caseSensitive, gridBagConstraints);
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(

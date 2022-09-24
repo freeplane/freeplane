@@ -23,9 +23,11 @@ package org.freeplane.view.swing.map;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Arrays;
+import java.util.function.ToIntFunction;
 
 import javax.swing.JComponent;
 
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
@@ -53,6 +55,8 @@ class VerticalNodeViewLayoutStrategy {
 
 	final private boolean allowsCompactLayout;
 
+	private int defaultVGap;
+
 	public VerticalNodeViewLayoutStrategy(NodeView view, boolean allowsCompactLayout) {
 		this.view = view;
 		childViewCount = view.getComponentCount() - 1;
@@ -65,7 +69,8 @@ class VerticalNodeViewLayoutStrategy {
 		this.xCoordinates = new int[childViewCount];
 		this.yCoordinates = new int[childViewCount];
 		this.isChildFreeNode = new boolean[childViewCount];
-		spaceAround = view.getSpaceAround();
+		this.spaceAround = view.getSpaceAround();
+		this.defaultVGap = view.getMap().getZoomed(LocationModel.DEFAULT_VGAP.toBaseUnits());
 		this.allowsCompactLayout = allowsCompactLayout;
 	}
 
@@ -111,7 +116,7 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void calculateLayoutY(final boolean isLeft) {
-		final int minimalDistanceBetweenChildren = view.getChildDistanceContainer().getMinimalDistanceBetweenChildren();
+		final int minimalDistanceBetweenChildren = view.getMinimalDistanceBetweenChildren();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int top = 0;
@@ -123,7 +128,7 @@ class VerticalNodeViewLayoutStrategy {
 		final int[] contentHeightSumAtGroupStart = new int[level];
 		final int[] groupUpperYCoordinate = new int[level];
 		final int[] groupLowerYCoordinate = new int[level];
-
+		
 		for (int childViewIndex = 0; childViewIndex < childViewCount; childViewIndex++) {
 			final NodeView child = (NodeView) view.getComponent(childViewIndex);
 			if (child.isLeft() == isLeft) {
@@ -144,22 +149,33 @@ class VerticalNodeViewLayoutStrategy {
 
 				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 				final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
-				final int childShiftY = child.isContentVisible() ? child.getShift() : 0;
+				int childShiftY = calculateShiftY(child);
 
 				if (isItem) {
 					final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
 					if (isFreeNode)
 						this.yCoordinates[childViewIndex] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
 					else {
+						int extraVGap = 0 ;
 						if (childHeight != 0) {
-							if (visibleChildCounter > 0)
-								childContentHeightSum += vGap;
+							boolean childHasVisibleChildren = child.getHeight() > child.getContent().getHeight() + 2 * spaceAround;
+							if (childHasVisibleChildren) {
+								extraVGap = Math.max(defaultVGap, minimalDistanceBetweenChildren / 6);
+							}
+							childContentHeightSum += vGap;
 						}
 						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
 
 						top += - childContentShift + child.getTopOverlap();
 						y -= child.getTopOverlap();
+
+						int upperGap = align(extraVGap);
+						if(visibleChildCounter > 0) {
+							top -= upperGap;
+							y += upperGap;
+						}
+
 						if (childShiftY < 0 && !allowsCompactLayout) {
 							this.yCoordinates[childViewIndex] = y;
 							y -= childShiftY;
@@ -168,6 +184,7 @@ class VerticalNodeViewLayoutStrategy {
 								y += childShiftY;
 							this.yCoordinates[childViewIndex] = y;
 						}
+						y += extraVGap - upperGap;
 						final int summaryNodeIndex = viewLevels.findSummaryNodeIndex(childViewIndex);
 						if(summaryNodeIndex == SummaryLevels.NODE_NOT_FOUND || summaryNodeIndex - 1 == childViewIndex)
 							vGap = minimalDistanceBetweenChildren;
@@ -245,16 +262,46 @@ class VerticalNodeViewLayoutStrategy {
 				}
 			}
 		}
-		top += (contentSize.height - childContentHeightSum) / 2;
+		top += align(contentSize.height - childContentHeightSum);
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
 	}
+
+	public int align(int height) {
+		VerticalNodeAlignment verticalAlignment = view.getVerticalAlignment();
+		int deltaTop;
+		if (view.isSummary() 
+				|| verticalAlignment == VerticalNodeAlignment.UNDEFINED
+				|| verticalAlignment == VerticalNodeAlignment.CENTER) {
+			deltaTop = height/2;
+		} else if (verticalAlignment == VerticalNodeAlignment.BOTTOM) {
+			deltaTop = height;
+		}
+		else deltaTop = 0;
+		return deltaTop;
+	}
+
+    private int calculateShiftY(final NodeView child) {
+        return calculateDistance(child, NodeView::getShift);
+    }
+
+    private int calculateDistance(final NodeView child, ToIntFunction<NodeView> nodeDistance) {
+        if (!child.isContentVisible())
+            return 0;
+        int shift = nodeDistance.applyAsInt(child);
+        for(NodeView ancestor = child.getParentView(); 
+                ancestor != null && ! ancestor.isContentVisible();
+                ancestor = ancestor.getParentView()) {
+            if(ancestor.isFree())
+                shift += nodeDistance.applyAsInt(ancestor);
+        }
+        return shift;
+    }
 
 	private boolean isNextNodeSummaryNode(int childViewIndex) {
 		return childViewIndex + 1 < viewLevels.summaryLevels.length && viewLevels.summaryLevels[childViewIndex + 1] > 0;
 	}
 
 	private int summarizedNodeDistance(final int distance) {
-		final int defaultVGap = view.getMap().getZoomed(LocationModel.DEFAULT_VGAP.toBaseUnits());
 		if(defaultVGap >= distance)
 			return distance;
 		else
@@ -274,7 +321,7 @@ class VerticalNodeViewLayoutStrategy {
 				boolean isItem = level == 0;
 				int childHGap;
 				if (child.isContentVisible())
-					childHGap = child.getHGap();
+					childHGap = calculateHGap(child);
 				else if (child.isSummary())
 					childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 				else
@@ -313,6 +360,10 @@ class VerticalNodeViewLayoutStrategy {
 			}
 		}
 	}
+
+    private int calculateHGap(final NodeView child) {
+        return calculateDistance(child, NodeView::getHGap);
+    }
 
 	private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int childContentHeightOnSide,  int topOnSide) {
 		if (! (leftSideCoordinaresAreSet || rightSideCoordinatesAreSet)) {

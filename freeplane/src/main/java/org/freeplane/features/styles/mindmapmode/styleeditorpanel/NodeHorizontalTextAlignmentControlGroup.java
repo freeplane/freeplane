@@ -67,7 +67,7 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 			final HorizontalTextAlignment style = NodeStyleModel.getHorizontalTextAlignment(node);
 			final HorizontalTextAlignment viewStyle = styleController.getHorizontalTextAlignment(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetNodeTextAlignment.setValue(style != null);
-			mNodeTextAlignment.setValue(viewStyle.toString());
+			mNodeTextAlignment.setValue(viewStyle.name());
 		}
 
         @Override

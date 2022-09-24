@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -43,6 +44,8 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class LocationController implements IExtension {
 	final private ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel> childGapHandlers;
+	final private ExclusivePropertyChain<VerticalNodeAlignment, NodeModel> childVerticalAlignmentHandlers;
+	
 	public static LocationController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -83,11 +86,32 @@ public class LocationController implements IExtension {
 				return LocationModel.DEFAULT_VGAP;
 			}
 		});
+		
+		childVerticalAlignmentHandlers = new ExclusivePropertyChain<VerticalNodeAlignment, NodeModel>();
+		addVerticalAlignmentGetter(IPropertyHandler.STYLE, new IPropertyHandler<VerticalNodeAlignment, NodeModel>() {
+			public VerticalNodeAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, VerticalNodeAlignment currentValue) {
+				final MapModel map = node.getMap();
+				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+				final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
+				final VerticalNodeAlignment returnedAlignment = getStyleAlignment(map, style);
+				return returnedAlignment;
+			}
+		});
+		addVerticalAlignmentGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<VerticalNodeAlignment, NodeModel>() {
+			public VerticalNodeAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, VerticalNodeAlignment currentValue) {
+				return LocationModel.DEFAULT_VERTICAL_ALIGNMENT;
+			}
+		});
 
 	}
 	private IPropertyHandler<Quantity<LengthUnit>, NodeModel> addChildGapGetter(final Integer key,
             final IPropertyHandler<Quantity<LengthUnit>, NodeModel> getter) {
 			return childGapHandlers.addGetter(key, getter);
+	}
+
+	private IPropertyHandler<VerticalNodeAlignment, NodeModel> addVerticalAlignmentGetter(final Integer key,
+            final IPropertyHandler<VerticalNodeAlignment, NodeModel> getter) {
+			return childVerticalAlignmentHandlers.addGetter(key, getter);
 	}
 
 	private Quantity<LengthUnit> getStyleChildGap(final MapModel map, final Collection<IStyle> styleKeys) {
@@ -110,6 +134,25 @@ public class LocationController implements IExtension {
 		return null;
 	}
 
+	private VerticalNodeAlignment getStyleAlignment(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
+			if (styleModel == null) {
+				continue;
+			}
+			VerticalNodeAlignment alignment = styleModel.getVerticalAlignment();
+			if (alignment == LocationModel.DEFAULT_VERTICAL_ALIGNMENT) {
+				continue;
+			}
+			return alignment;
+		}
+		return null;
+	}
 	public Quantity<LengthUnit> getHorizontalShift(NodeModel node){
 		return LocationModel.getModel(node).getHGap();
 	}
@@ -120,5 +163,9 @@ public class LocationController implements IExtension {
 
 	public Quantity<LengthUnit> getMinimalDistanceBetweenChildren(NodeModel node){
 		return childGapHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	public VerticalNodeAlignment getVerticalAlignment(NodeModel node) {
+		return childVerticalAlignmentHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 }

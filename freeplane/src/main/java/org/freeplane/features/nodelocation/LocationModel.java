@@ -19,8 +19,11 @@
  */
 package org.freeplane.features.nodelocation;
 
+import java.util.Objects;
+
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
@@ -32,6 +35,8 @@ public class LocationModel implements IExtension {
 	public static final int DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnitsRounded();
 	public static Quantity<LengthUnit> DEFAULT_SHIFT_Y = new Quantity<LengthUnit>(0, LengthUnit.pt);
 	public static Quantity<LengthUnit> DEFAULT_VGAP = new Quantity<LengthUnit>(2, LengthUnit.pt);
+	public static final VerticalNodeAlignment DEFAULT_VERTICAL_ALIGNMENT = VerticalNodeAlignment.UNDEFINED;
+
 	public static final LocationModel NULL_LOCATION = new LocationModel() {
 		@Override
 		public void setHGap(final Quantity<LengthUnit> gap) {
@@ -58,11 +63,13 @@ public class LocationModel implements IExtension {
 	private Quantity<LengthUnit> hGap;
 	private Quantity<LengthUnit> shiftY;
 	private Quantity<LengthUnit> vGap;
+	private VerticalNodeAlignment verticalAlignment;
 
 	public LocationModel(){
 		hGap = LocationModel.DEFAULT_HGAP;
 		shiftY = LocationModel.DEFAULT_SHIFT_Y;
 		vGap = LocationModel.DEFAULT_VGAP;
+		verticalAlignment = DEFAULT_VERTICAL_ALIGNMENT;
 	}
 
 	public static LocationModel createLocationModel(final NodeModel node) {
@@ -93,22 +100,28 @@ public class LocationModel implements IExtension {
 	}
 
 	public void setHGap(final Quantity<LengthUnit> gap) {
-		assertNotNull(gap);
+		Objects.requireNonNull(gap);
 		hGap = gap;
 	}
 
-	private void assertNotNull(Object object) {
-		if(object == null)
-			throw new NullPointerException();
-	}
-
 	public void setShiftY(final Quantity<LengthUnit> shiftY) {
-		assertNotNull(shiftY);
+		Objects.requireNonNull(shiftY);
 		this.shiftY = shiftY;
 	}
 
 	public void setVGap(final Quantity<LengthUnit> gap) {
-		assertNotNull(gap);
+		Objects.requireNonNull(gap);
 		vGap = gap.toBaseUnits() >= 0 ? gap : new Quantity<LengthUnit>(0, gap.unit);
 	}
+
+	public VerticalNodeAlignment getVerticalAlignment() {
+		return verticalAlignment;
+	}
+
+	public void setVerticalAlignment(VerticalNodeAlignment verticalAlignment) {
+		Objects.requireNonNull(verticalAlignment);
+		this.verticalAlignment = verticalAlignment;
+	}
+	
+	
 }
