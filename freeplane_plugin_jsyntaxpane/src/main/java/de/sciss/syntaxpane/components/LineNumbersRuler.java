@@ -219,11 +219,13 @@ public class LineNumbersRuler extends JPanel
         SyntaxView.setRenderingHits((Graphics2D) g);
 
         Rectangle clip = g.getClip().getBounds();
+        int topMargin = getInsets().top;
+        int leftMargin = editor.getInsets().left;
         int lh = fontMetrics.getHeight();
-        int topY = Math.max(clip.y / lh * lh, 0);
+        int topY = Math.max((clip.y - topMargin) / lh * lh, 0) + topMargin;
         int bottomY;
         if(isWordWrapEnabled) {
-            bottomY = Math.min((clip.y + clip.height) / lh * lh, editor.getHeight()) + lh;
+            bottomY = Math.min((clip.y - topMargin + clip.height) / lh * lh + topMargin + lh, editor.getHeight());
         }
         else {
             int topLine    = (int) (clip.getY() / lh);
@@ -233,6 +235,7 @@ public class LineNumbersRuler extends JPanel
         }
 
         Point p = new Point();
+        p.x = leftMargin;
         int pos = editor.viewToModel(p);
         int previousLine = getLineNumber(pos) - 1;
         for (int y = topY; y < bottomY; y+=lh) {
