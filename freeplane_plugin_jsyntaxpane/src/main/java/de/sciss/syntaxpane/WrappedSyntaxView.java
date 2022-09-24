@@ -1,3 +1,4 @@
+package de.sciss.syntaxpane;
 /*
  * Copyright 2008 Ayman Al-Sairafi ayman.alsairafi@gmail.com
  * Copyright 2011-2022 Hanns Holger Rutz.
@@ -13,7 +14,7 @@
  * limitations under the License.  
  */
 
-package de.sciss.syntaxpane;
+
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,12 +34,12 @@ import javax.swing.text.WrappedPlainView;
 
 import de.sciss.syntaxpane.util.Configuration;
 
-public class SyntaxView extends WrappedPlainView {
+public class WrappedSyntaxView extends WrappedPlainView {
 
     public static final String PROPERTY_RIGHT_MARGIN_COLOR  = "RightMarginColor";
     public static final String PROPERTY_RIGHT_MARGIN_COLUMN = "RightMarginColumn";
     public static final String PROPERTY_SINGLE_COLOR_SELECT = "SingleColorSelect";
-    private static final Logger log = Logger.getLogger(SyntaxView.class.getName());
+    private static final Logger log = Logger.getLogger(WrappedSyntaxView.class.getName());
     private boolean singleColorSelect;
     private int rightMarginColumn;
     private Color rightMarginColor;
@@ -48,7 +49,7 @@ public class SyntaxView extends WrappedPlainView {
     /**
      * Construct a new view using the given configuration and prefix given
      */
-    public SyntaxView(Element element, Configuration config) {
+    public WrappedSyntaxView(Element element, Configuration config) {
         super(element, true);
         configure(config);
     }

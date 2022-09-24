@@ -47,9 +47,10 @@ public class Activator implements BundleActivator {
 		try {
 			Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
 			DefaultSyntaxKit.initKit();
+			Configuration defaultConfig = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
+			defaultConfig.put(DefaultSyntaxKit.CONFIG_ENABLE_WORD_WRAP, "true");
 			if(hasDarkBackground()) {
-				Configuration config = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
-				configureDarkTheme(config);
+				configureDarkTheme(defaultConfig);
 			}
 
 			Configuration javaSyntaxKitConfig = DefaultSyntaxKit.getConfig(JavaSyntaxKit.class);
