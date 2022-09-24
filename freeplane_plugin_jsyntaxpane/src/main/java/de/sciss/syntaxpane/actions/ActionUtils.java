@@ -245,13 +245,22 @@ public class ActionUtils {
      */
     public static int getDocumentPosition(JTextComponent editor, int line,
         int column) {
-        int lineHeight = editor.getFontMetrics(editor.getFont()).getHeight();
-        int charWidth = editor.getFontMetrics(editor.getFont()).charWidth('m');
-        int y = line * lineHeight;
-        int x = column * charWidth;
-        Point pt = new Point(x, y);
-        int pos = editor.viewToModel(pt);
-        return pos;
+    	SyntaxDocument doc = getSyntaxDocument(editor);
+    	int pos;
+    	if(doc != null) {
+    		int offsetAtLineStart = doc.getOffsetAtLineStart(line);
+    		int offsetAtLineEnd =doc.getLineEndOffset(offsetAtLineStart);
+    		pos = Math.min(offsetAtLineStart + column, offsetAtLineEnd);
+    	}
+    	else {
+    		int lineHeight = editor.getFontMetrics(editor.getFont()).getHeight();
+    		int charWidth = editor.getFontMetrics(editor.getFont()).charWidth('m');
+    		int y = line * lineHeight;
+    		int x = column * charWidth;
+    		Point pt = new Point(x, y);
+    		pos = editor.viewToModel(pt);
+    	}
+    	return pos;
     }
 
     public static int getLineCount(JTextComponent pane) {
