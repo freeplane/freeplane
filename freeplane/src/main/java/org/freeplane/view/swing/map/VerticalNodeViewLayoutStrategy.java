@@ -25,8 +25,6 @@ import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.function.ToIntFunction;
 
-import javax.swing.JComponent;
-
 import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -34,7 +32,6 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.view.swing.map.NodeViewLayoutHelper.ContentAccessor;
 
 class VerticalNodeViewLayoutStrategy {
 	
@@ -149,17 +146,17 @@ class VerticalNodeViewLayoutStrategy {
 				boolean isItem = level == 0;
 
 				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
-				final int childContentHeight = child.getContent().getHeight() + childCloudHeigth;
+				final int childContentHeight = child.getContentHeight() + childCloudHeigth;
 				int childShiftY = calculateShiftY(child);
 
 				if (isItem) {
-					final int childContentShift = child.getContent().getY() - childCloudHeigth / 2 - spaceAround;
+					final int childContentShift = child.getContentY() - childCloudHeigth / 2 - spaceAround;
 					if (isFreeNode)
 						this.yCoordinates[childViewIndex] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
 					else {
 						int extraVGap = 0 ;
 						if (childHeight != 0) {
-							boolean childHasVisibleChildren = child.getHeight() > child.getContent().getHeight() + 2 * spaceAround;
+							boolean childHasVisibleChildren = child.getHeight() > child.getContentHeight() + 2 * spaceAround;
 							if (childHasVisibleChildren) {
 								extraVGap = Math.max(defaultVGap, minimalDistanceBetweenChildren / 6);
 							}
@@ -221,7 +218,7 @@ class VerticalNodeViewLayoutStrategy {
 					}
 					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
 							- childContentHeight / 2 + childShiftY
-							- (child.getContent().getY() - childCloudHeigth / 2 - spaceAround);
+							- (child.getContentY() - childCloudHeigth / 2 - spaceAround);
 					this.yCoordinates[childViewIndex] = summaryY;
 					if (!isFreeNode) {
 						final int deltaY = summaryY - groupUpperYCoordinate[itemLevel]
@@ -350,10 +347,10 @@ class VerticalNodeViewLayoutStrategy {
 					}
 				}
 				if (child.isLeft()) {
-					x = baseX - childHGap - child.getContent().getX() - child.getContent().getWidth();
+					x = baseX - childHGap - child.getContentX() - child.getContentWidth();
 					summaryBaseX[level] = Math.min(summaryBaseX[level], x + spaceAround);
 				} else {
-					x = baseX + childHGap - child.getContent().getX();
+					x = baseX + childHGap - child.getContentX();
 					summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - spaceAround);
 				}
 				left = Math.min(left, x);
@@ -396,14 +393,13 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
 	private void applyLayoutToChildComponents() {
-		ContentAccessor content = view.getContent();
 		int spaceAround = view.getSpaceAround();
 		final int contentX = Math.max(spaceAround, -this.left);
 		int cloudHeight = CloudHeightCalculator.INSTANCE
 				.getAdditionalCloudHeigth(view);
 		int contentY = spaceAround + cloudHeight / 2 - Math.min(0, this.top);
 
-		content.setVisible(view.isContentVisible());
+		view.setContentVisible(view.isContentVisible());
 
 		int baseY = contentY - spaceAround + this.top;
 		int minY = 0;
@@ -422,7 +418,7 @@ class VerticalNodeViewLayoutStrategy {
 		int width = contentX + contentSize.width + spaceAround;
 		int height = contentY + contentSize.height + cloudHeight / 2
 				+ spaceAround;
-		content.setBounds(contentX, contentY, contentSize.width,
+		view.setContentBounds(contentX, contentY, contentSize.width,
 				contentSize.height);
 		int topOverlap = -minY;
 		int heigthWithoutOverlap = height;
