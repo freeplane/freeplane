@@ -1813,4 +1813,8 @@ public class NodeView extends JComponent implements INodeView {
 	NodeViewLayoutHelper getLayoutHelper() {
 		return layoutHelper;
 	}
+
+	public boolean usesHorizontalLayout() {
+		return map.usesHorizontalLayout();
+	}
 }

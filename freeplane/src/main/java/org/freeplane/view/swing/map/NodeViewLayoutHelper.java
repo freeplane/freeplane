@@ -193,6 +193,6 @@ class NodeViewLayoutHelper {
 	}
 
 	boolean usesHorizontallayout() {
-		return view.getMap().usesHorizontalLayout();
+		return view.usesHorizontalLayout();
 	}
 }
