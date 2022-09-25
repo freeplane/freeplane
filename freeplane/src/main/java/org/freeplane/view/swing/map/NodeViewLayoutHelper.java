@@ -14,58 +14,56 @@ import org.freeplane.api.VerticalNodeAlignment;
 import org.freeplane.features.map.NodeModel;
 
 class NodeViewLayoutHelper {
-	static class ContentAccessor {
-
-		private JComponent content;
-
-		ContentAccessor(JComponent content) {
-			this.content = content;
-		}
+	class ContentAccessor {
 
 		int getX() {
-			return useHorizontalLayout ? content.getY(): content.getX();
+			return usesHorizontallayout() ? getContent().getY(): getContent().getX();
 		}
 
 		int getY() {
-			return useHorizontalLayout ? content.getX(): content.getY();
+			return usesHorizontallayout() ? getContent().getX(): getContent().getY();
 		}
 
 		int getWidth() {
-			return useHorizontalLayout ? content.getHeight(): content.getWidth();
+			return usesHorizontallayout() ? getContent().getHeight(): getContent().getWidth();
 		}
 
 		int getHeight() {
-			return useHorizontalLayout ? content.getWidth(): content.getHeight();
+			return usesHorizontallayout() ? getContent().getWidth(): getContent().getHeight();
 		}
 
 		public void setBounds(int x, int y, int width, int height) {
-			if (useHorizontalLayout) 
-				content.setBounds(y, x, height, width);
+			if (usesHorizontallayout()) 
+				getContent().setBounds(y, x, height, width);
 			else
-				content.setBounds(x, y, width, height);
+				getContent().setBounds(x, y, width, height);
 		}
 
 		public void setVisible(boolean aFlag) {
-			content.setVisible(aFlag);
+			getContent().setVisible(aFlag);
+		}
+
+		private JComponent getContent() {
+			return view.getContent();
 		}
 		
 		
 
 	}
 	
-	final static boolean useHorizontalLayout = true;
-
 	private NodeView view;
 	private int topOverlap;
 	private int bottomOverlap;
+	private final ContentAccessor contentAccessor;
 
 	NodeViewLayoutHelper(NodeView view) {
 		this.view = view;
+		this.contentAccessor = new ContentAccessor();
 	}
 
 	Dimension calculateContentSize() {
 		Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
-		return useHorizontalLayout ? new Dimension(contentSize.height, contentSize.width) : contentSize;
+		return usesHorizontallayout() ? new Dimension(contentSize.height, contentSize.width) : contentSize;
 	}
 
 	int getAdditionalCloudHeigth() {
@@ -73,7 +71,7 @@ class NodeViewLayoutHelper {
 	}
 
 	ContentAccessor getContent() {
-		return new ContentAccessor(view.getContent());
+		return contentAccessor;
 	}
 
 	int getComponentCount() {
@@ -165,26 +163,26 @@ class NodeViewLayoutHelper {
 	}
 
 	int getHeight() {
-		return useHorizontalLayout ? view.getWidth() : view.getHeight();
+		return usesHorizontallayout() ? view.getWidth() : view.getHeight();
 	}
 
 	int getWidth() {
-		return useHorizontalLayout ? view.getHeight() : view.getWidth();
+		return usesHorizontallayout() ? view.getHeight() : view.getWidth();
 	}
 
 	int getX() {
-		return useHorizontalLayout ? view.getY() : view.getX();
+		return usesHorizontallayout() ? view.getY() : view.getX();
 	}
 
 	void setSize(int width, int height) {
-		if (useHorizontalLayout)
+		if (usesHorizontallayout())
 			view.setSize(height, width);
 		else
 			view.setSize(width, height);
 	}
 
 	void setLocation(int x, int y) {
-		if (useHorizontalLayout) 
+		if (usesHorizontallayout()) 
 			view.setLocation(y, x);
 		else 
 			view.setLocation(x, y);
@@ -192,5 +190,9 @@ class NodeViewLayoutHelper {
 
 	String describeComponent(int i) {
 		return view.getComponent(i).toString();
+	}
+
+	boolean usesHorizontallayout() {
+		return view.getMap().usesHorizontalLayout();
 	}
 }

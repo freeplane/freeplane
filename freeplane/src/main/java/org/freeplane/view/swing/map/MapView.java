@@ -571,6 +571,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
 	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
 	private static final String DRAGGING_AREA_WIDTH_PROPERTY = "dragging_area_width";
+	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
+    public static final String SPOTLIGHT_ENABLED = "spotlight";
 
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
@@ -626,10 +628,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
-	private boolean allowsCompactLayout;
-	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
-    public static final String SPOTLIGHT_ENABLED = "spotlight";
 	private boolean scrollsViewAfterLayout = true;
+	private boolean allowsCompactLayout;
+	private boolean usesHorizontalLayout;
 	
 
 	static {
@@ -700,6 +701,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final String fitToViewportAsString = mapStyle.getPropertySetDefault(model, MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 		allowsCompactLayout = mapStyle.allowsCompactLayout(model);
+		usesHorizontalLayout = mapStyle.usesHorizontalLayout(model);
 		connectorChangeListener = new INodeChangeListener() {
 			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
@@ -1337,6 +1339,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT)) {
 			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
 			allowsCompactLayout = mapStyle.allowsCompactLayout(model);
+			getRoot().invalidateAll();
+			revalidate();
+			repaint();
+		}
+		if (property.equals(MapStyle.HORIZONTAL_LAYOUT)) {
+			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+			usesHorizontalLayout = mapStyle.usesHorizontalLayout(model);
 			getRoot().invalidateAll();
 			revalidate();
 			repaint();
@@ -2595,6 +2604,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public int getDraggingAreaWidth() {
 		return getZoomed(draggingAreaWidth);
+	}
+
+	boolean usesHorizontalLayout() {
+		return usesHorizontalLayout;
 	}
 
 }
