@@ -1337,7 +1337,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT)) {
 			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
 			allowsCompactLayout = mapStyle.allowsCompactLayout(model);
-			getRoot().updateAll();
+			getRoot().invalidateAll();
 			revalidate();
 			repaint();
 		}

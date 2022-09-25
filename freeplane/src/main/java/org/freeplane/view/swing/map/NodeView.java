@@ -1625,7 +1625,7 @@ public class NodeView extends JComponent implements INodeView {
 			child.updateAll();
 		}
 	}
-	private void invalidateAll() {
+	void invalidateAll() {
 		LinkedList<NodeView> childrenViews = getChildrenViews();
 		if(childrenViews.isEmpty())
 			invalidate();
