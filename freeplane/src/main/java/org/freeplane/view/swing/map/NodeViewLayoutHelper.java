@@ -158,6 +158,10 @@ class NodeViewLayoutHelper {
 		return getX(view);
 	}
 
+	int getY() {
+		return getY(view);
+	}
+
 	void setSize(int width, int height) {
 		if (usesHorizontallayout())
 			view.setSize(height, width);

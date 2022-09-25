@@ -56,11 +56,11 @@ class OvalPainter extends VariableInsetsPainter {
 	}
 
 	@Override
-	Point getConnectorPoint(Point p) {
+	Point getConnectorPoint(Point p, boolean usesHorizontalLayout) {
 		return getShapeConfiguration().isUniform()
 				|| !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && mainView.getNodeView().isRoot()
 				? getConnectorPointAtTheOvalBorder(p) :
-					super.getConnectorPoint(p);
+					super.getConnectorPoint(p, usesHorizontalLayout);
 	}
 
 
@@ -82,13 +82,15 @@ class OvalPainter extends VariableInsetsPainter {
 			return super.getPreferredSize();
 	}
 
-	Point getConnectorPointAtTheOvalBorder(Point p) {
+	private Point getConnectorPointAtTheOvalBorder(Point p) {
 		final double nWidth = mainView.getWidth() / 2f;
     	final double nHeight = mainView.getHeight() / 2f;
-    	int dx = Math.max(Math.abs(p.x -  mainView.getWidth()/2), mainView.getNodeView().getZoomed(LocationModel.DEFAULT_HGAP_PX));
+    	int dx = Math.abs(p.x -  mainView.getWidth()/2);
     	if(p.x < mainView.getWidth()/2)
     		dx = -dx;
-    	double angle = Math.atan((p.y - nHeight) / dx);
+    	double angle = dx != 0 
+    			? Math.atan((p.y - nHeight) / dx)
+    			: (p.y > nHeight ? Math.PI : -Math.PI) / 2 ;
     	if (dx < 0) {
     		angle += Math.PI;
     	}

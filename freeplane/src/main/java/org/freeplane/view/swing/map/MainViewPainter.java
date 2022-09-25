@@ -54,23 +54,29 @@ abstract class MainViewPainter{
 		return 0;
 	}
 
-    Point getConnectorPoint(Point relativeLocation) {
-    	NodeView nodeView = mainView.getNodeView();
-        if(relativeLocation.x > mainView.getWidth()) {
-			Point rightPoint = getRightPoint();
-			return rightPoint;
+	Point getConnectorPoint(Point relativeLocation, boolean usesHorizontalLayout) {
+		NodeView nodeView = mainView.getNodeView();
+		if(! usesHorizontalLayout) {
+			if(relativeLocation.x > mainView.getWidth()) {
+				return getRightPoint();
+			}
+			if(relativeLocation.x < 0) {
+				return getLeftPoint();
+			}
 		}
-		if(relativeLocation.x < 0) {
-			Point leftPoint = getLeftPoint();
-			return leftPoint;
-		}
-        if(relativeLocation.y > mainView.getHeight()){
+		if(relativeLocation.y > mainView.getHeight()){
             final Point bottomPoint = mainView.getBottomPoint();
             bottomPoint.y = nodeView.getContent().getHeight();
 			return bottomPoint;
         }
         if(relativeLocation.y <0)
             return mainView.getTopPoint();
+		if(relativeLocation.x > mainView.getWidth()) {
+			return getRightPoint();
+		}
+		if(relativeLocation.x < 0) {
+			return getLeftPoint();
+		}
         return getCenterPoint();
     }
 

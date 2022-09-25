@@ -1296,14 +1296,15 @@ public class NodeView extends JComponent implements INodeView {
         final MainView targetMainView = target.getMainView();
         relativeLocation.x += targetMainView.getWidth()/2;
         relativeLocation.y += targetMainView.getHeight()/2;
-        final Point inPoint = mainView.getConnectorPoint(relativeLocation);
+        boolean usesHorizontalLayout = usesHorizontalLayout();
+		final Point inPoint = mainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
         UITools.convertPointToAncestor(targetMainView, inPoint, this);
 
         relativeLocation.x -= targetMainView.getWidth()/2;
         relativeLocation.y -= targetMainView.getHeight()/2;
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-		final Point outPoint = targetMainView.getConnectorPoint(relativeLocation);
+		final Point outPoint = targetMainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
 		UITools.convertPointToAncestor(getMainView(), outPoint, this);
 
 		final int x = Math.min(inPoint.x, outPoint.x);

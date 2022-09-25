@@ -82,15 +82,16 @@ public abstract class EdgeView {
         final Point relativeLocation = source.getRelativeLocation(target);
         relativeLocation.x += targetMainView.getWidth()/2;
         relativeLocation.y += targetMainView.getHeight()/2;
-        start = mainView.getConnectorPoint(relativeLocation);
-        startConnectorLocation = mainView.getConnectorLocation(relativeLocation);
+        boolean usesHorizontalLayout = source.usesHorizontalLayout();
+        start = mainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
+		startConnectorLocation = mainView.getConnectorLocation(relativeLocation, usesHorizontalLayout);
                 
         relativeLocation.x -= targetMainView.getWidth()/2;
         relativeLocation.y -= targetMainView.getHeight()/2;
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-		end = target.getMainView().getConnectorPoint(relativeLocation);
-		endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation);
+		end = target.getMainView().getConnectorPoint(relativeLocation, usesHorizontalLayout);
+		endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation, usesHorizontalLayout);
 	}
 
 	protected ConnectorLocation getStartConnectorLocation() {

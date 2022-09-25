@@ -514,7 +514,13 @@ public class MainView extends ZoomableLabel {
 
     static public enum ConnectorLocation{LEFT, RIGHT, TOP, BOTTOM, CENTER};
 
-    public ConnectorLocation getConnectorLocation(Point relativeLocation) {
+    public ConnectorLocation getConnectorLocation(Point relativeLocation, boolean usesHorizontalLayout) {
+    	if(usesHorizontalLayout) {
+            if(relativeLocation.y > getHeight())
+                return ConnectorLocation.BOTTOM;
+            if(relativeLocation.y <0)
+                return ConnectorLocation.TOP;
+    	}
         if(relativeLocation.x > getWidth())
             return ConnectorLocation.RIGHT;
         if(relativeLocation.x < 0)
@@ -793,8 +799,8 @@ public class MainView extends ZoomableLabel {
 		super.setBounds(x, y, width, height);
 	}
 
-	public Point getConnectorPoint(Point relativeLocation) {
-		return painter.getConnectorPoint(relativeLocation);
+	public Point getConnectorPoint(Point relativeLocation, boolean usesHorizontalLayout) {
+		return painter.getConnectorPoint(relativeLocation, usesHorizontalLayout);
 	}
 
 	public Point getLeftPoint() {

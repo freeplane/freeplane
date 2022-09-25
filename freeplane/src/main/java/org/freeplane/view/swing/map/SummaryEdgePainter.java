@@ -53,16 +53,17 @@ class SummaryEdgePainter {
 	private void updateLevelValues(NodeView child) {
 		resetLevelValuesForStart(child);
 		int spaceAround = child.getSpaceAround();
-        if(child.getHeight() == 2 * spaceAround)
+		NodeViewLayoutHelper helper = child.getLayoutHelper();
+        if(helper.getHeight() == 2 * spaceAround)
         	return;
-		int yMin = child.getY() + spaceAround;
-		int yMax = child.getY() + child.getHeight() - child.getSpaceAround();
+		int yMin = helper.getY() + spaceAround;
+		int yMax = helper.getY() + helper.getHeight() - helper.getSpaceAround();
         int x;
         if (isLeft) {
-            x = child.getX() + spaceAround;
+            x = helper.getX() + spaceAround;
         }
         else {
-            x = child.getX() + child.getWidth() - spaceAround;
+            x = helper.getX() + helper.getWidth() - spaceAround;
         }
         yMins[level] = Math.min(yMin, yMins[level]);
         yMaxs[level] = Math.max(yMax, yMaxs[level]);
@@ -98,8 +99,9 @@ class SummaryEdgePainter {
 	boolean paintSummaryEdge(Graphics2D g, NodeView source, NodeView target) {
 		if(! hasSummaryEdge())
 			return false;
-		final Point start1 = new Point(currentX, currentY1);
-		final Point start2 = new Point(currentX, currentY2);
+		boolean usesHorizontalLayout = source.usesHorizontalLayout();
+		final Point start1 = usesHorizontalLayout ? new Point(currentY1, currentX) : new Point(currentX, currentY1);
+		final Point start2 = usesHorizontalLayout ? new Point(currentY2, currentX) : new Point(currentX, currentY2);
 		final NodeView parentView = target.getParentView();
 		UITools.convertPointToAncestor(parentView, start1, source);
 		UITools.convertPointToAncestor(parentView, start2, source);
@@ -110,15 +112,4 @@ class SummaryEdgePainter {
 		edgeView.paint(g);
 		return true;
 	}
-
-	int getY1(){
-		return currentY1;
-	}
-	int getY2(){
-		return currentY2;
-	}
-	int getX(){
-		return currentX;
-	}
-
 }
