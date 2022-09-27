@@ -360,7 +360,9 @@ public class MLinkController extends LinkController {
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final NodeModel target) {
-		return addConnector(source, target.createID());
+		ConnectorModel connector = addConnector(source, target.createID());
+		setNodeDependantStyle(source, target, connector);
+		return connector;
 	}
 
 	public void changeArrowsOfArrowLink(final ConnectorModel link, final Optional<ConnectorArrows> arrows) {
@@ -1141,8 +1143,9 @@ public class MLinkController extends LinkController {
 		}
 	}
 
-	public void addConnectorWithNodeDependantStyle(NodeModel source, final NodeModel target) {
-		ConnectorModel connector = addConnector(source, target);
+
+	private void setNodeDependantStyle(NodeModel source, final NodeModel target,
+			ConnectorModel connector) {
 		if(ResourceController.getResourceController().getBooleanProperty("assignsNodeDependantStylesToNewConnectors")) {
 			boolean nodeStyleWasSetToConnector = setConnectorStyleSameAsNodeStyleIfAvailable(connector, source);
 			if (!nodeStyleWasSetToConnector && source != target)

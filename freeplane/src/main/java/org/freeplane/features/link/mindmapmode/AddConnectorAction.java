@@ -50,12 +50,12 @@ class AddConnectorAction extends AFreeplaneAction {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final NodeModel target = selecteds.get(size-1);
 		if (selecteds.size() < 2) {
-			linkController.addConnectorWithNodeDependantStyle(target, target);
+			linkController.addConnector(target, target);
 		}
 		else  {
 			for (NodeModel node : selecteds) {
 				if(node != target) {
-					linkController.addConnectorWithNodeDependantStyle(node, target);
+					linkController.addConnector(node, target);
 				}
 			}
 		}
