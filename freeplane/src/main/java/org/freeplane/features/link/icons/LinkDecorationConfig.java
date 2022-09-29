@@ -46,11 +46,14 @@ class LinkDecorationConfig {
 	public List<LinkDecorationRule> getRules() {
 	    if (iniFile == null && rules == null) {
 	        rules = Collections.emptyList();
-	    }
-	    else if (iniFile != null && (rules == null || rulesFileHasChanged())) {
-	    	AccessController.doPrivileged((PrivilegedAction<?>)this::loadRules);
-			loadRules();
-		}
+	    } else {
+	        AccessController.doPrivileged((PrivilegedAction<?>)()-> {
+	            if (iniFile != null && (rules == null || rulesFileHasChanged())) {
+	                loadRules();
+	            }
+	            return  null;
+	        });
+        }
 		return rules;
 	}
 
