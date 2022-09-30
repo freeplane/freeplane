@@ -164,8 +164,7 @@ class VerticalNodeViewLayoutStrategy {
 						}
 						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
-
-						top += - childContentShift + child.getTopOverlap();
+						top -= align(child.getHeight() - child.getTopOverlap() - child.getBottomOverlap() - childCloudHeigth - 2 * spaceAround - child.getContent().getHeight());
 						y -= child.getTopOverlap();
 
 						int upperGap = align(extraVGap);

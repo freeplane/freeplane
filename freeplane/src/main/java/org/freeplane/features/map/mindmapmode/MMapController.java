@@ -55,8 +55,6 @@ import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
@@ -73,6 +71,7 @@ import org.freeplane.features.map.Clones;
 import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
@@ -321,8 +320,7 @@ public class MMapController extends MapController {
         if(SummaryNode.isSummaryNode(startNode))
             firstGroupNodeHook.undoableActivateHook(startNode, FIRST_GROUP);
         else {
-        	NodeModel newFirstGroup = addNewNode(parentNode, start, newSummaryNode.getSide());
-        	firstGroupNodeHook.undoableActivateHook(newFirstGroup, FIRST_GROUP);
+        	addNewFirstGroupNode(parentNode, start, newSummaryNode.getSide());
         }
         final NodeModel firstSummaryChildNode = addNewNode(newSummaryNode, 0, node -> {
             node.setSide(Side.DEFAULT);
@@ -331,6 +329,15 @@ public class MMapController extends MapController {
         KeyEvent currentKeyEvent = getCurrentKeyEvent();
         select(firstSummaryChildNode);
         startEditing(firstSummaryChildNode, currentKeyEvent);
+    }
+
+    private void addNewFirstGroupNode(final NodeModel parentNode, final int start,
+            final Side side) {
+        addNewNode(parentNode, start, 
+                n -> {
+                    n.setSide(side);
+                    n.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
+                });
     }
 
     public NodeModel addNewNode(final NodeModel parent, final int index, final Side side) {
@@ -614,7 +621,7 @@ public class MMapController extends MapController {
             }
             moveNodeAndItsClones(node, newParent, index++);
         }
-        removeSuperficiousFirstGroupNodes(newParent);
+        balanceFirstGroupNodes(newParent);
     }
 
     public void setSide(List<NodeModel> nodes, Side side) {
@@ -647,7 +654,7 @@ public class MMapController extends MapController {
     	}
     	nodes.stream().map(NodeModel::getParentNode)
     		.distinct()
-    		.forEach(this::removeSuperficiousFirstGroupNodes);
+    		.forEach(this::balanceFirstGroupNodes);
     }
 
 
@@ -802,37 +809,32 @@ public class MMapController extends MapController {
                 last = newInt;
             }
             Collection<NodeModel> selectedNodes = new ArrayList<NodeModel>(getSelectedNodes());
+            final int maxIndex = parent.getChildCount();
+            boolean movesGroupDown = direction == 1 && SummaryNode.isFirstGroupNode(movedNodesWithEdges.get(0));
             for (final Integer position : range) {
                 final NodeModel node = sortedChildren.get(position.intValue());
-                moveSingleNodeInGivenDirection(selectionRoot, node, direction);
+                final List<NodeModel> sortedOnSideNodes = getSiblingsSortedOnSide(selectionRoot, parent);
+                int newPositionInVector = sortedOnSideNodes.indexOf(node) + direction;
+                if (newPositionInVector < 0) {
+                    newPositionInVector = maxIndex - 1;
+                }
+                if (newPositionInVector >= maxIndex) {
+                    newPositionInVector = 0;
+                }
+                final NodeModel destinationNode = sortedOnSideNodes.get(newPositionInVector);
+                int newIndex = parent.getIndex(destinationNode)
+                        + ((movesGroupDown && SummaryNode.isFirstGroupNode(destinationNode)) ? 1 : 0);
+                moveNodeAndItsClones(node, parent, newIndex);
             }
             final IMapSelection selection = Controller.getCurrentController().getSelection();
             selection.selectAsTheOnlyOneSelected(selected);
             for (NodeModel selectedNode : selectedNodes) {
                 selection.makeTheSelected(selectedNode);
             }
-            removeSuperficiousFirstGroupNodes(parent);
+            balanceFirstGroupNodes(parent);
         }
     }
 
-    private int moveSingleNodeInGivenDirection(NodeModel selectionRoot, final NodeModel child, final int direction) {
-        final NodeModel parent = child.getParentNode();
-        final int index = parent.getIndex(child);
-        int newIndex = index;
-        final int maxIndex = parent.getChildCount();
-        final List<NodeModel> sortedOnSideNodes = getSiblingsSortedOnSide(selectionRoot, parent);
-        int newPositionInVector = sortedOnSideNodes.indexOf(child) + direction;
-        if (newPositionInVector < 0) {
-            newPositionInVector = maxIndex - 1;
-        }
-        if (newPositionInVector >= maxIndex) {
-            newPositionInVector = 0;
-        }
-        final NodeModel destinationNode = sortedOnSideNodes.get(newPositionInVector);
-        newIndex = parent.getIndex(destinationNode);
-        moveNodeAndItsClones(child, parent, newIndex);
-        return newIndex;
-    }
     /**
      * Sorts nodes by their left/right status. The left are first.
      * @param selectionRoot TODO
@@ -888,43 +890,91 @@ public class MMapController extends MapController {
         return newIndex;
     }
 
-    public void removeSuperficiousFirstGroupNodes(final NodeModel parent) {
-    	boolean isLeftFirstGroupNodeFound = false;
-    	boolean isRightFirstGroupNodeFound = false;
-    	IMapSelection selection = Controller.getCurrentController().getSelection();
-    	boolean shouldConsiderSeparateSides = selection != null && selection.getSelectionRoot() == parent || parent.isRoot();
-    	for(int i = 0; i < parent.getChildCount(); i++) {
-    		NodeModel child = parent.getChildAt(i);
-    		boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(child);
-    		boolean isSummaryNode = SummaryNode.isSummaryNode(child);
-    		if(isFirstGroupNode != isSummaryNode) {
-    			boolean isLeft = shouldConsiderSeparateSides && child.isLeft(parent);
-    			if(isLeft) {
-    				if(isFirstGroupNode) {
-    					if(isLeftFirstGroupNodeFound) {
-    						deleteSingleNodeWithClones(child);
-    						i--;
-    					}
-    					else {
-    						isLeftFirstGroupNodeFound = true;
-    					}
-    				}
-    				else
-    					isLeftFirstGroupNodeFound = false;
-    			}
-    			else if(isFirstGroupNode) {
-    				if(isRightFirstGroupNodeFound) {
-    					deleteSingleNodeWithClones(child);
-    					i--;
-    				}
-    				else {
-    					isRightFirstGroupNodeFound = true;
-    				}
-    			}
-    			else
-    				isRightFirstGroupNodeFound = false;
-    		}
-    	}
+    public void balanceFirstGroupNodes(final NodeModel parent) {
+        removeSuperficiousFirstGroupNodes(parent);
+        addMissingFirstGroupNodes(parent);
+    }
+
+    private void removeSuperficiousFirstGroupNodes(final NodeModel parent) {
+        NodeModel leftFirstGroupNode = null;
+        NodeModel rightFirstGroupNode = null;
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        boolean shouldConsiderSeparateSides = selection != null && selection.getSelectionRoot() == parent || parent.isRoot();
+        for(int i = 0; i < parent.getChildCount(); i++) {
+            NodeModel child = parent.getChildAt(i);
+            boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(child);
+            boolean isSummaryNode = SummaryNode.isSummaryNode(child);
+            if(isFirstGroupNode != isSummaryNode) {
+                boolean isLeft = shouldConsiderSeparateSides && child.isLeft(parent);
+                if(isLeft) {
+                    if(isFirstGroupNode) {
+                        if(leftFirstGroupNode != null) {
+                            deleteSingleNodeWithClones(child);
+                        }
+                        leftFirstGroupNode = child;
+                    }
+                    else
+                        leftFirstGroupNode = null;
+                }
+                else if(isFirstGroupNode) {
+                    if(rightFirstGroupNode != null) {
+                        deleteSingleNodeWithClones(child);
+                    }
+                    rightFirstGroupNode = child;
+                }
+                else
+                    rightFirstGroupNode = null;
+            }
+        }
+    }
+    private void addMissingFirstGroupNodes(final NodeModel parent) {
+        boolean isLeftItemNodeFound = false;
+        boolean isRightItemNodeFound = false;
+        NodeModel leftSummaryNode = null;
+        NodeModel rightSummaryNode = null;
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        boolean shouldConsiderSeparateSides = selection != null && selection.getSelectionRoot() == parent || parent.isRoot();
+        for(int i = parent.getChildCount() - 1; i >= 0; i--) {
+            NodeModel child = parent.getChildAt(i);
+            boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(child);
+            boolean isSummaryNode = SummaryNode.isSummaryNode(child);
+            boolean isLeft = shouldConsiderSeparateSides && child.isLeft(parent);
+            if(isFirstGroupNode != isSummaryNode) {
+                if(isLeft) {
+                    if(isSummaryNode) {
+                        if(leftSummaryNode != null && isLeftItemNodeFound) {
+                            addNewFirstGroupNode(parent, i+1, leftSummaryNode.getSide());
+                        }
+                        leftSummaryNode = child;
+                        isLeftItemNodeFound = false;
+                    } else {
+                        leftSummaryNode = null;
+                    }
+                }
+                else if(isSummaryNode) {
+                    if(rightSummaryNode != null && isRightItemNodeFound) {
+                        addNewFirstGroupNode(parent, i+1, rightSummaryNode.getSide());
+                    }
+                } else {
+                    rightSummaryNode = null;
+                }
+            }
+            if(isSummaryNode) {
+                if(isLeft) {
+                    leftSummaryNode = child;
+                    isLeftItemNodeFound = false;
+                } else {
+                    rightSummaryNode = child;
+                    isRightItemNodeFound = false;
+                }
+            }
+            if(! isFirstGroupNode && ! isSummaryNode) {
+                if(isLeft)
+                    isLeftItemNodeFound = true;
+                else
+                    isRightItemNodeFound = true;
+            }
+        }
     }
 
     public MapModel createModel(NodeModel existingNode) {

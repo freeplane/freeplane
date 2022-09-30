@@ -4,6 +4,9 @@
 Vertical aligning child nodes at the top, at the bottom or at the center of the parent node
 Consider hidden free node positions in map layout
 Creating new user style from selection assigns it to all selected nodes and clears their formatting
+Make dragging area width configurable and increase its default size
+Change key based navigation for summary nodes
+Word wrap in editors for formulas, scripts, markdown and latex
 Bug fixes
 
 ==============================
