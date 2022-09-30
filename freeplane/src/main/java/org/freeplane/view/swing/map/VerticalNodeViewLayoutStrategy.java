@@ -160,7 +160,7 @@ class VerticalNodeViewLayoutStrategy {
 						if (childHeight != 0) {
 							boolean childHasVisibleChildren = child.getHeight() > child.getContent().getHeight() + 2 * spaceAround;
 							if (childHasVisibleChildren) {
-								extraVGap = Math.max(defaultVGap, minimalDistanceBetweenChildren / 6);
+								extraVGap = calculateExtraGapForChildren(minimalDistanceBetweenChildren);
 							}
 							childContentHeightSum += vGap;
 						}
@@ -264,6 +264,13 @@ class VerticalNodeViewLayoutStrategy {
 		top += align(contentSize.height - childContentHeightSum);
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
 	}
+
+    private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
+        if(defaultVGap > minimalDistanceBetweenChildren)
+            return minimalDistanceBetweenChildren + defaultVGap;
+        else
+            return (minimalDistanceBetweenChildren + 11 * defaultVGap) / 6;
+    }
 
 	public int align(int height) {
 		VerticalNodeAlignment verticalAlignment = view.getVerticalAlignment();
