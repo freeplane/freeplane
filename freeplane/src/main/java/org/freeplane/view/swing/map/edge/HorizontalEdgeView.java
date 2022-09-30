@@ -44,22 +44,27 @@ public class HorizontalEdgeView extends EdgeView {
 
 	@Override
 	protected void createStart() {
-	    if(getSource().isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
+	    NodeView source = getSource();
+	    NodeView target = getTarget();
+	    boolean usesHorizontalLayout = source.usesHorizontalLayout();
+        if(source.isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
 	        super.createStart();
 	    }
 	    else{
-	        if(getTarget().isLeft()){
-	            start = getSource().getMainView().getLeftPoint();
+	        MainView mainView = source.getMainView();
+            if(target.isLeft()){
+	            start = usesHorizontalLayout ? mainView.getTopPoint() : mainView.getLeftPoint();
 	        }
 	        else{
-	            start = getSource().getMainView().getRightPoint();
+	            start = usesHorizontalLayout ? mainView.getBottomPoint() : mainView.getRightPoint();
 	        }
 	    }
-        if(getTarget().isLeft()){
-            end = getTarget().getMainView().getRightPoint();
+        MainView mainView = target.getMainView();
+        if(target.isLeft()){
+            end = usesHorizontalLayout ? mainView.getBottomPoint() : mainView.getRightPoint();
         }
         else{
-            end = getTarget().getMainView().getLeftPoint();
+            end = usesHorizontalLayout ? mainView.getTopPoint() : mainView.getLeftPoint();
         }
     }
 
@@ -69,18 +74,27 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setColor(color);
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
-		int xMiddle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
+		int middle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
+		boolean usesHorizontalLayout = getSource().usesHorizontalLayout();
 		final boolean left = getTarget().isLeft() 
-		    || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
-        if (left) {
-			xMiddle = -xMiddle;
+		        || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()
+		        && (usesHorizontalLayout && start.y > end.y || !usesHorizontalLayout && start.x > end.x );
+		if (left) {
+		    middle = -middle;
 		}
-		xMiddle += start.x;
-		xs = new int[] { start.x, xMiddle, xMiddle, end.x };
-		ys = new int[] { start.y, start.y, end.y, end.y };
+		if(usesHorizontalLayout) {
+            middle += start.y;
+            xs = new int[] { start.x, start.x, end.x, end.x };
+            ys = new int[] { start.y, middle, middle, end.y };
+		}
+		else {
+		    middle += start.x;
+		    xs = new int[] { start.x, middle, middle, end.x };
+		    ys = new int[] { start.y, start.y, end.y, end.y };
+		}
 		g.drawPolyline(xs, ys, 4);
 		if (drawHiddenParentEdge()) {
-			g.setColor(g.getBackground());
+		    g.setColor(g.getBackground());
 			g.setStroke(EdgeView.getEclipsedStroke());
 			g.drawPolyline(xs, ys, 4);
 			g.setColor(color);
