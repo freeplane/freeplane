@@ -38,6 +38,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class EdgeStyleControlGroup implements ControlGroup {
+    private static final String REVERT_EDGE = "revert-edge";
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = EnumToStringMapper.getStringValuesOf(EdgeStyle.class, EdgeStyle.values().length - 1);
 
@@ -80,7 +81,7 @@ public class EdgeStyleControlGroup implements ControlGroup {
 	
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeStyle = new RevertingProperty();
+		mSetEdgeStyle = new RevertingProperty(REVERT_EDGE);
 		mEdgeStyle = new ComboProperty(EDGE_STYLE, EDGE_STYLES);
 		propertyChangeListener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(propertyChangeListener);

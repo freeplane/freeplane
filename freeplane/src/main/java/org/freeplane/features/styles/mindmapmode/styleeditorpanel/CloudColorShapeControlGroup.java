@@ -45,7 +45,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 17, 2016
  */
 public class CloudColorShapeControlGroup implements ControlGroup {
-	static final String REVERT_CLOUD = "revert-cloud";
+	private static final String REVERT_CLOUD = "revert-cloud";
     static final String CLOUD_COLOR = "cloudcolor";
 	static final String CLOUD_SHAPE = "cloudshape";
 

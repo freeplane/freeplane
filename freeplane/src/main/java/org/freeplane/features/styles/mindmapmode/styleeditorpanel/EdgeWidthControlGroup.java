@@ -39,6 +39,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class EdgeWidthControlGroup implements ControlGroup {
+    private static final String REVERT_EDGE = "revert-edge";
 	private static final String THINNEST_TEXT = TextUtils.getText("thinnest");
 
 	private static final String EDGE_WIDTH = "edgewidth";
@@ -81,7 +82,7 @@ public class EdgeWidthControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeWidth = new RevertingProperty();
+		mSetEdgeWidth = new RevertingProperty(REVERT_EDGE);
 		mEdgeWidth = new NumberProperty(EDGE_WIDTH, 0, 100, 1);
 		mEdgeWidth.configureNames(Collections.singletonMap(THINNEST_TEXT, 0));
 		propertyChangeListener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
