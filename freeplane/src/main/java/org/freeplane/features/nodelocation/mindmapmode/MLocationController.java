@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.api.VerticalNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapModel;
@@ -47,7 +47,7 @@ public class MLocationController extends LocationController {
 			if(source != null){
 				LocationModel locationModel = LocationModel.createLocationModel(to);
 				locationModel.setVGap(source.getVGap());
-				locationModel.setVerticalAlignment(locationModel.getVerticalAlignment());
+				locationModel.setChildNodesAlignment(locationModel.getChildNodesAlignment());
 			}
 		}
 
@@ -58,7 +58,7 @@ public class MLocationController extends LocationController {
 			LocationModel target = from.getExtension(LocationModel.class);
 			if(target != null){
 				target.setVGap(LocationModel.DEFAULT_VGAP);
-				target.setVerticalAlignment(LocationModel.DEFAULT_VERTICAL_ALIGNMENT);
+				target.setChildNodesAlignment(LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT);
 			}
 		}
 
@@ -114,9 +114,9 @@ public class MLocationController extends LocationController {
 
 	}
 
-	public void setVerticalAlignment(NodeModel node, VerticalNodeAlignment alignment){
+	public void setChildNodesAlignment(NodeModel node, ChildNodesAlignment alignment){
 		if(node != null){
-			final IActor actor = new ChangeVerticalAlignmentActor(node, alignment != null ? alignment : LocationModel.DEFAULT_VERTICAL_ALIGNMENT);
+			final IActor actor = new ChangeChildNodesAlignmentActor(node, alignment != null ? alignment : LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT);
 			Controller.getCurrentModeController().execute(actor, node.getMap());
 		}
 

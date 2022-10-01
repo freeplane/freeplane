@@ -30,7 +30,7 @@ import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
 import org.freeplane.api.Side;
-import org.freeplane.api.VerticalNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -1076,13 +1076,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public void setVerticalNodeAlignment(final VerticalNodeAlignment alignment){
-		((MLocationController) LocationController.getController()).setVerticalAlignment(getDelegate(), alignment);
+	public void setChildNodesAlignment(final ChildNodesAlignment alignment){
+		((MLocationController) LocationController.getController()).setChildNodesAlignment(getDelegate(), alignment);
 	}
 
 	@Override
-	public VerticalNodeAlignment getVerticalNodeAlignment() {
-		return LocationController.getController().getVerticalAlignment(getDelegate());
+	public ChildNodesAlignment getChildNodesAlignment() {
+		return LocationController.getController().getChildNodesAlignment(getDelegate());
 	}
 
 	@Override
