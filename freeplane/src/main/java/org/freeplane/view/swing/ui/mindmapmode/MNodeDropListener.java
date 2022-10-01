@@ -107,7 +107,7 @@ private Timer timer;
 		getNode(e).setMouseArea(MouseArea.OUT);
 		stopUnfoldTimer();
 		final MainView mainView = getNode(e);
-		mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
+		mainView.stopDragOver();
 		mainView.repaint();
 	}
 
@@ -122,14 +122,8 @@ private Timer timer;
 		if(isDragAcceptable(dtde)) {
 			supportFolding(dtde);
 
-			final MainView draggedNode = (MainView) dtde.getDropTargetContext().getComponent();
-			final int oldDraggedOver = draggedNode.getDraggedOver();
-			draggedNode.setDraggedOver(dtde.getLocation());
-			final int newDraggedOver = draggedNode.getDraggedOver();
-			final boolean repaint = newDraggedOver != oldDraggedOver;
-			if (repaint) {
-				draggedNode.repaint();
-			}
+			final MainView dropTarget = (MainView) dtde.getDropTargetContext().getComponent();
+			dropTarget.setDraggedOver(dtde.getLocation());
 		}
 	}
 
@@ -223,7 +217,7 @@ private Timer timer;
 			final Controller controller = Controller.getCurrentController();
 			int dropAction = getDropAction(dtde);
 			final Transferable t = dtde.getTransferable();
-			mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
+			mainView.stopDragOver();
 			mainView.repaint();
 			if (dtde.isLocalTransfer() && !isDropAcceptable(dtde, dropAction)) {
 				dtde.rejectDrop();

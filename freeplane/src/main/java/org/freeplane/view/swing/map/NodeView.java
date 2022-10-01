@@ -104,11 +104,6 @@ public class NodeView extends JComponent implements INodeView {
 	final static int ALIGN_CENTER = 0;
 	final static int ALIGN_TOP = 1;
 	protected final static Color dragColor = Color.lightGray;
-	public final static int DRAGGED_OVER_NO = 0;
-	public final static int DRAGGED_OVER_SIBLING = 2;
-	public final static int DRAGGED_OVER_SON = 1;
-	/** For RootNodeView. */
-	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	private static final long serialVersionUID = 1L;
 	static final int SPACE_AROUND = 50;
 	public static final int MAIN_VIEWER_POSITION = 1;
