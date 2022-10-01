@@ -38,6 +38,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Dec 1, 2016
  */
 public class EdgeDashControlGroup implements ControlGroup {
+    private static final String REVERT_EDGE = "revert-edge";
 	private static final String EDGE_DASH = "edgedash";
 
 	private RevertingProperty mSetEdgeDash;
@@ -83,7 +84,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetEdgeDash = new RevertingProperty();
+		mSetEdgeDash = new RevertingProperty(REVERT_EDGE);
 		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);
 		propertyChangeListener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
 		mSetEdgeDash.addPropertyChangeListener(propertyChangeListener);

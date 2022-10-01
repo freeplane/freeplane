@@ -27,7 +27,7 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.freeplane.api.VerticalNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
@@ -43,20 +43,20 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * @author Joe Berry
  * Nov 27, 2016
  */
-class VerticalNodeAlignmentControlGroup implements ControlGroup {
-	static final String CHILD_VERTICAL_PLACEMENT = "child_vertical_placement";
+class ChildNodeAlignmentControlGroup implements ControlGroup {
+	static final String CHILD_NODES_PLACEMENT = "child_nodes_placement";
 	
-	private static final VerticalNodeAlignment[] ALIGNMENTS = {VerticalNodeAlignment.TOP, 
-			VerticalNodeAlignment.CENTER, 
-			VerticalNodeAlignment.BOTTOM, 
-			VerticalNodeAlignment.AS_PARENT};
-	private RevertingProperty mSetVerticalNodeAlignment;
-	private ComboProperty mVerticalNodeAlignment;
+	private static final ChildNodesAlignment[] ALIGNMENTS = {ChildNodesAlignment.BY_FIRST_NODE, 
+			ChildNodesAlignment.BY_CENTER, 
+			ChildNodesAlignment.BY_LAST_NODE, 
+			ChildNodesAlignment.AS_PARENT};
+	private RevertingProperty mSetChildNodesAlignment;
+	private ComboProperty mChildNodesAlignment;
 
-	private VerticalNodeAlignmentChangeListener propertyChangeListener;
+	private ChildNodesAlignmentChangeListener propertyChangeListener;
 
-	private class VerticalNodeAlignmentChangeListener extends ControlGroupChangeListener {
-		public VerticalNodeAlignmentChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
+	private class ChildNodesAlignmentChangeListener extends ControlGroupChangeListener {
+		public ChildNodesAlignmentChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -64,52 +64,52 @@ class VerticalNodeAlignmentControlGroup implements ControlGroup {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLocationController styleController = (MLocationController) Controller
 					.getCurrentModeController().getExtension(LocationController.class);
-			styleController.setVerticalAlignment(node, enabled ? VerticalNodeAlignment.valueOf(mVerticalNodeAlignment.getValue()) : null);
+			styleController.setChildNodesAlignment(node, enabled ? ChildNodesAlignment.valueOf(mChildNodesAlignment.getValue()) : null);
 }
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			LocationModel model = LocationModel.getModel(node);
-			final VerticalNodeAlignment alignment = model != null ? model.getVerticalAlignment() : LocationModel.DEFAULT_VERTICAL_ALIGNMENT;
-			VerticalNodeAlignment displayedValue = displayedValue(node, alignment);
-			mVerticalNodeAlignment.setValue(displayedValue.name());
+			final ChildNodesAlignment alignment = model != null ? model.getChildNodesAlignment() : LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT;
+			ChildNodesAlignment displayedValue = displayedValue(node, alignment);
+			mChildNodesAlignment.setValue(displayedValue.name());
 		}
 
-		private VerticalNodeAlignment displayedValue(NodeModel node, final VerticalNodeAlignment alignment) {
+		private ChildNodesAlignment displayedValue(NodeModel node, final ChildNodesAlignment alignment) {
 			final LocationController styleController = LocationController.getController();
-			final VerticalNodeAlignment viewAlignment = styleController.getVerticalAlignment(node);
-			mSetVerticalNodeAlignment.setValue(alignment != LocationModel.DEFAULT_VERTICAL_ALIGNMENT);
-			VerticalNodeAlignment displayedValue;
-			if(viewAlignment == VerticalNodeAlignment.AS_PARENT
+			final ChildNodesAlignment viewAlignment = styleController.getChildNodesAlignment(node);
+			mSetChildNodesAlignment.setValue(alignment != LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT);
+			ChildNodesAlignment displayedValue;
+			if(viewAlignment == ChildNodesAlignment.AS_PARENT
 					&& node.isRoot())
-				return VerticalNodeAlignment.CENTER;
-			else if (viewAlignment != LocationModel.DEFAULT_VERTICAL_ALIGNMENT)
+				return ChildNodesAlignment.BY_CENTER;
+			else if (viewAlignment != LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT)
 				displayedValue = viewAlignment;
 			else
-				displayedValue = VerticalNodeAlignment.CENTER;
+				displayedValue = ChildNodesAlignment.BY_CENTER;
 			return displayedValue;
 		}
 
         @Override
         void adjustForStyle(NodeModel node) {
-            StylePropertyAdjuster.adjustPropertyControl(node, mSetVerticalNodeAlignment);
-            StylePropertyAdjuster.adjustPropertyControl(node, mVerticalNodeAlignment);
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetChildNodesAlignment);
+            StylePropertyAdjuster.adjustPropertyControl(node, mChildNodesAlignment);
         }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetVerticalNodeAlignment = new RevertingProperty();
+		mSetChildNodesAlignment = new RevertingProperty();
 		final Vector<String> translations = new Vector<String>(ALIGNMENTS.length);
 		for (int i = 0; i < ALIGNMENTS.length; i++) {
 			translations.add(TextUtils.getText(ALIGNMENTS[i].name()));
 		}
 		Collection<String> alignmentNames = Stream.of(ALIGNMENTS).map(Enum::name).collect(Collectors.toList());
-		mVerticalNodeAlignment = new ComboProperty(CHILD_VERTICAL_PLACEMENT, alignmentNames, translations);
-		propertyChangeListener = new VerticalNodeAlignmentChangeListener(mSetVerticalNodeAlignment, mVerticalNodeAlignment);
-		mSetVerticalNodeAlignment.addPropertyChangeListener(propertyChangeListener);
-		mVerticalNodeAlignment.addPropertyChangeListener(propertyChangeListener);
-		mVerticalNodeAlignment.appendToForm(formBuilder);
-		mSetVerticalNodeAlignment.appendToForm(formBuilder);
+		mChildNodesAlignment = new ComboProperty(CHILD_NODES_PLACEMENT, alignmentNames, translations);
+		propertyChangeListener = new ChildNodesAlignmentChangeListener(mSetChildNodesAlignment, mChildNodesAlignment);
+		mSetChildNodesAlignment.addPropertyChangeListener(propertyChangeListener);
+		mChildNodesAlignment.addPropertyChangeListener(propertyChangeListener);
+		mChildNodesAlignment.appendToForm(formBuilder);
+		mSetChildNodesAlignment.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

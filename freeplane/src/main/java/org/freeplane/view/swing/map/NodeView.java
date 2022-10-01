@@ -45,7 +45,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.api.VerticalNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -756,25 +756,25 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
 	
-	VerticalNodeAlignment getVerticalAlignment() {
-		VerticalNodeAlignment verticalAlignment = getModeController().getExtension(LocationController.class).getVerticalAlignment(model);
+	ChildNodesAlignment getChildNodesAlignment() {
+		ChildNodesAlignment verticalAlignment = getModeController().getExtension(LocationController.class).getChildNodesAlignment(model);
 		switch (verticalAlignment) {
 		case UNDEFINED:
 		case AS_PARENT:
-			return getParentViewVerticalAlignment();
+			return getParentViewChildNodesAlignment();
 		default:
 			return verticalAlignment;
 		}
 	}
 
-	private VerticalNodeAlignment getParentViewVerticalAlignment() {
+	private ChildNodesAlignment getParentViewChildNodesAlignment() {
 		NodeView parentView = getParentView();
 		if (parentView == null)
-			return VerticalNodeAlignment.CENTER;
+			return ChildNodesAlignment.BY_CENTER;
 		else if(parentView.isSummary())
-			return parentView.getParentViewVerticalAlignment();
+			return parentView.getParentViewChildNodesAlignment();
 		else
-			return parentView.getVerticalAlignment();
+			return parentView.getChildNodesAlignment();
 	}
 
 	public NodeView getAncestorWithVisibleContent() {
@@ -914,7 +914,7 @@ public class NodeView extends JComponent implements INodeView {
 			if(property != EncryptionModel.class)
 				return;
 		}
-		if(property == VerticalNodeAlignment.class) {
+		if(property == ChildNodesAlignment.class) {
 			invalidateAll();
 			revalidate();
 			repaint();

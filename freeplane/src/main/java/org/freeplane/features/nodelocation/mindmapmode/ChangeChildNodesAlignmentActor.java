@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.nodelocation.mindmapmode;
 
-import org.freeplane.api.VerticalNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -28,14 +28,14 @@ import org.freeplane.features.nodelocation.LocationModel;
 /**
  * @author Dimitry Polivaev
  */
-class ChangeVerticalAlignmentActor implements IActor {
+class ChangeChildNodesAlignmentActor implements IActor {
 	private final NodeModel node;
-	private final VerticalNodeAlignment oldAlignment;
-	private final VerticalNodeAlignment newAlignment;
+	private final ChildNodesAlignment oldAlignment;
+	private final ChildNodesAlignment newAlignment;
 
-	ChangeVerticalAlignmentActor(final NodeModel node, VerticalNodeAlignment newAlignment){
+	ChangeChildNodesAlignmentActor(final NodeModel node, ChildNodesAlignment newAlignment){
 		final LocationModel locationModel = LocationModel.getModel(node);
-		oldAlignment = locationModel.getVerticalAlignment();
+		oldAlignment = locationModel.getChildNodesAlignment();
 		this.node = node;
 		this.newAlignment = newAlignment;
 	}
@@ -45,14 +45,14 @@ class ChangeVerticalAlignmentActor implements IActor {
 	}
 
 	public String getDescription() {
-		return "changeVerticalAlignment";
+		return "changeChildNodesAlignment";
 	}
 
-	private void setAlignment(final NodeModel node, VerticalNodeAlignment oldAlignment, VerticalNodeAlignment newAlignment) {
+	private void setAlignment(final NodeModel node, ChildNodesAlignment oldAlignment, ChildNodesAlignment newAlignment) {
 		if(oldAlignment != newAlignment) {
-			LocationModel.createLocationModel(node).setVerticalAlignment(newAlignment);
+			LocationModel.createLocationModel(node).setChildNodesAlignment(newAlignment);
 			Controller.getCurrentModeController().getMapController()
-			.nodeChanged(node, VerticalNodeAlignment.class, oldAlignment, newAlignment);
+			.nodeChanged(node, ChildNodesAlignment.class, oldAlignment, newAlignment);
 		}
 	}
 

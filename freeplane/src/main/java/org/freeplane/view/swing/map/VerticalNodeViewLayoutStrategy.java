@@ -25,7 +25,9 @@ import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.function.ToIntFunction;
 
-import org.freeplane.api.VerticalNodeAlignment;
+import javax.swing.JComponent;
+
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
@@ -158,7 +160,7 @@ class VerticalNodeViewLayoutStrategy {
 						if (childHeight != 0) {
 							boolean childHasVisibleChildren = child.getHeight() > child.getContentHeight() + 2 * spaceAround;
 							if (childHasVisibleChildren) {
-								extraVGap = Math.max(defaultVGap, minimalDistanceBetweenChildren / 6);
+								extraVGap = calculateExtraGapForChildren(minimalDistanceBetweenChildren);
 							}
 							childContentHeightSum += vGap;
 						}
@@ -263,14 +265,21 @@ class VerticalNodeViewLayoutStrategy {
 		calculateRelativeCoordinatesForContentAndBothSides(isLeft, childContentHeightSum, top);
 	}
 
+    private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
+        if(defaultVGap > minimalDistanceBetweenChildren)
+            return minimalDistanceBetweenChildren + defaultVGap;
+        else
+            return (minimalDistanceBetweenChildren + 11 * defaultVGap) / 6;
+    }
+
 	public int align(int height) {
-		VerticalNodeAlignment verticalAlignment = view.getVerticalAlignment();
+		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		int deltaTop;
 		if (view.isSummary() 
-				|| verticalAlignment == VerticalNodeAlignment.UNDEFINED
-				|| verticalAlignment == VerticalNodeAlignment.CENTER) {
+				|| childNodesAlignment == ChildNodesAlignment.UNDEFINED
+				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
 			deltaTop = height/2;
-		} else if (verticalAlignment == VerticalNodeAlignment.BOTTOM) {
+		} else if (childNodesAlignment == ChildNodesAlignment.BY_LAST_NODE) {
 			deltaTop = height;
 		}
 		else deltaTop = 0;

@@ -364,7 +364,7 @@ public interface Node extends NodeRO {
     void setHorizontalShift(Quantity<LengthUnit> verticalShift);
     
     /** @since 1.10.5 */
-    void setVerticalNodeAlignment(final VerticalNodeAlignment alignment);
+    void setChildNodesAlignment(final ChildNodesAlignment alignment);
 
 
 	/**
