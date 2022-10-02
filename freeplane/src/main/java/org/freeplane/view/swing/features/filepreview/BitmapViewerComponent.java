@@ -362,28 +362,41 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private void writeCacheFile() {
-		final File tempDir = new File(System.getProperty("java.io.tmpdir"), "freeplane");
-		tempDir.mkdirs();
-		try {
-			if(cacheFile == null)
-				cacheFile = File.createTempFile("cachedImage", ".image", tempDir);
-			final BufferedImage cachedImage = getCachedImage();
-			if (!ImageIO.write(cachedImage, "jpg", cacheFile))
-				ImageIO.write(cachedImage, "png", cacheFile);
-		}
-		catch (final IOException e) {
-			if(cacheFile != null) {
-				cacheFile.delete();
-				cacheFile = null;
-			}
-		}
+	    AccessController.doPrivileged(new PrivilegedAction<Void>() {
+
+            @Override
+            public Void run() {
+                final File tempDir = new File(System.getProperty("java.io.tmpdir"), "freeplane");
+                tempDir.mkdirs();
+                try {
+                    if(cacheFile == null)
+                        cacheFile = File.createTempFile("cachedImage", ".image", tempDir);
+                    final BufferedImage cachedImage = getCachedImage();
+                    if (!ImageIO.write(cachedImage, "jpg", cacheFile))
+                        ImageIO.write(cachedImage, "png", cacheFile);
+                }
+                catch (final IOException e) {
+                    if(cacheFile != null) {
+                        cacheFile.delete();
+                        cacheFile = null;
+                    }
+                }
+                return null;                
+            }
+        });
 	}
 
 	@Override
 	public void removeNotify() {
 		super.removeNotify();
 		if (cacheFile != null) {
-			cacheFile.delete();
+	        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+	            @Override
+	            public Void run() {
+	                cacheFile.delete();
+	                return null;
+	            }
+	        });
 			cacheFile = null;
 		}
 	}
