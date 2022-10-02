@@ -44,7 +44,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Nov 27, 2016
  */
 class ChildNodeAlignmentControlGroup implements ControlGroup {
-	static final String CHILD_NODES_PLACEMENT = "child_nodes_placement";
+	static final String CHILD_NODES_ALIGNMENT = "child_nodes_alignment";
 	
 	private static final ChildNodesAlignment[] ALIGNMENTS = {ChildNodesAlignment.BY_FIRST_NODE, 
 			ChildNodesAlignment.BY_CENTER, 
@@ -104,7 +104,7 @@ class ChildNodeAlignmentControlGroup implements ControlGroup {
 			translations.add(TextUtils.getText(ALIGNMENTS[i].name()));
 		}
 		Collection<String> alignmentNames = Stream.of(ALIGNMENTS).map(Enum::name).collect(Collectors.toList());
-		mChildNodesAlignment = new ComboProperty(CHILD_NODES_PLACEMENT, alignmentNames, translations);
+		mChildNodesAlignment = new ComboProperty(CHILD_NODES_ALIGNMENT, alignmentNames, translations);
 		propertyChangeListener = new ChildNodesAlignmentChangeListener(mSetChildNodesAlignment, mChildNodesAlignment);
 		mSetChildNodesAlignment.addPropertyChangeListener(propertyChangeListener);
 		mChildNodesAlignment.addPropertyChangeListener(propertyChangeListener);
