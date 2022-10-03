@@ -165,29 +165,30 @@ public class MainView extends ZoomableLabel {
 	}
 
 	protected void convertPointFromMap(final Point p) {
-		UITools.convertPointFromAncestor(getMap(), p, this);
+	    UITools.convertPointFromAncestor(getMap(), p, this);
 	}
 
 	protected void convertPointToMap(final Point p) {
 	    UITools.convertPointToAncestor(this, p, getMap());
 	}
 
-	public boolean dropAsSibling(final double xCoord) {
-	    if(getNodeView().isRoot())
+	public boolean dropsAsSibling(final Point p) {
+	    NodeView nodeView = getNodeView();
+	    if(nodeView.isRoot())
 	        return false;
-	    if(dropLeft(xCoord))
-	        return ! isInVerticalRegion(xCoord, 2. / 3);
-	    else
-	        return isInVerticalRegion(xCoord, 1. / 3);
+	    return nodeView.usesHorizontalLayout() ||  ! nodeView.isLeft() ? isInVerticalRegion(p.getX(), 1. / 3) : isInVerticalRegion(p.getX(), 2. / 3);
 	}
 
 	/** @return true if should be on the left, false otherwise. */
-	public boolean dropLeft(final double xCoord) {
+	public boolean dropsLeft(final Point p) {
 		/* here it is the same as me. */
 		NodeView nodeView = getNodeView();
-		if(getNodeView().isRoot())
-			return xCoord < getSize().width * 1 / 2;
-		else
+		if(nodeView.isRoot()) {
+		    if(nodeView.usesHorizontalLayout())
+                return p.getY() < getHeight() * 1 / 2;
+            else
+                return p.getX() < getWidth() * 1 / 2;
+        } else
 			return nodeView.isLeft();
 	}
 
@@ -393,26 +394,37 @@ public class MainView extends ZoomableLabel {
         }
     }
 
-	public void setDraggedOver(final Point p) {
-		final DragOver draggedOver;
-		if(getNodeView().isRoot()) {
-			if (dropLeft(p.getX()))
-				draggedOver = DragOver.DROP_LEFT;
-			else
-				draggedOver = DragOver.DROP_RIGHT;
-		}
-		else {
-			if (dropAsSibling(p.getX()))
-				draggedOver = DragOver.DROP_UP;
-			else
-				draggedOver = DragOver.DROP_RIGHT;
-		}
+    public void setDraggedOver(final Point p) {
+        final DragOver draggedOver;
+        NodeView nodeView = getNodeView();
+        if (dropsAsSibling(p)) {
+            if(nodeView.usesHorizontalLayout()) {
+                draggedOver = DragOver.DROP_LEFT;
+            } else {
+                draggedOver = DragOver.DROP_UP;
+            }
+        }
+        else {
+            if (dropsLeft(p)) {
+                if(nodeView.usesHorizontalLayout()) {
+                    draggedOver = DragOver.DROP_UP;
+                } else {
+                    draggedOver = DragOver.DROP_LEFT;
+                }
+            } else {
+                if(nodeView.usesHorizontalLayout()) {
+                    draggedOver = DragOver.DROP_DOWN;
+                } else {
+                    draggedOver = DragOver.DROP_RIGHT;
+                }
+            }
+        }
         setDraggedOver(draggedOver);
-	}
+    }
 
-	public void updateFont(final NodeView node) {
-		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
-		setFont(UITools.scale(font));
+    public void updateFont(final NodeView node) {
+        final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
+        setFont(UITools.scale(font));
 	}
 
 	void updateIcons(final NodeView node) {

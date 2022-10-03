@@ -223,7 +223,7 @@ private Timer timer;
 				dtde.rejectDrop();
 				return;
 			}
-			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
+			final boolean dropAsSibling = mainView.dropsAsSibling(dtde.getLocation());
 			ModeController modeController = controller.getModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
 			if ((dropAction == DnDConstants.ACTION_MOVE || dropAction == DnDConstants.ACTION_COPY)) {
@@ -235,7 +235,7 @@ private Timer timer;
 					return;
 				}
 			}
-			final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
+			final boolean isLeft = mainView.dropsLeft(dtde.getLocation());
 			if (!dtde.isLocalTransfer()) {
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
 				Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
