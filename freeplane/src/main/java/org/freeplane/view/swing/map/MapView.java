@@ -378,7 +378,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	        MapView.this.filter = filter;
 	    }
 
-
+        @Override
+        public boolean usesHorizontalLayout() {
+            return MapView.this.usesHorizontalLayout();
+        }
 	}
 
 	private class Selection {
@@ -1471,7 +1474,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectLeft(final boolean continious) {
-		final NodeView selected = getSelected();
+	    if(usesHorizontalLayout()) {
+	        return selectPreviousSibling(continious);
+	    }
+	    else
+	        return selectParentOrLeftChild(continious);
+    }
+
+    private boolean selectParentOrLeftChild(final boolean continious) {
+        final NodeView selected = getSelected();
 		final NodeView newSelected = getVisibleLeft(selected);
 		return selectRightOrLeft(newSelected, continious);
     }
@@ -1495,15 +1506,29 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectRight(final boolean continious) {
-		final NodeView selected = getSelected();
+        if(usesHorizontalLayout())
+            return selectNextSibling(continious);
+        else
+            return selectParentOrRightChild(continious);
+    }
+
+    private boolean selectParentOrRightChild(final boolean continious) {
+        final NodeView selected = getSelected();
 		final NodeView newSelected = getVisibleRight(selected);
 		return selectRightOrLeft(newSelected, continious);
     }
 
 
 	public boolean selectUp(final boolean continious) {
-		return selectSibling(continious, false, false);
+        if(usesHorizontalLayout())
+            return selectParentOrLeftChild(continious);
+        else
+            return selectPreviousSibling(continious);
 	}
+
+    private boolean selectPreviousSibling(final boolean continious) {
+        return selectSibling(continious, false, false);
+    }
 
 	private boolean selectSibling(final boolean continious, final boolean page, final boolean down) {
 		final NodeView oldSelectionEnd = selection.getSelectionEnd();
@@ -1578,8 +1603,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectDown(final boolean continious) {
-		return selectSibling(continious, false, true);
+        if(usesHorizontalLayout())
+            return selectParentOrRightChild(continious);
+        else
+            return selectNextSibling(continious);
 	}
+
+    private boolean selectNextSibling(final boolean continious) {
+        return selectSibling(continious, false, true);
+    }
 
 	public boolean selectPageDown(final boolean continious) {
 		return selectSibling(continious, true, true);

@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -41,8 +42,8 @@ import org.freeplane.features.ui.IMapViewManager;
 /**
  * @author foltin
  */
-public class ChangeNodeLevelController {
-	private class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
+public class ChangeNodeLevelController implements IExtension {
+	class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
 		/**
 		 * 
 		 */
@@ -52,23 +53,24 @@ public class ChangeNodeLevelController {
 			super("ChangeNodeLevelLeftsAction");
 		}
 
-		public void actionPerformed(final ActionEvent e) {
+		@Override
+        public void actionPerformed(final ActionEvent e) {
 			Controller controller = Controller.getCurrentController();
 			IMapSelection selection = controller.getSelection();
 			NodeModel selectedNode = selection.getSelected();
-			final IMapViewManager mapViewManager = controller.getMapViewManager();
-			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			NodeModel selectionRoot = selection.getSelectionRoot();
-			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selectionRoot)) {
-				moveDownwards(selectionRoot, selectedNode);
-			}
-			else {
-				moveUpwards(selectionRoot, selectedNode);
-			}
+            if(selection.usesHorizontalLayout()) {
+                MMapController mapController = (MMapController) controller.getModeController().getMapController();
+                mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), -1);
+            }
+            else {
+                ChangeNodeLevelController levelController = controller.getModeController().getExtension(ChangeNodeLevelController.class);
+                levelController.changeNodeLevelLefts(selectionRoot, selectedNode);
+            }
 		}
 	}
 
-	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
+	static class ChangeNodeLevelRightsAction extends AFreeplaneAction {
 		/**
 		 * 
 		 */
@@ -78,25 +80,29 @@ public class ChangeNodeLevelController {
 			super("ChangeNodeLevelRightsAction");
 		}
 
-		public void actionPerformed(final ActionEvent e) {
+		@Override
+        public void actionPerformed(final ActionEvent e) {
 			Controller controller = Controller.getCurrentController();
 			IMapSelection selection = controller.getSelection();
 			NodeModel selectedNode = selection.getSelected();
-			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-			final Component mapViewComponent = mapViewManager.getMapViewComponent();
-			if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selection.getSelectionRoot())) {
-				moveUpwards(selection.getSelectionRoot(), selectedNode);
-			}
-			else {
-				moveDownwards(selection.getSelectionRoot(), selectedNode);
-			}
+			NodeModel selectionRoot = selection.getSelectionRoot();
+            if(selection.usesHorizontalLayout()) {
+                MMapController mapController = (MMapController) controller.getModeController().getMapController();
+                mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), 1);
+            }
+            else {
+                ChangeNodeLevelController levelController = controller.getModeController().getExtension(ChangeNodeLevelController.class);
+                levelController.changeNodeLevelRights(selectionRoot, selectedNode);
+            }
 		}
-	};
+
+	}
 
 // // 	final private Controller controller;;
 
 	public ChangeNodeLevelController(MModeController modeController) {
 //		this.controller = controller;
+	    modeController.addExtension(ChangeNodeLevelController.class, this);
 		modeController.addAction(new ChangeNodeLevelLeftsAction());
 		modeController.addAction(new ChangeNodeLevelRightsAction());
 	}
@@ -212,5 +218,27 @@ public class ChangeNodeLevelController {
             }
         }
         return movedChildren;
+    }
+
+    void changeNodeLevelLefts(NodeModel selectionRoot, NodeModel selectedNode) {
+        final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+        final Component mapViewComponent = mapViewManager.getMapViewComponent();
+        if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selectionRoot)) {
+        	moveDownwards(selectionRoot, selectedNode);
+        }
+        else {
+        	moveUpwards(selectionRoot, selectedNode);
+        }
+    }
+    
+    void changeNodeLevelRights(NodeModel selectionRoot, NodeModel selectedNode) {
+        final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+        final Component mapViewComponent = mapViewManager.getMapViewComponent();
+        if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selectionRoot)) {
+            moveUpwards(selectionRoot, selectedNode);
+        }
+        else {
+            moveDownwards(selectionRoot, selectedNode);
+        }
     }
 }

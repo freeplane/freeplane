@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -30,19 +31,27 @@ class NodeUpAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public NodeUpAction() {
-		super("NodeUpAction");
-	}
+    public NodeUpAction() {
+        super("NodeUpAction");
+    }
 
-
-	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		IMapSelection selection = Controller.getCurrentController().getSelection();
-		((MMapController) modeController.getMapController()).moveNodesInGivenDirection(selection.getSelectionRoot(), selection
-			    .getSelected(), selection.getOrderedSelection(), -1);
-	}
+    public void actionPerformed(final ActionEvent e) {
+        final ModeController modeController = Controller.getCurrentModeController();
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        NodeModel selectionRoot = selection.getSelectionRoot();
+        NodeModel selectedNode = selection
+                .getSelected();
+        if(selection.usesHorizontalLayout()) {
+            ChangeNodeLevelController levelController = modeController.getExtension(ChangeNodeLevelController.class);
+            levelController.changeNodeLevelLefts(selectionRoot, selectedNode);
+        }
+        else {
+            MMapController mapController = (MMapController) modeController.getMapController();
+            mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), -1);
+        }
+    }
 
 
 }
