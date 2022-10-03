@@ -82,10 +82,11 @@ public class NewUserStyleAction extends AFreeplaneAction {
 		if(userStyleParentNode == null){
 			userStyleParentNode = new NodeModel(map);
 			userStyleParentNode.setUserObject(new StyleTranslatedObject(MapStyleModel.STYLES_USER_DEFINED));
-			mapController.insertNode(userStyleParentNode, map.getRootNode(), false);
+			NodeModel rootNode = map.getRootNode();
+            mapController.insertNode(userStyleParentNode, rootNode, rootNode.getChildCount());
 
 		}
-		mapController.insertNode(newNode, userStyleParentNode, false);
+		mapController.insertNode(newNode, userStyleParentNode, userStyleParentNode.getChildCount());
 		mapController.select(newNode);
 		final IActor actor = new IActor() {
 			public void undo() {
