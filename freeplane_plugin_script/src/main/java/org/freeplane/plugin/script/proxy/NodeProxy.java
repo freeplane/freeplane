@@ -106,7 +106,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		NodeModel target = getDelegate();
 		final NodeModel newNodeModel = new NodeModel(target.getMap());
 		newNodeModel.setSide( MapController.suggestNewChildSide(target, NodeModel.Side.DEFAULT));
-		getMapController().insertNode(newNodeModel, target);
+        final NodeModel parent = target;
+		getMapController().insertNode(newNodeModel, parent, parent.getChildCount());
 		return new NodeProxy(newNodeModel, getScriptContext());
 	}
 
@@ -151,7 +152,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		NodeModel target = getDelegate();
         final NodeModel newNodeModel = clipboardController.duplicate(source, target.getMap(), withChildren);
         newNodeModel.setSide(MapController.suggestNewChildSide(target, NodeModel.Side.DEFAULT));
-        getMapController().insertNode(newNodeModel, target);
+        final NodeModel parent = target;
+        getMapController().insertNode(newNodeModel, parent, parent.getChildCount());
 		return new NodeProxy(newNodeModel, getScriptContext());
     }
 

@@ -227,13 +227,7 @@ public class MMapController extends MapController {
                     else
                         unfold(targetNode, controller.getSelection().getFilter());
                 }
-                final MapStyleModel mapStyleModel = MapStyleModel.getExtension(targetNode.getMap());
-                MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
-
-                final int position = layoutType ==  MapViewLayout.OUTLINE ? 0 : 
-                    ResourceController.getResourceController().getProperty("placenewbranches")
-                    .equals("last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) 
-                    : 0;
+                final int position = findNewNodePosition(targetNode);
                 Side newChildSide = targetNode.suggestNewChildSide(selection.getSelectionRoot());
                 final Side side = newChildSide;
                 newNode = addNewNode(targetNode, position, node -> {
@@ -254,6 +248,18 @@ public class MMapController extends MapController {
                 newNode = null;
         }
         return newNode;
+    }
+
+    public int findNewNodePosition(final NodeModel targetNode) {
+        final MapStyleModel mapStyleModel = MapStyleModel.getExtension(targetNode.getMap());
+        MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
+
+        IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
+        final int position = layoutType ==  MapViewLayout.OUTLINE ? 0 : 
+            ResourceController.getResourceController().getProperty("placenewbranches")
+            .equals("last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) 
+            : 0;
+        return position;
     }
 
     private void copyFormat(final NodeModel source, final NodeModel target) {
@@ -566,7 +572,7 @@ public class MMapController extends MapController {
     }
 
     public void insertNode(final NodeModel node, final NodeModel parent) {
-        insertNode(node, parent, parent.getChildCount());
+        insertNode(node, parent, findNewNodePosition(parent));
     }
 
     public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling) {
@@ -581,7 +587,7 @@ public class MMapController extends MapController {
             insertNode(node, parent, parent.getIndex(target));
         }
         else {
-            insertNode(node, parent, parent.getChildCount());
+            insertNode(node, parent, findNewNodePosition(target));
         }
     }
 

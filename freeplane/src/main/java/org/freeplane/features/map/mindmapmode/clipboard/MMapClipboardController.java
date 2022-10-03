@@ -111,7 +111,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final NodeModel node = Controller.getCurrentModeController().getMapController().newNode(text,
 					Controller.getCurrentController().getMap());
 			node.setSide(MapController.suggestNewChildSide(target, Side.DEFAULT));
-			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
+			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+            mapController.insertNode(node, target);
 		}
 
 		@Override
@@ -498,6 +499,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 	private static final Pattern HEADER_REGEX = Pattern.compile("h(\\d)", Pattern.CASE_INSENSITIVE);
 	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
 	public static final String RESOURCES_CUT_NODES_WITHOUT_QUESTION = "cut_nodes_without_question";
+    private static final int AS_NEW_BRANCH = -1;
 
 	public static String firstLetterCapitalized(final String text) {
 		if (text == null || text.length() == 0) {
@@ -798,7 +800,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 		else{
 			parent = target;
-			insertionIndex = parent.getChildCount();
+			insertionIndex = AS_NEW_BRANCH;
 		}
 		final ArrayList<NodeModel> parentNodes = new ArrayList<NodeModel>();
 		final ArrayList<Integer> parentNodesDepths = new ArrayList<Integer>();
@@ -847,6 +849,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 						   final ArrayList<NodeModel> parentNodes, final ArrayList<Integer> parentNodesDepths,
 						   final TextFragment textFragment, final NodeModel node) {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		if(insertionIndex == AS_NEW_BRANCH)
+		    insertionIndex = mapController.findNewNodePosition(parent);
 		for (int parentNodeIndex = parentNodes.size() - 1; parentNodeIndex >= 0; --parentNodeIndex) {
 			if (textFragment.depth > parentNodesDepths.get(parentNodeIndex).intValue()) {
 				int firstCompletedIndex = parentNodeIndex + 1;
@@ -945,6 +949,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 			final List<NodeModel> movedNodes = new ArrayList<NodeModel>(clonedNodes.size());
 			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			int newNodePosition = mapController.findNewNodePosition(target);
 			for(NodeModel clonedNode:clonedNodes){
 				if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
 					return;
@@ -953,7 +958,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 					case CLONE:
 						try {
 							final NodeModel clone = asSingleNodes ? clonedNode.cloneContent() : clonedNode.cloneTree();
-							mapController.addNewNode(clone, target, target.getChildCount());
+                            mapController.addNewNode(clone, target, newNodePosition++);
 						} catch (CloneEncryptedNodeException e) {
 							UITools.errorMessage(TextUtils.getText("can_not_clone_encrypted_node"));
 						}
