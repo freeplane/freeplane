@@ -30,12 +30,15 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.plaf.ScrollPaneUI;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -299,8 +302,17 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	    super.removeNotify();
 		ResourceController.getResourceController().removePropertyChangeListener(MapViewScrollPane.this);
     }
+	
+	
 
 	@Override
+    public void setUI(ScrollPaneUI ui) {
+	    super.setUI(ui);
+	    SwingUtilities.replaceUIInputMap(this, JComponent.
+                WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
+    }
+
+    @Override
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if(ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
 				|| propertyName.startsWith("scrollbarsVisible")){
