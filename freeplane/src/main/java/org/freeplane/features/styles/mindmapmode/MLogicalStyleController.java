@@ -138,7 +138,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 		@Override
 		public void undo() {
-			int index = conditionalStyleModel.getStyleCount() - 1;
+			int index = this.index == -1 ? conditionalStyleModel.getStyleCount() - 1 : this.index;
 			MLogicalStyleController.super.removeConditionalStyle(conditionalStyleModel, index);
 		}
 
