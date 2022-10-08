@@ -396,16 +396,20 @@ public class NodeModel{
 
 	public boolean isLeft(NodeModel root) {
 		NodeModel parentNode = getParentNode();
-		if (parentNode == null)
+		return wouldBeLeft(root, parentNode);
+	}
+
+    public boolean wouldBeLeft(NodeModel root, NodeModel parent) {
+        if (parent == null)
 			return false;
-		else if (parentNode == root)
+		else if (parent == root)
 			if (side != Side.DEFAULT)
 				return side == Side.LEFT;
 			else
-				return parentNode.isLeft(parentNode.getMap().getRootNode());
+				return parent.isLeft(parent.getMap().getRootNode());
 		else
-			return parentNode.isLeft(root);
-	}
+			return parent.isLeft(root);
+    }
 
 	public Side suggestNewChildSide(NodeModel root) {
 		if(this != root)

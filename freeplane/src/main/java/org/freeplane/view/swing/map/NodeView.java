@@ -995,7 +995,9 @@ public class NodeView extends JComponent implements INodeView {
 		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
-		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
+		final boolean preferredChildIsLeft = preferredChild != null 
+		        && map.getLayoutType() != MapViewLayout.OUTLINE
+		        && preferredChild.getModel().wouldBeLeft(mapRootNode, getModel());
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		if (node == preferredChild) {
 			preferredChild = null;
