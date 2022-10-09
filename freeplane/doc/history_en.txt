@@ -1,4 +1,10 @@
 ==============================
+1.10.6
+===============================
+Left-to-right layouts
+Mixed layouts
+
+==============================
 1.10.5
 ===============================
 Vertical aligning child nodes at the top, at the bottom or at the center of the parent node
