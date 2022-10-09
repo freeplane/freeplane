@@ -520,7 +520,13 @@ public interface NodeRO {
 	Quantity<LengthUnit> getHorizontalShiftAsLength();
 	
     /** @since 1.10.5 */
-	ChildNodesAlignment getChildNodesAlignment();
+    ChildNodesAlignment getChildNodesAlignment();
+
+    /** @since 1.10.6 */
+    LayoutOrientation getLayoutOrientation();
+
+    /** @since 1.10.6 */
+    ChildrenSides getChildrenSides() ;
 
 	
     /**@since 1.8.11 */

@@ -66,6 +66,7 @@ import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -752,7 +753,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 	
 	ChildNodesAlignment getChildNodesAlignment() {
-		ChildNodesAlignment verticalAlignment = getModeController().getExtension(LocationController.class).getChildNodesAlignment(model);
+		ChildNodesAlignment verticalAlignment = getModeController().getExtension(LayoutController.class).getChildNodesAlignment(model);
 		switch (verticalAlignment) {
 		case UNDEFINED:
 		case AS_PARENT:

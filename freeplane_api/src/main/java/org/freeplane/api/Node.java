@@ -365,6 +365,12 @@ public interface Node extends NodeRO {
     
     /** @since 1.10.5 */
     void setChildNodesAlignment(final ChildNodesAlignment alignment);
+    
+    /** @since 1.10.6 */
+    void setLayoutOrientation(final LayoutOrientation orientation);
+    
+    /** @since 1.10.6 */
+    void setChildrenSides(final ChildrenSides sides);
 
 
 	/**

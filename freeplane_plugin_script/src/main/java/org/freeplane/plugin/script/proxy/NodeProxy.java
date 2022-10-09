@@ -20,6 +20,7 @@ import org.freeplane.api.Attributes;
 import org.freeplane.api.Cloud;
 import org.freeplane.api.Connector;
 import org.freeplane.api.DependencyLookup;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -31,6 +32,7 @@ import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
 import org.freeplane.api.Side;
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -47,6 +49,8 @@ import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -1078,15 +1082,35 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
 	}
 
-	@Override
-	public void setChildNodesAlignment(final ChildNodesAlignment alignment){
-		((MLocationController) LocationController.getController()).setChildNodesAlignment(getDelegate(), alignment);
-	}
+    @Override
+    public void setLayoutOrientation(final LayoutOrientation orientation){
+        ((MLayoutController) LayoutController.getController()).setLayoutOrientation(getDelegate(), orientation);
+    }
 
-	@Override
-	public ChildNodesAlignment getChildNodesAlignment() {
-		return LocationController.getController().getChildNodesAlignment(getDelegate());
-	}
+    @Override
+    public void setChildNodesAlignment(final ChildNodesAlignment alignment){
+        ((MLayoutController) LayoutController.getController()).setChildNodesAlignment(getDelegate(), alignment);
+    }
+
+    @Override
+    public void setChildrenSides(final ChildrenSides sides){
+        ((MLayoutController) LayoutController.getController()).setChildrenSides(getDelegate(), sides);
+    }
+
+    @Override
+    public LayoutOrientation getLayoutOrientation() {
+        return LayoutController.getController().getLayoutOrientation(getDelegate());
+    }
+
+    @Override
+    public ChildNodesAlignment getChildNodesAlignment() {
+        return LayoutController.getController().getChildNodesAlignment(getDelegate());
+    }
+
+    @Override
+    public ChildrenSides getChildrenSides() {
+        return LayoutController.getController().getChildrenSides(getDelegate());
+    }
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnit> minimalDistanceBetweenChildren) {

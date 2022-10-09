@@ -17,13 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.nodelocation.mindmapmode;
+package org.freeplane.features.layout.mindmapmode;
 
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.layout.LayoutModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodelocation.LocationModel;
 
 /**
  * @author Dimitry Polivaev
@@ -34,29 +34,32 @@ class ChangeChildNodesAlignmentActor implements IActor {
 	private final ChildNodesAlignment newAlignment;
 
 	ChangeChildNodesAlignmentActor(final NodeModel node, ChildNodesAlignment newAlignment){
-		final LocationModel locationModel = LocationModel.getModel(node);
-		oldAlignment = locationModel.getChildNodesAlignment();
+		final LayoutModel layoutModel = LayoutModel.getModel(node);
+		oldAlignment = layoutModel.getChildNodesAlignment();
 		this.node = node;
 		this.newAlignment = newAlignment;
 	}
 
-	public void act() {
+	@Override
+    public void act() {
 		setAlignment(node, oldAlignment, newAlignment);
 	}
 
-	public String getDescription() {
+	@Override
+    public String getDescription() {
 		return "changeChildNodesAlignment";
 	}
 
 	private void setAlignment(final NodeModel node, ChildNodesAlignment oldAlignment, ChildNodesAlignment newAlignment) {
 		if(oldAlignment != newAlignment) {
-			LocationModel.createLocationModel(node).setChildNodesAlignment(newAlignment);
+			LayoutModel.createLayoutModel(node).setChildNodesAlignment(newAlignment);
 			Controller.getCurrentModeController().getMapController()
 			.nodeChanged(node, ChildNodesAlignment.class, oldAlignment, newAlignment);
 		}
 	}
 
-	public void undo() {
+	@Override
+    public void undo() {
 		setAlignment(node, newAlignment, oldAlignment);
 	}
 }

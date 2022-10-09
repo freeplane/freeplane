@@ -44,7 +44,6 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class LocationController implements IExtension {
 	final private ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel> childGapHandlers;
-	final private ExclusivePropertyChain<ChildNodesAlignment, NodeModel> childNodesAlignmentHandlers;
 	
 	public static LocationController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -87,31 +86,10 @@ public class LocationController implements IExtension {
 			}
 		});
 		
-		childNodesAlignmentHandlers = new ExclusivePropertyChain<ChildNodesAlignment, NodeModel>();
-		addChildNodesAlignmentGetter(IPropertyHandler.STYLE, new IPropertyHandler<ChildNodesAlignment, NodeModel>() {
-			public ChildNodesAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesAlignment currentValue) {
-				final MapModel map = node.getMap();
-				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
-				final ChildNodesAlignment returnedAlignment = getStyleAlignment(map, style);
-				return returnedAlignment;
-			}
-		});
-		addChildNodesAlignmentGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ChildNodesAlignment, NodeModel>() {
-			public ChildNodesAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesAlignment currentValue) {
-				return LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT;
-			}
-		});
-
 	}
 	private IPropertyHandler<Quantity<LengthUnit>, NodeModel> addChildGapGetter(final Integer key,
             final IPropertyHandler<Quantity<LengthUnit>, NodeModel> getter) {
 			return childGapHandlers.addGetter(key, getter);
-	}
-
-	private IPropertyHandler<ChildNodesAlignment, NodeModel> addChildNodesAlignmentGetter(final Integer key,
-            final IPropertyHandler<ChildNodesAlignment, NodeModel> getter) {
-			return childNodesAlignmentHandlers.addGetter(key, getter);
 	}
 
 	private Quantity<LengthUnit> getStyleChildGap(final MapModel map, final Collection<IStyle> styleKeys) {
@@ -134,25 +112,6 @@ public class LocationController implements IExtension {
 		return null;
 	}
 
-	private ChildNodesAlignment getStyleAlignment(final MapModel map, final Collection<IStyle> styleKeys) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
-			if (styleModel == null) {
-				continue;
-			}
-			ChildNodesAlignment alignment = styleModel.getChildNodesAlignment();
-			if (alignment == LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT) {
-				continue;
-			}
-			return alignment;
-		}
-		return null;
-	}
 	public Quantity<LengthUnit> getHorizontalShift(NodeModel node){
 		return LocationModel.getModel(node).getHGap();
 	}
@@ -163,9 +122,5 @@ public class LocationController implements IExtension {
 
 	public Quantity<LengthUnit> getMinimalDistanceBetweenChildren(NodeModel node){
 		return childGapHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
-	}
-
-	public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
-		return childNodesAlignmentHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 }

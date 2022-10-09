@@ -33,10 +33,9 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodelocation.LocationController;
-import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
-
+import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.layout.mindmapmode.MLayoutController;
+import org.freeplane.features.layout.LayoutModel;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 /**
@@ -62,28 +61,28 @@ class ChildNodeAlignmentControlGroup implements ControlGroup {
 
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MLocationController styleController = (MLocationController) Controller
-					.getCurrentModeController().getExtension(LocationController.class);
+			final MLayoutController styleController = (MLayoutController) Controller
+					.getCurrentModeController().getExtension(LayoutController.class);
 			styleController.setChildNodesAlignment(node, enabled ? ChildNodesAlignment.valueOf(mChildNodesAlignment.getValue()) : null);
 }
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
-			LocationModel model = LocationModel.getModel(node);
-			final ChildNodesAlignment alignment = model != null ? model.getChildNodesAlignment() : LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT;
+			LayoutModel model = LayoutModel.getModel(node);
+			final ChildNodesAlignment alignment = model != null ? model.getChildNodesAlignment() : LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT;
 			ChildNodesAlignment displayedValue = displayedValue(node, alignment);
 			mChildNodesAlignment.setValue(displayedValue.name());
 		}
 
 		private ChildNodesAlignment displayedValue(NodeModel node, final ChildNodesAlignment alignment) {
-			final LocationController styleController = LocationController.getController();
+			final LayoutController styleController = LayoutController.getController();
 			final ChildNodesAlignment viewAlignment = styleController.getChildNodesAlignment(node);
-			mSetChildNodesAlignment.setValue(alignment != LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT);
+			mSetChildNodesAlignment.setValue(alignment != LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT);
 			ChildNodesAlignment displayedValue;
 			if(viewAlignment == ChildNodesAlignment.AS_PARENT
 					&& node.isRoot())
 				return ChildNodesAlignment.BY_CENTER;
-			else if (viewAlignment != LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT)
+			else if (viewAlignment != LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT)
 				displayedValue = viewAlignment;
 			else
 				displayedValue = ChildNodesAlignment.BY_CENTER;

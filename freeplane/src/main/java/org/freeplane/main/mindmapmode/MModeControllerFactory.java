@@ -76,6 +76,8 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.icon.mindmapmode.IconSelectionPlugin;
 import org.freeplane.features.icon.mindmapmode.MIconController;
+import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
@@ -251,6 +253,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
 		LocationController.install(new MLocationController());
+		LayoutController.install(new MLayoutController());
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();

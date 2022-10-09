@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapModel;
@@ -39,7 +38,8 @@ import org.freeplane.features.styles.LogicalStyleKeys;
 public class MLocationController extends LocationController {
 	
 	private static class StyleCopier implements IExtensionCopier {
-		public void copy(Object key, NodeModel from, NodeModel to) {
+		@Override
+        public void copy(Object key, NodeModel from, NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
@@ -47,22 +47,22 @@ public class MLocationController extends LocationController {
 			if(source != null){
 				LocationModel locationModel = LocationModel.createLocationModel(to);
 				locationModel.setVGap(source.getVGap());
-				locationModel.setChildNodesAlignment(locationModel.getChildNodesAlignment());
 			}
 		}
 
-		public void remove(Object key, NodeModel from) {
+		@Override
+        public void remove(Object key, NodeModel from) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
 			LocationModel target = from.getExtension(LocationModel.class);
 			if(target != null){
 				target.setVGap(LocationModel.DEFAULT_VGAP);
-				target.setChildNodesAlignment(LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT);
 			}
 		}
 
-		public void remove(Object key, NodeModel from, NodeModel which) {
+		@Override
+        public void remove(Object key, NodeModel from, NodeModel which) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
@@ -109,14 +109,6 @@ public class MLocationController extends LocationController {
 		if(node != null){
 			Quantity.assertNonNegativeOrNull(minimalDistanceBetweenChildren);
 			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
-			Controller.getCurrentModeController().execute(actor, node.getMap());
-		}
-
-	}
-
-	public void setChildNodesAlignment(NodeModel node, ChildNodesAlignment alignment){
-		if(node != null){
-			final IActor actor = new ChangeChildNodesAlignmentActor(node, alignment != null ? alignment : LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT);
 			Controller.getCurrentModeController().execute(actor, node.getMap());
 		}
 

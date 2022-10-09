@@ -56,14 +56,6 @@ class LocationBuilder implements IExtensionAttributeWriter {
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP", vgapHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP_QUANTITY", vgapHandler);
 		
-		final IAttributeHandler verticalAlignmentHandler = new IAttributeHandler() {
-			public void setAttribute(final Object userObject, final String value) {
-				final NodeModel node = (NodeModel) userObject;
-				LocationModel.createLocationModel(node).setChildNodesAlignment(ChildNodesAlignment.valueOf(value));
-			}
-		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
 		
 		
 		final IAttributeHandler hgapHandler = new IAttributeHandler() {
@@ -94,10 +86,6 @@ class LocationBuilder implements IExtensionAttributeWriter {
 		final Quantity<LengthUnit> shiftY = locationModel.getShiftY();
 		if (shiftY != LocationModel.DEFAULT_SHIFT_Y) {
 			writer.addAttribute("VSHIFT_QUANTITY", shiftY.toString());
-		}
-		final ChildNodesAlignment alignment = locationModel.getChildNodesAlignment();
-		if (alignment != LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT) {
-			writer.addAttribute("CHILD_NODES_ALIGNMENT", alignment.name());
 		}
 	}
 }
