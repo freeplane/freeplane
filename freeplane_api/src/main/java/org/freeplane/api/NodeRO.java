@@ -369,13 +369,34 @@ public interface NodeRO {
 	public boolean isFree();
 
 	boolean isLeaf();
+	
+    /** 
+     * @since 1.10.4 
+     * 
+     * @deprecated since 1.10.6 - use {@link #isTopOrLeft()}
+     */
+    @Deprecated
+	default boolean isLeft() {
+	    return isTopOrLeft();
+	}
 
-	boolean isLeft();
+	/** @since 1.10.6 */
+	boolean isTopOrLeft();
 
-	/** 
-	 * @since 1.10.4 
-	 */
-	boolean isLeftOnViewsWithRoot(NodeRO viewRoot);
+    /** 
+     * @since 1.10.4 
+     * 
+     * @deprecated since 1.10.6 - use {@link #isTopOrLeftOnViewsWithRoot()}
+     */
+	@Deprecated
+    default boolean isLeftOnViewsWithRoot(NodeRO viewRoot) {
+	    return isTopOrLeftOnViewsWithRoot(viewRoot);
+	}
+
+    /** 
+     * @since 1.10.6 
+     */
+    boolean isTopOrLeftOnViewsWithRoot(NodeRO viewRoot);
 
 	boolean isRoot();
 	

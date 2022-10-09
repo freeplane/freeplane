@@ -122,7 +122,7 @@ abstract class MainViewPainter{
 		boolean drawsControls = mainView.getMouseArea() != MouseArea.OUT && ! map.isPrinting();
 		if(markType == FoldingMark.FOLDING_CIRCLE_UNFOLDED && ! drawsControls)
 			return;
-		final Point p = mainView.getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
+		final Point p = mainView.getNodeView().isTopOrLeft() ? getLeftPoint() : getRightPoint();
 		final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
 		final int halfWidth = width / 2;
 		if (p.x <= 0) {

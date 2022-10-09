@@ -105,8 +105,8 @@ class NodeViewLayoutHelper {
 		return view.isFirstGroupNode();
 	}
 
-	boolean isLeft() {
-		return view.isLeft();
+	boolean isTopOrLeft() {
+		return view.isTopOrLeft();
 	}
 	
 	int getHGap() {

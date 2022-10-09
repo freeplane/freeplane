@@ -1171,7 +1171,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (isRoot(oldSelected)) {
 			newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet(), true);
 		}
-		else if (!oldSelected.isLeft()) {
+		else if (!oldSelected.isTopOrLeft()) {
 			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
@@ -1213,7 +1213,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	if(! (component instanceof NodeView))
 	    		break;
 	    	final NodeView next = (NodeView) component;
-	    	if(next.isLeft() != node.isLeft())
+	    	if(next.isTopOrLeft() != node.isTopOrLeft())
 	    		continue;
 	    	if(next.isSummary())
 	    		level++;
@@ -1222,7 +1222,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	if(level == requiredSummaryLevel){
 	    		if(next.getModel().hasVisibleContent(filter))
 	    			return next;
-	    		final NodeView preferredVisibleChild = next.getPreferredVisibleChild(isOutlineLayoutSet(), next.isLeft());
+	    		final NodeView preferredVisibleChild = next.getPreferredVisibleChild(isOutlineLayoutSet(), next.isTopOrLeft());
 	    		if(preferredVisibleChild != null)
 	    			return preferredVisibleChild;
 	    		break;
@@ -1248,7 +1248,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (isRoot(oldSelected)) {
 			newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet(), false);
 		}
-		else if (oldSelected.isLeft()) {
+		else if (oldSelected.isTopOrLeft()) {
 			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
@@ -2162,11 +2162,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final NodeView selectionStart = selection.getSelectionStart();
 		final NodeView selectionEnd = selection.getSelectionEnd();
 		final NodeView parentView = newSelected.getParentView();
-		final boolean left = newSelected.isLeft();
+		final boolean left = newSelected.isTopOrLeft();
 		if(isRoot(newSelected)
 				|| selectionStart == null || selectionEnd == null
 				|| parentView != selectionStart.getParentView() || parentView != selectionEnd.getParentView()
-				|| left != selectionStart.isLeft() || newSelected.isLeft() != selectionEnd.isLeft()){
+				|| left != selectionStart.isTopOrLeft() || newSelected.isTopOrLeft() != selectionEnd.isTopOrLeft()){
 			selection.setSelectionStart(newSelected);
 			if(!newSelected.isSelected())
 				selection.add(newSelected);
@@ -2177,7 +2177,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		boolean selectionFound = false;
 		boolean selectionRequired = false;
 		for (final NodeView child : parentView.getChildrenViews()){
-			if(child.isLeft() == left){
+			if(child.isTopOrLeft() == left){
 				final boolean onOldSelectionMargin = child == selectionStart || child == selectionEnd;
 				final boolean selectionFoundNow = ! selectionFound && onOldSelectionMargin;
 				selectionFound = selectionFound || selectionFoundNow;
@@ -2443,7 +2443,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
     public void preserveNodeLocationOnScreen(NodeView nodeView) {
-        int horizontalPoint = nodeView.isLeft() ? 1 : 0;
+        int horizontalPoint = nodeView.isTopOrLeft() ? 1 : 0;
         preserveNodeLocationOnScreen(nodeView, horizontalPoint, 0);
     }
 

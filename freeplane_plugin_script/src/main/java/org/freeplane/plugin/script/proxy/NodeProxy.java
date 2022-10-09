@@ -568,9 +568,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// NodeRO: R
 	@Override
-	public boolean isLeft() {
+	public boolean isTopOrLeft() {
 		NodeModel node = getDelegate();
-		return node.isLeft(node.getMap().getRootNode());
+		return node.isTopOrLeft(node.getMap().getRootNode());
 	}
 
 	@Override
@@ -580,12 +580,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// NodeRO: R
 	@Override
-	public boolean isLeftOnViewsWithRoot(NodeRO viewRoot) {
+	public boolean isTopOrLeftOnViewsWithRoot(NodeRO viewRoot) {
 		if(! (viewRoot instanceof NodeProxy))
 			return false;
         NodeModel node = getDelegate();
 		NodeModel root = ((NodeProxy)viewRoot).getDelegate();
-		return node.isLeft(root);
+		return node.isTopOrLeft(root);
 	}
 
 	// NodeRO: R
@@ -722,9 +722,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		styleController.setNodeFormat(getDelegate(), format);
 	}
 
-	@Override
-	public void setLeft(final boolean isLeft) {
-		setSide(isLeft ? NodeModel.Side.LEFT : NodeModel.Side.RIGHT);
+	@Deprecated
+    @Override
+	public void setLeft(final boolean isTopOrLeft) {
+		setSide(isTopOrLeft ? NodeModel.Side.TOP_OR_LEFT : NodeModel.Side.BOTTOM_OR_RIGHT);
 	}
 
 	@Override

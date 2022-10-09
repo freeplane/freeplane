@@ -8,8 +8,8 @@ import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.SummaryEdgeView;
 
 class SummaryEdgePainter {
-	SummaryEdgePainter(NodeView parent, boolean isLeft){
-		this.isLeft = isLeft;
+	SummaryEdgePainter(NodeView parent, boolean isTopOrLeft){
+		this.isTopOrLeft = isTopOrLeft;
 		int maxSize = parent.getComponentCount();
 		xs = new int[maxSize];
 		yMins = new int[maxSize];
@@ -20,7 +20,7 @@ class SummaryEdgePainter {
 		saveCurrentValues();
 	}
 	private void resetLevelValues(int level) {
-		if(this.isLeft)
+		if(this.isTopOrLeft)
 			xs[level] = Integer.MAX_VALUE;
 		else
 			xs[level] = Integer.MIN_VALUE;
@@ -39,11 +39,11 @@ class SummaryEdgePainter {
 	private int currentX;
 	private int currentY1;
 	private int currentY2;
-	final private boolean isLeft;
+	final private boolean isTopOrLeft;
 	private int level;
 	private int maxLevel;
 	void addChild(NodeView child){
-		if(child.isLeft() != isLeft)
+		if(child.isTopOrLeft() != isTopOrLeft)
 			return;
 		setCurrentLevel(child);
         updateLevelValues(child);
@@ -59,7 +59,7 @@ class SummaryEdgePainter {
 		int yMin = helper.getY() + spaceAround;
 		int yMax = helper.getY() + helper.getHeight() - helper.getSpaceAround();
         int x;
-        if (isLeft) {
+        if (isTopOrLeft) {
             x = helper.getX() + spaceAround;
         }
         else {
@@ -67,7 +67,7 @@ class SummaryEdgePainter {
         }
         yMins[level] = Math.min(yMin, yMins[level]);
         yMaxs[level] = Math.max(yMax, yMaxs[level]);
-		if (isLeft) {
+		if (isTopOrLeft) {
 			xs[level] = Math.min(x, xs[level]);
 		}
 		else {

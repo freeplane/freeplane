@@ -75,7 +75,7 @@ public class SummaryLevelsShould {
 
 		@Test
 		public void ignoreNodesOnDifferentSides() throws Exception {
-			mapFake.addNode("1").setSide(Side.LEFT);
+			mapFake.addNode("1").setSide(Side.TOP_OR_LEFT);
 			mapFake.addNode("2");
 			mapFake.addSummaryNode();
 			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot(), mapFake.getRoot());
@@ -164,7 +164,7 @@ public class SummaryLevelsShould {
 		public void ignoreNodesOnDifferentSides() throws Exception {
 			mapFake.addGroupBeginNode();
 			final NodeModel leftNode = mapFake.addNode("1");
-			leftNode.setSide(Side.LEFT);
+			leftNode.setSide(Side.TOP_OR_LEFT);
 			mapFake.addNode("2");
 			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot(), mapFake.getRoot());
 			assertThat(summaryLevels.findGroupBeginNode(leftNode.getIndex()), equalTo(leftNode));

@@ -162,7 +162,7 @@ public class ChangeNodeLevelController implements IExtension {
 
 	private boolean canMoveTo(final NodeModel selectionRoot, final NodeModel selectedNode, final List<NodeModel> selectedNodes,
 			final NodeModel targetCandidate) {
-		return !selectedNodes.contains(targetCandidate) && selectedNode.isLeft(selectionRoot) == targetCandidate.isLeft(selectionRoot) 
+		return !selectedNodes.contains(targetCandidate) && selectedNode.isTopOrLeft(selectionRoot) == targetCandidate.isTopOrLeft(selectionRoot) 
 				&& (targetCandidate.hasChildren() || ! targetCandidate.isHiddenSummary());
 	}
 
@@ -179,7 +179,7 @@ public class ChangeNodeLevelController implements IExtension {
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
 				return;
 			}
-			Side newSide = selectedNode.isLeft(selectionRoot) ? Side.RIGHT : Side.LEFT;
+			Side newSide = selectedNode.isTopOrLeft(selectionRoot) ? Side.BOTTOM_OR_RIGHT : Side.TOP_OR_LEFT;
 			mapController.setSide(selectedNodes, newSide);
 		}
 		else {
@@ -223,7 +223,7 @@ public class ChangeNodeLevelController implements IExtension {
     void changeNodeLevelLefts(NodeModel selectionRoot, NodeModel selectedNode) {
         final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         final Component mapViewComponent = mapViewManager.getMapViewComponent();
-        if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selectionRoot)) {
+        if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isTopOrLeft(selectionRoot)) {
         	moveDownwards(selectionRoot, selectedNode);
         }
         else {
@@ -234,7 +234,7 @@ public class ChangeNodeLevelController implements IExtension {
     void changeNodeLevelRights(NodeModel selectionRoot, NodeModel selectedNode) {
         final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         final Component mapViewComponent = mapViewManager.getMapViewComponent();
-        if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isLeft(selectionRoot)) {
+        if (mapViewManager.isLeftTreeSupported(mapViewComponent) && selectedNode.isTopOrLeft(selectionRoot)) {
             moveUpwards(selectionRoot, selectedNode);
         }
         else {

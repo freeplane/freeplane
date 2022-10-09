@@ -235,10 +235,10 @@ private Timer timer;
 					return;
 				}
 			}
-			final boolean isLeft = mainView.dropsLeft(dtde.getLocation());
+			final boolean isTopOrLeft = mainView.dropsLeft(dtde.getLocation());
 			if (!dtde.isLocalTransfer()) {
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
-				Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
+				Side side = dropAsSibling ? Side.AS_SIBLING : isTopOrLeft ? Side.TOP_OR_LEFT :  Side.BOTTOM_OR_RIGHT;
 				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode,
 						dropAsSibling ? Side.AS_SIBLING : MapController.suggestNewChildSide(targetNode, side), dropAction);
 				dtde.dropComplete(true);
@@ -264,7 +264,7 @@ private Timer timer;
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(targetNode, selecteds)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
-					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
+					moveNodes(mapController, targetNode, t, dropAsSibling, isTopOrLeft);
 
 					if(dropAsSibling || ! targetNodeView.isFolded())
 					    controller.getSelection().replaceSelection(array);
@@ -272,7 +272,7 @@ private Timer timer;
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
-					Side side = dropAsSibling ? Side.AS_SIBLING : isLeft ? Side.LEFT :  Side.RIGHT;
+					Side side = dropAsSibling ? Side.AS_SIBLING : isTopOrLeft ? Side.TOP_OR_LEFT :  Side.BOTTOM_OR_RIGHT;
 					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode,
 							dropAsSibling ? Side.AS_SIBLING : MapController.suggestNewChildSide(targetNode, side));
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
@@ -303,7 +303,7 @@ private Timer timer;
 	}
 
 	private void moveNodes(final MMapController mapController, final NodeModel targetNode, Transferable t,
-	                       final boolean dropAsSibling, final boolean isLeft) throws UnsupportedFlavorException,
+	                       final boolean dropAsSibling, final boolean isTopOrLeft) throws UnsupportedFlavorException,
 	        IOException {
 		final List<NodeModel> movedNodes = getNodeObjects(t);
 		if (dropAsSibling) {
@@ -313,7 +313,7 @@ private Timer timer;
 		else {
 			List<NodeModel> nodesChangingParent = movedNodes.stream().filter(node -> targetNode != node.getParentNode()).collect(Collectors.toList());
 			mapController.moveNodesAsChildren(movedNodes, targetNode);
-			Side side = MapController.suggestNewChildSide(targetNode, isLeft ? Side.LEFT : Side.RIGHT);
+			Side side = MapController.suggestNewChildSide(targetNode, isTopOrLeft ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
 			mapController.setSide(side == Side.DEFAULT ? nodesChangingParent : movedNodes, side);
 		}
 	}

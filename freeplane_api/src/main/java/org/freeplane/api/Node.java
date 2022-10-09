@@ -302,10 +302,10 @@ public interface Node extends NodeRO {
 	void setAttributes(java.util.Map<String, Object> attributes);
 
 	/**
-	 * @deprecated since 1.10.4 - use {@link #setPreferredSide(ViewSide)} instead. 
-	 * @param isLeft
+	 * @deprecated since 1.10.4 - use {@link #setSideAtRoot(Side)} instead. 
+	 * @param isTopOrLeft
 	 */
-	void setLeft(boolean isLeft);
+	void setLeft(boolean isTopOrLeft);
 	
 	/** 
 	 * @since 1.10.4 

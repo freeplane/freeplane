@@ -206,7 +206,7 @@ class ConnectorProperties{
 
 	public void changeInclination(int deltaX, final int deltaY, final NodeModel selectionRoot, final NodeModel linkedNodeView,
 	                              final Point changedInclination) {
-		if (linkedNodeView.isLeft(selectionRoot)) {
+		if (linkedNodeView.isTopOrLeft(selectionRoot)) {
 			deltaX = -deltaX;
 		}
 		changedInclination.translate(deltaX, deltaY);

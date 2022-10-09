@@ -79,7 +79,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getMapViewManager().getMapViewComponent());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
-		if (node.isLeft(mapView.getRoot().getModel())) {
+		if (node.isTopOrLeft(mapView.getRoot().getModel())) {
 			hGapChange = -hGapChange;
 		}
 		return hGapChange;
@@ -345,7 +345,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final NodeModel node = nodeV.getModel();
 		if (SummaryNode.isHidden(node))
 			return -1;
-		final boolean left = nodeV.isLeft();
+		final boolean left = nodeV.isTopOrLeft();
 		final int nodeY = getRefY(nodeV);
 		final NodeView parent = nodeV.getParentView();
 		int newIndex = 0;
@@ -359,12 +359,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				continue;
 			NodeView siblingV = (NodeView) component;
 			final NodeModel sibling = siblingV.getModel();
-			if (siblingV.isLeft() == left && !SummaryNode.isHidden(sibling) && getRefY(siblingV) > nodeY)
+			if (siblingV.isTopOrLeft() == left && !SummaryNode.isHidden(sibling) && getRefY(siblingV) > nodeY)
 				break;
 			else {
 				if (siblingV != nodeV) {
 					newIndex++;
-					if (siblingV.isLeft() != left)
+					if (siblingV.isTopOrLeft() != left)
 						wrondSideCount++;
 					else {
 						wrondSideCount = 0;

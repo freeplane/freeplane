@@ -39,7 +39,7 @@ public class SummaryNodeMapUpdater implements IMapLifeCycleListener {
 			if(SummaryNode.isSummaryNode(node)) {
 				if(summaryLevels == null)
 					summaryLevels = new SummaryLevels(rootNode, parentNode);
-				final NodeModel groupBeginNode = summaryLevels.findGroupBeginNode(parentNode.previousNodeIndex(rootNode, node.getIndex(), node.isLeft(rootNode)));
+				final NodeModel groupBeginNode = summaryLevels.findGroupBeginNode(parentNode.previousNodeIndex(rootNode, node.getIndex(), node.isTopOrLeft(rootNode)));
 				if(groupBeginNode == null)
 					node.removeExtension(SummaryNodeFlag.class);
 				else {

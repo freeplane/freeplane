@@ -360,7 +360,7 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			}
 			final NodeView view = (NodeView) components[i];
-			if (leftOnly && !view.isLeft() || rightOnly && view.isLeft()) {
+			if (leftOnly && !view.isTopOrLeft() || rightOnly && view.isTopOrLeft()) {
 				continue;
 			}
 			if (view.isContentVisible()) {
@@ -393,7 +393,7 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			}
 			final NodeView view = (NodeView) components[i];
-			if (leftOnly && !view.isLeft() || rightOnly && view.isLeft()) {
+			if (leftOnly && !view.isTopOrLeft() || rightOnly && view.isTopOrLeft()) {
 				continue;
 			}
 			if (view.isContentVisible()) {
@@ -415,7 +415,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (node == null) {
 				continue;
 			}
-			if (node.isLeft()) {
+			if (node.isTopOrLeft()) {
 				left.add(node);
 			}
 		}
@@ -436,7 +436,7 @@ public class NodeView extends JComponent implements INodeView {
 			x = 1;
 			y = 0;
 		}
-		if (isLeft()) {
+		if (isTopOrLeft()) {
 			x = -x;
 		}
 		if (y != 0) {
@@ -538,8 +538,8 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
-			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isLeft(),
-			    !this.isLeft());
+			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isTopOrLeft(),
+			    !this.isTopOrLeft());
 			if (first == null) {
 				break;
 			}
@@ -566,7 +566,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (getUpper) {
 			preferredChild = null;
 		}
-		if (preferredChild != null && (left == preferredChild.isLeft()) && preferredChild.getParent() == this) {
+		if (preferredChild != null && (left == preferredChild.isTopOrLeft()) && preferredChild.getParent() == this) {
 			if (preferredChild.isContentVisible()) {
 				return preferredChild;
 			}
@@ -594,7 +594,7 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			}
 			NodeView childView = (NodeView) c;
-			if (!(childView.isLeft() == left)) {
+			if (!(childView.isTopOrLeft() == left)) {
 				continue;
 			}
 			if (!childView.isContentVisible()) {
@@ -657,7 +657,7 @@ public class NodeView extends JComponent implements INodeView {
 			UITools.errorMessage("unexpected error: node " + getMainView().getText() + " has lost its parent ");
 		}
 		if (parentView.isRoot()) {
-			if (this.isLeft()) {
+			if (this.isTopOrLeft()) {
 				v = parentView.getLeft(true);
 			}
 			else {
@@ -681,8 +681,8 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
-			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isLeft(),
-			    !this.isLeft());
+			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isTopOrLeft(),
+			    !this.isTopOrLeft());
 			if (last == null) {
 				break;
 			}
@@ -700,7 +700,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (node == null) {
 				continue;
 			}
-			if (!node.isLeft()) {
+			if (!node.isTopOrLeft()) {
 				right.add(node);
 			}
 		}
@@ -853,16 +853,16 @@ public class NodeView extends JComponent implements INodeView {
 			return getModel().hasVisibleContent(map.getFilter());
 	}
 
-	public boolean isLeft() {
+	public boolean isTopOrLeft() {
 		if (map.getLayoutType() == MapViewLayout.OUTLINE) {
 			return false;
 		}
-		return getModel().isLeft(map.getRoot().getModel());
+		return getModel().isTopOrLeft(map.getRoot().getModel());
 	}
 
 
 	public boolean isRight() {
-		return ! isLeft() && getModel() != map.getRoot().getModel();
+		return ! isTopOrLeft() && getModel() != map.getRoot().getModel();
 	}
 
 	public boolean isParentHidden() {
@@ -990,7 +990,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
-		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
+		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isTopOrLeft();
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		if (node == preferredChild) {
 			preferredChild = null;
@@ -1000,7 +1000,7 @@ public class NodeView extends JComponent implements INodeView {
 					break;
 				}
 				final NodeView candidate = (NodeView) c;
-				if (candidate.isVisible() && node.isLeft() == candidate.isLeft()) {
+				if (candidate.isVisible() && node.isTopOrLeft() == candidate.isTopOrLeft()) {
 					preferredChild = candidate;
 					break;
 				}
@@ -1012,7 +1012,7 @@ public class NodeView extends JComponent implements INodeView {
 						break;
 					}
 					final NodeView candidate = (NodeView) c;
-					if (candidate.isVisible() && node.isLeft() == candidate.isLeft()) {
+					if (candidate.isVisible() && node.isTopOrLeft() == candidate.isTopOrLeft()) {
 						preferredChild = candidate;
 						break;
 					}
@@ -1157,7 +1157,7 @@ public class NodeView extends JComponent implements INodeView {
 
     private void paintEdges(final Graphics2D g, NodeView source) {
     	boolean isRoot  = isRoot();
-		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot ? true : isLeft());
+		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot ? true : isTopOrLeft());
     	SummaryEdgePainter rightSummaryEdgePainter =  isRoot ? new SummaryEdgePainter(this, false) : null;
         final int start;
         final int end;
@@ -1179,7 +1179,7 @@ public class NodeView extends JComponent implements INodeView {
             }
             final NodeView nodeView = (NodeView) component;
         	if (map.getLayoutType() != MapViewLayout.OUTLINE) {
-        		SummaryEdgePainter activePainter = nodeView.isLeft() || !isRoot ? summaryEdgePainter : rightSummaryEdgePainter;
+        		SummaryEdgePainter activePainter = nodeView.isTopOrLeft() || !isRoot ? summaryEdgePainter : rightSummaryEdgePainter;
         		activePainter.addChild(nodeView);
         		if(activePainter.paintSummaryEdge(g, source, nodeView)){
         			if(! nodeView.isContentVisible()){

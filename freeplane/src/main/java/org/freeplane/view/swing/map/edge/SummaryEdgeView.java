@@ -53,14 +53,14 @@ public class SummaryEdgeView extends EdgeView {
 	}
 
 	private Shape update() {
-		final boolean isLeft = getTarget().isLeft();
-		final int sign = isLeft ? -1 : 1;
+		final boolean isTopOrLeft = getTarget().isTopOrLeft();
+		final int sign = isTopOrLeft ? -1 : 1;
 		final int xctrl = getMap().getZoomed(sign * SummaryEdgeView.XCTRL);
 		final int childXctrl = getMap().getZoomed(sign * SummaryEdgeView.CHILD_XCTRL);
 		final GeneralPath path = new GeneralPath(Path2D.WIND_EVEN_ODD, 5);
 		if(getSource().usesHorizontalLayout()) {
 			final int startY; 
-			if(isLeft)
+			if(isTopOrLeft)
 				startY = Math.min(start.y, end.y - childXctrl);
 			else
 				startY = Math.max(start.y, end.y - childXctrl);
@@ -70,7 +70,7 @@ public class SummaryEdgeView extends EdgeView {
 		}
 		else {
 			final int startX; 
-			if(isLeft)
+			if(isTopOrLeft)
 				startX = Math.min(start.x, end.x - childXctrl);
 			else
 				startX = Math.max(start.x, end.x - childXctrl);

@@ -6,5 +6,5 @@
 package org.freeplane.api;
 
 public enum LayoutOrientation {
-    NORTH, EAST;
+    TOP_DOWN, LEFT_TO_RIGHT;
 }

@@ -56,9 +56,9 @@ class NewSummaryAction extends AFreeplaneAction {
 		final NodeModel lastNode = sortedSelection.get(sortedSelection.size()-1);
 		
 		NodeModel selectionRoot = selection.getSelectionRoot();
-		final boolean isLeft = firstNode.isLeft(selectionRoot);
+		final boolean isTopOrLeft = firstNode.isTopOrLeft(selectionRoot);
 		// different sides
-		if(isLeft!=lastNode.isLeft(selectionRoot)){
+		if(isTopOrLeft!=lastNode.isTopOrLeft(selectionRoot)){
 			UITools.errorMessage(TextUtils.getText("summary_not_possible")); 
 			return;
 		}
@@ -91,7 +91,7 @@ class NewSummaryAction extends AFreeplaneAction {
 
 		final NodeModel parentNode = firstNode.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
-		final boolean isLeft = firstNode.isLeft(selectionRoot);
+		final boolean isTopOrLeft = firstNode.isTopOrLeft(selectionRoot);
 		int start = parentNode.getIndex(firstNode);
 		int end = parentNode.getIndex(lastNode);
 		if(end < start){
@@ -100,6 +100,6 @@ class NewSummaryAction extends AFreeplaneAction {
 			start = temp;
 		}
 		
-		((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(selectionRoot, parentNode, start, end, isLeft);
+		((MMapController) modeController.getMapController()).addNewSummaryNodeStartEditing(selectionRoot, parentNode, start, end, isTopOrLeft);
 	}
 }

@@ -176,7 +176,7 @@ public class MainView extends ZoomableLabel {
 	    NodeView nodeView = getNodeView();
 	    if(nodeView.isRoot())
 	        return false;
-	    return nodeView.usesHorizontalLayout() ||  ! nodeView.isLeft() ? isInVerticalRegion(p.getX(), 1. / 3) : isInVerticalRegion(p.getX(), 2. / 3);
+	    return nodeView.usesHorizontalLayout() ||  ! nodeView.isTopOrLeft() ? isInVerticalRegion(p.getX(), 1. / 3) : isInVerticalRegion(p.getX(), 2. / 3);
 	}
 
 	/** @return true if should be on the left, false otherwise. */
@@ -189,12 +189,12 @@ public class MainView extends ZoomableLabel {
             else
                 return p.getX() < getWidth() * 1 / 2;
         } else
-			return nodeView.isLeft();
+			return nodeView.isTopOrLeft();
 	}
 
 	public int getDeltaX() {
 		final NodeView nodeView = getNodeView();
-		if (nodeView.isFolded() && nodeView.isLeft()) {
+		if (nodeView.isFolded() && nodeView.isTopOrLeft()) {
 			return getZoomedFoldingSymbolHalfWidth() * 3;
 		}
 		else
@@ -294,7 +294,7 @@ public class MainView extends ZoomableLabel {
 	Rectangle decorationMarkBounds(final NodeView nodeView, double shiftYFactor, double widthFactor, double heightFactor) {
 		final int size = nodeView.getZoomedStateSymbolHalfWidth();
 		int width = (int) (size * widthFactor);
-		int x = nodeView.isLeft() ? getWidth() : 0 - width;
+		int x = nodeView.isTopOrLeft() ? getWidth() : 0 - width;
 		int height = (int) (size * heightFactor);
 		int y = (getHeight() - height) / 2 + (int)(height * shiftYFactor);
 		Rectangle decorationMarkBounds = new Rectangle(x, y, width, height);
@@ -329,7 +329,7 @@ public class MainView extends ZoomableLabel {
 	public Rectangle getDragRectangle() {
 		final int size = getDraggingAreaWidth();
 		Rectangle r;
-		if(getNodeView().isLeft())
+		if(getNodeView().isTopOrLeft())
 			r = new Rectangle(getWidth(), -size/2, size, getHeight() + size);
 		else
 			r = new Rectangle(-size, -size/2, size, getHeight() + size);
@@ -432,7 +432,7 @@ public class MainView extends ZoomableLabel {
 	    final NodeModel model = node.getModel();
 		if(node.getMap().showsIcons()) {
 		    StyleOption styleOption = node.getStyleOption();
-            //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
+            //		setHorizontalTextPosition(node.isTopOrLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		    /* fc, 06.10.2003: images? */
 		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model, styleOption);
 		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
@@ -625,7 +625,7 @@ public class MainView extends ZoomableLabel {
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 				return false;
 			final int draggingWidth = getDraggingAreaWidth();
-			if(nodeView.isLeft()){
+			if(nodeView.isTopOrLeft()){
 				final int width = getWidth();
 				return p.x >= width && p.x < width + draggingWidth;
 			}
@@ -644,9 +644,9 @@ public class MainView extends ZoomableLabel {
 
 	public boolean isInFoldingRegion(Point p) {
 		if (hasChildren() && p.y >= 0 && p.y < getMainViewHeightWithFoldingMark(false)) {
-			final boolean isLeft = getNodeView().isLeft();
+			final boolean isTopOrLeft = getNodeView().isTopOrLeft();
 			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
-			if (isLeft) {
+			if (isTopOrLeft) {
 	            final int maxX = 0;
 	            return p.x >= -width && p.x < maxX;
             }
@@ -688,7 +688,7 @@ public class MainView extends ZoomableLabel {
 			final NodeView nodeView = getNodeView();
 			int height;
 			final int x, y;
-			if (nodeView.isLeft()){
+			if (nodeView.isTopOrLeft()){
 				x = -width;
 			}
 			else{

@@ -141,7 +141,7 @@ public class SummaryGroupEdgeListAdderShould {
 		final NodeModel firstEdge = mapFake.addGroupBeginNode();
 		final NodeModel summarized1 = mapFake.addNode("1");
 		final NodeModel leftNode = mapFake.addNode("2");
-		leftNode.setSide(Side.LEFT);
+		leftNode.setSide(Side.TOP_OR_LEFT);
 		final NodeModel summaryNode = mapFake.addSummaryNode();
 		
 		final SummaryGroupEdgeListAdder summaryEdgeFinder = new SummaryGroupEdgeListAdder(Arrays.asList(summarized1));

@@ -52,7 +52,7 @@ public class HorizontalEdgeView extends EdgeView {
 	    }
 	    else{
 	        MainView mainView = source.getMainView();
-            if(target.isLeft()){
+            if(target.isTopOrLeft()){
 	            start = usesHorizontalLayout ? mainView.getTopPoint() : mainView.getLeftPoint();
 	        }
 	        else{
@@ -60,7 +60,7 @@ public class HorizontalEdgeView extends EdgeView {
 	        }
 	    }
         MainView mainView = target.getMainView();
-        if(target.isLeft()){
+        if(target.isTopOrLeft()){
             end = usesHorizontalLayout ? mainView.getBottomPoint() : mainView.getRightPoint();
         }
         else{
@@ -76,7 +76,7 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setStroke(stroke);
 		int middle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
 		boolean usesHorizontalLayout = getSource().usesHorizontalLayout();
-		final boolean left = getTarget().isLeft() 
+		final boolean left = getTarget().isTopOrLeft() 
 		        || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()
 		        && (usesHorizontalLayout && start.y > end.y || !usesHorizontalLayout && start.x > end.x );
 		if (left) {

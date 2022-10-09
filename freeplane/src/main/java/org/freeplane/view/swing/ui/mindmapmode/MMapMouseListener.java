@@ -177,7 +177,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 					x = rootContentNormalWidth - x;
 				}
 				final Point pt = new Point(x, y);
-				((MMapController)modeController.getMapController()).addFreeNode(root.getModel(), pt, newNodeIsLeft ? Side.LEFT : Side.RIGHT);
+				((MMapController)modeController.getMapController()).addFreeNode(root.getModel(), pt, newNodeIsLeft ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
 			}
 		}
 		else

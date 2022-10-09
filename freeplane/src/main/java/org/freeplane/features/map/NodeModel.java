@@ -53,7 +53,7 @@ public class NodeModel{
 	}
 	
 	public enum Side {
-		DEFAULT, LEFT, RIGHT, AS_SIBLING
+		DEFAULT, TOP_OR_LEFT, BOTTOM_OR_RIGHT, AS_SIBLING
 	}
 	
 	public enum NodeProperty{UNKNOWN_PROPERTY};
@@ -394,17 +394,17 @@ public class NodeModel{
 		return getChildCount() == 0;
 	}
 
-	public boolean isLeft(NodeModel root) {
+	public boolean isTopOrLeft(NodeModel root) {
 		NodeModel parentNode = getParentNode();
 		if (parentNode == null)
 			return false;
 		else if (parentNode == root)
 			if (side != Side.DEFAULT)
-				return side == Side.LEFT;
+				return side == Side.TOP_OR_LEFT;
 			else
-				return parentNode.isLeft(parentNode.getMap().getRootNode());
+				return parentNode.isTopOrLeft(parentNode.getMap().getRootNode());
 		else
-			return parentNode.isLeft(root);
+			return parentNode.isTopOrLeft(root);
 	}
 
 	public Side suggestNewChildSide(NodeModel root) {
@@ -417,14 +417,14 @@ public class NodeModel{
 			NodeModel child = getChildAt(i);
 			if(child.isHiddenSummary() || FreeNode.isFreeNode(child))
 				childCountInTree--;
-			else if (!child.isLeft(this)) {
+			else if (!child.isTopOrLeft(this)) {
 				rightChildrenCount++;
 			}
 			if (rightChildrenCount > childCountInTree / 2) {
-				return Side.LEFT;
+				return Side.TOP_OR_LEFT;
 			}
 		}
-		return Side.RIGHT;
+		return Side.BOTTOM_OR_RIGHT;
 	}
 
 	public boolean isRoot() {
@@ -509,10 +509,6 @@ public class NodeModel{
 		getMap().registryID(value, this);
 	}
 
-//	public void setLeft(final boolean isLeft) {
-//		setHorizontalPosition(isLeft ? HorizontalPosition.LEFT : HorizontalPosition.RIGHT);
-//	}
-
 	public void setSide(Side side) {
 		if(isCloneTreeNode()) {
 			for(NodeModel node : clones[TREE.ordinal()]){
@@ -526,7 +522,7 @@ public class NodeModel{
 	public void setChildNodeSidesAsNow() {
 		children.forEach(child -> {
 			if(child.getSide() == Side.DEFAULT)
-				child.setSide(child.isLeft(this) ? Side.LEFT : Side.RIGHT);
+				child.setSide(child.isTopOrLeft(this) ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
 		});
 	}
 	/**
@@ -726,15 +722,15 @@ public class NodeModel{
 	private int nextNodeIndex(NodeModel root, int index, final boolean leftSide, final int step) {
 		for(int i = index  + step; i >= 0 && i < getChildCount(); i+=step){
 			final NodeModel followingNode = getChildAt(i);
-			if(followingNode.isLeft(root) == leftSide) {
+			if(followingNode.isTopOrLeft(root) == leftSide) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public NodeModel previousNode(NodeModel root, int start, boolean isLeft) {
-		final int previousNodeIndex = previousNodeIndex(root, start, isLeft);
+	public NodeModel previousNode(NodeModel root, int start, boolean isTopOrLeft) {
+		final int previousNodeIndex = previousNodeIndex(root, start, isTopOrLeft);
 		return parent.getChildAt(previousNodeIndex);
 	}
 
