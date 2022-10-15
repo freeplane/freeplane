@@ -11,13 +11,11 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.layout.LayoutController;
 
 public class SummaryLevels{
     private static final Filter TRANSPARENT_FILTER = new Filter(null, false, false, false, false, null);
 	public static final int NODE_NOT_FOUND = -1;
-	private static final boolean[] BOTH_SIDES = {true, false};
-	private static final boolean[] LEFT_SIDE = {true};
-	private static final boolean[] RIGHT_SIDE = {false};
 	public  final int[] summaryLevels;
 	public  final int highestSummaryLevel;
 	public  final boolean[] sides;
@@ -69,8 +67,8 @@ public class SummaryLevels{
 		}
 		this.highestSummaryLevel = highestSummaryLevel;
 	}
-	static private boolean[] sidesOf(NodeModel root, NodeModel parentNode) {
-		return parentNode == root ? BOTH_SIDES : parentNode.isTopOrLeft(root) ? LEFT_SIDE : RIGHT_SIDE;
+	static public boolean[] sidesOf(NodeModel root, NodeModel parentNode) {
+		return LayoutController.getController().sidesOf(parentNode, root);
 	}
 	
 	public Collection<NodeModel> summarizedNodes(NodeModel summaryNode){
@@ -85,11 +83,11 @@ public class SummaryLevels{
 			for(int i = summaryNodeIndex - 1; i >= 0; i--){
 				final int level = summaryLevels[i];
 				if(level >= summaryLevel) {
-					if(sides != BOTH_SIDES || parentNode.getChildAt(i).isTopOrLeft(root) == summaryNode.isTopOrLeft(root))
+					if(sides.length == 1 || parentNode.getChildAt(i).isTopOrLeft(root) == summaryNode.isTopOrLeft(root))
 						return arrayList;
 				} else if (level == summaryLevel - 1) {
 					final NodeModel child = parentNode.getChildAt(i);
-					if (sides != BOTH_SIDES || child.isTopOrLeft(root) == summaryNode.isTopOrLeft(root)) {
+					if (sides.length == 1 || child.isTopOrLeft(root) == summaryNode.isTopOrLeft(root)) {
 						if(SummaryNode.isFirstGroupNode(child)) {
 							if(level > 0)
 								arrayList.add(child);

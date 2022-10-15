@@ -29,9 +29,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
@@ -176,4 +178,78 @@ public class LayoutController implements IExtension {
         else
             return LayoutOrientation.TOP_DOWN;
     }
+	
+	   public boolean isTopOrLeft(NodeModel node, NodeModel root) {
+	        NodeModel parentNode = node.getParentNode();
+	        if (parentNode == null)
+	            return false;
+	        ChildrenSides childrenSides = getChildrenSides(parentNode);
+	        switch(childrenSides) {
+	        case NOT_SET:
+                break;
+            case AUTO:
+                break;
+            case BOTH_SIDES: {
+                Side side = node.getSide();
+                if(side == Side.TOP_OR_LEFT)
+                    return true;
+                if(side == Side.BOTTOM_OR_RIGHT)
+                    return false;
+                break;
+            }
+            case BOTTOM_OR_RIGHT:
+                return false;
+            case TOP_OR_LEFT:
+                return true;
+	        }
+            if (parentNode == root) {
+                Side side = node.getSide();
+                if (side != Side.DEFAULT)
+                    return side == Side.TOP_OR_LEFT;
+                else
+                    return parentNode.isTopOrLeft(parentNode.getMap().getRootNode());
+            } else
+                return isTopOrLeft(parentNode, root);
+	    }
+
+	    public Side suggestNewChildSide(NodeModel parent, NodeModel root) {
+	        if(parent != root)
+	            return Side.DEFAULT;
+	        int rightChildrenCount = 0;
+	        int childCount = parent.getChildCount();
+	        int childCountInTree = childCount;
+	        for (int i = 0; i < childCount; i++) {
+	            NodeModel child = parent.getChildAt(i);
+	            if(child.isHiddenSummary() || FreeNode.isFreeNode(child))
+	                childCountInTree--;
+	            else if (!isTopOrLeft(child, parent)) {
+	                rightChildrenCount++;
+	            }
+	            if (rightChildrenCount > childCountInTree / 2) {
+	                return Side.TOP_OR_LEFT;
+	            }
+	        }
+	        return Side.BOTTOM_OR_RIGHT;
+	    }
+	    private static final boolean[] BOTH_SIDES = {true, false};
+	    private static final boolean[] LEFT_SIDE = {true};
+	    private static final boolean[] RIGHT_SIDE = {false};
+
+	    public boolean[] sidesOf(NodeModel parentNode, NodeModel root) {
+	        if (parentNode == root)
+                return BOTH_SIDES;
+	        ChildrenSides childrenSides = getChildrenSides(parentNode);
+	        switch(childrenSides) {
+            case BOTTOM_OR_RIGHT:
+                return RIGHT_SIDE;
+            case TOP_OR_LEFT:
+                return LEFT_SIDE;
+            case BOTH_SIDES:
+                return BOTH_SIDES;
+            default:
+                break;
+	        }
+	        return parentNode.isTopOrLeft(root) ? LEFT_SIDE : RIGHT_SIDE;
+	    }
+	    
 }

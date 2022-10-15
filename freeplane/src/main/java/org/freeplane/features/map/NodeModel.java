@@ -36,6 +36,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -395,36 +396,11 @@ public class NodeModel{
 	}
 
 	public boolean isTopOrLeft(NodeModel root) {
-		NodeModel parentNode = getParentNode();
-		if (parentNode == null)
-			return false;
-		else if (parentNode == root)
-			if (side != Side.DEFAULT)
-				return side == Side.TOP_OR_LEFT;
-			else
-				return parentNode.isTopOrLeft(parentNode.getMap().getRootNode());
-		else
-			return parentNode.isTopOrLeft(root);
+		return LayoutController.getController().isTopOrLeft(this, root);
 	}
 
 	public Side suggestNewChildSide(NodeModel root) {
-		if(this != root)
-			return Side.DEFAULT;
-		int rightChildrenCount = 0;
-		int childCount = getChildCount();
-		int childCountInTree = childCount;
-		for (int i = 0; i < childCount; i++) {
-			NodeModel child = getChildAt(i);
-			if(child.isHiddenSummary() || FreeNode.isFreeNode(child))
-				childCountInTree--;
-			else if (!child.isTopOrLeft(this)) {
-				rightChildrenCount++;
-			}
-			if (rightChildrenCount > childCountInTree / 2) {
-				return Side.TOP_OR_LEFT;
-			}
-		}
-		return Side.BOTTOM_OR_RIGHT;
+	    return LayoutController.getController().suggestNewChildSide(this, root);
 	}
 
 	public boolean isRoot() {
