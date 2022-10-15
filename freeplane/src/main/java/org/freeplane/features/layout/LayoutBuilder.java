@@ -79,7 +79,7 @@ class LayoutBuilder implements IExtensionAttributeWriter {
 		}
 		ChildrenSides childrenSides = layoutModel.getChildrenSides();
         if (childrenSides != ChildrenSides.NOT_SET) {
-            writer.addAttribute("CHILDREN_SIDES", layoutOrientation.name());
+            writer.addAttribute("CHILDREN_SIDES", childrenSides.name());
         }
         final ChildNodesAlignment alignment = layoutModel.getChildNodesAlignment();
         if (alignment != LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT) {
