@@ -83,7 +83,6 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
-	public static final String HORIZONTAL_LAYOUT = "horizontal_layout";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
@@ -380,10 +379,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	public boolean allowsCompactLayout(MapModel map) {
 		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT);
-	}
-
-	public boolean usesHorizontalLayout(MapModel map) {
-		return getBooleanProperty(map, HORIZONTAL_LAYOUT);
 	}
 
 	private boolean getBooleanProperty(MapModel map, String name) {

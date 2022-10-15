@@ -70,7 +70,7 @@ class ChildrenSidesControlGroup implements ControlGroup {
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			LayoutModel model = LayoutModel.getModel(node);
-			final ChildrenSides alignment = model != null ? model.getChildrenSides() : ChildrenSides.AUTO;
+			final ChildrenSides alignment = model != null ? model.getChildrenSides() : ChildrenSides.NOT_SET;
 			ChildrenSides displayedValue = displayedValue(node, alignment);
 			mChildrenSides.setValue(displayedValue.name());
 		}

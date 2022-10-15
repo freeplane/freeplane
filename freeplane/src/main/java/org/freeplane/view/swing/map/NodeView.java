@@ -46,6 +46,8 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -67,6 +69,7 @@ import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.layout.LayoutModel;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -790,7 +793,6 @@ public class NodeView extends JComponent implements INodeView {
 		if (!(parent instanceof NodeView)) {
 			return null;
 		}
-		final NodeView parentView = (NodeView) parent;
 		if(isSummary()){
 			boolean startFromSummary = true;
 			LinkedList<NodeView> v = getSiblingViews();
@@ -807,6 +809,7 @@ public class NodeView extends JComponent implements INodeView {
 
 			}
 		}
+		final NodeView parentView = (NodeView) parent;
 		if (parentView.isContentVisible()) {
 			return parentView;
 		}
@@ -910,12 +913,24 @@ public class NodeView extends JComponent implements INodeView {
 			if(property != EncryptionModel.class)
 				return;
 		}
-		if(property == ChildNodesAlignment.class) {
-			invalidateAll();
-			revalidate();
-			repaint();
-			return;
-		}
+        if(property == ChildNodesAlignment.class) {
+            invalidateAll();
+            revalidate();
+            repaint();
+            return;
+        }
+        if(property == LayoutOrientation.class) {
+            invalidateAll();
+            revalidate();
+            repaint();
+            return;
+        }
+        if(property == ChildrenSides.class) {
+            invalidateAll();
+            revalidate();
+            repaint();
+            return;
+        }
 		if(property == NodeVisibilityConfiguration.class) {
 			updateAll();
 			if(event.getNewValue() != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES)
@@ -1812,6 +1827,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public boolean usesHorizontalLayout() {
-		return map.usesHorizontalLayout();
+		return getModeController().getExtension(LayoutController.class).getEffectiveLayoutOrientation(model, map.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
 	}
 }

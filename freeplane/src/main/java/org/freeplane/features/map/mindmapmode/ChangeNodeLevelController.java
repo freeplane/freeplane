@@ -24,10 +24,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -55,11 +57,15 @@ public class ChangeNodeLevelController implements IExtension {
 
 		@Override
         public void actionPerformed(final ActionEvent e) {
-			Controller controller = Controller.getCurrentController();
-			IMapSelection selection = controller.getSelection();
-			NodeModel selectedNode = selection.getSelected();
-			NodeModel selectionRoot = selection.getSelectionRoot();
-            if(selection.usesHorizontalLayout()) {
+            Controller controller = Controller.getCurrentController();
+            IMapSelection selection = controller.getSelection();
+            NodeModel selectedNode = selection.getSelected();
+            NodeModel selectionRoot = selection.getSelectionRoot();
+            if(selectedNode == selectionRoot)
+                return;
+            LayoutController layoutController = LayoutController.getController();
+            boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode(), selection.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+            if(selectionUsesHorizontalLayout) {
                 MMapController mapController = (MMapController) controller.getModeController().getMapController();
                 mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), -1);
             }
@@ -86,7 +92,11 @@ public class ChangeNodeLevelController implements IExtension {
 			IMapSelection selection = controller.getSelection();
 			NodeModel selectedNode = selection.getSelected();
 			NodeModel selectionRoot = selection.getSelectionRoot();
-            if(selection.usesHorizontalLayout()) {
+			if(selectedNode == selectionRoot)
+			    return;
+			LayoutController layoutController = LayoutController.getController();
+            boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode(), selection.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+            if(selectionUsesHorizontalLayout) {
                 MMapController mapController = (MMapController) controller.getModeController().getMapController();
                 mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), 1);
             }

@@ -25,8 +25,6 @@ import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.function.ToIntFunction;
 
-import javax.swing.JComponent;
-
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -55,7 +53,9 @@ class VerticalNodeViewLayoutStrategy {
 
 	final private boolean allowsCompactLayout;
 
-	private int defaultVGap;
+	private final int defaultVGap;
+
+    private final boolean usesHorizontalLayout;
 
 	public VerticalNodeViewLayoutStrategy(NodeView view, boolean allowsCompactLayout) {
 		this.view = view.getLayoutHelper();
@@ -72,6 +72,7 @@ class VerticalNodeViewLayoutStrategy {
 		this.spaceAround = view.getSpaceAround();
 		this.defaultVGap = view.getMap().getZoomed(LocationModel.DEFAULT_VGAP.toBaseUnits());
 		this.allowsCompactLayout = allowsCompactLayout;
+		this.usesHorizontalLayout = view.usesHorizontalLayout();
 	}
 
 	private void layoutChildViews(NodeView view) {
@@ -166,7 +167,8 @@ class VerticalNodeViewLayoutStrategy {
 						}
 						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
-						top -= align(child.getHeight() - child.getTopOverlap() - child.getBottomOverlap() - childCloudHeigth - 2 * spaceAround - child.getContentHeight());
+						top += - childContentShift + child.getTopOverlap(); 
+//						top -= align(child.getHeight() - child.getTopOverlap() - child.getBottomOverlap() - childCloudHeigth - 2 * spaceAround - child.getContentHeight());
 						y -= child.getTopOverlap();
 
 						int upperGap = align(extraVGap);
@@ -219,7 +221,7 @@ class VerticalNodeViewLayoutStrategy {
 					}
 					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
 							- childContentHeight / 2 + childShiftY
-							- (child.getContentY() - childCloudHeigth / 2 - spaceAround);
+							- (child.getContentYForSummary() - childCloudHeigth / 2 - spaceAround);
 					this.yCoordinates[childViewIndex] = summaryY;
 					if (!isFreeNode) {
 						final int deltaY = summaryY - groupUpperYCoordinate[itemLevel]

@@ -75,10 +75,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getHGapChange(final Point dragNextPoint, final NodeModel node) {
+	private int getHGapChange(final Point dragNextPoint, final NodeModel node, boolean usesHorizontalLayout) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getMapViewManager().getMapViewComponent());
-		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
+		int distance = usesHorizontalLayout ? dragNextPoint.y - dragStartingPoint.y : dragNextPoint.x - dragStartingPoint.x;
+        int hGapChange = (int) (distance / mapView.getZoom());
 		if (node.isTopOrLeft(mapView.getRoot().getModel())) {
 			hGapChange = -hGapChange;
 		}
@@ -87,10 +88,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	/**
 	 */
-	private int getNodeShiftYChange(final Point dragNextPoint, final NodeModel node) {
+	private int getNodeShiftYChange(final Point dragNextPoint, final NodeModel node, boolean usesHorizontalLayout) {
 		final Controller controller = Controller.getCurrentController();
 		final MapView mapView = ((MapView) controller.getMapViewManager().getMapViewComponent());
-		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
+        int distance = usesHorizontalLayout ? dragNextPoint.x - dragStartingPoint.x : dragNextPoint.y - dragStartingPoint.y;
+		final int shiftYChange = (int) (distance / mapView.getZoom());
 		return shiftYChange;
 	}
 
@@ -220,11 +222,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			if (shouldMoveSingleNode) {
 				final NodeModel node = nodeV.getModel();
 				final LocationModel locationModel = LocationModel.createLocationModel(node);
-				final int hGapChange = getHGapChange(dragNextPoint, node);
+				boolean usesHorizontalLayout = nodeV.getAncestorWithVisibleContent().usesHorizontalLayout();
+                final int hGapChange = getHGapChange(dragNextPoint, node, usesHorizontalLayout);
 				if(hGapChange != 0){
 					locationModel.setHGap(originalHGap.add(hGapChange, LengthUnit.px));
 				}
-				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node);
+				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node, usesHorizontalLayout);
 				if(shiftYChange != 0){
 					locationModel.setShiftY(originalShiftY.add(shiftYChange, LengthUnit.px));
 				}

@@ -23,7 +23,7 @@ class NodeViewLayoutHelper {
 
 	Dimension calculateContentSize() {
 		Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
-		return usesHorizontallayout() ? new Dimension(contentSize.height, contentSize.width) : contentSize;
+		return usesHorizontallayout(view.getContent()) ? new Dimension(contentSize.height, contentSize.width) : contentSize;
 	}
 
 	int getAdditionalCloudHeigth() {
@@ -60,15 +60,25 @@ class NodeViewLayoutHelper {
 	}
 
 	int getContentX() {
-		return getX(view.getContent());
+        Component component = view.getContent();
+        return usesHorizontallayout(view) ? component.getY(): component.getX();
 	}
 
 	int getContentY() {
-		return getY(view.getContent());
+        Component component = view.getContent();
+        return usesHorizontallayout(view) ? component.getX(): component.getY();
 	}
+	
+
+    int getContentYForSummary() {
+        Component component = view.getContent();
+        return usesHorizontallayout(component) ? component.getX(): component.getY();
+    }
+
 
 	int getContentWidth() {
-		return getWidth(view.getContent());
+		Component component = view.getContent();
+        return usesHorizontallayout(view) ? component.getHeight(): component.getWidth();
 	}
 
 	int getContentHeight() {
@@ -77,7 +87,7 @@ class NodeViewLayoutHelper {
 
 	void setContentBounds(int x, int y, int width, int height) {
 		Component component = view.getContent();
-		if (usesHorizontallayout()) 
+		if (usesHorizontallayout(component)) 
 			component.setBounds(y, x, height, width);
 		else
 			component.setBounds(x, y, width, height);
@@ -163,40 +173,54 @@ class NodeViewLayoutHelper {
 	}
 
 	void setSize(int width, int height) {
-		if (usesHorizontallayout())
+		if (usesHorizontallayout(view.getContent()))
 			view.setSize(height, width);
 		else
 			view.setSize(width, height);
 	}
 
 	void setLocation(int x, int y) {
-		if (usesHorizontallayout()) 
+		if (usesHorizontallayout(view)) 
 			view.setLocation(y, x);
 		else 
 			view.setLocation(x, y);
 	}
 
 	private int getX(Component component) {
-		return usesHorizontallayout() ? component.getY(): component.getX();
+		return usesHorizontallayout(component) ? component.getY(): component.getX();
 	}
 
 	private int getY(Component component) {
-		return usesHorizontallayout() ? component.getX(): component.getY();
+		return usesHorizontallayout(component) ? component.getX(): component.getY();
 	}
 
 	private int getWidth(Component component) {
-		return usesHorizontallayout() ? component.getHeight(): component.getWidth();
+		return usesHorizontallayout(component) ? component.getHeight(): component.getWidth();
 	}
 
 	private int getHeight(Component component) {
-		return usesHorizontallayout() ? component.getWidth(): component.getHeight();
+		return usesHorizontallayout(component) ? component.getWidth(): component.getHeight();
 	}
 
 	String describeComponent(int i) {
-		return view.getComponent(i).toString();
+	    return view.getComponent(i).toString();
+	}
+	
+	String getText() {
+	    return view.getModel().getText();
 	}
 
-	boolean usesHorizontallayout() {
-		return view.usesHorizontalLayout();
+	boolean usesHorizontallayout(Component component) {
+//	    return true;
+//	    return false;
+	    NodeView parent;
+        if (component == view) {
+            parent = view.isRoot() 
+                ? view 
+                : view.getAncestorWithVisibleContent();
+        } else {
+            parent = (NodeView)component.getParent();
+        }
+	    return parent.usesHorizontalLayout();
 	}
 }

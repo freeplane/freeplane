@@ -67,6 +67,7 @@ import javax.swing.JPanel;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -82,6 +83,7 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.Connectors;
@@ -126,6 +128,8 @@ import org.freeplane.view.swing.map.link.ILinkView;
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener, Configurable {
 
+    enum SelectionChangeDirection {RIGHT, LEFT, DOWN, UP}
+    
 	private static final int ROOT_NODE_COMPONENT_INDEX = 0;
 	private static final String UNFOLD_ON_NAVIGATION = "unfold_on_navigation";
 	private final MapScroller mapScroller;
@@ -377,11 +381,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         public void setFilter(Filter filter) {
 	        MapView.this.filter = filter;
 	    }
-
-        @Override
-        public boolean usesHorizontalLayout() {
-            return MapView.this.usesHorizontalLayout();
-        }
 	}
 
 	private class Selection {
@@ -633,8 +632,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final INodeChangeListener connectorChangeListener;
 	private boolean scrollsViewAfterLayout = true;
 	private boolean allowsCompactLayout;
-	private boolean usesHorizontalLayout;
-	
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -704,7 +701,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final String fitToViewportAsString = mapStyle.getPropertySetDefault(model, MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 		allowsCompactLayout = mapStyle.allowsCompactLayout(model);
-		usesHorizontalLayout = mapStyle.usesHorizontalLayout(model);
 		connectorChangeListener = new INodeChangeListener() {
 			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
@@ -1346,13 +1342,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			revalidate();
 			repaint();
 		}
-		if (property.equals(MapStyle.HORIZONTAL_LAYOUT)) {
-			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
-			usesHorizontalLayout = mapStyle.usesHorizontalLayout(model);
-			getRoot().invalidateAll();
-			revalidate();
-			repaint();
-		}
 		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
 			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 			    MapStyle.FIT_TO_VIEWPORT);
@@ -1474,7 +1463,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectLeft(final boolean continious) {
-	    if(usesHorizontalLayout()) {
+	    if(selectionUsesHorizontalLayout()) {
 	        return selectPreviousSibling(continious);
 	    }
 	    else
@@ -1506,7 +1495,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectRight(final boolean continious) {
-        if(usesHorizontalLayout())
+        if(selectionUsesHorizontalLayout())
             return selectNextSibling(continious);
         else
             return selectParentOrRightChild(continious);
@@ -1520,7 +1509,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	public boolean selectUp(final boolean continious) {
-        if(usesHorizontalLayout())
+        if(selectionUsesHorizontalLayout())
             return selectParentOrLeftChild(continious);
         else
             return selectPreviousSibling(continious);
@@ -1603,13 +1592,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectDown(final boolean continious) {
-        if(usesHorizontalLayout())
+        if(selectionUsesHorizontalLayout())
             return selectParentOrRightChild(continious);
         else
             return selectNextSibling(continious);
 	}
 
-    private boolean selectNextSibling(final boolean continious) {
+	private boolean selectionUsesHorizontalLayout() {
+	    NodeView selectedView = getSelected();
+	    if(selectedView == currentRootView) {
+	        return selectedView.usesHorizontalLayout();
+	    }
+	    else
+	        return selectedView.getAncestorWithVisibleContent().usesHorizontalLayout();
+	}
+
+	private boolean selectNextSibling(final boolean continious) {
         return selectSibling(continious, false, true);
     }
 
@@ -2636,10 +2634,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public int getDraggingAreaWidth() {
 		return getZoomed(draggingAreaWidth);
-	}
-
-	boolean usesHorizontalLayout() {
-		return usesHorizontalLayout;
 	}
 
 }

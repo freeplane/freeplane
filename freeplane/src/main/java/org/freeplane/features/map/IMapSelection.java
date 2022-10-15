@@ -91,8 +91,6 @@ public interface IMapSelection {
 	Filter getFilter();
 
 	void setFilter(Filter filter);
-	
-	boolean usesHorizontalLayout();
 
     default MapModel getMap() {
         return getSelected().getMap();

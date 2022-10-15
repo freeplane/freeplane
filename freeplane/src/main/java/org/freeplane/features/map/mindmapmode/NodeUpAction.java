@@ -21,7 +21,9 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -37,13 +39,18 @@ class NodeUpAction extends AFreeplaneAction {
         super("NodeUpAction");
     }
 
+    @Override
     public void actionPerformed(final ActionEvent e) {
         final ModeController modeController = Controller.getCurrentModeController();
-        IMapSelection selection = Controller.getCurrentController().getSelection();
+        Controller controller = Controller.getCurrentController();
+        IMapSelection selection = controller.getSelection();
+        NodeModel selectedNode = selection.getSelected();
         NodeModel selectionRoot = selection.getSelectionRoot();
-        NodeModel selectedNode = selection
-                .getSelected();
-        if(selection.usesHorizontalLayout()) {
+        if(selectedNode == selectionRoot)
+            return;
+        LayoutController layoutController = modeController.getExtension(LayoutController.class);
+        boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode(), selection.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+        if(selectionUsesHorizontalLayout) {
             ChangeNodeLevelController levelController = modeController.getExtension(ChangeNodeLevelController.class);
             levelController.changeNodeLevelLefts(selectionRoot, selectedNode);
         }

@@ -28,6 +28,7 @@ import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -147,15 +148,32 @@ public class LayoutController implements IExtension {
         return null;
     }
 
-    public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
-        return childNodesAlignmentHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
-    }
+	public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
+	    return childNodesAlignmentHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	}
 
-    public LayoutOrientation getLayoutOrientation(NodeModel node) {
-        return layoutOrientationHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
-    }
+	public LayoutOrientation getLayoutOrientation(NodeModel node) {
+	    return layoutOrientationHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	}
 
-    public ChildrenSides getChildrenSides(NodeModel node) {
-        return childrenSidesHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	public ChildrenSides getChildrenSides(NodeModel node) {
+	    return childrenSidesHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	public LayoutOrientation getEffectiveLayoutOrientation(NodeModel node, Filter filter) {
+	    if(node.hasVisibleContent(filter)) {
+	        LayoutOrientation layoutOrientation = getLayoutOrientation(node);
+	        switch(layoutOrientation) {
+	        case TOP_DOWN:
+	        case LEFT_TO_RIGHT:
+	            return layoutOrientation;
+	        default: break;
+	        }
+	    }
+	    NodeModel parentNode = node.getParentNode();
+	    if(parentNode != null)
+            return getEffectiveLayoutOrientation(parentNode, filter);
+        else
+            return LayoutOrientation.TOP_DOWN;
     }
 }
