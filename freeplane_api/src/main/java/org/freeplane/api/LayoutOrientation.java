@@ -6,5 +6,5 @@
 package org.freeplane.api;
 
 public enum LayoutOrientation {
-    NOT_SET, AS_PARENT, TOP_DOWN, LEFT_TO_RIGHT;
+    NOT_SET, AS_PARENT, TOP_TO_BOTTOM, LEFT_TO_RIGHT;
 }

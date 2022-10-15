@@ -166,7 +166,7 @@ public class LayoutController implements IExtension {
 	    if(node.hasVisibleContent(filter)) {
 	        LayoutOrientation layoutOrientation = getLayoutOrientation(node);
 	        switch(layoutOrientation) {
-	        case TOP_DOWN:
+	        case TOP_TO_BOTTOM:
 	        case LEFT_TO_RIGHT:
 	            return layoutOrientation;
 	        default: break;
@@ -176,7 +176,7 @@ public class LayoutController implements IExtension {
 	    if(parentNode != null)
             return getEffectiveLayoutOrientation(parentNode, filter);
         else
-            return LayoutOrientation.TOP_DOWN;
+            return LayoutOrientation.TOP_TO_BOTTOM;
     }
 	
 	   public boolean isTopOrLeft(NodeModel node, NodeModel root) {

@@ -48,7 +48,7 @@ class LayoutOrientationControlGroup implements ControlGroup {
 	private static final LayoutOrientation[] ORIENTATIONS = {
 	        LayoutOrientation.AS_PARENT, 
 			LayoutOrientation.LEFT_TO_RIGHT, 
-			LayoutOrientation.TOP_DOWN};
+			LayoutOrientation.TOP_TO_BOTTOM};
 	private RevertingProperty mSetLayoutOrientation;
 	private ComboProperty mLayoutOrientation;
 
@@ -80,7 +80,7 @@ class LayoutOrientationControlGroup implements ControlGroup {
 			mSetLayoutOrientation.setValue(orientation != LayoutOrientation.NOT_SET);
             if(viewOrientation == LayoutOrientation.AS_PARENT
                     && node.isRoot())
-                return LayoutOrientation.TOP_DOWN;
+                return LayoutOrientation.TOP_TO_BOTTOM;
             else
                 return viewOrientation;
 		}
