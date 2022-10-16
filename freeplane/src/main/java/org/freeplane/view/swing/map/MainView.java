@@ -176,7 +176,7 @@ public class MainView extends ZoomableLabel {
 	    NodeView nodeView = getNodeView();
 	    if(nodeView.isRoot())
 	        return false;
-	    return nodeView.usesHorizontalLayout() ||  ! nodeView.isTopOrLeft() ? isInVerticalRegion(p.getX(), 1. / 3) : isInVerticalRegion(p.getX(), 2. / 3);
+	    return nodeView.getAncestorWithVisibleContent().usesHorizontalLayout() ||  ! nodeView.isTopOrLeft() ? isInVerticalRegion(p.getX(), 1. / 3) : isInVerticalRegion(p.getX(), 2. / 3);
 	}
 
 	/** @return true if should be on the left, false otherwise. */
@@ -398,7 +398,7 @@ public class MainView extends ZoomableLabel {
         final DragOver draggedOver;
         NodeView nodeView = getNodeView();
         if (dropsAsSibling(p)) {
-            if(nodeView.usesHorizontalLayout()) {
+            if(nodeView.getAncestorWithVisibleContent().usesHorizontalLayout()) {
                 draggedOver = DragOver.DROP_LEFT;
             } else {
                 draggedOver = DragOver.DROP_UP;
