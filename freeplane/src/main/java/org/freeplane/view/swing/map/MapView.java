@@ -1599,6 +1599,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private boolean selectionUsesHorizontalLayout() {
+	    if(isOutlineLayoutSet())
+	        return false;
 	    NodeView selectedView = getSelected();
 	    if(selectedView == currentRootView) {
 	        return selectedView.usesHorizontalLayout();
