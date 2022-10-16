@@ -55,8 +55,6 @@ class VerticalNodeViewLayoutStrategy {
 
 	private final int defaultVGap;
 
-    private final boolean usesHorizontalLayout;
-
 	public VerticalNodeViewLayoutStrategy(NodeView view, boolean allowsCompactLayout) {
 		this.view = view.getLayoutHelper();
 		childViewCount = view.getComponentCount() - 1;
@@ -72,7 +70,6 @@ class VerticalNodeViewLayoutStrategy {
 		this.spaceAround = view.getSpaceAround();
 		this.defaultVGap = view.getMap().getZoomed(LocationModel.DEFAULT_VGAP.toBaseUnits());
 		this.allowsCompactLayout = allowsCompactLayout;
-		this.usesHorizontalLayout = view.usesHorizontalLayout();
 	}
 
 	private void layoutChildViews(NodeView view) {
