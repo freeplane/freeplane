@@ -26,6 +26,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.ReadManager;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -104,6 +105,8 @@ class PresentationBuilder {
 
 			@Override
 			public void endElement(Object parent, String tag, Object element, XMLElement dom) {
+	            if (! ReadManager.belongsToRootNode(dom))
+	                return;
 				final NodeModel node = (NodeModel) parent;
 				final MapModel map = node.getMap();
 				final NamedElementFactory<Slide> slideFactory = presentationController.getSlideFactory(map);

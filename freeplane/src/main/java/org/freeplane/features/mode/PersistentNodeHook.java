@@ -31,6 +31,7 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
@@ -121,8 +122,7 @@ public abstract class PersistentNodeHook {
 			act();
 		}
 	}
-
-	protected class XmlReader implements IElementDOMHandler {
+    protected class XmlReader implements IElementDOMHandler {
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (attributes == null) {
 				return null;
@@ -135,12 +135,8 @@ public abstract class PersistentNodeHook {
 
 		public void endElement(final Object parent, final String tag, final Object userObject,
 		                       final XMLElement lastBuiltElement) {
-			if (getHookAnnotation().onceForMap()) {
-				final XMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
-				if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
-					return;
-				}
-			}
+			if (getHookAnnotation().onceForMap() && ! ReadManager.belongsToRootNode(lastBuiltElement))
+                return;
 			final NodeModel node = (NodeModel) userObject;
 			if (node.getExtension(getExtensionClass()) != null) {
 				return;
@@ -151,7 +147,8 @@ public abstract class PersistentNodeHook {
 			}
 			add(node, extension);
 		}
-	}
+
+ 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
 		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
