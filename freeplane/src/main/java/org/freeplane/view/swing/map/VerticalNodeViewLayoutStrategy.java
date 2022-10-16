@@ -265,10 +265,10 @@ class VerticalNodeViewLayoutStrategy {
 	}
 
     private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
-        if(defaultVGap > minimalDistanceBetweenChildren)
-            return minimalDistanceBetweenChildren + defaultVGap;
+        if(3 * defaultVGap > minimalDistanceBetweenChildren)
+            return minimalDistanceBetweenChildren + 2 * defaultVGap;
         else
-            return (minimalDistanceBetweenChildren + 11 * defaultVGap) / 6;
+            return (minimalDistanceBetweenChildren + 11 * 2 * defaultVGap) / 6;
     }
 
 	public int align(int height) {
