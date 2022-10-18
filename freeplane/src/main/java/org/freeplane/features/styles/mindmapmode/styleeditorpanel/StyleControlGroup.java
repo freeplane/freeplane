@@ -72,7 +72,7 @@ class StyleControlGroup implements ControlGroup{
 	private RevertingProperty mSetStyle;
 	private JButton mNodeStyleButton;
 	private JButton mMapStyleButton;
-	private JLabel styleName;
+	private JLabel styleNameLabel;
 	private JRadioButton redefinesStyleForCurrentMapOnly;
     private JRadioButton redefinesStyleForCurrentMapAndTemplate;
     private JTextArea redefinedTemplate;
@@ -131,7 +131,9 @@ class StyleControlGroup implements ControlGroup{
 				mSetStyle.setValue(isStyleSet);
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 	            IStyle firstStyle = logicalStyleController.getFirstStyle(node);
-	            styleName.setText(TextUtils.format(FOR_ALL_NODES_OF_STYLE, firstStyle.toString()));
+	            String styleName = TextUtils.format(FOR_ALL_NODES_OF_STYLE, firstStyle.toString());
+	            if(! styleNameLabel.getText().equals(styleName))
+	                styleNameLabel.setText(styleName);
 	            updateTemplateName(node.getMap());
 
 			}
@@ -186,8 +188,8 @@ class StyleControlGroup implements ControlGroup{
 
             addAutomaticLayout(formBuilder);
 
-            styleName = new JLabel();
-            styleName.setAlignmentX(Component.CENTER_ALIGNMENT);
+            styleNameLabel = new JLabel();
+            styleNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             
             redefinesStyleForCurrentMapOnly = new JRadioButton();
             redefinesStyleForCurrentMapOnly.setSelected(true);
@@ -269,7 +271,7 @@ class StyleControlGroup implements ControlGroup{
             });
             redefineStyleBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            styleAndButtonBox.add(styleName);
+            styleAndButtonBox.add(styleNameLabel);
             styleAndButtonBox.add(redefineStyleBtn);
             styleAndButtonBox.add(radioButtonBox);
             UITools.addTitledBorder(styleAndButtonBox, TextUtils.getRawText(MAKE_FORMATTING_DEFAULT), fontSize);
@@ -293,7 +295,8 @@ class StyleControlGroup implements ControlGroup{
     private void updateTemplateName(MapModel map) {
         String templateLocation = MapStyle.getController().getProperty(map, MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
         String templateDescription = TemplateManager.INSTANCE.describeNormalizedLocation(templateLocation);
-        redefinedTemplate.setText(templateDescription);
+        if(! templateDescription.equals(redefinedTemplate.getText()))
+            redefinedTemplate.setText(templateDescription);
         redefinesStyleForCurrentMapAndTemplate.setToolTipText(
                 TextUtils.format(FOR_TEMPLATE_TOOLTIP, templateDescription));
         if(templateLocation == null)
