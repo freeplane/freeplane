@@ -396,8 +396,21 @@ public class NodeModel{
 	}
 
 	public boolean isTopOrLeft(NodeModel root) {
-		return LayoutController.getController().isTopOrLeft(this, root);
+		NodeModel parentNode = getParentNode();
+		return wouldBeTopOrLeft(root, parentNode);
 	}
+
+    public boolean wouldBeTopOrLeft(NodeModel root, NodeModel parent) {
+        if (parent == null)
+			return false;
+		else if (parent == root)
+			if (side != Side.DEFAULT)
+				return side == Side.TOP_OR_LEFT;
+			else
+				return parent.isTopOrLeft(parent.getMap().getRootNode());
+		else
+			return parent.isTopOrLeft(root);
+    }
 
 	public Side suggestNewChildSide(NodeModel root) {
 	    return LayoutController.getController().suggestNewChildSide(this, root);

@@ -281,11 +281,6 @@ public class StyleEditorPanel extends JPanel {
 					setStyle(node);
 				}
 			}
-
-			@Override
-			public void onDeselect(final NodeModel node) {
-				setComponentsEnabled(false);
-			}
 		});
 		mapController.addUINodeChangeListener(new INodeChangeListener() {
 			@Override
@@ -312,10 +307,22 @@ public class StyleEditorPanel extends JPanel {
 				}
 				final NodeModel node = selection.getSelected();
 				setStyle(node);
-            }
+			}
 
 		});
 		
+		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
+
+		    @Override
+		    public void afterMapChange(MapModel oldMap, MapModel newMap) {
+		        if(newMap == null)
+		            setComponentsEnabled(false);
+		    }
+
+		};
+		modeController.getController().getMapViewManager().addMapSelectionListener(mapSelectionListener);
+
+
 		panelEnabler = new PanelEnabler(controller, modeController);
 		controller.getMapViewManager().addMapSelectionListener(panelEnabler);
 		ResourceController.getResourceController().addPropertyChangeListener(panelEnabler);

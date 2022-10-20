@@ -69,7 +69,6 @@ import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.layout.LayoutController;
-import org.freeplane.features.layout.LayoutModel;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -1006,7 +1005,9 @@ public class NodeView extends JComponent implements INodeView {
 		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
-		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isTopOrLeft();
+		final boolean preferredChildIsLeft = preferredChild != null 
+		        && map.getLayoutType() != MapViewLayout.OUTLINE
+		        && preferredChild.getModel().wouldBeTopOrLeft(mapRootNode, getModel());
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		if (node == preferredChild) {
 			preferredChild = null;

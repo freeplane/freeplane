@@ -264,8 +264,8 @@ public class UITools {
 		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void informationMessage(final Component frame, final String text, final String string, final int type) {
-		JOptionPane.showMessageDialog(frame, text, string, type);
+	public static void informationMessage(final Component frame, final String text, final String title, final int type) {
+		JOptionPane.showMessageDialog(frame, text, title, type);
 	}
 
 	static public void setBounds(final Component frame, int win_x, int win_y, int win_width, int win_height) {

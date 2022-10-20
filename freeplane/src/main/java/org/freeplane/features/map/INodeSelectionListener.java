@@ -25,10 +25,10 @@ public interface INodeSelectionListener {
 	/**
 	 * Is sent when a node is deselected.
 	 */
-	void onDeselect(NodeModel node);
+	default void onDeselect(@SuppressWarnings("unused") NodeModel node) {/**/}
 
 	/**
 	 * Is sent when a node is selected.
 	 */
-	void onSelect(NodeModel node);
+	default void onSelect(@SuppressWarnings("unused") NodeModel node) {/**/}
 }

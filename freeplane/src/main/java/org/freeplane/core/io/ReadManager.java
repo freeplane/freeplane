@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public class ReadManager {
 	final private Hashtable<String, Hashtable<String, IAttributeHandler>> attributeHandlers;
@@ -107,4 +108,16 @@ public class ReadManager {
 		final boolean removed = readCompletionListeners.remove(listener);
 		assert removed;
 	}
+
+    public static boolean belongsToRootNode(final XMLElement element) {
+        boolean isRootNode;
+        final XMLElement parentNodeElement = element.getParent().getParent();
+        if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
+            isRootNode = false;
+        }
+        else {
+            isRootNode = true;
+        }
+        return isRootNode;
+    }
 }

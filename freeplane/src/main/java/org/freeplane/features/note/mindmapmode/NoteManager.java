@@ -73,11 +73,9 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			return;
 		}
 		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
-		TextController textController = TextController.getController();
-        noteController.setDefaultStyle(node);
-        notePanel.updateBaseUrl(node.getMap().getURL());
 		if (note != null) {
 			try {
+			    TextController textController = TextController.getController();
 				final Object transformedContent = textController.getTransformedObject(node, NoteModel.getNote(node), note);
 				Icon icon = textController.getIcon(transformedContent);
 				if(icon != null)
@@ -110,6 +108,8 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			else
 				notePanel.setViewedContent("");
 		}
+        noteController.setDefaultStyle(node);
+        notePanel.updateBaseUrl(node.getMap().getURL());
 	}
 
 	@Override

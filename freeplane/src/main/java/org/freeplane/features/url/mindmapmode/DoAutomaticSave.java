@@ -86,7 +86,8 @@ public class DoAutomaticSave implements ActionListener {
             if (filesShouldBeDeletedAfterShutdown) {
                 tempFile.deleteOnExit();
             }
-            if(file.canWrite()) {
+            if(tempFile.isFile() && tempFile.canWrite()
+                    || ! tempFile.exists() && tempFile.getParentFile().canWrite()) {
                 ((MFileManager) UrlManager.getController())
                 .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
                 modeController.getController().getViewController()
