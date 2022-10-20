@@ -19,6 +19,7 @@ import static org.freeplane.features.presentations.mindmapmode.PresentationBuild
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -27,6 +28,8 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -113,8 +116,14 @@ class PresentationBuilder {
 				MapPresentations mapPresentationExtension = presentationController.getPresentations(map);
 				NamedElementCollection<Presentation> presentations = mapPresentationExtension.presentations;
 				Enumeration<XMLElement> xmlPresentations = dom.enumerateChildren();
+				Set<XMLElement> knownPresentations = new HashSet<XMLElement>();
+				int dublicatePresentationsCount = 0;
 				while (xmlPresentations.hasMoreElements()) {
 					XMLElement xmlPresentation = xmlPresentations.nextElement();
+					if(! knownPresentations.add(xmlPresentation)) {
+					    dublicatePresentationsCount++;
+                        continue;
+                    }
 					presentations.add(xmlPresentation.getAttribute(NAME, "noname"));
 					Enumeration<XMLElement> xmlSlides = xmlPresentation.enumerateChildren();
 					NamedElementCollection<Slide> slides = presentations.getCurrentElement().slides;
@@ -131,6 +140,13 @@ class PresentationBuilder {
 				if (presentations.getSize() > 1)
 					presentations.selectCurrentElement(0);
 				node.addExtension(mapPresentationExtension);
+				if(dublicatePresentationsCount > 0) {
+				    UITools.errorMessage(TextUtils.format(
+				            "duplicate_presentations_removed", 
+				            dublicatePresentationsCount, 
+				            presentations.getSize(),
+				            map.getTitle()));
+				}
 			}
 
 			Slide applySlideAttributes(XMLElement xmlSlide, Slide s) {

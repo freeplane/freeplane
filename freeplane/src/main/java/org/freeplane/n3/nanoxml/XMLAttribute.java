@@ -16,6 +16,8 @@
  */
 package org.freeplane.n3.nanoxml;
 
+import java.util.Objects;
+
 /**
  * An attribute in an XML element. This is an internal class.
  * 
@@ -114,4 +116,25 @@ class XMLAttribute {
 	void setValue(final String value) {
 		this.value = value;
 	}
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullName, name, namespace, type, value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        XMLAttribute other = (XMLAttribute) obj;
+        return Objects.equals(fullName, other.fullName) && Objects.equals(name, other.name)
+                && Objects.equals(namespace, other.namespace) && Objects.equals(type, other.type)
+                && Objects.equals(value, other.value);
+    }
+	
+	
 }

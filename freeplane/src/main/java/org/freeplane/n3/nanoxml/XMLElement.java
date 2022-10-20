@@ -18,6 +18,7 @@ package org.freeplane.n3.nanoxml;
 
 import java.io.Serializable;
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -261,21 +262,20 @@ public class XMLElement implements Serializable {
 		return children.elements();
 	}
 
-	/**
-	 * Returns true if the element equals another element.
-	 * 
-	 * @param rawElement
-	 *            the element to compare to
-	 */
-	@Override
-	public boolean equals(final Object rawElement) {
-		try {
-			return this.equalsXMLElement((XMLElement) rawElement);
-		}
-		catch (final ClassCastException e) {
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object rawElement) {
+        try {
+            return this.equalsXMLElement((XMLElement) rawElement);
+        }
+        catch (final ClassCastException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, attributes, content, children);
+    }
 
 	/**
 	 * Returns true if the element equals another element.
@@ -283,40 +283,42 @@ public class XMLElement implements Serializable {
 	 * @param rawElement
 	 *            the element to compare to
 	 */
-	public boolean equalsXMLElement(final XMLElement elt) {
-		if (!name.equals(elt.getName())) {
+	public boolean equalsXMLElement(final XMLElement other) {
+		if (!name.equals(other.getName())) {
 			return false;
 		}
-		if (attributes.size() != elt.getAttributeCount()) {
+		if (attributes.size() != other.getAttributeCount()) {
 			return false;
 		}
 		final Enumeration<XMLAttribute> enumeration = attributes.elements();
 		while (enumeration.hasMoreElements()) {
 			final XMLAttribute attr = enumeration.nextElement();
-			if (!elt.hasAttribute(attr.getName(), attr.getNamespace())) {
+			if (!other.hasAttribute(attr.getName(), attr.getNamespace())) {
 				return false;
 			}
-			final String value = elt.getAttribute(attr.getName(), attr.getNamespace(), null);
+			final String value = other.getAttribute(attr.getName(), attr.getNamespace(), null);
 			if (!attr.getValue().equals(value)) {
 				return false;
 			}
-			final String type = elt.getAttributeType(attr.getName(), attr.getNamespace());
+			final String type = other.getAttributeType(attr.getName(), attr.getNamespace());
 			if (!attr.getType().equals(type)) {
 				return false;
 			}
 		}
-		if (children.size() != elt.getChildrenCount()) {
+		if (children.size() != other.getChildrenCount()) {
 			return false;
 		}
 		for (int i = 0; i < children.size(); i++) {
 			final XMLElement child1 = this.getChildAtIndex(i);
-			final XMLElement child2 = elt.getChildAtIndex(i);
+			final XMLElement child2 = other.getChildAtIndex(i);
 			if (!child1.equalsXMLElement(child2)) {
 				return false;
 			}
 		}
 		return true;
 	}
+	
+	
 
 	/**
 	 * Cleans up the object when it's destroyed.
