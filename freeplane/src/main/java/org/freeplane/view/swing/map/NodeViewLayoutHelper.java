@@ -115,7 +115,7 @@ class NodeViewLayoutHelper {
 		return view.isFirstGroupNode();
 	}
 
-	boolean isTopOrLeft() {
+	boolean isLeft() {
 		return view.isTopOrLeft();
 	}
 	

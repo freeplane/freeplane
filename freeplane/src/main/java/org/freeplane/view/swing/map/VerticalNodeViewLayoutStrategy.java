@@ -88,10 +88,10 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 
-	private void setFreeChildNodes(final boolean isTopOrLeft) {
+	private void setFreeChildNodes(final boolean laysOutLeftSide) {
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
-			if (child.isTopOrLeft() == isTopOrLeft)
+			if (child.isLeft() == laysOutLeftSide)
 				this.isChildFreeNode[i] = child.isFree();
 		}
 	}
@@ -101,19 +101,19 @@ class VerticalNodeViewLayoutStrategy {
 		Filter filter = map.getFilter();
 		NodeModel selectionRoot = map.getRoot().getModel();
 		viewLevels = view.isFolded() ? SummaryLevels.ignoringChildNodes(selectionRoot, node, filter) : SummaryLevels.of(selectionRoot, node, filter);
-		for(boolean isTopOrLeft : viewLevels.sides)
-			calculateLayoutData(isTopOrLeft);
+		for(boolean isLeft : viewLevels.sides)
+			calculateLayoutData(isLeft);
 		applyLayoutToChildComponents();
 	}
 	
-	private void calculateLayoutData(final boolean isTopOrLeft) {
-		setFreeChildNodes(isTopOrLeft);
-		calculateLayoutY(isTopOrLeft);
-		calculateLayoutX(isTopOrLeft);
+	private void calculateLayoutData(final boolean isLeft) {
+		setFreeChildNodes(isLeft);
+		calculateLayoutY(isLeft);
+		calculateLayoutX(isLeft);
 
 	}
 
-	private void calculateLayoutY(final boolean isTopOrLeft) {
+	private void calculateLayoutY(final boolean laysOutLeftSide) {
 		final int minimalDistanceBetweenChildren = view.getMinimalDistanceBetweenChildren();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
@@ -129,7 +129,7 @@ class VerticalNodeViewLayoutStrategy {
 		
 		for (int childViewIndex = 0; childViewIndex < childViewCount; childViewIndex++) {
 			final NodeViewLayoutHelper child = view.getComponent(childViewIndex);
-			if (child.isTopOrLeft() == isTopOrLeft) {
+			if (child.isLeft() == laysOutLeftSide) {
 				final int childHeight = child.getHeight() - 2 * spaceAround;
 				final int oldLevel = level;
 				if(childViewIndex >= viewLevels.summaryLevels.length){
@@ -229,7 +229,7 @@ class VerticalNodeViewLayoutStrategy {
 							summaryY -= deltaY;
 							for (int j = groupStartIndex[itemLevel]; j <= childViewIndex; j++) {
 								NodeViewLayoutHelper groupItem = view.getComponent(j);
-								if (groupItem.isTopOrLeft() == isTopOrLeft
+								if (groupItem.isLeft() == laysOutLeftSide
 										&& (this.viewLevels.summaryLevels[j] > 0 || !this.isChildFreeNode[j]))
 									this.yCoordinates[j] -= deltaY;
 							}
@@ -261,7 +261,7 @@ class VerticalNodeViewLayoutStrategy {
 			}
 		}
 		top += align(contentSize.height - childContentHeightSum);
-		calculateRelativeCoordinatesForContentAndBothSides(isTopOrLeft, childContentHeightSum, top);
+		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, childContentHeightSum, top);
 	}
 
     private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
@@ -313,13 +313,13 @@ class VerticalNodeViewLayoutStrategy {
 			return defaultVGap + (distance - defaultVGap) / 6;
 	}
 
-	private void calculateLayoutX(final boolean isTopOrLeft) {
+	private void calculateLayoutX(final boolean laysOutLeftSide) {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
-			if (child.isTopOrLeft() == isTopOrLeft) {
+			if (child.isLeft() == laysOutLeftSide) {
 				final int oldLevel = level;
 				level = viewLevels.summaryLevels[i];
 				boolean isFreeNode = child.isFree();
@@ -347,13 +347,13 @@ class VerticalNodeViewLayoutStrategy {
 				if (level > 0)
 					baseX = summaryBaseX[level - 1];
 				else {
-					if (child.isTopOrLeft() != (isItem && isFreeNode)) {
+					if (child.isLeft() != (isItem && isFreeNode)) {
 						baseX = 0;
 					} else {
 						baseX = contentSize.width;
 					}
 				}
-				if (child.isTopOrLeft()) {
+				if (child.isLeft()) {
 					x = baseX - childHGap - child.getContentX() - child.getContentWidth();
 					summaryBaseX[level] = Math.min(summaryBaseX[level], x + spaceAround);
 				} else {
@@ -370,7 +370,7 @@ class VerticalNodeViewLayoutStrategy {
         return calculateDistance(child, NodeViewLayoutHelper::getHGap);
     }
 
-	private void calculateRelativeCoordinatesForContentAndBothSides(boolean isTopOrLeft, int childContentHeightOnSide,  int topOnSide) {
+	private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int childContentHeightOnSide,  int topOnSide) {
 		if (! (leftSideCoordinaresAreSet || rightSideCoordinatesAreSet)) {
 			childContentHeight = childContentHeightOnSide;
 			top = topOnSide;
@@ -380,20 +380,20 @@ class VerticalNodeViewLayoutStrategy {
 			final boolean changeLeft;
 			if (deltaTop < 0) {
 				top = topOnSide;
-				changeLeft = !isTopOrLeft;
+				changeLeft = !isLeft;
 				deltaTop = -deltaTop;
 			} else {
-				changeLeft = isTopOrLeft;
+				changeLeft = isLeft;
 			}
 			for (int i = 0; i < childViewCount; i++) {
 				NodeViewLayoutHelper child = view.getComponent(i);
-				if (child.isTopOrLeft() == changeLeft
+				if (child.isLeft() == changeLeft
 						&& (viewLevels.summaryLevels[i] > 0 || !isChildFreeNode[i])) {
 					yCoordinates[i] += deltaTop;
 				}
 			}
 		}
-		if (isTopOrLeft)
+		if (isLeft)
 			leftSideCoordinaresAreSet = true;
 		else
 			rightSideCoordinatesAreSet = true;
@@ -444,7 +444,7 @@ class VerticalNodeViewLayoutStrategy {
 			}
 			final int x = contentX + this.xCoordinates[i];
 			child.setLocation(x, y);
-			width = Math.max(width, child.getX() + child.getWidth());
+			width = Math.max(width, x + child.getWidth());
 			height = Math.max(height, y + child.getHeight() + cloudHeight / 2);
 		}
 
