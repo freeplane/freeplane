@@ -1173,9 +1173,10 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     private void paintEdges(final Graphics2D g, NodeView source) {
-    	boolean isRoot  = isRoot();
-		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, isRoot ? true : isTopOrLeft());
-    	SummaryEdgePainter rightSummaryEdgePainter =  isRoot ? new SummaryEdgePainter(this, false) : null;
+        ChildrenSides childrenSides = LayoutController.getController(getModeController()).getChildrenSides(this.model);
+    	boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
+		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, paintsChildrenOnBothSides ? true : isTopOrLeft());
+    	SummaryEdgePainter rightSummaryEdgePainter =  paintsChildrenOnBothSides ? new SummaryEdgePainter(this, false) : null;
         final int start;
         final int end;
         final int step;
@@ -1196,7 +1197,7 @@ public class NodeView extends JComponent implements INodeView {
             }
             final NodeView nodeView = (NodeView) component;
         	if (map.getLayoutType() != MapViewLayout.OUTLINE) {
-        		SummaryEdgePainter activePainter = nodeView.isTopOrLeft() || !isRoot ? summaryEdgePainter : rightSummaryEdgePainter;
+        		SummaryEdgePainter activePainter = nodeView.isTopOrLeft() || !paintsChildrenOnBothSides ? summaryEdgePainter : rightSummaryEdgePainter;
         		activePainter.addChild(nodeView);
         		if(activePainter.paintSummaryEdge(g, source, nodeView)){
         			if(! nodeView.isContentVisible()){
