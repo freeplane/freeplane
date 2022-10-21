@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.function.ToIntFunction;
+import java.util.stream.IntStream;
 
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.ui.components.UITools;
@@ -45,7 +46,6 @@ class VerticalNodeViewLayoutStrategy {
 	private final int[] yCoordinates;
 	private final boolean[] isChildFreeNode;
 	private SummaryLevels viewLevels;
-	private int left;
 	private int childContentHeight;
 	private int top;
 	private boolean rightSideCoordinatesAreSet;
@@ -59,7 +59,6 @@ class VerticalNodeViewLayoutStrategy {
 		this.view = view.getLayoutHelper();
 		childViewCount = view.getComponentCount() - 1;
 		layoutChildViews(view);
-		this.left = 0;
 		this.childContentHeight = 0;
 		this.top = 0;
 		rightSideCoordinatesAreSet = false;
@@ -165,7 +164,6 @@ class VerticalNodeViewLayoutStrategy {
 						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
 						top += - childContentShift + child.getTopOverlap(); 
-//						top -= align(child.getHeight() - child.getTopOverlap() - child.getBottomOverlap() - childCloudHeigth - 2 * spaceAround - child.getContentHeight());
 						y -= child.getTopOverlap();
 
 						int upperGap = align(extraVGap);
@@ -360,7 +358,6 @@ class VerticalNodeViewLayoutStrategy {
 					x = baseX + childHGap - child.getContentX();
 					summaryBaseX[level] = Math.max(summaryBaseX[level], x + child.getWidth() - spaceAround);
 				}
-				left = Math.min(left, x);
 				this.xCoordinates[i] = x;
 			}
 		}
@@ -401,7 +398,8 @@ class VerticalNodeViewLayoutStrategy {
 
 	private void applyLayoutToChildComponents() {
 		int spaceAround = view.getSpaceAround();
-		final int contentX = Math.max(spaceAround, -this.left);
+		int left = IntStream.of(xCoordinates).min().orElse(0);
+		final int contentX = Math.max(spaceAround, -left);
 		int cloudHeight = CloudHeightCalculator.INSTANCE
 				.getAdditionalCloudHeigth(view);
 		int contentY = spaceAround + cloudHeight / 2 - Math.min(0, this.top);
@@ -429,10 +427,13 @@ class VerticalNodeViewLayoutStrategy {
 				contentSize.height);
 		int topOverlap = -minY;
 		int heigthWithoutOverlap = height;
+        NodeViewLayoutHelper parentView = view.getParentView();
+        boolean laidoutComponentUsesHorizontalLayout =  parentView != null && view.usesHorizontalLayout() == parentView.usesHorizontalLayout();
 		for (int i = 0; i < childViewCount; i++) {
 			NodeViewLayoutHelper child = view.getComponent(i);
 			final int y;
-			if (this.viewLevels.summaryLevels[i] == 0 && this.isChildFreeNode[i]) {
+			boolean isChildFreeNode = this.isChildFreeNode[i];
+            if (this.viewLevels.summaryLevels[i] == 0 && isChildFreeNode) {
 				y = contentY + this.yCoordinates[i];
 			} else {
 				y = baseY + this.yCoordinates[i];

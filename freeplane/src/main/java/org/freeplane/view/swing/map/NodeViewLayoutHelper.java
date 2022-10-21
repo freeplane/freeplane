@@ -36,7 +36,7 @@ class NodeViewLayoutHelper {
 
 	NodeViewLayoutHelper getComponent(int n) {
 		Component component = view.getComponent(n);
-		return component instanceof NodeView ? new NodeViewLayoutHelper((NodeView) component) : null;
+		return component instanceof NodeView ? ((NodeView) component).getLayoutHelper() : null;
 	}
 
 	MapView getMap() {
@@ -111,9 +111,13 @@ class NodeViewLayoutHelper {
 		return view.isSummary();
 	}
 
-	boolean isFirstGroupNode() {
-		return view.isFirstGroupNode();
-	}
+    boolean isFirstGroupNode() {
+        return view.isFirstGroupNode();
+    }
+
+    boolean usesHorizontalLayout() {
+        return view.usesHorizontalLayout();
+    }
 
 	boolean isLeft() {
 		return view.isTopOrLeft();
@@ -149,7 +153,7 @@ class NodeViewLayoutHelper {
 	}
 	NodeViewLayoutHelper getParentView() {
 		NodeView parentView = view.getParentView();
-		return parentView != null ? new NodeViewLayoutHelper(parentView) : null;
+		return parentView != null ? parentView.getLayoutHelper() : null;
 	}
 
 	int getZoomed(int i) {
