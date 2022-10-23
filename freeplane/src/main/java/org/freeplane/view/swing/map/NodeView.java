@@ -1175,7 +1175,11 @@ public class NodeView extends JComponent implements INodeView {
     private void paintEdges(final Graphics2D g, NodeView source) {
         ChildrenSides childrenSides = LayoutController.getController(getModeController()).getChildrenSides(this.model);
     	boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
-		SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, paintsChildrenOnBothSides ? true : isTopOrLeft());
+		boolean paintsOnTheLeftSide = paintsChildrenOnBothSides ? true 
+		        : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
+		        : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
+		        : isTopOrLeft();
+        SummaryEdgePainter summaryEdgePainter = new SummaryEdgePainter(this, paintsOnTheLeftSide);
     	SummaryEdgePainter rightSummaryEdgePainter =  paintsChildrenOnBothSides ? new SummaryEdgePainter(this, false) : null;
         final int start;
         final int end;
