@@ -427,8 +427,6 @@ class VerticalNodeViewLayoutStrategy {
 				contentSize.height);
 		int topOverlap = -minY;
 		int heigthWithoutOverlap = height;
-        NodeViewLayoutHelper parentView = view.getParentView();
-        boolean laidoutComponentUsesHorizontalLayout =  parentView != null && view.usesHorizontalLayout() == parentView.usesHorizontalLayout();
 		for (int i = 0; i < childViewCount; i++) {
 			NodeViewLayoutHelper child = view.getComponent(i);
 			final int y;
