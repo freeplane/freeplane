@@ -540,7 +540,8 @@ public class NodeView extends JComponent implements INodeView {
 				break;
 			}
 		}
-		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
+		while (!sibling.isRoot() && sibling.getAncestorWithVisibleContent().usesHorizontalLayout() == getAncestorWithVisibleContent().usesHorizontalLayout()
+		        && sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
 			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isTopOrLeft(),
 			    !this.isTopOrLeft());
 			if (first == null) {
@@ -683,7 +684,8 @@ public class NodeView extends JComponent implements INodeView {
 				break;
 			}
 		}
-		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
+        while (!sibling.isRoot() && sibling.getAncestorWithVisibleContent().usesHorizontalLayout() == getAncestorWithVisibleContent().usesHorizontalLayout()
+                && sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
 			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isTopOrLeft(),
 			    !this.isTopOrLeft());
 			if (last == null) {
