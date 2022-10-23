@@ -540,8 +540,7 @@ public class NodeView extends JComponent implements INodeView {
 				break;
 			}
 		}
-		while (!sibling.isRoot() && sibling.getAncestorWithVisibleContent().usesHorizontalLayout() == getAncestorWithVisibleContent().usesHorizontalLayout()
-		        && sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
+		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
 			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isTopOrLeft(),
 			    !this.isTopOrLeft());
 			if (first == null) {
@@ -549,7 +548,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			sibling = first;
 		}
-		if (sibling.isRoot()) {
+		if (sibling.isRoot() ) {
 			return this;
 		}
 		return sibling;
@@ -563,19 +562,19 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	public NodeView getPreferredVisibleChild(final boolean getUpper, final boolean left) {
+	public NodeView getPreferredVisibleChild(final boolean getUpper, final boolean topOrLeft) {
 		if (getModel().isLeaf()) {
 			return null;
 		}
 		if (getUpper) {
 			preferredChild = null;
 		}
-		if (preferredChild != null && (left == preferredChild.isTopOrLeft()) && preferredChild.getParent() == this) {
+		if (preferredChild != null && (topOrLeft == preferredChild.isTopOrLeft()) && preferredChild.getParent() == this) {
 			if (preferredChild.isContentVisible()) {
 				return preferredChild;
 			}
 			else {
-				final NodeView newSelected = preferredChild.getPreferredVisibleChild(getUpper, left);
+				final NodeView newSelected = preferredChild.getPreferredVisibleChild(getUpper, topOrLeft);
 				if (newSelected != null) {
 					return newSelected;
 				}
@@ -598,11 +597,11 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			}
 			NodeView childView = (NodeView) c;
-			if (!(childView.isTopOrLeft() == left)) {
+			if (!(childView.isTopOrLeft() == topOrLeft)) {
 				continue;
 			}
 			if (!childView.isContentVisible()) {
-				childView = childView.getPreferredVisibleChild(getUpper, left);
+				childView = childView.getPreferredVisibleChild(getUpper, topOrLeft);
 				if (childView == null) {
 					continue;
 				}
@@ -613,7 +612,7 @@ public class NodeView extends JComponent implements INodeView {
 			final JComponent childContent = childView.getContent();
 			if(childContent == null)
 				continue;
-			final Point childPoint = new Point(left ? childContent.getWidth() : 0, childContent.getHeight() / 2);
+			final Point childPoint = new Point(topOrLeft ? childContent.getWidth() : 0, childContent.getHeight() / 2);
 			UITools.convertPointToAncestor(childContent, childPoint, baseComponent);
 			final int dy = childPoint.y - ownY;
 			final int dx = childPoint.x - ownX;
@@ -684,8 +683,7 @@ public class NodeView extends JComponent implements INodeView {
 				break;
 			}
 		}
-        while (!sibling.isRoot() && sibling.getAncestorWithVisibleContent().usesHorizontalLayout() == getAncestorWithVisibleContent().usesHorizontalLayout()
-                && sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
+        while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
 			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isTopOrLeft(),
 			    !this.isTopOrLeft());
 			if (last == null) {
