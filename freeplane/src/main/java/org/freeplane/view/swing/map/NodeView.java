@@ -1173,7 +1173,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     private void paintEdges(final Graphics2D g, NodeView source) {
-        ChildrenSides childrenSides = LayoutController.getController(getModeController()).getChildrenSides(this.model);
+        ChildrenSides childrenSides = getChildrenSides();
     	boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
 		boolean paintsOnTheLeftSide = paintsChildrenOnBothSides ? true 
 		        : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
@@ -1226,6 +1226,10 @@ public class NodeView extends JComponent implements INodeView {
         		nodeView.paintEdges(g, source);
         	}
         }
+    }
+
+    ChildrenSides getChildrenSides() {
+        return LayoutController.getController(getModeController()).getChildrenSides(this.model);
     }
 
 
@@ -1835,4 +1839,16 @@ public class NodeView extends JComponent implements INodeView {
 	public boolean usesHorizontalLayout() {
 		return getModeController().getExtension(LayoutController.class).getEffectiveLayoutOrientation(model, map.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
 	}
+
+    boolean paintsChildrenOnTheLeft() {
+        if(usesHorizontalLayout())
+            return false;
+        ChildrenSides childrenSides = getChildrenSides();
+        boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
+        boolean paintsOnTheLeft = paintsChildrenOnBothSides ? false 
+                : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
+                : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
+                : isTopOrLeft();
+        return paintsOnTheLeft;
+     }
 }
