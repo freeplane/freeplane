@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Window;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -252,8 +254,13 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindowProperties.addSuperObject(theme.getRootWindowProperties());
 
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
+		
+		overwrittenProperties.getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(BorderFactory.createEmptyBorder());
 
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
+		
+		overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties().getContentPanelProperties()
+		    .getComponentProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(BorderFactory.createEmptyBorder());
 
 		TabbedPanelProperties tabbedPanelProperties = overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties();
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);

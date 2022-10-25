@@ -120,7 +120,6 @@ public abstract class ResourceController {
 
 	public void firePropertyChanged(final String property, final String value, final String oldValue) {
 		if (oldValue == null || !oldValue.equals(value)) {
-			setProperty(property, value);
 			for (final IFreeplanePropertyListener listener : getPropertyChangeListeners()) {
 				listener.propertyChanged(property, value, oldValue);
 			}

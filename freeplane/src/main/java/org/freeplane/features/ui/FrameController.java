@@ -298,7 +298,7 @@ abstract public class FrameController implements ViewController {
 		return isFullScreenEnabled(getMenuComponent());
 	}
 
-	boolean isFullScreenEnabled() {
+	public boolean isFullScreenEnabled() {
 		return isFullScreenEnabled(getCurrentRootComponent());
 	}
 
@@ -520,7 +520,7 @@ abstract public class FrameController implements ViewController {
 		Compat.setFullScreenOnMac(frame, fullScreen);
 		if (Boolean.valueOf(fullScreen).equals(frame.getRootPane().getClientProperty(FULLSCREEN_ENABLED_PROPERTY))) {
 			ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
-				    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
+				    Boolean.toString(fullScreen), Boolean.toString(!fullScreen));
 			final Controller controller = getController();
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()

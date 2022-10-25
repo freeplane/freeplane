@@ -30,6 +30,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -313,6 +314,11 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
     }
 
     @Override
+    public void setBorder(Border border) {
+        super.setBorder(border);
+    }
+
+    @Override
 	public void propertyChanged(String propertyName, String newValue, String oldValue) {
 		if(ViewController.FULLSCREEN_ENABLED_PROPERTY.equals(propertyName)
 				|| propertyName.startsWith("scrollbarsVisible")){
@@ -337,8 +343,8 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 			getVerticalScrollBar().setPreferredSize(INVISIBLE);
 			getHorizontalScrollBar().setPreferredSize(INVISIBLE);
 		}
-	    final boolean isFullScreenEnabled = ! UITools.getCurrentFrame().isResizable();
-	    setBorder(isFullScreenEnabled && ! areScrollbarsVisible ? null : defaultBorder);
+	    final boolean isFullScreenEnabled =  viewController.isFullScreenEnabled();
+	    setBorder(isFullScreenEnabled && ! areScrollbarsVisible ? BorderFactory.createEmptyBorder() : defaultBorder);
 		revalidate();
 		repaint();
     }

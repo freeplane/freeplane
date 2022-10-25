@@ -63,6 +63,8 @@ public interface ViewController {
 	public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
 	public boolean isMenubarVisible();
+	
+	boolean isFullScreenEnabled();
 
 	public void openDocument(Hyperlink link) throws IOException;
 
