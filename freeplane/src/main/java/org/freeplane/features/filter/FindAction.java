@@ -149,6 +149,9 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	void findNext(Direction direction) {
+	    if (editor == null) {
+	        return;
+	    }
 		Controller controller = Controller.getCurrentController();
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final NodeModel start = controller.getSelection().getSelected();
