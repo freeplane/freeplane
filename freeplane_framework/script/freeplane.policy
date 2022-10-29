@@ -37,5 +37,6 @@ grant {
 		permission java.awt.AWTPermission "accessClipboard";
 		permission java.awt.AWTPermission "accessEventQueue";
 		permission java.awt.AWTPermission "setWindowAlwaysOnTop";
+		permission java.awt.AWTPermission "watchMousePointer";
 		permission java.util.logging.LoggingPermission "control", "";
 };
