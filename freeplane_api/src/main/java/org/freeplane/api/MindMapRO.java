@@ -35,4 +35,7 @@ public interface MindMapRO {
     /** returns HTML color spec like #ff0000 (red) or #222222 (darkgray).
      *  @since 1.2 */
     String getBackgroundColorCode();
+
+	/** @since 1.10.5 */
+	ConditionalStyles getConditionalStyles();
 }

@@ -83,7 +83,7 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
-	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
+	private static final String NODE_CONDITIONAL_STYLES = "ConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";

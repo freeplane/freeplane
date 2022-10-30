@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
 import groovy.lang.Closure;
+import org.freeplane.api.ConditionalStyles;
 import org.freeplane.api.NodeChangeListener;
 import org.freeplane.api.NodeCondition;
 import org.freeplane.core.resources.ResourceController;
@@ -96,6 +97,11 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	public String getBackgroundColorCode() {
         return ColorUtils.colorToString(getBackgroundColor());
     }
+
+	@Override
+	public ConditionalStyles getConditionalStyles() {
+		return new MapConditionalStylesProxy(getDelegate(), getScriptContext());
+	}
 
 	// Map: R/W
 	@Override

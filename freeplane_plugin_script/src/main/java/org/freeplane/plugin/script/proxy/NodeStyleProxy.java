@@ -6,6 +6,7 @@ package org.freeplane.plugin.script.proxy;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,8 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
+	static final String STYLE_NAME_MUST_NOT_BE_NULL = "styleName mustn't be null";
+
     static IStyle styleByName(org.freeplane.api.MindMap map, String styleName) {
         return styleByName(((MapProxy)map).getDelegate(), styleName);
     }
@@ -62,6 +65,14 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
         }
         return sourceStyle;
     }
+
+	static IStyle styleByNameOrException(MapModel map, String styleName) {
+		IStyle style = styleByName(map, Objects.requireNonNull(styleName, STYLE_NAME_MUST_NOT_BE_NULL));
+		if (style == null)
+			throw new IllegalArgumentException("style '" + styleName + "' not found");
+		else
+			return style;
+	}
 
 	NodeStyleProxy(final NodeModel delegate, final ScriptContext scriptContext) {
 		super(delegate, scriptContext);
