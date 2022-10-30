@@ -10,11 +10,11 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.plugin.script.filter.ScriptCondition;
 
-import static org.freeplane.plugin.script.proxy.NodeStyleProxy.styleByNameOrException;
+import static org.freeplane.plugin.script.proxy.NodeStyleProxy.styleByNameOrThrowException;
 
 public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
-	public MapConditionalStyleProxy(MapModel delegate, ConditionalStyleModel.Item item) {
-		super(delegate, item);
+	public MapConditionalStyleProxy(MapModel mapModel, ConditionalStyleModel.Item item) {
+		super(mapModel, item);
 	}
 
 	@Override
@@ -22,17 +22,17 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 		return MapStyleModel.getExtension(getDelegate()).getConditionalStyleModel();
 	}
 
-	public MapConditionalStyleProxy(MapModel delegate, boolean isActive, String script, String styleName, boolean isLast) {
-		super(delegate, isActive, script, styleName, isLast);
+	public MapConditionalStyleProxy(MapModel mapModel, boolean isActive, String script, String styleName, boolean isLast) {
+		super(mapModel, isActive, script, styleName, isLast);
 	}
 
-	public MapConditionalStyleProxy(MapModel delegate, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-		super(delegate, isActive, condition, style, isLast);
+	public MapConditionalStyleProxy(MapModel mapModel, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
+		super(mapModel, isActive, condition, style, isLast);
 	}
 
 	@Override
 	public void setStyleName(String styleName) {
-		IStyle iStyle = styleByNameOrException(getDelegate(), styleName);
+		IStyle iStyle = styleByNameOrThrowException(getDelegate(), styleName);
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
 		ConditionalStyleModel.Item item = getItem();
 		controller.modifyConditionalStyleItemAndRefreshMap(getDelegate(), item, iStyle, item.getCondition(), item.isActive(), item.isLast());

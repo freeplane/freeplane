@@ -9,11 +9,11 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.plugin.script.filter.ScriptCondition;
 
-import static org.freeplane.plugin.script.proxy.NodeStyleProxy.styleByNameOrException;
+import static org.freeplane.plugin.script.proxy.NodeStyleProxy.styleByNameOrThrowException;
 
 public class NodeConditionalStyleProxy extends AConditionalStyleProxy<NodeModel> {
-	public NodeConditionalStyleProxy(NodeModel delegate, ConditionalStyleModel.Item item) {
-		super(delegate, item);
+	public NodeConditionalStyleProxy(NodeModel nodeModel, ConditionalStyleModel.Item item) {
+		super(nodeModel, item);
 	}
 
 	@Override
@@ -21,17 +21,17 @@ public class NodeConditionalStyleProxy extends AConditionalStyleProxy<NodeModel>
 		return ConditionalStyleModel.getExtension(getDelegate());
 	}
 
-	public NodeConditionalStyleProxy(NodeModel delegate, boolean isActive, String script, String styleName, boolean isLast) {
-		super(delegate, isActive, script, styleName, isLast);
+	public NodeConditionalStyleProxy(NodeModel nodeModel, boolean isActive, String script, String styleName, boolean isLast) {
+		super(nodeModel, isActive, script, styleName, isLast);
 	}
 
-	public NodeConditionalStyleProxy(NodeModel delegate, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-		super(delegate, isActive, condition, style, isLast);
+	public NodeConditionalStyleProxy(NodeModel nodeModel, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
+		super(nodeModel, isActive, condition, style, isLast);
 	}
 
 	@Override
 	public void setStyleName(String styleName) {
-		IStyle iStyle = styleByNameOrException(getDelegate().getMap(), styleName);
+		IStyle iStyle = styleByNameOrThrowException(getDelegate().getMap(), styleName);
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
 		ConditionalStyleModel.Item item = getItem();
 		controller.modifyConditionalStyleAndCallNodeChanged(getDelegate(), item, iStyle, item.getCondition(), item.isActive(), item.isLast());

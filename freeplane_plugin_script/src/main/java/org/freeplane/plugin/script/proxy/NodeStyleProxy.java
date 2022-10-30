@@ -66,7 +66,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
         return sourceStyle;
     }
 
-	static IStyle styleByNameOrException(MapModel map, String styleName) {
+	static IStyle styleByNameOrThrowException(MapModel map, String styleName) {
 		IStyle style = styleByName(map, Objects.requireNonNull(styleName, STYLE_NAME_MUST_NOT_BE_NULL));
 		if (style == null)
 			throw new IllegalArgumentException("style '" + styleName + "' not found");

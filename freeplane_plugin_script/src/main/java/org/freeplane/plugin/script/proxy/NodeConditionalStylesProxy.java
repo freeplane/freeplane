@@ -16,11 +16,6 @@ public class NodeConditionalStylesProxy extends AConditionalStylesProxy<NodeMode
 	}
 
 	@Override
-	ConditionalStyleModel getConditionalStyleModel() {
-		return ConditionalStyleModel.getExtension(getDelegate());
-	}
-
-	@Override
 	NodeConditionalStyleProxy createProxy(ConditionalStyleModel.Item item) {
 		return new NodeConditionalStyleProxy(getDelegate(), item);
 	}
@@ -28,6 +23,11 @@ public class NodeConditionalStylesProxy extends AConditionalStylesProxy<NodeMode
 	@Override
 	NodeConditionalStyleProxy createProxy(boolean isActive, String script, String styleName, boolean isLast) {
 		return new NodeConditionalStyleProxy(getDelegate(), isActive, script, styleName, isLast);
+	}
+
+	@Override
+	ConditionalStyleModel getConditionalStyleModel() {
+		return ConditionalStyleModel.getExtension(getDelegate());
 	}
 
 	@Override

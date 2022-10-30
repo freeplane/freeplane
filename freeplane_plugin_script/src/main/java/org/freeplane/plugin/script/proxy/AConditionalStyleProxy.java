@@ -10,7 +10,7 @@ import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.plugin.script.filter.ScriptCondition;
 
 import static java.util.Objects.requireNonNull;
-import static org.freeplane.plugin.script.proxy.NodeStyleProxy.styleByNameOrException;
+import static org.freeplane.plugin.script.proxy.NodeStyleProxy.styleByNameOrThrowException;
 
 public abstract class AConditionalStyleProxy<T> implements Proxy.ConditionalStyle {
 	private final T delegate;
@@ -26,7 +26,7 @@ public abstract class AConditionalStyleProxy<T> implements Proxy.ConditionalStyl
 		this(delegate,
 				isActive,
 				script == null ? null : new ScriptCondition(script),
-				styleByNameOrException(delegate instanceof NodeModel ? ((NodeModel) delegate).getMap() : (MapModel) delegate, styleName),
+				styleByNameOrThrowException(delegate instanceof NodeModel ? ((NodeModel) delegate).getMap() : (MapModel) delegate, styleName),
 				isLast);
 	}
 
@@ -44,10 +44,10 @@ public abstract class AConditionalStyleProxy<T> implements Proxy.ConditionalStyl
 		return item;
 	}
 
-	protected int getIndex() {
+	int getIndex() {
 		int i = 0;
-		for (ConditionalStyleModel.Item item_ : getConditionalStyleModel().getStyles()) {
-			if (getItem().getUuid().equals(item_.getUuid()))
+		for (ConditionalStyleModel.Item _item : getConditionalStyleModel().getStyles()) {
+			if (getItem().getUuid().equals(_item.getUuid()))
 				return i;
 			i++;
 		}
@@ -76,7 +76,7 @@ public abstract class AConditionalStyleProxy<T> implements Proxy.ConditionalStyl
 
 	@Override
 	public String getScript() {
-		if (isScriptCondition())
+		if (hasScriptCondition())
 			return ((ScriptCondition) item.getCondition()).getScript();
 		else
 			return null;
@@ -98,10 +98,9 @@ public abstract class AConditionalStyleProxy<T> implements Proxy.ConditionalStyl
 	}
 
 	@Override
-	public boolean isScriptCondition() {
+	public boolean hasScriptCondition() {
 		return item.getCondition() instanceof ScriptCondition;
 	}
-
 
 	@Override
 	public String toString() {

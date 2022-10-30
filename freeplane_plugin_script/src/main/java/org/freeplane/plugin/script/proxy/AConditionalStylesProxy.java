@@ -13,11 +13,11 @@ public abstract class AConditionalStylesProxy<T> extends AbstractProxy<T> implem
 		super(delegate, scriptContext);
 	}
 
-	abstract ConditionalStyleModel getConditionalStyleModel();
-
 	abstract AConditionalStyleProxy<T> createProxy(ConditionalStyleModel.Item item);
 
 	abstract AConditionalStyleProxy<T> createProxy(boolean isActive, String script, String styleName, boolean isLast);
+
+	abstract ConditionalStyleModel getConditionalStyleModel();
 
 	public void add(boolean isActive, String script, String styleName, boolean isLast) {
 		add(createProxy(isActive, script, styleName, isLast));

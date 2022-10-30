@@ -18,11 +18,6 @@ public class MapConditionalStylesProxy extends AConditionalStylesProxy<MapModel>
 	}
 
 	@Override
-	ConditionalStyleModel getConditionalStyleModel() {
-		return MapStyleModel.getExtension(getDelegate()).getConditionalStyleModel();
-	}
-
-	@Override
 	MapConditionalStyleProxy createProxy(ConditionalStyleModel.Item item) {
 		return new MapConditionalStyleProxy(getDelegate(), item);
 	}
@@ -30,6 +25,11 @@ public class MapConditionalStylesProxy extends AConditionalStylesProxy<MapModel>
 	@Override
 	MapConditionalStyleProxy createProxy(boolean isActive, String script, String styleName, boolean isLast) {
 		return new MapConditionalStyleProxy(getDelegate(), isActive, script, styleName, isLast);
+	}
+
+	@Override
+	ConditionalStyleModel getConditionalStyleModel() {
+		return MapStyleModel.getExtension(getDelegate()).getConditionalStyleModel();
 	}
 
 	@Override

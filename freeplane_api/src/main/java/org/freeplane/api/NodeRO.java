@@ -275,7 +275,7 @@ public interface NodeRO {
 	 * @since 1.2 */
 	boolean hasStyle(String styleName);
 
-	/** @since 1.10.5 */
+	/** @since 1.11.1 */
 	ConditionalStyles getConditionalStyles();
 
 	/** Raw text of this node which might be plain or HTML text.
@@ -501,7 +501,7 @@ public interface NodeRO {
     /**@since 1.8.11 */
 	Quantity<LengthUnit> getHorizontalShiftAsLength();
 	
-    /** @since 1.10.5 */
+    /** @since 1.11.1 */
 	ChildNodesAlignment getChildNodesAlignment();
 
 	
