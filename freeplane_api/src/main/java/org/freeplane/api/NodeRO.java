@@ -501,7 +501,7 @@ public interface NodeRO {
     /**@since 1.8.11 */
 	Quantity<LengthUnit> getHorizontalShiftAsLength();
 	
-    /** @since 1.11.1 */
+    /** @since 1.10.5 */
 	ChildNodesAlignment getChildNodesAlignment();
 
 	

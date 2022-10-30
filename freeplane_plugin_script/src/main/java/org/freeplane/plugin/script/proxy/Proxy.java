@@ -299,8 +299,6 @@ public interface Proxy {
 
 	interface ConditionalStyles extends ConditionalStylesRO, org.freeplane.api.ConditionalStyles {}
 
-	interface ScriptFilter extends org.freeplane.api.ScriptFilter {}
-
 	interface ConditionalStyleRO extends org.freeplane.api.ConditionalStyleRO {}
 
 	interface ConditionalStyle extends ConditionalStyleRO, org.freeplane.api.ConditionalStyle {}
