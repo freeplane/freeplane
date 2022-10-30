@@ -41,7 +41,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
     private Options createMarkdownOptions() {
         Options options = new Options();
-        options.setWhitelist(null);
+        options.setSafelist(null);
         return options;
     }
 

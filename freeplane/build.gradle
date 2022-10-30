@@ -21,8 +21,8 @@ dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	lib ':kitfox-svg-salamander-1.1.1-p1'
 	lib 'com.github.robtimus:data-url:2.0'
-	lib 'com.formdev:flatlaf:2.2'
-	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.8.2'
+	lib 'com.formdev:flatlaf:2.6'
+	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.9.3'
 
     lib project(':JOrtho_0.4_freeplane')
     api project(':freeplane_api')
