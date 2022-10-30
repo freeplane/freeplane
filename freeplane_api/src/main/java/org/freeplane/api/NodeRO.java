@@ -373,20 +373,20 @@ public interface NodeRO {
     /** 
      * @since 1.10.4 
      * 
-     * @deprecated since 1.10.6 - use {@link #isTopOrLeft()}
+     * @deprecated since 1.11.1 - use {@link #isTopOrLeft()}
      */
     @Deprecated
 	default boolean isLeft() {
 	    return isTopOrLeft();
 	}
 
-	/** @since 1.10.6 */
+	/** @since 1.11.1 */
 	boolean isTopOrLeft();
 
     /** 
      * @since 1.10.4 
      * 
-     * @deprecated since 1.10.6 - use {@link #isTopOrLeftOnViewsWithRoot()}
+     * @deprecated since 1.11.1 - use {@link #isTopOrLeftOnViewsWithRoot()}
      */
 	@Deprecated
     default boolean isLeftOnViewsWithRoot(NodeRO viewRoot) {
@@ -394,7 +394,7 @@ public interface NodeRO {
 	}
 
     /** 
-     * @since 1.10.6 
+     * @since 1.11.1 
      */
     boolean isTopOrLeftOnViewsWithRoot(NodeRO viewRoot);
 
@@ -522,10 +522,10 @@ public interface NodeRO {
     /** @since 1.10.5 */
     ChildNodesAlignment getChildNodesAlignment();
 
-    /** @since 1.10.6 */
+    /** @since 1.11.1 */
     LayoutOrientation getLayoutOrientation();
 
-    /** @since 1.10.6 */
+    /** @since 1.11.1 */
     ChildrenSides getChildrenSides() ;
 
 	
