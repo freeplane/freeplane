@@ -68,17 +68,21 @@ public class MMapModel extends MapModel {
     }
 
     public void updateLastKnownFileModificationTime() {
-        this.lastKnownModificationTime = getLastFileModificationTime();
+        this.lastKnownModificationTime = getFileModificationTime();
     }
 
-    private long getLastFileModificationTime() {
+    private long getFileModificationTime() {
         File file = getFile();
-        long lastKnownModificationTime = file != null ? file.lastModified() : UNKNOWN_MODIFICATION_TIME;
+        long lastKnownModificationTime = file != null  && file.exists() ? file.lastModified() : UNKNOWN_MODIFICATION_TIME;
         return lastKnownModificationTime;
     }
     
     public boolean hasExternalFileChanged() {
-        return lastKnownModificationTime != getLastFileModificationTime();
+        long fileModificationTime = getFileModificationTime();
+        boolean hasTimeChanged = fileModificationTime != lastKnownModificationTime && fileModificationTime != UNKNOWN_MODIFICATION_TIME;
+        if(hasTimeChanged)
+            lastKnownModificationTime = fileModificationTime;
+        return hasTimeChanged;
     }
 
     @Override

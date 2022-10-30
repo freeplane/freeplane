@@ -36,7 +36,6 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
@@ -150,6 +149,9 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	void findNext(Direction direction) {
+	    if (editor == null) {
+	        return;
+	    }
 		Controller controller = Controller.getCurrentController();
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final NodeModel start = controller.getSelection().getSelected();
@@ -160,7 +162,8 @@ class FindAction extends AFreeplaneAction {
 		}
 		final NodeModel next = filterController.findNextInSubtree(start, subtreeRoot, direction, condition, filter);
 		if (next == null) {
-			displayNotFoundMessage(searchStart, condition);
+		    if(searchStart != null)
+		        displayNotFoundMessage(searchStart, condition);
 			return;
 		}
 	     final MapModel map = controller.getMap();

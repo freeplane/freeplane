@@ -110,7 +110,7 @@ public class TreeXmlReader implements IXMLBuilder {
 					attributeHandler.setAttribute(currentElement, value);
 					return true;
 				} catch (Exception e) {
-					LogUtils.severe("Can not process attribute" + key + " = '" + value + "'", e);
+					LogUtils.severe("Can not process attribute " + key + " = '" + value + "'", e);
 				}
 			}
 		}
