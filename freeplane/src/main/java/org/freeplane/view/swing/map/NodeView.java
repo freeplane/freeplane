@@ -112,6 +112,9 @@ public class NodeView extends JComponent implements INodeView {
 	public static final int MAIN_VIEWER_POSITION = 1;
 	public static final int NOTE_VIEWER_POSITION = 10;
 	final static boolean PAINT_DEBUG_INFO;
+    public static int ADDITIONAL_MOUSE_SENSITIVE_AREA = 50;
+    public static final int DETAIL_VIEWER_POSITION = 2;
+
 	static {
 		boolean paintDebugInfo = false;
 		try{
@@ -136,8 +139,9 @@ public class NodeView extends JComponent implements INodeView {
 	private boolean isFolded;
 	private DashVariant edgeDash = DashVariant.DEFAULT;
 	private final NodeViewLayoutHelper layoutHelper;
-
-	public static final int DETAIL_VIEWER_POSITION = 2;
+    private boolean usesHorizontalLayout;
+    private ChildNodesAlignment childNodesAlignment;
+    private ChildrenSides childrenSides;
 
 	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -146,6 +150,8 @@ public class NodeView extends JComponent implements INodeView {
 		this.isFolded = map.getModeController().getMapController().isFolded(model);
 		this.layoutHelper = new NodeViewLayoutHelper(this);
 	}
+	
+	
 
 	public boolean isFolded(){
 		return isFolded;
@@ -180,8 +186,6 @@ public class NodeView extends JComponent implements INodeView {
 			return 0;
 		}
 	}
-
-	public static int ADDITIONAL_MOUSE_SENSITIVE_AREA = 50;
 
 	@Override
 	public boolean contains(final int x, final int y) {
@@ -755,15 +759,21 @@ public class NodeView extends JComponent implements INodeView {
 	}
 	
 	ChildNodesAlignment getChildNodesAlignment() {
-		ChildNodesAlignment verticalAlignment = getModeController().getExtension(LayoutController.class).getChildNodesAlignment(model);
-		switch (verticalAlignment) {
+	    updateLayoutProperties();
+		return childNodesAlignment;
+	}
+
+    private void updateChildNodesAlignment() {
+        ChildNodesAlignment childNodesAlignment = getModeController().getExtension(LayoutController.class).getChildNodesAlignment(model);
+		switch (childNodesAlignment) {
 		case UNDEFINED:
 		case AS_PARENT:
-			return getParentViewChildNodesAlignment();
+			this.childNodesAlignment = getParentViewChildNodesAlignment();
+			break;
 		default:
-			return verticalAlignment;
+		    this.childNodesAlignment =  childNodesAlignment;
 		}
-	}
+    }
 
 	private ChildNodesAlignment getParentViewChildNodesAlignment() {
 		NodeView parentView = getParentView();
@@ -912,20 +922,10 @@ public class NodeView extends JComponent implements INodeView {
 			if(property != EncryptionModel.class)
 				return;
 		}
-        if(property == ChildNodesAlignment.class) {
-            invalidateAll();
-            revalidate();
-            repaint();
-            return;
-        }
-        if(property == LayoutOrientation.class) {
-            invalidateAll();
-            revalidate();
-            repaint();
-            return;
-        }
-        if(property == ChildrenSides.class) {
-            invalidateAll();
+        if(property == ChildNodesAlignment.class
+                || property == LayoutOrientation.class
+                || property == ChildrenSides.class) {
+            resetLayoutPropertiesRecursively();
             revalidate();
             repaint();
             return;
@@ -947,7 +947,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		
 		if(property == Side.class) {
-			invalidateAll();
+			resetLayoutPropertiesRecursively();
 			revalidate();
 		}
 
@@ -1229,7 +1229,14 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     ChildrenSides getChildrenSides() {
-        return LayoutController.getController(getModeController()).getChildrenSides(this.model);
+        updateLayoutProperties();
+        return childrenSides;
+    }
+
+
+
+    private ChildrenSides updateChildrenSize() {
+        return childrenSides = LayoutController.getController(getModeController()).getChildrenSides(this.model);
     }
 
 
@@ -1647,14 +1654,24 @@ public class NodeView extends JComponent implements INodeView {
 			child.updateAll();
 		}
 	}
-	void invalidateAll() {
+	void resetLayoutPropertiesRecursively() {
+	    childNodesAlignment = null;
+	    childrenSides = null;
 		LinkedList<NodeView> childrenViews = getChildrenViews();
 		if(childrenViews.isEmpty())
 			invalidate();
 		for (final NodeView child : childrenViews) {
-			child.invalidateAll();
+			child.resetLayoutPropertiesRecursively();
 		}
 	}
+
+	private void updateLayoutProperties() {
+	    if(childNodesAlignment == null) {
+	        updateChildNodesAlignment();
+	        updateUsesHorizontalLayout();
+	        updateChildrenSize();
+	    }
+    }
 	
 	
 
@@ -1833,22 +1850,29 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	NodeViewLayoutHelper getLayoutHelper() {
-		return layoutHelper;
+	    return layoutHelper;
 	}
 
 	public boolean usesHorizontalLayout() {
-		return getModeController().getExtension(LayoutController.class).getEffectiveLayoutOrientation(model, map.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+	    updateLayoutProperties();
+        return usesHorizontalLayout;
 	}
 
-    boolean paintsChildrenOnTheLeft() {
+    private void updateUsesHorizontalLayout() {
+        usesHorizontalLayout = getModeController().getExtension(LayoutController.class).getEffectiveLayoutOrientation(model, map.getFilter())
+	            == LayoutOrientation.LEFT_TO_RIGHT;
+    }
+
+	boolean paintsChildrenOnTheLeft() {
         if(usesHorizontalLayout())
             return false;
-        ChildrenSides childrenSides = getChildrenSides();
-        boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
-        boolean paintsOnTheLeft = paintsChildrenOnBothSides ? false 
-                : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
-                : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
-                : isTopOrLeft();
-        return paintsOnTheLeft;
+        else {
+            ChildrenSides childrenSides = getChildrenSides();
+            boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
+            return paintsChildrenOnBothSides ? false 
+                    : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
+                            : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
+                                    : isTopOrLeft();
+        }
      }
 }

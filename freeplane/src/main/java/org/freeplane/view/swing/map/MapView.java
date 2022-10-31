@@ -171,6 +171,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void setLayoutType(final MapViewLayout layoutType) {
 		if(this.layoutType != layoutType) {
 			this.layoutType = layoutType;
+			currentRootView.resetLayoutPropertiesRecursively();
 			if(outlineViewFitsWindowWidth())
 				currentRootView.updateAll();
 		}
@@ -1349,7 +1350,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT)) {
 			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
 			allowsCompactLayout = mapStyle.allowsCompactLayout(model);
-			getRoot().invalidateAll();
+			getRoot().resetLayoutPropertiesRecursively();
 			revalidate();
 			repaint();
 		}
@@ -2592,8 +2593,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		currentRootView = mapRootView;
 		currentRootParentView = null;
-		if(! temporarily)
-			rootsHistory.clear();
+		if(! temporarily) {
+            rootsHistory.clear();
+            currentRootParentView.resetLayoutPropertiesRecursively();
+        }
 	}
 	
 	private void setRootNode(NodeView newRootView) {
@@ -2624,6 +2627,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else
 			selectAsTheOnlyOneSelected(lastSelectedNode);
 		newRootView.setFolded(false);
+		newRootView.resetLayoutPropertiesRecursively();
 		revalidate();
 		repaint();
 	}
