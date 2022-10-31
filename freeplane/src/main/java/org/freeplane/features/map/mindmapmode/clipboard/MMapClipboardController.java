@@ -32,7 +32,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -122,11 +124,11 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private class FileListFlavorHandler implements IDataFlavorHandler {
-		final List<File> fileList;
+		final ArrayList<File> fileList;
 
 		public FileListFlavorHandler(final List<File> fileList) {
 			super();
-			this.fileList = fileList;
+			this.fileList = new ArrayList<>(fileList);
 		}
 
 		@Override
@@ -140,6 +142,10 @@ public class MMapClipboardController extends MapClipboardController implements M
 	        }
 			ViewerController viewerController = (Controller.getCurrentModeController().getExtension(ViewerController.class));
 			boolean pasteImagesFromFiles = ResourceController.getResourceController().getBooleanProperty("pasteImagesFromFiles");
+			Side newChildSide = side == Side.AS_SIBLING ? target.getSide() : side;
+			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			if(side != Side.AS_SIBLING  && mapController.placesNewChildFirst(target))
+			    Collections.reverse(fileList);
 			for (final File sourceFile : fileList) {
 				final File file;
 				if(copyFile){
@@ -155,10 +161,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 				else
 					file = sourceFile;
 				if(! pasteImagesFromFiles || dropAction == DnDConstants.ACTION_LINK || !viewerController.paste(file, target, PasteMode.valueOf(side))) {
-					final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 					final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 					((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
-					node.setSide(side == Side.AS_SIBLING ? target.getSide() : side);
+                    node.setSide(newChildSide);
 					mapController.insertNode(node, target, side == Side.AS_SIBLING);
 				}
 			}
@@ -184,15 +189,17 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 
 		private void paste(final String text, final NodeModel target, final Side side) {
-			final String[] textLines = text.split(MapClipboardController.NODESEPARATOR);
+			final ArrayList<String> textLines = new ArrayList<>(Arrays.asList(text.split(MapClipboardController.NODESEPARATOR)));
 			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			final MapReader mapReader = mapController.getMapReader();
+			if(side != Side.AS_SIBLING  && mapController.placesNewChildFirst(target))
+                Collections.reverse(textLines);
 			synchronized(mapReader) {
 				final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
 				nodeTreeCreator.setHint(Hint.MODE, Mode.CLIPBOARD);
-				for (int i = 0; i < textLines.length; ++i) {
+				for (int i = 0; i < textLines.size(); ++i) {
 					try {
-						final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
+						final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines.get(i)));
 						newModel.removeExtension(FreeNode.class);
 						newModel.setSide(side == Side.AS_SIBLING ? target.getSide() : side);
 						mapController.insertNode(newModel, target, side == Side.AS_SIBLING);
