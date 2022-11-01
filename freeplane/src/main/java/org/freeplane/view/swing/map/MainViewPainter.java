@@ -32,23 +32,27 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 abstract class MainViewPainter{
 
-	MainView mainView;
-	MainViewPainter(MainView mainView){
-		this.mainView = mainView;
+    MainView mainView;
+    MainViewPainter(MainView mainView){
+        this.mainView = mainView;
 
-	}
-	int getMainViewHeightWithFoldingMark(@SuppressWarnings("unused") boolean onlyFolded) {
-		return mainView.getHeight();
-	}
-	/** get width including folding symbol */
-	int getMainViewWidthWithFoldingMark() {
-		int width = mainView.getWidth();
-		final NodeView nodeView = mainView.getNodeView();
-		if (nodeView.isFolded()) {
-			width += mainView.getZoomedFoldingSymbolHalfWidth() * 3;
-		}
-		return width;
-	}
+    }
+    int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
+        int height = mainView.getHeight();
+        NodeView nodeView = mainView.getNodeView();
+        if (nodeView.usesHorizontalLayout() &&  (! onlyFolded || nodeView.isFolded())) {
+            height += 2 * mainView.getZoomedFoldingSymbolHalfWidth();
+        }
+        return height;
+    }
+    int getMainViewWidthWithFoldingMark(boolean onlyFolded) {
+        int width = mainView.getWidth();
+        final NodeView nodeView = mainView.getNodeView();
+        if (! nodeView.usesHorizontalLayout() && (! onlyFolded || nodeView.isFolded())) {
+            width += mainView.getZoomedFoldingSymbolHalfWidth() * 3;
+        }
+        return width;
+    }
 
 	int getSingleChildShift() {
 		return 0;
@@ -87,6 +91,14 @@ abstract class MainViewPainter{
 	abstract Point getLeftPoint();
 
 	abstract Point getRightPoint();
+	
+    Point getTopPoint() {
+        return new Point(mainView.getWidth()/2, 0);
+    }
+
+    Point getBottomPoint() {
+        return new Point(mainView.getWidth()/2, mainView.getHeight());
+    }
 
 	abstract NodeGeometryModel getShapeConfiguration();
 
@@ -121,19 +133,38 @@ abstract class MainViewPainter{
 		final FoldingMark markType = mainView.foldingMarkType(mapController, nodeView);
 		boolean drawsControls = mainView.getMouseArea() != MouseArea.OUT && ! map.isPrinting();
 		if(markType == FoldingMark.FOLDING_CIRCLE_UNFOLDED && ! drawsControls)
-			return;
-		final Point p = mainView.getNodeView().paintsChildrenOnTheLeft() ? getLeftPoint() : getRightPoint();
-		final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
+		    return;
+		Rectangle markBounds = getFoldingRectangleBounds(nodeView, drawsControls);
+		(drawsControls || markType != FoldingMark.FOLDING_CIRCLE_FOLDED ? markType : FoldingMark.FOLDING_CIRCLE_UNFOLDED)
+			.draw(g, nodeView, markBounds);
+	}
+    
+	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
+        final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
 		final int halfWidth = width / 2;
-		if (p.x <= 0) {
-			p.x -= halfWidth;
+		final Point p;
+		if(nodeView.usesHorizontalLayout()) {
+		    if(nodeView.isTopOrLeft()) {
+		        p = getTopPoint();
+                p.y -= halfWidth;
+		    }
+		    else {
+                p = getBottomPoint();
+                p.y += halfWidth;
+		    }
 		}
 		else {
-			p.x += halfWidth;
+		    p = mainView.getNodeView().paintsChildrenOnTheLeft() ? getLeftPoint() : getRightPoint();
+		    if (p.x <= 0) {
+		        p.x -= halfWidth;
+		    }
+		    else {
+		        p.x += halfWidth;
+		    }
 		}
-		(drawsControls || markType != FoldingMark.FOLDING_CIRCLE_FOLDED ? markType : FoldingMark.FOLDING_CIRCLE_UNFOLDED)
-			.draw(g, nodeView, new Rectangle(p.x - halfWidth, p.y-halfWidth, halfWidth*2, halfWidth*2));
-	}
+		Rectangle markBounds = new Rectangle(p.x - halfWidth, p.y-halfWidth, halfWidth*2, halfWidth*2);
+        return markBounds;
+    }
 
 	boolean areInsetsFixed() {
 		return true;

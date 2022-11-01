@@ -79,7 +79,6 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.map.MainView.DragOver;
 
 
 /**
@@ -192,18 +191,23 @@ public class MainView extends ZoomableLabel {
 			return nodeView.paintsChildrenOnTheLeft();
 	}
 
-	public int getDeltaX() {
-		final NodeView nodeView = getNodeView();
-		if (nodeView.isFolded() && nodeView.paintsChildrenOnTheLeft()) {
-			return getZoomedFoldingSymbolHalfWidth() * 3;
-		}
-		else
-		return 0;
+	public int getDeltaX(boolean onlyFolded) {
+	    final NodeView nodeView = getNodeView();
+	    if ((! onlyFolded || nodeView.isFolded()) && nodeView.paintsChildrenOnTheLeft()) {
+	        return getZoomedFoldingSymbolHalfWidth() * 3;
+	    }
+	    else
+	        return 0;
 	}
 
 	/** get y coordinate including folding symbol */
-	public int getDeltaY() {
-		return 0;
+	public int getDeltaY(boolean onlyFolded) {
+	    final NodeView nodeView = getNodeView();
+	    if ((! onlyFolded || nodeView.isFolded()) && nodeView.usesHorizontalLayout() && nodeView.isTopOrLeft()) {
+	        return getZoomedFoldingSymbolHalfWidth() * 2;
+	    }
+	    else
+	        return 0;
 	}
 
 	public DragOver getDraggedOver() {
@@ -640,23 +644,29 @@ public class MainView extends ZoomableLabel {
 	    final NodeView nodeView = getNodeView();
 		final NodeModel node = nodeView.getModel();
 		return node.hasChildren();
-    }
+	}
 
 	public boolean isInFoldingRegion(Point p) {
-		if (hasChildren() && p.y >= 0 && p.y < getMainViewHeightWithFoldingMark(false)) {
-			final boolean isLeft = getNodeView().paintsChildrenOnTheLeft();
-			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
-			if (isLeft) {
-	            final int maxX = 0;
-	            return p.x >= -width && p.x < maxX;
-            }
-            else {
-	            final int minX = getWidth();
-	            return p.x >= minX && p.x < (getWidth() + width);
-            }
-		}
-        else
-			return false;
+	    NodeView nodeView = getNodeView();
+	    if (!nodeView.getModel().hasChildren())
+	        return false;
+	    Rectangle foldingRectangleBounds = painter.getFoldingRectangleBounds(nodeView, true);
+	    if(nodeView.usesHorizontalLayout()) {
+	        if(nodeView.isTopOrLeft())
+	            return p.y >= foldingRectangleBounds.y && p.y < 0 
+	            && p.x >= 0 && p.x < getWidth();
+	        else
+	            return p.y >= foldingRectangleBounds.y && p.y < foldingRectangleBounds.y + foldingRectangleBounds.height 
+	                && p.x >= 0 && p.x < getWidth();
+	    }
+	    else {
+	        if(nodeView.isTopOrLeft())
+	            return p.x >= foldingRectangleBounds.x && p.x < 0 
+	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
+	        else 
+	            return p.x >= foldingRectangleBounds.x && p.x < foldingRectangleBounds.x + foldingRectangleBounds.width 
+	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
+	    }
 	}
 
 	public MouseArea getMouseArea() {
@@ -683,27 +693,8 @@ public class MainView extends ZoomableLabel {
 	}
 
 	private void paintFoldingRectangleImmediately() {
-			final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-			final int width = Math.max(FOLDING_CIRCLE_WIDTH, zoomedFoldingSymbolHalfWidth * 2);
-			final NodeView nodeView = getNodeView();
-			int height;
-			final int x, y;
-			if (nodeView.paintsChildrenOnTheLeft()){
-				x = -width;
-			}
-			else{
-				x = getWidth();
-			}
-			if(FOLDING_CIRCLE_WIDTH >= getHeight()){
-				height = FOLDING_CIRCLE_WIDTH;
-				y = getHeight() - FOLDING_CIRCLE_WIDTH;
-			}
-			else{
-				height = getHeight();
-				y = 0;
-			}
-			height += width/2;
-			final Rectangle foldingRectangle = new Rectangle(x-4, y-4, width+8, height+8);
+			NodeView nodeView = getNodeView();
+            final Rectangle foldingRectangle = painter.getFoldingRectangleBounds(nodeView, true);
 			final MapView map = nodeView.getMap();
 			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
 			map.paintImmediately(foldingRectangle);
@@ -884,8 +875,8 @@ public class MainView extends ZoomableLabel {
 		painter.setBounds(x, y, width, height);
 	}
 
-	public int getMainViewWidthWithFoldingMark() {
-		return painter.getMainViewWidthWithFoldingMark();
+	public int getMainViewWidthWithFoldingMark(boolean onlyFolded) {
+		return painter.getMainViewWidthWithFoldingMark(onlyFolded);
 	}
 
 	public int getMainViewHeightWithFoldingMark(boolean onlyFolded) {

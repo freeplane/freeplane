@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 
 import org.freeplane.core.ui.components.UITools;
@@ -65,16 +66,26 @@ class FoldingCircle implements Drawable{
 		final MainView mainView = nodeView.getMainView();
 		Color borderColor = mainView.getFoldingCircleBorderColor();
 		Color fillColor = folded ? borderColor : mainView.getFoldingCircleFillColor();
-		if(fillColor.getAlpha() != 255) {
+		int x = r.x;
+        int y = r.y;
+        int width = r.width;
+        int height = r.height;
+        float minimumStroke = height / 8f;
+        BasicStroke stroke = minimumStroke > UITools.FONT_SCALE_FACTOR * 1f ? new BasicStroke(minimumStroke) : BORDER_STROKE;
+        int strokeLineWidth = (int) Math.ceil(stroke.getLineWidth() / 2);
+        x += strokeLineWidth;
+        y += strokeLineWidth;
+        width -= strokeLineWidth*2;
+        height -= strokeLineWidth*2;
+        if(fillColor.getAlpha() != 255) {
 			g.setColor(nodeView.getBackgroundColor());
-			g.fillOval(r.x, r.y, r.width , r.height);
+			g.fillOval(x, y, width , height);
 		}
 		g.setColor(fillColor);
-		g.fillOval(r.x, r.y, r.width , r.height);
+		g.fillOval(x, y, width , height);
 		g.setColor(borderColor);
-		float minimumStroke = r.height / 8f;
-		g.setStroke(minimumStroke > UITools.FONT_SCALE_FACTOR * 1f ? new BasicStroke(minimumStroke) : BORDER_STROKE);
-		g.drawOval(r.x, r.y, r.width , r.height);
+        g.setStroke(stroke);
+		g.drawOval(x, y, width , height);
 	}
 
 }
