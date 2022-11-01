@@ -325,11 +325,13 @@ public class NodeView extends JComponent implements INodeView {
 					additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(cloud, this) / 5;
 				}
 			}
-			final int x = transX + getContent().getX() - getDeltaX(true);
-			final int y = transY + getContent().getY() - getDeltaY(true);
-			final int width = mainView.getMainViewWidthWithFoldingMark(true);
-			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark(true);
-			final int height = Math.max(heightWithFoldingMark, getContent().getHeight());
+			
+			Rectangle foldingRectangleBounds = getMainView().getFoldingRectangleBounds(this, false);
+			JComponent content = getContent();
+            final int x = transX + content.getX() + Math.min(0, foldingRectangleBounds.x);
+			final int y = transY + content.getY() + Math.min(0, foldingRectangleBounds.y);
+			final int width = Math.max(content.getWidth(), foldingRectangleBounds.x + foldingRectangleBounds.width);
+			final int height = Math.max(content.getHeight(), foldingRectangleBounds.y + foldingRectangleBounds.height);
 			inList.addLast(new Point(-additionalDistanceForConvexHull + x, -additionalDistanceForConvexHull + y));
 			inList
 			    .addLast(new Point(-additionalDistanceForConvexHull + x, additionalDistanceForConvexHull + y + height));
@@ -342,16 +344,6 @@ public class NodeView extends JComponent implements INodeView {
 			child.getCoordinates(inList, additionalDistanceForConvexHull, true, transX + child.getX(),
 			    transY + child.getY());
 		}
-	}
-
-	/** get x coordinate including folding symbol */
-	public int getDeltaX(boolean onlyFolded) {
-		return mainView.getDeltaX(onlyFolded);
-	}
-
-	/** get y coordinate including folding symbol */
-	public int getDeltaY(boolean onlyFolded) {
-		return mainView.getDeltaY(onlyFolded);
 	}
 
 	private NodeView getFirst(Component startAfter, final boolean leftOnly, final boolean rightOnly) {

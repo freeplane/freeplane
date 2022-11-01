@@ -191,24 +191,6 @@ public class MainView extends ZoomableLabel {
 			return nodeView.paintsChildrenOnTheLeft();
 	}
 
-	public int getDeltaX(boolean onlyFolded) {
-	    final NodeView nodeView = getNodeView();
-	    if ((! onlyFolded || nodeView.isFolded()) && nodeView.paintsChildrenOnTheLeft()) {
-	        return getZoomedFoldingSymbolHalfWidth() * 3;
-	    }
-	    else
-	        return 0;
-	}
-
-	/** get y coordinate including folding symbol */
-	public int getDeltaY(boolean onlyFolded) {
-	    final NodeView nodeView = getNodeView();
-	    if ((! onlyFolded || nodeView.isFolded()) && nodeView.usesHorizontalLayout() && nodeView.isTopOrLeft()) {
-	        return getZoomedFoldingSymbolHalfWidth() * 2;
-	    }
-	    else
-	        return 0;
-	}
 
 	public DragOver getDraggedOver() {
 		return isDraggedOver;
@@ -691,6 +673,10 @@ public class MainView extends ZoomableLabel {
 		if(repaintFoldingRectangle)
 			paintFoldingRectangleImmediately();
 	}
+	
+	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
+	    return painter.getFoldingRectangleBounds(nodeView, drawsControls);
+	}
 
 	private void paintFoldingRectangleImmediately() {
 			NodeView nodeView = getNodeView();
@@ -873,14 +859,6 @@ public class MainView extends ZoomableLabel {
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		painter.setBounds(x, y, width, height);
-	}
-
-	public int getMainViewWidthWithFoldingMark(boolean onlyFolded) {
-		return painter.getMainViewWidthWithFoldingMark(onlyFolded);
-	}
-
-	public int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
-		return painter.getMainViewHeightWithFoldingMark(onlyFolded);
 	}
 
 	public int getSingleChildShift() {
