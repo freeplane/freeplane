@@ -74,6 +74,8 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -97,6 +99,8 @@ import org.freeplane.main.application.FreeplaneSplashModern;
  * @since 29.12.2008
  */
 public class UITools {
+	private static final String MONITOR_SIZE_INCHES_PROPERTY = "monitor_size_inches";
+
 	public static class Defaults {
 		public static float DEFAULT_FONT_SCALING_FACTOR = 1f;
 	}
@@ -691,11 +695,17 @@ public class UITools {
 			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(windowX, windowY);
 			final int userDefinedScreenResolution;
 			if(graphicsConfiguration != null) {
+				if(Compat.isWindowsOS() || Compat.isMacOsX()) {
+					if (OptionPanelBuilder.hidePropertyByDefault(MONITOR_SIZE_INCHES_PROPERTY)) {
+						int screenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
+						return screenResolution / 72f;
+					}
+				}
 				final Rectangle screenBounds = graphicsConfiguration.getBounds();
 				final int w = screenBounds.width;
 				final int h = screenBounds.height;
 				final double diagonalPixels = Math.sqrt(w*w + h*h);
-				final double monitorSize = resourceController.getDoubleProperty("monitor_size_inches", 0);
+				final double monitorSize = resourceController.getDoubleProperty(MONITOR_SIZE_INCHES_PROPERTY, 0);
 				if(monitorSize >= 1 && diagonalPixels >= 1){
 					userDefinedScreenResolution = (int) Math.round(diagonalPixels / monitorSize);
 					resourceController.setProperty("user_defined_screen_resolution", userDefinedScreenResolution);
@@ -703,12 +713,12 @@ public class UITools {
 				else{
 					userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
 					final double effectiveMonitorSize = Math.round(diagonalPixels / userDefinedScreenResolution * 10) / 10;
-					resourceController.setDefaultProperty("monitor_size_inches", Double.toString(effectiveMonitorSize));
+					resourceController.setDefaultProperty(MONITOR_SIZE_INCHES_PROPERTY, Double.toString(effectiveMonitorSize));
 				}
 			}
 			else {
 				userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
-				resourceController.setDefaultProperty("monitor_size_inches", Double.toString(0));
+				resourceController.setDefaultProperty(MONITOR_SIZE_INCHES_PROPERTY, Double.toString(0));
 			}
 			return userDefinedScreenResolution  / 72f;
     }
