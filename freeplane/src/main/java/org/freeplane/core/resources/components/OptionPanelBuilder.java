@@ -532,7 +532,7 @@ public class OptionPanelBuilder {
 	}
 
 	public void addColorProperty(final String path, final String name, final int position) {
-		addColorProperty(path, name, position, true);		
+		addColorProperty(path, name, position, true);
 	}
 
 	public void addComboProperty(final String path, final String name, final Vector<String> choices,
@@ -843,5 +843,12 @@ public class OptionPanelBuilder {
 
 	public List<URL> getLoadedPreferences() {
 		return preferencesSources;
+	}
+
+	public static boolean hidePropertyByDefault(String name) {
+		String hidePropertyName = name + ".hide";
+		ResourceController resourceController = ResourceController.getResourceController();
+		resourceController.setDefaultProperty(hidePropertyName, "true");
+		return resourceController.getBooleanProperty(hidePropertyName);
 	}
 }
