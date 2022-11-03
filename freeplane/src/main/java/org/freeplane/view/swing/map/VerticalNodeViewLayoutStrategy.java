@@ -161,6 +161,20 @@ class VerticalNodeViewLayoutStrategy {
 							}
 							childContentHeightSum += vGap;
 						}
+						int missingWidth;
+						if(view.usesHorizontalLayout() && ! child.usesHorizontalLayout())
+                            missingWidth = child.getFoldingHandleWidth() - vGap - extraVGap;
+						else
+						    missingWidth = 0;
+						
+						if(missingWidth > 0) {
+						    childContentHeightSum += missingWidth;
+                            if (child.paintsChildrenOnTheLeft()) {
+                                top -= missingWidth;
+                                y += missingWidth;
+                            }
+                        }
+						
 						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
 						top += - childContentShift + child.getTopOverlap(); 
@@ -180,6 +194,9 @@ class VerticalNodeViewLayoutStrategy {
 								y += childShiftY;
 							this.yCoordinates[childViewIndex] = y;
 						}
+                        if(missingWidth > 0 && ! child.paintsChildrenOnTheLeft()) {
+                            y += missingWidth;
+                        }
 						y += extraVGap - upperGap;
 						final int summaryNodeIndex = viewLevels.findSummaryNodeIndex(childViewIndex);
 						if(summaryNodeIndex == SummaryLevels.NODE_NOT_FOUND || summaryNodeIndex - 1 == childViewIndex)
