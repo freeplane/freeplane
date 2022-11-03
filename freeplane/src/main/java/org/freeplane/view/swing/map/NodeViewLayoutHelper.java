@@ -82,7 +82,8 @@ class NodeViewLayoutHelper {
 	}
 
 	int getContentHeight() {
-		return getHeight(view.getContent());
+        Component component = view.getContent();
+        return usesHorizontallayout(view) ? component.getWidth() : component.getHeight();
 	}
 
 	void setContentBounds(int x, int y, int width, int height) {
@@ -215,8 +216,6 @@ class NodeViewLayoutHelper {
 	}
 
 	boolean usesHorizontallayout(Component component) {
-//	    return true;
-//	    return false;
 	    NodeView parent;
         if (component == view) {
             parent = view.isRoot() 
@@ -227,4 +226,9 @@ class NodeViewLayoutHelper {
         }
 	    return parent.usesHorizontalLayout();
 	}
+
+    @Override
+    public String toString() {
+        return "NodeViewLayoutHelper [view=" + view + "]";
+    }
 }
