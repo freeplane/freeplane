@@ -642,7 +642,7 @@ public class MainView extends ZoomableLabel {
 	                && p.x >= 0 && p.x < getWidth();
 	    }
 	    else {
-	        if(nodeView.isTopOrLeft())
+	        if(nodeView.paintsChildrenOnTheLeft())
 	            return p.x >= foldingRectangleBounds.x && p.x < 0 
 	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
 	        else 
