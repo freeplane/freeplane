@@ -1233,7 +1233,7 @@ public class NodeView extends JComponent implements INodeView {
 
 
 
-    private ChildrenSides updateChildrenSize() {
+    private ChildrenSides updateChildrenSide() {
         return childrenSides = LayoutController.getController(getModeController()).getChildrenSides(this.model);
     }
 
@@ -1667,7 +1667,7 @@ public class NodeView extends JComponent implements INodeView {
 	    if(childNodesAlignment == null) {
 	        updateChildNodesAlignment();
 	        updateUsesHorizontalLayout();
-	        updateChildrenSize();
+	        updateChildrenSide();
 	    }
     }
 	
