@@ -518,16 +518,9 @@ public interface NodeRO {
 
     /**@since 1.8.11 */
 	Quantity<LengthUnit> getHorizontalShiftAsLength();
-	
-    /** @since 1.11.1 */
-    ChildNodesAlignment getChildNodesAlignment();
 
     /** @since 1.11.1 */
     LayoutOrientation getLayoutOrientation();
-
-    /** @since 1.11.1 */
-    ChildrenSides getChildrenSides() ;
-
 	
     /**@since 1.8.11 */
     NodeGeometryRO getGeometry();

@@ -20,7 +20,7 @@
 package org.freeplane.features.layout.mindmapmode;
 
 import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.layout.LayoutController;
@@ -44,9 +44,7 @@ public class MLayoutController extends LayoutController {
 			LayoutModel source = from.getExtension(LayoutModel.class);
 			if(source != null){
 				LayoutModel layoutModel = LayoutModel.createLayoutModel(to);
-				layoutModel.setChildNodesAlignment(layoutModel.getChildNodesAlignment());
-				layoutModel.setLayoutOrientation(layoutModel.getLayoutOrientation());
-				layoutModel.setChildrenSides(layoutModel.getChildrenSides());
+				layoutModel.setChildNodesLayout(layoutModel.getChildNodesLayout());
 			}
 		}
 
@@ -57,9 +55,7 @@ public class MLayoutController extends LayoutController {
 			}
 			LayoutModel target = from.getExtension(LayoutModel.class);
 			if(target != null){
-                target.setChildNodesAlignment(LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT);
-                target.setLayoutOrientation(LayoutOrientation.NOT_SET);
-                target.setChildrenSides(ChildrenSides.NOT_SET);
+                target.setChildNodesLayout(ChildNodesLayout.NOT_SET);
 			}
 		}
 
@@ -74,14 +70,8 @@ public class MLayoutController extends LayoutController {
 			LayoutModel target = from.getExtension(LayoutModel.class);
             if(target == null)
                 return;
-            if(model.getChildNodesAlignment() != LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT ){
-                target.setChildNodesAlignment(LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT);
-            }
-            if(model.getLayoutOrientation() != LayoutOrientation.NOT_SET ){
-                target.setLayoutOrientation(LayoutOrientation.NOT_SET);
-            }
-            if(model.getChildrenSides() != ChildrenSides.NOT_SET ){
-                target.setChildrenSides(ChildrenSides.NOT_SET);
+            if(model.getChildNodesLayout() != ChildNodesLayout.NOT_SET ){
+                target.setChildNodesLayout(ChildNodesLayout.NOT_SET);
             }
 		}
 	}
@@ -92,23 +82,9 @@ public class MLayoutController extends LayoutController {
 		modeController.registerExtensionCopier(new StyleCopier());
 	}
 
-    public void setChildNodesAlignment(NodeModel node, ChildNodesAlignment alignment){
+    public void setChildNodesLayout(NodeModel node, ChildNodesLayout sides){
         if(node != null){
-            final IActor actor = new ChangeChildNodesAlignmentActor(node, alignment != null ? alignment : LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT);
-            Controller.getCurrentModeController().execute(actor, node.getMap());
-        }
-    }
-
-    public void setLayoutOrientation(NodeModel node, LayoutOrientation orientation){
-        if(node != null){
-            final IActor actor = new ChangeLayoutOrientationActor(node, orientation != null ? orientation : LayoutOrientation.NOT_SET);
-            Controller.getCurrentModeController().execute(actor, node.getMap());
-        }
-    }
-
-    public void setChildrenSides(NodeModel node, ChildrenSides sides){
-        if(node != null){
-            final IActor actor = new ChangeChildrenSidesActor(node, sides != null ? sides : ChildrenSides.NOT_SET);
+            final IActor actor = new ChangeChildNodesLayoutActor(node, sides != null ? sides : ChildNodesLayout.NOT_SET);
             Controller.getCurrentModeController().execute(actor, node.getMap());
         }
     }

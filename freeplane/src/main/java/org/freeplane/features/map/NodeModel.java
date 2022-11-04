@@ -31,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -404,7 +405,7 @@ public class NodeModel{
     public boolean wouldBeTopOrLeft(NodeModel root, NodeModel parent) {
         if (parent == null)
 			return false;
-        ChildrenSides childrenSides = LayoutController.getController().getChildrenSides(parent);
+        ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(parent).childrenSides();
         if(childrenSides == ChildrenSides.TOP_OR_LEFT)
             return true;
         if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)

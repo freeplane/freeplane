@@ -19,11 +19,8 @@
  */
 package org.freeplane.features.layout;
 
-import java.util.Objects;
-
 import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.ChildrenSides;
-import org.freeplane.api.LayoutOrientation;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
@@ -47,34 +44,14 @@ public class LayoutModel implements IExtension {
         return location != null ? location : LayoutModel.NOT_SET;
     }
 
-    private LayoutOrientation layoutOrientation = LayoutOrientation.NOT_SET;
-    private ChildrenSides childrenSides = ChildrenSides.NOT_SET;
-    private ChildNodesAlignment childNodesAlignment = DEFAULT_CHILD_NODES_ALIGNMENT;
+    private ChildNodesLayout childNodesLayout = ChildNodesLayout.NOT_SET;
 
-    public LayoutOrientation getLayoutOrientation() {
-        return layoutOrientation;
+    public ChildNodesLayout getChildNodesLayout() {
+        return childNodesLayout;
     }
     
-    public void setLayoutOrientation(LayoutOrientation layoutOrientation) {
-        this.layoutOrientation = layoutOrientation;
+    public void setChildNodesLayout(ChildNodesLayout childNodesLayout) {
+        this.childNodesLayout = childNodesLayout;
     }
-    
-    public ChildrenSides getChildrenSides() {
-        return childrenSides;
-    }
-    
-    public void setChildrenSides(ChildrenSides childrenSides) {
-        this.childrenSides = childrenSides;
-    }
-    
-
-    public ChildNodesAlignment getChildNodesAlignment() {
-        return childNodesAlignment;
-    }
-
-    public void setChildNodesAlignment(ChildNodesAlignment verticalAlignment) {
-        Objects.requireNonNull(verticalAlignment);
-        this.childNodesAlignment = verticalAlignment;
-    }
-    
+        
 }

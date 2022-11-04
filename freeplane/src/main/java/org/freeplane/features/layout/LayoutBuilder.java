@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.layout;
 
-import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.ChildrenSides;
-import org.freeplane.api.LayoutOrientation;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;
@@ -37,32 +35,15 @@ import org.freeplane.features.map.NodeModel;
  */
 class LayoutBuilder implements IExtensionAttributeWriter {
 	private void registerAttributeHandlers(final ReadManager reader) {
-		final IAttributeHandler layoutOrientationHandler = new IAttributeHandler() {
-			@Override
-            public void setAttribute(final Object userObject, final String value) {
-				final NodeModel node = (NodeModel) userObject;
-				LayoutModel.createLayoutModel(node).setLayoutOrientation(LayoutOrientation.valueOf(value));
-			}
-		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "LAYOUT_ORIENTATION", layoutOrientationHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "LAYOUT_ORIENTATION", layoutOrientationHandler);
-		final IAttributeHandler childrenSidesHandler = new IAttributeHandler() {
+		final IAttributeHandler childNodesLayoutHandler = new IAttributeHandler() {
             @Override
             public void setAttribute(final Object userObject, final String value) {
                 final NodeModel node = (NodeModel) userObject;
-                LayoutModel.createLayoutModel(node).setChildrenSides(ChildrenSides.valueOf(value));
+                LayoutModel.createLayoutModel(node).setChildNodesLayout(ChildNodesLayout.valueOf(value));
             }
         };
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "CHILDREN_SIDES", childrenSidesHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILDREN_SIDES", childrenSidesHandler);
-        final IAttributeHandler verticalAlignmentHandler = new IAttributeHandler() {
-            public void setAttribute(final Object userObject, final String value) {
-                final NodeModel node = (NodeModel) userObject;
-                LayoutModel.createLayoutModel(node).setChildNodesAlignment(ChildNodesAlignment.valueOf(value));
-            }
-        };
-        reader.addAttributeHandler(NodeBuilder.XML_NODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
-        reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "CHILD_NODES_LAYOUT", childNodesLayoutHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILD_NODES_LAYOUT", childNodesLayoutHandler);
 	}
 
 	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
@@ -73,18 +54,9 @@ class LayoutBuilder implements IExtensionAttributeWriter {
 	@Override
     public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final LayoutModel layoutModel = (LayoutModel) extension;
-		LayoutOrientation layoutOrientation = layoutModel.getLayoutOrientation();
-		if (layoutOrientation != LayoutOrientation.NOT_SET) {
-			writer.addAttribute("LAYOUT_ORIENTATION", layoutOrientation.name());
-		}
-		ChildrenSides childrenSides = layoutModel.getChildrenSides();
-        if (childrenSides != ChildrenSides.NOT_SET) {
-            writer.addAttribute("CHILDREN_SIDES", childrenSides.name());
+		ChildNodesLayout childrenNodesLayout = layoutModel.getChildNodesLayout();
+        if (childrenNodesLayout != ChildNodesLayout.NOT_SET) {
+            writer.addAttribute("CHILD_NODES_LAYOUT", childrenNodesLayout.name());
         }
-        final ChildNodesAlignment alignment = layoutModel.getChildNodesAlignment();
-        if (alignment != LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT) {
-            writer.addAttribute("CHILD_NODES_ALIGNMENT", alignment.name());
-        }
-
-	}
+ 	}
 }

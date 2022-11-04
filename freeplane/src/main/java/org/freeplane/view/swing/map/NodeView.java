@@ -46,6 +46,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
@@ -141,7 +142,7 @@ public class NodeView extends JComponent implements INodeView {
 	private final NodeViewLayoutHelper layoutHelper;
     private boolean usesHorizontalLayout;
     private ChildNodesAlignment childNodesAlignment;
-    private ChildrenSides childrenSides;
+    private ChildNodesLayout childrenSides;
 
 	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -922,7 +923,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
         if(property == ChildNodesAlignment.class
                 || property == LayoutOrientation.class
-                || property == ChildrenSides.class) {
+                || property == ChildNodesLayout.class) {
             resetLayoutPropertiesRecursively();
             revalidate();
             repaint();
@@ -1171,7 +1172,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     private void paintEdges(final Graphics2D g, NodeView source) {
-        ChildrenSides childrenSides = getChildrenSides();
+        ChildrenSides childrenSides = getChildNodesLayout().childrenSides();
     	boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
 		boolean paintsOnTheLeftSide = paintsChildrenOnBothSides ? true 
 		        : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
@@ -1226,15 +1227,15 @@ public class NodeView extends JComponent implements INodeView {
         }
     }
 
-    ChildrenSides getChildrenSides() {
+    ChildNodesLayout getChildNodesLayout() {
         updateLayoutProperties();
         return childrenSides;
     }
 
 
 
-    private ChildrenSides updateChildrenSide() {
-        return childrenSides = LayoutController.getController(getModeController()).getChildrenSides(this.model);
+    private ChildNodesLayout updateChildrenSide() {
+        return childrenSides = LayoutController.getController(getModeController()).getChildNodesLayout(this.model);
     }
 
 
@@ -1865,7 +1866,7 @@ public class NodeView extends JComponent implements INodeView {
         if(usesHorizontalLayout())
             return false;
         else {
-            ChildrenSides childrenSides = getChildrenSides();
+            ChildrenSides childrenSides = getChildNodesLayout().childrenSides();
             boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
             return paintsChildrenOnBothSides ? false 
                     : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false

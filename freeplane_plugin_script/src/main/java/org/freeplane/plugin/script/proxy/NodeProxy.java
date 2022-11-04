@@ -17,6 +17,8 @@ import java.util.stream.Stream;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.freeplane.api.Attributes;
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.Cloud;
 import org.freeplane.api.Connector;
 import org.freeplane.api.DependencyLookup;
@@ -31,8 +33,6 @@ import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
 import org.freeplane.api.Side;
-import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -1083,33 +1083,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
     @Override
-    public void setLayoutOrientation(final LayoutOrientation orientation){
-        ((MLayoutController) LayoutController.getController()).setLayoutOrientation(getDelegate(), orientation);
-    }
-
-    @Override
-    public void setChildNodesAlignment(final ChildNodesAlignment alignment){
-        ((MLayoutController) LayoutController.getController()).setChildNodesAlignment(getDelegate(), alignment);
-    }
-
-    @Override
-    public void setChildrenSides(final ChildrenSides sides){
-        ((MLayoutController) LayoutController.getController()).setChildrenSides(getDelegate(), sides);
+    public void setChildNodesLayout(final ChildNodesLayout sides){
+        ((MLayoutController) LayoutController.getController()).setChildNodesLayout(getDelegate(), sides);
     }
 
     @Override
     public LayoutOrientation getLayoutOrientation() {
         return LayoutController.getController().getLayoutOrientation(getDelegate());
-    }
-
-    @Override
-    public ChildNodesAlignment getChildNodesAlignment() {
-        return LayoutController.getController().getChildNodesAlignment(getDelegate());
-    }
-
-    @Override
-    public ChildrenSides getChildrenSides() {
-        return LayoutController.getController().getChildrenSides(getDelegate());
     }
 
 	@Override

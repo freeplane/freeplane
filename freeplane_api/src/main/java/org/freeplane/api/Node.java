@@ -364,13 +364,7 @@ public interface Node extends NodeRO {
     void setHorizontalShift(Quantity<LengthUnit> verticalShift);
     
     /** @since 1.11.1 */
-    void setChildNodesAlignment(final ChildNodesAlignment alignment);
-    
-    /** @since 1.11.1 */
-    void setLayoutOrientation(final LayoutOrientation orientation);
-    
-    /** @since 1.11.1 */
-    void setChildrenSides(final ChildrenSides sides);
+    void setChildNodesLayout(final ChildNodesLayout sides);
 
 
 	/**

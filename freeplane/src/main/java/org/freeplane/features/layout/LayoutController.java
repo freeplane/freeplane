@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.function.Function;
 
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.IExtension;
@@ -47,9 +48,7 @@ import org.freeplane.features.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class LayoutController implements IExtension {
-    final private ExclusivePropertyChain<ChildNodesAlignment, NodeModel> childNodesAlignmentHandlers;
-    final private ExclusivePropertyChain<LayoutOrientation, NodeModel> layoutOrientationHandlers;
-    final private ExclusivePropertyChain<ChildrenSides, NodeModel> childrenSidesHandlers;
+    final private ExclusivePropertyChain<ChildNodesLayout, NodeModel> childrenLayoutHandlers;
 	
     private final ModeController modeController;
 	
@@ -77,53 +76,20 @@ public class LayoutController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final LayoutBuilder layoutBuilder = new LayoutBuilder();
 		layoutBuilder.registerBy(readManager, writeManager);
-		
-		childNodesAlignmentHandlers = new ExclusivePropertyChain<ChildNodesAlignment, NodeModel>();
-		childNodesAlignmentHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<ChildNodesAlignment, NodeModel>() {
-        	@Override
-            public ChildNodesAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesAlignment currentValue) {
-        		final ChildNodesAlignment returnedAlignment = getLayoutProperty(node, LayoutModel::getChildNodesAlignment, LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT);
-        		return returnedAlignment;
-        	}
-        });
-		
-		childNodesAlignmentHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ChildNodesAlignment, NodeModel>() {
-        	@Override
-            public ChildNodesAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesAlignment currentValue) {
-        		return LayoutModel.DEFAULT_CHILD_NODES_ALIGNMENT;
-        	}
-        });
-
         
-        layoutOrientationHandlers = new ExclusivePropertyChain<LayoutOrientation, NodeModel>();
-        layoutOrientationHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<LayoutOrientation, NodeModel>() {
+        childrenLayoutHandlers = new ExclusivePropertyChain<ChildNodesLayout, NodeModel>();
+        childrenLayoutHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<ChildNodesLayout, NodeModel>() {
             @Override
-            public LayoutOrientation getProperty(final NodeModel node, LogicalStyleController.StyleOption option, LayoutOrientation currentValue) {
-                final LayoutOrientation returnedAlignment = getLayoutProperty(node, LayoutModel::getLayoutOrientation, LayoutOrientation.NOT_SET);
+            public ChildNodesLayout getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesLayout currentValue) {
+                final ChildNodesLayout returnedAlignment = getLayoutProperty(node, LayoutModel::getChildNodesLayout, ChildNodesLayout.NOT_SET);
                 return returnedAlignment;
             }
         });
         
-        layoutOrientationHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<LayoutOrientation, NodeModel>() {
+        childrenLayoutHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ChildNodesLayout, NodeModel>() {
             @Override
-            public LayoutOrientation getProperty(final NodeModel node, LogicalStyleController.StyleOption option, LayoutOrientation currentValue) {
-                return LayoutOrientation.AS_PARENT;
-            }
-        });
-        
-        childrenSidesHandlers = new ExclusivePropertyChain<ChildrenSides, NodeModel>();
-        childrenSidesHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<ChildrenSides, NodeModel>() {
-            @Override
-            public ChildrenSides getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildrenSides currentValue) {
-                final ChildrenSides returnedAlignment = getLayoutProperty(node, LayoutModel::getChildrenSides, ChildrenSides.NOT_SET);
-                return returnedAlignment;
-            }
-        });
-        
-        childrenSidesHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ChildrenSides, NodeModel>() {
-            @Override
-            public ChildrenSides getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildrenSides currentValue) {
-                return ChildrenSides.AUTO;
+            public ChildNodesLayout getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesLayout currentValue) {
+                return ChildNodesLayout.AUTO;
             }
         });
 	}
@@ -151,15 +117,15 @@ public class LayoutController implements IExtension {
     }
 
 	public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
-	    return childNodesAlignmentHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	    return getChildNodesLayout(node).childNodesAlignment();
 	}
 
 	public LayoutOrientation getLayoutOrientation(NodeModel node) {
-	    return layoutOrientationHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	    return getChildNodesLayout(node).layoutOrientation();
 	}
 
-	public ChildrenSides getChildrenSides(NodeModel node) {
-	    return childrenSidesHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	public ChildNodesLayout getChildNodesLayout(NodeModel node) {
+	    return childrenLayoutHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	public LayoutOrientation getEffectiveLayoutOrientation(NodeModel node, Filter filter) {
@@ -183,7 +149,7 @@ public class LayoutController implements IExtension {
 	        NodeModel parentNode = node.getParentNode();
 	        if (parentNode == null)
 	            return false;
-	        ChildrenSides childrenSides = getChildrenSides(parentNode);
+	        ChildrenSides childrenSides = getChildNodesLayout(parentNode).childrenSides();
 	        switch(childrenSides) {
 	        case NOT_SET:
                 break;
@@ -238,7 +204,7 @@ public class LayoutController implements IExtension {
 	    public boolean[] sidesOf(NodeModel parentNode, NodeModel root) {
 	        if (parentNode == root)
                 return BOTH_SIDES;
-	        ChildrenSides childrenSides = getChildrenSides(parentNode);
+	        ChildrenSides childrenSides = getChildNodesLayout(parentNode).childrenSides();
 	        switch(childrenSides) {
             case BOTTOM_OR_RIGHT:
                 return RIGHT_SIDE;

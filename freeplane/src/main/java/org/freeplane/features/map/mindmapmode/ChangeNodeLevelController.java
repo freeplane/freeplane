@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.IExtension;
@@ -185,7 +186,7 @@ public class ChangeNodeLevelController implements IExtension {
 		NodeModel selectedParent = selectedNode.getParentNode();
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
 		if (selectedParent == selectionRoot || 
-		        LayoutController.getController().getChildrenSides(selectedParent) == ChildrenSides.BOTH_SIDES) {
+		        LayoutController.getController().getChildNodesLayout(selectedParent).childrenSides() == ChildrenSides.BOTH_SIDES) {
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {

@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.layout.mindmapmode;
 
-import org.freeplane.api.LayoutOrientation;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.layout.LayoutModel;
 import org.freeplane.features.map.NodeModel;
@@ -28,38 +28,38 @@ import org.freeplane.features.mode.Controller;
 /**
  * @author Dimitry Polivaev
  */
-class ChangeLayoutOrientationActor implements IActor {
+class ChangeChildNodesLayoutActor implements IActor {
 	private final NodeModel node;
-	private final LayoutOrientation oldOrientation;
-	private final LayoutOrientation newOrientation;
+	private final ChildNodesLayout oldSides;
+	private final ChildNodesLayout newSides;
 
-	ChangeLayoutOrientationActor(final NodeModel node, LayoutOrientation newOrientation){
+	ChangeChildNodesLayoutActor(final NodeModel node, ChildNodesLayout newSides){
 		final LayoutModel layoutModel = LayoutModel.getModel(node);
-		oldOrientation = layoutModel.getLayoutOrientation();
+		oldSides = layoutModel.getChildNodesLayout();
 		this.node = node;
-		this.newOrientation = newOrientation;
+		this.newSides = newSides;
 	}
 
 	@Override
     public void act() {
-		setOrientation(node, oldOrientation, newOrientation);
+		setSides(node, oldSides, newSides);
 	}
 
 	@Override
     public String getDescription() {
-		return "changeLayoutOrientation";
+		return "changeChildNodesLayout";
 	}
 
-	private void setOrientation(final NodeModel node, LayoutOrientation oldOrientation, LayoutOrientation newOrientation) {
-		if(oldOrientation != newOrientation) {
-			LayoutModel.createLayoutModel(node).setLayoutOrientation(newOrientation);
+	private void setSides(final NodeModel node, ChildNodesLayout oldSides, ChildNodesLayout newSides) {
+		if(oldSides != newSides) {
+			LayoutModel.createLayoutModel(node).setChildNodesLayout(newSides);
 			Controller.getCurrentModeController().getMapController()
-			.nodeChanged(node, LayoutOrientation.class, oldOrientation, newOrientation);
+			.nodeChanged(node, ChildNodesLayout.class, oldSides, newSides);
 		}
 	}
 
 	@Override
     public void undo() {
-		setOrientation(node, newOrientation, oldOrientation);
+		setSides(node, newSides, oldSides);
 	}
 }

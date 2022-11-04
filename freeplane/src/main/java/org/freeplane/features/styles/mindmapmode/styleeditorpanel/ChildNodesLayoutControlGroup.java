@@ -20,12 +20,13 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
@@ -41,22 +42,18 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * @author Joe Berry
  * Nov 27, 2016
  */
-class ChildrenSidesControlGroup implements ControlGroup {
+class ChildNodesLayoutControlGroup implements ControlGroup {
 	static final String CHILDREN_SIDES = "children_sides";
 	
-	private static final ChildrenSides[] SIDES = {
-	        ChildrenSides.AUTO, 
-			ChildrenSides.BOTH_SIDES, 
-			ChildrenSides.BOTTOM_OR_RIGHT, 
-			ChildrenSides.TOP_OR_LEFT
-	};
-	private RevertingProperty mSetChildrenSides;
-	private ComboProperty mChildrenSides;
+	private static final ChildNodesLayout[] SIDES = 
+	        Arrays.asList(ChildNodesLayout.values()).stream().skip(1).toArray(ChildNodesLayout[]::new);
+	private RevertingProperty mSetChildNodesLayout;
+	private ComboProperty mChildNodesLayout;
 
-	private ChildrenSidesChangeListener propertyChangeListener;
+	private ChildNodesLayoutChangeListener propertyChangeListener;
 
-	private class ChildrenSidesChangeListener extends ControlGroupChangeListener {
-		public ChildrenSidesChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
+	private class ChildNodesLayoutChangeListener extends ControlGroupChangeListener {
+		public ChildNodesLayoutChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
 
@@ -64,44 +61,44 @@ class ChildrenSidesControlGroup implements ControlGroup {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLayoutController styleController = (MLayoutController) Controller
 					.getCurrentModeController().getExtension(LayoutController.class);
-			styleController.setChildrenSides(node, enabled ? ChildrenSides.valueOf(mChildrenSides.getValue()) : null);
+			styleController.setChildNodesLayout(node, enabled ? ChildNodesLayout.valueOf(mChildNodesLayout.getValue()) : null);
 }
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			LayoutModel model = LayoutModel.getModel(node);
-			final ChildrenSides alignment = model != null ? model.getChildrenSides() : ChildrenSides.NOT_SET;
-			ChildrenSides displayedValue = displayedValue(node, alignment);
-			mChildrenSides.setValue(displayedValue.name());
+			final ChildNodesLayout alignment = model != null ? model.getChildNodesLayout() : ChildNodesLayout.NOT_SET;
+			ChildNodesLayout displayedValue = displayedValue(node, alignment);
+			mChildNodesLayout.setValue(displayedValue.name());
 		}
 
-		private ChildrenSides displayedValue(NodeModel node, final ChildrenSides alignment) {
+		private ChildNodesLayout displayedValue(NodeModel node, final ChildNodesLayout alignment) {
 			final LayoutController styleController = LayoutController.getController();
-			final ChildrenSides displayedValue = styleController.getChildrenSides(node);
-			mSetChildrenSides.setValue(alignment != ChildrenSides.NOT_SET);
+			final ChildNodesLayout displayedValue = styleController.getChildNodesLayout(node);
+			mSetChildNodesLayout.setValue(alignment != ChildNodesLayout.NOT_SET);
 			return displayedValue;
 		}
 
         @Override
         void adjustForStyle(NodeModel node) {
-            StylePropertyAdjuster.adjustPropertyControl(node, mSetChildrenSides);
-            StylePropertyAdjuster.adjustPropertyControl(node, mChildrenSides);
+            StylePropertyAdjuster.adjustPropertyControl(node, mSetChildNodesLayout);
+            StylePropertyAdjuster.adjustPropertyControl(node, mChildNodesLayout);
         }
 	}
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetChildrenSides = new RevertingProperty();
+		mSetChildNodesLayout = new RevertingProperty();
 		final Vector<String> translations = new Vector<String>(SIDES.length);
 		for (int i = 0; i < SIDES.length; i++) {
 			translations.add(TextUtils.getText(SIDES[i].name()));
 		}
 		Collection<String> alignmentNames = Stream.of(SIDES).map(Enum::name).collect(Collectors.toList());
-		mChildrenSides = new ComboProperty(CHILDREN_SIDES, alignmentNames, translations);
-		propertyChangeListener = new ChildrenSidesChangeListener(mSetChildrenSides, mChildrenSides);
-		mSetChildrenSides.addPropertyChangeListener(propertyChangeListener);
-		mChildrenSides.addPropertyChangeListener(propertyChangeListener);
-		mChildrenSides.appendToForm(formBuilder);
-		mSetChildrenSides.appendToForm(formBuilder);
+		mChildNodesLayout = new ComboProperty(CHILDREN_SIDES, alignmentNames, translations);
+		propertyChangeListener = new ChildNodesLayoutChangeListener(mSetChildNodesLayout, mChildNodesLayout);
+		mSetChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
+		mChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
+		mChildNodesLayout.appendToForm(formBuilder);
+		mSetChildNodesLayout.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {
