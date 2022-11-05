@@ -22,11 +22,16 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.swing.Icon;
+
 import org.freeplane.api.ChildNodesLayout;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.ButtonPanelProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
@@ -43,12 +48,12 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Nov 27, 2016
  */
 class ChildNodesLayoutControlGroup implements ControlGroup {
-	static final String CHILDREN_SIDES = "children_sides";
+	static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
 	
-	private static final ChildNodesLayout[] SIDES = 
+	private static final ChildNodesLayout[] LAYOUTS = 
 	        Arrays.asList(ChildNodesLayout.values()).stream().skip(1).toArray(ChildNodesLayout[]::new);
 	private RevertingProperty mSetChildNodesLayout;
-	private ComboProperty mChildNodesLayout;
+	private ButtonPanelProperty mChildNodesLayout;
 
 	private ChildNodesLayoutChangeListener propertyChangeListener;
 
@@ -88,12 +93,13 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
-		final Vector<String> translations = new Vector<String>(SIDES.length);
-		for (int i = 0; i < SIDES.length; i++) {
-			translations.add(TextUtils.getText(SIDES[i].name()));
+		final Vector<Icon> translations = new Vector<>(LAYOUTS.length);
+		ResourceController resourceController = ResourceController.getResourceController();
+		for (int i = 0; i < LAYOUTS.length; i++) {
+            translations.add(resourceController.getIcon("/images/layouts/" + LAYOUTS[i].name().toLowerCase(Locale.ENGLISH) + ".svg?useAccentColor=true"));
 		}
-		Collection<String> alignmentNames = Stream.of(SIDES).map(Enum::name).collect(Collectors.toList());
-		mChildNodesLayout = new ComboProperty(CHILDREN_SIDES, alignmentNames, translations);
+		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
+		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, translations);
 		propertyChangeListener = new ChildNodesLayoutChangeListener(mSetChildNodesLayout, mChildNodesLayout);
 		mSetChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
 		mChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
