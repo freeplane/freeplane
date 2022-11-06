@@ -290,7 +290,7 @@ class VerticalNodeViewLayoutStrategy {
 		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		int deltaTop;
 		if (view.isSummary() 
-				|| childNodesAlignment == ChildNodesAlignment.UNDEFINED
+				|| childNodesAlignment == ChildNodesAlignment.NOT_SET
 				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
 			deltaTop = height/2;
 		} else if (childNodesAlignment == ChildNodesAlignment.BY_LAST_NODE) {

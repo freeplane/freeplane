@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.layout;
 
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -44,9 +45,39 @@ class LayoutBuilder implements IExtensionAttributeWriter {
         };
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "CHILD_NODES_LAYOUT", childNodesLayoutHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILD_NODES_LAYOUT", childNodesLayoutHandler);
+        final IAttributeHandler verticalAlignmentHandler = new IAttributeHandler() {
+            public void setAttribute(final Object userObject, final String value) {
+                final NodeModel node = (NodeModel) userObject;
+                LayoutModel.createLayoutModel(node).setChildNodesLayout(layoutForAlignment(value));
+            }
+        };
+        reader.addAttributeHandler(NodeBuilder.XML_NODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
+        reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
 	}
 
-	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
+	protected ChildNodesLayout layoutForAlignment(String value) {
+	    if("AS_PARENT".equals(value))
+	        return layoutForAlignment(ChildNodesAlignment.AUTO);
+	    else
+	        return layoutForAlignment(ChildNodesAlignment.valueOf(value));
+    }
+
+    private ChildNodesLayout layoutForAlignment(ChildNodesAlignment alignment) {
+        switch (alignment) {
+        case AUTO:
+            return ChildNodesLayout.AUTO;
+        case BY_FIRST_NODE:
+        case BY_CENTER:
+        case BY_LAST_NODE:
+        case NOT_SET:
+            
+        default:
+            return ChildNodesLayout.NOT_SET;
+        }
+        
+    }
+
+    void registerBy(final ReadManager readManager, final WriteManager writeManager) {
 		registerAttributeHandlers(readManager);
 		writeManager.addExtensionAttributeWriter(LayoutModel.class, this);
 	}

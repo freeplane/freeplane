@@ -19,8 +19,12 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Vector;
@@ -48,6 +52,20 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		}
 		return displayedItems;
 	}
+	private static class SizeChanger extends ComponentAdapter {
+	    static final SizeChanger INSTANCE = new SizeChanger();
+	    @Override
+	    public void componentResized(ComponentEvent e) {
+	        Component component = e.getComponent();
+	        Dimension preferredSize = component.getPreferredSize();
+	        int width = component.getWidth();
+	        int height = component.getHeight();
+	        if(width != preferredSize.width || height != preferredSize.height) {
+	            component.setMaximumSize(new Dimension(width, Integer.MAX_VALUE));
+	            component.revalidate();
+	        }
+	    }
+	}
 
 	private final JPanel buttonPanel;
 	private final Vector<String> possibleValues;
@@ -60,6 +78,7 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		possibleValues = new Vector<String>();
         possibleValues.addAll(possibles);
 		buttonPanel = new JPanel(ToolbarLayout.vertical());
+		buttonPanel.addComponentListener(SizeChanger.INSTANCE);
 		buttons = new Vector<JToggleButton>(displayedItems.size());
 		int i = 0;
 		for(Object item : displayedItems) {

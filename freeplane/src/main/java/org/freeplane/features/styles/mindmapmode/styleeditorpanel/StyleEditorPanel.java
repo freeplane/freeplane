@@ -173,8 +173,8 @@ public class StyleEditorPanel extends JPanel {
 				new MaxNodeWidthControlGroup(),
 				
 				new GroupSeparator("OptionPanel.separator.NodeLayout"),
+				new ChildNodesLayoutControlGroup(),
 				new ChildDistanceControlGroup(),
-                new ChildNodesLayoutControlGroup(),
 				
 				new GroupSeparator("OptionPanel.separator.NodeBorder"),
 				new BorderWidthAndBorderWidthMatchesEdgeControlGroup(),
@@ -197,8 +197,8 @@ public class StyleEditorPanel extends JPanel {
 	 * @param modeController
 	 */
 	private void init() {
-        final String form = "right:max(20dlu;p), 4dlu, 40dlu:grow, 4dlu, max(10dlu;p)";
-		final FormLayout rightLayout = new FormLayout(form, "");
+        final String colSpec = "right:max(20dlu;p), 4dlu, 40dlu:grow, 4dlu, max(10dlu;p)";
+        final FormLayout rightLayout = new FormLayout(colSpec, "");
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
 		formBuilder.lineGapSize(LayoutStyle.getCurrent().getNarrowLinePad());

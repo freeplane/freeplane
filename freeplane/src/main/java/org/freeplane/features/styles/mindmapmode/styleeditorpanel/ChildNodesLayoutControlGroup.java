@@ -20,6 +20,7 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
@@ -35,6 +36,7 @@ import org.freeplane.core.resources.components.ButtonPanelProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.layout.LayoutModel;
 import org.freeplane.features.layout.mindmapmode.MLayoutController;
@@ -93,13 +95,14 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
-		final Vector<Icon> translations = new Vector<>(LAYOUTS.length);
+		final Vector<Icon> icons = new Vector<>(LAYOUTS.length);
 		ResourceController resourceController = ResourceController.getResourceController();
 		for (int i = 0; i < LAYOUTS.length; i++) {
-            translations.add(resourceController.getIcon("/images/layouts/" + LAYOUTS[i].name().toLowerCase(Locale.ENGLISH) + ".svg?useAccentColor=true"));
+		    URL url = resourceController.getIconResource("/images/layouts/" + LAYOUTS[i].name().toLowerCase(Locale.ENGLISH) + ".svg?useAccentColor=true");
+            icons.add(IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(1.5)));
 		}
 		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
-		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, translations);
+		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, icons);
 		propertyChangeListener = new ChildNodesLayoutChangeListener(mSetChildNodesLayout, mChildNodesLayout);
 		mSetChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
 		mChildNodesLayout.addPropertyChangeListener(propertyChangeListener);

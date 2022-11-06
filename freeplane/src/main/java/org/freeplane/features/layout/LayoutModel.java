@@ -29,7 +29,7 @@ import org.freeplane.features.map.NodeModel;
  */
 public class LayoutModel implements IExtension {
     private static final LayoutModel NOT_SET = new LayoutModel();
-    public static final ChildNodesAlignment DEFAULT_CHILD_NODES_ALIGNMENT = ChildNodesAlignment.UNDEFINED;
+    public static final ChildNodesAlignment DEFAULT_CHILD_NODES_ALIGNMENT = ChildNodesAlignment.NOT_SET;
 
     public static LayoutModel createLayoutModel(final NodeModel node) {
         LayoutModel layoutModel = node.getExtension(LayoutModel.class);

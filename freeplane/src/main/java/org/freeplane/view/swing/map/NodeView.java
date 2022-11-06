@@ -759,8 +759,8 @@ public class NodeView extends JComponent implements INodeView {
     private void updateChildNodesAlignment() {
         ChildNodesAlignment childNodesAlignment = getModeController().getExtension(LayoutController.class).getChildNodesAlignment(model);
 		switch (childNodesAlignment) {
-		case UNDEFINED:
-		case AS_PARENT:
+		case NOT_SET:
+		case AUTO:
 			this.childNodesAlignment = getParentViewChildNodesAlignment();
 			break;
 		default:
