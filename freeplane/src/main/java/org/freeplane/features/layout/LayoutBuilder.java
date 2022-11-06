@@ -63,6 +63,7 @@ class LayoutBuilder implements IExtensionAttributeWriter {
     }
 
     private ChildNodesLayout layoutForAlignment(ChildNodesAlignment alignment) {
+        // TODO
         switch (alignment) {
         case AUTO:
             return ChildNodesLayout.AUTO;
