@@ -9,9 +9,9 @@ package org.freeplane.api;
 public enum ChildNodesLayout {
     NOT_SET(LayoutOrientation.NOT_SET, ChildrenSides.NOT_SET, ChildNodesAlignment.NOT_SET),
     AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),
-    AUTO_BYFIRST(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_FIRST_NODE),
+    AUTO_BYFIRSTCHILD(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_FIRST_NODE),
     AUTO_CENTERED(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_CENTER),
-    AUTO_BYLAST(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_LAST_NODE),
+    AUTO_BYLASTCHILD(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_LAST_NODE),
     TOPTOBOTTOM_BOTHSIDES_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AUTO),
     TOPTOBOTTOM_LEFT_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AUTO),
     TOPTOBOTTOM_RIGHT_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AUTO),
