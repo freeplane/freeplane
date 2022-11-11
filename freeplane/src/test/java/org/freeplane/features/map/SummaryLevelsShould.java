@@ -2,16 +2,43 @@ package org.freeplane.features.map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.freeplane.api.ChildNodesLayout;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.NodeModel.Side;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SummaryLevelsShould {
 	protected MapFake mapFake;
+	Controller backupController;
 	@Before
 	public void setup(){
 		mapFake = new MapFake();
+		Controller controllerMock = mock(Controller.class);
+		ModeController modeControllerMock = mock(ModeController.class);
+		LayoutController layoutControllerMock = mock(LayoutController.class);
+		backupController = Controller.getCurrentController();
+		Controller.setCurrentController(controllerMock);
+		when(controllerMock.getModeController()).thenReturn(modeControllerMock);
+		when(modeControllerMock.getExtension(LayoutController.class)).thenReturn(layoutControllerMock);
+		when(layoutControllerMock.getChildNodesLayout(any())).thenReturn(ChildNodesLayout.AUTO);
+		when(layoutControllerMock.sidesOf(any(), any())).thenAnswer(invocation -> {
+		    NodeModel parentNode = invocation.getArgument(0); 
+		    NodeModel root = invocation.getArgument(1);
+		    return parentNode == root ? LayoutController.BOTH_SIDES : parentNode.isTopOrLeft(root) ? LayoutController.LEFT_SIDE : LayoutController.RIGHT_SIDE;
+		});
+	}
+	
+	@After
+	public void tearDown() {
+	    Controller.setCurrentController(backupController);
 	}
 	
 	public static class FindSummaryNodeIndex extends SummaryLevelsShould{

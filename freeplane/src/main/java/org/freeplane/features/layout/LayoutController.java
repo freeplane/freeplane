@@ -197,9 +197,9 @@ public class LayoutController implements IExtension {
 	        }
 	        return Side.BOTTOM_OR_RIGHT;
 	    }
-	    private static final boolean[] BOTH_SIDES = {true, false};
-	    private static final boolean[] LEFT_SIDE = {true};
-	    private static final boolean[] RIGHT_SIDE = {false};
+	    public static final boolean[] BOTH_SIDES = {true, false};
+	    public static final boolean[] LEFT_SIDE = {true};
+	    public static final boolean[] RIGHT_SIDE = {false};
 
 	    public boolean[] sidesOf(NodeModel parentNode, NodeModel root) {
 	        if (parentNode == root)
