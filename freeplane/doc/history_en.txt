@@ -1,8 +1,7 @@
 ==============================
 1.11.1
 ===============================
-Left-to-right layouts
-Mixed layouts
+Top-to-bottom, left-to-right and combined layouts
 
 ==============================
 1.10.5
