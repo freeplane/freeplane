@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -35,12 +34,25 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import org.freeplane.core.ui.components.ToolbarLayout;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl, ActionListener {
+    
+    static public class ButtonIcon{
+        public final Icon icon;
+        public final String tooltip;
+        public ButtonIcon(Icon icon, String tooltipLabel) {
+            super();
+            this.icon = icon;
+            this.tooltip = tooltipLabel;
+        }
+        
+    }
+    
 	static public Vector<Object> translate(final String[] possibles) {
 		final Vector<Object> displayedItems = new Vector<Object>(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
@@ -73,7 +85,7 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
     private int selectedIndex = 0;
 
 	public ButtonPanelProperty(final String name, final Collection<String> possibles,
-	                     final Collection<?> displayedItems) {
+	                     final Collection<ButtonIcon> displayedItems) {
 		super(name);
 		possibleValues = new Vector<String>();
         possibleValues.addAll(possibles);
@@ -81,13 +93,10 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		buttonPanel.addComponentListener(SizeChanger.INSTANCE);
 		buttons = new Vector<JToggleButton>(displayedItems.size());
 		int i = 0;
-		for(Object item : displayedItems) {
-		    JToggleButton button = new JToggleButton();
+		for(ButtonIcon item : displayedItems) {
+		    JToggleButton button = new JToggleButton(item.icon);
+		    button.setToolTipText(item.tooltip);
 		    buttons.add(button);
-		    if(item instanceof Icon)
-                button.setIcon((Icon)item);
-            else
-		        button.setText(item.toString());
 		    int buttonIndex = i++;
 		    button.addActionListener(event -> {
 		        setSelected(button);
@@ -102,10 +111,6 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
     private void setSelected(JToggleButton button) {
         buttons.forEach(b -> b.setSelected(b == button));
     }
-
-	public ButtonPanelProperty(final String name, final String[] strings) {
-		this(name, Arrays.asList(strings), ButtonPanelProperty.translate(strings));
-	}
 
 	@Override
 	public String getValue() {

@@ -5,6 +5,7 @@
  */
 package org.freeplane.api;
 
+
 public enum ChildNodesLayout {
     NOT_SET(LayoutOrientation.NOT_SET, ChildrenSides.NOT_SET, ChildNodesAlignment.NOT_SET),
     AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),

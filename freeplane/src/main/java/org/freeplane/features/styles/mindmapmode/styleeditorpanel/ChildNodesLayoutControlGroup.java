@@ -30,9 +30,13 @@ import java.util.stream.Stream;
 
 import javax.swing.Icon;
 
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
+import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ButtonPanelProperty;
+import org.freeplane.core.resources.components.ButtonPanelProperty.ButtonIcon;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
@@ -93,13 +97,18 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
         }
 	}
 	
-	public void addControlGroup(DefaultFormBuilder formBuilder) {
+	@Override
+    public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
-		final Vector<Icon> icons = new Vector<>(LAYOUTS.length);
+		final Vector<ButtonIcon> icons = new Vector<>(LAYOUTS.length);
 		ResourceController resourceController = ResourceController.getResourceController();
 		for (int i = 0; i < LAYOUTS.length; i++) {
-		    URL url = resourceController.getIconResource("/images/layouts/" + LAYOUTS[i].name().toLowerCase(Locale.ENGLISH) + ".svg?useAccentColor=true");
-            icons.add(IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(1.5)));
+		    ChildNodesLayout layout = LAYOUTS[i];
+            String name = layout.name().toLowerCase(Locale.ENGLISH);
+            URL url = resourceController.getIconResource("/images/layouts/" + name + ".svg?useAccentColor=true");
+            icons.add(new ButtonIcon(
+                    IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(1.5)),
+                    description(layout)));
 		}
 		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
 		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, icons);
@@ -110,7 +119,22 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		mSetChildNodesLayout.appendToForm(formBuilder);
 	}
 	
-	public void setStyle(NodeModel node, boolean canEdit) {
+	private String description(ChildNodesLayout layout) {
+	    if(layout == ChildNodesLayout.AUTO)
+	        return TextUtils.getRawText(layout.name());
+	    if(layout.layoutOrientation() == LayoutOrientation.AUTO
+	            && layout.childrenSides() == ChildrenSides.AUTO)
+	        return TextUtils.getRawText(layout.childNodesAlignment().name());
+        if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
+            return TextUtils.getRawText(layout.layoutOrientation().name()) + ", " 
+            + TextUtils.getRawText(layout.childrenSides().name());
+	    return TextUtils.getRawText(layout.layoutOrientation().name()) + ", " 
+	        + TextUtils.getRawText(layout.childrenSides().name())  + ", " 
+	       + TextUtils.getRawText(layout.childNodesAlignment().name());
+    }
+
+    @Override
+    public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
 
