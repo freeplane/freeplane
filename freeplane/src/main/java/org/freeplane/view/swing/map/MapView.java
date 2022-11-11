@@ -1258,9 +1258,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             else if(selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
                     || ! selectedUsesHorizontalLayout && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
                 if (oldSelected.isFolded() && unfoldsOnNavigation()) {
-                    getModeController().getMapController().unfoldAndScroll(oldModel, filter);
-                    if(oldSelected.getModel().hasVisibleContent(filter))
-                        return oldSelected;
+                    NodeView ancestorWithVisibleContent = oldSelected.getAncestorWithVisibleContent();
+                    if (ancestorWithVisibleContent == null || oldSelected.usesHorizontalLayout() == ancestorWithVisibleContent.usesHorizontalLayout()) {
+                        getModeController().getMapController().unfoldAndScroll(oldModel, filter);
+                        if(oldSelected.getModel().hasVisibleContent(filter))
+                            return oldSelected;
+                    }
                 }
                 boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
                 newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet, looksAtTopOrLeft);
