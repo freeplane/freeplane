@@ -142,7 +142,7 @@ public class NodeView extends JComponent implements INodeView {
 	private final NodeViewLayoutHelper layoutHelper;
     private boolean usesHorizontalLayout;
     private ChildNodesAlignment childNodesAlignment;
-    private ChildNodesLayout childrenSides;
+    private ChildNodesLayout childNodesLayout;
 
 	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -757,25 +757,29 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
     private void updateChildNodesAlignment() {
-        ChildNodesAlignment childNodesAlignment = getModeController().getExtension(LayoutController.class).getChildNodesAlignment(model);
+        ChildNodesAlignment childNodesAlignment = childNodesLayout.childNodesAlignment();
 		switch (childNodesAlignment) {
 		case NOT_SET:
 		case AUTO:
-			this.childNodesAlignment = getParentViewChildNodesAlignment();
+			this.childNodesAlignment = getDefaultChildNodesAlignment();
 			break;
 		default:
 		    this.childNodesAlignment =  childNodesAlignment;
 		}
     }
 
-	private ChildNodesAlignment getParentViewChildNodesAlignment() {
+	private ChildNodesAlignment getDefaultChildNodesAlignment() {
 		NodeView parentView = getParentView();
 		if (parentView == null)
 			return ChildNodesAlignment.BY_CENTER;
 		else if(parentView.isSummary())
-			return parentView.getParentViewChildNodesAlignment();
-		else
+			return parentView.getDefaultChildNodesAlignment();
+		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout)
 			return parentView.getChildNodesAlignment();
+		else if(isTopOrLeft()) 
+		    return ChildNodesAlignment.BY_LAST_NODE;
+		else
+		    return ChildNodesAlignment.BY_FIRST_NODE;
 	}
 
 	public NodeView getAncestorWithVisibleContent() {
@@ -1229,13 +1233,13 @@ public class NodeView extends JComponent implements INodeView {
 
     ChildNodesLayout getChildNodesLayout() {
         updateLayoutProperties();
-        return childrenSides;
+        return childNodesLayout;
     }
 
 
 
-    private ChildNodesLayout updateChildrenSide() {
-        return childrenSides = LayoutController.getController(getModeController()).getChildNodesLayout(this.model);
+    private void updateChildNodesLayout(ChildNodesLayout childNodesLayout) {
+        this.childNodesLayout = childNodesLayout;
     }
 
 
@@ -1655,7 +1659,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 	void resetLayoutPropertiesRecursively() {
 	    childNodesAlignment = null;
-	    childrenSides = null;
+	    childNodesLayout = null;
 		LinkedList<NodeView> childrenViews = getChildrenViews();
 		if(childrenViews.isEmpty())
 			invalidate();
@@ -1666,9 +1670,11 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateLayoutProperties() {
 	    if(childNodesAlignment == null) {
+	        LayoutController layoutController = getModeController().getExtension(LayoutController.class);
+            ChildNodesLayout childNodesLayout = layoutController.getChildNodesLayout(model);
+            updateChildNodesLayout(childNodesLayout);
+            updateUsesHorizontalLayout();
 	        updateChildNodesAlignment();
-	        updateUsesHorizontalLayout();
-	        updateChildrenSide();
 	    }
     }
 	
