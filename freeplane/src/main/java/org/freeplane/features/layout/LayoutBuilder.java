@@ -68,9 +68,11 @@ class LayoutBuilder implements IExtensionAttributeWriter {
         case AUTO:
             return ChildNodesLayout.AUTO;
         case BY_FIRST_NODE:
+            return ChildNodesLayout.AUTO_BYFIRST;
         case BY_CENTER:
+            return ChildNodesLayout.AUTO_CENTERED;
         case BY_LAST_NODE:
-        case NOT_SET:
+            return ChildNodesLayout.AUTO_BYLAST;
             
         default:
             return ChildNodesLayout.NOT_SET;
