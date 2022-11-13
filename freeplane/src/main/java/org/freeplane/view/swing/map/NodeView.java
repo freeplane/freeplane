@@ -141,6 +141,7 @@ public class NodeView extends JComponent implements INodeView {
 	private DashVariant edgeDash = DashVariant.DEFAULT;
 	private final NodeViewLayoutHelper layoutHelper;
     private boolean usesHorizontalLayout;
+    private boolean isTopOrLeft;
     private ChildNodesAlignment childNodesAlignment;
     private ChildNodesLayout childNodesLayout;
 
@@ -870,10 +871,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public boolean isTopOrLeft() {
-		if (map.getLayoutType() == MapViewLayout.OUTLINE) {
-			return false;
-		}
-		return getModel().isTopOrLeft(map.getRoot().getModel());
+	    return isTopOrLeft;
 	}
 
 
@@ -1237,13 +1235,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 
-
-    private void updateChildNodesLayout(ChildNodesLayout childNodesLayout) {
-        this.childNodesLayout = childNodesLayout;
-    }
-
-
-	int getSpaceAround() {
+    int getSpaceAround() {
 		return getZoomed(NodeView.SPACE_AROUND);
 	}
 
@@ -1670,17 +1662,35 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateLayoutProperties() {
 	    if(childNodesAlignment == null) {
+	        updateIsTopOrLeft();
 	        LayoutController layoutController = getModeController().getExtension(LayoutController.class);
-            ChildNodesLayout childNodesLayout = layoutController.getChildNodesLayout(model);
-            updateChildNodesLayout(childNodesLayout);
+            this.childNodesLayout = layoutController.getChildNodesLayout(model);
             updateUsesHorizontalLayout();
 	        updateChildNodesAlignment();
 	    }
     }
-	
-	
 
-	private void updateShape() {
+    @Override
+    public boolean isLayoutSet() {
+        return childNodesAlignment != null;
+    }
+
+    @Override
+    public boolean hasRootNode(NodeModel root) {
+        return map.getRoot().getModel().equals(root);
+    }
+
+
+	private void updateIsTopOrLeft() {
+        if (map.getLayoutType() == MapViewLayout.OUTLINE) {
+            isTopOrLeft = false;
+        }
+        isTopOrLeft = getModel().isTopOrLeft(map.getRoot().getModel());
+    }
+
+
+
+    private void updateShape() {
 		if(mainView != null) {
 			NodeViewFactory.getInstance().updateViewPainter(this);
 		}

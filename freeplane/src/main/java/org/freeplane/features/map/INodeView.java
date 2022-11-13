@@ -26,5 +26,8 @@ package org.freeplane.features.map;
 public interface INodeView {
 	default void nodeChanged(NodeChangeEvent event) {};
 	default void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {};
-	default void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {};
+	default void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {}
+    boolean isLayoutSet();
+    boolean hasRootNode(NodeModel root);
+    boolean isTopOrLeft();
 }
