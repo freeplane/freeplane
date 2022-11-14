@@ -405,9 +405,11 @@ public class NodeModel{
     public boolean wouldBeTopOrLeft(NodeModel root, NodeModel parent) {
         if (parent == null)
 			return false;
-        for(INodeView view:views) {
-            if(view.isLayoutSet() && view.hasRootNode(root))
-                return view.isTopOrLeft();
+        if(views != null) {
+            for(INodeView view:views) {
+                if(view.isLayoutSet() && view.hasRootNode(root))
+                    return view.isTopOrLeft();
+            }
         }
         ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(parent).childrenSides();
         if(childrenSides == ChildrenSides.TOP_OR_LEFT)
