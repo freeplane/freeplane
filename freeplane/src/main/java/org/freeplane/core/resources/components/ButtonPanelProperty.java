@@ -28,6 +28,8 @@ import java.awt.event.ComponentEvent;
 import java.util.Collection;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -39,6 +41,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormSpecs;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl, ActionListener {
     
@@ -124,7 +127,9 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 
 	@Override
     public void appendToForm(final DefaultFormBuilder builder) {
-		appendToForm(builder, buttonPanel);
+        int iconWidth = buttons.get(0).getIcon().getIconWidth();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, iconWidth, 0, 0));
+ 	    builder.append(buttonPanel, 3);
 	}
 
 	public Vector<String> getPossibleValues() {
