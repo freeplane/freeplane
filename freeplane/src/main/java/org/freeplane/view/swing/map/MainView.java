@@ -175,11 +175,16 @@ public class MainView extends ZoomableLabel {
 	    NodeView nodeView = getNodeView();
 	    if(nodeView.isRoot())
 	        return false;
-	    return nodeView.getAncestorWithVisibleContent().usesHorizontalLayout() ||  ! nodeView.paintsChildrenOnTheLeft() ? isInVerticalRegion(p.getX(), 1. / 3) : isInVerticalRegion(p.getX(), 2. / 3);
+	    if (nodeView.getAncestorWithVisibleContent().usesHorizontalLayout())
+            return isInVerticalRegion(p.getX(), 1. / 3);
+        else if (nodeView.paintsChildrenOnTheLeft())
+            return !isInVerticalRegion(p.getX(), 1. / 3);
+        else
+            return isInVerticalRegion(p.getX(), 2. / 3);
 	}
 
 	/** @return true if should be on the left, false otherwise. */
-	public boolean dropsLeft(final Point p) {
+	public boolean dropsTopOrLeft(final Point p) {
 		/* here it is the same as me. */
 		NodeView nodeView = getNodeView();
 		if(nodeView.isRoot()) {
@@ -188,7 +193,7 @@ public class MainView extends ZoomableLabel {
             else
                 return p.getX() < getWidth() * 1 / 2;
         } else
-			return nodeView.paintsChildrenOnTheLeft();
+			return nodeView.paintsChildrenOnTopOrLeft();
 	}
 
 
@@ -391,7 +396,7 @@ public class MainView extends ZoomableLabel {
             }
         }
         else {
-            if (dropsLeft(p)) {
+            if (dropsTopOrLeft(p)) {
                 if(nodeView.usesHorizontalLayout()) {
                     draggedOver = DragOver.DROP_UP;
                 } else {

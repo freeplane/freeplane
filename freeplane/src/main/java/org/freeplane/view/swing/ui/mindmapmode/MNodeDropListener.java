@@ -235,7 +235,7 @@ private Timer timer;
 					return;
 				}
 			}
-			final boolean isTopOrLeft = mainView.dropsLeft(dtde.getLocation());
+			final boolean isTopOrLeft = mainView.dropsTopOrLeft(dtde.getLocation());
 			if (!dtde.isLocalTransfer()) {
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
 				Side side = dropAsSibling ? Side.AS_SIBLING : isTopOrLeft ? Side.TOP_OR_LEFT :  Side.BOTTOM_OR_RIGHT;

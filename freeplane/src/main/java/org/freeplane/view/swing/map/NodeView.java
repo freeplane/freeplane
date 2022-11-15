@@ -1882,12 +1882,18 @@ public class NodeView extends JComponent implements INodeView {
         if(usesHorizontalLayout())
             return false;
         else {
-            ChildrenSides childrenSides = getChildNodesLayout().childrenSides();
-            boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
-            return paintsChildrenOnBothSides ? false 
-                    : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
-                            : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
-                                    : isTopOrLeft();
+            return paintsChildrenOnTopOrLeft();
         }
      }
+
+
+
+    boolean paintsChildrenOnTopOrLeft() {
+        ChildrenSides childrenSides = getChildNodesLayout().childrenSides();
+        boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
+        return paintsChildrenOnBothSides ? false 
+                : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
+                        : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
+                                : isTopOrLeft();
+    }
 }
