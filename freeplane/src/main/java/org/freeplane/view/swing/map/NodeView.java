@@ -871,6 +871,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public boolean isTopOrLeft() {
+	   updateLayoutProperties();
 	    return isTopOrLeft;
 	}
 
@@ -1671,21 +1672,33 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     @Override
-    public boolean isLayoutSet() {
-        return childNodesAlignment != null;
-    }
-
-    @Override
     public boolean hasRootNode(NodeModel root) {
         return map.getRoot().getModel().equals(root);
     }
 
 
-	private void updateIsTopOrLeft() {
-        if (map.getLayoutType() == MapViewLayout.OUTLINE) {
+    private void updateIsTopOrLeft() {
+        final boolean isTopOrLeft;
+        if (map.getLayoutType() == MapViewLayout.OUTLINE || isRoot()) {
             isTopOrLeft = false;
         }
-        isTopOrLeft = getModel().isTopOrLeft(map.getRoot().getModel());
+        else {
+            NodeView ancestor = getAncestorWithVisibleContent();
+            ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(ancestor.getModel()).childrenSides();
+            if(childrenSides == ChildrenSides.TOP_OR_LEFT)
+                isTopOrLeft = true;
+            else if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)
+                isTopOrLeft = false;
+            else if (ancestor.isRoot() || childrenSides == ChildrenSides.BOTH_SIDES) {
+                Side side = model.getSide();
+                if (side != Side.DEFAULT)
+                    isTopOrLeft = side == Side.TOP_OR_LEFT;
+                else
+                    isTopOrLeft = ancestor.getModel().isTopOrLeft(model.getMap().getRootNode());
+            } else
+                isTopOrLeft = ancestor.isTopOrLeft();
+        }
+        this.isTopOrLeft = isTopOrLeft;
     }
 
 

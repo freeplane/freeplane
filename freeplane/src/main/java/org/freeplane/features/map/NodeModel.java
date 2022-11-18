@@ -406,7 +406,7 @@ public class NodeModel{
 			return false;
         if(views != null) {
             for(INodeView view:views) {
-                if(view.isLayoutSet() && view.hasRootNode(root))
+                if(view.hasRootNode(root))
                     return view.isTopOrLeft();
             }
         }
