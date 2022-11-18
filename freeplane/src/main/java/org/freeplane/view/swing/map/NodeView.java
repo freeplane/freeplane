@@ -152,8 +152,8 @@ public class NodeView extends JComponent implements INodeView {
 		this.isFolded = map.getModeController().getMapController().isFolded(model);
 		this.layoutHelper = new NodeViewLayoutHelper(this);
 	}
-	
-	
+
+
 
 	public boolean isFolded(){
 		return isFolded;
@@ -327,7 +327,7 @@ public class NodeView extends JComponent implements INodeView {
 					additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(cloud, this) / 5;
 				}
 			}
-			
+
 			Rectangle foldingRectangleBounds = getMainView().getFoldingRectangleBounds(this, false);
 			JComponent content = getContent();
             final int x = transX + content.getX() + Math.min(0, foldingRectangleBounds.x);
@@ -751,7 +751,7 @@ public class NodeView extends JComponent implements INodeView {
 		final double minimalDistanceBetweenChildren = getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(model).toBaseUnits();
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
-	
+
 	ChildNodesAlignment getChildNodesAlignment() {
 	    updateLayoutProperties();
 		return childNodesAlignment;
@@ -777,7 +777,7 @@ public class NodeView extends JComponent implements INodeView {
 			return parentView.getDefaultChildNodesAlignment();
 		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout)
 			return parentView.getChildNodesAlignment();
-		else if(isTopOrLeft()) 
+		else if(isTopOrLeft())
 		    return ChildNodesAlignment.BY_LAST_NODE;
 		else
 		    return ChildNodesAlignment.BY_FIRST_NODE;
@@ -946,7 +946,7 @@ public class NodeView extends JComponent implements INodeView {
                 FilterController.getCurrentFilterController().selectVisibleNodes(map.getMapSelection());
 			return;
 		}
-		
+
 		if(property == Side.class) {
 			resetLayoutPropertiesRecursively();
 			revalidate();
@@ -1006,7 +1006,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
-		final boolean preferredChildIsLeft = preferredChild != null 
+		final boolean preferredChildIsLeft = preferredChild != null
 		        && map.getLayoutType() != MapViewLayout.OUTLINE
 		        && preferredChild.getModel().wouldBeTopOrLeft(mapRootNode, getModel());
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
@@ -1176,7 +1176,7 @@ public class NodeView extends JComponent implements INodeView {
     private void paintEdges(final Graphics2D g, NodeView source) {
         ChildrenSides childrenSides = getChildNodesLayout().childrenSides();
     	boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
-		boolean paintsOnTheLeftSide = paintsChildrenOnBothSides ? true 
+		boolean paintsOnTheLeftSide = paintsChildrenOnBothSides ? true
 		        : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
 		        : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
 		        : isTopOrLeft();
@@ -1870,17 +1870,31 @@ public class NodeView extends JComponent implements INodeView {
 
 	public boolean usesHorizontalLayout() {
 	    updateLayoutProperties();
-        return usesHorizontalLayout;
+	    return usesHorizontalLayout;
 	}
 
-    private void updateUsesHorizontalLayout() {
-        usesHorizontalLayout = getModeController().getExtension(LayoutController.class).getEffectiveLayoutOrientation(model, map.getFilter())
-	            == LayoutOrientation.LEFT_TO_RIGHT;
-    }
+	private void updateUsesHorizontalLayout() {
+	    LayoutController layoutController = getModeController().getExtension(LayoutController.class);
+	    LayoutOrientation layoutOrientation = layoutController.getLayoutOrientation(model);
+	    switch(layoutOrientation) {
+	    case TOP_TO_BOTTOM:
+	        usesHorizontalLayout = false;
+	        break;
+	    case LEFT_TO_RIGHT:
+	        usesHorizontalLayout = true;
+	        break;
+	    default:
+	        NodeView ancestor = getAncestorWithVisibleContent();
+	        if(ancestor != null)
+	            usesHorizontalLayout = ancestor.usesHorizontalLayout();
+	        else
+	            usesHorizontalLayout = false;
+	    }
+	}
 
 	boolean paintsChildrenOnTheLeft() {
-        if(usesHorizontalLayout())
-            return false;
+	    if(usesHorizontalLayout())
+	        return false;
         else {
             return paintsChildrenOnTopOrLeft();
         }
@@ -1891,7 +1905,7 @@ public class NodeView extends JComponent implements INodeView {
     boolean paintsChildrenOnTopOrLeft() {
         ChildrenSides childrenSides = getChildNodesLayout().childrenSides();
         boolean paintsChildrenOnBothSides  = childrenSides == ChildrenSides.BOTH_SIDES || isRoot();
-        return paintsChildrenOnBothSides ? false 
+        return paintsChildrenOnBothSides ? false
                 : childrenSides == ChildrenSides.BOTTOM_OR_RIGHT ? false
                         : childrenSides == ChildrenSides.TOP_OR_LEFT ? true
                                 : isTopOrLeft();
