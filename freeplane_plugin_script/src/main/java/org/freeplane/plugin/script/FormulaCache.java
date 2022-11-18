@@ -3,6 +3,7 @@ package org.freeplane.plugin.script;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.function.Supplier;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
@@ -23,9 +24,28 @@ public class FormulaCache implements IExtension{
 					FormulaCache.of(nodeModel.getMap()).remove(nodeModel);
 				}
 			}
-		}
+	}
 
-	Object getOrThrowCachedResult(final NodeScript nodeScript) {
+	static Object getOrThrowCachedResult(final ScriptContext scriptContext, Supplier<Object> computation) {
+	    if (! FormulaCache.ENABLE_CACHING)
+	        return computation.get();
+	    NodeScript nodeScript = scriptContext.getNodeScript();
+	    final FormulaCache formulaCache = FormulaCache.of(nodeScript.node.getMap());
+	    Object value = formulaCache.getOrThrowCachedResult(nodeScript);
+	    if(value != null)
+	        return value;
+	    try {
+	        value = computation.get();
+	        formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
+	        return value;
+	    }
+	    catch (final ExecuteScriptException e) {
+	        formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getRelatedElements()));
+	        throw e;
+	    }
+	}
+
+	private Object getOrThrowCachedResult(final NodeScript nodeScript) {
 		final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(nodeScript.node.getID());
 		if (cacheEntry == null)
 			return null;
