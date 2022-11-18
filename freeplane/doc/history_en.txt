@@ -1,6 +1,10 @@
 ==============================
+1.10.6
+==============================
+Performance optimizations
+==============================
 1.10.5
-===============================
+==============================
 Vertical aligning child nodes at the top, at the bottom or at the center of the parent node
 Consider hidden free node positions in map layout
 Creating new user style from selection assigns it to all selected nodes and clears their formatting
