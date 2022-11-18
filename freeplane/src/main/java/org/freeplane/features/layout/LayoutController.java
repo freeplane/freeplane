@@ -145,7 +145,7 @@ public class LayoutController implements IExtension {
             return LayoutOrientation.TOP_TO_BOTTOM;
     }
 	
-	   public boolean isTopOrLeft(NodeModel node, NodeModel root) {
+	   private boolean isTopOrLeft(NodeModel node, NodeModel root) {
 	        NodeModel parentNode = node.getParentNode();
 	        if (parentNode == null)
 	            return false;
