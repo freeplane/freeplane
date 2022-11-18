@@ -31,7 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
