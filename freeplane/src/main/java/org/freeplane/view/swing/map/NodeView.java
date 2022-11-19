@@ -1672,8 +1672,9 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     @Override
-    public boolean hasRootNode(NodeModel root) {
-        return map.getRoot().getModel().equals(root);
+    public boolean hasStandardLayoutWithRootNode(NodeModel root) {
+        return map.getLayoutType() == MapViewLayout.MAP
+                && map.getRoot().getModel().equals(root);
     }
 
 
