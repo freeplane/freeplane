@@ -23,7 +23,7 @@ import java.util.Collection;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;

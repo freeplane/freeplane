@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.layout;
 
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -55,29 +55,19 @@ class LayoutBuilder implements IExtensionAttributeWriter {
         reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "CHILD_NODES_ALIGNMENT", verticalAlignmentHandler);
 	}
 
-	protected ChildNodesLayout layoutForAlignment(String value) {
-	    if("AS_PARENT".equals(value))
-	        return layoutForAlignment(ChildNodesAlignment.AUTO);
-	    else
-	        return layoutForAlignment(ChildNodesAlignment.valueOf(value));
-    }
+	protected ChildNodesLayout layoutForAlignment(String alignment) {
+	    if("AS_PARENT".equals(alignment) || "AUTO".equals(alignment)) {
+	        return ChildNodesLayout.AUTO;
+	    } else if ("BY_FIRST_NODE".equals(alignment)) {
+	        return ChildNodesLayout.AUTO_BYFIRSTCHILD;
+	    } else if ("BY_CENTER".equals(alignment)) {
+	        return ChildNodesLayout.AUTO_CENTERED;
+	    } else if ("BY_LAST_NODE".equals(alignment)) {
+	        return ChildNodesLayout.AUTO_BYLASTCHILD;
+	    } else {
+	        return ChildNodesLayout.NOT_SET;
+	    }
 
-    private ChildNodesLayout layoutForAlignment(ChildNodesAlignment alignment) {
-        // TODO
-        switch (alignment) {
-        case AUTO:
-            return ChildNodesLayout.AUTO;
-        case BY_FIRST_NODE:
-            return ChildNodesLayout.AUTO_BYFIRSTCHILD;
-        case BY_CENTER:
-            return ChildNodesLayout.AUTO_CENTERED;
-        case BY_LAST_NODE:
-            return ChildNodesLayout.AUTO_BYLASTCHILD;
-            
-        default:
-            return ChildNodesLayout.NOT_SET;
-        }
-        
     }
 
     void registerBy(final ReadManager readManager, final WriteManager writeManager) {

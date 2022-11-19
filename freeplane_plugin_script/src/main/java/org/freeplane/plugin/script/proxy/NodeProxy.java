@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.freeplane.api.Attributes;
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.Cloud;
 import org.freeplane.api.Connector;

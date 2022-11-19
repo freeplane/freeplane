@@ -22,7 +22,7 @@ package org.freeplane.features.layout;
 import java.util.Collection;
 import java.util.function.Function;
 
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
@@ -115,8 +115,8 @@ public class LayoutController implements IExtension {
         return null;
     }
 
-	public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
-	    return getChildNodesLayout(node).childNodesAlignment();
+	public ParentNodeAlignment getParentNodeAlignment(NodeModel node) {
+	    return getChildNodesLayout(node).parentNodeAlignment();
 	}
 
 	public LayoutOrientation getLayoutOrientation(NodeModel node) {

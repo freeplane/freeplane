@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.layout.mindmapmode;
 
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.undo.IActor;

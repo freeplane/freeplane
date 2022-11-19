@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
@@ -287,13 +287,13 @@ class VerticalNodeViewLayoutStrategy {
     }
 
 	public int align(int height) {
-		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
+		ParentNodeAlignment parentNodeAlignment = view.getParentNodeAlignment();
 		int deltaTop;
 		if (view.isSummary() 
-				|| childNodesAlignment == ChildNodesAlignment.NOT_SET
-				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
+				|| parentNodeAlignment == ParentNodeAlignment.NOT_SET
+				|| parentNodeAlignment == ParentNodeAlignment.BY_CENTER) {
 			deltaTop = height/2;
-		} else if (childNodesAlignment == ChildNodesAlignment.BY_LAST_NODE) {
+		} else if (parentNodeAlignment == ParentNodeAlignment.BY_LAST_CHILD) {
 			deltaTop = height;
 		}
 		else deltaTop = 0;
