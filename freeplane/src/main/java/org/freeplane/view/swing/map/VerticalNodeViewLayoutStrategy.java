@@ -168,7 +168,6 @@ class VerticalNodeViewLayoutStrategy {
 						    missingWidth = 0;
 						
 						if(missingWidth > 0) {
-						    childContentHeightSum += missingWidth;
                             if (child.paintsChildrenOnTheLeft()) {
                                 top -= missingWidth;
                                 y += missingWidth;
