@@ -6,5 +6,5 @@
 package org.freeplane.api;
 
 public enum ParentNodeAlignment {
-	NOT_SET, BY_FIRST_CHILD, BY_CENTER, BY_LAST_CHILD, AUTO
+	NOT_SET, BEFORE_FIRST_CHILD, BY_FIRST_CHILD, BY_CENTER, BY_LAST_CHILD, AFTER_LAST_CHILD, AUTO
 }

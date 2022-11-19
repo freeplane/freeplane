@@ -160,6 +160,11 @@ class VerticalNodeViewLayoutStrategy {
 								extraVGap = calculateExtraGapForChildren(minimalDistanceBetweenChildren);
 							}
 							childContentHeightSum += vGap;
+							if(visibleChildCounter == 0 
+							        && view.getParentNodeAlignment() == ParentNodeAlignment.BEFORE_FIRST_CHILD
+							        && contentSize.height > 0) {
+							    y += contentSize.height + vGap;
+							}
 						}
 						int missingWidth;
 						if(view.usesHorizontalLayout() && ! child.usesHorizontalLayout())
@@ -275,6 +280,11 @@ class VerticalNodeViewLayoutStrategy {
 			}
 		}
 		top += align(contentSize.height - childContentHeightSum);
+        if(view.getParentNodeAlignment() == ParentNodeAlignment.AFTER_LAST_CHILD
+                && contentSize.height > 0) {
+            top -= contentSize.height + vGap;
+        }
+
 		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, childContentHeightSum, top);
 	}
 
@@ -292,7 +302,8 @@ class VerticalNodeViewLayoutStrategy {
 				|| parentNodeAlignment == ParentNodeAlignment.NOT_SET
 				|| parentNodeAlignment == ParentNodeAlignment.BY_CENTER) {
 			deltaTop = height/2;
-		} else if (parentNodeAlignment == ParentNodeAlignment.BY_LAST_CHILD) {
+		} else if (parentNodeAlignment == ParentNodeAlignment.BY_LAST_CHILD
+		        || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD) {
 			deltaTop = height;
 		}
 		else deltaTop = 0;
