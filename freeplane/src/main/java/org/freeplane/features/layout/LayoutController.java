@@ -29,7 +29,6 @@ import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -128,20 +127,18 @@ public class LayoutController implements IExtension {
 	    return childrenLayoutHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 
-	public LayoutOrientation getEffectiveLayoutOrientation(NodeModel node, Filter filter) {
-	    if(node.hasVisibleContent(filter)) {
-	        LayoutOrientation layoutOrientation = getLayoutOrientation(node);
-	        switch(layoutOrientation) {
-	        case TOP_TO_BOTTOM:
-	        case LEFT_TO_RIGHT:
-	            return layoutOrientation;
-	        default: break;
-	        }
+	public LayoutOrientation getEffectiveLayoutOrientation(NodeModel node) {
+	    LayoutOrientation layoutOrientation = getLayoutOrientation(node);
+	    switch(layoutOrientation) {
+	    case TOP_TO_BOTTOM:
+	    case LEFT_TO_RIGHT:
+	        return layoutOrientation;
+	    default: break;
 	    }
 	    NodeModel parentNode = node.getParentNode();
 	    if(parentNode != null)
-            return getEffectiveLayoutOrientation(parentNode, filter);
-        else
+	        return getEffectiveLayoutOrientation(parentNode);
+	    else
             return LayoutOrientation.TOP_TO_BOTTOM;
     }
 	

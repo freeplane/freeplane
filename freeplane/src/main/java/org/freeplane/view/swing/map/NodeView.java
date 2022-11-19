@@ -1684,20 +1684,20 @@ public class NodeView extends JComponent implements INodeView {
             isTopOrLeft = false;
         }
         else {
-            NodeView ancestor = getAncestorWithVisibleContent();
-            ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(ancestor.getModel()).childrenSides();
+            NodeView parent = getParentView();
+            ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(parent.getModel()).childrenSides();
             if(childrenSides == ChildrenSides.TOP_OR_LEFT)
                 isTopOrLeft = true;
             else if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)
                 isTopOrLeft = false;
-            else if (ancestor.isRoot() || childrenSides == ChildrenSides.BOTH_SIDES) {
+            else if (parent.isRoot() || childrenSides == ChildrenSides.BOTH_SIDES) {
                 Side side = model.getSide();
                 if (side != Side.DEFAULT)
                     isTopOrLeft = side == Side.TOP_OR_LEFT;
                 else
-                    isTopOrLeft = ancestor.getModel().isTopOrLeft(model.getMap().getRootNode());
+                    isTopOrLeft = parent.getModel().isTopOrLeft(model.getMap().getRootNode());
             } else
-                isTopOrLeft = ancestor.isTopOrLeft();
+                isTopOrLeft = parent.isTopOrLeft();
         }
         this.isTopOrLeft = isTopOrLeft;
     }
@@ -1898,9 +1898,9 @@ public class NodeView extends JComponent implements INodeView {
 	        usesHorizontalLayout = true;
 	        break;
 	    default:
-	        NodeView ancestor = getAncestorWithVisibleContent();
-	        if(ancestor != null)
-	            usesHorizontalLayout = ancestor.usesHorizontalLayout();
+	        NodeView parent = getParentView();
+	        if(parent != null)
+	            usesHorizontalLayout = parent.usesHorizontalLayout();
 	        else
 	            usesHorizontalLayout = false;
 	    }

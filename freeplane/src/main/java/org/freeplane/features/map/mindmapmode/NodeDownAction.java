@@ -49,7 +49,7 @@ class NodeDownAction extends AFreeplaneAction {
         if(selectedNode == selectionRoot)
             return;
         LayoutController layoutController = modeController.getExtension(LayoutController.class);
-        boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode(), selection.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+        boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode()) == LayoutOrientation.LEFT_TO_RIGHT;
         if(selectionUsesHorizontalLayout) {
             ChangeNodeLevelController levelController = modeController.getExtension(ChangeNodeLevelController.class);
             levelController.changeNodeLevelRights(selectionRoot, selectedNode);

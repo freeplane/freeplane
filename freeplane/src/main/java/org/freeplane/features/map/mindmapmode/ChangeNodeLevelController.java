@@ -66,7 +66,7 @@ public class ChangeNodeLevelController implements IExtension {
             if(selectedNode == selectionRoot)
                 return;
             LayoutController layoutController = LayoutController.getController();
-            boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode(), selection.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+            boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode()) == LayoutOrientation.LEFT_TO_RIGHT;
             if(selectionUsesHorizontalLayout) {
                 MMapController mapController = (MMapController) controller.getModeController().getMapController();
                 mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), -1);
@@ -97,7 +97,7 @@ public class ChangeNodeLevelController implements IExtension {
 			if(selectedNode == selectionRoot)
 			    return;
 			LayoutController layoutController = LayoutController.getController();
-            boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode(), selection.getFilter()) == LayoutOrientation.LEFT_TO_RIGHT;
+            boolean selectionUsesHorizontalLayout = layoutController.getEffectiveLayoutOrientation(selectedNode.getParentNode()) == LayoutOrientation.LEFT_TO_RIGHT;
             if(selectionUsesHorizontalLayout) {
                 MMapController mapController = (MMapController) controller.getModeController().getMapController();
                 mapController.moveNodesInGivenDirection(selectionRoot, selectedNode, selection.getOrderedSelection(), 1);
