@@ -377,7 +377,7 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	public int getHGap() {
+	int getHGap() {
 		return map.getZoomed(LocationModel.getModel(model).getHGap().toBaseUnits());
 	}
 

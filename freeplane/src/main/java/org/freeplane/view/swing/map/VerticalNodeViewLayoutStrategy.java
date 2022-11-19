@@ -342,6 +342,8 @@ class VerticalNodeViewLayoutStrategy {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
+		ParentNodeAlignment parentNodeAlignment = view.getParentNodeAlignment();
+		boolean areChildrenSeparatedByY = parentNodeAlignment == ParentNodeAlignment.BEFORE_FIRST_CHILD || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD;
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
 			if (child.isLeft() == laysOutLeftSide) {
@@ -372,7 +374,7 @@ class VerticalNodeViewLayoutStrategy {
 				if (level > 0)
 					baseX = summaryBaseX[level - 1];
 				else {
-					if (child.isLeft() != (isItem && isFreeNode)) {
+					if (child.isLeft() != (isItem && (isFreeNode || areChildrenSeparatedByY))) {
 						baseX = 0;
 					} else {
 						baseX = contentSize.width;
