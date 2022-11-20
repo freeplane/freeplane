@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import javax.swing.table.AbstractTableModel;
@@ -26,7 +25,6 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		private IStyle style;
 		private boolean isActive;
 		private boolean isLast;
-		private UUID uuid;
 
 		public Item(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 	        super();
@@ -34,7 +32,6 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	        this.condition = condition;
 	        this.style = style;
 	        this.setLast(isLast);
-			uuid = UUID.randomUUID();
         }
 
 		public Item(Item prototype) {
@@ -65,10 +62,6 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		public boolean isLast() {
 	        return isLast;
         }
-
-		public UUID getUuid() {
-			return uuid;
-		}
 
 		public void toXml(XMLElement conditionalStylesRoot)
 		{
