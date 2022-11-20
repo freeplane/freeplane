@@ -24,4 +24,4 @@ package org.freeplane.api;
  * </pre>
  * See also {@link ConditionalStyles}
  */
-public interface ConditionalStylesRO {}
+public interface ConditionalStylesRO extends  Iterable<ConditionalStyle>{/**/}
