@@ -2,6 +2,7 @@ package org.freeplane.plugin.script;
 
 import java.net.URL;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,31 +75,22 @@ public class FormulaUtils {
 		return matcher.find() && text.charAt(matcher.end()-1) == '=';
     }
 
-	/** evaluate text as a script.
+    public static Object executeScript(final ScriptContext scriptContext, Supplier<Object> computation) {
+        return FormulaCache.getOrThrowCachedResult(scriptContext, computation);
+    }
+
+        /** evaluate text as a script.
 	 * @return the evaluation result.
 	 * @throws ExecuteScriptException */
 	public static Object executeScript(final NodeModel nodeModel, final String script) {
-		final NodeScript nodeScript = new NodeScript(nodeModel, script);
-		final ScriptContext scriptContext = new ScriptContext(nodeScript);
-		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
-		if (FormulaCache.ENABLE_CACHING) {
-			final FormulaCache formulaCache = FormulaCache.of(nodeModel.getMap());
-			Object value = formulaCache.getOrThrowCachedResult(nodeScript);
-			if (value == null) {
-				try {
-					value = evaluateLoggingExceptions(scriptContext, restrictedPermissions);
-					formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
-				}
-				catch (final ExecuteScriptException e) {
-					formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getRelatedElements()));
-					throw e;
-				}
-			}
-			return value;
-		}
-		else {
-			return evaluateLoggingExceptions(scriptContext, restrictedPermissions);
-		}
+	    final NodeScript nodeScript = new NodeScript(nodeModel, script);
+	    final ScriptContext scriptContext = new ScriptContext(nodeScript);
+	    final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
+	    
+	    return FormulaCache.getOrThrowCachedResult(scriptContext, () -> {
+	            Object result = evaluateLoggingExceptions(scriptContext, restrictedPermissions);
+	            return result;
+	    });
 	}
 
 	private static Object evaluateLoggingExceptions(final ScriptContext scriptContext,

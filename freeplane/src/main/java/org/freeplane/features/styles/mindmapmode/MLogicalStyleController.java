@@ -87,7 +87,7 @@ import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
  */
 public class MLogicalStyleController extends LogicalStyleController {
 
-    public enum NodeProperty{CONDITIONAL_STYLES}
+	public enum NodeProperty {CONDITIONAL_STYLES}
 
 	private static final String STYLE_ACTIONS = "styleActions";
 	private static final String NEW_NODE_STYLE_ACTIONS = "newNodeStyleActions";
@@ -102,10 +102,13 @@ public class MLogicalStyleController extends LogicalStyleController {
 			this.conditionalStyleModel = conditionalStyleModel;
 		}
 
+
+
+
 		@Override
 		public void undo() {
 			MLogicalStyleController.super.insertConditionalStyle(conditionalStyleModel, index, item.isActive(), item.getCondition(),
-				item.getStyle(), item.isLast());
+					item.getStyle(), item.isLast());
 		}
 
 		@Override
@@ -135,6 +138,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 			this.style = style;
 			this.isLast = isLast;
 		}
+
+
+
 
 		@Override
 		public void undo() {
@@ -180,7 +186,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
 		}
 	};
-
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
@@ -225,78 +230,79 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	final private List<AFreeplaneAction> actions;
-    private final ModeController modeController;
+	private final ModeController modeController;
 
 	public MLogicalStyleController(ModeController modeController) {
-	    super(modeController);
-        this.modeController = modeController;
-	    modeController.getMapController().addUINodeChangeListener(new INodeChangeListener() {
-	        @Override
-	        public void nodeChanged(NodeChangeEvent event) {
-	            if(event.getProperty() == NodeProperty.CONDITIONAL_STYLES)
-                    return;
-	            NodeModel node = event.getNode();
-	            ConditionalStyleModel mapStyles = MapStyleModel.getExtension(node.getMap()).getConditionalStyleModel();
-	            if(mapStyles.dependsOnCondition(ICondition::checksDescendants)) {
-	                delayedRefreshParent(node, true);
+		super(modeController);
+		this.modeController = modeController;
+		modeController.getMapController().addUINodeChangeListener(new INodeChangeListener() {
+			@Override
+			public void nodeChanged(NodeChangeEvent event) {
+				if (event.getProperty() == NodeProperty.CONDITIONAL_STYLES)
+					return;
+				NodeModel node = event.getNode();
+				ConditionalStyleModel mapStyles = MapStyleModel.getExtension(node.getMap()).getConditionalStyleModel();
+				if (mapStyles.dependsOnCondition(ICondition::checksDescendants)) {
+					delayedRefreshParent(node, true);
 	            }
 	            else if (mapStyles.dependsOnCondition(ICondition::checksChildren)) {
-                    delayedRefreshParent(node, false);
+					delayedRefreshParent(node, false);
 
-	            }
-	            if(mapStyles.dependsOnCondition(ICondition::checksAncestors)) {
-	                delayedRefreshChildren(node, true);
+				}
+				if (mapStyles.dependsOnCondition(ICondition::checksAncestors)) {
+					delayedRefreshChildren(node, true);
 	            }
 	            else if (mapStyles.dependsOnCondition(ICondition::checksParent)) {
-                    delayedRefreshChildren(node, false);
+					delayedRefreshChildren(node, false);
 	            }
 	            else {
-	                for (NodeModel child : node.getChildren()) {
-	                    ConditionalStyleModel nodeStyles = node.getExtension(ConditionalStyleModel.class);
-	                    if(nodeStyles != null && nodeStyles.dependsOnCondition(ICondition::checksParent))
-	                        modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
-	                                null, null);
-	                }
-                }
-	        }
+					for (NodeModel child : node.getChildren()) {
+						ConditionalStyleModel nodeStyles = node.getExtension(ConditionalStyleModel.class);
+						if (nodeStyles != null && nodeStyles.dependsOnCondition(ICondition::checksParent))
+							modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
+									null, null);
+					}
+				}
+			}
 
-	        private void delayedRefreshChildren(NodeModel node, boolean withDescendants) {
-	            for (NodeModel child : node.getChildren()) {
-	                if(child.hasViewers()) {
-	                    MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
-	                            null, null);
-	                    if(withDescendants)
-	                        delayedRefreshChildren(child, true);
-	                }
-                }
-            }
+			private void delayedRefreshChildren(NodeModel node, boolean withDescendants) {
+				for (NodeModel child : node.getChildren()) {
+					if (child.hasViewers()) {
+						MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(child, NodeProperty.CONDITIONAL_STYLES,
+								null, null);
+						if (withDescendants)
+							delayedRefreshChildren(child, true);
+					}
+				}
+			}
 
-            private void delayedRefreshParent(NodeModel node, boolean withAncestors) {
-                NodeModel parent =  node.getParentNode();
-                if(parent != null) {
-                    if(withAncestors)
-                        delayedRefreshParent(parent, true);
-                    if(parent.hasViewers())
-                        MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(parent, NodeProperty.CONDITIONAL_STYLES,
-                                null, null);
-                }
-            }
-	    });
+			private void delayedRefreshParent(NodeModel node, boolean withAncestors) {
+				NodeModel parent = node.getParentNode();
+				if (parent != null) {
+					if (withAncestors)
+						delayedRefreshParent(parent, true);
+					if (parent.hasViewers())
+						MLogicalStyleController.this.modeController.getMapController().delayedNodeRefresh(parent, NodeProperty.CONDITIONAL_STYLES,
+								null, null);
+				}
+			}
+		});
 
 //		this.modeController = modeController;
 		actions = new LinkedList<AFreeplaneAction>();
 	}
 
 	public void initS() {
-	    final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new ManageNodeConditionalStylesAction());
 	}
+
 	public void initM() {
-	    final ModeController modeController = Controller.getCurrentModeController();
+		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().addUINodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
-        modeController.addAction(new RedefineStyleAction());
-        modeController.addAction(new RedefineStyleUpdateTemplateAction());
+		modeController.addAction(new RedefineStyleAction());
+		modeController.addAction(new RedefineStyleUpdateTemplateAction());
 		modeController.addAction(new NewUserStyleFromSelectionAction());
 		modeController.addAction(new ManageMapConditionalStylesAction());
 		modeController.addAction(new ManageNodeConditionalStylesAction());
@@ -306,26 +312,26 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new MapBackgroundImageAction());
 			modeController.addAction(new MapBackgroundClearAction());
 			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_VIEWPORT));
-            modeController.addAction(new CopyMapStylesAction());
-            modeController.addAction(new ReplaceMapStylesAction());
-            modeController.addAction(new ManageAssociatedMindMapsAction());
+			modeController.addAction(new CopyMapStylesAction());
+			modeController.addAction(new ReplaceMapStylesAction());
+			modeController.addAction(new ManageAssociatedMindMapsAction());
 		}
-		if(! GraphicsEnvironment.isHeadless()){
+		if (!GraphicsEnvironment.isHeadless()) {
 			StyleMenuBuilder styleBuilder = new StyleMenuBuilder(AssignStyleAction::new);
 			styleBuilder.addStyleAction(new ResetStyleAction());
-            modeController.addUiBuilder(Phase.ACTIONS, "style_actions", styleBuilder,
-			    new ChildActionEntryRemover(modeController));
-            StyleMenuBuilder newNodeStyleBuilder = new StyleMenuBuilder(SetNewNodeStyleAction::new);
-            newNodeStyleBuilder.addStyleAction(new UseCurrentStyleForNewNodesAction());
-            newNodeStyleBuilder.addStyleAction(new ResetNewNodeStyleAction());
-            modeController.addUiBuilder(Phase.ACTIONS, "new_node_style_actions", newNodeStyleBuilder,
-                new ChildActionEntryRemover(modeController));
+			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", styleBuilder,
+					new ChildActionEntryRemover(modeController));
+			StyleMenuBuilder newNodeStyleBuilder = new StyleMenuBuilder(SetNewNodeStyleAction::new);
+			newNodeStyleBuilder.addStyleAction(new UseCurrentStyleForNewNodesAction());
+			newNodeStyleBuilder.addStyleAction(new ResetNewNodeStyleAction());
+			modeController.addUiBuilder(Phase.ACTIONS, "new_node_style_actions", newNodeStyleBuilder,
+					new ChildActionEntryRemover(modeController));
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
 				@Override
 				public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-                    userInputListenerFactory.rebuildMenus(STYLE_ACTIONS);
-                    userInputListenerFactory.rebuildMenus(NEW_NODE_STYLE_ACTIONS);
+					userInputListenerFactory.rebuildMenus(STYLE_ACTIONS);
+					userInputListenerFactory.rebuildMenus(NEW_NODE_STYLE_ACTIONS);
 				}
 			});
 			final MapController mapController = modeController.getMapController();
@@ -372,24 +378,22 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	class StyleMenuBuilder implements EntryVisitor {
-        private final Function<IStyle, AFreeplaneAction> styleActionFactory;
-        private final List<AFreeplaneAction> additionalActions;
+		private final Function<IStyle, AFreeplaneAction> styleActionFactory;
+		private final List<AFreeplaneAction> additionalActions;
 
 		StyleMenuBuilder(Function<IStyle, AFreeplaneAction> actionFactory) {
 			super();
-            this.styleActionFactory = actionFactory;
-            this.additionalActions = new ArrayList<>();
+			this.styleActionFactory = actionFactory;
+			this.additionalActions = new ArrayList<>();
 		}
 
 
-
 		boolean addStyleAction(AFreeplaneAction e) {
-            return additionalActions.add(e);
-        }
+			return additionalActions.add(e);
+		}
 
 
-
-        @Override
+		@Override
 		public void visit(Entry target) {
 			addStyleMenu(target);
 		}
@@ -406,31 +410,31 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 			if (mapStyleModel == null) {
-			    return;
+				return;
 			}
 			actions.clear();
 			final EntryAccessor entryAccessor = new EntryAccessor();
-			for(AFreeplaneAction action : additionalActions) {
-			    final AFreeplaneAction addedAction =  modeController.addActionIfNotAlreadySet(action);
-			    if(action == addedAction)
-			        actions.add(action);
-			    addedAction.setEnabled(true);
-			    entryAccessor.addChildAction(target, addedAction);
+			for (AFreeplaneAction action : additionalActions) {
+				final AFreeplaneAction addedAction = modeController.addActionIfNotAlreadySet(action);
+				if (action == addedAction)
+					actions.add(action);
+				addedAction.setEnabled(true);
+				entryAccessor.addChildAction(target, addedAction);
 			}
 			for (final IStyle style : mapStyleModel.getNodeStyles()) {
-			    AFreeplaneAction newAction = styleActionFactory.apply(style);
-			    final AFreeplaneAction action =  modeController.addActionIfNotAlreadySet(newAction);
-			    if(newAction == action)
-			        actions.add(newAction);
-			    action.setEnabled(true);
-			    entryAccessor.addChildAction(target, action);
+				AFreeplaneAction newAction = styleActionFactory.apply(style);
+				final AFreeplaneAction action = modeController.addActionIfNotAlreadySet(newAction);
+				if (newAction == action)
+					actions.add(newAction);
+				action.setEnabled(true);
+				entryAccessor.addChildAction(target, action);
 			}
 		}
 	}
 
 	public void setStyle(final NodeModel node, final IStyle style) {
 		final ModeController modeController = Controller.getCurrentModeController();
-        final IStyle oldStyle = LogicalStyleModel.getStyle(node);
+		final IStyle oldStyle = LogicalStyleModel.getStyle(node);
 		if (oldStyle != null && oldStyle.equals(style) || oldStyle == style) {
 			modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 			return;
@@ -452,8 +456,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 
 			private void changeStyle(final ModeController modeController, final NodeModel node, final IStyle oldStyle,
-                                    final IStyle style) {
-	            if(style != null){
+			                         final IStyle style) {
+				if (style != null) {
 					final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
 					model.setStyle(style);
 				}
@@ -462,29 +466,29 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
 				selectActions();
-            }
+			}
 		};
 		modeController.execute(actor, node.getMap());
 	}
 
-    public void copyStyleExtensions(final IStyle style, final NodeModel target) {
-        final MTextController textController = MTextController.getController();
-        final MapStyleModel extension = MapStyleModel.getExtension(target.getMap());
-        final NodeModel styleNode = extension.getStyleNode(style);
-        if(styleNode != null){
-            final MAttributeController attributeController = MAttributeController.getController();
-            attributeController.copyAttributesToNode(styleNode, target);
-            final String detailTextText = DetailModel.getDetailText(styleNode);
-            if(detailTextText != null)
-                textController.setDetails(target, detailTextText);
-            final String noteText = NoteModel.getNoteText(styleNode);
-            if(noteText != null)
-            {
-            	MNoteController noteController = (MNoteController) NoteController.getController();
-            	noteController.setNoteText(target, noteText);
-            }
-        }
-    }
+	public void copyStyleExtensions(final IStyle style, final NodeModel target) {
+		final MTextController textController = MTextController.getController();
+		final MapStyleModel extension = MapStyleModel.getExtension(target.getMap());
+		final NodeModel styleNode = extension.getStyleNode(style);
+		if (styleNode != null) {
+			final MAttributeController attributeController = MAttributeController.getController();
+			attributeController.copyAttributesToNode(styleNode, target);
+			final String detailTextText = DetailModel.getDetailText(styleNode);
+			if (detailTextText != null)
+				textController.setDetails(target, detailTextText);
+			final String noteText = NoteModel.getNoteText(styleNode);
+			if(noteText != null)
+			{
+				MNoteController noteController = (MNoteController) NoteController.getController();
+				noteController.setNoteText(target, noteText);
+			}
+		}
+	}
 
 	void selectActions() {
 		for (final AFreeplaneAction action : actions) {
@@ -494,25 +498,25 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 	public void setStyle(final IStyle style) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		if(MapStyleModel.NEW_STYLE.equals(style)) {
-		    IMapSelection selection = Controller.getCurrentController().getSelection();
-		    if(selection == null) {
-		      return;
-		    }
-		    IStyle newStyle = addNewUserStyle(true);
-		    if(newStyle != null) {
+		if (MapStyleModel.NEW_STYLE.equals(style)) {
+			IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (selection == null) {
+				return;
+			}
+			IStyle newStyle = addNewUserStyle(true);
+			if (newStyle != null) {
 				Set<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
 				for (NodeModel node : nodes) {
 					modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 				}
 				setStyle(newStyle);
-		    }
+			}
 			else {
-		        NodeModel node = selection.getSelected();
-		        final IStyle oldStyle = LogicalStyleModel.getStyle(node);
-		        modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, oldStyle);
-		    }
-		    return;
+				NodeModel node = selection.getSelected();
+				final IStyle oldStyle = LogicalStyleModel.getStyle(node);
+				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, oldStyle);
+			}
+			return;
 		}
 		final Collection<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		for (final NodeModel selected : selectedNodes) {
@@ -570,6 +574,15 @@ public class MLogicalStyleController extends LogicalStyleController {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
+
+
+
+
+
+
+
+
+
 	public static MLogicalStyleController getController() {
 		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
@@ -579,6 +592,9 @@ public class MLogicalStyleController extends LogicalStyleController {
 		InsertConditionalStyleActor actor = new InsertConditionalStyleActor(conditionalStyleModel, -1, isActive, condition, style, isLast);
 		Controller.getCurrentModeController().execute(actor, map);
 	}
+
+
+
 
 	public void insertConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 		InsertConditionalStyleActor actor = new InsertConditionalStyleActor(conditionalStyleModel, index, isActive, condition, style, isLast);
@@ -590,6 +606,16 @@ public class MLogicalStyleController extends LogicalStyleController {
 		Controller.getCurrentModeController().execute(actor, map);
 		return actor.item;
 	}
+
+
+
+
+
+
+
+
+
+
 
 	public TableModel getConditionalStyleModelAsTableModel(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
 		return new TableModel() {
@@ -638,7 +664,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			@Override
 			public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
 				final Object oldValue = tableModel.getValueAt(rowIndex, columnIndex);
-				if(aValue == oldValue || aValue != null && aValue.equals(oldValue)){
+				if (aValue == oldValue || aValue != null && aValue.equals(oldValue)) {
 					return;
 				}
 				IActor actor = new IActor() {
@@ -663,69 +689,69 @@ public class MLogicalStyleController extends LogicalStyleController {
 		};
 	}
 
-    IStyle addNewUserStyle(final boolean copyStyleFromSelected) {
-        final String styleName = JOptionPane.showInputDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
-                TextUtils.getText("enter_new_style_name"), "");
-    	if (styleName == null || styleName.isEmpty()) {
-    		return null;
-    	}
+	IStyle addNewUserStyle(final boolean copyStyleFromSelected) {
+		final String styleName = JOptionPane.showInputDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
+				TextUtils.getText("enter_new_style_name"), "");
+		if (styleName == null || styleName.isEmpty()) {
+			return null;
+		}
 
-    	final MapModel map = Controller.getCurrentController().getMap();
-    	final MapStyleModel styleModel = MapStyleModel.getExtension(map);
-    	final MapModel styleMap = styleModel.getStyleMap();
-    	final IStyle newStyle = StyleFactory.create(styleName);
-    	if (null != styleModel.getStyleNode(newStyle)) {
-    		UITools.errorMessage(TextUtils.getText("style_already_exists"));
-    		return null;
-    	}
-    	final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-    	final NodeModel newNode = new NodeModel(styleMap);
-    	newNode.setUserObject(newStyle);
-    	if(copyStyleFromSelected) {
-            NodeModel styleSourceNode = Controller.getCurrentController().getSelection().getSelected();
-    	    final ArrayList<IStyle> styles = new ArrayList<IStyle>(getStyles(styleSourceNode, StyleOption.FOR_UNSELECTED_NODE));
-    	    for(int i = styles.size() - 1; i >= 0; i--){
-    	        IStyle style = styles.get(i);
-    	        if(MapStyleModel.DEFAULT_STYLE.equals(style)){
-    	            continue;
-    	        }
-    	        final NodeModel styleNode = styleModel.getStyleNode(style);
-    	        if(styleNode == null){
-    	            continue;
-    	        }
-    	        Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleNode, newNode);
-    	    }
-    	    Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleSourceNode, newNode);
-    	    Controller.getCurrentModeController().copyExtensions(Keys.ICONS, styleSourceNode, newNode);
-    	}
-    	NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
-    	if(userStyleParentNode == null){
-    		userStyleParentNode = new NodeModel(styleMap);
-    		userStyleParentNode.setUserObject(new StyleTranslatedObject(MapStyleModel.STYLES_USER_DEFINED));
-    		NodeModel rootNode = styleMap.getRootNode();
-            mapController.insertNode(userStyleParentNode, rootNode, rootNode.getChildCount());
+		final MapModel map = Controller.getCurrentController().getMap();
+		final MapStyleModel styleModel = MapStyleModel.getExtension(map);
+		final MapModel styleMap = styleModel.getStyleMap();
+		final IStyle newStyle = StyleFactory.create(styleName);
+		if (null != styleModel.getStyleNode(newStyle)) {
+			UITools.errorMessage(TextUtils.getText("style_already_exists"));
+			return null;
+		}
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		final NodeModel newNode = new NodeModel(styleMap);
+		newNode.setUserObject(newStyle);
+		if (copyStyleFromSelected) {
+			NodeModel styleSourceNode = Controller.getCurrentController().getSelection().getSelected();
+			final ArrayList<IStyle> styles = new ArrayList<IStyle>(getStyles(styleSourceNode, StyleOption.FOR_UNSELECTED_NODE));
+			for (int i = styles.size() - 1; i >= 0; i--) {
+				IStyle style = styles.get(i);
+				if (MapStyleModel.DEFAULT_STYLE.equals(style)) {
+					continue;
+				}
+				final NodeModel styleNode = styleModel.getStyleNode(style);
+				if (styleNode == null) {
+					continue;
+				}
+				Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleNode, newNode);
+			}
+			Controller.getCurrentModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, styleSourceNode, newNode);
+			Controller.getCurrentModeController().copyExtensions(Keys.ICONS, styleSourceNode, newNode);
+		}
+		NodeModel userStyleParentNode = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
+		if (userStyleParentNode == null) {
+			userStyleParentNode = new NodeModel(styleMap);
+			userStyleParentNode.setUserObject(new StyleTranslatedObject(MapStyleModel.STYLES_USER_DEFINED));
+			NodeModel rootNode = styleMap.getRootNode();
+			mapController.insertNode(userStyleParentNode, rootNode, rootNode.getChildCount());
 
-    	}
-    	mapController.insertNode(newNode, userStyleParentNode, userStyleParentNode.getChildCount());
-    	mapController.select(newNode);
-    	final IActor actor = new IActor() {
-    		public void undo() {
-    			styleModel.removeStyleNode(newNode);
-    			refreshMap(map);
-    		}
+		}
+		mapController.insertNode(newNode, userStyleParentNode, userStyleParentNode.getChildCount());
+		mapController.select(newNode);
+		final IActor actor = new IActor() {
+			public void undo() {
+				styleModel.removeStyleNode(newNode);
+				refreshMap(map);
+			}
 
-    		public String getDescription() {
-    			return "NewStyle";
-    		}
+			public String getDescription() {
+				return "NewStyle";
+			}
 
-    		public void act() {
-    			styleModel.addStyleNode(newNode);
-    			refreshMap(map);
-    		}
-    	};
-    	Controller.getCurrentModeController().execute(actor, styleMap);
-    	return newStyle;
-    }
+			public void act() {
+				styleModel.addStyleNode(newNode);
+				refreshMap(map);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, styleMap);
+		return newStyle;
+	}
 
 
 }
