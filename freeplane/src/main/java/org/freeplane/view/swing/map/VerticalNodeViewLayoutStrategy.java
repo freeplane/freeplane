@@ -164,7 +164,7 @@ class VerticalNodeViewLayoutStrategy {
 							if(visibleChildCounter == 0 
 							        && view.getParentNodeAlignment() == ParentNodeAlignment.BEFORE_FIRST_CHILD
 							        && contentSize.height > 0) {
-							    y += contentSize.height + vGap;
+							    y += contentSize.height + minimalDistanceBetweenChildren;
 							}
 						}
 						int missingWidth;
@@ -282,8 +282,9 @@ class VerticalNodeViewLayoutStrategy {
 		}
 		top += align(contentSize.height - childContentHeightSum);
         if(view.getParentNodeAlignment() == ParentNodeAlignment.AFTER_LAST_CHILD
-                && contentSize.height > 0) {
-            top -= contentSize.height + vGap;
+                && contentSize.height > 0
+                && visibleChildCounter > 0) {
+            top -= contentSize.height + minimalDistanceBetweenChildren;
         }
 
 		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, childContentHeightSum, top);
