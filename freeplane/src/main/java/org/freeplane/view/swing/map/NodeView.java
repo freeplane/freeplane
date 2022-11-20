@@ -1322,23 +1322,24 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		final Point relativeLocation = getRelativeLocation(target);
         final MainView targetMainView = target.getMainView();
-        relativeLocation.x += targetMainView.getWidth()/2;
-        relativeLocation.y += targetMainView.getHeight()/2;
         boolean usesHorizontalLayout = usesHorizontalLayout();
-		final Point inPoint = mainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
-        UITools.convertPointToAncestor(targetMainView, inPoint, this);
 
-        relativeLocation.x -= targetMainView.getWidth()/2;
-        relativeLocation.y -= targetMainView.getHeight()/2;
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-		final Point outPoint = targetMainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
-		UITools.convertPointToAncestor(getMainView(), outPoint, this);
+		final Point end = targetMainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
 
-		final int x = Math.min(inPoint.x, outPoint.x);
-		final int y = Math.min(inPoint.y, outPoint.y);
-		final int w = Math.abs(inPoint.x - outPoint.x);
-		final int h = Math.abs(inPoint.y - outPoint.y);
+
+        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2 + end.x;
+        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2 + end.y;
+        final Point start = mainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
+
+        UITools.convertPointToAncestor(getMainView(), end, this);
+        UITools.convertPointToAncestor(targetMainView, start, this);
+
+        final int x = Math.min(start.x, end.x);
+		final int y = Math.min(start.y, end.y);
+		final int w = Math.abs(start.x - end.x);
+		final int h = Math.abs(start.y - end.y);
 		final int EXTRA = 50;
 		repaint(x - EXTRA, y - EXTRA, w + EXTRA * 2, h + EXTRA * 2);
 	}
