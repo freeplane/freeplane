@@ -18,7 +18,7 @@ public class NodeConditionalStyleProxy extends AConditionalStyleProxy<NodeModel>
 
 	@Override
 	ConditionalStyleModel getConditionalStyleModel() {
-		return ConditionalStyleModel.getExtension(getDelegate());
+		return ConditionalStyleModel.createConditionalStyleModel(getDelegate());
 	}
 
 	public NodeConditionalStyleProxy(NodeModel nodeModel, boolean isActive, String script, String styleName, boolean isLast) {

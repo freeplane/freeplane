@@ -114,6 +114,16 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 
 	}
+ 
+	public static ConditionalStyleModel createConditionalStyleModel(NodeModel nodeModel) {
+        ConditionalStyleModel extension = nodeModel.getExtension(ConditionalStyleModel.class);
+        if (extension == null) {
+            extension = new ConditionalStyleModel();
+            nodeModel.addExtension(extension);
+        }
+        return extension;
+    }
+
 	private ArrayList<Item> styles;
 	public ConditionalStyleModel() {
 	    super();
@@ -357,13 +367,4 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
     private boolean contains(Item item) {
         return styles.stream().anyMatch(own -> item.style.equals(own.style) && Objects.equals(item.condition, own.condition));
     }
-
-	public static ConditionalStyleModel getExtension(NodeModel nodeModel) {
-		ConditionalStyleModel extension = nodeModel.getExtension(ConditionalStyleModel.class);
-		if (extension == null) {
-			extension = new ConditionalStyleModel();
-			nodeModel.addExtension(extension);
-		}
-		return extension;
-	}
 }
