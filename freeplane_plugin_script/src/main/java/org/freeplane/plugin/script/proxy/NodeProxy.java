@@ -1069,16 +1069,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public void setChildNodesAlignment(final ChildNodesAlignment alignment){
-		((MLocationController) LocationController.getController()).setChildNodesAlignment(getDelegate(), alignment);
-	}
-
-	@Override
-	public ChildNodesAlignment getChildNodesAlignment() {
-		return LocationController.getController().getChildNodesAlignment(getDelegate());
-	}
-
-	@Override
 	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnit> minimalDistanceBetweenChildren) {
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
 	}

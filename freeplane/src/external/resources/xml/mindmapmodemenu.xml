@@ -16,7 +16,9 @@
 		<Entry name="NodeListAction" row="2" weight = "1"/>
 		<Entry usedBy="EDITOR" >
 			<Entry name="CutAction" row = "1" />
-			<Entry name="CopyAction" row = "1" />
+		</Entry>
+		<Entry name="CopyAction" row = "1" />
+		<Entry usedBy="EDITOR" >
 			<Entry name="PasteAction" row = "1" />
 			<Entry builder="dropdownMenu" text = "edit.tooltip" width = "3" row="2">
 				<Entry name="CopySingleAction" />
@@ -633,13 +635,15 @@
 	<Entry name="node_popup" builder="node_popup">
         <Entry usedBy = "EDITOR" >
 			<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
-	        <Entry name="menu_copy">
-	          <Entry name="CopyAction" accelerator="control C" />
-	          <Entry name="CopySingleAction" accelerator="control shift C" />
-	          <Entry name="CopyIDAction" />
-	          <Entry name="CopyNodeURIAction" />
-	          <Entry name="CopyAttributes" />
-	        </Entry>
+		</Entry>	
+        <Entry name="menu_copy">
+          <Entry name="CopyAction" accelerator="control C" />
+          <Entry name="CopySingleAction" accelerator="control shift C" />
+          <Entry name="CopyIDAction" />
+          <Entry name="CopyNodeURIAction" />
+          <Entry name="CopyAttributes" />
+        </Entry>
+	    <Entry usedBy = "EDITOR" >
 			<Entry name="PasteAction" accelerator="control V" usedBy = "EDITOR" />
             <Entry name="menu_remove">
             	<Entry name="DeleteAction" />

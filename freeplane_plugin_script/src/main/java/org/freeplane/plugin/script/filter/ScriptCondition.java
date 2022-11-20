@@ -80,7 +80,7 @@ public class ScriptCondition extends ASelectableCondition {
 		try {
 	        final Object result;
 	        try {
-	            result = scriptRunner.execute(node);
+	            result = FormulaUtils.executeScript(scriptContext, () -> scriptRunner.execute(node));
 	            if(result instanceof Boolean)
 	                return (Boolean) result;
 	            if(result instanceof Number)

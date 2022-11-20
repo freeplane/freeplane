@@ -105,8 +105,8 @@ class OptionPanel {
 		this.feedback = feedback;
 		new OptionPanelBuilder();
 	}
-	
-	
+
+
 
 	void enablePropertyValidators() {
         this.arePropertyValidatorsEnabled = true;
@@ -398,6 +398,9 @@ class OptionPanel {
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) i.nextElement();
 			final IPropertyControlCreator creator = (IPropertyControlCreator) node.getUserObject();
 			if (creator != null) {
+				String propertyName = creator.getPropertyName();
+				if(ResourceController.getResourceController().getBooleanProperty(propertyName + ".hide"))
+					continue;
 				final IPropertyControl control = creator.createControl();
 				controls.add(control);
 				if (parentControl != null)

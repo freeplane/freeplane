@@ -251,15 +251,21 @@ public class MMapController extends MapController {
     }
 
     public int findNewNodePosition(final NodeModel targetNode) {
+        boolean placeAsFirstChild = placesNewChildFirst(targetNode);
+        IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
+        final int position = placeAsFirstChild 
+                ? 0
+                : targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode);
+        return position;
+    }
+
+    public boolean placesNewChildFirst(final NodeModel targetNode) {
         final MapStyleModel mapStyleModel = MapStyleModel.getExtension(targetNode.getMap());
         MapViewLayout layoutType = mapStyleModel.getMapViewLayout();
 
-        IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
-        final int position = layoutType ==  MapViewLayout.OUTLINE ? 0 : 
-            ResourceController.getResourceController().getProperty("placenewbranches")
-            .equals("last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) 
-            : 0;
-        return position;
+        boolean placeAsFirstChild = layoutType ==  MapViewLayout.OUTLINE ||
+            ResourceController.getResourceController().getProperty("placenewbranches").equals("first");
+        return placeAsFirstChild;
     }
 
     private void copyFormat(final NodeModel source, final NodeModel target) {
