@@ -378,7 +378,11 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	int getHGap() {
-		return map.getZoomed(LocationModel.getModel(model).getHGap().toBaseUnits());
+	    NodeView parentView = getParentView();
+        ParentNodeAlignment parentNodeAlignment = parentView != null ? parentView.getParentNodeAlignment() : ParentNodeAlignment.NOT_SET;
+        boolean areChildrenSeparatedOnMainLayoutAxis = parentNodeAlignment == ParentNodeAlignment.BEFORE_FIRST_CHILD || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD;
+		double modelGap = LocationModel.getModel(model).getHGap().toBaseUnits();
+        return map.getZoomed(areChildrenSeparatedOnMainLayoutAxis ? modelGap - LocationModel.DEFAULT_HGAP_PX * 2. / 3. : modelGap);
 	}
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {

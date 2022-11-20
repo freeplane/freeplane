@@ -8,6 +8,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Component;
 import java.awt.Dimension;
 
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.features.map.NodeModel;
 
@@ -238,5 +239,9 @@ class NodeViewLayoutHelper {
     @Override
     public String toString() {
         return "NodeViewLayoutHelper [view=" + view + "]";
+    }
+
+    ChildrenSides childrenSides() {
+        return view.getChildNodesLayout().childrenSides();
     }
 }

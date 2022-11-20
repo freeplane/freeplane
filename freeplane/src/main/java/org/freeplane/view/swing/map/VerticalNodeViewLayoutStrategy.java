@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -146,7 +147,7 @@ class VerticalNodeViewLayoutStrategy {
 
 				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 				final int childContentHeight = child.getContentHeight() + childCloudHeigth;
-				int childShiftY = calculateShiftY(child);
+				int childShiftY = calculateDistance(child, NodeViewLayoutHelper::getShift);
 
 				if (isItem) {
 					final int childContentShift = child.getContentY() - childCloudHeigth / 2 - spaceAround;
@@ -310,10 +311,6 @@ class VerticalNodeViewLayoutStrategy {
 		return deltaTop;
 	}
 
-    private int calculateShiftY(final NodeViewLayoutHelper child) {
-        return calculateDistance(child, NodeViewLayoutHelper::getShift);
-    }
-
     private int calculateDistance(final NodeViewLayoutHelper child, ToIntFunction<NodeViewLayoutHelper> nodeDistance) {
         if (!child.isContentVisible())
             return 0;
@@ -352,9 +349,9 @@ class VerticalNodeViewLayoutStrategy {
 				boolean isFreeNode = child.isFree();
 				boolean isItem = level == 0;
 				int childHGap;
-				if (child.isContentVisible())
-					childHGap = calculateHGap(child);
-				else if (child.isSummary())
+				if (child.isContentVisible()) {
+                    childHGap = calculateDistance(child, NodeViewLayoutHelper::getHGap);
+                } else if (child.isSummary())
 					childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 				else
 					childHGap = 0;
@@ -374,7 +371,9 @@ class VerticalNodeViewLayoutStrategy {
 				if (level > 0)
 					baseX = summaryBaseX[level - 1];
 				else {
-					if (child.isLeft() != (isItem && (isFreeNode || areChildrenSeparatedByY))) {
+				    if(isItem && areChildrenSeparatedByY && view.childrenSides() == ChildrenSides.BOTH_SIDES)
+				        baseX = contentSize.width / 2;
+				    else if (child.isLeft() != (isItem && (isFreeNode || areChildrenSeparatedByY))) {
 						baseX = 0;
 					} else {
 						baseX = contentSize.width;
@@ -392,11 +391,7 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 
-    private int calculateHGap(final NodeViewLayoutHelper child) {
-        return calculateDistance(child, NodeViewLayoutHelper::getHGap);
-    }
-
-	private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int childContentHeightOnSide,  int topOnSide) {
+    private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int childContentHeightOnSide,  int topOnSide) {
 		if (! (leftSideCoordinaresAreSet || rightSideCoordinatesAreSet)) {
 			childContentHeight = childContentHeightOnSide;
 			top = topOnSide;
