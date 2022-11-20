@@ -19,6 +19,19 @@
  */
 package org.freeplane.features.styles.mindmapmode;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.KeyboardFocusManager;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -33,27 +46,40 @@ import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
-import org.freeplane.features.map.*;
+import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
-import org.freeplane.features.styles.*;
+import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.ConditionalStyleModel.Item;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.SetBooleanMapPropertyAction;
+import org.freeplane.features.styles.StyleFactory;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
-
-import javax.swing.*;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
-import java.awt.*;
-import java.util.List;
-import java.util.*;
-import java.util.function.Function;
 
 /**
  * @author Dimitry Polivaev
@@ -202,9 +228,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
 		}
 	}
-
-	;
-
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
