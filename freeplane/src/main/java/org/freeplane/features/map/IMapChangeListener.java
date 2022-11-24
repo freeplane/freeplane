@@ -22,7 +22,7 @@ package org.freeplane.features.map;
 /**
  * @author Dimitry Polivaev
  */
-public interface IMapChangeListener {
+public interface IMapChangeListener extends ComparableByPriority {
 	default void mapChanged(MapChangeEvent event) {}
 
 	default void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {}
