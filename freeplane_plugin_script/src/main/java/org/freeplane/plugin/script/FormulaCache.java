@@ -46,7 +46,7 @@ public class FormulaCache implements IExtension{
 	}
 
 	private Object getOrThrowCachedResult(final NodeScript nodeScript) {
-		final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(nodeScript.node.getID());
+		final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(nodeScript.node.createID());
 		if (cacheEntry == null)
 			return null;
 		final CachedResult cachedResult = cacheEntry.get(nodeScript.script);

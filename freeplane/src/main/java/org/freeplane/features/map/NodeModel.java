@@ -53,11 +53,11 @@ public class NodeModel{
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
-	
+
 	public enum Side {
 		DEFAULT, TOP_OR_LEFT, BOTTOM_OR_RIGHT, AS_SIBLING
 	}
-	
+
 	public enum NodeProperty{UNKNOWN_PROPERTY};
 
 	public enum CloneType{TREE, CONTENT}
@@ -115,9 +115,9 @@ public class NodeModel{
 	}
 
 	protected void init(final Object userObject) {
-	    setUserObject(userObject);
+		setUserObject(userObject);
 		setHistoryInformation(new HistoryInformationModel());
-    }
+	}
 
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
 		if (views == null) {
@@ -161,12 +161,12 @@ public class NodeModel{
 	}
 
 	protected List<NodeModel> getChildrenInternal() {
-	    return children;
-    }
+		return children;
+	}
 
 	protected void setChildrenInternal(List<NodeModel> chidren) {
-	    this.children = chidren;
-    }
+		this.children = chidren;
+	}
 
 	public Enumeration<NodeModel> children() {
 		final Iterator<NodeModel> i = getChildrenInternal().iterator();
@@ -194,16 +194,12 @@ public class NodeModel{
 		return id;
 	}
 
-	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
-		if (views == null) {
-			return;
+	void fireNodeInserted(IMapChangeListener[] list, NodeModel child, int index) {
+		for (final IMapChangeListener next : list) {
+			next.onNodeInserted(this, child, index);
 		}
-		final Iterator<INodeView> iterator = new ArrayList<>(views).iterator();
-		while (iterator.hasNext()) {
-			iterator.next().nodeChanged(nodeChangeEvent);
-		}
+		fireNodeInserted(child, index);
 	}
-
 	private void fireNodeInserted(final NodeModel child, final int index) {
 		if (views == null) {
 			return;
@@ -214,12 +210,52 @@ public class NodeModel{
 		}
 	}
 
-	private void fireNodeRemoved(final NodeModel child, final int index) {
+	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
+		for(NodeModel node : clones[CONTENT.ordinal()]){
+			final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
+			node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
+		}
+	}
+
+	private void fireSingleNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
+		for (final INodeChangeListener listener : nodeChangeListeners) {
+			listener.nodeChanged(nodeChangeEvent);
+		}
+		fireNodeChanged(nodeChangeEvent);
+	}
+
+	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
+			if (views == null) {
+				return;
+			}
+			final Iterator<INodeView> iterator = new ArrayList<>(views).iterator();
+			while (iterator.hasNext()) {
+				iterator.next().nodeChanged(nodeChangeEvent);
+			}
+	}
+
+	static void fireNodeMoved(IMapChangeListener[] list, NodeMoveEvent nodeMoveEvent) {
+		NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(nodeMoveEvent.oldParent, nodeMoveEvent.child, nodeMoveEvent.oldIndex);
+		nodeMoveEvent.oldParent.fireNodeRemoved(nodeDeletionEvent);
+		for (final IMapChangeListener next : list) {
+			next.onNodeMoved(nodeMoveEvent);
+		}
+		nodeMoveEvent.newParent.fireNodeInserted(nodeMoveEvent.child, nodeMoveEvent.newIndex);
+	}
+
+	void fireNodeRemoved(IMapChangeListener[] list, NodeDeletionEvent nodeDeletionEvent) {
+		fireNodeRemoved(nodeDeletionEvent);
+		for (final IMapChangeListener next : list) {
+			next.onNodeDeleted(nodeDeletionEvent);
+
+		}
+	}
+
+	private void fireNodeRemoved(NodeDeletionEvent nodeDeletionEvent) {
 		if (views == null) {
 			return;
 		}
 		final Iterator<INodeView> iterator = views.iterator();
-		final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(this, child, index);
 		while (iterator.hasNext()) {
 			iterator.next().onNodeDeleted(nodeDeletionEvent);
 		}
@@ -227,7 +263,7 @@ public class NodeModel{
 
 	public boolean getAllowsChildren() {
 		return NodeModel.ALLOWSCHILDREN;
-	};
+	}
 
 	public NodeModel getChildAt(final int childIndex) {
 		return childIndex >= 0 ? getChildrenInternal().get(childIndex) : null;
@@ -251,13 +287,13 @@ public class NodeModel{
 		return Collections.unmodifiableList(childrenList);
 	}
 
-    public <T extends IExtension> T getExtension(final Class<T> clazz) {
+	public <T extends IExtension> T getExtension(final Class<T> clazz) {
 		return getExtensionContainer().getExtension(clazz);
 	}
 
 	public Map<Class<? extends IExtension>, IExtension> getSharedExtensions() {
 		return getExtensionContainer().getExtensions();
-	};
+	}
 
 	public HistoryInformationModel getHistoryInformation() {
 		return sharedData.getHistoryInformation();
@@ -283,15 +319,15 @@ public class NodeModel{
 		return map;
 	}
 
-    public int getNodeLevel() {
-        return getNodeLevel(true, null);
-    }
-    
-    public int getNodeLevel(Filter filter) {
-        return getNodeLevel(false, filter);
-    }
-    
-    private int getNodeLevel(final boolean countHidden, Filter filter) {
+	public int getNodeLevel() {
+		return getNodeLevel(true, null);
+	}
+
+	public int getNodeLevel(Filter filter) {
+		return getNodeLevel(false, filter);
+	}
+
+	private int getNodeLevel(final boolean countHidden, Filter filter) {
 		int level = 0;
 		NodeModel parent;
 		for (parent = getParentNode(); parent != null; parent = parent.getParentNode()) {
@@ -331,11 +367,11 @@ public class NodeModel{
 		}
 		return views;
 	}
-	
 
-    public boolean hasViewers() {
-        return views != null && ! views.isEmpty();
-    }
+
+	public boolean hasViewers() {
+		return views != null && ! views.isEmpty();
+	}
 
 
 	public final String getXmlText() {
@@ -361,7 +397,6 @@ public class NodeModel{
 			preferredChild = childNode;
 		}
 		child.setParent(this);
-		fireNodeInserted(childNode, getIndex(child));
 	}
 
 	private boolean isAccessible() {
@@ -449,7 +484,7 @@ public class NodeModel{
 	}
 
 	public void remove(final int index) {
-	    final NodeModel child = children.get(index);
+		final NodeModel child = children.get(index);
 		if (child == preferredChild) {
 			if (getChildrenInternal().size() > index + 1) {
 				preferredChild = (getChildrenInternal().get(index + 1));
@@ -460,8 +495,7 @@ public class NodeModel{
 		}
 		child.setParent(null);
 		children.remove(index);
-		fireNodeRemoved(child, index);
-    }
+	}
 
 	public <T extends IExtension> T removeExtension(final Class<T> clazz){
 		return getExtensionContainer().removeExtension(clazz);
@@ -537,18 +571,18 @@ public class NodeModel{
 
 	public void setParent(final NodeModel newParent) {
 		if(parent == null && newParent != null && newParent.isAttached())
-	        attach();
+			attach();
 		else if(parent != null && parent.isAttached() &&  (newParent == null || !newParent.isAttached())
 				|| newParent == null && isAttached())
-	        detach();
+			detach();
 		parent = newParent;
 	}
 
 	void attach() {
 		attachClones();
-	    for(NodeModel child : children)
-	    	child.attach();
-    }
+		for(NodeModel child : children)
+			child.attach();
+	}
 
 	private void attachClones() {
 		for(Clones clonesGroup : clones)
@@ -557,9 +591,9 @@ public class NodeModel{
 
 	private void detach() {
 		detachClones();
-	    for(NodeModel child : children)
-	    	child.detach();
-    }
+		for(NodeModel child : children)
+			child.detach();
+	}
 
 	private void detachClones() {
 		for(Clones clonesGroup : clones)
@@ -568,8 +602,8 @@ public class NodeModel{
 
 
 	boolean isAttached() {
-	    return clones[0].size() != 0;
-    }
+		return clones[0].size() != 0;
+	}
 
 	public final void setText(final String text) {
 		sharedData.setText(text);
@@ -609,65 +643,51 @@ public class NodeModel{
 	}
 
 	private ExtensionContainer getExtensionContainer() {
-	    return sharedData.getExtensionContainer();
-    }
-
-	private NodeIconSetModel getIconModel() {
-	    return sharedData.getIcons();
-    }
-
-	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-		for(NodeModel node : clones[CONTENT.ordinal()]){
-			final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
-			node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
-		}
+		return sharedData.getExtensionContainer();
 	}
 
-	private void fireSingleNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-	    for (final INodeChangeListener listener : nodeChangeListeners) {
-			listener.nodeChanged(nodeChangeEvent);
-		}
-		fireNodeChanged(nodeChangeEvent);
-    }
+	private NodeIconSetModel getIconModel() {
+		return sharedData.getIcons();
+	}
 
-    public NodeModel cloneTree(){
+	public NodeModel cloneTree(){
 		final NodeModel clone = new Cloner(this).cloneTree();
 		return clone;
 	}
 
-    public NodeModel cloneContent() {
+	public NodeModel cloneContent() {
 		if(containsExtension(EncryptionModel.class))
 			throw new CloneEncryptedNodeException();
 		return cloneNode(CloneType.CONTENT);
 	}
 
 	protected NodeModel cloneNode(CloneType cloneType) {
-	    final NodeModel clone = new NodeModel(this, cloneType);
+		final NodeModel clone = new NodeModel(this, cloneType);
 		return clone;
-    }
+	}
 
 	public SharedNodeData getSharedData() {
-	    return sharedData;
-    }
+		return sharedData;
+	}
 
 	public Collection<IExtension> getIndividualExtensionValues() {
 		return Collections.emptyList();
-    }
+	}
 
 	public void convertToClone(NodeModel node, CloneType cloneType) {
 		sharedData = node.sharedData;
 		if(cloneType == TREE)
 			this.clones[TREE.ordinal()] = new DetachedNodeList(this, node, TREE);
 		this.clones[CONTENT.ordinal()] = new DetachedNodeList(this, node, CONTENT);
-    }
+	}
 
 	public  Clones subtreeClones() {
-	    return clones(CloneType.TREE);
-    }
+		return clones(CloneType.TREE);
+	}
 
 	public  Clones allClones() {
-	    return clones(CloneType.CONTENT);
-    }
+		return clones(CloneType.CONTENT);
+	}
 
 	Clones clones(final CloneType cloneType) {
 		return clones[cloneType.ordinal()];
@@ -681,11 +701,11 @@ public class NodeModel{
 			if(child.subtreeContainsCloneOf(node))
 				return true;
 		return false;
-    }
+	}
 
 	public boolean isSubtreeCloneOf(NodeModel ancestorClone) {
-	    return subtreeClones().contains(ancestorClone);
-    }
+		return subtreeClones().contains(ancestorClone);
+	}
 
 	public NodeModel getSubtreeRoot() {
 		if(isSubtreeRoot())
@@ -693,11 +713,11 @@ public class NodeModel{
 		else
 			return getParentNode().getSubtreeRoot();
 
-    }
+	}
 
 	private boolean isSubtreeRoot() {
-	    return parent == null || isCloneTreeRoot();
-    }
+		return parent == null || isCloneTreeRoot();
+	}
 
 	public boolean isCloneTreeRoot(){
 		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
@@ -707,7 +727,7 @@ public class NodeModel{
 	public boolean isCloneTreeNode(){
 		return parent != null && clones[TREE_CLONE_INDEX].size() > 1 && parent.clones[TREE_CLONE_INDEX].size() == clones[TREE_CLONE_INDEX].size();
 	}
-	
+
 	public boolean isCloneNode() {
 		return clones[TREE_CLONE_INDEX].size() > 1 || clones[CONTENT_CLONE_INDEX].size() > 1;
 	}
@@ -756,20 +776,20 @@ public class NodeModel{
 		this.attachClones();
 	}
 
-    public boolean subtreeHasVisibleContent(Filter filter) {
-        return hasVisibleContent(filter) || childSubtreesHaveVisibleContent(filter);
-    }
+	public boolean subtreeHasVisibleContent(Filter filter) {
+		return hasVisibleContent(filter) || childSubtreesHaveVisibleContent(filter);
+	}
 
 	public boolean childSubtreesHaveVisibleContent(Filter filter) {
 		return children.stream().anyMatch(child -> child.subtreeHasVisibleContent(filter));
 	}
 
-    public NodeModel duplicate(boolean withChildren) {
-        return map.duplicate(this, withChildren);
-    }
+	public NodeModel duplicate(boolean withChildren) {
+		return map.duplicate(this, withChildren);
+	}
 
 	public Side getSide() {
 		return side;
 	}
-    
+
 }

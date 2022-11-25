@@ -19,6 +19,6 @@
  */
 package org.freeplane.features.map;
 
-public interface INodeChangeListener {
-	public void nodeChanged(NodeChangeEvent event);
+public interface INodeChangeListener extends ComparableByPriority{
+    public void nodeChanged(NodeChangeEvent event);
 }
