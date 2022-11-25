@@ -645,7 +645,7 @@ implements IExtension, NodeChangeAnnouncer{
 					new IMapLifeCycleListener[] {});
 			for (final IMapLifeCycleListener next : list) {
 				next.onCreate(map);
-			} 
+			}
 		} finally {
 			map.setReadOnly(readOnly);
 		}
@@ -682,7 +682,7 @@ implements IExtension, NodeChangeAnnouncer{
 	protected void fireNodeDeleted(final NodeDeletionEvent nodeDeletionEvent) {
 	    sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
-		nodeDeletionEvent.node.fireNodeRemoved(list, nodeDeletionEvent);
+		nodeDeletionEvent.parent.fireNodeRemoved(list, nodeDeletionEvent);
 		NodeModel node = nodeDeletionEvent.node;
 		node.getMap().unregistryNodes(node);
 	}
@@ -697,9 +697,7 @@ implements IExtension, NodeChangeAnnouncer{
 	protected void fireNodeMoved(final NodeMoveEvent nodeMoveEvent) {
 	    sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
-		for (final IMapChangeListener next : list) {
-			next.onNodeMoved(nodeMoveEvent);
-		}
+		NodeModel.fireNodeMoved(list, nodeMoveEvent);
 	}
 
 	protected void firePreNodeMoved(final NodeMoveEvent nodeMoveEvent) {
