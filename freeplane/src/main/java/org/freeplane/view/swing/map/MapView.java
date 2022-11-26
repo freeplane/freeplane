@@ -1252,14 +1252,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	        boolean selectedIsTopOrLeft = oldSelected.isTopOrLeft();
 	        NodeView ancestorWithVisibleContent = oldSelected.getAncestorWithVisibleContent();
             boolean ancestorUsesHorizontalLayout = ancestorWithVisibleContent.usesHorizontalLayout();
-            ChildNodesAlignment ancestorChildNodesAlignment = ancestorWithVisibleContent.getChildNodesLayout().childNodesAlignment();
             if ((ancestorUsesHorizontalLayout && selectedIsTopOrLeft) && direction == SelectionDirection.DOWN
                     || (ancestorUsesHorizontalLayout && ! selectedIsTopOrLeft) && direction == SelectionDirection.UP
                     || (! ancestorUsesHorizontalLayout && selectedIsTopOrLeft) && direction == SelectionDirection.RIGHT
                     || (! ancestorUsesHorizontalLayout && ! selectedIsTopOrLeft) && direction == SelectionDirection.LEFT) {
                 newSelected = getVisibleSummarizedOrParentView(oldSelected);
             } else {
-                ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesLayout().childNodesAlignment();
+                ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesAlignment();
                 boolean areChildrenShifted = childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT;
                 if((selectedUsesHorizontalLayout || areChildrenShifted)
                         && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)

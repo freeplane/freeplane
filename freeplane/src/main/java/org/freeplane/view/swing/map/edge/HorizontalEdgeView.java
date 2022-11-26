@@ -26,6 +26,9 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildNodesLayout;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
@@ -52,12 +55,35 @@ public class HorizontalEdgeView extends EdgeView {
 	    }
 	    else{
 	        MainView mainView = source.getMainView();
-            if(target.isTopOrLeft()){
-	            start = usesHorizontalLayout ? mainView.getTopPoint() : mainView.getLeftPoint();
+
+	        if(usesHorizontalLayout) {
+	            if(target.isTopOrLeft()){
+	                start = mainView.getTopPoint();
+	            }
+	            else{
+	                start = mainView.getBottomPoint();
+	            }
+
 	        }
-	        else{
-	            start = usesHorizontalLayout ? mainView.getBottomPoint() : mainView.getRightPoint();
+	        else {
+	            ChildrenSides childrenSides = source.getChildNodesLayout().childrenSides();
+	            if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)
+                    start = mainView.getLeftPoint();
+                else if(childrenSides == ChildrenSides.TOP_OR_LEFT)
+                    start = mainView.getRightPoint();
+                else if(source.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT)
+	                start = mainView.getBottomPoint();
+	            else if(source.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
+	                start = mainView.getTopPoint();
+	            else if(target.isTopOrLeft()){
+	                start = mainView.getLeftPoint();
+	            }
+	            else{
+	                start = mainView.getRightPoint();
+	            }
+
 	        }
+
 	    }
         MainView mainView = target.getMainView();
         if(target.isTopOrLeft()){
@@ -76,7 +102,7 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setStroke(stroke);
 		int middle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
 		boolean usesHorizontalLayout = getSource().usesHorizontalLayout();
-		final boolean left = getTarget().isTopOrLeft() 
+		final boolean left = getTarget().isTopOrLeft()
 		        || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()
 		        && (usesHorizontalLayout && start.y > end.y || !usesHorizontalLayout && start.x > end.x );
 		if (left) {

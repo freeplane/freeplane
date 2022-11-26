@@ -770,7 +770,7 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
 
-	ChildNodesAlignment getChildNodesAlignment() {
+	public ChildNodesAlignment getChildNodesAlignment() {
 	    updateLayoutProperties();
 		return childNodesAlignment;
 	}
@@ -1254,7 +1254,7 @@ public class NodeView extends JComponent implements INodeView {
         }
     }
 
-    ChildNodesLayout getChildNodesLayout() {
+    public ChildNodesLayout getChildNodesLayout() {
         updateLayoutProperties();
         return childNodesLayout;
     }
