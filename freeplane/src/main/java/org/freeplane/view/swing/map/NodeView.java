@@ -577,19 +577,19 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	public NodeView getPreferredVisibleChild(final boolean getUpper, final boolean topOrLeft) {
+	public NodeView getPreferredVisibleChild(final boolean getUpper, final ChildrenSides sides) {
 		if (getModel().isLeaf()) {
 			return null;
 		}
 		if (getUpper) {
 			preferredChild = null;
 		}
-		if (preferredChild != null && (topOrLeft == preferredChild.isTopOrLeft()) && preferredChild.getParent() == this) {
+		if (preferredChild != null && (sides.matches(preferredChild.isTopOrLeft())) && preferredChild.getParent() == this) {
 			if (preferredChild.isContentVisible()) {
 				return preferredChild;
 			}
 			else {
-				final NodeView newSelected = preferredChild.getPreferredVisibleChild(getUpper, topOrLeft);
+				final NodeView newSelected = preferredChild.getPreferredVisibleChild(getUpper, sides);
 				if (newSelected != null) {
 					return newSelected;
 				}
@@ -612,11 +612,12 @@ public class NodeView extends JComponent implements INodeView {
 				continue;
 			}
 			NodeView childView = (NodeView) c;
-			if (!(childView.isTopOrLeft() == topOrLeft)) {
+			boolean isChildTopOrLeft = childView.isTopOrLeft();
+            if (! sides.matches(isChildTopOrLeft)) {
 				continue;
 			}
 			if (!childView.isContentVisible()) {
-				childView = childView.getPreferredVisibleChild(getUpper, topOrLeft);
+				childView = childView.getPreferredVisibleChild(getUpper, sides);
 				if (childView == null) {
 					continue;
 				}
@@ -627,7 +628,7 @@ public class NodeView extends JComponent implements INodeView {
 			final JComponent childContent = childView.getContent();
 			if(childContent == null)
 				continue;
-			final Point childPoint = new Point(topOrLeft ? childContent.getWidth() : 0, childContent.getHeight() / 2);
+			final Point childPoint = new Point(isChildTopOrLeft ? childContent.getWidth() : 0, childContent.getHeight() / 2);
 			UITools.convertPointToAncestor(childContent, childPoint, baseComponent);
 			final int dy = childPoint.y - ownY;
 			final int dx = childPoint.x - ownX;
@@ -1058,7 +1059,7 @@ public class NodeView extends JComponent implements INodeView {
 		numberingChanged(nodeDeletionEvent.index+1);
 		map.preserveRootNodeLocationOnScreen();
 		node.remove();
-		NodeView preferred = getPreferredVisibleChild(false, preferredChildIsLeft);
+		NodeView preferred = getPreferredVisibleChild(false, isTopOrLeft);
 		if (preferred == null) {
 			preferred = this;
 		}
@@ -1067,7 +1068,13 @@ public class NodeView extends JComponent implements INodeView {
 			map.selectVisibleAncestorOrSelf(preferred);
 	}
 
-	@Override
+	public NodeView getPreferredVisibleChild(boolean getUpper, boolean isTopOrLeft) {
+	    return getPreferredVisibleChild(getUpper, ChildrenSides.ofTopOrLeft(isTopOrLeft));
+    }
+
+
+
+    @Override
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
 		assert parent == model;
 		if (isFolded) {

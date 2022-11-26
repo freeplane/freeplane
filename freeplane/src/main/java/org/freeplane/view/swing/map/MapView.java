@@ -67,6 +67,8 @@ import javax.swing.JPanel;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -1248,32 +1250,41 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 return null;
 	    } else {
 	        boolean selectedIsTopOrLeft = oldSelected.isTopOrLeft();
-	        boolean ancestorUsesHorizontalLayout = oldSelected.getAncestorWithVisibleContent().usesHorizontalLayout();
-            if (ancestorUsesHorizontalLayout && (selectedIsTopOrLeft && direction == SelectionDirection.DOWN
-                    || ! selectedIsTopOrLeft && direction == SelectionDirection.UP)
-                    || ! ancestorUsesHorizontalLayout && (selectedIsTopOrLeft && direction == SelectionDirection.RIGHT
-                    || ! selectedIsTopOrLeft && direction == SelectionDirection.LEFT)) {
+	        NodeView ancestorWithVisibleContent = oldSelected.getAncestorWithVisibleContent();
+            boolean ancestorUsesHorizontalLayout = ancestorWithVisibleContent.usesHorizontalLayout();
+            ChildNodesAlignment ancestorChildNodesAlignment = ancestorWithVisibleContent.getChildNodesLayout().childNodesAlignment();
+            if ((ancestorUsesHorizontalLayout && selectedIsTopOrLeft || ! ancestorUsesHorizontalLayout && ancestorChildNodesAlignment == ChildNodesAlignment.BEFORE_PARENT) && direction == SelectionDirection.DOWN
+                    || (ancestorUsesHorizontalLayout && ! selectedIsTopOrLeft || ! ancestorUsesHorizontalLayout && ancestorChildNodesAlignment == ChildNodesAlignment.AFTER_PARENT) && direction == SelectionDirection.UP
+                    || (! ancestorUsesHorizontalLayout && selectedIsTopOrLeft || ancestorUsesHorizontalLayout && ancestorChildNodesAlignment == ChildNodesAlignment.BEFORE_PARENT) && direction == SelectionDirection.RIGHT
+                    || (! ancestorUsesHorizontalLayout && ! selectedIsTopOrLeft || ancestorUsesHorizontalLayout && ancestorChildNodesAlignment == ChildNodesAlignment.AFTER_PARENT) && direction == SelectionDirection.LEFT) {
                 newSelected = getVisibleSummarizedOrParentView(oldSelected);
-            }
-            else if(selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
-                    || ! selectedUsesHorizontalLayout && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
-                if (oldSelected.isFolded() && unfoldsOnNavigation()) {
-                    NodeView ancestorWithVisibleContent = oldSelected.getAncestorWithVisibleContent();
-                    if (ancestorWithVisibleContent == null || oldSelected.usesHorizontalLayout() == ancestorWithVisibleContent.usesHorizontalLayout()) {
-                        getModeController().getMapController().unfoldAndScroll(oldModel, filter);
-                        if(oldSelected.getModel().hasVisibleContent(filter))
-                            return oldSelected;
+            } else {
+                ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesLayout().childNodesAlignment();
+                boolean areChildrenShifted = childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT;
+                if((selectedUsesHorizontalLayout || areChildrenShifted)
+                        && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
+                        || (! selectedUsesHorizontalLayout || areChildrenShifted) && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
+                    if (oldSelected.isFolded() && unfoldsOnNavigation()) {
+                        if (ancestorWithVisibleContent == null || oldSelected.usesHorizontalLayout() == ancestorWithVisibleContent.usesHorizontalLayout()) {
+                            getModeController().getMapController().unfoldAndScroll(oldModel, filter);
+                            if(oldSelected.getModel().hasVisibleContent(filter))
+                                return oldSelected;
+                        }
                     }
+                    boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
+                    if(oldSelected.getChildNodesLayout().childrenSides() == ChildrenSides.BOTH_SIDES
+                            && ((direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)) == selectedUsesHorizontalLayout)
+                        newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet, ChildrenSides.BOTH_SIDES);
+                    else
+                        newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet, looksAtTopOrLeft);
+                    while (newSelected != null && !newSelected.getModel().hasVisibleContent(filter)) {
+                        newSelected = newSelected.getPreferredVisibleChild(isOutlineLayoutSet, looksAtTopOrLeft);
+                    }
+                    if(newSelected == null)
+                        newSelected = getVisibleSummaryView(oldSelected);
                 }
-                boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
-                newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet, looksAtTopOrLeft);
-                while (newSelected != null && !newSelected.getModel().hasVisibleContent(filter)) {
-                    newSelected = newSelected.getPreferredVisibleChild(isOutlineLayoutSet, looksAtTopOrLeft);
-                }
-                if(newSelected == null)
-                    newSelected = getVisibleSummaryView(oldSelected);
+                else newSelected = null;
             }
-            else newSelected = null;
 	    }
         return newSelected;
 	}
