@@ -8,34 +8,40 @@ package org.freeplane.api;
 
 public enum ChildNodesLayout {
     NOT_SET(LayoutOrientation.NOT_SET, ChildrenSides.NOT_SET, ChildNodesAlignment.NOT_SET),
-    AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),
-    AUTO_AFTERPARENT(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AFTER_PARENT),
-    AUTO_BEFOREPARENT(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BEFORE_PARENT),
-    AUTO_CENTERED(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_CENTER),
-    TOPTOBOTTOM_LEFT_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AUTO),
-    TOPTOBOTTOM_BOTHSIDES_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AUTO),
-    TOPTOBOTTOM_RIGHT_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AUTO),
-    LEFTTORIGHT_TOP_AUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AUTO),
-    LEFTTORIGHT_BOTHSIDES_AUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AUTO),
-    LEFTTORIGHT_BOTTOM_AUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AUTO),
-    TOPTOBOTTOM_LEFT_TOP(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BEFORE_PARENT),
-    TOPTOBOTTOM_BOTHSIDES_TOP(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BEFORE_PARENT),
-    TOPTOBOTTOM_RIGHT_TOP(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BEFORE_PARENT),
-    TOPTOBOTTOM_LEFT_CENTERED(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BY_CENTER),
-    TOPTOBOTTOM_BOTHSIDES_CENTERED(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BY_CENTER),
-    TOPTOBOTTOM_RIGHT_CENTERED(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BY_CENTER),
+
     TOPTOBOTTOM_LEFT_BOTTOM(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AFTER_PARENT),
     TOPTOBOTTOM_BOTHSIDES_BOTTOM(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AFTER_PARENT),
     TOPTOBOTTOM_RIGHT_BOTTOM(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AFTER_PARENT),
-    LEFTTORIGHT_TOP_LEFT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BEFORE_PARENT),
-    LEFTTORIGHT_BOTHSIDES_LEFT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BEFORE_PARENT),
-    LEFTTORIGHT_BOTTOM_LEFT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BEFORE_PARENT),
-    LEFTTORIGHT_TOP_CENTERED(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BY_CENTER),
-    LEFTTORIGHT_BOTHSIDES_CENTERED(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BY_CENTER),
-    LEFTTORIGHT_BOTTOM_CENTERED(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BY_CENTER),
+    TOPTOBOTTOM_LEFT_CENTERED(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BY_CENTER),
+    TOPTOBOTTOM_BOTHSIDES_CENTERED(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BY_CENTER),
+    TOPTOBOTTOM_RIGHT_CENTERED(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BY_CENTER),
+    TOPTOBOTTOM_LEFT_TOP(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BEFORE_PARENT),
+    TOPTOBOTTOM_BOTHSIDES_TOP(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BEFORE_PARENT),
+    TOPTOBOTTOM_RIGHT_TOP(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BEFORE_PARENT),
+
     LEFTTORIGHT_TOP_RIGHT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AFTER_PARENT),
     LEFTTORIGHT_BOTHSIDES_RIGHT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AFTER_PARENT),
     LEFTTORIGHT_BOTTOM_RIGHT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AFTER_PARENT),
+    LEFTTORIGHT_TOP_CENTERED(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BY_CENTER),
+    LEFTTORIGHT_BOTHSIDES_CENTERED(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BY_CENTER),
+    LEFTTORIGHT_BOTTOM_CENTERED(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BY_CENTER),
+    LEFTTORIGHT_TOP_LEFT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.BEFORE_PARENT),
+    LEFTTORIGHT_BOTHSIDES_LEFT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.BEFORE_PARENT),
+    LEFTTORIGHT_BOTTOM_LEFT(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.BEFORE_PARENT),
+
+    TOPTOBOTTOM_RIGHT_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AUTO),
+    TOPTOBOTTOM_BOTHSIDES_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AUTO),
+    TOPTOBOTTOM_LEFT_AUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AUTO),
+
+    LEFTTORIGHT_BOTTOM_AUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTTOM_OR_RIGHT, ChildNodesAlignment.AUTO),
+    LEFTTORIGHT_BOTHSIDES_AUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.AUTO),
+    LEFTTORIGHT_TOP_AUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.TOP_OR_LEFT, ChildNodesAlignment.AUTO),
+
+    AUTO_AFTERPARENT(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AFTER_PARENT),
+    AUTO_CENTERED(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BY_CENTER),
+    AUTO_BEFOREPARENT(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BEFORE_PARENT),
+
+    AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),
     ;
 
     private final ChildrenSides childrenSides;
