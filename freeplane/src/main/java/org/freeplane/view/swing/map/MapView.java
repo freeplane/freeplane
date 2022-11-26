@@ -135,11 +135,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         boolean isVertical() {
             return this == DOWN || this == UP;
         }
-        
+
         boolean isForward() {
             return this == RIGHT || this == DOWN;
         }
-        
+
         boolean isBackward() {
             return this == LEFT || this == UP;
         }
@@ -971,7 +971,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private NodeView getDisplayedNodeView(NodeModel node) {
 		NodeView nodeView = getNodeView(node);
-		return currentRootView == mapRootView 
+		return currentRootView == mapRootView
 				||  nodeView != null && isAncestorOf(nodeView) ? nodeView : null;
 	}
 
@@ -1242,7 +1242,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         if (isRoot(oldSelected)) {
             if(selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
                     || ! selectedUsesHorizontalLayout && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT))
-                newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet, 
+                newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet,
                         direction == SelectionDirection.UP || direction == SelectionDirection.LEFT);
             else
                 return null;
@@ -1478,7 +1478,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectLeft(final boolean continious) {
-	    return selectParentOrChild(SelectionDirection.LEFT, continious) 
+	    return selectParentOrChild(SelectionDirection.LEFT, continious)
 	            || selectPreviousSibling(SelectionDirection.LEFT, continious);
     }
 
@@ -1501,7 +1501,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectRight(final boolean continious) {
-	    return selectParentOrChild(SelectionDirection.RIGHT, continious) 
+	    return selectParentOrChild(SelectionDirection.RIGHT, continious)
 	            || selectNextSibling(SelectionDirection.RIGHT, continious);
     }
 
@@ -1512,7 +1512,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	public boolean selectUp(final boolean continious) {
-	    return selectParentOrChild(SelectionDirection.UP, continious) 
+	    return selectParentOrChild(SelectionDirection.UP, continious)
 	            || selectPreviousSibling(SelectionDirection.UP, continious);
 	}
 
@@ -1529,6 +1529,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         NodeView nextSelected = oldSelectionEnd;
         for(;;){
             NodeView visibleAncestor = nextSelected.getAncestorWithVisibleContent();
+            if(visibleAncestor == null)
+                return false;
             boolean ancestorUsesHorizontalLayout = visibleAncestor.usesHorizontalLayout();
             if(ancestorUsesHorizontalLayout == direction.isHorizontal())
                 break;
@@ -2545,7 +2547,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeView nodeView = getNodeView(node);
 		setRootNode(nodeView);
 	}
-	
+
 
 	public void usePreviousViewRoot() {
 		NodeView newRoot;
@@ -2559,7 +2561,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	int calculateComponentIndex(Container parent, int index) {
-		if(parent == currentRootParentView 
+		if(parent == currentRootParentView
 				&& index >= calculateCurrentRootNodePosition())
 			return index - 1;
 		else
@@ -2572,26 +2574,26 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return currentParent.getIndex(currentRoot);
 	}
 
-	
+
 	void restoreRootNode() {
 		restoreRootNode(-1, false);
 	}
-	
+
 	void restoreRootNodeTemporarily() {
 		restoreRootNode(-1, true);
 	}
-	
+
 	void restoreRootNode(int index) {
 		restoreRootNode(index, false);
 	}
-	
+
 	private void restoreRootNode(int index, boolean temporarily) {
 		if(currentRootView == mapRootView)
 			return;
 		remove(ROOT_NODE_COMPONENT_INDEX);
 		add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
 		if(! currentRootParentView.isFolded()) {
-			currentRootParentView.add(currentRootView, 
+			currentRootParentView.add(currentRootView,
 					index >= 0 ? index : calculateCurrentRootNodePosition());
 		}
 		currentRootView = mapRootView;
@@ -2601,7 +2603,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             currentRootParentView.resetLayoutPropertiesRecursively();
         }
 	}
-	
+
 	private void setRootNode(NodeView newRootView) {
 		if(currentRootView == newRootView)
 			return;
@@ -2610,7 +2612,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			preserveNodeLocationOnScreen(currentRootView, 0, 0);
 		} else
 			preserveNodeLocationOnScreen(newRootView, 0, 0);
-		
+
 		NodeView lastSelectedNode;
 		if(jumpsOut)
 			lastSelectedNode = selection.selectedNode;
