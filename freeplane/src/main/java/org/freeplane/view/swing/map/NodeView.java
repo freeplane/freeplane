@@ -378,11 +378,24 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	int getHGap() {
+	    final double modelGap = LocationModel.getModel(model).getHGap().toBaseUnits();
 	    NodeView parentView = getParentView();
-        ParentNodeAlignment parentNodeAlignment = parentView != null ? parentView.getParentNodeAlignment() : ParentNodeAlignment.NOT_SET;
-        boolean areChildrenSeparatedOnMainLayoutAxis = parentNodeAlignment == ParentNodeAlignment.BEFORE_FIRST_CHILD || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD;
-		double modelGap = LocationModel.getModel(model).getHGap().toBaseUnits();
-        return map.getZoomed(areChildrenSeparatedOnMainLayoutAxis ? modelGap - LocationModel.DEFAULT_HGAP_PX * 2. / 3. : modelGap);
+	    final double unscaledHGap;
+	    if(parentView == null) {
+	        unscaledHGap = modelGap;
+	    }
+	    else {
+	        final boolean parentViewUsesHorizontalLayout = parentView.usesHorizontalLayout();
+	        if (parentViewUsesHorizontalLayout)
+	            unscaledHGap = modelGap + (LocationModel.DEFAULT_VGAP_PX - LocationModel.DEFAULT_HGAP_PX);
+	        else {
+	            ParentNodeAlignment parentNodeAlignment = parentView.getParentNodeAlignment();
+	            ChildrenSides childrenSides = parentView.getChildNodesLayout().childrenSides();
+	            boolean reduce = (parentNodeAlignment == ParentNodeAlignment.BEFORE_FIRST_CHILD || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD) && childrenSides == ChildrenSides.BOTH_SIDES;
+	            unscaledHGap = reduce ? modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.) : modelGap;
+	        }
+	    }
+        return map.getZoomed(unscaledHGap);
 	}
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {
