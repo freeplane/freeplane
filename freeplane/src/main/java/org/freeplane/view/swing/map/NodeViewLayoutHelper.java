@@ -9,7 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import org.freeplane.api.ChildrenSides;
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.features.map.NodeModel;
 
 class NodeViewLayoutHelper {
@@ -56,8 +56,8 @@ class NodeViewLayoutHelper {
 		return view.getSpaceAround();
 	}
 
-	ParentNodeAlignment getParentNodeAlignment() {
-		return view.getParentNodeAlignment();
+	ChildNodesAlignment getChildNodesAlignment() {
+		return view.getChildNodesAlignment();
 	}
 
 	int getContentX() {

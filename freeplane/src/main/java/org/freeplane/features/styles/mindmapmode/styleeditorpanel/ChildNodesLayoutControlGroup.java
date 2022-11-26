@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 import javax.swing.Icon;
 
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
@@ -124,13 +124,13 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	        return TextUtils.getRawText(layout.name());
 	    if(layout.layoutOrientation() == LayoutOrientation.AUTO
 	            && layout.childrenSides() == ChildrenSides.AUTO)
-	        return TextUtils.getRawText(layout.parentNodeAlignment().name());
-        if(layout.parentNodeAlignment() == ParentNodeAlignment.AUTO)
+	        return TextUtils.getRawText(layout.childNodesAlignment().name());
+        if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
             return TextUtils.getRawText(layout.layoutOrientation().name()) + ", " 
             + TextUtils.getRawText(layout.childrenSides().name());
 	    return TextUtils.getRawText(layout.layoutOrientation().name()) + ", " 
 	        + TextUtils.getRawText(layout.childrenSides().name())  + ", " 
-	       + TextUtils.getRawText(layout.parentNodeAlignment().name());
+	       + TextUtils.getRawText(layout.childNodesAlignment().name());
     }
 
     @Override

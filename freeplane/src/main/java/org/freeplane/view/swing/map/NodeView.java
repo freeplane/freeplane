@@ -45,7 +45,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
@@ -142,7 +142,7 @@ public class NodeView extends JComponent implements INodeView {
 	private final NodeViewLayoutHelper layoutHelper;
     private boolean usesHorizontalLayout;
     private boolean isTopOrLeft;
-    private ParentNodeAlignment parentNodeAlignment;
+    private ChildNodesAlignment childNodesAlignment;
     private ChildNodesLayout childNodesLayout;
 
 	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
@@ -389,9 +389,9 @@ public class NodeView extends JComponent implements INodeView {
 	        if (parentViewUsesHorizontalLayout)
 	            unscaledHGap = modelGap + (LocationModel.DEFAULT_VGAP_PX - LocationModel.DEFAULT_HGAP_PX);
 	        else {
-	            ParentNodeAlignment parentNodeAlignment = parentView.getParentNodeAlignment();
+	            ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
 	            ChildrenSides childrenSides = parentView.getChildNodesLayout().childrenSides();
-	            boolean reduce = (parentNodeAlignment == ParentNodeAlignment.BEFORE_FIRST_CHILD || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD) && childrenSides == ChildrenSides.BOTH_SIDES;
+	            boolean reduce = (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT || childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT) && childrenSides == ChildrenSides.BOTH_SIDES;
 	            unscaledHGap = reduce ? modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.) : modelGap;
 	        }
 	    }
@@ -769,35 +769,35 @@ public class NodeView extends JComponent implements INodeView {
 		return map.getZoomed(minimalDistanceBetweenChildren);
 	}
 
-	ParentNodeAlignment getParentNodeAlignment() {
+	ChildNodesAlignment getChildNodesAlignment() {
 	    updateLayoutProperties();
-		return parentNodeAlignment;
+		return childNodesAlignment;
 	}
 
-    private void updateParentNodeAlignment() {
-        ParentNodeAlignment parentNodeAlignment = childNodesLayout.parentNodeAlignment();
-		switch (parentNodeAlignment) {
+    private void updateChildNodesAlignment() {
+        ChildNodesAlignment childNodesAlignment = childNodesLayout.childNodesAlignment();
+		switch (childNodesAlignment) {
 		case NOT_SET:
 		case AUTO:
-			this.parentNodeAlignment = getDefaultParentNodeAlignment();
+			this.childNodesAlignment = getDefaultChildNodesAlignment();
 			break;
 		default:
-		    this.parentNodeAlignment =  parentNodeAlignment;
+		    this.childNodesAlignment =  childNodesAlignment;
 		}
     }
 
-	private ParentNodeAlignment getDefaultParentNodeAlignment() {
+	private ChildNodesAlignment getDefaultChildNodesAlignment() {
 		NodeView parentView = getParentView();
 		if (parentView == null)
-			return ParentNodeAlignment.BY_CENTER;
+			return ChildNodesAlignment.BY_CENTER;
 		else if(parentView.isSummary())
-			return parentView.getDefaultParentNodeAlignment();
+			return parentView.getDefaultChildNodesAlignment();
 		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout)
-			return parentView.getParentNodeAlignment();
+			return parentView.getChildNodesAlignment();
 		else if(isTopOrLeft())
-		    return ParentNodeAlignment.BY_LAST_CHILD;
+		    return ChildNodesAlignment.BEFORE_PARENT;
 		else
-		    return ParentNodeAlignment.BY_FIRST_CHILD;
+		    return ChildNodesAlignment.AFTER_PARENT;
 	}
 
 	public NodeView getAncestorWithVisibleContent() {
@@ -941,7 +941,7 @@ public class NodeView extends JComponent implements INodeView {
 			if(property != EncryptionModel.class)
 				return;
 		}
-        if(property == ParentNodeAlignment.class
+        if(property == ChildNodesAlignment.class
                 || property == LayoutOrientation.class
                 || property == ChildNodesLayout.class) {
             resetLayoutPropertiesRecursively();
@@ -1669,7 +1669,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 	void resetLayoutPropertiesRecursively() {
-	    parentNodeAlignment = null;
+	    childNodesAlignment = null;
 	    childNodesLayout = null;
 		LinkedList<NodeView> childrenViews = getChildrenViews();
 		if(childrenViews.isEmpty())
@@ -1685,7 +1685,7 @@ public class NodeView extends JComponent implements INodeView {
 	        LayoutController layoutController = getModeController().getExtension(LayoutController.class);
             childNodesLayout = layoutController.getChildNodesLayout(model);
             updateUsesHorizontalLayout();
-	        updateParentNodeAlignment();
+	        updateChildNodesAlignment();
 	    }
     }
 

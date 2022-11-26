@@ -21,7 +21,7 @@ package org.freeplane.features.nodelocation;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;

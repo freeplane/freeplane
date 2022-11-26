@@ -27,7 +27,7 @@ import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
 import org.freeplane.api.ChildrenSides;
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
@@ -36,9 +36,9 @@ import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
 
 class VerticalNodeViewLayoutStrategy {
-	
+
 	static private boolean wrongChildComponentsReported = false;
-	
+
 	private int childViewCount;
 	private final int spaceAround;
 	private final NodeViewLayoutHelper view;
@@ -105,7 +105,7 @@ class VerticalNodeViewLayoutStrategy {
 			calculateLayoutData(isLeft);
 		applyLayoutToChildComponents();
 	}
-	
+
 	private void calculateLayoutData(final boolean isLeft) {
 		setFreeChildNodes(isLeft);
 		calculateLayoutY(isLeft);
@@ -126,7 +126,7 @@ class VerticalNodeViewLayoutStrategy {
 		final int[] contentHeightSumAtGroupStart = new int[level];
 		final int[] groupUpperYCoordinate = new int[level];
 		final int[] groupLowerYCoordinate = new int[level];
-		
+
 		for (int childViewIndex = 0; childViewIndex < childViewCount; childViewIndex++) {
 			final NodeViewLayoutHelper child = view.getComponent(childViewIndex);
 			if (child.isLeft() == laysOutLeftSide) {
@@ -161,8 +161,8 @@ class VerticalNodeViewLayoutStrategy {
 								extraVGap = calculateExtraGapForChildren(minimalDistanceBetweenChildren);
 							}
 							childContentHeightSum += vGap;
-							if(visibleChildCounter == 0 
-							        && view.getParentNodeAlignment() == ParentNodeAlignment.BEFORE_FIRST_CHILD
+							if(visibleChildCounter == 0
+							        && view.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT
 							        && contentSize.height > 0) {
 							    y += contentSize.height + minimalDistanceBetweenChildren;
 							}
@@ -172,17 +172,17 @@ class VerticalNodeViewLayoutStrategy {
                             missingWidth = child.getFoldingHandleWidth() - vGap - extraVGap;
 						else
 						    missingWidth = 0;
-						
+
 						if(missingWidth > 0) {
                             if (child.paintsChildrenOnTheLeft()) {
                                 top -= missingWidth;
                                 y += missingWidth;
                             }
                         }
-						
+
 						if ((childShiftY < 0 || visibleChildCounter == 0) && !allowsCompactLayout)
 							top += childShiftY;
-						top += - childContentShift + child.getTopOverlap(); 
+						top += - childContentShift + child.getTopOverlap();
 						y -= child.getTopOverlap();
 
 						int upperGap = align(extraVGap);
@@ -236,7 +236,7 @@ class VerticalNodeViewLayoutStrategy {
 						groupUpperYCoordinate[itemLevel] = y;
 						groupLowerYCoordinate[itemLevel] = y;
 					}
-					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
+					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2
 							- childContentHeight / 2 + childShiftY
 							- (child.getContentYForSummary() - childCloudHeigth / 2 - spaceAround);
 					this.yCoordinates[childViewIndex] = summaryY;
@@ -281,7 +281,7 @@ class VerticalNodeViewLayoutStrategy {
 			}
 		}
 		top += align(contentSize.height - childContentHeightSum);
-        if(view.getParentNodeAlignment() == ParentNodeAlignment.AFTER_LAST_CHILD
+        if(view.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT
                 && contentSize.height > 0
                 && visibleChildCounter > 0) {
             top -= contentSize.height + minimalDistanceBetweenChildren;
@@ -298,14 +298,13 @@ class VerticalNodeViewLayoutStrategy {
     }
 
 	public int align(int height) {
-		ParentNodeAlignment parentNodeAlignment = view.getParentNodeAlignment();
+		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		int deltaTop;
-		if (view.isSummary() 
-				|| parentNodeAlignment == ParentNodeAlignment.NOT_SET
-				|| parentNodeAlignment == ParentNodeAlignment.BY_CENTER) {
+		if (view.isSummary()
+				|| childNodesAlignment == ChildNodesAlignment.NOT_SET
+				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
 			deltaTop = height/2;
-		} else if (parentNodeAlignment == ParentNodeAlignment.BY_LAST_CHILD
-		        || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD) {
+		} else if (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT) {
 			deltaTop = height;
 		}
 		else deltaTop = 0;
@@ -316,7 +315,7 @@ class VerticalNodeViewLayoutStrategy {
         if (!child.isContentVisible())
             return 0;
         int shift = nodeDistance.applyAsInt(child);
-        for(NodeViewLayoutHelper ancestor = child.getParentView(); 
+        for(NodeViewLayoutHelper ancestor = child.getParentView();
                 ancestor != null && ! ancestor.isContentVisible();
                 ancestor = ancestor.getParentView()) {
             if(ancestor.isFree())
@@ -340,8 +339,8 @@ class VerticalNodeViewLayoutStrategy {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
-		ParentNodeAlignment parentNodeAlignment = view.getParentNodeAlignment();
-		boolean areChildrenSeparatedByY = parentNodeAlignment == ParentNodeAlignment.BEFORE_FIRST_CHILD || parentNodeAlignment == ParentNodeAlignment.AFTER_LAST_CHILD;
+		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
+		boolean areChildrenSeparatedByY = childNodesAlignment == ChildNodesAlignment.AFTER_PARENT || childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT;
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
 			if (child.isLeft() == laysOutLeftSide) {
@@ -362,7 +361,7 @@ class VerticalNodeViewLayoutStrategy {
 				if (isItem) {
 					if (!isFreeNode && (oldLevel > 0 || child.isFirstGroupNode()))
 						summaryBaseX[0] = 0;
-				} 
+				}
 				else if (child.isFirstGroupNode())
 					summaryBaseX[level] = 0;
 

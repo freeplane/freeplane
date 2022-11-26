@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.layout;
 
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -59,11 +59,11 @@ class LayoutBuilder implements IExtensionAttributeWriter {
 	    if("AS_PARENT".equals(alignment) || "AUTO".equals(alignment)) {
 	        return ChildNodesLayout.AUTO;
 	    } else if ("BY_FIRST_NODE".equals(alignment)) {
-	        return ChildNodesLayout.AUTO_BYFIRSTCHILD;
+	        return ChildNodesLayout.AUTO_BEFOREPARENT;
 	    } else if ("BY_CENTER".equals(alignment)) {
 	        return ChildNodesLayout.AUTO_CENTERED;
 	    } else if ("BY_LAST_NODE".equals(alignment)) {
-	        return ChildNodesLayout.AUTO_BYLASTCHILD;
+	        return ChildNodesLayout.AUTO_AFTERPARENT;
 	    } else {
 	        return ChildNodesLayout.NOT_SET;
 	    }

@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.layout;
 
-import org.freeplane.api.ParentNodeAlignment;
+import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
@@ -29,7 +29,7 @@ import org.freeplane.features.map.NodeModel;
  */
 public class LayoutModel implements IExtension {
     private static final LayoutModel NOT_SET = new LayoutModel();
-    public static final ParentNodeAlignment DEFAULT_CHILD_NODES_ALIGNMENT = ParentNodeAlignment.NOT_SET;
+    public static final ChildNodesAlignment DEFAULT_CHILD_NODES_ALIGNMENT = ChildNodesAlignment.NOT_SET;
 
     public static LayoutModel createLayoutModel(final NodeModel node) {
         LayoutModel layoutModel = node.getExtension(LayoutModel.class);
