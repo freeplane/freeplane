@@ -164,7 +164,8 @@ class VerticalNodeViewLayoutStrategy {
 							if(visibleChildCounter == 0
 							        && view.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT
 							        && contentSize.height > 0) {
-							    y += contentSize.height + minimalDistanceBetweenChildren;
+							    y += (view.usesHorizontalLayout() ?  minimalDistanceBetweenChildren : contentSize.height)
+							            + minimalDistanceBetweenChildren;
 							}
 						}
 						int missingWidth;
@@ -284,7 +285,8 @@ class VerticalNodeViewLayoutStrategy {
         if(view.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT
                 && contentSize.height > 0
                 && visibleChildCounter > 0) {
-            top -= contentSize.height + minimalDistanceBetweenChildren;
+            top -= (view.usesHorizontalLayout() ?  minimalDistanceBetweenChildren : contentSize.height)
+                    + minimalDistanceBetweenChildren;
         }
 
 		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, childContentHeightSum, top);
@@ -339,8 +341,10 @@ class VerticalNodeViewLayoutStrategy {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
+		boolean usesHorizontalLayout = view.usesHorizontalLayout();
 		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
-		boolean areChildrenSeparatedByY = childNodesAlignment == ChildNodesAlignment.AFTER_PARENT || childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT;
+		boolean areChildrenSeparatedByY = ! usesHorizontalLayout
+		        && (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT || childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT);
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
 			if (child.isLeft() == laysOutLeftSide) {
