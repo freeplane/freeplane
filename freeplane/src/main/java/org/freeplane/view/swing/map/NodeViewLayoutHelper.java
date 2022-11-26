@@ -13,7 +13,7 @@ import org.freeplane.api.ParentNodeAlignment;
 import org.freeplane.features.map.NodeModel;
 
 class NodeViewLayoutHelper {
-	
+
 	private NodeView view;
 	private int topOverlap;
 	private int bottomOverlap;
@@ -69,7 +69,7 @@ class NodeViewLayoutHelper {
         Component component = view.getContent();
         return usesHorizontallayout(view) ? component.getX(): component.getY();
 	}
-	
+
 
     int getContentYForSummary() {
         Component component = view.getContent();
@@ -89,7 +89,7 @@ class NodeViewLayoutHelper {
 
 	void setContentBounds(int x, int y, int width, int height) {
 		Component component = view.getContent();
-		if (usesHorizontallayout(component)) 
+		if (usesHorizontallayout(component))
 			component.setBounds(y, x, height, width);
 		else
 			component.setBounds(x, y, width, height);
@@ -98,15 +98,15 @@ class NodeViewLayoutHelper {
 	void setContentVisible(boolean aFlag) {
 		view.getContent().setVisible(aFlag);
 	}
-	
+
 	boolean isContentVisible() {
 		return view.isContentVisible();
-		
+
 	}
 
 	boolean isFolded() {
 		return view.isFolded();
-		
+
 	}
 
 	boolean isSummary() {
@@ -124,19 +124,19 @@ class NodeViewLayoutHelper {
 	boolean isLeft() {
 		return view.isTopOrLeft();
 	}
-	
+
 	int getHGap() {
 		return view.getHGap();
 	}
-	
+
 	int getShift() {
 		return view.getShift();
 	}
-	
+
 	boolean isFree() {
 		return view.isFree();
 	}
-	
+
 
  	int getTopOverlap() {
 		return topOverlap;
@@ -186,9 +186,9 @@ class NodeViewLayoutHelper {
 	}
 
 	void setLocation(int x, int y) {
-		if (usesHorizontallayout(view)) 
+		if (usesHorizontallayout(view))
 			view.setLocation(y, x);
-		else 
+		else
 			view.setLocation(x, y);
 	}
 
@@ -211,17 +211,15 @@ class NodeViewLayoutHelper {
 	String describeComponent(int i) {
 	    return view.getComponent(i).toString();
 	}
-	
+
 	String getText() {
 	    return view.getModel().getText();
 	}
 
 	boolean usesHorizontallayout(Component component) {
 	    NodeView parent;
-        if (component == view) {
-            parent = view.isRoot() 
-                ? view 
-                : view.getAncestorWithVisibleContent();
+        if (component == view && view.isRoot()) {
+            parent = view;
         } else {
             parent = (NodeView)component.getParent();
         }
