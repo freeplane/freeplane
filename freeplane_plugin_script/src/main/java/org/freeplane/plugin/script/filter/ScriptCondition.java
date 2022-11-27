@@ -47,7 +47,7 @@ public class ScriptCondition extends ASelectableCondition {
 	}
 
 	@Override
-	public String getName() {
+    protected String getName() {
 	    return NAME;
     }
 
@@ -115,7 +115,7 @@ public class ScriptCondition extends ASelectableCondition {
     }
 
 	@Override
-	public String createDescription() {
+	protected String createDescription() {
 		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, source);
 	}
 
