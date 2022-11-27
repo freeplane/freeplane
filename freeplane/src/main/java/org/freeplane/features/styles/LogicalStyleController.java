@@ -21,7 +21,12 @@ package org.freeplane.features.styles;
 
 import java.awt.Component;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
@@ -345,25 +350,20 @@ public class LogicalStyleController implements IExtension {
 	    return conditionalStyleModel.removeCondition(index);
     }
 
-	public boolean modifyConditionalStyleItem(final ConditionalStyleModel.Item item, IStyle style, ASelectableCondition condition, boolean isActive, boolean isLast) {
-		boolean isModified = false;
-		if (!Objects.equals(item.getStyle(), style)) {
-			item.setStyle(style);
-			isModified = true;
-		}
-		if (!Objects.equals(item.getCondition(), condition)) {
-			item.setCondition(condition);
-			isModified = true;
-		}
-		if (item.isActive() != isActive) {
-			item.setActive(isActive);
-			isModified = true;
-		}
-		if (item.isLast() != isLast) {
-			item.setLast(isLast);
-			isModified = true;
-		}
-		return isModified;
+	public void setActiveForConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive) {
+		conditionalStyleModel.setActive(index, isActive);
+	}
+
+	public void setConditionForConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index, ASelectableCondition condition) {
+		conditionalStyleModel.setCondition(index, condition);
+	}
+
+	public void setStyleForConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index, IStyle style) {
+		conditionalStyleModel.setStyle(index, style);
+	}
+
+	public void setLastForConditionalStyle(final ConditionalStyleModel conditionalStyleModel, int index, boolean isLast) {
+		conditionalStyleModel.setLast(index, isLast);
 	}
 
 	private void clearCache() {
