@@ -24,7 +24,7 @@ package org.freeplane.api;
  *     node.conditionalStyles.findAll { it.styleName == 'styles.important' }.each { it.active = false }
  *
  *     // find the first conditional style with ScriptCondition (aka Script Filter) and remove it
- *     node.conditionalStyles.find { it.hasScriptCondition() }.each { it.remove() }
+ *     node.conditionalStyles.find { it.hasScriptCondition() }?.remove()
  *
  *     // remove all, i.e. each ConditionalStyle item
  *     node.conditionalStyles.collect().each { it.remove() }

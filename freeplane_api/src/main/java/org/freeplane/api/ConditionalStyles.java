@@ -4,7 +4,7 @@ package org.freeplane.api;
  * Node's or map's conditional-styles table:
  * <code>node.conditionalStyles</code> or <code>node.mindMap.conditionalStyles</code> - read-only.
  * <p>
- * In the Manage Conditional Styles dialog it's the entire table. Each row in the table is a separate {@link ConditionalStyleRO}.
+ * In the Manage Conditional Styles dialog it's the entire table. Each row in the table is a separate {@link ConditionalStyle}.
  * </p>
  * Actions known from the Manage Conditional Styles dialog can be called on ConditionalStyles
  * <pre>
@@ -24,7 +24,7 @@ package org.freeplane.api;
  *     // remove the first conditional style from the table
  *     node.conditionalStyles.remove(0)
  *
- *     // remove each ConditionalStyle item
+ *     // remove all, i.e. each ConditionalStyle item
  *     node.conditionalStyles.collect().each { it.remove() }
  * </pre>
  */
