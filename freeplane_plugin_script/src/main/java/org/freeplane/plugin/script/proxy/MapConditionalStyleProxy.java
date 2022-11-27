@@ -17,11 +17,6 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 		super(mapModel, item);
 	}
 
-	@Override
-	ConditionalStyleModel getConditionalStyleModel() {
-		return MapStyleModel.getExtension(getDelegate()).getConditionalStyleModel();
-	}
-
 	public MapConditionalStyleProxy(MapModel mapModel, boolean isActive, String script, String styleName, boolean isLast) {
 		super(mapModel, isActive, script, styleName, isLast);
 	}
@@ -31,33 +26,38 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 	}
 
 	@Override
-	public void setStyleName(String styleName) {
-		IStyle iStyle = styleByNameOrThrowException(getDelegate(), styleName);
-		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		ConditionalStyleModel.Item item = getItem();
-		controller.modifyConditionalStyleItemAndRefreshMap(getDelegate(), item, iStyle, item.getCondition(), item.isActive(), item.isLast());
-	}
-
-	@Override
-	public void setScript(String script) {
-		ASelectableCondition condition = script != null ? new ScriptCondition(script) : null;
-		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		ConditionalStyleModel.Item item = getItem();
-		controller.modifyConditionalStyleItemAndRefreshMap(getDelegate(), item, item.getStyle(), condition, item.isActive(), item.isLast());
+	ConditionalStyleModel getConditionalStyleModel() {
+		return MapStyleModel.getExtension(getDelegate()).getConditionalStyleModel();
 	}
 
 	@Override
 	public void setActive(boolean isActive) {
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		ConditionalStyleModel.Item item = getItem();
-		controller.modifyConditionalStyleItemAndRefreshMap(getDelegate(), item, item.getStyle(), item.getCondition(), isActive, item.isLast());
+		controller.setActiveForConditionalStyle(getDelegate(), getConditionalStyleModel(), getIndex(), isActive);
+		callDelayedRefresh(getDelegate());
+	}
+
+	@Override
+	public void setScript(String script) {
+		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
+		ScriptCondition condition = script == null ? null : new ScriptCondition(script);
+		controller.setConditionForConditionalStyle(getDelegate(), getConditionalStyleModel(), getIndex(), condition);
+		callDelayedRefresh(getDelegate());
+	}
+
+	@Override
+	public void setStyleName(String styleName) {
+		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
+		IStyle style = styleByNameOrThrowException(getDelegate(), styleName);
+		controller.setStyleForConditionalStyle(getDelegate(), getConditionalStyleModel(), getIndex(), style);
+		callDelayedRefresh(getDelegate());
 	}
 
 	@Override
 	public void setLast(boolean isLast) {
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		ConditionalStyleModel.Item item = getItem();
-		controller.modifyConditionalStyleItemAndRefreshMap(getDelegate(), item, item.getStyle(), item.getCondition(), item.isActive(), isLast);
+		controller.setLastForConditionalStyle(getDelegate(), getConditionalStyleModel(), getIndex(), isLast);
+		callDelayedRefresh(getDelegate());
 	}
 
 	@Override
@@ -67,7 +67,8 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 			throw new ConditionalStyleNotFoundException(this.toString());
 		if (toIndex == index)
 			return;
-		MLogicalStyleController.getController().moveConditionalStyleAndRefreshMap(getDelegate(), getConditionalStyleModel(), index, toIndex);
+		MLogicalStyleController.getController().moveConditionalStyle(getDelegate(), getConditionalStyleModel(), index, toIndex);
+		callDelayedRefresh(getDelegate());
 	}
 
 	@Override
@@ -75,7 +76,12 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 		int index = getIndex();
 		if (index == -1)
 			throw new ConditionalStyleNotFoundException(this.toString());
-		ConditionalStyleModel.Item item = MLogicalStyleController.getController().removeConditionalStyleAndRefreshMap(getDelegate(), getConditionalStyleModel(), index);
+		ConditionalStyleModel.Item item = MLogicalStyleController.getController().removeConditionalStyle(getDelegate(), getConditionalStyleModel(), index);
+		callDelayedRefresh(getDelegate());
 		return new MapConditionalStyleProxy(getDelegate(), item);
+	}
+
+	private void callDelayedRefresh(MapModel mapModel) {
+		//TODO implement
 	}
 }

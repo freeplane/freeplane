@@ -34,26 +34,34 @@ public class NodeConditionalStylesProxy extends AConditionalStylesProxy<NodeMode
 	public void add(ConditionalStyleRO conditionalStyle) {
 		NodeConditionalStyleProxy cs = (NodeConditionalStyleProxy) requireNonNull(conditionalStyle, CONDITIONAL_STYLE_MUST_NOT_BE_NULL);
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		controller.addConditionalStyleAndCallNodeChanged(getDelegate(), getConditionalStyleModel(), cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
+		controller.addConditionalStyle(getDelegate().getMap(), getConditionalStyleModel(), cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
+		callDelayedRefresh(getDelegate());
 	}
 
 	@Override
 	public void insert(int index, ConditionalStyleRO conditionalStyle) {
 		NodeConditionalStyleProxy cs = (NodeConditionalStyleProxy) requireNonNull(conditionalStyle, CONDITIONAL_STYLE_MUST_NOT_BE_NULL);
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		controller.insertConditionalStyleAndCallNodeChanged(getDelegate(), getConditionalStyleModel(), index, cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
+		controller.insertConditionalStyle(getDelegate().getMap(), getConditionalStyleModel(), index, cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
+		callDelayedRefresh(getDelegate());
 	}
 
 	@Override
 	public void move(int index, int toIndex) {
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		controller.moveConditionalStyleAndCallNodeChanged(getDelegate(), getConditionalStyleModel(), index, toIndex);
+		controller.moveConditionalStyle(getDelegate().getMap(), getConditionalStyleModel(), index, toIndex);
+		callDelayedRefresh(getDelegate());
 	}
 
 	@Override
 	public ConditionalStyle remove(int index) {
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		ConditionalStyleModel.Item item = controller.removeConditionalStyleAndCallNodeChanged(getDelegate(), getConditionalStyleModel(), index);
+		ConditionalStyleModel.Item item = controller.removeConditionalStyle(getDelegate().getMap(), getConditionalStyleModel(), index);
+		callDelayedRefresh(getDelegate());
 		return new NodeConditionalStyleProxy(getDelegate(), item);
+	}
+
+	private void callDelayedRefresh(NodeModel nodeModel) {
+		//TODO implement
 	}
 }

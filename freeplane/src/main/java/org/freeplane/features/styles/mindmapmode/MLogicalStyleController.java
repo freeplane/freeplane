@@ -93,39 +93,22 @@ public class MLogicalStyleController extends LogicalStyleController {
 	private static final String NEW_NODE_STYLE_ACTIONS = "newNodeStyleActions";
 
 	private final class RemoveConditionalStyleActor implements IActor {
-		private final MapModel changedMap;
-		private final NodeModel changedNode;
 		private final int index;
 		private final ConditionalStyleModel conditionalStyleModel;
 		Item item = null;
 
-		private RemoveConditionalStyleActor(MapModel changedMap, NodeModel changedNode, ConditionalStyleModel conditionalStyleModel, int index) {
-			this.changedMap = changedMap;
-			this.changedNode = changedNode;
+		private RemoveConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index) {
 			this.index = index;
 			this.conditionalStyleModel = conditionalStyleModel;
 		}
 
-		private RemoveConditionalStyleActor(NodeModel changedNode, ConditionalStyleModel conditionalStyleModel, int index) {
-			this(null, changedNode, conditionalStyleModel, index);
-		}
 
-		private RemoveConditionalStyleActor(MapModel changedMap, ConditionalStyleModel conditionalStyleModel, int index) {
-			this(changedMap, null, conditionalStyleModel, index);
-		}
 
-		private RemoveConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index) {
-			this(null, null, conditionalStyleModel, index);
-		}
 
 		@Override
 		public void undo() {
 			MLogicalStyleController.super.insertConditionalStyle(conditionalStyleModel, index, item.isActive(), item.getCondition(),
 					item.getStyle(), item.isLast());
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
 		}
 
 		@Override
@@ -136,16 +119,10 @@ public class MLogicalStyleController extends LogicalStyleController {
 		@Override
 		public void act() {
 			item = MLogicalStyleController.super.removeConditionalStyle(conditionalStyleModel, index);
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
 		}
 	}
 
 	private final class AddConditionalStyleActor implements IActor {
-		private final MapModel changedMap;
-		private final NodeModel changedNode;
 		private final ConditionalStyleModel conditionalStyleModel;
 		private final int index;
 		private final boolean isActive;
@@ -153,9 +130,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		private final IStyle style;
 		private final boolean isLast;
 
-		public AddConditionalStyleActor(MapModel changedMap, NodeModel changedNode, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-			this.changedMap = changedMap;
-			this.changedNode = changedNode;
+		public AddConditionalStyleActor(final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 			this.conditionalStyleModel = conditionalStyleModel;
 			this.index = index;
 			this.isActive = isActive;
@@ -164,26 +139,13 @@ public class MLogicalStyleController extends LogicalStyleController {
 			this.isLast = isLast;
 		}
 
-		public AddConditionalStyleActor(final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-			this(null, null, conditionalStyleModel, index, isActive, condition, style, isLast);
-		}
 
-		public AddConditionalStyleActor(NodeModel changedNode, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-			this(null, changedNode, conditionalStyleModel, index, isActive, condition, style, isLast);
-		}
 
-		public AddConditionalStyleActor(MapModel changedMap, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-			this(changedMap, null, conditionalStyleModel, index, isActive, condition, style, isLast);
-		}
 
 		@Override
 		public void undo() {
-			int idx = this.index == -1 ? conditionalStyleModel.getStyleCount() - 1 : this.index;
-			MLogicalStyleController.super.removeConditionalStyle(conditionalStyleModel, idx);
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
+			int index = conditionalStyleModel.getStyleCount() - 1;
+			MLogicalStyleController.super.removeConditionalStyle(conditionalStyleModel, index);
 		}
 
 		@Override
@@ -197,10 +159,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 				MLogicalStyleController.super.addConditionalStyle(conditionalStyleModel, isActive, condition, style, isLast);
 			else
 				MLogicalStyleController.super.insertConditionalStyle(conditionalStyleModel, index, isActive, condition, style, isLast);
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
 		}
 	}
 
@@ -227,7 +185,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
 		}
-	}
+	};
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
@@ -286,15 +244,18 @@ public class MLogicalStyleController extends LogicalStyleController {
 				ConditionalStyleModel mapStyles = MapStyleModel.getExtension(node.getMap()).getConditionalStyleModel();
 				if (mapStyles.dependsOnCondition(ICondition::checksDescendants)) {
 					delayedRefreshParent(node, true);
-				} else if (mapStyles.dependsOnCondition(ICondition::checksChildren)) {
+	            }
+	            else if (mapStyles.dependsOnCondition(ICondition::checksChildren)) {
 					delayedRefreshParent(node, false);
 
 				}
 				if (mapStyles.dependsOnCondition(ICondition::checksAncestors)) {
 					delayedRefreshChildren(node, true);
-				} else if (mapStyles.dependsOnCondition(ICondition::checksParent)) {
+	            }
+	            else if (mapStyles.dependsOnCondition(ICondition::checksParent)) {
 					delayedRefreshChildren(node, false);
-				} else {
+	            }
+	            else {
 					for (NodeModel child : node.getChildren()) {
 						ConditionalStyleModel nodeStyles = node.getExtension(ConditionalStyleModel.class);
 						if (nodeStyles != null && nodeStyles.dependsOnCondition(ICondition::checksParent))
@@ -499,7 +460,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 				if (style != null) {
 					final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
 					model.setStyle(style);
-				} else {
+				}
+				else{
 					node.removeExtension(LogicalStyleModel.class);
 				}
 				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
@@ -520,7 +482,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			if (detailTextText != null)
 				textController.setDetails(target, detailTextText);
 			final String noteText = NoteModel.getNoteText(styleNode);
-			if (noteText != null) {
+			if(noteText != null)
+			{
 				MNoteController noteController = (MNoteController) NoteController.getController();
 				noteController.setNoteText(target, noteText);
 			}
@@ -547,7 +510,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 					modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 				}
 				setStyle(newStyle);
-			} else {
+			}
+			else {
 				NodeModel node = selection.getSelected();
 				final IStyle oldStyle = LogicalStyleModel.getStyle(node);
 				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, oldStyle);
@@ -611,26 +575,14 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 
 	private final class MoveConditionalStyleActor implements IActor {
-		final MapModel changedMap;
-		final NodeModel changedNode;
 		final ConditionalStyleModel conditionalStyleModel;
 		final int index;
 		final int toIndex;
 
-		MoveConditionalStyleActor(MapModel changedMap, NodeModel changedNode, ConditionalStyleModel conditionalStyleModel, int index, int toIndex) {
-			this.changedMap = changedMap;
-			this.changedNode = changedNode;
+		MoveConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index, int toIndex) {
 			this.conditionalStyleModel = conditionalStyleModel;
 			this.index = index;
 			this.toIndex = toIndex;
-		}
-
-		MoveConditionalStyleActor(NodeModel changedNode, ConditionalStyleModel conditionalStyleModel, int index, int toIndex) {
-			this(null, changedNode, conditionalStyleModel, index, toIndex);
-		}
-
-		MoveConditionalStyleActor(MapModel changedMap, ConditionalStyleModel conditionalStyleModel, int index, int toIndex) {
-			this(changedMap, null, conditionalStyleModel, index, toIndex);
 		}
 
 		@Override
@@ -641,31 +593,19 @@ public class MLogicalStyleController extends LogicalStyleController {
 		@Override
 		public void act() {
 			MLogicalStyleController.super.moveConditionalStyle(conditionalStyleModel, index, toIndex);
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
 		}
 
 		@Override
 		public void undo() {
 			MLogicalStyleController.super.moveConditionalStyle(conditionalStyleModel, toIndex, index);
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
 		}
 	}
 
-	public void moveConditionalStyleAndCallNodeChanged(NodeModel changedNode, final ConditionalStyleModel conditionalStyleModel, final int index, final int toIndex) {
-		MoveConditionalStyleActor actor = new MoveConditionalStyleActor(changedNode, conditionalStyleModel, index, toIndex);
-		Controller.getCurrentModeController().execute(actor, changedNode.getMap());
+	public void moveConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index, final int toIndex) {
+		MoveConditionalStyleActor actor = new MoveConditionalStyleActor(conditionalStyleModel, index, toIndex);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public void moveConditionalStyleAndRefreshMap(MapModel changedMap, final ConditionalStyleModel conditionalStyleModel, final int index, final int toIndex) {
-		MoveConditionalStyleActor actor = new MoveConditionalStyleActor(changedMap, conditionalStyleModel, index, toIndex);
-		Controller.getCurrentModeController().execute(actor, changedMap);
-	}
 
 	public static MLogicalStyleController getController() {
 		return (MLogicalStyleController) LogicalStyleController.getController();
@@ -677,24 +617,12 @@ public class MLogicalStyleController extends LogicalStyleController {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public void addConditionalStyleAndCallNodeChanged(NodeModel changedNode, final ConditionalStyleModel conditionalStyleModel, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-		AddConditionalStyleActor actor = new AddConditionalStyleActor(changedNode, conditionalStyleModel, -1, isActive, condition, style, isLast);
-		Controller.getCurrentModeController().execute(actor, changedNode.getMap());
-	}
 
-	public void addConditionalStyleAndRefreshMap(MapModel changedMap, final ConditionalStyleModel conditionalStyleModel, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-		AddConditionalStyleActor actor = new AddConditionalStyleActor(changedMap, conditionalStyleModel, -1, isActive, condition, style, isLast);
-		Controller.getCurrentModeController().execute(actor, changedMap);
-	}
 
-	public void insertConditionalStyleAndCallNodeChanged(NodeModel changedNode, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-		AddConditionalStyleActor actor = new AddConditionalStyleActor(changedNode, conditionalStyleModel, index, isActive, condition, style, isLast);
-		Controller.getCurrentModeController().execute(actor, changedNode.getMap());
-	}
 
-	public void insertConditionalStyleAndRefreshMap(MapModel changedMap, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
-		AddConditionalStyleActor actor = new AddConditionalStyleActor(changedMap, conditionalStyleModel, index, isActive, condition, style, isLast);
-		Controller.getCurrentModeController().execute(actor, changedMap);
+	public void insertConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, int index, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
+		AddConditionalStyleActor actor = new AddConditionalStyleActor(conditionalStyleModel, index, isActive, condition, style, isLast);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
 	public Item removeConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index) {
@@ -703,85 +631,151 @@ public class MLogicalStyleController extends LogicalStyleController {
 		return actor.item;
 	}
 
-	public Item removeConditionalStyleAndCallNodeChanged(NodeModel changedNode, final ConditionalStyleModel conditionalStyleModel, final int index) {
-		RemoveConditionalStyleActor actor = new RemoveConditionalStyleActor(changedNode, conditionalStyleModel, index);
-		Controller.getCurrentModeController().execute(actor, changedNode.getMap());
-		return actor.item;
-	}
-
-	public Item removeConditionalStyleAndRefreshMap(MapModel changedMap, final ConditionalStyleModel conditionalStyleModel, final int index) {
-		RemoveConditionalStyleActor actor = new RemoveConditionalStyleActor(changedMap, conditionalStyleModel, index);
-		Controller.getCurrentModeController().execute(actor, changedMap);
-		return actor.item;
-	}
-
-	private final class ModifyConditionalStyleActor implements IActor {
-		private final MapModel changedMap;
-		private final NodeModel changedNode;
-		private final ConditionalStyleModel.Item item;
-		private final ConditionalStyleModel.Item oldItem;
-		private final IStyle style;
-		private final ASelectableCondition condition;
+	class SetActiveForConditionalStyleActor implements IActor {
+		private final ConditionalStyleModel conditionalStyleModel;
+		private final int index;
 		private final boolean isActive;
-		private final boolean isLast;
-		private boolean isModified;
+		private final boolean oldActive;
 
-		ModifyConditionalStyleActor(MapModel changedMap, NodeModel changedNode, ConditionalStyleModel.Item item, IStyle style, ASelectableCondition condition, boolean isActive, boolean isLast) {
-			this.changedMap = changedMap;
-			this.changedNode = changedNode;
-			this.item = item;
-			this.oldItem = new ConditionalStyleModel.Item(item);
-			this.style = style;
-			this.condition = condition;
+		SetActiveForConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index, boolean isActive) {
+			this.conditionalStyleModel = conditionalStyleModel;
+			this.index = index;
 			this.isActive = isActive;
-			this.isLast = isLast;
-		}
-
-		ModifyConditionalStyleActor(NodeModel changedNode, ConditionalStyleModel.Item item, IStyle style, ASelectableCondition condition, boolean isActive, boolean isLast) {
-			this(null, changedNode, item, style, condition, isActive, isLast);
-		}
-
-		ModifyConditionalStyleActor(MapModel changedMap, ConditionalStyleModel.Item item, IStyle style, ASelectableCondition condition, boolean isActive, boolean isLast) {
-			this(changedMap, null, item, style, condition, isActive, isLast);
-		}
-
-		@Override
-		public String getDescription() {
-			return "ModifyConditionalStyle";
+			oldActive = conditionalStyleModel.getStyles().get(index).isActive();
 		}
 
 		@Override
 		public void act() {
-			isModified = MLogicalStyleController.super.modifyConditionalStyleItem(item, style, condition, isActive, isLast);
-			if (isModified) {
-				if (changedNode != null)
-					Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-				if (changedMap != null)
-					LogicalStyleController.getController().refreshMap(changedMap);
-			}
+			MLogicalStyleController.super.setActiveForConditionalStyle(conditionalStyleModel, index, isActive);
+		}
+
+		@Override
+		public String getDescription() {
+			return "SetActiveForConditionalStyle";
 		}
 
 		@Override
 		public void undo() {
-			if (!isModified)
-				return;
-			MLogicalStyleController.super.modifyConditionalStyleItem(item, oldItem.getStyle(), oldItem.getCondition(), oldItem.isActive(), oldItem.isLast());
-			if (changedNode != null)
-				Controller.getCurrentModeController().getMapController().nodeChanged(changedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-			if (changedMap != null)
-				LogicalStyleController.getController().refreshMap(changedMap);
+			MLogicalStyleController.super.setActiveForConditionalStyle(conditionalStyleModel, index, oldActive);
 		}
 	}
 
-	public void modifyConditionalStyleAndCallNodeChanged(NodeModel changedNode, final ConditionalStyleModel.Item item, IStyle style, ASelectableCondition condition, boolean isActive, boolean isLast) {
-		ModifyConditionalStyleActor actor = new ModifyConditionalStyleActor(changedNode, item, style, condition, isActive, isLast);
-		Controller.getCurrentModeController().execute(actor, changedNode.getMap());
+	public void setActiveForConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index, final boolean isActive) {
+		SetActiveForConditionalStyleActor actor = new SetActiveForConditionalStyleActor(conditionalStyleModel, index, isActive);
+		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public void modifyConditionalStyleItemAndRefreshMap(MapModel changedMap, final ConditionalStyleModel.Item item, IStyle style, ASelectableCondition condition, boolean isActive, boolean isLast) {
-		ModifyConditionalStyleActor actor = new ModifyConditionalStyleActor(changedMap, item, style, condition, isActive, isLast);
-		Controller.getCurrentModeController().execute(actor, changedMap);
+	class SetConditionForConditionalStyleActor implements IActor {
+		private final ConditionalStyleModel conditionalStyleModel;
+		private final int index;
+		private final ASelectableCondition condition;
+		private final ASelectableCondition oldCondition;
+
+		SetConditionForConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index, ASelectableCondition condition) {
+			this.conditionalStyleModel = conditionalStyleModel;
+			this.index = index;
+			this.condition = condition;
+			oldCondition = conditionalStyleModel.getStyles().get(index).getCondition();
+		}
+
+		@Override
+		public void act() {
+			MLogicalStyleController.super.setConditionForConditionalStyle(conditionalStyleModel, index, condition);
+		}
+
+		@Override
+		public String getDescription() {
+			return "SetConditionForConditionalStyle";
+		}
+
+		@Override
+		public void undo() {
+			MLogicalStyleController.super.setConditionForConditionalStyle(conditionalStyleModel, index, oldCondition);
+		}
 	}
+
+	public void setConditionForConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index, final ASelectableCondition condition) {
+		SetConditionForConditionalStyleActor actor = new SetConditionForConditionalStyleActor(conditionalStyleModel, index, condition);
+		Controller.getCurrentModeController().execute(actor, map);
+	}
+
+	class SetStyleForConditionalStyleActor implements IActor {
+		private final ConditionalStyleModel conditionalStyleModel;
+		private final int index;
+		private final IStyle style;
+		private final IStyle oldStyle;
+
+		SetStyleForConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index, IStyle style) {
+			this.conditionalStyleModel = conditionalStyleModel;
+			this.index = index;
+			this.style = style;
+			oldStyle = conditionalStyleModel.getStyles().get(index).getStyle();
+		}
+
+		@Override
+		public void act() {
+			MLogicalStyleController.super.setStyleForConditionalStyle(conditionalStyleModel, index, style);
+		}
+
+		@Override
+		public String getDescription() {
+			return "SetStyleForConditionalStyle";
+		}
+
+		@Override
+		public void undo() {
+			MLogicalStyleController.super.setStyleForConditionalStyle(conditionalStyleModel, index, oldStyle);
+		}
+	}
+
+	public void setStyleForConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index, final IStyle style) {
+		SetStyleForConditionalStyleActor actor = new SetStyleForConditionalStyleActor(conditionalStyleModel, index, style);
+		Controller.getCurrentModeController().execute(actor, map);
+	}
+
+	class SetLastForConditionalStyleActor implements IActor {
+		private final ConditionalStyleModel conditionalStyleModel;
+		private final int index;
+		private final boolean isLast;
+		private final boolean oldLast;
+
+		SetLastForConditionalStyleActor(ConditionalStyleModel conditionalStyleModel, int index, boolean isLast) {
+			this.conditionalStyleModel = conditionalStyleModel;
+			this.index = index;
+			this.isLast = isLast;
+			oldLast = conditionalStyleModel.getStyles().get(index).isLast();
+		}
+
+		@Override
+		public void act() {
+			MLogicalStyleController.super.setLastForConditionalStyle(conditionalStyleModel, index, isLast);
+		}
+
+		@Override
+		public String getDescription() {
+			return "SetLastForConditionalStyle";
+		}
+
+		@Override
+		public void undo() {
+			MLogicalStyleController.super.setLastForConditionalStyle(conditionalStyleModel, index, oldLast);
+		}
+	}
+
+	public void setLastForConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index, final boolean isLast) {
+		SetLastForConditionalStyleActor actor = new SetLastForConditionalStyleActor(conditionalStyleModel, index, isLast);
+		Controller.getCurrentModeController().execute(actor, map);
+	}
+
+
+
+
+
+
+
+
+
+
 	public TableModel getConditionalStyleModelAsTableModel(final MapModel map, final ConditionalStyleModel conditionalStyleModel) {
 		return new TableModel() {
 			private final TableModel tableModel = conditionalStyleModel.asTableModel();
