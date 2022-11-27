@@ -45,13 +45,7 @@ public abstract class AConditionalStyleProxy<T> implements Proxy.ConditionalStyl
 	}
 
 	int getIndex() {
-		int i = 0;
-		for (ConditionalStyleModel.Item _item : getConditionalStyleModel().getStyles()) {
-			if (item == _item)
-				return i;
-			i++;
-		}
-		return -1;
+		return getConditionalStyleModel().getStyles().indexOf(item);
 	}
 
 	@Override
