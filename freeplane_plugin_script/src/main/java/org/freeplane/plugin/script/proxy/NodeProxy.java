@@ -89,13 +89,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public Node createChild() {
-		NodeModel target = getDelegate();
-		final NodeModel newNodeModel = new NodeModel(target.getMap());
-		newNodeModel.setSide( MapController.suggestNewChildSide(target, NodeModel.Side.DEFAULT));
-        final NodeModel parent = target;
-		getMapController().insertNode(newNodeModel, parent, parent.getChildCount());
-		return new NodeProxy(newNodeModel, getScriptContext());
+	    return createChild("");
 	}
+
+    private NodeModel extracted(NodeModel target, final Object value) {
+        return new NodeModel(value, target.getMap());
+    }
 
 	private MMapController getMapController() {
 		return (MMapController) getModeController().getMapController();
@@ -104,20 +103,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public Node createChild(final Object value) {
-		final Node child = createChild();
-		child.setObject(value);
-		return child;
+        return createChild(getDelegate(), value, getDelegate().getChildCount());
 	}
+
+    private Node createChild(NodeModel parent, final Object value, int position) {
+        final NodeModel newNodeModel = extracted(parent, value);
+        if(parent.isRoot())
+            newNodeModel.setSide( MapController.suggestNewChildSide(parent, NodeModel.Side.DEFAULT));
+        getMapController().insertNode(newNodeModel, parent, position);
+        return new NodeProxy(newNodeModel, getScriptContext());
+    }
 
 	// Node: R/W
 	@Override
 	public Node createChild(final int position) {
-		NodeModel target = getDelegate();
-		final NodeModel newNodeModel = new NodeModel(target.getMap());
-		if(target.isRoot())
-			newNodeModel.setSide(target.suggestNewChildSide(target));
-		getMapController().insertNode(newNodeModel, target, position);
-		return new NodeProxy(newNodeModel, getScriptContext());
+        return createChild(getDelegate(), "", position);
 	}
 
 	// Node: R/W
@@ -266,14 +266,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	public void setDetailsContentType(String contentType) {
 		MTextController textController = MTextController.getController();
-		if(contentType != null 
+		if(contentType != null
 				&& ! Stream.of(textController.getDetailContentTypes()).anyMatch(contentType::equals)) {
 			throw new IllegalArgumentException("Unknown content type " + contentType);
 		}
 		final NodeModel nodeModel = getDelegate();
 		textController.setDetailsContentType(nodeModel, contentType);
 	}
-	
+
 	// NodeRO: R
 	@Override
 	public boolean getHideDetails() {
@@ -343,7 +343,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		final String noteText = getNoteText();
 		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext(), noteText);
 	}
-	
+
 	public String getNoteContentType() {
 		final NodeModel nodeModel = getDelegate();
 		final String contentType = NoteController.getController().getNoteContentType(nodeModel);
@@ -352,7 +352,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	public void setNoteContentType(String contentType) {
 		MNoteController noteController = MNoteController.getController();
-		if(contentType != null 
+		if(contentType != null
 				&& ! Stream.of(noteController.getNoteContentTypes()).anyMatch(contentType::equals)) {
 			throw new IllegalArgumentException("Unknown content type " + contentType);
 		}

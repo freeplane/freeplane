@@ -309,12 +309,14 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 // 	final private Controller controller;
-	final private Collection<IMapChangeListener> mapChangeListeners;
-	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
+	final private List<IMapChangeListener> mapChangeListeners;
+	private boolean areMapChangeListenersSorted;
+	final private List<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
 	final private MapWriter mapWriter;
  	final private ModeController modeController;
 	final LinkedList<INodeChangeListener> nodeChangeListeners;
+	private boolean areNodeChangeListenersSorted;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
@@ -537,20 +539,23 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void addUIMapChangeListener(final IMapChangeListener listener) {
 		if(!GraphicsEnvironment.isHeadless())
-			mapChangeListeners.add(listener);
+		    addMapChangeListener(listener);
 	}
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.add(listener);
+		areMapChangeListenersSorted = false;
 	}
 
 	public void addUINodeChangeListener(final INodeChangeListener listener) {
-		if(!GraphicsEnvironment.isHeadless())
-			nodeChangeListeners.add(listener);
+		if(!GraphicsEnvironment.isHeadless()) {
+		    addNodeChangeListener(listener);
+        }
 	}
 
 	public void addNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.add(listener);
+		areNodeChangeListenersSorted = false;
 	}
 
 	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {
@@ -622,6 +627,7 @@ implements IExtension, NodeChangeAnnouncer{
 		if (map != null && event.setsDirtyFlag()) {
 			setSaved(map, false);
 		}
+		sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
 			next.mapChanged(event);
@@ -639,7 +645,7 @@ implements IExtension, NodeChangeAnnouncer{
 					new IMapLifeCycleListener[] {});
 			for (final IMapLifeCycleListener next : list) {
 				next.onCreate(map);
-			} 
+			}
 		} finally {
 			map.setReadOnly(readOnly);
 		}
@@ -652,36 +658,50 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
+    private void sortNodeChangeListeners() {
+        if(! areNodeChangeListenersSorted) {
+            Collections.sort(nodeChangeListeners);
+            areNodeChangeListenersSorted = true;
+        }
+    }
+
 	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
+	    sortNodeChangeListeners();
 		final INodeChangeListener[] nodeChangeListeners = this.nodeChangeListeners.toArray(new INodeChangeListener[]{});
 	    node.fireNodeChanged(nodeChangeListeners, nodeChangeEvent);
 	}
 
+
+    private void sortMapChangeListeners() {
+        if(! areMapChangeListenersSorted) {
+            Collections.sort(mapChangeListeners);
+            areMapChangeListenersSorted = true;
+        }
+    }
+
 	protected void fireNodeDeleted(final NodeDeletionEvent nodeDeletionEvent) {
+	    sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
-		for (final IMapChangeListener next : list) {
-			next.onNodeDeleted(nodeDeletionEvent);
-		}
+		nodeDeletionEvent.parent.fireNodeRemoved(list, nodeDeletionEvent);
 		NodeModel node = nodeDeletionEvent.node;
 		node.getMap().unregistryNodes(node);
 	}
 
 	protected void fireNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
+	    sortMapChangeListeners();
 		parent.getMap().registryNodeRecursive(child);
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
-		for (final IMapChangeListener next : list) {
-			next.onNodeInserted(parent, child, index);
-		}
+		parent.fireNodeInserted(list, child, index);
 	}
 
 	protected void fireNodeMoved(final NodeMoveEvent nodeMoveEvent) {
+	    sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
-		for (final IMapChangeListener next : list) {
-			next.onNodeMoved(nodeMoveEvent);
-		}
+		NodeModel.fireNodeMoved(list, nodeMoveEvent);
 	}
 
 	protected void firePreNodeMoved(final NodeMoveEvent nodeMoveEvent) {
+	    sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
 			next.onPreNodeMoved(nodeMoveEvent);
@@ -689,6 +709,7 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	protected void firePreNodeDelete(final NodeDeletionEvent nodeDeletionEvent) {
+	    sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
 		for (final IMapChangeListener next : list) {
 			next.onPreNodeDelete(nodeDeletionEvent);
@@ -1064,6 +1085,7 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public Collection<IMapChangeListener> getMapChangeListeners() {
+	    sortMapChangeListeners();
         return Collections.unmodifiableCollection(mapChangeListeners);
     }
 
@@ -1072,6 +1094,7 @@ implements IExtension, NodeChangeAnnouncer{
     }
 
 	public Collection<INodeChangeListener> getNodeChangeListeners() {
+	    sortNodeChangeListeners();
         return Collections.unmodifiableCollection(nodeChangeListeners);
     }
 

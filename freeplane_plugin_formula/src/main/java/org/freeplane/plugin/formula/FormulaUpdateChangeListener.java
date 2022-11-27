@@ -23,8 +23,16 @@ import org.freeplane.plugin.script.FormulaDependencies;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
-public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapLifeCycleListener{
+public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapLifeCycleListener {
+    
+    
+    
 	@Override
+    public int priority() {
+        return 1;
+    }
+
+    @Override
 	public void nodeChanged(NodeChangeEvent event) {
 		Object property = event.getProperty();
 		// Note: this doesn't mean that other properties are not interesting here (e.g. links, edges, ...)
