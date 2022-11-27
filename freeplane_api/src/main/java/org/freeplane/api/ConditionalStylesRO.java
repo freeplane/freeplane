@@ -1,12 +1,16 @@
 package org.freeplane.api;
 
-/** Node's or map's conditional-styles table:
+/**
+ * Node's or map's conditional-styles table:
  * <code>node.conditionalStyles</code> or <code>node.mindMap.conditionalStyles</code> - read-only.
  * <p>
- * In the Manage Conditional Styles dialog it's the entire table. Each row in the table is a separate {@link ConditionalStyleRO}.
+ * In the Manage Conditional Styles dialog it's the entire table. Each row in the table is a separate {@link ConditionalStyle}.
  * </p>
  * ConditionalStyles can be iterated over, e.g.
  * <pre>
+ *     // get a list of conditional styles (ConditionalStyle items)
+ *     node.conditionalStyles.collect()
+ *
  *     // get a list of conditional styles, each as a string (description)
  *     node.conditionalStyles.collect { it.toString() }
  *
@@ -21,7 +25,10 @@ package org.freeplane.api;
  *
  *     // find the first conditional style with ScriptCondition (aka Script Filter) and remove it
  *     node.conditionalStyles.find { it.hasScriptCondition() }.each { it.remove() }
+ *
+ *     // remove all, i.e. each ConditionalStyle item
+ *     node.conditionalStyles.collect().each { it.remove() }
  * </pre>
  * See also {@link ConditionalStyles}
  */
-public interface ConditionalStylesRO extends  Iterable<ConditionalStyle>{/**/}
+public interface ConditionalStylesRO extends Iterable<ConditionalStyle> {/**/}

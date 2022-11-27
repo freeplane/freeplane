@@ -36,6 +36,6 @@ public interface MindMapRO {
      *  @since 1.2 */
     String getBackgroundColorCode();
 
-	/** @since 1.11.1 */
+	/** @since 1.10.6~TBC */
 	ConditionalStyles getConditionalStyles();
 }

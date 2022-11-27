@@ -23,6 +23,9 @@ package org.freeplane.api;
  *
  *     // remove the first conditional style from the table
  *     node.conditionalStyles.remove(0)
+ *
+ *     // remove each ConditionalStyle item
+ *     node.conditionalStyles.collect().each { it.remove() }
  * </pre>
  */
 public interface ConditionalStyles {
@@ -31,7 +34,7 @@ public interface ConditionalStyles {
 	 * Adds a conditional style to the end of the table
 	 *
 	 * @throws IllegalArgumentException if styleName is not found
-	 * @since 1.11.1
+	 * @since 1.10.6~TBC
 	 */
 	void add(boolean isActive, String script, String styleName, boolean isLast);
 
@@ -39,7 +42,7 @@ public interface ConditionalStyles {
 	 * Adds a copy of conditionalStyle to the end of the table.
 	 * It can be used to copy a conditional style between nodes or between maps.
 	 *
-	 * @since 1.11.1
+	 * @since 1.10.6~TBC
 	 */
 	void add(ConditionalStyleRO conditionalStyle);
 
@@ -47,7 +50,7 @@ public interface ConditionalStyles {
 	 * Inserts a conditional style at the specified position.
 	 *
 	 * @throws IllegalArgumentException if styleName is not found
-	 * @since 1.11.1
+	 * @since 1.10.6~TBC
 	 */
 	void insert(int position, boolean isActive, String script, String styleName, boolean isLast);
 
@@ -55,14 +58,14 @@ public interface ConditionalStyles {
 	 * Inserts a copy of conditionalStyle at the specified position.
 	 * It can be used to copy a conditional style between nodes or between maps.
 	 *
-	 * @since 1.11.1
+	 * @since 1.10.6~TBC
 	 */
 	void insert(int position, ConditionalStyleRO conditionalStyle);
 
 	/**
 	 * Moves the conditional style found at <b>position</b> to <b>toPosition</b>
 	 *
-	 * @since 1.11.1
+	 * @since 1.10.6~TBC
 	 */
 	void move(int position, int toPosition);
 
@@ -74,7 +77,7 @@ public interface ConditionalStyles {
 	 * </pre>
 	 *
 	 * @return the removed ConditionalStyle
-	 * @since 1.11.1
+	 * @since 1.10.6~TBC
 	 */
 	ConditionalStyle remove(int position);
 }

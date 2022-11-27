@@ -275,7 +275,7 @@ public interface NodeRO {
 	 * @since 1.2 */
 	boolean hasStyle(String styleName);
 
-	/** @since 1.11.1 */
+	/** @since 1.10.6~TBC */
 	ConditionalStyles getConditionalStyles();
 
 	/** Raw text of this node which might be plain or HTML text.
