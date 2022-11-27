@@ -25,7 +25,6 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		private IStyle style;
 		private boolean isActive;
 		private boolean isLast;
-
 		public Item(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 	        super();
 	        this.isActive = isActive;
@@ -230,12 +229,49 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		int lastIndex = styles.size() - 1;
 		if (toIndex < 0 || toIndex > lastIndex)
 			throw new IndexOutOfBoundsException(String.format("toIndex (%d) is out of bounds - expected between 0 and %d", toIndex, lastIndex));
-		if (index > toIndex)
-			while (index > toIndex)
-				moveUp(index--);
-		else if (index < toIndex)
-			while (index < toIndex)
-				moveDown(index++);
+		final Item itemAtIndex = styles.remove(index);
+		styles.add(toIndex, itemAtIndex);
+		if (table == null) {
+			return;
+		}
+		table.fireTableRowsUpdated(index, index);
+		table.fireTableRowsUpdated(toIndex, toIndex);
+	}
+
+	void setActive(int index, boolean isActive) {
+		final Item item = styles.get(index);
+		item.setActive(isActive);
+		if (table == null) {
+			return;
+		}
+		table.fireTableRowsUpdated(index, index);
+	}
+
+	void setCondition(int index, ASelectableCondition condition) {
+		final Item item = styles.get(index);
+		item.setCondition(condition);
+		if (table == null) {
+			return;
+		}
+		table.fireTableRowsUpdated(index, index);
+	}
+
+	void setStyle(int index, IStyle style) {
+		final Item item = styles.get(index);
+		item.setStyle(style);
+		if (table == null) {
+			return;
+		}
+		table.fireTableRowsUpdated(index, index);
+	}
+
+	void setLast(int index, boolean isLast) {
+		final Item item = styles.get(index);
+		item.setLast(isLast);
+		if (table == null) {
+			return;
+		}
+		table.fireTableRowsUpdated(index, index);
 	}
 
 	void clear(){
