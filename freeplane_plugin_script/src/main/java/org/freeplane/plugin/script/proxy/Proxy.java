@@ -4,8 +4,11 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import org.freeplane.api.*;
 import org.freeplane.api.Convertible;
+import org.freeplane.api.FreeplaneVersion;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.NodeCondition;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.link.ArrowType;
