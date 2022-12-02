@@ -30,19 +30,29 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  */
 public class LocationModel implements IExtension {
-	public static final Quantity<LengthUnit> DEFAULT_HGAP = new Quantity<LengthUnit>(14, LengthUnit.pt);
-	public static final int DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnitsRounded();
+    public static final Quantity<LengthUnit> DEFAULT_HGAP = new Quantity<LengthUnit>(14, LengthUnit.pt);
+    public static final int DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnitsRounded();
+    public static final Quantity<LengthUnit> DEFAULT_COMMON_HGAP = new Quantity<LengthUnit>(0, LengthUnit.px);
+    public static final int DEFAULT_COMMON_HGAP_PX = 0;
+
 	public static Quantity<LengthUnit> DEFAULT_SHIFT_Y = new Quantity<LengthUnit>(0, LengthUnit.pt);
 	public static Quantity<LengthUnit> DEFAULT_VGAP = new Quantity<LengthUnit>(2, LengthUnit.pt);
 	public static final int DEFAULT_VGAP_PX = DEFAULT_VGAP.toBaseUnitsRounded();
 
 	public static final LocationModel NULL_LOCATION = new LocationModel() {
-		@Override
-		public void setHGap(final Quantity<LengthUnit> gap) {
-			if (gap != getHGap()) {
-				throw new NoSuchMethodError();
-			}
-		}
+        @Override
+        public void setHGap(final Quantity<LengthUnit> gap) {
+            if (gap != getHGap()) {
+                throw new NoSuchMethodError();
+            }
+        }
+
+        @Override
+        public void setCommonHGap(final Quantity<LengthUnit> gap) {
+            if (gap != getCommonHGap()) {
+                throw new NoSuchMethodError();
+            }
+        }
 
 		@Override
 		public void setShiftY(final Quantity<LengthUnit> shiftY) {
@@ -60,11 +70,13 @@ public class LocationModel implements IExtension {
 	};
 
 	private Quantity<LengthUnit> hGap;
+	private Quantity<LengthUnit> commonHGap;
 	private Quantity<LengthUnit> shiftY;
 	private Quantity<LengthUnit> vGap;
 
 	public LocationModel(){
 		hGap = LocationModel.DEFAULT_HGAP;
+		commonHGap = LocationModel.DEFAULT_COMMON_HGAP;
 		shiftY = LocationModel.DEFAULT_SHIFT_Y;
 		vGap = LocationModel.DEFAULT_VGAP;
 	}
@@ -88,6 +100,10 @@ public class LocationModel implements IExtension {
 		return hGap;
 	}
 
+    public Quantity<LengthUnit> getCommonHGap() {
+        return commonHGap;
+    }
+
 	public Quantity<LengthUnit> getShiftY() {
 		return shiftY;
 	}
@@ -96,10 +112,15 @@ public class LocationModel implements IExtension {
 		return vGap;
 	}
 
-	public void setHGap(final Quantity<LengthUnit> gap) {
+    public void setHGap(final Quantity<LengthUnit> gap) {
 		Objects.requireNonNull(gap);
 		hGap = gap;
 	}
+
+    public void setCommonHGap(Quantity<LengthUnit> commonHGap) {
+        Objects.requireNonNull(commonHGap);
+        this.commonHGap = commonHGap;
+    }
 
 	public void setShiftY(final Quantity<LengthUnit> shiftY) {
 		Objects.requireNonNull(shiftY);
