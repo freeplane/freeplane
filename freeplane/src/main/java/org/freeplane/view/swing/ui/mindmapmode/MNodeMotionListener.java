@@ -26,7 +26,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JScrollPane;
 
@@ -61,6 +64,8 @@ import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 public class MNodeMotionListener extends DefaultNodeMouseMotionListener implements IMouseListener {
 	private Point dragStartingPoint = null;
 	private Quantity<LengthUnit> originalHGap;
+	private List<NodeModel> selection;
+	private List<Quantity<LengthUnit>> originalHGaps;
 	private Quantity<LengthUnit> originalAssignedParentVGap;
 	private Quantity<LengthUnit> minimalDistanceBetweenChildren;
 	private Quantity<LengthUnit> originalShiftY;
@@ -128,7 +133,13 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				if (e.getModifiersEx() == 0) {
 					final NodeView nodeV = getNodeView(e);
 					final NodeModel node = nodeV.getModel();
-					locationController.moveNodePosition(node, LocationModel.DEFAULT_HGAP, LocationModel.DEFAULT_SHIFT_Y);
+					Set<NodeModel> currentSelection = controller.getSelection().getSelection();
+					if(currentSelection.size() > 1) {
+					    currentSelection.forEach(n ->
+					        locationController.moveNodePosition(n, LocationModel.DEFAULT_HGAP, LocationModel.getModel(n).getShiftY()));
+					}
+					else
+					    locationController.moveNodePosition(node, LocationModel.DEFAULT_HGAP, LocationModel.DEFAULT_SHIFT_Y);
 					return;
 				}
 				if (Compat.isCtrlEvent(e)) {
@@ -195,6 +206,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					minimalDistanceBetweenChildren = modeController.getExtension(LocationController.class).getMinimalDistanceBetweenChildren(childDistanceContainer);
 					originalHGap = LocationModel.getModel(node).getHGap();
 					originalShiftY = LocationModel.getModel(node).getShiftY();
+					Set<NodeModel> selection = modeController.getController().getSelection().getSelection();
+					if(selection.size() > 1) {
+					    this.selection = new ArrayList<>(selection);
+					    originalHGaps = new ArrayList<>(selection.size());
+					    selection.forEach(n -> originalHGaps.add(LocationModel.getModel(n).getHGap()));
+					}
 				}
 			}
 		}
@@ -216,24 +233,36 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			final Point point = e.getPoint();
 			UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
 			findGridPoint(point);
-			ModeController c = Controller.getCurrentController().getModeController();
+			Controller controller = Controller.getCurrentController();
+            ModeController modeController = controller.getModeController();
 			final Point dragNextPoint = point;
-			boolean shouldMoveSingleNode = !Compat.isCtrlEvent(e);
-			if (shouldMoveSingleNode) {
-				final NodeModel node = nodeV.getModel();
-				final LocationModel locationModel = LocationModel.createLocationModel(node);
-				boolean usesHorizontalLayout = nodeV.getAncestorWithVisibleContent().usesHorizontalLayout();
-                final int hGapChange = getHGapChange(dragNextPoint, node, usesHorizontalLayout);
-				if(hGapChange != 0){
-					locationModel.setHGap(originalHGap.add(hGapChange, LengthUnit.px));
-				}
-				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node, usesHorizontalLayout);
-				if(shiftYChange != 0){
+			boolean changesDistanceBetweenChildren = Compat.isCtrlEvent(e);
+			if (! changesDistanceBetweenChildren) {
+			    final NodeModel node = nodeV.getModel();
+			    final LocationModel locationModel = LocationModel.createLocationModel(node);
+			    boolean usesHorizontalLayout = nodeV.getAncestorWithVisibleContent().usesHorizontalLayout();
+			    final int hGapChange = getHGapChange(dragNextPoint, node, usesHorizontalLayout);
+			    if(hGapChange != 0) {
+			        Quantity<LengthUnit> newHGap = originalHGap.add(hGapChange, LengthUnit.px);
+                    if (movesMultipleNodesHorizontally()) {
+                        selection.forEach(n ->
+                            LocationModel.createLocationModel(n).setHGap(newHGap));
+                    } else
+                        LocationModel.createLocationModel(node).setHGap(newHGap);
+                }
+			    final int shiftYChange = movesMultipleNodesHorizontally() ? 0 : getNodeShiftYChange(dragNextPoint, node, usesHorizontalLayout);
+			    if(shiftYChange != 0){
 					locationModel.setShiftY(originalShiftY.add(shiftYChange, LengthUnit.px));
 				}
-				if(hGapChange != 0 || shiftYChange != 0)
-					c.getMapController().nodeRefresh(node);
-				else
+				if(hGapChange != 0 || shiftYChange != 0) {
+				    final MapController mapController = modeController.getMapController();
+				    if(movesMultipleNodesHorizontally()) {
+                        selection.forEach(mapController::nodeRefresh);
+
+				    }
+				    else
+				        mapController.nodeRefresh(node);
+                } else
 					return;
 			}
 			else {
@@ -244,7 +273,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				if(locationModel.getVGap().toBaseUnitsRounded() == newVGap)
 					return;
 				locationModel.setVGap(new Quantity<LengthUnit>(newVGap, LengthUnit.px).in(LengthUnit.pt));
-				final MapController mapController = c.getMapController();
+				final MapController mapController = modeController.getMapController();
 				mapController.nodeRefresh(childDistanceContainer);
 				mapController.nodeRefresh(nodeV.getModel());
 			}
@@ -263,6 +292,10 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			});
 		}
 	}
+
+    private boolean movesMultipleNodesHorizontally() {
+        return selection != null;
+    }
 
 	private void findGridPoint(Point point) {
 		final int gridSize = ResourceController.getResourceController().getLengthProperty("grid_size");
@@ -296,9 +329,15 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final Quantity<LengthUnit> shiftY = LocationModel.getModel(node).getShiftY();
 		adjustNodeIndices(nodeV);
 		resetPositions(node);
-		final Quantity<LengthUnit> hGap = hgap;
-		locationController.moveNodePosition(node, hGap, shiftY);
+		locationController.moveNodePosition(node, hgap, shiftY);
 		locationController.setMinimalDistanceBetweenChildren(childDistanceContainer, parentVGap);
+		if(movesMultipleNodesHorizontally()) {
+		    selection.forEach(n ->
+		    {
+		        if(n != node)
+		            locationController.moveNodePosition(n, hgap, LocationModel.getModel(n).getShiftY());
+		    });
+		}
 		stopDrag();
 	}
 
@@ -399,6 +438,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		locationModel.setVGap(originalAssignedParentVGap);
 		LocationModel.getModel(node).setHGap(originalHGap);
 		LocationModel.getModel(node).setShiftY(originalShiftY);
+		if (movesMultipleNodesHorizontally()) {
+            for(int i = 0; i < selection.size(); i++) {
+                LocationModel.getModel(selection.get(i)).setHGap(originalHGaps.get(i));
+            }
+        }
 	}
 
 	private void resetDragStartingPoint() {
@@ -406,6 +450,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		minimalDistanceBetweenChildren = originalAssignedParentVGap = LocationModel.DEFAULT_VGAP;
 		originalHGap = LocationModel.DEFAULT_HGAP;
 		originalShiftY = LocationModel.DEFAULT_SHIFT_Y;
+		originalHGaps = null;
+		selection = null;
 	}
 
 	private void stopDrag() {
