@@ -344,7 +344,7 @@ class VerticalNodeViewLayoutStrategy {
 		boolean usesHorizontalLayout = view.usesHorizontalLayout();
 		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		boolean areChildrenSeparatedByY = ! usesHorizontalLayout
-		        && (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT || childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT);
+		        && childNodesAlignment.areChildrenApart;
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
 			if (child.isLeft() == laysOutLeftSide) {

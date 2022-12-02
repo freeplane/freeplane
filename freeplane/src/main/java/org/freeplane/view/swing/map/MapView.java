@@ -1259,12 +1259,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 newSelected = getVisibleSummarizedOrParentView(oldSelected);
             } else {
                 ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesAlignment();
-                boolean areChildrenShifted = childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT;
-                if((selectedUsesHorizontalLayout || areChildrenShifted)
+                boolean areChildrenApart = childNodesAlignment.areChildrenApart;
+                if((selectedUsesHorizontalLayout || areChildrenApart)
                         && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
-                        || (! selectedUsesHorizontalLayout || areChildrenShifted) && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
+                        || (! selectedUsesHorizontalLayout || areChildrenApart) && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
                     if (oldSelected.isFolded() && unfoldsOnNavigation()) {
-                        if (ancestorWithVisibleContent == null || oldSelected.usesHorizontalLayout() == ancestorWithVisibleContent.usesHorizontalLayout()) {
+                        if (oldSelected.usesHorizontalLayout() == ancestorWithVisibleContent.usesHorizontalLayout()) {
                             getModeController().getMapController().unfoldAndScroll(oldModel, filter);
                             if(oldSelected.getModel().hasVisibleContent(filter))
                                 return oldSelected;
