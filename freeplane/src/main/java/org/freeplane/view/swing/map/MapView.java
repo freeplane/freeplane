@@ -1570,45 +1570,26 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				nextSelected = getNextVisibleSibling(nextSelected, direction == SelectionDirection.DOWN);
 		}
 		if(continious){
-			final NodeView selectionStart = selection.getSelectionStart();
-			selectAsTheOnlyOneSelected(selectionStart);
-			final Boolean selectsDown = selectsDown(selectionStart, nextSelected);
-			if(selectsDown != null){
-				NodeView node = selectionStart;
-				do{
-					NodeView nextVisibleSibling = getNextVisibleSibling(node, selectsDown);
-					if(node == nextVisibleSibling) {
-						selectAsTheOnlyOneSelected(nextSelected);
-						LogUtils.severe("Can not select next visible sibling in continious selection, endless loop");
-						break;
-					}
-					node = nextVisibleSibling;
-					addSelected(node, false);
-				}while(node != nextSelected);
-				selection.setSelectionEnd(nextSelected);
-				mapScroller.scrollNodeToVisible(nextSelected);
-			}
+		    final NodeView selectionStart = selection.getSelectionStart();
+		    selectAsTheOnlyOneSelected(selectionStart);
+		    final boolean selectsDown = direction.isForward();
+		    NodeView node = selectionStart;
+		    do{
+		        NodeView nextVisibleSibling = getNextVisibleSibling(node, selectsDown);
+		        if(node == nextVisibleSibling) {
+		            selectAsTheOnlyOneSelected(nextSelected);
+		            LogUtils.severe("Can not select next visible sibling in continious selection, endless loop");
+		            break;
+		        }
+		        node = nextVisibleSibling;
+		        addSelected(node, false);
+		    }while(node != nextSelected);
+		    selection.setSelectionEnd(nextSelected);
+		    mapScroller.scrollNodeToVisible(nextSelected);
 		}
 		else
 			selectAsTheOnlyOneSelected(nextSelected);
 		return true;
-    }
-
-	private Boolean selectsDown(final NodeView first, final NodeView second) {
-		if(first == second)
-			return null;
-		NodeView node = first;
-		for(final boolean down : new boolean[]{true, false}){
-			for(;;){
-				final NodeView nextVisibleSibling = getNextVisibleSibling(node, down);
-				if(node == nextVisibleSibling)
-					break;
-				node = nextVisibleSibling;
-				if(node == second)
-					return down;
-			}
-		}
-		return null;
     }
 
 	private NodeView getNextVisibleSibling(final NodeView node, final boolean down) {
