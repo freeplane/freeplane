@@ -50,9 +50,13 @@ class ChangeVGapActor implements IActor {
 		return "changeVGap";
 	}
 
-	private void setVGap(final NodeModel node, final Quantity<LengthUnit> parentVGap) {
-		LocationModel.createLocationModel(node).setVGap(parentVGap);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);
+	private void setVGap(final NodeModel node, final Quantity<LengthUnit>vGap) {
+	    LocationModel oldModel = LocationModel.getModel(node);
+        Quantity<LengthUnit> oldVGap = oldModel.getVGap();
+		LocationModel changeableModel = LocationModel.createLocationModel(node);
+        changeableModel.setVGap(vGap);
+		if(changeableModel != oldModel || ! vGap.equals(oldVGap))
+		    Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 
 	public void undo() {
