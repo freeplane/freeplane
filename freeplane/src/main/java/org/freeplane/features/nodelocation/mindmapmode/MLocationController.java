@@ -36,7 +36,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
-	
+
 	private static class StyleCopier implements IExtensionCopier {
 		@Override
         public void copy(Object key, NodeModel from, NodeModel to) {
@@ -47,6 +47,7 @@ public class MLocationController extends LocationController {
 			if(source != null){
 				LocationModel locationModel = LocationModel.createLocationModel(to);
 				locationModel.setVGap(source.getVGap());
+				locationModel.setCommonHGap(source.getCommonHGap());
 			}
 		}
 
@@ -72,7 +73,7 @@ public class MLocationController extends LocationController {
 			}
 		}
 	}
-	
+
 	public MLocationController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
