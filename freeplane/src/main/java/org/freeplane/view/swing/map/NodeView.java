@@ -762,13 +762,15 @@ public class NodeView extends JComponent implements INodeView {
 		return color;
 	}
 
-	/**
-	 * @return Returns the VGAP.
-	 */
-	public int getMinimalDistanceBetweenChildren() {
-		final double minimalDistanceBetweenChildren = getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(model).toBaseUnits();
-		return map.getZoomed(minimalDistanceBetweenChildren);
-	}
+    public int getMinimalDistanceBetweenChildren() {
+        final double minimalDistanceBetweenChildren = getModeController().getExtension(LocationController.class).getCommonVGapBetweenChildren(model).toBaseUnits();
+        return map.getZoomed(minimalDistanceBetweenChildren);
+    }
+
+    public int getBaseDistanceToChildren() {
+        final double distance = getModeController().getExtension(LocationController.class).getBaseHGapToChildren(model).toBaseUnits();
+        return map.getZoomed(distance);
+    }
 
 	public ChildNodesAlignment getChildNodesAlignment() {
 	    updateLayoutProperties();

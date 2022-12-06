@@ -46,8 +46,8 @@ public class MLocationController extends LocationController {
 			LocationModel source = from.getExtension(LocationModel.class);
 			if(source != null){
 				LocationModel locationModel = LocationModel.createLocationModel(to);
+				locationModel.setBaseHGap(source.getBaseHGap());
 				locationModel.setVGap(source.getVGap());
-				locationModel.setCommonHGap(source.getCommonHGap());
 			}
 		}
 
@@ -59,6 +59,7 @@ public class MLocationController extends LocationController {
 			LocationModel target = from.getExtension(LocationModel.class);
 			if(target != null){
 				target.setVGap(LocationModel.DEFAULT_VGAP);
+				target.setBaseHGap(LocationModel.DEFAULT_BASE_HGAP);
 			}
 		}
 
@@ -88,7 +89,7 @@ public class MLocationController extends LocationController {
 	public void moveNodePosition(final NodeModel node, final Quantity<LengthUnit> hGap, final Quantity<LengthUnit> shiftY) {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		MapModel map = node.getMap();
-		ArrayList<IActor> actors = new ArrayList<IActor>(3);
+		ArrayList<IActor> actors = new ArrayList<IActor>(2);
 		actors.add(new ChangeShiftXActor(node, hGap));
 		actors.add(new ChangeShiftYActor(node, shiftY));
 		for (final IActor actor : actors) {
@@ -106,12 +107,18 @@ public class MLocationController extends LocationController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnit> minimalDistanceBetweenChildren){
-		if(node != null){
-			Quantity.assertNonNegativeOrNull(minimalDistanceBetweenChildren);
-			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
-			Controller.getCurrentModeController().execute(actor, node.getMap());
-		}
+    public void setCommonVGapBetweenChildren(NodeModel node, final Quantity<LengthUnit> minimalDistanceBetweenChildren){
+        if(node != null){
+            Quantity.assertNonNegativeOrNull(minimalDistanceBetweenChildren);
+            final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
+            Controller.getCurrentModeController().execute(actor, node.getMap());
+        }
+    }
 
-	}
+    public void setBaseHGapToChildren(NodeModel node, final Quantity<LengthUnit> minimalDistanceBetweenChildren){
+        if(node != null){
+            final IActor actor = new ChangeBaseHGapActor(node, minimalDistanceBetweenChildren);
+            Controller.getCurrentModeController().execute(actor, node.getMap());
+        }
+    }
 }

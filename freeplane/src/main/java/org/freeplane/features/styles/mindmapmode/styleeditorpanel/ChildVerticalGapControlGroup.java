@@ -39,7 +39,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * @author Joe Berry
  * Nov 27, 2016
  */
-class ChildDistanceControlGroup implements ControlGroup {
+class ChildVerticalGapControlGroup implements ControlGroup {
 	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
 
 	private RevertingProperty mSetChildDistance;
@@ -55,7 +55,7 @@ class ChildDistanceControlGroup implements ControlGroup {
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLocationController locationController = (MLocationController) Controller.getCurrentModeController().getExtension(LocationController.class);
-			locationController.setMinimalDistanceBetweenChildren(node, enabled ? mChildDistance.getQuantifiedValue(): LocationModel.DEFAULT_VGAP);
+			locationController.setCommonVGapBetweenChildren(node, enabled ? mChildDistance.getQuantifiedValue(): LocationModel.DEFAULT_VGAP);
 		}
 
 		@Override
@@ -64,7 +64,7 @@ class ChildDistanceControlGroup implements ControlGroup {
 			final LocationModel locationModel = LocationModel.getModel(node);
 			final LocationController locationController = modeController.getExtension(LocationController.class);
 			final Quantity<LengthUnit> gap = locationModel.getVGap();
-			final Quantity<LengthUnit> viewGap = locationController.getMinimalDistanceBetweenChildren(node);
+			final Quantity<LengthUnit> viewGap = locationController.getCommonVGapBetweenChildren(node);
 			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_VGAP);
 			mChildDistance.setQuantifiedValue(viewGap);
 		}

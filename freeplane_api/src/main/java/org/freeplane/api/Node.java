@@ -94,13 +94,13 @@ public interface Node extends NodeRO {
 
     /** Sets the raw (HTML) note text. */
     void setDetailsText(String html);
-    
+
 	/**
-	 * 
+	 *
 	 * Sets details content type.
-	 * 
+	 *
 	 * Use null to remove.
-	 * 
+	 *
 	 * @since 1.9.0
 	 */
     void setDetailsContentType(String contentType);
@@ -162,15 +162,15 @@ public interface Node extends NodeRO {
 	void setNoteText(String html);
 
 	/**
-	 * 
+	 *
 	 * Sets note content type.
-	 * 
+	 *
 	 * Use null to remove.
-	 * 
+	 *
 	 * @since 1.9.0
 	 */
     void setNoteContentType(String contentType);
-    
+
 	/** If <code>value</code> is a String the node object is set to it verbatim. For all other argument types it's
 	 * an alias for {@link #setObject(Object)}.
 	 * <pre>
@@ -302,13 +302,13 @@ public interface Node extends NodeRO {
 	void setAttributes(java.util.Map<String, Object> attributes);
 
 	/**
-	 * @deprecated since 1.10.4 - use {@link #setSideAtRoot(Side)} instead. 
+	 * @deprecated since 1.10.4 - use {@link #setSideAtRoot(Side)} instead.
 	 * @param isTopOrLeft
 	 */
 	void setLeft(boolean isTopOrLeft);
-	
-	/** 
-	 * @since 1.10.4 
+
+	/**
+	 * @since 1.10.4
 	 */
 	void setSideAtRoot(Side side);
 
@@ -348,21 +348,30 @@ public interface Node extends NodeRO {
 	void setVerticalShift(String verticalShift);
 
     /**@since 1.3.7 */
-	void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren);
+    void setMinimalDistanceBetweenChildren(final int minimalDistance);
+
+    /**@since 1.11.1 */
+    void setBaseDistanceToChildren(final int baseDistance);
 
     /** use length units like "1 cm" or "6 pt"
      * @since 1.5.6 */
-	void setMinimalDistanceBetweenChildren(String verticalShift);
+	void setMinimalDistanceBetweenChildren(String minimalDistance);
+
+    /**@since 1.11.1 */
+    void setBaseDistanceToChildren(String baseDistance);
 
     /**@since 1.5.6 */
     void setVerticalShift(Quantity<LengthUnit> verticalShift);
 
     /**@since 1.5.6 */
-    void setMinimalDistanceBetweenChildren(Quantity<LengthUnit> verticalShift);
+    void setMinimalDistanceBetweenChildren(Quantity<LengthUnit> minimalDistance);
+
+    /**@since 1.11.1 */
+    void setBaseDistanceToChildren(Quantity<LengthUnit>  baseDistance);
 
     /**@since 1.5.6 */
     void setHorizontalShift(Quantity<LengthUnit> verticalShift);
-    
+
     /** @since 1.11.1 */
     void setChildNodesLayout(final ChildNodesLayout sides);
 
@@ -397,7 +406,7 @@ public interface Node extends NodeRO {
 	  *
 	  *  @since 1.7.1 */
 	void setIsGlobal(boolean value);
-	
+
     /**@since 1.8.11 */
 	@Override
     NodeGeometry getGeometry();

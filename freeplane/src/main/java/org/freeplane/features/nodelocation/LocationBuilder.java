@@ -51,13 +51,21 @@ class LocationBuilder implements IExtensionAttributeWriter {
 				LocationModel.createLocationModel(node).setVGap(Quantity.fromString(value, LengthUnit.px));
 			}
 		};
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", vgapHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP_QUANTITY", vgapHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP", vgapHandler);
-		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP_QUANTITY", vgapHandler);
-		
-		
-		
+        reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", vgapHandler);
+        reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP_QUANTITY", vgapHandler);
+        reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP", vgapHandler);
+        reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "VGAP_QUANTITY", vgapHandler);
+
+        final IAttributeHandler baseHgapHandler = new IAttributeHandler() {
+            public void setAttribute(final Object userObject, final String value) {
+                final NodeModel node = (NodeModel) userObject;
+                LocationModel.createLocationModel(node).setBaseHGap(Quantity.fromString(value, LengthUnit.px));
+            }
+        };
+        reader.addAttributeHandler(NodeBuilder.XML_NODE, "COMMON_HGAP_QUANTITY", baseHgapHandler);
+        reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "COMMON_HGAP_QUANTITY", baseHgapHandler);
+
+
 		final IAttributeHandler hgapHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -75,10 +83,6 @@ class LocationBuilder implements IExtensionAttributeWriter {
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final LocationModel locationModel = (LocationModel) extension;
-		final Quantity<LengthUnit> vGap = locationModel.getVGap();
-		if (vGap != LocationModel.DEFAULT_VGAP) {
-			writer.addAttribute("VGAP_QUANTITY", vGap.toString());
-		}
 		final Quantity<LengthUnit> hGap = locationModel.getHGap();
 		if (locationModel.getHGap() != LocationModel.DEFAULT_HGAP) {
 			writer.addAttribute("HGAP_QUANTITY", hGap.toString());
@@ -87,5 +91,13 @@ class LocationBuilder implements IExtensionAttributeWriter {
 		if (shiftY != LocationModel.DEFAULT_SHIFT_Y) {
 			writer.addAttribute("VSHIFT_QUANTITY", shiftY.toString());
 		}
+        final Quantity<LengthUnit> vGap = locationModel.getVGap();
+        if (vGap != LocationModel.DEFAULT_VGAP) {
+            writer.addAttribute("VGAP_QUANTITY", vGap.toString());
+        }
+        final Quantity<LengthUnit> baseHgap = locationModel.getBaseHGap();
+        if (baseHgap != LocationModel.DEFAULT_BASE_HGAP) {
+            writer.addAttribute("COMMON_HGAP_QUANTITY", baseHgap.toString());
+        }
 	}
 }

@@ -66,7 +66,7 @@ public class StyleEditorPanel extends JPanel {
 			this.fontSize = UITools.getUIFontSize(scalingFactor);
 			this.paragraphGapSize = Sizes.pixel((int) (2.5 * scalingFactor * fontSize));
 		}
-		
+
 	}
 
     private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
@@ -84,7 +84,7 @@ public class StyleEditorPanel extends JPanel {
 			if(propertyName.equals(ModeController.VIEW_MODE_PROPERTY))
 				updatePanel();
 		}
-		
+
 		@Override
 		public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 			if (modeController.equals(Controller.getCurrentModeController())) {
@@ -140,11 +140,11 @@ public class StyleEditorPanel extends JPanel {
 	private ControlGroup[] createControlGroups(ModeController modeController, MUIFactory uiFactory, boolean addStyleBox) {
 		return new ControlGroup[]{
 				new StyleControlGroup(addStyleBox, uiFactory, modeController, panelConfiguration.fontSize),
-				
+
 				new GroupSeparator("OptionPanel.separator.NodeColors"),
 				new NodeColorControlGroup(),
 				new NodeBackgroundColorControlGroup(),
-				
+
                 new GroupSeparator("OptionPanel.separator.NodeFont"),
                 new FontNameControlGroup(),
                 new FontSizeControlGroup(),
@@ -155,33 +155,34 @@ public class StyleEditorPanel extends JPanel {
                 new NodeFontHyperLinkControlGroup(),
                 new NextLineControlGroup(),
                 new CssControlGroup(modeController),
-                
+
                 new GroupSeparator("OptionPanel.separator.IconControls"),
                 new IconSizeControlGroup(),
-                
+
                 new GroupSeparator("OptionPanel.separator.NodeText"),
                 new FormatControlGroup(),
                 new NodeNumberingControlGroup(),
-                
+
 				new GroupSeparator("OptionPanel.separator.ContentTypes"),
                 new DetailContentTypeControlGroup(),
                 new NoteContentTypeControlGroup(),
-				
+
                 new GroupSeparator("OptionPanel.separator.NodeShape"),
 				new NodeShapeControlGroup(),
 				new MinNodeWidthControlGroup(),
 				new MaxNodeWidthControlGroup(),
-				
+
 				new GroupSeparator("OptionPanel.separator.NodeLayout"),
 				new ChildNodesLayoutControlGroup(),
-				new ChildDistanceControlGroup(),
-				
+                new ChildHorizontalGapControlGroup(),
+                new ChildVerticalGapControlGroup(),
+
 				new GroupSeparator("OptionPanel.separator.NodeBorder"),
 				new BorderWidthAndBorderWidthMatchesEdgeControlGroup(),
 				new BorderDashAndDashMatchesEdgeControlGroup(),
 				new BorderColorAndColorMatchesEdgeControlGroup(),
 				new NextLineControlGroup(),
-				
+
 				new GroupSeparator("OptionPanel.separator.EdgeControls"),
 				new EdgeWidthControlGroup(),
 				new EdgeDashControlGroup(),
@@ -213,8 +214,8 @@ public class StyleEditorPanel extends JPanel {
 		addListeners();
 		setFont(this, panelConfiguration.fontSize);
 	}
-	
-	
+
+
 
 	@Override
 	public Dimension getPreferredSize() {
@@ -261,7 +262,7 @@ public class StyleEditorPanel extends JPanel {
 	                setComponentsEnabled((Container) component, enabled);
 	        }
 	}
-	
+
 	private void addListeners() {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -308,7 +309,7 @@ public class StyleEditorPanel extends JPanel {
 			}
 
 		});
-		
+
 		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
 
 		    @Override

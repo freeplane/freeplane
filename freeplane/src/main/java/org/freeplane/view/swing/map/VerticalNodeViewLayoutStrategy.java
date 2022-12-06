@@ -339,6 +339,7 @@ class VerticalNodeViewLayoutStrategy {
 
 	private void calculateLayoutX(final boolean laysOutLeftSide) {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
+		final int baseDistanceToChildren = view.getBaseDistanceToChildren();
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
 		boolean usesHorizontalLayout = view.usesHorizontalLayout();
@@ -361,6 +362,9 @@ class VerticalNodeViewLayoutStrategy {
 					childHGap = 0;
 				if(view.getModel().isHiddenSummary() && ! child.getModel().isHiddenSummary())
 					childHGap -= child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
+
+				if(isItem && ! isFreeNode)
+				    childHGap += baseDistanceToChildren;
 
 				if (isItem) {
 					if (!isFreeNode && (oldLevel > 0 || child.isFirstGroupNode()))

@@ -1071,16 +1071,29 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
 	}
 
-	@Override
-	public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
-		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
-	}
+    @Override
+    public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
+        return LocationController.getController().getCommonVGapBetweenChildren(getDelegate());
+    }
+
+    @Override
+    public Quantity<LengthUnit> getBaseDistanceToChildrenAsLength(){
+        return LocationController.getController().getBaseHGapToChildren(getDelegate());
+    }
+
+
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
 		final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(minimalDistanceBetweenChildren, LengthUnit.px);
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
 	}
+
+    @Override
+    public void setBaseDistanceToChildren(final int baseDistanceToChildren){
+        final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(baseDistanceToChildren, LengthUnit.px);
+        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+    }
 
     @Override
     public void setChildNodesLayout(final ChildNodesLayout sides){
@@ -1094,13 +1107,24 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnit> minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
 	}
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final String minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
+		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
 	}
+
+    @Override
+    public void setBaseDistanceToChildren(final Quantity<LengthUnit> baseDistance){
+        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), baseDistance);
+    }
+
+    @Override
+    public void setBaseDistanceToChildren(final String baseDistance){
+        final Quantity<LengthUnit> baseDistancerenQuantity = Quantity.fromString(baseDistance, LengthUnit.px);
+        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), baseDistancerenQuantity);
+    }
 
 	@Override
 	public void sortChildrenBy(final Closure<Comparable<Object>> closure) {

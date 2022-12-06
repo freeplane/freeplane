@@ -48,9 +48,13 @@ class NodeViewLayoutHelper {
 		return view.getModel();
 	}
 
-	int getMinimalDistanceBetweenChildren() {
-		return view.getMinimalDistanceBetweenChildren();
-	}
+    int getMinimalDistanceBetweenChildren() {
+        return view.getMinimalDistanceBetweenChildren();
+    }
+
+    int getBaseDistanceToChildren() {
+        return view.getBaseDistanceToChildren();
+    }
 
 	int getSpaceAround() {
 		return view.getSpaceAround();

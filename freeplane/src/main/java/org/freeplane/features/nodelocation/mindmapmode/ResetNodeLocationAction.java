@@ -32,7 +32,7 @@ import org.freeplane.features.nodelocation.LocationModel;
  */
 class ResetNodeLocationAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -45,6 +45,7 @@ class ResetNodeLocationAction extends AMultipleNodeAction {
 		MLocationController locationController = (MLocationController) LocationController.getController();
 		locationController.moveNodePosition(node, LocationModel.NULL_LOCATION.getHGap(), LocationModel.NULL_LOCATION
 						.getShiftY());
-		locationController.setMinimalDistanceBetweenChildren(node.getParentNode(), LocationModel.NULL_LOCATION.getVGap());
+		locationController.setBaseHGapToChildren(node.getParentNode(), LocationModel.NULL_LOCATION.getBaseHGap());
+		locationController.setCommonVGapBetweenChildren(node.getParentNode(), LocationModel.NULL_LOCATION.getVGap());
 	}
 }
