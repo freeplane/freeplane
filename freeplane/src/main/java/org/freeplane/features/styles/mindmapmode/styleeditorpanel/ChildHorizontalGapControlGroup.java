@@ -78,7 +78,7 @@ class ChildHorizontalGapControlGroup implements ControlGroup {
 
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildDistance = new RevertingProperty();
-		mChildDistance = new  QuantityProperty<LengthUnit>(HORIZONTAL_CHILD_GAP, 0, 1000, 0.1, LengthUnit.px);
+		mChildDistance = new  QuantityProperty<LengthUnit>(HORIZONTAL_CHILD_GAP, -1000, 1000, 0.1, LengthUnit.px);
 		propertyChangeListener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.addPropertyChangeListener(propertyChangeListener);
