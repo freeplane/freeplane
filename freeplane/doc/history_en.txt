@@ -2,6 +2,9 @@
 1.11.1
 ===============================
 Top-to-bottom, left-to-right and combined layouts
+Base distance from parent node to child node configurable for parent nodes and styles
+Node movement restricted to single directions
+Simultaneous movement of all selected nodes
 
 ==============================
 1.10.5
