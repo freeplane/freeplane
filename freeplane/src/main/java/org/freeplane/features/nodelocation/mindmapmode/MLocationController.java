@@ -59,7 +59,7 @@ public class MLocationController extends LocationController {
 			LocationModel target = from.getExtension(LocationModel.class);
 			if(target != null){
 				target.setVGap(LocationModel.DEFAULT_VGAP);
-				target.setBaseHGap(LocationModel.DEFAULT_BASE_HGAP);
+				target.setBaseHGap(LocationModel.DEFAULT_HGAP);
 			}
 		}
 

@@ -339,7 +339,7 @@ class VerticalNodeViewLayoutStrategy {
 
 	private void calculateLayoutX(final boolean laysOutLeftSide) {
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
-		final int baseDistanceToChildren = view.getBaseDistanceToChildren();
+		final int baseDistanceToChildren = view.getBaseDistanceToChildren() - LocationModel.DEFAULT_HGAP_PX;
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
 		boolean usesHorizontalLayout = view.usesHorizontalLayout();

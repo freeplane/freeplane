@@ -55,7 +55,7 @@ class ChildHorizontalGapControlGroup implements ControlGroup {
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLocationController locationController = (MLocationController) Controller.getCurrentModeController().getExtension(LocationController.class);
-			locationController.setBaseHGapToChildren(node, enabled ? mChildDistance.getQuantifiedValue() : LocationModel.DEFAULT_BASE_HGAP);
+			locationController.setBaseHGapToChildren(node, enabled ? mChildDistance.getQuantifiedValue() : LocationModel.DEFAULT_HGAP);
 		}
 
 		@Override
@@ -65,7 +65,7 @@ class ChildHorizontalGapControlGroup implements ControlGroup {
 			final LocationController locationController = modeController.getExtension(LocationController.class);
 			final Quantity<LengthUnit> gap = locationModel.getBaseHGap();
 			final Quantity<LengthUnit> viewGap = locationController.getBaseHGapToChildren(node);
-			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_BASE_HGAP);
+			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_HGAP);
 			mChildDistance.setQuantifiedValue(viewGap);
 		}
 

@@ -141,13 +141,13 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                         currentSelection.forEach(n ->
                             {
                                 NodeModel parentNode = n.getParentNode();
-                                locationController.setBaseHGapToChildren(parentNode, LocationModel.DEFAULT_BASE_HGAP);
+                                locationController.setBaseHGapToChildren(parentNode, LocationModel.DEFAULT_HGAP);
                                 locationController.setCommonVGapBetweenChildren(parentNode, LocationModel.DEFAULT_VGAP);
                             });
                     }
                     else {
                         NodeModel parentNode = nodeV.getParentView().getModel();
-                        locationController.setBaseHGapToChildren(parentNode, LocationModel.DEFAULT_BASE_HGAP);
+                        locationController.setBaseHGapToChildren(parentNode, LocationModel.DEFAULT_HGAP);
                         locationController.setCommonVGapBetweenChildren(parentNode, LocationModel.DEFAULT_VGAP);
                     }
 					return;
@@ -570,7 +570,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private void resetDragStartingPoint() {
 		dragStartingPoint = null;
 		effectiveParentVGap = originalAssignedParentVGap = LocationModel.DEFAULT_VGAP;
-		effectiveBaseHGap = originalAssignedBaseHGap = LocationModel.DEFAULT_BASE_HGAP;
+		effectiveBaseHGap = originalAssignedBaseHGap = LocationModel.DEFAULT_HGAP;
 		originalHGap = LocationModel.DEFAULT_HGAP;
 		originalShiftY = LocationModel.DEFAULT_SHIFT_Y;
 		originalHGaps = originalAssignedBaseHGaps = originalAssignedVGaps = null;

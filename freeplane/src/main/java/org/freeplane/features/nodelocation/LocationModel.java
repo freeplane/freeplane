@@ -32,10 +32,7 @@ import org.freeplane.features.map.NodeModel;
 public class LocationModel implements IExtension {
     public static final Quantity<LengthUnit> DEFAULT_HGAP = new Quantity<LengthUnit>(14, LengthUnit.pt);
     public static final int DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnitsRounded();
-    public static final Quantity<LengthUnit> DEFAULT_BASE_HGAP = new Quantity<LengthUnit>(0, LengthUnit.px);
-    public static final int DEFAULT_BASE_HGAP_PX = DEFAULT_BASE_HGAP.toBaseUnitsRounded();
-
-	public static Quantity<LengthUnit> DEFAULT_SHIFT_Y = new Quantity<LengthUnit>(0, LengthUnit.pt);
+    public static Quantity<LengthUnit> DEFAULT_SHIFT_Y = new Quantity<LengthUnit>(0, LengthUnit.pt);
 	public static Quantity<LengthUnit> DEFAULT_VGAP = new Quantity<LengthUnit>(2, LengthUnit.pt);
 	public static final int DEFAULT_VGAP_PX = DEFAULT_VGAP.toBaseUnitsRounded();
 
@@ -76,7 +73,7 @@ public class LocationModel implements IExtension {
 
 	public LocationModel(){
 		hGap = LocationModel.DEFAULT_HGAP;
-		baseHGap = LocationModel.DEFAULT_BASE_HGAP;
+		baseHGap = DEFAULT_HGAP;
 		shiftY = LocationModel.DEFAULT_SHIFT_Y;
 		vGap = LocationModel.DEFAULT_VGAP;
 	}

@@ -96,7 +96,7 @@ class LocationBuilder implements IExtensionAttributeWriter {
             writer.addAttribute("VGAP_QUANTITY", vGap.toString());
         }
         final Quantity<LengthUnit> baseHgap = locationModel.getBaseHGap();
-        if (baseHgap != LocationModel.DEFAULT_BASE_HGAP) {
+        if (baseHgap != LocationModel.DEFAULT_HGAP) {
             writer.addAttribute("COMMON_HGAP_QUANTITY", baseHgap.toString());
         }
 	}

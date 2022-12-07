@@ -87,7 +87,7 @@ public class LocationController implements IExtension {
             final Quantity<LengthUnit> returnedGap = getStyleCommonChildHGap(map, style);
             return returnedGap;
         });
-		childHGapHandlers.addGetter(IPropertyHandler.DEFAULT, (node, option, currentValue) -> LocationModel.DEFAULT_BASE_HGAP);
+		childHGapHandlers.addGetter(IPropertyHandler.DEFAULT, (node, option, currentValue) -> LocationModel.DEFAULT_HGAP);
 
 	}
 	private Quantity<LengthUnit> getStyleChildVGap(final MapModel map, final Collection<IStyle> styleKeys) {
@@ -122,7 +122,7 @@ public class LocationController implements IExtension {
                 continue;
             }
             Quantity<LengthUnit> gap = styleModel.getBaseHGap();
-            if (gap == LocationModel.DEFAULT_BASE_HGAP) {
+            if (gap == LocationModel.DEFAULT_HGAP) {
                 continue;
             }
             return gap;
