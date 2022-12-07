@@ -687,7 +687,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		if (supportedHtmlFlavor != null) {
 			try {
 				final String textFromClipboard = t.getTransferData(supportedHtmlFlavor).toString();
-				if (textFromClipboard.charAt(0) != 65533) {
+				if (textFromClipboard.length() > 0 && textFromClipboard.charAt(0) != 65533) {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						handlerList.add(new StructuredHtmlFlavorHandler(textFromClipboard));
 						handlerList.add(new DirectHtmlFlavorHandler(textFromClipboard));
@@ -768,7 +768,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 			return;
 		}
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		if (side == Side.AS_SIBLING && !mapController.isWriteable(target.getParentNode()) 
+		if (side == Side.AS_SIBLING && !mapController.isWriteable(target.getParentNode())
 				|| side != Side.AS_SIBLING && !mapController.isWriteable(target)) {
 			final String message = TextUtils.getText("node_is_write_protected");
 			UITools.errorMessage(message);
@@ -1007,7 +1007,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 			UITools.errorMessage(TextUtils.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node", 
+		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node",
 		    MMapClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
 		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
