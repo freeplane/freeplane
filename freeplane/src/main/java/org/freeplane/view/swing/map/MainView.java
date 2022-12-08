@@ -85,11 +85,13 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public class MainView extends ZoomableLabel {
+    private static final long serialVersionUID = 1L;
+
     public enum DragOver {
         NO {
             @Override
             void paint(MainView view, final Graphics2D graphics) {/**/}
-        }, 
+        },
         DROP_UP {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
@@ -97,7 +99,7 @@ public class MainView extends ZoomableLabel {
                         NodeView.dragColor));
                 graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
             }
-        }, 
+        },
         DROP_DOWN {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
@@ -105,7 +107,7 @@ public class MainView extends ZoomableLabel {
                         NodeView.dragColor));
                 graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
             }
-        }, 
+        },
         DROP_LEFT {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
@@ -113,7 +115,7 @@ public class MainView extends ZoomableLabel {
                         NodeView.dragColor));
                 graphics.fillRect(0, 0, view.getWidth() * 3 / 4, view.getHeight() - 1);
             }
-        }, 
+        },
         DROP_RIGHT {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
@@ -122,7 +124,7 @@ public class MainView extends ZoomableLabel {
                 graphics.fillRect(view.getWidth() / 4, 0, view.getWidth() - 1, view.getHeight() - 1);
 
             }
-        }, 
+        },
         ;
 
         abstract void paint(MainView view, final Graphics2D graphics);
@@ -136,12 +138,15 @@ public class MainView extends ZoomableLabel {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
+	final static Stroke DEF_STROKE = new BasicStroke(1f);
+	private static final BasicStroke THIN_STROKE = new BasicStroke(1.5f);
+	private static final int THICK_STROKE_WIDTH = 4;
+    private final static Stroke THICK_STROKE =  new BasicStroke(3f);
+
 	private DragOver isDraggedOver = DragOver.NO;
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
-	final static Stroke DEF_STROKE = new BasicStroke();
 	private float unzoomedBorderWidth = 1f;
 	private DashVariant dash = DashVariant.DEFAULT;
 	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
@@ -267,7 +272,7 @@ public class MainView extends ZoomableLabel {
 		}
 		Filter filter = nodeView.getMap().getFilter();
 		for (final NodeView childView : nodeView.getChildrenViews()) {
-			if (!childView.getModel().hasVisibleContent(filter) 
+			if (!childView.getModel().hasVisibleContent(filter)
 					&& !FoldingMark.FOLDING_CIRCLE_UNFOLDED.equals(foldingMarkType(mapController, childView))) {
 				return FoldingMark.FOLDING_CIRCLE_FOLDED;
 			}
@@ -301,8 +306,18 @@ public class MainView extends ZoomableLabel {
 		final MapView parent = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
 		parent.getModeController().getController().getMapViewManager().setEdgesRenderingHint(g2);
 		final Color color = g2.getColor();
+		Stroke stroke = g2.getStroke();
+        g2.setColor(Color.WHITE);
+        Rectangle r = getDragRectangle();
+        r.x += THICK_STROKE_WIDTH / 2;
+        r.y += THICK_STROKE_WIDTH / 2;
+        r.width -= THICK_STROKE_WIDTH;
+        r.height -= THICK_STROKE_WIDTH;
+
+        g2.setStroke(THICK_STROKE);
+        g.drawOval(r.x, r.y, r.width - 1, r.height - 1);
+        g2.setStroke(THIN_STROKE);
 		NodeView movedView = getNodeView();
-		Rectangle r = getDragRectangle();
 		if (movedView .isFree()) {
 			g2.setColor(Color.BLUE);
 			g.fillOval(r.x, r.y, r.width - 1, r.height - 1);
@@ -313,6 +328,7 @@ public class MainView extends ZoomableLabel {
 		}
 		g2.setColor(Color.BLACK);
 		g.drawOval(r.x, r.y, r.width- 1, r.height- 1);
+		g2.setStroke(stroke);
 		g2.setColor(color);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
@@ -447,14 +463,14 @@ public class MainView extends ZoomableLabel {
 	void updateTextColor(final NodeView node) {
 		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
 		Color newForeground = styleController.getColor(node.getModel(), node.getStyleOption());
-		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE) 
+		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE)
 				: newForeground;
 		if(! Objects.equals(getForeground(), newForeground)) {
 			setForeground(newForeground);
 			revalidate();
 		}
 	}
-	
+
 	void updateCss(NodeView node) {
 		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
 		NodeCss newCss = styleController.getStyleSheet(node.getModel(), node.getStyleOption());
@@ -640,18 +656,18 @@ public class MainView extends ZoomableLabel {
 	    Rectangle foldingRectangleBounds = painter.getFoldingRectangleBounds(nodeView, true);
 	    if(nodeView.usesHorizontalLayout()) {
 	        if(nodeView.isTopOrLeft())
-	            return p.y >= foldingRectangleBounds.y && p.y < 0 
+	            return p.y >= foldingRectangleBounds.y && p.y < 0
 	            && p.x >= 0 && p.x < getWidth();
 	        else
-	            return p.y >= foldingRectangleBounds.y && p.y < foldingRectangleBounds.y + foldingRectangleBounds.height 
+	            return p.y >= foldingRectangleBounds.y && p.y < foldingRectangleBounds.y + foldingRectangleBounds.height
 	                && p.x >= 0 && p.x < getWidth();
 	    }
 	    else {
 	        if(nodeView.paintsChildrenOnTheLeft())
-	            return p.x >= foldingRectangleBounds.x && p.x < 0 
+	            return p.x >= foldingRectangleBounds.x && p.x < 0
 	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
-	        else 
-	            return p.x >= foldingRectangleBounds.x && p.x < foldingRectangleBounds.x + foldingRectangleBounds.width 
+	        else
+	            return p.x >= foldingRectangleBounds.x && p.x < foldingRectangleBounds.x + foldingRectangleBounds.width
 	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
 	    }
 	}
@@ -678,7 +694,7 @@ public class MainView extends ZoomableLabel {
 		if(repaintFoldingRectangle)
 			paintFoldingRectangleImmediately();
 	}
-	
+
 	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
 	    return painter.getFoldingRectangleBounds(nodeView, drawsControls);
 	}
@@ -710,7 +726,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	private int getDraggingAreaWidth() {
-		return getNodeView().getMap().getDraggingAreaWidth();
+		return getNodeView().getMap().getDraggingAreaWidth() + THICK_STROKE_WIDTH;
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
@@ -772,7 +788,7 @@ public class MainView extends ZoomableLabel {
 
 		return fillColor;
 	}
-	
+
 	public void updateBorder(NodeView nodeView) {
 		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
 		final NodeModel node = nodeView.getModel();
@@ -799,7 +815,7 @@ public class MainView extends ZoomableLabel {
 	void paintComponentDefault(final Graphics graphics) {
 	    super.paintComponent(graphics);
 	}
-	
+
     public Insets getDefaultZoomedInsets() {
 		return super.getZoomedInsets();
 	}
