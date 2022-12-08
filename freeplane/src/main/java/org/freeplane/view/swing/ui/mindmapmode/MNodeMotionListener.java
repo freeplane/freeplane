@@ -196,7 +196,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		setClickDelay();
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-			    NodeView nodeView = ((MainView) e.getSource()).getNodeView();
+			    NodeView nodeView = getNodeView(e);
 				final NodeModel node = nodeView.getModel();
 				ModeController modeController = mapView.getModeController();
 				if(modeController.canEdit(node.getMap())) {
@@ -243,10 +243,14 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			super.mousePressed(e);
 	}
 
+    private NodeView getNodeView(MouseEvent e) {
+        return ((MainView) e.getSource()).getNodeView();
+    }
+
 	@Override
     public void mouseDragged(final MouseEvent e) {
 		if (!isDragActive()) {
-			if(! draggedNodeView.isSelected())
+			if(! getNodeView(e).isSelected())
 				super.mouseDragged(e);
 			return;
 		}
