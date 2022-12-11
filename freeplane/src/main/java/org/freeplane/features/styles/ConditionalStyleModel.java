@@ -106,7 +106,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 
 	}
- 
+
 	public static ConditionalStyleModel createConditionalStyleModel(NodeModel nodeModel) {
         ConditionalStyleModel extension = nodeModel.getExtension(ConditionalStyleModel.class);
         if (extension == null) {
@@ -225,17 +225,16 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		swapConditions(index, index + 1);
 	}
 
-	void move(int index, int toIndex) {
+	void move(int from, int to) {
 		int lastIndex = styles.size() - 1;
-		if (toIndex < 0 || toIndex > lastIndex)
-			throw new IndexOutOfBoundsException(String.format("toIndex (%d) is out of bounds - expected between 0 and %d", toIndex, lastIndex));
-		final Item itemAtIndex = styles.remove(index);
-		styles.add(toIndex, itemAtIndex);
+		if (to < 0 || to > lastIndex)
+			throw new IndexOutOfBoundsException(String.format("toIndex (%d) is out of bounds - expected between 0 and %d", to, lastIndex));
+		final Item itemAtIndex = styles.remove(from);
+		styles.add(to, itemAtIndex);
 		if (table == null) {
 			return;
 		}
-		table.fireTableRowsUpdated(index, index);
-		table.fireTableRowsUpdated(toIndex, toIndex);
+		table.fireTableRowsUpdated(Math.min(from, to), Math.max(from, to));
 	}
 
 	void setActive(int index, boolean isActive) {
