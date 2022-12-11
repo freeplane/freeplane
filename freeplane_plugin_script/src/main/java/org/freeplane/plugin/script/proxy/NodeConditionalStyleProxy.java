@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.api.ConditionalStyleNotFoundException;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -81,6 +82,7 @@ public class NodeConditionalStyleProxy extends AConditionalStyleProxy<NodeModel>
 	}
 
 	private void callDelayedRefresh(NodeModel nodeModel) {
-		//TODO implement
+	    Controller.getCurrentModeController().getMapController()
+	        .refreshNodeLaterUndoable(nodeModel, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
 }

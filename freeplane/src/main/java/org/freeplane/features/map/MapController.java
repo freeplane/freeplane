@@ -1030,6 +1030,30 @@ implements IExtension, NodeChangeAnnouncer{
 			}
 		}
 	}
+
+    public void refreshNodeLaterUndoable(final NodeModel node, final Object property, final Object oldValue,
+            final Object newValue){
+        IActor actor = new IActor() {
+
+            @Override
+            public void undo() {
+                delayedNodeRefresh(node, property, newValue, oldValue);
+            }
+
+            @Override
+            public String getDescription() {
+                return "delayedNodeRefresh";
+            }
+
+            @Override
+            public void act() {
+                delayedNodeRefresh(node, property, oldValue, newValue);
+             }
+        };
+        getModeController().execute(actor, node.getMap());
+    }
+
+
 	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 			final Object newValue){
 		if(Controller.getCurrentController().getViewController().isDispatchThread())

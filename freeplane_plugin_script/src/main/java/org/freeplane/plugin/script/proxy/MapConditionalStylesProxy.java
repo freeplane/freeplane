@@ -3,6 +3,8 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.api.ConditionalStyle;
 import org.freeplane.api.ConditionalStyleRO;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -62,7 +64,7 @@ public class MapConditionalStylesProxy extends AConditionalStylesProxy<MapModel>
 		return new MapConditionalStyleProxy(getDelegate(), item);
 	}
 
-	private void callDelayedRefresh(MapModel mapModel) {
-		//TODO implement
-	}
+    private void callDelayedRefresh(MapModel map) {
+        LogicalStyleController.getController().refreshMap(map);
+    }
 }

@@ -81,7 +81,7 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 		return new MapConditionalStyleProxy(getDelegate(), item);
 	}
 
-	private void callDelayedRefresh(MapModel mapModel) {
-		//TODO implement
+	private void callDelayedRefresh(MapModel map) {
+        LogicalStyleController.getController().refreshMap(map);
 	}
 }

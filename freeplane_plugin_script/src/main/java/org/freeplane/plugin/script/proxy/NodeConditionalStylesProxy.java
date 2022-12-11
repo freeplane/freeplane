@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.api.ConditionalStyle;
 import org.freeplane.api.ConditionalStyleRO;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
@@ -61,7 +62,8 @@ public class NodeConditionalStylesProxy extends AConditionalStylesProxy<NodeMode
 		return new NodeConditionalStyleProxy(getDelegate(), item);
 	}
 
-	private void callDelayedRefresh(NodeModel nodeModel) {
-		//TODO implement
-	}
+    private void callDelayedRefresh(NodeModel nodeModel) {
+        Controller.getCurrentModeController().getMapController()
+            .refreshNodeLaterUndoable(nodeModel, NodeModel.UNKNOWN_PROPERTY, null, null);
+    }
 }
