@@ -150,7 +150,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	    if(map.isUndoActionRunning()){
 	    	return extension;
 	    }
-		LogicalStyleController.getController().refreshMap(map);
+		LogicalStyleController.getController().refreshMapLaterUndoable(map);
     	return extension;
     }
 

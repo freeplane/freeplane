@@ -57,7 +57,7 @@ public class ManageMapConditionalStylesAction extends AManageConditionalStylesAc
 		try{
 			final int confirmed = JOptionPane.showConfirmDialog(controller.getMapViewManager().getMapViewComponent(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if(JOptionPane.OK_OPTION == confirmed){
-				LogicalStyleController.getController().refreshMap(map);
+				LogicalStyleController.getController().refreshMapLaterUndoable(map);
 				Controller.getCurrentModeController().commit();
 			}
 			else{

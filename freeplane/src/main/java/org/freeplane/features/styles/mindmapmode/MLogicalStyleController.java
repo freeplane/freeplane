@@ -896,7 +896,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		final IActor actor = new IActor() {
 			public void undo() {
 				styleModel.removeStyleNode(newNode);
-				refreshMap(map);
+				refreshMapLaterUndoable(map);
 			}
 
 			public String getDescription() {
@@ -905,7 +905,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 			public void act() {
 				styleModel.addStyleNode(newNode);
-				refreshMap(map);
+				refreshMapLaterUndoable(map);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, styleMap);

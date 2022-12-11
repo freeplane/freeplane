@@ -88,7 +88,7 @@ public class EditStylesAction extends AFreeplaneAction {
 	}
 
 	void commit() {
-	    LogicalStyleController.getController().refreshMap(currentMap);
+	    LogicalStyleController.getController().refreshMapLaterUndoable(currentMap);
 	    final ModeController currentModeController = Controller.getCurrentModeController();
 		currentModeController.commit();
     }

@@ -244,7 +244,7 @@ public class LogicalStyleController implements IExtension {
 	public static LogicalStyleController getController(ModeController modeController) {
 		return modeController.getExtension(LogicalStyleController.class);
     }
-	public void refreshMap(final MapModel map) {
+	public void refreshMapLaterUndoable(final MapModel map) {
 		final IActor actor = new IActor() {
 			@Override
 			public boolean isReadonly() {
@@ -256,7 +256,7 @@ public class LogicalStyleController implements IExtension {
 			}
 
 			public String getDescription() {
-				return "refreshMap";
+				return "refreshMapLaterUndoable";
 			}
 
 			public void act() {

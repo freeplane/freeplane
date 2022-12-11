@@ -82,6 +82,6 @@ public class MapConditionalStyleProxy extends AConditionalStyleProxy<MapModel> {
 	}
 
 	private void callDelayedRefresh(MapModel map) {
-        LogicalStyleController.getController().refreshMap(map);
+        LogicalStyleController.getController().refreshMapLaterUndoable(map);
 	}
 }

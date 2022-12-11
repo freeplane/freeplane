@@ -103,7 +103,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 	    if(map.isUndoActionRunning()){
 	    	return extension;
 	    }
-		LogicalStyleController.getController().refreshMap(map);
+		LogicalStyleController.getController().refreshMapLaterUndoable(map);
     	return extension;
     }
 

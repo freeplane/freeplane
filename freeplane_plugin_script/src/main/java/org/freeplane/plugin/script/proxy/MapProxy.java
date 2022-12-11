@@ -339,6 +339,6 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
                 controller.addConditionalStyle(getDelegate(), ownConditionalStyleModel, item.isActive(), item.getCondition(), style, item.isLast());
             }
         }
-        controller.refreshMap(getDelegate());
+        controller.refreshMapLaterUndoable(getDelegate());
     }
 }

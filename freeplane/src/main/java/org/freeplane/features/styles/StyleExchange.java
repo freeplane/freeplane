@@ -66,7 +66,7 @@ class StyleExchange {
 			@Override
 			public void undo() {
 				targetMap.getRootNode().putExtension(oldStyleModel);
-		        LogicalStyleController.getController().refreshMap(targetMap);
+		        LogicalStyleController.getController().refreshMapLaterUndoable(targetMap);
 			}
 
 			@Override
@@ -77,7 +77,7 @@ class StyleExchange {
 			@Override
 			public void act() {
 				targetMap.getRootNode().putExtension(newStyleModel);
-		        LogicalStyleController.getController().refreshMap(targetMap);
+		        LogicalStyleController.getController().refreshMapLaterUndoable(targetMap);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, targetMap);
