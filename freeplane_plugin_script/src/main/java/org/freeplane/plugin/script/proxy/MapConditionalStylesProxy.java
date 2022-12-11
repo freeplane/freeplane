@@ -3,8 +3,6 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.api.ConditionalStyle;
 import org.freeplane.api.ConditionalStyleRO;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -37,7 +35,7 @@ public class MapConditionalStylesProxy extends AConditionalStylesProxy<MapModel>
 	public void add(ConditionalStyleRO conditionalStyle) {
 		MapConditionalStyleProxy cs = (MapConditionalStyleProxy) requireNonNull(conditionalStyle, CONDITIONAL_STYLE_MUST_NOT_BE_NULL);
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		controller.addConditionalStyle(getConditionalStyleModel(), cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
+		controller.addConditionalStyle(getDelegate(), getConditionalStyleModel(), cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
 		callDelayedRefresh(getDelegate());
 	}
 
@@ -45,7 +43,7 @@ public class MapConditionalStylesProxy extends AConditionalStylesProxy<MapModel>
 	public void insert(int index, ConditionalStyleRO conditionalStyle) {
 		MapConditionalStyleProxy cs = (MapConditionalStyleProxy) requireNonNull(conditionalStyle, CONDITIONAL_STYLE_MUST_NOT_BE_NULL);
 		MLogicalStyleController controller = (MLogicalStyleController) LogicalStyleController.getController();
-		controller.insertConditionalStyle(getConditionalStyleModel(), index, cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
+		controller.insertConditionalStyle(getDelegate(), getConditionalStyleModel(), index, cs.isActive(), cs.getCondition(), cs.getStyle(), cs.isLast());
 		callDelayedRefresh(getDelegate());
 	}
 
