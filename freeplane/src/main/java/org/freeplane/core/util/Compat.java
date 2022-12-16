@@ -26,7 +26,7 @@ import org.freeplane.features.ui.FrameController;
 public class Compat {
 	public static final String FREEPLANE_USERDIR_PROPERTY = "org.freeplane.userfpdir";
     public static final String JAVA_VERSION = System.getProperty("java.version");
-	public static final String VERSION_1_6_0 = "1.6.0";
+	public static final String JAVA_VERSION_15 = "15.";
 	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.10.x";
 	final public static String PREVIOUS_VERSION_DIR_NAME = "1.9.x";
 
@@ -52,7 +52,7 @@ public class Compat {
 		return pFile.toURL();
 	}
 
-	public static boolean isLowerJdk(final String version) {
+	public static boolean isJavaVersionLessThan(final String version) {
 		return JAVA_VERSION.compareTo(version) < 0;
 	}
 
