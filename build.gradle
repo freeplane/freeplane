@@ -29,7 +29,7 @@ allprojects {
 	ext.majorVersion = props['freeplane_version']
 	ext.versionStatus = props['freeplane_version_status']
 	ext.minorVersion = System.getProperty('minor', '')
-	ext.distVersion = "$majorVersion${versionStatus.empty?'':'-'+versionStatus}${minorVersion.empty?'':'-pre' + minorVersion}"
+	ext.distVersion = "$majorVersion${versionStatus.empty?'':'-'+versionStatus}${(minorVersion.empty || minorVersion.startsWith('u'))? minorVersion : '-pre' + minorVersion}"
     version = ext.majorVersion
 
     // WARNING: this is removed with "gradle clean"!!
