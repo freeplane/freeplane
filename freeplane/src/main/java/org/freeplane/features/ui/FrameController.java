@@ -789,7 +789,7 @@ abstract public class FrameController implements ViewController {
 	private static void scaleDefaultUIFonts(double scalingFactor) {
 		final UIDefaults uiDefaults = UIManager.getDefaults();
 		UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
-		boolean shouldUseWorkaroundForJava11 = Compat.isWindowsOS() && Compat.isJavaVersionLessThan(Compat.JAVA_VERSION_15);
+		boolean shouldUseWorkaroundForJava11 = Compat.isJavaVersionLessThan(Compat.JAVA_VERSION_15);
 		Set<Object> keySet = (shouldUseWorkaroundForJava11 ?lookAndFeelDefaults : uiDefaults).keySet();
 		Map<Font, Void> scaledFonts = new IdentityHashMap<>();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
