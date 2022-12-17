@@ -695,7 +695,7 @@ public class UITools {
 			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(windowX, windowY);
 			final int userDefinedScreenResolution;
 			if(graphicsConfiguration != null) {
-				if(Compat.isWindowsOS() || Compat.isMacOsX()) {
+				if(Compat.isWindowsOS() && ! Compat.isJavaVersionLessThan(Compat.JAVA_VERSION_15) || Compat.isMacOsX()) {
 					if (OptionPanelBuilder.hidePropertyByDefault(MONITOR_SIZE_INCHES_PROPERTY)) {
 						int screenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
 						return screenResolution / 72f;
