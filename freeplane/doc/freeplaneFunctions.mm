@@ -132,7 +132,7 @@
   </head>
   <body>
     <p>
-      Hover with the cursor over the different texts to unhide links to <b><i>Tutorial</i></b>&nbsp;and <b><i>Documentation</i></b>.
+      Hover with the cursor over the different texts to unhide links to <b><i>Tutorial</i></b>&#160;and <b><i>Documentation</i></b>.
     </p>
     <p>
       
@@ -144,7 +144,7 @@
       
     </p>
     <p>
-      To switch lthe<b>&nbsp;Note panel</b>&nbsp;on/off:
+      To switch lthe<b>&#160;Note panel</b>&#160;on/off:
     </p>
     <p>
       
@@ -516,7 +516,7 @@
   </head>
   <body>
     <p>
-      <a href="freeplaneUserGuide.mm#ID_448981847">&nbsp;xx</a>&nbsp;
+      <a href="freeplaneUserGuide.mm#ID_448981847">&#160;xx</a>&#160;
     </p>
   </body>
 </html>
@@ -571,7 +571,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt; <b>&#160;Tutorial</b></i>&#160;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
       </li>
     </ul>
   </body>
@@ -682,7 +682,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
+        <i>Help &gt; Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
       </li>
     </ul>
   </body>
@@ -800,7 +800,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
+        <i>Help &gt; <b>&#160;Tutorial</b></i>&#160;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
       </li>
     </ul>
   </body>
@@ -833,7 +833,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
+        <i>Help &gt; <b>&#160;Tutorial</b></i>&#160;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
       </li>
     </ul>
   </body>
@@ -855,7 +855,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
+        <i>Help &gt; <b>&#160;Tutorial</b></i>&#160;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
       </li>
     </ul>
   </body>
@@ -888,7 +888,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
+        <i>Help &gt; <b>&#160;Tutorial</b></i>&#160;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
       </li>
     </ul>
   </body>
@@ -929,7 +929,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
+        <i>Help &gt; Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
       </li>
     </ul>
   </body>
@@ -989,7 +989,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt; Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
@@ -1020,7 +1020,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt; Tutorial</i>&#160;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
