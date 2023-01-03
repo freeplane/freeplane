@@ -97,7 +97,7 @@ public class HtmlUtils {
 	public static HtmlUtils getInstance() {
 		return HtmlUtils.sInstance;
 	}
-	
+
 	static class CachedStringTransformationResult{
 		public final String input;
 		public final String output;
@@ -107,7 +107,7 @@ public class HtmlUtils {
 			this.output = output;
 		}
 	}
-	
+
 	static private ThreadLocal<CachedStringTransformationResult> cachedHtmlToPlain = ThreadLocal.withInitial(() -> new CachedStringTransformationResult("", ""));
 
 	/** equivalent to htmlToPlain(text, strictHTMLOnly=true, removeNewLines=true)
@@ -611,16 +611,16 @@ public class HtmlUtils {
 	public static String toHtml(final String xhtmlText) {
 		return HtmlUtils.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
-	
+
 
 	public static String objectToHtml(Object object) {
 		if(object == null)
 			return "";
-        if(object instanceof String) 
+        if(object instanceof String)
             return plainTextToHtml((String)object);
-		if(object instanceof Icon) 
+		if(object instanceof Icon)
 		    return "<html><body>" + iconToHtml((Icon) object) + "</body></html>";
-		if(object instanceof RenderedImage) 
+		if(object instanceof RenderedImage)
 		    return "<html><body>" + imageToHtml((RenderedImage) object) + "</body></html>";
 		return plainTextToHtml(object.toString());
 	}
@@ -683,6 +683,7 @@ public class HtmlUtils {
 		}
 		htmlText = htmlText.replaceAll("<", "&gt;");
 		htmlText = htmlText.replaceAll(">", "&lt;");
+		htmlText = htmlText.replaceAll("&nbsp;", XHTMLWriter.NB_SPACE_LITERAL);
 		return htmlText;
 	}
 
