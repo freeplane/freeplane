@@ -49,6 +49,6 @@ public class NewFreeNodeAction extends AFreeplaneAction {
 		NodeModel rootNode = controller.getSelection().getSelectionRoot();
 		final Component component = viewController.getComponent(rootNode);
 		int x = (int)(component.getWidth() / zoom);
-		mapController.addFreeNode(rootNode, new Point(x, 0), Side.RIGHT);
+		mapController.addFreeNode(rootNode, new Point(x, 0), Side.BOTTOM_OR_RIGHT);
 	}
 }

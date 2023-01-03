@@ -34,13 +34,20 @@ class BubblePainter extends RectanglePainter {
 	@Override
 	void paintNodeShape(final Graphics2D g) {
 		final int zoomedEdgeWidth = (int) mainView.getPaintedBorderWidth();
-		g.drawRoundRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, mainView.getWidth() - zoomedEdgeWidth, mainView.getHeight() - zoomedEdgeWidth, 10, 10);
+		int arcWidth = getArcWidth();
+        g.drawRoundRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, mainView.getWidth() - zoomedEdgeWidth, mainView.getHeight() - zoomedEdgeWidth, arcWidth, arcWidth);
 	}
+
+    private int getArcWidth() {
+        int minimumArcWidth = mainView.getNodeView().getMap().getZoomed(10);
+        return Math.max(minimumArcWidth, mainView.getWidth() / 10);
+    }
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRoundRect(0, 0, mainView.getWidth(), mainView.getHeight(), 10, 10);
+		int arcWidth = getArcWidth();
+        graphics.fillRoundRect(0, 0, mainView.getWidth(), mainView.getHeight(), arcWidth, arcWidth);
 	}
 
 }

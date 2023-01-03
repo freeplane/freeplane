@@ -1,7 +1,7 @@
 package org.freeplane.api;
 
 public class NodeChanged {
-	public enum ChangedElement{TEXT, DETAILS, NOTE, ICON, ATTRIBUTE, FORMULA_RESULT, UNKNOWN};
+	public enum ChangedElement{TEXT, DETAILS, NOTE, ICON, ATTRIBUTE, FORMULA_RESULT, UNKNOWN}
 	private final Node node;
 	private final ChangedElement changedElement;
 	public NodeChanged(Node node, ChangedElement changedElement) {

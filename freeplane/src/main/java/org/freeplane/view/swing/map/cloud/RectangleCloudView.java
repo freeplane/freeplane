@@ -21,12 +21,19 @@ public class RectangleCloudView extends CloudView {
 
 	@Override
     protected void paintDecoration(Graphics2D g, Graphics2D gstroke) {
-        final int distanceToConvexHull = (int) getDistanceToConvexHull();
+	    final int distanceToConvexHull = (int) getDistanceToConvexHull();
 	    final Rectangle bounds = source.getInnerBounds();
-	    bounds.x -= distanceToConvexHull;
-	    bounds.width += 2 * distanceToConvexHull;
+	    NodeView parentView = source.getParentView();
+	    if(parentView == null || ! parentView.usesHorizontalLayout() || ! source.usesHorizontalLayout()) {
+            bounds.x -= distanceToConvexHull;
+            bounds.width += 2 * distanceToConvexHull;
+	    }
+	    if(parentView == null || parentView.usesHorizontalLayout() || source.usesHorizontalLayout()) {
+	        bounds.y -= distanceToConvexHull;
+	        bounds.height += 2 * distanceToConvexHull;
+	    }
 	    if(isRound){
-			g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, distanceToConvexHull, distanceToConvexHull);
+	        g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, distanceToConvexHull, distanceToConvexHull);
 			gstroke.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, distanceToConvexHull, distanceToConvexHull);
 		}
 		else{

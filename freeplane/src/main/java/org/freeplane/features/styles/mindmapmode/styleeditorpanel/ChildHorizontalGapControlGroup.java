@@ -39,8 +39,8 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * @author Joe Berry
  * Nov 27, 2016
  */
-class ChildDistanceControlGroup implements ControlGroup {
-	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
+class ChildHorizontalGapControlGroup implements ControlGroup {
+	private static final String HORIZONTAL_CHILD_GAP = "horizontal_child_gap";
 
 	private RevertingProperty mSetChildDistance;
 	private QuantityProperty<LengthUnit> mChildDistance;
@@ -55,7 +55,7 @@ class ChildDistanceControlGroup implements ControlGroup {
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLocationController locationController = (MLocationController) Controller.getCurrentModeController().getExtension(LocationController.class);
-			locationController.setMinimalDistanceBetweenChildren(node, enabled ? mChildDistance.getQuantifiedValue(): LocationModel.DEFAULT_VGAP);
+			locationController.setBaseHGapToChildren(node, enabled ? mChildDistance.getQuantifiedValue() : LocationModel.DEFAULT_HGAP);
 		}
 
 		@Override
@@ -63,31 +63,31 @@ class ChildDistanceControlGroup implements ControlGroup {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final LocationModel locationModel = LocationModel.getModel(node);
 			final LocationController locationController = modeController.getExtension(LocationController.class);
-			final Quantity<LengthUnit> gap = locationModel.getVGap();
-			final Quantity<LengthUnit> viewGap = locationController.getMinimalDistanceBetweenChildren(node);
-			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_VGAP);
+			final Quantity<LengthUnit> gap = locationModel.getBaseHGap();
+			final Quantity<LengthUnit> viewGap = locationController.getBaseHGapToChildren(node);
+			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_HGAP);
 			mChildDistance.setQuantifiedValue(viewGap);
 		}
-        
+
         @Override
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetChildDistance);
             StylePropertyAdjuster.adjustPropertyControl(node, mChildDistance);
         }
 	}
-	
+
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildDistance = new RevertingProperty();
-		mChildDistance = new  QuantityProperty<LengthUnit>(VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnit.px);
+		mChildDistance = new  QuantityProperty<LengthUnit>(HORIZONTAL_CHILD_GAP, -1000, 1000, 0.1, LengthUnit.px);
 		propertyChangeListener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.appendToForm(formBuilder);
 		mSetChildDistance.appendToForm(formBuilder);
 	}
-	
+
 	public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
-	
+
 }

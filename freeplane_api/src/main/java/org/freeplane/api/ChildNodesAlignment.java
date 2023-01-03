@@ -6,5 +6,11 @@
 package org.freeplane.api;
 
 public enum ChildNodesAlignment {
-	UNDEFINED, BY_FIRST_NODE, BY_LAST_NODE, BY_CENTER, AS_PARENT
+	NOT_SET(false), AFTER_PARENT(true), BY_CENTER(false), BEFORE_PARENT(true), AUTO(false);
+
+    public final boolean areChildrenApart;
+    private ChildNodesAlignment(boolean areChildrenApart) {
+        this.areChildrenApart = areChildrenApart;
+
+    }
 }

@@ -54,6 +54,8 @@ import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.MIconController;
+import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.IMapSelection;
@@ -146,6 +148,7 @@ public class SModeControllerFactory {
 		new MIconController(modeController).install(modeController);
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		LocationController.install(new MLocationController());
+		LayoutController.install(new MLayoutController());
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));

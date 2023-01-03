@@ -235,8 +235,17 @@ public class NodeBuilder implements IElementDOMHandler {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				node.setSide(Side.valueOf(value.toUpperCase(Locale.ENGLISH)));
+				node.setSide(sideOf(value));
 			}
+
+            public Side sideOf(final String value) {
+                String upperCase = value.toUpperCase(Locale.ENGLISH);
+                if("LEFT".equals(upperCase))
+                    return Side.TOP_OR_LEFT;
+                if("RIGHT".equals(upperCase))
+                    return Side.BOTTOM_OR_RIGHT;
+                return Side.valueOf(upperCase);
+            }
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "POSITION", positionHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "POSITION", positionHandler);

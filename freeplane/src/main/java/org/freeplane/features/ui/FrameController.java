@@ -298,6 +298,7 @@ abstract public class FrameController implements ViewController {
 		return isFullScreenEnabled(getMenuComponent());
 	}
 
+	@Override
 	public boolean isFullScreenEnabled() {
 		return isFullScreenEnabled(getCurrentRootComponent());
 	}
@@ -788,7 +789,8 @@ abstract public class FrameController implements ViewController {
 	private static void scaleDefaultUIFonts(double scalingFactor) {
 		final UIDefaults uiDefaults = UIManager.getDefaults();
 		UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
-		Set<Object> keySet = uiDefaults.keySet();
+		boolean shouldUseWorkaroundForJava11 = Compat.isJavaVersionLessThan(Compat.JAVA_VERSION_15);
+		Set<Object> keySet = (shouldUseWorkaroundForJava11 ?lookAndFeelDefaults : uiDefaults).keySet();
 		Map<Font, Void> scaledFonts = new IdentityHashMap<>();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
 		for (Object key : keys) {

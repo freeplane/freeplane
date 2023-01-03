@@ -245,11 +245,6 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public boolean isLeft(NodeModel root) {
-	    return delegate.isLeft(root);
-    }
-
-	@Override
     public boolean isRoot() {
 	    return delegate.isRoot();
     }

@@ -31,11 +31,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -53,7 +55,7 @@ public class NodeModel{
 	}
 
 	public enum Side {
-		DEFAULT, LEFT, RIGHT, AS_SIBLING
+		DEFAULT, TOP_OR_LEFT, BOTTOM_OR_RIGHT, AS_SIBLING
 	}
 
 	public enum NodeProperty{UNKNOWN_PROPERTY};
@@ -429,41 +431,36 @@ public class NodeModel{
 		return getChildCount() == 0;
 	}
 
-	public boolean isLeft(NodeModel root) {
+	public boolean isTopOrLeft(NodeModel root) {
 		NodeModel parentNode = getParentNode();
-		return wouldBeLeft(root, parentNode);
+		return wouldBeTopOrLeft(root, parentNode);
 	}
 
-	public boolean wouldBeLeft(NodeModel root, NodeModel parent) {
-		if (parent == null)
+    public boolean wouldBeTopOrLeft(NodeModel root, NodeModel parent) {
+        if (parent == null)
 			return false;
-		else if (parent == root)
+        if(views != null) {
+            for(INodeView view:views) {
+                if(view.hasStandardLayoutWithRootNode(root))
+                    return view.isTopOrLeft();
+            }
+        }
+        ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(parent).childrenSides();
+        if(childrenSides == ChildrenSides.TOP_OR_LEFT)
+            return true;
+        if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)
+            return false;
+        if (parent == root || childrenSides == ChildrenSides.BOTH_SIDES)
 			if (side != Side.DEFAULT)
-				return side == Side.LEFT;
+				return side == Side.TOP_OR_LEFT;
 			else
-				return parent.isLeft(parent.getMap().getRootNode());
+				return parent.isTopOrLeft(parent.getMap().getRootNode());
 		else
-			return parent.isLeft(root);
-	}
+			return parent.isTopOrLeft(root);
+    }
 
 	public Side suggestNewChildSide(NodeModel root) {
-		if(this != root)
-			return Side.DEFAULT;
-		int rightChildrenCount = 0;
-		int childCount = getChildCount();
-		int childCountInTree = childCount;
-		for (int i = 0; i < childCount; i++) {
-			NodeModel child = getChildAt(i);
-			if(child.isHiddenSummary() || FreeNode.isFreeNode(child))
-				childCountInTree--;
-			else if (!child.isLeft(this)) {
-				rightChildrenCount++;
-			}
-			if (rightChildrenCount > childCountInTree / 2) {
-				return Side.LEFT;
-			}
-		}
-		return Side.RIGHT;
+	    return LayoutController.getController().suggestNewChildSide(this, root);
 	}
 
 	public boolean isRoot() {
@@ -547,10 +544,6 @@ public class NodeModel{
 		getMap().registryID(value, this);
 	}
 
-//	public void setLeft(final boolean isLeft) {
-//		setHorizontalPosition(isLeft ? HorizontalPosition.LEFT : HorizontalPosition.RIGHT);
-//	}
-
 	public void setSide(Side side) {
 		if(isCloneTreeNode()) {
 			for(NodeModel node : clones[TREE.ordinal()]){
@@ -564,7 +557,7 @@ public class NodeModel{
 	public void setChildNodeSidesAsNow() {
 		children.forEach(child -> {
 			if(child.getSide() == Side.DEFAULT)
-				child.setSide(child.isLeft(this) ? Side.LEFT : Side.RIGHT);
+				child.setSide(child.isTopOrLeft(this) ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
 		});
 	}
 	/**
@@ -750,15 +743,15 @@ public class NodeModel{
 	private int nextNodeIndex(NodeModel root, int index, final boolean leftSide, final int step) {
 		for(int i = index  + step; i >= 0 && i < getChildCount(); i+=step){
 			final NodeModel followingNode = getChildAt(i);
-			if(followingNode.isLeft(root) == leftSide) {
+			if(followingNode.isTopOrLeft(root) == leftSide) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public NodeModel previousNode(NodeModel root, int start, boolean isLeft) {
-		final int previousNodeIndex = previousNodeIndex(root, start, isLeft);
+	public NodeModel previousNode(NodeModel root, int start, boolean isTopOrLeft) {
+		final int previousNodeIndex = previousNodeIndex(root, start, isTopOrLeft);
 		return parent.getChildAt(previousNodeIndex);
 	}
 

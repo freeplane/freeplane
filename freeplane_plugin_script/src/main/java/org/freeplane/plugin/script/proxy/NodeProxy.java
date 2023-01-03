@@ -17,10 +17,13 @@ import java.util.stream.Stream;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.freeplane.api.Attributes;
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.Cloud;
 import org.freeplane.api.Connector;
 import org.freeplane.api.ConditionalStyles;
 import org.freeplane.api.DependencyLookup;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -31,7 +34,6 @@ import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
 import org.freeplane.api.Side;
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -48,6 +50,8 @@ import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
+import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -574,9 +578,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// NodeRO: R
 	@Override
-	public boolean isLeft() {
+	public boolean isTopOrLeft() {
 		NodeModel node = getDelegate();
-		return node.isLeft(node.getMap().getRootNode());
+		return node.isTopOrLeft(node.getMap().getRootNode());
 	}
 
 	@Override
@@ -586,12 +590,12 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// NodeRO: R
 	@Override
-	public boolean isLeftOnViewsWithRoot(NodeRO viewRoot) {
+	public boolean isTopOrLeftOnViewsWithRoot(NodeRO viewRoot) {
 		if(! (viewRoot instanceof NodeProxy))
 			return false;
         NodeModel node = getDelegate();
 		NodeModel root = ((NodeProxy)viewRoot).getDelegate();
-		return node.isLeft(root);
+		return node.isTopOrLeft(root);
 	}
 
 	// NodeRO: R
@@ -728,9 +732,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		styleController.setNodeFormat(getDelegate(), format);
 	}
 
-	@Override
-	public void setLeft(final boolean isLeft) {
-		setSide(isLeft ? NodeModel.Side.LEFT : NodeModel.Side.RIGHT);
+	@Deprecated
+    @Override
+	public void setLeft(final boolean isTopOrLeft) {
+		setSide(isTopOrLeft ? NodeModel.Side.TOP_OR_LEFT : NodeModel.Side.BOTTOM_OR_RIGHT);
 	}
 
 	@Override
@@ -1072,26 +1077,60 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
 	}
 
-	@Override
-	public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
-		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
-	}
+    @Override
+    public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
+        return LocationController.getController().getCommonVGapBetweenChildren(getDelegate());
+    }
+
+    @Override
+    public Quantity<LengthUnit> getBaseDistanceToChildrenAsLength(){
+        return LocationController.getController().getBaseHGapToChildren(getDelegate());
+    }
+
+
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
 		final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(minimalDistanceBetweenChildren, LengthUnit.px);
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
 	}
+
+    @Override
+    public void setBaseDistanceToChildren(final int baseDistanceToChildren){
+        final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(baseDistanceToChildren, LengthUnit.px);
+        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+    }
+
+    @Override
+    public void setChildNodesLayout(final ChildNodesLayout sides){
+        ((MLayoutController) LayoutController.getController()).setChildNodesLayout(getDelegate(), sides);
+    }
+
+    @Override
+    public LayoutOrientation getLayoutOrientation() {
+        return LayoutController.getController().getLayoutOrientation(getDelegate());
+    }
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnit> minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
 	}
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final String minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
+		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
 	}
+
+    @Override
+    public void setBaseDistanceToChildren(final Quantity<LengthUnit> baseDistance){
+        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), baseDistance);
+    }
+
+    @Override
+    public void setBaseDistanceToChildren(final String baseDistance){
+        final Quantity<LengthUnit> baseDistancerenQuantity = Quantity.fromString(baseDistance, LengthUnit.px);
+        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), baseDistancerenQuantity);
+    }
 
 	@Override
 	public void sortChildrenBy(final Closure<Comparable<Object>> closure) {

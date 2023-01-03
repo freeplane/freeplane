@@ -3,6 +3,7 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 
 import javax.swing.JSeparator;
@@ -29,25 +30,29 @@ public class ToolbarLayout implements LayoutManager {
         this.maximumWidth = maximumWidth;
     }
 
+    @Override
     public void addLayoutComponent(final String name, final Component comp) {
 	}
 
-	public void layoutContainer(final Container container) {
+	@Override
+    public void layoutContainer(final Container container) {
 		if(! container.isVisible())
 			return;
-		final int maximumWidth = calculateMaxWidth(container);
-		int heigth = 0;
 		int blockWidth = 0;
 		int blockHeight = 0;
 		int lastBlockWidth = 0;
 		int lastBlockHeight = 0;
 		int lastBlockStart = 0;
 		int lastBlockFinish = 0;
+		Insets insets = container.getInsets();
+		int leftMargin = insets.left;
+		int heigth =  insets.top;
+		final int maximumWidth = calculateMaxWidth(container) - insets.left - insets.right;
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
 			if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
 				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maximumWidth) {
-					int x = 0;
+					int x = leftMargin;
 					for (int j = lastBlockStart; j < lastBlockFinish; j++) {
 						final Component c = container.getComponent(j);
 						final int width = getPreferredWidth(c, maximumWidth);
@@ -80,6 +85,8 @@ public class ToolbarLayout implements LayoutManager {
 	}
 
     private int calculateMaxWidth(final Container container) {
+        if(container.isMaximumSizeSet())
+            return container.getMaximumSize().width;
         Container viewport = SwingUtilities.getAncestorOfClass(JViewport.class, container);
         if (viewport != null)
             return viewport.getWidth();
@@ -98,11 +105,13 @@ public class ToolbarLayout implements LayoutManager {
 		return width;
 	}
 
-	public Dimension minimumLayoutSize(final Container comp) {
+	@Override
+    public Dimension minimumLayoutSize(final Container comp) {
 		return new Dimension(0, 0);
 	}
 
-	public Dimension preferredLayoutSize(final Container container) {
+	@Override
+    public Dimension preferredLayoutSize(final Container container) {
 		final int maxWidth = calculateMaxWidth(container);
 		int width = 0;
 		int heigth = 0;
@@ -140,10 +149,12 @@ public class ToolbarLayout implements LayoutManager {
 			final Dimension compPreferredSize = component.getPreferredSize();
 			blockHeight = Math.max(compPreferredSize.height, blockHeight);
 		}
-		return new Dimension(width, heigth);
+		Insets insets = container.getInsets();
+		return new Dimension(width + insets.left + insets.right, heigth + insets.top + insets.bottom);
 	}
 
-	public void removeLayoutComponent(final Component comp) {
+	@Override
+    public void removeLayoutComponent(final Component comp) {
 	}
 
 	public static ToolbarLayout horizontal() {

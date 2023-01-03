@@ -266,7 +266,7 @@ public class MapStyleModel implements IExtension {
 		if (predefinedStyleParentNode == null) {
 			predefinedStyleParentNode = new NodeModel(styleMap);
 			predefinedStyleParentNode.setUserObject(new StyleTranslatedObject(groupName));
-			predefinedStyleParentNode.setSide(Side.RIGHT);
+			predefinedStyleParentNode.setSide(Side.BOTTOM_OR_RIGHT);
 			root.insert(predefinedStyleParentNode);
 		}
 		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleShape.bubble);

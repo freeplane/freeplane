@@ -11,7 +11,7 @@ dependencies {
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-commons'
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-picocli'
 	}
-	lib 'org.apache.groovy:groovy-dateutil:4.0.1'
+	lib 'org.apache.groovy:groovy-dateutil:4.0.6'
 	lib 'org.apache.ivy:ivy:2.5.0'
 
 }

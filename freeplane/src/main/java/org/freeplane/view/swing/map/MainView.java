@@ -85,6 +85,50 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public class MainView extends ZoomableLabel {
+    private static final long serialVersionUID = 1L;
+
+    public enum DragOver {
+        NO {
+            @Override
+            void paint(MainView view, final Graphics2D graphics) {/**/}
+        },
+        DROP_UP {
+            @Override
+            void paint(MainView view, final Graphics2D graphics) {
+                graphics.setPaint(new GradientPaint(0, view.getHeight() * 3 / 5, view.getMap().getBackground(), 0, view.getHeight() / 5,
+                        NodeView.dragColor));
+                graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
+            }
+        },
+        DROP_DOWN {
+            @Override
+            void paint(MainView view, final Graphics2D graphics) {
+                graphics.setPaint(new GradientPaint(0, view.getHeight() * 2 / 5, view.getMap().getBackground(), 0, view.getHeight() * 4 / 5,
+                        NodeView.dragColor));
+                graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
+            }
+        },
+        DROP_LEFT {
+            @Override
+            void paint(MainView view, final Graphics2D graphics) {
+                graphics.setPaint(new GradientPaint(view.getWidth() * 3 / 4, 0, view.getMap().getBackground(), view.getWidth() / 4, 0,
+                        NodeView.dragColor));
+                graphics.fillRect(0, 0, view.getWidth() * 3 / 4, view.getHeight() - 1);
+            }
+        },
+        DROP_RIGHT {
+            @Override
+            void paint(MainView view, final Graphics2D graphics) {
+                graphics.setPaint(new GradientPaint(view.getWidth() / 4, 0, view.getMap().getBackground(), view.getWidth() * 3 / 4, 0,
+                        NodeView.dragColor));
+                graphics.fillRect(view.getWidth() / 4, 0, view.getWidth() - 1, view.getHeight() - 1);
+
+            }
+        },
+        ;
+
+        abstract void paint(MainView view, final Graphics2D graphics);
+    }
 	static final int FOLDING_CIRCLE_WIDTH = 16;
 	static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
@@ -94,12 +138,15 @@ public class MainView extends ZoomableLabel {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
-	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
+	final static Stroke DEF_STROKE = new BasicStroke(1f);
+	private static final BasicStroke THIN_STROKE = new BasicStroke(1.5f);
+	private static final int THICK_STROKE_WIDTH = 4;
+    private final static Stroke THICK_STROKE =  new BasicStroke(3f);
+
+	private DragOver isDraggedOver = DragOver.NO;
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
-	final static Stroke DEF_STROKE = new BasicStroke();
 	private float unzoomedBorderWidth = 1f;
 	private DashVariant dash = DashVariant.DEFAULT;
 	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
@@ -122,47 +169,40 @@ public class MainView extends ZoomableLabel {
 	}
 
 	protected void convertPointFromMap(final Point p) {
-		UITools.convertPointFromAncestor(getMap(), p, this);
+	    UITools.convertPointFromAncestor(getMap(), p, this);
 	}
 
 	protected void convertPointToMap(final Point p) {
-		UITools.convertPointToAncestor(this, p, getMap());
+	    UITools.convertPointToAncestor(this, p, getMap());
 	}
 
-	public boolean dropAsSibling(final double xCoord) {
-		if(getNodeView().isRoot())
-			return false;
-		if(dropLeft(xCoord))
-		return ! isInVerticalRegion(xCoord, 2. / 3);
-		else
-			return isInVerticalRegion(xCoord, 1. / 3);
+	public boolean dropsAsSibling(final Point p) {
+	    NodeView nodeView = getNodeView();
+	    if(nodeView.isRoot())
+	        return false;
+	    if (nodeView.getAncestorWithVisibleContent().usesHorizontalLayout())
+            return isInVerticalRegion(p.getX(), 1. / 3);
+        else if (nodeView.paintsChildrenOnTheLeft())
+            return !isInVerticalRegion(p.getX(), 1. / 3);
+        else
+            return isInVerticalRegion(p.getX(), 2. / 3);
 	}
 
 	/** @return true if should be on the left, false otherwise. */
-	public boolean dropLeft(final double xCoord) {
+	public boolean dropsTopOrLeft(final Point p) {
 		/* here it is the same as me. */
 		NodeView nodeView = getNodeView();
-		if(getNodeView().isRoot())
-			return xCoord < getSize().width * 1 / 2;
-		else
-			return nodeView.isLeft();
+		if(nodeView.isRoot()) {
+		    if(nodeView.usesHorizontalLayout())
+                return p.getY() < getHeight() * 1 / 2;
+            else
+                return p.getX() < getWidth() * 1 / 2;
+        } else
+			return nodeView.paintsChildrenOnTopOrLeft();
 	}
 
-	public int getDeltaX() {
-		final NodeView nodeView = getNodeView();
-		if (nodeView.isFolded() && nodeView.isLeft()) {
-			return getZoomedFoldingSymbolHalfWidth() * 3;
-		}
-		else
-		return 0;
-	}
 
-	/** get y coordinate including folding symbol */
-	public int getDeltaY() {
-		return 0;
-	}
-
-	public int getDraggedOver() {
+	public DragOver getDraggedOver() {
 		return isDraggedOver;
 	}
 
@@ -223,31 +263,7 @@ public class MainView extends ZoomableLabel {
 
 
 	public void paintDragOver(final Graphics2D graphics) {
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SON || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
-			paintDragOverSon(graphics);
-		}
-		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			paintDragOverSibling(graphics);
-		}
-	}
-
-	private void paintDragOverSibling(final Graphics2D graphics) {
-		graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getMap().getBackground(), 0, getHeight() / 5,
-		    NodeView.dragColor));
-		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-	}
-
-	private void paintDragOverSon(final Graphics2D graphics) {
-		if (getNodeView().isLeft() || isDraggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
-			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getMap().getBackground(), getWidth() / 4, 0,
-			    NodeView.dragColor));
-			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
-		}
-		else {
-			graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getMap().getBackground(), getWidth() * 3 / 4, 0,
-			    NodeView.dragColor));
-			graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
-		}
+	    isDraggedOver.paint(this, graphics);
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeView nodeView) {
@@ -256,7 +272,7 @@ public class MainView extends ZoomableLabel {
 		}
 		Filter filter = nodeView.getMap().getFilter();
 		for (final NodeView childView : nodeView.getChildrenViews()) {
-			if (!childView.getModel().hasVisibleContent(filter) 
+			if (!childView.getModel().hasVisibleContent(filter)
 					&& !FoldingMark.FOLDING_CIRCLE_UNFOLDED.equals(foldingMarkType(mapController, childView))) {
 				return FoldingMark.FOLDING_CIRCLE_FOLDED;
 			}
@@ -274,7 +290,7 @@ public class MainView extends ZoomableLabel {
 	Rectangle decorationMarkBounds(final NodeView nodeView, double shiftYFactor, double widthFactor, double heightFactor) {
 		final int size = nodeView.getZoomedStateSymbolHalfWidth();
 		int width = (int) (size * widthFactor);
-		int x = nodeView.isLeft() ? getWidth() : 0 - width;
+		int x = nodeView.paintsChildrenOnTheLeft() ? getWidth() : 0 - width;
 		int height = (int) (size * heightFactor);
 		int y = (getHeight() - height) / 2 + (int)(height * shiftYFactor);
 		Rectangle decorationMarkBounds = new Rectangle(x, y, width, height);
@@ -290,8 +306,18 @@ public class MainView extends ZoomableLabel {
 		final MapView parent = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
 		parent.getModeController().getController().getMapViewManager().setEdgesRenderingHint(g2);
 		final Color color = g2.getColor();
+		Stroke stroke = g2.getStroke();
+        g2.setColor(Color.WHITE);
+        Rectangle r = getDragRectangle();
+        r.x += THICK_STROKE_WIDTH / 2;
+        r.y += THICK_STROKE_WIDTH / 2;
+        r.width -= THICK_STROKE_WIDTH;
+        r.height -= THICK_STROKE_WIDTH;
+
+        g2.setStroke(THICK_STROKE);
+        g.drawOval(r.x, r.y, r.width - 1, r.height - 1);
+        g2.setStroke(THIN_STROKE);
 		NodeView movedView = getNodeView();
-		Rectangle r = getDragRectangle();
 		if (movedView .isFree()) {
 			g2.setColor(Color.BLUE);
 			g.fillOval(r.x, r.y, r.width - 1, r.height - 1);
@@ -302,6 +328,7 @@ public class MainView extends ZoomableLabel {
 		}
 		g2.setColor(Color.BLACK);
 		g.drawOval(r.x, r.y, r.width- 1, r.height- 1);
+		g2.setStroke(stroke);
 		g2.setColor(color);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
@@ -309,7 +336,7 @@ public class MainView extends ZoomableLabel {
 	public Rectangle getDragRectangle() {
 		final int size = getDraggingAreaWidth();
 		Rectangle r;
-		if(getNodeView().isLeft())
+		if(getNodeView().paintsChildrenOnTheLeft())
 			r = new Rectangle(getWidth(), -size/2, size, getHeight() + size);
 		else
 			r = new Rectangle(-size, -size/2, size, getHeight() + size);
@@ -362,30 +389,49 @@ public class MainView extends ZoomableLabel {
 		        && freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
 	}
 
-	public void setDraggedOver(final int draggedOver) {
-		isDraggedOver = draggedOver;
-	}
+    public void stopDragOver() {
+        isDraggedOver = DragOver.NO;
+    }
 
-	public void setDraggedOver(final Point p) {
-		final int draggedOver;
-		if(getNodeView().isRoot()) {
-			if (dropLeft(p.getX()))
-				draggedOver = NodeView.DRAGGED_OVER_SON_LEFT;
-			else
-				draggedOver = NodeView.DRAGGED_OVER_SON;
-		}
-		else {
-			if (dropAsSibling(p.getX()))
-				draggedOver = NodeView.DRAGGED_OVER_SIBLING;
-			else
-				draggedOver = NodeView.DRAGGED_OVER_SON;
-		}
-		setDraggedOver(draggedOver);
-	}
+    private void setDraggedOver(final DragOver draggedOver) {
+        final boolean isDifferent = draggedOver != isDraggedOver;
+        if (isDifferent) {
+            isDraggedOver = draggedOver;
+            repaint();
+        }
+    }
 
-	public void updateFont(final NodeView node) {
-		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
-		setFont(UITools.scale(font));
+    public void setDraggedOver(final Point p) {
+        final DragOver draggedOver;
+        NodeView nodeView = getNodeView();
+        if (dropsAsSibling(p)) {
+            if(nodeView.getAncestorWithVisibleContent().usesHorizontalLayout()) {
+                draggedOver = DragOver.DROP_LEFT;
+            } else {
+                draggedOver = DragOver.DROP_UP;
+            }
+        }
+        else {
+            if (dropsTopOrLeft(p)) {
+                if(nodeView.usesHorizontalLayout()) {
+                    draggedOver = DragOver.DROP_UP;
+                } else {
+                    draggedOver = DragOver.DROP_LEFT;
+                }
+            } else {
+                if(nodeView.usesHorizontalLayout()) {
+                    draggedOver = DragOver.DROP_DOWN;
+                } else {
+                    draggedOver = DragOver.DROP_RIGHT;
+                }
+            }
+        }
+        setDraggedOver(draggedOver);
+    }
+
+    public void updateFont(final NodeView node) {
+        final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
+        setFont(UITools.scale(font));
 	}
 
 	void updateIcons(final NodeView node) {
@@ -417,14 +463,14 @@ public class MainView extends ZoomableLabel {
 	void updateTextColor(final NodeView node) {
 		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
 		Color newForeground = styleController.getColor(node.getModel(), node.getStyleOption());
-		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE) 
+		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE)
 				: newForeground;
 		if(! Objects.equals(getForeground(), newForeground)) {
 			setForeground(newForeground);
 			revalidate();
 		}
 	}
-	
+
 	void updateCss(NodeView node) {
 		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
 		NodeCss newCss = styleController.getStyleSheet(node.getModel(), node.getStyleOption());
@@ -514,7 +560,13 @@ public class MainView extends ZoomableLabel {
 
     static public enum ConnectorLocation{LEFT, RIGHT, TOP, BOTTOM, CENTER};
 
-    public ConnectorLocation getConnectorLocation(Point relativeLocation) {
+    public ConnectorLocation getConnectorLocation(Point relativeLocation, boolean usesHorizontalLayout) {
+    	if(usesHorizontalLayout) {
+            if(relativeLocation.y > getHeight())
+                return ConnectorLocation.BOTTOM;
+            if(relativeLocation.y <0)
+                return ConnectorLocation.TOP;
+    	}
         if(relativeLocation.x > getWidth())
             return ConnectorLocation.RIGHT;
         if(relativeLocation.x < 0)
@@ -580,7 +632,7 @@ public class MainView extends ZoomableLabel {
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 				return false;
 			final int draggingWidth = getDraggingAreaWidth();
-			if(nodeView.isLeft()){
+			if(nodeView.paintsChildrenOnTheLeft()){
 				final int width = getWidth();
 				return p.x >= width && p.x < width + draggingWidth;
 			}
@@ -595,23 +647,29 @@ public class MainView extends ZoomableLabel {
 	    final NodeView nodeView = getNodeView();
 		final NodeModel node = nodeView.getModel();
 		return node.hasChildren();
-    }
+	}
 
 	public boolean isInFoldingRegion(Point p) {
-		if (hasChildren() && p.y >= 0 && p.y < getMainViewHeightWithFoldingMark(false)) {
-			final boolean isLeft = getNodeView().isLeft();
-			final int width = Math.max(FOLDING_CIRCLE_WIDTH, getZoomedFoldingSymbolHalfWidth() * 2);
-			if (isLeft) {
-	            final int maxX = 0;
-	            return p.x >= -width && p.x < maxX;
-            }
-            else {
-	            final int minX = getWidth();
-	            return p.x >= minX && p.x < (getWidth() + width);
-            }
-		}
-        else
-			return false;
+	    NodeView nodeView = getNodeView();
+	    if (!nodeView.getModel().hasChildren())
+	        return false;
+	    Rectangle foldingRectangleBounds = painter.getFoldingRectangleBounds(nodeView, true);
+	    if(nodeView.usesHorizontalLayout()) {
+	        if(nodeView.isTopOrLeft())
+	            return p.y >= foldingRectangleBounds.y && p.y < 0
+	            && p.x >= 0 && p.x < getWidth();
+	        else
+	            return p.y >= foldingRectangleBounds.y && p.y < foldingRectangleBounds.y + foldingRectangleBounds.height
+	                && p.x >= 0 && p.x < getWidth();
+	    }
+	    else {
+	        if(nodeView.paintsChildrenOnTheLeft())
+	            return p.x >= foldingRectangleBounds.x && p.x < 0
+	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
+	        else
+	            return p.x >= foldingRectangleBounds.x && p.x < foldingRectangleBounds.x + foldingRectangleBounds.width
+	                && p.y >= 0 && p.y < Math.max(foldingRectangleBounds.y + foldingRectangleBounds.height, getHeight());
+	    }
 	}
 
 	public MouseArea getMouseArea() {
@@ -637,28 +695,13 @@ public class MainView extends ZoomableLabel {
 			paintFoldingRectangleImmediately();
 	}
 
+	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
+	    return painter.getFoldingRectangleBounds(nodeView, drawsControls);
+	}
+
 	private void paintFoldingRectangleImmediately() {
-			final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-			final int width = Math.max(FOLDING_CIRCLE_WIDTH, zoomedFoldingSymbolHalfWidth * 2);
-			final NodeView nodeView = getNodeView();
-			int height;
-			final int x, y;
-			if (nodeView.isLeft()){
-				x = -width;
-			}
-			else{
-				x = getWidth();
-			}
-			if(FOLDING_CIRCLE_WIDTH >= getHeight()){
-				height = FOLDING_CIRCLE_WIDTH;
-				y = getHeight() - FOLDING_CIRCLE_WIDTH;
-			}
-			else{
-				height = getHeight();
-				y = 0;
-			}
-			height += width/2;
-			final Rectangle foldingRectangle = new Rectangle(x-4, y-4, width+8, height+8);
+			NodeView nodeView = getNodeView();
+            final Rectangle foldingRectangle = painter.getFoldingRectangleBounds(nodeView, true);
 			final MapView map = nodeView.getMap();
 			UITools.convertRectangleToAncestor(this, foldingRectangle, map);
 			map.paintImmediately(foldingRectangle);
@@ -683,7 +726,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	private int getDraggingAreaWidth() {
-		return getNodeView().getMap().getDraggingAreaWidth();
+		return getNodeView().getMap().getDraggingAreaWidth() + THICK_STROKE_WIDTH;
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
@@ -745,7 +788,7 @@ public class MainView extends ZoomableLabel {
 
 		return fillColor;
 	}
-	
+
 	public void updateBorder(NodeView nodeView) {
 		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
 		final NodeModel node = nodeView.getModel();
@@ -772,7 +815,7 @@ public class MainView extends ZoomableLabel {
 	void paintComponentDefault(final Graphics graphics) {
 	    super.paintComponent(graphics);
 	}
-	
+
     public Insets getDefaultZoomedInsets() {
 		return super.getZoomedInsets();
 	}
@@ -793,8 +836,8 @@ public class MainView extends ZoomableLabel {
 		super.setBounds(x, y, width, height);
 	}
 
-	public Point getConnectorPoint(Point relativeLocation) {
-		return painter.getConnectorPoint(relativeLocation);
+	public Point getConnectorPoint(Point relativeLocation, boolean usesHorizontalLayout) {
+		return painter.getConnectorPoint(relativeLocation, usesHorizontalLayout);
 	}
 
 	public Point getLeftPoint() {
@@ -837,14 +880,6 @@ public class MainView extends ZoomableLabel {
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		painter.setBounds(x, y, width, height);
-	}
-
-	public int getMainViewWidthWithFoldingMark() {
-		return painter.getMainViewWidthWithFoldingMark();
-	}
-
-	public int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
-		return painter.getMainViewHeightWithFoldingMark(onlyFolded);
 	}
 
 	public int getSingleChildShift() {

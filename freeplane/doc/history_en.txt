@@ -1,7 +1,18 @@
 ==============================
+1.11.1
+===============================
+Top-to-bottom, left-to-right and combined layouts
+Base distance from parent node to child node configurable for parent nodes and styles
+Node movement restricted to single directions
+Simultaneous movement of all selected nodes
+
+==============================
 1.10.6
 ==============================
 Performance optimizations
+
+1.10.6u1: fix font scaling for Java 11
+
 ==============================
 1.10.5
 ==============================
@@ -147,7 +158,7 @@ Formula support for node core, node details and notes
 New Freeplane Application icons and splash screen
 Configurable icons for links depending on link URL and file extension
 Following styles defined in external maps (synchronized when the map is loaded)
-New action for copying styles from other maps but keeping own user styles if they are different 
+New action for copying styles from other maps but keeping own user styles if they are different
 Fix default edge and node widths
 Option to open node links only if Control key is pressed
 Add background colors to generated HTML
@@ -240,7 +251,7 @@ Bug fixes
 ===============================
 Use UTF-8 encoding for mind map files
 Use emoticons from https://twemoji.twitter.com/ as icons
-Use only svg icons, remove png icons when svg icons can be used 
+Use only svg icons, remove png icons when svg icons can be used
 Hierarchical icons for subtrees
 
 ===============================

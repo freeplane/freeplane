@@ -131,9 +131,9 @@ public interface NodeRO {
 	String getDetailsText();
 
 	/**
-	 * 
+	 *
 	 * Returns details content type.
-	 * 
+	 *
 	 * @since 1.9.0
 	 */
 	String getDetailsContentType();
@@ -164,23 +164,23 @@ public interface NodeRO {
 	/** use it to create and inspect {@link Reminder}s. This property is never null. */
 	Reminder getReminder();
 
-	/** 
-	 * The mind map this node belongs to. 
+	/**
+	 * The mind map this node belongs to.
 	 *
 	 * @since 1.7.10
 	 */
 	MindMap getMindMap();
 
 	/**
-	 * The mind map this node belongs to. 
+	 * The mind map this node belongs to.
 	 *
 	 * @since 1.7.5
-	 * 
+	 *
 	 * @deprecated since 1.7.10 - use {@link #getMindMap()}
 	 */
 	@Deprecated
 	default Map getMap() {return (Map) getMindMap();}
-	
+
 	/** @deprecated since 1.2 - use Node.getId() instead. */
 	@Deprecated
 	String getNodeID();
@@ -212,11 +212,11 @@ public interface NodeRO {
 	/** Returns the HTML text of the node. (Notes always contain HTML text.)
 	 * @throws org.freeplane.plugin.script.ExecuteScriptException */
 	String getNoteText();
-	
+
 	/**
-	 * 
+	 *
 	 * Returns note content type.
-	 * 
+	 *
 	 * @since 1.9.0
 	 */
 	String getNoteContentType();
@@ -373,33 +373,54 @@ public interface NodeRO {
 
 	boolean isLeaf();
 
-	boolean isLeft();
+    /**
+     * @since 1.10.4
+     *
+     * @deprecated since 1.11.1 - use {@link #isTopOrLeft()}
+     */
+    @Deprecated
+	default boolean isLeft() {
+	    return isTopOrLeft();
+	}
 
-	/** 
-	 * @since 1.10.4 
-	 */
-	boolean isLeftOnViewsWithRoot(NodeRO viewRoot);
+	/** @since 1.11.1 */
+	boolean isTopOrLeft();
+
+    /**
+     * @since 1.10.4
+     *
+     * @deprecated since 1.11.1 - use {@link #isTopOrLeftOnViewsWithRoot()}
+     */
+	@Deprecated
+    default boolean isLeftOnViewsWithRoot(NodeRO viewRoot) {
+	    return isTopOrLeftOnViewsWithRoot(viewRoot);
+	}
+
+    /**
+     * @since 1.11.1
+     */
+    boolean isTopOrLeftOnViewsWithRoot(NodeRO viewRoot);
 
 	boolean isRoot();
-	
-	/** 
-	 * @since 1.10.4 
+
+	/**
+	 * @since 1.10.4
 	 */
 	Side getSideAtRoot();
 
-	/** 
+	/**
 	 * if this node is visible or not (due to filtering). Node folding and view roots are not considered.
 	 * See {@link #isFolded()} for folding state. */
 	boolean isVisible();
 
-	/** 
+	/**
 	 * if this node is visible or not (due to filtering). Node folding is not considered.
-	 * @since 1.10.4 
+	 * @since 1.10.4
 	 */
 	boolean isVisibleOnViewsWithRoot(NodeRO viewRoot);
 
-	/** 
-	 * if this node's text is shortened for display. 
+	/**
+	 * if this node's text is shortened for display.
 	 */
 	boolean isMinimized();
 
@@ -490,17 +511,23 @@ public interface NodeRO {
     /**@since 1.8.11 */
     default int getMinimalDistanceBetweenChildrenInScreenPixels() {
         return getMinimalDistanceBetweenChildrenAsLength().toBaseUnitsRounded();
-    }    
+    }
 
     /**@since 1.8.11 */
 	Quantity<LengthUnit> getVerticalShiftAsLength();
 
     /**@since 1.8.11 */
-	Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength();
+    Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength();
+
+    /**@since 1.11.1 */
+    Quantity<LengthUnit> getBaseDistanceToChildrenAsLength();
 
     /**@since 1.8.11 */
 	Quantity<LengthUnit> getHorizontalShiftAsLength();
-	
+
+    /** @since 1.11.1 */
+    LayoutOrientation getLayoutOrientation();
+
     /**@since 1.8.11 */
     NodeGeometryRO getGeometry();
 

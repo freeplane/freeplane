@@ -19,7 +19,8 @@
  */
 package org.freeplane.features.nodelocation.mindmapmode;
 
-import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -27,36 +28,38 @@ import org.freeplane.features.nodelocation.LocationModel;
 
 /**
  * @author Dimitry Polivaev
+ * 01.03.2014
  */
-class ChangeChildNodesAlignmentActor implements IActor {
+class ChangeBaseHGapActor implements IActor {
 	private final NodeModel node;
-	private final ChildNodesAlignment oldAlignment;
-	private final ChildNodesAlignment newAlignment;
+	private final Quantity<LengthUnit> oldBaseHgap;
+	private final Quantity<LengthUnit> baseHgap;
 
-	ChangeChildNodesAlignmentActor(final NodeModel node, ChildNodesAlignment newAlignment){
+	ChangeBaseHGapActor(final NodeModel node, final Quantity<LengthUnit> baseHgap){
 		final LocationModel locationModel = LocationModel.getModel(node);
-		oldAlignment = locationModel.getChildNodesAlignment();
+		oldBaseHgap = locationModel.getBaseHGap();
 		this.node = node;
-		this.newAlignment = newAlignment;
+		this.baseHgap = baseHgap;
 	}
 
 	public void act() {
-		setAlignment(node, oldAlignment, newAlignment);
+		setBaseHgap(node, baseHgap);
 	}
 
 	public String getDescription() {
-		return "changeChildNodesAlignment";
+		return "changeBaseHHap";
 	}
 
-	private void setAlignment(final NodeModel node, ChildNodesAlignment oldAlignment, ChildNodesAlignment newAlignment) {
-		if(oldAlignment != newAlignment) {
-			LocationModel.createLocationModel(node).setChildNodesAlignment(newAlignment);
-			Controller.getCurrentModeController().getMapController()
-			.nodeChanged(node, ChildNodesAlignment.class, oldAlignment, newAlignment);
-		}
+	private void setBaseHgap(final NodeModel node, final Quantity<LengthUnit>baseHgap) {
+	    LocationModel oldModel = LocationModel.getModel(node);
+        Quantity<LengthUnit> oldBaseHgap = oldModel.getBaseHGap();
+		LocationModel changeableModel = LocationModel.createLocationModel(node);
+        changeableModel.setBaseHGap(baseHgap);
+		if(changeableModel != oldModel || ! baseHgap.equals(oldBaseHgap))
+		    Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}
 
 	public void undo() {
-		setAlignment(node, newAlignment, oldAlignment);
+		setBaseHgap(node, oldBaseHgap);
 	}
 }

@@ -301,11 +301,11 @@ public class ConnectorView extends AConnectorView{
 		Point startPoint = null, endPoint = null;
         if (isSourceVisible()) {
             startPoint = source.getLinkPoint(startInclination);
-            sourceIsLeft = source.isLeft();
+            sourceIsLeft = source.isTopOrLeft();
         }
         if (isTargetVisible()) {
             endPoint = target.getLinkPoint(endInclination);
-            targetIsLeft = target.isLeft();
+            targetIsLeft = target.isTopOrLeft();
         }
 		final MapView map = getMap();
 		Point startPoint2 = null;

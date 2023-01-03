@@ -26,6 +26,7 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;
@@ -52,19 +53,32 @@ public class SummaryEdgeView extends EdgeView {
 	}
 
 	private Shape update() {
-		final boolean isLeft = getTarget().isLeft();
-        final int sign = isLeft ? -1 : 1;
+		final boolean isTopOrLeft = getTarget().isTopOrLeft();
+		final int sign = isTopOrLeft ? -1 : 1;
 		final int xctrl = getMap().getZoomed(sign * SummaryEdgeView.XCTRL);
 		final int childXctrl = getMap().getZoomed(sign * SummaryEdgeView.CHILD_XCTRL);
-		final GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 5);
-		final int startX; 
-		if(isLeft)
-		    startX = Math.min(start.x, end.x - childXctrl);
-		else
-            startX = Math.max(start.x, end.x - childXctrl);
-        path.moveTo(startX, start.y);
-		path.lineTo(startX + xctrl, start.y);
-		path.curveTo(startX + 2 * xctrl, start.y, startX, end.y, end.x, end.y);
+		final GeneralPath path = new GeneralPath(Path2D.WIND_EVEN_ODD, 5);
+		if(getSource().usesHorizontalLayout()) {
+			final int startY; 
+			if(isTopOrLeft)
+				startY = Math.min(start.y, end.y - childXctrl);
+			else
+				startY = Math.max(start.y, end.y - childXctrl);
+			path.moveTo(start.x, startY);
+			path.lineTo(start.x, startY + xctrl);
+			path.curveTo(start.x, startY + 2 * xctrl, end.x, startY, end.x, end.y);
+		}
+		else {
+			final int startX; 
+			if(isTopOrLeft)
+				startX = Math.min(start.x, end.x - childXctrl);
+			else
+				startX = Math.max(start.x, end.x - childXctrl);
+			path.moveTo(startX, start.y);
+			path.lineTo(startX + xctrl, start.y);
+			path.curveTo(startX + 2 * xctrl, start.y, startX, end.y, end.x, end.y);
+
+		}
 		return path;
 	}
 

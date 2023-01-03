@@ -26,7 +26,8 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
-import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;
@@ -44,22 +45,50 @@ public class HorizontalEdgeView extends EdgeView {
 
 	@Override
 	protected void createStart() {
-	    if(getSource().isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
+	    NodeView source = getSource();
+	    NodeView target = getTarget();
+	    boolean usesHorizontalLayout = source.usesHorizontalLayout();
+        if(source.isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
 	        super.createStart();
 	    }
 	    else{
-	        if(getTarget().isLeft()){
-	            start = getSource().getMainView().getLeftPoint();
+	        MainView mainView = source.getMainView();
+
+	        if(usesHorizontalLayout) {
+	            if(target.isTopOrLeft()){
+	                start = mainView.getTopPoint();
+	            }
+	            else{
+	                start = mainView.getBottomPoint();
+	            }
+
 	        }
-	        else{
-	            start = getSource().getMainView().getRightPoint();
+	        else {
+	            ChildrenSides childrenSides = source.getChildNodesLayout().childrenSides();
+	            if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)
+                    start = mainView.getLeftPoint();
+                else if(childrenSides == ChildrenSides.TOP_OR_LEFT)
+                    start = mainView.getRightPoint();
+                else if(source.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT)
+	                start = mainView.getBottomPoint();
+	            else if(source.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
+	                start = mainView.getTopPoint();
+	            else if(target.isTopOrLeft()){
+	                start = mainView.getLeftPoint();
+	            }
+	            else{
+	                start = mainView.getRightPoint();
+	            }
+
 	        }
+
 	    }
-        if(getTarget().isLeft()){
-            end = getTarget().getMainView().getRightPoint();
+        MainView mainView = target.getMainView();
+        if(target.isTopOrLeft()){
+            end = usesHorizontalLayout ? mainView.getBottomPoint() : mainView.getRightPoint();
         }
         else{
-            end = getTarget().getMainView().getLeftPoint();
+            end = usesHorizontalLayout ? mainView.getTopPoint() : mainView.getLeftPoint();
         }
     }
 
@@ -69,20 +98,28 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setColor(color);
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
-		int xMiddle = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
-		final boolean left = getTarget().isLeft() 
-		    || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
-        if (left) {
-			xMiddle = -xMiddle;
+		NodeView source = getSource();
+        boolean usesHorizontalLayout = source.usesHorizontalLayout();
+        boolean areChildrenApart = source.getChildNodesAlignment().areChildrenApart;
+        if(usesHorizontalLayout) {
+            int middleY = (start.y + end.y) / 2;
+            xs = new int[] { start.x, start.x, end.x, end.x };
+            ys = new int[] { start.y, middleY, middleY, end.y };
+        }
+        else if(areChildrenApart) {
+            xs = new int[] { start.x, start.x, end.x };
+            ys = new int[] { start.y, end.y, end.y };
+        }
+        else {
+		    int middleX = (start.x + end.x) / 2;
+		    xs = new int[] { start.x, middleX, middleX, end.x };
+		    ys = new int[] { start.y, start.y, end.y, end.y };
 		}
-		xMiddle += start.x;
-		xs = new int[] { start.x, xMiddle, xMiddle, end.x };
-		ys = new int[] { start.y, start.y, end.y, end.y };
-		g.drawPolyline(xs, ys, 4);
+		g.drawPolyline(xs, ys, xs.length);
 		if (drawHiddenParentEdge()) {
-			g.setColor(g.getBackground());
+		    g.setColor(g.getBackground());
 			g.setStroke(EdgeView.getEclipsedStroke());
-			g.drawPolyline(xs, ys, 4);
+			g.drawPolyline(xs, ys, xs.length);
 			g.setColor(color);
 			g.setStroke(stroke);
 		}

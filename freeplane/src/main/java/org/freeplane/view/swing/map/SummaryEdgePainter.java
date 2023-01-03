@@ -8,8 +8,8 @@ import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.SummaryEdgeView;
 
 class SummaryEdgePainter {
-	SummaryEdgePainter(NodeView parent, boolean isLeft){
-		this.isLeft = isLeft;
+	SummaryEdgePainter(NodeView parent, boolean isTopOrLeft){
+		this.isTopOrLeft = isTopOrLeft;
 		int maxSize = parent.getComponentCount();
 		xs = new int[maxSize];
 		yMins = new int[maxSize];
@@ -20,7 +20,7 @@ class SummaryEdgePainter {
 		saveCurrentValues();
 	}
 	private void resetLevelValues(int level) {
-		if(this.isLeft)
+		if(this.isTopOrLeft)
 			xs[level] = Integer.MAX_VALUE;
 		else
 			xs[level] = Integer.MIN_VALUE;
@@ -39,11 +39,11 @@ class SummaryEdgePainter {
 	private int currentX;
 	private int currentY1;
 	private int currentY2;
-	final private boolean isLeft;
+	final private boolean isTopOrLeft;
 	private int level;
 	private int maxLevel;
 	void addChild(NodeView child){
-		if(child.isLeft() != isLeft)
+		if(child.isTopOrLeft() != isTopOrLeft)
 			return;
 		setCurrentLevel(child);
         updateLevelValues(child);
@@ -53,20 +53,21 @@ class SummaryEdgePainter {
 	private void updateLevelValues(NodeView child) {
 		resetLevelValuesForStart(child);
 		int spaceAround = child.getSpaceAround();
-        if(child.getHeight() == 2 * spaceAround)
+		NodeViewLayoutHelper helper = child.getLayoutHelper();
+        if(helper.getHeight() == 2 * spaceAround)
         	return;
-		int yMin = child.getY() + spaceAround;
-		int yMax = child.getY() + child.getHeight() - child.getSpaceAround();
+		int yMin = helper.getY() + spaceAround;
+		int yMax = helper.getY() + helper.getHeight() - helper.getSpaceAround();
         int x;
-        if (isLeft) {
-            x = child.getX() + spaceAround;
+        if (isTopOrLeft) {
+            x = helper.getX() + spaceAround;
         }
         else {
-            x = child.getX() + child.getWidth() - spaceAround;
+            x = helper.getX() + helper.getWidth() - spaceAround;
         }
         yMins[level] = Math.min(yMin, yMins[level]);
         yMaxs[level] = Math.max(yMax, yMaxs[level]);
-		if (isLeft) {
+		if (isTopOrLeft) {
 			xs[level] = Math.min(x, xs[level]);
 		}
 		else {
@@ -98,8 +99,9 @@ class SummaryEdgePainter {
 	boolean paintSummaryEdge(Graphics2D g, NodeView source, NodeView target) {
 		if(! hasSummaryEdge())
 			return false;
-		final Point start1 = new Point(currentX, currentY1);
-		final Point start2 = new Point(currentX, currentY2);
+		boolean usesHorizontalLayout = source.usesHorizontalLayout();
+		final Point start1 = usesHorizontalLayout ? new Point(currentY1, currentX) : new Point(currentX, currentY1);
+		final Point start2 = usesHorizontalLayout ? new Point(currentY2, currentX) : new Point(currentX, currentY2);
 		final NodeView parentView = target.getParentView();
 		UITools.convertPointToAncestor(parentView, start1, source);
 		UITools.convertPointToAncestor(parentView, start2, source);
@@ -110,15 +112,4 @@ class SummaryEdgePainter {
 		edgeView.paint(g);
 		return true;
 	}
-
-	int getY1(){
-		return currentY1;
-	}
-	int getY2(){
-		return currentY2;
-	}
-	int getX(){
-		return currentX;
-	}
-
 }

@@ -23,7 +23,6 @@ import java.util.Collection;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -43,9 +42,9 @@ import org.freeplane.features.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class LocationController implements IExtension {
-	final private ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel> childGapHandlers;
-	final private ExclusivePropertyChain<ChildNodesAlignment, NodeModel> childNodesAlignmentHandlers;
-	
+	final private ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel> childVGapHandlers;
+    final private ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel> childHGapHandlers;
+
 	public static LocationController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -71,88 +70,66 @@ public class LocationController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final LocationBuilder locationBuilder = new LocationBuilder();
 		locationBuilder.registerBy(readManager, writeManager);
-		childGapHandlers = new ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel>();
-		addChildGapGetter(IPropertyHandler.STYLE, new IPropertyHandler<Quantity<LengthUnit>, NodeModel>() {
-			public Quantity<LengthUnit> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Quantity<LengthUnit> currentValue) {
-				final MapModel map = node.getMap();
-				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
-				final Quantity<LengthUnit> returnedGap = getStyleChildGap(map, style);
-				return returnedGap;
-			}
-		});
-		addChildGapGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Quantity<LengthUnit>, NodeModel>() {
-			public Quantity<LengthUnit> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Quantity<LengthUnit> currentValue) {
-				return LocationModel.DEFAULT_VGAP;
-			}
-		});
-		
-		childNodesAlignmentHandlers = new ExclusivePropertyChain<ChildNodesAlignment, NodeModel>();
-		addChildNodesAlignmentGetter(IPropertyHandler.STYLE, new IPropertyHandler<ChildNodesAlignment, NodeModel>() {
-			public ChildNodesAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesAlignment currentValue) {
-				final MapModel map = node.getMap();
-				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-				final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
-				final ChildNodesAlignment returnedAlignment = getStyleAlignment(map, style);
-				return returnedAlignment;
-			}
-		});
-		addChildNodesAlignmentGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ChildNodesAlignment, NodeModel>() {
-			public ChildNodesAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesAlignment currentValue) {
-				return LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT;
-			}
-		});
+        childVGapHandlers = new ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel>();
+        childHGapHandlers = new ExclusivePropertyChain<Quantity<LengthUnit>, NodeModel>();
+		childVGapHandlers.addGetter(IPropertyHandler.STYLE, (node, option, currentValue) -> {
+        	final MapModel map = node.getMap();
+        	final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+        	final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
+        	final Quantity<LengthUnit> returnedGap = getStyleChildVGap(map, style);
+        	return returnedGap;
+        });
+		childVGapHandlers.addGetter(IPropertyHandler.DEFAULT, (node, option, currentValue) -> LocationModel.DEFAULT_VGAP);
+		childHGapHandlers.addGetter(IPropertyHandler.STYLE, (node, option, currentValue) -> {
+            final MapModel map = node.getMap();
+            final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+            final Collection<IStyle> style = styleController.getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
+            final Quantity<LengthUnit> returnedGap = getStyleCommonChildHGap(map, style);
+            return returnedGap;
+        });
+		childHGapHandlers.addGetter(IPropertyHandler.DEFAULT, (node, option, currentValue) -> LocationModel.DEFAULT_HGAP);
 
 	}
-	private IPropertyHandler<Quantity<LengthUnit>, NodeModel> addChildGapGetter(final Integer key,
-            final IPropertyHandler<Quantity<LengthUnit>, NodeModel> getter) {
-			return childGapHandlers.addGetter(key, getter);
-	}
+	private Quantity<LengthUnit> getStyleChildVGap(final MapModel map, final Collection<IStyle> styleKeys) {
+        final MapStyleModel model = MapStyleModel.getExtension(map);
+        for(IStyle styleKey : styleKeys){
+            final NodeModel styleNode = model.getStyleNode(styleKey);
+            if (styleNode == null) {
+                continue;
+            }
+            final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
+            if (styleModel == null) {
+                continue;
+            }
+            Quantity<LengthUnit> vGap = styleModel.getVGap();
+            if (vGap == LocationModel.DEFAULT_VGAP) {
+                continue;
+            }
+            return vGap;
+        }
+        return null;
+    }
 
-	private IPropertyHandler<ChildNodesAlignment, NodeModel> addChildNodesAlignmentGetter(final Integer key,
-            final IPropertyHandler<ChildNodesAlignment, NodeModel> getter) {
-			return childNodesAlignmentHandlers.addGetter(key, getter);
-	}
+    private Quantity<LengthUnit> getStyleCommonChildHGap(final MapModel map, final Collection<IStyle> styleKeys) {
+        final MapStyleModel model = MapStyleModel.getExtension(map);
+        for(IStyle styleKey : styleKeys){
+            final NodeModel styleNode = model.getStyleNode(styleKey);
+            if (styleNode == null) {
+                continue;
+            }
+            final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
+            if (styleModel == null) {
+                continue;
+            }
+            Quantity<LengthUnit> gap = styleModel.getBaseHGap();
+            if (gap == LocationModel.DEFAULT_HGAP) {
+                continue;
+            }
+            return gap;
+        }
+        return null;
+    }
 
-	private Quantity<LengthUnit> getStyleChildGap(final MapModel map, final Collection<IStyle> styleKeys) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
-			if (styleModel == null) {
-				continue;
-			}
-			Quantity<LengthUnit> vGap = styleModel.getVGap();
-			if (vGap == LocationModel.DEFAULT_VGAP) {
-				continue;
-			}
-			return vGap;
-		}
-		return null;
-	}
-
-	private ChildNodesAlignment getStyleAlignment(final MapModel map, final Collection<IStyle> styleKeys) {
-		final MapStyleModel model = MapStyleModel.getExtension(map);
-		for(IStyle styleKey : styleKeys){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final LocationModel styleModel = styleNode.getExtension(LocationModel.class);
-			if (styleModel == null) {
-				continue;
-			}
-			ChildNodesAlignment alignment = styleModel.getChildNodesAlignment();
-			if (alignment == LocationModel.DEFAULT_CHILD_NODES_ALIGNMENT) {
-				continue;
-			}
-			return alignment;
-		}
-		return null;
-	}
 	public Quantity<LengthUnit> getHorizontalShift(NodeModel node){
 		return LocationModel.getModel(node).getHGap();
 	}
@@ -161,11 +138,11 @@ public class LocationController implements IExtension {
 		return LocationModel.getModel(node).getShiftY();
 	}
 
-	public Quantity<LengthUnit> getMinimalDistanceBetweenChildren(NodeModel node){
-		return childGapHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
-	}
+    public Quantity<LengthUnit> getCommonVGapBetweenChildren(NodeModel node){
+        return childVGapHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+    }
 
-	public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
-		return childNodesAlignmentHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
-	}
+    public Quantity<LengthUnit> getBaseHGapToChildren(NodeModel node){
+        return childHGapHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+    }
 }

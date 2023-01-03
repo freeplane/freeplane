@@ -315,9 +315,9 @@ public class MMapController extends MapController {
     }
 
     public void addNewSummaryNodeStartEditing(NodeModel selectionRoot, final NodeModel parentNode, final int start,
-            final int end, final boolean isLeft) {
+            final int end, final boolean isTopOrLeft) {
     	SummaryLevels summaryLevels = new SummaryLevels(selectionRoot, parentNode);
-    	if(!summaryLevels.canInsertSummaryNode(start, end, isLeft))
+    	if(!summaryLevels.canInsertSummaryNode(start, end, isTopOrLeft))
     		return;
         ModeController modeController = getMModeController();
         stopInlineEditing();
@@ -692,7 +692,7 @@ public class MMapController extends MapController {
         		newSide = oldParent.getSide();
         	}
         	else {
-        		Side oldSide = child.isLeft(newParent) ? Side.LEFT : Side.RIGHT;
+        		Side oldSide = child.isTopOrLeft(newParent) ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT;
         		newSide = MapController.suggestNewChildSide(newParent, oldSide);
         	}
         	setSide(Collections.singletonList(child), newSide);
@@ -872,8 +872,8 @@ public class MMapController extends MapController {
                     final NodeModel n1 = (NodeModel) o1;
                     if (o2 instanceof NodeModel) {
                         final NodeModel n2 = (NodeModel) o2;
-                        final int b1 = n1.isLeft(selectionRoot) ? 0 : 1;
-                        final int b2 = n2.isLeft(selectionRoot) ? 0 : 1;
+                        final int b1 = n1.isTopOrLeft(selectionRoot) ? 0 : 1;
+                        final int b2 = n2.isTopOrLeft(selectionRoot) ? 0 : 1;
                         return b1 - b2;
                     }
                 }
@@ -917,8 +917,8 @@ public class MMapController extends MapController {
             boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(child);
             boolean isSummaryNode = SummaryNode.isSummaryNode(child);
             if(isFirstGroupNode != isSummaryNode) {
-                boolean isLeft = shouldConsiderSeparateSides && child.isLeft(parent);
-                if(isLeft) {
+                boolean isTopOrLeft = shouldConsiderSeparateSides && child.isTopOrLeft(parent);
+                if(isTopOrLeft) {
                     if(isFirstGroupNode) {
                         if(leftFirstGroupNode != null) {
                             deleteSingleNodeWithClones(child);
@@ -950,9 +950,9 @@ public class MMapController extends MapController {
             NodeModel child = parent.getChildAt(i);
             boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(child);
             boolean isSummaryNode = SummaryNode.isSummaryNode(child);
-            boolean isLeft = shouldConsiderSeparateSides && child.isLeft(parent);
+            boolean isTopOrLeft = shouldConsiderSeparateSides && child.isTopOrLeft(parent);
             if(isFirstGroupNode != isSummaryNode) {
-                if(isLeft) {
+                if(isTopOrLeft) {
                     if(isSummaryNode) {
                         if(leftSummaryNode != null && isLeftItemNodeFound) {
                             addNewFirstGroupNode(parent, i+1, leftSummaryNode.getSide());
@@ -972,7 +972,7 @@ public class MMapController extends MapController {
                 }
             }
             if(isSummaryNode) {
-                if(isLeft) {
+                if(isTopOrLeft) {
                     leftSummaryNode = child;
                     isLeftItemNodeFound = false;
                 } else {
@@ -981,7 +981,7 @@ public class MMapController extends MapController {
                 }
             }
             if(! isFirstGroupNode && ! isSummaryNode) {
-                if(isLeft)
+                if(isTopOrLeft)
                     isLeftItemNodeFound = true;
                 else
                     isRightItemNodeFound = true;
