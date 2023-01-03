@@ -443,7 +443,7 @@ class VerticalNodeViewLayoutStrategy {
 		int minY = 0;
 		for (int i = 0; i < childViewCount; i++) {
 			if (this.viewLevels.summaryLevels[i] == 0 && this.isChildFreeNode[i]) {
-				minY = Math.min(minY, contentY + this.yCoordinates[i]);
+				minY = Math.min(minY, contentY + this.yCoordinates[i] - cloudHeight / 2);
 			} else
 				minY = Math.min(minY, baseY + this.yCoordinates[i]);
 		}
