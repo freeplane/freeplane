@@ -30,11 +30,15 @@ import com.lightdev.app.shtm.SHTMLWriter;
  * The result will be a valid XML file, but it is not granted that the file will
  * really be XHTML 1.0 transitional conformous. The basic purpose of this class
  * is to give an XSL processor access to plain HTML files.
- * 
+ *
  * @author Richard "Shred" Koerber
  */
 class XHTMLWriter extends SHTMLWriter {
-	/**
+    private static final char NB_SPACE = '\u00A0';
+    static final String NB_SPACE_LITERAL = "&#xa0;";
+
+
+    /**
 	 * This FilterWriter will convert the output of Swing's HTMLWriter to XHTML
 	 * format. This is done by converting tags like &lt;br&gt; to
 	 * &lt;br&nbsp;/&gt;. Also, special characters in tag attributes are
@@ -49,7 +53,7 @@ class XHTMLWriter extends SHTMLWriter {
 
 		/**
 		 * Create a new XHTMLFilterWriter.
-		 * 
+		 *
 		 * @param writer
 		 *            Writer to write to
 		 */
@@ -59,7 +63,7 @@ class XHTMLWriter extends SHTMLWriter {
 
 		/**
 		 * Write a char array to the Writer.
-		 * 
+		 *
 		 * @param cbuf
 		 *            Char array to be written
 		 * @param off
@@ -76,7 +80,7 @@ class XHTMLWriter extends SHTMLWriter {
 
 		/**
 		 * Write a single char to the Writer.
-		 * 
+		 *
 		 * @param c
 		 *            Char to be written
 		 */
@@ -115,7 +119,7 @@ class XHTMLWriter extends SHTMLWriter {
 
 		/**
 		 * Write a String to the Writer.
-		 * 
+		 *
 		 * @param str
 		 *            String to be written
 		 * @param off
@@ -132,7 +136,7 @@ class XHTMLWriter extends SHTMLWriter {
 	/**
 	 * Read HTML from the Reader, and send XHTML to the writer. Common mistakes
 	 * in the HTML code will also be corrected. The result is pretty-printed.
-	 * 
+	 *
 	 * @param reader
 	 *            HTML source
 	 * @param writer
@@ -150,7 +154,7 @@ class XHTMLWriter extends SHTMLWriter {
 	 * External call to convert a source HTML file to a target XHTML file.
 	 * <p>
 	 * Usage: <tt>java XHTMLWriter &lt;source file&gt; &lt;target file&gt;</tt>
-	 * 
+	 *
 	 * @param args
 	 *            Shell arguments
 	 */
@@ -169,7 +173,7 @@ class XHTMLWriter extends SHTMLWriter {
 
 	/**
 	 * Create a new XHTMLWriter that will write the entire HTMLDocument.
-	 * 
+	 *
 	 * @param writer
 	 *            Writer to write to
 	 * @param doc
@@ -181,7 +185,7 @@ class XHTMLWriter extends SHTMLWriter {
 
 	/**
 	 * Create a new XHTMLWriter that will write a part of a HTMLDocument.
-	 * 
+	 *
 	 * @param writer
 	 *            Writer to write to
 	 * @param doc
@@ -251,6 +255,14 @@ class XHTMLWriter extends SHTMLWriter {
 	}
 
 	@Override
+    protected String entity(char c) {
+	    if(c == NB_SPACE)
+	        return NB_SPACE_LITERAL;
+	    else
+	        return super.entity(c);
+    }
+
+    @Override
 	protected void emptyTag(final Element elem) throws BadLocationException, IOException {
 		try {
 			final boolean isEndtag = isEndtag(elem);

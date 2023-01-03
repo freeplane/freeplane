@@ -128,26 +128,26 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
-      Hover with the cursor over the different texts to unhide links to <b><i>Tutorial</i></b>&nbsp;and <b><i>Documentation</i></b>.
+      Hover with the cursor over the different texts to unhide links to <b><i>Tutorial</i></b>&#xa0;and <b><i>Documentation</i></b>.
     </p>
     <p>
-      
+
     </p>
     <p>
       N.B. This is text is a <b>Note text</b>..
     </p>
     <p>
-      
+
     </p>
     <p>
-      To switch lthe<b>&nbsp;Note panel</b>&nbsp;on/off:
+      To switch the<b>&#xa0;Note panel</b>&#xa0;on/off:
     </p>
     <p>
-      
+
     </p>
     <p>
       <i>View &gt; Notes &gt; Displaly note panel. </i>
@@ -165,7 +165,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -177,7 +177,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -197,7 +197,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -209,7 +209,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -227,7 +227,7 @@
 <node TEXT="Publish &amp; share" ID="ID_671406309" CREATED="1330890243562" MODIFIED="1620564016961"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -246,7 +246,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -258,7 +258,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -277,7 +277,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -289,7 +289,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -312,7 +312,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -335,7 +335,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -350,7 +350,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -369,7 +369,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -381,7 +381,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -398,7 +398,7 @@
 <node TEXT="=3 + 4" ID="ID_38981929" CREATED="1319800292281" MODIFIED="1620564016964" TEXT_SHORTENED="true"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -419,7 +419,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -431,7 +431,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -450,7 +450,7 @@
 <node TEXT="Format node core" POSITION="left" ID="ID_1983670807" CREATED="1319795759589" MODIFIED="1620564016964" TEXT_SHORTENED="true"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -497,7 +497,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -512,11 +512,11 @@
 <node TEXT="Relations" POSITION="right" ID="ID_441663322" CREATED="1288536353356" MODIFIED="1620564016950" STYLE="fork"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
-      <a href="freeplaneUserGuide.mm#ID_448981847">&nbsp;xx</a>&nbsp;
+      <a href="freeplaneUserGuide.mm#ID_448981847">&#xa0;xx</a>&#xa0;
     </p>
   </body>
 </html>
@@ -535,7 +535,7 @@
 <node TEXT="node c" ID="ID_268922755" CREATED="1288535699522" MODIFIED="1620564016967" TEXT_SHORTENED="true" STYLE="bubble"><richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -563,7 +563,7 @@
 <node TEXT="Cloud" STYLE_REF="Reference" POSITION="right" ID="ID_1697684606" CREATED="1319873881764" MODIFIED="1620564166581"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -571,7 +571,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
+        <i>Help &gt; <b>&#xa0;Tutorial</b></i>&#xa0;<a href="freeplaneUserGuide.mm#ID_1150908697">Cloud node group</a>
       </li>
     </ul>
   </body>
@@ -583,7 +583,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -603,7 +603,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -623,7 +623,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -639,7 +639,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -658,7 +658,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -674,7 +674,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -682,7 +682,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
+        <i>Help &gt; Tutorial</i>&#xa0;<a href="freeplaneUserGuide.mm#ID_143196514">Node extensions</a>
       </li>
     </ul>
   </body>
@@ -697,7 +697,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -762,7 +762,7 @@
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -778,7 +778,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -792,7 +792,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -800,7 +800,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
+        <i>Help &gt; <b>&#xa0;Tutorial</b></i>&#xa0;<a href="freeplaneUserGuide.mm#ID_575269438">Image</a>
       </li>
     </ul>
   </body>
@@ -812,7 +812,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -825,7 +825,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -833,7 +833,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
+        <i>Help &gt; <b>&#xa0;Tutorial</b></i>&#xa0;<a href="freeplaneUserGuide.mm#ID_616494746">Scientific formula</a>
       </li>
     </ul>
   </body>
@@ -847,7 +847,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -855,7 +855,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
+        <i>Help &gt; <b>&#xa0;Tutorial</b></i>&#xa0;<a href="freeplaneUserGuide.mm#ID_1324773677">Attributes in node extensions</a>
       </li>
     </ul>
   </body>
@@ -867,7 +867,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -880,7 +880,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -888,7 +888,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&nbsp;Tutorial</b></i>&nbsp;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
+        <i>Help &gt; <b>&#xa0;Tutorial</b></i>&#xa0;<a href="freeplaneUserGuide.mm#ID_898889730">Edit text in node details</a>
       </li>
     </ul>
   </body>
@@ -903,7 +903,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -921,7 +921,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -929,7 +929,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
+        <i>Help &gt; Tutorial</i>&#xa0;<a href="freeplaneUserGuide.mm#ID_288274844">Show in tool tip (hover text)</a>
       </li>
     </ul>
   </body>
@@ -950,7 +950,7 @@
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -961,7 +961,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -981,7 +981,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -989,7 +989,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt; Tutorial</i>&#xa0;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
@@ -998,7 +998,7 @@
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1012,7 +1012,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1020,7 +1020,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; Tutorial</i>&nbsp;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
+        <i>Help &gt; Tutorial</i>&#xa0;<a href="freeplaneUserGuide.mm#ID_128387683">Free (floating) node</a>
       </li>
     </ul>
   </body>
@@ -1029,7 +1029,7 @@
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1044,7 +1044,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1057,7 +1057,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1077,7 +1077,7 @@
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1096,7 +1096,7 @@
 <node TEXT="Automatic node number" ID="ID_1097461051" CREATED="1305277030363" MODIFIED="1620564016973" NUMBERED="true" TEXT_SHORTENED="true"><richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1118,7 +1118,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1143,7 +1143,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1163,7 +1163,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1182,7 +1182,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1195,7 +1195,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1214,7 +1214,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <img src="Images/doc/freeplaneApplications.png"/>
@@ -1224,7 +1224,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
@@ -1243,7 +1243,7 @@
 
 <html>
   <head>
-    
+
   </head>
   <body>
     <p style="text-align: center">
@@ -1255,7 +1255,7 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
-    
+
   </head>
   <body>
     <p>
