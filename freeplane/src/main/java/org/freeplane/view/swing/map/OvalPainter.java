@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
@@ -56,11 +58,11 @@ class OvalPainter extends VariableInsetsPainter {
 	}
 
 	@Override
-	Point getConnectorPoint(Point p, boolean usesHorizontalLayout) {
+	Point getConnectorPoint(Point p, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
 		return getShapeConfiguration().isUniform()
 				|| !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && mainView.getNodeView().isRoot()
 				? getConnectorPointAtTheOvalBorder(p) :
-					super.getConnectorPoint(p, usesHorizontalLayout);
+					super.getConnectorPoint(p, layoutOrientation, alignment);
 	}
 
 
@@ -88,7 +90,7 @@ class OvalPainter extends VariableInsetsPainter {
     	int dx = Math.abs(p.x -  mainView.getWidth()/2);
     	if(p.x < mainView.getWidth()/2)
     		dx = -dx;
-    	double angle = dx != 0 
+    	double angle = dx != 0
     			? Math.atan((p.y - nHeight) / dx)
     			: (p.y > nHeight ? Math.PI : -Math.PI) / 2 ;
     	if (dx < 0) {

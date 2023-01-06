@@ -47,6 +47,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
@@ -558,10 +560,13 @@ public class MainView extends ZoomableLabel {
     public void setBorder(Border border) {
     }
 
-    static public enum ConnectorLocation{LEFT, RIGHT, TOP, BOTTOM, CENTER};
+    @SuppressWarnings("hiding")
+    static public enum ConnectorLocation{ LEFT, RIGHT, TOP, BOTTOM, CENTER }
 
-    public ConnectorLocation getConnectorLocation(Point relativeLocation, boolean usesHorizontalLayout) {
-    	if(usesHorizontalLayout) {
+    public ConnectorLocation getConnectorLocation(Point relativeLocation,
+            LayoutOrientation layoutOrientation,
+            ChildNodesAlignment alignment) {
+    	if(layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT || alignment.areChildrenApart) {
             if(relativeLocation.y > getHeight())
                 return ConnectorLocation.BOTTOM;
             if(relativeLocation.y <0)
@@ -836,8 +841,8 @@ public class MainView extends ZoomableLabel {
 		super.setBounds(x, y, width, height);
 	}
 
-	public Point getConnectorPoint(Point relativeLocation, boolean usesHorizontalLayout) {
-		return painter.getConnectorPoint(relativeLocation, usesHorizontalLayout);
+	public Point getConnectorPoint(Point relativeLocation, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
+		return painter.getConnectorPoint(relativeLocation, layoutOrientation, alignment);
 	}
 
 	public Point getLeftPoint() {

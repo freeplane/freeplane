@@ -27,6 +27,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
@@ -58,9 +60,9 @@ abstract class MainViewPainter{
 		return 0;
 	}
 
-	Point getConnectorPoint(Point relativeLocation, boolean usesHorizontalLayout) {
+	Point getConnectorPoint(Point relativeLocation, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
 		NodeView nodeView = mainView.getNodeView();
-		if(! usesHorizontalLayout) {
+		if(layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && ! alignment.areChildrenApart) {
 			if(relativeLocation.x > mainView.getWidth()) {
 				return getRightPoint();
 			}
@@ -91,7 +93,7 @@ abstract class MainViewPainter{
 	abstract Point getLeftPoint();
 
 	abstract Point getRightPoint();
-	
+
     Point getTopPoint() {
         return new Point(mainView.getWidth()/2, 0);
     }
@@ -138,7 +140,7 @@ abstract class MainViewPainter{
 		(drawsControls || markType != FoldingMark.FOLDING_CIRCLE_FOLDED ? markType : FoldingMark.FOLDING_CIRCLE_UNFOLDED)
 			.draw(g, nodeView, markBounds);
 	}
-    
+
 	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
         final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
 		final int halfWidth = width / 2;

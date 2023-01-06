@@ -26,6 +26,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.DashVariant;
 import org.freeplane.view.swing.map.MainView;
@@ -51,7 +53,7 @@ public abstract class EdgeView {
 
 	private final NodeView source;
 	protected Point start, end;
-	
+
 	public void setStart(Point start) {
     	this.start = start;
     }
@@ -78,20 +80,21 @@ public abstract class EdgeView {
 	protected void createStart() {
         final MainView mainView = source.getMainView();
         final MainView targetMainView = target.getMainView();
-        
+
         final Point relativeLocation = source.getRelativeLocation(target);
-        boolean usesHorizontalLayout = source.usesHorizontalLayout();
-                
+        LayoutOrientation layoutOrientation = source.layoutOrientation();
+
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-		end = target.getMainView().getConnectorPoint(relativeLocation, usesHorizontalLayout);
-		endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation, usesHorizontalLayout);
+		end = target.getMainView().getConnectorPoint(relativeLocation, layoutOrientation, ChildNodesAlignment.NOT_SET);
+		endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation, layoutOrientation, ChildNodesAlignment.NOT_SET);
 
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2 + end.x;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2 + end.y;
 
-        start = mainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
-        startConnectorLocation = mainView.getConnectorLocation(relativeLocation, usesHorizontalLayout);
+        ChildNodesAlignment alignment = source.getChildNodesAlignment();
+        start = mainView.getConnectorPoint(relativeLocation, layoutOrientation, alignment);
+        startConnectorLocation = mainView.getConnectorLocation(relativeLocation, layoutOrientation, alignment);
 }
 
 	protected ConnectorLocation getStartConnectorLocation() {
@@ -103,8 +106,8 @@ public abstract class EdgeView {
     }
 
     protected Point getControlPoint(ConnectorLocation startConnectorLocation){
-        final int xctrl; 
-        final int yctrl; 
+        final int xctrl;
+        final int yctrl;
         if(ConnectorLocation.LEFT.equals(startConnectorLocation)){
             xctrl= - 1;
             yctrl = 0;
@@ -130,7 +133,7 @@ public abstract class EdgeView {
 
     protected void align(Point start, Point end) {
 		if(1 == Math.abs(start.y - end.y)){
-			end.y = start.y; 
+			end.y = start.y;
 		}
     }
 

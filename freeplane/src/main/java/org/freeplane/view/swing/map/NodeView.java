@@ -140,10 +140,10 @@ public class NodeView extends JComponent implements INodeView {
 	private boolean isFolded;
 	private DashVariant edgeDash = DashVariant.DEFAULT;
 	private final NodeViewLayoutHelper layoutHelper;
-    private boolean usesHorizontalLayout;
     private boolean isTopOrLeft;
     private ChildNodesAlignment childNodesAlignment;
     private ChildNodesLayout childNodesLayout;
+    private LayoutOrientation layoutOrientation;
 
 	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -795,7 +795,7 @@ public class NodeView extends JComponent implements INodeView {
 			return ChildNodesAlignment.BY_CENTER;
 		else if(parentView.isSummary())
 			return parentView.getDefaultChildNodesAlignment();
-		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout)
+		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout())
 			return parentView.getChildNodesAlignment();
 		else if(isTopOrLeft())
 		    return ChildNodesAlignment.BEFORE_PARENT;
@@ -1344,16 +1344,17 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		final Point relativeLocation = getRelativeLocation(target);
         final MainView targetMainView = target.getMainView();
-        boolean usesHorizontalLayout = usesHorizontalLayout();
+        LayoutOrientation layoutOrientation = layoutOrientation();
+        ChildNodesAlignment alignment = getChildNodesAlignment();
 
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-		final Point end = targetMainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
+		final Point end = targetMainView.getConnectorPoint(relativeLocation, layoutOrientation, alignment);
 
 
         relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2 + end.x;
         relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2 + end.y;
-        final Point start = mainView.getConnectorPoint(relativeLocation, usesHorizontalLayout);
+        final Point start = mainView.getConnectorPoint(relativeLocation, layoutOrientation, ChildNodesAlignment.NOT_SET);
 
         UITools.convertPointToAncestor(getMainView(), end, this);
         UITools.convertPointToAncestor(targetMainView, start, this);
@@ -1909,27 +1910,30 @@ public class NodeView extends JComponent implements INodeView {
 	    return layoutHelper;
 	}
 
-	public boolean usesHorizontalLayout() {
-	    updateLayoutProperties();
-	    return usesHorizontalLayout;
-	}
+    public boolean usesHorizontalLayout() {
+        updateLayoutProperties();
+        return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT;
+    }
+
+    public LayoutOrientation layoutOrientation() {
+        updateLayoutProperties();
+        return layoutOrientation;
+    }
 
 	private void updateUsesHorizontalLayout() {
 	    LayoutController layoutController = getModeController().getExtension(LayoutController.class);
 	    LayoutOrientation layoutOrientation = layoutController.getLayoutOrientation(model);
 	    switch(layoutOrientation) {
 	    case TOP_TO_BOTTOM:
-	        usesHorizontalLayout = false;
-	        break;
 	    case LEFT_TO_RIGHT:
-	        usesHorizontalLayout = true;
+	        this.layoutOrientation = layoutOrientation;
 	        break;
 	    default:
 	        NodeView parent = getParentView();
 	        if(parent != null)
-	            usesHorizontalLayout = parent.usesHorizontalLayout();
+	            this.layoutOrientation = parent.layoutOrientation;
 	        else
-	            usesHorizontalLayout = false;
+	            this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
 	    }
 	}
 
