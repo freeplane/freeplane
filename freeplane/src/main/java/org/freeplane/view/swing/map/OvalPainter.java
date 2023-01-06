@@ -24,10 +24,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.LayoutOrientation;
-import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 
 class OvalPainter extends VariableInsetsPainter {
 	private static final double MARGIN_FACTOR = Math.sqrt(2);
@@ -58,11 +56,12 @@ class OvalPainter extends VariableInsetsPainter {
 	}
 
 	@Override
-	Point getConnectorPoint(Point p, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
+	Point getConnectorPoint(Point relativeLocation,
+            ConnectorLocation connectorLocation) {
 		return getShapeConfiguration().isUniform()
 				|| !MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && mainView.getNodeView().isRoot()
-				? getConnectorPointAtTheOvalBorder(p) :
-					super.getConnectorPoint(p, layoutOrientation, alignment);
+				? getConnectorPointAtTheOvalBorder(relativeLocation) :
+					super.getConnectorPoint(relativeLocation, connectorLocation);
 	}
 
 

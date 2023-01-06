@@ -38,6 +38,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Function;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -81,6 +82,7 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 
 
 /**
@@ -561,7 +563,20 @@ public class MainView extends ZoomableLabel {
     }
 
     @SuppressWarnings("hiding")
-    static public enum ConnectorLocation{ LEFT, RIGHT, TOP, BOTTOM, CENTER }
+    static public enum ConnectorLocation{
+        LEFT(MainViewPainter::getLeftPoint),
+        RIGHT(MainViewPainter::getRightPoint),
+        TOP(MainViewPainter::getTopPoint),
+        BOTTOM(MainViewPainter::getBottomPoint),
+        CENTER(MainViewPainter::getCenterPoint);
+
+        public final Function<MainViewPainter, Point> pointSupplier;
+
+        private ConnectorLocation(Function<MainViewPainter, Point> pointSupplier) {
+            this.pointSupplier = pointSupplier;
+        }
+
+    }
 
     public ConnectorLocation getConnectorLocation(Point relativeLocation,
             LayoutOrientation layoutOrientation,
@@ -839,8 +854,13 @@ public class MainView extends ZoomableLabel {
 		super.setBounds(x, y, width, height);
 	}
 
-	public Point getConnectorPoint(Point relativeLocation, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
-		return painter.getConnectorPoint(relativeLocation, layoutOrientation, alignment);
+    public Point getConnectorPoint(Point relativeLocation, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
+        ConnectorLocation location = getConnectorLocation(relativeLocation, layoutOrientation, alignment);
+        return painter.getConnectorPoint(relativeLocation, location);
+    }
+
+    public Point getConnectorPoint(Point relativeLocation, ConnectorLocation connectorLocation) {
+		return painter.getConnectorPoint(relativeLocation, connectorLocation);
 	}
 
 	public Point getLeftPoint() {

@@ -31,6 +31,7 @@ import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 
 abstract class MainViewPainter{
 
@@ -60,30 +61,9 @@ abstract class MainViewPainter{
 		return 0;
 	}
 
-	Point getConnectorPoint(Point relativeLocation, LayoutOrientation layoutOrientation, ChildNodesAlignment alignment) {
-		NodeView nodeView = mainView.getNodeView();
-		if(layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && ! alignment.areChildrenApart) {
-			if(relativeLocation.x > mainView.getWidth()) {
-				return getRightPoint();
-			}
-			if(relativeLocation.x < 0) {
-				return getLeftPoint();
-			}
-		}
-		if(relativeLocation.y > mainView.getHeight()){
-            final Point bottomPoint = mainView.getBottomPoint();
-            bottomPoint.y = nodeView.getContent().getHeight();
-			return bottomPoint;
-        }
-        if(relativeLocation.y <0)
-            return mainView.getTopPoint();
-		if(relativeLocation.x > mainView.getWidth()) {
-			return getRightPoint();
-		}
-		if(relativeLocation.x < 0) {
-			return getLeftPoint();
-		}
-        return getCenterPoint();
+	Point getConnectorPoint(@SuppressWarnings("unused") Point relativeLocation,
+	        ConnectorLocation connectorLocation) {
+		return connectorLocation.pointSupplier.apply(this);
     }
 
     Point getCenterPoint() {
