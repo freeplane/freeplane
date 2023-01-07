@@ -55,8 +55,8 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  */
 class ChildNodesLayoutControlGroup implements ControlGroup {
 	static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
-	
-	private static final ChildNodesLayout[] LAYOUTS = 
+
+	private static final ChildNodesLayout[] LAYOUTS =
 	        Arrays.asList(ChildNodesLayout.values()).stream().skip(1).toArray(ChildNodesLayout[]::new);
 	private RevertingProperty mSetChildNodesLayout;
 	private ButtonPanelProperty mChildNodesLayout;
@@ -96,7 +96,7 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
             StylePropertyAdjuster.adjustPropertyControl(node, mChildNodesLayout);
         }
 	}
-	
+
 	@Override
     public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
@@ -118,19 +118,19 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		mChildNodesLayout.appendToForm(formBuilder);
 		mSetChildNodesLayout.appendToForm(formBuilder);
 	}
-	
+
 	private String description(ChildNodesLayout layout) {
 	    if(layout == ChildNodesLayout.AUTO)
 	        return TextUtils.getRawText(layout.name());
-	    if(layout.layoutOrientation() == LayoutOrientation.AUTO
+	    String childNodesAlignmentText = TextUtils.getRawText(layout.childNodesAlignment().name());
+        if(layout.layoutOrientation() == LayoutOrientation.AUTO
 	            && layout.childrenSides() == ChildrenSides.AUTO)
-	        return TextUtils.getRawText(layout.childNodesAlignment().name());
+	        return childNodesAlignmentText;
+        String childrenSidesText = TextUtils.getRawText(layout.childrenSides().labelKey(layout.layoutOrientation()));
+        String layoutOrientationText = TextUtils.getRawText(layout.layoutOrientation().name());
         if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
-            return TextUtils.getRawText(layout.layoutOrientation().name()) + ", " 
-            + TextUtils.getRawText(layout.childrenSides().name());
-	    return TextUtils.getRawText(layout.layoutOrientation().name()) + ", " 
-	        + TextUtils.getRawText(layout.childrenSides().name())  + ", " 
-	       + TextUtils.getRawText(layout.childNodesAlignment().name());
+            return layoutOrientationText + ", " + childrenSidesText;
+	    return layoutOrientationText + ", " + childrenSidesText  + ", " + childNodesAlignmentText;
     }
 
     @Override
@@ -138,5 +138,5 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		propertyChangeListener.setStyle(node);
 	}
 
-	
+
 }
