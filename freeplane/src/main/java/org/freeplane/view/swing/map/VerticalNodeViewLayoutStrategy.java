@@ -168,18 +168,12 @@ class VerticalNodeViewLayoutStrategy {
 							            + minimalDistanceBetweenChildren;
 							}
 						}
-						int missingWidth;
-						if(view.usesHorizontalLayout() && ! child.usesHorizontalLayout())
-                            missingWidth = child.getFoldingHandleWidth() - vGap - extraVGap;
-						else
-						    missingWidth = 0;
 
-						if(missingWidth > 0) {
-                            if (child.paintsChildrenOnTheLeft()) {
-                                top -= missingWidth;
-                                y += missingWidth;
-                            }
-                        }
+						if (! isFirstVisibleLaidOutChild && child.paintsChildrenOnTheLeft() && view.usesHorizontalLayout()) {
+						    int missingWidth = child.getMinimumDistanceConsideringHandles() - vGap - extraVGap;
+						    top -= missingWidth;
+						    y += missingWidth;
+						}
 
 						if ((childShiftY < 0 || isFirstVisibleLaidOutChild) && !allowsCompactLayout)
 							top += childShiftY;
@@ -200,15 +194,18 @@ class VerticalNodeViewLayoutStrategy {
 								y += childShiftY;
 							this.yCoordinates[childViewIndex] = y;
 						}
-                        if(missingWidth > 0 && ! child.paintsChildrenOnTheLeft()) {
-                            y += missingWidth;
-                        }
-						y += extraVGap - upperGap;
 						final int summaryNodeIndex = viewLevels.findSummaryNodeIndex(childViewIndex);
 						if(summaryNodeIndex == SummaryLevels.NODE_NOT_FOUND || summaryNodeIndex - 1 == childViewIndex)
-							vGap = minimalDistanceBetweenChildren;
+						    vGap = minimalDistanceBetweenChildren;
 						else if (childHeight != 0)
-							vGap = summarizedNodeDistance(minimalDistanceBetweenChildren);
+						    vGap = summarizedNodeDistance(minimalDistanceBetweenChildren);
+                        if(! child.paintsChildrenOnTheLeft() && view.usesHorizontalLayout()) {
+                            int missingWidth = child.getMinimumDistanceConsideringHandles() - vGap - extraVGap;
+                            if (missingWidth > 0) {
+                                y += missingWidth;
+                            }
+                        }
+						y += extraVGap - upperGap;
 						if (childHeight != 0)
 							y += childHeight + vGap - child.getBottomOverlap();
 
@@ -293,7 +290,7 @@ class VerticalNodeViewLayoutStrategy {
 		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, childContentHeightSum, top);
 	}
 
-    private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
+	private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
         if(3 * defaultVGap > minimalDistanceBetweenChildren)
             return minimalDistanceBetweenChildren + 2 * defaultVGap;
         else

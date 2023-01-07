@@ -230,8 +230,8 @@ class NodeViewLayoutHelper {
 	    return parent.usesHorizontalLayout();
 	}
 
-    int getFoldingHandleWidth() {
-        return view.getZoomedFoldingHandleWidth() * 2;
+    int getMinimumDistanceConsideringHandles() {
+        return view.getMinimumDistanceConsideringHandles();
     }
 
     boolean paintsChildrenOnTheLeft() {

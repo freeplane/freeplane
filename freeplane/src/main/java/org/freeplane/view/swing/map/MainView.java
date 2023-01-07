@@ -745,7 +745,7 @@ public class MainView extends ZoomableLabel {
 			setMouseArea(MouseArea.OUT);
 	}
 
-	private int getDraggingAreaWidth() {
+	int getDraggingAreaWidth() {
 		return getNodeView().getMap().getDraggingAreaWidth() + THICK_STROKE_WIDTH;
 	}
 

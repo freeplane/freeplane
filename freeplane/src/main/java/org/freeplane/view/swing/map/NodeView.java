@@ -843,16 +843,21 @@ public class NodeView extends JComponent implements INodeView {
 		return parentView.getVisibleSummarizedOrParentView();
 	}
 
-    public int getZoomedFoldingSymbolHalfWidth() {
-        final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10) * map.getZoom()) / 2);
-        return preferredFoldingSymbolHalfWidth;
-    }
+	public int getZoomedFoldingSymbolHalfWidth() {
+	    final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10) * map.getZoom()) / 2);
+	    return preferredFoldingSymbolHalfWidth;
+	}
 
-    public int getZoomedFoldingHandleWidth() {
-        int propertyValue = ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10);
-        final int preferredFoldingSymbolHalfWidth = (int) ((Math.max(propertyValue, MainView.FOLDING_CIRCLE_WIDTH) * map.getZoom()) / 2);
-        return preferredFoldingSymbolHalfWidth;
-    }
+	int getMinimumDistanceConsideringHandles() {
+	    int draggingAreaWidth = mainView.getDraggingAreaWidth();
+	    if(!usesHorizontalLayout()) {
+	        int propertyValue = ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10);
+	        final int preferredFoldingSymbolHalfWidth = (int) ((Math.max(propertyValue, MainView.FOLDING_CIRCLE_WIDTH) * map.getZoom()));
+	        return draggingAreaWidth + preferredFoldingSymbolHalfWidth;
+	    }
+	    else
+	        return draggingAreaWidth;
+	}
 
 	public int getZoomedStateSymbolHalfWidth() {
 		final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("statesymbolwidth", 10) * map.getZoom()) / 2);
@@ -1931,7 +1936,7 @@ public class NodeView extends JComponent implements INodeView {
 	    default:
 	        NodeView parent = getParentView();
 	        if(parent != null)
-	            this.layoutOrientation = parent.layoutOrientation;
+	            this.layoutOrientation = parent.layoutOrientation();
 	        else
 	            this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
 	    }
