@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.layout;
 
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;

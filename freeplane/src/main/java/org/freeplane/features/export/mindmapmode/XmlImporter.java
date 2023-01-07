@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
@@ -31,21 +30,21 @@ public class XmlImporter	{
 		this.xsltResource = xsltResource;
 	}
 
-	public void importXml(final File file) throws XMLParseException, MalformedURLException, IOException, URISyntaxException, XMLException{
+	public void importXml(final File file) throws XMLParseException, MalformedURLException, IOException, XMLException{
 		final File directory = file.getParentFile();
 		final File outputFile = new File (directory, file.getName() + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 		importXml(file, outputFile);
 	}
 
 	public void importXml(final File inputFile, final File outputFile) throws FileNotFoundException, IOException,
-			XMLParseException, URISyntaxException, XMLException, MalformedURLException {
+			XMLParseException, XMLException, MalformedURLException {
 		try(FileInputStream in = new FileInputStream(inputFile)){
 			importXml(in, outputFile);
 		}
 	}
 
 	public void importXml(final InputStream in, final File outputFile) throws IOException, FileNotFoundException,
-	XMLParseException, URISyntaxException, XMLException, MalformedURLException {
+	XMLParseException, XMLException, MalformedURLException {
 		final URL mapUrl = Compat.fileToUrl(outputFile);
 		if(outputFile.exists()){
 			if(Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(mapUrl))

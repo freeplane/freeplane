@@ -27,8 +27,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.LayoutOrientation;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.view.swing.map.MainView.ConnectorLocation;

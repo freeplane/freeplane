@@ -29,19 +29,16 @@ import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import org.freeplane.core.ui.components.ToolbarLayout;
-import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormSpecs;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl, ActionListener {
     

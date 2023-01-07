@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Hyperlink;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * Provides services, used by {@link NodeView} to decorate nodes based on the link they hold, etc.

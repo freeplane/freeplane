@@ -27,7 +27,6 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.freeplane.api.ChildNodesAlignment;
-import org.freeplane.api.ChildrenSides;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;

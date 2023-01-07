@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.layout.mindmapmode;
 
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
-import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.layout.LayoutModel;
@@ -34,7 +32,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  * @author Dimitry Polivaev
  */
 public class MLayoutController extends LayoutController {
-	
+
 	private static class StyleCopier implements IExtensionCopier {
 		@Override
         public void copy(Object key, NodeModel from, NodeModel to) {
@@ -75,7 +73,7 @@ public class MLayoutController extends LayoutController {
             }
 		}
 	}
-	
+
 	public MLayoutController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();

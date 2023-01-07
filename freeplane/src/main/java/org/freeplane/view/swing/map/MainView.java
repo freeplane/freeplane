@@ -62,7 +62,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
-import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
@@ -82,7 +81,6 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 
 
 /**

@@ -10,7 +10,6 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.NodeView;
 

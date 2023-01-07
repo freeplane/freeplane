@@ -28,8 +28,6 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.swing.Icon;
-
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
@@ -37,7 +35,6 @@ import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ButtonPanelProperty;
 import org.freeplane.core.resources.components.ButtonPanelProperty.ButtonIcon;
-import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;

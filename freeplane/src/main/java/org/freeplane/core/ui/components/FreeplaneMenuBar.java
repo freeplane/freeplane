@@ -34,7 +34,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.ui.IKeyStrokeProcessor;
-import org.freeplane.core.util.Compat;
 
 /**
  * This is the menu bar for Freeplane. Actions are defined in MenuListener.
