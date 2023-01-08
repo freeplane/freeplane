@@ -42,7 +42,7 @@ public class MLayoutController extends LayoutController {
 			LayoutModel source = from.getExtension(LayoutModel.class);
 			if(source != null){
 				LayoutModel layoutModel = LayoutModel.createLayoutModel(to);
-				layoutModel.setChildNodesLayout(layoutModel.getChildNodesLayout());
+				layoutModel.setChildNodesLayout(source.getChildNodesLayout());
 			}
 		}
 
@@ -86,4 +86,5 @@ public class MLayoutController extends LayoutController {
             Controller.getCurrentModeController().execute(actor, node.getMap());
         }
     }
+
 }
