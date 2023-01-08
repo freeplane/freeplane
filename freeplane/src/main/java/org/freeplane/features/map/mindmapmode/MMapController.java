@@ -253,7 +253,7 @@ public class MMapController extends MapController {
     public int findNewNodePosition(final NodeModel targetNode) {
         boolean placeAsFirstChild = placesNewChildFirst(targetNode);
         IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
-        final int position = placeAsFirstChild 
+        final int position = placeAsFirstChild
                 ? 0
                 : targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode);
         return position;
@@ -269,10 +269,10 @@ public class MMapController extends MapController {
     }
 
     private void copyFormat(final NodeModel source, final NodeModel target) {
-        getMModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, source, target);
-        getMModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, source, target);
+        getMModeController().copyExtensions(LogicalStyleKeys.NODE_STYLE, source, target);
+        getMModeController().copyExtensions(LogicalStyleKeys.LOGICAL_STYLE, source, target);
         if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewNodeIncludesIcons")) {
-            getMModeController().undoableCopyExtensions(Keys.ICONS, source, target);
+            getMModeController().copyExtensions(Keys.ICONS, source, target);
         }
     }
 
@@ -293,7 +293,7 @@ public class MMapController extends MapController {
         final TextController textController = TextController.getController();
         ((MTextController) textController).edit(newNode, newNode.getParentNode(), true, false, false, currentKeyEvent);
     }
-    
+
     private KeyEvent getCurrentKeyEvent() {
         AWTEvent currentEvent = EventQueue.getCurrentEvent();
         if(currentEvent instanceof KeyEvent)
@@ -345,7 +345,7 @@ public class MMapController extends MapController {
 
     private void addNewFirstGroupNode(final NodeModel parentNode, final int start,
             final Side side) {
-        addNewNode(parentNode, start, 
+        addNewNode(parentNode, start,
                 n -> {
                     n.setSide(side);
                     n.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
@@ -355,7 +355,7 @@ public class MMapController extends MapController {
     public NodeModel addNewNode(final NodeModel parent, final int index, final Side side) {
         return addNewNode(parent, index, node -> node.setSide(side));
     }
-    
+
     public NodeModel addNewNode(final NodeModel parent, final int index, Consumer<NodeModel> configurator) {
         if (!isWriteable(parent)) {
             UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
@@ -537,7 +537,7 @@ public class MMapController extends MapController {
 				 final FirstGroupNode firstGroupNodeHook = getModeController().getExtension(FirstGroupNode.class);
 				 firstGroupNodeHook.undoableDeactivateHook(groupBeginNode);
 			}
-			else 
+			else
 				deleteSingleNode(summaryParent, groupBeginNodeIndex);
 		}
     }
@@ -685,7 +685,7 @@ public class MMapController extends MapController {
         final int childCount = newParent.getChildCount();
         newIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
 
-        
+
         if(oldParent != newParent) {
         	Side newSide;
         	if(oldParent.isHiddenSummary()) {
@@ -1151,11 +1151,11 @@ public class MMapController extends MapController {
     public void restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
         restoreCurrentMap(true);
     }
-    
+
     public void restoreCurrentMapIgnoreAlternatives() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
         restoreCurrentMap(false);
     }
-    
+
     private void restoreCurrentMap(boolean checkAlternatives) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
         final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();

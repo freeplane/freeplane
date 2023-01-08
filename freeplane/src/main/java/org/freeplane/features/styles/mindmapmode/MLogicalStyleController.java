@@ -46,6 +46,7 @@ import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
@@ -175,17 +176,21 @@ public class MLogicalStyleController extends LogicalStyleController {
 				return;
 			}
 			if (!event.getProperty().equals(LogicalStyleModel.class)) {
-				return;
+			    return;
 			}
 			final IStyle styleKey = (IStyle) event.getNewValue();
 			final MapStyleModel mapStyles = MapStyleModel.getExtension(map);
 			final NodeModel styleNode = mapStyles.getStyleNode(styleKey);
 			if (styleNode == null) {
-				return;
+			    return;
 			}
-			modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
+			LayoutController layoutController = modeController.getExtension(LayoutController.class);
+			layoutController.withNodeChangeEventOnLayoutChange(node, () -> {
+			    modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, styleNode);
+			});
 		}
-	};
+	}
+
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
@@ -452,20 +457,23 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 			@Override
 			public void undo() {
-				changeStyle(modeController, node, style, oldStyle);
+			    changeStyle(modeController, node, style, oldStyle);
 			}
 
 			private void changeStyle(final ModeController modeController, final NodeModel node, final IStyle oldStyle,
-			                         final IStyle style) {
-				if (style != null) {
-					final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
-					model.setStyle(style);
-				}
-				else{
-					node.removeExtension(LogicalStyleModel.class);
-				}
-				modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
-				selectActions();
+			        final IStyle style) {
+			    LayoutController layoutController = modeController.getExtension(LayoutController.class);
+			    layoutController.withNodeChangeEventOnLayoutChange(node, () -> {
+			        if (style != null) {
+			            final LogicalStyleModel model = LogicalStyleModel.createExtension(node);
+			            model.setStyle(style);
+			        }
+			        else{
+			            node.removeExtension(LogicalStyleModel.class);
+			        }
+			        modeController.getMapController().nodeChanged(node, LogicalStyleModel.class, oldStyle, style);
+			    });
+			    selectActions();
 			}
 		};
 		modeController.execute(actor, node.getMap());

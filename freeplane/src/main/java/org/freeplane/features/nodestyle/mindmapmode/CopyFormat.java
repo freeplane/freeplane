@@ -26,6 +26,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -37,7 +38,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
 class CopyFormat extends AFreeplaneAction {
 	private static NodeModel pattern = null;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -68,7 +69,7 @@ class CopyFormat extends AFreeplaneAction {
 
 class PasteFormat extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -91,14 +92,17 @@ class PasteFormat extends AMultipleNodeAction {
 			return;
 		}
 		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.undoableRemoveExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, node);
-		modeController.undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
-		modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
-		modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
+		LayoutController layoutController = modeController.getExtension(LayoutController.class);
+		layoutController.withNodeChangeEventOnLayoutChange(node, () -> {
+		    modeController.undoableRemoveExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, node);
+		    modeController.undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
+		    modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
+		    modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
+		});
 		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewNodeIncludesIcons")) {
 			modeController.undoableRemoveExtensions(Keys.ICONS, node, node);
 			modeController.undoableCopyExtensions(Keys.ICONS, pattern, node);
 		}
-		
+
 	}
 }

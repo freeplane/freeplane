@@ -55,7 +55,7 @@ import org.freeplane.features.url.UrlManager;
 
 class ExportBranchAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -121,7 +121,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			final NodeModel parent = existingNode.getParentNode();
 			Side nodeSide = existingNode.getSide();
 			final File oldFile = parentMap.getFile();
-	
+
 			final URI newUri = LinkController.toLinkTypeDependantURI(oldFile, chosenFile);
 			final URI oldUri = LinkController.toLinkTypeDependantURI(chosenFile, file);
 			((MLinkController) LinkController.getController()).setLink(existingNode,
@@ -167,10 +167,12 @@ class ExportBranchAction extends AFreeplaneAction {
 				}
 			}
 			((MFileManager) UrlManager.getController()).save(newMap, chosenFile);
-			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, nodeSide);
-			((MTextController) TextController.getController()).setNodeText(newNode, existingNode.getText());
-			modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, existingNode, newNode);
-			newMap.getFile();
+            final Side side = nodeSide;
+			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, node -> {
+                node.setSide(side);
+                modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, existingNode, node);
+                node.setText(existingNode.getText());
+            });
 			((MLinkController) LinkController.getController()).setLink(newNode, newUri, LinkController.LINK_ABSOLUTE);
 			newMap.releaseResources();
 			existingNode.setParent(null);

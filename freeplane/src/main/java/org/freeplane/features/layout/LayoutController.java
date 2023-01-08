@@ -48,9 +48,9 @@ import org.freeplane.features.styles.MapStyleModel;
  */
 public class LayoutController implements IExtension {
     final private ExclusivePropertyChain<ChildNodesLayout, NodeModel> childrenLayoutHandlers;
-	
+
     private final ModeController modeController;
-	
+
 	public static LayoutController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -65,8 +65,6 @@ public class LayoutController implements IExtension {
 		modeController.addExtension(LayoutController.class, layoutController);
 	}
 
-// 	final private ModeController modeController;
-
 	public LayoutController() {
 		super();
 		modeController = Controller.getCurrentModeController();
@@ -75,7 +73,7 @@ public class LayoutController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final LayoutBuilder layoutBuilder = new LayoutBuilder();
 		layoutBuilder.registerBy(readManager, writeManager);
-        
+
         childrenLayoutHandlers = new ExclusivePropertyChain<ChildNodesLayout, NodeModel>();
         childrenLayoutHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<ChildNodesLayout, NodeModel>() {
             @Override
@@ -84,7 +82,7 @@ public class LayoutController implements IExtension {
                 return returnedAlignment;
             }
         });
-        
+
         childrenLayoutHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ChildNodesLayout, NodeModel>() {
             @Override
             public ChildNodesLayout getProperty(final NodeModel node, LogicalStyleController.StyleOption option, ChildNodesLayout currentValue) {
@@ -127,6 +125,14 @@ public class LayoutController implements IExtension {
 	    return childrenLayoutHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
 	}
 
+    public void withNodeChangeEventOnLayoutChange(NodeModel node, Runnable runnable) {
+        ChildNodesLayout oldLayout = getChildNodesLayout(node);
+        runnable.run();
+        ChildNodesLayout newLayout = getChildNodesLayout(node);
+        if(oldLayout != newLayout)
+            Controller.getCurrentModeController().getMapController().refreshNodeLaterUndoable(node, ChildNodesLayout.class, oldLayout, newLayout);
+    }
+
 	public LayoutOrientation getEffectiveLayoutOrientation(NodeModel node) {
 	    LayoutOrientation layoutOrientation = getLayoutOrientation(node);
 	    switch(layoutOrientation) {
@@ -141,7 +147,7 @@ public class LayoutController implements IExtension {
 	    else
             return LayoutOrientation.TOP_TO_BOTTOM;
     }
-	
+
 	   private boolean isTopOrLeft(NodeModel node, NodeModel root) {
 	        NodeModel parentNode = node.getParentNode();
 	        if (parentNode == null)
@@ -214,5 +220,5 @@ public class LayoutController implements IExtension {
 	        }
 	        return parentNode.isTopOrLeft(root) ? LEFT_SIDE : RIGHT_SIDE;
 	    }
-	    
+
 }
