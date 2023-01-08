@@ -50,11 +50,11 @@ class ChangeChildNodesLayoutActor implements IActor {
 		return "changeChildNodesLayout";
 	}
 
-	private void setSides(final NodeModel node, ChildNodesLayout oldSides, ChildNodesLayout newSides) {
-		if(oldSides != newSides) {
-			LayoutModel.createLayoutModel(node).setChildNodesLayout(newSides);
+	private void setSides(final NodeModel node, ChildNodesLayout oldLayout, ChildNodesLayout newLayout) {
+		if(oldLayout != newLayout) {
+			LayoutModel.createLayoutModel(node).setChildNodesLayout(newLayout);
 			Controller.getCurrentModeController().getMapController()
-			.nodeChanged(node, ChildNodesLayout.class, oldSides, newSides);
+			.nodeChanged(node, ChildNodesLayout.class, oldLayout, newLayout);
 		}
 	}
 
