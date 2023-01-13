@@ -49,6 +49,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -89,36 +90,60 @@ import org.freeplane.features.text.TextController;
 public class MainView extends ZoomableLabel {
     private static final long serialVersionUID = 1L;
 
-    public enum DragOver {
-        NO {
+    public enum DragOverRelation {
+        NOT_AVAILABLE, CHILD_BEFORE, CHILD_AFTER, SIBLING_BEFORE, SIBLING_AFTER;
+        public boolean isChild() {
+            return this == CHILD_BEFORE || this == CHILD_AFTER;
+        }
+    }
+
+    public enum DragOverDirection {
+        OFF(false) {
             @Override
             void paint(MainView view, final Graphics2D graphics) {/**/}
+
+            @Override
+            DragOverRelation relation(boolean usesHorizontalLayout) {
+                return DragOverRelation.NOT_AVAILABLE;
+            }
         },
-        DROP_UP {
+        DROP_UP(false) {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
                 graphics.setPaint(new GradientPaint(0, view.getHeight() * 3 / 5, view.getMap().getBackground(), 0, view.getHeight() / 5,
                         NodeView.dragColor));
                 graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
             }
-        },
-        DROP_DOWN {
+            @Override
+            DragOverRelation relation(boolean usesHorizontalLayout) {
+                return usesHorizontalLayout ? DragOverRelation.CHILD_BEFORE : DragOverRelation.SIBLING_BEFORE;
+            }
+       },
+        DROP_DOWN(false) {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
                 graphics.setPaint(new GradientPaint(0, view.getHeight() * 2 / 5, view.getMap().getBackground(), 0, view.getHeight() * 4 / 5,
                         NodeView.dragColor));
                 graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
             }
+            @Override
+            DragOverRelation relation(boolean usesHorizontalLayout) {
+                return usesHorizontalLayout ? DragOverRelation.CHILD_AFTER : DragOverRelation.SIBLING_AFTER;
+            }
         },
-        DROP_LEFT {
+        DROP_LEFT(true) {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
                 graphics.setPaint(new GradientPaint(view.getWidth() * 3 / 4, 0, view.getMap().getBackground(), view.getWidth() / 4, 0,
                         NodeView.dragColor));
                 graphics.fillRect(0, 0, view.getWidth() * 3 / 4, view.getHeight() - 1);
             }
+            @Override
+            DragOverRelation relation(boolean usesHorizontalLayout) {
+                return usesHorizontalLayout ? DragOverRelation.SIBLING_BEFORE : DragOverRelation.CHILD_BEFORE;
+            }
         },
-        DROP_RIGHT {
+        DROP_RIGHT(true) {
             @Override
             void paint(MainView view, final Graphics2D graphics) {
                 graphics.setPaint(new GradientPaint(view.getWidth() / 4, 0, view.getMap().getBackground(), view.getWidth() * 3 / 4, 0,
@@ -126,10 +151,21 @@ public class MainView extends ZoomableLabel {
                 graphics.fillRect(view.getWidth() / 4, 0, view.getWidth() - 1, view.getHeight() - 1);
 
             }
+            @Override
+            DragOverRelation relation(boolean usesHorizontalLayout) {
+                return usesHorizontalLayout ? DragOverRelation.SIBLING_AFTER : DragOverRelation.CHILD_AFTER;
+            }
         },
         ;
 
+        public final boolean isHorizontal;
+        private DragOverDirection(boolean isHorizontal) {
+            this.isHorizontal = isHorizontal;
+        }
+
         abstract void paint(MainView view, final Graphics2D graphics);
+
+        abstract DragOverRelation relation(boolean usesHorizontalLayout);
     }
 	static final int FOLDING_CIRCLE_WIDTH = 16;
 	static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
@@ -145,7 +181,7 @@ public class MainView extends ZoomableLabel {
 	private static final int THICK_STROKE_WIDTH = 4;
     private final static Stroke THICK_STROKE =  new BasicStroke(3f);
 
-	private DragOver isDraggedOver = DragOver.NO;
+	private DragOverDirection dragOverDirection = DragOverDirection.OFF;
 	private boolean isShortened;
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
@@ -178,34 +214,34 @@ public class MainView extends ZoomableLabel {
 	    UITools.convertPointToAncestor(this, p, getMap());
 	}
 
-	public boolean dropsAsSibling(final Point p) {
-	    NodeView nodeView = getNodeView();
-	    if(nodeView.isRoot())
-	        return false;
-	    if (nodeView.getAncestorWithVisibleContent().usesHorizontalLayout())
-            return isInVerticalRegion(p.getX(), 1. / 3);
-        else if (nodeView.paintsChildrenOnTheLeft())
-            return !isInVerticalRegion(p.getX(), 1. / 3);
+    private DragOverDirection dragOverDirection(final Point p) {
+        final DragOverDirection dragOverDirection;
+        if(p.getX() < getWidth() * 1 / 4)
+            dragOverDirection = DragOverDirection.DROP_LEFT;
+        else if (p.getX() >= getWidth() * 3 / 4)
+            dragOverDirection = DragOverDirection.DROP_RIGHT;
+        else if (p.getY() < getHeight() * 1 / 2)
+            dragOverDirection = DragOverDirection.DROP_UP;
         else
-            return isInVerticalRegion(p.getX(), 2. / 3);
-	}
+            dragOverDirection = DragOverDirection.DROP_DOWN;
 
-	/** @return true if should be on the left, false otherwise. */
-	public boolean dropsTopOrLeft(final Point p) {
-		/* here it is the same as me. */
-		NodeView nodeView = getNodeView();
-		if(nodeView.isRoot()) {
-		    if(nodeView.usesHorizontalLayout())
-                return p.getY() < getHeight() * 1 / 2;
-            else
-                return p.getX() < getWidth() * 1 / 2;
-        } else
-			return nodeView.paintsChildrenOnTopOrLeft();
-	}
+        NodeView nodeView = getNodeView();
+        boolean usesHorizontalLayout = nodeView.usesHorizontalLayout();
+        DragOverRelation relation = dragOverDirection.relation(usesHorizontalLayout);
+        if(relation == DragOverRelation.SIBLING_AFTER)
+            return DragOverDirection.OFF;
+        boolean isRoot = nodeView.isRoot();
+        if(isRoot && relation == DragOverRelation.SIBLING_BEFORE)
+            return DragOverDirection.OFF;
+        ChildrenSides childrenSides = nodeView.getChildNodesLayout().childrenSides();
+        if(relation.isChild() && ! childrenSides.matches(relation == DragOverRelation.CHILD_BEFORE))
+            return DragOverDirection.OFF;
+        return dragOverDirection;
+    }
 
-
-	public DragOver getDraggedOver() {
-		return isDraggedOver;
+	public DragOverRelation dragOverRelation(final Point p) {
+	    final DragOverDirection dragOverDirection = dragOverDirection(p);
+	    return dragOverDirection.relation(getNodeView().usesHorizontalLayout());
 	}
 
 	@Override
@@ -265,7 +301,7 @@ public class MainView extends ZoomableLabel {
 
 
 	public void paintDragOver(final Graphics2D graphics) {
-	    isDraggedOver.paint(this, graphics);
+	    dragOverDirection.paint(this, graphics);
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeView nodeView) {
@@ -392,44 +428,22 @@ public class MainView extends ZoomableLabel {
 	}
 
     public void stopDragOver() {
-        isDraggedOver = DragOver.NO;
+        dragOverDirection = DragOverDirection.OFF;
     }
 
-    private void setDraggedOver(final DragOver draggedOver) {
-        final boolean isDifferent = draggedOver != isDraggedOver;
+    private void setDraggedOver(final DragOverDirection draggedOver) {
+        final boolean isDifferent = draggedOver != dragOverDirection;
         if (isDifferent) {
-            isDraggedOver = draggedOver;
+            dragOverDirection = draggedOver;
             repaint();
         }
     }
 
-    public void setDraggedOver(final Point p) {
-        final DragOver draggedOver;
-        NodeView nodeView = getNodeView();
-        if (dropsAsSibling(p)) {
-            if(nodeView.getAncestorWithVisibleContent().usesHorizontalLayout()) {
-                draggedOver = DragOver.DROP_LEFT;
-            } else {
-                draggedOver = DragOver.DROP_UP;
-            }
-        }
-        else {
-            if (dropsTopOrLeft(p)) {
-                if(nodeView.usesHorizontalLayout()) {
-                    draggedOver = DragOver.DROP_UP;
-                } else {
-                    draggedOver = DragOver.DROP_LEFT;
-                }
-            } else {
-                if(nodeView.usesHorizontalLayout()) {
-                    draggedOver = DragOver.DROP_DOWN;
-                } else {
-                    draggedOver = DragOver.DROP_RIGHT;
-                }
-            }
-        }
-        setDraggedOver(draggedOver);
+    public void setDragOverDirection(final Point p) {
+        final DragOverDirection dragOverDirection = dragOverDirection(p);
+        setDraggedOver(dragOverDirection);
     }
+
 
     public void updateFont(final NodeView node) {
         final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
