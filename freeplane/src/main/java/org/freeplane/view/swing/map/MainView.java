@@ -233,7 +233,7 @@ public class MainView extends ZoomableLabel {
         boolean isRoot = nodeView.isRoot();
         if(isRoot && relation == DragOverRelation.SIBLING_BEFORE)
             return DragOverDirection.OFF;
-        ChildrenSides childrenSides = nodeView.getChildNodesLayout().childrenSides();
+        ChildrenSides childrenSides = nodeView.childrenSides();
         if(relation.isChild() && ! childrenSides.matches(relation == DragOverRelation.CHILD_BEFORE))
             return DragOverDirection.OFF;
         return dragOverDirection;

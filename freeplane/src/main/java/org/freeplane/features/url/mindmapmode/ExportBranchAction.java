@@ -50,7 +50,6 @@ import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 
 class ExportBranchAction extends AFreeplaneAction {

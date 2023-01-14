@@ -244,6 +244,6 @@ class NodeViewLayoutHelper {
     }
 
     ChildrenSides childrenSides() {
-        return view.getChildNodesLayout().childrenSides();
+        return view.childrenSides();
     }
 }

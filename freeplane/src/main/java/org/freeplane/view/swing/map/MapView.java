@@ -1271,7 +1271,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                         }
                     }
                     boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
-                    if(oldSelected.getChildNodesLayout().childrenSides() == ChildrenSides.BOTH_SIDES
+                    if(oldSelected.childrenSides() == ChildrenSides.BOTH_SIDES
                             && ((direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)) == selectedUsesHorizontalLayout)
                         newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet, ChildrenSides.BOTH_SIDES);
                     else
