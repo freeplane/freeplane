@@ -140,7 +140,7 @@ public class NodeView extends JComponent implements INodeView {
 	private boolean isFolded;
 	private DashVariant edgeDash = DashVariant.DEFAULT;
 	private final NodeViewLayoutHelper layoutHelper;
-    private boolean isTopOrLeft;
+    private Side side;
     private ChildNodesAlignment childNodesAlignment;
     private ChildNodesLayout childNodesLayout;
     private LayoutOrientation layoutOrientation;
@@ -896,11 +896,15 @@ public class NodeView extends JComponent implements INodeView {
 			return getModel().hasVisibleContent(map.getFilter());
 	}
 
-	public boolean isTopOrLeft() {
-	   updateLayoutProperties();
-	    return isTopOrLeft;
-	}
+    public Side side() {
+        updateLayoutProperties();
+         return side;
+     }
 
+    @Override
+    public boolean isTopOrLeft() {
+         return side() == Side.TOP_OR_LEFT;
+    }
 
 	public boolean isRight() {
 		return ! isTopOrLeft() && getModel() != map.getRoot().getModel();
@@ -1067,7 +1071,7 @@ public class NodeView extends JComponent implements INodeView {
 		numberingChanged(nodeDeletionEvent.index+1);
 		map.preserveRootNodeLocationOnScreen();
 		node.remove();
-		NodeView preferred = getPreferredVisibleChild(false, isTopOrLeft);
+		NodeView preferred = getPreferredVisibleChild(false, isTopOrLeft());
 		if (preferred == null) {
 			preferred = this;
 		}
@@ -1704,11 +1708,12 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateLayoutProperties() {
 	    if(childNodesLayout == null) {
-	        updateIsTopOrLeftAndChildrenSides();
+	        updateSide();
 	        LayoutController layoutController = getModeController().getExtension(LayoutController.class);
             childNodesLayout = layoutController.getChildNodesLayout(model);
             updateUsesHorizontalLayout();
 	        updateChildNodesAlignment();
+	        updateChildrenSides();
 	    }
     }
 
@@ -1719,39 +1724,49 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 
-    private void updateIsTopOrLeftAndChildrenSides() {
-        final ChildrenSides childrenSides;
-        final boolean isTopOrLeft;
+    private void updateChildrenSides() {
+        ChildrenSides childrenSides;
         if (isRoot()) {
             childrenSides = ChildrenSides.BOTH_SIDES;
-            isTopOrLeft = false;
         } else if (map.getLayoutType() == MapViewLayout.OUTLINE) {
             childrenSides = ChildrenSides.BOTTOM_OR_RIGHT;
-            isTopOrLeft = false;
         } else {
-            NodeView parent = getParentView();
-            ChildrenSides childrenSidesByLayout = LayoutController.getController().getChildNodesLayout(parent.getModel()).childrenSides();
-            if(childrenSidesByLayout == ChildrenSides.TOP_OR_LEFT) {
-                isTopOrLeft = true;
-                childrenSides = childrenSidesByLayout;
-            } else if(childrenSidesByLayout == ChildrenSides.BOTTOM_OR_RIGHT) {
-                isTopOrLeft = false;
+            ChildrenSides childrenSidesByLayout = childNodesLayout.childrenSides();
+            if(childrenSidesByLayout == ChildrenSides.TOP_OR_LEFT
+                    || childrenSidesByLayout == ChildrenSides.BOTTOM_OR_RIGHT
+                    || childrenSidesByLayout == ChildrenSides.BOTH_SIDES) {
                 childrenSides = childrenSidesByLayout;
             } else {
-                if (parent.isRoot() || childrenSidesByLayout == ChildrenSides.BOTH_SIDES) {
-                    Side side = model.getSide();
-                    if (side != Side.DEFAULT)
-                        isTopOrLeft = side == Side.TOP_OR_LEFT;
-                    else
-                        isTopOrLeft = parent.getModel().isTopOrLeft(model.getMap().getRootNode());
-                } else {
-                    isTopOrLeft = parent.isTopOrLeft();
-                }
-                childrenSides = ChildrenSides.ofTopOrLeft(isTopOrLeft);
+                childrenSides  = side == Side.TOP_OR_LEFT
+                    ? ChildrenSides.TOP_OR_LEFT
+                    :  ChildrenSides.BOTTOM_OR_RIGHT;
             }
         }
         this.childrenSides = childrenSides;
-        this.isTopOrLeft = isTopOrLeft;
+    }
+
+    private void updateSide() {
+        final boolean isTopOrLeft;
+        if (map.getLayoutType() == MapViewLayout.OUTLINE || isRoot()) {
+            isTopOrLeft = false;
+        }
+        else {
+            NodeView parent = getParentView();
+            ChildrenSides childrenSides = parent.childrenSides();
+            if(childrenSides == ChildrenSides.TOP_OR_LEFT)
+                isTopOrLeft = true;
+            else if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)
+                isTopOrLeft = false;
+            else if (parent.isRoot() || childrenSides == ChildrenSides.BOTH_SIDES) {
+                Side side = model.getSide();
+                if (side != Side.DEFAULT)
+                    isTopOrLeft = side == Side.TOP_OR_LEFT;
+                else
+                    isTopOrLeft = parent.getModel().isTopOrLeft(model.getMap().getRootNode());
+            } else
+                isTopOrLeft = parent.isTopOrLeft();
+        }
+        this.side = isTopOrLeft ? Side.TOP_OR_LEFT :  Side.BOTTOM_OR_RIGHT;
     }
 
 
@@ -1935,8 +1950,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
     public boolean usesHorizontalLayout() {
-        updateLayoutProperties();
-        return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT;
+        return layoutOrientation() == LayoutOrientation.LEFT_TO_RIGHT;
     }
 
     public LayoutOrientation layoutOrientation() {

@@ -72,6 +72,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeCss;
@@ -103,7 +104,7 @@ public class MainView extends ZoomableLabel {
             void paint(MainView view, final Graphics2D graphics) {/**/}
 
             @Override
-            DragOverRelation relation(boolean usesHorizontalLayout) {
+            DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
                 return DragOverRelation.NOT_AVAILABLE;
             }
         },
@@ -115,8 +116,12 @@ public class MainView extends ZoomableLabel {
                 graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
             }
             @Override
-            DragOverRelation relation(boolean usesHorizontalLayout) {
-                return usesHorizontalLayout ? DragOverRelation.CHILD_BEFORE : DragOverRelation.SIBLING_BEFORE;
+            DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
+                return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT
+                        ? DragOverRelation.CHILD_BEFORE
+                        : side == Side.BOTTOM_OR_RIGHT
+                                ? DragOverRelation.SIBLING_BEFORE
+                                : DragOverRelation.SIBLING_AFTER;
             }
        },
         DROP_DOWN(false) {
@@ -127,8 +132,12 @@ public class MainView extends ZoomableLabel {
                 graphics.fillRect(0, 0, view.getWidth() - 1, view.getHeight() - 1);
             }
             @Override
-            DragOverRelation relation(boolean usesHorizontalLayout) {
-                return usesHorizontalLayout ? DragOverRelation.CHILD_AFTER : DragOverRelation.SIBLING_AFTER;
+            DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
+                return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT
+                        ? DragOverRelation.CHILD_AFTER
+                        : side == Side.BOTTOM_OR_RIGHT
+                                ? DragOverRelation.SIBLING_AFTER
+                                : DragOverRelation.SIBLING_BEFORE;
             }
         },
         DROP_LEFT(true) {
@@ -139,8 +148,12 @@ public class MainView extends ZoomableLabel {
                 graphics.fillRect(0, 0, view.getWidth() * 3 / 4, view.getHeight() - 1);
             }
             @Override
-            DragOverRelation relation(boolean usesHorizontalLayout) {
-                return usesHorizontalLayout ? DragOverRelation.SIBLING_BEFORE : DragOverRelation.CHILD_BEFORE;
+            DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
+                return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT
+                        ? side == Side.BOTTOM_OR_RIGHT
+                            ? DragOverRelation.SIBLING_BEFORE
+                            : DragOverRelation.SIBLING_AFTER
+                        : DragOverRelation.CHILD_BEFORE;
             }
         },
         DROP_RIGHT(true) {
@@ -152,8 +165,12 @@ public class MainView extends ZoomableLabel {
 
             }
             @Override
-            DragOverRelation relation(boolean usesHorizontalLayout) {
-                return usesHorizontalLayout ? DragOverRelation.SIBLING_AFTER : DragOverRelation.CHILD_AFTER;
+            DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
+                return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT
+                        ? side == Side.BOTTOM_OR_RIGHT
+                            ? DragOverRelation.SIBLING_AFTER
+                            : DragOverRelation.SIBLING_BEFORE
+                        : DragOverRelation.CHILD_AFTER;
             }
         },
         ;
@@ -165,7 +182,7 @@ public class MainView extends ZoomableLabel {
 
         abstract void paint(MainView view, final Graphics2D graphics);
 
-        abstract DragOverRelation relation(boolean usesHorizontalLayout);
+        abstract DragOverRelation relation(LayoutOrientation layoutOrientation, Side side);
     }
 	static final int FOLDING_CIRCLE_WIDTH = 16;
 	static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
@@ -226,8 +243,8 @@ public class MainView extends ZoomableLabel {
             dragOverDirection = DragOverDirection.DROP_DOWN;
 
         NodeView nodeView = getNodeView();
-        boolean usesHorizontalLayout = nodeView.usesHorizontalLayout();
-        DragOverRelation relation = dragOverDirection.relation(usesHorizontalLayout);
+        DragOverRelation relation = dragOverDirection.relation(nodeView.layoutOrientation(),
+                nodeView.side());
         if(relation == DragOverRelation.SIBLING_AFTER)
             return DragOverDirection.OFF;
         boolean isRoot = nodeView.isRoot();
@@ -241,7 +258,8 @@ public class MainView extends ZoomableLabel {
 
 	public DragOverRelation dragOverRelation(final Point p) {
 	    final DragOverDirection dragOverDirection = dragOverDirection(p);
-	    return dragOverDirection.relation(getNodeView().usesHorizontalLayout());
+	    NodeView nodeView = getNodeView();
+        return dragOverDirection.relation(nodeView.layoutOrientation(), nodeView.side());
 	}
 
 	@Override
