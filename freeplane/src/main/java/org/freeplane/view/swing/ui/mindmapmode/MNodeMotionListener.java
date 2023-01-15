@@ -227,7 +227,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					    Set<NodeModel> parentSelection = new HashSet<>();
 					    this.selection.forEach(n -> {
                             NodeModel parentNode = n.getParentNode();
-                            if (parentSelection.add(parentNode)) {
+                            if (parentNode != null && parentSelection.add(parentNode)) {
                                 LocationModel parentLocationModel = LocationModel.getModel(parentNode);
                                 originalAssignedBaseHGaps.add(parentLocationModel.getBaseHGap());
                                 originalAssignedVGaps.add(parentLocationModel.getVGap());
