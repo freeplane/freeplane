@@ -1726,9 +1726,7 @@ public class NodeView extends JComponent implements INodeView {
 
     private void updateChildrenSides() {
         ChildrenSides childrenSides;
-        if (isRoot()) {
-            childrenSides = ChildrenSides.BOTH_SIDES;
-        } else if (map.getLayoutType() == MapViewLayout.OUTLINE) {
+        if (map.getLayoutType() == MapViewLayout.OUTLINE) {
             childrenSides = ChildrenSides.BOTTOM_OR_RIGHT;
         } else {
             ChildrenSides childrenSidesByLayout = childNodesLayout.childrenSides();
@@ -1736,6 +1734,8 @@ public class NodeView extends JComponent implements INodeView {
                     || childrenSidesByLayout == ChildrenSides.BOTTOM_OR_RIGHT
                     || childrenSidesByLayout == ChildrenSides.BOTH_SIDES) {
                 childrenSides = childrenSidesByLayout;
+            } else if (isRoot()) {
+                childrenSides = ChildrenSides.BOTH_SIDES;
             } else {
                 childrenSides  = side == Side.TOP_OR_LEFT
                     ? ChildrenSides.TOP_OR_LEFT
