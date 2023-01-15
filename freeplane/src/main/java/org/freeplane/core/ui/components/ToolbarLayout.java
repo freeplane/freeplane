@@ -19,9 +19,9 @@ public class ToolbarLayout implements LayoutManager {
 	enum BlockEndPosition{ON_SEPARATOR, ANYWHERE};
 	ToolbarLayout(BlockEndPosition blockEndPosition){
 		this.blockEndPosition = blockEndPosition;
-		
+
 	}
-	
+
 	public int getMaximumWidth() {
         return maximumWidth;
     }
@@ -95,12 +95,12 @@ public class ToolbarLayout implements LayoutManager {
             return parent.getWidth();
         if (maximumWidth >= 0)
             return maximumWidth;
-        
+
         return Integer.MAX_VALUE;
     }
 	private int getPreferredWidth(final Component c, final int maxWidth) {
-		final int width = ! c.isVisible() ? 0 : 
-				c instanceof JSeparator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : 
+		final int width = ! c.isVisible() ? 0 :
+				c instanceof JSeparator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth :
 					c.getPreferredSize().width;
 		return width;
 	}
@@ -112,7 +112,8 @@ public class ToolbarLayout implements LayoutManager {
 
 	@Override
     public Dimension preferredLayoutSize(final Container container) {
-		final int maxWidth = calculateMaxWidth(container);
+	    Insets insets = container.getInsets();
+		final int maxWidth = calculateMaxWidth(container) - insets.left - insets.right;
 		int width = 0;
 		int heigth = 0;
 		int blockWidth = 0;
@@ -149,8 +150,8 @@ public class ToolbarLayout implements LayoutManager {
 			final Dimension compPreferredSize = component.getPreferredSize();
 			blockHeight = Math.max(compPreferredSize.height, blockHeight);
 		}
-		Insets insets = container.getInsets();
-		return new Dimension(width + insets.left + insets.right, heigth + insets.top + insets.bottom);
+		Dimension preferredSize = new Dimension(width + insets.left + insets.right, heigth + insets.top + insets.bottom);
+        return preferredSize;
 	}
 
 	@Override
