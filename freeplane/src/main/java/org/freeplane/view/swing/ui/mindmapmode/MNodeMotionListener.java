@@ -43,6 +43,7 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.FreeNode;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
@@ -217,15 +218,14 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                     effectiveBaseHGap = extension.getBaseHGapToChildren(childDistanceContainer);
 					originalHGap = LocationModel.getModel(node).getHGap();
 					originalShiftY = LocationModel.getModel(node).getShiftY();
-					Set<NodeModel> selection = modeController.getController().getSelection().getSelection();
-					if(selection.size() > 1) {
-					    this.selection = new ArrayList<>(selection);
+					List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection(true);
+					if(selectedNodes.size() > 1) {
 					    originalAssignedBaseHGaps = new ArrayList<>();
 					    originalAssignedVGaps = new ArrayList<>();
-					    originalHGaps = new ArrayList<>(selection.size());
-					    this.selection.forEach(n -> originalHGaps.add(LocationModel.getModel(n).getHGap()));
+					    originalHGaps = new ArrayList<>(selectedNodes.size());
+					    selectedNodes.forEach(n -> originalHGaps.add(LocationModel.getModel(n).getHGap()));
 					    Set<NodeModel> parentSelection = new HashSet<>();
-					    this.selection.forEach(n -> {
+					    selectedNodes.forEach(n -> {
                             NodeModel parentNode = n.getParentNode();
                             if (parentNode != null && parentSelection.add(parentNode)) {
                                 LocationModel parentLocationModel = LocationModel.getModel(parentNode);
@@ -234,6 +234,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                             }
 
                         });
+					    this.selection = new ArrayList<>(selectedNodes);
 					    this.parentSelection = new ArrayList<>(parentSelection);
 					}
 				}
