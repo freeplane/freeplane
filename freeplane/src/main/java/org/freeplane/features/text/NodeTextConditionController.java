@@ -136,7 +136,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
-		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)
 				|| selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
 			return new FixedBasicComboBoxEditor();
 		return FrameController.getTextDateTimeEditor();
@@ -149,7 +149,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public boolean isCaseDependent(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
-	
+
 	public boolean supportsApproximateMatching(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
@@ -178,15 +178,15 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	public static Object[] getItemsForComparison(Object nodeItem, final NodeModel node) {
 		if (nodeItem.equals(TextController.FILTER_ANYTEXT)) {
-			return new Object[] { 
-					getItemForComparison(TextController.FILTER_NODE, node), 
+			return new Object[] {
+					getItemForComparison(TextController.FILTER_NODE, node),
 					getItemForComparison(TextController.FILTER_DETAILS, node),
 			        getItemForComparison(TextController.FILTER_NOTE, node) };
 		}
 		else
 			return new Object[] { getItemForComparison(nodeItem, node) };
 	}
-	
+
 	private static Object getItemForComparison(Object nodeItem, final NodeModel node) {
 		final Object result;
 		if(nodeItem.equals(TextController.FILTER_NODE)){
@@ -213,11 +213,13 @@ class NodeTextConditionController implements IElementaryConditionController {
     }
 
 	private static Object transformedObject(final NodeModel node) {
-		return TextController.getController().getPlainTransformedTextWithoutNodeNumber(node);
+		TextController textController = TextController.getController();
+        Object object = textController.withNodeNumbering( false, () -> textController.getTransformedObjectNoThrow(node));
+        return object instanceof String ? HtmlUtils.htmlToPlain((String)object) : object;
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
-        if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+        if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return null;
 	    return new TypedListCellRenderer();
