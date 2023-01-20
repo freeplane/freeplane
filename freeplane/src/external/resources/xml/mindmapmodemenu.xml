@@ -51,11 +51,16 @@
 			<Entry name="FoldAllAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="4"/>
+		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="9"/>
 		<Entry usedBy="EDITOR" row="2">
 			<Entry name="CloudAction" />
 			<Entry name="CloudColorAction" />
 			<Entry name="NodeBackgroundColorAction" />
+			<Entry builder="panel" />
+			<Entry builder="separator" />
+			<Entry name="TextAlignAction.LEFT" />
+			<Entry name="TextAlignAction.CENTER" />
+			<Entry name="TextAlignAction.RIGHT" />
 			<Entry builder="panel" />
 		</Entry>
 		<Entry builder="main_toolbar_font_name" usedBy="EDITOR" row="1"  width="6"/>
@@ -636,7 +641,7 @@
 	<Entry name="node_popup" builder="node_popup">
         <Entry usedBy = "EDITOR" >
 			<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
-		</Entry>	
+		</Entry>
         <Entry name="menu_copy">
           <Entry name="CopyAction" accelerator="control C" />
           <Entry name="CopySingleAction" accelerator="control shift C" />
