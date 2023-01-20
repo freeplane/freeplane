@@ -119,9 +119,7 @@ public class MainView extends ZoomableLabel {
             DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
                 return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT
                         ? DragOverRelation.CHILD_BEFORE
-                        : side == Side.BOTTOM_OR_RIGHT
-                                ? DragOverRelation.SIBLING_BEFORE
-                                : DragOverRelation.SIBLING_AFTER;
+                        : DragOverRelation.SIBLING_BEFORE;
             }
        },
         DROP_DOWN(false) {
@@ -135,9 +133,7 @@ public class MainView extends ZoomableLabel {
             DragOverRelation relation(LayoutOrientation layoutOrientation, Side side) {
                 return layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT
                         ? DragOverRelation.CHILD_AFTER
-                        : side == Side.BOTTOM_OR_RIGHT
-                                ? DragOverRelation.SIBLING_AFTER
-                                : DragOverRelation.SIBLING_BEFORE;
+                        : DragOverRelation.SIBLING_AFTER;
             }
         },
         DROP_LEFT(true) {
