@@ -103,9 +103,12 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		    ChildNodesLayout layout = LAYOUTS[i];
             String name = layout.name().toLowerCase(Locale.ENGLISH);
             URL url = resourceController.getIconResource("/images/layouts/" + name + ".svg?useAccentColor=true");
+            boolean startsGroup = layout.childrenSides() == ChildrenSides.TOP_OR_LEFT
+                    || layout == ChildNodesLayout.AUTO_AFTERPARENT
+                    || layout == ChildNodesLayout.AUTO;
             icons.add(new ButtonIcon(
                     IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(1.5)),
-                    description(layout)));
+                    description(layout), startsGroup));
 		}
 		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
 		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, icons);

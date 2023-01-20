@@ -32,6 +32,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 
 import org.freeplane.core.ui.components.ToolbarLayout;
@@ -41,18 +42,20 @@ import org.freeplane.core.util.TextUtils;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl, ActionListener {
-    
+
     static public class ButtonIcon{
         public final Icon icon;
         public final String tooltip;
-        public ButtonIcon(Icon icon, String tooltipLabel) {
+        public final boolean startsGroup;
+        public ButtonIcon(Icon icon, String tooltipLabel, boolean startsGroup) {
             super();
             this.icon = icon;
             this.tooltip = tooltipLabel;
+            this.startsGroup = startsGroup;
         }
-        
+
     }
-    
+
 	static public Vector<Object> translate(final String[] possibles) {
 		final Vector<Object> displayedItems = new Vector<Object>(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
@@ -84,12 +87,12 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 	private final Vector<JToggleButton> buttons;
     private int selectedIndex = 0;
 
-	public ButtonPanelProperty(final String name, final Collection<String> possibles,
+	public ButtonPanelProperty(final String name, final Collection<String> values,
 	                     final Collection<ButtonIcon> displayedItems) {
 		super(name);
 		possibleValues = new Vector<String>();
-        possibleValues.addAll(possibles);
-		buttonPanel = new JPanel(ToolbarLayout.vertical());
+        possibleValues.addAll(values);
+		buttonPanel = new JPanel(ToolbarLayout.horizontal());
 		buttonPanel.addComponentListener(SizeChanger.INSTANCE);
 		buttons = new Vector<JToggleButton>(displayedItems.size());
 		int i = 0;
@@ -102,8 +105,10 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		        setSelected(button);
 		        selectedIndex = buttonIndex;
 		        firePropertyChangeEvent();
-		        
+
 		    });
+		    if(item.startsGroup)
+		        buttonPanel.add(new JSeparator());
 		    buttonPanel.add(button);
 		}
 	}
