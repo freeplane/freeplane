@@ -40,7 +40,7 @@ class BubblePainter extends RectanglePainter {
 
     private int getArcWidth() {
         int minimumArcWidth = mainView.getNodeView().getMap().getZoomed(10);
-        return Math.max(minimumArcWidth, mainView.getWidth() / 10);
+        return minimumArcWidth;
     }
 
 	@Override
