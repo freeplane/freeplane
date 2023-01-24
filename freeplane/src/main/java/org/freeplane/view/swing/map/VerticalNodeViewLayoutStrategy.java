@@ -304,7 +304,8 @@ class VerticalNodeViewLayoutStrategy {
 				|| childNodesAlignment == ChildNodesAlignment.NOT_SET
 				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
 			deltaTop = height/2;
-		} else if (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT) {
+		} else if (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+		        || childNodesAlignment == ChildNodesAlignment.LAST_CHILD_BY_PARENT) {
 			deltaTop = height;
 		}
 		else deltaTop = 0;

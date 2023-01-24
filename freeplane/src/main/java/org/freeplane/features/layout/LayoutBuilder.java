@@ -58,11 +58,11 @@ class LayoutBuilder implements IExtensionAttributeWriter {
 	    if("AS_PARENT".equals(alignment) || "AUTO".equals(alignment)) {
 	        return ChildNodesLayout.AUTO;
 	    } else if ("BY_FIRST_NODE".equals(alignment)) {
-	        return ChildNodesLayout.AUTO_BEFOREPARENT;
+	        return ChildNodesLayout.AUTO_FIRST;
 	    } else if ("BY_CENTER".equals(alignment)) {
 	        return ChildNodesLayout.AUTO_CENTERED;
 	    } else if ("BY_LAST_NODE".equals(alignment)) {
-	        return ChildNodesLayout.AUTO_AFTERPARENT;
+	        return ChildNodesLayout.AUTO_LAST;
 	    } else {
 	        return ChildNodesLayout.NOT_SET;
 	    }

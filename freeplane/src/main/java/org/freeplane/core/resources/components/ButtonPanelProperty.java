@@ -36,6 +36,7 @@ import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 
 import org.freeplane.core.ui.components.ToolbarLayout;
+import org.freeplane.core.ui.menubuilders.menu.JUnitPanel;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -43,15 +44,19 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl, ActionListener {
 
+    public enum ComponentBefore {
+        NOTHING, SEPARATOR
+    }
+
     static public class ButtonIcon{
         public final Icon icon;
         public final String tooltip;
-        public final boolean startsGroup;
-        public ButtonIcon(Icon icon, String tooltipLabel, boolean startsGroup) {
+        public final ComponentBefore componentBefore;
+        public ButtonIcon(Icon icon, String tooltipLabel, ComponentBefore componentBefore) {
             super();
             this.icon = icon;
             this.tooltip = tooltipLabel;
-            this.startsGroup = startsGroup;
+            this.componentBefore = componentBefore;
         }
 
     }
@@ -107,7 +112,7 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		        firePropertyChangeEvent();
 
 		    });
-		    if(item.startsGroup)
+		    if(item.componentBefore == ComponentBefore.SEPARATOR)
 		        buttonPanel.add(new JSeparator());
 		    buttonPanel.add(button);
 		}

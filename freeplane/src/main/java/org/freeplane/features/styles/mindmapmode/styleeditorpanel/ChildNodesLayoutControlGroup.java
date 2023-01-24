@@ -35,6 +35,7 @@ import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ButtonPanelProperty;
 import org.freeplane.core.resources.components.ButtonPanelProperty.ButtonIcon;
+import org.freeplane.core.resources.components.ButtonPanelProperty.ComponentBefore;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
@@ -103,10 +104,33 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		    ChildNodesLayout layout = LAYOUTS[i];
             String name = layout.name().toLowerCase(Locale.ENGLISH);
             URL url = resourceController.getIconResource("/images/layouts/" + name + ".svg?useAccentColor=true");
-            boolean startsGroup = layout.ordinal() % 3 == 1 ;
+            ComponentBefore componentBefore;
+            if(layout.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM) {
+                if(layout.childrenSides() == ChildrenSides.TOP_OR_LEFT)
+                    componentBefore = ComponentBefore.SEPARATOR;
+                else
+                    componentBefore = ComponentBefore.NOTHING;
+            }
+            else if(layout.layoutOrientation() == LayoutOrientation.LEFT_TO_RIGHT) {
+                if(layout.childNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
+                    componentBefore = ComponentBefore.SEPARATOR;
+                else if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO) {
+                    if(layout.childrenSides() == ChildrenSides.TOP_OR_LEFT)
+                        componentBefore = ComponentBefore.SEPARATOR;
+                    else
+                        componentBefore = ComponentBefore.NOTHING;
+                }
+                else
+                    componentBefore = ComponentBefore.NOTHING;
+            }
+            else if(layout.childNodesAlignment() == ChildNodesAlignment.AFTER_PARENT
+                    || layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
+                componentBefore = ComponentBefore.SEPARATOR;
+            else
+                componentBefore = ComponentBefore.NOTHING;
             icons.add(new ButtonIcon(
                     IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(1.5)),
-                    description(layout), startsGroup));
+                    description(layout), componentBefore));
 		}
 		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
 		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, icons);
