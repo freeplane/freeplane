@@ -1355,32 +1355,21 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private void repaintEdge(final NodeView target) {
-		if (target.map.getLayoutType() == MapViewLayout.OUTLINE){
-			target.getAncestorWithVisibleContent().repaint();
-			return;
-		}
-		final Point relativeLocation = getRelativeLocation(target);
         final MainView targetMainView = target.getMainView();
-        LayoutOrientation layoutOrientation = layoutOrientation();
-        ChildNodesAlignment alignment = getChildNodesAlignment();
+        int targetEdgeWidth = target.getEdgeWidth();
 
-        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
-        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-		final Point end = targetMainView.getConnectorPoint(relativeLocation, layoutOrientation, alignment);
+        Point mainViewLocation = new Point(0, 0);
+        UITools.convertPointToAncestor(mainView, mainViewLocation, this);
+        Point targetMainViewLocation = new Point(0, 0);
+        UITools.convertPointToAncestor(targetMainView, targetMainViewLocation, this);
 
-
-        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2 + end.x;
-        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2 + end.y;
-        final Point start = mainView.getConnectorPoint(relativeLocation, layoutOrientation, ChildNodesAlignment.NOT_SET);
-
-        UITools.convertPointToAncestor(getMainView(), end, this);
-        UITools.convertPointToAncestor(targetMainView, start, this);
-
-        final int x = Math.min(start.x, end.x);
-		final int y = Math.min(start.y, end.y);
-		final int w = Math.abs(start.x - end.x);
-		final int h = Math.abs(start.y - end.y);
-		final int EXTRA = 50;
+        final int x = Math.min(mainViewLocation.x, targetMainViewLocation.x);
+		final int y = Math.min(mainViewLocation.y, targetMainViewLocation.y);
+		final int w = Math.max(mainViewLocation.x + mainView.getWidth(),
+		        targetMainViewLocation.x + targetMainView.getWidth()) - x;
+		final int h =Math.max(mainViewLocation.y + mainView.getHeight(),
+                targetMainViewLocation.y + targetMainView.getHeight()) - y;
+		final int EXTRA = 1 + targetEdgeWidth;
 		repaint(x - EXTRA, y - EXTRA, w + EXTRA * 2, h + EXTRA * 2);
 	}
 
