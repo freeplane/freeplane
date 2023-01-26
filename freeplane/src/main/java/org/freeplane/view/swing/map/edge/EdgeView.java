@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.DashVariant;
@@ -39,65 +40,100 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a single Edge of a MindMap.
  */
 public abstract class EdgeView {
-	protected static final BasicStroke DEF_STROKE = new BasicStroke();
-	static Stroke ECLIPSED_STROKE = null;
+    protected static final BasicStroke DEF_STROKE = new BasicStroke();
+    static Stroke ECLIPSED_STROKE = null;
 
-	protected static Stroke getEclipsedStroke() {
-		if (EdgeView.ECLIPSED_STROKE == null) {
-			final float dash[] = { 3.0f, 9.0f };
-			EdgeView.ECLIPSED_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 12.0f, dash,
-			    0.0f);
-		}
-		return EdgeView.ECLIPSED_STROKE;
-	}
-
-	private final NodeView source;
-	protected Point start, end;
-
-	public void setStart(Point start) {
-    	this.start = start;
+    protected static Stroke getEclipsedStroke() {
+        if (EdgeView.ECLIPSED_STROKE == null) {
+            final float dash[] = { 3.0f, 9.0f };
+            EdgeView.ECLIPSED_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 12.0f, dash,
+                0.0f);
+        }
+        return EdgeView.ECLIPSED_STROKE;
     }
 
-	public Point getStart() {
-    	return start;
+    private final NodeView source;
+    protected Point start, end;
+
+    public void setStart(Point start) {
+        this.start = start;
     }
 
-	public void setEnd(Point end) {
-    	this.end = end;
+    public Point getStart() {
+        return start;
     }
 
-	public Point getEnd() {
-    	return end;
+    public void setEnd(Point end) {
+        this.end = end;
     }
 
-	private final NodeView target;
-	private Color color;
-	private Integer width;
+    public Point getEnd() {
+        return end;
+    }
+
+    private final NodeView target;
+    private Color color;
+    private Integer width;
     private ConnectorLocation startConnectorLocation;
     private ConnectorLocation endConnectorLocation;
-	private int[] dash;
+    private int[] dash;
 
-	protected void createStart() {
+    protected void createStart() {
         final MainView mainView = source.getMainView();
         final MainView targetMainView = target.getMainView();
 
-        final Point relativeLocation = source.getRelativeLocation(target);
-        LayoutOrientation layoutOrientation = source.layoutOrientation();
-        ChildNodesAlignment alignment = source.getChildNodesAlignment();
+        ChildNodesAlignment childNodesAlignment = source.getChildNodesAlignment();
 
-        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
-        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
-        endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation, layoutOrientation, ChildNodesAlignment.NOT_SET);
-		end = target.getMainView().getConnectorPoint(relativeLocation, endConnectorLocation);
+        boolean usesHorizontalLayout = source.usesHorizontalLayout();
+        if(! usesHorizontalLayout
+                && ! (source.isRoot() && MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE)
+                && childNodesAlignment.areChildrenApart) {
+            if(source.childrenSides() == ChildrenSides.BOTH_SIDES) {
+                if(childNodesAlignment == ChildNodesAlignment.AFTER_PARENT) {
+                    start = mainView.getBottomPoint();
+                    startConnectorLocation = ConnectorLocation.BOTTOM;
+                } else {
+                    start = mainView.getTopPoint();
+                    startConnectorLocation = ConnectorLocation.TOP;
+                }
+            }
+            else if(target.isTopOrLeft()){
+                start = mainView.getRightPoint();
+                startConnectorLocation = ConnectorLocation.RIGHT;
+            }
+            else{
+                start = mainView.getLeftPoint();
+                startConnectorLocation = ConnectorLocation.LEFT;
+            }
+            if(target.isTopOrLeft()){
+                end = targetMainView.getRightPoint();
+                endConnectorLocation = ConnectorLocation.RIGHT;
+            }
+            else{
+                end = targetMainView.getLeftPoint();
+                endConnectorLocation = ConnectorLocation.LEFT;
+            }
 
-        relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2 + end.x;
-        relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2 + end.y;
+        }
+        else {
 
-        startConnectorLocation = mainView.getConnectorLocation(relativeLocation, LayoutOrientation.NOT_SET,  ChildNodesAlignment.NOT_SET);
-        start = mainView.getConnectorPoint(relativeLocation, startConnectorLocation);
-}
+            final Point relativeLocation = source.getRelativeLocation(target);
+            LayoutOrientation layoutOrientation = source.layoutOrientation();
 
-	protected ConnectorLocation getStartConnectorLocation() {
+            relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2;
+            relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2;
+            endConnectorLocation = targetMainView.getConnectorLocation(relativeLocation, layoutOrientation, ChildNodesAlignment.NOT_SET);
+            end = target.getMainView().getConnectorPoint(relativeLocation, endConnectorLocation);
+
+            relativeLocation.x = - relativeLocation.x + mainView.getWidth()/2 + end.x;
+            relativeLocation.y = - relativeLocation.y + mainView.getHeight()/2 + end.y;
+
+            startConnectorLocation = mainView.getConnectorLocation(relativeLocation, LayoutOrientation.NOT_SET,  ChildNodesAlignment.NOT_SET);
+            start = mainView.getConnectorPoint(relativeLocation, startConnectorLocation);
+        }
+    }
+
+    protected ConnectorLocation getStartConnectorLocation() {
         return startConnectorLocation;
     }
 
@@ -132,100 +168,100 @@ public abstract class EdgeView {
     }
 
     protected void align(Point start, Point end) {
-		if(1 == Math.abs(start.y - end.y)){
-			end.y = start.y;
-		}
+        if(1 == Math.abs(start.y - end.y)){
+            end.y = start.y;
+        }
     }
 
-	public Color getColor() {
-		if (color == null) {
-			color = target.getEdgeColor();
-		}
-		return color;
-	}
+    public Color getColor() {
+        if (color == null) {
+            color = target.getEdgeColor();
+        }
+        return color;
+    }
 
-	public void setColor(final Color color) {
-		this.color = color;
-	}
+    public void setColor(final Color color) {
+        this.color = color;
+    }
 
-	protected MapView getMap() {
-		return getTarget().getMap();
-	}
+    protected MapView getMap() {
+        return getTarget().getMap();
+    }
 
-	/**
-	 * @return Returns the source.
-	 */
-	public NodeView getSource() {
-		return source;
-	}
+    /**
+     * @return Returns the source.
+     */
+    public NodeView getSource() {
+        return source;
+    }
 
-	protected Stroke getStroke() {
-		final int width = getWidth();
-		return getStroke(width);
-	}
+    protected Stroke getStroke() {
+        final int width = getWidth();
+        return getStroke(width);
+    }
 
-	protected Stroke getStroke(final float width) {
-		int[] dash = getDash();
-		if (width <= 0 && dash == null) {
-			return EdgeView.DEF_STROKE;
-		}
-		final int[] dash1 = dash;
-    	return UITools.createStroke(width * getMap().getZoom(), dash1, BasicStroke.JOIN_ROUND);
-	}
+    protected Stroke getStroke(final float width) {
+        int[] dash = getDash();
+        if (width <= 0 && dash == null) {
+            return EdgeView.DEF_STROKE;
+        }
+        final int[] dash1 = dash;
+        return UITools.createStroke(width * getMap().getZoom(), dash1, BasicStroke.JOIN_ROUND);
+    }
 
-	/**
-	 * @return Returns the target.
-	 */
-	public NodeView getTarget() {
-		return target;
-	}
+    /**
+     * @return Returns the target.
+     */
+    public NodeView getTarget() {
+        return target;
+    }
 
-	public int getWidth() {
-		if (width != null) {
-			return width;
-		}
-		final int width = target.getEdgeWidth();
-		return width;
-	}
+    public int getWidth() {
+        if (width != null) {
+            return width;
+        }
+        final int width = target.getEdgeWidth();
+        return width;
+    }
 
-	public void setWidth(final int width) {
-		this.width = width;
-	}
+    public void setWidth(final int width) {
+        this.width = width;
+    }
 
-	public int[] getDash() {
-		if (dash != null) {
-			return dash;
-		}
-		final DashVariant dash = target.getEdgeDash();
-		return dash.variant;
-	}
+    public int[] getDash() {
+        if (dash != null) {
+            return dash;
+        }
+        final DashVariant dash = target.getEdgeDash();
+        return dash.variant;
+    }
 
-	public void setDash(final int[] dash) {
-		this.dash = dash;
-	}
+    public void setDash(final int[] dash) {
+        this.dash = dash;
+    }
 
-	protected boolean drawHiddenParentEdge() {
-		return false;
-	}
+    protected boolean drawHiddenParentEdge() {
+        return false;
+    }
 
-	abstract protected void draw(Graphics2D g);
+    abstract protected void draw(Graphics2D g);
 
-	public void paint(final Graphics2D g) {
-		final Stroke stroke = g.getStroke();
-		final Color color = g.getColor();
-		draw(g);
-		g.setStroke(stroke);
-		g.setColor(color);
-	}
+    public void paint(final Graphics2D g) {
+        final Stroke stroke = g.getStroke();
+        final Color color = g.getColor();
+        draw(g);
+        g.setStroke(stroke);
+        g.setColor(color);
+    }
 
-	public EdgeView(final NodeView source, final NodeView target, final Component paintedComponent) {
-		this.source = source;
-		this.target = target;
-		createStart();
+    public EdgeView(final NodeView source, final NodeView target, final Component paintedComponent) {
+        this.source = source;
+        this.target = target;
+        createStart();
         UITools.convertPointToAncestor(target.getMainView(), end, paintedComponent);
-		UITools.convertPointToAncestor(source.getMainView(), start, paintedComponent);
+        UITools.convertPointToAncestor(source.getMainView(), start, paintedComponent);
         align(start, end);
-	}
+    }
 
-	abstract public boolean detectCollision(Point p);
+    abstract public boolean detectCollision(Point p);
 }

@@ -27,7 +27,9 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.freeplane.api.ChildNodesAlignment;
+import org.freeplane.api.ChildrenSides;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.link.CollisionDetector;
 
@@ -47,6 +49,20 @@ public class HorizontalEdgeView extends EdgeView {
 	    NodeView source = getSource();
 	    NodeView target = getTarget();
 	    boolean usesHorizontalLayout = source.usesHorizontalLayout();
+	    ChildNodesAlignment childNodesAlignment = source.getChildNodesAlignment();
+	    if(! usesHorizontalLayout
+                && ! (source.isRoot() && MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE)
+                && childNodesAlignment.areChildrenApart
+                && source.childrenSides() != ChildrenSides.BOTH_SIDES) {
+	        super.createStart();
+	        if(getStartConnectorLocation() == ConnectorLocation.RIGHT)
+	            start.x -= getWidth() / 2;
+	        else if(getStartConnectorLocation() == ConnectorLocation.LEFT)
+                start.x += getWidth() / 2;
+	        return;
+	    }
+
+
         if(source.isRoot() && ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE){
 	        super.createStart();
 	    }
