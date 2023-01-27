@@ -24,20 +24,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.PopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
@@ -90,45 +84,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 			        window= popup;
 			    }
 			    else{
-			    	final Component optionComponent;
-			    	if(popup instanceof JScrollPane)
-			    		optionComponent = popup;
-					else {
-						final JAutoScrollBarPane scrollPane = new JAutoScrollBarPane(popup);
-						UITools.setScrollbarIncrement(scrollPane);
-						scrollPane.setBorder( BorderFactory.createEmptyBorder() );
-						optionComponent = scrollPane;
-					}
-					JOptionPane pane = new JOptionPane(optionComponent);
-					Component menuComponent = UITools.getMenuComponent();
-					final JDialog d = pane.createDialog(menuComponent, popup.getName());
-					d.getRootPane().applyComponentOrientation(menuComponent.getComponentOrientation());
-					final Window frame = d.getOwner();
-                    d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    d.setModal(false);
-                    d.pack();
-                    d.addWindowFocusListener(new WindowFocusListener() {
-                        @Override
-						public void windowLostFocus(WindowEvent e) {
-                        }
-
-                        @Override
-						public void windowGainedFocus(WindowEvent e) {
-                            frame.addWindowFocusListener(new WindowFocusListener() {
-                                @Override
-								public void windowLostFocus(WindowEvent e) {
-                                }
-
-                                @Override
-								public void windowGainedFocus(WindowEvent e) {
-                                    d.setVisible(false);
-                                    frame.removeWindowFocusListener(this);
-                                }
-                            });
-                            d.removeWindowFocusListener(this);
-                        }
-                    });
-			        window = d;
+			    	window = PopupDialog.createOptionPanelPopupDialog(popup);
 			    }
 			    Point eventLocation = e.getPoint();
 			    SwingUtilities.convertPointToScreen(eventLocation, e.getComponent());
@@ -140,7 +96,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	private boolean isMapViewWithOriginalConectosAvailable(MapView mapView) {
-		return mapView != null && mapView.getClientProperty(Connectors.class) == null;
+	    return mapView != null && mapView.getClientProperty(Connectors.class) == null;
 	}
 
 	@Override
