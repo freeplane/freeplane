@@ -129,7 +129,7 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
             else
                 componentBefore = ComponentBefore.NOTHING;
             icons.add(new ButtonIcon(
-                    IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(1.5)),
+                    IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(2)),
                     description(layout), componentBefore));
 		}
 		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
