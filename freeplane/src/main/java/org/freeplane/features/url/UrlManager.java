@@ -21,10 +21,8 @@ package org.freeplane.features.url;
 
 import static java.util.Arrays.asList;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,18 +38,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
+import org.freeplane.core.ui.components.PopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -165,24 +159,12 @@ public class UrlManager implements IExtension {
 	protected JFreeplaneCustomizableFileChooser getFileChooserNotFollowingDirectoryChanges() {
 		JFreeplaneCustomizableFileChooser choosery = AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
             final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser(getLastCurrentDir());
-            Customizer closeDialogCustomizer = dialog -> {
-                    InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-                    in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
-                    ActionMap aMap = dialog.getRootPane().getActionMap();
-                    aMap.put("escape", new AbstractAction()
-                    {
-                        @Override
-                        public void actionPerformed (ActionEvent e)
-                        {
-                            dialog.dispose();
-                        }
-                    });
-            };
-            chooser.addCustomizer(closeDialogCustomizer);
+            chooser.addCustomizer(PopupDialog::closeOnEscape);
             return chooser;
         });
 		return choosery;
 	}
+
     public JFreeplaneCustomizableFileChooser getFileChooser(final FileFilter filter) {
         JFreeplaneCustomizableFileChooser chooser = getFileChooser();
         chooser.addChoosableFileFilter(filter);
