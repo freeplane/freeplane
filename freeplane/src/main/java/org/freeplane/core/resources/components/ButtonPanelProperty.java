@@ -20,7 +20,10 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -28,15 +31,18 @@ import java.awt.event.ComponentEvent;
 import java.util.Collection;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 
+import org.freeplane.core.ui.components.PopupDialog;
 import org.freeplane.core.ui.components.ToolbarLayout;
-import org.freeplane.core.ui.menubuilders.menu.JUnitPanel;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -88,6 +94,7 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 	}
 
 	private final JPanel buttonPanel;
+	private final JButton startButton;
 	private final Vector<String> possibleValues;
 	private final Vector<JToggleButton> buttons;
     private int selectedIndex = 0;
@@ -116,6 +123,8 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		        buttonPanel.add(new JSeparator());
 		    buttonPanel.add(button);
 		}
+        startButton = new JButton();
+        startButton.addActionListener(this::showButtonPanel);
 	}
 
     private void setSelected(JToggleButton button) {
@@ -129,14 +138,12 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 
 	@Override
 	public JComponent getValueComponent() {
-		return buttonPanel;
+		return startButton;
 	}
 
 	@Override
     public void appendToForm(final DefaultFormBuilder builder) {
-        int iconWidth = buttons.get(0).getIcon().getIconWidth();
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, iconWidth, 0, 0));
- 	    builder.append(buttonPanel, 3);
+	    appendToForm(builder, startButton);
 	}
 
 	public Vector<String> getPossibleValues() {
@@ -161,6 +168,9 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 			    selectedIndex = 0;
 			}
 		}
+		JToggleButton selectedButton = buttons.get(selectedIndex);
+		startButton.setIcon(selectedButton.getIcon());
+		startButton.setToolTipText(selectedButton.getToolTipText());
 	}
 
 	@Override
@@ -168,4 +178,18 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		firePropertyChangeEvent();
 	}
 
+    private void showButtonPanel(ActionEvent e) {
+        Window owner = SwingUtilities.getWindowAncestor(startButton);
+        final JDialog d = new JDialog(owner, ModalityType.MODELESS);
+        d.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
+        d.getContentPane().add(buttonPanel);
+        PopupDialog.closeWhenOwnerIsFocused(d);
+        Point eventLocation = new Point(0, startButton.getHeight());
+        SwingUtilities.convertPointToScreen(eventLocation, startButton);
+        d.pack();
+        UITools.setBounds(d, eventLocation.x, eventLocation.y,
+                d.getWidth(), d.getHeight());
+        d.setVisible(true);
+
+    }
 }
