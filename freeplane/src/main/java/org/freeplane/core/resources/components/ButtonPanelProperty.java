@@ -28,6 +28,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -184,11 +187,15 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
         d.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
         d.getContentPane().add(buttonPanel);
         PopupDialog.closeWhenOwnerIsFocused(d);
+        PopupDialog.closeOnEscape(d);
         Point eventLocation = new Point(0, startButton.getHeight());
         SwingUtilities.convertPointToScreen(eventLocation, startButton);
         d.pack();
         UITools.setBounds(d, eventLocation.x, eventLocation.y,
                 d.getWidth(), d.getHeight());
+
+        JToggleButton selectedButton = buttons.get(selectedIndex);
+        selectedButton.requestFocusInWindow();
         d.setVisible(true);
 
     }
