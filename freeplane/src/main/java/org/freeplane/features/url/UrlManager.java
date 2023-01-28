@@ -44,7 +44,6 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
-import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
 import org.freeplane.core.ui.components.PopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
