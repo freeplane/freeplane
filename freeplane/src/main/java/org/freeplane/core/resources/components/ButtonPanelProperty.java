@@ -23,7 +23,6 @@ import java.awt.Dialog.ModalityType;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -37,7 +36,7 @@ import org.freeplane.core.ui.components.UITools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class ButtonPanelProperty extends PropertyBean implements IPropertyControl, ActionListener {
+public class ButtonPanelProperty extends PropertyBean implements IPropertyControl {
 
  	private final JButton startButton;
 	private final ButtonSelectorPanel buttons;
@@ -81,27 +80,24 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 		startButton.setToolTipText(selectedButton.getToolTipText());
 	}
 
-	@Override
-    public void actionPerformed(final ActionEvent e) {
-		firePropertyChangeEvent();
-	}
-
     private void showButtonPanel(ActionEvent e) {
         Window owner = SwingUtilities.getWindowAncestor(startButton);
-        final JDialog d = new JDialog(owner, ModalityType.MODELESS);
-        d.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
-        d.getContentPane().add(buttons.getButtonPanel());
-        PopupDialog.closeWhenOwnerIsFocused(d);
-        PopupDialog.closeOnEscape(d);
+        final JDialog dialog = new JDialog(owner, ModalityType.MODELESS);
+        dialog.setResizable(false);
+        dialog.setUndecorated(true);
+        dialog.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
+        dialog.getContentPane().add(buttons.getButtonPanel());
+        PopupDialog.closeWhenOwnerIsFocused(dialog);
+        PopupDialog.closeOnEscape(dialog);
         Point eventLocation = new Point(0, startButton.getHeight());
         SwingUtilities.convertPointToScreen(eventLocation, startButton);
-        d.pack();
-        UITools.setBounds(d, eventLocation.x, eventLocation.y,
-                d.getWidth(), d.getHeight());
+        dialog.pack();
+        UITools.setBounds(dialog, eventLocation.x, eventLocation.y,
+                dialog.getWidth(), dialog.getHeight());
 
         JToggleButton selectedButton = buttons.getSelectedButton();
         selectedButton.requestFocusInWindow();
-        d.setVisible(true);
+        dialog.setVisible(true);
 
     }
 }
