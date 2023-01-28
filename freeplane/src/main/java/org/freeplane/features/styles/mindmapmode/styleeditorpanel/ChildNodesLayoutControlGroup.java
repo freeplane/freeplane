@@ -20,27 +20,14 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Vector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
-import org.freeplane.api.ChildrenSides;
-import org.freeplane.api.LayoutOrientation;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ButtonPanelProperty;
-import org.freeplane.core.resources.components.ButtonPanelProperty.ButtonIcon;
-import org.freeplane.core.resources.components.ButtonPanelProperty.ComponentBefore;
+import org.freeplane.core.resources.components.ButtonSelectorPanel;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.layout.LayoutModel;
+import org.freeplane.features.layout.mindmapmode.LayoutSelectorPanelFactory;
 import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -54,8 +41,6 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class ChildNodesLayoutControlGroup implements ControlGroup {
 	static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
 
-	private static final ChildNodesLayout[] LAYOUTS =
-	        Arrays.asList(ChildNodesLayout.values()).stream().skip(1).toArray(ChildNodesLayout[]::new);
 	private RevertingProperty mSetChildNodesLayout;
 	private ButtonPanelProperty mChildNodesLayout;
 
@@ -98,42 +83,8 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	@Override
     public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
-		final Vector<ButtonIcon> icons = new Vector<>(LAYOUTS.length);
-		ResourceController resourceController = ResourceController.getResourceController();
-		for (int i = 0; i < LAYOUTS.length; i++) {
-		    ChildNodesLayout layout = LAYOUTS[i];
-            String name = layout.name().toLowerCase(Locale.ENGLISH);
-            URL url = resourceController.getIconResource("/images/layouts/" + name + ".svg?useAccentColor=true");
-            ComponentBefore componentBefore;
-            if(layout.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM) {
-                if(layout.childrenSides() == ChildrenSides.TOP_OR_LEFT)
-                    componentBefore = ComponentBefore.SEPARATOR;
-                else
-                    componentBefore = ComponentBefore.NOTHING;
-            }
-            else if(layout.layoutOrientation() == LayoutOrientation.LEFT_TO_RIGHT) {
-                if(layout.childNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
-                    componentBefore = ComponentBefore.SEPARATOR;
-                else if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO) {
-                    if(layout.childrenSides() == ChildrenSides.TOP_OR_LEFT)
-                        componentBefore = ComponentBefore.SEPARATOR;
-                    else
-                        componentBefore = ComponentBefore.NOTHING;
-                }
-                else
-                    componentBefore = ComponentBefore.NOTHING;
-            }
-            else if(layout.childNodesAlignment() == ChildNodesAlignment.AFTER_PARENT
-                    || layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
-                componentBefore = ComponentBefore.SEPARATOR;
-            else
-                componentBefore = ComponentBefore.NOTHING;
-            icons.add(new ButtonIcon(
-                    IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(2)),
-                    description(layout), componentBefore));
-		}
-		Collection<String> alignmentNames = Stream.of(LAYOUTS).map(Enum::name).collect(Collectors.toList());
-		mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, alignmentNames, icons);
+		ButtonSelectorPanel buttons = LayoutSelectorPanelFactory.createLayoutSelectorPanel();
+        mChildNodesLayout = new ButtonPanelProperty(CHILD_NODES_LAYOUTS, buttons);
 		propertyChangeListener = new ChildNodesLayoutChangeListener(mSetChildNodesLayout, mChildNodesLayout);
 		mSetChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
 		mChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
@@ -141,21 +92,7 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		mSetChildNodesLayout.appendToForm(formBuilder);
 	}
 
-	private String description(ChildNodesLayout layout) {
-	    if(layout == ChildNodesLayout.AUTO)
-	        return TextUtils.getRawText(layout.name());
-	    String childNodesAlignmentText = TextUtils.getRawText(layout.childNodesAlignment().name());
-        if(layout.layoutOrientation() == LayoutOrientation.AUTO
-	            && layout.childrenSides() == ChildrenSides.AUTO)
-	        return childNodesAlignmentText;
-        String childrenSidesText = TextUtils.getRawText(layout.childrenSides().labelKey(layout.layoutOrientation()));
-        String layoutOrientationText = TextUtils.getRawText(layout.layoutOrientation().name());
-        if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
-            return layoutOrientationText + ", " + childrenSidesText;
-	    return layoutOrientationText + ", " + childrenSidesText  + ", " + childNodesAlignmentText;
-    }
-
-    @Override
+	@Override
     public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
