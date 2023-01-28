@@ -7,15 +7,19 @@ package org.freeplane.core.resources.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collection;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 
 import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.core.util.LogUtils;
@@ -64,6 +68,18 @@ public class ButtonSelectorPanel{
             }
         }
     }
+    private static final Action CLICK = new AbstractAction() {
+        /**
+         * Comment for <code>serialVersionUID</code>
+         */
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ((JToggleButton)(e.getSource())).doClick();
+         }
+
+    };
 
     private final JPanel buttonPanel;
     private final Vector<String> possibleValues;
@@ -78,6 +94,8 @@ public class ButtonSelectorPanel{
         buttonPanel.addComponentListener(SizeChanger.INSTANCE);
         buttons = new Vector<JToggleButton>(displayedItems.size());
         int i = 0;
+        KeyStroke enterKeyStroke = KeyStroke.getKeyStroke("ENTER");
+        KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke("SPACE");
         for(ButtonSelectorPanel.ButtonIcon item : displayedItems) {
             JToggleButton button = new JToggleButton(item.icon);
             button.setToolTipText(item.tooltip);
@@ -89,6 +107,9 @@ public class ButtonSelectorPanel{
                 if(callback != null)
                     callback.run();
             });
+            button.getInputMap().put(enterKeyStroke, "ON_CLICK");
+            button.getInputMap().put(spaceKeyStroke, "ON_CLICK");
+            button.getActionMap().put("ON_CLICK", CLICK);
             if(item.componentBefore == ComponentBefore.SEPARATOR)
                 buttonPanel.add(new JSeparator());
             buttonPanel.add(button);
