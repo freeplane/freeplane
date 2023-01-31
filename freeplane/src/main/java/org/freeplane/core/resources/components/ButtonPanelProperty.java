@@ -75,6 +75,7 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 
 	@Override
 	public void setValue(final String value) {
+	    buttons.setValue(value);
 		JToggleButton selectedButton = buttons.getSelectedButton();
 		startButton.setIcon(selectedButton.getIcon());
 		startButton.setToolTipText(selectedButton.getToolTipText());
