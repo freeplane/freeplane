@@ -10,7 +10,7 @@ import org.freeplane.features.mode.Controller;
 
 public class NextNodeAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private final Direction direction;
@@ -21,7 +21,7 @@ public class NextNodeAction extends AFreeplaneAction {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		final FilterController filterController = FilterController.getCurrentFilterController();
@@ -30,8 +30,8 @@ public class NextNodeAction extends AFreeplaneAction {
 		NodeModel selectionRoot = selection.getSelectionRoot();
 		Filter filter = selection.getFilter();
 		Direction direction = this.direction;
-		NodeModel next = filterController.findNextInSubtree(start, selectionRoot, direction, 
-				filter.getCondition(), filter);
+		NodeModel next = filterController.findNextInSubtree(start, selectionRoot, direction,
+				null, filter);
 		if(next != null){
 			Controller.getCurrentModeController().getMapController().select(next);
 		}
