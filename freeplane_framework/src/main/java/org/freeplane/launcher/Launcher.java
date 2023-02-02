@@ -98,8 +98,8 @@ public class Launcher {
 	}
 
     private static void exitOnNonCompatibleJavaVersion(String version) {
-        if(JAVA_VERSION.startsWith(version) 
-                && JAVA_VERSION.length() > version.length() 
+        if(JAVA_VERSION.startsWith(version)
+                && JAVA_VERSION.length() > version.length()
                 &&  0 <= "._".indexOf(JAVA_VERSION.charAt(version.length()))) {
             JOptionPane optionPane = new JOptionPane(
                     "Freeplane is not compatible with java " + version + ", exiting",
@@ -309,8 +309,12 @@ public class Launcher {
 		Utils.setDefine("org.knopflerfish.framework.readonly", "true");
 		Utils.setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
 		Utils.setDefine("org.freeplane.user.dir", System.getProperty("user.dir"));
-		Utils.setDefine(BASEDIRECTORY_PROPERTY, getAbsolutePath());
-		System.setProperty("user.dir", getAbsolutePath());
+		String freeplaneAbsolutePath = getFreeplaneAbsolutePath();
+        Utils.setDefine(BASEDIRECTORY_PROPERTY, freeplaneAbsolutePath);
+		if(new File(freeplaneInstallationDirectory, "flatlaf-windows-x86.dll").exists()) {
+		    Utils.setDefine("flatlaf.nativeLibraryPath", freeplaneAbsolutePath);
+		}
+		System.setProperty("user.dir", getFreeplaneAbsolutePath());
 		Utils.setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
 		Utils.setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
 		Utils.setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));
@@ -337,7 +341,7 @@ public class Launcher {
 		return service;
 	}
 
-	private String getAbsolutePath() {
+	private String getFreeplaneAbsolutePath() {
 		return freeplaneInstallationDirectory.getAbsolutePath();
 	}
 

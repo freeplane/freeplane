@@ -241,6 +241,17 @@ task generateIconGroupProperties {
         props.store(System.out, null)
     }
 }
+task copyFlatLafDll(type: Copy) {
+    def dependencyFile = configurations.lib.find { it.name.startsWith('flatlaf-')}
+    from zipTree(dependencyFile)
+    into(globalBin)
+    include { file -> file.name.endsWith('.dll') || file.name.endsWith('.so') }
+    eachFile { details ->
+        details.path = details.file.name
+    }
+}
+
+build.dependsOn copyFlatLafDll
 
 task copyOSGiJars(type: Copy) {
     from ("$buildDir/libs") {
