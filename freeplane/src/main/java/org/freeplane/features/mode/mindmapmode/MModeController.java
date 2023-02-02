@@ -35,6 +35,7 @@ import org.freeplane.core.ui.flatlaf.FlatSolarizedLightIJTheme;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -49,6 +50,8 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 public class MModeController extends ModeController {
 	private static final String LOOKANDFEEL_PROPERTY = "lookandfeel";
@@ -130,7 +133,15 @@ public class MModeController extends ModeController {
 			lafNames.add(className);
 			translatedLafNames.add(info.getName());
 		}
-		lafNames.add(FlatLightLaf.class.getName());
+
+        if(Compat.isMacOsX()) {
+            lafNames.add(FlatMacLightLaf.class.getName());
+            translatedLafNames.add("Flat macOS Light");
+            lafNames.add(FlatMacDarkLaf.class.getName());
+            translatedLafNames.add("Flat macOS Dark");
+        }
+
+        lafNames.add(FlatLightLaf.class.getName());
 		translatedLafNames.add("Flat Light");
 		lafNames.add(FlatIntelliJLaf.class.getName());
 		translatedLafNames.add("Flat IntelliJ");
@@ -260,7 +271,7 @@ public class MModeController extends ModeController {
 	public UserRole userRole(MapModel map) {
 		return map != null ? UserRole.of(canEdit(map)) : UserRole.NO_MAP;
 	}
-	
+
 	@Override
 	public boolean supportsHookActions() {
 		return true;
