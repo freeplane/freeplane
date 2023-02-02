@@ -348,14 +348,14 @@ public class EditNodeTextField extends EditNodeBase {
 				return;
 			}
 			Window myWindow = SwingUtilities.getWindowAncestor(e.getComponent());
-			if (oppositeComponent != null && SwingUtilities.getWindowAncestor(oppositeComponent) 
+			if (oppositeComponent != null && SwingUtilities.getWindowAncestor(oppositeComponent)
 					!= myWindow) {
 				myWindow.addWindowFocusListener(new WindowFocusListener() {
-					
+
 					@Override
 					public void windowLostFocus(WindowEvent e) {
 					}
-					
+
 					@Override
 					public void windowGainedFocus(WindowEvent e) {
 						myWindow.removeWindowFocusListener(this);
@@ -412,12 +412,6 @@ public class EditNodeTextField extends EditNodeBase {
 					nodeView.requestFocusInWindow();
 				}
 				break;
-				case KeyEvent.VK_TAB:
-					if (e.isControlDown() || e.isMetaDown())
-						break;
-					textfield.replaceSelection("    ");
-					e.consume();
-					break;
 				case KeyEvent.VK_SPACE:
 					if (e.isControlDown() || e.isMetaDown())
 						break;
@@ -679,6 +673,9 @@ public class EditNodeTextField extends EditNodeBase {
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "ignore-insert-tab");
+        inputMap.put(KeyStroke.getKeyStroke('\t'), "ignore-insert-tab");
+
 		actionMap.put(DefaultEditorKit.pasteAction, pasteAction);
 
 		inputMap.put((KeyStroke) boldAction.getValue(Action.ACCELERATOR_KEY), "boldAction");
@@ -754,7 +751,7 @@ public class EditNodeTextField extends EditNodeBase {
 		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
 		final int textFieldBorderWidth = 2;
-		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, 
+		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth,
 				MapView.drawsRectangleForSelection() ? MapView.getSelectionRectangleColor() : nodeView.getTextBackground()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
 		textFieldMinimumSize.width = 1 + textFieldMinimumSize.width * 21 / 20;
