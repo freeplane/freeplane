@@ -188,26 +188,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		}
 	}
 
-	/**
-	 * Unfolds every node that has only children which themselves have children.
-	 * As this function is a bit difficult to describe and perhaps not so
-	 * useful, it is currently not introduced into the menus.
-	 *
-	 * @param node
-	 *            node to start from.
-	 */
-	public void foldLastBranches(final NodeModel node) {
-		boolean nodeHasChildWhichIsLeave = false;
-		for (final NodeModel child : node.getChildren()) {
-			if (child.getChildCount() == 0) {
-				nodeHasChildWhichIsLeave = true;
-			}
-		}
-		setFolded(node, nodeHasChildWhichIsLeave);
-		for (final NodeModel child : node.getChildren()) {
-			foldLastBranches(child);
-		}
-	}
 
 	protected void foldOneStage(final NodeModel node) {
 		foldStageN(node, getMaxDepth(node) - 1);
