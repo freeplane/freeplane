@@ -142,51 +142,6 @@ public class MMapController extends MapController {
                     viewController.addStatusInfo("display_node_id", null, null);
                 }
             });
-            addMapChangeListener(new IMapChangeListener() {
-
-                @Override
-                public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-                }
-
-                @Override
-                public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-                }
-
-                @Override
-                public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-                    if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent)) {
-                        final NodeModel node = nodeMoveEvent.oldParent;
-                        if (isSummaryNodeWithoutChildren(node)){
-                            if(nodeMoveEvent.newParent == node.getParentNode())
-                                SwingUtilities.invokeLater(() ->
-                                    deleteSingleSummaryNode(node));
-                            else
-                                deleteSingleSummaryNode(node);
-                        }
-                    }
-                }
-
-                @Override
-                public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-                }
-
-                @Override
-                public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-                    final NodeModel parent = nodeDeletionEvent.parent;
-                    if (isSummaryNodeWithoutChildren(parent)){
-                        deleteSingleSummaryNode(parent);
-                    }
-                }
-
-                private boolean isSummaryNodeWithoutChildren(final NodeModel node) {
-                    return !node.getMap().isUndoActionRunning() && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty();
-                }
-
-                @Override
-                public void mapChanged(MapChangeEvent event) {
-                }
-            });
-
     }
 
     public NodeModel addNewNode(int newNodeMode) {
@@ -534,21 +489,25 @@ public class MMapController extends MapController {
             deleteSingleNode(parentClone, index);
     }
 
-    private void deleteSingleSummaryNode(NodeModel summarynode) {
-        final NodeModel summaryParent = summarynode.getParentNode();
-        final SummaryLevels summaryLevels = new SummaryLevels(summaryParent, summaryParent);
-        final int summaryNodeIndex = summarynode.getIndex();
-        final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(summaryNodeIndex - 1);
-        deleteSingleNode(summaryParent, summaryNodeIndex);
-        NodeModel groupBeginNode = summaryParent.getChildAt(groupBeginNodeIndex);
-		if(SummaryNode.isFirstGroupNode(groupBeginNode)) {
-			if(SummaryNode.isSummaryNode(groupBeginNode)) {
-				 final FirstGroupNode firstGroupNodeHook = getModeController().getExtension(FirstGroupNode.class);
-				 firstGroupNodeHook.undoableDeactivateHook(groupBeginNode);
-			}
-			else
-				deleteSingleNode(summaryParent, groupBeginNodeIndex);
-		}
+    private void deleteSingleSummaryNode(NodeModel node) {
+        boolean shouldDeleteSummaryNodeWithoutChildren = !node.getMap().isUndoActionRunning() && ! node.isFolded()
+                && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty();
+        if(shouldDeleteSummaryNodeWithoutChildren) {
+            final NodeModel summaryParent = node.getParentNode();
+            final SummaryLevels summaryLevels = new SummaryLevels(summaryParent, summaryParent);
+            final int summaryNodeIndex = node.getIndex();
+            final int groupBeginNodeIndex = summaryLevels.findGroupBeginNodeIndex(summaryNodeIndex - 1);
+            deleteSingleNode(summaryParent, summaryNodeIndex);
+            NodeModel groupBeginNode = summaryParent.getChildAt(groupBeginNodeIndex);
+            if(SummaryNode.isFirstGroupNode(groupBeginNode)) {
+                if(SummaryNode.isSummaryNode(groupBeginNode)) {
+                    final FirstGroupNode firstGroupNodeHook = getModeController().getExtension(FirstGroupNode.class);
+                    firstGroupNodeHook.undoableDeactivateHook(groupBeginNode);
+                }
+                else
+                    deleteSingleNode(summaryParent, groupBeginNodeIndex);
+            }
+        }
     }
 
     private void deleteSingleNode(final NodeModel parentNode, final int index) {
@@ -580,6 +539,7 @@ public class MMapController extends MapController {
         setSaved(map, false);
         parent.remove(index);
         fireNodeDeleted(nodeDeletionEvent);
+        deleteSingleSummaryNode(nodeDeletionEvent.parent);
     }
 
     public MModeController getMModeController() {
@@ -907,7 +867,9 @@ public class MMapController extends MapController {
         oldParent.remove(oldParent.getIndex(child));
         newParent.insert(child, newIndex);
         fireNodeMoved(nodeMoveEvent);
-        setSaved(newParent.getMap(), false);
+        if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
+            deleteSingleSummaryNode(nodeMoveEvent.oldParent);
+       setSaved(newParent.getMap(), false);
         return newIndex;
     }
 
