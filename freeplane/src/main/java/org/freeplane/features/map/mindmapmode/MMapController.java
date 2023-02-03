@@ -49,6 +49,7 @@ import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -153,8 +154,16 @@ public class MMapController extends MapController {
 
                 @Override
                 public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-                    if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
-                        onNodeDeleted(nodeMoveEvent.oldParent);
+                    if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent)) {
+                        final NodeModel node = nodeMoveEvent.oldParent;
+                        if (isSummaryNodeWithoutChildren(node)){
+                            if(nodeMoveEvent.newParent == node.getParentNode())
+                                SwingUtilities.invokeLater(() ->
+                                    deleteSingleSummaryNode(node));
+                            else
+                                deleteSingleSummaryNode(node);
+                        }
+                    }
                 }
 
                 @Override
@@ -164,13 +173,13 @@ public class MMapController extends MapController {
                 @Override
                 public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
                     final NodeModel parent = nodeDeletionEvent.parent;
-                    onNodeDeleted(parent);
+                    if (isSummaryNodeWithoutChildren(parent)){
+                        deleteSingleSummaryNode(parent);
+                    }
                 }
 
-                private void onNodeDeleted(final NodeModel node) {
-                    if (!node.getMap().isUndoActionRunning() && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty()){
-                        deleteSingleSummaryNode(node);
-                    }
+                private boolean isSummaryNodeWithoutChildren(final NodeModel node) {
+                    return !node.getMap().isUndoActionRunning() && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty();
                 }
 
                 @Override
