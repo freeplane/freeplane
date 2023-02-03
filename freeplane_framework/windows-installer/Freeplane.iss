@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.10.6"
+#define MyVersion "1.10.7"
 #define MyStatus ""
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
@@ -81,8 +81,8 @@ Source: "..\..\java-runtime\*"; DestDir: "{app}\runtime"; Flags: ignoreversion c
 #endif
 
 [Icons]
-Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: 
-Name: {group}\Uninstall Freeplane; Filename: {uninstallexe}; Tasks: 
+Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks:
+Name: {group}\Uninstall Freeplane; Filename: {uninstallexe}; Tasks:
 Name: {commondesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon
 
@@ -117,7 +117,7 @@ Type: filesandordirs; Name: "{app}\runtime"
 Type: filesandordirs; Name: "{app}"
 
 [Dirs]
-Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 
+Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages:
 
 [Code]
 function CmdLineParamExists(const Value: string): Boolean;

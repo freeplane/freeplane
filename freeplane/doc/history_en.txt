@@ -1,4 +1,8 @@
 ==============================
+1.10.7
+==============================
+Bug fixes
+==============================
 1.10.6
 ==============================
 Performance optimizations
@@ -150,7 +154,7 @@ Formula support for node core, node details and notes
 New Freeplane Application icons and splash screen
 Configurable icons for links depending on link URL and file extension
 Following styles defined in external maps (synchronized when the map is loaded)
-New action for copying styles from other maps but keeping own user styles if they are different 
+New action for copying styles from other maps but keeping own user styles if they are different
 Fix default edge and node widths
 Option to open node links only if Control key is pressed
 Add background colors to generated HTML
@@ -243,7 +247,7 @@ Bug fixes
 ===============================
 Use UTF-8 encoding for mind map files
 Use emoticons from https://twemoji.twitter.com/ as icons
-Use only svg icons, remove png icons when svg icons can be used 
+Use only svg icons, remove png icons when svg icons can be used
 Hierarchical icons for subtrees
 
 ===============================
