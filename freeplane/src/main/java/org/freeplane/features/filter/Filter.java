@@ -37,7 +37,7 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  */
 public class Filter implements IExtension {
-    
+
     public static Filter createTransparentFilter() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false, null);
@@ -145,7 +145,7 @@ public class Filter implements IExtension {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_HIDDEN);
 		}
 		boolean childrenHaveMatchingAncestor = hasMatchingAncestor || matchesCombinedFilter && ! node.isRoot();
-        if (filterChildren(node, childrenHaveMatchingAncestor, 
+        if (filterChildren(node, childrenHaveMatchingAncestor,
 		        !matchesCombinedFilter
 		        || hasHiddenAncestor)) {
 		    addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
@@ -161,7 +161,7 @@ public class Filter implements IExtension {
 	public boolean areAncestorsShown() {
 		return 0 != (options & FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 	}
-	
+
 	boolean areMatchingNodesHidden() {
 	    return hidesMatchingNodes;
 	}
@@ -206,22 +206,32 @@ public class Filter implements IExtension {
     public void useFilterResultsFrom(Filter oldFilter) {
         accessor = oldFilter.accessor;
     }
-    
+
 	/*
 	 * (non-Javadoc)
 	 * @see
 	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
 	 */
 	public boolean isVisible(final NodeModel node) {
-		if(node.getExtension(NodeVisibility.class) == NodeVisibility.HIDDEN
+		return isVisible(node, options);
+	}
+
+    public boolean isVisibleOrHasVisibleDescendant(final NodeModel node) {
+        return isVisible(node,
+                options + FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+    }
+
+    private boolean isVisible(final NodeModel node, int options) {
+        if(node.getExtension(NodeVisibility.class) == NodeVisibility.HIDDEN
 				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES)
 			return false;
 		if (condition == null || node.isRoot()) {
 			return true;
 		}
 		FilterInfo filterInfo = getFilterInfo(node);
-        return filterInfo.isNotChecked() || filterInfo.matches(this.options) != hidesMatchingNodes;
-	}
+        return filterInfo.isNotChecked() || filterInfo.matches(options) != hidesMatchingNodes;
+    }
+
 
 	void resetFilter(final NodeModel node) {
 		getFilterInfo(node).reset();

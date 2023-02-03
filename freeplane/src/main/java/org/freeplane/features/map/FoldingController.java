@@ -35,6 +35,7 @@ import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -53,7 +54,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@Override
 		public void actionPerformed(final ActionEvent e, final NodeModel node) {
-			foldAll(node);
+		    Filter filter = FilterController.getFilter(node.getMap());
+			foldAll(node, filter);
 		}
 	}
 
@@ -67,7 +69,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@Override
 		public void actionPerformed(final ActionEvent e, final NodeModel node) {
-			foldOneStage(node);
+		    Filter filter = FilterController.getFilter(node.getMap());
+			foldOneStage(node, filter);
 		}
 	}
 
@@ -81,7 +84,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@Override
 		public void actionPerformed(final ActionEvent e, final NodeModel node) {
-			unfoldAll(node);
+		    Filter filter = FilterController.getFilter(node.getMap());
+			unfoldAll(node, filter);
 		}
 	}
 
@@ -94,7 +98,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 		@Override
 		public void actionPerformed(final ActionEvent e, final NodeModel node) {
-			unfoldOneStage(node);
+		    Filter filter = FilterController.getFilter(node.getMap());
+			unfoldOneStage(node, filter);
 		}
 	}
 
@@ -181,39 +186,46 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		return result;
 	}
 
-	protected void foldAll(final NodeModel node) {
-		setFolded(node, true);
-		for (NodeModel child : node.getChildren()) {
-			foldAll(child);
-		}
+	private void foldAll(final NodeModel node, Filter filter) {
+	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	        setFolded(node, true);
+	        for (NodeModel child : node.getChildren()) {
+	            foldAll(child, filter);
+	        }
+	    }
 	}
 
-
-	protected void foldOneStage(final NodeModel node) {
-		foldStageN(node, getMaxDepth(node) - 1);
+	private void foldOneStage(final NodeModel node, Filter filter) {
+	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+            foldStageN(node, getMaxDepth(node, filter) - 1, filter);
+        }
 	}
 
-	private void foldStageN(final NodeModel node, final int stage) {
-		final int k = depth(node);
-		if (k < stage) {
-			setFolded(node, false);
-			for (final NodeModel child : node.getChildren()) {
-				foldStageN(child, stage);
-			}
-		}
-		else {
-			foldAll(node);
-		}
+	private void foldStageN(final NodeModel node, final int stage, Filter filter) {
+	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	        final int k = depth(node);
+	        if (k < stage) {
+	            setFolded(node, false);
+	            for (final NodeModel child : node.getChildren()) {
+	                foldStageN(child, stage, filter);
+	            }
+	        }
+	        else {
+	            foldAll(node, filter);
+	        }
+	    }
 	}
 
-	private int getMaxDepth(final NodeModel node) {
+	private int getMaxDepth(final NodeModel node, Filter filter) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if (mapController.isFolded(node) || !node.hasChildren()) {
+		if (mapController.isFolded(node)
+		        || !node.hasChildren()
+		        || ! filter.isVisibleOrHasVisibleDescendant(node)) {
 			return depth(node);
 		}
 		int maxDepth = 0;
 		for (final NodeModel child : node.getChildren()) {
-			final int childMaxDepth = getMaxDepth(child);
+			final int childMaxDepth = getMaxDepth(child, filter);
 			if (childMaxDepth > maxDepth) {
 				maxDepth = childMaxDepth;
 			}
@@ -230,7 +242,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		Filter filter = Controller.getCurrentController().getSelection().getFilter();
 		if (!node.hasChildren()) {
 			return Integer.MAX_VALUE;
-		} 
+		}
 		if(node.hasVisibleContent(filter)) {
 			if (mapController.isFolded(node)) {
 				return depth(node);
@@ -254,11 +266,12 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 			Controller controller = Controller.getCurrentController();
 			final IMapSelection selection = controller.getSelection();
 			final NodeModel node = selection.getSelected();
+			Filter filter = FilterController.getFilter(node.getMap());
 			if (e.getWheelRotation() > 0) {
-				unfoldOneStage(node);
+				unfoldOneStage(node, filter);
 			}
 			else {
-				foldOneStage(node);
+				foldOneStage(node, filter);
 			}
 			return true;
 		}
@@ -273,32 +286,38 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		}
 	}
 
-	public void unfoldAll(final NodeModel node) {
-		setFolded(node, false);
-		for (final NodeModel child : node.getChildren()) {
-			unfoldAll(child);
-		}
+	private void unfoldAll(final NodeModel node, Filter filter) {
+	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	        setFolded(node, false);
+	        for (final NodeModel child : node.getChildren()) {
+	            unfoldAll(child, filter);
+	        }
+	    }
 	}
 
-	protected void unfoldOneStage(final NodeModel node) {
-		int minDepth = getMinDepth(node);
-		if (minDepth < Integer.MAX_VALUE) {
-			minDepth++;
-		}
-		unfoldStageN(node, minDepth);
+	private void unfoldOneStage(final NodeModel node, Filter filter) {
+	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	        int minDepth = getMinDepth(node);
+	        if (minDepth < Integer.MAX_VALUE) {
+	            minDepth++;
+	        }
+	        unfoldStageN(node, minDepth, filter);
+	    }
 	}
 
-	private void unfoldStageN(final NodeModel node, final int stage) {
-		final int k = depth(node);
-		if (k < stage) {
-			setFolded(node, false);
-			for (final NodeModel child : node.getChildren()) {
-				unfoldStageN(child, stage);
-			}
-		}
-		else {
-			foldAll(node);
-		}
+	private void unfoldStageN(final NodeModel node, final int stage, Filter filter) {
+	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	        final int k = depth(node);
+	        if (k < stage) {
+	            setFolded(node, false);
+	            for (final NodeModel child : node.getChildren()) {
+	                unfoldStageN(child, stage, filter);
+	            }
+	        }
+	        else {
+	            foldAll(node, filter);
+	        }
+	    }
 	}
 
 	private int depth(NodeModel node) {
