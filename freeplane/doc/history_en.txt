@@ -7,6 +7,11 @@ Node movement restricted to single directions
 Simultaneous movement of all selected nodes
 
 ==============================
+1.10.7
+==============================
+Bug fixes
+
+==============================
 1.10.6
 ==============================
 Performance optimizations
