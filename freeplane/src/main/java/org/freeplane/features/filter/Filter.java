@@ -216,9 +216,9 @@ public class Filter implements IExtension {
 		return isVisible(node, options);
 	}
 
-    public boolean isVisibleOrHasVisibleDescendant(final NodeModel node) {
-        return isVisible(node,
-                options | FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+    public boolean isFoldable(final NodeModel node) {
+        return  hidesMatchingNodes
+                || isVisible(node, options | FilterInfo.FILTER_SHOW_AS_ANCESTOR);
     }
 
     private boolean isVisible(final NodeModel node, int options) {

@@ -187,7 +187,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	private void foldAll(final NodeModel node, Filter filter) {
-	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	    if(filter.isFoldable(node)) {
 	        setFolded(node, true);
 	        for (NodeModel child : node.getChildren()) {
 	            foldAll(child, filter);
@@ -196,13 +196,13 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	private void foldOneStage(final NodeModel node, Filter filter) {
-	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	    if(filter.isFoldable(node)) {
             foldStageN(node, getMaxDepth(node, filter) - 1, filter);
         }
 	}
 
 	private void foldStageN(final NodeModel node, final int stage, Filter filter) {
-	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	    if(filter.isFoldable(node)) {
 	        final int k = depth(node);
 	        if (k < stage) {
 	            setFolded(node, false);
@@ -220,7 +220,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node)
 		        || !node.hasChildren()
-		        || ! filter.isVisibleOrHasVisibleDescendant(node)) {
+		        || ! filter.isFoldable(node)) {
 			return depth(node);
 		}
 		int maxDepth = 0;
@@ -287,7 +287,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	private void unfoldAll(final NodeModel node, Filter filter) {
-	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	    if(filter.isFoldable(node)) {
 	        setFolded(node, false);
 	        for (final NodeModel child : node.getChildren()) {
 	            unfoldAll(child, filter);
@@ -296,7 +296,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	private void unfoldOneStage(final NodeModel node, Filter filter) {
-	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	    if(filter.isFoldable(node)) {
 	        int minDepth = getMinDepth(node);
 	        if (minDepth < Integer.MAX_VALUE) {
 	            minDepth++;
@@ -306,7 +306,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	private void unfoldStageN(final NodeModel node, final int stage, Filter filter) {
-	    if(filter.isVisibleOrHasVisibleDescendant(node)) {
+	    if(filter.isFoldable(node)) {
 	        final int k = depth(node);
 	        if (k < stage) {
 	            setFolded(node, false);
