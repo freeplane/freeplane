@@ -264,11 +264,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
             ModeController modeController = controller.getModeController();
 			final Point dragNextPoint = point;
 			boolean changesDistanceBetweenChildren = Compat.isCtrlEvent(e);
-			boolean movesSingleNodeInBothDirections = Compat.isShiftEvent(e);
 			boolean usesHorizontalLayout = draggedNodeView.getAncestorWithVisibleContent().usesHorizontalLayout();
 			final NodeModel node = getNode();
 			final int hGapChange = getHGapChange(dragNextPoint, usesHorizontalLayout);
 			final int shiftYChange = getNodeShiftYChange(dragNextPoint, usesHorizontalLayout);
+			int minimumIntentionalTwoDirectionChange = 8;
+            boolean movesSingleNodeInBothDirections = Compat.isShiftEvent(e) || Math.abs(hGapChange) > minimumIntentionalTwoDirectionChange && Math.abs(shiftYChange) > minimumIntentionalTwoDirectionChange;
 			if (! changesDistanceBetweenChildren) {
 			    final LocationModel locationModel = LocationModel.createLocationModel(node);
 			    boolean isHgapChanged = originalHGap.toBaseUnitsRounded() + hGapChange != locationModel.getHGap().toBaseUnitsRounded();
