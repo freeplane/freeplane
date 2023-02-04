@@ -877,6 +877,9 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public void setBoundsDefault(int x, int y, int width, int height) {
+	    if(x != getX() || y != getY() || width != getWidth() || height != getHeight()) {
+	        getNodeView().repaintEdge();
+	    }
 		super.setBounds(x, y, width, height);
 	}
 

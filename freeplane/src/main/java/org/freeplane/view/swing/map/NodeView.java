@@ -1383,10 +1383,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		if (getEdgeStyle().equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
-			final NodeView visibleParentView = getAncestorWithVisibleContent();
-			if (visibleParentView != null) {
-				visibleParentView.repaintEdge(this);
-			}
+			repaintEdge();
 		}
 		final JComponent content = getContent();
 		final int EXTRA = 20;
@@ -1394,6 +1391,15 @@ public class NodeView extends JComponent implements INodeView {
 		final int y = content.getY() - EXTRA;
 		repaint(x, y, content.getWidth() + EXTRA * 2, content.getHeight() + EXTRA * 2);
 	}
+
+
+
+    void repaintEdge() {
+        final NodeView visibleParentView = getAncestorWithVisibleContent();
+        if (visibleParentView != null) {
+        	visibleParentView.repaintEdge(this);
+        }
+    }
 
 	@Override
 	public boolean requestFocusInWindow() {
@@ -1846,9 +1852,12 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		Rules rule = edgeColor.getRule();
-		if(EdgeController.Rules.BY_PARENT != rule)
-			edgeColor.resetCache();
+	    if(x != getX() || y != getY() || width != getWidth() || height != getHeight()) {
+	        Rules rule = edgeColor.getRule();
+	        if(EdgeController.Rules.BY_PARENT != rule)
+	            edgeColor.resetCache();
+	        repaintEdge();
+	    }
 		super.setBounds(x, y, width, height);
 	}
 
