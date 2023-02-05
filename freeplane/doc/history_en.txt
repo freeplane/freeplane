@@ -6,6 +6,8 @@ Base distance from parent node to child node configurable for parent nodes and s
 Node movement restricted to single directions
 Simultaneous movement of all selected nodes
 Fold/unfold only visible nodes and their ancestors
+New flat look and feels for MacOS
+TAB not blocked when editing node content
 
 ==============================
 1.10.7

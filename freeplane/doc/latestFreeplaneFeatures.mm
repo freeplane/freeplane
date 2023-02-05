@@ -148,7 +148,15 @@
 </hook>
 <node TEXT="Version 1.11.x" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_414352132" CREATED="1668190203324" MODIFIED="1668190235820">
 <node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1802701213" CREATED="1541848060291" MODIFIED="1541848968607">
-<node TEXT="Top-to-bottom, left-to-right and combined layouts" ID="ID_930950985" CREATED="1668190600311" MODIFIED="1668190697443"/>
+<node TEXT="Top-to-bottom, left-to-right and combined layouts" ID="ID_120328641" CREATED="1675608098149" MODIFIED="1675608116259">
+<hook URI="latestFreeplaneFeatures_files/layouts.png" SIZE="0.6124021" NAME="ExternalObject"/>
+</node>
+<node TEXT="Base distance from parent node to child node configurable for parent nodes and styles" ID="ID_455500811" CREATED="1675606733862" MODIFIED="1675606733862"/>
+<node TEXT="Node movement restricted to single directions" ID="ID_1260662085" CREATED="1675606733862" MODIFIED="1675606733862"/>
+<node TEXT="Simultaneous movement of all selected nodes" ID="ID_1265802507" CREATED="1675606733868" MODIFIED="1675606733868"/>
+<node TEXT="Fold/unfold only visible nodes and their ancestors" ID="ID_1883753058" CREATED="1675606733869" MODIFIED="1675606733869"/>
+<node TEXT="New flat look and feels for MacOS" ID="ID_467226780" CREATED="1675606743640" MODIFIED="1675606781008"/>
+<node TEXT="TAB  inserts new nodes when editing node content" ID="ID_1345875067" CREATED="1675606821161" MODIFIED="1675607669478"/>
 </node>
 <node TEXT="Updated software components" STYLE_REF="Purpose" ID="ID_127255283" CREATED="1541847932161" MODIFIED="1541848968607"/>
 </node>
@@ -166,9 +174,9 @@
 <node TEXT="Change key based navigation for summary nodes" ID="ID_1444166533" CREATED="1668190566693" MODIFIED="1668190566693"/>
 <node TEXT="Word wrap in editors for formulas, scripts, markdown and latex" ID="ID_171708339" CREATED="1668190566693" MODIFIED="1668190566693"/>
 </node>
-<node TEXT="Updated software components" STYLE_REF="Purpose" FOLDED="true" ID="ID_1651141080" CREATED="1541847932161" MODIFIED="1541848968607">
+<node TEXT="Updated software components" STYLE_REF="Purpose" FOLDED="true" ID="ID_1651141080" CREATED="1541847932161" MODIFIED="1675607272082" VGAP_QUANTITY="2 pt">
 <node TEXT="Java 17 support" ID="ID_602837388" CREATED="1668190416034" MODIFIED="1668190416034"/>
-<node TEXT="Updated Groovy to version 4" ID="ID_1354215770" CREATED="1668190416034" MODIFIED="1668190431098"/>
+<node TEXT="Updated Groovy to version 4" ID="ID_1354215770" CREATED="1668190416034" MODIFIED="1675607272081"/>
 </node>
 </node>
 <node TEXT="Version 1.9.x" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_1638165251" CREATED="1541847687331" MODIFIED="1620389180349">
