@@ -35,6 +35,7 @@ import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.filemode.CenterAction;
@@ -79,6 +80,7 @@ public class FModeControllerFactory {
 		LinkController.install(new LinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		LocationController.install(new LocationController());
+		LayoutController.install(new LayoutController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);
 		NodeStyleController.getController().shapeHandlers.addGetter(new Integer(0), new IPropertyHandler<NodeGeometryModel, NodeModel>() {

@@ -34,6 +34,7 @@ import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.hidden.HiddenNodeContoller;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.FreeNode;
@@ -81,6 +82,7 @@ public class BModeControllerFactory {
 		LinkController.install(new LinkController(modeController));
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		LocationController.install(new LocationController());
+		LayoutController.install(new LayoutController());
 		SummaryNode.install();
 		FreeNode.install();
 		MapStyle.install(true);
