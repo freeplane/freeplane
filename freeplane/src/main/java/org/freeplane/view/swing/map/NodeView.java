@@ -157,7 +157,7 @@ public class NodeView extends JComponent implements INodeView {
 
 
 	public boolean isFolded(){
-		return isFolded;
+		return isFolded && ! isRoot();
 	}
 
 	void addDragListener(final DragGestureListener dgl) {
@@ -585,7 +585,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (getUpper) {
 			preferredChild = null;
 		}
-		if (preferredChild != null && (sides.matches(preferredChild.isTopOrLeft())) && preferredChild.getParent() == this) {
+		if (preferredChild != null && preferredChild.getParent() == this && (sides.matches(preferredChild.isTopOrLeft()))) {
 			if (preferredChild.isContentVisible()) {
 				return preferredChild;
 			}
@@ -866,7 +866,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void addChildViews() {
-		if(isFolded)
+		if(isFolded())
 			return;
 		int index = 0;
 		for (NodeModel child : getModel().getChildren()) {
@@ -946,7 +946,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING || property == Properties.HIDDEN_CHILDREN || property == EncryptionModel.class) {
-			if(map.isSelected() || property == EncryptionModel.class && ! isFolded){
+			if(map.isSelected() || property == EncryptionModel.class && ! isFolded()){
 				boolean folded = getModeController().getMapController().isFolded(model);
 				boolean force = property ==Properties.HIDDEN_CHILDREN || property == EncryptionModel.class;
 				setFolded(folded, force);
@@ -972,7 +972,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(property == NodeVisibility.class
 				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES) {
 			final NodeView parentView = getParentView();
-			parentView.setFolded(parentView.isFolded, true);
+			parentView.setFolded(parentView.isFolded(), true);
             if(event.getNewValue() == NodeVisibility.HIDDEN && isSelected())
                 FilterController.getCurrentFilterController().selectVisibleNodes(map.getMapSelection());
 			return;
@@ -1015,17 +1015,21 @@ public class NodeView extends JComponent implements INodeView {
 		revalidate();
 	}
 
-	private void setFolded(boolean folded, boolean force) {
+	private void setFolded(boolean fold, boolean force) {
 		boolean wasFolded = isFolded;
-		this.isFolded = folded;
-		if(wasFolded != isFolded || force) {
-			treeStructureChanged();
-			map.selectIfSelectionIsEmpty(this);
-			NodeStyleShape shape = styleController().getShape(model, getStyleOption());
-			if (shape.equals(NodeStyleShape.combined))
-				update();
+		this.isFolded = fold;
+		if(wasFolded != fold || force) {
+			fireFoldingChanged();
 		}
 	}
+
+    void fireFoldingChanged() {
+        treeStructureChanged();
+        map.selectIfSelectionIsEmpty(this);
+        NodeStyleShape shape = styleController().getShape(model, getStyleOption());
+        if (shape.equals(NodeStyleShape.combined))
+        	update();
+    }
 
 	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
@@ -1089,7 +1093,7 @@ public class NodeView extends JComponent implements INodeView {
     @Override
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
 		assert parent == model;
-		if (isFolded) {
+		if (isFolded()) {
 			return;
 		}
 		addChildView(child, index);

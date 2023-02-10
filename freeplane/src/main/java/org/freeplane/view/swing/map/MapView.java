@@ -2541,6 +2541,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	public void usePreviousViewRoot() {
+	    NodeView lastRoot = currentRootView;
 		NodeView newRoot;
 		if(rootsHistory.size() == 0)
 			newRoot = mapRootView;
@@ -2548,6 +2549,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newRoot = rootsHistory.remove(rootsHistory.size() - 1);
 		}
 		setRootNode(newRoot);
+		if(lastRoot.isFolded()) {
+		    lastRoot.fireFoldingChanged();
+		}
 	}
 
 
@@ -2598,6 +2602,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void setRootNode(NodeView newRootView) {
 		if(currentRootView == newRootView)
 			return;
+		boolean newRootWasFolded = newRootView.isFolded();
 		boolean jumpsOut = currentRootView.getModel().isDescendantOf(newRootView.getModel());
 		if(jumpsOut) {
 			preserveNodeLocationOnScreen(currentRootView, 0, 0);
@@ -2622,7 +2627,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			lastSelectedNode.requestFocusInWindow();
 		else
 			selectAsTheOnlyOneSelected(lastSelectedNode);
-		newRootView.setFolded(false);
+		if(newRootWasFolded)
+		    newRootView.fireFoldingChanged();
 		newRootView.resetLayoutPropertiesRecursively();
 		revalidate();
 		repaint();
