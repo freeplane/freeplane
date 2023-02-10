@@ -29,11 +29,12 @@ import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 @SelectableAction(checkOnNodeChange = true)
 class CloudShapeAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private CloudShape actionShape;
@@ -65,7 +66,10 @@ class CloudShapeAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final MCloudController cloudController = (MCloudController) CloudController.getController();
-		cloudController.setShape(node, actionShape);
+		if(! isSelected())
+		    cloudController.setShape(node, actionShape);
+		else
+		    cloudController.setCloud(node, false);
 	}
 
 	@Override
@@ -73,7 +77,8 @@ class CloudShapeAction extends AMultipleNodeAction {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final CloudModel model = CloudModel.getModel(node);
 		if (model != null) {
-			if (actionShape.equals(model.getShape())) {
+		    final MCloudController cloudController = (MCloudController) CloudController.getController();
+			if (actionShape.equals(cloudController.getShape(node, StyleOption.FOR_UNSELECTED_NODE))) {
 				setSelected(true);
 				return;
 			}
