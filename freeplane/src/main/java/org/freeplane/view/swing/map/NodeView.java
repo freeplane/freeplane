@@ -578,6 +578,16 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
+    public NodeView getParentNodeView() {
+        NodeView parent = getParentView();
+        if (parent != null)
+            return parent;
+        NodeModel parentNode = model.getParentNode();
+        if(parentNode == null)
+            return null;
+        return getMap().getNodeView(parentNode);
+    }
+
 	public NodeView getPreferredVisibleChild(final boolean getUpper, final ChildrenSides sides) {
 		if (getModel().isLeaf()) {
 			return null;

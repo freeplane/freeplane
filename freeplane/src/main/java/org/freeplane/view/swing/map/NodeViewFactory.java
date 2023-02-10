@@ -120,35 +120,33 @@ class NodeViewFactory {
 	}
 
 	private NodeGeometryModel shapeConfiguration(NodeView node, StyleOption styleOption) {
-		final ModeController modeController = node.getMap().getModeController();
-		final NodeModel model = node.getModel();
-		NodeStyleController styleController = NodeStyleController.getController(modeController);
-        NodeGeometryModel shapeConfiguration = styleController.getShapeConfiguration(model, styleOption);
-		if (shapeConfiguration.getShape().equals(NodeStyleShape.combined)) {
-			if (node.isFolded()) {
-				shapeConfiguration= shapeConfiguration.withShape(NodeStyleShape.bubble);
-			}
-			else {
-			    shapeConfiguration = NodeGeometryModel.FORK;
-			}
-		}
-		else if(shapeConfiguration.getShape().equals(NodeStyleShape.as_parent)){
-		    if(node.getModel().isRoot())
-		        shapeConfiguration = NodeGeometryModel.DEFAULT_ROOT_OVAL;
-		    else {
-		        NodeView parent = node.getParentView();
-		        if (parent == null)
-		            parent = node.getMap().getNodeView(model.getParentNode());
-		        if(parent.isSelected())
-		            shapeConfiguration = shapeConfiguration(parent, StyleOption.FOR_UNSELECTED_NODE);
-		        else
-		            shapeConfiguration = parent.getMainView().getShapeConfiguration();
-		        if(shapeConfiguration == NodeGeometryModel.DEFAULT_ROOT_OVAL) {
-		            shapeConfiguration = NodeGeometryModel.FORK;
-		        }
-		    }
-		}
-		return shapeConfiguration;
+	    final ModeController modeController = node.getMap().getModeController();
+	    final NodeModel model = node.getModel();
+	    NodeStyleController styleController = NodeStyleController.getController(modeController);
+	    NodeGeometryModel shapeConfiguration = styleController.getShapeConfiguration(model, styleOption);
+	    if (shapeConfiguration.getShape().equals(NodeStyleShape.combined)) {
+	        if (node.isFolded()) {
+	            shapeConfiguration= shapeConfiguration.withShape(NodeStyleShape.bubble);
+	        }
+	        else {
+	            shapeConfiguration = NodeGeometryModel.FORK;
+	        }
+	    }
+	    else if(shapeConfiguration.getShape().equals(NodeStyleShape.as_parent)){
+	        NodeView parent = node.getParentNodeView();
+	        if(parent == null)
+	            shapeConfiguration = NodeGeometryModel.DEFAULT_ROOT_OVAL;
+	        else {
+	            if(parent.isSelected())
+	                shapeConfiguration = shapeConfiguration(parent, StyleOption.FOR_UNSELECTED_NODE);
+	            else
+	                shapeConfiguration = parent.getMainView().getShapeConfiguration();
+	            if(shapeConfiguration == NodeGeometryModel.DEFAULT_ROOT_OVAL) {
+	                shapeConfiguration = NodeGeometryModel.FORK;
+	            }
+	        }
+	    }
+	    return shapeConfiguration;
 	}
 
 	/**
