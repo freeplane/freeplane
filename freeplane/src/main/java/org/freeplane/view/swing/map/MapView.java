@@ -1241,21 +1241,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    final NodeModel oldModel = oldSelected.getModel();
 	    boolean selectedUsesHorizontalLayout = oldSelected.usesHorizontalLayout();
 	    NodeView newSelected;
-	    if (isRoot(oldSelected)) {
+        if (isRoot(oldSelected)) {
             if(selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
-                    || ! selectedUsesHorizontalLayout && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)) {
-                if (oldSelected.isFolded()) {
-                    if (unfoldsOnNavigation()) {
-                        getModeController().getMapController().unfoldAndScroll(oldModel, filter);
-                    }
-                    return null;
-                }
-                else
-                    newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet,
-                            direction == SelectionDirection.UP || direction == SelectionDirection.LEFT);
-            } else {
+                    || ! selectedUsesHorizontalLayout && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT))
+                newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet,
+                        direction == SelectionDirection.UP || direction == SelectionDirection.LEFT);
+            else
                 return null;
-            }
 	    } else {
 	        boolean selectedIsTopOrLeft = oldSelected.isTopOrLeft();
 	        NodeView ancestorWithVisibleContent = oldSelected.getAncestorWithVisibleContent();
@@ -2630,6 +2622,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			lastSelectedNode.requestFocusInWindow();
 		else
 			selectAsTheOnlyOneSelected(lastSelectedNode);
+		newRootView.setFolded(false);
 		newRootView.resetLayoutPropertiesRecursively();
 		revalidate();
 		repaint();
