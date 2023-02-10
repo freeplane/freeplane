@@ -122,27 +122,31 @@ class NodeViewFactory {
 	private NodeGeometryModel shapeConfiguration(NodeView node, StyleOption styleOption) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		NodeGeometryModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model, styleOption);
+		NodeStyleController styleController = NodeStyleController.getController(modeController);
+        NodeGeometryModel shapeConfiguration = styleController.getShapeConfiguration(model, styleOption);
 		if (shapeConfiguration.getShape().equals(NodeStyleShape.combined)) {
 			if (node.isFolded()) {
 				shapeConfiguration= shapeConfiguration.withShape(NodeStyleShape.bubble);
 			}
 			else {
-				shapeConfiguration = NodeGeometryModel.FORK;
+			    shapeConfiguration = NodeGeometryModel.FORK;
 			}
 		}
-		else while(shapeConfiguration.getShape().equals(NodeStyleShape.as_parent)){
-			NodeView parent = node.getParentView();
-			if (parent == null)
-				shapeConfiguration = NodeGeometryModel.DEFAULT_ROOT_OVAL;
-			else if (parent.getParentView() == null)
-				shapeConfiguration = NodeGeometryModel.FORK;
-			else
-			    if(parent.isSelected()) {
-			        shapeConfiguration = shapeConfiguration(parent, StyleOption.FOR_UNSELECTED_NODE);
-			    }
-			    else
-			        shapeConfiguration = parent.getMainView().getShapeConfiguration();
+		else if(shapeConfiguration.getShape().equals(NodeStyleShape.as_parent)){
+		    if(node.getModel().isRoot())
+		        shapeConfiguration = NodeGeometryModel.DEFAULT_ROOT_OVAL;
+		    else {
+		        NodeView parent = node.getParentView();
+		        if (parent == null)
+		            parent = node.getMap().getNodeView(model.getParentNode());
+		        if(parent.isSelected())
+		            shapeConfiguration = shapeConfiguration(parent, StyleOption.FOR_UNSELECTED_NODE);
+		        else
+		            shapeConfiguration = parent.getMainView().getShapeConfiguration();
+		        if(shapeConfiguration == NodeGeometryModel.DEFAULT_ROOT_OVAL) {
+		            shapeConfiguration = NodeGeometryModel.FORK;
+		        }
+		    }
 		}
 		return shapeConfiguration;
 	}
@@ -228,7 +232,7 @@ class NodeViewFactory {
 		}
 		ZoomableLabel noteView = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		if (noteView == null && newText == null && newIcon == null
-				|| noteView != null && newIcon == null 
+				|| noteView != null && newIcon == null
 				&& Objects.equals(newText, noteView.getText())
 				&& noteView.getTextRenderingIcon() == null) {
 			return;
