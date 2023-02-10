@@ -801,7 +801,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	private ChildNodesAlignment getDefaultChildNodesAlignment() {
-		NodeView parentView = getParentView();
+		NodeView parentView = getParentNodeView();
 		if (parentView == null)
 			return ChildNodesAlignment.BY_CENTER;
 		else if(parentView.isSummary())
@@ -1606,7 +1606,7 @@ public class NodeView extends JComponent implements INodeView {
 	public EdgeStyle getEdgeStyle() {
 		if(edgeStyle != null)
 			return edgeStyle;
-		final NodeView parentView = getParentView();
+		final NodeView parentView = getParentNodeView();
 		if(parentView != null)
 			return parentView.getEdgeStyle();
 		return EdgeStyle.values()[0];
@@ -1615,7 +1615,7 @@ public class NodeView extends JComponent implements INodeView {
 	public DashVariant getEdgeDash() {
 		if(edgeDash != null)
 		    return edgeDash;
-		final NodeView parentView = getParentView();
+		final NodeView parentView = getParentNodeView();
 		if(parentView != null)
 			return parentView.getEdgeDash();
 		return DashVariant.DEFAULT;
@@ -1624,7 +1624,7 @@ public class NodeView extends JComponent implements INodeView {
 	public int getEdgeWidth() {
 		if(edgeWidth != null)
 		    return edgeWidth;
-		final NodeView parentView = getParentView();
+		final NodeView parentView = getParentNodeView();
 		if(parentView != null)
 			return parentView.getEdgeWidth();
 		return 1;
@@ -1658,7 +1658,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		else
 			if(rule == EdgeController.Rules.BY_PARENT) {
-			final NodeView parentView = getParentView();
+			final NodeView parentView = getParentNodeView();
 			if (parentView != null) {
 				final Color color = parentView.getEdgeColor();
 				return color;
@@ -1979,7 +1979,7 @@ public class NodeView extends JComponent implements INodeView {
 	        this.layoutOrientation = layoutOrientation;
 	        break;
 	    default:
-	        NodeView parent = getParentView();
+	        NodeView parent = getParentNodeView();
 	        if(parent != null)
 	            this.layoutOrientation = parent.layoutOrientation();
 	        else
