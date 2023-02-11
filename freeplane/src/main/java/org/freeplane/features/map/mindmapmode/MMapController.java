@@ -49,7 +49,6 @@ import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -74,10 +73,8 @@ import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.FreeNode;
-import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeBuilder;
