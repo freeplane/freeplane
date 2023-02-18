@@ -246,4 +246,8 @@ class NodeViewLayoutHelper {
     ChildrenSides childrenSides() {
         return view.childrenSides();
     }
+
+    boolean isSubtreeVisible() {
+       return view.isSubtreeVisible();
+    }
 }
