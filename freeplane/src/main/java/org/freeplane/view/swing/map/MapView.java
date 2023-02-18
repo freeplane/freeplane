@@ -67,7 +67,6 @@ import javax.swing.JPanel;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
@@ -1258,11 +1257,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                     || (! ancestorUsesHorizontalLayout && ! selectedIsTopOrLeft) && direction == SelectionDirection.LEFT) {
                 newSelected = getVisibleSummarizedOrParentView(oldSelected);
             } else {
-                ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesAlignment();
-                boolean areChildrenApart = childNodesAlignment.areChildrenApart;
-                if((selectedUsesHorizontalLayout || areChildrenApart)
+                if((selectedUsesHorizontalLayout)
                         && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
-                        || (! selectedUsesHorizontalLayout || areChildrenApart) && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
+                        || (! selectedUsesHorizontalLayout)
+                            && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)){
                     if (oldSelected.isFolded() && unfoldsOnNavigation()) {
                         if (oldSelected.usesHorizontalLayout() == ancestorWithVisibleContent.usesHorizontalLayout()) {
                             getModeController().getMapController().unfoldAndScroll(oldModel, filter);
@@ -1537,17 +1535,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         if(oldSelectionEnd == null)
             return false;
         NodeView nextSelected = oldSelectionEnd;
-        for(;;){
-            NodeView visibleAncestor = nextSelected.getAncestorWithVisibleContent();
-            if(visibleAncestor == null)
-                return false;
-            boolean ancestorUsesHorizontalLayout = visibleAncestor.usesHorizontalLayout();
-            if(ancestorUsesHorizontalLayout == direction.isHorizontal())
-                break;
-            nextSelected = visibleAncestor;
-            if(nextSelected.isRoot() || continious)
-                return false;
-        }
+        boolean ancestorUsesHorizontalLayout = nextSelected.usesHorizontalLayout();
+        if(ancestorUsesHorizontalLayout != direction.isHorizontal())
+            return false;
+        if(nextSelected.isRoot() || continious)
+            return false;
         {
             final NodeView nextVisibleSibling = getNextVisibleSibling(nextSelected, direction == SelectionDirection.DOWN || direction == SelectionDirection.RIGHT);
             if (nextSelected == nextVisibleSibling)

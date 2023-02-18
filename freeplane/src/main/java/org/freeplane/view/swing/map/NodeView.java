@@ -529,6 +529,8 @@ public class NodeView extends JComponent implements INodeView {
 		boolean skipUntilSummaryEnd = isSummary();
 		for (int i = index + 1; i < v.size(); i++) {
 			final NodeView nextView = v.get(i);
+			if(this.isTopOrLeft() != nextView.isTopOrLeft())
+			    continue;
 			if(skipUntilSummaryEnd && nextView.isSummary())
 				break;
 			skipUntilSummaryEnd = false;
@@ -537,7 +539,8 @@ public class NodeView extends JComponent implements INodeView {
 				return nextView;
 			}
 			else if (! node.isHiddenSummary()){
-				final NodeView first = nextView.getFirst(null, false, false);
+				final NodeView first = nextView.getFirst(null, this.isTopOrLeft(),
+		                !this.isTopOrLeft());
 				if (first != null) {
 					return first;
 				}
@@ -547,18 +550,25 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	NodeView getNextVisibleSibling() {
-		NodeView sibling;
+		NodeView sibling = this;
 		NodeView lastSibling = this;
-		for (sibling = this; sibling != map.getRoot(); sibling = sibling.getParentView()) {
+		NodeView parentView = getParentView();
+        boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
+		while (sibling != map.getRoot()) {
 			lastSibling = sibling;
 			sibling = sibling.getNextSiblingSingle();
 			if (sibling != lastSibling) {
 				break;
 			}
+			sibling = parentView;
+			parentView = parentView.getParentView();
+            if (parentUsesHorizontalLayout != parentView.usesHorizontalLayout())
+                return this;
 		}
-		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
-			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isTopOrLeft(),
-			    !this.isTopOrLeft());
+		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
+		        && sibling.usesHorizontalLayout() == parentUsesHorizontalLayout) {
+			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null,
+			        this.isTopOrLeft(), !this.isTopOrLeft());
 			if (first == null) {
 				break;
 			}
@@ -666,12 +676,15 @@ public class NodeView extends JComponent implements INodeView {
  				skipUntilFirstGroupNode = !nextView.isFirstGroupNode();
  				continue;
  			}
+            if(this.isTopOrLeft() != nextView.isTopOrLeft())
+                continue;
 			final NodeModel node = nextView.getModel();
 			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
 			}
 			else if (! node.isHiddenSummary()){
-				final NodeView last = nextView.getLast(null, false, false);
+				final NodeView last = nextView.getLast(null, this.isTopOrLeft(),
+		                !this.isTopOrLeft());
 				if (last != null) {
 					return last;
 				}
@@ -701,16 +714,23 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	NodeView getPreviousVisibleSibling() {
-		NodeView sibling;
+		NodeView sibling = this;
 		NodeView previousSibling = this;
-		for (sibling = this; sibling != map.getRoot(); sibling = sibling.getParentView()) {
+        NodeView parentView = getParentView();
+        boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
+		while(sibling != map.getRoot()) {
 			previousSibling = sibling;
 			sibling = sibling.getPreviousSiblingSingle();
 			if (sibling != previousSibling) {
 				break;
 			}
+            sibling = parentView;
+            parentView = parentView.getParentView();
+            if (parentUsesHorizontalLayout != parentView.usesHorizontalLayout())
+                return this;
 		}
-        while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
+        while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
+                && sibling.usesHorizontalLayout() == parentUsesHorizontalLayout) {
 			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isTopOrLeft(),
 			    !this.isTopOrLeft());
 			if (last == null) {
