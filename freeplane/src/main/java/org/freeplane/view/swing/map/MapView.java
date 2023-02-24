@@ -1538,7 +1538,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         boolean ancestorUsesHorizontalLayout = nextSelected.usesHorizontalLayout();
         if(ancestorUsesHorizontalLayout != direction.isHorizontal())
             return false;
-        if(nextSelected.isRoot() || continious)
+        if(nextSelected.isRoot())
             return false;
         {
             final NodeView nextVisibleSibling = getNextVisibleSibling(nextSelected, direction == SelectionDirection.DOWN || direction == SelectionDirection.RIGHT);
