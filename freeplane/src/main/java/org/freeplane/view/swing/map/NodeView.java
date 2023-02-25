@@ -523,7 +523,7 @@ public class NodeView extends JComponent implements INodeView {
 		return model;
 	}
 
-	private NodeView getNextSiblingSingle() {
+	private NodeView getNextSiblingSameParent() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
 		boolean skipUntilSummaryEnd = isSummary();
@@ -556,7 +556,7 @@ public class NodeView extends JComponent implements INodeView {
         boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
 		while (sibling != map.getRoot()) {
 			lastSibling = sibling;
-			sibling = sibling.getNextSiblingSingle();
+			sibling = sibling.getNextSiblingSameParent();
 			if (sibling != lastSibling) {
 				break;
 			}
@@ -666,7 +666,7 @@ public class NodeView extends JComponent implements INodeView {
 		return newSelected;
 	}
 
-	private NodeView getPreviousSiblingSingle() {
+	private NodeView getPreviousSiblingSameParent() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
 		boolean skipUntilFirstGroupNode = isSummary();
@@ -720,7 +720,7 @@ public class NodeView extends JComponent implements INodeView {
         boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
 		while(sibling != map.getRoot()) {
 			previousSibling = sibling;
-			sibling = sibling.getPreviousSiblingSingle();
+			sibling = sibling.getPreviousSiblingSameParent();
 			if (sibling != previousSibling) {
 				break;
 			}
