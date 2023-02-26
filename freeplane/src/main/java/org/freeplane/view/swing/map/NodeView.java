@@ -846,32 +846,34 @@ public class NodeView extends JComponent implements INodeView {
 		return parentView.getAncestorWithVisibleContent();
 	}
 
-	NodeView getVisibleSummarizedOrParentView() {
+	NodeView getVisibleSummarizedOrParentView(LayoutOrientation requiredLayoutOrientation, boolean isChildTopOrLeft) {
 		final Container parent = getParent();
 		if (!(parent instanceof NodeView)) {
 			return null;
 		}
-		if(isSummary()){
-			boolean startFromSummary = true;
-			LinkedList<NodeView> v = getSiblingViews();
-			final int index = v.indexOf(this);
-			for (int i = index - 1; i >= 0; i--) {
-				final NodeView nextView = v.get(i);
-				if (nextView.isContentVisible()) {
-					return nextView;
-				}
-				if(! nextView.isSummary())
-					startFromSummary = false;
-				else if(! startFromSummary)
-					break;
-
-			}
-		}
 		final NodeView parentView = (NodeView) parent;
-		if (parentView.isContentVisible()) {
-			return parentView;
+		if(parentView.layoutOrientation() == requiredLayoutOrientation && isChildTopOrLeft == isTopOrLeft()) {
+		    if(isSummary()){
+		        boolean startFromSummary = true;
+		        LinkedList<NodeView> v = getSiblingViews();
+		        final int index = v.indexOf(this);
+		        for (int i = index - 1; i >= 0; i--) {
+		            final NodeView nextView = v.get(i);
+		            if (nextView.isContentVisible()) {
+		                return nextView;
+		            }
+		            if(! nextView.isSummary())
+		                startFromSummary = false;
+		            else if(! startFromSummary)
+		                break;
+
+		        }
+		    }
+		    if (parentView.isContentVisible()) {
+		        return parentView;
+		    }
 		}
-		return parentView.getVisibleSummarizedOrParentView();
+		return parentView.getVisibleSummarizedOrParentView(requiredLayoutOrientation, isChildTopOrLeft);
 	}
 
 	public int getZoomedFoldingSymbolHalfWidth() {
