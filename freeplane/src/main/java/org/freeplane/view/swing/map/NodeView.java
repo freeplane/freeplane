@@ -121,8 +121,7 @@ public class NodeView extends JComponent implements INodeView {
 		try{
 			paintDebugInfo = Boolean.getBoolean("org.freeplane.view.swing.map.NodeView.PAINT_DEBUG_INFO");
 		}
-		catch(Exception e){
-		}
+		catch(Exception e){/**/}
 		PAINT_DEBUG_INFO = paintDebugInfo;
 	}
 	static private int maxToolTipWidth;
@@ -146,7 +145,7 @@ public class NodeView extends JComponent implements INodeView {
     private LayoutOrientation layoutOrientation;
     private ChildrenSides childrenSides;
 
-	protected NodeView(final NodeModel model, final MapView map, final Container parent) {
+	protected NodeView(final NodeModel model, final MapView map) {
 		setFocusCycleRoot(true);
 		this.model = model;
 		this.map = map;
@@ -295,8 +294,7 @@ public class NodeView extends JComponent implements INodeView {
 		else
 			windowAncestor.addWindowFocusListener(new WindowFocusListener() {
 				@Override
-				public void windowLostFocus(WindowEvent e) {
-				}
+				public void windowLostFocus(WindowEvent e) {/**/}
 
 				@Override
 				public void windowGainedFocus(WindowEvent e) {
@@ -428,7 +426,7 @@ public class NodeView extends JComponent implements INodeView {
 		return null;
 	}
 
-	LinkedList<NodeView> getLeft(final boolean onlyVisible) {
+	LinkedList<NodeView> getLeft() {
 		final LinkedList<NodeView> left = new LinkedList<NodeView>();
 		for (final NodeView node : getChildrenViews()) {
 			if (node == null) {
@@ -549,24 +547,23 @@ public class NodeView extends JComponent implements INodeView {
 		return this;
 	}
 
-	NodeView getNextVisibleSibling() {
-		NodeView sibling = this;
-		NodeView lastSibling = this;
-		NodeView parentView = getParentView();
-        boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
-		while (sibling != map.getRoot()) {
-			lastSibling = sibling;
-			sibling = sibling.getNextSiblingSameParent();
-			if (sibling != lastSibling) {
-				break;
-			}
+	NodeView getNextVisibleSibling(LayoutOrientation requiredLayoutOrientation) {
+	    NodeView sibling = this;
+	    NodeView lastSibling = this;
+	    NodeView parentView = getParentView();
+	    while (sibling != map.getRoot()) {
+	        lastSibling = sibling;
+	        if (requiredLayoutOrientation == parentView.layoutOrientation()) {
+	            sibling = sibling.getNextSiblingSameParent();
+	            if (sibling != lastSibling) {
+	                break;
+	            }
+	        }
 			sibling = parentView;
 			parentView = parentView.getParentView();
-            if (parentUsesHorizontalLayout != parentView.usesHorizontalLayout())
-                return this;
 		}
 		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
-		        && sibling.usesHorizontalLayout() == parentUsesHorizontalLayout) {
+		        && sibling.layoutOrientation() == requiredLayoutOrientation) {
 			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null,
 			        this.isTopOrLeft(), !this.isTopOrLeft());
 			if (first == null) {
@@ -698,13 +695,14 @@ public class NodeView extends JComponent implements INodeView {
 		final NodeView parentView = getParentView();
 		if (parentView == null){
 			UITools.errorMessage("unexpected error: node " + getMainView().getText() + " has lost its parent ");
+			return null;
 		}
 		if (parentView.isRoot()) {
 			if (this.isTopOrLeft()) {
-				v = parentView.getLeft(true);
+				v = parentView.getLeft();
 			}
 			else {
-				v = parentView.getRight(true);
+				v = parentView.getRight();
 			}
 		}
 		else {
@@ -713,21 +711,21 @@ public class NodeView extends JComponent implements INodeView {
 		return v;
 	}
 
-	NodeView getPreviousVisibleSibling() {
-		NodeView sibling = this;
-		NodeView previousSibling = this;
-        NodeView parentView = getParentView();
-        boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
-		while(sibling != map.getRoot()) {
-			previousSibling = sibling;
-			sibling = sibling.getPreviousSiblingSameParent();
-			if (sibling != previousSibling) {
-				break;
-			}
-            sibling = parentView;
-            parentView = parentView.getParentView();
-            if (parentUsesHorizontalLayout != parentView.usesHorizontalLayout())
-                return this;
+	NodeView getPreviousVisibleSibling(LayoutOrientation requiredLayoutOrientation) {
+	    NodeView sibling = this;
+	    NodeView previousSibling = this;
+	    NodeView parentView = getParentView();
+	    boolean parentUsesHorizontalLayout = parentView.usesHorizontalLayout();
+	    while(sibling != map.getRoot()) {
+	        previousSibling = sibling;
+	        if (requiredLayoutOrientation == parentView.layoutOrientation()) {
+	            sibling = sibling.getPreviousSiblingSameParent();
+	            if (sibling != previousSibling) {
+	                break;
+	            }
+	        }
+	        sibling = parentView;
+	        parentView = parentView.getParentView();
 		}
         while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
                 && sibling.usesHorizontalLayout() == parentUsesHorizontalLayout) {
@@ -744,7 +742,7 @@ public class NodeView extends JComponent implements INodeView {
 		return sibling;
 	}
 
-	LinkedList<NodeView> getRight(final boolean onlyVisible) {
+	LinkedList<NodeView> getRight() {
 		final LinkedList<NodeView> right = new LinkedList<NodeView>();
 		for (final NodeView node : getChildrenViews()) {
 			if (node == null) {
@@ -1073,9 +1071,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
-		final boolean preferredChildIsLeft = preferredChild != null
-		        && map.getLayoutType() != MapViewLayout.OUTLINE
-		        && preferredChild.getModel().wouldBeTopOrLeft(mapRootNode, getModel());
+
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		if (node == preferredChild) {
 			preferredChild = null;
@@ -1471,9 +1467,7 @@ public class NodeView extends JComponent implements INodeView {
 		else if (mainView != null) {
 			final Container c = mainView.getParent();
 			int i;
-			for (i = c.getComponentCount() - 1; i >= 0 && mainView != c.getComponent(i); i--) {
-				;
-			}
+			for (i = c.getComponentCount() - 1; i >= 0 && mainView != c.getComponent(i); i--) {/**/}
 			c.remove(i);
 			c.add(newMainView, i);
 		}
@@ -1593,7 +1587,7 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 		}
-		updateShortener(getModel(), textShortened);
+		updateShortener(textShortened);
 		mainView.updateIcons(this);
 		mainView.updateText(getModel());
 		modelBackgroundColor = styleController().getBackgroundColor(model, getStyleOption());
@@ -1698,7 +1692,7 @@ public class NodeView extends JComponent implements INodeView {
 		return (CloudModel) getClientProperty(CloudModel.class);
     }
 
-	private void updateShortener(NodeModel nodeModel, boolean textShortened) {
+	private void updateShortener(boolean textShortened) {
 		final boolean componentsVisible = !textShortened;
 		setContentComponentVisible(componentsVisible);
 	}
@@ -1916,7 +1910,7 @@ public class NodeView extends JComponent implements INodeView {
 
 
 
-	public enum Properties{HIDDEN_CHILDREN};
+	public enum Properties{HIDDEN_CHILDREN}
 
 	boolean isChildHidden(NodeModel node) {
 		@SuppressWarnings("unchecked")
