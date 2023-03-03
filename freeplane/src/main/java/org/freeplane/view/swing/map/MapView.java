@@ -1473,7 +1473,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	        while (newSelected != null && !newSelected.getModel().hasVisibleContent(filter)) {
 	            newSelected = newSelected.getPreferredVisibleChild(isOutlineLayoutSet, looksAtTopOrLeft);
 	        }
-	        if(newSelected == null)
+	        if(newSelected == null && (selectedUsesHorizontalLayout
+	                && (direction == SelectionDirection.UP && oldSelected.isTopOrLeft() || direction == SelectionDirection.DOWN  && !oldSelected.isTopOrLeft())
+	                || (! selectedUsesHorizontalLayout)
+	                && (direction == SelectionDirection.LEFT && oldSelected.isTopOrLeft() || direction == SelectionDirection.RIGHT && !oldSelected.isTopOrLeft())))
 	            newSelected = getVisibleSummaryView(oldSelected);
 	    }
 	    if(newSelected != null) {
