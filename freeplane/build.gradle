@@ -138,6 +138,8 @@ ext.bundleExports = """\
                     org.freeplane.features.icon,
                     org.freeplane.features.icon.factory,
                     org.freeplane.features.icon.mindmapmode,
+                    org.freeplane.features.layout,
+                    org.freeplane.features.layout.mindmapmode,
                     org.freeplane.features.link,
                     org.freeplane.features.link.mindmapmode,
                     org.freeplane.features.map,
