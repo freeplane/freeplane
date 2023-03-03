@@ -30,6 +30,7 @@ import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager;
 import java.awt.LayoutManager2;
 import java.awt.Rectangle;
@@ -123,6 +124,7 @@ class ApplicationViewController extends FrameController {
 	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		// --- Save the Component --
 		mMindMapComponent = pMindMapComponent;
+		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
 		if ("right".equals(mLocationPreferenceValue)) {
@@ -144,6 +146,9 @@ class ApplicationViewController extends FrameController {
 			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			mSplitPane.setLeftComponent(mapPane);
 			mSplitPane.setRightComponent(pMindMapComponent);
+		}
+		if(focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, mSplitPane)) {
+		    focusOwner.requestFocusInWindow();
 		}
 		mSplitPane.setContinuousLayout(true);
 		mSplitPane.setOneTouchExpandable(false);
