@@ -1429,7 +1429,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public boolean selectLeft(final boolean continious) {
-	    return selectParentOrChild(SelectionDirection.LEFT, continious);
+	    return selectRelatedNode(SelectionDirection.LEFT, continious);
 	}
 
 	private void selectChild(final NodeView newSelected, final boolean continious) {
@@ -1449,10 +1449,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public boolean selectRight(final boolean continious) {
-	    return selectParentOrChild(SelectionDirection.RIGHT, continious);
+	    return selectRelatedNode(SelectionDirection.RIGHT, continious);
 	}
 
-	private boolean selectParentOrChild(SelectionDirection direction, final boolean continious) {
+	private boolean selectRelatedNode(SelectionDirection direction, final boolean continious) {
 	    boolean isOutlineLayoutSet = isOutlineLayoutSet();
 	    if(isOutlineLayoutSet && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN))
 	        return false;
@@ -1522,7 +1522,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
     public boolean selectUp(final boolean continious) {
-	    return selectParentOrChild(SelectionDirection.UP, continious);
+	    return selectRelatedNode(SelectionDirection.UP, continious);
 	}
 
     private boolean selectDistantSibling(final NodeView oldSelectionEnd, final boolean continious, boolean selectsForward) {
@@ -1581,7 +1581,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean selectDown(final boolean continious) {
-            return selectParentOrChild(SelectionDirection.DOWN, continious);
+            return selectRelatedNode(SelectionDirection.DOWN, continious);
 	}
 
 	public boolean selectPageDown(final boolean continious) {
