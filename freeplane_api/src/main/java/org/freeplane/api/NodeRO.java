@@ -528,6 +528,10 @@ public interface NodeRO {
     /** @since 1.11.1 */
     LayoutOrientation getLayoutOrientation();
 
+    /** @since 1.11.1 */
+    ChildNodesLayout getChildNodesLayout();
+
+
     /**@since 1.8.11 */
     NodeGeometryRO getGeometry();
 

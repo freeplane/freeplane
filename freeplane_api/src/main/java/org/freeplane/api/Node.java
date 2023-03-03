@@ -373,7 +373,7 @@ public interface Node extends NodeRO {
     void setHorizontalShift(Quantity<LengthUnit> verticalShift);
 
     /** @since 1.11.1 */
-    void setChildNodesLayout(final ChildNodesLayout sides);
+    void setChildNodesLayout(final ChildNodesLayout layout);
 
 
 	/**

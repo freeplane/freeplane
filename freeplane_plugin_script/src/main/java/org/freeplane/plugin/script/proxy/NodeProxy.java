@@ -17,11 +17,10 @@ import java.util.stream.Stream;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
 import org.freeplane.api.Attributes;
-import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.Cloud;
-import org.freeplane.api.Connector;
 import org.freeplane.api.ConditionalStyles;
+import org.freeplane.api.Connector;
 import org.freeplane.api.DependencyLookup;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
@@ -277,13 +276,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return DetailModel.getDetailText(getDelegate());
 	}
 
-	public String getDetailsContentType() {
+	@Override
+    public String getDetailsContentType() {
 		final NodeModel nodeModel = getDelegate();
 		final String contentType = TextController.getController().getDetailsContentType(nodeModel);
 		return contentType;
 	}
 
-	public void setDetailsContentType(String contentType) {
+	@Override
+    public void setDetailsContentType(String contentType) {
 		MTextController textController = MTextController.getController();
 		if(contentType != null
 				&& ! Stream.of(textController.getDetailContentTypes()).anyMatch(contentType::equals)) {
@@ -363,13 +364,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext(), noteText);
 	}
 
-	public String getNoteContentType() {
+	@Override
+    public String getNoteContentType() {
 		final NodeModel nodeModel = getDelegate();
 		final String contentType = NoteController.getController().getNoteContentType(nodeModel);
 		return contentType;
 	}
 
-	public void setNoteContentType(String contentType) {
+	@Override
+    public void setNoteContentType(String contentType) {
 		MNoteController noteController = MNoteController.getController();
 		if(contentType != null
 				&& ! Stream.of(noteController.getNoteContentTypes()).anyMatch(contentType::equals)) {
@@ -1104,6 +1107,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     @Override
     public void setChildNodesLayout(final ChildNodesLayout sides){
         ((MLayoutController) LayoutController.getController()).setChildNodesLayout(getDelegate(), sides);
+    }
+
+    @Override
+    public ChildNodesLayout getChildNodesLayout() {
+        return LayoutController.getController().getChildNodesLayout(getDelegate());
     }
 
     @Override
