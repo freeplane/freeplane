@@ -2,7 +2,6 @@ package org.freeplane.plugin.formula;
 
 import java.util.List;
 
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -15,8 +14,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.LogicalStyleModel;
-import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.script.FormulaCache;
 import org.freeplane.plugin.script.FormulaDependencies;
@@ -24,9 +21,9 @@ import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
 public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapLifeCycleListener {
-    
-    
-    
+
+
+
 	@Override
     public int priority() {
         return 1;
@@ -34,15 +31,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 
     @Override
 	public void nodeChanged(NodeChangeEvent event) {
-		Object property = event.getProperty();
-		// Note: this doesn't mean that other properties are not interesting here (e.g. links, edges, ...)
-		// since all these could be referenced by formulas too. It's restricted only to limit the number of updates.
-		// ALTERNATIVE: property.getClass() == Class.class && IExtension.class.isAssignableFrom((Class<?>)property)
-        if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)
-                || NodeModel.NOTE_TEXT.equals(property) || NodeModel.NODE_ICON.equals(property)
-                || LogicalStyleModel.class.equals(property) || DetailModel.class.equals(property)) {
-            nodeChangedImpl(false, event.getNode());
-		}
+        nodeChangedImpl(false, event.getNode());
 	}
 
 	@Override
