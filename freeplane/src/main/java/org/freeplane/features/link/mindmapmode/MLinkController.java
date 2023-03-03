@@ -75,6 +75,7 @@ import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
@@ -137,7 +138,7 @@ public class MLinkController extends LinkController {
 			NodeModel source = arrowLink.getSource();
             NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			nodeLinks.addArrowlink(arrowLink);
-			fireNodeConnectorChange(source, arrowLink);
+			fireNodeConnectorChange(arrowLink);
 		}
 
 		@Override
@@ -150,7 +151,7 @@ public class MLinkController extends LinkController {
 		    NodeModel source = arrowLink.getSource();
 			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 			nodeLinks.removeArrowlink(arrowLink);
-			fireNodeConnectorChange(source, arrowLink);
+			fireNodeConnectorChange(arrowLink);
 		}
 	}
 
@@ -168,7 +169,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void act() {
 			model.setTargetLabel(label);
-			fireNodeConnectorChange(model.getSource(), model);
+			fireNodeConnectorChange(model);
 		}
 
 		@Override
@@ -179,7 +180,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void undo() {
 			model.setTargetLabel(oldLabel);
-			fireNodeConnectorChange(model.getSource(), model);
+			fireNodeConnectorChange(model);
 		}
 	}
 
@@ -197,7 +198,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void act() {
 			model.setSourceLabel(label);
-			fireNodeConnectorChange(model.getSource(), model);
+			fireNodeConnectorChange(model);
 		}
 
 		@Override
@@ -208,7 +209,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void undo() {
 			model.setSourceLabel(oldLabel);
-			fireNodeConnectorChange(model.getSource(), model);
+			fireNodeConnectorChange(model);
 		}
 	}
 
@@ -226,7 +227,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void act() {
 			model.setMiddleLabel(label);
-			fireNodeConnectorChange(model.getSource(), model);
+			fireNodeConnectorChange(model);
 		}
 
 		@Override
@@ -237,7 +238,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void undo() {
 			model.setMiddleLabel(oldLabel);
-			fireNodeConnectorChange(model.getSource(), model);
+			fireNodeConnectorChange(model);
 		}
 	}
 
@@ -331,7 +332,7 @@ public class MLinkController extends LinkController {
 					Controller.getCurrentModeController().getMapController().delayedNodeRefresh(source, NodeModel.NODE_ICON,
 						null, null);
 				else if(link instanceof ConnectorModel)
-					fireNodeConnectorChange(source, (ConnectorModel) link);
+					fireNodeConnectorChange((ConnectorModel) link);
 			}
 		}
 
@@ -372,7 +373,7 @@ public class MLinkController extends LinkController {
 			@Override
 			public void act() {
 				link.setArrows(arrows);
-				fireNodeConnectorChange(link.getSource(), link);
+				fireNodeConnectorChange(link);
 			}
 
 			@Override
@@ -383,7 +384,7 @@ public class MLinkController extends LinkController {
 			@Override
 			public void undo() {
 				link.setArrows(oldArrows);
-				fireNodeConnectorChange(link.getSource(), link);
+				fireNodeConnectorChange(link);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
@@ -424,7 +425,7 @@ public class MLinkController extends LinkController {
 		comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
         arrowLinkPopup.add(comp);
 		addSeparator(arrowLinkPopup);
-  
+
 		final JTextArea sourceLabelEditor;
 		final JTextArea middleLabelEditor;
 		final JTextArea targetLabelEditor ;
@@ -441,7 +442,7 @@ public class MLinkController extends LinkController {
 		else {
 		    sourceLabelEditor = middleLabelEditor = targetLabelEditor = null;
 		}
-		
+
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
             private Component focusOwner;
             private Window dialog;
@@ -492,7 +493,7 @@ public class MLinkController extends LinkController {
             public void act() {
                 link.setStyle(style);
                 final NodeModel node = link.getSource();
-                fireNodeConnectorChange(node, link);
+                fireNodeConnectorChange(link);
             }
 
             @Override
@@ -504,7 +505,7 @@ public class MLinkController extends LinkController {
             public void undo() {
                 link.setStyle(oldStyle);
                 final NodeModel node = link.getSource();
-                fireNodeConnectorChange(node, link);
+                fireNodeConnectorChange(link);
             }
         };
         Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
@@ -595,7 +596,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				arrowLink.setColor(color);
 				final NodeModel node = arrowLink.getSource();
-				fireNodeConnectorChange(node, arrowLink);
+				fireNodeConnectorChange(arrowLink);
 			}
 
 			@Override
@@ -607,7 +608,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				arrowLink.setColor(oldColor);
 				final NodeModel node = arrowLink.getSource();
-				fireNodeConnectorChange(node, arrowLink);
+				fireNodeConnectorChange(arrowLink);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
@@ -623,7 +624,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				arrowLink.setDash(dash);
 				final NodeModel node = arrowLink.getSource();
-				fireNodeConnectorChange(node, arrowLink);
+				fireNodeConnectorChange(arrowLink);
 			}
 
 			@Override
@@ -635,7 +636,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				arrowLink.setDash(oldDash);
 				final NodeModel node = arrowLink.getSource();
-				fireNodeConnectorChange(node, arrowLink);
+				fireNodeConnectorChange(arrowLink);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
@@ -650,7 +651,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				link.setStartInclination(startPoint);
 				link.setEndInclination(endPoint);
-				fireNodeConnectorChange(link.getSource(), link);
+				fireNodeConnectorChange(link);
 			}
 
 			@Override
@@ -662,7 +663,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				link.setStartInclination(oldStartPoint);
 				link.setEndInclination(oldEndPoint);
-				fireNodeConnectorChange(link.getSource(), link);
+				fireNodeConnectorChange(link);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
@@ -711,7 +712,7 @@ public class MLinkController extends LinkController {
 		final Hyperlink hyperlink = argUri != null ? new Hyperlink(relativeLink(argUri, node, linkType)) : null;
 		setLink(node, hyperlink);
 	}
-	
+
 
 	public void setLink(NodeModel node, Hyperlink hyperlink) {
 		final IActor actor = new IActor() {
@@ -809,7 +810,7 @@ public class MLinkController extends LinkController {
 				final NodeModel source = arrowLink.getSource();
 				final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 				nodeLinks.removeArrowlink(arrowLink);
-				fireNodeConnectorChange(source, arrowLink);
+				fireNodeConnectorChange(arrowLink);
 			}
 
 			@Override
@@ -822,7 +823,7 @@ public class MLinkController extends LinkController {
 				final NodeModel source = arrowLink.getSource();
 				NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 				nodeLinks.addArrowlink(arrowLink);
-				fireNodeConnectorChange(source, arrowLink);
+				fireNodeConnectorChange(arrowLink);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
@@ -838,7 +839,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				connector.setShape(shape);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 
 			@Override
@@ -850,7 +851,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				connector.setShape(oldShape);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
@@ -866,7 +867,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				connector.setWidth(width);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 
 			@Override
@@ -878,7 +879,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				connector.setWidth(oldWidth);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
@@ -895,7 +896,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				connector.setLabelFontSize(width);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 
 			@Override
@@ -907,7 +908,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				connector.setLabelFontSize(oldWidth);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
@@ -924,7 +925,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				connector.setLabelFontFamily(family);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 
 			@Override
@@ -936,7 +937,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				connector.setLabelFontFamily(oldFamily);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
@@ -952,7 +953,7 @@ public class MLinkController extends LinkController {
 			public void act() {
 				connector.setAlpha(alpha);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 
 			@Override
@@ -964,7 +965,7 @@ public class MLinkController extends LinkController {
 			public void undo() {
 				connector.setAlpha(oldAlpha);
 				final NodeModel node = connector.getSource();
-				fireNodeConnectorChange(node, connector);
+				fireNodeConnectorChange(connector);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
@@ -1090,8 +1091,12 @@ public class MLinkController extends LinkController {
 		modeController.execute(actor, node.getMap());
 	}
 
-	private void fireNodeConnectorChange(NodeModel source, ConnectorModel arrowLink) {
-	    Controller.getCurrentModeController().getMapController().nodeChanged(source, NodeLinks.CONNECTOR, arrowLink, arrowLink);
+	private void fireNodeConnectorChange(ConnectorModel arrowLink) {
+	    MapController mapController = Controller.getCurrentModeController().getMapController();
+        mapController.nodeChanged(arrowLink.getSource(), NodeLinks.CONNECTOR, arrowLink, arrowLink);
+        NodeModel target = arrowLink.getTarget();
+        if(target != null)
+            mapController.nodeRefresh(target);
     }
 
 	public void deleteMapLinksForClone(final NodeModel model){
