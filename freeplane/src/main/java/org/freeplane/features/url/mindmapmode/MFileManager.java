@@ -265,7 +265,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	private static String getDefaultSaveDirFromPrefs() {
-		return ResourceController.getResourceController().getProperty(DEFAULT_SAVE_DIR_PROPERTY);
+		String saveDirProperty = ResourceController.getResourceController().getProperty(DEFAULT_SAVE_DIR_PROPERTY);
+        return TextUtils.replaceAtBegin(saveDirProperty, "{user.home}", System.getProperty("user.home"));
 	}
 
 	@Override
