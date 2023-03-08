@@ -58,6 +58,7 @@ test {
 		sourceSets.viewer.resources.sourceDirectories +
  		sourceSets.editor.resources.sourceDirectories +
  		sourceSets.external.resources.sourceDirectories
+    dependsOn createEmojiList
 }
 
 targetCompatibility=JavaVersion.VERSION_1_8
@@ -253,6 +254,9 @@ task copyOSGiJars(type: Copy) {
     from (project(':freeplane_mac').jar.outputs.files)
     from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
     into(globalBin + '/core/' + pluginid + '/lib/')
+    dependsOn(':freeplane:editorJar')
+    dependsOn(':freeplane:osgiJar')
+    dependsOn(':freeplane:viewerJar')
 }
 copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
 copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
@@ -360,6 +364,8 @@ task copyExternalResources(type: Copy) {
     dependsOn copyGitTxt
     dependsOn copyGitProperty
     dependsOn createGitProperty
+    dependsOn(':srcTarGz')
+    dependsOn(':srcpureTarGz')
 }
 
 task copyDoc(type: Copy) {
