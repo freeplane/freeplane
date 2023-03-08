@@ -43,6 +43,7 @@ task copyFreeplaneShellScript(type: Copy) {
      }
 	 into(globalBin)
 	 filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
+     dependsOn(':srcTarGz')
 }	 
 
 ext {launch4jDir = 'C:/Program Files (x86)/Launch4j'}
@@ -94,6 +95,7 @@ task copyLauncherStuff(type: Copy) {
      }
      into(globalBin)
      dependsOn jar
+     dependsOn(':srcTarGz')
 }
 
 eclipseJdt {
