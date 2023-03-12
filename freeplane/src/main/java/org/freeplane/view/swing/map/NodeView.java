@@ -1297,10 +1297,10 @@ public class NodeView extends JComponent implements INodeView {
                 continue;
             }
             final NodeView nodeView = (NodeView) component;
-        	if (map.getLayoutType() != MapViewLayout.OUTLINE && nodeView.isSubtreeVisible()) {
+        	if (map.getLayoutType() != MapViewLayout.OUTLINE) {
         		SummaryEdgePainter activePainter = nodeView.isTopOrLeft() || !paintsChildrenOnBothSides ? summaryEdgePainter : rightSummaryEdgePainter;
         		activePainter.addChild(nodeView);
-        		if(activePainter.paintSummaryEdge(g, source, nodeView)){
+        		if(nodeView.isSubtreeVisible() && activePainter.paintSummaryEdge(g, source, nodeView)){
         			if(! nodeView.isContentVisible()){
         				final Rectangle bounds =  SwingUtilities.convertRectangle(this, nodeView.getBounds(), source);
         				final Graphics cg = g.create(bounds.x, bounds.y, bounds.width, bounds.height);
