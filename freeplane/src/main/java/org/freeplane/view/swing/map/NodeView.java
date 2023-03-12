@@ -618,7 +618,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		int yGap = Integer.MAX_VALUE;
 		final NodeView baseComponent;
-		baseComponent = isContentVisible() && preferredChild != PreferredChild.NEAREST_SIBLING ? this : getAncestorWithVisibleContent();
+		baseComponent = (isContentVisible() || isSummary()) && preferredChild != PreferredChild.NEAREST_SIBLING ? this : getAncestorWithVisibleContent();
 		NodeView newSelected = null;
         boolean lastSelectedChildWasTopOrLeft = lastSelectedChild != null && lastSelectedChild.isTopOrLeft();
         lastSelectedChild = null;
