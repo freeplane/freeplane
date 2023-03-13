@@ -1475,7 +1475,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
                 || (! selectedUsesHorizontalLayout)
                 && (! (parentUsesHorizontalLayout && childNodesAlignment.areChildrenApart) && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)
-                        || parentUsesHorizontalLayout && (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.UP
+                        || (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.UP
                                                         || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.DOWN))){
             boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
             PreferredChild preferredChild = isOutlineLayoutSet() || ! selectedUsesHorizontalLayout && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
@@ -1483,9 +1483,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                     : ! selectedUsesHorizontalLayout && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
                     ? PreferredChild.LAST
                     : PreferredChild.LAST_SELECTED;
-            ChildrenSides childrenSides = oldSelected.childrenSides();
-            if(childrenSides == ChildrenSides.BOTH_SIDES
-                    && ((direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)) == selectedUsesHorizontalLayout) {
+            if((direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT) == selectedUsesHorizontalLayout) {
                 newSelected = oldSelected.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES);
             } else {
                 newSelected = oldSelected.getPreferredVisibleChild(preferredChild, looksAtTopOrLeft);

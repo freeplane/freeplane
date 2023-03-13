@@ -553,7 +553,8 @@ public class NodeView extends JComponent implements INodeView {
 	    NodeView parentView = getParentView();
 	    while (sibling != map.getRoot()) {
 	        lastSibling = sibling;
-	        if (requiredLayoutOrientation == parentView.layoutOrientation()) {
+	        LayoutOrientation parentLayoutOrientation = parentView.layoutOrientation();
+            if (requiredLayoutOrientation == parentLayoutOrientation) {
 	            sibling = sibling.getNextSiblingSameParent();
 	            if (sibling != lastSibling) {
 	                break;
@@ -562,8 +563,11 @@ public class NodeView extends JComponent implements INodeView {
 			sibling = parentView;
 			parentView = parentView.getParentView();
 		}
+	    if(sibling.getChildNodesAlignment().areChildrenApart && ! sibling.usesHorizontalLayout())
+	        return sibling;
+	    LayoutOrientation parentLayoutOrientation = getParentView().layoutOrientation();
 		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
-		        && sibling.layoutOrientation() == requiredLayoutOrientation) {
+		        && sibling.layoutOrientation() == parentLayoutOrientation) {
 			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null,
 			        this.isTopOrLeft(), !this.isTopOrLeft());
 			if (first == null) {
@@ -620,8 +624,6 @@ public class NodeView extends JComponent implements INodeView {
 		final NodeView baseComponent;
 		baseComponent = (isContentVisible() || isSummary()) && preferredChild != PreferredChild.NEAREST_SIBLING ? this : getAncestorWithVisibleContent();
 		NodeView newSelected = null;
-        boolean lastSelectedChildWasTopOrLeft = lastSelectedChild != null && lastSelectedChild.isTopOrLeft();
-        lastSelectedChild = null;
 		final Point ownPoint = calculateCentralPoint(baseComponent, isContentVisible() ? getContent() : baseComponent.getContent());
 		for (int i = 0; i < baseComponent.getComponentCount(); i++) {
 			final Component c = baseComponent.getComponent(i);
@@ -631,7 +633,7 @@ public class NodeView extends JComponent implements INodeView {
 			NodeView childView = (NodeView) c;
 			boolean isChildTopOrLeft = childView.isTopOrLeft();
 			if (! sides.matches(isChildTopOrLeft)
-			        || sides == ChildrenSides.BOTH_SIDES && childView.isTopOrLeft() != lastSelectedChildWasTopOrLeft) {
+			        || sides == ChildrenSides.BOTH_SIDES && (lastSelectedChild != null && (lastSelectedChild.isTopOrLeft() != isChildTopOrLeft) )) {
 			    continue;
 			}
 			if (!childView.isContentVisible()) {
@@ -645,7 +647,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			else if(preferredChild == PreferredChild.LAST) {
 			    newSelected = childView;
-			    break;
+			    continue;
 			}
 			final JComponent childContent = childView.getContent();
 			if(childContent == null)
@@ -669,13 +671,13 @@ public class NodeView extends JComponent implements INodeView {
 			final int gapToChild = dy*dy + dx*dx;
 			if (gapToChild < yGap) {
 			    newSelected = childView;
-			    lastSelectedChild = (NodeView) c;
 			    yGap = gapToChild;
 			}
 			else {
 			    break;
 			}
 		}
+		lastSelectedChild = newSelected;
 		return newSelected;
 	}
 
