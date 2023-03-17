@@ -1656,6 +1656,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	private NodeView getNextVisibleSibling(final NodeView node, LayoutOrientation layoutOrientation, final boolean down) {
+	    setSiblingMaxLevel(node.getModel().getNodeLevel(filter));
 	    return down ? node.getNextVisibleSibling(layoutOrientation) : node.getPreviousVisibleSibling(layoutOrientation);
     }
 
@@ -2171,7 +2172,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(node.isHiddenSummary())
 			throw new AssertionError("select invisible node");
 		selectAsTheOnlyOneSelected(newSelected, true);
-		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(filter));
 	}
 
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected, final boolean requestFocus) {
