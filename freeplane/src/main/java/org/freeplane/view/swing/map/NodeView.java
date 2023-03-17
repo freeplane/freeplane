@@ -603,8 +603,12 @@ public class NodeView extends JComponent implements INodeView {
         LAST_SELECTED, FIRST, LAST, NEAREST_SIBLING
     }
 
-	public NodeView getPreferredVisibleChild(final PreferredChild preferredChild, final ChildrenSides sides) {
-		if (getModel().isLeaf() && preferredChild  != PreferredChild.NEAREST_SIBLING) {
+    NodeView getPreferredVisibleChild(final PreferredChild preferredChild, final ChildrenSides sides) {
+        return getPreferredVisibleChild(preferredChild, sides, this);
+    }
+
+    private NodeView getPreferredVisibleChild(final PreferredChild preferredChild, final ChildrenSides sides, NodeView nearest) {
+		if (getModel().isLeaf()) {
 			return null;
 		}
 		if (preferredChild == PreferredChild.LAST_SELECTED
@@ -614,20 +618,26 @@ public class NodeView extends JComponent implements INodeView {
 				return lastSelectedChild;
 			}
 			else {
-				final NodeView newSelected = lastSelectedChild.getPreferredVisibleChild(preferredChild, sides);
+				final NodeView newSelected = lastSelectedChild.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES, nearest);
 				if (newSelected != null) {
 					return newSelected;
 				}
 			}
 		}
-		int yGap = Integer.MAX_VALUE;
-		final NodeView baseComponent;
-		baseComponent = (isContentVisible() || isSummary()) && preferredChild != PreferredChild.NEAREST_SIBLING ? this : getAncestorWithVisibleContent();
+		return selectNearest(preferredChild, sides, nearest);
+	}
+
+
+
+    NodeView selectNearest(final PreferredChild preferredChild, final ChildrenSides sides,
+            NodeView ancor) {
+        int yGap = Integer.MAX_VALUE;
+		final NodeView baseComponent = (isContentVisible() || isSummary()) && preferredChild != PreferredChild.NEAREST_SIBLING ? this : getAncestorWithVisibleContent();
 		NodeView newSelected = null;
-		final Point ownPoint = calculateCentralPoint(baseComponent, isContentVisible() ? getContent() : baseComponent.getContent());
-		for (int i = 0; i < baseComponent.getComponentCount(); i++) {
-			final Component c = baseComponent.getComponent(i);
-			if (!(c instanceof NodeView)) {
+		final Point ownPoint = baseComponent.calculateCentralPoint(ancor.getContent());
+		for (int i = 0; i < getComponentCount(); i++) {
+			final Component c = getComponent(i);
+			if (!(c instanceof NodeView) || c == ancor) {
 			    continue;
 			}
 			NodeView childView = (NodeView) c;
@@ -637,7 +647,7 @@ public class NodeView extends JComponent implements INodeView {
 			    continue;
 			}
 			if (!childView.isContentVisible()) {
-			    childView = childView.getPreferredVisibleChild(preferredChild, sides);
+			    childView = childView.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES, ancor);
 			    if (childView == null) {
 			        continue;
 			    }
@@ -652,7 +662,7 @@ public class NodeView extends JComponent implements INodeView {
 			final JComponent childContent = childView.getContent();
 			if(childContent == null)
 			    continue;
-			final Point childPoint = calculateCentralPoint(baseComponent, childContent);
+			final Point childPoint = baseComponent.calculateCentralPoint(childContent);
 			if(baseComponent.usesHorizontalLayout()) {
 			    if(childView.isTopOrLeft())
 			        childPoint.y += childContent.getHeight()/2;
@@ -679,14 +689,13 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		lastSelectedChild = newSelected;
 		return newSelected;
-	}
+    }
 
 
 
-    private Point calculateCentralPoint(final NodeView baseComponent,
-            final JComponent childContent) {
-        final Point childPoint = new Point(childContent.getWidth()/2, childContent.getHeight() / 2);
-        UITools.convertPointToAncestor(childContent, childPoint, baseComponent);
+    private Point calculateCentralPoint(final JComponent c) {
+        final Point childPoint = new Point(c.getWidth()/2, c.getHeight() / 2);
+        UITools.convertPointToAncestor(c, childPoint, this);
         return childPoint;
     }
 
@@ -862,12 +871,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public NodeView getAncestorWithVisibleContent() {
-		final Container parent = getParent();
-		if (!(parent instanceof NodeView)) {
-			return null;
-		}
-		final NodeView parentView = (NodeView) parent;
-		if (parentView.isContentVisible()) {
+		final NodeView parentView = getParentView();
+		if (parentView == null || parentView.isContentVisible()) {
 			return parentView;
 		}
 		return parentView.getAncestorWithVisibleContent();

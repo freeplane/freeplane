@@ -1488,9 +1488,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             } else {
                 newSelected = oldSelected.getPreferredVisibleChild(preferredChild, looksAtTopOrLeft);
             }
-            while (newSelected != null && !newSelected.getModel().hasVisibleContent(filter)) {
-                newSelected = newSelected.getPreferredVisibleChild(preferredChild, looksAtTopOrLeft);
-            }
             if(newSelected == null && (selectedUsesHorizontalLayout
                     && (direction == SelectionDirection.UP && oldSelected.isTopOrLeft() || direction == SelectionDirection.DOWN  && !oldSelected.isTopOrLeft())
                     || (! selectedUsesHorizontalLayout)
@@ -1507,27 +1504,37 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private boolean selectSiblingOnTheOtherSide(SelectionDirection direction, boolean continious) {
         final NodeView oldSelected = getSelected();
         NodeView parentView = oldSelected.getParentView();
-        if(parentView == null)
-            return false;
-        NodeView parentsParentView = parentView.getParentView();
-        if(parentsParentView == null)
-            return false;
-        if(parentsParentView.usesHorizontalLayout()
-                && parentView.getChildNodesAlignment().areChildrenApart
-                && parentView.childrenSides() == ChildrenSides.BOTH_SIDES
-                ) {
+        boolean isTopOrLeft = oldSelected.isTopOrLeft();
+        for(;;) {
+            if(parentView == null )
+                return false;
+            if(parentView.getChildNodesAlignment().areChildrenApart
+                    && parentView.childrenSides() == ChildrenSides.BOTH_SIDES)
+                break;
+            if (parentView.isContentVisible())
+                return false;
+            isTopOrLeft =  parentView.isTopOrLeft();
+            parentView = parentView.getParentView();
 
-            NodeView newSelected = null;
-            if(oldSelected.isTopOrLeft() && direction == SelectionDirection.RIGHT || ! oldSelected.isTopOrLeft() && direction == SelectionDirection.LEFT){
-                newSelected = oldSelected.getPreferredVisibleChild(PreferredChild.NEAREST_SIBLING, ! oldSelected.isTopOrLeft());
-                while (newSelected != null && !newSelected.getModel().hasVisibleContent(filter)) {
-                    newSelected = newSelected.getPreferredVisibleChild(PreferredChild.LAST_SELECTED, ! oldSelected.isTopOrLeft());
-                }
-            }
-            if(newSelected != null) {
-                selectChild(newSelected, continious);
-                return true;
-            }
+        }
+        NodeView parentsParentView = parentView.getParentView();
+        for(;;) {
+            if(parentsParentView == null )
+                return false;
+            if(parentsParentView.usesHorizontalLayout())
+                break;
+            if (parentsParentView.isContentVisible())
+                return false;
+            parentsParentView = parentsParentView.getParentView();
+
+        }
+        NodeView newSelected = null;
+        if(isTopOrLeft && direction == SelectionDirection.RIGHT || ! isTopOrLeft && direction == SelectionDirection.LEFT){
+            newSelected = parentView.selectNearest(PreferredChild.NEAREST_SIBLING, ChildrenSides.ofTopOrLeft(! isTopOrLeft), oldSelected);
+        }
+        if(newSelected != null) {
+            selectChild(newSelected, continious);
+            return true;
         }
         return false;
     }
