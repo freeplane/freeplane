@@ -1574,18 +1574,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             if (direction == SelectionDirection.DOWN) {
                 nextSelectedSibling = getNextVisibleSibling(selectionEnd, LayoutOrientation.TOP_TO_BOTTOM, true);
                 newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
-                        childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
-                        ? layoutOrientation
+                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                        ? LayoutOrientation.TOP_TO_BOTTOM
                                 :  LayoutOrientation.LEFT_TO_RIGHT,
-                                childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
                                 ? oldSelected.isTopOrLeft() : true);
             } else if (direction == SelectionDirection.UP) {
                 nextSelectedSibling = getNextVisibleSibling(selectionEnd, LayoutOrientation.TOP_TO_BOTTOM, false);
                 newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
-                        childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
-                        ? layoutOrientation
+                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                        ? LayoutOrientation.TOP_TO_BOTTOM
                                 : LayoutOrientation.LEFT_TO_RIGHT,
-                                childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
                                 ? oldSelected.isTopOrLeft() :false);
             } else if (direction == SelectionDirection.RIGHT) {
                 nextSelectedSibling = getNextVisibleSibling(selectionEnd, LayoutOrientation.LEFT_TO_RIGHT, true);
