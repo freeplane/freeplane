@@ -841,20 +841,24 @@ public class NodeView extends JComponent implements INodeView {
 
 	public ChildNodesAlignment getChildNodesAlignment() {
 	    updateLayoutProperties();
-		return childNodesAlignment;
+        return childNodesAlignment;
 	}
 
-    private void updateChildNodesAlignment() {
-        ChildNodesAlignment childNodesAlignment = childNodesLayout.childNodesAlignment();
-		switch (childNodesAlignment) {
-		case NOT_SET:
-		case AUTO:
-			this.childNodesAlignment = getDefaultChildNodesAlignment();
-			break;
-		default:
-		    this.childNodesAlignment =  childNodesAlignment;
-		}
-    }
+	private void updateChildNodesAlignment() {
+	    if(map.isOutlineLayoutSet())
+	        this.childNodesAlignment =  ChildNodesAlignment.AFTER_PARENT;
+	    else {
+	        ChildNodesAlignment childNodesAlignment = childNodesLayout.childNodesAlignment();
+	        switch (childNodesAlignment) {
+	        case NOT_SET:
+	        case AUTO:
+	            this.childNodesAlignment = getDefaultChildNodesAlignment();
+	            break;
+	        default:
+	            this.childNodesAlignment =  childNodesAlignment;
+	        }
+	    }
+	}
 
 	private ChildNodesAlignment getDefaultChildNodesAlignment() {
 		NodeView parentView = getParentNodeView();
@@ -2017,24 +2021,28 @@ public class NodeView extends JComponent implements INodeView {
 
     public LayoutOrientation layoutOrientation() {
         updateLayoutProperties();
-        return layoutOrientation;
+	    return layoutOrientation;
     }
 
-	private void updateUsesHorizontalLayout() {
-	    LayoutController layoutController = getModeController().getExtension(LayoutController.class);
-	    LayoutOrientation layoutOrientation = layoutController.getLayoutOrientation(model);
-	    switch(layoutOrientation) {
-	    case TOP_TO_BOTTOM:
-	    case LEFT_TO_RIGHT:
-	        this.layoutOrientation = layoutOrientation;
-	        break;
-	    default:
-	        NodeView parent = getParentNodeView();
-	        if(parent != null)
-	            this.layoutOrientation = parent.layoutOrientation();
-	        else
-	            this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
-	    }
+    private void updateUsesHorizontalLayout() {
+        if(map.isOutlineLayoutSet())
+            this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
+        else {
+            LayoutController layoutController = getModeController().getExtension(LayoutController.class);
+            LayoutOrientation layoutOrientation = layoutController.getLayoutOrientation(model);
+            switch(layoutOrientation) {
+            case TOP_TO_BOTTOM:
+            case LEFT_TO_RIGHT:
+                this.layoutOrientation = layoutOrientation;
+                break;
+            default:
+                NodeView parent = getParentNodeView();
+                if(parent != null)
+                    this.layoutOrientation = parent.layoutOrientation();
+                else
+                    this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
+            }
+        }
 	}
 
 	boolean paintsChildrenOnTheLeft() {
