@@ -524,7 +524,8 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView getNextSiblingSameParent() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
-		boolean skipUntilSummaryEnd = isSummary();
+		boolean isOutlineLayoutSet = map.isOutlineLayoutSet();
+        boolean skipUntilSummaryEnd = ! isOutlineLayoutSet && isSummary();
 		for (int i = index + 1; i < v.size(); i++) {
 			final NodeView nextView = v.get(i);
 			if(this.isTopOrLeft() != nextView.isTopOrLeft())
@@ -536,7 +537,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
 			}
-			else if (! node.isHiddenSummary()){
+			else if (isOutlineLayoutSet || ! node.isHiddenSummary()){
 				final NodeView first = nextView.getFirst(null, this.isTopOrLeft(),
 		                !this.isTopOrLeft());
 				if (first != null) {
@@ -647,6 +648,8 @@ public class NodeView extends JComponent implements INodeView {
 			    continue;
 			}
 			if (!childView.isContentVisible()) {
+			    if(childView.isSummary() && newSelected !=  null && ! map.isOutlineLayoutSet())
+			        continue;
 			    childView = childView.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES, ancor);
 			    if (childView == null) {
 			        continue;
@@ -702,7 +705,7 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeView getPreviousSiblingSameParent() {
 		LinkedList<NodeView> v = getSiblingViews();
 		final int index = v.indexOf(this);
-		boolean skipUntilFirstGroupNode = isSummary();
+		boolean skipUntilFirstGroupNode = ! map.isOutlineLayoutSet() && isSummary();
 		for (int i = index - 1; i >= 0; i--) {
 			final NodeView nextView = v.get(i);
  			if(skipUntilFirstGroupNode) {
@@ -882,6 +885,19 @@ public class NodeView extends JComponent implements INodeView {
 		return parentView.getAncestorWithVisibleContent();
 	}
 
+    NodeView getDescendant(PreferredChild preferredChild) {
+        NodeView newSelected = this;
+        while(layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM
+                 && getChildNodesAlignment() == getParentView().getChildNodesAlignment()
+                 && isSubtreeVisible()) {
+            NodeView preferredVisibleChild = newSelected.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES);
+            if(preferredVisibleChild != null)
+                newSelected = preferredVisibleChild;
+            else
+                break;
+        }
+        return newSelected;
+    }
 	NodeView getVisibleSummarizedOrParentView(LayoutOrientation requiredLayoutOrientation, boolean isChildTopOrLeft) {
 		final Container parent = getParent();
 		if (!(parent instanceof NodeView)) {
@@ -895,8 +911,8 @@ public class NodeView extends JComponent implements INodeView {
 		        final int index = v.indexOf(this);
 		        for (int i = index - 1; i >= 0; i--) {
 		            final NodeView nextView = v.get(i);
-		            if (nextView.isContentVisible()) {
-		                return nextView;
+		            if (nextView.isContentVisible() || nextView.isSubtreeVisible()) {
+		                return nextView.getDescendant(PreferredChild.FIRST);
 		            }
 		            if(! nextView.isSummary())
 		                startFromSummary = false;
