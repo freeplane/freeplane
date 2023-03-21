@@ -1187,40 +1187,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	boolean isOutlineLayoutSet() {
-		return layoutType.equals(MapViewLayout.OUTLINE);
+	    return layoutType.equals(MapViewLayout.OUTLINE);
 	}
-
-	private NodeView getVisibleSummaryView(final NodeView node) {
-	    if(isRoot(node))
-	    	return null;
-	    final int currentSummaryLevel = SummaryNode.getSummaryLevel(currentRootView.getModel(), node.getModel());
-		int level = currentSummaryLevel;
-		final int requiredSummaryLevel = level + 1;
-	    final NodeView parent = node.getParentView();
-            for (int i = 1 + getIndex(node);i < parent.getComponentCount();i++){
-            	final Component component = parent.getComponent(i);
-            	if(! (component instanceof NodeView))
-            		break;
-            	final NodeView next = (NodeView) component;
-            	if(next.isTopOrLeft() != node.isTopOrLeft())
-            		continue;
-            	if(next.isSummary())
-            		level++;
-            	else
-            		level = 0;
-            	if(level == requiredSummaryLevel){
-            		if(next.getModel().hasVisibleContent(filter))
-            			return next;
-            		final NodeView preferredVisibleChild = next.getPreferredVisibleChild(isOutlineLayoutSet() ? PreferredChild.FIRST : PreferredChild.LAST_SELECTED, next.isTopOrLeft());
-            		if(preferredVisibleChild != null)
-            			return preferredVisibleChild;
-            		break;
-            	}
-            	if(level == currentSummaryLevel && SummaryNode.isFirstGroupNode(next.getModel()))
-            		break;
-            }
-	    return getVisibleSummaryView(parent);
-        }
 
 	int getIndex(final NodeView node) {
 	    final NodeView parent = node.getParentView();
@@ -1489,12 +1457,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 newSelected = oldSelected.getPreferredVisibleChild(preferredChild, looksAtTopOrLeft);
             }
         }
-        if(newSelected == null && !isOutlineLayoutSet && (
-                selectedUsesHorizontalLayout
-                && (direction == SelectionDirection.UP && oldSelected.isTopOrLeft() || direction == SelectionDirection.DOWN  && !oldSelected.isTopOrLeft())
-                || (! selectedUsesHorizontalLayout)
-                && (direction == SelectionDirection.LEFT && oldSelected.isTopOrLeft() || direction == SelectionDirection.RIGHT && !oldSelected.isTopOrLeft())))
-            newSelected = getVisibleSummaryView(oldSelected);
         if(newSelected != null) {
             select(newSelected, continious);
             return true;
@@ -1502,7 +1464,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         return false;
     }
 
-    private boolean selectSiblingOnTheOtherSide(SelectionDirection direction, boolean continious) {
+     private boolean selectSiblingOnTheOtherSide(SelectionDirection direction, boolean continious) {
         if(isOutlineLayoutSet() || direction.isVertical())
             return false;
 
@@ -1551,44 +1513,27 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
         final NodeView oldSelected = selection.getSelectionEnd();
         if (! oldSelected.isRoot()) {
-            NodeView nextSelectedSibling = null;
-            NodeView newSelectedParent = null;
-            NodeView parentView = oldSelected.getParentView();
-            ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
-            LayoutOrientation layoutOrientation = parentView.layoutOrientation();
-            if (direction == SelectionDirection.DOWN) {
-                nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.TOP_TO_BOTTOM, true);
-                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
-                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
-                        ? LayoutOrientation.TOP_TO_BOTTOM
-                                :  LayoutOrientation.LEFT_TO_RIGHT,
-                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
-                                ? oldSelected.isTopOrLeft() : true);
-            } else if (direction == SelectionDirection.UP) {
-                nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.TOP_TO_BOTTOM, false);
-                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
-                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
-                        ? LayoutOrientation.TOP_TO_BOTTOM
-                                : LayoutOrientation.LEFT_TO_RIGHT,
-                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
-                                ? oldSelected.isTopOrLeft() :false);
-            } else if (direction == SelectionDirection.RIGHT) {
-                nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.LEFT_TO_RIGHT, true);
-                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, true);
-            } else if (direction == SelectionDirection.LEFT) {
-                nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.LEFT_TO_RIGHT, false);
-                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, false);
-            }
-            NodeView newSelected = null;
+            NodeView newSelectedAncestor = suggestNewSelectedAncestor(direction, oldSelected);
+            NodeView newSelectedSibling = suggestNewSelectedSibling(direction, oldSelected);
+            NodeView newSelectedSummary = suggestNewSelectedSummary(direction, oldSelected);
 
-            if (nextSelectedSibling != null && oldSelected != nextSelectedSibling &&
-                    (newSelectedParent == null || nextSelectedSibling.getModel().isDescendantOf(newSelectedParent.getModel()))) {
-                newSelected = nextSelectedSibling;
-            } else if(newSelectedParent != null) {
-                newSelected = newSelectedParent;
+            NodeView newSelected = newSelectedSibling;
+
+            if (newSelectedSummary != null && (newSelectedSibling == null
+                    || newSelectedSummary.getModel().isDescendantOf(newSelectedSibling.getAncestorWithVisibleContent().getModel()))) {
+                newSelected = newSelectedSummary;
             }
+
+            if (newSelectedAncestor != null && (newSelected == null
+                    || oldSelected == newSelected
+                    || !newSelected.getModel().isDescendantOf(newSelectedAncestor.getModel()))) {
+                newSelected = newSelectedAncestor;
+            }
+
             if(newSelected != null) {
-                if(newSelected.getParent() == parentView && layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM) {
+                NodeView parentView = oldSelected.getParentView();
+                if(newSelected.getParent() == parentView && parentView.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM) {
+                    ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
                     if (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.UP) {
                         getDescendant(newSelected, continious, PreferredChild.LAST);
                         return true;
@@ -1604,6 +1549,92 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
         }
         return false;
+    }
+
+    private NodeView suggestNewSelectedSibling(SelectionDirection direction,
+            final NodeView oldSelected) {
+        NodeView nextSelectedSibling = null;
+        if (direction == SelectionDirection.DOWN) {
+            nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.TOP_TO_BOTTOM, true);
+        } else if (direction == SelectionDirection.UP) {
+            nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.TOP_TO_BOTTOM, false);
+        } else if (direction == SelectionDirection.RIGHT) {
+            nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.LEFT_TO_RIGHT, true);
+        } else if (direction == SelectionDirection.LEFT) {
+            nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.LEFT_TO_RIGHT, false);
+        }
+        return nextSelectedSibling;
+    }
+
+    private NodeView suggestNewSelectedAncestor(SelectionDirection direction,
+            final NodeView oldSelected) {
+        NodeView newSelectedParent = null;
+        {
+            NodeView parentView = oldSelected.getParentView();
+            ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
+            LayoutOrientation layoutOrientation = parentView.layoutOrientation();
+            if (direction == SelectionDirection.DOWN) {
+                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
+                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                        ? LayoutOrientation.TOP_TO_BOTTOM
+                                :  LayoutOrientation.LEFT_TO_RIGHT,
+                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                                ? oldSelected.isTopOrLeft() : true);
+            } else if (direction == SelectionDirection.UP) {
+                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
+                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                        ? LayoutOrientation.TOP_TO_BOTTOM
+                                : LayoutOrientation.LEFT_TO_RIGHT,
+                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                                ? oldSelected.isTopOrLeft() :false);
+            } else if (direction == SelectionDirection.RIGHT) {
+                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, true);
+            } else if (direction == SelectionDirection.LEFT) {
+                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, false);
+            }
+        }
+        return newSelectedParent;
+    }
+
+    private boolean canHaveSummary(final NodeView node, SelectionDirection direction) {
+        return node.usesHorizontalLayout()
+                && (direction == SelectionDirection.UP && node.isTopOrLeft() || direction == SelectionDirection.DOWN  && !node.isTopOrLeft())
+                || (! node.usesHorizontalLayout())
+                && (direction == SelectionDirection.LEFT && node.isTopOrLeft() || direction == SelectionDirection.RIGHT && !node.isTopOrLeft());
+    }
+
+    private NodeView suggestNewSelectedSummary(SelectionDirection direction, final NodeView node) {
+        if(isOutlineLayoutSet() || isRoot(node))
+            return null;
+        final int currentSummaryLevel = SummaryNode.getSummaryLevel(currentRootView.getModel(), node.getModel());
+        int level = currentSummaryLevel;
+        final int requiredSummaryLevel = level + 1;
+        final NodeView parent = node.getParentView();
+        if(canHaveSummary(node, direction)) {
+            for (int i = 1 + getIndex(node);i < parent.getComponentCount();i++){
+                final Component component = parent.getComponent(i);
+                if(! (component instanceof NodeView))
+                    break;
+                final NodeView next = (NodeView) component;
+                if(next.isTopOrLeft() != node.isTopOrLeft())
+                    continue;
+                if(next.isSummary())
+                    level++;
+                else
+                    level = 0;
+                if(level == requiredSummaryLevel){
+                    if(next.getModel().hasVisibleContent(filter))
+                        return next;
+                    final NodeView preferredVisibleChild = next.getPreferredVisibleChild(isOutlineLayoutSet() ? PreferredChild.FIRST : PreferredChild.LAST_SELECTED, next.isTopOrLeft());
+                    if(preferredVisibleChild != null)
+                        return preferredVisibleChild;
+                    break;
+                }
+                if(level == currentSummaryLevel && SummaryNode.isFirstGroupNode(next.getModel()))
+                    break;
+            }
+        }
+        return suggestNewSelectedSummary(direction, parent);
     }
 
     private void getDescendant(NodeView newSelected, boolean continious, PreferredChild preferredChild) {
