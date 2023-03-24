@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
- <defs>
-  <marker id="Arrow2_F-333333_S-333333" overflow="visible" markerHeight="6" markerUnits="userSpaceOnUse" markerWidth="7.7142859" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 7.7 5.6">
-   <path transform="scale(.7)" d="m-2-4 11 4-11 4c2-2.33 2-5.66 0-8z" fill="#333333" fill-rule="evenodd"/>
-  </marker>
- </defs>
- <path d="m2.8099 12h12.068" fill="#333333" marker-end="url(#Arrow2_F-333333_S-333333)" stroke="#333333" stroke-width="2"/>
- <path d="m2.8099 12h12.068" color="#000000" fill="#333333" stroke-width="2" style="none"/>
- <path d="m2.8105 11v2h12.068v-2z" color="#000000" fill="#333333" style="none"/>
- <path d="m13.476 9.1948 7.7143 2.8052-7.7143 2.8052c1.4026-1.634 1.4026-3.9694 0-5.6104z" fill="#333333" fill-rule="evenodd" stroke-width=".7013"/>
+<svg width="6" height="24" version="1.1" viewBox="0 0 6 24" xmlns="http://www.w3.org/2000/svg">
+ <g fill="#333333">
+  <path d="m2.8099 12h12.068" color="#000000" stroke-width="2"/>
+  <path d="m0.41899 11v2h2.7516v-2z" color="#000000" stroke-width=".4775"/>
+  <path d="m2.7141 9.1948 2.8669 2.8052-2.8669 2.8052c0.52126-1.634 0.52126-3.9694 0-5.6104z" fill-rule="evenodd" stroke-width=".42753"/>
+ </g>
 </svg>
