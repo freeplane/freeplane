@@ -21,7 +21,7 @@ package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.core.ui.components.MultipleImageIcon;
 import org.freeplane.features.icon.NamedIcon;
 
 /**
@@ -42,7 +42,7 @@ class IconsRenderer extends DefaultTableCellRenderer {
 	public void setValue(final Object value) {
 		if (value instanceof IconsHolder) {
 			final IconsHolder iconsHolder = (IconsHolder) value;
-			final MultipleImage iconImages = new MultipleImage();
+			final MultipleImageIcon iconImages = new MultipleImageIcon();
 			for (final NamedIcon icon : iconsHolder.getIcons()) {
 				iconImages.addIcon(icon);
 			}

@@ -5,6 +5,8 @@
  */
 package org.freeplane.api;
 
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public enum ChildNodesLayout {
     NOT_SET(LayoutOrientation.NOT_SET, ChildrenSides.NOT_SET, ChildNodesAlignment.NOT_SET),
@@ -63,6 +65,13 @@ public enum ChildNodesLayout {
 
     AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),
     ;
+
+    static public Optional<ChildNodesLayout> using(ChildrenSides childrenSides, ChildNodesAlignment childNodesAlignment, LayoutOrientation layoutOrientation) {
+        return Stream.of(values()).filter(x ->
+        x.childrenSides == childrenSides
+        && x.childNodesAlignment == childNodesAlignment
+        && x.layoutOrientation == layoutOrientation).findAny();
+    }
 
     private final ChildrenSides childrenSides;
     private final ChildNodesAlignment childNodesAlignment;

@@ -25,7 +25,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 
@@ -36,11 +38,11 @@ import org.freeplane.features.styles.MapViewLayout;
 @SelectableAction(checkOnPopup = true)
 public class ViewLayoutTypeAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * 
+	 *
 	 */
 	private final MapViewLayout layoutType;
 
@@ -51,17 +53,17 @@ public class ViewLayoutTypeAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapView map = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-		if (isSelected()) {
-			map.setLayoutType(MapViewLayout.MAP);
-			setSelected(false);
-		}
-		else {
-			map.setLayoutType(layoutType);
-			setSelected(true);
-		}
-		final MapStyle mapStyle = map.getModeController().getExtension(MapStyle.class);
-		mapStyle.setMapViewLayout(map.getModel(), map.getLayoutType());
+		MapViewLayout oldLayoutType = map.getLayoutType();
+		boolean wasSelected = isSelected();
+        MapViewLayout newLayoutType = wasSelected ? MapViewLayout.MAP : layoutType;
+        map.setLayoutType(newLayoutType);
+        setSelected(! wasSelected);
+		ModeController modeController = map.getModeController();
+        final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
+		mapStyle.setMapViewLayout(map.getModel(), oldLayoutType);
 		map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getModel(), 0.5f, 0.5f);
+		modeController.getMapController().fireMapChanged(
+                new MapChangeEvent(this, map.getModel(), MapStyle.MAP_LAYOUT, oldLayoutType, newLayoutType));
 		final NodeView root = map.getRoot();
 		invalidate(root);
 		root.revalidate();

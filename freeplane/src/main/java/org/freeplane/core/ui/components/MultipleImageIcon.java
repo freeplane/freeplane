@@ -37,11 +37,11 @@ import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
-public class MultipleImage implements Icon {
+public class MultipleImageIcon implements Icon {
 	final private List<Icon> mIcons = new ArrayList<>();
 	final private List<NamedIcon> mUIIcons = new ArrayList<>();
 
-	public MultipleImage() {
+	public MultipleImageIcon() {
 	}
 
 	public void addIcon(final NamedIcon uiIcon) {
@@ -58,16 +58,23 @@ public class MultipleImage implements Icon {
 		mUIIcons.add(uiIcon);
 	}
 
-	public void addLinkIcon(Icon icon, NodeModel node, StyleOption option) {
-	    Objects.requireNonNull(icon);
-		final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node, option);
-		final IconFactory iconFactory = IconFactory.getInstance();
-		final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
-		mIcons.add(scaledIcon);
-		mUIIcons.add(null);
-	};
+    public void addLinkIcon(Icon icon, NodeModel node, StyleOption option) {
+        Objects.requireNonNull(icon);
+        final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node, option);
+        final IconFactory iconFactory = IconFactory.getInstance();
+        final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
+        mIcons.add(scaledIcon);
+        mUIIcons.add(null);
+    }
 
-	public int getIconHeight() {
+    public void addIcon(Icon icon) {
+        Objects.requireNonNull(icon);
+        mIcons.add(icon);
+        mUIIcons.add(null);
+    }
+
+	@Override
+    public int getIconHeight() {
 		int myY = 0;
 		for (final Icon icon : mIcons) {
 			final int otherHeight = icon.getIconHeight();
@@ -78,7 +85,8 @@ public class MultipleImage implements Icon {
 		return myY;
 	};
 
-	public int getIconWidth() {
+	@Override
+    public int getIconWidth() {
 		int myX = 0;
 		for (final Icon icon : mIcons) {
 			myX += icon.getIconWidth();
@@ -90,14 +98,15 @@ public class MultipleImage implements Icon {
 		return mIcons.size();
 	}
 
-	public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
+	@Override
+    public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
 		int myX = x;
 		for (final Icon icon : mIcons) {
 			icon.paintIcon(c, g, myX, y);
 			myX += icon.getIconWidth();
 		}
 	}
-	
+
 	public NamedIcon getUIIconAt(Point coordinate){
 		if(coordinate.x < 0 || coordinate.y < 0)
 			return null;
@@ -111,8 +120,8 @@ public class MultipleImage implements Icon {
 		}
 		return null;
 	}
-	
-	//DOCEAR - get a rect relative to this image for a specific icon  
+
+	//DOCEAR - get a rect relative to this image for a specific icon
 	public Rectangle getIconR(Icon icon) {
 		int myX = 0;
 		for (final Icon ico : mIcons) {

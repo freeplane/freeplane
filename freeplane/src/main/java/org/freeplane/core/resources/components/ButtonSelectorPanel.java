@@ -137,20 +137,38 @@ public class ButtonSelectorPanel{
     }
 
     public void setValue(final String value) {
-        if (possibleValues.contains(value)) {
-            selectedIndex = possibleValues.indexOf(value);
+        int index = indexOf(value);
+        selectedIndex = index;
+        if (selectedIndex >= 0) {
             setSelected(buttons.elementAt(selectedIndex));
         }
-        else{
-            LogUtils.severe("Can't set the value:" + value + " into buttons containing values " + possibleValues);
-            if (possibleValues.size() > 0) {
-                selectedIndex = 0;
-            }
-        }
     }
-    JToggleButton getSelectedButton() {
+
+    public JToggleButton getSelectedButton() {
         return buttons.get(selectedIndex);
     }
+
+    public JToggleButton getButton(String value) {
+        int index = indexOf(value);
+        return index >= 0 ? buttons.elementAt(index) : null;
+    }
+
+    public int indexOf(String value) {
+        if (possibleValues.contains(value)) {
+            int index = possibleValues.indexOf(value);
+            return index;
+        }
+        else{
+            LogUtils.severe("Can't find value:" + value + " in buttons containing values " + possibleValues);
+            if (possibleValues.size() > 0) {
+                return 0;
+            }
+            else
+                return -1;
+        }
+    }
+
+
     public Component getButtonPanel() {
         return buttonPanel;
     }

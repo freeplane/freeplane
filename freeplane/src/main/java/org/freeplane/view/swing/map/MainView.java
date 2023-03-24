@@ -55,7 +55,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.core.ui.components.MultipleImageIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Hyperlink;
@@ -465,7 +465,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	void updateIcons(final NodeView node) {
-	    final MultipleImage iconImages = new MultipleImage();
+	    final MultipleImageIcon iconImages = new MultipleImageIcon();
 	    final NodeModel model = node.getModel();
 		if(node.getMap().showsIcons()) {
 		    StyleOption styleOption = node.getStyleOption();
@@ -485,7 +485,7 @@ public class MainView extends ZoomableLabel {
         setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
 
-	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model, StyleOption option) {
+	private void addOwnIcons(final MultipleImageIcon iconImages, final NodeModel model, StyleOption option) {
 		getNodeView().getMap()
 		        .getModeController().getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, option);
 	}
@@ -777,11 +777,11 @@ public class MainView extends ZoomableLabel {
 
 	public NamedIcon getUIIconAt(Point coordinate){
 		Icon icon = getIcon();
-		if(icon instanceof MultipleImage){
+		if(icon instanceof MultipleImageIcon){
 			Rectangle iconRectangle = getIconRectangle();
 			Point transformedToIconCoordinate = new Point(coordinate);
 			transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
-			return ((MultipleImage)icon).getUIIconAt(transformedToIconCoordinate);
+			return ((MultipleImageIcon)icon).getUIIconAt(transformedToIconCoordinate);
 
 		}
 		else

@@ -65,7 +65,7 @@ import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.core.ui.components.MultipleImageIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -976,7 +976,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	}
 
-	public void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model, StyleOption option) {
+	public void addLinkDecorationIcons(MultipleImageIcon iconImages, NodeModel model, StyleOption option) {
 	    final Hyperlink link = NodeLinks.getLink(model);
 	    if (link != null) {
 	        addIconsBasedOnLinkType(link, iconImages, model, option);
@@ -996,7 +996,7 @@ public class LinkController extends SelectionController implements IExtension {
         return iconsForLink.stream().map(name -> "links/" + name).anyMatch(iconName::equals);
 	    
 	}
-	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImage iconImages, NodeModel node, StyleOption option)
+	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImageIcon iconImages, NodeModel node, StyleOption option)
 	{
 	    try {
 	        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;

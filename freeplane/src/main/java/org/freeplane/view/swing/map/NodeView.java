@@ -1793,6 +1793,8 @@ public class NodeView extends JComponent implements INodeView {
             updateUsesHorizontalLayout();
 	        updateChildNodesAlignment();
 	        updateChildrenSides();
+	        childNodesLayout = ChildNodesLayout.using(childrenSides, childNodesAlignment, layoutOrientation)
+	                .orElse(childNodesLayout);
 	    }
     }
 

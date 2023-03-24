@@ -38,13 +38,14 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl {
 
- 	private final JButton startButton;
-	private final ButtonSelectorPanel buttons;
+    protected final JButton startButton;
+	protected final ButtonSelectorPanel buttons;
 	public ButtonPanelProperty(final String name, ButtonSelectorPanel buttons) {
 	    super(name);
 	    this.buttons = buttons;
 	    buttons.setCallback(this::firePropertyChangeEvent);
         startButton = new JButton();
+        startButton.setDefaultCapable(false);
         startButton.addActionListener(this::showButtonPanel);
 	}
 

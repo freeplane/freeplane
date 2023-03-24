@@ -6,11 +6,12 @@ import javax.swing.Icon;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.core.ui.components.EmptyIcon;
 import org.freeplane.features.icon.UIIcon;
 
 class HeadlessIconFactory implements IconFactory {
-	private static final Icon EMPTY_ICON = new EmptyIcon(16, 16);
-	
+	private static final Icon EMPTY_ICON = new EmptyIcon(16);
+
 	static final HeadlessIconFactory FACTORY = new HeadlessIconFactory();
 	private HeadlessIconFactory() {};
 
@@ -46,5 +47,5 @@ class HeadlessIconFactory implements IconFactory {
 
 	@Override
 	public void registerIcon(Icon icon, URL url) {/**/}
-	
+
 }

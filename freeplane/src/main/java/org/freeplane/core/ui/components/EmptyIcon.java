@@ -25,10 +25,10 @@ import javax.swing.Icon;
 /**
  * @author foltin
  */
-public class BlindIcon implements Icon {
+public class EmptyIcon implements Icon {
 	final private int length;
 
-	public BlindIcon(final int length) {
+	public EmptyIcon(final int length) {
 		this.length = length;
 	}
 

@@ -298,7 +298,8 @@ public class StyleEditorPanel extends JPanel {
 
 			@Override
             public void mapChanged(MapChangeEvent event) {
-				if(! MapStyle.MAP_STYLES.equals(event.getProperty()))
+				Object property = event.getProperty();
+                if(! MapStyle.MAP_STYLES.equals(property) && ! MapStyle.MAP_LAYOUT.equals(property))
 					return;
 				final IMapSelection selection = controller.getSelection();
 				if (selection == null) {

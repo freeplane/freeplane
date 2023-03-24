@@ -56,7 +56,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.EmptyIcon;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -427,7 +427,7 @@ class ScriptEditorPanel extends JDialog {
 	private void addAction(final JMenu menu, final AbstractAction action) {
 		final JMenuItem item = menu.add(action);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(item, (String) action.getValue(Action.NAME));
-		item.setIcon(new BlindIcon(UIBuilder.ICON_SIZE));
+		item.setIcon(new EmptyIcon(UIBuilder.ICON_SIZE));
 	}
 
 	/**

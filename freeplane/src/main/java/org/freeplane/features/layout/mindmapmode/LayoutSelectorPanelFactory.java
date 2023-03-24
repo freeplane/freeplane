@@ -13,6 +13,8 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.swing.Icon;
+
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
@@ -27,6 +29,10 @@ import org.freeplane.features.icon.factory.IconFactory;
 public class LayoutSelectorPanelFactory {
     private static final ChildNodesLayout[] LAYOUTS =
             Arrays.asList(ChildNodesLayout.values()).stream().skip(1).toArray(ChildNodesLayout[]::new);
+
+    public final static Icon RIGHT_ARROW_ICON = IconFactory.getInstance()
+            .getIcon(ResourceController.getResourceController().getIconResource("/images/layouts/right_arrow.svg?useAccentColor=true"),
+                    IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(2));
 
     static public ButtonSelectorPanel createLayoutSelectorPanel() {
         final Vector<ButtonIcon> icons = new Vector<>(LayoutSelectorPanelFactory.LAYOUTS.length);

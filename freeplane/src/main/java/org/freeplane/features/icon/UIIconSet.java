@@ -28,7 +28,7 @@ import javax.swing.Icon;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
-import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.core.ui.components.MultipleImageIcon;
 
 public class UIIconSet extends UIIcon {
 	private static final int ORDER = Integer.MAX_VALUE;
@@ -40,7 +40,7 @@ public class UIIconSet extends UIIcon {
 	}
 
 	List<NamedIcon> imageIcons;
-	private MultipleImage compoundIcon;
+	private MultipleImageIcon compoundIcon;
 
 	public UIIconSet(final Collection<NamedIcon> uiIcons, final float zoom) {
 		super("", "", ORDER);
@@ -67,7 +67,7 @@ public class UIIconSet extends UIIcon {
 	@Override
 	public Icon getIcon(Quantity<LengthUnit> iconHeight) {
 		if (compoundIcon == null) {
-			compoundIcon = new MultipleImage();
+			compoundIcon = new MultipleImageIcon();
 			for (final NamedIcon icon : imageIcons) {
 				compoundIcon.addIcon(icon, iconHeight);
 			}
