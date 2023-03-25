@@ -1351,6 +1351,13 @@ public class NodeView extends JComponent implements INodeView {
         }
     }
 
+
+    public ChildNodesLayout recalculateChildNodesLayout() {
+        childNodesLayout = null;
+        return getChildNodesLayout();
+    }
+
+
     public ChildNodesLayout getChildNodesLayout() {
         updateLayoutProperties();
         return childNodesLayout;

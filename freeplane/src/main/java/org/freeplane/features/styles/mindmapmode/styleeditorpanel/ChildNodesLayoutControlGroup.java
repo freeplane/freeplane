@@ -94,7 +94,7 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 			if(nodeView == null)
                 mChildNodesLayout.setValue(displayedValue, displayedValue);
 			else
-			    mChildNodesLayout.setValue(displayedValue, nodeView.getChildNodesLayout());
+			    mChildNodesLayout.setValue(displayedValue, nodeView.recalculateChildNodesLayout());
 		}
 
 		private ChildNodesLayout displayedValue(NodeModel node, final ChildNodesLayout alignment) {
