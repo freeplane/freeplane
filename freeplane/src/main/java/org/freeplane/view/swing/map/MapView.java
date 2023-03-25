@@ -1643,10 +1643,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
     private boolean unfoldInDirection(SelectionDirection direction) {
-        final NodeView oldSelected = getSelected();
+        final NodeView oldSelected = selection.getSelectionEnd();
         boolean selectedUsesHorizontalLayout = oldSelected.usesHorizontalLayout();
         if (oldSelected.isFolded() && unfoldsOnNavigation()
-                && (selectedUsesHorizontalLayout
+                && (oldSelected.getChildNodesAlignment().areChildrenApart
+                        || selectedUsesHorizontalLayout
                         && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
                         || (! selectedUsesHorizontalLayout)
                         && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT))) {
