@@ -767,6 +767,8 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	    if((parentView != null ? parentView : sibling).layoutOrientation() != requiredLayoutOrientation)
 	        return this;
+        if(sibling.getChildNodesAlignment().areChildrenApart && ! sibling.usesHorizontalLayout())
+            return sibling;
         while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
                 && sibling.usesHorizontalLayout() == parentUsesHorizontalLayout) {
 			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isTopOrLeft(),
