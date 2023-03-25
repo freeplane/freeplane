@@ -1530,7 +1530,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 newSelected = newSelectedAncestor;
             }
 
-            if(newSelected != null) {
+            if(newSelected != null && newSelected != oldSelected) {
                 NodeView parentView = oldSelected.getParentView();
                 if(newSelected.getParent() == parentView && parentView.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM) {
                     ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
