@@ -40,6 +40,8 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -163,4 +165,6 @@ public interface IMapViewManager {
 	public void setViewRoot(NodeModel node);
 
 	public void usePreviousViewRoot();
+
+	public void setLayout(final Component map, MapViewLayout newLayoutType);
 }

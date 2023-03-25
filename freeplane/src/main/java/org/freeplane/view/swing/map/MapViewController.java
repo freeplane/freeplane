@@ -68,6 +68,7 @@ import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -933,7 +934,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	private static final String[] zooms = ResourceController.getResourceController().getArrayProperty("predefined_zoom_levels", ", *");
-	
+
 	@Override
 	public void obtainFocusForSelected() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -1047,9 +1048,9 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			String workspaceTitle = ResourceController.getResourceController().getProperty("workspaceTitle");
 			if (model != null) {
 				viewName = getMapViewComponent().getName();
-				frameTitle = (workspaceTitle.isEmpty() ? "" : workspaceTitle + " - ") 
-						+ viewName 
-						+ ((model.isSaved() || model.isReadOnly()) ? "" : "*") 
+				frameTitle = (workspaceTitle.isEmpty() ? "" : workspaceTitle + " - ")
+						+ viewName
+						+ ((model.isSaved() || model.isReadOnly()) ? "" : "*")
 						+ " - " + modeName
 						+ (modeController.isEditingLocked() ? format("OptionPanel.view_mode.true") :
 							model.isReadOnly() ? format("read_only") : "");
@@ -1176,11 +1177,36 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void usePreviousViewRoot() {
-		if(selectedMapView == null)
-			return;
-		selectedMapView.usePreviousViewRoot();
+	    if(selectedMapView == null)
+	        return;
+	    selectedMapView.usePreviousViewRoot();
 	}
-	
-	
+
+
+	@Override
+	public void setLayout(Component mapComponent, MapViewLayout newLayoutType) {
+	    MapView map = (MapView) mapComponent;
+	    MapViewLayout oldLayoutType = map.getLayoutType();
+	    map.setLayoutType(newLayoutType);
+	    ModeController modeController = map.getModeController();
+	    final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
+	    mapStyle.setMapViewLayout(map.getModel(), oldLayoutType);
+	    map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getModel(), 0.5f, 0.5f);
+	    modeController.getMapController().fireMapChanged(
+	            new MapChangeEvent(this, map.getModel(), MapStyle.MAP_LAYOUT, oldLayoutType, newLayoutType));
+	    final NodeView root = map.getRoot();
+	    invalidateAll(root);
+	    root.revalidate();
+	}
+
+    private void invalidateAll(final Component c) {
+        c.invalidate();
+        if(! (c instanceof Container))
+            return;
+        Container c2 = (Container) c;
+        for(int i = 0; i < c2.getComponentCount(); i++)
+            invalidateAll(c2.getComponent(i));
+    }
+
 
 }

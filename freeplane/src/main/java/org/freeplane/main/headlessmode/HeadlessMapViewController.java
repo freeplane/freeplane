@@ -46,6 +46,7 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -399,4 +400,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public void usePreviousViewRoot() {
 		throw new RuntimeException("Method not implemented");
 	}
+
+    @Override
+    public void setLayout(Component map, MapViewLayout newLayoutType) {
+        throw new RuntimeException("Method not implemented");
+    }
 }

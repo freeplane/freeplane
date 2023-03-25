@@ -23,6 +23,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 
+import javax.swing.JComponent;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.MapChangeEvent;
@@ -30,6 +32,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author Dimitry Polivaev
@@ -52,31 +55,13 @@ public class ViewLayoutTypeAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapView map = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-		MapViewLayout oldLayoutType = map.getLayoutType();
-		boolean wasSelected = isSelected();
-        MapViewLayout newLayoutType = wasSelected ? MapViewLayout.MAP : layoutType;
-        map.setLayoutType(newLayoutType);
-        setSelected(! wasSelected);
-		ModeController modeController = map.getModeController();
-        final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
-		mapStyle.setMapViewLayout(map.getModel(), oldLayoutType);
-		map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getModel(), 0.5f, 0.5f);
-		modeController.getMapController().fireMapChanged(
-                new MapChangeEvent(this, map.getModel(), MapStyle.MAP_LAYOUT, oldLayoutType, newLayoutType));
-		final NodeView root = map.getRoot();
-		invalidate(root);
-		root.revalidate();
+	    boolean wasSelected = isSelected();
+	    MapViewLayout newLayoutType = wasSelected ? MapViewLayout.MAP : layoutType;
+		IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+        final JComponent map = mapViewManager.getMapViewComponent();
+        mapViewManager.setLayout(map, newLayoutType);
+		setSelected(! wasSelected);
 	}
-
-	private void invalidate(final Component c) {
-		c.invalidate();
-		if(! (c instanceof Container))
-			return;
-		Container c2 = (Container) c;
-		for(int i = 0; i < c2.getComponentCount(); i++)
-			invalidate(c2.getComponent(i));
-    }
 
 	@Override
 	public void setSelected() {
