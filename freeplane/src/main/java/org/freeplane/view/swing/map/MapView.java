@@ -344,9 +344,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		@Override
 		public void selectRoot() {
+		    mapScroller.scrollToRootNode();
 			final NodeModel rootNode = currentRootView.getModel();
 			selectAsTheOnlyOneSelected(rootNode);
-			mapScroller.scrollToRootNode();
 		}
 
 		@Override

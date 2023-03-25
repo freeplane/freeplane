@@ -643,7 +643,8 @@ public class NodeView extends JComponent implements INodeView {
 			NodeView childView = (NodeView) c;
 			boolean isChildTopOrLeft = childView.isTopOrLeft();
 			if (! sides.matches(isChildTopOrLeft)
-			        || sides == ChildrenSides.BOTH_SIDES && (lastSelectedChild != null && (lastSelectedChild.isTopOrLeft() != isChildTopOrLeft) )) {
+			        || sides == ChildrenSides.BOTH_SIDES
+			        && lastSelectedChild != null && lastSelectedChild.getParent() == this && (lastSelectedChild.isTopOrLeft() != isChildTopOrLeft)) {
 			    continue;
 			}
 			if (!childView.isContentVisible()) {
@@ -1104,6 +1105,7 @@ public class NodeView extends JComponent implements INodeView {
 		boolean wasFolded = isFolded;
 		this.isFolded = fold;
 		if(wasFolded != fold || force) {
+	        map.preserveRootNodeLocationOnScreen();
 			fireFoldingChanged();
 		}
 	}
@@ -1595,7 +1597,6 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-		map.preserveRootNodeLocationOnScreen();
 		for (NodeView child : getChildrenViews()) {
 			child.remove();
 		}
