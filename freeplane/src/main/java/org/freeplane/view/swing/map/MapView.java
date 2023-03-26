@@ -2698,13 +2698,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void restoreRootNode(int index, boolean temporarily) {
 		if(currentRootView == mapRootView)
-			return;
+		    return;
 		remove(ROOT_NODE_COMPONENT_INDEX);
 		add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
-		if(! currentRootParentView.isFolded()) {
-			currentRootParentView.add(currentRootView,
-					index >= 0 ? index : calculateCurrentRootNodePosition());
-		}
+		currentRootParentView.add(currentRootView,
+		        index >= 0 ? index : calculateCurrentRootNodePosition());
 		currentRootView = mapRootView;
 		currentRootParentView = null;
 		if(! temporarily) {
@@ -2716,8 +2714,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void setRootNode(NodeView newRootView) {
 		if(currentRootView == newRootView)
 			return;
-		boolean newRootWasFolded = newRootView.isFolded();
 		boolean jumpsOut = currentRootView.getModel().isDescendantOf(newRootView.getModel());
+		boolean newRootWasFolded = newRootView.isFolded() && ! jumpsOut;
 		if(jumpsOut) {
 			preserveNodeLocationOnScreen(currentRootView, 0, 0);
 		} else
