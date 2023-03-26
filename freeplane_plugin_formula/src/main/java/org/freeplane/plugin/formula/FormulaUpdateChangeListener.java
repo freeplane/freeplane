@@ -31,7 +31,9 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 
     @Override
 	public void nodeChanged(NodeChangeEvent event) {
-        nodeChangedImpl(false, event.getNode());
+		if (!FormulaCache.class.equals(event.getProperty())) {
+            nodeChangedImpl(false, event.getNode());
+		}
 	}
 
 	@Override
