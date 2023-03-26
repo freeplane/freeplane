@@ -119,7 +119,7 @@ class MapScroller {
 			rect.y -= distanceToMarginY;
 			break;
 
-		case SCROLL_NODE_TO_LEFT_MARGIN: 
+		case SCROLL_NODE_TO_LEFT_MARGIN:
 			rect.x += distanceToMargin;
 			break;
 
@@ -135,7 +135,7 @@ class MapScroller {
 			rect.y -= distanceToMarginY;
 			break;
 
-		case SCROLL_TO_BEST_ROOT_POSITION: 
+		case SCROLL_TO_BEST_ROOT_POSITION:
 			final Rectangle innerBounds = map.getInnerBounds();
 			if(innerBounds.width <= extentSize.width && map.getModeController().shouldCenterCompactMaps()){
 				rect.x = innerBounds.x - (extentSize.width - innerBounds.width) / 2;
@@ -143,7 +143,7 @@ class MapScroller {
 			else {
 				NodeView root = map.getRoot();
 				final boolean outlineLayoutSet = map.isOutlineLayoutSet();
-				if(!outlineLayoutSet) {
+				if(!outlineLayoutSet && ! root.usesHorizontalLayout()) {
 					boolean scrollToTheLeft = false;
 					final List<NodeModel> children = root.getModel().getChildren();
 					if(! children.isEmpty()){
@@ -265,8 +265,8 @@ class MapScroller {
 			vp.setViewPosition(viewPosition);
 		}
 
-		if(scrolledNode != null && 
-		        (scrollingDirective != ScrollingDirective.ANCHOR 
+		if(scrolledNode != null &&
+		        (scrollingDirective != ScrollingDirective.ANCHOR
 		        || ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)))
 			scrollNodeToVisible(scrolledNode, extraWidth);
 		scrolledNode = null;
@@ -282,7 +282,7 @@ class MapScroller {
 		else
 			anchorContentLocation = getAnchorCenterPoint();
 	}
-	
+
 	public void scrollNodeTreeToVisible(NodeView node) {
 		final Rectangle visibleRect = map.getVisibleRect();
 		Rectangle requiredRectangle = new Rectangle(node.getSize());
@@ -324,14 +324,14 @@ class MapScroller {
 enum ScrollingDirective {
 	SCROLL_NODE_TO_CENTER(NodePosition.CENTER),
 	SCROLL_NODE_TO_LEFT_MARGIN(NodePosition.LEFT),
-	SCROLL_NODE_TO_RIGHT_MARGIN(NodePosition.RIGHT), 
+	SCROLL_NODE_TO_RIGHT_MARGIN(NodePosition.RIGHT),
 	SCROLL_NODE_TO_TOP_MARGIN(NodePosition.TOP),
 	SCROLL_NODE_TO_BOTTOM_MARGIN(NodePosition.BOTTOM),
 	SCROLL_NODE_TO_TOP_LEFT_CORNER(NodePosition.TOP_LEFT),
 	SCROLL_NODE_TO_TOP_RIGHT_CORNER(NodePosition.TOP_RIGHT),
 	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER(NodePosition.BOTTOM_LEFT),
 	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER(NodePosition.BOTTOM_RIGHT),
-	SCROLL_TO_BEST_ROOT_POSITION, 
+	SCROLL_TO_BEST_ROOT_POSITION,
 	MAKE_NODE_VISIBLE, DONE, ANCHOR;
 	static private class CompanionObject{
 		private static final ScrollingDirective positionDirectiveMapping[] = new ScrollingDirective[NodePosition.values().length];
