@@ -1485,9 +1485,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         }
         NodeView ancestorsAncestorView = ancestorView.getParentView();
         for(;;) {
-            if(ancestorsAncestorView == null )
-                return false;
-            if(ancestorsAncestorView.usesHorizontalLayout())
+            if(ancestorsAncestorView == null || ancestorsAncestorView.usesHorizontalLayout())
                 break;
             if (ancestorsAncestorView.isContentVisible())
                 return false;

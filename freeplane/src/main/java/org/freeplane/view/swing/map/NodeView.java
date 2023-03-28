@@ -631,10 +631,11 @@ public class NodeView extends JComponent implements INodeView {
 
     NodeView selectNearest(final PreferredChild preferredChild, final ChildrenSides sides,
             NodeView ancor) {
-        int yGap = Integer.MAX_VALUE;
-		final NodeView baseComponent = (isContentVisible() || isSummary()) && preferredChild != PreferredChild.NEAREST_SIBLING ? this : getAncestorWithVisibleContent();
+        int distance = Integer.MAX_VALUE;
+		final NodeView baseComponent = (isContentVisible() || isSummary()) && preferredChild != PreferredChild.NEAREST_SIBLING || getParentView() == null ? this : getAncestorWithVisibleContent();
 		NodeView newSelected = null;
-		final Point ownPoint = baseComponent.calculateCentralPoint(ancor.getContent());
+		JComponent ancorContent = ancor.getContent();
+        final Point ownPoint = baseComponent.calculateCentralPoint(ancorContent);
 		for (int i = 0; i < getComponentCount(); i++) {
 			final Component c = getComponent(i);
 			if (!(c instanceof NodeView) || c == ancor) {
@@ -667,24 +668,28 @@ public class NodeView extends JComponent implements INodeView {
 			    continue;
 			final Point childPoint = baseComponent.calculateCentralPoint(childContent);
 			if(baseComponent.usesHorizontalLayout()) {
-			    if(childView.isTopOrLeft())
-			        childPoint.y += childContent.getHeight()/2;
+			    int distanceToBorder = (ancorContent.getHeight() + childContent.getHeight())/2;
+                if(childView.isTopOrLeft())
+			        childPoint.y += distanceToBorder;
 			    else
-			        childPoint.y -= childContent.getHeight()/2;
+			        childPoint.y -= distanceToBorder;
 			}
 			else {
-			    if(childView.isTopOrLeft())
-			        childPoint.x += childContent.getWidth()/2;
+			    int distanceToBorder = (ancorContent.getWidth() + childContent.getWidth())/2;
+                if(childView.isTopOrLeft())
+			        childPoint.x += distanceToBorder;
 			    else
-			        childPoint.x -= childContent.getWidth()/2;
+			        childPoint.x -= distanceToBorder;
 
 			}
 			final int dx = childPoint.x - ownPoint.x;
 			final int dy = childPoint.y - ownPoint.y;
-			final int gapToChild = dy*dy + dx*dx;
-			if (gapToChild < yGap) {
+			final int gapToChild = baseComponent.usesHorizontalLayout()
+			        ? dy*dy + 2 * dx*dx
+			        : 2 * dy*dy + dx*dx;
+			if (gapToChild < distance) {
 			    newSelected = childView;
-			    yGap = gapToChild;
+			    distance = gapToChild;
 			}
 			else {
 			    break;
