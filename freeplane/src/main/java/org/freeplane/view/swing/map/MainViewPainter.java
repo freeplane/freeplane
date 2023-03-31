@@ -33,6 +33,7 @@ import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 
 abstract class MainViewPainter{
 
+    private static final Rectangle EMPTY_RECTANGLE = new Rectangle();
     MainView mainView;
     MainViewPainter(MainView mainView){
         this.mainView = mainView;
@@ -123,6 +124,8 @@ abstract class MainViewPainter{
         final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
 		final int halfWidth = width / 2;
 		final Point p;
+		if(! drawsControls && ! nodeView.isFolded())
+		    return EMPTY_RECTANGLE;
 		if(nodeView.usesHorizontalLayout()) {
 		    if(nodeView.isTopOrLeft()) {
 		        p = getTopPoint();

@@ -329,10 +329,12 @@ public class NodeView extends JComponent implements INodeView {
 
 			Rectangle foldingRectangleBounds = getMainView().getFoldingRectangleBounds(this, false);
 			JComponent content = getContent();
-            final int x = transX + content.getX() + Math.min(0, foldingRectangleBounds.x);
-			final int y = transY + content.getY() + Math.min(0, foldingRectangleBounds.y);
-			final int width = Math.max(content.getWidth(), foldingRectangleBounds.x + foldingRectangleBounds.width);
-			final int height = Math.max(content.getHeight(), foldingRectangleBounds.y + foldingRectangleBounds.height);
+            int extraFoldingRectangleLeftWidth = - Math.min(0, foldingRectangleBounds.x);
+            final int x = transX + content.getX() - extraFoldingRectangleLeftWidth;
+			int extraFoldingRectangleTopHeight = - Math.min(0, foldingRectangleBounds.y);
+            final int y = transY + content.getY() - extraFoldingRectangleTopHeight;
+			final int width = extraFoldingRectangleLeftWidth + Math.max(content.getWidth(), foldingRectangleBounds.x + foldingRectangleBounds.width);
+			final int height = extraFoldingRectangleTopHeight + Math.max(content.getHeight(), foldingRectangleBounds.y + foldingRectangleBounds.height);
 			inList.addLast(new Point(-additionalDistanceForConvexHull + x, -additionalDistanceForConvexHull + y));
 			inList
 			    .addLast(new Point(-additionalDistanceForConvexHull + x, additionalDistanceForConvexHull + y + height));
