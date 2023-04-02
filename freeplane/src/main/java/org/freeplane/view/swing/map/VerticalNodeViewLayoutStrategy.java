@@ -181,7 +181,8 @@ class VerticalNodeViewLayoutStrategy {
 						if ((childShiftY < 0 || isFirstVisibleLaidOutChild) && !allowsCompactLayout)
 							top += childShiftY;
 						if(childNodesAlignment != ChildNodesAlignment.AFTER_PARENT
-						        && childNodesAlignment != ChildNodesAlignment.FIRST_CHILD_BY_PARENT)
+						        && childNodesAlignment != ChildNodesAlignment.FIRST_CHILD_BY_PARENT
+						   || isFirstVisibleLaidOutChild)
 						    top += - childContentShift + child.getTopOverlap();
 						y -= child.getTopOverlap();
 
