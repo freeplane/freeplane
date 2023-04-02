@@ -115,6 +115,7 @@ class VerticalNodeViewLayoutStrategy {
 
 	private void calculateLayoutY(final boolean laysOutLeftSide) {
 		final int minimalDistanceBetweenChildren = view.getMinimalDistanceBetweenChildren();
+		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		final Dimension contentSize = ContentSizeCalculator.INSTANCE.calculateContentSize(view);
 		int childContentHeightSum = 0;
 		int top = 0;
@@ -127,7 +128,7 @@ class VerticalNodeViewLayoutStrategy {
 		final int[] groupUpperYCoordinate = new int[level];
 		final int[] groupLowerYCoordinate = new int[level];
 
-		for (int childViewIndex = 0; childViewIndex < childViewCount; childViewIndex++) {
+        for (int childViewIndex = 0; childViewIndex < childViewCount; childViewIndex++) {
 			final NodeViewLayoutHelper child = view.getComponent(childViewIndex);
 			if (child.isLeft() == laysOutLeftSide) {
 				final int childHeight = child.getHeight() - 2 * spaceAround;
@@ -162,7 +163,7 @@ class VerticalNodeViewLayoutStrategy {
 							}
 							childContentHeightSum += vGap;
 							if(isFirstVisibleLaidOutChild
-							        && view.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT
+							        && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
 							        && contentSize.height > 0) {
 							    y += calculateAddedDistanceFromParentToChildren(minimalDistanceBetweenChildren, contentSize);
 							}
@@ -179,7 +180,9 @@ class VerticalNodeViewLayoutStrategy {
 
 						if ((childShiftY < 0 || isFirstVisibleLaidOutChild) && !allowsCompactLayout)
 							top += childShiftY;
-						top += - childContentShift + child.getTopOverlap();
+						if(childNodesAlignment != ChildNodesAlignment.AFTER_PARENT
+						        && childNodesAlignment != ChildNodesAlignment.FIRST_CHILD_BY_PARENT)
+						    top += - childContentShift + child.getTopOverlap();
 						y -= child.getTopOverlap();
 
 						int upperGap = align(extraVGap);
@@ -284,7 +287,7 @@ class VerticalNodeViewLayoutStrategy {
 			}
 		}
 		top += align(contentSize.height - childContentHeightSum);
-        if(view.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT
+        if(childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
                 && contentSize.height > 0
                 && ! isFirstVisibleLaidOutChild) {
             top -= calculateAddedDistanceFromParentToChildren(minimalDistanceBetweenChildren, contentSize);
