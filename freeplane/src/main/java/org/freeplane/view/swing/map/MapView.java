@@ -2536,9 +2536,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		mapScroller.setAnchorContentLocation();
 	}
 
-	public void preserveRootNodeLocationOnScreen() {
-	    mapScroller.anchorToRoot();
-	}
+    public void preserveRootNodeLocationOnScreen() {
+        mapScroller.anchorToRoot();
+    }
+
+    public void preserveRootNodeLocationOnScreenAndShowSelected() {
+        mapScroller.anchorToRoot();
+        mapScroller.showSelectedAfterScroll();
+    }
+
 
 	public void preserveSelectedNodeLocation() {
 		if(selectedsValid)

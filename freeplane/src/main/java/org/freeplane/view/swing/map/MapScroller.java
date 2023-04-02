@@ -205,7 +205,9 @@ class MapScroller {
 	private void scrollNodeToVisible(final NodeView node, final int extraWidth) {
 		if(node == null)
 			return;
-		if(scrollingDirective == ScrollingDirective.DONE || scrollingDirective == ScrollingDirective.ANCHOR)
+		if(scrollingDirective == ScrollingDirective.DONE
+		        || scrollingDirective == ScrollingDirective.ANCHOR
+		        || scrollingDirective == ScrollingDirective.ANCHOR_AND_SHOW_SELECTED)
 			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
 			if (node != scrolledNode) {
@@ -246,7 +248,8 @@ class MapScroller {
 
 	void scrollView() {
 		if(scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE
-				&& scrollingDirective != ScrollingDirective.ANCHOR){
+				&& scrollingDirective != ScrollingDirective.ANCHOR
+				&& scrollingDirective != ScrollingDirective.ANCHOR_AND_SHOW_SELECTED){
 			scrollNode(scrolledNode, scrollingDirective, slowScroll);
 			return;
 		}
@@ -265,7 +268,9 @@ class MapScroller {
 			vp.setViewPosition(viewPosition);
 		}
 
-		if(scrolledNode != null &&
+		if(scrollingDirective == ScrollingDirective.ANCHOR_AND_SHOW_SELECTED)
+		    scrollNodeToVisible(map.getSelected(), 0);
+		else if(scrolledNode != null &&
 		        (scrollingDirective != ScrollingDirective.ANCHOR
 		        || ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)))
 			scrollNodeToVisible(scrolledNode, extraWidth);
@@ -319,6 +324,12 @@ class MapScroller {
 		if(! root.equals(anchor))
 			anchorToNode(root, 0, 0);
 	}
+
+    public void showSelectedAfterScroll() {
+        if(scrollingDirective == ScrollingDirective.ANCHOR
+                || scrollingDirective == ScrollingDirective.DONE)
+            scrollingDirective = ScrollingDirective.ANCHOR_AND_SHOW_SELECTED;
+    }
 }
 
 enum ScrollingDirective {
@@ -332,7 +343,8 @@ enum ScrollingDirective {
 	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER(NodePosition.BOTTOM_LEFT),
 	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER(NodePosition.BOTTOM_RIGHT),
 	SCROLL_TO_BEST_ROOT_POSITION,
-	MAKE_NODE_VISIBLE, DONE, ANCHOR;
+	MAKE_NODE_VISIBLE, DONE,
+	ANCHOR, ANCHOR_AND_SHOW_SELECTED;
 	static private class CompanionObject{
 		private static final ScrollingDirective positionDirectiveMapping[] = new ScrollingDirective[NodePosition.values().length];
 	}
