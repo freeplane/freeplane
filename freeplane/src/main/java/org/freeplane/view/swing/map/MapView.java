@@ -1412,6 +1412,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 }
             }
             else {
+                mapScroller.scrollNodeToVisible(newSelected);
                 addSelected(newSelected, true);
                 selection.setSelectionEnd(newSelected);
             }
