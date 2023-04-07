@@ -1665,21 +1665,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private boolean selectDistantSibling(final NodeView oldSelectionEnd, final boolean continious, boolean selectsForward) {
         if(oldSelectionEnd == null || oldSelectionEnd.isRoot())
             return false;
-        NodeView nextSelected = oldSelectionEnd;
-        final NodeView s = getNextVisibleSibling(nextSelected, LayoutOrientation.NOT_SET, selectsForward);
-        if (nextSelected == s)
-            return false;
-        nextSelected = s;
-        selectDistantSibling(oldSelectionEnd, nextSelected, continious, selectsForward);
-		return true;
-    }
-
-    private void selectDistantSibling(final NodeView oldSelectionEnd, NodeView nextSelected,
-            final boolean continious, boolean selectsForward) {
         LayoutOrientation layoutOrientation = oldSelectionEnd.getParentView().layoutOrientation();
-        NodeView sibling = nextSelected;
+        NodeView sibling = oldSelectionEnd;
+        NodeView nextSelected = oldSelectionEnd;
         for(;;)  {
         	sibling = getNextVisibleSibling(sibling, layoutOrientation, selectsForward);
+        	if(sibling == oldSelectionEnd)
+        	    return false;
         	final boolean noNextNodeFound = sibling == nextSelected;
         	if(noNextNodeFound
         			|| sibling.getParentView() != nextSelected.getParentView()
@@ -1707,6 +1699,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             selection.setSelectionEnd(nextSelected);
             mapScroller.scrollNodeToVisible(nextSelected);
         }
+        else
+            selectAsTheOnlyOneSelected(nextSelected);
+        return true;
     }
 
 	private NodeView getNextVisibleSibling(final NodeView node, LayoutOrientation layoutOrientation, final boolean down) {
