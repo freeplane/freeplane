@@ -47,7 +47,6 @@ class VerticalNodeViewLayoutStrategy {
 	private final int[] yCoordinates;
 	private final boolean[] isChildFreeNode;
 	private SummaryLevels viewLevels;
-	private int childContentHeight;
 	private int top;
 	private boolean rightSideCoordinatesAreSet;
 	private boolean leftSideCoordinaresAreSet;
@@ -60,7 +59,6 @@ class VerticalNodeViewLayoutStrategy {
 		this.view = view.getLayoutHelper();
 		childViewCount = view.getComponentCount() - 1;
 		layoutChildViews(view);
-		this.childContentHeight = 0;
 		this.top = 0;
 		rightSideCoordinatesAreSet = false;
 		leftSideCoordinaresAreSet = false;
@@ -127,7 +125,7 @@ class VerticalNodeViewLayoutStrategy {
 		final int[] contentHeightSumAtGroupStart = new int[level];
 		final int[] groupUpperYCoordinate = new int[level];
 		final int[] groupLowerYCoordinate = new int[level];
-
+		NodeViewLayoutHelper alignedChild = null;
         for (int childViewIndex = 0; childViewIndex < childViewCount; childViewIndex++) {
 			final NodeViewLayoutHelper child = view.getComponent(childViewIndex);
 			if (child.isLeft() == laysOutLeftSide) {
@@ -146,15 +144,13 @@ class VerticalNodeViewLayoutStrategy {
 				boolean isFreeNode = child.isFree();
 				boolean isItem = level == 0;
 
-				final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
-				final int childContentHeight = child.getContentHeight() + childCloudHeigth;
 				int childShiftY = calculateDistance(child, NodeViewLayoutHelper::getShift);
 
 				if (isItem) {
-					final int childContentShift = child.getContentY() - childCloudHeigth / 2 - spaceAround;
-					if (isFreeNode)
-						this.yCoordinates[childViewIndex] = childShiftY - childContentShift - childCloudHeigth / 2 - spaceAround;
-					else {
+					if (isFreeNode) {
+					    this.yCoordinates[childViewIndex] = childShiftY - child.getContentY();
+                    } else {
+                        alignedChild = child;
 						int extraVGap = 0 ;
 						if (childHeight != 0) {
 							boolean childHasVisibleChildren = child.getHeight() > child.getContentHeight() + 2 * spaceAround;
@@ -179,11 +175,19 @@ class VerticalNodeViewLayoutStrategy {
 						}
 
 						if ((childShiftY < 0 || isFirstVisibleLaidOutChild) && !allowsCompactLayout)
-							top += childShiftY;
-						if(childNodesAlignment != ChildNodesAlignment.AFTER_PARENT
-						        && childNodesAlignment != ChildNodesAlignment.FIRST_CHILD_BY_PARENT
-						   || isFirstVisibleLaidOutChild)
-						    top += - childContentShift + child.getTopOverlap();
+						    top += childShiftY;
+						final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
+						if(childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT || childNodesAlignment == ChildNodesAlignment.LAST_CHILD_BY_PARENT) {
+						    top += - child.getHeight() + childCloudHeigth + 2 * spaceAround + child.getBottomOverlap() + child.getContentHeight();
+						}
+						else if(childNodesAlignment == ChildNodesAlignment.FIRST_CHILD_BY_PARENT && isFirstVisibleLaidOutChild) {
+						    top += - (child.getContentY() - spaceAround);
+						}
+						else if(childNodesAlignment != ChildNodesAlignment.AFTER_PARENT
+						        && childNodesAlignment != ChildNodesAlignment.FIRST_CHILD_BY_PARENT) {
+						    top += - (child.getContentY() - childCloudHeigth / 2 - spaceAround);
+						}
+						top += child.getTopOverlap();
 						y -= child.getTopOverlap();
 
 						int upperGap = align(extraVGap);
@@ -216,41 +220,43 @@ class VerticalNodeViewLayoutStrategy {
 						y += extraVGap - upperGap;
 						if (childHeight != 0)
 							y += childHeight + vGap - child.getBottomOverlap();
-
+						final int childContentHeight = child.getContentHeight() + childCloudHeigth;
 						childContentHeightSum += childContentHeight;
 						if (oldLevel > 0) {
-							for (int j = 0; j < oldLevel; j++) {
-								groupStartIndex[j] = childViewIndex;
-								groupUpperYCoordinate[j] = Integer.MAX_VALUE;
-								groupLowerYCoordinate[j] = Integer.MIN_VALUE;
-								contentHeightSumAtGroupStart[j] = childContentHeightSum;
-							}
+						    for (int j = 0; j < oldLevel; j++) {
+						        groupStartIndex[j] = childViewIndex;
+						        groupUpperYCoordinate[j] = Integer.MAX_VALUE;
+						        groupLowerYCoordinate[j] = Integer.MIN_VALUE;
+						        contentHeightSumAtGroupStart[j] = childContentHeightSum;
+						    }
 						} else if (child.isFirstGroupNode()) {
-							contentHeightSumAtGroupStart[0] = childContentHeightSum;
-							groupStartIndex[0] = childViewIndex;
+						    contentHeightSumAtGroupStart[0] = childContentHeightSum;
+						    groupStartIndex[0] = childViewIndex;
 						}
 						if (childHeight != 0)
 						    isFirstVisibleLaidOutChild = false;
-					}
+                    }
 				}
 				else {
-					final int itemLevel = level - 1;
-					if (child.isFirstGroupNode()) {
-						contentHeightSumAtGroupStart[level] = contentHeightSumAtGroupStart[itemLevel];
-						groupStartIndex[level] = groupStartIndex[itemLevel];
-					}
-					if(groupUpperYCoordinate[itemLevel] == Integer.MAX_VALUE){
-						groupUpperYCoordinate[itemLevel] = y;
-						groupLowerYCoordinate[itemLevel] = y;
-					}
-					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2
-							- childContentHeight / 2 + childShiftY
-							- (child.getContentYForSummary() - childCloudHeigth / 2 - spaceAround);
-					this.yCoordinates[childViewIndex] = summaryY;
-					if (!isFreeNode) {
-						final int deltaY = summaryY - groupUpperYCoordinate[itemLevel]
-								+ child.getTopOverlap();
-						if (deltaY < 0) {
+				    final int itemLevel = level - 1;
+				    if (child.isFirstGroupNode()) {
+				        contentHeightSumAtGroupStart[level] = contentHeightSumAtGroupStart[itemLevel];
+				        groupStartIndex[level] = groupStartIndex[itemLevel];
+				    }
+				    if(groupUpperYCoordinate[itemLevel] == Integer.MAX_VALUE){
+				        groupUpperYCoordinate[itemLevel] = y;
+				        groupLowerYCoordinate[itemLevel] = y;
+				    }
+				    final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
+				    final int childContentHeight = child.getContentHeight() + childCloudHeigth;
+				    int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2
+				            - childContentHeight / 2 + childShiftY
+				            - (child.getContentYForSummary() - childCloudHeigth / 2 - spaceAround);
+				    this.yCoordinates[childViewIndex] = summaryY;
+				    if (!isFreeNode) {
+				        final int deltaY = summaryY - groupUpperYCoordinate[itemLevel]
+				                + child.getTopOverlap();
+				        if (deltaY < 0) {
 							top += deltaY;
 							y -= deltaY;
 							summaryY -= deltaY;
@@ -287,6 +293,10 @@ class VerticalNodeViewLayoutStrategy {
 				}
 			}
 		}
+        if (childNodesAlignment == ChildNodesAlignment.LAST_CHILD_BY_PARENT && alignedChild != null) {
+            top += alignedChild.getHeight() - (alignedChild.getContentY() + alignedChild.getContentHeight() + spaceAround + alignedChild.getBottomOverlap()) ;
+        }
+
 		top += align(contentSize.height - childContentHeightSum);
         if(childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
                 && contentSize.height > 0
@@ -294,7 +304,7 @@ class VerticalNodeViewLayoutStrategy {
             top -= calculateAddedDistanceFromParentToChildren(minimalDistanceBetweenChildren, contentSize);
         }
 
-		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, childContentHeightSum, top);
+		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, top);
 	}
 
     private int calculateAddedDistanceFromParentToChildren(final int minimalDistance,
@@ -412,12 +422,10 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 
-    private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int childContentHeightOnSide,  int topOnSide) {
+    private void calculateRelativeCoordinatesForContentAndBothSides(boolean isLeft, int topOnSide) {
 		if (! (leftSideCoordinaresAreSet || rightSideCoordinatesAreSet)) {
-			childContentHeight = childContentHeightOnSide;
 			top = topOnSide;
 		} else {
-			childContentHeight = Math.max(this.childContentHeight, childContentHeightOnSide);
 			int deltaTop = topOnSide - this.top;
 			final boolean changeLeft;
 			if (deltaTop < 0) {
