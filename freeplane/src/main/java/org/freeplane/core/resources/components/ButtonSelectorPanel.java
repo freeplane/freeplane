@@ -90,7 +90,8 @@ public class ButtonSelectorPanel{
             final Collection<ButtonSelectorPanel.ButtonIcon> displayedItems) {
         possibleValues = new Vector<String>();
         possibleValues.addAll(values);
-        buttonPanel = new JPanel(ToolbarLayout.horizontal());
+        ToolbarLayout layout = ToolbarLayout.fix();
+        buttonPanel = new JPanel(layout);
         buttonPanel.addComponentListener(SizeChanger.INSTANCE);
         buttons = new Vector<JToggleButton>(displayedItems.size());
         int i = 0;

@@ -13,10 +13,22 @@ import javax.swing.SwingUtilities;
 public class ToolbarLayout implements LayoutManager {
 
     public static final int MAX_WIDTH_BY_PARENT_WIDTH = -1;
+
+    public static ToolbarLayout horizontal() {
+        return new ToolbarLayout(BlockEndPosition.ON_SEPARATOR);
+    }
+
+    public static ToolbarLayout fix() {
+        return new ToolbarLayout(BlockEndPosition.ON_EACH_SEPARATOR);
+    }
+
+    public static ToolbarLayout vertical() {
+        return new ToolbarLayout(BlockEndPosition.ANYWHERE);
+    }
     private BlockEndPosition blockEndPosition;
 	private int maximumWidth = MAX_WIDTH_BY_PARENT_WIDTH;
 
-	enum BlockEndPosition{ON_SEPARATOR, ANYWHERE};
+	enum BlockEndPosition{ON_SEPARATOR, ON_EACH_SEPARATOR, ANYWHERE};
 	ToolbarLayout(BlockEndPosition blockEndPosition){
 		this.blockEndPosition = blockEndPosition;
 
@@ -51,7 +63,7 @@ public class ToolbarLayout implements LayoutManager {
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
 			if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
-				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maximumWidth) {
+				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maximumWidth || blockEndPosition == BlockEndPosition.ON_EACH_SEPARATOR) {
 					int x = leftMargin;
 					for (int j = lastBlockStart; j < lastBlockFinish; j++) {
 						final Component c = container.getComponent(j);
@@ -125,7 +137,7 @@ public class ToolbarLayout implements LayoutManager {
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
 			if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
-				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth) {
+				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth || blockEndPosition == BlockEndPosition.ON_EACH_SEPARATOR) {
 					heigth += lastBlockHeight;
 					lastBlockWidth = blockWidth;
 					lastBlockHeight = blockHeight;
@@ -156,13 +168,5 @@ public class ToolbarLayout implements LayoutManager {
 
 	@Override
     public void removeLayoutComponent(final Component comp) {
-	}
-
-	public static ToolbarLayout horizontal() {
-		return new ToolbarLayout(BlockEndPosition.ON_SEPARATOR);
-	}
-
-	public static ToolbarLayout vertical() {
-		return new ToolbarLayout(BlockEndPosition.ANYWHERE);
 	}
 }
