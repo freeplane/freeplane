@@ -321,7 +321,7 @@ class VerticalNodeViewLayoutStrategy {
             return (minimalDistanceBetweenChildren + 11 * 2 * defaultVGap) / 6;
     }
 
-	public int align(int height) {
+	private int align(int height) {
 		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		int deltaTop;
 		if (view.isSummary()
