@@ -386,11 +386,12 @@ public class NodeView extends JComponent implements INodeView {
 	        unscaledHGap = modelGap;
 	    }
 	    else {
-	        final boolean parentViewUsesHorizontalLayout = parentView.usesHorizontalLayout();
-	        if (parentViewUsesHorizontalLayout)
+	        ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
+	        if(childNodesAlignment.areChildrenAlignedWithParent())
+	            unscaledHGap = modelGap + ( - LocationModel.DEFAULT_HGAP_PX);
+	        else if (parentView.usesHorizontalLayout())
 	            unscaledHGap = modelGap + ( - LocationModel.DEFAULT_HGAP_PX / 2);
 	        else {
-	            ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
 	            ChildrenSides childrenSides = parentView.childrenSides();
 	            boolean reduce = childNodesAlignment.isStacked() && childrenSides == ChildrenSides.BOTH_SIDES;
 	            unscaledHGap = reduce ? modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.) : modelGap;
@@ -1386,9 +1387,13 @@ public class NodeView extends JComponent implements INodeView {
 		return getZoomed(NodeView.SPACE_AROUND);
 	}
 
-	public int getZoomed(int x) {
-		return map.getZoomed(x);
-	}
+    public int getZoomed(int number) {
+        return map.getZoomed(number);
+    }
+
+    public int getZoomed(double number) {
+        return map.getZoomed(number);
+    }
 
 	private void paintDecoration(final Graphics2D g) {
 		final PaintingMode paintingMode = map.getPaintingMode();
@@ -2071,9 +2076,17 @@ public class NodeView extends JComponent implements INodeView {
                 break;
             default:
                 NodeView parent = getParentNodeView();
-                if(parent != null)
-                    this.layoutOrientation = parent.layoutOrientation();
-                else
+                if(parent != null) {
+                    LayoutOrientation parentLayoutOrientation = parent.layoutOrientation();
+                    if(parent.getChildNodesAlignment().areChildrenAlignedWithParent()) {
+                        if(parentLayoutOrientation == LayoutOrientation.TOP_TO_BOTTOM)
+                            this.layoutOrientation = LayoutOrientation.LEFT_TO_RIGHT;
+                        else
+                            this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
+                    } else {
+                        this.layoutOrientation = parentLayoutOrientation;
+                    }
+                } else
                     this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
             }
         }

@@ -31,10 +31,10 @@ import org.freeplane.features.map.NodeModel;
  */
 public class LocationModel implements IExtension {
     public static final Quantity<LengthUnit> DEFAULT_HGAP = new Quantity<LengthUnit>(14, LengthUnit.pt);
-    public static final int DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnitsRounded();
+    public static final double DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnits();
     public static Quantity<LengthUnit> DEFAULT_SHIFT_Y = new Quantity<LengthUnit>(0, LengthUnit.pt);
 	public static Quantity<LengthUnit> DEFAULT_VGAP = new Quantity<LengthUnit>(2, LengthUnit.pt);
-	public static final int DEFAULT_VGAP_PX = DEFAULT_VGAP.toBaseUnitsRounded();
+	public static final double DEFAULT_VGAP_PX = DEFAULT_VGAP.toBaseUnits();
 
 	public static final LocationModel NULL_LOCATION = new LocationModel() {
         @Override

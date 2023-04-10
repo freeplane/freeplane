@@ -1441,15 +1441,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         NodeView newSelected = null;
         boolean selectedUsesHorizontalLayout = oldSelected.usesHorizontalLayout();
         ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesAlignment();
+        boolean isChildPlacedBeforeParent = childNodesAlignment.isChildStackedBeforeParent(oldSelected.isTopOrLeft());
+        boolean isChildPlacedAfterParent = childNodesAlignment.isChildStackedAfterParent(oldSelected.isTopOrLeft());
         if(isOutlineLayoutSet
          || selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
          || (! selectedUsesHorizontalLayout) && (!childNodesAlignment.isStacked() && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)
-         || (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.UP
-            || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.DOWN))){
+         || (isChildPlacedBeforeParent && direction == SelectionDirection.UP
+            || isChildPlacedAfterParent && direction == SelectionDirection.DOWN))){
             boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
-            PreferredChild preferredChild = isOutlineLayoutSet || ! selectedUsesHorizontalLayout && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+            PreferredChild preferredChild = isOutlineLayoutSet || ! selectedUsesHorizontalLayout && isChildPlacedAfterParent
                     ? PreferredChild.FIRST
-                    : ! selectedUsesHorizontalLayout && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                    : ! selectedUsesHorizontalLayout && isChildPlacedBeforeParent
                     ? PreferredChild.LAST
                     : PreferredChild.LAST_SELECTED;
             if(isOutlineLayoutSet || (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT) == selectedUsesHorizontalLayout) {
@@ -1533,11 +1535,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 NodeView parentView = oldSelected.getParentView();
                 if(newSelected.getParent() == parentView && parentView.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM) {
                     ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
-                    if (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.UP) {
+                    boolean isChildPlacedAfterParent = childNodesAlignment.isChildStackedAfterParent(oldSelected.isTopOrLeft());
+                    if (isChildPlacedAfterParent && direction == SelectionDirection.UP) {
                         getDescendant(newSelected, continious, PreferredChild.LAST);
                         return true;
                     }
-                    if (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.DOWN) {
+                    boolean isChildPlacedBeforeParent = childNodesAlignment.isChildStackedBeforeParent(oldSelected.isTopOrLeft());
+                    if (isChildPlacedBeforeParent && direction == SelectionDirection.DOWN) {
                         getDescendant(newSelected, continious, PreferredChild.FIRST);
                         return true;
                     }
@@ -1573,18 +1577,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
             LayoutOrientation layoutOrientation = parentView.layoutOrientation();
             if (direction == SelectionDirection.DOWN) {
+                boolean isChildPlacedBeforeParent = childNodesAlignment.isChildStackedBeforeParent(oldSelected.isTopOrLeft());
                 newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
-                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && isChildPlacedBeforeParent
                         ? LayoutOrientation.TOP_TO_BOTTOM
                                 :  LayoutOrientation.LEFT_TO_RIGHT,
-                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && isChildPlacedBeforeParent
                                 ? oldSelected.isTopOrLeft() : true);
             } else if (direction == SelectionDirection.UP) {
+                boolean isChildPlacedAfterParent = childNodesAlignment.isChildStackedAfterParent(oldSelected.isTopOrLeft());
                 newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
-                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                        layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && isChildPlacedAfterParent
                         ? LayoutOrientation.TOP_TO_BOTTOM
                                 : LayoutOrientation.LEFT_TO_RIGHT,
-                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                                layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && isChildPlacedAfterParent
                                 ? oldSelected.isTopOrLeft() :false);
             } else if (direction == SelectionDirection.RIGHT) {
                 newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, true);

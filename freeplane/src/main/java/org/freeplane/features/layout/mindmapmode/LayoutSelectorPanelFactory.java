@@ -84,7 +84,7 @@ public class LayoutSelectorPanelFactory {
     static private String description(ChildNodesLayout layout) {
         if(layout == ChildNodesLayout.AUTO)
             return TextUtils.getRawText(layout.name());
-        String childNodesAlignmentText = TextUtils.getRawText(layout.childNodesAlignment().name());
+        String childNodesAlignmentText = TextUtils.getRawText(layout.childrenSides().labelKey(layout.childNodesAlignment()));
         if(layout.layoutOrientation() == LayoutOrientation.AUTO
                 && layout.childrenSides() == ChildrenSides.AUTO)
             return childNodesAlignmentText;

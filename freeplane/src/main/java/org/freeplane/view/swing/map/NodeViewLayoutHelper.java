@@ -162,9 +162,13 @@ class NodeViewLayoutHelper {
 		return parentView != null ? parentView.getLayoutHelper() : null;
 	}
 
-	int getZoomed(int i) {
-		return view.getZoomed(i);
-	}
+    int getZoomed(int number) {
+        return view.getZoomed(number);
+    }
+
+    int getZoomed(double number) {
+        return view.getZoomed(number);
+    }
 
 	int getHeight() {
 		return getHeight(view);

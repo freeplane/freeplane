@@ -6,16 +6,38 @@
 package org.freeplane.api;
 
 public enum ChildNodesAlignment {
-	NOT_SET(false), AFTER_PARENT(true), FIRST_CHILD_BY_PARENT(false), BY_CENTER(false), LAST_CHILD_BY_PARENT(false), BEFORE_PARENT(true),
-	TOP_OR_LEFT(true), BOTTOM_OR_RIGHT(true), CENTER(true), AUTO(false);
+	NOT_SET(false, false),
+	FIRST_CHILD_BY_PARENT(false, false), BY_CENTER(false, false), LAST_CHILD_BY_PARENT(false, false),
+	AFTER_PARENT(true, false), BEFORE_PARENT(true, false),
+	TOP_OR_LEFT(true, true), BOTTOM_OR_RIGHT(true, true), CENTER(true, true),
+	AUTO(false, false);
 
     private final boolean isStacked;
 
-    private ChildNodesAlignment(boolean isStacked) {
+    private final boolean areAlignedWithParent;
+
+    private ChildNodesAlignment(boolean isStacked, boolean areAlignedWithParent) {
         this.isStacked = isStacked;
+        this.areAlignedWithParent = areAlignedWithParent;
     }
 
     public boolean isStacked() {
         return isStacked;
     }
+
+    public boolean areChildrenAlignedWithParent() {
+        return areAlignedWithParent;
+    }
+
+    public boolean isChildStackedBeforeParent(boolean isChildTopOrLeft) {
+        return this == BEFORE_PARENT
+                || areChildrenAlignedWithParent() && isChildTopOrLeft;
+    }
+
+    public boolean isChildStackedAfterParent(boolean isChildTopOrLeft) {
+        return this == AFTER_PARENT
+                || areChildrenAlignedWithParent() && ! isChildTopOrLeft;
+
+    }
+
 }
