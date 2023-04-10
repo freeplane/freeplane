@@ -607,7 +607,7 @@ public class MainView extends ZoomableLabel {
     public ConnectorLocation getConnectorLocation(Point relativeLocation,
             LayoutOrientation layoutOrientation,
             ChildNodesAlignment alignment) {
-    	if(layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT || alignment.areChildrenApart) {
+    	if(layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT || alignment.isStacked) {
             if(relativeLocation.y > getHeight())
                 return ConnectorLocation.BOTTOM;
             if(relativeLocation.y <0)
