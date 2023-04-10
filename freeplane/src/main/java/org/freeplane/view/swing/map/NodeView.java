@@ -392,7 +392,7 @@ public class NodeView extends JComponent implements INodeView {
 	        else {
 	            ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
 	            ChildrenSides childrenSides = parentView.childrenSides();
-	            boolean reduce = childNodesAlignment.areChildrenApart && childrenSides == ChildrenSides.BOTH_SIDES;
+	            boolean reduce = childNodesAlignment.isStacked && childrenSides == ChildrenSides.BOTH_SIDES;
 	            unscaledHGap = reduce ? modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.) : modelGap;
 	        }
 	    }
@@ -566,7 +566,7 @@ public class NodeView extends JComponent implements INodeView {
 			sibling = parentView;
 			parentView = parentView.getParentView();
 		}
-	    if(sibling.getChildNodesAlignment().areChildrenApart && ! sibling.usesHorizontalLayout())
+	    if(sibling.getChildNodesAlignment().isStacked && ! sibling.usesHorizontalLayout())
 	        return sibling;
 		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
 		        && sibling.layoutOrientation() == requiredLayoutOrientation) {
@@ -775,7 +775,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	    if((parentView != null ? parentView : sibling).layoutOrientation() != requiredLayoutOrientation)
 	        return this;
-        if(sibling.getChildNodesAlignment().areChildrenApart && ! sibling.usesHorizontalLayout())
+        if(sibling.getChildNodesAlignment().isStacked && ! sibling.usesHorizontalLayout())
             return sibling;
         while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
                 && sibling.usesHorizontalLayout() == parentUsesHorizontalLayout) {
