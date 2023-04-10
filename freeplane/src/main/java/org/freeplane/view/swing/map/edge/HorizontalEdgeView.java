@@ -52,7 +52,7 @@ public class HorizontalEdgeView extends EdgeView {
 	    ChildNodesAlignment childNodesAlignment = source.getChildNodesAlignment();
 	    if(! usesHorizontalLayout
                 && ! (source.isRoot() && MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE)
-                && childNodesAlignment.isStacked
+                && childNodesAlignment.isStacked()
                 && source.childrenSides() != ChildrenSides.BOTH_SIDES) {
 	        super.createStart();
 	        if(getStartConnectorLocation() == ConnectorLocation.RIGHT)
@@ -110,7 +110,7 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setStroke(stroke);
 		NodeView source = getSource();
         boolean usesHorizontalLayout = source.usesHorizontalLayout();
-        boolean areChildrenApart = source.getChildNodesAlignment().isStacked;
+        boolean areChildrenApart = source.getChildNodesAlignment().isStacked();
         if(usesHorizontalLayout) {
             int middleY = (start.y + end.y) / 2;
             xs = new int[] { start.x, start.x, end.x, end.x };

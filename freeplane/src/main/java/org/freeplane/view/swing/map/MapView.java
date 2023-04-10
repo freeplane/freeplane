@@ -1443,7 +1443,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesAlignment();
         if(isOutlineLayoutSet
          || selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
-         || (! selectedUsesHorizontalLayout) && (!childNodesAlignment.isStacked && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)
+         || (! selectedUsesHorizontalLayout) && (!childNodesAlignment.isStacked() && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)
          || (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.UP
             || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.DOWN))){
             boolean looksAtTopOrLeft = direction == SelectionDirection.LEFT || direction == SelectionDirection.UP;
@@ -1476,7 +1476,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             if(ancestorView == null )
                 return false;
             if(ancestorView.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM
-                    && ancestorView.getChildNodesAlignment().isStacked
+                    && ancestorView.getChildNodesAlignment().isStacked()
                     && ancestorView.childrenSides() == ChildrenSides.BOTH_SIDES)
                 break;
             if (ancestorView.isContentVisible())
@@ -1645,7 +1645,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         final NodeView oldSelected = selection.getSelectionEnd();
         boolean selectedUsesHorizontalLayout = oldSelected.usesHorizontalLayout();
         if (oldSelected.isFolded() && unfoldsOnNavigation()
-                && (oldSelected.getChildNodesAlignment().isStacked
+                && (oldSelected.getChildNodesAlignment().isStacked()
                         || selectedUsesHorizontalLayout
                         && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
                         || (! selectedUsesHorizontalLayout)

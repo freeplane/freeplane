@@ -8,9 +8,13 @@ package org.freeplane.api;
 public enum ChildNodesAlignment {
 	NOT_SET(false), AFTER_PARENT(true), FIRST_CHILD_BY_PARENT(false), BY_CENTER(false), LAST_CHILD_BY_PARENT(false), BEFORE_PARENT(true), AUTO(false);
 
-    public final boolean isStacked;
+    private final boolean isStacked;
 
     private ChildNodesAlignment(boolean isStacked) {
         this.isStacked = isStacked;
+    }
+
+    public boolean isStacked() {
+        return isStacked;
     }
 }
