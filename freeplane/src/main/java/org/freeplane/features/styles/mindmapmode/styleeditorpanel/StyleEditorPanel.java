@@ -48,6 +48,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
+import org.freeplane.features.ui.IMapViewManager.MapChangeEventProperty;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
@@ -299,7 +300,8 @@ public class StyleEditorPanel extends JPanel {
 			@Override
             public void mapChanged(MapChangeEvent event) {
 				Object property = event.getProperty();
-                if(! MapStyle.MAP_STYLES.equals(property) && ! MapStyle.MAP_LAYOUT.equals(property))
+                if(! MapStyle.MAP_STYLES.equals(property) && ! MapStyle.MAP_LAYOUT.equals(property)
+                        && MapChangeEventProperty.MAP_VIEW_ROOT != property)
 					return;
 				final IMapSelection selection = controller.getSelection();
 				if (selection == null) {

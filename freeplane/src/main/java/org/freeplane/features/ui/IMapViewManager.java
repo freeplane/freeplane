@@ -48,7 +48,9 @@ import org.freeplane.view.swing.map.MapView;
  * 12.01.2009
  */
 public interface IMapViewManager {
-	public void addMapSelectionListener(final IMapSelectionListener pListener);
+	enum MapChangeEventProperty { MAP_VIEW_ROOT }
+
+    public void addMapSelectionListener(final IMapSelectionListener pListener);
 
 	public void addMapViewChangeListener(final IMapViewChangeListener pListener);
 
