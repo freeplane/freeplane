@@ -114,6 +114,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
@@ -2708,8 +2709,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(! temporarily) {
             rootsHistory.clear();
             currentRootParentView.resetLayoutPropertiesRecursively();
+            fireRootChanged();
         }
 	}
+
+    private void fireRootChanged() {
+        modeController.getMapController().fireMapChanged(
+                new MapChangeEvent(this, getModel(), IMapViewManager.MapChangeEventProperty.MAP_VIEW_ROOT, null, null, false));
+    }
 
 	private void setRootNode(NodeView newRootView) {
 		if(currentRootView == newRootView)
@@ -2742,6 +2749,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(newRootWasFolded)
 		    newRootView.fireFoldingChanged();
 		newRootView.resetLayoutPropertiesRecursively();
+		fireRootChanged();
 		revalidate();
 		repaint();
 	}
