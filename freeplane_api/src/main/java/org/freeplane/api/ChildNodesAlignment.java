@@ -14,11 +14,11 @@ public enum ChildNodesAlignment {
 
     private final boolean isStacked;
 
-    private final boolean areAlignedWithParent;
+    private final boolean areChildrenAlignedWithParent;
 
-    private ChildNodesAlignment(boolean isStacked, boolean areAlignedWithParent) {
+    private ChildNodesAlignment(boolean isStacked, boolean areChildrenAlignedWithParent) {
         this.isStacked = isStacked;
-        this.areAlignedWithParent = areAlignedWithParent;
+        this.areChildrenAlignedWithParent = areChildrenAlignedWithParent;
     }
 
     public boolean isStacked() {
@@ -26,7 +26,7 @@ public enum ChildNodesAlignment {
     }
 
     public boolean areChildrenAlignedWithParent() {
-        return areAlignedWithParent;
+        return areChildrenAlignedWithParent;
     }
 
     public boolean isChildStackedBeforeParent(boolean isChildTopOrLeft) {
