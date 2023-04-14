@@ -161,7 +161,7 @@ class VerticalNodeViewLayoutStrategy {
 							if(isFirstVisibleLaidOutChild
 							        && childNodesAlignment.isChildStackedAfterParent(laysOutLeftSide)
 							        && contentSize.height > 0) {
-							    y += calculateAddedDistanceFromParentToChildren(minimalDistanceBetweenChildren, contentSize);
+							    y += calculateAddedDistanceFromParentToChildren(childNodesAlignment, minimalDistanceBetweenChildren, contentSize);
 							}
 						}
 
@@ -301,18 +301,18 @@ class VerticalNodeViewLayoutStrategy {
 		top += align(contentSize.height - childContentHeightSum, laysOutLeftSide);
         if(childNodesAlignment.isChildStackedBeforeParent(laysOutLeftSide)
                 && contentSize.height > 0
-                && ! isFirstVisibleLaidOutChild) {
-            top -= calculateAddedDistanceFromParentToChildren(minimalDistanceBetweenChildren, contentSize);
+                && (childNodesAlignment.areChildrenAlignedWithParent() ||  ! isFirstVisibleLaidOutChild)) {
+            top -= calculateAddedDistanceFromParentToChildren(childNodesAlignment, minimalDistanceBetweenChildren, contentSize);
         }
 
 		calculateRelativeCoordinatesForContentAndBothSides(laysOutLeftSide, top);
 	}
 
-    private int calculateAddedDistanceFromParentToChildren(final int minimalDistance,
+    private int calculateAddedDistanceFromParentToChildren(ChildNodesAlignment childNodesAlignment, final int minimalDistance,
             final Dimension contentSize) {
         boolean usesHorizontalLayout = view.usesHorizontalLayout();
         int distance = Math.max(view.getMap().getZoomed(usesHorizontalLayout ? LocationModel.DEFAULT_VGAP_PX * 2 : LocationModel.DEFAULT_VGAP_PX), minimalDistance);
-        return (usesHorizontalLayout ?  distance : contentSize.height) + distance;
+        return (usesHorizontalLayout && !childNodesAlignment.areChildrenAlignedWithParent() ?  distance : contentSize.height) + distance;
     }
 
 	private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
