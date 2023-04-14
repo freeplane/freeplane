@@ -19,12 +19,14 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.Image;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
@@ -215,7 +217,12 @@ class NodeTextConditionController implements IElementaryConditionController {
 	private static Object transformedObject(final NodeModel node) {
 		TextController textController = TextController.getController();
         Object object = textController.withNodeNumbering( false, () -> textController.getTransformedObjectNoThrow(node));
-        return object instanceof String ? HtmlUtils.htmlToPlain((String)object) : object;
+        if(object instanceof Icon || object instanceof Image)
+            object = node.getText();
+        if (object instanceof String)
+            return HtmlUtils.htmlToPlain((String)object);
+        else
+            return object;
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
