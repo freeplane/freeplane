@@ -42,15 +42,18 @@ abstract class MainViewPainter{
     int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
         int height = mainView.getHeight();
         NodeView nodeView = mainView.getNodeView();
-        if (nodeView.usesHorizontalLayout() &&  (! onlyFolded || nodeView.isFolded())) {
+        if (paintsFoldingMarkBelow(nodeView) &&  (! onlyFolded || nodeView.isFolded())) {
             height += 2 * mainView.getZoomedFoldingSymbolHalfWidth();
         }
         return height;
     }
+    protected boolean paintsFoldingMarkBelow(NodeView nodeView) {
+        return nodeView.usesHorizontalLayout() != nodeView.getChildNodesAlignment().areChildrenAlignedWithParent();
+    }
     int getMainViewWidthWithFoldingMark(boolean onlyFolded) {
         int width = mainView.getWidth();
         final NodeView nodeView = mainView.getNodeView();
-        if (! nodeView.usesHorizontalLayout() && (! onlyFolded || nodeView.isFolded())) {
+        if (! paintsFoldingMarkBelow(nodeView) && (! onlyFolded || nodeView.isFolded())) {
             width += mainView.getZoomedFoldingSymbolHalfWidth() * 3;
         }
         return width;
@@ -126,7 +129,7 @@ abstract class MainViewPainter{
 		final Point p;
 		if(! drawsControls && ! nodeView.isFolded())
 		    return EMPTY_RECTANGLE;
-		if(nodeView.usesHorizontalLayout()) {
+		if(paintsFoldingMarkBelow(nodeView)) {
 		    if(nodeView.isTopOrLeft()) {
 		        p = getTopPoint();
                 p.y -= halfWidth;

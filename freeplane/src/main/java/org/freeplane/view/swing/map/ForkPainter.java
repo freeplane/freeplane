@@ -46,7 +46,7 @@ class ForkPainter extends MainViewPainter {
 	@Override
 	int getMainViewHeightWithFoldingMark(boolean onlyFolded) {
 	    final NodeView nodeView = mainView.getNodeView();
-	    if(nodeView.usesHorizontalLayout())
+	    if(paintsFoldingMarkBelow(nodeView))
 	        return super.getMainViewHeightWithFoldingMark(onlyFolded);
 		int height = mainView.getHeight();
 		if (! onlyFolded || nodeView.isFolded()) {
