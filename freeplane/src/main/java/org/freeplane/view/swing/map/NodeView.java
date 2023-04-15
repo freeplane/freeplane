@@ -191,7 +191,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public boolean contains(final int x, final int y) {
-		final int space = map.getZoomed(NodeView.SPACE_AROUND);
+		final int space = getSpaceAround();
 		final int reducedSpace = space - ADDITIONAL_MOUSE_SENSITIVE_AREA;
 		if (x >= reducedSpace && x < getWidth() - reducedSpace && y >= reducedSpace && y < getHeight() - reducedSpace){
 			for(int i = getComponentCount()-1; i >= 0; i--){
@@ -894,50 +894,7 @@ public class NodeView extends JComponent implements INodeView {
 		return parentView.getAncestorWithVisibleContent();
 	}
 
-    NodeView getDescendant(PreferredChild preferredChild) {
-        NodeView newSelected = this;
-        while(layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM
-                 && getChildNodesAlignment() == getParentView().getChildNodesAlignment()
-                 && isSubtreeVisible()) {
-            NodeView preferredVisibleChild = newSelected.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES);
-            if(preferredVisibleChild != null)
-                newSelected = preferredVisibleChild;
-            else
-                break;
-        }
-        return newSelected;
-    }
-	NodeView getVisibleSummarizedOrParentView(LayoutOrientation requiredLayoutOrientation, boolean isChildTopOrLeft) {
-		final Container parent = getParent();
-		if (!(parent instanceof NodeView)) {
-			return null;
-		}
-		final NodeView parentView = (NodeView) parent;
-		if(parentView.layoutOrientation() == requiredLayoutOrientation && isChildTopOrLeft == isTopOrLeft()) {
-		    if(isSummary()){
-		        boolean startFromSummary = true;
-		        LinkedList<NodeView> v = getSiblingViews();
-		        final int index = v.indexOf(this);
-		        for (int i = index - 1; i >= 0; i--) {
-		            final NodeView nextView = v.get(i);
-		            if (nextView.isContentVisible() || nextView.isSubtreeVisible()) {
-		                return nextView.getDescendant(PreferredChild.FIRST);
-		            }
-		            if(! nextView.isSummary())
-		                startFromSummary = false;
-		            else if(! startFromSummary)
-		                break;
-
-		        }
-		    }
-		    if (parentView.isContentVisible()) {
-		        return parentView;
-		    }
-		}
-		return parentView.getVisibleSummarizedOrParentView(requiredLayoutOrientation, isChildTopOrLeft);
-	}
-
-	public int getZoomedFoldingSymbolHalfWidth() {
+    public int getZoomedFoldingSymbolHalfWidth() {
 	    final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10) * map.getZoom()) / 2);
 	    return preferredFoldingSymbolHalfWidth;
 	}
