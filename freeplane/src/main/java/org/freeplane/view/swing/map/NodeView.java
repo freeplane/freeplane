@@ -130,7 +130,6 @@ public class NodeView extends JComponent implements INodeView {
 	private MainView mainView;
 	private final MapView map;
 	private NodeModel model;
-	private NodeView lastSelectedChild;
 	private EdgeStyle edgeStyle = EdgeStyle.EDGESTYLE_HIDDEN;
 	private Integer edgeWidth = 1;
 	private ObjectRule<Color, Rules> edgeColor = null;
@@ -602,7 +601,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     enum PreferredChild {
-        LAST_SELECTED, FIRST, LAST, NEAREST_SIBLING
+        FIRST, LAST, NEAREST_SIBLING
     }
 
     NodeView getPreferredVisibleChild(final PreferredChild preferredChild, final ChildrenSides sides) {
@@ -612,19 +611,6 @@ public class NodeView extends JComponent implements INodeView {
     private NodeView getPreferredVisibleChild(final PreferredChild preferredChild, final ChildrenSides sides, NodeView nearest) {
 		if (getModel().isLeaf()) {
 			return null;
-		}
-		if (preferredChild == PreferredChild.LAST_SELECTED
-		        && lastSelectedChild != null
-		        && lastSelectedChild.getParent() == this && (sides.matches(lastSelectedChild.isTopOrLeft()))) {
-			if (lastSelectedChild.isContentVisible()) {
-				return lastSelectedChild;
-			}
-			else {
-				final NodeView newSelected = lastSelectedChild.getPreferredVisibleChild(preferredChild, ChildrenSides.BOTH_SIDES, nearest);
-				if (newSelected != null) {
-					return newSelected;
-				}
-			}
 		}
 		return selectNearest(preferredChild, sides, nearest);
 	}
@@ -645,9 +631,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			NodeView childView = (NodeView) c;
 			boolean isChildTopOrLeft = childView.isTopOrLeft();
-			if (! sides.matches(isChildTopOrLeft)
-			        || sides == ChildrenSides.BOTH_SIDES
-			        && lastSelectedChild != null && lastSelectedChild.getParent() == this && (lastSelectedChild.isTopOrLeft() != isChildTopOrLeft)) {
+			if (! sides.matches(isChildTopOrLeft)) {
 			    continue;
 			}
 			if (!childView.isContentVisible()) {
@@ -697,7 +681,6 @@ public class NodeView extends JComponent implements INodeView {
 			    break;
 			}
 		}
-		lastSelectedChild = newSelected;
 		return newSelected;
     }
 
@@ -1094,50 +1077,19 @@ public class NodeView extends JComponent implements INodeView {
 		}
 
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
-		if (node == lastSelectedChild) {
-			lastSelectedChild = null;
-			for (int j = nodeDeletionEvent.index + 1; j < getComponentCount(); j++) {
-				final Component c = getComponent(j);
-				if (!(c instanceof NodeView)) {
-					break;
-				}
-				final NodeView candidate = (NodeView) c;
-				if (candidate.isVisible() && node.isTopOrLeft() == candidate.isTopOrLeft()) {
-					lastSelectedChild = candidate;
-					break;
-				}
-			}
-			if (lastSelectedChild == null) {
-				for (int j = nodeDeletionEvent.index - 1; j >= 0; j--) {
-					final Component c = getComponent(j);
-					if (!(c instanceof NodeView)) {
-						break;
-					}
-					final NodeView candidate = (NodeView) c;
-					if (candidate.isVisible() && node.isTopOrLeft() == candidate.isTopOrLeft()) {
-						lastSelectedChild = candidate;
-						break;
-					}
-				}
-			}
-		}
+
 		numberingChanged(nodeDeletionEvent.index+1);
 		map.preserveRootNodeLocationOnScreen();
+		NodeView preferred = selectNearest(PreferredChild.NEAREST_SIBLING, childrenSides(), node);
 		node.remove();
-		NodeView preferred = getPreferredVisibleChild(PreferredChild.LAST_SELECTED, childrenSides());
-		if (preferred == null) {
-			preferred = this;
-		}
 		revalidate();
-		if(map.getSelected() ==  null)
-			map.selectVisibleAncestorOrSelf(preferred);
+		if(map.getSelected() ==  null) {
+		    if (preferred == null) {
+		        preferred = this;
+		    }
+		    map.selectVisibleAncestorOrSelf(preferred);
+		}
 	}
-
-	public NodeView getPreferredVisibleChild(PreferredChild preferredChild, boolean isTopOrLeft) {
-	    return getPreferredVisibleChild(preferredChild, ChildrenSides.ofTopOrLeft(isTopOrLeft));
-    }
-
-
 
     @Override
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
@@ -1518,18 +1470,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	protected void setModel(final NodeModel model) {
 		this.model = model;
-	}
-
-	public void setLastSelectedChild(final NodeView view) {
-		if(view != null && ! SummaryNode.isSummaryNode(view.getModel()))
-			lastSelectedChild = view;
-		final Container parent = this.getParent();
-		if (view == null) {
-			return;
-		}
-		else if (parent instanceof NodeView) {
-			((NodeView) parent).setLastSelectedChild(this);
-		}
 	}
 
 	/**

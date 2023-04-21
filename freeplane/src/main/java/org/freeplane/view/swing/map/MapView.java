@@ -2121,10 +2121,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		selection.select(newSelected);
-		Container selectionParent = newSelected.getParent();
-		if (selectionParent instanceof NodeView) {
-			((NodeView) selectionParent).setLastSelectedChild(newSelected);
-		}
 	}
 
 	/**
