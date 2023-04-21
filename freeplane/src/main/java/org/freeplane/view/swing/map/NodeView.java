@@ -876,7 +876,7 @@ public class NodeView extends JComponent implements INodeView {
 	private ChildNodesAlignment getDefaultChildNodesAlignment() {
 		NodeView parentView = getParentNodeView();
 		if (parentView == null)
-			return ChildNodesAlignment.BY_CENTER;
+			return ChildNodesAlignment.FLOW;
 		else if(parentView.isSummary())
 			return parentView.getDefaultChildNodesAlignment();
 		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout())

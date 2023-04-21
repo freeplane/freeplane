@@ -180,6 +180,9 @@ class VerticalNodeViewLayoutStrategy {
 						if(childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT || childNodesAlignment == ChildNodesAlignment.LAST_CHILD_BY_PARENT) {
 						    top += - child.getHeight() + childCloudHeigth + 2 * spaceAround + child.getBottomOverlap() + child.getContentHeight();
 						}
+						else if(childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
+                            top += - child.getHeight()/2 + childCloudHeigth/2 + spaceAround + child.getBottomOverlap()/2 + child.getContentHeight()/2;
+                        }
 						else if(childNodesAlignment == ChildNodesAlignment.FIRST_CHILD_BY_PARENT && isFirstVisibleLaidOutChild) {
 						    top += - (child.getContentY() - spaceAround);
 						}
@@ -325,7 +328,8 @@ class VerticalNodeViewLayoutStrategy {
 		int deltaTop;
 		if (view.isSummary()
 				|| childNodesAlignment == ChildNodesAlignment.NOT_SET
-				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER) {
+				|| childNodesAlignment == ChildNodesAlignment.BY_CENTER
+				|| childNodesAlignment == ChildNodesAlignment.FLOW) {
 			deltaTop = height/2;
 		} else if (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
 		        || childNodesAlignment == ChildNodesAlignment.LAST_CHILD_BY_PARENT) {
