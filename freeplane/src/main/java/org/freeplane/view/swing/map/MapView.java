@@ -1478,7 +1478,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         for(;;) {
             if(ancestorView == null )
                 return false;
-            if(ancestorView.getChildNodesAlignment().isStacked()
+            if((ancestorView.getChildNodesAlignment().isStacked() || ! ancestorView.isContentVisible())
                     && ancestorView.childrenSides() == ChildrenSides.BOTH_SIDES)
                 break;
             if (ancestorView.isContentVisible())
