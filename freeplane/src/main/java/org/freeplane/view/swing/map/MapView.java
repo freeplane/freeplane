@@ -1485,15 +1485,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             isTopOrLeft =  ancestorView.isTopOrLeft();
             ancestorView = ancestorView.getParentView();
         }
-        NodeView ancestorsAncestorView = ancestorView.getParentView();
-        for(;;) {
-            if(ancestorsAncestorView == null || ancestorsAncestorView.usesHorizontalLayout())
-                break;
-            if (ancestorsAncestorView.isContentVisible())
-                return false;
-            ancestorsAncestorView = ancestorsAncestorView.getParentView();
-
-        }
         NodeView newSelected = null;
         if(isTopOrLeft && direction == SelectionDirection.RIGHT || ! isTopOrLeft && direction == SelectionDirection.LEFT){
             newSelected = ancestorView.selectNearest(PreferredChild.NEAREST_SIBLING, ChildrenSides.ofTopOrLeft(! isTopOrLeft), oldSelected);
