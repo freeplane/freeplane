@@ -70,7 +70,11 @@ public class HorizontalEdgeView extends EdgeView {
 	        MainView mainView = source.getMainView();
 
 	        if(usesHorizontalLayout) {
-	            if(target.isTopOrLeft()){
+	            if(source.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT)
+                    start = mainView.getRightPoint();
+                else if(source.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
+                    start = mainView.getLeftPoint();
+                else if(target.isTopOrLeft()){
 	                start = mainView.getTopPoint();
 	            }
 	            else{

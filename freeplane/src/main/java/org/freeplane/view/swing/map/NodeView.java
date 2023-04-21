@@ -386,17 +386,18 @@ public class NodeView extends JComponent implements INodeView {
 	        unscaledHGap = modelGap;
 	    }
 	    else {
-	        final boolean parentViewUsesHorizontalLayout = parentView.usesHorizontalLayout();
-	        if (parentViewUsesHorizontalLayout)
-	            unscaledHGap = modelGap + ( - LocationModel.DEFAULT_HGAP_PX / 2);
-	        else {
-	            ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
-	            ChildrenSides childrenSides = parentView.childrenSides();
-	            boolean reduce = childNodesAlignment.isStacked() && childrenSides == ChildrenSides.BOTH_SIDES;
-	            unscaledHGap = reduce ? modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.) : modelGap;
-	        }
+	        ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
+	        ChildrenSides childrenSides = parentView.childrenSides();
+	        boolean reduce = childNodesAlignment.isStacked() && childrenSides == ChildrenSides.BOTH_SIDES;
+	        if (reduce) {
+	            if(parentView.usesHorizontalLayout())
+                    unscaledHGap = modelGap - LocationModel.DEFAULT_HGAP_PX + 2 * LocationModel.DEFAULT_VGAP_PX;
+                else
+                    unscaledHGap = modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.);
+            } else
+                unscaledHGap = modelGap;
 	    }
-        return map.getZoomed(unscaledHGap);
+	    return map.getZoomed(unscaledHGap);
 	}
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {

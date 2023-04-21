@@ -1443,7 +1443,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         boolean selectedUsesHorizontalLayout = oldSelected.usesHorizontalLayout();
         ChildNodesAlignment childNodesAlignment = oldSelected.getChildNodesAlignment();
         if(isOutlineLayoutSet
-         || selectedUsesHorizontalLayout && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
+         || selectedUsesHorizontalLayout && (!childNodesAlignment.isStacked() && (direction == SelectionDirection.UP || direction == SelectionDirection.DOWN)
+                 || (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.LEFT
+                 || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.RIGHT))
          || (! selectedUsesHorizontalLayout) && (!childNodesAlignment.isStacked() && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT)
          || (childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && direction == SelectionDirection.UP
             || childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && direction == SelectionDirection.DOWN))){
@@ -1467,7 +1469,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
      private boolean selectSiblingOnTheOtherSide(SelectionDirection direction, boolean continious) {
-        if(isOutlineLayoutSet() || direction.isVertical())
+        if(isOutlineLayoutSet())
             return false;
 
         final NodeView oldSelected = selection.getSelectionEnd();
@@ -1476,8 +1478,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         for(;;) {
             if(ancestorView == null )
                 return false;
-            if(ancestorView.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM
-                    && ancestorView.getChildNodesAlignment().isStacked()
+            if(ancestorView.getChildNodesAlignment().isStacked()
                     && ancestorView.childrenSides() == ChildrenSides.BOTH_SIDES)
                 break;
             if (ancestorView.isContentVisible())
@@ -1486,7 +1487,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             ancestorView = ancestorView.getParentView();
         }
         NodeView newSelected = null;
-        if(isTopOrLeft && direction == SelectionDirection.RIGHT || ! isTopOrLeft && direction == SelectionDirection.LEFT){
+        if(ancestorView.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM && (isTopOrLeft && direction == SelectionDirection.RIGHT || ! isTopOrLeft && direction == SelectionDirection.LEFT)
+                || ancestorView.layoutOrientation() == LayoutOrientation.LEFT_TO_RIGHT && (isTopOrLeft && direction == SelectionDirection.DOWN || ! isTopOrLeft && direction == SelectionDirection.UP)){
             newSelected = ancestorView.selectNearest(PreferredChild.NEAREST_SIBLING, ChildrenSides.ofTopOrLeft(! isTopOrLeft), oldSelected);
         }
         if(newSelected != null) {
@@ -1579,9 +1581,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                                 layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
                                 ? oldSelected.isTopOrLeft() :false);
             } else if (direction == SelectionDirection.RIGHT) {
-                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, true);
+                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
+                        layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                        ? LayoutOrientation.LEFT_TO_RIGHT
+                                :  LayoutOrientation.TOP_TO_BOTTOM,
+                                layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT && childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT
+                                ? oldSelected.isTopOrLeft() : true);
             } else if (direction == SelectionDirection.LEFT) {
-                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(LayoutOrientation.TOP_TO_BOTTOM, false);
+                newSelectedParent = oldSelected.getVisibleSummarizedOrParentView(
+                        layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                        ? LayoutOrientation.LEFT_TO_RIGHT
+                                :  LayoutOrientation.TOP_TO_BOTTOM,
+                                layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT && childNodesAlignment == ChildNodesAlignment.AFTER_PARENT
+                                ? oldSelected.isTopOrLeft() : false);
             }
         }
         return newSelectedParent;

@@ -310,7 +310,7 @@ class VerticalNodeViewLayoutStrategy {
             final Dimension contentSize) {
         boolean usesHorizontalLayout = view.usesHorizontalLayout();
         int distance = Math.max(view.getMap().getZoomed(usesHorizontalLayout ? LocationModel.DEFAULT_VGAP_PX * 2 : LocationModel.DEFAULT_VGAP_PX), minimalDistance);
-        return (usesHorizontalLayout ?  distance : contentSize.height) + distance;
+        return contentSize.height + distance;
     }
 
 	private int calculateExtraGapForChildren(final int minimalDistanceBetweenChildren) {
@@ -364,10 +364,8 @@ class VerticalNodeViewLayoutStrategy {
 		final int baseDistanceToChildren = view.getBaseDistanceToChildren();
 		int level = viewLevels.highestSummaryLevel + 1;
 		final int summaryBaseX[] = new int[level];
-		boolean usesHorizontalLayout = view.usesHorizontalLayout();
 		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
-		boolean areChildrenSeparatedByY = ! usesHorizontalLayout
-		        && childNodesAlignment.isStacked();
+		boolean areChildrenSeparatedByY = childNodesAlignment.isStacked();
 		for (int i = 0; i < childViewCount; i++) {
 			final NodeViewLayoutHelper child = view.getComponent(i);
 			if (child.isLeft() == laysOutLeftSide) {
