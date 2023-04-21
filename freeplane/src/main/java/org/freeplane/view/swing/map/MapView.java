@@ -131,7 +131,7 @@ import org.freeplane.view.swing.map.link.ILinkView;
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener, Configurable {
 
-    enum SelectionDirection {RIGHT, LEFT, DOWN, UP;
+    public enum SelectionDirection {RIGHT, LEFT, DOWN, UP;
 
         boolean isHorizontal() {
             return this == RIGHT || this == LEFT;
@@ -653,6 +653,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final INodeChangeListener connectorChangeListener;
 	private boolean scrollsViewAfterLayout = true;
 	private boolean allowsCompactLayout;
+    public static final int SCROLL_VELOCITY_PX = (int) (UITools.FONT_SCALE_FACTOR  * 10);
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -1429,9 +1430,30 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    return selectPreferredVisibleChild(direction, continious)
 	                || selectSiblingOnTheOtherSide(direction, continious)
 	                || selectPreferredVisibleSiblingOrAncestor(direction, continious)
-	                || unfoldInDirection(direction);
+	                || unfoldInDirection(direction)
+	                || scroll(direction);
 
 	}
+
+    public boolean scroll(SelectionDirection direction) {
+        switch(direction) {
+        case DOWN:
+            scrollBy(0, SCROLL_VELOCITY_PX);
+            break;
+        case UP:
+            scrollBy(0, -SCROLL_VELOCITY_PX);
+            break;
+        case LEFT:
+            scrollBy(-SCROLL_VELOCITY_PX, 0);
+            break;
+        case RIGHT:
+            scrollBy(SCROLL_VELOCITY_PX, 0);
+            break;
+        default:
+            return false;
+        }
+        return true;
+    }
 
     private boolean selectPreferredVisibleChild(SelectionDirection direction,
             final boolean continious) {

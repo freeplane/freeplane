@@ -17,6 +17,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapView.SelectionDirection;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -37,24 +38,24 @@ public class DefaultNodeKeyListener implements KeyListener {
 			return;
 		final ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
 		if(acceleratorManager.canProcessKeyEvent(e))
-			return;
+		    return;
 		if(checkForScrollMap){
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_UP:
-					mapView.scrollBy(0, -10);
-					e.consume();
-				return;
-			case KeyEvent.VK_DOWN:
-					mapView.scrollBy(0, 10);
-					e.consume();
-				return;
-			case KeyEvent.VK_LEFT:
-					mapView.scrollBy(-10, 0);
-					e.consume();
-				return;
-			case KeyEvent.VK_RIGHT:
-					mapView.scrollBy(10, 0);
-					e.consume();
+		    switch (e.getKeyCode()) {
+		    case KeyEvent.VK_UP:
+		        mapView.scroll(SelectionDirection.UP);
+		        e.consume();
+		        return;
+		    case KeyEvent.VK_DOWN:
+		        mapView.scroll(SelectionDirection.DOWN);
+		        e.consume();
+		        return;
+		    case KeyEvent.VK_LEFT:
+		        mapView.scroll(SelectionDirection.LEFT);
+		        e.consume();
+		        return;
+		    case KeyEvent.VK_RIGHT:
+		        mapView.scroll(SelectionDirection.RIGHT);
+		        e.consume();
 			}
 			return;
 		}
