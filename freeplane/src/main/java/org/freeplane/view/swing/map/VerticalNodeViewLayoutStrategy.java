@@ -152,8 +152,9 @@ class VerticalNodeViewLayoutStrategy {
                     } else {
                         alignedChild = child;
 						int extraVGap = 0 ;
+                        final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 						if (childHeight != 0) {
-							boolean childHasVisibleChildren = child.getHeight() > child.getContentHeight() + 2 * spaceAround;
+							boolean childHasVisibleChildren = child.getHeight() > child.getContentHeight() + childCloudHeigth + 2 * spaceAround;
 							if (childHasVisibleChildren) {
 								extraVGap = calculateExtraGapForChildren(minimalDistanceBetweenChildren);
 							}
@@ -176,7 +177,6 @@ class VerticalNodeViewLayoutStrategy {
 
 						if ((childShiftY < 0 || isFirstVisibleLaidOutChild) && !allowsCompactLayout)
 						    top += childShiftY;
-						final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 						if(childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT || childNodesAlignment == ChildNodesAlignment.LAST_CHILD_BY_PARENT) {
 						    top += - child.getHeight() + childCloudHeigth + 2 * spaceAround + child.getBottomOverlap() + child.getContentHeight();
 						}
@@ -220,8 +220,7 @@ class VerticalNodeViewLayoutStrategy {
 						y += extraVGap - upperGap;
 						if (childHeight != 0)
 							y += childHeight + vGap - child.getBottomOverlap();
-						final int childContentHeight = child.getContentHeight() + childCloudHeigth;
-						childContentHeightSum += childContentHeight;
+						childContentHeightSum += child.getContentHeight() + childCloudHeigth;
 						if (oldLevel > 0) {
 						    for (int j = 0; j < oldLevel; j++) {
 						        groupStartIndex[j] = childViewIndex;
@@ -321,7 +320,7 @@ class VerticalNodeViewLayoutStrategy {
             return (minimalDistanceBetweenChildren + 11 * 2 * defaultVGap) / 6;
     }
 
-	public int align(int height) {
+	private int align(int height) {
 		ChildNodesAlignment childNodesAlignment = view.getChildNodesAlignment();
 		int deltaTop;
 		if (view.isSummary()
