@@ -388,11 +388,14 @@ public class NodeView extends JComponent implements INodeView {
 	    else {
 	        ChildNodesAlignment childNodesAlignment = parentView.getChildNodesAlignment();
 	        ChildrenSides childrenSides = parentView.childrenSides();
-	        boolean reduce = childNodesAlignment.isStacked() && childrenSides == ChildrenSides.BOTH_SIDES;
+	        boolean reduce = childNodesAlignment.isStacked() && (childrenSides == ChildrenSides.BOTH_SIDES || parentView.usesHorizontalLayout());
 	        if (reduce) {
-	            if(parentView.usesHorizontalLayout())
-                    unscaledHGap = modelGap - LocationModel.DEFAULT_HGAP_PX + 2 * LocationModel.DEFAULT_VGAP_PX;
-                else
+	            if(parentView.usesHorizontalLayout()) {
+	                if(childrenSides != ChildrenSides.BOTH_SIDES)
+	                    unscaledHGap = modelGap - LocationModel.DEFAULT_HGAP_PX + LocationModel.DEFAULT_VGAP_PX;
+	                else
+	                    unscaledHGap = modelGap - LocationModel.DEFAULT_HGAP_PX + 2 * LocationModel.DEFAULT_VGAP_PX;
+                } else
                     unscaledHGap = modelGap - LocationModel.DEFAULT_HGAP_PX * (1. / 2.);
             } else
                 unscaledHGap = modelGap;

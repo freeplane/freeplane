@@ -70,14 +70,16 @@ public class HorizontalEdgeView extends EdgeView {
 	        MainView mainView = source.getMainView();
 
 	        if(usesHorizontalLayout) {
-	            if(source.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT)
+	            if(source.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT && source.childrenSides() == ChildrenSides.BOTH_SIDES) {
                     start = mainView.getRightPoint();
-                else if(source.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
+                } else if(source.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT && source.childrenSides() == ChildrenSides.BOTH_SIDES) {
                     start = mainView.getLeftPoint();
-                else if(target.isTopOrLeft()){
+                } else if (source.getChildNodesAlignment().isStacked()) {
+                    super.createStart();
+                    return;
+                } else if(target.isTopOrLeft()){
 	                start = mainView.getTopPoint();
-	            }
-	            else{
+	            } else {
 	                start = mainView.getBottomPoint();
 	            }
 
