@@ -22,6 +22,9 @@ package org.freeplane.features.map;
 import static org.freeplane.features.map.NodeModel.CloneType.CONTENT;
 import static org.freeplane.features.map.NodeModel.CloneType.TREE;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -195,10 +198,13 @@ public class NodeModel{
 	}
 
 	void fireNodeInserted(IMapChangeListener[] list, NodeModel child, int index) {
-		for (final IMapChangeListener next : list) {
-			next.onNodeInserted(this, child, index);
-		}
-		fireNodeInserted(child, index);
+	    AccessController.doPrivileged( (PrivilegedAction<Void>) () -> {
+	        for (final IMapChangeListener next : list) {
+	            next.onNodeInserted(this, child, index);
+	        }
+	        fireNodeInserted(child, index);
+	        return null;
+	    });
 	}
 	private void fireNodeInserted(final NodeModel child, final int index) {
 		if (views == null) {
@@ -206,15 +212,18 @@ public class NodeModel{
 		}
 		final Iterator<INodeView> iterator = views.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().onNodeInserted(this, child, index);
+		    iterator.next().onNodeInserted(this, child, index);
 		}
 	}
 
 	void fireNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
-		for(NodeModel node : clones[CONTENT.ordinal()]){
-			final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
-			node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
-		}
+	    AccessController.doPrivileged( (PrivilegedAction<Void>) () -> {
+	        for(NodeModel node : clones[CONTENT.ordinal()]){
+	            final NodeChangeEvent cloneEvent = nodeChangeEvent.forNode(node);
+	            node.fireSingleNodeChanged(nodeChangeListeners, cloneEvent);
+	        }
+	        return null;
+	    });
 	}
 
 	private void fireSingleNodeChanged(INodeChangeListener[] nodeChangeListeners, final NodeChangeEvent nodeChangeEvent) {
@@ -225,30 +234,39 @@ public class NodeModel{
 	}
 
 	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
-			if (views == null) {
-				return;
-			}
-			final Iterator<INodeView> iterator = new ArrayList<>(views).iterator();
-			while (iterator.hasNext()) {
-				iterator.next().nodeChanged(nodeChangeEvent);
-			}
+	    if (views == null) {
+	        return;
+	    }
+	    AccessController.doPrivileged( (PrivilegedAction<Void>) () -> {
+	        final Iterator<INodeView> iterator = new ArrayList<>(views).iterator();
+	        while (iterator.hasNext()) {
+	            iterator.next().nodeChanged(nodeChangeEvent);
+	        }
+	        return null;
+	    });
 	}
 
 	static void fireNodeMoved(IMapChangeListener[] list, NodeMoveEvent nodeMoveEvent) {
-		NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(nodeMoveEvent.oldParent, nodeMoveEvent.child, nodeMoveEvent.oldIndex);
-		nodeMoveEvent.oldParent.fireNodeRemoved(nodeDeletionEvent);
-		for (final IMapChangeListener next : list) {
-			next.onNodeMoved(nodeMoveEvent);
-		}
-		nodeMoveEvent.newParent.fireNodeInserted(nodeMoveEvent.child, nodeMoveEvent.newIndex);
+	    AccessController.doPrivileged( (PrivilegedAction<Void>) () -> {
+	        NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(nodeMoveEvent.oldParent, nodeMoveEvent.child, nodeMoveEvent.oldIndex);
+	        nodeMoveEvent.oldParent.fireNodeRemoved(nodeDeletionEvent);
+	        for (final IMapChangeListener next : list) {
+	            next.onNodeMoved(nodeMoveEvent);
+	        }
+	        nodeMoveEvent.newParent.fireNodeInserted(nodeMoveEvent.child, nodeMoveEvent.newIndex);
+	        return null;
+	    });
 	}
 
 	void fireNodeRemoved(IMapChangeListener[] list, NodeDeletionEvent nodeDeletionEvent) {
-		fireNodeRemoved(nodeDeletionEvent);
-		for (final IMapChangeListener next : list) {
-			next.onNodeDeleted(nodeDeletionEvent);
+	    AccessController.doPrivileged( (PrivilegedAction<Void>) () -> {
+	        fireNodeRemoved(nodeDeletionEvent);
+	        for (final IMapChangeListener next : list) {
+	            next.onNodeDeleted(nodeDeletionEvent);
 
-		}
+	        }
+	        return null;
+	    });
 	}
 
 	private void fireNodeRemoved(NodeDeletionEvent nodeDeletionEvent) {
