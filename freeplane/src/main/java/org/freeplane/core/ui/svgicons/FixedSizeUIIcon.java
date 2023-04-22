@@ -55,7 +55,7 @@ public class FixedSizeUIIcon implements Icon {
 		}
 		else {
 			AffineTransform newTransform = AffineTransform.getTranslateInstance(
-					x * transform.getScaleX() + transform.getTranslateX(), 
+					x * transform.getScaleX() + transform.getTranslateX(),
 					y * transform.getScaleY()  + transform.getTranslateY());
 			gg.setTransform(newTransform);
 			gg.drawImage(image, 0, 0, c);
@@ -122,7 +122,7 @@ public class FixedSizeUIIcon implements Icon {
                 return new FixedSizeUIIcon(url, height * image.getWidth() / image.getHeight() , height);
             }
         } catch (Exception e) {
-            LogUtils.severe("Can not create icon for URL " + url, e);
+            LogUtils.warn("Can not create icon for URL " + url, e);
             failure = true;
             return null;
         }
