@@ -28,7 +28,7 @@ import org.freeplane.features.mode.Controller;
 /** */
 class SelectAllAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ class SelectAllAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final NodeModel root = Controller.getCurrentController().getMap().getRootNode();
+		final NodeModel root = Controller.getCurrentController().getSelection().getSelectionRoot();
 		Controller.getCurrentController().getSelection().selectBranch(root, true);
 	}
 }
