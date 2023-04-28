@@ -462,11 +462,11 @@ public class NodeView extends JComponent implements INodeView {
 		if (isTopOrLeft()) {
 			x = -x;
 		}
-		if (y != 0) {
+		if (y != 0 && getContent().getHeight() > 0) {
 			final double ctgRect = Math.abs((double) getContent().getWidth() / getContent().getHeight());
 			final double ctgLine = Math.abs((double) x / y);
 			int absLinkX, absLinkY;
-			if (ctgRect >= ctgLine) {
+			if (ctgRect >= ctgLine || x == 0) {
 				absLinkX = Math.abs(x * getContent().getHeight() / (2 * y));
 				absLinkY = getContent().getHeight() / 2;
 			}
