@@ -105,12 +105,12 @@ public class LogUtils {
     }
 
     public static boolean isLikelyToStartErrorLog(LogRecord record) {
-        return record.getLevel() == Level.SEVERE
+        return record.getLevel().intValue() == Level.SEVERE.intValue()
                 && (! LoggingOutputStream.STREAM_LOGGER_NAME.equals(record.getLoggerName())
                         || matchesExceptionMessage(record.getMessage()));
     }
 
-    private static final Pattern EXCEPTION_START = Pattern.compile("[\\w.]+?(?:Exception|Error)(?::.*)?");
+    private static final Pattern EXCEPTION_START = Pattern.compile("[\\w.]+?(?:Exception|Error)(?::.*)?\\s*", Pattern.DOTALL);
     static boolean matchesExceptionMessage(String message) {
         return message != null && EXCEPTION_START.matcher(message).matches();
     }
