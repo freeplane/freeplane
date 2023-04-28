@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -227,10 +228,16 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 
 	        if (filterText.trim().length() > 0) {
 	            final Pattern regex;
-	            if (filterText.startsWith("/") && filterText.trim().length() >= 2) {
-	                regex = Pattern.compile(filterText.substring(1).trim());
-	            }
-	            else
+	            if (filterText.startsWith("/")) {
+                    if (filterText.trim().length() >= 2) {
+                        try {
+                            regex = Pattern.compile(filterText.substring(1).trim(), Pattern.CASE_INSENSITIVE);
+                        } catch (PatternSyntaxException pse) {
+                            return;
+                        }
+                    } else
+                        return;
+                } else
 	                regex = null;
 
 	            for (JLabel label : iconLabels) {
@@ -252,9 +259,9 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
                             } else {
                                 matches = tag.contains(filterText);
                             }
-                            if(matches)
-                                break;
                         }
+                        if(matches)
+                            break;
                     }
                     label.setVisible(matches);
 	            }
