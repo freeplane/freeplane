@@ -1123,7 +1123,7 @@ public class NodeView extends JComponent implements INodeView {
 
     void fireFoldingChanged() {
         treeStructureChanged();
-        map.selectIfSelectionIsEmpty(this);
+        map.selectIfSelectionIsEmpty(this.isContentVisible() ? this : getAncestorWithVisibleContent());
         NodeStyleShape shape = styleController().getShape(model, getStyleOption());
         if (shape.equals(NodeStyleShape.combined))
         	update();
