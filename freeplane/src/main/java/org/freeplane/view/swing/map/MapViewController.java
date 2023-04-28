@@ -204,7 +204,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void changeToMap(MapModel map) {
-		if(selectedMapView != null || selectedMapView.getModel().equals(map))
+		if(selectedMapView != null && selectedMapView.getModel().equals(map))
 			return;
 		for (final MapView view : mapViewVector) {
 			if (view.getModel().equals(map)) {
