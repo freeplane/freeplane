@@ -175,7 +175,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			});
 			return fileList;
 		}
-		return new File[0];
+		return null;
 	}
 
 	/** prevents name conflicts with singleBackupDirectory in most cases (uses the file's hashcode). */
@@ -516,7 +516,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public File getAlternativeFile(final File file, AlternativeFileMode mode) {
 		final File[] revisions = findFileRevisions(file, MFileManager.backupDir(file), mode);
-		if (revisions.length == 0 && mode == AlternativeFileMode.AUTOSAVE)
+		if (revisions == null || revisions.length == 0 && mode == AlternativeFileMode.AUTOSAVE)
 			return file;
 		final FileRevisionsDialog newerFileRevisionsFoundDialog = new FileRevisionsDialog(file, revisions, mode);
 		final File selectedFile = newerFileRevisionsFoundDialog.getSelectedFile();
