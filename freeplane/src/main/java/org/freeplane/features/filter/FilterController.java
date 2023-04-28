@@ -515,7 +515,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		else {
 			filterCondition = selectedCondition;
 		}
-		final Filter baseFilter = Controller.getCurrentController().getSelection().getFilter();
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+        final Filter baseFilter = selection != null ? selection.getFilter() : null;
         final Filter filter = new Filter(filterCondition, hideMatchingNodes.isSelected(), showAncestors.isSelected(), showDescendants
 		    .isSelected(), applyToVisibleNodeOnly.isSelected(), baseFilter);
 		return filter;
@@ -600,17 +601,17 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 
 		JComponent searchOptionPanel = quickEditor.getOptionPanel();
-		
+
 		constraints.weightx = 1;
 		searchOptionPanel.add(new JUnitPanel(), constraints);
-		
+
 		constraints.weightx = 0;
 		searchOptionPanel.add(applyQuickHighlightBtn, constraints);
 		searchOptionPanel.add(applyQuickSelectBtn, constraints);
 		searchOptionPanel.add(applyQuickFilterBtn, constraints);
-		
+
 		JComponent searchPanel = new FreeplaneToolBar("searchPanel", JToolBar.HORIZONTAL);
-		
+
 		constraints.gridwidth = 1;
 		constraints.gridy = 0;
 		searchPanel.add(applyFindPreviousBtn, constraints);
@@ -625,10 +626,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		constraints.gridwidth = 8;
 		constraints.gridheight = 1;
 		filterOptionPanel.add(activeFilterConditionComboBox, constraints);
-		
+
 		constraints.gridy =1;
 		constraints.gridwidth =1;
-		
+
 		filterOptionPanel.add(hideMatchingNodesBox, constraints);
 		filterOptionPanel.add(showAncestorsBox, constraints);
 		filterOptionPanel.add(showDescendantsBox, constraints);
@@ -636,7 +637,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 		constraints.weightx = 1;
 		filterOptionPanel.add(new JUnitPanel(), constraints);
-		
+
 		constraints.weightx = 0;
 		filterOptionPanel.add(reapplyFilterBtn, constraints);
 		filterOptionPanel.add(selectFilteredNodesBtn, constraints);
@@ -651,10 +652,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		filterOptionPanel.add(noFilteringBtn, constraints);
 		filterOptionPanel.add(btnEdit, constraints);
 
-		
+
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
-		
+
 		final JPanel filterToolbar = new JPanel();
 		filterToolbar.setLayout(ToolbarLayout.horizontal());
 		filterToolbar.add(new JSeparator(SwingConstants.VERTICAL));
@@ -855,7 +856,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	}
 
 
-	NodeModel findNextInSubtree(final NodeModel start, NodeModel subtreeRoot, Direction direction, 
+	NodeModel findNextInSubtree(final NodeModel start, NodeModel subtreeRoot, Direction direction,
 			final ICondition condition, Filter filter) {
 		NodeModel next = findNext(start, subtreeRoot, direction, condition, filter);
 		if(next == null && subtreeRoot != null && subtreeRoot != start) {
@@ -866,7 +867,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		}
 		return next;
 	}
-	
+
 	NodeModel findNext(final NodeModel from, final NodeModel end, final Direction direction,
 	                   final ICondition condition, Filter filter) {
 		NodeModel next = from;
