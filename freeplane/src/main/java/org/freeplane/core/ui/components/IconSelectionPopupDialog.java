@@ -73,15 +73,15 @@ import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
 
 public class IconSelectionPopupDialog extends JDialog implements MouseListener {
-	
+
 	private static final String WINDOW_CONFIG_PROPERTY = "icon_selection_window_configuration";
 
     private static int BORDER_THICKNESS = 2;
-    
+
 	private static final Border USUAL = BorderFactory.createEmptyBorder(BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS);
     private static final Border HIGHLIGHTED =  BorderFactory.createLineBorder(Color.RED, BORDER_THICKNESS);
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private static String lastSearchText = "";
@@ -100,7 +100,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	private JCheckBox closeAfterSelection;
 
 	private Box statusPanel;
-	
+
 	private final MouseListener focusRequester = new MouseAdapter() {
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -114,14 +114,14 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	};
 
 	private final ActionListener actionPanelActionListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(closeAfterSelection != null && closeAfterSelection.isSelected())
 				dispose();
 		}
 	};
-	
+
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
 		Container contentPane = getContentPane();
@@ -139,7 +139,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
         int xDimension = Math.min(20, (int) Math.ceil(Math.sqrt(numOfIcons)) * 16 / 9);
         final ToolbarLayout layout = ToolbarLayout.vertical();
         layout.setMaximumWidth(Math.min(singleIconSize * xDimension, UITools.getScreenBounds(frame.getGraphicsConfiguration()).width * 4 / 5));
-        
+
 		iconPanel.setLayout(layout);
 		iconLabels = new ArrayList<>(numOfIcons);
 		for (int i = 0; i < numOfIcons; ++i) {
@@ -152,7 +152,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
             label.addMouseListener(this);
 		}
 		Dimension preferredSize = iconPanel.getPreferredSize();
-		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
+		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 		        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(singleIconSize);
 		scrollPane.setPreferredSize(new Dimension(preferredSize.width, preferredSize.width / 2));
@@ -161,7 +161,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
             @Override
             public void windowLostFocus(WindowEvent e) {
             }
-            
+
             @Override
             public void windowGainedFocus(WindowEvent e) {
                 filterTextField.requestFocusInWindow();
@@ -188,17 +188,17 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	        JTextField filterTextField = new JTextField();
 	        filterTextField.setText(lastSearchText);
 	        filterTextField.getDocument().addDocumentListener(new DocumentListener() {
-                
+
                 @Override
                 public void removeUpdate(DocumentEvent e) {
                     filterIconsLater();
                 }
-                
+
                 @Override
                 public void insertUpdate(DocumentEvent e) {
                     filterIconsLater();
                 }
-                
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
                     filterIconsLater();
@@ -221,20 +221,22 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	    private void filterIconsLater() {
 	        filterTimer.restart();
 	    }
-	    
+
 	    private void filterIcons(ActionEvent e) {
 	        String filterText = filterTextField.getText().toLowerCase();
-	        Pattern regex = null;
 
 	        if (filterText.trim().length() > 0) {
+	            final Pattern regex;
 	            if (filterText.startsWith("/") && filterText.trim().length() >= 2) {
 	                regex = Pattern.compile(filterText.substring(1).trim());
 	            }
+	            else
+	                regex = null;
 
 	            for (JLabel label : iconLabels) {
 	                boolean matches = false;
                     for (String tag : getTags(label)) {
-                        if (filterText.startsWith("/")) {
+                        if (regex != null) {
                             matches = regex.matcher(tag).matches();
                         } else {
                             if (filterText.contains(" ")) {
@@ -368,8 +370,8 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 			if (iconKeyStroke != null
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
 			            && keyEvent.getKeyCode() != 0
-			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent.getModifiers() & InputEvent.SHIFT_MASK) 
-			                || 
+			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent.getModifiers() & InputEvent.SHIFT_MASK)
+			                ||
 			                (keyEvent.getKeyChar() == iconKeyStroke.getKeyChar()) && keyEvent.getKeyChar() != 0
 			                && keyEvent.getKeyChar() != KeyEvent.CHAR_UNDEFINED)) {
 				return i;
@@ -413,7 +415,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
             selected.scrollRectToVisible(new Rectangle(0, 0, selected.getWidth(), selected.getHeight()));
     }
 
-	
+
     public void processKeyEvent(final KeyEvent keyEvent) {
 		boolean areModifiersDown = keyEvent.isControlDown() || keyEvent.isMetaDown();
 		switch (keyEvent.getKeyCode()) {
@@ -567,7 +569,7 @@ public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 	public void addActionPanel(ActionPanel actionPanel) {
 		actionPanel.setDisablesFocus(false);
 		actionPanel.setButtonConfigurer(this::configureButton);
-		
+
 		Container contentPane = getContentPane();
 		JPanel newContentPane = new JPanel(new BorderLayout());
 		setContentPane(newContentPane);
