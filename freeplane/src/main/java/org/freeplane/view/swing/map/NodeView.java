@@ -1689,7 +1689,7 @@ public class NodeView extends JComponent implements INodeView {
 		final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode, getStyleOption());
 		this.edgeColor = newColor;
 		final NodeModel parentNode = model.getParentNode();
-		if(parentNode != null && SummaryNode.isSummaryNode(parentNode))
+		if(!isRoot() && parentNode != null && SummaryNode.isSummaryNode(parentNode))
 			getParentView().updateEdge();
     }
 
