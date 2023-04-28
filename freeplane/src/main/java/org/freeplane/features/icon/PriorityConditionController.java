@@ -107,7 +107,7 @@ class PriorityConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
-		final Object[] items = new Object[10];
+		final Object[] items = new Object[9];
 		for (int i = 1; i < 10; ++i) {
 			items[i - 1] = STORE.getMindIcon("full-" + Integer.toString(i));
 		}
