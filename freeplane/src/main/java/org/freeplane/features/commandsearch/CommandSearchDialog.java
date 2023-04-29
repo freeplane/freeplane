@@ -187,13 +187,13 @@ public class CommandSearchDialog extends JDialog
         getContentPane().add(panel);
 
         JPanel scopePanel = new JPanel();
+        searchPrefs = createScopeButton(Scope.PREFERENCES);
         searchMenus = createScopeButton(Scope.MENUS);
         searchMenus.setToolTipText(TextUtils.getRawText(Scope.MENUS.labelName() + ".tooltip"));
-        searchPrefs = createScopeButton(Scope.PREFERENCES);
         searchIcons = createScopeButton(Scope.ICONS);
+        scopePanel.add(searchPrefs);
         scopePanel.add(searchMenus);
         scopePanel.add(searchIcons);
-        scopePanel.add(searchPrefs);
         searchWholeWords = new JCheckBox();
         LabelAndMnemonicSetter.setLabelAndMnemonic(searchWholeWords, TextUtils.getRawText("cmdsearch.searchWholeWords"));
         searchWholeWords.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"));
