@@ -113,45 +113,51 @@ public class ToolbarLayout implements LayoutManager {
 	@Override
     public Dimension preferredLayoutSize(final Container container) {
 	    Insets insets = container.getInsets();
-		final int maxWidth = calculateMaxWidth(container) - insets.left - insets.right;
-		int width = 0;
-		int heigth = 0;
-		int blockWidth = 0;
-		int blockHeight = 0;
-		int lastBlockWidth = 0;
-		int lastBlockHeight = 0;
-		int lastBlockStart = 0;
-		int lastBlockFinish = 0;
-		for (int i = 0;; i++) {
-			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
-			if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
-				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth) {
-					heigth += lastBlockHeight;
-					lastBlockWidth = blockWidth;
-					lastBlockHeight = blockHeight;
-					lastBlockStart = lastBlockFinish;
-				}
-				else {
-					lastBlockWidth += blockWidth;
-					lastBlockHeight = Math.max(blockHeight, lastBlockHeight);
-				}
-				width = Math.max(width, lastBlockWidth);
-				lastBlockFinish = i;
-				blockWidth = blockHeight = 0;
-			}
-			if (component == null) {
-				if (lastBlockStart == container.getComponentCount()) {
-					break;
-				}
-				lastBlockFinish = container.getComponentCount();
-				continue;
-			}
-			blockWidth += getPreferredWidth(component, maxWidth);
-			final Dimension compPreferredSize = component.getPreferredSize();
-			blockHeight = Math.max(compPreferredSize.height, blockHeight);
+		int maxWidth = calculateMaxWidth(container) - insets.left - insets.right;
+		for(;;) {
+	        int width = 0;
+	        int heigth = 0;
+	        int blockWidth = 0;
+	        int blockHeight = 0;
+	        int lastBlockWidth = 0;
+	        int lastBlockHeight = 0;
+	        int lastBlockStart = 0;
+	        int lastBlockFinish = 0;
+	        for (int i = 0;; i++) {
+	            final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
+	            if (component == null || component instanceof JSeparator || blockEndPosition == BlockEndPosition.ANYWHERE) {
+	                if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth) {
+	                    heigth += lastBlockHeight;
+	                    lastBlockWidth = blockWidth;
+	                    lastBlockHeight = blockHeight;
+	                    lastBlockStart = lastBlockFinish;
+	                }
+	                else {
+	                    lastBlockWidth += blockWidth;
+	                    lastBlockHeight = Math.max(blockHeight, lastBlockHeight);
+	                }
+	                width = Math.max(width, lastBlockWidth);
+	                lastBlockFinish = i;
+	                blockWidth = blockHeight = 0;
+	            }
+	            if (component == null) {
+	                if (lastBlockStart == container.getComponentCount()) {
+	                    break;
+	                }
+	                lastBlockFinish = container.getComponentCount();
+	                continue;
+	            }
+	            blockWidth += getPreferredWidth(component, maxWidth);
+	            final Dimension compPreferredSize = component.getPreferredSize();
+	            blockHeight = Math.max(compPreferredSize.height, blockHeight);
+	        }
+	        if(maxWidth >= width) {
+	            Dimension preferredSize = new Dimension(width + insets.left + insets.right, heigth + insets.top + insets.bottom);
+	            return preferredSize;
+	        }
+	        else
+	            maxWidth = width;
 		}
-		Dimension preferredSize = new Dimension(width + insets.left + insets.right, heigth + insets.top + insets.bottom);
-        return preferredSize;
 	}
 
 	@Override
