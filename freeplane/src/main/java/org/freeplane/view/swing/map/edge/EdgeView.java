@@ -82,11 +82,10 @@ public abstract class EdgeView {
         final MainView mainView = source.getMainView();
         final MainView targetMainView = target.getMainView();
 
-        ChildNodesAlignment childNodesAlignment = source.getChildNodesAlignment();
+        final ChildNodesAlignment childNodesAlignment = source.getChildNodesAlignment();
 
         boolean usesHorizontalLayout = source.usesHorizontalLayout();
         if(! usesHorizontalLayout
-                && ! (source.isRoot() && MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE)
                 && childNodesAlignment.isStacked()) {
             if(source.childrenSides() == ChildrenSides.BOTH_SIDES) {
                 if(childNodesAlignment == ChildNodesAlignment.AFTER_PARENT) {

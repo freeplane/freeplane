@@ -51,7 +51,6 @@ public class HorizontalEdgeView extends EdgeView {
 	    boolean usesHorizontalLayout = source.usesHorizontalLayout();
 	    ChildNodesAlignment childNodesAlignment = source.getChildNodesAlignment();
 	    if(! usesHorizontalLayout
-                && ! (source.isRoot() && MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE)
                 && childNodesAlignment.isStacked()
                 && source.childrenSides() != ChildrenSides.BOTH_SIDES) {
 	        super.createStart();
@@ -70,9 +69,9 @@ public class HorizontalEdgeView extends EdgeView {
 	        MainView mainView = source.getMainView();
 
 	        if(usesHorizontalLayout) {
-	            if(source.getChildNodesAlignment() == ChildNodesAlignment.AFTER_PARENT && source.childrenSides() == ChildrenSides.BOTH_SIDES) {
+	            if(childNodesAlignment == ChildNodesAlignment.AFTER_PARENT && source.childrenSides() == ChildrenSides.BOTH_SIDES) {
                     start = mainView.getRightPoint();
-                } else if(source.getChildNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT && source.childrenSides() == ChildrenSides.BOTH_SIDES) {
+                } else if(childNodesAlignment == ChildNodesAlignment.BEFORE_PARENT && source.childrenSides() == ChildrenSides.BOTH_SIDES) {
                     start = mainView.getLeftPoint();
                 } else if (source.getChildNodesAlignment().isStacked()) {
                     super.createStart();
