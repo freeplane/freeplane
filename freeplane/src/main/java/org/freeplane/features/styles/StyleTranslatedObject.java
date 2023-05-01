@@ -16,7 +16,7 @@ public class StyleTranslatedObject implements IStyle {
 	public StyleTranslatedObject(String string) {
 		if(string == null)
 			throw new NullPointerException();
-		translatedObject = new TranslatedObject(string);
+		translatedObject = TranslatedObject.format(string);
     }
 
 	@Override
