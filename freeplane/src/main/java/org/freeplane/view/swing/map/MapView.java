@@ -2732,8 +2732,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		currentRootView = mapRootView;
 		currentRootParentView = null;
 		if(! temporarily) {
+		    rootsHistory.forEach(NodeView::keepUnfolded);
             rootsHistory.clear();
-            currentRootParentView.resetLayoutPropertiesRecursively();
+            mapRootView.resetLayoutPropertiesRecursively();
             fireRootChanged();
         }
 	}

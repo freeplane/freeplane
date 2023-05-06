@@ -1112,6 +1112,10 @@ public class NodeView extends JComponent implements INodeView {
 		revalidate();
 	}
 
+    void keepUnfolded() {
+        isFolded = false;
+    }
+
 	private void setFolded(boolean fold, boolean force) {
 		boolean wasFolded = isFolded;
 		this.isFolded = fold;
