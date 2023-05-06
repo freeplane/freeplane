@@ -429,8 +429,14 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	private BufferedImage printToImage(int dpi, final MapView view, final Rectangle innerBounds) {
 		double scaleFactor = (double) dpi / (double) (UITools.FONT_SCALE_FACTOR * 72);
 
-		int imageWidth = (int) Math.ceil(innerBounds.width * scaleFactor);
-		int imageHeight = (int) Math.ceil(innerBounds.height * scaleFactor);
+		double scaledWidth = innerBounds.width * scaleFactor;
+		double scaledHeight = innerBounds.height * scaleFactor;
+		if(scaledWidth * scaledHeight > Integer.MAX_VALUE) {
+		    UITools.errorMessage(TextUtils.getText("out_of_memory"));
+		    return null;
+        }
+		int imageWidth = (int) Math.ceil(scaledWidth);
+        int imageHeight = (int) Math.ceil(scaledHeight);
 
 		final BufferedImage myImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g = (Graphics2D) myImage.getGraphics();
