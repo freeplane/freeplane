@@ -249,13 +249,19 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
     public void mouseDragged(final MouseEvent e) {
-		if (!isDragActive()) {
-			if(! getNodeView(e).isSelected())
-				super.mouseDragged(e);
-			return;
-		}
-		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-			final MainView mainView = (MainView) e.getSource();
+	    if (!isDragActive()) {
+	        if(! getNodeView(e).isSelected())
+	            super.mouseDragged(e);
+	        return;
+	    }
+	    if(draggedNodeView.getParentView() == null) {
+	        resetPositions();
+	        stopDrag();
+	        return;
+	    }
+
+	    if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
+	        final MainView mainView = (MainView) e.getSource();
 			final MapView mapView = draggedNodeView.getMap();
 			final Point point = e.getPoint();
 			UITools.convertPointToAncestor(draggedNodeView, point, JScrollPane.class);
@@ -398,10 +404,15 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final NodeModel node = getNode();
 		final ModeController modeController = draggedNodeView.getMap().getModeController();
 		final Controller controller = modeController.getController();
-		MLocationController locationController = (MLocationController) LocationController.getController(controller
-				.getModeController());
 		final NodeView parentView = draggedNodeView.getParentView();
+		if(parentView == null) {
+		    resetPositions();
+		    stopDrag();
+		    return;
+		}
 		NodeModel parentNode = parentView.getModel();
+        MLocationController locationController = (MLocationController) LocationController.getController(controller
+                .getModeController());
         final Quantity<LengthUnit> parentVGap = locationController.getCommonVGapBetweenChildren(parentNode);
         final Quantity<LengthUnit> baseHGap = locationController.getBaseHGapToChildren(parentNode);
 		Quantity<LengthUnit> hgap = LocationModel.getModel(node).getHGap();
