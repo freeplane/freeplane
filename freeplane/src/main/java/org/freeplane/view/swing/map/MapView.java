@@ -1427,6 +1427,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private boolean selectRelatedNode(SelectionDirection direction, final boolean continious) {
+        if(selection.getSelectionEnd() == null)
+            return false;
 	    return selectPreferredVisibleChild(direction, continious)
 	                || selectSiblingOnTheOtherSide(direction, continious)
 	                || selectPreferredVisibleSiblingOrAncestor(direction, continious)
