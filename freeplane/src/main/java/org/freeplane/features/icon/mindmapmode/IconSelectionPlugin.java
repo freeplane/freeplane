@@ -18,6 +18,8 @@
 package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -41,21 +43,31 @@ import org.freeplane.features.mode.ModeController;
 public class IconSelectionPlugin extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
     private static final String ADD_EMOJIS_TO_ICON_SELECTOR = "add_emojis_to_icon_selector";
+    private IconSelectionPopupDialog selectionDialog;
 
 	public IconSelectionPlugin() {
 		super("IconSelectionPlugin");
 	}
 
-	
+
 	private boolean areEmojisAvailbleFromIconSelector() {
 	    return ResourceController.getResourceController().getBooleanProperty(ADD_EMOJIS_TO_ICON_SELECTOR);
     }
 
-	
-	public void actionPerformed(final ActionEvent e) {
-		final ModeController modeController = Controller.getCurrentModeController();
+
+	@Override
+    public void actionPerformed(final ActionEvent e) {
+	    if(selectionDialog == null)
+	        showDialog();
+	    else
+	        selectionDialog.toFront();
+	}
+
+
+    private void showDialog() {
+        final ModeController modeController = Controller.getCurrentModeController();
 		ArrayList<IconDescription> actions = new ArrayList<IconDescription>();
-		
+
 		final Controller controller = Controller.getCurrentController();
 
 		actions.add((IconDescription) modeController.getAction(MIconController.REMOVE_FIRST_ICON_ACTION));
@@ -63,14 +75,14 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		actions.add((IconDescription) modeController.getAction(MIconController.REMOVE_ALL_ICONS_ACTION));
 
 		final MIconController mIconController = (MIconController) IconController.getController();
-		Collection<AFreeplaneAction> iconActions =areEmojisAvailbleFromIconSelector() ? 
-				mIconController.getIconActions() : 
+		Collection<AFreeplaneAction> iconActions =areEmojisAvailbleFromIconSelector() ?
+				mIconController.getIconActions() :
 					mIconController.getIconActions(icon -> ! (icon instanceof EmojiIcon));
-		
+
 		for (AFreeplaneAction aFreeplaneAction : iconActions)
 			actions.add((IconDescription) aFreeplaneAction);
-		
-		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);
+
+		selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);
 		ActionPanel controls = mIconController.createActionPanelWithControlActions();
 		selectionDialog.addActionPanel(controls);
 		final NodeModel selected = controller.getSelection().getSelected();
@@ -85,6 +97,14 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 			}
 
 		});
+		selectionDialog.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                selectionDialog = null;
+             }
+
+		});
 		selectionDialog.show();
-	}
+    }
 }

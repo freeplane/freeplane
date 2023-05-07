@@ -18,12 +18,16 @@
 package org.freeplane.features.commandsearch;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
 public class CommandSearchAction extends AFreeplaneAction {
+    private static final long serialVersionUID = 1L;
     static final String KEY = "CommandSearchAction";
+    private CommandSearchDialog commandSearchDialog;
 
     public CommandSearchAction()
     {
@@ -33,6 +37,20 @@ public class CommandSearchAction extends AFreeplaneAction {
     @Override
     public void actionPerformed(final ActionEvent e)
     {
-        new CommandSearchDialog(UITools.getCurrentFrame());
+        if(commandSearchDialog == null)
+            createDialog();
+        else
+            commandSearchDialog.toFront();
+    }
+
+    private void createDialog() {
+        commandSearchDialog = new CommandSearchDialog(UITools.getCurrentFrame());
+        commandSearchDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                commandSearchDialog = null;
+            }
+        });
+
     }
 }
