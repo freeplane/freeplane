@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.swing.JComponent;
@@ -1686,14 +1687,24 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateEdge() {
         final EdgeController edgeController = EdgeController.getController(getModeController());
-		this.edgeStyle = edgeController.getStyle(model, getStyleOption(), false);
-		final NodeModel realNode = SummaryNode.getRealNode(model);
-		this.edgeWidth = edgeController.getWidth(realNode, getStyleOption(), false);
-		this.edgeDash = edgeController.getDash(realNode, getStyleOption(), false);
-		final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode, getStyleOption());
-		this.edgeColor = newColor;
-		final NodeModel parentNode = model.getParentNode();
-		if(!isRoot() && parentNode != null && SummaryNode.isSummaryNode(parentNode))
+        EdgeStyle newEdgeStyle = edgeController.getStyle(model, getStyleOption(), false);
+        final NodeModel realNode = SummaryNode.getRealNode(model);
+        Integer newEdgeWidth = edgeController.getWidth(realNode, getStyleOption(), false);
+        DashVariant newEdgeDash = edgeController.getDash(realNode, getStyleOption(), false);
+        final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode, getStyleOption());
+        if(newEdgeStyle != edgeStyle
+                || ! Objects.equals(newEdgeWidth, edgeWidth)
+                || newEdgeDash != edgeDash
+                || ! Objects.equals(newColor, edgeColor)) {
+            this.edgeStyle = newEdgeStyle;
+            this.edgeWidth = newEdgeWidth;
+            this.edgeDash = newEdgeDash;
+            this.edgeColor = newColor;
+            if(! isRoot())
+                getAncestorWithVisibleContent().repaint();
+        }
+        final NodeModel parentNode = model.getParentNode();
+        if(!isRoot() && parentNode != null && SummaryNode.isSummaryNode(parentNode))
 			getParentView().updateEdge();
     }
 
