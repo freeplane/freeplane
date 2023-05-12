@@ -318,7 +318,6 @@
 			<Entry name="menu_viewmode" >
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="SetBooleanMapPropertyAction.allow_compact_layout" usedBy = "EDITOR" />
-				<Entry name="SetBooleanMapPropertyAction.horizontal_layout" usedBy = "EDITOR" />
 				<Entry name="SetBooleanPropertyAction.outline_view_fits_window_width" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
