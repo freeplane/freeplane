@@ -149,7 +149,7 @@
 <node TEXT="Version 1.11.x" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_414352132" CREATED="1668190203324" MODIFIED="1668190235820">
 <node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1802701213" CREATED="1541848060291" MODIFIED="1541848968607">
 <node TEXT="Top-to-bottom, left-to-right and combined layouts" ID="ID_120328641" CREATED="1675608098149" MODIFIED="1675608116259">
-<hook URI="latestFreeplaneFeatures_files/layouts.png" SIZE="0.6124021" NAME="ExternalObject"/>
+<hook URI="latestFreeplaneFeatures_files/layouts.png" SIZE="0.5" NAME="ExternalObject"/>
 </node>
 <node TEXT="Base distance from parent node to child node configurable for parent nodes and styles" ID="ID_455500811" CREATED="1675606733862" MODIFIED="1675606733862"/>
 <node TEXT="Node movement restricted to single directions" ID="ID_1260662085" CREATED="1675606733862" MODIFIED="1675606733862"/>
