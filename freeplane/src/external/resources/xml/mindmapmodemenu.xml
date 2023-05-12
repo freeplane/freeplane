@@ -606,6 +606,7 @@
 			<Entry builder="separator" />
 			<Entry name="TutorialAction" />
 			<Entry name="DocumentationAction" accelerator="F1" />
+			<Entry name="LatestFeaturesAction" />
             <Entry name="FreeplaneHandbook" />
 			<Entry name="HotKeyInfoAction" />
 			<Entry name="OpenApiDocumentationAction" plugin="org.freeplane.plugin.script" />

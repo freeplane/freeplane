@@ -53,6 +53,8 @@ public class HelpController implements IExtension {
 		controller.addAction(new DocumentationAction("DocumentationAction", defaultMap));
 		final String tutorialMap = resourceController.getProperty("tutorial_map");
 		controller.addAction(new DocumentationAction("TutorialAction", tutorialMap));
+		final String latestFeaturesMap = resourceController.getProperty("latest_features_map");
+        controller.addAction(new DocumentationAction("LatestFeaturesAction", latestFeaturesMap));
 		controller.addAction(new HotKeyInfoAction());
 	}
 
