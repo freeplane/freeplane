@@ -133,6 +133,7 @@
 				</Entry>
 				<Entry accelerator="alt shift E" name="EdgeColorAction" />
 			</Entry>
+			<Entry name="SelectNodeChildrenLayoutAction"/>
 		</Entry>
 		<Entry name="navigate">
 			<Entry name="navigate">

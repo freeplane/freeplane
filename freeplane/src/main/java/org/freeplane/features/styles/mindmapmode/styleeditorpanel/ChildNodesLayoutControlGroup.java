@@ -82,8 +82,12 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MLayoutController styleController = (MLayoutController) Controller
 					.getCurrentModeController().getExtension(LayoutController.class);
-			styleController.setChildNodesLayout(node, enabled ? ChildNodesLayout.valueOf(mChildNodesLayout.getValue()) : null);
-}
+			String selectedValue = mChildNodesLayout.getValue();
+            styleController.setChildNodesLayout(node, enabled && selectedValue != null ? ChildNodesLayout.valueOf(selectedValue) : null);
+            if(selectedValue == null) {
+                setStyleOnExternalChange(node);
+            }
+		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {

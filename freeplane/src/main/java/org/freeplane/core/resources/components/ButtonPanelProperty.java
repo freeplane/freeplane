@@ -19,22 +19,12 @@
  */
 package org.freeplane.core.resources.components;
 
-import java.awt.Dialog.ModalityType;
-import java.awt.Point;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-
-import org.freeplane.core.ui.components.PopupDialog;
-import org.freeplane.core.ui.components.UITools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -84,35 +74,6 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 	}
 
 	private void showButtonPanel(ActionEvent e) {
-	    Window owner = SwingUtilities.getWindowAncestor(startButton);
-	    final JDialog dialog = new JDialog(owner, ModalityType.MODELESS);
-	    dialog.setResizable(false);
-	    dialog.setUndecorated(true);
-	    dialog.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
-	    dialog.getContentPane().add(buttons.getButtonPanel());
-	    PopupDialog.closeWhenOwnerIsFocused(dialog);
-	    PopupDialog.closeOnEscape(dialog);
-	    Point eventLocation = new Point(0, startButton.getHeight());
-	    SwingUtilities.convertPointToScreen(eventLocation, startButton);
-	    dialog.pack();
-	    UITools.setBounds(dialog, eventLocation.x, eventLocation.y,
-	            dialog.getWidth(), dialog.getHeight());
-
-	    JToggleButton selectedButton = buttons.getSelectedButton();
-	    selectedButton.requestFocusInWindow();
-	    buttons.setCallback(() -> {
-	        dialog.dispose();
-	        firePropertyChangeEvent();
-	    });
-	    dialog.addWindowListener(new WindowAdapter() {
-
-	        @Override
-	        public void windowClosed(WindowEvent e) {
-	            buttons.setCallback(null);
-	        }
-
-	    });
-	    dialog.setVisible(true);
-
+	    buttons.showButtonDialog(startButton, this::firePropertyChangeEvent);
 	}
 }

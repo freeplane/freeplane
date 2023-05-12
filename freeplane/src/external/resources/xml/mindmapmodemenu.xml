@@ -462,6 +462,7 @@
 					<Entry builder="new_node_style_actions" />
 					<Entry builder="noActions" />
 				</Entry>
+				<Entry name="SelectNodeChildrenLayoutAction"/>
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewChild" />
 			</Entry>

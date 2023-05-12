@@ -77,6 +77,7 @@ public class MLayoutController extends LayoutController {
 	public MLayoutController() {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
+		modeController.addAction(new SelectNodeChildrenLayoutAction());
 		modeController.registerExtensionCopier(new StyleCopier());
 	}
 

@@ -6,24 +6,37 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
+import org.freeplane.core.ui.components.PopupDialog;
 import org.freeplane.core.ui.components.ToolbarLayout;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.styles.mindmapmode.styleeditorpanel.IconFont;
 
 public class ButtonSelectorPanel{
     public enum ComponentBefore {
@@ -96,8 +109,9 @@ public class ButtonSelectorPanel{
         int i = 0;
         KeyStroke enterKeyStroke = KeyStroke.getKeyStroke("ENTER");
         KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke("SPACE");
+        JToggleButton prototypeButton = null;
         for(ButtonSelectorPanel.ButtonIcon item : displayedItems) {
-            JToggleButton button = new JToggleButton(item.icon);
+            JToggleButton button = prototypeButton = new JToggleButton(item.icon);
             button.setToolTipText(item.tooltip);
             buttons.add(button);
             int buttonIndex = i++;
@@ -114,7 +128,29 @@ public class ButtonSelectorPanel{
                 buttonPanel.add(new JSeparator());
             buttonPanel.add(button);
         }
+        addRevertButton(prototypeButton);
     }
+
+    private final static String RESET_RESOURCE = "reset_property_text";
+    private static final String TEXT = TextUtils.getText(RESET_RESOURCE);
+    private void addRevertButton(AbstractButton sizePrototype) {
+        JButton button = new JButton();
+        button.setPreferredSize(sizePrototype.getPreferredSize());
+        button.setFont(IconFont.FONT.deriveFont(0.8f * sizePrototype.getIcon().getIconHeight()));
+        JButton revertButton = button;
+        revertButton.setText(IconFont.REVERT_CHARACTER);
+        revertButton.setToolTipText(TEXT);
+        revertButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedIndex = -1;
+                if(callback != null)
+                    callback.run();
+           }
+        });
+        buttonPanel.add(revertButton);
+    }
+
     private void setSelected(JToggleButton button) {
         buttons.forEach(b -> b.setSelected(b == button));
     }
@@ -126,7 +162,7 @@ public class ButtonSelectorPanel{
         this.callback = callback;
     }
     public String getValue() {
-        return possibleValues.get(selectedIndex);
+        return selectedIndex >= 0 ? possibleValues.get(selectedIndex) : null;
     }
     public Vector<String> getPossibleValues() {
         return possibleValues;
@@ -171,5 +207,37 @@ public class ButtonSelectorPanel{
 
     public Component getButtonPanel() {
         return buttonPanel;
+    }
+
+    public void showButtonDialog(Component parentComponent, Runnable callback) {
+        Window owner = SwingUtilities.getWindowAncestor(parentComponent);
+        final JDialog dialog = new JDialog(owner, ModalityType.MODELESS);
+        dialog.setResizable(false);
+        dialog.setUndecorated(true);
+        dialog.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
+        dialog.getContentPane().add(getButtonPanel());
+        PopupDialog.closeWhenOwnerIsFocused(dialog);
+        PopupDialog.closeOnEscape(dialog);
+        Point eventLocation = new Point(0, parentComponent.getHeight());
+        SwingUtilities.convertPointToScreen(eventLocation, parentComponent);
+        dialog.pack();
+        UITools.setBounds(dialog, eventLocation.x, eventLocation.y,
+                dialog.getWidth(), dialog.getHeight());
+
+        JToggleButton selectedButton = getSelectedButton();
+        selectedButton.requestFocusInWindow();
+        setCallback(() -> {
+            dialog.dispose();
+            callback.run();
+        });
+        dialog.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                setCallback(null);
+            }
+
+        });
+        dialog.setVisible(true);
     }
 }
