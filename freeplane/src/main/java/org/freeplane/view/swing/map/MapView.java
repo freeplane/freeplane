@@ -1028,6 +1028,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selection.selectedNode;
 	}
 
+	public NodeView getSelectionEnd() {
+	    getSelected();
+	    return selection.getSelectionEnd();
+	}
+
 	public Set<NodeModel> getSelectedNodes() {
 		validateSelecteds();
 		return new AbstractSet<NodeModel>() {

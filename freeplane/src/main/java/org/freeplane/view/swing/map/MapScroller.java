@@ -269,7 +269,7 @@ class MapScroller {
 		}
 
 		if(scrollingDirective == ScrollingDirective.ANCHOR_AND_SHOW_SELECTED)
-		    scrollNodeToVisible(map.getSelected(), 0);
+		    scrollNodeToVisible(map.getSelectionEnd(), 0);
 		else if(scrolledNode != null &&
 		        (scrollingDirective != ScrollingDirective.ANCHOR
 		        || ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)))
@@ -325,11 +325,16 @@ class MapScroller {
 			anchorToNode(root, 0, 0);
 	}
 
-    public void showSelectedAfterScroll() {
-        if(scrollingDirective == ScrollingDirective.ANCHOR
-                || scrollingDirective == ScrollingDirective.DONE)
-            scrollingDirective = ScrollingDirective.ANCHOR_AND_SHOW_SELECTED;
-    }
+	public void showSelectedAfterScroll() {
+	    if(scrollingDirective == ScrollingDirective.ANCHOR
+	            || scrollingDirective == ScrollingDirective.DONE) {
+	        JComponent selectionEndContent = map.getSelectionEnd().getContent();
+            Rectangle selectionEndVisibleRectangle = selectionEndContent.getVisibleRect();
+	        boolean isOnScreen = selectionEndVisibleRectangle.width >0 && selectionEndVisibleRectangle.height >0;
+            if(isOnScreen)
+	            scrollingDirective = ScrollingDirective.ANCHOR_AND_SHOW_SELECTED;
+	    }
+	}
 }
 
 enum ScrollingDirective {
