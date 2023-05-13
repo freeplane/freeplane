@@ -540,4 +540,7 @@ public interface NodeRO {
 
 	/**@since 1.7.2 */
 	DependencyLookup getDependents();
+
+	/**@since 1.11.3 */
+	String getBranchAsTextOutline();
 }

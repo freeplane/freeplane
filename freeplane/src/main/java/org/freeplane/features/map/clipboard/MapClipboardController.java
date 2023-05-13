@@ -32,19 +32,14 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
@@ -52,10 +47,7 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.text.DetailModel;
-import org.freeplane.features.text.TextController;
 
 /**
  * @author Dimitry Polivaev
@@ -85,7 +77,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes) {
 		try {
 			final String forNodesFlavor = createForNodesFlavor(selectedNodes);
-			final String plainText = getAsPlainText(selectedNodes);
+			final String plainText = MindMapPlainTextWriter.INSTANCE.getAsPlainText(selectedNodes);
 			return new MindMapNodesSelection(forNodesFlavor, plainText,
 			    getAsHTML(selectedNodes));
 		}
@@ -167,24 +159,6 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 			return null;
 		}
 	}
-
-	public String getAsPlainText(final Collection<NodeModel> selectedNodes) {
-		try {
-			final StringWriter stringWriter = new StringWriter();
-			try (final BufferedWriter fileout = new BufferedWriter(stringWriter)) {
-			    for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
-			        writeTXT(it.next(), fileout,/* depth= */0);
-			    }
-			}
-			return stringWriter.toString();
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-			return null;
-		}
-	}
-
-
 	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
 		saveHTML(Collections.singletonList(rootNodeOfBranch), file);
 	}
@@ -195,18 +169,6 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.configureCharset("UTF-8");
 		htmlWriter.writeHTML(branchRootNodes);
-	}
-
-	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
-	    try (final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
-	            StandardCharsets.UTF_8))){
-	        writeTXT(rootNodeOfBranch, fileout,/* depth = */ 0);
-	        return true;
-	    }
-		catch (final Exception e) {
-			LogUtils.severe("Error in MindMapMapModel.saveTXT(): ", e);
-			return false;
-		}
 	}
 
 	@Override
@@ -229,77 +191,10 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	}
 
 
-	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
-	        throws IOException {
-		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
-				writeTXT(child, fileout, depth + 1, indentation);
-			}
-			else {
-				writeChildrenText(child, fileout, depth, indentation);
-			}
-		}
-	}
-
 	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(selectedNodes);
 	}
-
-	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {
-        boolean indentTextOutput = ResourceController.getResourceController().getBooleanProperty("indentTextOutput");
-		boolean indentationUsesTabsInTextOutput = ResourceController.getResourceController().getBooleanProperty("indentationUsesTabsInTextOutput");
-		String indentation = indentTextOutput ? (indentationUsesTabsInTextOutput ? "\t" : "    ") : "";
-		writeTXT(mindMapNodeModel, fileout, depth, indentation);
-	}
-
-	private void writeTXT(final NodeModel node, final Writer fileout, final int depth, String indentation) throws IOException {
-	    String core = getTransformedTextForClipboard(node, node, node.getUserObject());
-        writeMultilineTXT(fileout, depth, indentation, core);
-        if (NodeLinks.getValidLink(node) != null) {
-            final String link = NodeLinks.getLinkAsString(node);
-            if (! core.contains(link)) {
-                writeTXT(fileout, depth, indentation, " <" + link + ">");
-            }
-        }
-        String detailText = DetailModel.getDetailText(node);
-        if(detailText != null) {
-            String details = getTransformedTextForClipboard(node, DetailModel.getDetail(node), detailText);
-            writeMultilineTXT(fileout, depth+1, indentation, details);
-        }
-        String noteText = NoteModel.getNoteText(node);
-        if(noteText != null) {
-            String transformedNote = getTransformedTextForClipboard(node, NoteModel.getNote(node), noteText);
-            writeMultilineTXT(fileout, depth+1, indentation, transformedNote);
-        }
-		writeChildrenText(node, fileout, depth, indentation);
-	}
-
-    private void writeMultilineTXT(final Writer fileout, final int depth, String indentation,
-            String transformedTextForClipboard) throws IOException {
-        String[] plainTextContentStrings = transformedTextForClipboard.split("\\n");
-	    for(String plainTextContent : plainTextContentStrings) {
-	        if(! plainTextContent.isEmpty())
-	            writeTXT(fileout, depth, indentation, plainTextContent);
-	    }
-    }
-
-    private void writeTXT(final Writer fileout, final int depth,
-            String indentation, String plainTextContent) throws IOException {
-        if(! indentation.isEmpty()) {
-            for (int i = 0; i < depth; ++i) {
-                fileout.write(indentation);
-            }
-        }
-        fileout.write(plainTextContent);
-        fileout.write("\n");
-    }
-
-    private String getTransformedTextForClipboard(final NodeModel node, Object nodeProperty, Object content) {
-        String text = TextController.getController().getTransformedTextForClipboard(node, nodeProperty, content);
-        String plainTextContent = HtmlUtils.htmlToPlain(text);
-        return plainTextContent;
-    }
 
 	@Override
 	public boolean canCopy() {

@@ -63,6 +63,11 @@ public interface Node extends NodeRO {
 	 * @since 1.5 */
 	Node appendAsCloneWithoutSubtree(NodeRO toBeCloned);
 
+
+    /**@since 1.11.3 */
+    void appendTextOutlineAsBranch(String outline);
+
+
 	/** inserts the node(s) copied from clipboard as clone(s). Errors like
 	 * if the clipboard doesn't contain proper content will only be reported to the log.
 	 * You should prefer {@link #appendAsCloneWithSubtree(Proxy.NodeRO)} or {@link #appendAsCloneWithoutSubtree(Proxy.NodeRO)}

@@ -3,6 +3,7 @@
  */
 package org.freeplane.plugin.script.proxy;
 
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -62,6 +63,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.clipboard.MindMapPlainTextWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
@@ -1317,5 +1319,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     @Override
     public NodeGeometry getGeometry() {
         return new NodeGeometryProxy(getDelegate(), getScriptContext());
+    }
+
+    @Override
+    public String getBranchAsTextOutline() {
+        return MindMapPlainTextWriter.INSTANCE.getAsPlainText(Collections.singletonList(getDelegate()));
+    }
+
+    @Override
+    public void appendTextOutlineAsBranch(String outline) {
+        ((MMapClipboardController) MapClipboardController.getController()).paste(new StringSelection(outline));
     }
 }
