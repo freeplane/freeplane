@@ -63,7 +63,7 @@ public class MNoteController extends NoteController {
 			String contentType = fromNote.getContentType();
 			if (contentType == null)
 				return;
-	        
+
 	        NoteModel oldNote = NoteModel.getNote(to);
 	        NoteModel newNote = oldNote == null ? new NoteModel() :  oldNote.copy();
 	        newNote.setContentType(contentType);
@@ -81,11 +81,11 @@ public class MNoteController extends NoteController {
 			String contentType = fromNote.getContentType();
 			if (contentType == null)
 				return;
-	        
+
 	        NoteModel newNote = fromNote.copy();
 	        newNote.setContentType(null);
 	        from.putExtension(newNote);
-			
+
 		}
 
 		@Override
@@ -141,7 +141,7 @@ public class MNoteController extends NoteController {
 	}
 
 
-	
+
 	private final NoteManager noteManager;
     private final Set<String> noteContentTypes;
 	private MModeController modeController;
@@ -154,6 +154,7 @@ public class MNoteController extends NoteController {
 		this.modeController = modeController;
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		noteManager = new NoteManager(this);
+		modeController.getMapController().addMapLifeCycleListener(noteManager);
         noteContentTypes = new LinkedHashSet<>();
         noteContentTypes.add(TextController.CONTENT_TYPE_AUTO);
         noteContentTypes.add(TextController.CONTENT_TYPE_HTML);
@@ -175,7 +176,7 @@ public class MNoteController extends NoteController {
     public boolean addNoteContentType(String e) {
         return noteContentTypes.add(e);
     }
-    
+
     public String[] getNoteContentTypes() {
         return noteContentTypes.stream().toArray(String[]::new);
     }
@@ -204,16 +205,16 @@ public class MNoteController extends NoteController {
             setNoteText(node, null);
             return;
         }
-            
+
         final String oldText = NoteModel.getNoteText(node);
         if (oldText == newText || null != oldText && oldText.equals(newText)) {
             return;
         }
-        
+
         NoteModel oldNote = NoteModel.getNote(node);
         NoteModel newNote= oldNote == null ? new NoteModel() :  oldNote.copy();
         newNote.setText(newText);
-        
+
         setNote(node, oldNote, newNote, "setNoteText");
 	}
 
@@ -230,7 +231,7 @@ public class MNoteController extends NoteController {
 
         setNote(node, oldNote, newNote, "setNoteContentType");
     }
-    
+
     private void setNote(final NodeModel node, NoteModel oldNote, NoteModel newNote, String description) {
         final IActor actor = new IActor() {
             @Override
@@ -296,7 +297,7 @@ public class MNoteController extends NoteController {
 	        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
 			cssBuilder.append("p {margin-top:0;}\n");
 		}
-	    
+
 	    notePanel.updateStyleSheet(cssBuilder.toString(), noteStyleAccessor.getNoteStyleSheet());
 	}
 

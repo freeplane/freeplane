@@ -22,9 +22,12 @@ package org.freeplane.features.note.mindmapmode;
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -33,21 +36,41 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.TextController;
 
-final class NoteManager implements INodeSelectionListener, IMapSelectionListener {
+final class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
+    private static final String NOTE_FOLLOWS_SELECTION_PROPERTY = "noteFollowsSelection";
 	private boolean ignoreEditorUpdate;
 	NodeModel node;
 	/**
 	 *
 	 */
 	final MNoteController noteController;
+    private boolean noteFollowsSelection;
 
 	public NoteManager(final MNoteController noteController) {
 		this.noteController = noteController;
+		ResourceController resourceController = ResourceController.getResourceController();
+        resourceController.addPropertyChangeListener(this::propertyChanged);
+        noteFollowsSelection = resourceController.getBooleanProperty(NOTE_FOLLOWS_SELECTION_PROPERTY);
 	}
 
+
+
 	@Override
+    public void onRemove(MapModel map) {
+        if(! noteFollowsSelection && node != null && node.getMap() == map) {
+            stopEditing();
+            updateEditor();
+        }
+    }
+
+    @Override
 	public void onDeselect(final NodeModel node) {
-		final NotePanel notePanel = noteController.getNotePanel();
+	    if(noteFollowsSelection)
+	        stopEditing();
+	}
+
+    private void stopEditing() {
+        final NotePanel notePanel = noteController.getNotePanel();
 		if (notePanel == null) {
 			return;
 		}
@@ -55,12 +78,14 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		saveNote(node);
         notePanel.stopEditing();
 		this.node = null;
-	}
+    }
 
 	@Override
 	public void onSelect(final NodeModel node) {
-		this.node = node;
-		updateEditor();
+	    if(noteFollowsSelection) {
+	        this.node = node;
+	        updateEditor();
+	    }
 	}
 
 
@@ -70,6 +95,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			return;
 		}
 		if(node == null) {
+		    notePanel.setViewedContent("");
 			return;
 		}
 		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
@@ -115,17 +141,20 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 	@Override
 	public void afterMapChange(MapModel oldMap, MapModel newMap) {
 		if(newMap == null) {
-			node = null;
+		    if(node != null) {
+		        saveNote();
+		        node = null;
+		    }
 			final NotePanel notePanel = noteController.getNotePanel();
 			if(notePanel != null)
 				notePanel.setViewedContent("");
 		}
 	}
-	
-   void saveNote(final NodeModel node) {
-        if (this.node != node) {
+
+   void saveNote(final NodeModel savedNode) {
+        if (node == null || node.getMap() != savedNode.getMap()) {
             return;
-        } 
+        }
         saveNote();
     }
 
@@ -138,7 +167,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
             notePanel.saveNote();
         }
     }
-	
+
 
 	NodeModel getNode() {
 		return node;
@@ -172,4 +201,15 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
         }
         Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
     }
+
+    private void propertyChanged(String propertyName, String newValue, @SuppressWarnings("unused") String oldValue) {
+        if(NOTE_FOLLOWS_SELECTION_PROPERTY.equals(propertyName))
+            noteFollowsSelection = Boolean.parseBoolean(newValue);
+        if(noteFollowsSelection) {
+            IMapSelection selection = Controller.getCurrentController().getSelection();
+            node = selection != null ? selection.getSelected() : null;
+            updateEditor();
+        }
+    }
+
 }

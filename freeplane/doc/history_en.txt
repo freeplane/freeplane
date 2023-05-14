@@ -3,6 +3,7 @@
 ==============================
 Bug fixes
 Allow to remove minimum and maximum node width limits for the default style
+Option View->Notes->Note follows selection (enabled by default)
 
 ==============================
 1.1.2

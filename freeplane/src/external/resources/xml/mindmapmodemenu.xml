@@ -373,6 +373,7 @@
 				</Entry>
 				<Entry name="SetBooleanMapPropertyAction.show_note_icons" />
 				<Entry name="ShowNotesInMapAction" />
+                <Entry name="SetBooleanPropertyAction.noteFollowsSelection" />
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_menu" />
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_toolbars" />
 			</Entry>
