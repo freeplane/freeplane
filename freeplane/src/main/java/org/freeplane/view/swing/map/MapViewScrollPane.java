@@ -73,11 +73,21 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	        layoutInProgress = view != null && ! view.isValid();
 	        super.doLayout();
 	        layoutInProgress = false;
-	        if(view != null)
-	        	((MapView) view).scrollViewAfterLayout();
-        }
+		}
 
-		private Timer timer;
+
+
+		@Override
+		protected void validateTree() {
+		    super.validateTree();
+		    final Component view = getView();
+		    if(view != null)
+		        ((MapView) view).scrollViewAfterLayout();
+		}
+
+
+
+        private Timer timer;
 
 		private JComponent backgroundComponent;
 
@@ -302,8 +312,8 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	    super.removeNotify();
 		ResourceController.getResourceController().removePropertyChangeListener(MapViewScrollPane.this);
     }
-	
-	
+
+
 
 	@Override
     public void setUI(ScrollPaneUI ui) {

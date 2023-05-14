@@ -1419,9 +1419,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 }
             }
             else {
-                mapScroller.scrollNodeToVisible(newSelected);
                 addSelected(newSelected, true);
                 selection.setSelectionEnd(newSelected);
+                mapScroller.scrollNodeToVisible(newSelected);
             }
         } else
 	        selectAsTheOnlyOneSelected(newSelected);
@@ -2260,16 +2260,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (requestFocus) {
 			newSelected.requestFocusInWindow();
 		}
+		selection.select(newSelected);
         if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
             mapScroller.scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
         }
         else {
             mapScroller.scrollNodeToVisible(newSelected);
         }
-		if(selection.size() == 1 && getSelected().equals(newSelected)){
-			return;
-		}
-		selection.select(newSelected);
+        if(selection.size() == 1 && getSelected().equals(newSelected)){
+            return;
+        }
 		Container selectionParent = newSelected.getParent();
 		if (selectionParent instanceof NodeView) {
 			((NodeView) selectionParent).setLastSelectedChild(newSelected);
