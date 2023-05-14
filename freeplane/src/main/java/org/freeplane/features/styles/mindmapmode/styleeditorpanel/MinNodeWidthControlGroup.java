@@ -40,7 +40,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  */
 class MinNodeWidthControlGroup implements ControlGroup {
 	private static final String MIN_NODE_WIDTH = "min_node_width";
-
+	private static final String REVERT = "revert-" + MIN_NODE_WIDTH;
 	private RevertingProperty mSetMinNodeWidth;
 	private QuantityProperty<LengthUnit> mMinNodeWidth;
 	private MinNodeWidthChangeListener propertyChangeListener;
@@ -73,9 +73,9 @@ class MinNodeWidthControlGroup implements ControlGroup {
             StylePropertyAdjuster.adjustPropertyControl(node, mMinNodeWidth);
         }
 	}
-	
+
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetMinNodeWidth = new RevertingProperty();
+		mSetMinNodeWidth = new RevertingProperty(REVERT);
 		mMinNodeWidth = new QuantityProperty<LengthUnit>(MIN_NODE_WIDTH, 0, 100000, 0.1, LengthUnit.px);
 		propertyChangeListener = new MinNodeWidthChangeListener(mSetMinNodeWidth, mMinNodeWidth);
 		mSetMinNodeWidth.addPropertyChangeListener(propertyChangeListener);
@@ -83,9 +83,9 @@ class MinNodeWidthControlGroup implements ControlGroup {
 		mMinNodeWidth.appendToForm(formBuilder);
 		mSetMinNodeWidth.appendToForm(formBuilder);
 	}
-	
+
 	public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
-	
+
 }

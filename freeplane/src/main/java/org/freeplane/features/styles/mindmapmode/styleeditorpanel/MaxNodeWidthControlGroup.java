@@ -40,7 +40,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  */
 class MaxNodeWidthControlGroup implements ControlGroup {
 	private static final String MAX_NODE_WIDTH = "max_node_width";
-
+	private static final String REVERT = "revert-" + MAX_NODE_WIDTH;
 	private RevertingProperty mSetMaxNodeWidth;
 	private QuantityProperty<LengthUnit> mMaxNodeWidth;
 	private MaxNodeWidthChangeListener propertyChangeListener;
@@ -73,9 +73,9 @@ class MaxNodeWidthControlGroup implements ControlGroup {
             StylePropertyAdjuster.adjustPropertyControl(node, mMaxNodeWidth);
         }
 	}
-	
+
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		mSetMaxNodeWidth = new RevertingProperty();
+		mSetMaxNodeWidth = new RevertingProperty(REVERT);
 		mMaxNodeWidth = new QuantityProperty<LengthUnit>(MAX_NODE_WIDTH, 0, 100000, 0.1, LengthUnit.px);
 		propertyChangeListener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
 		mSetMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);
@@ -83,9 +83,9 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 		mMaxNodeWidth.appendToForm(formBuilder);
 		mSetMaxNodeWidth.appendToForm(formBuilder);
 	}
-	
+
 	public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
-	
+
 }
