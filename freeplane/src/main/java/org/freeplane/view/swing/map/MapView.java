@@ -1585,7 +1585,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         } else if (direction == SelectionDirection.LEFT) {
             nextSelectedSibling = getNextVisibleSibling(oldSelected, LayoutOrientation.LEFT_TO_RIGHT, false);
         }
-        return nextSelectedSibling;
+        return nextSelectedSibling != oldSelected ? nextSelectedSibling : null;
     }
 
     private NodeView suggestNewSelectedAncestor(SelectionDirection direction,
