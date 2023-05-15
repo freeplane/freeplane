@@ -57,7 +57,7 @@ public class AddExternalImageAction extends AFreeplaneAction {
 		if (absoluteUri == null)
 			return;
 		for (final NodeModel node : nodes) {
-			vc.paste(absoluteUri, node);
+			vc.paste(extRes.getUri(), node);
 		}
 	}
 }
