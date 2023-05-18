@@ -1,18 +1,30 @@
 package org.freeplane.plugin.script;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import javax.swing.Icon;
+
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.api.ControllerRO;
+import org.freeplane.api.LengthUnit;
 import org.freeplane.api.NodeRO;
+import org.freeplane.api.Quantity;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormatController;
@@ -51,49 +63,179 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	 * as "global variable" <code>config</code>.
 	 */
 	public static class ConfigProperties {
-		public boolean getBooleanProperty(final String name) {
-			return ResourceController.getResourceController().getBooleanProperty(name);
-		}
+	    private final ResourceController resourceController = ResourceController.getResourceController();
 
-		public double getDoubleProperty(final String name, final double defaultValue) {
-			return ResourceController.getResourceController().getDoubleProperty(name, defaultValue);
-		}
+        public boolean getBooleanProperty(String key) {
+            return resourceController.getBooleanProperty(key);
+        }
 
-		public int getIntProperty(final String name) {
-			return ResourceController.getResourceController().getIntProperty(name);
-		}
+        public boolean getBooleanProperty(String key, boolean defaultValue) {
+            return resourceController.getBooleanProperty(key, defaultValue);
+        }
 
-		public int getIntProperty(final String name, final int defaultValue) {
-			return ResourceController.getResourceController().getIntProperty(name, defaultValue);
-		}
+        public boolean getProperty(String key, boolean defaultValue) {
+            return getBooleanProperty(key, defaultValue);
+        }
 
-		public long getLongProperty(final String name, final int defaultValue) {
-			return ResourceController.getResourceController().getLongProperty(name, defaultValue);
-		}
+        public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T> defaultValue) {
+            return resourceController.getEnumProperty(propertyName, defaultValue);
+        }
 
-		public String getProperty(final String name) {
-			return ResourceController.getResourceController().getProperty(name);
-		}
+        public <T extends Enum<T>> T getProperty(String propertyName, Enum<T> defaultValue) {
+            return getEnumProperty(propertyName, defaultValue);
+        }
 
-		public String getProperty(final String name, final String defaultValue) {
-			return ResourceController.getResourceController().getProperty(name, defaultValue);
-		}
+        public double getDoubleProperty(String key) {
+            return resourceController.getDoubleProperty(key);
+        }
 
-		public Properties getProperties() {
-			return ResourceController.getResourceController().getProperties();
+        public double getDoubleProperty(String key, double defaultValue) {
+            return resourceController.getDoubleProperty(key, defaultValue);
+        }
+
+        public double getProperty(String key, double defaultValue) {
+            return getDoubleProperty(key, defaultValue);
+        }
+
+        public int getIntProperty(String key) {
+            return resourceController.getIntProperty(key);
+        }
+
+        public int getIntProperty(String key, int defaultValue) {
+            return resourceController.getIntProperty(key, defaultValue);
+        }
+
+        public int getProperty(String key, int defaultValue) {
+            return getIntProperty(key, defaultValue);
+        }
+
+        public long getLongProperty(String key, long defaultValue) {
+            return resourceController.getLongProperty(key, defaultValue);
+        }
+
+        public long getProperty(String key, long defaultValue) {
+            return getLongProperty(key, defaultValue);
+        }
+
+        public int getLengthProperty(String name) {
+            return resourceController.getLengthProperty(name);
+        }
+
+        public Quantity<LengthUnit> getLengthQuantityProperty(String name) {
+            return resourceController.getLengthQuantityProperty(name);
+        }
+
+        public int getTimeProperty(String name) {
+            return resourceController.getTimeProperty(name);
+        }
+
+        public Quantity<TimePeriodUnits> getTimeQuantityProperty(String name) {
+            return resourceController.getTimeQuantityProperty(name);
+        }
+
+        public Color getColorProperty(String name) {
+            return resourceController.getColorProperty(name);
+        }
+
+        public String getProperty(String key) {
+            return resourceController.getProperty(key);
+        }
+
+        public String getProperty(String key, String value) {
+            return resourceController.getProperty(key, value);
+        }
+
+        public String getDefaultProperty(String key) {
+            return resourceController.getDefaultProperty(key);
+        }
+
+        public Collection<IFreeplanePropertyListener> getPropertyChangeListeners() {
+            return resourceController.getPropertyChangeListeners();
+        }
+
+        public URL getResource(String resourcePath) {
+            return resourceController.getResource(resourcePath);
+        }
+
+        public InputStream getResourceStream(String resFileName) throws IOException {
+            return resourceController.getResourceStream(resFileName);
+        }
+
+        public String getResourceBaseDir() {
+            return resourceController.getResourceBaseDir();
+        }
+
+        public String getInstallationBaseDir() {
+            return resourceController.getInstallationBaseDir();
+        }
+
+        public String getLanguageCode() {
+            return resourceController.getLanguageCode();
+        }
+
+        public String getDefaultLanguageCode() {
+            return resourceController.getDefaultLanguageCode();
+        }
+
+        public void setDefaultProperty(String key, String value) {
+            resourceController.setDefaultProperty(key, value);
+        }
+
+        public void setProperty(String property, boolean value) {
+            resourceController.setProperty(property, value);
+        }
+
+        public void setProperty(String name, int value) {
+            resourceController.setProperty(name, value);
+        }
+
+        public void setProperty(String name, long value) {
+            resourceController.setProperty(name, value);
+        }
+
+        public void setProperty(String property, String value) {
+            resourceController.setProperty(property, value);
+        }
+
+        public Icon getIcon(String iconKey) {
+            return resourceController.getIcon(iconKey);
+        }
+
+        public URL getIconResource(String resourcePath) {
+            return resourceController.getIconResource(resourcePath);
+        }
+
+        public Icon getImageIcon(String iconKey) {
+            return resourceController.getImageIcon(iconKey);
+        }
+
+        public Locale getSystemLocale() {
+            return resourceController.getSystemLocale();
+        }
+
+        public String[] getArrayProperty(String key, String separator) {
+            return resourceController.getArrayProperty(key, separator);
+        }
+
+        public Properties getProperties() {
+			return resourceController.getProperties();
 		}
 
 		/** support config['key'] from Groovy. */
-		public String getAt(final String name) {
+        public String getAt(final String name) {
             return getProperty(name);
-		}
+        }
+
+        public void setAt(final String name, final String value) {
+            setProperty(name, value);
+        }
 
 		public ResourceBundle getResources() {
-		    return ResourceController.getResourceController().getResources();
+		    return resourceController.getResources();
 		}
 
 		public String getFreeplaneUserDirectory() {
-			return ResourceController.getResourceController().getFreeplaneUserDirectory();
+			return resourceController.getFreeplaneUserDirectory();
 		}
 	}
 
@@ -110,7 +252,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
     }
-    
+
     public FreeplaneScriptBaseClass(Binding binding) {
         this();
         setBinding(binding);
