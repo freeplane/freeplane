@@ -50,6 +50,7 @@ class ScriptingPolicy extends Policy {
 		permissionBlackList = new Permissions();
 		permissionBlackList.add(new PropertyPermission(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY, "write"));
 		permissionBlackList.add(new PropertyPermission(Compat.FREEPLANE_USERDIR_PROPERTY, "write"));
+		permissionBlackList.add(new FilePermission(Compat.getApplicationUserDirectory() + "/auto.properties", "write"));
 		CodeSource userLibCodeSource;
 		try {
 			final String userLibDirectory = Compat.getApplicationUserDirectory() + "/lib/-";

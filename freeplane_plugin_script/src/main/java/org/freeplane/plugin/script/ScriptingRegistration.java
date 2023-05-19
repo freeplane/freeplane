@@ -177,7 +177,7 @@ class ScriptingRegistration {
 			}
 		});
 		registerScriptAddOns();
-		new ScriptingConfiguration();
+		ScriptingConfiguration.register();
 		ClasspathScriptCompiler scriptCompiler = new ClasspathScriptCompiler();
 		boolean isSecurityManagerEnabled = System.getSecurityManager() != null;
 		if(isSecurityManagerEnabled)

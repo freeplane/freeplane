@@ -29,6 +29,7 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.AccessController;
+import java.security.AllPermission;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -49,10 +50,12 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class ApplicationResourceController extends ResourceController {
-	final private File autoPropertiesFile;
+	private static final AllPermission ALL_PERMISSION = new AllPermission();
+    final private File autoPropertiesFile;
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
+	final private Properties securedProps;
 	public static final String FREEPLANE_BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
@@ -100,6 +103,7 @@ public class ApplicationResourceController extends ResourceController {
 		resourceDirectories = new ArrayList<File>(2);
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
+		securedProps = new Properties(props);
 		final File userDir = createUserDirectory();
 		final String resourceBaseDir = getResourceBaseDir();
 		if (resourceBaseDir != null) {
@@ -114,7 +118,7 @@ public class ApplicationResourceController extends ResourceController {
 				e.printStackTrace();
 			}
 		}
-		setDefaultLocale(props);
+		setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override
@@ -163,7 +167,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getProperty(final String key) {
-		return props.getProperty(key);
+	    return securedProps.getProperty(key);
 	}
 
 	@Override
@@ -274,6 +278,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties() {
+	    props.putAll(securedProps);
 		MModeController modeController = MModeController.getMModeController();
 		if(modeController != null) {
 			MIconController iconController = (MIconController)modeController.getExtension(IconController.class);
@@ -299,8 +304,7 @@ public class ApplicationResourceController extends ResourceController {
 	/**
 	 * @param pProperties
 	 */
-	private void setDefaultLocale(final Properties pProperties) {
-		final String lang = pProperties.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
+	private void setDefaultLocale(final String lang ) {
 		if (lang == null) {
 			return;
 		}
@@ -332,7 +336,31 @@ public class ApplicationResourceController extends ResourceController {
 		if (oldValue != null && oldValue.equals(value)) {
 			return;
 		}
+		if(securedProps.containsKey(key)) {
+		    checkSecurityPermission();
+            securedProps.setProperty(key, value);
+        }
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
 	}
+
+    static private void checkSecurityPermission() {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(ALL_PERMISSION);
+        }
+    }
+
+    @Override
+    public Properties getSecuredProperties() {
+        checkSecurityPermission();
+        return securedProps;
+    }
+
+    @Override
+    public void secureProperty(String key) {
+        checkSecurityPermission();
+        if(! securedProps.containsKey(key))
+            securedProps.setProperty(key, props.getProperty(key));
+    }
 }

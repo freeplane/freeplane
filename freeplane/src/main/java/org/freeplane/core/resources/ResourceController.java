@@ -61,7 +61,6 @@ public abstract class ResourceController {
 	public static final String LOCAL_PROPERTIES = "LocalProperties.";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
 	// some plugins have their own file for registration of defaults
-	public static final String PLUGIN_DEFAULTS_RESOURCE = "defaults.properties";
 
 	static public ResourceController getResourceController() {
 		return Controller.getCurrentController().getResourceController();
@@ -310,7 +309,7 @@ public abstract class ResourceController {
 
 	/** adds properties from url to properties. Existing properties in resultProps will be overridden.
 	 * @return false if anything went wrong. */
-	protected static boolean loadProperties(Properties resultProps, final URL url) {
+	public static boolean loadProperties(Properties resultProps, final URL url) {
 		try (InputStream in = new BufferedInputStream(url.openStream()) ){
 			resultProps.load(in);
 			LogUtils.info("Loaded properties from " + url);
@@ -426,4 +425,8 @@ public abstract class ResourceController {
                 ? joinedValues.split(separator)  : new String[] {};
         return groupNames;
     }
+
+    abstract public Properties getSecuredProperties();
+
+    abstract public void secureProperty(String key);
 }

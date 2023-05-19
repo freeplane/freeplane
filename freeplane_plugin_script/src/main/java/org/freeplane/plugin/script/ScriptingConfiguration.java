@@ -27,6 +27,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 
 import org.freeplane.core.resources.ResourceController;
@@ -50,7 +52,7 @@ import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
 class ScriptingConfiguration {
 
     private static Map<String, Object> staticProperties = createStaticProperties();
-    
+
     final static private FilenameFilter JAR_FILE_FILTER = new FilenameFilter() {
         @Override
         public boolean accept(final File dir, final String name) {
@@ -58,17 +60,23 @@ class ScriptingConfiguration {
         }
     };
 
-	ScriptingConfiguration() {
-	    ArrayList<String> classpath = buildClasspath();
+	static void register() {
+	    ScriptingConfiguration scriptingConfiguration = new ScriptingConfiguration();
+        ArrayList<String> classpath = scriptingConfiguration.buildClasspath();
         ScriptResources.setClasspath(classpath);
-		addPluginDefaults();
+        scriptingConfiguration.addPluginDefaults();
 	}
 
+	private ScriptingConfiguration() {/**/}
+
  	private void addPluginDefaults() {
-		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		if (defaults == null)
-			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		Controller.getCurrentController().getResourceController().addDefaults(defaults);
+		final URL defaults = ScriptingConfiguration.class.getResource("defaults.properties");
+		Objects.requireNonNull(defaults);
+		Properties props = new Properties();
+        ResourceController.loadProperties(props, defaults);
+        ResourceController resourceController = Controller.getCurrentController().getResourceController();
+        resourceController.addDefaults(props);
+        props.keySet().forEach(key -> resourceController.secureProperty((String)key));
 	}
 
     private List<ScriptAddOnProperties> getInstalledScriptAddOns() {

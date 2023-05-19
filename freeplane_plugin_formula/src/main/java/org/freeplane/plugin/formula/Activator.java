@@ -2,6 +2,7 @@ package org.freeplane.plugin.formula;
 
 import java.net.URL;
 import java.util.Hashtable;
+import java.util.Objects;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.MapController;
@@ -41,7 +42,7 @@ public class Activator implements BundleActivator {
 				TextController textController = TextController.getController(modeController);
                 textController.addTextTransformer(//
 						new ConditionalContentTransformer(new FormulaTextTransformer(1), TOGGLE_PARSE_FORMULAS));
-                
+
 				// to enable Formulas in text templates:
 				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
@@ -72,9 +73,8 @@ public class Activator implements BundleActivator {
 		}
 
 		private void addPluginDefaults() {
-			final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-			if (defaults == null)
-				throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
+			final URL defaults = this.getClass().getResource("defaults.properties");
+			Objects.requireNonNull(defaults);
 			Controller.getCurrentController().getResourceController().addDefaults(defaults);
 		}
 	}

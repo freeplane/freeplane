@@ -67,7 +67,7 @@ public class ScriptSecurity {
             return specificPermissions;
         } else {
             return new ScriptingPermissions(ResourceController.getResourceController()
-                    .getProperties());
+                    .getSecuredProperties());
         }
     }
 

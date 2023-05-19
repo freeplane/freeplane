@@ -22,7 +22,6 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -41,7 +40,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnProperties.AddOnType;
 import org.freeplane.main.addons.AddOnsController;
@@ -154,15 +152,7 @@ class ScriptingGuiConfiguration {
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
 
 	ScriptingGuiConfiguration() {
-		addPluginDefaults();
 		initMenuTitleToPathMap();
-	}
-
-	private void addPluginDefaults() {
-		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		if (defaults == null)
-			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
-		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
 
 	private void initMenuTitleToPathMap() {

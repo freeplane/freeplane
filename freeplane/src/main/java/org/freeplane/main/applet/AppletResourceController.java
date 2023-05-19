@@ -105,4 +105,12 @@ class AppletResourceController extends ResourceController {
 	public boolean isApplet() {
 		return true;
 	}
+
+    @Override
+    public Properties getSecuredProperties() {
+        return getProperties();
+    }
+
+    @Override
+    public void secureProperty(String key) {/**/}
 }
