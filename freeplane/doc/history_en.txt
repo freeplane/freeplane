@@ -1,12 +1,14 @@
 ==============================
-1.1.3
+1.11.3
 ==============================
 Bug fixes
 Allow to remove minimum and maximum node width limits for the default style
 Option View->Notes->Note follows selection (enabled by default)
+Scripting API extended
+Scripting Security permissions sharpened
 
 ==============================
-1.1.2
+1.11.2
 ==============================
 Bug fixes
 
