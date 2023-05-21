@@ -46,6 +46,8 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.TextController;
 
+import com.jgoodies.common.base.Objects;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -215,7 +217,8 @@ public class MNoteController extends NoteController {
         NoteModel newNote= oldNote == null ? new NoteModel() :  oldNote.copy();
         newNote.setText(newText);
 
-        setNote(node, oldNote, newNote, "setNoteText");
+        if(oldNote == null || ! Objects.equals(oldNote.getXml(), newNote.getXml()))
+            setNote(node, oldNote, newNote, "setNoteText");
 	}
 
 

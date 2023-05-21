@@ -8,20 +8,20 @@ public class RichTextModel {
     private String contentType = null;
 	private String text = null;
 	private String xml = null;
-	
-	
+
+
 
 	public RichTextModel() {
         super();
     }
-	
-	
+
+
 
     public RichTextModel(String contentType, String text, String xml) {
         super();
         this.contentType = contentType;
         this.text = text;
-        this.xml = xml;
+        this.xml = xml.trim();
     }
 
     public String getText() {
@@ -40,7 +40,7 @@ public class RichTextModel {
 		}
 	    try {
 	        text = XmlUtils.replaceAscii0BySpace(newText);
-	        xml = HtmlUtils.toXhtml(text);
+	        xml = HtmlUtils.toXhtml(text).trim();
 	        if (xml != null && !xml.startsWith("<")) {
 	            text = xml;
 	        }
@@ -55,7 +55,7 @@ public class RichTextModel {
 			text = null;
 			return;
 		}
-		xml = XmlUtils.replaceAscii0BySpace(pXmlNoteText);
+		xml = XmlUtils.replaceAscii0BySpace(pXmlNoteText).trim();
 		text = HtmlUtils.toHtml(xml);
 	}
 
