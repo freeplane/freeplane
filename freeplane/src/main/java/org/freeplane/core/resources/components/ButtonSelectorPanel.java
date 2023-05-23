@@ -216,8 +216,6 @@ public class ButtonSelectorPanel{
         dialog.setUndecorated(true);
         dialog.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
         dialog.getContentPane().add(getButtonPanel());
-        PopupDialog.closeWhenOwnerIsFocused(dialog);
-        PopupDialog.closeOnEscape(dialog);
         Point eventLocation = new Point(0, parentComponent.getHeight());
         SwingUtilities.convertPointToScreen(eventLocation, parentComponent);
         dialog.pack();
@@ -239,6 +237,10 @@ public class ButtonSelectorPanel{
 
         });
         SwingUtilities.invokeLater(() ->
-            dialog.setVisible(true));
+        {
+            PopupDialog.closeWhenOwnerIsFocused(dialog);
+            PopupDialog.closeOnEscape(dialog);
+        });
+        dialog.setVisible(true);
     }
 }
