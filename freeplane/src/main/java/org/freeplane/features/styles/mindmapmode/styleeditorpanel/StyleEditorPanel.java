@@ -34,21 +34,14 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
-import org.freeplane.features.map.INodeChangeListener;
-import org.freeplane.features.map.INodeSelectionListener;
-import org.freeplane.features.map.MapChangeEvent;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
-import org.freeplane.features.ui.IMapViewManager.MapChangeEventProperty;
+import org.freeplane.features.styles.mindmapmode.SelectedNodeChangeListener;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
@@ -232,7 +225,7 @@ public class StyleEditorPanel extends JPanel {
 		}
     }
 
-	public void setStyle( final NodeModel node) {
+	private void setStyle( final NodeModel node) {
 		if (internalChange) {
 			return;
 		}
@@ -246,6 +239,15 @@ public class StyleEditorPanel extends JPanel {
 		finally {
 			internalChange = false;
 		}
+	}
+
+	private void updatePanel(NodeModel selected) {
+	    if (selected == null) {
+	        return;
+	    }
+	    if(Controller.getCurrentModeController().canEdit(selected.getMap()))
+	        setComponentsEnabled(true);
+	    setStyle(selected);
 	}
 
 	private void setComponentsEnabled(boolean enabled) {
@@ -265,53 +267,7 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void addListeners() {
-		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final MapController mapController = modeController.getMapController();
-		mapController.addNodeSelectionListener(new INodeSelectionListener() {
-			@Override
-			public void onSelect(final NodeModel node) {
-				final IMapSelection selection = controller.getSelection();
-				if (selection == null) {
-					return;
-				}
-				if (selection.size() >= 1) {
-					if(modeController.canEdit(selection.getSelected().getMap()))
-						setComponentsEnabled(true);
-					setStyle(node);
-				}
-			}
-		});
-		mapController.addUINodeChangeListener(new INodeChangeListener() {
-			@Override
-			public void nodeChanged(final NodeChangeEvent event) {
-				final IMapSelection selection = controller.getSelection();
-				if (selection == null) {
-					return;
-				}
-				final NodeModel node = event.getNode();
-				if (selection.getSelected().equals(node)) {
-					setStyle(node);
-				}
-			}
-		});
-		mapController.addUIMapChangeListener(new IMapChangeListener() {
-
-			@Override
-            public void mapChanged(MapChangeEvent event) {
-				Object property = event.getProperty();
-                if(! MapStyle.MAP_STYLES.equals(property) && ! MapStyle.MAP_LAYOUT.equals(property)
-                        && MapChangeEventProperty.MAP_VIEW_ROOT != property)
-					return;
-				final IMapSelection selection = controller.getSelection();
-				if (selection == null) {
-					return;
-				}
-				final NodeModel node = selection.getSelected();
-				setStyle(node);
-			}
-
-		});
+	    SelectedNodeChangeListener.onSelectedNodeChange(this::updatePanel);
 
 		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
 
@@ -322,12 +278,14 @@ public class StyleEditorPanel extends JPanel {
 		    }
 
 		};
-		modeController.getController().getMapViewManager().addMapSelectionListener(mapSelectionListener);
+		final ModeController modeController = Controller.getCurrentModeController();
+		Controller controller = modeController.getController();
+        controller.getMapViewManager().addMapSelectionListener(mapSelectionListener);
 
 
-		panelEnabler = new PanelEnabler(controller, modeController);
-		controller.getMapViewManager().addMapSelectionListener(panelEnabler);
-		ResourceController.getResourceController().addPropertyChangeListener(panelEnabler);
+        panelEnabler = new PanelEnabler(controller, modeController);
+        controller.getMapViewManager().addMapSelectionListener(panelEnabler);
+        ResourceController.getResourceController().addPropertyChangeListener(panelEnabler);
 	}
 
 }
