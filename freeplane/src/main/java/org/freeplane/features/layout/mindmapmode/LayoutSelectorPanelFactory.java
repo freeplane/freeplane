@@ -26,7 +26,7 @@ import org.freeplane.core.resources.components.ButtonSelectorPanel.ComponentBefo
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
 
-public class LayoutSelectorPanelFactory {
+class LayoutSelectorPanelFactory {
     private static final ChildNodesLayout[] LAYOUTS =
             Arrays.asList(ChildNodesLayout.values()).stream().skip(1).toArray(ChildNodesLayout[]::new);
 

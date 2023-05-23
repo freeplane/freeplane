@@ -21,16 +21,11 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
-import javax.swing.JToggleButton;
-
 import org.freeplane.api.ChildNodesLayout;
-import org.freeplane.core.resources.components.ButtonPanelProperty;
-import org.freeplane.core.resources.components.ButtonSelectorPanel;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.ui.components.MultipleImageIcon;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.layout.LayoutModel;
-import org.freeplane.features.layout.mindmapmode.LayoutSelectorPanelFactory;
+import org.freeplane.features.layout.mindmapmode.ChildNodesLayoutButtonPanelProperty;
 import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -47,33 +42,11 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
 
 	private RevertingProperty mSetChildNodesLayout;
-	private ButtonPanelPropertyWithAdditionalIcon mChildNodesLayout;
+	private ChildNodesLayoutButtonPanelProperty mChildNodesLayout;
 
 	private ChildNodesLayoutChangeListener propertyChangeListener;
 
-	static class ButtonPanelPropertyWithAdditionalIcon extends ButtonPanelProperty {
-	    ButtonPanelPropertyWithAdditionalIcon(String name, ButtonSelectorPanel buttons) {
-	        super(name, buttons);
-	    }
-
-	    public void setValue(ChildNodesLayout value, ChildNodesLayout viewValue) {
-	        if(value == viewValue || viewValue == null) {
-	            super.setValue(value.name());
-	            return;
-	        }
-	        buttons.setValue(value.name());
-	        MultipleImageIcon multipleImageIcon = new MultipleImageIcon();
-	        JToggleButton selectedButton = buttons.getSelectedButton();
-	        JToggleButton viewButton = buttons.getButton(viewValue.name());
-	        multipleImageIcon.addIcon(selectedButton.getIcon());
-	        multipleImageIcon.addIcon(LayoutSelectorPanelFactory.RIGHT_ARROW_ICON);
-	        multipleImageIcon.addIcon(viewButton.getIcon());
-	        startButton.setIcon(multipleImageIcon);
-	        startButton.setToolTipText(selectedButton.getToolTipText() + ": " + viewButton.getToolTipText());
-	    }
-	}
-
-    private class ChildNodesLayoutChangeListener extends ControlGroupChangeListener {
+	private class ChildNodesLayoutChangeListener extends ControlGroupChangeListener {
 		public ChildNodesLayoutChangeListener(final RevertingProperty mSet,final IPropertyControl... mProperty) {
 			super(mSet, mProperty);
 		}
@@ -118,8 +91,7 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	@Override
     public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
-		ButtonSelectorPanel buttons = LayoutSelectorPanelFactory.createLayoutSelectorPanel();
-        mChildNodesLayout = new ButtonPanelPropertyWithAdditionalIcon(CHILD_NODES_LAYOUTS, buttons);
+        mChildNodesLayout = new ChildNodesLayoutButtonPanelProperty(CHILD_NODES_LAYOUTS);
 		propertyChangeListener = new ChildNodesLayoutChangeListener(mSetChildNodesLayout, mChildNodesLayout);
 		mSetChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
 		mChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
