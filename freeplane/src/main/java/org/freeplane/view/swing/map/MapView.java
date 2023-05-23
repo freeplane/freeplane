@@ -2267,9 +2267,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         else {
             mapScroller.scrollNodeToVisible(newSelected);
         }
-        if(selection.size() == 1 && getSelected().equals(newSelected)){
-            return;
-        }
 		Container selectionParent = newSelected.getParent();
 		if (selectionParent instanceof NodeView) {
 			((NodeView) selectionParent).setLastSelectedChild(newSelected);
