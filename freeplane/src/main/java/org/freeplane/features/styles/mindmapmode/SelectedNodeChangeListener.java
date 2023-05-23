@@ -9,10 +9,12 @@ import java.util.function.Consumer;
 
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -66,5 +68,16 @@ public class SelectedNodeChangeListener{
             }
 
         });
+        IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
+
+            @Override
+            public void afterMapChange(MapModel oldMap, MapModel newMap) {
+                if(newMap == null)
+                    callback.accept(null);
+            }
+
+        };
+        controller.getMapViewManager().addMapSelectionListener(mapSelectionListener);
+
     }
 }

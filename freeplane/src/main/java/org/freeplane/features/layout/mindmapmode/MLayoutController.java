@@ -19,15 +19,23 @@
  */
 package org.freeplane.features.layout.mindmapmode;
 
+import java.awt.Component;
+
 import org.freeplane.api.ChildNodesLayout;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.layout.LayoutModel;
 import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.mindmapmode.SelectedNodeChangeListener;
 /**
  * @author Dimitry Polivaev
  */
@@ -79,11 +87,28 @@ public class MLayoutController extends LayoutController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new SelectNodeChildrenLayoutAction());
 		modeController.registerExtensionCopier(new StyleCopier());
+
+		modeController.addUiBuilder(Phase.UI, "childNodesLayout", new JToolbarComponentBuilder(
+	            new ComponentProvider() {
+	                @Override
+	                public Component createComponent(Entry entry) {
+	                    ChildNodesLayoutButtonPanelProperty childNodesLayoutButtonPanelProperty = new ChildNodesLayoutButtonPanelProperty();
+	                    SelectedNodeChangeListener.onSelectedNodeChange(childNodesLayoutButtonPanelProperty::setStyleOnExternalChange);
+	                    childNodesLayoutButtonPanelProperty.addPropertyChangeListener(evt -> {
+                           IMapSelection selection = Controller.getCurrentController().getSelection();
+                           if(selection != null) {
+                               ChildNodesLayout value = ChildNodesLayout.valueOf(childNodesLayoutButtonPanelProperty.getValue());
+                               selection.getSelection().forEach(node -> setChildNodesLayout(node, value));
+                           }
+                        });
+                        return childNodesLayoutButtonPanelProperty.getValueComponent();
+	                }
+	            }));
 	}
 
-    public void setChildNodesLayout(NodeModel node, ChildNodesLayout sides){
+    public void setChildNodesLayout(NodeModel node, ChildNodesLayout layout){
         if(node != null){
-            final IActor actor = new ChangeChildNodesLayoutActor(node, sides != null ? sides : ChildNodesLayout.NOT_SET);
+            final IActor actor = new ChangeChildNodesLayoutActor(node, layout != null ? layout : ChildNodesLayout.NOT_SET);
             Controller.getCurrentModeController().execute(actor, node.getMap());
         }
     }

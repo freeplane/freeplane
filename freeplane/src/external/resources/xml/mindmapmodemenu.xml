@@ -51,6 +51,8 @@
 			<Entry name="FoldAllAction" />
 		</Entry>
 		<Entry builder="separator" />
+		<Entry builder="childNodesLayout" />
+		<Entry builder="separator" />
 		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="9"/>
 		<Entry usedBy="EDITOR" row="2">
 			<Entry name="CloudAction" />

@@ -238,6 +238,7 @@ public class ButtonSelectorPanel{
             }
 
         });
-        dialog.setVisible(true);
+        SwingUtilities.invokeLater(() ->
+            dialog.setVisible(true));
     }
 }

@@ -39,8 +39,6 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * Nov 27, 2016
  */
 class ChildNodesLayoutControlGroup implements ControlGroup {
-	static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
-
 	private RevertingProperty mSetChildNodesLayout;
 	private ChildNodesLayoutButtonPanelProperty mChildNodesLayout;
 
@@ -65,20 +63,9 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			LayoutModel model = LayoutModel.getModel(node);
-			final ChildNodesLayout alignment = model != null ? model.getChildNodesLayout() : ChildNodesLayout.NOT_SET;
-			ChildNodesLayout displayedValue = displayedValue(node, alignment);
-			NodeView nodeView = ((MapViewController)Controller.getCurrentController().getMapViewManager()).getMapView().getNodeView(node);
-			if(nodeView == null)
-                mChildNodesLayout.setValue(displayedValue, displayedValue);
-			else
-			    mChildNodesLayout.setValue(displayedValue, nodeView.recalculateChildNodesLayout());
-		}
-
-		private ChildNodesLayout displayedValue(NodeModel node, final ChildNodesLayout alignment) {
-			final LayoutController styleController = LayoutController.getController();
-			final ChildNodesLayout displayedValue = styleController.getChildNodesLayout(node);
-			mSetChildNodesLayout.setValue(alignment != ChildNodesLayout.NOT_SET);
-			return displayedValue;
+			final ChildNodesLayout layout = model != null ? model.getChildNodesLayout() : ChildNodesLayout.NOT_SET;
+			mChildNodesLayout.setStyleOnExternalChange(node);
+			mSetChildNodesLayout.setValue(layout != ChildNodesLayout.NOT_SET);
 		}
 
         @Override
@@ -91,7 +78,7 @@ class ChildNodesLayoutControlGroup implements ControlGroup {
 	@Override
     public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildNodesLayout = new RevertingProperty();
-        mChildNodesLayout = new ChildNodesLayoutButtonPanelProperty(CHILD_NODES_LAYOUTS);
+        mChildNodesLayout = new ChildNodesLayoutButtonPanelProperty();
 		propertyChangeListener = new ChildNodesLayoutChangeListener(mSetChildNodesLayout, mChildNodesLayout);
 		mSetChildNodesLayout.addPropertyChangeListener(propertyChangeListener);
 		mChildNodesLayout.addPropertyChangeListener(propertyChangeListener);

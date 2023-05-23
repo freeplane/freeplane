@@ -82,7 +82,8 @@ public class EditStylesAction extends AFreeplaneAction {
 		SModeController modeController = getModeController();
 		modeController.getMapController().createMapView(styleMap);
 		Controller controller = modeController.getController();
-		Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
+		IMapViewManager styleMapViewManager = controller.getMapViewManager();
+        Component mapViewComponent = styleMapViewManager.getMapViewComponent();
 		((DialogController) controller.getViewController()).setMapView(mapViewComponent);
 		dialog.setVisible(true);
 	}

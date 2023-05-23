@@ -19,6 +19,8 @@
  */
 package org.freeplane.main.mindmapmode.stylemode;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.util.Collections;
 import java.util.Set;
@@ -38,6 +40,11 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
+import org.freeplane.core.ui.menubuilders.action.ComponentBuilder;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
@@ -245,6 +252,29 @@ public class SModeControllerFactory {
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		modeController.addExtension(MUIFactory.class, new MUIFactory());
 		final Set<String> emptySet = Collections.emptySet();
+		MUIFactory uiFactory = new MUIFactory();
+		mapController.addUINodeChangeListener(uiFactory);
+		mapController.addNodeSelectionListener(uiFactory);
+
+		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_name", new ComponentBuilder(
+	              new ComponentProvider() {
+	                  @Override
+	                  public Component createComponent(Entry entry) {
+	                      final Container fontBox = uiFactory.createFontBox();
+	                      return fontBox;
+	                  }
+	              }), EntryVisitor.EMTPY);
+
+
+	          modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_font_size", new ComponentBuilder(
+	              new ComponentProvider() {
+	                  @Override
+	                  public Component createComponent(Entry entry) {
+	                      return uiFactory.createSizeBox();
+	                  }
+	              }), EntryVisitor.EMTPY);
+
+
 		modeController.updateMenus("/xml/stylemodemenu.xml", emptySet);
 		this.modeController = null;
 		return controller;

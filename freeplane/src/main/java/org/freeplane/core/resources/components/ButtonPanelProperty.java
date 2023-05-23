@@ -60,9 +60,11 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 	}
 
 	@Override
-    public void setEnabled(final boolean pEnabled) {
-	    buttons.setEnabled(pEnabled);
-		super.setEnabled(pEnabled);
+	public void setEnabled(final boolean pEnabled) {
+	    if (startButton.isEnabled() != pEnabled) {
+	        startButton.setEnabled(pEnabled);
+	        super.setEnabled(pEnabled);
+	    }
 	}
 
 	@Override

@@ -10,10 +10,17 @@ import javax.swing.JToggleButton;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.resources.components.ButtonPanelProperty;
 import org.freeplane.core.ui.components.MultipleImageIcon;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.layout.LayoutController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.view.swing.map.MapViewController;
+import org.freeplane.view.swing.map.NodeView;
 
 public class ChildNodesLayoutButtonPanelProperty extends ButtonPanelProperty {
-    public ChildNodesLayoutButtonPanelProperty(String name) {
-        super(name,  LayoutSelectorPanelFactory.createLayoutSelectorPanel());
+    static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
+    public ChildNodesLayoutButtonPanelProperty() {
+        super(CHILD_NODES_LAYOUTS,  LayoutSelectorPanelFactory.createLayoutSelectorPanel());
     }
 
     public void setValue(ChildNodesLayout value, ChildNodesLayout viewValue) {
@@ -29,6 +36,33 @@ public class ChildNodesLayoutButtonPanelProperty extends ButtonPanelProperty {
         multipleImageIcon.addIcon(LayoutSelectorPanelFactory.RIGHT_ARROW_ICON);
         multipleImageIcon.addIcon(viewButton.getIcon());
         startButton.setIcon(multipleImageIcon);
-        startButton.setToolTipText(selectedButton.getToolTipText() + ": " + viewButton.getToolTipText());
+        final String labelKey = getLabel();
+        final String buttonName = TextUtils.getRawText(labelKey);
+        startButton.setToolTipText(
+                buttonName + ": " +
+                selectedButton.getToolTipText() + ": " + viewButton.getToolTipText());
     }
+
+    public void setStyleOnExternalChange(NodeModel node) {
+        if(node == null) {
+            setEnabled(false);
+        }
+        else {
+            setEnabled(true);
+            ChildNodesLayout displayedValue = displayedValue(node);
+            NodeView nodeView = ((MapViewController)Controller.getCurrentController().getMapViewManager()).getMapView().getNodeView(node);
+            if(nodeView == null)
+                setValue(displayedValue, displayedValue);
+            else
+                setValue(displayedValue, nodeView.recalculateChildNodesLayout());
+        }
+    }
+
+    private ChildNodesLayout displayedValue(NodeModel node) {
+        final LayoutController styleController = LayoutController.getController();
+        final ChildNodesLayout displayedValue = styleController.getChildNodesLayout(node);
+        return displayedValue;
+    }
+
+
 }

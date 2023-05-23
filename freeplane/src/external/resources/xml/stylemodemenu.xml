@@ -180,11 +180,16 @@
 		<Entry name="DeleteLevelStyleAction" />
 		<Entry name="ManageNodeConditionalStylesAction" />
 		<Entry name="AddSelfConnectorAction" />
-		<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
-		<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
+		<Entry builder="separator" />
+		<Entry builder="childNodesLayout" />
+		<Entry builder="separator" />
+		<Entry builder="main_toolbar_font_name"/>
+		<Entry builder="main_toolbar_font_size" />
 		<Entry name="BoldAction" />
 		<Entry name="ItalicAction" />
-		<Entry name="StrikeThroughAction"/>
+		<Entry name="StrikeThroughAction" />
+		<Entry name="NodeColorAction" />
+
 		<Entry builder="separator" />
 		<Entry>
 			<Entry name="TextAlignAction.LEFT" />

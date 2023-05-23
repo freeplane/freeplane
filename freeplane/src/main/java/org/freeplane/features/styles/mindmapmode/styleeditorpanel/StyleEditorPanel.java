@@ -243,11 +243,13 @@ public class StyleEditorPanel extends JPanel {
 
 	private void updatePanel(NodeModel selected) {
 	    if (selected == null) {
-	        return;
+	        setComponentsEnabled(false);
 	    }
-	    if(Controller.getCurrentModeController().canEdit(selected.getMap()))
-	        setComponentsEnabled(true);
-	    setStyle(selected);
+	    else {
+	        if(Controller.getCurrentModeController().canEdit(selected.getMap()))
+	            setComponentsEnabled(true);
+	        setStyle(selected);
+	    }
 	}
 
 	private void setComponentsEnabled(boolean enabled) {
@@ -269,19 +271,8 @@ public class StyleEditorPanel extends JPanel {
 	private void addListeners() {
 	    SelectedNodeChangeListener.onSelectedNodeChange(this::updatePanel);
 
-		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
-
-		    @Override
-		    public void afterMapChange(MapModel oldMap, MapModel newMap) {
-		        if(newMap == null)
-		            setComponentsEnabled(false);
-		    }
-
-		};
 		final ModeController modeController = Controller.getCurrentModeController();
 		Controller controller = modeController.getController();
-        controller.getMapViewManager().addMapSelectionListener(mapSelectionListener);
-
 
         panelEnabler = new PanelEnabler(controller, modeController);
         controller.getMapViewManager().addMapSelectionListener(panelEnabler);
