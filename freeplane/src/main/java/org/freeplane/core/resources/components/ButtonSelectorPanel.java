@@ -8,6 +8,7 @@ package org.freeplane.core.resources.components;
 import java.awt.Component;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -112,6 +113,7 @@ public class ButtonSelectorPanel{
         JToggleButton prototypeButton = null;
         for(ButtonSelectorPanel.ButtonIcon item : displayedItems) {
             JToggleButton button = prototypeButton = new JToggleButton(item.icon);
+            button.setName(item.tooltip);
             button.setToolTipText(item.tooltip);
             buttons.add(button);
             int buttonIndex = i++;
@@ -210,12 +212,18 @@ public class ButtonSelectorPanel{
     }
 
     public void showButtonDialog(Component parentComponent, Runnable callback) {
+        EventQueue.invokeLater(() -> showButtonDialogNow( parentComponent, callback));
+    }
+
+    private void showButtonDialogNow(Component parentComponent, Runnable callback) {
         Window owner = SwingUtilities.getWindowAncestor(parentComponent);
         final JDialog dialog = new JDialog(owner, ModalityType.MODELESS);
         dialog.setResizable(false);
         dialog.setUndecorated(true);
         dialog.getRootPane().applyComponentOrientation(owner.getComponentOrientation());
         dialog.getContentPane().add(getButtonPanel());
+        PopupDialog.closeWhenOwnerIsFocused(dialog);
+        PopupDialog.closeOnEscape(dialog);
         Point eventLocation = new Point(0, parentComponent.getHeight());
         SwingUtilities.convertPointToScreen(eventLocation, parentComponent);
         dialog.pack();
@@ -235,11 +243,6 @@ public class ButtonSelectorPanel{
                 setCallback(null);
             }
 
-        });
-        SwingUtilities.invokeLater(() ->
-        {
-            PopupDialog.closeWhenOwnerIsFocused(dialog);
-            PopupDialog.closeOnEscape(dialog);
         });
         dialog.setVisible(true);
     }
