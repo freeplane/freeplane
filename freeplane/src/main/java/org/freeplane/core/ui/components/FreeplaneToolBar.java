@@ -43,9 +43,9 @@ import org.freeplane.core.util.Compat;
  */
 public class FreeplaneToolBar extends JToolBar {
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
-	
+
 	private static final GridBagConstraints separatorConstraints = new GridBagConstraints();
-	
+
 	static {
 		separatorConstraints.gridy = 0;
 		separatorConstraints.fill = GridBagConstraints.VERTICAL;
@@ -61,7 +61,7 @@ public class FreeplaneToolBar extends JToolBar {
 	public FreeplaneToolBar(int orientation) {
 		this(null, orientation);
 	}
-	
+
 	public FreeplaneToolBar(final String name, final int orientation) {
 		super(name, orientation);
 		this.disablesFocus = true;
@@ -132,8 +132,8 @@ public class FreeplaneToolBar extends JToolBar {
 		configureComponent(comp);
 		return comp;
 	}
-	
-	
+
+
 
 	@Override
 	public void addSeparator() {
@@ -172,9 +172,10 @@ public class FreeplaneToolBar extends JToolBar {
 	private void configureToolbarButton(AbstractButton abstractButton) {
 		configureToolbarButtonText(abstractButton);
 		configureToolbarButtonSize(abstractButton);
-		if(disablesFocus)
-			abstractButton.setFocusable(false);
-
+		if(disablesFocus) {
+            abstractButton.setRequestFocusEnabled(false);
+            abstractButton.setFocusable(false);
+        }
 	}
 
 	private void configureToolbarButtonText(final AbstractButton abstractButton) {
