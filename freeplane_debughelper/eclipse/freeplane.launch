@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/freeplane_framework/src/main/java/org/freeplane/launcher/Launcher.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
     </listAttribute>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.freeplane.launcher.Launcher"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="freeplane_debughelper"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="freeplane_debughelper"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m &quot;-Dorg.freeplane.basedirectory=${workspace_loc:freeplane_debughelper}/../BIN&quot; &quot;-Djava.security.policy=${workspace_loc:freeplane_debughelper/security/freeplane.policy}&quot; -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.main.application.FreeplaneStarter.headless=false -Dorg.osgi.framework.bundle.parent=app -Dorg.freeplane.nosplash=false &quot;-Dorg.freeplane.builtin.scripts.dir=${workspace_loc:freeplane_plugin_script/scripts}&quot; &quot;-Dorg.freeplane.globalresourcedir=${workspace_loc:freeplane}/src/external/resources&quot; -Dsun.awt.disablegrab=true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m &quot;-Dorg.freeplane.basedirectory=${workspace_loc:freeplane_debughelper}/../BIN&quot; &quot;-Djava.security.policy=${workspace_loc:freeplane_debughelper/security/freeplane.policy}&quot; -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.main.application.FreeplaneStarter.headless=false -Dorg.osgi.framework.bundle.parent=app -Dorg.freeplane.nosplash=false &quot;-Dorg.freeplane.builtin.scripts.dir=${workspace_loc:freeplane_plugin_script/scripts}&quot; &quot;-Dorg.freeplane.globalresourcedir=${workspace_loc:freeplane}/src/external/resources&quot; -Dsun.awt.disablegrab=true -Djava.util.logging.config.file=${workspace_loc:freeplane_debughelper}/logging.properties"/>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:freeplane_debughelper}/../BIN"/>
     <stringAttribute key="yk-options" value="&#13;&#10;additional-options2=onexit\=snapshot&#13;&#10;startup=0&#13;&#10;"/>
 </launchConfiguration>
