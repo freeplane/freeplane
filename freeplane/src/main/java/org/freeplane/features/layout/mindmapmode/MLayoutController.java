@@ -21,8 +21,6 @@ package org.freeplane.features.layout.mindmapmode;
 
 import java.awt.Component;
 
-import javax.swing.JComponent;
-
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;

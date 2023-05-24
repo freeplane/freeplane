@@ -29,9 +29,6 @@ import org.freeplane.features.layout.mindmapmode.ChildNodesLayoutButtonPanelProp
 import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.view.swing.map.MapViewController;
-import org.freeplane.view.swing.map.NodeView;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 /**

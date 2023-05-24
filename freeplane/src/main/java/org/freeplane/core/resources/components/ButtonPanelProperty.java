@@ -25,7 +25,6 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

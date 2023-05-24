@@ -19,18 +19,13 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.ui.IMapViewManager;
 

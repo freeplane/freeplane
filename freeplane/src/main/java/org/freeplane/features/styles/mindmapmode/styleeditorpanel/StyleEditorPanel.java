@@ -34,7 +34,6 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;

@@ -24,7 +24,6 @@ import static org.freeplane.features.map.NodeModel.CloneType.TREE;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

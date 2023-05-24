@@ -1,6 +1,5 @@
 package org.freeplane.plugin.bugreport;
 
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
