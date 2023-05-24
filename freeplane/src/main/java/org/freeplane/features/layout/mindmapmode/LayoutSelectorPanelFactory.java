@@ -65,7 +65,7 @@ class LayoutSelectorPanelFactory {
                 componentBefore = ComponentBefore.SEPARATOR;
             else
                 componentBefore = ComponentBefore.NOTHING;
-            icons.add(new ButtonIcon(
+            icons.add(new ButtonIcon(layout.name(),
                     IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH.zoomBy(2)),
                     description(layout), componentBefore));
         }

@@ -58,6 +58,7 @@ public class ToolbarComponentProvider implements ComponentProvider {
 
 
 			component = actionComponent;
+			component.setName(action.getKey());
 		}
 		else if(entry.builders().contains("separator")){
 			component = new Separator();

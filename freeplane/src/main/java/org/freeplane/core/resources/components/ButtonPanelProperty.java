@@ -25,6 +25,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -36,6 +37,7 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 	    super(name);
 	    this.buttons = buttons;
         startButton = new JButton();
+        startButton.setName(name);
         startButton.setDefaultCapable(false);
         startButton.addActionListener(this::showButtonPanel);
 	}

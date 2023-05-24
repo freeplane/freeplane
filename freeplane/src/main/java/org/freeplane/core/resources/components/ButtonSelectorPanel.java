@@ -48,10 +48,12 @@ public class ButtonSelectorPanel{
         public final Icon icon;
         public final String tooltip;
         public final ButtonSelectorPanel.ComponentBefore componentBefore;
-        public ButtonIcon(Icon icon, String tooltipLabel, ButtonSelectorPanel.ComponentBefore componentBefore) {
+        public final String name;
+        public ButtonIcon(String name, Icon icon, String tooltip, ButtonSelectorPanel.ComponentBefore componentBefore) {
             super();
+            this.name = name;
             this.icon = icon;
-            this.tooltip = tooltipLabel;
+            this.tooltip = tooltip;
             this.componentBefore = componentBefore;
         }
 
@@ -113,7 +115,7 @@ public class ButtonSelectorPanel{
         JToggleButton prototypeButton = null;
         for(ButtonSelectorPanel.ButtonIcon item : displayedItems) {
             JToggleButton button = prototypeButton = new JToggleButton(item.icon);
-            button.setName(item.tooltip);
+            button.setName(item.name);
             button.setToolTipText(item.tooltip);
             buttons.add(button);
             int buttonIndex = i++;
