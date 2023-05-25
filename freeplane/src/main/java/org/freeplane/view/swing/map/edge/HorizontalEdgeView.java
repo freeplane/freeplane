@@ -28,6 +28,7 @@ import java.awt.geom.Line2D;
 
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildrenSides;
+import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.NodeView;
@@ -116,8 +117,14 @@ public class HorizontalEdgeView extends EdgeView {
 		NodeView source = getSource();
         boolean usesHorizontalLayout = source.usesHorizontalLayout();
         boolean areChildrenApart = source.getChildNodesAlignment().isStacked();
+        int middleGap = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
+        final boolean left = getTarget().isTopOrLeft() 
+            || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
+        if (left) {
+            middleGap = -middleGap;
+        }
         if(usesHorizontalLayout) {
-            int middleY = (start.y + end.y) / 2;
+            int middleY = start.y + middleGap;
             xs = new int[] { start.x, start.x, end.x, end.x };
             ys = new int[] { start.y, middleY, middleY, end.y };
         }
@@ -126,7 +133,7 @@ public class HorizontalEdgeView extends EdgeView {
             ys = new int[] { start.y, end.y, end.y };
         }
         else {
-		    int middleX = (start.x + end.x) / 2;
+		    int middleX = start.x + middleGap;
 		    xs = new int[] { start.x, middleX, middleX, end.x };
 		    ys = new int[] { start.y, start.y, end.y, end.y };
 		}
