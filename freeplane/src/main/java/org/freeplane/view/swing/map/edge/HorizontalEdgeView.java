@@ -118,8 +118,9 @@ public class HorizontalEdgeView extends EdgeView {
         boolean usesHorizontalLayout = source.usesHorizontalLayout();
         boolean areChildrenApart = source.getChildNodesAlignment().isStacked();
         int middleGap = getTarget().getMap().getZoomed(LocationModel.DEFAULT_HGAP_PX) / 2;
-        final boolean left = getTarget().isTopOrLeft() 
-            || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()&& start.x > end.x;
+        final boolean left = getTarget().isTopOrLeft()
+            || ! MainView.USE_COMMON_OUT_POINT_FOR_ROOT_NODE && getSource().isRoot()
+            && (! usesHorizontalLayout && start.x > end.x || usesHorizontalLayout && start.y > end.y);
         if (left) {
             middleGap = -middleGap;
         }
