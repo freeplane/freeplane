@@ -1328,6 +1328,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
     @Override
     public void appendTextOutlineAsBranch(String outline) {
-        ((MMapClipboardController) MapClipboardController.getController()).paste(new StringSelection(outline));
+        ((MMapClipboardController) MapClipboardController.getController()).paste(new StringSelection(outline), getDelegate());
     }
 }
