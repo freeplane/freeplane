@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
@@ -28,14 +29,18 @@ public class FileUtils {
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {
 		final String path = resource.getPath();
 		final int index = path.lastIndexOf('/');
-		final String fileName = URLDecoder.decode(index > -1 ? path.substring(index + 1) : path);
-		try (InputStream in = resource.openStream();
-		    OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName))) {
-		        FileUtils.copyStream(in, out);
+		try {
+            String fileName = index > -1 ? path.substring(index + 1) : path;
+            if("file".equals(resource.getProtocol()))
+                fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8.name());
+            try (InputStream in = resource.openStream();
+                OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName))) {
+                    FileUtils.copyStream(in, out);
+            }
 		}
 		catch (final Exception e) {
-			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + path
-			        + " and should go to " + destinationDirectory.getAbsolutePath());
+		    LogUtils.severe("File not found or could not be copied. " + "Was searching for " + path
+		            + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
 	}
 
