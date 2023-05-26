@@ -301,9 +301,13 @@ public abstract class ResourceController {
 		setProperty(name, Integer.toString(value));
 	}
 
-	public void setProperty(String name, long value) {
-		setProperty(name, Long.toString(value));
-	}
+    public void setProperty(String name, long value) {
+        setProperty(name, Long.toString(value));
+    }
+
+    public void setProperty(String name, double value) {
+        setProperty(name, Double.toString(value));
+    }
 
 	abstract public void setProperty(final String property, final String value);
 

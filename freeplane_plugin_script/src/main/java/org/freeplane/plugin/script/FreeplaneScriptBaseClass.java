@@ -193,6 +193,10 @@ public abstract class FreeplaneScriptBaseClass extends Script {
             resourceController.setProperty(name, value);
         }
 
+        public void setProperty(String name, double value) {
+            resourceController.setProperty(name, value);
+        }
+
         public void setProperty(String property, String value) {
             resourceController.setProperty(property, value);
         }
