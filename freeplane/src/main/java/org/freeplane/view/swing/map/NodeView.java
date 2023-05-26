@@ -976,8 +976,8 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	void addChildView(final NodeModel newNode, int index) {
-			NodeViewFactory.getInstance().newNodeView(newNode, map, this, index);
+	NodeView addChildView(final NodeModel newNode, int index) {
+			return NodeViewFactory.getInstance().newNodeView(newNode, map, this, index);
 	}
 
 	/* fc, 25.1.2004: Refactoring necessary: should call the model. */
@@ -1195,12 +1195,14 @@ public class NodeView extends JComponent implements INodeView {
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
 		assert parent == model;
 		if (isFolded()) {
-			return;
+		    return;
 		}
-		addChildView(child, index);
+		NodeView newChild = addChildView(child, index);
 		numberingChanged(index + 1);
+		if(! SummaryNode.isSummaryNode(child))
+		    lastSelectedChild = newChild;
 		revalidate();
-	}
+    }
 
 	// updates children, starting from firstChangedIndex, if necessary.
 	private void numberingChanged(int firstChangedIndex) {
@@ -1573,13 +1575,13 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void setLastSelectedChild(final NodeView view) {
-		if(view != null && ! SummaryNode.isSummaryNode(view.getModel()))
+	    if (view == null) {
+	        return;
+	    }
+		if(! SummaryNode.isSummaryNode(view.getModel()))
 			lastSelectedChild = view;
 		final Container parent = this.getParent();
-		if (view == null) {
-			return;
-		}
-		else if (parent instanceof NodeView) {
+		if (parent instanceof NodeView) {
 			((NodeView) parent).setLastSelectedChild(this);
 		}
 	}
