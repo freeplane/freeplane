@@ -71,14 +71,21 @@ public enum ChildNodesLayout {
     AUTO_LAST(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.LAST_CHILD_BY_PARENT),
     AUTO_BEFOREPARENT(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.BEFORE_PARENT),
 
+    TOPTOBOTTOM_ASC_STACKEDAUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.ASC, ChildNodesAlignment.STACKED_AUTO),
+    TOPTOBOTTOM_BOTHSIDES_STACKEDAUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.STACKED_AUTO),
+    TOPTOBOTTOM_DESC_STACKEDAUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.DESC, ChildNodesAlignment.STACKED_AUTO),
+    LEFTTORIGHT_ASC_STACKEDAUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.ASC, ChildNodesAlignment.STACKED_AUTO),
+    LEFTTORIGHT_BOTHSIDES_STACKEDAUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.STACKED_AUTO),
+    LEFTTORIGHT_DESC_STACKEDAUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.DESC, ChildNodesAlignment.STACKED_AUTO),
+
     AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),
     ;
 
-    static public Optional<ChildNodesLayout> using(ChildrenSides childrenSides, ChildNodesAlignment childNodesAlignment, LayoutOrientation layoutOrientation) {
+    static public Optional<ChildNodesLayout> using(LayoutOrientation layoutOrientation, ChildrenSides childrenSides, ChildNodesAlignment childNodesAlignment) {
         return Stream.of(values()).filter(x ->
-        x.childrenSides == childrenSides
-        && x.childNodesAlignment == childNodesAlignment
-        && x.layoutOrientation == layoutOrientation).findAny();
+        x.layoutOrientation == layoutOrientation
+        && x.childrenSides == childrenSides
+        && x.childNodesAlignment == childNodesAlignment).findAny();
     }
 
     private final ChildrenSides childrenSides;

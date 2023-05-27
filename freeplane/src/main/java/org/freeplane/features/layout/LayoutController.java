@@ -155,7 +155,8 @@ public class LayoutController implements IExtension {
 	        ChildrenSides childrenSides = getChildNodesLayout(parentNode).childrenSides();
 	        switch(childrenSides) {
 	        case NOT_SET:
-                break;
+	        case ASC:
+	        case DESC:
             case AUTO:
                 break;
             case BOTH_SIDES: {
@@ -178,7 +179,7 @@ public class LayoutController implements IExtension {
                 else
                     return parentNode.isTopOrLeft(parentNode.getMap().getRootNode());
             } else
-                return isTopOrLeft(parentNode, root);
+                return childrenSides == ChildrenSides.ASC != isTopOrLeft(parentNode, root);
 	    }
 
 	    public Side suggestNewChildSide(NodeModel parent, NodeModel root) {
@@ -214,6 +215,8 @@ public class LayoutController implements IExtension {
             case TOP_OR_LEFT:
                 return LEFT_SIDE;
             case BOTH_SIDES:
+            case ASC:
+            case DESC:
                 return BOTH_SIDES;
             default:
                 break;

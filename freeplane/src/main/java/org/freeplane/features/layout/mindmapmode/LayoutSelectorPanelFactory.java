@@ -42,27 +42,8 @@ class LayoutSelectorPanelFactory {
             String name = layout.name().toLowerCase(Locale.ENGLISH);
             URL url = resourceController.getIconResource("/images/layouts/" + name + ".svg?useAccentColor=true");
             ComponentBefore componentBefore;
-            if(layout.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM) {
-                if(layout.childrenSides() == ChildrenSides.TOP_OR_LEFT)
-                    componentBefore = ComponentBefore.SEPARATOR;
-                else
-                    componentBefore = ComponentBefore.NOTHING;
-            }
-            else if(layout.layoutOrientation() == LayoutOrientation.LEFT_TO_RIGHT) {
-                if(layout.childNodesAlignment() == ChildNodesAlignment.BEFORE_PARENT)
-                    componentBefore = ComponentBefore.SEPARATOR;
-                else if(layout.childNodesAlignment() == ChildNodesAlignment.AUTO) {
-                    if(layout.childrenSides() == ChildrenSides.TOP_OR_LEFT)
-                        componentBefore = ComponentBefore.SEPARATOR;
-                    else
-                        componentBefore = ComponentBefore.NOTHING;
-                }
-                else
-                    componentBefore = ComponentBefore.NOTHING;
-            }
-            else if(layout.childNodesAlignment() == ChildNodesAlignment.AFTER_PARENT
-                    || layout.childNodesAlignment() == ChildNodesAlignment.AUTO)
-                componentBefore = ComponentBefore.SEPARATOR;
+            if(i % 6 == 0)
+              componentBefore = ComponentBefore.SEPARATOR;
             else
                 componentBefore = ComponentBefore.NOTHING;
             icons.add(new ButtonIcon(layout.name(),

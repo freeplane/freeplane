@@ -1,7 +1,7 @@
 package org.freeplane.api;
 
 public enum ChildrenSides {
-	NOT_SET, AUTO, TOP_OR_LEFT, BOTTOM_OR_RIGHT, BOTH_SIDES;
+	NOT_SET, AUTO, TOP_OR_LEFT, BOTTOM_OR_RIGHT, BOTH_SIDES, ASC, DESC;
 
     private static final String AT_THE_ = "AT_THE_";
     private static final String BOTTOM = "BOTTOM";

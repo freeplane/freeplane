@@ -867,6 +867,16 @@ public class NodeView extends JComponent implements INodeView {
 	    else {
 	        ChildNodesAlignment childNodesAlignment = childNodesLayout.childNodesAlignment();
 	        switch (childNodesAlignment) {
+	        case STACKED_AUTO:
+	            if(isRoot() ||  ! getParentView().getChildNodesAlignment().isStacked()) {
+                    if( isEffectivelyTopOrLeft())
+                        this.childNodesAlignment =  ChildNodesAlignment.BEFORE_PARENT;
+                    else
+                        this.childNodesAlignment =  ChildNodesAlignment.AFTER_PARENT;
+                }
+	            else
+	                this.childNodesAlignment = getParentView().getChildNodesAlignment();
+	            break;
 	        case NOT_SET:
 	        case AUTO:
 	            this.childNodesAlignment = getDefaultChildNodesAlignment();
@@ -875,6 +885,14 @@ public class NodeView extends JComponent implements INodeView {
 	            this.childNodesAlignment =  childNodesAlignment;
 	        }
 	    }
+	}
+
+	private boolean isEffectivelyTopOrLeft() {
+	    NodeView parentView = getParentView();
+	    if(parentView == null || parentView.layoutOrientation() != layoutOrientation())
+	        return isTopOrLeft();
+	    else
+	        return parentView.isEffectivelyTopOrLeft();
 	}
 
 	private ChildNodesAlignment getDefaultChildNodesAlignment() {
@@ -1824,13 +1842,13 @@ public class NodeView extends JComponent implements INodeView {
 
 	private void updateLayoutProperties() {
 	    if(childNodesLayout == null) {
-	        updateSide();
+            updateSide();
 	        LayoutController layoutController = getModeController().getExtension(LayoutController.class);
-            childNodesLayout = layoutController.getChildNodesLayout(model);
-            updateUsesHorizontalLayout();
+	        childNodesLayout = layoutController.getChildNodesLayout(model);
+	        updateLayoutOrientation();
 	        updateChildNodesAlignment();
 	        updateChildrenSides();
-	        childNodesLayout = ChildNodesLayout.using(childrenSides, childNodesAlignment, layoutOrientation)
+	        childNodesLayout = ChildNodesLayout.using(layoutOrientation, childrenSides, childNodesAlignment)
 	                .orElse(childNodesLayout);
 	    }
     }
@@ -1855,9 +1873,17 @@ public class NodeView extends JComponent implements INodeView {
             } else if (isRoot()) {
                 childrenSides = ChildrenSides.BOTH_SIDES;
             } else {
-                childrenSides  = side == Side.TOP_OR_LEFT
-                    ? ChildrenSides.TOP_OR_LEFT
-                    :  ChildrenSides.BOTTOM_OR_RIGHT;
+                if(childNodesAlignment.isStacked()
+                        && (childrenSidesByLayout == ChildrenSides.ASC || childrenSidesByLayout == ChildrenSides.DESC))
+                        childrenSides  = (childrenSidesByLayout == ChildrenSides.ASC)
+                            == (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT)
+                                ? ChildrenSides.TOP_OR_LEFT
+                                        :  ChildrenSides.BOTTOM_OR_RIGHT;
+                else {
+                    childrenSides  = side == Side.TOP_OR_LEFT
+                            ? ChildrenSides.TOP_OR_LEFT
+                                    :  ChildrenSides.BOTTOM_OR_RIGHT;
+                }
             }
         }
         this.childrenSides = childrenSides;
@@ -2079,7 +2105,7 @@ public class NodeView extends JComponent implements INodeView {
 	    return layoutOrientation;
     }
 
-    private void updateUsesHorizontalLayout() {
+    private void updateLayoutOrientation() {
         if(map.isOutlineLayoutSet())
             this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
         else {
