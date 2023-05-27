@@ -1255,8 +1255,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		if (property.equals(MapStyle.MAP_STYLES)){
-	        // set default font for notes:
 	        updateContentStyle();
+	        getRoot().resetLayoutPropertiesRecursively();
+	        revalidate();
 	        repaint();
 		}
 		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)
