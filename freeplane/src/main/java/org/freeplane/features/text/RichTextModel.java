@@ -21,7 +21,7 @@ public class RichTextModel {
         super();
         this.contentType = contentType;
         this.text = text;
-        this.xml = xml.trim();
+        this.xml = xml != null ? xml.trim() : null;
     }
 
     public String getText() {
