@@ -1,11 +1,13 @@
 ==============================
 1.11.3
 ==============================
-Bug fixes
 Allow to remove minimum and maximum node width limits for the default style
 Option View->Notes->Note follows selection (enabled by default)
-Scripting API extended
+Node children layout added to the toolbar
+Latest features mind map added to help menu
+Scripting API extended (node.getBranchAsTextOutline(), node.setBranchAsTextOutline(string))
 Scripting Security permissions sharpened
+Bug fixes
 
 ==============================
 1.11.2
