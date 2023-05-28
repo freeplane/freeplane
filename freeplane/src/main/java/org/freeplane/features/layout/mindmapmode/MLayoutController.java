@@ -100,6 +100,9 @@ public class MLayoutController extends LayoutController {
                                String selectedValue = layoutSelectorPanel.getValue();
                                ChildNodesLayout layout = selectedValue != null ? ChildNodesLayout.valueOf(selectedValue) : null;
                                selection.getSelection().forEach(node -> setChildNodesLayout(node, layout));
+                               if(selectedValue == null) {
+                                   layoutSelectorPanel.setStyleOnExternalChange(selection.getSelected());
+                               }
                            }
                         });
                         return layoutSelectorPanel.getValueComponent();

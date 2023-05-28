@@ -185,7 +185,7 @@ public class ButtonSelectorPanel{
     }
 
     public JToggleButton getSelectedButton() {
-        return buttons.get(selectedIndex);
+        return buttons.get(selectedIndex >= 0 ? selectedIndex : buttons.size() -1);
     }
 
     public JToggleButton getButton(String value) {
