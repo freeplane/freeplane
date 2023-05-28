@@ -1,4 +1,9 @@
 ==============================
+1.11.4
+==============================
+Bug fix
+
+==============================
 1.11.3
 ==============================
 Allow to remove minimum and maximum node width limits for the default style
