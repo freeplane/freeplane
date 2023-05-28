@@ -28,19 +28,19 @@ public class SummaryLevelsShould {
 		Controller.setCurrentController(controllerMock);
 		when(controllerMock.getModeController()).thenReturn(modeControllerMock);
 		when(modeControllerMock.getExtension(LayoutController.class)).thenReturn(layoutControllerMock);
-		when(layoutControllerMock.getChildNodesLayout(any())).thenReturn(ChildNodesLayout.AUTO);
+		when(layoutControllerMock.getEffectiveChildNodesLayout(any())).thenReturn(ChildNodesLayout.AUTO);
 		when(layoutControllerMock.sidesOf(any(), any())).thenAnswer(invocation -> {
-		    NodeModel parentNode = invocation.getArgument(0); 
+		    NodeModel parentNode = invocation.getArgument(0);
 		    NodeModel root = invocation.getArgument(1);
 		    return parentNode == root ? LayoutController.BOTH_SIDES : parentNode.isTopOrLeft(root) ? LayoutController.LEFT_SIDE : LayoutController.RIGHT_SIDE;
 		});
 	}
-	
+
 	@After
 	public void tearDown() {
 	    Controller.setCurrentController(backupController);
 	}
-	
+
 	public static class FindSummaryNodeIndex extends SummaryLevelsShould{
 
 		@Test
@@ -109,7 +109,7 @@ public class SummaryLevelsShould {
 			assertThat(summaryLevels.findSummaryNode(0), equalTo((NodeModel)null));
 
 		}
-		
+
 		@Test
 		public void returnNull_IfGroupBefinNodeIsFound() throws Exception {
 			mapFake.addNode("1");
@@ -137,7 +137,7 @@ public class SummaryLevelsShould {
 			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot(), mapFake.getRoot());
 			assertThat(summaryLevels.findGroupBeginNodeIndex(groupBeginNode.getIndex()), equalTo(groupBeginNode.getIndex()));
 		}
-		
+
 		@Test
 		public void returnGroupBeginNodeLevel0AfterItem() throws Exception {
 			final NodeModel groupBeginNode = mapFake.addGroupBeginNode();
@@ -172,7 +172,7 @@ public class SummaryLevelsShould {
 			final SummaryLevels summaryLevels = new SummaryLevels(mapFake.getRoot(), mapFake.getRoot());
 			assertThat(summaryLevels.findGroupBeginNode(node.getIndex()), equalTo(groupBeginNode));
 		}
-		
+
 		@Test
 		public void returnSummaryOfSummaryNodeLevel1AfterTwoItems() throws Exception {
 			mapFake.addGroupBeginNode();
@@ -198,7 +198,7 @@ public class SummaryLevelsShould {
 
 		}
 
-		
+
 		@Test
 		public void returnNull_IfSummaryNodeIsFound() throws Exception {
 			mapFake.addGroupBeginNode();

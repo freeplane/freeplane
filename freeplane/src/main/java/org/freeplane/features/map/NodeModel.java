@@ -462,7 +462,7 @@ public class NodeModel{
                     return view.isTopOrLeft();
             }
         }
-        ChildrenSides childrenSides = LayoutController.getController().getChildNodesLayout(parent).childrenSides();
+        ChildrenSides childrenSides = LayoutController.getController().getEffectiveChildNodesLayout(parent).childrenSides();
         if(childrenSides == ChildrenSides.TOP_OR_LEFT)
             return true;
         if(childrenSides == ChildrenSides.BOTTOM_OR_RIGHT)

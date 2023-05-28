@@ -114,16 +114,30 @@ public class LayoutController implements IExtension {
     }
 
 	public ChildNodesAlignment getChildNodesAlignment(NodeModel node) {
-	    return getChildNodesLayout(node).childNodesAlignment();
+	    return getEffectiveChildNodesLayout(node).childNodesAlignment();
 	}
 
 	public LayoutOrientation getLayoutOrientation(NodeModel node) {
-	    return getChildNodesLayout(node).layoutOrientation();
+	    return getEffectiveChildNodesLayout(node).layoutOrientation();
 	}
 
-	public ChildNodesLayout getChildNodesLayout(NodeModel node) {
-	    return childrenLayoutHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+	public ChildNodesLayout getEffectiveChildNodesLayout(NodeModel node) {
+	    ChildNodesLayout layout = getChildNodesLayout(node);
+	    if(node.isRoot() && layout.childNodesAlignment() == ChildNodesAlignment.STACKED_AUTO) {
+	        if(layout.layoutOrientation() == LayoutOrientation.TOP_TO_BOTTOM)
+	            return ChildNodesLayout.LEFTTORIGHT_BOTHSIDES_CENTERED;
+	        else
+	            return ChildNodesLayout.TOPTOBOTTOM_BOTHSIDES_CENTERED;
+        }
+	    else if(! node.isRoot() && layout == ChildNodesLayout.AUTO && node.getParentNode().isRoot())
+	        return childrenLayoutHandlers.getProperty(node.getParentNode(), StyleOption.FOR_UNSELECTED_NODE);
+        return layout;
 	}
+
+    public ChildNodesLayout getChildNodesLayout(NodeModel node) {
+        ChildNodesLayout layout = childrenLayoutHandlers.getProperty(node, StyleOption.FOR_UNSELECTED_NODE);
+        return layout;
+    }
 
     public void withNodeChangeEventOnLayoutChange(NodeModel node, Runnable runnable) {
         ChildNodesLayout oldLayout = getChildNodesLayout(node);
@@ -152,7 +166,7 @@ public class LayoutController implements IExtension {
 	        NodeModel parentNode = node.getParentNode();
 	        if (parentNode == null)
 	            return false;
-	        ChildrenSides childrenSides = getChildNodesLayout(parentNode).childrenSides();
+	        ChildrenSides childrenSides = getEffectiveChildNodesLayout(parentNode).childrenSides();
 	        switch(childrenSides) {
 	        case NOT_SET:
 	        case ASC:
@@ -208,7 +222,7 @@ public class LayoutController implements IExtension {
 	    public boolean[] sidesOf(NodeModel parentNode, NodeModel root) {
 	        if (parentNode == root)
                 return BOTH_SIDES;
-	        ChildrenSides childrenSides = getChildNodesLayout(parentNode).childrenSides();
+	        ChildrenSides childrenSides = getEffectiveChildNodesLayout(parentNode).childrenSides();
 	        switch(childrenSides) {
             case BOTTOM_OR_RIGHT:
                 return RIGHT_SIDE;

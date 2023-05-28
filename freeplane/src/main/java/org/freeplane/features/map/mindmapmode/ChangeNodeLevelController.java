@@ -48,7 +48,7 @@ import org.freeplane.features.ui.IMapViewManager;
 public class ChangeNodeLevelController implements IExtension {
 	class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -79,7 +79,7 @@ public class ChangeNodeLevelController implements IExtension {
 
 	static class ChangeNodeLevelRightsAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -173,7 +173,7 @@ public class ChangeNodeLevelController implements IExtension {
 
 	private boolean canMoveTo(final NodeModel selectionRoot, final NodeModel selectedNode, final List<NodeModel> selectedNodes,
 			final NodeModel targetCandidate) {
-		return !selectedNodes.contains(targetCandidate) && selectedNode.isTopOrLeft(selectionRoot) == targetCandidate.isTopOrLeft(selectionRoot) 
+		return !selectedNodes.contains(targetCandidate) && selectedNode.isTopOrLeft(selectionRoot) == targetCandidate.isTopOrLeft(selectionRoot)
 				&& (targetCandidate.hasChildren() || ! targetCandidate.isHiddenSummary());
 	}
 
@@ -184,8 +184,8 @@ public class ChangeNodeLevelController implements IExtension {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		NodeModel selectedParent = selectedNode.getParentNode();
 		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(true);
-		if (selectedParent == selectionRoot || 
-		        LayoutController.getController().getChildNodesLayout(selectedParent).childrenSides() == ChildrenSides.BOTH_SIDES) {
+		if (selectedParent == selectionRoot ||
+		        LayoutController.getController().getEffectiveChildNodesLayout(selectedParent).childrenSides() == ChildrenSides.BOTH_SIDES) {
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final Component mapViewComponent = mapViewManager.getMapViewComponent();
 			if (!mapViewManager.isLeftTreeSupported(mapViewComponent)) {
@@ -242,7 +242,7 @@ public class ChangeNodeLevelController implements IExtension {
         	moveUpwards(selectionRoot, selectedNode);
         }
     }
-    
+
     void changeNodeLevelRights(NodeModel selectionRoot, NodeModel selectedNode) {
         final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         final Component mapViewComponent = mapViewManager.getMapViewComponent();

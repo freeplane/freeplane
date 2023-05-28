@@ -868,15 +868,6 @@ public class NodeView extends JComponent implements INodeView {
 	        ChildNodesAlignment childNodesAlignment = childNodesLayout.childNodesAlignment();
 	        switch (childNodesAlignment) {
 	        case STACKED_AUTO:
-	            if(isRoot() ||  ! getParentView().getChildNodesAlignment().isStacked()) {
-                    if( isEffectivelyTopOrLeft())
-                        this.childNodesAlignment =  ChildNodesAlignment.BEFORE_PARENT;
-                    else
-                        this.childNodesAlignment =  ChildNodesAlignment.AFTER_PARENT;
-                }
-	            else
-	                this.childNodesAlignment = getParentView().getChildNodesAlignment();
-	            break;
 	        case NOT_SET:
 	        case AUTO:
 	            this.childNodesAlignment = getDefaultChildNodesAlignment();
@@ -888,7 +879,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	private boolean isEffectivelyTopOrLeft() {
-	    NodeView parentView = getParentView();
+	    NodeView parentView = getParentNodeView();
 	    if(parentView == null || parentView.layoutOrientation() != layoutOrientation())
 	        return isTopOrLeft();
 	    else
@@ -897,11 +888,21 @@ public class NodeView extends JComponent implements INodeView {
 
 	private ChildNodesAlignment getDefaultChildNodesAlignment() {
 		NodeView parentView = getParentNodeView();
+
 		if (parentView == null)
-			return ChildNodesAlignment.FLOW;
+		    return ChildNodesAlignment.FLOW;
 		else if(parentView.isSummary())
-			return parentView.getDefaultChildNodesAlignment();
-		else if(parentView.usesHorizontalLayout() == usesHorizontalLayout())
+		    return parentView.getDefaultChildNodesAlignment();
+		else if(childNodesLayout.childNodesAlignment() == ChildNodesAlignment.STACKED_AUTO) {
+            if(getParentView().getChildNodesAlignment().isStacked())
+                return getParentView().getChildNodesAlignment();
+            else {
+		        if(isEffectivelyTopOrLeft())
+		            return ChildNodesAlignment.BEFORE_PARENT;
+		        else
+		            return   ChildNodesAlignment.AFTER_PARENT;
+		    }
+        } else if(parentView.usesHorizontalLayout() == usesHorizontalLayout())
 			return parentView.getChildNodesAlignment();
 		else if(isTopOrLeft())
 		    return ChildNodesAlignment.BEFORE_PARENT;
@@ -1844,7 +1845,7 @@ public class NodeView extends JComponent implements INodeView {
 	    if(childNodesLayout == null) {
             updateSide();
 	        LayoutController layoutController = getModeController().getExtension(LayoutController.class);
-	        childNodesLayout = layoutController.getChildNodesLayout(model);
+	        childNodesLayout = layoutController.getEffectiveChildNodesLayout(model);
 	        updateLayoutOrientation();
 	        updateChildNodesAlignment();
 	        updateChildrenSides();
@@ -1861,10 +1862,12 @@ public class NodeView extends JComponent implements INodeView {
 
 
     private void updateChildrenSides() {
-        ChildrenSides childrenSides;
-        if (map.getLayoutType() == MapViewLayout.OUTLINE) {
+        final ChildrenSides childrenSides;
+        if (map.getLayoutType() == MapViewLayout.OUTLINE)
             childrenSides = ChildrenSides.BOTTOM_OR_RIGHT;
-        } else {
+        else if(model.isRoot() && childNodesLayout.childNodesAlignment() == ChildNodesAlignment.STACKED_AUTO)
+            childrenSides = ChildrenSides.BOTH_SIDES;
+        else {
             ChildrenSides childrenSidesByLayout = childNodesLayout.childrenSides();
             if(childrenSidesByLayout == ChildrenSides.TOP_OR_LEFT
                     || childrenSidesByLayout == ChildrenSides.BOTTOM_OR_RIGHT
@@ -2109,12 +2112,11 @@ public class NodeView extends JComponent implements INodeView {
         if(map.isOutlineLayoutSet())
             this.layoutOrientation = LayoutOrientation.TOP_TO_BOTTOM;
         else {
-            LayoutController layoutController = getModeController().getExtension(LayoutController.class);
-            LayoutOrientation layoutOrientation = layoutController.getLayoutOrientation(model);
+            LayoutOrientation layoutOrientation = childNodesLayout.layoutOrientation();
             switch(layoutOrientation) {
             case TOP_TO_BOTTOM:
             case LEFT_TO_RIGHT:
-                this.layoutOrientation = layoutOrientation;
+                    this.layoutOrientation = layoutOrientation;
                 break;
             default:
                 NodeView parent = getParentNodeView();
