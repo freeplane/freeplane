@@ -74,9 +74,6 @@ public enum ChildNodesLayout {
     TOPTOBOTTOM_ASC_STACKEDAUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.ASC, ChildNodesAlignment.STACKED_AUTO),
     TOPTOBOTTOM_BOTHSIDES_STACKEDAUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.STACKED_AUTO),
     TOPTOBOTTOM_DESC_STACKEDAUTO(LayoutOrientation.TOP_TO_BOTTOM, ChildrenSides.DESC, ChildNodesAlignment.STACKED_AUTO),
-    LEFTTORIGHT_ASC_STACKEDAUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.ASC, ChildNodesAlignment.STACKED_AUTO),
-    LEFTTORIGHT_BOTHSIDES_STACKEDAUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.BOTH_SIDES, ChildNodesAlignment.STACKED_AUTO),
-    LEFTTORIGHT_DESC_STACKEDAUTO(LayoutOrientation.LEFT_TO_RIGHT, ChildrenSides.DESC, ChildNodesAlignment.STACKED_AUTO),
 
     AUTO(LayoutOrientation.AUTO, ChildrenSides.AUTO, ChildNodesAlignment.AUTO),
     ;
