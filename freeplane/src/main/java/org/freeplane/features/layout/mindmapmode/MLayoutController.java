@@ -92,16 +92,17 @@ public class MLayoutController extends LayoutController {
 	            new ComponentProvider() {
 	                @Override
 	                public Component createComponent(Entry entry) {
-	                    ChildNodesLayoutButtonPanelProperty childNodesLayoutButtonPanelProperty = new ChildNodesLayoutButtonPanelProperty();
-	                    SelectedNodeChangeListener.onSelectedNodeChange(childNodesLayoutButtonPanelProperty::setStyleOnExternalChange);
-	                    childNodesLayoutButtonPanelProperty.addPropertyChangeListener(evt -> {
+	                    ChildNodesLayoutButtonPanelProperty layoutSelectorPanel = new ChildNodesLayoutButtonPanelProperty();
+	                    SelectedNodeChangeListener.onSelectedNodeChange(layoutSelectorPanel::setStyleOnExternalChange);
+	                    layoutSelectorPanel.addPropertyChangeListener(evt -> {
                            IMapSelection selection = Controller.getCurrentController().getSelection();
                            if(selection != null) {
-                               ChildNodesLayout value = ChildNodesLayout.valueOf(childNodesLayoutButtonPanelProperty.getValue());
-                               selection.getSelection().forEach(node -> setChildNodesLayout(node, value));
+                               String selectedValue = layoutSelectorPanel.getValue();
+                               ChildNodesLayout layout = selectedValue != null ? ChildNodesLayout.valueOf(selectedValue) : null;
+                               selection.getSelection().forEach(node -> setChildNodesLayout(node, layout));
                            }
                         });
-                        return childNodesLayoutButtonPanelProperty.getValueComponent();
+                        return layoutSelectorPanel.getValueComponent();
 	                }
 	            }));
 	}
