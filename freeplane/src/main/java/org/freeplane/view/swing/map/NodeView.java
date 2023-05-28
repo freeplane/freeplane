@@ -894,8 +894,8 @@ public class NodeView extends JComponent implements INodeView {
 		else if(parentView.isSummary())
 		    return parentView.getDefaultChildNodesAlignment();
 		else if(childNodesLayout.childNodesAlignment() == ChildNodesAlignment.STACKED_AUTO) {
-            if(getParentView().getChildNodesAlignment().isStacked())
-                return getParentView().getChildNodesAlignment();
+            if(parentView.getChildNodesAlignment().isStacked())
+                return parentView.getChildNodesAlignment();
             else {
 		        if(isEffectivelyTopOrLeft())
 		            return ChildNodesAlignment.BEFORE_PARENT;
@@ -1894,11 +1894,11 @@ public class NodeView extends JComponent implements INodeView {
 
     private void updateSide() {
         final boolean isTopOrLeft;
-        if (map.getLayoutType() == MapViewLayout.OUTLINE || isRoot()) {
+        if (map.getLayoutType() == MapViewLayout.OUTLINE || model.isRoot()) {
             isTopOrLeft = false;
         }
         else {
-            NodeView parent = getParentView();
+            NodeView parent = getParentNodeView();
             ChildrenSides childrenSides = parent.childrenSides();
             if(childrenSides == ChildrenSides.TOP_OR_LEFT)
                 isTopOrLeft = true;
