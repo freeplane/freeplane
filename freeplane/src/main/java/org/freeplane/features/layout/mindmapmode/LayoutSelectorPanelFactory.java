@@ -42,7 +42,7 @@ class LayoutSelectorPanelFactory {
             String name = layout.name().toLowerCase(Locale.ENGLISH);
             URL url = resourceController.getIconResource("/images/layouts/" + name + ".svg?useAccentColor=true");
             ComponentBefore componentBefore;
-            if(i % 6 == 0 || layout == ChildNodesLayout.AUTO)
+            if(i % 6 == 0)
               componentBefore = ComponentBefore.SEPARATOR;
             else
                 componentBefore = ComponentBefore.NOTHING;
