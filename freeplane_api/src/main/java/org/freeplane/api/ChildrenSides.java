@@ -1,9 +1,10 @@
 package org.freeplane.api;
 
 public enum ChildrenSides {
-	NOT_SET, AUTO, TOP_OR_LEFT, BOTTOM_OR_RIGHT, BOTH_SIDES, ASC, DESC;
+	NOT_SET, AUTO, TOP_OR_LEFT, BOTTOM_OR_RIGHT, BOTH_SIDES, DIAGONAL_ASCENDING, DIAGONAL_DESCENDING;
 
-    private static final String AT_THE_ = "AT_THE_";
+    private static final String PLACE_ = "PLACE_";
+    private static final String PLACE_AT_THE = PLACE_ + "AT_THE_";
     private static final String BOTTOM = "BOTTOM";
        private static final String TOP = "TOP";
     private static final String RIGHT = "RIGHT";
@@ -20,16 +21,19 @@ public enum ChildrenSides {
     public String labelKey(LayoutOrientation layoutOrientation) {
         if(layoutOrientation == LayoutOrientation.TOP_TO_BOTTOM) {
             if(this == TOP_OR_LEFT)
-                return AT_THE_ + LEFT;
+                return PLACE_AT_THE + LEFT;
             if(this == BOTTOM_OR_RIGHT)
-                return AT_THE_ + RIGHT;
+                return PLACE_AT_THE + RIGHT;
         }
         else if(layoutOrientation == LayoutOrientation.LEFT_TO_RIGHT) {
             if(this == TOP_OR_LEFT)
-                return AT_THE_ + TOP;
+                return PLACE_AT_THE + TOP;
             if(this == BOTTOM_OR_RIGHT)
-                return AT_THE_ + BOTTOM;
+                return PLACE_AT_THE + BOTTOM;
         }
-        return AT_THE_ + name();
+        if(this == DIAGONAL_ASCENDING || this == DIAGONAL_DESCENDING)
+            return PLACE_ + name();
+        else
+            return PLACE_AT_THE + name();
     }
 }

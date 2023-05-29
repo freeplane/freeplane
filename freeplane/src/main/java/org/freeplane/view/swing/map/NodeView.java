@@ -1877,8 +1877,8 @@ public class NodeView extends JComponent implements INodeView {
                 childrenSides = ChildrenSides.BOTH_SIDES;
             } else {
                 if(childNodesAlignment.isStacked()
-                        && (childrenSidesByLayout == ChildrenSides.ASC || childrenSidesByLayout == ChildrenSides.DESC))
-                        childrenSides  = (childrenSidesByLayout == ChildrenSides.ASC)
+                        && (childrenSidesByLayout == ChildrenSides.DIAGONAL_ASCENDING || childrenSidesByLayout == ChildrenSides.DIAGONAL_DESCENDING))
+                        childrenSides  = (childrenSidesByLayout == ChildrenSides.DIAGONAL_ASCENDING)
                             == (childNodesAlignment == ChildNodesAlignment.AFTER_PARENT)
                                 ? ChildrenSides.TOP_OR_LEFT
                                         :  ChildrenSides.BOTTOM_OR_RIGHT;
