@@ -1721,8 +1721,11 @@ public class NodeView extends JComponent implements INodeView {
             this.edgeWidth = newEdgeWidth;
             this.edgeDash = newEdgeDash;
             this.edgeColor = newColor;
-            if(! isRoot())
-                getAncestorWithVisibleContent().repaint();
+            if(! isRoot()) {
+                NodeView ancestorWithVisibleContent = getAncestorWithVisibleContent();
+                if(ancestorWithVisibleContent != null)
+                    ancestorWithVisibleContent.repaint();
+            }
         }
         final NodeModel parentNode = model.getParentNode();
         if(!isRoot() && parentNode != null && SummaryNode.isSummaryNode(parentNode))
