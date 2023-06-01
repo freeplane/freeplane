@@ -176,11 +176,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	protected void setLayoutType(final MapViewLayout layoutType) {
 		if(this.layoutType != layoutType) {
 			this.layoutType = layoutType;
-			currentRootView.resetLayoutPropertiesRecursively();
+			getRoot().resetLayoutPropertiesRecursively();
 			if(outlineViewFitsWindowWidth())
-				currentRootView.updateAll();
+			    updateAllNodeViews();
 		}
 	}
+
+    private void updateAllNodeViews() {
+        getRoot().updateAll();
+        if(mapRootView != currentRootView)
+            mapRootView.updateAll();
+    }
 
 	private boolean showNotes;
 
@@ -194,7 +200,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		this.showNotes = showNotes;
-		getRoot().updateAll();
+		updateAllNodeViews();
 	}
 
 	private PaintingMode paintingMode = null;
@@ -1265,7 +1271,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		        || property.equals(Filter.class)
 		        || property.equals(UrlManager.MAP_URL)) {
 			setBackground(requiredBackground());
-			getRoot().updateAll();
+			updateAllNodeViews();
 			return;
 		}
 		if(property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)
@@ -1293,7 +1299,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			adjustBackgroundComponentScale();
 		}
 		if(property.equals(EdgeColorsConfigurationFactory.EDGE_COLOR_CONFIGURATION_PROPERTY)){
-			getRoot().updateAll();
+			updateAllNodeViews();
 			repaint();
 		}
 	}
@@ -2118,7 +2124,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void updatePrintedNodes() {
 		if (zoom == 1f) {
-			getRoot().updateAll();
+			updateAllNodeViews();
 			synchronized (getTreeLock()) {
 				validateTree();
 			}
@@ -2348,7 +2354,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             this.zoom = zoom;
             scrollsViewAfterLayout = true;
             mapScroller.anchorToNode(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
-            getRoot().updateAll();
+            updateAllNodeViews();
             adjustBackgroundComponentScale();
         }
     }
@@ -2366,7 +2372,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             float y = referenceHeight > 0 ? (keptPoint.y - mainViewLocation.y) / referenceHeight : 0;
             scrollsViewAfterLayout = true;
             mapScroller.anchorToNode(selected, x, y);
-            getRoot().updateAll();
+            updateAllNodeViews();
             adjustBackgroundComponentScale();
         }
     }
