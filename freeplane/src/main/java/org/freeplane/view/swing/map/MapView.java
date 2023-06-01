@@ -2740,6 +2740,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
 		currentRootParentView.add(currentRootView,
 		        index >= 0 ? index : calculateCurrentRootNodePosition());
+		NodeView lastRoot = currentRootView;
 		currentRootView = mapRootView;
 		currentRootParentView = null;
 		if(! temporarily) {
@@ -2747,6 +2748,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             rootsHistory.clear();
             mapRootView.resetLayoutPropertiesRecursively();
             fireRootChanged();
+            if(lastRoot.isFolded()) {
+                lastRoot.fireFoldingChanged();
+            }
         }
 	}
 
