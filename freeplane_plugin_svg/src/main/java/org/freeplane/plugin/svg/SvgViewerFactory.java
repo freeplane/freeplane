@@ -1,5 +1,6 @@
 package org.freeplane.plugin.svg;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,12 +31,14 @@ public class SvgViewerFactory implements IViewerFactory {
 
 	private static class ViewerComponent extends JSVGComponent implements ScalableComponent {
 		private static final long serialVersionUID = 1L;
+		private static final Color TRANSPARENT = new Color(0,0,0,0);
 		private Dimension originalSize = null;
 		private Dimension maximumSize = null;
 
 		public ViewerComponent(final URI uri, Consumer<ViewerComponent> initializer) {
 		    super(null, false, false);
 		    setPreferredSize(new Dimension(1, 1));
+		    setBackground(TRANSPARENT);
 		    setRecenterOnResize(false);
 		    setDocumentState(ALWAYS_STATIC);
 		    addGVTTreeBuilderListener(new GVTTreeBuilderAdapter() {
@@ -75,7 +78,7 @@ public class SvgViewerFactory implements IViewerFactory {
 		    loadSVGDocument(uri.toString());
 
 		}
-		
+
         @Override
 		public Dimension getOriginalSize() {
 			return new Dimension(originalSize);
@@ -174,7 +177,7 @@ public class SvgViewerFactory implements IViewerFactory {
             public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
                 callback.run();
             }
-            
+
         });
         return viewer;
     }
@@ -189,7 +192,7 @@ public class SvgViewerFactory implements IViewerFactory {
             public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
             	callback.run();
             }
-            
+
         });
         return viewer;
 
