@@ -306,16 +306,17 @@ public class UrlManager implements IExtension {
 	}
 
 	private void loadNodeReferenceURI(final NodeAndMapReference nodeAndMapReference) {
-		try {
-			loadHyperlink(new Hyperlink(new URI(nodeAndMapReference.getMapReference())));
-			final MapModel map = Controller.getCurrentController().getMap();
-			selectNode(map.getRootNode(), nodeAndMapReference.getNodeReference());
-		} catch (URISyntaxException e) {
-			LogUtils.severe(e);
-		}
+	    try {
+	        if(loadOtherHyperlink(new Hyperlink(new URI(nodeAndMapReference.getMapReference())), true)) {
+	            final MapModel map = Controller.getCurrentController().getMap();
+	            selectNode(map.getRootNode(), nodeAndMapReference.getNodeReference());
+	        }
+	    } catch (URISyntaxException e) {
+	        LogUtils.severe(e);
+	    }
 	}
 
-	private void loadOtherHyperlink(Hyperlink link, final boolean hasFreeplaneFileExtension) {
+	private boolean loadOtherHyperlink(Hyperlink link, final boolean hasFreeplaneFileExtension) {
 		URI uri = link.getUri();
 		try {
 			if(! uri.isAbsolute()){
@@ -326,7 +327,7 @@ public class UrlManager implements IExtension {
 						UITools.errorMessage(TextUtils.getText("map_not_saved"));
 					else
 						UITools.errorMessage(TextUtils.format("link_not_found", String.valueOf(uri)));
-					return;
+					return false;
 				}
 				uri = absoluteUri;
 				link = new Hyperlink(absoluteUri);
@@ -346,7 +347,7 @@ public class UrlManager implements IExtension {
 					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
 					modeController.getMapController().openMap(url);
-					return;
+					return true;
 				}
 				Controller.getCurrentController().getViewController().openDocument(link);
 			}
@@ -354,12 +355,12 @@ public class UrlManager implements IExtension {
 				LogUtils.warn("link " + uri + " not found", e);
 				UITools.errorMessage(TextUtils.format("link_not_found", uri.toString()));
 			}
-			return;
 		}
 		catch (final MalformedURLException ex) {
 			LogUtils.warn("URL " + uri + " not found", ex);
 			UITools.errorMessage(TextUtils.format("link_not_found", uri));
 		}
+		return false;
 	}
 
 	private MapController getMapController() {
