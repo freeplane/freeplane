@@ -270,7 +270,7 @@ public class NodeView extends JComponent implements INodeView {
 		return c;
 	}
 
-	private Container getContentPane() {
+	private JComponent getContentPane() {
 		if (contentPane == null) {
 			Window windowAncestor = SwingUtilities.getWindowAncestor(mainView);
 			boolean hasFocus = windowAncestor != null && windowAncestor.getMostRecentFocusOwner() == mainView;
@@ -1945,7 +1945,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void addContent(JComponent component, int pos) {
 		component.putClientProperty("NODE_VIEW_CONTENT_POSITION", pos);
-		final Container contentPane = getContentPane();
+		final JComponent contentPane = getContentPane();
 		for (int i = 0; i < contentPane.getComponentCount(); i++) {
 			JComponent content = (JComponent) contentPane.getComponent(i);
 			if (content == null)
