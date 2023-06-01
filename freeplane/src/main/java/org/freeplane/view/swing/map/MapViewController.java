@@ -1196,7 +1196,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	    map.setLayoutType(newLayoutType);
 	    ModeController modeController = map.getModeController();
 	    final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
-	    mapStyle.setMapViewLayout(map.getModel(), oldLayoutType);
+	    mapStyle.setMapViewLayout(map.getModel(), newLayoutType);
 	    map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getModel(), 0.5f, 0.5f);
 	    modeController.getMapController().fireMapChanged(
 	            new MapChangeEvent(this, map.getModel(), MapStyle.MAP_LAYOUT, oldLayoutType, newLayoutType));
