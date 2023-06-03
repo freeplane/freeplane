@@ -2,6 +2,9 @@
 1.11.5
 ==============================
 Automatic stacked layouts
+Prevent overlapping node drag handler from stealing the mouse pointer
+Fast fold/unfold on node click if editing is not possible or editing on double click is disabled
+Bug fixes
 
 ==============================
 1.11.4
