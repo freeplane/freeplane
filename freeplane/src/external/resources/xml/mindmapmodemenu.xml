@@ -43,10 +43,12 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
+			<Entry name="JumpInAction"/>
 			<Entry name="UnfoldOneLevelAction" />
 			<Entry name="UnfoldAllAction" />
 		</Entry>
 		<Entry row="2">
+			<Entry name="JumpOutAction"/>
 			<Entry name="FoldOneLevelAction" />
 			<Entry name="FoldAllAction" />
 		</Entry>
