@@ -970,7 +970,7 @@ public class NodeView extends JComponent implements INodeView {
 	    int draggingAreaWidth = mainView.getDraggingAreaWidth();
 	    if(!usesHorizontalLayout()) {
 	        int propertyValue = ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10);
-	        final int preferredFoldingSymbolHalfWidth = (int) ((Math.max(propertyValue, MainView.FOLDING_CIRCLE_WIDTH) * map.getZoom()));
+	        final int preferredFoldingSymbolHalfWidth = (int) ((Math.max(propertyValue, MainView.FOLDING_CIRCLE_MIN_WIDTH) * map.getZoom()));
 	        return draggingAreaWidth + preferredFoldingSymbolHalfWidth;
 	    }
 	    else

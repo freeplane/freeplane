@@ -181,7 +181,7 @@ public class MainView extends ZoomableLabel {
 
         abstract DragOverRelation relation(LayoutOrientation layoutOrientation, Side side);
     }
-	static final int FOLDING_CIRCLE_WIDTH = 16;
+	static final int FOLDING_CIRCLE_MIN_WIDTH = new Quantity<>(16, LengthUnit.pt).toBaseUnitsRounded();
 	static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 
