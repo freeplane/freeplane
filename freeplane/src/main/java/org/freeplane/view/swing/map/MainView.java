@@ -90,6 +90,7 @@ import org.freeplane.features.text.TextController;
  */
 public class MainView extends ZoomableLabel {
     private static final long serialVersionUID = 1L;
+    private static MainView lastMouseEventTarget = null;
 
     public enum DragOverRelation {
         NOT_AVAILABLE, CHILD_BEFORE, CHILD_AFTER, SIBLING_BEFORE, SIBLING_AFTER;
@@ -657,11 +658,27 @@ public class MainView extends ZoomableLabel {
 
 	@Override
 	public boolean contains(int x, int y) {
+	    if(super.contains(x, y))
+	        return true;
+	    if(lastMouseEventTarget != null && lastMouseEventTarget != this)
+	        return false;
 		final Point p = new Point(x, y);
-		return isInFoldingRegion(p) || isInDragRegion(p)|| super.contains(x, y);
+		return isInFoldingRegion(p) || isInDragRegion(p);
 	}
 
-	public boolean isInDragRegion(Point p) {
+
+
+	@Override
+    protected void processMouseEvent(MouseEvent e) {
+	    if(e.getID() == MouseEvent.MOUSE_ENTERED)
+	        lastMouseEventTarget = this;
+	    else if (e.getID() == MouseEvent.MOUSE_EXITED
+	            && lastMouseEventTarget == this)
+	        lastMouseEventTarget = null;
+	    super.processMouseEvent(e);
+    }
+
+    public boolean isInDragRegion(Point p) {
 		if (p.y >= 0 && p.y < getHeight()){
 			final NodeView nodeView = getNodeView();
 			if(nodeView.isRoot())
