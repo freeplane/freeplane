@@ -97,7 +97,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 			if(Compat.isPlainEvent(e)){
-				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
+				if(inside && (e.getClickCount() == 1 && foldsOnClickInside())
+				        || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick())){
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							@Override
@@ -126,6 +127,16 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			nodeSelector.extendSelection(e);
 	}
+
+
+    private boolean foldsOnClickInside() {
+        return ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE);
+    }
+
+    protected boolean editsOnDoubleClick() {
+        return false;
+    }
+
 
 	private void loadLink(NodeModel node, final String link) {
 		try {

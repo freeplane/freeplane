@@ -193,12 +193,16 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		mapView.select();
 		doubleClickTimer.cancel();
-		setClickDelay();
+		ModeController modeController = mapView.getModeController();
+		if (modeController.canEdit(mapView.getModel()) && editsOnDoubleClick())
+            doubleClickTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
+        else {
+        	doubleClickTimer.setDelay(0);
+        }
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			    NodeView nodeView = getNodeView(e);
 				final NodeModel node = nodeView.getModel();
-				ModeController modeController = mapView.getModeController();
 				if(modeController.canEdit(node.getMap())) {
 					nodeSelector.stopTimerForDelayedSelection();
 					final Point point = e.getPoint();
@@ -599,11 +603,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		resetDragStartingPoint();
 	}
 
-	private void setClickDelay() {
-	    if (ResourceController.getResourceController().getBooleanProperty(EDIT_ON_DOUBLE_CLICK))
-	        doubleClickTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
-        else {
-	    	doubleClickTimer.setDelay(0);
-	    }
+	@Override
+    protected boolean editsOnDoubleClick() {
+        return ResourceController.getResourceController().getBooleanProperty(EDIT_ON_DOUBLE_CLICK);
     }
 }
