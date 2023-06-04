@@ -36,6 +36,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	 * given time.
 	 */
 	protected final DoubleClickTimer doubleClickTimer;
+    private boolean popupMenuIsShown;
 
 	public DefaultNodeMouseMotionListener() {
 //		mc = modeController;
@@ -54,21 +55,26 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		final ModeController mc = Controller.getCurrentController().getModeController();
-		if(Compat.isMacOsX()){
-			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
-			if(popupmenu.isShowing()){
-				return;
-			}
+		if(popupMenuIsShown){
+		    return;
 		}
 		final MainView component = (MainView) e.getComponent();
 		NodeView nodeView = component.getNodeView();
 		if (nodeView == null)
-			return;
+		    return;
 
 		final NodeModel node = nodeView.getModel();
-		final boolean inside = nodeSelector.isInside(e);
+		final ModeController mc = Controller.getCurrentController().getModeController();
 		final MapController mapController = mc.getMapController();
+		if(e.getButton() == MouseEvent.BUTTON1
+		        && Compat.isPlainEvent(e)
+		        && isInFoldingRegion(e)) {
+		    doubleClickTimer.cancel();
+		    mapController.toggleFolded(node);
+		    return;
+		}
+
+		final boolean inside = nodeSelector.isInside(e);
 		if(e.getButton() == 1){
 			if(Compat.isCtrlEvent(e) || Compat.isPlainEvent(e) && ResourceController.getResourceController().getBooleanProperty(OPEN_LINKS_ON_PLAIN_CLICKS)){
 				NamedIcon uiIcon = component.getUIIconAt(e.getPoint());
@@ -124,6 +130,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			e.consume();
 			return;
 		}
+
 		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			nodeSelector.extendSelection(e);
 	}
@@ -156,15 +163,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 		nodeSelector.stopTimerForDelayedSelection();
 		nodeSelector.extendSelection(e);
-	}
-
-
-	private void toggleFolded(final MouseEvent e) {
-		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
-		if(nodeView!= null) {
-			doubleClickTimer.cancel();
-			nodeView.getMap().getModeController().getMapController().toggleFolded(nodeView.getModel());
-		}
 	}
 
 	@Override
@@ -222,23 +220,20 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		mapView.select();
 		doubleClickTimer.cancel();
+		popupMenuIsShown = false;
 		if (e.isPopupTrigger())
 			showPopupMenu(e);
-		else if(e.getButton() == MouseEvent.BUTTON1
-				&& Compat.isPlainEvent(e)
-				&& isInFoldingRegion(e))
-			toggleFolded(e);
 	}
 
 	@Override
 	public void mouseReleased(final MouseEvent e) {
 		nodeSelector.stopTimerForDelayedSelection();
-		showPopupMenu(e);
+        if (e.isPopupTrigger())
+            showPopupMenu(e);
 	}
 
-	public void showPopupMenu(final MouseEvent e) {
-		if (! e.isPopupTrigger())
-			return;
+	private void showPopupMenu(final MouseEvent e) {
+	    popupMenuIsShown = true;
 		final boolean inside = nodeSelector.isInside(e);
 		final boolean inFoldingRegion = ! inside && isInFoldingRegion(e);
 		if (inside || inFoldingRegion) {
