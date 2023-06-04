@@ -42,7 +42,7 @@ class MapScroller {
     }
 
 
-	private static final String KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY = "keepSelectedNodeVisibleAfterZoom";
+	private static final String KEEP_SELECTED_NODE_VISIBLE_PROPERTY = "keepSelectedNodeVisible";
     private NodeView anchor;
 	private Point anchorContentLocation;
 	private float anchorHorizontalPoint;
@@ -375,7 +375,7 @@ class MapScroller {
 
 	private void keepShowingSelectedAfterScroll() {
 	    if (! showSelectedAfterScroll
-	            && ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)) {
+	            && ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_PROPERTY)) {
 	        JComponent selectionEndContent = map.getSelectionEnd().getContent();
 	        Rectangle selectionEndVisibleRectangle = selectionEndContent.getVisibleRect();
 	        showSelectedAfterScroll = selectionEndVisibleRectangle.width >0 && selectionEndVisibleRectangle.height >0;

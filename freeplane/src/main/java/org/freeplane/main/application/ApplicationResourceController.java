@@ -103,6 +103,7 @@ public class ApplicationResourceController extends ResourceController {
 		resourceDirectories = new ArrayList<File>(2);
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
+		replacePropertyKey("keepSelectedNodeVisibleAfterZoom", "keepSelectedNodeVisible");
 		securedProps = new Properties(props);
 		final File userDir = createUserDirectory();
 		final String resourceBaseDir = getResourceBaseDir();
@@ -129,6 +130,11 @@ public class ApplicationResourceController extends ResourceController {
 			}
 		});
 	}
+
+    private void replacePropertyKey(String oldKey, String newKey) {
+        if(props.containsKey(oldKey) && ! props.containsKey(newKey))
+		    props.put(newKey, props.getProperty(oldKey));
+    }
 
 	private File createUserDirectory() {
 		final File userPropertiesFolder = new File(getFreeplaneUserDirectory());

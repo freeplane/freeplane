@@ -131,7 +131,7 @@
 				<number name="toolTipManager.max_tooltip_height" />
 				<length name="default_attribute_key_column_width" defaultUnit = "px" min="0" max = "1000" step = "0.1" />
 				<length name="default_attribute_value_column_width" defaultUnit = "px" min="0" max = "1000" step = "0.1" />
-				
+
 			</separator>
 			<separator name="clones">
 				<boolean name="markClones"/>
@@ -200,7 +200,7 @@
 				<length name="grid_size" defaultUnit = "px" min="0" max = "1000" step = "0.01"/>
 				<number name="scrolling_speed" min="1" max="30" />
 				<boolean name="zoomAroundSelectedNode"/>
-				<boolean name="keepSelectedNodeVisibleAfterZoom"/>
+				<boolean name="keepSelectedNodeVisible"/>
 				<boolean name="goto_note_end_on_edit" />
 				<combo name="key_type_action">
 					<choice value="EDIT_CURRENT" />
@@ -331,10 +331,10 @@
 				<boolean name="presentation.zoom"/>
 				<boolean name="presentation.combineAll"/>
 				<boolean name="presentation.slowMotion"/>
-				<number name="presentation.maxDropBoxRowCount" min="3" max="999" /> 
+				<number name="presentation.maxDropBoxRowCount" min="3" max="999" />
 				<string name="presentation.exportDirectory" />
 			</separator>
-			
+
 		</tab>
 		<tab name="Keystrokes">
 			<separator name="commands_for_the_program">
