@@ -226,7 +226,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		private void centerNode(final NodeModel node, final boolean slowScroll) {
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
-				mapScroller.scrollNode(nodeView, ScrollingDirective.SCROLL_NODE_TO_CENTER, slowScroll);
+				mapScroller.scrollNode(nodeView, NodePosition.CENTER, slowScroll);
 			}
 		}
 
@@ -245,7 +245,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		private void moveNodeTo(final NodeModel node, final NodePosition position, final boolean slowScroll) {
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
-				mapScroller.scrollNode(nodeView, ScrollingDirective.of(position), slowScroll);
+				mapScroller.scrollNode(nodeView, position, slowScroll);
 			}
 		}
 
@@ -351,9 +351,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		@Override
 		public void selectRoot() {
-		    mapScroller.scrollToRootNode();
 			final NodeModel rootNode = currentRootView.getModel();
 			selectAsTheOnlyOneSelected(rootNode);
+			mapScroller.scrollToRootNode();
 		}
 
 		@Override
@@ -2269,7 +2269,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		selection.select(newSelected);
         if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
-            mapScroller.scrollNode(newSelected, ScrollingDirective.SCROLL_NODE_TO_CENTER, ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
+            mapScroller.scrollNodeToCenter(newSelected);
         }
         else {
             mapScroller.scrollNodeToVisible(newSelected);
@@ -2571,11 +2571,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public void preserveRootNodeLocationOnScreen() {
         mapScroller.anchorToRoot();
-    }
-
-    public void preserveRootNodeLocationOnScreenAndShowSelected() {
-        mapScroller.anchorToRoot();
-        mapScroller.showSelectedAfterScroll();
     }
 
 

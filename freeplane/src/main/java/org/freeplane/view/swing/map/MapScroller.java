@@ -16,6 +16,32 @@ import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
 
+    private enum ScrollingDirective {
+        SCROLL_NODE_TO_CENTER(NodePosition.CENTER),
+        SCROLL_NODE_TO_LEFT_MARGIN(NodePosition.LEFT),
+        SCROLL_NODE_TO_RIGHT_MARGIN(NodePosition.RIGHT),
+        SCROLL_NODE_TO_TOP_MARGIN(NodePosition.TOP),
+        SCROLL_NODE_TO_BOTTOM_MARGIN(NodePosition.BOTTOM),
+        SCROLL_NODE_TO_TOP_LEFT_CORNER(NodePosition.TOP_LEFT),
+        SCROLL_NODE_TO_TOP_RIGHT_CORNER(NodePosition.TOP_RIGHT),
+        SCROLL_NODE_TO_BOTTOM_LEFT_CORNER(NodePosition.BOTTOM_LEFT),
+        SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER(NodePosition.BOTTOM_RIGHT),
+        SCROLL_TO_BEST_ROOT_POSITION,
+        MAKE_NODE_VISIBLE, DONE,
+        ANCHOR;
+        static private class CompanionObject{
+            private static final ScrollingDirective positionDirectiveMapping[] = new ScrollingDirective[NodePosition.values().length];
+        }
+        public static ScrollingDirective of(NodePosition position) {
+            return CompanionObject.positionDirectiveMapping[position.ordinal()];
+        }
+        private ScrollingDirective() {/**/}
+        private ScrollingDirective(NodePosition position) {
+            CompanionObject.positionDirectiveMapping[position.ordinal()] = this;
+        }
+    }
+
+
 	private static final String KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY = "keepSelectedNodeVisibleAfterZoom";
     private NodeView anchor;
 	private Point anchorContentLocation;
@@ -23,13 +49,14 @@ class MapScroller {
 	private float anchorVerticalPoint;
 	private NodeView scrolledNode = null;
 	private ScrollingDirective scrollingDirective = ScrollingDirective.DONE;
+	private boolean showSelectedAfterScroll = false;
 	private boolean slowScroll;
 	private int extraWidth;
 	final private MapView map;
 
 
 
-	public MapScroller(MapView map) {
+	MapScroller(MapView map) {
 		this.map = map;
 		this.anchorContentLocation = null;
 	}
@@ -52,7 +79,7 @@ class MapScroller {
 	 * Scroll the viewport of the map to the south-west, i.e. scroll the map
 	 * itself to the north-east.
 	 */
-	public void scrollBy(final int x, final int y) {
+	void scrollBy(final int x, final int y) {
 		final JViewport mapViewport = (JViewport) map.getParent();
 		if (mapViewport != null) {
 			final Point currentPoint = mapViewport.getViewPosition();
@@ -75,7 +102,19 @@ class MapScroller {
 		}
 	}
 
-	public void scrollNode(final NodeView node, ScrollingDirective scrollingDirective, boolean slowScroll) {
+
+    void scrollNode(NodeView nodeView, NodePosition position, boolean slowScroll) {
+        showSelectedAfterScroll = false;
+        scrollNode(nodeView, ScrollingDirective.of(position), slowScroll);
+    }
+
+    void scrollNodeToCenter(NodeView node) {
+        scrollNode(node, ScrollingDirective.SCROLL_NODE_TO_CENTER,
+                ResourceController.getResourceController().getBooleanProperty("slow_scroll_selected_node"));
+    }
+
+
+	private void scrollNode(final NodeView node, ScrollingDirective scrollingDirective, boolean slowScroll) {
 		if (node != null) {
 			this.slowScroll = slowScroll;
 			scrolledNode = node;
@@ -198,7 +237,7 @@ class MapScroller {
 		return anchorCenterPoint;
 	}
 
-	public void scrollNodeToVisible(final NodeView node) {
+	void scrollNodeToVisible(final NodeView node) {
 		scrollNodeToVisible(node, 0);
 	}
 
@@ -206,9 +245,10 @@ class MapScroller {
 		if(node == null)
 			return;
 		if(scrollingDirective == ScrollingDirective.DONE
-		        || scrollingDirective == ScrollingDirective.ANCHOR
-		        || scrollingDirective == ScrollingDirective.ANCHOR_AND_SHOW_SELECTED)
-			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
+		        || scrollingDirective == ScrollingDirective.ANCHOR) {
+            scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
+            showSelectedAfterScroll = false;
+        }
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
 			if (node != scrolledNode) {
 				if (scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION && !node.isRoot())
@@ -248,14 +288,15 @@ class MapScroller {
 
 	void scrollView() {
 		if(scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE
-				&& scrollingDirective != ScrollingDirective.ANCHOR
-				&& scrollingDirective != ScrollingDirective.ANCHOR_AND_SHOW_SELECTED){
+				&& scrollingDirective != ScrollingDirective.ANCHOR){
 			scrollNode(scrolledNode, scrollingDirective, slowScroll);
 			return;
 		}
 		if (anchorContentLocation == null) {
 			return;
 		}
+		if(scrollingDirective == ScrollingDirective.ANCHOR)
+		    keepShowingSelectedAfterScroll();
 		final JViewport vp = (JViewport) map.getParent();
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
@@ -268,11 +309,9 @@ class MapScroller {
 			vp.setViewPosition(viewPosition);
 		}
 
-		if(scrollingDirective == ScrollingDirective.ANCHOR_AND_SHOW_SELECTED)
-		    scrollNodeToVisible(map.getSelectionEnd(), 0);
-		else if(scrolledNode != null &&
-		        (scrollingDirective != ScrollingDirective.ANCHOR
-		        || ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)))
+        showSelectedAfterScroll();
+		if(scrolledNode != null &&
+		        (scrollingDirective == ScrollingDirective.MAKE_NODE_VISIBLE))
 			scrollNodeToVisible(scrolledNode, extraWidth);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
@@ -281,6 +320,13 @@ class MapScroller {
 		this.anchorContentLocation = getAnchorCenterPoint();
 	}
 
+    private void showSelectedAfterScroll() {
+        if(showSelectedAfterScroll) {
+            showSelectedAfterScroll = false;
+            scrollNodeToVisible(map.getSelectionEnd(), 0);
+        }
+    }
+
 	void setAnchorContentLocation(){
 		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION)
 			scrollView();
@@ -288,7 +334,7 @@ class MapScroller {
 			anchorContentLocation = getAnchorCenterPoint();
 	}
 
-	public void scrollNodeTreeToVisible(NodeView node) {
+	void scrollNodeTreeToVisible(NodeView node) {
 		final Rectangle visibleRect = map.getVisibleRect();
 		Rectangle requiredRectangle = new Rectangle(node.getSize());
 		int margin = 30;
@@ -315,49 +361,26 @@ class MapScroller {
 			}
 		}
 		if(! node.getVisibleRect().contains(requiredRectangle)){
+	        keepShowingSelectedAfterScroll();
 			node.scrollRectToVisible(requiredRectangle);
+			showSelectedAfterScroll();
 		}
 	}
 
 	void anchorToRoot() {
 		final NodeView root = map.getRoot();
 		if(! root.equals(anchor))
-			anchorToNode(root, 0, 0);
+		    anchorToNode(root, 0, 0);
 	}
 
-	public void showSelectedAfterScroll() {
-	    if(scrollingDirective == ScrollingDirective.ANCHOR
-	            || scrollingDirective == ScrollingDirective.DONE) {
+	private void keepShowingSelectedAfterScroll() {
+	    if (! showSelectedAfterScroll
+	            && ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_AFTER_ZOOM_PROPERTY)) {
 	        JComponent selectionEndContent = map.getSelectionEnd().getContent();
-            Rectangle selectionEndVisibleRectangle = selectionEndContent.getVisibleRect();
-	        boolean isOnScreen = selectionEndVisibleRectangle.width >0 && selectionEndVisibleRectangle.height >0;
-            if(isOnScreen)
-	            scrollingDirective = ScrollingDirective.ANCHOR_AND_SHOW_SELECTED;
+	        Rectangle selectionEndVisibleRectangle = selectionEndContent.getVisibleRect();
+	        showSelectedAfterScroll = selectionEndVisibleRectangle.width >0 && selectionEndVisibleRectangle.height >0;
 	    }
 	}
+
 }
 
-enum ScrollingDirective {
-	SCROLL_NODE_TO_CENTER(NodePosition.CENTER),
-	SCROLL_NODE_TO_LEFT_MARGIN(NodePosition.LEFT),
-	SCROLL_NODE_TO_RIGHT_MARGIN(NodePosition.RIGHT),
-	SCROLL_NODE_TO_TOP_MARGIN(NodePosition.TOP),
-	SCROLL_NODE_TO_BOTTOM_MARGIN(NodePosition.BOTTOM),
-	SCROLL_NODE_TO_TOP_LEFT_CORNER(NodePosition.TOP_LEFT),
-	SCROLL_NODE_TO_TOP_RIGHT_CORNER(NodePosition.TOP_RIGHT),
-	SCROLL_NODE_TO_BOTTOM_LEFT_CORNER(NodePosition.BOTTOM_LEFT),
-	SCROLL_NODE_TO_BOTTOM_RIGHT_CORNER(NodePosition.BOTTOM_RIGHT),
-	SCROLL_TO_BEST_ROOT_POSITION,
-	MAKE_NODE_VISIBLE, DONE,
-	ANCHOR, ANCHOR_AND_SHOW_SELECTED;
-	static private class CompanionObject{
-		private static final ScrollingDirective positionDirectiveMapping[] = new ScrollingDirective[NodePosition.values().length];
-	}
-	public static ScrollingDirective of(NodePosition position) {
-		return CompanionObject.positionDirectiveMapping[position.ordinal()];
-	}
-	private ScrollingDirective() {/**/}
-	private ScrollingDirective(NodePosition position) {
-		CompanionObject.positionDirectiveMapping[position.ordinal()] = this;
-	}
-}
