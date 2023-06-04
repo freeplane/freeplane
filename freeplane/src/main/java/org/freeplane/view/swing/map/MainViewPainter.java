@@ -43,7 +43,7 @@ abstract class MainViewPainter{
         int height = mainView.getHeight();
         NodeView nodeView = mainView.getNodeView();
         if (nodeView.usesHorizontalLayout() &&  (! onlyFolded || nodeView.isFolded())) {
-            height += 2 * mainView.getZoomedFoldingSymbolHalfWidth();
+            height += 2 * mainView.getZoomedFoldingMarkHalfWidth();
         }
         return height;
     }
@@ -51,7 +51,7 @@ abstract class MainViewPainter{
         int width = mainView.getWidth();
         final NodeView nodeView = mainView.getNodeView();
         if (! nodeView.usesHorizontalLayout() && (! onlyFolded || nodeView.isFolded())) {
-            width += mainView.getZoomedFoldingSymbolHalfWidth() * 3;
+            width += mainView.getZoomedFoldingMarkHalfWidth() * 3;
         }
         return width;
     }
@@ -121,8 +121,8 @@ abstract class MainViewPainter{
 	}
 
 	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
-        final int width = drawsControls ? Math.max(nodeView.getZoomed(MainView.FOLDING_CIRCLE_MIN_WIDTH),
-                mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
+        final int width = drawsControls ? Math.max(mainView.getZoomedFoldingSwitchMinWidth(),
+                mainView.getZoomedFoldingMarkHalfWidth() * 2) : mainView.getZoomedFoldingMarkHalfWidth() * 2;
 		final int halfWidth = width / 2;
 		final Point p;
 		if(! drawsControls && ! nodeView.isFolded())

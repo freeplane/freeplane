@@ -402,14 +402,14 @@ public class ConnectorView extends AConnectorView{
 			if (showsControlPoints || !isSourceVisible() || !isTargetVisible()) {
 				if (startPoint != null) {
 					g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
-					drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
+					drawCircle(g, startPoint2, source.getZoomedFoldingMarkHalfWidth());
 					if (arrowLinkCurve == null) {
 						arrowLinkCurve = createLine(startPoint, startPoint2);
 					}
 				}
 				if (endPoint != null && !(selfLink && isLine)) {
 					g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
-					drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
+					drawCircle(g, endPoint2, target.getZoomedFoldingMarkHalfWidth());
 					if (arrowLinkCurve == null) {
 						arrowLinkCurve = createLine(endPoint, endPoint2);
 					}

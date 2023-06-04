@@ -961,24 +961,30 @@ public class NodeView extends JComponent implements INodeView {
 		return parentView.getVisibleSummarizedOrParentView(requiredLayoutOrientation, isChildTopOrLeft);
 	}
 
-	public int getZoomedFoldingSymbolHalfWidth() {
-	    final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10) * map.getZoom()) / 2);
+	public int getZoomedFoldingMarkHalfWidth() {
+	    final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getLengthQuantityProperty("foldingsymbolwidth").toBaseUnits() * map.getZoom()) / 2);
 	    return preferredFoldingSymbolHalfWidth;
 	}
+
+
+    public int getZoomedFoldingSwitchMinWidth() {
+        final int preferredFoldingSwitchMinWidth = (int) ((ResourceController.getResourceController().getLengthQuantityProperty("foldingSwitchMinWidth").toBaseUnits() * map.getZoom()));
+        return preferredFoldingSwitchMinWidth;
+    }
+
 
 	int getMinimumDistanceConsideringHandles() {
 	    int draggingAreaWidth = mainView.getDraggingAreaWidth();
 	    if(!usesHorizontalLayout()) {
-	        int propertyValue = ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 10);
-	        final int preferredFoldingSymbolHalfWidth = (int) ((Math.max(propertyValue, MainView.FOLDING_CIRCLE_MIN_WIDTH) * map.getZoom()));
-	        return draggingAreaWidth + preferredFoldingSymbolHalfWidth;
+	        final int preferredFoldingSymbolWidth = Math.max(getZoomedFoldingMarkHalfWidth(), getZoomedFoldingSwitchMinWidth());
+	        return draggingAreaWidth + preferredFoldingSymbolWidth;
 	    }
 	    else
 	        return draggingAreaWidth;
 	}
 
 	public int getZoomedStateSymbolHalfWidth() {
-		final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getIntProperty("statesymbolwidth", 10) * map.getZoom()) / 2);
+		final int preferredFoldingSymbolHalfWidth = (int) ((ResourceController.getResourceController().getLengthQuantityProperty("statesymbolwidth").toBaseUnits() * map.getZoom()) / 2);
 		return preferredFoldingSymbolHalfWidth;
 	}
 

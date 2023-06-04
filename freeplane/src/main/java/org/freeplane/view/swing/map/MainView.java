@@ -181,7 +181,6 @@ public class MainView extends ZoomableLabel {
 
         abstract DragOverRelation relation(LayoutOrientation layoutOrientation, Side side);
     }
-	static final int FOLDING_CIRCLE_MIN_WIDTH = new Quantity<>(16, LengthUnit.pt).toBaseUnitsRounded();
 	static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
     public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = ResourceController.getResourceController().getBooleanProperty(USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 
@@ -268,9 +267,15 @@ public class MainView extends ZoomableLabel {
 		return MainView.minimumSize;
 	}
 
-	int getZoomedFoldingSymbolHalfWidth() {
-		return getNodeView().getZoomedFoldingSymbolHalfWidth();
+	int getZoomedFoldingMarkHalfWidth() {
+		return getNodeView().getZoomedFoldingMarkHalfWidth();
 	}
+
+
+    public int getZoomedFoldingSwitchMinWidth() {
+        return getNodeView().getZoomedFoldingSwitchMinWidth();
+    }
+
 
 	public boolean isClickableLink(final double xCoord) {
 		final NodeView nodeView = getNodeView();
@@ -823,7 +828,7 @@ public class MainView extends ZoomableLabel {
 		return borderColorMatchesEdgeColor ? getNodeView().getEdgeColor() : borderColor;
 	}
 
-	public Color getFoldingCircleBorderColor() {
+	public Color getFoldingMarkBorderColor() {
 		Color borderColor = getBorderColor();
 		if(borderColor.getAlpha() == 255)
 			return borderColor;
@@ -831,9 +836,9 @@ public class MainView extends ZoomableLabel {
 			return new Color(borderColor.getRed(), borderColor.getGreen(), borderColor.getGreen(), 255);
 	}
 
-	public Color getFoldingCircleFillColor() {
+	public Color getFoldingMarkFillColor() {
 		Color fillColor = getNodeView().getTextBackground();
-		Color foldingCircleBorderColor = getFoldingCircleBorderColor();
+		Color foldingCircleBorderColor = getFoldingMarkBorderColor();
 		if(foldingCircleBorderColor.equals(fillColor)) {
 			final Color color = fillColor;
 			if(UITools.isLighter(color, 0x60))
