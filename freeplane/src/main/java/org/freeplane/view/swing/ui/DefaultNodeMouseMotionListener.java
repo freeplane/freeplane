@@ -97,8 +97,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 			if(Compat.isPlainEvent(e)){
-				if(inside && (e.getClickCount() == 1 && foldsOnClickInside())
-				        || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick())){
+				if(inside && (e.getClickCount() == 1 && foldsOnClickInside()
+				        || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick()))){
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							@Override
