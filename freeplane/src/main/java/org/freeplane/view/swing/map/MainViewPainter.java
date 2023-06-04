@@ -121,7 +121,8 @@ abstract class MainViewPainter{
 	}
 
 	Rectangle getFoldingRectangleBounds(final NodeView nodeView, boolean drawsControls) {
-        final int width = drawsControls ? Math.max(MainView.FOLDING_CIRCLE_MIN_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
+        final int width = drawsControls ? Math.max(nodeView.getZoomed(MainView.FOLDING_CIRCLE_MIN_WIDTH),
+                mainView.getZoomedFoldingSymbolHalfWidth() * 2) : mainView.getZoomedFoldingSymbolHalfWidth() * 2;
 		final int halfWidth = width / 2;
 		final Point p;
 		if(! drawsControls && ! nodeView.isFolded())
