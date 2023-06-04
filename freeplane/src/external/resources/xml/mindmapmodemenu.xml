@@ -134,7 +134,6 @@
 				<Entry builder="separator" />
 				<Entry name="menu_node_core">
 					<Entry name="EditAction" accelerator="F2" />
-					<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
 					<Entry name="EditLongAction" accelerator="alt ENTER" />
 					<Entry name="SplitNode" accelerator="alt shift S" />
 					<Entry builder="splitToWordsActions" />
