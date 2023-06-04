@@ -392,20 +392,29 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void toggleFolded(final NodeModel node) {
         Filter filter = Controller.getCurrentController().getSelection().getFilter();
-		if (canBeUnfoldedOnCurrentView(node, filter)) {
+		toggleFolded(node, filter);
+	}
+
+    public void toggleFolded(final NodeModel node, Filter filter) {
+        if (canBeUnfoldedOnCurrentView(node, filter)) {
 			unfold(node, filter);
 		}
 		else{
 			fold(node);
 		}
-	}
+    }
 
-	public void toggleFoldedAndScroll(final NodeModel node, Filter filter){
-		if(canBeUnfoldedOnCurrentView(node, filter))
-			unfoldAndScroll(node, filter);
-		else
-			fold(node);
-	}
+    public void toggleFoldedAndScroll(final NodeModel node){
+        Filter filter = Controller.getCurrentController().getSelection().getFilter();
+        toggleFoldedAndScroll(node, filter);
+    }
+
+    public void toggleFoldedAndScroll(final NodeModel node, Filter filter){
+        if(canBeUnfoldedOnCurrentView(node, filter))
+            unfoldAndScroll(node, filter);
+        else
+            fold(node);
+    }
 
 	public void unfold(final NodeModel node, Filter filter) {
 		if (node.getChildCount() == 0)

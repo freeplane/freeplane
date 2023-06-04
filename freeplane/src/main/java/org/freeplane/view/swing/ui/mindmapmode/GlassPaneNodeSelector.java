@@ -89,7 +89,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         switch(e.getClickCount()){
         	case 1:
         		final MapController mapController = Controller.getCurrentModeController().getMapController();
-				mapController.toggleFolded(node);
+				mapController.toggleFoldedAndScroll(node);
         		break;
         	case 2:
     	        nodeSelector.nodeSelected(node);
