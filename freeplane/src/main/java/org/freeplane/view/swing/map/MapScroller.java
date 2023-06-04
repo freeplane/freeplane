@@ -49,8 +49,8 @@ class MapScroller {
 	private float anchorVerticalPoint;
 	private NodeView scrolledNode = null;
 	private ScrollingDirective scrollingDirective = ScrollingDirective.DONE;
-	private boolean showSelectedAfterScroll = false;
-	private boolean slowScroll;
+	private boolean showsSelectedAfterScroll = false;
+    private boolean slowScroll;
 	private int extraWidth;
 	final private MapView map;
 
@@ -71,6 +71,7 @@ class MapScroller {
 				scrolledNode = anchor;
 				scrollingDirective = ScrollingDirective.ANCHOR;
 				extraWidth = 0;
+				keepShowingSelectedAfterScroll();
 			}
 		}
 	}
@@ -104,7 +105,7 @@ class MapScroller {
 
 
     void scrollNode(NodeView nodeView, NodePosition position, boolean slowScroll) {
-        showSelectedAfterScroll = false;
+        showsSelectedAfterScroll = false;
         scrollNode(nodeView, ScrollingDirective.of(position), slowScroll);
     }
 
@@ -247,7 +248,7 @@ class MapScroller {
 		if(scrollingDirective == ScrollingDirective.DONE
 		        || scrollingDirective == ScrollingDirective.ANCHOR) {
             scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
-            showSelectedAfterScroll = false;
+            showsSelectedAfterScroll = false;
         }
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {
 			if (node != scrolledNode) {
@@ -295,8 +296,6 @@ class MapScroller {
 		if (anchorContentLocation == null) {
 			return;
 		}
-		if(scrollingDirective == ScrollingDirective.ANCHOR)
-		    keepShowingSelectedAfterScroll();
 		final JViewport vp = (JViewport) map.getParent();
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
@@ -321,8 +320,8 @@ class MapScroller {
 	}
 
     private void showSelectedAfterScroll() {
-        if(showSelectedAfterScroll) {
-            showSelectedAfterScroll = false;
+        if(showsSelectedAfterScroll) {
+            showsSelectedAfterScroll = false;
             scrollNodeToVisible(map.getSelectionEnd(), 0);
         }
     }
@@ -373,12 +372,20 @@ class MapScroller {
 		    anchorToNode(root, 0, 0);
 	}
 
+    boolean isShowsSelectedAfterScroll() {
+        return showsSelectedAfterScroll;
+    }
+
+    void setShowsSelectedAfterScroll(boolean showSelectedAfterScroll) {
+        this.showsSelectedAfterScroll = showSelectedAfterScroll;
+    }
+
 	private void keepShowingSelectedAfterScroll() {
-	    if (! showSelectedAfterScroll
+	    if (! showsSelectedAfterScroll
 	            && ResourceController.getResourceController().getBooleanProperty(KEEP_SELECTED_NODE_VISIBLE_PROPERTY)) {
 	        JComponent selectionEndContent = map.getSelectionEnd().getContent();
 	        Rectangle selectionEndVisibleRectangle = selectionEndContent.getVisibleRect();
-	        showSelectedAfterScroll = selectionEndVisibleRectangle.width >0 && selectionEndVisibleRectangle.height >0;
+	        showsSelectedAfterScroll = selectionEndVisibleRectangle.width >0 && selectionEndVisibleRectangle.height >0;
 	    }
 	}
 

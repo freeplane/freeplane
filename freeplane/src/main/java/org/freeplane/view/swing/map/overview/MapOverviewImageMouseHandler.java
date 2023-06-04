@@ -59,9 +59,10 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
             scrollTo(image, e.getPoint());
             Dimension viewportSize = mapViewScrollPane.getViewport().getExtentSize();
             Point mapViewLocation = mapView.getLocation();
-            Point keptPoint = new Point(-mapViewLocation.x + viewportSize.width / 2, 
+            Point keptPoint = new Point(-mapViewLocation.x + viewportSize.width / 2,
                     -mapViewLocation.y + viewportSize.height / 2);
             mapView.setZoom((float) zoom, keptPoint);
+            mapView.setShowsSelectedAfterScroll(false);
         }
         viewManager.setZoom((float) zoom);
     }
@@ -115,7 +116,7 @@ class MapOverviewImageMouseHandler extends MouseInputAdapter {
                 mapLocation.x
                     + (int)((newCenterPointOnOverview.x - overviewSize.width / 2) / scale)
                     + (mapSize.width - viewportSize.width) / 2,
-                mapLocation.y 
+                mapLocation.y
                     + (int)((newCenterPointOnOverview.y - overviewSize.height / 2) / scale)
                     + (mapSize.height -viewportSize.height) / 2
                 );

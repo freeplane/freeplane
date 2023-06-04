@@ -2588,6 +2588,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		mapScroller.anchorToNode(nodeView, horizontalPoint, verticalPoint);
 	}
 
+    public void setShowsSelectedAfterScroll(boolean showSelectedAfterScroll) {
+        mapScroller.setShowsSelectedAfterScroll(showSelectedAfterScroll);
+    }
+
 
 	public void display(final NodeModel node) {
 		NodeModel currentRoot = currentRootView.getModel();
