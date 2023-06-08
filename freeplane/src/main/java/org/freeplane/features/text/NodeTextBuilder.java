@@ -35,6 +35,7 @@ import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
@@ -57,7 +58,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
     public static final String XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE = "CONTENT-TYPE";
     public static final String XML_NODE_OBJECT = "OBJECT";
 	private static final String XML_NODE_TEXT_SHORTENED = "TEXT_SHORTENED";
-	
+
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (attributes == null) {
 			return null;
@@ -70,22 +71,10 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		return null;
 	}
 
-
-    @Override
-    public boolean containsXml(XMLElement element) {
-        return ContentSyntax.XML.matches(element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, ContentSyntax.XML.prefix));
-    }
-
 	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement element,
 	                       final String content) {
 		assert tag.equals("richcontent");
-		final String text;
-		if(content != null)
-			text = content.trim();
-		else {
-			XMLElement textElement = element.getFirstChildNamed(TEXT_ELEMENT);
-			text = textElement != null ? textElement.getContent() : null;
-		}
+		final String text = content != null ? content.trim() : null;
 		final String type = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 		final NodeModel nodeModel = (NodeModel) obj;
 		if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE.equals(type)) {
@@ -94,12 +83,9 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		else if (NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS.equals(type)) {
 			final boolean hidden = "true".equals(element.getAttribute("HIDDEN", "false"));
 			final DetailModel details = new DetailModel(hidden);
-			if(containsXml(element))
-			    details.setXml(text);
-			else
-			    details.setText(text);
+			details.setXml(text);
             final String contentType = element.getAttribute(
-                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, 
+                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE,
                     ContentSyntax.XML.prefix);
             details.setContentType(ContentSyntax.specificType(contentType));
 			nodeModel.addExtension(details);
@@ -144,7 +130,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, textShortenedHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT_SHORTENED, textShortenedHandler);
-		
+
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = ((NodeModel) userObject);
@@ -177,12 +163,18 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		writeManager.addAttributeWriter(NodeBuilder.XML_STYLENODE, this);
 	}
 
-	private static class TransformedXMLExtension extends RichTextModel implements IExtension {
-		public TransformedXMLExtension(String contentType, String original, String html) {
-            super(contentType, original.equals(html) ? null : HtmlUtils.htmlToPlain(original), HtmlUtils.toXhtml(html));
+	private static class TransformedXMLExtension implements IExtension {
+		private String contentType;
+        private String originaText;
+        private String xhtml;
+
+        public TransformedXMLExtension(String contentType, String original, String html) {
+            this.contentType = contentType;
+            this.originaText = original.equals(html) ? null : HtmlUtils.htmlToPlain(original);
+            this.xhtml = HtmlUtils.toXhtml(html);
         }
 	}
-	
+
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		if(! NodeWriter.shouldWriteSharedContent(writer))
 			return;
@@ -239,11 +231,11 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE);
 			final String xmlText;
 			if (transformedXML != null){
-				xmlText = transformedXML.getXml();
-	            if(transformedXML.getText() != null) {
-	                element.setAttribute("FORMAT", transformedXML.getContentType());
+				xmlText = transformedXML.xhtml;
+	            if(transformedXML.originaText != null) {
+	                element.setAttribute("FORMAT", transformedXML.contentType);
 	                XMLElement textElement = element.createElement(TEXT_ELEMENT);
-	                textElement.setContent(transformedXML.getText());
+	                textElement.setContent(transformedXML.originaText);
 	                element.addChild(textElement);
 	            }
 				node.removeExtension(transformedXML);
@@ -262,44 +254,46 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension) throws IOException {
 		DetailModel details = (DetailModel) extension;
 		final XMLElement element = new XMLElement();
-		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
-		
-		String transformedXhtml = "";
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
-		if (forceFormatting) {
-			String data = details.getText();
-			if(data != null) {
-				final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, details, data);
-				if(!transformed.equals(data)) {
-					String transformedHtml = HtmlUtils.objectToHtml(transformed);
-					transformedXhtml = HtmlUtils.toXhtml(transformedHtml);
-				}
-			}
-		}
-		
-        boolean containsXml = transformedXhtml.isEmpty() && details.getXml() != null;
-        String contentType = details.getContentType();
-        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
-        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
         element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
-        if(details.isHidden()){
-            element.setAttribute("HIDDEN", "true");
-        }
-        if (containsXml) {
-        		final String content = details.getXml().replace('\0', ' ');
-        		writer.addElement(content, element);
-        }
-        else {
-            String text = details.getText();
-            if(text != null) {
-            	XMLElement textElement = element.createElement(TEXT_ELEMENT);
-            	textElement.setContent(HtmlUtils.htmlToPlain(text));
-            	element.addChild(textElement);
-            }
-            writer.addElement(transformedXhtml, element);
-        }
-		return;
+		if(details.isHidden()){
+		    element.setAttribute("HIDDEN", "true");
+		}
+        writeRichContent(writer, node, details, element);
 	}
+
+    static public void writeRichContent(final ITreeWriter writer, final Object node,
+            RichTextModel richContent, final XMLElement element)
+            throws IOException {
+        element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
+        String xmlContent = richContent.getXml();
+        String contentType = richContent.getContentType();
+        ContentSyntax contentSyntax = xmlContent == null || XmlUtils.startsWithElement(xmlContent, "text") ? ContentSyntax.PLAIN : ContentSyntax.XML;
+        if(contentType != null) {
+            element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
+        }
+        if(xmlContent == null) {
+            if(contentType != null)
+                writer.addElement(null, element);
+            return;
+        }
+        String transformedXhtml = "";
+        final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
+        if (forceFormatting) {
+            String data = richContent.getText();
+            if(data != null) {
+                final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, richContent, data);
+                if(! transformed.equals(data)) {
+                    String transformedHtml = HtmlUtils.objectToHtml(transformed);
+                    transformedXhtml = HtmlUtils.toXhtml(transformedHtml);
+                }
+            }
+        }
+
+        String combinedContent = contentSyntax == ContentSyntax.PLAIN &&! transformedXhtml.isEmpty()
+                ? xmlContent + "\n" + transformedXhtml
+                : xmlContent;
+        writer.addElement(combinedContent, element);
+    }
 
 	public void writeAttributes(ITreeWriter writer, Object userObject, IExtension extension) {
 		writer.addAttribute(XML_NODE_TEXT_SHORTENED, Boolean.TRUE.toString());

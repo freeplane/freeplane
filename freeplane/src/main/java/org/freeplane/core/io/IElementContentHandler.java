@@ -22,6 +22,5 @@ package org.freeplane.core.io;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public interface IElementContentHandler extends IElementHandler {
-    boolean containsXml(XMLElement element);
 	void endElement(Object parent, String tag, Object node, XMLElement element, String content);
 }

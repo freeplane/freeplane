@@ -23,6 +23,7 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.XmlUtils;
+import org.freeplane.features.text.RichTextModel;
 
 /**
  * @author  Dimitry Polivaev 05.02.2014
@@ -76,8 +77,10 @@ public class SharedNodeData {
 	}
 
 	public void setXmlText(String content) {
-		xmlText = XmlUtils.replaceAscii0BySpace(content);
-		userObject = HtmlUtils.toHtml(xmlText);
+		RichTextModel richTextModel = new RichTextModel();
+		richTextModel.setXml(content);
+		userObject = richTextModel.getText();
+		xmlText = richTextModel.getXml();
 	}
 
 	public void setText(String text) {

@@ -86,7 +86,6 @@ public class HtmlUtils {
 	}
 
 	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
-	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html[^>]*>.*", Pattern.CASE_INSENSITIVE);
 	private static Pattern[] PATTERNS;
 	private static HtmlUtils sInstance = new HtmlUtils();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<((" + "br|area|base|basefont|"
@@ -202,16 +201,7 @@ public class HtmlUtils {
 	}
 
 	public static boolean isHtml(final String text) {
-		for (int i = 0; i < text.length(); i++) {
-			final char ch = text.charAt(i);
-			if (ch == '<') {
-				break;
-			}
-			if (!Character.isWhitespace(ch) || i == text.length()) {
-				return false;
-			}
-		}
-		return HtmlUtils.HTML_PATTERN.matcher(text).matches();
+	    return XmlUtils.startsWithElement(text, "html");
 	}
 
 	/** transforms {@code &, <, >, \n} and whitespace by their HTML counterpart and

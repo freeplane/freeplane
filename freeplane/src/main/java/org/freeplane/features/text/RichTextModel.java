@@ -32,31 +32,51 @@ public class RichTextModel {
 		return xml;
 	}
 
-	public final void setText(final String newText) {
-		if (newText == null) {
-			xml = null;
-			text = null;
-			return;
+	public final void setText(final String newContent) {
+		if (newContent == null) {
+		    xml = null;
+		    text = null;
+		    return;
 		}
-	    try {
-	        text = XmlUtils.replaceAscii0BySpace(newText);
-	        xml = HtmlUtils.toXhtml(text).trim();
-	        if (xml != null && !xml.startsWith("<")) {
-	            text = xml;
-	        }
-	    } catch (Exception e) {
-	        text = xml = HtmlUtils.unescapeHTMLUnicodeEntity(newText);
-	    }
+		if(newContent.startsWith("<html>")) {
+		    try {
+		        text = XmlUtils.replaceAscii0BySpace(newContent);
+		        String xhtml = HtmlUtils.toXhtml(text);
+		        xml = xhtml != null ? xhtml.trim() : null;
+		        if (xml != null && !xml.startsWith("<")) {
+		            text = xml;
+		        }
+		    } catch (Exception e) {
+		        text = xml = HtmlUtils.unescapeHTMLUnicodeEntity(newContent);
+		    }
+		}
+		else {
+		    text = newContent;
+		    xml = "<text>" + HtmlUtils.toXMLEscapedText(newContent) + "</text>";
+		}
 	}
 
-	public final void setXml(final String pXmlNoteText) {
-		if (pXmlNoteText == null) {
+	public final void setXml(final String newContent) {
+		if (newContent == null) {
 			xml = null;
 			text = null;
 			return;
 		}
-		xml = XmlUtils.replaceAscii0BySpace(pXmlNoteText).trim();
-		text = HtmlUtils.toHtml(xml);
+		String trimmed = newContent.trim();
+        if(HtmlUtils.isHtml(newContent)) {
+		    xml = trimmed;
+		    text = HtmlUtils.toHtml(trimmed);
+        }
+        else if (trimmed.startsWith("<text>") && trimmed.endsWith("</text>")){
+            xml = trimmed;
+            text = HtmlUtils.toXMLUnescapedText(trimmed.substring("<text>".length(), trimmed.length() - "</text>".length()));
+        }  else if (trimmed.equals("<text/>")){
+            xml = trimmed;
+            text = "";
+        }
+        else
+            setText(newContent);
+
 	}
 
     public String getContentType() {

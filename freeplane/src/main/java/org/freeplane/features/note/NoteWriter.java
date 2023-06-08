@@ -25,16 +25,10 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.MapWriter;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
-import org.freeplane.features.text.ContentSyntax;
 import org.freeplane.features.text.NodeTextBuilder;
-import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -60,43 +54,12 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension) throws IOException {
 	    NoteModel note = (NoteModel) extension;
 		final XMLElement element = new XMLElement();
-		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
 		if(extension instanceof NoteModel){
 		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE);
 		}
 		else{
 		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, "UNKNOWN");
 		}
-		String transformedXhtml = "";
-		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
-		if (forceFormatting) {
-			String data = note.getText();
-			if(data != null) {
-				final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, note, data);
-				if(! transformed.equals(data)) {
-					String transformedHtml = HtmlUtils.objectToHtml(transformed);
-					transformedXhtml = HtmlUtils.toXhtml(transformedHtml);
-				}
-			}
-		}
-        boolean containsXml = transformedXhtml.isEmpty() && note.getXml() != null;
-        String contentType = note.getContentType();
-        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
-        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
-
-		if (containsXml) {
-        	final String content = note.getXml().replace('\0', ' ');
-        	writer.addElement(content, element);
-        }
-		else {
-            String text = note.getText();
-            if(text != null) {
-            	XMLElement textElement = element.createElement(NodeTextBuilder.TEXT_ELEMENT);
-            	textElement.setContent(text);
-            	element.addChild(textElement);
-            }
-            writer.addElement(transformedXhtml, element);
-		}
-		return;
+		NodeTextBuilder.writeRichContent(writer, node, note, element);
 	}
 }

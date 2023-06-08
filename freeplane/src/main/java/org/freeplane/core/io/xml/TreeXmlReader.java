@@ -164,7 +164,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			}
 		}
 		if (currentElement != null) {
-			if (nodeCreator instanceof IElementContentHandler && ((IElementContentHandler)nodeCreator).containsXml(lastBuiltElement)) {
+			if (nodeCreator instanceof IElementContentHandler) {
 				parser.notParseNextElementContent();
 			}
 			attributeHandlersForTag = getAttributeLoaders().get(tag);
@@ -211,7 +211,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			if (nodeCreator instanceof IElementContentHandler) {
 				IElementContentHandler contentHandler = (IElementContentHandler) nodeCreator;
                 contentHandler.endElement(currentElement, name, element, lastBuiltElement,
-						contentHandler.containsXml(lastBuiltElement) ? elementContentAsString : lastBuiltElement.getContent());
+						elementContentAsString);
 			}
 			else if (nodeCreator instanceof IElementDOMHandler) {
 				((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement);

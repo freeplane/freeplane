@@ -48,22 +48,13 @@ class NoteBuilder implements IElementContentHandler {
 	public void endElement(final Object parent, final String tag, final Object node, final XMLElement element,
 	        final String content) {
 	    if (tag.equals("richcontent")) {
-	        final String text;
-			if(content != null)
-				text = content.trim();
-			else {
-				XMLElement textElement = element.getFirstChildNamed(NodeTextBuilder.TEXT_ELEMENT);
-				text = textElement != null ? textElement.getContent() : null;
-			}
+	        final String text = content != null ? content.trim() : null;
 	        final Object typeAttribute = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 			if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE.equals(typeAttribute)) {
 				final NoteModel note = new NoteModel();
-	            if(containsXml(element))
-	                note.setXml(text);
-	            else
-	                note.setText(text);
+				note.setXml(text);
 	            final String contentType = element.getAttribute(
-	                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, 
+	                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE,
 	                    ContentSyntax.XML.prefix);
 	            note.setContentType(ContentSyntax.specificType(contentType));
 
@@ -71,8 +62,4 @@ class NoteBuilder implements IElementContentHandler {
 			}
 		}
 	}
-
-    @Override
-    public boolean containsXml(XMLElement element) {
-        return ContentSyntax.XML.matches(element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, ContentSyntax.XML.prefix));
-    }}
+}
