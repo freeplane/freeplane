@@ -231,7 +231,7 @@ public class ReportGenerator extends StreamHandler {
 		if (!isLoggable(record)) {
 			return;
 		}
-		
+
 		if (!(isReportGenerationInProgress)) {
 	        if(looksLikeDebugMessagePrintedToSystemStandardErrorStream(record)) {
 	            return;
@@ -370,7 +370,7 @@ public class ReportGenerator extends StreamHandler {
 			if (resourceController.getBooleanProperty("org.freeplane.plugin.bugreport.dialog.disabled") || GraphicsEnvironment.isHeadless())
 				return BugReportDialogManager.DENIED;
 			String question = TextUtils.getText("org.freeplane.plugin.bugreport.question");
-			if (!question.startsWith("<html>")) {
+			if (!HtmlUtils.isHtml(question)) {
 				question = HtmlUtils.plainToHTML(question);
 			}
 			final Object[] options = new Object[] { TextUtils.getText("org.freeplane.plugin.bugreport.always_agree"),

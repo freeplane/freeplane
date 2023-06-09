@@ -1,7 +1,13 @@
 package org.freeplane.features.text;
 
+import java.io.StringReader;
+
+import javax.xml.parsers.SAXParserFactory;
+
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.XmlUtils;
+import org.xml.sax.InputSource;
 
 
 public class RichTextModel {
@@ -9,6 +15,10 @@ public class RichTextModel {
 	private String text = null;
 	private String xml = null;
 
+	private static void validateXml(String xml) throws Exception{
+            SAXParserFactory.newInstance().newSAXParser().getXMLReader()
+                .parse(new InputSource(new StringReader(xml)));
+	}
 
 
 	public RichTextModel() {
@@ -38,16 +48,16 @@ public class RichTextModel {
 		    text = null;
 		    return;
 		}
-		if(newContent.startsWith("<html>")) {
+		if(HtmlUtils.isHtml(newContent)) {
 		    try {
-		        text = XmlUtils.replaceAscii0BySpace(newContent);
-		        String xhtml = HtmlUtils.toXhtml(text);
-		        xml = xhtml != null ? xhtml.trim() : null;
-		        if (xml != null && !xml.startsWith("<")) {
-		            text = xml;
-		        }
+		        String html = XmlUtils.replaceAscii0BySpace(newContent);
+		        String xhtml = HtmlUtils.toXhtml(html);
+		        validateXml(xhtml);
+		        text = html;
+		        xml = xhtml;
 		    } catch (Exception e) {
-		        text = xml = HtmlUtils.unescapeHTMLUnicodeEntity(newContent);
+		        LogUtils.severe("Can not create xhtml", e);
+		        setText(" " + newContent);
 		    }
 		}
 		else {

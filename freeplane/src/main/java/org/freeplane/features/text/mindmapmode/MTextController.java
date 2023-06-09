@@ -122,7 +122,7 @@ import com.lightdev.app.shtm.UIResources;
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
-	
+
 	private static class ExtensionCopier implements IExtensionCopier {
 
 		@Override
@@ -136,7 +136,7 @@ public class MTextController extends TextController {
 			String contentType = fromDetails.getContentType();
 			if (contentType == null)
 				return;
-	        
+
 	        DetailModel oldDetails = DetailModel.getDetail(to);
 	        DetailModel newDetails = oldDetails == null ? new DetailModel(false) :  oldDetails.copy();
 	        newDetails.setContentType(contentType);
@@ -154,11 +154,11 @@ public class MTextController extends TextController {
 			String contentType = fromDetails.getContentType();
 			if (contentType == null)
 				return;
-	        
+
 	        DetailModel newDetails = fromDetails.copy();
 	        newDetails.setContentType(null);
 	        from.putExtension(newDetails);
-			
+
 		}
 
 		@Override
@@ -172,8 +172,8 @@ public class MTextController extends TextController {
 	        remove(key, from);
 		}
 	}
-	
-	
+
+
     private static final String PARSE_DATA_PROPERTY = "parse_data";
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
@@ -313,7 +313,7 @@ public class MTextController extends TextController {
 			return null;
 		}
 		final String[] strings = new String[2];
-		if (text.startsWith("<html>")) {
+		if (HtmlUtils.isHtml(text)) {
 			final HTMLEditorKit kit = new HTMLEditorKit();
 			final HTMLDocument doc = new HTMLDocument();
 			final StringReader buf = new StringReader(text);
@@ -1008,8 +1008,8 @@ public class MTextController extends TextController {
 		    }
 		    if(e.getID() == KeyEvent.KEY_RELEASED|| isDeadKey(keyCode) || isNavigationKey(keyCode))
 		        return false;
-		    if(initialKeyEvent != null && 
-		            (initialKeyEvent.getKeyChar() != 0 
+		    if(initialKeyEvent != null &&
+		            (initialKeyEvent.getKeyChar() != 0
 		            && initialKeyEvent.getKeyChar() == e.getKeyChar()
 		            || initialKeyEvent.getKeyCode() == e.getKeyCode())) {
 		        return false;

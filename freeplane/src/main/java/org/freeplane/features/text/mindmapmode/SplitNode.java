@@ -30,6 +30,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -48,7 +49,7 @@ import com.lightdev.app.shtm.SHTMLWriter;
  */
 public class SplitNode extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -117,7 +118,7 @@ public class SplitNode extends AFreeplaneAction {
 	}
 
 	private String[] splitNode(final String text) {
-		if (text.startsWith("<html>")) {
+		if (HtmlUtils.isHtml(text)) {
 			String[] parts = null;
 			final HTMLEditorKit kit = new HTMLEditorKit();
 			final HTMLDocument doc = new HTMLDocument();

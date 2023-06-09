@@ -84,17 +84,13 @@ public class SharedNodeData {
 	}
 
 	public void setText(String text) {
-		try {
-			userObject = XmlUtils.replaceAscii0BySpace(text);
-			xmlText = HtmlUtils.toXhtml(text);
-			if (xmlText != null && !xmlText.startsWith("<")) {
-				userObject = " " + text;
-				xmlText = null;
-			}
-		} catch (Exception e) {
-			userObject = " " + text;
-			xmlText = null;
-		}
+		RichTextModel richTextModel = new RichTextModel();
+		richTextModel.setText(text);
+		userObject = richTextModel.getText();
+		if(HtmlUtils.isHtml(richTextModel.getXml()))
+		    xmlText = richTextModel.getXml();
+		else
+		    xmlText = null;
 	}
 
 	public void setFolded(boolean folded) {

@@ -207,7 +207,7 @@ class MindMapHTMLWriter {
 		writer.write("fold_document();" + lf);
 		writer.write("</SCRIPT>" + lf);
 	}
-	
+
 	private void writeFoldingButtons(final String localParentID) throws IOException {
 		writer.write("<span id=\"show" + localParentID + "\" class=\"foldclosed\" onClick=\"show_folder('"
 		        + localParentID + "')\" style=\"POSITION: absolute\">+</span> " + "<span id=\"hide" + localParentID
@@ -304,7 +304,7 @@ class MindMapHTMLWriter {
 	private void writeDivWithBackgroundColor(final Color backgroundColor) throws IOException {
 		writeElementWithBackgroundColorAndPadding("div", backgroundColor, "");
 	}
-	
+
 	private void writeElementWithBackgroundColorAndPadding(String element, final Color backgroundColor, final String otherStyleAttributes) throws IOException {
 			writer.write("<" + element);
 			if(backgroundColor != null)
@@ -313,7 +313,7 @@ class MindMapHTMLWriter {
 					+ otherStyleAttributes + "\"");
 			writer.write(">" + lf );
 	}
-	
+
 	private Color getCloudColor(NodeModel node, boolean considerAncestors) {
 		if(node == null)
 			return null;
@@ -324,7 +324,7 @@ class MindMapHTMLWriter {
 			return getCloudColor(node.getParentNode(), true);
 		return null;
 	}
-	
+
 	private Color getWrittenCloudColor(NodeModel node, Color ancestorCloudColor) {
 		if(! writesColors)
 			return null;
@@ -335,7 +335,7 @@ class MindMapHTMLWriter {
 			return color;
 		return ancestorCloudColor;
 	}
-	
+
 	private Color getWrittenBackgroundColor(NodeModel node) {
 		if(! writesColors)
 			return null;
@@ -366,7 +366,7 @@ class MindMapHTMLWriter {
 			Object transformed = textController.getTransformedObjectNoFormattingNoThrow(node, node, userObject);
 			boolean containsIcon = transformed instanceof Icon;
 			final String text =  containsIcon ? HtmlUtils.iconToHtml((Icon) transformed) :  transformed.toString();
-			final boolean containsHtml = ! containsIcon && text.startsWith("<html>");
+			final boolean containsHtml = ! containsIcon && HtmlUtils.isHtml(text);
 			boolean childSubtreesHaveVisibleContent = node.childSubtreesHaveVisibleContent(filter);
 			final boolean heading = basedOnHeadings && !containsHtml && childSubtreesHaveVisibleContent && depth <= 6;
 			final boolean writesCloudColor = cloudColor != null;
@@ -385,14 +385,14 @@ class MindMapHTMLWriter {
 				writer.write("<p>");
 			}
 			boolean createFolding =  childSubtreesHaveVisibleContent && shouldCreateFoldingCode(node);
-			
+
 			String localParentID = parentID;
 			if (createFolding) {
 				lastChildNumber++;
 				localParentID = parentID + "_" + lastChildNumber;
 				writeFoldingButtons(localParentID);
 			}
-			final String fontStyle = fontStyle(writesColors ? nodeStyleController.getColor(node, StyleOption.FOR_UNSELECTED_NODE) : null, 
+			final String fontStyle = fontStyle(writesColors ? nodeStyleController.getColor(node, StyleOption.FOR_UNSELECTED_NODE) : null,
 			        nodeStyleController.getFont(node, StyleOption.FOR_UNSELECTED_NODE));
 			boolean shouldOutputFontStyle = !fontStyle.equals("");
 			if (shouldOutputFontStyle) {

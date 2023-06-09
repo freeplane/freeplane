@@ -15,15 +15,6 @@ public class XmlUtils {
     }
 
     public static boolean startsWithElement(final String text, String elementName) {
-        for (int i = 0; i < text.length(); i++) {
-            final char ch = text.charAt(i);
-            if (ch == '<') {
-                return containsElementAt(text, elementName, i);
-            }
-            if (!Character.isWhitespace(ch)) {
-                return false;
-            }
-        }
-        return false;
+        return containsElementAt(text, elementName, 0);
     }
 }

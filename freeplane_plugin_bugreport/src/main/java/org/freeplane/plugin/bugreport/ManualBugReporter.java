@@ -62,7 +62,7 @@ class ManualBugReporter implements IBugReportListener {
 		String option = ResourceController.getResourceController().getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
 			String question = TextUtils.getText("org.freeplane.plugin.bugreport.wanted_bug");
-			if (!question.startsWith("<html>")) {
+			if (!HtmlUtils.isHtml(question)) {
 				question = HtmlUtils.plainToHTML(question);
 			}
 			final Object[] options = new Object[] { TextUtils.getText("ok"),

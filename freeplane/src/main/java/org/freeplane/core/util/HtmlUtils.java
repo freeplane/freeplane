@@ -655,9 +655,6 @@ public class HtmlUtils {
 
 
 	public static String toXhtml(String htmlText) {
-		if (!HtmlUtils.isHtml(htmlText)) {
-			return null;
-		}
 		final StringReader reader = new StringReader(htmlText);
 		final StringWriter writer = new StringWriter();
 		try {

@@ -69,7 +69,7 @@ public class ZoomableLabel extends JLabel {
 		}
 		return ((ZoomableLabelUI)getUI()).getPreferredSize(this);
 	}
-	
+
 	protected float getZoom() {
 		final float zoom = getMap().getZoom();
 		return zoom;
@@ -116,7 +116,7 @@ public class ZoomableLabel extends JLabel {
 		if (map == null || nodeText == null) {
 			return;
 		}
-		final boolean isHtml = nodeText.startsWith("<html>");
+		final boolean isHtml = HtmlUtils.isHtml(nodeText);
 		boolean widthMustBeRestricted = ! areInsetsFixed();
 		boolean isLong = false;
 		if (!isHtml) {
@@ -175,7 +175,7 @@ public class ZoomableLabel extends JLabel {
 			setText(nodeText);
 		}
     }
-	
+
 	public void setStyleSheet(String css, StyleSheet styleSheet) {
 		if(! this.css.equals(css)) {
 			StyleSheet old = (StyleSheet) getClientProperty(StyleSheet.class);
@@ -191,7 +191,7 @@ public class ZoomableLabel extends JLabel {
 		StyleSheet s = (StyleSheet) getClientProperty(StyleSheet.class);
 		return s != null ? s : NodeCss.EMPTY.getStyleSheet();
 	}
-	
+
 	protected boolean areInsetsFixed() {
 		return true;
 	}
@@ -235,7 +235,7 @@ public class ZoomableLabel extends JLabel {
 		final FontMetrics fontMetrics = fmg.getFontMetrics();
 		return fontMetrics;
 	}
-	
+
 	public String getLink(Point p){
 		View view = (View)getClientProperty(BasicHTML.propertyKey);
 		if(view == null)
@@ -257,9 +257,9 @@ public class ZoomableLabel extends JLabel {
 	public Insets getZoomedInsets() {
 		Insets unzoomedInsets = getInsets();
 		float zoom = getZoom();
-		Insets zoomedInsets = new Insets((int) (unzoomedInsets.top * zoom), 
-				(int) (unzoomedInsets.left * zoom), 
-				(int) (unzoomedInsets.bottom * zoom), 
+		Insets zoomedInsets = new Insets((int) (unzoomedInsets.top * zoom),
+				(int) (unzoomedInsets.left * zoom),
+				(int) (unzoomedInsets.bottom * zoom),
 				(int) (unzoomedInsets.right * zoom));
 		return zoomedInsets;
 	}
@@ -296,7 +296,7 @@ public class ZoomableLabel extends JLabel {
 		else
 			return width;
 	}
-	
+
     public Color getUnselectedForeground() {
         return super.getForeground();
     }
@@ -304,7 +304,7 @@ public class ZoomableLabel extends JLabel {
 	public Icon getTextRenderingIcon() {
 		return (Icon) getClientProperty(ZoomableLabel.TEXT_RENDERING_ICON);
 	}
-	
+
 	public void setTextRenderingIcon(Icon icon) {
 		putClientProperty(TEXT_RENDERING_ICON, icon);
 	}

@@ -37,7 +37,7 @@ public class TextUtils {
             return text;
         }
 		final Object[] processedArguments;
-		if(text.startsWith("<html>")){
+		if(HtmlUtils.isHtml(text)){
 			processedArguments = new String[messageArguments.length];
 			int i = 0;
 			for(Object s : messageArguments){
