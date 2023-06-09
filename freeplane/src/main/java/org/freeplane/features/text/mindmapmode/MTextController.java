@@ -821,7 +821,8 @@ public class MTextController extends TextController {
 
 	private boolean containsFormatting(final String text) {
 		if (FORMATTING_PATTERN == null) {
-			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)|&lt;(?:html|table)&gt;",
+			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)"
+			        + "|^(?:<[^<]+>|\\s)*&lt;(?:html|table)&gt;",
 			    Pattern.CASE_INSENSITIVE);
 		}
 		final Matcher matcher = FORMATTING_PATTERN.matcher(text);
@@ -1260,7 +1261,6 @@ public class MTextController extends TextController {
 				text = HtmlUtils.htmlToPlain(text);
 			}
 		}
-		text = text.replaceFirst("\\s+$", "");
 		return text;
 	}
 
