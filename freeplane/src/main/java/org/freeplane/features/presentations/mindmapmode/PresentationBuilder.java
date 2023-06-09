@@ -6,6 +6,7 @@ import static org.freeplane.features.presentations.mindmapmode.PresentationBuild
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODES_ON_SLIDE;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODE_ON_SLIDE;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.ROOT_NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PLACED_NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PLACED_NODE_POSITION;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PRESENTATION;
@@ -40,18 +41,18 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class PresentationBuilder {
-	
+
 	private enum NodePositionMap {
-		WEST(NodePosition.LEFT), 
-		CENTER(NodePosition.CENTER), 
-		EAST(NodePosition.RIGHT), 
-		NORTH(NodePosition.TOP), 
+		WEST(NodePosition.LEFT),
+		CENTER(NodePosition.CENTER),
+		EAST(NodePosition.RIGHT),
+		NORTH(NodePosition.TOP),
 		SOUTH(NodePosition.BOTTOM),
-		NORTHWEST(NodePosition.TOP_LEFT), 
-		NORTHEAST(NodePosition.TOP_RIGHT), 
-		SOUTHWEST(NodePosition.BOTTOM_LEFT), 
+		NORTHWEST(NodePosition.TOP_LEFT),
+		NORTHEAST(NodePosition.TOP_RIGHT),
+		SOUTHWEST(NodePosition.BOTTOM_LEFT),
 		SOUTHEAST(NodePosition.BOTTOM_RIGHT);
-		
+
 		static private NodePosition nodePositionOf(final String nodePosition) {
 			try {
 				return NodePosition.valueOf(nodePosition);
@@ -60,13 +61,13 @@ class PresentationBuilder {
 			}
 		}
 
-		
+
 		public final NodePosition nodePosition;
 
 		private NodePositionMap(NodePosition nodePosition) {
 			this.nodePosition = nodePosition;
 		}
-		
+
 	}
 
 
@@ -78,7 +79,8 @@ class PresentationBuilder {
 	static final String SLIDE_CONDITION = "SlideCondition";
 	static final String ZOOM = "zoom";
 	static final String CENTERED_NODE_ID = "centeredNodeId";
-	static final String PLACED_NODE_ID = "placedNodeId";
+    static final String ROOT_NODE_ID = "rootNodeId";
+    static final String PLACED_NODE_ID = "placedNodeId";
 	static final String PLACED_NODE_POSITION = "placedNodePosition";
 	static final String CHANGES_ZOOM = "changesZoom";
 	static final String SHOWS_ONLY_SPECIFIC_NODES = "showsOnlySpecificNodes";
@@ -142,8 +144,8 @@ class PresentationBuilder {
 				node.addExtension(mapPresentationExtension);
 				if(dublicatePresentationsCount > 0) {
 				    UITools.errorMessage(TextUtils.format(
-				            "duplicate_presentations_removed", 
-				            dublicatePresentationsCount, 
+				            "duplicate_presentations_removed",
+				            dublicatePresentationsCount,
 				            presentations.getSize(),
 				            map.getTitle()));
 				}
@@ -158,10 +160,14 @@ class PresentationBuilder {
 				if(centeredNodeId != null) {
 					s.setPlacedNodeId(centeredNodeId);
 				}
-				final String placedNodeId = toString(xmlSlide, PLACED_NODE_ID);
-				if(placedNodeId != null) {
-					s.setPlacedNodeId(placedNodeId);
-				}
+                final String rootNodeId = toString(xmlSlide, ROOT_NODE_ID);
+                if(rootNodeId != null) {
+                    s.setRootNodeId(rootNodeId);
+                }
+                final String placedNodeId = toString(xmlSlide, PLACED_NODE_ID);
+                if(placedNodeId != null) {
+                    s.setPlacedNodeId(placedNodeId);
+                }
 				final String nodePosition = xmlSlide.getAttribute(PLACED_NODE_POSITION, NodePosition.CENTER.name());
 				s.setPlacedNodePosition(NodePositionMap.nodePositionOf(nodePosition));
 				s.setZoom(toFloat(xmlSlide, ZOOM));
@@ -268,6 +274,10 @@ class PresentationWriter {
 			xmlSlide.setAttribute(SHOWS_ONLY_SPECIFIC_NODES, TRUE);
 		if (s.changesZoom())
 			xmlSlide.setAttribute(CHANGES_ZOOM, TRUE);
+        final String rootNodeId = s.getRootNodeId();
+        if (rootNodeId != null){
+            xmlSlide.setAttribute(ROOT_NODE_ID, rootNodeId);
+        }
 		final String placedNodeId = s.getPlacedNodeId();
 		if (placedNodeId != null){
 			xmlSlide.setAttribute(PLACED_NODE_ID, placedNodeId);

@@ -12,6 +12,8 @@ import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeE
 
 public class PresentationState {
 	private static final String USES_PRESENTATION_ZOOM_PROPERTY = "presentation.zoom";
+	private static final Slide ALL_NODES = new Slide("All nodes");
+
 	private NamedElementCollection<Presentation> presentations;
 	private Presentation currentPresentation;
 	private final ArrayList<PresentationStateChangeListener> presentationStateChangeListeners;
@@ -19,7 +21,7 @@ public class PresentationState {
 	private boolean highlightsNodes;
 	private boolean combinesAllPresentations;
 	private float zoomFactor;
-	
+
 	protected void setCombinesAllPresentations(boolean combinesAllPresentations) {
 		if(this.combinesAllPresentations != combinesAllPresentations){
 			this.combinesAllPresentations = combinesAllPresentations;
@@ -35,7 +37,7 @@ public class PresentationState {
 		this.presentationStateChangeListeners = new ArrayList<>();
 		this.zoomFactor = 1f;
 	}
-	
+
 	public void changePresentation(CollectionChangedEvent<Presentation> event) {
 		presentations = event.collection;
 		Presentation presentation = presentations != null ? presentations.getCurrentElement() : null;
@@ -55,10 +57,13 @@ public class PresentationState {
 		if (currentSlide != newSlide) {
 			currentSlide = newSlide;
 			firePresentationStateChangedEvent(isPresentationAlreadyRunning ? SLIDE_CHANGED : PLAYING_STATE_CHANGED);
-		}		
+		}
 		if (currentSlide != null) {
 			if(! isPresentationAlreadyRunning){
-				zoomFactor = Controller.getCurrentController().getMapViewManager().getZoom();
+				Controller controller = Controller.getCurrentController();
+                zoomFactor = controller.getMapViewManager().getZoom();
+				ALL_NODES.setRootNodeId(controller.getSelection().getSelectionRoot().getID());
+				ALL_NODES.setZoom(zoomFactor);
 			}
 			currentSlide.apply(getPresentationZoomFactor());
 		}
@@ -76,13 +81,14 @@ public class PresentationState {
 		if (currentSlide != null) {
 			currentSlide = null;
 			firePresentationStateChangedEvent(PLAYING_STATE_CHANGED);
-			Slide.ALL_NODES.apply(1f);
+			ALL_NODES.apply(1f);
+			ALL_NODES.setRootNodeId(null);
 			if(usesMapZoom())
 				Controller.getCurrentController().getMapViewManager().setZoom(zoomFactor);
 			zoomFactor = 1f;
 		}
 	}
-	
+
 	public void addPresentationStateListener(PresentationStateChangeListener presentationStateChangeListener) {
 		this.presentationStateChangeListeners.add(presentationStateChangeListener);
 	}
@@ -223,7 +229,17 @@ public class PresentationState {
 	public boolean shouldHighlightNodeContainedOnSlide(NodeModel node) {
 		return  ! isPresentationRunning() && highlightsNodes && canShowCurrentSlide() && currentPresentation.slides.getCurrentElement().isNodeVisible(node);
 	}
-	
+
+
+    public boolean isSlideRoot(NodeModel node) {
+        NodeModel slideRootNode = currentPresentation.slides.getCurrentElement().getSlideRootNode();
+        System.out.println(slideRootNode.getText());
+        System.out.println(node.getText());
+        System.out.println(slideRootNode == node);
+
+        return slideRootNode == node;
+    }
+
 	public boolean shouldHighlightNodeFoldedOnSlide(NodeModel node) {
 		return ! isPresentationRunning() && highlightsNodes && canShowCurrentSlide() && currentPresentation.slides.getCurrentElement().isNodeFolded(node);
 	}
@@ -243,7 +259,7 @@ public class PresentationState {
 		if(isPresentationRunning())
 			currentSlide.apply(zoomFactor);
 		else
-			Slide.ALL_NODES.apply(1f);
+			ALL_NODES.apply(1f);
 	}
 
 	NamedElementCollection<Presentation> getPresentations() {

@@ -36,6 +36,7 @@ public class PresentationController implements IExtension{
 
 	private static float[] FOLDED_NODE_DASH = new float[]{FOLDED_NODE_DOT_WIDTH/2, 2*FOLDED_NODE_DOT_WIDTH};
 	private static BasicStroke FOLDED_NODE_STROKE = new BasicStroke(FOLDED_NODE_DOT_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1f, FOLDED_NODE_DASH, 0f);
+	private static BasicStroke ROOT_NODE_STROKE = new BasicStroke(FOLDED_NODE_DOT_WIDTH * 2);
 	private final PresentationState presentationState;
 	private final PresentationEditorController presentationEditorController;
 	ModeController modeController;
@@ -59,8 +60,10 @@ public class PresentationController implements IExtension{
 			}
 
 			@Override
-			public void configure(Graphics2D g, boolean isPrinting) {
+			public void configure(NodeModel node, Graphics2D g, boolean isPrinting) {
 				g.setColor(NODE_HIGHLIGHTING_COLOR);
+				if (presentationState.isSlideRoot(node))
+				    g.setStroke(ROOT_NODE_STROKE);
 			}
 
 		});
@@ -72,7 +75,7 @@ public class PresentationController implements IExtension{
 			}
 
 			@Override
-			public void configure(Graphics2D g, boolean isPrinting) {
+			public void configure(NodeModel node, Graphics2D g, boolean isPrinting) {
 				g.setColor(NODE_HIGHLIGHTING_COLOR);
 				g.setStroke(FOLDED_NODE_STROKE);
 			}

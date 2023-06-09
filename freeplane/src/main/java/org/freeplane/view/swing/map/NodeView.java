@@ -1461,7 +1461,7 @@ public class NodeView extends JComponent implements INodeView {
 		final Color oldColor = g.getColor();
 		final Stroke oldStroke = g.getStroke();
 		g.setStroke(NodeHighlighter.DEFAULT_STROKE);
-		highlighter.configure(g, map.isPrinting());
+		highlighter.configure(getModel(), g, map.isPrinting());
 		final JComponent content = getContent();
 		Point contentLocation = content.getLocation();
 		final int arcWidth = 15;

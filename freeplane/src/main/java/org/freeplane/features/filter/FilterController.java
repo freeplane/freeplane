@@ -227,7 +227,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 			}
 
 			@Override
-			public void configure(Graphics2D g, boolean isPrinting) {
+			public void configure(NodeModel node, Graphics2D g, boolean isPrinting) {
 				g.setColor(HIGHLIGHT_COLOR);
 			}
 		});

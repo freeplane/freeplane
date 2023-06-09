@@ -2687,6 +2687,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		NodeView nodeView = getNodeView(node);
 		setRootNode(nodeView);
+        validateAndScroll();
 	}
 
 
@@ -2702,7 +2703,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(lastRoot.isFolded()) {
 		    lastRoot.fireFoldingChanged();
 		}
+        validateAndScroll();
 	}
+
+    private void validateAndScroll() {
+        final JViewport mapViewport = (JViewport) getParent();
+        if(mapViewport != null)
+            mapViewport.validate();
+    }
 
 
 	int calculateComponentIndex(Container parent, int index) {
