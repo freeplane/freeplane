@@ -22,7 +22,6 @@ package org.freeplane.features.map;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.XmlUtils;
 import org.freeplane.features.text.RichTextModel;
 
 /**
