@@ -23,6 +23,10 @@ task viewerApiJar(type: Jar) {
 				include '**/Quantity.class'
 				include '**/EdgeStyle.class'
 				include '**/FreeplaneVersion.class'
+				include '**/LayoutOrientation.class'
+				include '**/ChildNodesLayout.class'
+				include '**/ChildrenSides.class'
+				include '**/ChildNodesAlignment.class'
     }
     includeEmptyDirs = false
 }
