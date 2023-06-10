@@ -71,7 +71,7 @@ class NotePanel extends JPanel {
     private final StyleSheet ownStyleSheet;
 
     private FocusListener sourcePanelFocusListener;
-    
+
     private boolean isEditing = false;
 
 	NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
@@ -241,23 +241,44 @@ class NotePanel extends JPanel {
                 return false;
         } else
             return false;
-		
+
 	}
 
-	void setEditedContent(String note) {
+	void setEditedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background) {
 	    isEditing = true;
 		setVisible(htmlEditorPanel);
+		htmlEditorPanel.setCurrentDocumentContent("");
+        updateStyleSheet(ownRule, customStyleSheet);
+        updateColors(foreground, background);
 		htmlEditorPanel.setCurrentDocumentContent(note);
+		if(note.isEmpty()) {
+		    htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+            htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+		}
 	}
 
-	void setViewedContent(String note) {
+
+    void removeViewedContent() {
+        setVisible(htmlViewerPanel);
+        String contentType = CONTENT_TYPE_TEXT_PLAIN;
+        htmlViewerPanel.setText("");
+        if(! htmlViewerPanel.getContentType().equals(contentType))
+            htmlViewerPanel.setContentType(contentType);
+    }
+	void setViewedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background) {
 		setVisible(htmlViewerPanel);
-		if(! note.isEmpty()) {
-			String contentType = HtmlUtils.isHtml(note) ? CONTENT_TYPE_TEXT_HTML : CONTENT_TYPE_TEXT_PLAIN;
-			if(! htmlViewerPanel.getContentType().equals(contentType))
-				htmlViewerPanel.setContentType(contentType);
-		}
+		String contentType = HtmlUtils.isHtml(note) ? CONTENT_TYPE_TEXT_HTML : CONTENT_TYPE_TEXT_PLAIN;
+		htmlViewerPanel.setText("");
+		if(! htmlViewerPanel.getContentType().equals(contentType))
+		    htmlViewerPanel.setContentType(contentType);
+		if(contentType == CONTENT_TYPE_TEXT_HTML)
+		    updateStyleSheet(ownRule, customStyleSheet);
+		updateColors(foreground, background);
 		htmlViewerPanel.setText(note);
+        if(note.isEmpty()) {
+            htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+            htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+        }
 	}
 
 	void setViewedImage(Icon icon) {
@@ -301,7 +322,7 @@ class NotePanel extends JPanel {
 			return htmlViewerPanel;
 	}
 
-	void updateColors(Color noteForeground, Color noteBackground) {
+	private void updateColors(Color noteForeground, Color noteBackground) {
 	    final Color caretColor = noteForeground != null ? noteForeground : defaultCaretColor;
 	    final JEditorPane editorPane;
 	    if(htmlEditorPanel.isVisible()) {
@@ -315,7 +336,7 @@ class NotePanel extends JPanel {
 	    editorPane.setBackground(noteBackground);
 	}
 
-	void updateStyleSheet(String ownRule, StyleSheet customStyleSheet) {
+	private void updateStyleSheet(String ownRule, StyleSheet customStyleSheet) {
 		HTMLDocument document = getDocument();
 		StyleSheet styleSheet = document.getStyleSheet();
 		StyleSheetConfigurer.resetStyles(styleSheet, 1);
@@ -381,17 +402,17 @@ class NotePanel extends JPanel {
                 textPane.addFocusListener(sourcePanelFocusListener);
                 textPane.getDocument().addDocumentListener(noteDocumentListener);
                 textPane.addKeyListener(new KeyListener() {
-                    
+
                     @Override
                     public void keyTyped(KeyEvent e) {
                         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
                             isEditing = false;
                             setViewerComponent(view);
                     }
-                    
+
                     @Override
                     public void keyReleased(KeyEvent e) {
-                    }                    
+                    }
                     @Override
                     public void keyPressed(KeyEvent e) {
                     }
@@ -400,10 +421,10 @@ class NotePanel extends JPanel {
             }
         }
 	}
-	
+
 	private void setViewerComponent(Component view) {
 	       Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-	       if(isEditing && focusOwner instanceof JTextComponent 
+	       if(isEditing && focusOwner instanceof JTextComponent
 	               && ((JTextComponent)focusOwner).isEditable()
 	               && SwingUtilities.isDescendingFrom(focusOwner, this))
 	           return;

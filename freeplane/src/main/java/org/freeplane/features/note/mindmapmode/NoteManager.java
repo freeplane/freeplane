@@ -19,8 +19,11 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
+import java.awt.Color;
+
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
+import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
@@ -33,7 +36,9 @@ import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.text.TextController;
 
 final class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
@@ -94,8 +99,22 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		if (notePanel == null) {
 			return;
 		}
+        // set default font for notes:
+        final ModeController modeController = Controller.getCurrentModeController();
+        final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
+        String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
+        Color noteForeground = noteStyleAccessor.getNoteForeground();
+        Color noteBackground = noteStyleAccessor.getNoteBackground();
+        StringBuilder bodyCssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
+        if (ResourceController.getResourceController().getBooleanProperty(
+            MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
+            bodyCssBuilder.append("p {margin-top:0;}\n");
+        }
+
+        String bodyCssRule = bodyCssBuilder.toString();
+        StyleSheet noteStyleSheet = noteStyleAccessor.getNoteStyleSheet();
 		if(node == null) {
-		    notePanel.setViewedContent("");
+		    notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			return;
 		}
 		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
@@ -111,7 +130,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 						return;
 					}
 					notePanel.removeDocumentListener();
-					notePanel.setEditedContent(note);
+					notePanel.setEditedContent(note, bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -120,21 +139,21 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 					});
 				}
 				else
-					notePanel.setViewedContent(transformedContent.toString());
+					notePanel.setViewedContent(transformedContent.toString(), bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			}
 			catch (Throwable e) {
 				LogUtils.warn(e.getMessage());
-				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()));
+				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()),
+				        bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			}
 		} else {
 			String noteContentType = noteController.getNoteContentType(node);
 			if (TextController.CONTENT_TYPE_AUTO.equals(noteContentType)
 					|| TextController.CONTENT_TYPE_HTML.equals(noteContentType))
-					notePanel.setEditedContent("");
+					notePanel.setEditedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			else
-				notePanel.setViewedContent("");
+				notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 		}
-        noteController.setDefaultStyle(node);
         notePanel.updateBaseUrl(node.getMap().getURL());
 	}
 
@@ -147,7 +166,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		    }
 			final NotePanel notePanel = noteController.getNotePanel();
 			if(notePanel != null)
-				notePanel.setViewedContent("");
+				notePanel.removeViewedContent();
 		}
 	}
 

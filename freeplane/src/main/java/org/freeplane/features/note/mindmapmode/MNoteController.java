@@ -40,7 +40,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
@@ -287,21 +286,6 @@ public class MNoteController extends NoteController {
 		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(notePanel);
 		notePanel.setVisible(true);
 		notePanel.revalidate();
-	}
-
-	void setDefaultStyle(NodeModel node) {
-	    // set default font for notes:
-	    final ModeController modeController = Controller.getCurrentModeController();
-	    final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
-		String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
-		notePanel.updateColors(noteStyleAccessor.getNoteForeground(), noteStyleAccessor.getNoteBackground());
-		StringBuilder cssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
-	    if (ResourceController.getResourceController().getBooleanProperty(
-	        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
-			cssBuilder.append("p {margin-top:0;}\n");
-		}
-
-	    notePanel.updateStyleSheet(cssBuilder.toString(), noteStyleAccessor.getNoteStyleSheet());
 	}
 
 	public void stopEditing() {
