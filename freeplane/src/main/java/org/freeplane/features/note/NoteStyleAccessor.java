@@ -13,6 +13,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 
@@ -20,7 +21,8 @@ public class NoteStyleAccessor {
 	final private String rule;
 	final private Color noteForeground;
 	final private NodeCss noteCss;
-	private Color noteBackground;
+	final private Color noteBackground;
+	final private HorizontalTextAlignment horizontalAlignment;
 	public NoteStyleAccessor(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
 		final Controller controller = modeController.getController();
 		MapModel map = controller.getMap();
@@ -33,7 +35,7 @@ public class NoteStyleAccessor {
 			this.noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			this.noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			this.noteCss = style.getStyleSheet(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
-			final int alignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+			this.horizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
 			if(asHtmlFragment)
 				cssRuleBuilder.withHTMLFont(noteFont);
@@ -42,7 +44,7 @@ public class NoteStyleAccessor {
 			cssRuleBuilder.withColor(noteForeground)
 			.withBackground((noteBackground != null ? noteBackground : //
 				controller.getMapViewManager().getMapViewComponent().getBackground()))
-			.withAlignment(alignment);
+			.withAlignment(horizontalAlignment.swingConstant);
 			if(asHtmlFragment)
 				cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node, StyleOption.FOR_UNSELECTED_NODE));
 			this.rule = cssRuleBuilder.toString();
@@ -52,23 +54,28 @@ public class NoteStyleAccessor {
 			this.noteForeground = null;
 			this.noteBackground = null;
 			this.noteCss = NodeCss.EMPTY;
+			this.horizontalAlignment = HorizontalTextAlignment.DEFAULT;
 		}
 
 	}
 	public String getNoteCSSStyle() {
 		return rule;
 	}
-	
+
 	public StyleSheet getNoteStyleSheet() {
 		return noteCss.getStyleSheet();
 	}
-	
+
 	public Color getNoteForeground() {
 		return noteForeground;
 	}
 	public Color getNoteBackground() {
 		return noteBackground;
 	}
+    public HorizontalTextAlignment getHorizontalAlignment() {
+        return horizontalAlignment;
+    }
+
 
 
 }

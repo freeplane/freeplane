@@ -43,6 +43,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -281,9 +282,10 @@ class NotePanel extends JPanel {
         }
 	}
 
-	void setViewedImage(Icon icon) {
+	void setViewedImage(Icon icon, HorizontalTextAlignment alignment ) {
 		setVisible(iconViewerPanel);
 		iconViewerPanel.setIcon(icon);
+		iconViewerPanel.setHorizontalAlignment(alignment.swingConstant);
 	}
 
 	private void setVisible(JComponent component) {

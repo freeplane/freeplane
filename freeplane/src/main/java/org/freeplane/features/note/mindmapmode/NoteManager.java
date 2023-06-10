@@ -124,7 +124,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 				final Object transformedContent = textController.getTransformedObject(node, NoteModel.getNote(node), note);
 				Icon icon = textController.getIcon(transformedContent);
 				if(icon != null)
-					notePanel.setViewedImage(icon);
+					notePanel.setViewedImage(icon, noteStyleAccessor.getHorizontalAlignment());
 				else if (transformedContent == note) {
 					if (ignoreEditorUpdate) {
 						return;
