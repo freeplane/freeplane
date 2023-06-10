@@ -20,16 +20,21 @@
 package org.freeplane.main.applet;
 
 import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.JLabel;
+import javax.swing.JToolBar;
 
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -78,14 +83,10 @@ class BToolbarContributor implements EntryVisitor, IMapViewChangeListener {
 	}
 
 	@Override
-	public void visit(Entry target) {
-		final EntryAccessor entryAccessor = new EntryAccessor();
-		final Entry label = new Entry();
-		target.addChild(label);
-		entryAccessor.setComponent(label, new JLabel("URL:"));
-		final Entry field = new Entry();
-		target.addChild(field);
-		entryAccessor.setComponent(field, urlfield);
+	public void visit(Entry entry) {
+		final JToolBar container = (JToolBar) new EntryAccessor().getAncestorComponent(entry);
+		GridBagConstraints constraints = JToolbarComponentBuilder.layoutConstraintsForEntry(entry, urlfield);
+		container.add(urlfield, constraints);
 	}
 
 	@Override

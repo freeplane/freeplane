@@ -19,12 +19,17 @@
  */
 package org.freeplane.main.applet;
 
+import java.awt.Component;
+
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.menu.ComponentProvider;
+import org.freeplane.core.ui.menubuilders.menu.JToolbarComponentBuilder;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
@@ -87,7 +92,6 @@ public class BModeControllerFactory {
 		FreeNode.install();
 		MapStyle.install(true);
 		final BToolbarContributor toolbarContributor = new BToolbarContributor();
-		modeController.addUiBuilder(Phase.ACTIONS, "main_toolbar_url", toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
@@ -102,6 +106,14 @@ public class BModeControllerFactory {
 		EncryptionController.install(new EncryptionController(modeController));
 		new AutomaticLayoutController();
 		HiddenNodeContoller.install(modeController);
+		modeController.addUiBuilder(Phase.UI, "main_toolbar_url", toolbarContributor);
+		modeController.addUiBuilder(Phase.UI, "main_toolbar_zoom", new JToolbarComponentBuilder(
+			    new ComponentProvider() {
+				    @Override
+				    public Component createComponent(Entry entry) {
+					    return controller.getMapViewManager().createZoomBox();
+				    }
+			    }));
 		return modeController;
 	}
 }

@@ -110,28 +110,20 @@
 		<Entry name="CopySingleAction" accelerator="control shift C" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
-		<Entry name="url" builder="main_toolbar_url" row = "1" width = "3"/>
-		<Entry builder="main_toolbar_zoom" name="zoom"  row = "2"/>
-		<Entry name="open" row = "2">
-			<Entry name="PrintAction" />
-			<Entry name="PrintDirectAction" />
-		</Entry>
+		<Entry builder="separator" />
+		<Entry name="url" builder="main_toolbar_url" />
+		<Entry name="PrintAction" />
+		<Entry name="PrintDirectAction" />
+		<Entry builder="main_toolbar_zoom" name="zoom" />
 		<Entry name="CopyAction" />
 		<Entry name="EnterPassword" />
-		<Entry row="1">
-			<Entry name="UnfoldOneLevelAction" />
-			<Entry name="UnfoldAllAction" />
-		</Entry>
-		<Entry row="2">
-			<Entry name="FoldOneLevelAction" />
-			<Entry name="FoldAllAction" />
-		</Entry>
-		<Entry row="1">
-			<Entry name="FindAction" />
-			<Entry name="FindNextAction" />
-		</Entry>
-		<Entry name="find" row="2">
-			<Entry name="FindPreviousAction" />
-		</Entry>
+		<Entry builder="separator" />
+		<Entry name="UnfoldOneLevelAction" />
+		<Entry name="UnfoldAllAction" />
+		<Entry name="FoldOneLevelAction" />
+		<Entry name="FoldAllAction" />
+		<Entry name="FindAction" />
+		<Entry name="FindNextAction" />
+		<Entry name="FindPreviousAction" />
 	</Entry>
 </FreeplaneUIEntries>

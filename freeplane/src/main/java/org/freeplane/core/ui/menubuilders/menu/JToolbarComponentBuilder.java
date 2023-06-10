@@ -38,37 +38,42 @@ public class JToolbarComponentBuilder implements EntryVisitor {
 				entry.setAttribute(actionEnabler.getClass(), actionEnabler);
 			}
 			final JToolBar container = (JToolBar) new EntryAccessor().getAncestorComponent(entry);
-			final int gridWidth;
-			final int gridHeight;
-			String rowSpec = (String) entry.getAttribute("row");
-			if(rowSpec == null)
-				rowSpec = (String) entry.getParent().getAttribute("row");
-			final int row;
-			if ("2".equals(rowSpec))
-				row = 1;
-			else
-				row = 0;
-			String widthSpec =(String)entry.getAttribute("width");
-			if(widthSpec != null)
-				gridWidth = Integer.valueOf(widthSpec);
-			else
-				gridWidth = 1;
-			if(rowSpec == null || component instanceof JSeparator) {
-				gridHeight = 2;
-			} else {
-				gridHeight = 1;
-			}
-			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = GridBagConstraints.RELATIVE;
-			constraints.gridy = row;
-			constraints.gridwidth = gridWidth;
-			constraints.gridheight = gridHeight;
-			String weightSpec = (String) entry.getAttribute("weight");
-			constraints.weightx = weightSpec != null ? Integer.parseInt(weightSpec) : 0;
-			constraints.fill = gridHeight == 1 ? GridBagConstraints.HORIZONTAL : GridBagConstraints.BOTH;
-			constraints.anchor = entry.builders().contains("dropdownMenu") ? GridBagConstraints.SOUTH : GridBagConstraints.NORTHEAST;
+			GridBagConstraints constraints = layoutConstraintsForEntry(entry, component);
 			container.add(component, constraints);
 		}
+	}
+
+	public static GridBagConstraints layoutConstraintsForEntry(Entry entry, Component component) {
+		final int gridWidth;
+		final int gridHeight;
+		String rowSpec = (String) entry.getAttribute("row");
+		if(rowSpec == null)
+			rowSpec = (String) entry.getParent().getAttribute("row");
+		final int row;
+		if ("2".equals(rowSpec))
+			row = 1;
+		else
+			row = 0;
+		String widthSpec =(String)entry.getAttribute("width");
+		if(widthSpec != null)
+			gridWidth = Integer.valueOf(widthSpec);
+		else
+			gridWidth = 1;
+		if(rowSpec == null || component instanceof JSeparator) {
+			gridHeight = 2;
+		} else {
+			gridHeight = 1;
+		}
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = GridBagConstraints.RELATIVE;
+		constraints.gridy = row;
+		constraints.gridwidth = gridWidth;
+		constraints.gridheight = gridHeight;
+		String weightSpec = (String) entry.getAttribute("weight");
+		constraints.weightx = weightSpec != null ? Integer.parseInt(weightSpec) : 0;
+		constraints.fill = gridHeight == 1 ? GridBagConstraints.HORIZONTAL : GridBagConstraints.BOTH;
+		constraints.anchor = entry.builders().contains("dropdownMenu") ? GridBagConstraints.SOUTH : GridBagConstraints.NORTHEAST;
+		return constraints;
 	}
 
 	@Override
