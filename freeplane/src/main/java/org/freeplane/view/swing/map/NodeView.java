@@ -702,7 +702,6 @@ public class NodeView extends JComponent implements INodeView {
 			    break;
 			}
 		}
-		lastSelectedChild = newSelected;
 		return newSelected;
     }
 
