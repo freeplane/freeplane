@@ -494,14 +494,24 @@ public class NodeModel{
 	}
 
 	public boolean isVisible(Filter filter) {
-		return isHiddenSummary() || satisfies(filter);
+	    return isHiddenSummary() || satisfies(filter);
 	}
 
 	public void remove(final int index) {
-		final NodeModel child = children.get(index);
-		child.setParent(null);
-		children.remove(index);
+	    final NodeModel child = children.get(index);
+	    firePreNodeDeleted(child, index);
+	    child.setParent(null);
+	    children.remove(index);
 	}
+
+    private void firePreNodeDeleted(final NodeModel child, final int index) {
+        if (views != null && views.size() > 0) {
+	        NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(this, child, index);
+	        for (INodeView view:views) {
+	            view.onPreNodeDeleted(nodeDeletionEvent);
+	        }
+	    }
+    }
 
 	public <T extends IExtension> T removeExtension(final Class<T> clazz){
 		return getExtensionContainer().removeExtension(clazz);

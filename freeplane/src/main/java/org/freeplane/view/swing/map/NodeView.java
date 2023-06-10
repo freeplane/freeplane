@@ -1160,16 +1160,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	@Override
-	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		NodeModel mapRootNode = map.getRoot().getModel();
-		if(mapRootNode == nodeDeletionEvent.node)
-			map.restoreRootNode(nodeDeletionEvent.index);
-		else if (mapRootNode.isDescendantOf(nodeDeletionEvent.node))
-			map.restoreRootNode();
-		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
-			return;
-		}
-
+	public void onPreNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		if (node == lastSelectedChild) {
 			lastSelectedChild = null;
@@ -1198,8 +1189,22 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+        NodeModel mapRootNode = map.getRoot().getModel();
+        if(mapRootNode == nodeDeletionEvent.node)
+            map.restoreRootNode(nodeDeletionEvent.index);
+        else if (mapRootNode.isDescendantOf(nodeDeletionEvent.node))
+            map.restoreRootNode();
+        if (nodeDeletionEvent.index >= getComponentCount() - 1) {
+            return;
+        }
+
 		numberingChanged(nodeDeletionEvent.index+1);
 		map.preserveRootNodeLocationOnScreen();
+		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		node.remove();
 		NodeView preferred = getPreferredVisibleChild(PreferredChild.LAST_SELECTED, childrenSides());
 		if (preferred == null) {
