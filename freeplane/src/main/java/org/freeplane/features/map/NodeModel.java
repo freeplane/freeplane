@@ -79,7 +79,6 @@ public class NodeModel{
 	private String id;
 	private MapModel map = null;
 	private Side side;
-	private NodeModel preferredChild;
 	private Collection<INodeView> views = null;
 
 	private SharedNodeData sharedData;
@@ -404,14 +403,12 @@ public class NodeModel{
 	}
 
 	public void insert(final NodeModel child, int index) {
-		final NodeModel childNode = child;
 		if (index < 0) {
 			index = getChildCount();
 			children.add(index, child);
 		}
 		else {
 			children.add(index, child);
-			preferredChild = childNode;
 		}
 		child.setParent(this);
 	}
@@ -502,14 +499,6 @@ public class NodeModel{
 
 	public void remove(final int index) {
 		final NodeModel child = children.get(index);
-		if (child == preferredChild) {
-			if (getChildrenInternal().size() > index + 1) {
-				preferredChild = (getChildrenInternal().get(index + 1));
-			}
-			else {
-				preferredChild = (index > 0) ? (getChildrenInternal().get(index - 1)) : null;
-			}
-		}
 		child.setParent(null);
 		children.remove(index);
 	}
