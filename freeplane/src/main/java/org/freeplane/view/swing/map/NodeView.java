@@ -1179,7 +1179,7 @@ public class NodeView extends JComponent implements INodeView {
 					break;
 				}
 				final NodeView candidate = (NodeView) c;
-				if (candidate.isVisible() && node.side == candidate.side()) {
+				if (candidate.isVisible() && node.isTopOrLeft() == candidate.isTopOrLeft()) {
 					lastSelectedChild = candidate;
 					break;
 				}
@@ -1191,7 +1191,7 @@ public class NodeView extends JComponent implements INodeView {
 						break;
 					}
 					final NodeView candidate = (NodeView) c;
-					if (candidate.isVisible() && node.side == candidate.side()) {
+					if (candidate.isVisible() && node.isTopOrLeft() == candidate.isTopOrLeft()) {
 						lastSelectedChild = candidate;
 						break;
 					}
@@ -1224,11 +1224,8 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		NodeView newChild = addChildView(child, index);
 		numberingChanged(index + 1);
-		if(! SummaryNode.isSummaryNode(child)
-		        && lastSelectedChild == null || lastSelectedChild.side() == newChild.side()) {
-		    newChild.updateLayoutProperties();
+		if(! SummaryNode.isSummaryNode(child))
 		    lastSelectedChild = newChild;
-		}
 		revalidate();
     }
 
