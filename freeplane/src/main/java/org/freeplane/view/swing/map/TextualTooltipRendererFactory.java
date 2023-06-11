@@ -87,6 +87,7 @@ class TextualTooltipRendererFactory {
 			final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
 			tip.setEditorKit(kit);
 			final HTMLDocument document = (HTMLDocument) tip.getDocument();
+			document.setPreservesUnknownTags(false);
 			final StyleSheet styleSheet = document.getStyleSheet();
 			styleSheet.addRule("p {margin-top:0;}");
 			styleSheet.addRule("table {border: 0; border-spacing: 0;}");

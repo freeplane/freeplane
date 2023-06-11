@@ -670,6 +670,7 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		};
 		textfield.setEditorKit(kit);
+		((HTMLDocument)textfield.getDocument()).setPreservesUnknownTags(false);
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();

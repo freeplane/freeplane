@@ -272,8 +272,10 @@ class NotePanel extends JPanel {
 		htmlViewerPanel.setText("");
 		if(! htmlViewerPanel.getContentType().equals(contentType))
 		    htmlViewerPanel.setContentType(contentType);
-		if(contentType == CONTENT_TYPE_TEXT_HTML)
-		    updateStyleSheet(ownRule, customStyleSheet);
+		if(contentType == CONTENT_TYPE_TEXT_HTML) {
+		    ((HTMLDocument)htmlViewerPanel.getDocument()).setPreservesUnknownTags(false);
+            updateStyleSheet(ownRule, customStyleSheet);
+        }
 		updateColors(foreground, background);
 		htmlViewerPanel.setText(note);
         if(note.isEmpty()) {
