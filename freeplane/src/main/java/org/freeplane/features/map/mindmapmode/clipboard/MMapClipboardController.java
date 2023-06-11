@@ -403,16 +403,14 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final LinkedList<TextFragment> htmlFragments = new LinkedList<TextFragment>();
 			final HTMLEditorKit kit = new HTMLEditorKit();
 			final HTMLDocument doc = new HTMLDocument();
+			doc.setPreservesUnknownTags(false);
 			final StringReader buf = new StringReader(text);
 			try {
 				kit.read(buf, doc, 0);
 				final Element parent = getParentElement(doc);
 				split(doc, parent, htmlFragments, 0);
 			}
-			catch (final IOException e) {
-				LogUtils.severe(e);
-			}
-			catch (final BadLocationException e) {
+			catch (Exception e) {
 				LogUtils.severe(e);
 			}
 			return htmlFragments.toArray(new TextFragment[htmlFragments.size()]);

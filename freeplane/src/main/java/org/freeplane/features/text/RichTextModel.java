@@ -4,6 +4,7 @@ import java.io.StringReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
+import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.XmlUtils;
@@ -35,34 +36,38 @@ public class RichTextModel {
     }
 
     public String getText() {
-		return text;
-	}
+        return text;
+    }
 
-	public String getXml() {
-		return xml;
-	}
+    public String getXml() {
+        return xml;
+    }
 
-	public final void setText(final String newContent) {
-		if (newContent == null) {
-		    xml = null;
-		    text = null;
-		    return;
-		}
-		if(HtmlUtils.isHtml(newContent)) {
-		    try {
-		        String html = XmlUtils.replaceAscii0BySpace(newContent);
-		        String xhtml = HtmlUtils.toXhtml(html);
-		        validateXml(xhtml);
-		        text = html;
-		        xml = xhtml;
-		    } catch (Exception e) {
-		        LogUtils.severe("Can not create xhtml", e);
-		        setText(" " + newContent);
-		    }
-		}
-		else {
-		    text = newContent;
-		    xml = "<text>" + HtmlUtils.toXMLEscapedText(newContent) + "</text>";
+    public final void setText(final String newContent) {
+        if (newContent == null) {
+            xml = null;
+            text = null;
+            return;
+        }
+        if(HtmlUtils.isHtml(newContent)) {
+            String html = XmlUtils.replaceAscii0BySpace(newContent);
+            HtmlProcessor htmlProcessor = new HtmlProcessor(html);
+            try {
+                if(htmlProcessor.isOk()) {
+                    String xhtml = htmlProcessor.cleanXhtml();
+                    validateXml(xhtml);
+                    text = htmlProcessor.cleanHtml();
+                    xml = htmlProcessor.cleanXhtml();
+                    return;
+                }
+            } catch (Exception e) {
+                LogUtils.severe("Can not create xhtml", e);
+            }
+            setText(" " + newContent);
+        }
+        else {
+            text = newContent;
+            xml = "<text>" + HtmlUtils.toXMLEscapedText(newContent) + "</text>";
 		}
 	}
 
