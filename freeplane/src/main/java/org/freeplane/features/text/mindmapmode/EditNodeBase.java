@@ -55,7 +55,6 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
  * @author foltin
  */
 abstract public class EditNodeBase {
-	public static final String COPIED_IMAGE_SOURCES = "images_copied_by_editor";
     private static final String EDIT_NODE_DIALOG_HEIGHT_PROPERTY = "editNodeDialog.height";
     private static final String EDIT_NODE_DIALOG_WIDTH_PROPERTY = "editNodeDialog.width";
 
@@ -354,13 +353,13 @@ abstract public class EditNodeBase {
 	public void setBackground(Color background) {
 	    this.background = background;
     }
-    
+
     protected void saveDialogSize(final JDialog dialog) {
         ResourceController resourceController = ResourceController.getResourceController();
         resourceController.setProperty(EDIT_NODE_DIALOG_WIDTH_PROPERTY, dialog.getWidth());
         resourceController.setProperty(EDIT_NODE_DIALOG_HEIGHT_PROPERTY, dialog.getHeight());
     }
-    
+
     protected void restoreDialogSize(final JDialog dialog) {
         Dimension preferredSize = dialog.getPreferredSize();
         ResourceController resourceController = ResourceController.getResourceController();
