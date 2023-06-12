@@ -456,16 +456,11 @@ public class Slide implements NamedElement<Slide>{
     private NodeModel getCurrentNode(String nodeId) {
         if (nodeId != null) {
 			MapModel map = getMap();
-			NodeModel currentPlacedNode = map.getNodeForID(nodeId);
-			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			if(currentPlacedNode != null && currentPlacedNode.hasVisibleContent(selection.getFilter())) {
-				return currentPlacedNode;
-			} else {
-				return selection.getSelected();
-			}
+			NodeModel currentNode = map.getNodeForID(nodeId);
+				return currentNode;
 		}
 		else
-			return null;
+		    return null;
     }
 
 	private MapModel getMap() {
@@ -492,9 +487,11 @@ public class Slide implements NamedElement<Slide>{
 			condition = filterCondition;
 		}
 		else{
-			condition = null;
+			return null;
 		}
-		return condition;
+		return node -> node.getID() == rootNodeId
+		        || node.getID() == placedNodeId
+		        || condition.checkNode(node);
 	}
 
 	private SelectedViewSnapshotCondition getFilterConditionForSelectedNodes() {
