@@ -2770,11 +2770,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(currentRootView == newRootView)
 			return;
 		boolean jumpsOut = currentRootView.getModel().isDescendantOf(newRootView.getModel());
+		boolean jumpsIn = newRootView.getModel().isDescendantOf(currentRootView.getModel());
 		boolean newRootWasFolded = newRootView.isFolded() && ! jumpsOut;
 		if(jumpsOut) {
 			preserveNodeLocationOnScreen(currentRootView, 0, 0);
-		} else
+		} else if(jumpsIn)
 			preserveNodeLocationOnScreen(newRootView, 0, 0);
+		else {
+		    preserveNodeLocationOnScreen(currentRootView, 0, 0);
+		    mapScroller.setAnchorView(newRootView);
+		}
 
 		NodeView lastSelectedNode;
 		if(jumpsOut)
