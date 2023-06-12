@@ -524,10 +524,19 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private String cleanHtml(String content) {
-		content = content.replaceFirst("(?i)(?s)<head>.*</head>", "").replaceFirst("(?i)(?s)^.*<html[^>]*>", "<html>")
-		    .replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll("(?i)(?s)<script.*?>.*?</script>", "")
-		    .replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll("(?i)(?s)<!--.*?-->", "").replaceAll(
+		content = content.replaceFirst("(?i)(?s)<head>.*</head>", "")
+		        .replaceFirst("(?i)(?s)^.*<html[^>]*>", "<html>")
+		    .replaceFirst("(?i)(?s)<body [^>]*>", "<body>")
+		    .replaceAll("(?i)(?s)<script.*?>.*?</script>", "")
+		    .replaceAll("(?i)(?s)<meta.*?>", "")
+		    .replaceAll("(?i)(?s)</?tbody.*?>", "")
+		    .replaceAll("(?i)(?s)<!--.*?-->", "")
+		    .replaceAll(
 		        "(?i)(?s)</?o[^>]*>", "");
+        if(! content.contains("<html>"))
+            content = "<html>" + content;
+        if(! content.contains("<body>"))
+            content = content.replaceFirst("<html>", "<html><body>");
 		if (ResourceController.getResourceController().getBooleanProperty("cut_out_pictures_when_pasting_html")) {
 			String contentWithoutImages = content.replaceAll("(?i)(?s)<img[^>]*>", "");
 			final boolean contentContainsOnlyImages = HtmlUtils.htmlToPlain(contentWithoutImages).trim().isEmpty();
