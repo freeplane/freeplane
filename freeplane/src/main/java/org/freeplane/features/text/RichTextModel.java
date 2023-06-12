@@ -56,8 +56,8 @@ public class RichTextModel {
                 if(htmlProcessor.isOk()) {
                     String xhtml = htmlProcessor.cleanXhtml();
                     validateXml(xhtml);
+                    xml = xhtml;
                     text = htmlProcessor.cleanHtml();
-                    xml = htmlProcessor.cleanXhtml();
                     return;
                 }
             } catch (Exception e) {
