@@ -381,11 +381,14 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 
-    private void applyRoot() {
-        NodeModel currentRootNode = getSlideRootNode();
-        currentRootNode.setChildNodeSidesAsNow();
-        Controller.getCurrentController().getMapViewManager().setViewRoot(currentRootNode);
-    }
+	private void applyRoot() {
+	    NodeModel currentRootNode = getSlideRootNode();
+	    Controller currentController = Controller.getCurrentController();
+	    if(currentController.getSelection().getSelectionRoot()!= currentRootNode) {
+	        currentRootNode.setChildNodeSidesAsNow();
+	        currentController.getMapViewManager().setViewRoot(currentRootNode);
+	    }
+	}
 
 	private void applySelection() {
 		if (selectedNodeIds.isEmpty())
