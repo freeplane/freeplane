@@ -7,6 +7,8 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
 
+import com.lightdev.app.shtm.SHTMLWriter;
+
 public class HtmlProcessor {
 	private final HTMLDocument doc;
 	private final boolean ok;
@@ -29,7 +31,7 @@ public class HtmlProcessor {
 		final StringWriter writer = new StringWriter();
 		try {
 			if(pos < doc.getLength() && length > 0){
-				final HTMLWriter hw = new HTMLWriter(writer, (HTMLDocument) doc, pos,
+				final HTMLWriter hw = new SHTMLWriter(writer, (HTMLDocument) doc, pos,
 						Math.min(length, doc.getLength() - pos));
 				hw.write();
 			}
