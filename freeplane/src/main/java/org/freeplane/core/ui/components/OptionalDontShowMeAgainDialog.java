@@ -18,6 +18,7 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -153,12 +154,16 @@ public class OptionalDontShowMeAgainDialog {
 			mResult = JOptionPane.OK_OPTION;
 			return this;
 		}
-		if ((messageType == MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED
-		        || messageType == MessageType.ONLY_CANCEL_SELECTION_IS_STORED)
-		        && StringUtils.equals(property, "false")) {
-			mResult = JOptionPane.CANCEL_OPTION;
-			return this;
-		}
+        if ((messageType == MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED
+                || messageType == MessageType.ONLY_CANCEL_SELECTION_IS_STORED)
+                && StringUtils.equals(property, "false")) {
+            mResult = JOptionPane.CANCEL_OPTION;
+            return this;
+        }
+        if (GraphicsEnvironment.isHeadless()) {
+            mResult = JOptionPane.CANCEL_OPTION;
+            return this;
+        }
         String boxString;
         if (messageType != MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) {
             boxString = DONT_SHOW_AGAIN;
