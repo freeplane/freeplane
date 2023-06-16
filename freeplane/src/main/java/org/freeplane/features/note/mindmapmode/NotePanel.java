@@ -37,6 +37,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
+import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
@@ -251,6 +252,7 @@ class NotePanel extends JPanel {
 		htmlEditorPanel.setCurrentDocumentContent("");
         updateStyleSheet(ownRule, customStyleSheet);
         updateColors(foreground, background);
+        HtmlProcessor.configureUnknownTags(htmlEditorPanel.getDocument());
 		htmlEditorPanel.setCurrentDocumentContent(note);
 		if(note.isEmpty()) {
 		    htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
@@ -273,7 +275,7 @@ class NotePanel extends JPanel {
 		if(! htmlViewerPanel.getContentType().equals(contentType))
 		    htmlViewerPanel.setContentType(contentType);
 		if(contentType == CONTENT_TYPE_TEXT_HTML) {
-		    ((HTMLDocument)htmlViewerPanel.getDocument()).setPreservesUnknownTags(false);
+		    HtmlProcessor.configureUnknownTags((HTMLDocument)htmlViewerPanel.getDocument());
             updateStyleSheet(ownRule, customStyleSheet);
         }
 		updateColors(foreground, background);

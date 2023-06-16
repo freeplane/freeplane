@@ -85,6 +85,7 @@ import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -670,7 +671,6 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		};
 		textfield.setEditorKit(kit);
-		((HTMLDocument)textfield.getDocument()).setPreservesUnknownTags(false);
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
@@ -724,6 +724,7 @@ public class EditNodeTextField extends EditNodeBase {
 		styleSheet.addStyleSheet(ownStyleSheet);
 		styleSheet.addStyleSheet(parent.getStyleSheet());
 		MapElementRemovingWorkaround.removeAllMapElements(document);
+		HtmlProcessor.configureUnknownTags(document);
 		textfield.setText(getText());
 		UndoEnabler.addUndoRedoFunctionality(textfield);
 		final MapView mapView = nodeView.getMap();

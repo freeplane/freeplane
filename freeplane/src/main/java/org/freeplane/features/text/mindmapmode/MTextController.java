@@ -1186,7 +1186,6 @@ public class MTextController extends TextController {
 			}
 		});
 		final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
-		shtmlPanel.getDocument().setPreservesUnknownTags(false);
 		shtmlPanel.applyComponentOrientation(UITools.getMenuComponent().getComponentOrientation());
 		final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
 		sourceEditorPane.setOpaque(true);

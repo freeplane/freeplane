@@ -47,6 +47,7 @@ import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
+import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -206,9 +207,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private String title;
 
 	private Font font;
-	
+
 	private StyleSheet customStyleSheet = NodeCss.EMPTY.getStyleSheet();
-	
+
 	private Color textColor = Color.BLACK;
 	private Dimension preferredContentSize = PREFERRED_CONTENT_SIZE;
 
@@ -237,7 +238,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	public void setTextColor(Color textColor) {
     	this.textColor = textColor;
     }
-	
+
 	public StyleSheet getCustomStyleSheet() {
 		return customStyleSheet;
 	}
@@ -278,7 +279,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 					.withBackground(getBackground())
 					.withAlignment(horizontalAlignment));
 			ruleBuilder.append("}\n");
-			if(getEditControl().getEditType() != EditedComponent.NOTE 
+			if(getEditControl().getEditType() != EditedComponent.NOTE
 					|| ResourceController.getResourceController().getBooleanProperty(
 			        MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES))
 				ruleBuilder.append("p {margin-top:0;}\n");
@@ -304,7 +305,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
                 public void componentResized(ComponentEvent e) {
                    saveDialogSize(dialog);
                 }
-			    
+
             });
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 				UITools.setDialogLocationUnder(dialog, node);
@@ -316,6 +317,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			if (!HtmlUtils.isHtml(content)) {
 				content = HtmlUtils.plainToHTML(content);
 			}
+			HtmlProcessor.configureUnknownTags(htmlEditorPanel.getDocument());
 			htmlEditorPanel.setCurrentDocumentContent(content);
 			final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
 			final JTextComponent currentPane = htmlEditorPanel.getEditorPane();

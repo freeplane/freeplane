@@ -30,14 +30,14 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlProcessor;
 
 @SuppressWarnings("serial")
 public class ScaledEditorKit extends HTMLEditorKit {
 	/** Shared base style for all documents created by us use. */
 	private static StyleSheet defaultStyles;
 
-	protected ScaledEditorKit() {
-	};
+	protected ScaledEditorKit() {}
 
 	/**
 	 * Overriden to return our own slimmed down style sheet.
@@ -49,7 +49,7 @@ public class ScaledEditorKit extends HTMLEditorKit {
 				defaultStyles.loadRules(r, null);
 			}
 			catch (Throwable e) {
-				// don't want to die in static initialization... 
+				// don't want to die in static initialization...
 				// just display things wrong.
 			}
 			defaultStyles.addStyleSheet(super.getStyleSheet());
@@ -97,10 +97,9 @@ public class ScaledEditorKit extends HTMLEditorKit {
 		if(customStyleSheet != null)
 			ss.addStyleSheet(customStyleSheet);
 		HTMLDocument doc = new HTMLDocument(ss);
-		doc.setPreservesUnknownTags(false);
+		HtmlProcessor.configureUnknownTags(doc);
 		doc.setParser(getParser());
 		doc.setAsynchronousLoadPriority(Integer.MAX_VALUE);
-		doc.setPreservesUnknownTags(false);
 		return doc;
 	}
 }

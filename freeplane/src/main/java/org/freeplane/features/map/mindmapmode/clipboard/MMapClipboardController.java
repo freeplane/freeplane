@@ -54,6 +54,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.HtmlProcessor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
@@ -403,7 +404,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final LinkedList<TextFragment> htmlFragments = new LinkedList<TextFragment>();
 			final HTMLEditorKit kit = new HTMLEditorKit();
 			final HTMLDocument doc = new HTMLDocument();
-			doc.setPreservesUnknownTags(false);
+			HtmlProcessor.configureUnknownTags(doc);
 			final StringReader buf = new StringReader(text);
 			try {
 				kit.read(buf, doc, 0);
