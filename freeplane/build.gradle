@@ -23,6 +23,7 @@ dependencies {
 	lib 'com.github.robtimus:data-url:2.0'
 	lib 'com.formdev:flatlaf:3.0'
 	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.9.4'
+	lib 'org.jsoup:jsoup:1.16.1'
 
     lib project(':JOrtho_0.4_freeplane')
     api project(':freeplane_api')

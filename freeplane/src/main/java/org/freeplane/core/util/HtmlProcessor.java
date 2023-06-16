@@ -11,6 +11,10 @@ import javax.swing.text.html.HTMLWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Document.OutputSettings.Syntax;
+import org.jsoup.nodes.Entities.EscapeMode;
 
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -62,7 +66,10 @@ public class HtmlProcessor {
     }
 
 
-	private final HTMLDocument doc;
+    private final HTMLDocument doc;
+    private String cleanHtml;
+    private Document jsoupDocument;
+
 	public HtmlProcessor(final String input){
 	    doc = createDocument(input);
 	}
@@ -97,20 +104,33 @@ public class HtmlProcessor {
 	}
 
 	public String cleanHtml() {
-	    return cleanHtml(doc);
+           if(cleanHtml != null)
+                return cleanHtml;
+            String html = cleanHtml(doc);
+            if(! doc.getPreservesUnknownTags()) {
+                this.cleanHtml = html;
+                return html;
+            }
+            return this.cleanHtml = cleanWithJSoup(html, Syntax.html);
+
+	}
+
+	private String cleanWithJSoup(String html, Syntax syntax) {
+	    if(jsoupDocument == null)
+	        jsoupDocument = Jsoup.parse(html);
+	    jsoupDocument.outputSettings()
+	        .syntax(syntax)
+	        .escapeMode(EscapeMode.xhtml);
+	    return jsoupDocument.html();
 	}
 
 	public String cleanXhtml() {
-	    if(doc == null)
-	        return "";
-	    StringWriter writer = new StringWriter();
-        final XHTMLWriter xhw = new XHTMLWriter(writer, doc);
-	    try {
-            xhw.write();
-        } catch (Exception e) {
-            LogUtils.severe(e);
-        }
-	    return writer.toString();
+	    String cleanHtml = cleanHtml();
+	    if(cleanHtml.isEmpty())
+	        return cleanHtml;
+	    else
+	        return cleanWithJSoup(cleanHtml, Syntax.xml);
+
 	}
 	public int getDocumentLength() {
 		return doc.getLength();
