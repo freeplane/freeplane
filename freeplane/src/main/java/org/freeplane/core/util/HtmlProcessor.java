@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
@@ -21,6 +22,8 @@ import com.lightdev.app.shtm.SHTMLWriter;
 public class HtmlProcessor {
 
     private static final String SAVE_COMPACT_HTML_PROPERTY = "saveCompactHypertext";
+
+    private static Integer lastDecision = null;
 
     public static boolean preservesUnknownTags() {
         ResourceController resourceController = ResourceController.getResourceController();
@@ -75,6 +78,9 @@ public class HtmlProcessor {
 	}
 
     private static HTMLDocument createDocument(final String input) {
+        if(lastDecision != null) {
+            return createDocument(input, lastDecision.intValue() == JOptionPane.OK_OPTION);
+        }
         ResourceController resourceController = ResourceController.getResourceController();
         String saveCompactHypertextProperty = resourceController.getProperty(SAVE_COMPACT_HTML_PROPERTY, null);
         if(saveCompactHypertextProperty != null)
@@ -89,10 +95,12 @@ public class HtmlProcessor {
         String fullText = cleanHtml(fullDocument);
         if(compactText.equals(fullText))
             return compactDocument;
-        if (JOptionPane.OK_OPTION == OptionalDontShowMeAgainDialog.showWithExplanation("OptionPanel." + SAVE_COMPACT_HTML_PROPERTY + ".question",
-                "OptionPanel." + SAVE_COMPACT_HTML_PROPERTY + ".explanation",
+        lastDecision = OptionalDontShowMeAgainDialog.showWithExplanation("OptionPanel." + SAVE_COMPACT_HTML_PROPERTY + ".question",
+                "OptionPanel." + SAVE_COMPACT_HTML_PROPERTY + ".tooltip",
                 SAVE_COMPACT_HTML_PROPERTY,
-                MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED))
+                MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+        SwingUtilities.invokeLater(() -> {lastDecision = null;});
+        if (JOptionPane.OK_OPTION == lastDecision)
                 return compactDocument;
         else
             return fullDocument;
