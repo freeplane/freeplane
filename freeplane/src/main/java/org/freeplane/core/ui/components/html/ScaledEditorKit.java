@@ -25,6 +25,7 @@ import java.io.StringReader;
 
 import javax.swing.JLabel;
 import javax.swing.text.Document;
+import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -32,10 +33,25 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlProcessor;
 
+import com.lightdev.app.shtm.SHTMLEditorKit.SHTMLFactory;
+
 @SuppressWarnings("serial")
 public class ScaledEditorKit extends HTMLEditorKit {
 	/** Shared base style for all documents created by us use. */
 	private static StyleSheet defaultStyles;
+
+    private static final ViewFactory defaultFactory = new SHTMLFactory();
+
+    /**
+     * Fetch a factory that is suitable for producing
+     * views of any models that are produced by this
+     * kit.
+     *
+     * @return the factory
+     */
+    public ViewFactory getViewFactory() {
+        return defaultFactory;
+    }
 
 	protected ScaledEditorKit() {}
 
