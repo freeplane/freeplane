@@ -5,7 +5,6 @@ Automatic stacked layouts
 Prevent overlapping node drag handler from stealing the mouse pointer
 Fast fold/unfold on node click if editing is not possible or editing on double click is disabled
 Slide roots (jump-in and jump-out for slides)
-Options to save full or compact hypertext when rich text is copied into Freeplane
 Bug fixes
 
 ==============================
