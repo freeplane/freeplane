@@ -25,11 +25,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
