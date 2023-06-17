@@ -10,6 +10,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.MaybeBooleanProperty;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.jsoup.Jsoup;
@@ -82,8 +83,8 @@ public class HtmlProcessor {
             return createDocument(input, lastDecision.intValue() == JOptionPane.OK_OPTION);
         }
         ResourceController resourceController = ResourceController.getResourceController();
-        String saveCompactHypertextProperty = resourceController.getProperty(SAVE_COMPACT_HTML_PROPERTY, null);
-        if(saveCompactHypertextProperty != null)
+        String saveCompactHypertextProperty = resourceController.getProperty(SAVE_COMPACT_HTML_PROPERTY, MaybeBooleanProperty.ASK_VALUE);
+        if(! MaybeBooleanProperty.ASK_VALUE.equals(saveCompactHypertextProperty))
             return createDocument(input, Boolean.valueOf(saveCompactHypertextProperty));
         HTMLDocument compactDocument = createDocument(input, true);
         if(compactDocument == null)
