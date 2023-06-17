@@ -1000,7 +1000,8 @@ public class MTextController extends TextController {
 		    int keyCode = e.getKeyCode();
 		    switch (keyCode) {
 		    case KeyEvent.VK_SHIFT:
-		    case KeyEvent.VK_CONTROL:
+            case KeyEvent.VK_CONTROL:
+            case KeyEvent.VK_META:
 		    case KeyEvent.VK_CAPS_LOCK:
 		    case KeyEvent.VK_ALT:
 		    case KeyEvent.VK_ALT_GRAPH:
@@ -1033,18 +1034,9 @@ public class MTextController extends TextController {
 		}
 
 		private boolean isMenuEvent(KeyEvent e) {
-			if (!editInDialog) {
-				AFreeplaneAction editLongAcction = modeController.getAction("EditLongAction");
-				KeyStroke accelerator = ResourceController.getResourceController().getAcceleratorManager()
-				    .getAccelerator(editLongAcction);
-				if (accelerator != null) {
-					final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
-					if (accelerator.equals(keyStroke)) {
-						return true;
-					}
-				}
-			}
-			return false;
+			return !editInDialog &&
+			        ResourceController.getResourceController()
+			        .getAcceleratorManager().canProcessKeyEvent(e);
 		}
 
 		public void uninstall() {
