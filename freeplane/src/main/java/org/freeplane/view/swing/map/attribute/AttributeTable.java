@@ -271,7 +271,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	}
 
+
+
 	@Override
+    public void addNotify() {
+	    updateComponentFontAndColors(this);
+	    super.addNotify();
+	}
+
+    @Override
 	protected JTableHeader createDefaultTableHeader() {
 		return new TableHeader(columnModel);
 	}
