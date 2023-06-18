@@ -68,6 +68,7 @@ import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
+import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
@@ -1145,24 +1146,36 @@ implements IExtension, NodeChangeAnnouncer{
             changedMapViewComponent = previous;
         }
     }
-	public void select(final NodeModel node) {
-		final MapModel map = node.getMap();
-		final Controller controller = Controller.getCurrentController();
-		IMapViewManager mapViewManager = controller.getMapViewManager();
+    public void select(final NodeModel node) {
+        final MapModel map = node.getMap();
+        final Controller controller = Controller.getCurrentController();
+        IMapViewManager mapViewManager = controller.getMapViewManager();
         if(changedMapViewComponent == mapViewManager.getMapViewComponent()) {
             List<Component> views = mapViewManager.getViews(map);
             Optional<Component> anotherView = views.stream().filter(v -> ! v.equals(changedMapViewComponent)).findFirst();
             if(anotherView.isPresent()) {
                 mapViewManager.changeToMapView(anotherView.get());
             }
+            else {
+                mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
+                    @Override
+                    public void afterViewCreated(Component oldView, Component newView) {
+                        mapViewManager.removeMapViewChangeListener(this);
+                        select(node);
+                    }
+
+                });
+                mapViewManager.newMapView(map, modeController);
+                return;
+            }
         }
         else if (! map.equals(controller.getMap())){
             mapViewManager.changeToMap(map);
         }
-		displayNode(node);
-		IMapSelection selection = controller.getSelection();
+        displayNode(node);
+        IMapSelection selection = controller.getSelection();
         selection.selectAsTheOnlyOneSelected(node);
-	}
+    }
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
 		for (final NodeModel node : selecteds) {
