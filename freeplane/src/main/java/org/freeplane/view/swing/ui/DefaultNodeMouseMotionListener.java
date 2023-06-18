@@ -102,6 +102,26 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					return;
 				}
 			}
+			else if(Compat.isShiftEvent(e)){
+		                if (component.isClickableLink(e.getX())) {
+		                    mapController.forceViewChange(() -> LinkController.getController(mc).loadURL(node, e));
+		                    e.consume();
+		                    return;
+		                }
+
+		                final String link = component.getLink(e.getPoint());
+		                if (link != null) {
+		                    doubleClickTimer.start(new Runnable() {
+		                        @Override
+		                        public void run() {
+		                            mapController.forceViewChange(() -> loadLink(node, link));
+		                        }
+		                    });
+		                    e.consume();
+		                    return;
+		                }
+            }
+
 			if(Compat.isPlainEvent(e)){
 				if(inside && (e.getClickCount() == 1 && foldsOnClickInside()
 				        || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick()))){
