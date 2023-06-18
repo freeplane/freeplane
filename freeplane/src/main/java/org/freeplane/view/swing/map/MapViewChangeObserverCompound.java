@@ -24,9 +24,11 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.ui.IMapViewChangeListener;
 
 /**
@@ -85,13 +87,18 @@ class MapViewChangeObserverCompound {
 		if(! createdMapView.isShowing())
 		{
 			fireMapViewCreatedAfterItIsDisplayed(previousMapView, createdMapView);
-		}
-		else if (!createdMapView.isLayoutCompleted()) {
-			fireMapViewCreatedLater(previousMapView, createdMapView);
-		}
-		else {
-			fireMapViewCreated(previousMapView, createdMapView);
-		}
+		} else {
+	        if(previousMapView != null && previousMapView.getModel() == createdMapView.getModel()) {
+	            List<NodeModel> nodes = previousMapView.getMapSelection().getOrderedSelection();
+	            createdMapView.getMapSelection().replaceSelection(nodes.toArray(new NodeModel[nodes.size()]));
+	        }
+            if (!createdMapView.isLayoutCompleted()) {
+            	fireMapViewCreatedLater(previousMapView, createdMapView);
+            }
+            else {
+            	fireMapViewCreated(previousMapView, createdMapView);
+            }
+        }
 	}
 
 	private void fireMapViewCreatedLater(final MapView previousView, MapView createdMapView) {

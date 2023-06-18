@@ -641,10 +641,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	    addToOrChangeInMapViews(mapView.getName(), mapView);
 	    map.addMapChangeListener(mapView);
 	    ResourceController.getResourceController().addPropertyChangeListener(mapView);
-	    if(selectedMapView != null && selectedMapView.getModel() == map) {
-	        List<NodeModel> nodes = selectedMapView.getMapSelection().getOrderedSelection();
-	        mapView.getMapSelection().replaceSelection(nodes.toArray(new NodeModel[nodes.size()]));
-	    }
 	    mapViewChangeListeners.mapViewCreated(selectedMapView, mapView);
 	    changeToMapView(mapView);
 	}
