@@ -3,6 +3,7 @@ package org.freeplane.core.util;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
@@ -72,5 +73,14 @@ public class HtmlProcessor {
 
     public boolean isOk() {
         return doc != null;
+    }
+
+    public String getText() {
+        try {
+            return doc == null ? "" : doc.getText(0, getDocumentLength());
+        } catch (BadLocationException e) {
+            LogUtils.severe(e);
+            return "";
+        }
     }
 }

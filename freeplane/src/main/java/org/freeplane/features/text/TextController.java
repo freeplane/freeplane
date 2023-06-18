@@ -139,11 +139,11 @@ public class TextController implements IExtension {
 		return nodeModel.getText();
 	}
 
-    public Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content) 
+    public Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content)
             throws TransformationException{
         return getTransformedObject(node, nodeProperty, content, Mode.VIEW);
     }
-    
+
 	private Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content, Mode mode)
 	        throws TransformationException {
 		if (content instanceof String) {
@@ -200,7 +200,7 @@ public class TextController implements IExtension {
     public Object getTransformedObjectNoFormattingNoThrow(final NodeModel node, Object nodeProperty, Object data) {
         return getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data, Mode.VIEW);
     }
-    
+
 	private Object getTransformedObjectNoFormattingNoThrow(final NodeModel node, Object nodeProperty, Object data, Mode mode) {
 		try {
 			Object transformedObject = getTransformedObject(node, nodeProperty, data, mode);
@@ -257,7 +257,7 @@ public class TextController implements IExtension {
 	public String getPlainTransformedTextWithoutNodeNumber(NodeModel node) {
 		return withNodeNumbering( false, () -> getPlainTransformedText(node));
 	}
-	
+
 	public <T> T withNodeNumbering(boolean isEnabled, Supplier<T> supplier) {
 		final boolean nodeNumberingWasEnabled = nodeNumberingEnabled;
 		nodeNumberingEnabled = isEnabled;
@@ -267,7 +267,7 @@ public class TextController implements IExtension {
 		finally {
 			nodeNumberingEnabled = nodeNumberingWasEnabled;
 		}
-		
+
 	}
 
 	public String getTransformedTextNoThrow(NodeModel nodeModel) {
@@ -286,32 +286,51 @@ public class TextController implements IExtension {
 	public String getShortText(String longText) {
 		String text;
 		final boolean isHtml = HtmlUtils.isHtml(longText);
+		HtmlProcessor htmlProcessor = null;
+
 		if (isHtml) {
-			text = HtmlUtils.htmlToPlain(longText).trim();
+		    htmlProcessor = new HtmlProcessor(longText);
+			text = htmlProcessor.getText();
 		}
 		else {
 			text = longText;
 		}
-		int length = text.length();
-		final int eolPosition = text.indexOf('\n');
+		int skippedCharacterCount = countInitialSpaces(text);
+		int length = text.length() - skippedCharacterCount;
+		final int eolPosition;
+		if(isHtml)
+		    eolPosition = skippedCharacterCount + HtmlUtils.htmlToPlain(longText).indexOf('\n');
+		else
+		    eolPosition = text.indexOf('\n', skippedCharacterCount);
 		final int maxShortenedNodeWidth = ResourceController.getResourceController()
 		    .getIntProperty("max_shortened_text_length");
 		if (eolPosition == -1 || eolPosition >= length || eolPosition >= maxShortenedNodeWidth) {
 			if (length <= maxShortenedNodeWidth) {
-				return longText;
+				return isHtml ? longText : longText.substring(skippedCharacterCount);
 			}
 			length = maxShortenedNodeWidth;
 		}
 		else {
 			length = eolPosition;
 		}
-		if (isHtml)
-			return new HtmlProcessor(longText).htmlSubstring(0, length);
+		if (htmlProcessor != null)
+			return htmlProcessor.htmlSubstring(0, skippedCharacterCount + length);
 		else
-			return text.substring(0, length);
+		    return text.substring(skippedCharacterCount, skippedCharacterCount + length);
 	}
 
-	public String getDetailsContentType(NodeModel node) {
+	private int countInitialSpaces(String text) {
+	    int count = 0;
+	    for(int i = 0; i < text.length(); i++) {
+	        if(Character.isWhitespace(text.charAt(i)))
+	            count++;
+	        else
+	            return count;
+	    }
+	    return count;
+	}
+
+    public String getDetailsContentType(NodeModel node) {
 	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 	    final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 	    for(IStyle styleKey : collection){
@@ -326,7 +345,7 @@ public class TextController implements IExtension {
 	                return contentType;
 	            }
 	        }
-	    } 
+	    }
         return TextController.CONTENT_TYPE_HTML;
 	}
 
@@ -379,7 +398,7 @@ public class TextController implements IExtension {
 				}
 				catch (Exception e) {
 					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
-				}				
+				}
 				if (!HtmlUtils.isHtml(text)) {
 					text = HtmlUtils.plainToHTML(text);
 				}
