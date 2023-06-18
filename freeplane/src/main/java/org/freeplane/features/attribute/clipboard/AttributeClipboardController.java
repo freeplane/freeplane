@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeSelection;
+import org.freeplane.features.attribute.AttributeSelection.SelectedAttribute;
 import org.freeplane.features.attribute.NodeAttribute;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.ClipboardController;
@@ -40,12 +41,8 @@ public class AttributeClipboardController implements ClipboardController{
 	}
 
 	private String toStringContent(AttributeSelection selection) {
-		return selection.nodeAttributeStream().map(this::toStringContent)
+		return selection.getSelectedAttributes().stream().map(SelectedAttribute::toStringContent)
 		.collect(Collectors.joining("\n"));
-	}
-
-	private String toStringContent(NodeAttribute attribute) {
-		return attribute.name() + '\t' + String.valueOf(attribute.value());
 	}
 
 	private String toAttributesContent(AttributeSelection selection) {

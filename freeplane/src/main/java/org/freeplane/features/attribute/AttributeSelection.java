@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.freeplane.features.attribute.AttributeSelection.SelectedAttribute;
+
 public interface AttributeSelection {
 	public static final AttributeSelection EMPTY = new AttributeSelection() {
 		@Override
@@ -26,6 +28,18 @@ public interface AttributeSelection {
 		}
 		public SelectedPart getSelectedPart() {
 			return selectedPart;
+		}
+
+		public String toStringContent() {
+		    switch (selectedPart) {
+		    case NAME:
+                return selectedAttribute.name();
+		    case VALUE:
+                return String.valueOf(selectedAttribute.value());
+		    case BOTH:
+		    default:
+		        return selectedAttribute.name() + '\t' + String.valueOf(selectedAttribute.value());
+            }
 		}
 	}
 
