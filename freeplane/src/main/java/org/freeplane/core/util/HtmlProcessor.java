@@ -27,52 +27,43 @@ public class HtmlProcessor {
         }
     }
 
-    private static String cleanHtml(HTMLDocument document) {
-        return htmlSubstring(document, 0, document.getLength());
-    }
-
-    private static String htmlSubstring(HTMLDocument document, int pos, int length) {
-        if(document == null)
-            return "";
-        final StringWriter writer = new StringWriter();
-        try {
-            if(pos < document.getLength() && length > 0){
-                final HTMLWriter hw = new SHTMLWriter(writer, document, pos,
-                        Math.min(length, document.getLength() - pos));
-                hw.write();
-            }
-        } catch (Exception e) {
-            LogUtils.severe(e);
-        }
-        return writer.toString();
-    }
-
-
-    private final HTMLDocument doc;
-    private String cleanHtml;
+     private final HTMLDocument doc;
 
 	public HtmlProcessor(final String input){
 	    doc = createDocument(input);
 	}
 
 	public String htmlSubstring(int pos, int length){
-	    return htmlSubstring(doc, pos, length);
+	    if(doc == null)
+            return "";
+        final StringWriter writer = new StringWriter();
+        try {
+            if(pos < doc.getLength() && length > 0){
+                final HTMLWriter hw = new SHTMLWriter(writer, doc, pos,
+                        Math.min(length, doc.getLength() - pos));
+                hw.write();
+            }
+        } catch (Exception e) {
+            LogUtils.severe(e);
+        }
+        return writer.toString();
 	}
 
 	public String cleanHtml() {
-	    if(cleanHtml != null)
-	        return cleanHtml;
-	    String html = cleanHtml(doc);
-	    this.cleanHtml = html;
-	    return html;
+	    return htmlSubstring(0, doc.getLength());
 	}
 
 	public String cleanXhtml() {
-	    String cleanHtml = cleanHtml();
-	    if(cleanHtml.isEmpty())
-	        return cleanHtml;
-	    else
-	        return HtmlUtils.toXhtml(cleanHtml);
+        if(doc == null)
+            return "";
+	    StringWriter writer = new StringWriter();
+        final XHTMLWriter xhw = new XHTMLWriter(writer, doc);
+	    try {
+            xhw.write();
+        } catch (Exception e) {
+            LogUtils.severe(e);
+        }
+	    return writer.toString();
 	}
 
 	public int getDocumentLength() {
