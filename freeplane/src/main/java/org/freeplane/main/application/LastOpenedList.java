@@ -182,17 +182,14 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	@Override
 	public void afterViewCreated(Component oldView, Component newView) {
-		final MapModel map = getMapModel(newView);
-		final RecentFile recentFile = findRecentFileByMapModel(map);
 		// the next line will only succeed if the map is already opened
-		if(oldView instanceof MapView && newView instanceof MapView
-		        && ((MapView)oldView).getModel() == ((MapView)newView).getModel()) {
-		    List<NodeModel> nodes = ((MapView)oldView).getMapSelection().getOrderedSelection();
-            ((MapView)newView).getMapSelection().replaceSelection(nodes.toArray(new NodeModel[nodes.size()]));
-		}
-		else if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
-			ensureSelectLastVisitedNodeOnOpen(map, recentFile);
-		}
+		if(!(oldView instanceof MapView) || ((MapView)oldView).getModel() != ((MapView)newView).getModel()) {
+		    final MapModel map = getMapModel(newView);
+		    final RecentFile recentFile = findRecentFileByMapModel(map);
+            if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
+            	ensureSelectLastVisitedNodeOnOpen(map, recentFile);
+            }
+        }
 	}
 
 	private void ensureSelectLastVisitedNodeOnOpen(final MapModel map, final RecentFile recentFile) {
@@ -363,8 +360,8 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 			messageArea.setColumns(Math.min(80, message.length() + 5));
 			messageArea.setEditable(false);
 			messageArea.setSize(messageArea.getPreferredSize());
-			final int remove = JOptionPane.showConfirmDialog(frame, 
-					messageArea, 
+			final int remove = JOptionPane.showConfirmDialog(frame,
+					messageArea,
 					"Freeplane", JOptionPane.YES_NO_OPTION);
 			if (remove == JOptionPane.YES_OPTION) {
 				lastOpenedList.remove(recentFile);
