@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,9 +37,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.extension.IExtension;
@@ -1131,12 +1134,31 @@ implements IExtension, NodeChangeAnnouncer{
         return Collections.unmodifiableCollection(nodeChangeListeners);
     }
 
+    private JComponent changedMapViewComponent;
+    public void forceViewChange(Runnable runnable) {
+        JComponent previous = changedMapViewComponent;
+        changedMapViewComponent = modeController.getController().getMapViewManager().getMapViewComponent();
+        try {
+            runnable.run();
+        }
+        finally {
+            changedMapViewComponent = previous;
+        }
+    }
 	public void select(final NodeModel node) {
 		final MapModel map = node.getMap();
 		final Controller controller = Controller.getCurrentController();
-		if (! map.equals(controller.getMap())){
-			controller.getMapViewManager().changeToMap(map);
-		}
+		IMapViewManager mapViewManager = controller.getMapViewManager();
+        if(changedMapViewComponent == mapViewManager.getMapViewComponent()) {
+            List<Component> views = mapViewManager.getViews(map);
+            Optional<Component> anotherView = views.stream().filter(v -> ! v.equals(changedMapViewComponent)).findFirst();
+            if(anotherView.isPresent()) {
+                mapViewManager.changeToMapView(anotherView.get());
+            }
+        }
+        else if (! map.equals(controller.getMap())){
+            mapViewManager.changeToMap(map);
+        }
 		displayNode(node);
 		IMapSelection selection = controller.getSelection();
         selection.selectAsTheOnlyOneSelected(node);
