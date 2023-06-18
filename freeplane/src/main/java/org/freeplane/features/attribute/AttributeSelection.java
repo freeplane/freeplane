@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.freeplane.features.attribute.AttributeSelection.SelectedAttribute;
-
 public interface AttributeSelection {
 	public static final AttributeSelection EMPTY = new AttributeSelection() {
 		@Override
