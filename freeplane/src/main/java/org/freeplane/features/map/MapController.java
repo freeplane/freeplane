@@ -1155,6 +1155,9 @@ implements IExtension, NodeChangeAnnouncer{
             if(anotherView.isPresent()) {
                 mapViewManager.changeToMapView(anotherView.get());
             }
+            else {
+                mapViewManager.newMapView(map, modeController);
+            }
         }
         else if (! map.equals(controller.getMap())){
             mapViewManager.changeToMap(map);
