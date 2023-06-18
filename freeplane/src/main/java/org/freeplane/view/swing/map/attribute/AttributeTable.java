@@ -343,8 +343,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
 				if(x < xmax){
-					LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
-					return false;
+				    if(me.isShiftDown())
+				        Controller.getCurrentModeController().getMapController().forceViewChange(() ->
+				        LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link)
+				                );
+				    else
+				        LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
+				    return false;
 				}
              }
 		}
@@ -403,7 +408,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Icon getLinkIcon(final Hyperlink link) {
 		NodeModel nodeModel = ((AttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(link, nodeModel);
+	    final Icon linkIcon =  LinkController.getController().getLinkIcon(link, nodeModel);
 	    return linkIcon;
     }
 
