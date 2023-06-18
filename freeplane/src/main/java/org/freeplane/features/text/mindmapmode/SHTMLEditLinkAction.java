@@ -2,6 +2,8 @@ package org.freeplane.features.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
@@ -42,7 +44,7 @@ public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction
             final Object linkAttr = elemAttrs.getAttribute(HTML.Tag.A);
             final Object href = ((AttributeSet) linkAttr).getAttribute(HTML.Attribute.HREF);
             if (href != null) {
-            	linkAsString = href.toString();
+            	linkAsString = URLDecoder.decode(href.toString(), StandardCharsets.UTF_8);
             }
             else
             	linkAsString = "http://";

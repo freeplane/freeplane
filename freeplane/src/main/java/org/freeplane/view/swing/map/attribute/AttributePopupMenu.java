@@ -29,6 +29,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -185,7 +187,11 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 				public void actionPerformed(final ActionEvent e) {
 					final AttributeTable table = AttributePopupMenu.this.table;
 					final Object oldValue = table.getValueAt(row, col);
-					final String inputValue = JOptionPane.showInputDialog(table, TextUtils.getText("edit_link_manually"), oldValue.toString());
+					String oldString = oldValue.toString();
+					if (oldString != null) {
+						oldString = URLDecoder.decode(oldString, StandardCharsets.UTF_8);
+					}
+					final String inputValue = JOptionPane.showInputDialog(table, TextUtils.getText("edit_link_manually"), oldString);
 					if (inputValue != null && (oldValue instanceof String || ! oldValue.equals(inputValue))) {
 						if (inputValue.toString().equals("")) {
 							table.setValueAt("", row, col);

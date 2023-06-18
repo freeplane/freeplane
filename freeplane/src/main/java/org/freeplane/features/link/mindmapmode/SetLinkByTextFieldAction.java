@@ -24,6 +24,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -60,6 +62,9 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		if(Compat.isWindowsOS() && linkAsString != null && linkAsString.startsWith("smb:")){
 			final Hyperlink link = NodeLinks.getValidLink(selectedNode);
 			linkAsString = Compat.smbUri2unc(link.getUri());
+		}
+		if (linkAsString != null) {
+			linkAsString = URLDecoder.decode(linkAsString, StandardCharsets.UTF_8);
 		}
 		if(linkAsString == null || "".equals(linkAsString)){
 			linkAsString = "http://";
