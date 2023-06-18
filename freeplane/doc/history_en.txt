@@ -5,6 +5,7 @@ Automatic stacked layouts
 Prevent overlapping node drag handler from stealing the mouse pointer
 Fast fold/unfold on node click if editing is not possible or editing on double click is disabled
 Slide roots (jump-in and jump-out for slides)
+Opening links to nodes try to use other map view if shift button is pressed
 Bug fixes
 
 ==============================
