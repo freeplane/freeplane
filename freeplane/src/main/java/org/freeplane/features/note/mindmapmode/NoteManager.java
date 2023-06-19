@@ -159,8 +159,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 			}
 		} else {
 			String noteContentType = noteController.getNoteContentType(node);
-			if (TextController.CONTENT_TYPE_AUTO.equals(noteContentType)
-					|| TextController.CONTENT_TYPE_HTML.equals(noteContentType))
+			if (TextController.isHtmlContentType(noteContentType))
 					notePanel.setEditedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			else
 				notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);

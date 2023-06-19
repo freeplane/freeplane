@@ -211,19 +211,23 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setDetails(final Object details) {
-		setDetailsText(convertConvertibleToHtml(details));
+		setDetailsText(Convertible.toString(details));
 	}
 
 	// Node: R/W
     @Override
 	public void setDetailsText(final String text) {
         final MTextController textController = (MTextController) TextController.getController();
-		if (text == null) {
-			textController.setDetailsHidden(getDelegate(), false);
-			textController.setDetails(getDelegate(), null);
+		NodeModel delegate = getDelegate();
+        if (text == null || text.isEmpty()) {
+			textController.setDetailsHidden(delegate, false);
+			textController.setDetails(delegate, null);
 		}
 		else{
-			textController.setDetails(getDelegate(), HtmlUtils.textToHTML(text));
+	        String detailsContentType = textController.getDetailsContentType(delegate);
+			textController.setDetails(delegate,
+			        ! HtmlUtils.isHtml(text) && TextController.isHtmlContentType(detailsContentType)
+                    ?  HtmlUtils.textToHTML(text) : text);
 		}
     }
 
@@ -677,25 +681,18 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setNote(final Object value) {
-		final MNoteController noteController = (MNoteController) NoteController.getController();
-		noteController.setNoteText(getDelegate(), convertConvertibleToHtml(value));
-	}
-
-	private String convertConvertibleToHtml(final Object value) {
-		if (value == null)
-			return null;
-		final String text = Convertible.toString(value);
-		// the text content of a Convertible object might be null
-		if (text == null)
-			return null;
-		return HtmlUtils.isHtml(text) ? text : HtmlUtils.plainToHTML(text);
+		setNoteText(Convertible.toString(value));
 	}
 
 	// Node: R/W
 	@Override
 	public void setNoteText(final String text) {
+	    NodeModel delegate = getDelegate();
 		final MNoteController noteController = (MNoteController) NoteController.getController();
-		noteController.setNoteText(getDelegate(), HtmlUtils.textToHTML(text));
+		String noteContentType = noteController.getNoteContentType(delegate);
+        noteController.setNoteText(delegate,
+                ! HtmlUtils.isHtml(text) && TextController.isHtmlContentType(noteContentType)
+                ?  HtmlUtils.textToHTML(text) : text);
 	}
 
 	// Node: R/W

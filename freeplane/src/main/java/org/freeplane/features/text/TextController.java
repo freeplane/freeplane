@@ -83,6 +83,11 @@ public class TextController implements IExtension {
 		return Controller.getCurrentController().getResourceController().getBooleanProperty(MARK_TRANSFORMED_TEXT);
 	}
 
+    public static boolean isHtmlContentType(String noteContentType) {
+        return TextController.CONTENT_TYPE_AUTO.equals(noteContentType)
+                || TextController.CONTENT_TYPE_HTML.equals(noteContentType);
+    }
+
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -491,10 +496,10 @@ public class TextController implements IExtension {
 	}
 
 	public Hyperlink toLink(final Object value, final NodeModel node, Object extension) {
-		if(value instanceof Hyperlink)
-			return (Hyperlink) value;
-		final Object transformedObject = getTransformedObjectNoFormattingNoThrow(node, extension, value);
-		return modeController.getExtension(LinkController.class).toLink(node, transformedObject);
+	    if(value instanceof Hyperlink)
+	        return (Hyperlink) value;
+	    final Object transformedObject = getTransformedObjectNoFormattingNoThrow(node, extension, value);
+	    return modeController.getExtension(LinkController.class).toLink(node, transformedObject);
 	}
 
 }
