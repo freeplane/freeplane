@@ -32,8 +32,10 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -41,10 +43,10 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.text.TextController;
 
-final class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
+class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
     private static final String NOTE_FOLLOWS_SELECTION_PROPERTY = "noteFollowsSelection";
 	private boolean ignoreEditorUpdate;
-	NodeModel node;
+	private NodeModel node;
 	/**
 	 *
 	 */
@@ -56,6 +58,15 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		ResourceController resourceController = ResourceController.getResourceController();
         resourceController.addPropertyChangeListener(this::propertyChanged);
         noteFollowsSelection = resourceController.getBooleanProperty(NOTE_FOLLOWS_SELECTION_PROPERTY);
+        noteController.getModeController().getMapController().addNodeChangeListener(new INodeChangeListener() {
+
+            @Override
+            public void nodeChanged(NodeChangeEvent event) {
+                if(event.getNode().equals(node)
+                        && NodeModel.NOTE_TEXT.equals(event.getProperty()))
+                    updateEditor();
+            }
+        });
 	}
 
 

@@ -147,7 +147,11 @@ public class MNoteController extends NoteController {
     private final Set<String> noteContentTypes;
 	private MModeController modeController;
 
-	/**
+	MModeController getModeController() {
+        return modeController;
+    }
+
+    /**
 	 * @param modeController
 	 */
 	public MNoteController(MModeController modeController) {
@@ -260,11 +264,6 @@ public class MNoteController extends NoteController {
                 }
                 else
                     node.putExtension(note);
-				if(noteManager != null) {
-					IMapSelection selection = Controller.getCurrentController().getSelection();
-					if (selection != null && node.equals(selection.getSelected()))
-						noteManager.updateEditor();
-				}
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
