@@ -1160,6 +1160,9 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void onPreNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+        if (nodeDeletionEvent.index >= getComponentCount() - 1) {
+            return;
+        }
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		if (node == lastSelectedChild) {
 			lastSelectedChild = null;
