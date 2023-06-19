@@ -298,13 +298,16 @@ public class TextController implements IExtension {
 		int skippedCharacterCount = countInitialSpaces(text);
 		int length = text.length() - skippedCharacterCount;
 		final int eolPosition;
-		if(isHtml)
-		    eolPosition = skippedCharacterCount + HtmlUtils.htmlToPlain(longText).indexOf('\n');
-		else
-		    eolPosition = text.indexOf('\n', skippedCharacterCount);
+		if(isHtml) {
+            int lineBreakIndex = HtmlUtils.htmlToPlain(longText).indexOf('\n');
+            eolPosition = lineBreakIndex >= 0 ? skippedCharacterCount + lineBreakIndex : text.length();
+        } else {
+            int lineBreakIndex = text.indexOf('\n', skippedCharacterCount);
+            eolPosition = lineBreakIndex >= 0 ? lineBreakIndex : text.length();
+        }
 		final int maxShortenedNodeWidth = ResourceController.getResourceController()
 		    .getIntProperty("max_shortened_text_length");
-		if (eolPosition == -1 || eolPosition >= length || eolPosition >= maxShortenedNodeWidth) {
+		if (eolPosition >= length || eolPosition >= maxShortenedNodeWidth) {
 			if (length <= maxShortenedNodeWidth) {
 				return isHtml ? longText : longText.substring(skippedCharacterCount);
 			}
