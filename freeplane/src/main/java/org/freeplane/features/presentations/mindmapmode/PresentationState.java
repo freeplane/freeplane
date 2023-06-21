@@ -233,10 +233,6 @@ public class PresentationState {
 
     public boolean isSlideRoot(NodeModel node) {
         NodeModel slideRootNode = currentPresentation.slides.getCurrentElement().getSlideRootNode();
-        System.out.println(slideRootNode.getText());
-        System.out.println(node.getText());
-        System.out.println(slideRootNode == node);
-
         return slideRootNode == node;
     }
 
