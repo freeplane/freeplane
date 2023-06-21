@@ -419,16 +419,24 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	    String propertyName = e.getPropertyName();
 	    if (propertyName == "text" || "font" == propertyName || "foreground" == propertyName
 	            || ("ancestor" == propertyName || "graphicsConfiguration" == propertyName) && e.getNewValue() != null
-	            || ZoomableLabel.CUSTOM_CSS == propertyName) {
-	        if(lbl.getTextRenderingIcon() !=  null){
-	            ScaledHTML.updateRenderer(lbl, "");
-	        }
-	        else{
-	            ScaledHTML.updateRendererOnPropertyChange(lbl, propertyName);
-	        }
-	    } else
-            super.propertyChange(e);
+	            || ZoomableLabel.CUSTOM_CSS == propertyName)
+            updateRendererOnPropertyChange(lbl, propertyName);
+        else {
+	        super.propertyChange(e);
+	        View view = (View) lbl.getClientProperty(BasicHTML.propertyKey);
+	        if (view != null && ! (view instanceof ScaledHTML.Renderer))
+	            updateRendererOnPropertyChange(lbl, propertyName);
+	    }
 	}
+
+    private void updateRendererOnPropertyChange(ZoomableLabel lbl, String propertyName) {
+        if(lbl.getTextRenderingIcon() !=  null){
+            ScaledHTML.updateRenderer(lbl, "");
+        }
+        else{
+            ScaledHTML.updateRendererOnPropertyChange(lbl, propertyName);
+        }
+    }
 
 	@Override
     protected void installComponents(JLabel c) {
