@@ -2685,6 +2685,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else {
 			rootsHistory.clear();
 		}
+		display(node);
 		NodeView nodeView = getNodeView(node);
 		setRootNode(nodeView);
         validateAndScroll();
@@ -2777,8 +2778,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		} else if(jumpsIn)
 			preserveNodeLocationOnScreen(newRootView, 0, 0);
 		else {
-		    preserveNodeLocationOnScreen(currentRootView, 0, 0);
-		    mapScroller.setAnchorView(newRootView);
+		    LogUtils.severe(new IllegalStateException("Only jumping in or out is possible here"));
+		    restoreRootNode();
+		    setRootNode(newRootView);
+		    return;
 		}
 
 		NodeView lastSelectedNode;
