@@ -345,14 +345,14 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		try {
 			isPainting = true;
 			if(htmlViewSet){
-				GlyphPainterMetricResetter.resetPainter();
+			    ScaledHTML.resetPainter();
 			}
 			superPaintSafe(g, mainView);
 		}
 		finally {
 			isPainting = false;
 			if(htmlViewSet){
-				GlyphPainterMetricResetter.resetPainter();
+			    ScaledHTML.resetPainter();
 			}
 		}
 		g2.setTransform(transform);
@@ -414,37 +414,21 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	}
 
 	@Override
-    public void propertyChange(PropertyChangeEvent e) {
-	    	String name = e.getPropertyName();
-	    	if (name == "text" || "font" == name || "foreground" == name
-	    			|| ("ancestor" == name || "graphicsConfiguration" == name) && e.getNewValue() != null 
-	    			|| ZoomableLabel.CUSTOM_CSS == name) {
-	    		ZoomableLabel lbl = ((ZoomableLabel) e.getSource());
-	    		if(lbl.getTextRenderingIcon() !=  null){
-	    			ScaledHTML.updateRenderer(lbl, "");
-	    		}
-	    		else{
-	    			String text = lbl.getText();
-	    			GlyphPainterMetricResetter.resetPainter();
-	    			try {
-	    			    if("foreground" == name)
-	    			        ScaledHTML.updateRendererOnForegroundChange(lbl, text);
-	    			    else
-                            ScaledHTML.updateRenderer(lbl, text);
-	    			}
-	    			finally{
-	    				GlyphPainterMetricResetter.resetPainter();
-	    			}
-	    			View v = (View) lbl.getClientProperty(BasicHTML.propertyKey);
-	    			if (v != null) {
-	    				lbl.putClientProperty("preferredWidth", v.getPreferredSpan(View.X_AXIS));
-	    			}
-	    		}
-	    	}
-	    	else
-		        super.propertyChange(e);
-
-    }
+	public void propertyChange(PropertyChangeEvent e) {
+	    ZoomableLabel lbl = ((ZoomableLabel) e.getSource());
+	    String propertyName = e.getPropertyName();
+	    if (propertyName == "text" || "font" == propertyName || "foreground" == propertyName
+	            || ("ancestor" == propertyName || "graphicsConfiguration" == propertyName) && e.getNewValue() != null
+	            || ZoomableLabel.CUSTOM_CSS == propertyName) {
+	        if(lbl.getTextRenderingIcon() !=  null){
+	            ScaledHTML.updateRenderer(lbl, "");
+	        }
+	        else{
+	            ScaledHTML.updateRendererOnPropertyChange(lbl, propertyName);
+	        }
+	    } else
+            super.propertyChange(e);
+	}
 
 	@Override
     protected void installComponents(JLabel c) {

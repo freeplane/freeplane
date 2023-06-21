@@ -66,7 +66,29 @@ public class ScaledHTML extends BasicHTML{
         return v;
     }
 
-    public static void updateRendererOnForegroundChange(JLabel c, String text) {
+    public static void resetPainter() {
+        GlyphPainterMetricResetter.resetPainter();
+    }
+
+    public static void updateRendererOnPropertyChange(JLabel lbl, String propertyName) {
+        String text = lbl.getText();
+        GlyphPainterMetricResetter.resetPainter();
+        try {
+            if("foreground" == propertyName)
+                ScaledHTML.updateRendererOnForegroundChange(lbl, text);
+            else
+                ScaledHTML.updateRenderer(lbl, text);
+        }
+        finally{
+            GlyphPainterMetricResetter.resetPainter();
+        }
+        View v = (View) lbl.getClientProperty(BasicHTML.propertyKey);
+        if (v != null) {
+            lbl.putClientProperty("preferredWidth", v.getPreferredSpan(View.X_AXIS));
+        }
+    }
+
+    private static void updateRendererOnForegroundChange(JLabel c, String text) {
         Renderer oldRenderer = (Renderer) c.getClientProperty(BasicHTML.propertyKey);
         updateRenderer(c, text);
         if(oldRenderer !=  null) {
