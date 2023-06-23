@@ -2679,15 +2679,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeModel currentRootNode = currentRootView.getModel();
 		if(currentRootNode == node)
 			return;
-		if(! currentRootNode.isRoot() && node.isDescendantOf(currentRootNode)) {
+        NodeView nodeView = getNodeView(node);
+        RootChange rootChange;
+        if(nodeView == null) {
+            nodeView = NodeViewFactory.getInstance().newNodeView(node, this);
+            rootChange = RootChange.ANY;
+        }
+        else if(SwingUtilities.isDescendingFrom(nodeView, currentRootView)){
+            rootChange = RootChange.JUMP_IN;
+        }
+        else
+            rootChange = RootChange.ANY;
+		if(! currentRootNode.isRoot() && rootChange == RootChange.JUMP_IN) {
 			rootsHistory.add(currentRootView);
 		}
-		else {
-			rootsHistory.clear();
-		}
-		display(node);
-		NodeView nodeView = getNodeView(node);
-		setRootNode(nodeView);
+        setRootNode(nodeView, rootChange);
         validateAndScroll();
 	}
 
@@ -2700,7 +2706,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else {
 			newRoot = rootsHistory.remove(rootsHistory.size() - 1);
 		}
-		setRootNode(newRoot);
+		setRootNode(newRoot, RootChange.JUMP_OUT);
 		if(lastRoot.isFolded()) {
 		    lastRoot.fireFoldingChanged();
 		}
@@ -2742,21 +2748,26 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void restoreRootNode(int index, boolean temporarily) {
-		if(currentRootView == mapRootView)
-		    return;
-		remove(ROOT_NODE_COMPONENT_INDEX);
-		add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
-		currentRootParentView.add(currentRootView,
-		        index >= 0 ? index : calculateCurrentRootNodePosition());
-		NodeView lastRoot = currentRootView;
-		currentRootView = mapRootView;
-		currentRootParentView = null;
-		if(! temporarily) {
+	    if(currentRootView == mapRootView)
+	        return;
+	    if(currentRootParentView != null) {
+	        remove(ROOT_NODE_COMPONENT_INDEX);
+	        currentRootParentView.add(currentRootView,
+	                index >= 0 ? index : calculateCurrentRootNodePosition());
+	    }
+	    else {
+	        currentRootView.remove();
+	    }
+        add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
+	    NodeView lastRoot = currentRootView;
+	    currentRootView = mapRootView;
+	    currentRootParentView = null;
+	    if(! temporarily) {
 		    rootsHistory.forEach(NodeView::keepUnfolded);
             rootsHistory.clear();
             mapRootView.resetLayoutPropertiesRecursively();
             fireRootChanged();
-            if(lastRoot.isFolded()) {
+            if(lastRoot.getParent() != null && lastRoot.isFolded()) {
                 lastRoot.fireFoldingChanged();
             }
         }
@@ -2767,29 +2778,26 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 new MapChangeEvent(this, getModel(), IMapViewManager.MapChangeEventProperty.MAP_VIEW_ROOT, null, null, false));
     }
 
-	private void setRootNode(NodeView newRootView) {
+    static enum RootChange{JUMP_IN, JUMP_OUT, ANY}
+
+	private void setRootNode(NodeView newRootView, RootChange rootChange) {
 		if(currentRootView == newRootView)
 			return;
-		boolean jumpsOut = currentRootView.getModel().isDescendantOf(newRootView.getModel());
-		boolean jumpsIn = newRootView.getModel().isDescendantOf(currentRootView.getModel());
-		boolean newRootWasFolded = newRootView.isFolded() && ! jumpsOut;
-		if(jumpsOut) {
-			preserveNodeLocationOnScreen(currentRootView, 0, 0);
-		} else if(jumpsIn)
+		boolean newRootWasFolded = newRootView.isFolded() && ! (rootChange == RootChange.JUMP_OUT);
+		if(rootChange == RootChange.JUMP_OUT)
+            preserveNodeLocationOnScreen(currentRootView, 0, 0);
+        else if(rootChange == RootChange.JUMP_IN)
 			preserveNodeLocationOnScreen(newRootView, 0, 0);
-		else {
-		    LogUtils.severe(new IllegalStateException("Only jumping in or out is possible here"));
-		    restoreRootNode();
-		    setRootNode(newRootView);
-		    return;
-		}
 
-		NodeView lastSelectedNode;
-		if(jumpsOut)
-			lastSelectedNode = selection.selectedNode;
+		NodeView nextSelectedNode;
+		if(rootChange == RootChange.JUMP_OUT)
+			nextSelectedNode = selection.selectedNode;
 		else
-			lastSelectedNode = newRootView;
-		restoreRootNodeTemporarily();
+			nextSelectedNode = newRootView;
+		if(rootChange == RootChange.ANY)
+		    restoreRootNode();
+		else
+		    restoreRootNodeTemporarily();
 		if(currentRootView != newRootView) {
 			currentRootView = newRootView;
 			currentRootParentView = newRootView.getParentView();
@@ -2797,17 +2805,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			add(newRootView, ROOT_NODE_COMPONENT_INDEX);
 		}
 		else
-			rootsHistory.clear();
-		if(jumpsOut)
-			lastSelectedNode.requestFocusInWindow();
-		else
-			selectAsTheOnlyOneSelected(lastSelectedNode);
+		    rootsHistory.clear();
 		if(newRootWasFolded)
 		    newRootView.fireFoldingChanged();
 		newRootView.resetLayoutPropertiesRecursively();
 		fireRootChanged();
+		if(nextSelectedNode.isDisplayable()) {
+		    if(rootChange == RootChange.JUMP_OUT)
+		        nextSelectedNode.requestFocusInWindow();
+		    else
+		        selectAsTheOnlyOneSelected(nextSelectedNode);
+		}
 		revalidate();
 		repaint();
+		if(rootChange == RootChange.ANY)
+		    mapScroller.scrollToRootNode();
 	}
 
 	public int getDraggingAreaWidth() {

@@ -148,13 +148,14 @@ class NodeViewFactory {
 	    }
 	    return shapeConfiguration;
 	}
+    NodeView newNodeView(final NodeModel model, final MapView map) {
+        return newNodeView(model, map, null, 0);
+    }
 
-	/**
-	 * Factory method which creates the right NodeView for the model.
-	 */
 	NodeView newNodeView(final NodeModel model, final MapView map, final Container parent, final int index) {
 		final NodeView newView = new NodeView(model, map);
-		parent.add(newView, map.calculateComponentIndex(parent, index));
+		if(parent != null)
+		    parent.add(newView, map.calculateComponentIndex(parent, index));
 		newView.setMainView(newMainView(newView));
 		if(map.isDisplayable())
 			updateNewView(newView);
