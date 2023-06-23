@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.sounds.SoundClipPlayer;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
@@ -261,6 +262,7 @@ public class ReportGenerator extends StreamHandler {
 							final JComponent statusBar = viewController.getStatusBar();
 							if (!statusBar.isVisible())
 								UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
+							SoundClipPlayer.playSound("error");
 						}
 					}
 					catch (Exception e) {

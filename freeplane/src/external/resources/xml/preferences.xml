@@ -74,6 +74,8 @@
 			<separator name="surveys">
 				<boolean name="neverShowSurvey" />
 			</separator>
+			<separator name="sounds"></separator>
+				<boolean name="playsSound.error"/>
 			<separator name="org.freeplane.plugin.bugreport">
 				<combo name="org.freeplane.plugin.bugreport">
 					<choice value="org.freeplane.plugin.bugreport.allowed" />
