@@ -22,12 +22,11 @@ package org.freeplane.features.styles.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -37,10 +36,10 @@ import org.freeplane.features.styles.MapStyleModel;
  * Jul 21, 2011
  */
 public class ManageMapConditionalStylesAction extends AManageConditionalStylesAction{
-	
+
 	public static final String NAME = "ManageConditionalStylesAction";
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -48,28 +47,21 @@ public class ManageMapConditionalStylesAction extends AManageConditionalStylesAc
 	    super(NAME);
     }
 
-	public void actionPerformed(ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
-		Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.FILTER_COMPOSER);
-		Controller.getCurrentModeController().startTransaction();
-		try{
-			final int confirmed = JOptionPane.showConfirmDialog(controller.getMapViewManager().getMapViewComponent(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-			if(JOptionPane.OK_OPTION == confirmed){
-				LogicalStyleController.getController().refreshMapLaterUndoable(map);
-				Controller.getCurrentModeController().commit();
-			}
-			else{
-				Controller.getCurrentModeController().rollback();
+    public void actionPerformed(ActionEvent e) {
+        final Controller controller = Controller.getCurrentController();
+        final MapModel map = controller.getMap();
+        final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+        Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.FILTER_COMPOSER);
+        Controller.getCurrentModeController().startTransaction();
 
-			}
-		}
-		catch(RuntimeException ex){
-			ex.printStackTrace();
-			Controller.getCurrentModeController().rollback();
-		}
-	}
+        createAndShowDialog(Controller.getCurrentModeController(), conditionalStyleModel, pane,
+                            TextUtils.getText(TextUtils.removeMnemonic("ManageConditionalStylesAction.text")));
+    }
+
+    protected void handleOkAction(ModeController modeController, ConditionalStyleModel conditionalStyleModel) {
+        LogicalStyleController.getController().refreshMapLaterUndoable(modeController.getController().getMap());
+        modeController.commit();
+    }
 
 	@Override
 	public ConditionalStyleModel getConditionalStyleModel() {

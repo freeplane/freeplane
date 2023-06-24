@@ -8,10 +8,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.WindowConstants;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
@@ -20,14 +24,16 @@ import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.ConditionalStyleModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 
 abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	private static final int BUTTON_GAP = 15;
+	private static final String WINDOW_CONFIG_PROPERTY = "conditional_style_window_configuration";
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -35,22 +41,67 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    super(name);
     }
 
-	abstract public ConditionalStyleModel getConditionalStyleModel();
+    protected void createAndShowDialog(final ModeController modeController, final ConditionalStyleModel conditionalStyleModel, Component pane, String title) {
+        final JDialog dialog = new JDialog(UITools.getCurrentFrame());
+        dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        dialog.setResizable(true);
+        dialog.setTitle(title);
+        dialog.getContentPane().add(pane, BorderLayout.CENTER);
+
+        JButton okButton = new JButton();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
+        JButton cancelButton = new JButton();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+
+        okButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleOkAction(modeController, conditionalStyleModel);
+                dialog.dispose();
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleCancelAction(modeController);
+                dialog.dispose();
+            }
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+        dialog.getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
+        dialog.pack();
+        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        windowConfigurationStorage.setBounds(dialog);
+        dialog.setVisible(true);
+    }
+
+    protected abstract void handleOkAction(ModeController modeController, ConditionalStyleModel conditionalStyleModel);
+
+
+    protected void handleCancelAction(final ModeController modeController) {
+        modeController.rollback();
+    }
+
+    abstract public ConditionalStyleModel getConditionalStyleModel();
 
 	protected Component createConditionalStylePane(final MapModel map, final ConditionalStyleModel conditionalStyleModel, Variant variant) {
 		final JPanel pane = new JPanel(new BorderLayout());
 	    final MapStyleModel styles = MapStyleModel.getExtension(map);
 		final TableModel tableModel = MLogicalStyleController.getController().getConditionalStyleModelAsTableModel(map, conditionalStyleModel);
 		final ConditionalStyleTable conditionalStyleTable = new ConditionalStyleTable(styles, conditionalStyleModel, tableModel, variant);
+		conditionalStyleTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		if(conditionalStyleTable.getRowCount() > 0){
 			conditionalStyleTable.setRowSelectionInterval(0, 0);
 		}
-	    JScrollPane scrollPane = new JScrollPane(conditionalStyleTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    JScrollPane scrollPane = new JScrollPane(conditionalStyleTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	    final int tablePreferredWidth = scrollPane.getViewport().getViewSize().width;
 	    scrollPane.setPreferredSize(new Dimension(tablePreferredWidth, 400));
 	    pane.add(scrollPane, BorderLayout.CENTER);
 	    final Box buttons = Box.createVerticalBox();
-	    
+
 	    JButton create = new JButton();
 	    LabelAndMnemonicSetter.setLabelAndMnemonic(create, TextUtils.getRawText("new"));
 	    create.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
@@ -60,7 +111,7 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 				final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
 				((MLogicalStyleController)LogicalStyleController.getController()).addConditionalStyle(map, conditionalStyleModel, true, null, MapStyleModel.DEFAULT_STYLE, false);
 				conditionalStyleTable.setRowSelectionInterval(row, row);
-			} 
+			}
 		});
 
 	    JButton edit = new JButton();

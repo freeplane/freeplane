@@ -22,8 +22,6 @@ package org.freeplane.features.styles.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.map.IMapSelection;
@@ -38,10 +36,10 @@ import org.freeplane.features.styles.ConditionalStyleModel;
  * Jul 21, 2011
  */
 public class ManageNodeConditionalStylesAction extends AManageConditionalStylesAction{
-	
+
 	public static final String NAME = "ManageNodeConditionalStylesAction";
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -49,37 +47,29 @@ public class ManageNodeConditionalStylesAction extends AManageConditionalStylesA
 	    super(NAME);
     }
 
-	public void actionPerformed(ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
-		Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.NODE_CONDITION);
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.startTransaction();
-		try{
-			final int confirmed = JOptionPane.showConfirmDialog(controller.getMapViewManager().getMapViewComponent(), pane, TextUtils.getText(TextUtils.removeMnemonic("ManageNodeConditionalStylesAction.text")), JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-			if(JOptionPane.OK_OPTION == confirmed){
-				modeController.commit();
-				final IMapSelection selection = controller.getSelection();
-				final NodeModel selected = selection.getSelected();
-				modeController.getMapController().nodeChanged(selected,NodeModel.UNKNOWN_PROPERTY,null,null);
-				for (NodeModel otherSelectedNode : selection.getSelection())
-					if (selected != otherSelectedNode) {
-						otherSelectedNode.putExtension(conditionalStyleModel.clone());
-						modeController.getMapController().nodeChanged(otherSelectedNode, NodeModel.UNKNOWN_PROPERTY,
-						    null, null);
-					}
-			}
-			else{
-				modeController.rollback();
+    public void actionPerformed(ActionEvent e) {
+        final Controller controller = Controller.getCurrentController();
+        final MapModel map = controller.getMap();
+        final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
+        Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.NODE_CONDITION);
+        final ModeController modeController = Controller.getCurrentModeController();
+        modeController.startTransaction();
 
-			}
-		}
-		catch(RuntimeException ex){
-			ex.printStackTrace();
-			modeController.rollback();
-		}
-	}
+        createAndShowDialog(modeController, conditionalStyleModel, pane,
+                            TextUtils.getText(TextUtils.removeMnemonic("ManageNodeConditionalStylesAction.text")));
+    }
+
+    protected void handleOkAction(ModeController modeController, ConditionalStyleModel conditionalStyleModel) {
+        modeController.commit();
+        final IMapSelection selection = modeController.getController().getSelection();
+        final NodeModel selected = selection.getSelected();
+        modeController.getMapController().nodeChanged(selected,NodeModel.UNKNOWN_PROPERTY,null,null);
+        for (NodeModel otherSelectedNode : selection.getSelection())
+            if (selected != otherSelectedNode) {
+                otherSelectedNode.putExtension(conditionalStyleModel.clone());
+                modeController.getMapController().nodeChanged(otherSelectedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
+            }
+    }
 
 	@Override
 	public ConditionalStyleModel getConditionalStyleModel() {
