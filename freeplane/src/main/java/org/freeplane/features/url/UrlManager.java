@@ -268,7 +268,7 @@ public class UrlManager implements IExtension {
     /**@deprecated -- use LinkController*/
 	@Deprecated
 	public void loadHyperlink(Hyperlink link) {
-		final String uriString = link.toString();
+		final String uriString = link.toUriFriendlyDecodedString();
 		if (uriString.startsWith("#")) {
 			loadLocalLinkURI(uriString);
 		}

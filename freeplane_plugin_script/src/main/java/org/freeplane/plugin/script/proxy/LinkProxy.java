@@ -61,10 +61,10 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	// LinkRO
 	@Override
 	public Node getNode() {
-		final URI uri = getUri();
-		if (uri == null)
+		final Hyperlink hyperlink = NodeLinks.getLink(getDelegate());
+		if (hyperlink == null)
 			return null;
-		final String link = uri.toString();
+		final String link = hyperlink.toUriFriendlyDecodedString();
 		if (!link.startsWith("#")) {
 			return null;
 		}

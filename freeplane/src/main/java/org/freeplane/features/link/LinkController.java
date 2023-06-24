@@ -141,6 +141,9 @@ public class LinkController extends SelectionController implements IExtension {
 			try {
 				String string = (String)object;
 				if(string.startsWith("#")) {
+					try {
+						string = LinkController.createHyperlink(string).toUriFriendlyDecodedString();
+					} catch (URISyntaxException ignore) {}
 					String reference = string.substring(1);
 			        final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
 			        final NodeModel dest = explorer.getNodeAt(node, reference);
@@ -449,7 +452,7 @@ public class LinkController extends SelectionController implements IExtension {
 		if (link == null) {
 			return null;
 		}
-		final String adaptedText = link.toString();
+		final String adaptedText = link.toUriFriendlyDecodedString();
 		if (adaptedText.startsWith("#")) {
 			ModeController modeController = Controller.getCurrentModeController();
 			final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
@@ -1084,7 +1087,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public void loadURI(NodeModel node, Hyperlink uri) {
-		final String uriString = uri.toString();
+		final String uriString = uri.toUriFriendlyDecodedString();
 		if (uriString.startsWith("#")) {
 			String reference = uriString.substring(1);
 			UrlManager.getController().selectNode(node, reference);

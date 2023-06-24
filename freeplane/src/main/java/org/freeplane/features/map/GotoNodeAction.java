@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
+import java.net.URISyntaxException;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -28,6 +29,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.explorer.MapExplorerController;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -63,7 +65,11 @@ public class GotoNodeAction extends AFreeplaneAction {
     private String getReference(String reference) {
         if(reference.startsWith("ID_") || reference.startsWith("at("))
             return reference;
-        else
+        else {
+            try {
+                reference = LinkController.createHyperlink(reference).toUriFriendlyDecodedString();
+            } catch (URISyntaxException ignore) {}
             return "at(" + reference + ")";
+        }
     }
 }

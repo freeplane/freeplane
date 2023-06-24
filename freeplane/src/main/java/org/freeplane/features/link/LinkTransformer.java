@@ -20,6 +20,7 @@
 package org.freeplane.features.link;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.Icon;
 
@@ -53,9 +54,12 @@ public class LinkTransformer extends AbstractContentTransformer {
 			return content;
 		if(! ( content instanceof Hyperlink ||  content instanceof URI))
 			return content;
-		final String string = content.toString();
+		String string = content.toString();
 		if(! string.startsWith("#"))
 			return content;
+		try {
+			string = LinkController.createHyperlink(string).toUriFriendlyDecodedString();
+		} catch (URISyntaxException ignore) {}
 		final String reference=string.substring(1);
 		final NodeModel target = modeController.getExtension(MapExplorerController.class).getNodeAt(node, reference);
 		if(target != null){

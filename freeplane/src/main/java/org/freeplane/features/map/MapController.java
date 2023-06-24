@@ -60,6 +60,7 @@ import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.map.NodeModel.Side;
@@ -860,6 +861,7 @@ implements IExtension, NodeChangeAnnouncer{
 	    String nodeReference = url.getRef();
 	    if(nodeReference != null){
 	    	openMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
+		    nodeReference =  LinkController.createHyperlink(nodeReference).toUriFriendlyDecodedString();
 	    	final NodeModel node = getNodeAt(nodeReference);
 	    	if(node != null)
 	    		select(node);
