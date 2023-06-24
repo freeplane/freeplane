@@ -63,7 +63,7 @@ public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction
 				return;
 			}
 			try {
-				final Hyperlink link = LinkController.createHyperlink(inputValue.trim());
+				final Hyperlink link = LinkController.createHyperlink(inputValue.trim(), false);
 				editor.setLink(null, link.toString(), null);
 			}
 			catch (final URISyntaxException e1) {
