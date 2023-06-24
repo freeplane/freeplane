@@ -20,6 +20,7 @@
 package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.Action;
@@ -67,7 +68,7 @@ public class GotoNodeAction extends AFreeplaneAction {
             return reference;
         else {
             try {
-                reference = LinkController.createHyperlink(reference).toUriFriendlyDecodedString();
+                reference = new URI(null, "", reference).getFragment();
             } catch (URISyntaxException ignore) {}
             return "at(" + reference + ")";
         }
