@@ -53,33 +53,25 @@ public class ManageNodeConditionalStylesAction extends AManageConditionalStylesA
         final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
         Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.NODE_CONDITION);
         final ModeController modeController = Controller.getCurrentModeController();
-        modeController.startTransaction();
 
         createAndShowDialog(modeController, conditionalStyleModel, pane,
                             TextUtils.getText(TextUtils.removeMnemonic("ManageNodeConditionalStylesAction.text")));
     }
 
     protected void handleOkAction(ModeController modeController, ConditionalStyleModel conditionalStyleModel) {
-        modeController.commit();
         final IMapSelection selection = modeController.getController().getSelection();
-        final NodeModel selected = selection.getSelected();
-        modeController.getMapController().nodeChanged(selected,NodeModel.UNKNOWN_PROPERTY,null,null);
-        for (NodeModel otherSelectedNode : selection.getSelection())
-            if (selected != otherSelectedNode) {
-                otherSelectedNode.putExtension(conditionalStyleModel.clone());
-                modeController.getMapController().nodeChanged(otherSelectedNode, NodeModel.UNKNOWN_PROPERTY, null, null);
-            }
+        for (NodeModel node : selection.getSelection()) {
+            MLogicalStyleController.getController().setConditionalStyles(node, conditionalStyleModel.clone());
+        }
     }
 
-	@Override
-	public ConditionalStyleModel getConditionalStyleModel() {
+    private ConditionalStyleModel getConditionalStyleModel() {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel node = controller.getSelection().getSelected();
 		ConditionalStyleModel conditionalStyleModel = node.getExtension(ConditionalStyleModel.class);
 		if(conditionalStyleModel == null){
-			conditionalStyleModel = new ConditionalStyleModel();
-			node.addExtension(conditionalStyleModel);
+			return new ConditionalStyleModel();
 		}
-	    return conditionalStyleModel;
+	    return conditionalStyleModel.clone();
     }
 }

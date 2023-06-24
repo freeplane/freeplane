@@ -28,7 +28,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.ConditionalStyleModel;
-import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 
 /**
@@ -52,23 +51,20 @@ public class ManageMapConditionalStylesAction extends AManageConditionalStylesAc
         final MapModel map = controller.getMap();
         final ConditionalStyleModel conditionalStyleModel = getConditionalStyleModel();
         Component pane = createConditionalStylePane(map, conditionalStyleModel, Variant.FILTER_COMPOSER);
-        Controller.getCurrentModeController().startTransaction();
 
         createAndShowDialog(Controller.getCurrentModeController(), conditionalStyleModel, pane,
                             TextUtils.getText(TextUtils.removeMnemonic("ManageConditionalStylesAction.text")));
     }
 
     protected void handleOkAction(ModeController modeController, ConditionalStyleModel conditionalStyleModel) {
-        LogicalStyleController.getController().refreshMapLaterUndoable(modeController.getController().getMap());
-        modeController.commit();
+        MLogicalStyleController.getController().setConditionalStyles(modeController.getController().getMap(), conditionalStyleModel);
     }
 
-	@Override
-	public ConditionalStyleModel getConditionalStyleModel() {
+	private ConditionalStyleModel getConditionalStyleModel() {
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 	    final MapStyleModel styleModel = MapStyleModel.getExtension(map);
 		final ConditionalStyleModel conditionalStyleModel = styleModel.getConditionalStyleModel();
-	    return conditionalStyleModel;
+	    return conditionalStyleModel.clone();
     }
 }

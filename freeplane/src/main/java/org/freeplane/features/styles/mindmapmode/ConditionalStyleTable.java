@@ -33,19 +33,19 @@ import org.freeplane.features.styles.MapStyleModel;
 class ConditionalStyleTable extends JTable {
 
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-	private MapStyleModel styleModel;
-	private DefaultConditionRenderer conditionRenderer;
-    private FilterComposerDialog filterComposerDialog;
-    private Variant filterComposerVariant;
-	private ConditionalStyleModel conditionalStyleModel;
-	
+	private final MapStyleModel styleModel;
+	private final DefaultConditionRenderer conditionRenderer;
+    private final Variant filterComposerVariant;
+	private final ConditionalStyleModel conditionalStyleModel;
+	private FilterComposerDialog filterComposerDialog;
+
 	@SuppressWarnings("serial")
     private class ConditionEditor extends AbstractCellEditor
     implements TableCellEditor{
-		
+
 		private JButton btn;
 		public ConditionEditor() {
 			super();
@@ -77,7 +77,7 @@ class ConditionalStyleTable extends JTable {
 		public Object getCellEditorValue() {
 	        return cellEditorValue;
         }
-		
+
 		@Override
 		public boolean isCellEditable(EventObject anEvent) {
 			if (anEvent instanceof MouseEvent) {
@@ -86,7 +86,7 @@ class ConditionalStyleTable extends JTable {
 			return true;
 		}
 	}
-	
+
 	ConditionalStyleTable(MapStyleModel styleModel, ConditionalStyleModel conditionalStyleModel, TableModel tableModel, Variant filterComposerVariant) {
 	    super(tableModel);
 	    this.styleModel = styleModel;
@@ -95,7 +95,7 @@ class ConditionalStyleTable extends JTable {
 	    setCellSelectionEnabled(false);
 	    setRowSelectionAllowed(true);
 	    final TableColumnModel columnModel = getColumnModel();
-	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
+	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 //	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
 	    setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		conditionRenderer = createConditionRenderer();
@@ -106,7 +106,7 @@ class ConditionalStyleTable extends JTable {
 		columnModel.getColumn(2).setCellEditor(new DefaultCellEditor(styleBox){
 
 			/**
-             * 
+             *
              */
             private static final long serialVersionUID = 1L;
             {
@@ -121,7 +121,7 @@ class ConditionalStyleTable extends JTable {
 				styleBox.setModel(boxContent);
 	            return super.getTableCellEditorComponent(table, value, isSelected, row, column);
             }
-			
+
 		});
 		columnModel.getColumn(1).setPreferredWidth(300);
 		columnModel.getColumn(2).setPreferredWidth(180);
@@ -153,6 +153,5 @@ class ConditionalStyleTable extends JTable {
         }
         return filterComposerDialog;
     }
-
 }
 

@@ -144,7 +144,14 @@ public class MapStyleModel implements IExtension {
 		return conditionalStyleModel;
 	}
 
-	private void insertStyleMap(MapModel map, MapModel styleMap) {
+
+
+	public void setConditionalStyleModel(ConditionalStyleModel conditionalStyleModel) {
+	    Objects.requireNonNull(conditionalStyleModel);
+        this.conditionalStyleModel = conditionalStyleModel;
+    }
+
+    private void insertStyleMap(MapModel map, MapModel styleMap) {
 		this.styleMap = styleMap;
 		styleMap.putExtension(MapStyleModel.class, this);
 		final NodeModel rootNode = styleMap.getRootNode();
@@ -516,7 +523,7 @@ public class MapStyleModel implements IExtension {
                     targetStyleNode = new NodeModel(styleMap);
                     targetStyleNode.setUserObject(source.getUserObject());
                     targetGroupNode.insert(targetStyleNode);
-                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);         
+                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);
                     addStyleNode(targetStyleNode);
                 }
             }

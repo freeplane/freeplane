@@ -173,7 +173,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
         this.styles = styles;
     }
 
-    void addCondition(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
+    public void addCondition(boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast){
 		styles.add(new Item(isActive, condition, style, isLast));
 		if(table == null){
 			return;
@@ -190,7 +190,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		table.fireTableRowsInserted(index, index);
 	}
 
-	Item removeCondition(int index){
+	public Item removeCondition(int index){
 		final Item item = styles.remove(index);
 		if(table == null){
 			return item;
@@ -211,14 +211,14 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		table.fireTableRowsUpdated(index2, index2);
 	}
 
-	void moveUp(int index){
+	public void moveUp(int index){
 		if(index == 0){
 			return;
 		}
 		swapConditions(index, index - 1);
 	}
 
-	void moveDown(int index){
+	public void moveDown(int index){
 		if(index == styles.size() - 1){
 			return;
 		}

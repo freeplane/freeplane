@@ -920,5 +920,60 @@ public class MLogicalStyleController extends LogicalStyleController {
 		return newStyle;
 	}
 
+    public void setConditionalStyles(NodeModel node, ConditionalStyleModel newStyles) {
+        ConditionalStyleModel oldStyles = node.getExtension(ConditionalStyleModel.class);
+        IActor setStyles = new IActor() {
+
+            @Override
+            public void undo() {
+                setStyles(node, oldStyles);
+            }
+
+            @Override
+            public String getDescription() {
+               return "setConditionalStyles";
+            }
+
+            @Override
+            public void act() {
+                setStyles(node, newStyles);
+            }
+
+            private void setStyles(NodeModel node, ConditionalStyleModel newStyles) {
+                node.putExtension(ConditionalStyleModel.class, newStyles);
+                modeController.getMapController().nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+            }
+        };
+        modeController.execute(setStyles, node.getMap());
+    }
+
+
+    public void setConditionalStyles(MapModel map, ConditionalStyleModel newStyles) {
+        ConditionalStyleModel oldStyles = MapStyleModel.getExtension(map).getConditionalStyleModel();
+        IActor setStyles = new IActor() {
+
+            @Override
+            public void undo() {
+                setStyles(map, oldStyles);
+            }
+
+            @Override
+            public String getDescription() {
+               return "setConditionalStyles";
+            }
+
+            @Override
+            public void act() {
+                setStyles(map, newStyles);
+            }
+
+            private void setStyles(MapModel map, ConditionalStyleModel newStyles) {
+                MapStyleModel.getExtension(map).setConditionalStyleModel(newStyles);
+                modeController.getMapController().fireMapChanged(
+                        new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
+            }
+        };
+        modeController.execute(setStyles, map);
+    }
 
 }
