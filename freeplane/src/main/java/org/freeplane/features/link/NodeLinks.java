@@ -71,6 +71,11 @@ public class NodeLinks implements IExtension {
 		return link != null ? link.toString() : null;
 	}
 
+	public static String getLinkAsUriFriendlyDecodedString(final NodeModel selectedNode) {
+		final Hyperlink link = NodeLinks.getValidLink(selectedNode);
+		return link != null ? link.toUriFriendlyDecodedString() : null;
+	}
+
 	/**
 	 * @param node
 	 * @return
