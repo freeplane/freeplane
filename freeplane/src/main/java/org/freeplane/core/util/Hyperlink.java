@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Hyperlink {
 	private URI uri;
 	private String uriString;
+	private String uriFriendlyDecodedString;
 
     public Hyperlink(URI uri) {
         super();
@@ -46,6 +47,17 @@ public class Hyperlink {
 		if(uriString == null)
 			uriString = uri.toString();
 		return uriString;
+	}
+
+	public String toUriFriendlyDecodedString() {
+		if (uriFriendlyDecodedString == null)
+			uriFriendlyDecodedString = makeUriConstructorFriendlyDecodedString();
+		return uriFriendlyDecodedString;
+	}
+	private String makeUriConstructorFriendlyDecodedString() {
+		String scheme = uri.getScheme();
+		String fragment = uri.getFragment();
+		return (scheme != null ? scheme + ":" : "") + uri.getSchemeSpecificPart() + (fragment != null ? "#" + fragment : "");
 	}
 
 	public String getScheme() {
