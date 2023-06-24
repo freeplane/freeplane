@@ -36,13 +36,17 @@ public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction
         SHTMLEditorPane editorPane = panel.getSHTMLEditorPane();
 		final Element linkElement = editorPane.getCurrentLinkElement();
         final boolean foundLink = (linkElement != null);
-		final String linkAsString;
+		String linkAsString;
         if (foundLink) {
             final AttributeSet elemAttrs = linkElement.getAttributes();
             final Object linkAttr = elemAttrs.getAttribute(HTML.Tag.A);
             final Object href = ((AttributeSet) linkAttr).getAttribute(HTML.Attribute.HREF);
             if (href != null) {
-            	linkAsString = href.toString();
+	            try {
+		            linkAsString = LinkController.createHyperlink(href.toString()).toUriFriendlyDecodedString();
+	            } catch (URISyntaxException e) {
+		            linkAsString = href.toString();
+	            }
             }
             else
             	linkAsString = "http://";

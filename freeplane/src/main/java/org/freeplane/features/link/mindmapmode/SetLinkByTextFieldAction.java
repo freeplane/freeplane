@@ -56,7 +56,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		String linkAsString = NodeLinks.getLinkAsString(selectedNode);
+		String linkAsString = NodeLinks.getLinkAsUriFriendlyDecodedString(selectedNode);
 		if(Compat.isWindowsOS() && linkAsString != null && linkAsString.startsWith("smb:")){
 			final Hyperlink link = NodeLinks.getValidLink(selectedNode);
 			linkAsString = Compat.smbUri2unc(link.getUri());
