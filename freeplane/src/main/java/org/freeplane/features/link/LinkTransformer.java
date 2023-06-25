@@ -56,7 +56,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 		final String string = content.toString();
 		if(! string.startsWith("#"))
 			return content;
-		final String reference=string.substring(1);
+		final String reference = LinkController.decodeUriFragmentIfEncoded(string.substring(1));
 		final NodeModel target = modeController.getExtension(MapExplorerController.class).getNodeAt(node, reference);
 		if(target != null){
 			final String shortText = TextController.getController(modeController).getShortPlainText(target);

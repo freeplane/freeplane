@@ -52,6 +52,7 @@ import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.explorer.MapExplorerController;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -309,7 +310,8 @@ public class UrlManager implements IExtension {
 	    try {
 	        if(loadOtherHyperlink(new Hyperlink(new URI(nodeAndMapReference.getMapReference())), true)) {
 	            final MapModel map = Controller.getCurrentController().getMap();
-	            selectNode(map.getRootNode(), nodeAndMapReference.getNodeReference());
+	            final String reference = LinkController.decodeUriFragmentIfEncoded(nodeAndMapReference.getNodeReference());
+	            selectNode(map.getRootNode(), reference);
 	        }
 	    } catch (URISyntaxException e) {
 	        LogUtils.severe(e);

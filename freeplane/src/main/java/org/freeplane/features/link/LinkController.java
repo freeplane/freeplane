@@ -108,6 +108,7 @@ import org.freeplane.features.url.UrlManager;
 public class LinkController extends SelectionController implements IExtension {
     public static final String MENUITEM_SCHEME = "menuitem";
 	public static final String EXECUTE_APP_SCHEME = "execute";
+	private static final String HASH = "#";
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -141,7 +142,7 @@ public class LinkController extends SelectionController implements IExtension {
 			try {
 				String string = (String)object;
 				if(string.startsWith("#")) {
-					String reference = string.substring(1);
+					String reference = LinkController.decodeUriFragmentIfEncoded(string.substring(1));
 			        final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
 			        final NodeModel dest = explorer.getNodeAt(node, reference);
 			        if(dest != null)
@@ -453,7 +454,7 @@ public class LinkController extends SelectionController implements IExtension {
 		if (adaptedText.startsWith("#")) {
 			ModeController modeController = Controller.getCurrentModeController();
 			final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
-			final String reference = adaptedText.substring(1);
+			final String reference = LinkController.decodeUriFragmentIfEncoded(adaptedText.substring(1));
 			final NodeModel dest = explorer.getNodeAt(node, reference);
 			if (dest != null) {
 				return TextController.getController().getShortPlainText(dest);
@@ -814,6 +815,22 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
+	/**
+	 * Tries to decode URI fragment passed in as {@code reference}. Returns it unchanged in case of {@link URISyntaxException}
+	 *
+	 * <p> This is useful for converting e.g. {@code at(/'some%20text')} to {@code at(/'some text')}</p>
+	 *
+	 * @param reference The string to be decoded
+	 * @return Decoded URI fragment or unchanged, in case of {@link URISyntaxException}
+	 */
+	public static String decodeUriFragmentIfEncoded(String reference) {
+		try {
+			return new URI(HASH + reference).getFragment();
+		} catch (URISyntaxException e) {
+			return reference;
+		}
+	}
+
 	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
 	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
     private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
@@ -1084,7 +1101,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public void loadURI(NodeModel node, Hyperlink uri) {
-		final String uriString = uri.toString();
+		final String uriString = uri.toUriFriendlyDecodedString();
 		if (uriString.startsWith("#")) {
 			String reference = uriString.substring(1);
 			UrlManager.getController().selectNode(node, reference);
