@@ -56,6 +56,12 @@ public class NodeLinks implements IExtension {
 		return nodeLinks;
 	}
 
+	/**
+	 * Get either a non-local link or a local link (#ID or #at)
+	 *
+	 * @param node The node whose link to get
+	 * @return Node's link, be it non-local or local, or {@code null} if no link exists
+	 */
 	public static Hyperlink getLink(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
 		return links != null ? links.getHyperLink(node) : null;
@@ -126,7 +132,10 @@ public class NodeLinks implements IExtension {
 	}
 
 	/**
-	 * @return
+	 * Get either a non-local link or a local link (#ID or #at)
+	 *
+	 * @param clone not used
+	 * @return Node's link, be it non-local or local, or {@code null} if no link exists
 	 */
 	public Hyperlink getHyperLink(NodeModel clone) {
 		if(nonLocalHyperlink != null)
@@ -201,6 +210,12 @@ public class NodeLinks implements IExtension {
 		}
 	}
 
+	/**
+	 * Get node's link. If it's a local link to #ID, check that the target node exists.
+	 *
+	 * @param model The node whose link to get
+	 * @return Node's link or {@code null} if no link is set or the target node with the #ID doesn't exists
+	 */
 	public static Hyperlink getValidLink(final NodeModel model) {
 		final Hyperlink link = NodeLinks.getLink(model);
 		if (link == null) {
