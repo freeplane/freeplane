@@ -755,13 +755,18 @@ public class LinkController extends SelectionController implements IExtension {
 	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
 	    "(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
 
+	public static Hyperlink createHyperlink(final String inputValue) throws URISyntaxException {
+		return createHyperlink(inputValue, true);
+	}
+
 	/* Function that tries to transform a not necessarily well-formed
 	 * string into a valid URI. We use the fact that the single-argument
 	 * URI constructor doesn't escape invalid characters (especially
 	 * spaces), whereas the 3-argument constructors does do escape
 	 * them (e.g. space into %20).
+	 * keepOriginalString has effect only for non-smb and non-file URIs
 	 */
-	public static Hyperlink createHyperlink(final String inputValue) throws URISyntaxException {
+	public static Hyperlink createHyperlink(final String inputValue, boolean keepOriginalString) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
 			return new Hyperlink(inputValue, new URI(inputValue));
 		}
@@ -808,7 +813,11 @@ public class LinkController extends SelectionController implements IExtension {
 					final String scheme = mat.group(1);
 					final String ssp = mat.group(2).replace('\\', '/');
 					final String fragment = mat.group(3);
-					return new Hyperlink(inputValue, new URI(scheme, ssp, fragment));
+					final URI uri = new URI(scheme, ssp, fragment);
+					if (keepOriginalString)
+						return new Hyperlink(inputValue, uri);
+					else
+						return new Hyperlink(uri);
 				}
 			}
 			throw new URISyntaxException(inputValue, "This doesn't look like a valid link (URI, file, SMB or URL).");
