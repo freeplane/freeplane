@@ -92,7 +92,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			        & (KeyEvent.CTRL_MASK | KeyEvent.META_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = buttons.get(modifiers);
 			final JButton button = buttonRow[oldButtonNumber];
-			setAcceleratorAction(button, oldStroke);
+			assignSetAcceleratorOnNextClickAction(button, oldStroke);
 		}
 		if (newButtonNumber >= 0 && newButtonNumber < BUTTON_NUMBER) {
 			final int modifiers = newStroke.getModifiers()
@@ -108,12 +108,13 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	}
 
 
-    private void setAcceleratorAction(final JButton button, final KeyStroke ks) {
+    private void assignSetAcceleratorOnNextClickAction(final JButton button, final KeyStroke ks) {
         final Action setAcceleratorAction = new SetFKeyAcceleratorOnNextClickAction(ks);
         button.setAction(setAcceleratorAction);
         button.setEnabled(setAcceleratorAction.isEnabled());
         final String text = TextUtils.getText("f_button_unassigned");
         button.setText(text);
+        button.setToolTipText(null);
     }
 
 	private void cleanModifiers(final int modifiers) {
@@ -140,7 +141,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			};
 			button.setFocusable(false);
             KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i, modifiers);
-            setAcceleratorAction(button, ks);
+            assignSetAcceleratorOnNextClickAction(button, ks);
 
 		}
 		return buttons;
