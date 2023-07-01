@@ -24,11 +24,11 @@ public class IconNotFound extends MindIcon {
     public static Icon createIconOrReturnNotFoundIcon(final String... fileNames) {
         for(String fileName : fileNames) {
             final Icon icon = ResourceController.getResourceController()
-            .getIcon(DEFAULT_IMAGE_PATH + "/" + fileName);
+            .getOptionalIcon(DEFAULT_IMAGE_PATH + "/" + fileName);
         if (icon != null)
             return icon;
         }
         return new IconNotFound("?").getIcon();
     }
- 
+
 }

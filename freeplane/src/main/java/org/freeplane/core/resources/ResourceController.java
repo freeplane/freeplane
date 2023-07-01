@@ -363,16 +363,24 @@ public abstract class ResourceController {
 
 	private Map<String, Icon> iconCache = new HashMap<String, Icon>();
 
-	public Icon getIcon(final String iconKey) {
-		Icon icon = iconCache.get(iconKey);
+    public Icon getIcon(final String iconKey) {
+        return getIcon(iconKey, false);
+    }
+
+    public Icon getOptionalIcon(final String iconKey) {
+        return getIcon(iconKey, true);
+    }
+
+    private Icon getIcon(final String iconKey, boolean isOptional) {
+        Icon icon = iconCache.get(iconKey);
 		if (icon == null) {
 			final String iconResource = iconKey.startsWith("/") ? iconKey : getProperty(iconKey, null);
-			icon = loadIcon(iconResource);
+			icon = loadIcon(iconResource, isOptional);
 			if (icon != null)
 				iconCache.put(iconKey, icon);
 		}
 		return icon;
-	}
+    }
 
 	public URL getIconResource(String resourcePath) {
 		if (resourcePath != null) {
@@ -393,14 +401,14 @@ public abstract class ResourceController {
 	}
 
 
-	private Icon loadIcon(final String resourcePath) {
+	private Icon loadIcon(final String resourcePath, boolean isOptional) {
 		if(resourcePath == null)
 			return null;
 		URL url = getIconResource(resourcePath);
 		if (url != null) {
 			return IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGTH);
 		}
-		else {
+		else if(! isOptional){
 			LogUtils.severe("can not load icon '" + resourcePath + "'");
 		}
 		return null;
