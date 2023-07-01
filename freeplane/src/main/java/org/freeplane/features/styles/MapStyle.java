@@ -154,6 +154,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				public Object createElement(Object parent, String tag, XMLElement attributes) {
 	                return parent;
                 }
+
+			    @Override
+			    public boolean findsClosingTagByName() {
+			        return true;
+			    }
+
 				@Override
 				public void endElement(final Object parent, final String tag, final Object userObject,
 				                       final XMLElement attributes, final String content) {

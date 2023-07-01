@@ -24,7 +24,7 @@ import java.util.Vector;
 
 /**
  * StdXMLParser is the core parser of NanoXML.
- * 
+ *
  * @author Marc De Scheemaecker re-factored by Dimitry Polivaev : method
  *         processElementContent() extracted
  */
@@ -46,6 +46,8 @@ public class StdXMLParser implements IXMLParser {
 	 * data.
 	 */
 	private IXMLValidator validator;
+
+	protected boolean closingTagIsReadAndVerified = false;
 
 	/**
 	 * Creates a new parser.
@@ -71,7 +73,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Returns the builder which creates the logical structure of the XML data.
-	 * 
+	 *
 	 * @return the builder
 	 */
 	public IXMLBuilder getBuilder() {
@@ -80,7 +82,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Returns the reader from which the parser retrieves its data.
-	 * 
+	 *
 	 * @return the reader
 	 */
 	public IXMLReader getReader() {
@@ -89,7 +91,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Returns the entity resolver.
-	 * 
+	 *
 	 * @return the non-null resolver
 	 */
 	public IXMLEntityResolver getResolver() {
@@ -98,7 +100,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Returns the validator that validates the XML data.
-	 * 
+	 *
 	 * @return the validator
 	 */
 	public IXMLValidator getValidator() {
@@ -107,7 +109,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Parses the data and lets the builder create the logical data structure.
-	 * 
+	 *
 	 * @return the logical structure built by the builder
 	 * @throws org.freeplane.n3.nanoxml.XMLException
 	 *             if an error occurred reading or parsing the data
@@ -128,7 +130,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Processes an attribute of an element.
-	 * 
+	 *
 	 * @param attrNames
 	 *            contains the names of the attributes.
 	 * @param attrValues
@@ -155,7 +157,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Processes a CDATA section.
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
@@ -171,7 +173,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Processes a document type declaration.
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 *             if an error occurred reading or parsing the data
 	 */
@@ -215,7 +217,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Processes a regular element.
-	 * 
+	 *
 	 * @param defaultNamespace
 	 *            the default namespace URI (or null)
 	 * @param namespaces
@@ -311,15 +313,19 @@ public class StdXMLParser implements IXMLParser {
 			return;
 		}
 		processElementContent(defaultNamespace, namespaces, fullName, name, prefix);
-		XMLUtil.skipWhitespace(reader, null);
-		final String str = XMLUtil.scanIdentifier(reader);
-		if (!str.equals(fullName)) {
-			XMLUtil.errorWrongClosingTag(reader.getSystemID(), reader.getLineNr(), name, str);
+		if(! closingTagIsReadAndVerified) {
+		    XMLUtil.skipWhitespace(reader, null);
+		    final String str = XMLUtil.scanIdentifier(reader);
+		    if (!str.equals(fullName)) {
+		        XMLUtil.errorWrongClosingTag(reader.getSystemID(), reader.getLineNr(), name, str);
+		    }
+		    XMLUtil.skipWhitespace(reader, null);
+		    if (reader.read() != '>') {
+		        XMLUtil.errorClosingTagNotEmpty(reader.getSystemID(), reader.getLineNr());
+		    }
 		}
-		XMLUtil.skipWhitespace(reader, null);
-		if (reader.read() != '>') {
-			XMLUtil.errorClosingTagNotEmpty(reader.getSystemID(), reader.getLineNr());
-		}
+		else
+		    closingTagIsReadAndVerified = false;
 		validator.elementEnded(fullName, reader.getSystemID(), reader.getLineNr());
 		if (prefix == null) {
 			builder.endElement(name, prefix, defaultNamespace);
@@ -375,7 +381,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Processes a "processing instruction".
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
@@ -392,7 +398,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Processes a tag that starts with a bang (&lt;!...&gt;).
-	 * 
+	 *
 	 * @param allowCDATA
 	 *            true if CDATA sections are allowed at this point
 	 * @throws java.lang.Exception
@@ -424,7 +430,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Scans the XML data for elements.
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
@@ -454,7 +460,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Scans an XML tag.
-	 * 
+	 *
 	 * @param allowCDATA
 	 *            true if CDATA sections are allowed at this point
 	 * @param defaultNamespace
@@ -486,7 +492,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Sets the builder which creates the logical structure of the XML data.
-	 * 
+	 *
 	 * @param builder
 	 *            the non-null builder
 	 */
@@ -496,7 +502,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Sets the reader from which the parser retrieves its data.
-	 * 
+	 *
 	 * @param reader
 	 *            the reader
 	 */
@@ -506,7 +512,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Sets the entity resolver.
-	 * 
+	 *
 	 * @param resolver
 	 *            the non-null resolver
 	 */
@@ -516,7 +522,7 @@ public class StdXMLParser implements IXMLParser {
 
 	/**
 	 * Sets the validator that validates the XML data.
-	 * 
+	 *
 	 * @param validator
 	 *            the non-null validator
 	 */

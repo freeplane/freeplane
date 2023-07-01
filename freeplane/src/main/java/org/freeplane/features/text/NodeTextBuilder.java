@@ -71,7 +71,16 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement element,
+
+
+	@Override
+    public boolean findsClosingTagByName() {
+        return true;
+    }
+
+
+    @Override
+    public void endElement(final Object parent, final String tag, final Object obj, final XMLElement element,
 	                       final String content) {
 		assert tag.equals("richcontent");
 		final String text = content != null ? content.trim() : null;

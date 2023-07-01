@@ -45,6 +45,11 @@ class NoteBuilder implements IElementContentHandler {
 		return parent;
 	}
 
+    @Override
+    public boolean findsClosingTagByName() {
+        return true;
+    }
+
 	public void endElement(final Object parent, final String tag, final Object node, final XMLElement element,
 	        final String content) {
 	    if (tag.equals("richcontent")) {

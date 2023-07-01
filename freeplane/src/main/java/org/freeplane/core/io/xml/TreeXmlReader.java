@@ -165,7 +165,7 @@ public class TreeXmlReader implements IXMLBuilder {
 		}
 		if (currentElement != null) {
 			if (nodeCreator instanceof IElementContentHandler) {
-				parser.notParseNextElementContent();
+				parser.collectContentUntilMatchingTag(((IElementContentHandler)nodeCreator).findsClosingTagByName());
 			}
 			attributeHandlersForTag = getAttributeLoaders().get(tag);
 			if (attributeHandlersForTag == null) {
@@ -319,7 +319,7 @@ public class TreeXmlReader implements IXMLBuilder {
 		if (currentElement != null) {
 			attributeHandlersForTag = getAttributeLoaders().get(tag);
 			if (nodeCreator instanceof IElementContentHandler) {
-				parser.notParseNextElementContent();
+				parser.collectContentUntilMatchingTag(((IElementContentHandler)nodeCreator).findsClosingTagByName());
 			}
 		}
 		else {
