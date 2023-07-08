@@ -36,6 +36,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -228,7 +229,7 @@ abstract public class EditNodeBase {
 
 	}
 
-	protected JPopupMenu createPopupMenu(Component component){
+	protected JPopupMenu createPopupMenu(JComponent component){
 		JPopupMenu menu = new JPopupMenu();
 		if(! (component instanceof JTextComponent)){
 			return menu;

@@ -49,6 +49,7 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -67,12 +68,12 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.NavigationFilter;
 import javax.swing.text.Position.Bias;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.swing.text.StyledEditorKit.ItalicAction;
 import javax.swing.text.StyledEditorKit.StyledTextAction;
 import javax.swing.text.StyledEditorKit.UnderlineAction;
+import javax.swing.text.html.CSS;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
@@ -315,7 +316,7 @@ public class EditNodeTextField extends EditNodeBase {
 
 		private void conditionallyShowPopup(final MouseEvent e) {
 			if (e.isPopupTrigger()) {
-				final Component component = e.getComponent();
+				final JComponent component = (JComponent) e.getComponent();
 				final JPopupMenu popupMenu = createPopupMenu(component);
 				popupShown = true;
 				popupMenu.show(component, e.getX(), e.getY());
@@ -535,22 +536,37 @@ public class EditNodeTextField extends EditNodeBase {
 		underlineAction.putValue(Action.NAME, TextUtils.getText("UnderlineAction.text"));
 		underlineAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control U"));
 
-		redAction = new ForegroundAction(TextUtils.getText("red"), SHTMLPanel.DARK_RED, SHTMLPanel.LIGHT_RED);
+		redAction = new CharacterColorAction(TextUtils.getText("simplyhtml.redFontColorLabel"), CSS.Attribute.COLOR, SHTMLPanel.DARK_RED, SHTMLPanel.LIGHT_RED);
 		redAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
 
-		greenAction = new ForegroundAction(TextUtils.getText("green"), SHTMLPanel.DARK_GREEN, SHTMLPanel.LIGHT_GREEN);
+		greenAction = new CharacterColorAction(TextUtils.getText("simplyhtml.greenFontColorLabel"), CSS.Attribute.COLOR, SHTMLPanel.DARK_GREEN, SHTMLPanel.LIGHT_GREEN);
 		greenAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control G"));
 
-		blueAction = new ForegroundAction(TextUtils.getText("blue"), SHTMLPanel.DARK_BLUE, SHTMLPanel.LIGHT_BLUE);
+		blueAction = new CharacterColorAction(TextUtils.getText("simplyhtml.blueFontColorLabel"), CSS.Attribute.COLOR, SHTMLPanel.DARK_BLUE, SHTMLPanel.LIGHT_BLUE);
 		blueAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control L"));
 
-		blackAction = new ForegroundAction(TextUtils.getText("black"), Color.BLACK, Color.WHITE);
+		blackAction = new CharacterColorAction(TextUtils.getText("simplyhtml.blackFontColorLabel"), CSS.Attribute.COLOR, Color.BLACK, Color.WHITE);
 		blackAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control K"));
 
-		defaultColorAction = new ExtendedEditorKit.RemoveStyleAttributeAction(StyleConstants.Foreground, TextUtils.getText("DefaultColorAction.text"));
+		defaultColorAction = new ExtendedEditorKit.RemoveStyleAttributeAction(CSS.Attribute.COLOR, TextUtils.getText("simplyhtml.removeFontColorLabel"));
 		defaultColorAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control D"));
 
-		removeFormattingAction = new ExtendedEditorKit.RemoveStyleAttributeAction(null, TextUtils.getText("simplyhtml.clearFormatLabel"));
+        redHighlightAction = new CharacterColorAction(TextUtils.getText("simplyhtml.redHighlightColorLabel"), CSS.Attribute.BACKGROUND_COLOR, SHTMLPanel.LIGHT_RED.brighter(), SHTMLPanel.DARK_RED.darker());
+        redHighlightAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift R"));
+
+        greenHighlightAction = new CharacterColorAction(TextUtils.getText("simplyhtml.greenHighlightColorLabel"), CSS.Attribute.BACKGROUND_COLOR, SHTMLPanel.LIGHT_GREEN.brighter(), SHTMLPanel.DARK_GREEN.darker());
+        greenHighlightAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift G"));
+
+        blueHighlightAction = new CharacterColorAction(TextUtils.getText("simplyhtml.blueHighlightColorLabel"), CSS.Attribute.BACKGROUND_COLOR, SHTMLPanel.LIGHT_BLUE.brighter(), SHTMLPanel.LIGHT_BLUE.darker());
+        blueHighlightAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift L"));
+
+        yellowHighlightAction = new CharacterColorAction(TextUtils.getText("simplyhtml.yellowHighlightColorLabel"), CSS.Attribute.BACKGROUND_COLOR, Color.YELLOW, Color.ORANGE.darker());
+        yellowHighlightAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift Y"));
+
+        removeHighlightAction = new ExtendedEditorKit.RemoveStyleAttributeAction(CSS.Attribute.BACKGROUND_COLOR, TextUtils.getText("simplyhtml.removeHighlightColorLabel"));
+        removeHighlightAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control shift D"));
+
+        removeFormattingAction = new ExtendedEditorKit.RemoveStyleAttributeAction(null, TextUtils.getText("simplyhtml.clearFormatLabel"));
 		removeFormattingAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control T"));
 
 		inputMethodInUseListener = new InputMethodInUseListener();
@@ -611,20 +627,40 @@ public class EditNodeTextField extends EditNodeBase {
 	private final BoldAction boldAction;
 	private final ItalicAction italicAction;
 	private final UnderlineAction underlineAction;
-	private final ForegroundAction redAction;
-	private final ForegroundAction greenAction;
-	private final ForegroundAction blueAction;
-	private final ForegroundAction blackAction;
-	private StyledTextAction defaultColorAction;
+
+	private final CharacterColorAction redAction;
+	private final CharacterColorAction greenAction;
+	private final CharacterColorAction blueAction;
+	private final CharacterColorAction blackAction;
+	private final StyledTextAction defaultColorAction;
+
+	private final CharacterColorAction redHighlightAction;
+	private final CharacterColorAction greenHighlightAction;
+	private final CharacterColorAction blueHighlightAction;
+	private final CharacterColorAction yellowHighlightAction;
+	private final StyledTextAction removeHighlightAction;
+
 	private StyledTextAction removeFormattingAction;
 	private int verticalSpace;
 	private int horizontalSpace;
 	private MapViewChangeListener mapViewChangeListener;
 
     @Override
-    protected JPopupMenu createPopupMenu(Component component) {
+    protected JPopupMenu createPopupMenu(JComponent component) {
 		JPopupMenu menu = super.createPopupMenu(component);
-	    JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel"));
+
+
+		Action undoAction = component.getActionMap().get(UndoEnabler.UNDO_ACTION);
+		if(undoAction != null) {
+		    menu.add(undoAction);
+		}
+
+        Action redoAction = component.getActionMap().get(UndoEnabler.REDO_ACTION);
+        if(redoAction != null) {
+            menu.add(redoAction);
+        }
+
+        JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel"));
 	    menu.add(formatMenu);
 		if (textfield.getSelectionStart() == textfield.getSelectionEnd()){
 			formatMenu.setEnabled(false);
@@ -638,7 +674,14 @@ public class EditNodeTextField extends EditNodeBase {
 	    formatMenu.add(blueAction);
 	    formatMenu.add(blackAction);
 	    formatMenu.add(defaultColorAction);
-	    formatMenu.add(removeFormattingAction);
+
+        formatMenu.add(redHighlightAction);
+        formatMenu.add(greenHighlightAction);
+        formatMenu.add(blueHighlightAction);
+        formatMenu.add(yellowHighlightAction);
+        formatMenu.add(removeHighlightAction);
+
+        formatMenu.add(removeFormattingAction);
 		return menu;
     }
 

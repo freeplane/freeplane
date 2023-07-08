@@ -26,23 +26,27 @@ import javax.swing.JEditorPane;
 import javax.swing.UIManager;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit.StyledTextAction;
+import javax.swing.text.html.CSS;
 
 import org.freeplane.core.util.ColorUtils;
+
+import com.lightdev.app.shtm.Util;
 
 /**
  * @author Dimitry Polivaev
  * Jan 3, 2020
  */
-class ForegroundAction extends StyledTextAction {
+class CharacterColorAction extends StyledTextAction {
 
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private final Color darkColor;
 	private final Color lightColor;
+	private final CSS.Attribute attributeName;
+
 
 	/**
      * Creates a new ForegroundAction.
@@ -50,10 +54,11 @@ class ForegroundAction extends StyledTextAction {
      * @param nm the action name
      * @param fg the foreground color
      */
-    public ForegroundAction(String nm, Color darkColor, Color lightColor) {
+    public CharacterColorAction(String nm, CSS.Attribute attributeName, Color darkColor, Color lightColor) {
         super(nm);
 		this.darkColor = darkColor;
 		this.lightColor = lightColor;
+        this.attributeName = attributeName;
     }
 
     /**
@@ -64,17 +69,18 @@ class ForegroundAction extends StyledTextAction {
     public void actionPerformed(ActionEvent e) {
         JEditorPane editor = getEditor(e);
         if (editor != null) {
-            Color fg = getColorCloserTo(editor.getCaretColor());
+            Color color = getColorCloserTo(editor.getCaretColor());
             if ((e != null) && (e.getSource() == editor)) {
                 String s = e.getActionCommand();
                 try {
-                    fg = Color.decode(s);
+                    color = Color.decode(s);
                 } catch (NumberFormatException nfe) {
                 }
             }
-            if (fg != null) {
+            if (color != null) {
                 MutableAttributeSet attr = new SimpleAttributeSet();
-                StyleConstants.setForeground(attr, fg);
+                final String colorRGB = "#" + Integer.toHexString(color.getRGB()).substring(2);
+                Util.styleSheet().addCSSAttribute(attr, attributeName, colorRGB);
                 setCharacterAttributes(editor, attr, false);
             } else {
                 UIManager.getLookAndFeel().provideErrorFeedback(editor);
