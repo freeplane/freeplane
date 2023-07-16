@@ -46,7 +46,7 @@ class ShowPreferenceItemAction extends AbstractAction {
     	final Controller controller = Controller.getCurrentController();
 		MModeController modeController = (MModeController) controller.getModeController(MModeController.MODENAME);
 		OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
-		ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder, true, this.preferencesItem.getKey());
+		ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder, true, this.preferencesItem.getPropertyName());
         int uniqueId = new Long(System.currentTimeMillis()).intValue();
         showPreferencesAction.actionPerformed(
                 new ActionEvent(this, uniqueId, OptionPanelConstants.OPTION_PANEL_RESOURCE_PREFIX + preferencesItem.getTab()));

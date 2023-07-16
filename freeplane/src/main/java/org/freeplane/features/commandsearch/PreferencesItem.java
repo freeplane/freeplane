@@ -29,19 +29,20 @@ import org.freeplane.core.util.TextUtils;
 
 public class PreferencesItem extends SearchItem {
 
-    private static final ImageIcon PREFERENCES_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
+    private static final ImageIcon OPTION_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("Option.icon"));
+    private static final ImageIcon SELECTED_OPTION_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("SelectedOption.icon"));
     private static final String PREFERENCES_PATH =  TextUtils.getText(ShowPreferencesAction.KEY + ".text") + ITEM_PATH_SEPARATOR;
 
     private final String tab;
-    private final String key;
+    private final String propertyName;
     private final String displayedText;
     private final String searchedText;
     private final String tooltip;
 
-    PreferencesItem(final String tab, final String key, final String path, final String tooltip)
+    PreferencesItem(final String tab, final String propertyName, final String path, final String tooltip)
     {
         this.tab = tab;
-        this.key = key;
+        this.propertyName = propertyName;
         this.displayedText =  tab + ITEM_PATH_SEPARATOR + path;
         this.searchedText = normalizeText(path);
         this.tooltip = tooltip;
@@ -59,7 +60,7 @@ public class PreferencesItem extends SearchItem {
 
     @Override
     public Icon getTypeIcon() {
-        return PREFERENCES_ICON;
+        return ResourceController.getResourceController().getBooleanProperty(propertyName, false) ? SELECTED_OPTION_ICON : OPTION_ICON;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class PreferencesItem extends SearchItem {
     void execute(InputEvent event) {
         new ShowPreferenceItemAction(this).actionPerformed(null);
     }
-    
+
     @Override
     void assignNewAccelerator() {
     }
@@ -100,8 +101,8 @@ public class PreferencesItem extends SearchItem {
 		return tab;
 	}
 
-	String getKey() {
-		return key;
+	String getPropertyName() {
+		return propertyName;
 	}
 
     @Override

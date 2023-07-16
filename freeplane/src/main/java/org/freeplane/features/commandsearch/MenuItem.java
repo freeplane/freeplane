@@ -32,7 +32,10 @@ import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 public class MenuItem extends SearchItem {
 
     private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController
-            .getResourceController().getIcon("/images/menu_items.svg"));
+            .getResourceController().getIcon("/images/menu_items.svg?useAccentColor=true"));
+
+    private static final ImageIcon selectedMenuIcon = FreeplaneIconFactory.toImageIcon(ResourceController
+            .getResourceController().getIcon("/images/selected_menu_items.svg?useAccentColor=true"));
 
     private final AFreeplaneAction action;
 
@@ -52,7 +55,9 @@ public class MenuItem extends SearchItem {
 
     @Override
     public Icon getTypeIcon() {
-        return menuIcon;
+        if(action.checkSelectionOnPopup())
+            action.setSelected();
+        return action.isSelected() ? selectedMenuIcon : menuIcon;
     }
 
     @Override
@@ -76,7 +81,7 @@ public class MenuItem extends SearchItem {
         if(action.isEnabled())
             action.actionPerformed(new ActionEvent(event.getSource(), ActionEvent.ACTION_PERFORMED, (String) action.getValue(Action.NAME)));
     }
-    
+
     @Override
     void assignNewAccelerator() {
         assignNewAccelerator(action);
@@ -96,7 +101,7 @@ public class MenuItem extends SearchItem {
     public String getComparedText() {
         return path;
     }
-    
+
     @Override
     public String getCopiedText() {
         return getDisplayedText();
