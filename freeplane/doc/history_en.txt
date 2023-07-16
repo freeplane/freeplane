@@ -9,6 +9,8 @@ Opening links to nodes try to use other map view if shift button is pressed
 Plays sound on errors (Preferences…->Environment->Plays sound on errors)
 Highlight any parts of text in node, details and notes
 Indicate selected menu items and options in command search dialog
+Improve handling of unknown html tags in pasted html content
+Add option "Save Compact Hypertext" disabled by default
 Bug fixes
 
 ==============================
