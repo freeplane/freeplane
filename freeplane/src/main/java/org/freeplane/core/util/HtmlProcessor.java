@@ -8,18 +8,20 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
 
+import com.lightdev.app.shtm.SHTMLDocument;
+import com.lightdev.app.shtm.SHTMLEditorKit;
 import com.lightdev.app.shtm.SHTMLWriter;
 
 public class HtmlProcessor {
     public static void configureUnknownTags(HTMLDocument doc) {
-        doc.setPreservesUnknownTags(false);
+        doc.setPreservesUnknownTags(true);
     }
 
     private static HTMLDocument createDocument(String input) {
-        final HTMLEditorKit kit = new HTMLEditorKit();
+        final HTMLEditorKit kit = new SHTMLEditorKit();
         try {
-            HTMLDocument doc = (HTMLDocument) kit.createDefaultDocument();
-            doc.setPreservesUnknownTags(false);
+            HTMLDocument doc = new SHTMLDocument();
+            configureUnknownTags(doc);
             kit.read(new StringReader(input), doc, 0);
             return doc;
         } catch (Exception e) {

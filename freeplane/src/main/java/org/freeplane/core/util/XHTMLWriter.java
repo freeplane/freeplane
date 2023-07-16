@@ -169,7 +169,7 @@ class XHTMLWriter extends SHTMLWriter {
 	}
 
 	private boolean writeLineSeparatorEnabled = true;
-	private boolean insideEmptyTag;
+	private boolean shouldEndElementNow;
 
 	/**
 	 * Create a new XHTMLWriter that will write the entire HTMLDocument.
@@ -180,7 +180,8 @@ class XHTMLWriter extends SHTMLWriter {
 	 *            Source document
 	 */
 	public XHTMLWriter(final Writer writer, final HTMLDocument doc) {
-		this(writer, doc, 0, doc.getLength());
+	    super(writer, doc);
+	    setLineLength(Integer.MAX_VALUE);
 	}
 
 	/**
@@ -237,7 +238,7 @@ class XHTMLWriter extends SHTMLWriter {
 			return;
 		}
 		super.writeAttributes(attributeSet);
-		if (insideEmptyTag) {
+		if (shouldEndElementNow) {
 			write('/');
 		}
 	}
@@ -278,11 +279,11 @@ class XHTMLWriter extends SHTMLWriter {
 				write('>');
 				return;
 			}
-			insideEmptyTag = true;
+			shouldEndElementNow = true;
 			super.emptyTag(elem);
 		}
 		finally {
-			insideEmptyTag = false;
+			shouldEndElementNow = false;
 		}
 	}
 
@@ -294,31 +295,30 @@ class XHTMLWriter extends SHTMLWriter {
 		for (int i = 0; i < elementCount; i++) {
 			final Element childElement = parentElement.getElement(i);
 			if (isEndtag) {
-				if (childElement.equals(elem)) {
+				if (childElement == elem) {
 					balance--;
 					break;
 				}
 			}
 			else {
-				if (childElement.equals(elem)) {
+				if (childElement == elem) {
 					balance = 1;
 					continue;
 				}
-				if (balance == 0) {
+				else if (balance == 0) {
 					continue;
 				}
 			}
-			if (!elemName.equals(childElement.getName())) {
-				continue;
-			}
-			if (isEndtag(childElement)) {
-				if (balance > 0) {
-					balance--;
-					continue;
-				}
-			}
-			else {
-				balance++;
+			if (elemName.equals(childElement.getName())) {
+			    if (isEndtag(childElement)) {
+			        if (balance > 0) {
+			            balance--;
+			            continue;
+			        }
+			    }
+			    else {
+			        balance++;
+			    }
 			}
 		}
 		return balance;
@@ -333,25 +333,25 @@ class XHTMLWriter extends SHTMLWriter {
 
 	@Override
 	protected void closeOutUnwantedEmbeddedTags(final AttributeSet attr) throws IOException {
-		final boolean insideEmptyTag = this.insideEmptyTag;
-		this.insideEmptyTag = false;
+		final boolean insideEmptyTag = this.shouldEndElementNow;
+		this.shouldEndElementNow = false;
 		try {
 			super.closeOutUnwantedEmbeddedTags(attr);
 		}
 		finally {
-			this.insideEmptyTag = insideEmptyTag;
+			this.shouldEndElementNow = insideEmptyTag;
 		}
 	}
 
 	@Override
 	protected void writeEmbeddedTags(final AttributeSet attr) throws IOException {
-		final boolean insideEmptyTag = this.insideEmptyTag;
-		this.insideEmptyTag = false;
+		final boolean insideEmptyTag = this.shouldEndElementNow;
+		this.shouldEndElementNow = false;
 		try {
 			super.writeEmbeddedTags(attr);
 		}
 		finally {
-			this.insideEmptyTag = insideEmptyTag;
+			this.shouldEndElementNow = insideEmptyTag;
 		}
 	}
 }

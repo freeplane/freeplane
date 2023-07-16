@@ -95,6 +95,8 @@ import org.freeplane.view.swing.features.filepreview.ImageAdder;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
 
+import com.lightdev.app.shtm.SHTMLDocument;
+import com.lightdev.app.shtm.SHTMLEditorKit;
 import com.lightdev.app.shtm.SHTMLWriter;
 
 /**
@@ -402,8 +404,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 		private TextFragment[] split(final String text) {
 			final LinkedList<TextFragment> htmlFragments = new LinkedList<TextFragment>();
-			final HTMLEditorKit kit = new HTMLEditorKit();
-			final HTMLDocument doc = new HTMLDocument();
+			final HTMLEditorKit kit = new SHTMLEditorKit();
+			final HTMLDocument doc =  new SHTMLDocument();
 			HtmlProcessor.configureUnknownTags(doc);
 			final StringReader buf = new StringReader(text);
 			try {
