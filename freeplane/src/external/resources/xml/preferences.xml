@@ -322,6 +322,7 @@
 			<separator name="html_import">
 				<boolean name="structured_html_import" />
 				<boolean name="cut_out_pictures_when_pasting_html"/>
+				<boolean name="saveCompactHypertext"/>
 			</separator>
 		</tab>
 		<tab name="Presentation">

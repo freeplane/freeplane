@@ -8,13 +8,16 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLWriter;
 
+import org.freeplane.core.resources.ResourceController;
+
 import com.lightdev.app.shtm.SHTMLDocument;
 import com.lightdev.app.shtm.SHTMLEditorKit;
 import com.lightdev.app.shtm.SHTMLWriter;
 
 public class HtmlProcessor {
+    private static final String SAVE_COMPACT_HTML_PROPERTY = "saveCompactHypertext";
     public static void configureUnknownTags(HTMLDocument doc) {
-        doc.setPreservesUnknownTags(true);
+        doc.setPreservesUnknownTags(! ResourceController.getResourceController().getBooleanProperty(SAVE_COMPACT_HTML_PROPERTY));
     }
 
     private static HTMLDocument createDocument(String input) {
