@@ -51,6 +51,7 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -61,13 +62,16 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 
 public class CommandSearchDialog extends JDialog
-    implements DocumentListener, ListCellRenderer<SearchItem>, IMapSelectionListener{
+    implements DocumentListener, ListCellRenderer<SearchItem>, IMapSelectionListener, INodeSelectionListener {
 	private static final long serialVersionUID = 1L;
 
 	private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
@@ -151,6 +155,7 @@ public class CommandSearchDialog extends JDialog
         controller = Controller.getCurrentController();
         modeController = Controller.getCurrentModeController();
         controller.getMapViewManager().addMapSelectionListener(this);
+        modeController.getMapController().addNodeSelectionListener(this);
 
         setLocationRelativeTo(parent);
 
@@ -243,6 +248,8 @@ public class CommandSearchDialog extends JDialog
 		addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                MapController mapController = modeController.getMapController();
+                mapController.removeNodeSelectionListener(CommandSearchDialog.this);
                 controller.getMapViewManager().removeMapSelectionListener(CommandSearchDialog.this);
             }
         });
@@ -271,7 +278,10 @@ public class CommandSearchDialog extends JDialog
         }
     }
 
-
+    @Override
+    public void onSelect(NodeModel node) {
+        SwingUtilities.invokeLater(this::updateResultList);
+    }
 
     private JCheckBox createScopeButton(Scope scope) {
     	JCheckBox searchPrefs = new JCheckBox();
@@ -398,13 +408,15 @@ public class CommandSearchDialog extends JDialog
             }
         }
 
-        if (item.shouldUpdateResultList()) {
-            UpdateableListModel<SearchItem> model = (UpdateableListModel<SearchItem>) resultList.getModel();
-            int lastElementIndex = model.getSize() - 1;
-            if(lastElementIndex >= 0)
-                model.fireContentsChanged(this, 0, lastElementIndex);
+        if (item.shouldUpdateResultList())
+            updateResultList();
+    }
 
-         }
+    private void updateResultList() {
+        UpdateableListModel<SearchItem> model = (UpdateableListModel<SearchItem>) resultList.getModel();
+        int lastElementIndex = model.getSize() - 1;
+        if(lastElementIndex >= 0)
+            model.fireContentsChanged(this, 0, lastElementIndex);
     }
 
     private void copySelectedItemToClipboard() {
