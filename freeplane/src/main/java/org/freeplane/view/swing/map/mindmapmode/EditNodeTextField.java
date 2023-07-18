@@ -740,11 +740,26 @@ public class EditNodeTextField extends EditNodeBase {
 		inputMap.put((KeyStroke) blueAction.getValue(Action.ACCELERATOR_KEY), "blueAction");
 		actionMap.put("blueAction", blueAction);
 
-		inputMap.put((KeyStroke) blackAction.getValue(Action.ACCELERATOR_KEY), "blackAction");
-		actionMap.put("blackAction", blackAction);
+        inputMap.put((KeyStroke) blackAction.getValue(Action.ACCELERATOR_KEY), "blackAction");
+        actionMap.put("blackAction", blackAction);
 
-		inputMap.put((KeyStroke) defaultColorAction.getValue(Action.ACCELERATOR_KEY), "defaultColorAction");
-		actionMap.put("defaultColorAction", defaultColorAction);
+        inputMap.put((KeyStroke) defaultColorAction.getValue(Action.ACCELERATOR_KEY), "defaultColorAction");
+        actionMap.put("defaultColorAction", defaultColorAction);
+
+        inputMap.put((KeyStroke) redHighlightAction.getValue(Action.ACCELERATOR_KEY), "redHighlightAction");
+        actionMap.put("redHighlightAction", redHighlightAction);
+
+        inputMap.put((KeyStroke) greenHighlightAction.getValue(Action.ACCELERATOR_KEY), "greenHighlightAction");
+        actionMap.put("greenHighlightAction", greenHighlightAction);
+
+        inputMap.put((KeyStroke) blueHighlightAction.getValue(Action.ACCELERATOR_KEY), "blueHighlightAction");
+        actionMap.put("blueHighlightAction", blueHighlightAction);
+
+        inputMap.put((KeyStroke) yellowHighlightAction.getValue(Action.ACCELERATOR_KEY), "yellowHighlightAction");
+        actionMap.put("yellowHighlightAction", yellowHighlightAction);
+
+        inputMap.put((KeyStroke) removeHighlightAction.getValue(Action.ACCELERATOR_KEY), "removeHighlightAction");
+        actionMap.put("removeHighlightAction", removeHighlightAction);
 
 		inputMap.put((KeyStroke) removeFormattingAction.getValue(Action.ACCELERATOR_KEY), "removeFormattingAction");
 		actionMap.put("removeFormattingAction", removeFormattingAction);
