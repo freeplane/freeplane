@@ -112,6 +112,9 @@ public class HtmlUtils {
 	/** equivalent to htmlToPlain(text, strictHTMLOnly=true, removeNewLines=true)
 	 * @see #htmlToPlain(String, boolean, boolean) */
 	public static String htmlToPlain(final String text) {
+		if (text == null) {
+			return null;
+		}
 		CachedStringTransformationResult threadLocalCachedHtmlToPlain = cachedHtmlToPlain.get();
 		if(threadLocalCachedHtmlToPlain.input.equals(text))
 			return threadLocalCachedHtmlToPlain.output;
