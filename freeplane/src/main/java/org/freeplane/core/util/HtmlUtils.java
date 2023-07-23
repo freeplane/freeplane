@@ -153,9 +153,10 @@ public class HtmlUtils {
 			        Pattern.compile("(?ims)&lt;"),
 			        Pattern.compile("(?ims)&gt;"),
 			        Pattern.compile("(?ims)&quot;"),
-			        Pattern.compile("(?ims)&nbsp;"),
 			        Pattern.compile("(?ims)&amp;"),
-			        Pattern.compile("(?ims)[ \t]+\n") };
+					Pattern.compile("(?ims)[ \t]+\n"),
+					Pattern.compile("(?ims)&nbsp;")
+			};
 		}
 		String intermediate = text;
 		int i = 0;
@@ -184,9 +185,9 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("<");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(">");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\"");
-		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("&");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
+		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
 		intermediate = intermediate.replace('\u00a0', ' ');
 		return intermediate;
 	}
