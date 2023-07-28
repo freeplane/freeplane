@@ -160,11 +160,11 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Indicate selected menu items and options in command search dialog" ID="ID_1835008982" CREATED="1690542681554" MODIFIED="1690542681554"/>
 <node TEXT="Improve handling of unknown html tags in pasted html content" ID="ID_1342587624" CREATED="1690542681554" MODIFIED="1690542681554"/>
+<node TEXT="New automatic &quot;stacked&quot; layouts (at the bottom of the layout selector)" ID="ID_23956346" CREATED="1690546319162" MODIFIED="1690546600685"/>
 </node>
 </node>
 <node TEXT="Version 1.11.x" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_414352132" CREATED="1690542512247" MODIFIED="1690542512247">
