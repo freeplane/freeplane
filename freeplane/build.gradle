@@ -62,8 +62,10 @@ test {
     dependsOn createEmojiList
 }
 
-targetCompatibility=JavaVersion.VERSION_1_8
-sourceCompatibility=JavaVersion.VERSION_1_8
+java {
+    targetCompatibility=JavaVersion.VERSION_1_8
+    sourceCompatibility=JavaVersion.VERSION_1_8
+}
 /*
 compileJava {
     options.compilerArgs << '--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED'
@@ -284,7 +286,7 @@ class PartialJar extends Jar {
 
 task editorJar(type: PartialJar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
-    manifest = project.manifest {
+    manifest = project.java.manifest {
         attributes("Manifest-Version": "1.0",
                    "Main-Class": "org.freeplane.main.application.FreeplaneMain")
     }
@@ -308,7 +310,7 @@ task editorJar(type: PartialJar) {
 
 task osgiJar(type: PartialJar) {
 	// use '= project.manifest' to avoid that an OSGi manifest is created!
-	manifest = project.manifest {
+	manifest = project.java.manifest {
 		attributes("Manifest-Version": "1.0")
 	}
 	archiveBaseName = 'freeplaneosgi'
@@ -324,7 +326,7 @@ task osgiJar(type: PartialJar) {
 
 task viewerJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
-    manifest = project.manifest {
+    manifest = project.java.manifest {
         attributes("Manifest-Version": "1.0",
                    "Permissions": "all-permissions",
                    "Codebase": "*",

@@ -5,12 +5,14 @@ dependencies {
 		 	'org.assertj:assertj-core:3.23.1'
 }
 
-targetCompatibility=JavaVersion.VERSION_1_8
-sourceCompatibility=JavaVersion.VERSION_1_8
+java {
+	targetCompatibility=JavaVersion.VERSION_1_8
+	sourceCompatibility=JavaVersion.VERSION_1_8
+}
 
 task viewerApiJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
-	manifest = project.manifest {
+	manifest = project.java.manifest {
 		attributes("Manifest-Version": "1.0")
 	}
 

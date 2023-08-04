@@ -5,7 +5,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:6.3.1'
+    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:6.4.0'
   }
 }
 
@@ -83,8 +83,10 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
-	targetCompatibility=JavaVersion.VERSION_1_8
-	sourceCompatibility=JavaVersion.VERSION_1_8
+    java {
+        targetCompatibility=JavaVersion.VERSION_1_8
+        sourceCompatibility=JavaVersion.VERSION_1_8
+    }
 
     tasks.withType(JavaCompile) {
       options.encoding = "UTF-8"
@@ -169,6 +171,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
 
 // common configuration for all OSGi projects...
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
+
     apply plugin: 'biz.aQute.bnd.builder'
 
     ext.bundleImports = 'nothing.*'
