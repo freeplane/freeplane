@@ -20,16 +20,16 @@ sourceSets {
 dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	lib ':kitfox-svg-salamander-1.1.1-p1'
-	lib 'com.github.robtimus:data-url:2.0'
-	lib 'com.formdev:flatlaf:3.0'
+	lib 'com.github.robtimus:data-url:2.0.1'
+	lib 'com.formdev:flatlaf:3.1.1'
 	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.9.4'
 
     lib project(':JOrtho_0.4_freeplane')
     api project(':freeplane_api')
 
     lib 'commons-lang:commons-lang:2.6',
-            'commons-io:commons-io:2.11.0',
-            'commons-codec:commons-codec:1.15',
+            'commons-io:commons-io:2.13.0',
+            'commons-codec:commons-codec:1.16.0',
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
@@ -41,14 +41,8 @@ dependencies {
     lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
 
-    maclib ('org.violetlib:vaqua:10') {
-        transitive = false
-    }
-
-    runtimeOnly 'org.violetlib:jnr:11'
-    runtimeOnly 'org.violetlib:vappearances:3'
-    runtimeOnly 'org.violetlib:vappearances:3'
-
+    maclib 'org.violetlib:vaqua:11'
+    
     runtimeOnly files("${project.buildDir}/emoji/xml")
     emoji 'org.freeplane.emoji:twemoji:12.1.4'
 }
