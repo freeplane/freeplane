@@ -58,6 +58,8 @@ test {
 		sourceSets.viewer.resources.sourceDirectories +
  		sourceSets.editor.resources.sourceDirectories +
  		sourceSets.external.resources.sourceDirectories
+
+    dependsOn createEmojiList
 }
 
 targetCompatibility=JavaVersion.VERSION_1_8
@@ -268,8 +270,6 @@ task copyOSGiJars(type: Copy) {
     from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
     into(globalBin + '/core/' + pluginid + '/lib/')
 }
-copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
-copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/manifest/") {
@@ -322,7 +322,6 @@ task osgiJar(type: PartialJar) {
     includeEmptyDirs = false
 }
 
-
 task viewerJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
     manifest = project.manifest {
@@ -351,6 +350,12 @@ task viewerJar(type: Jar) {
 
     includeEmptyDirs = false
 }
+
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
+copyOSGiJars.dependsOn editorJar
+copyOSGiJars.dependsOn viewerJar
+copyOSGiJars.dependsOn osgiJar
 
 eclipseJdt {
     doLast {
