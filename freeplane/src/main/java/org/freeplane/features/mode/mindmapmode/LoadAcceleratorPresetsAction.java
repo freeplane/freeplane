@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 
+import org.apache.commons.io.comparator.NameFileComparator;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
@@ -87,6 +89,7 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 				if (fileList == null) {
 					continue;
 				}
+				Arrays.sort(fileList, NameFileComparator.NAME_COMPARATOR);
 				for (final File prop : fileList) {
 					final String fileName = prop.getName();
 					if (prop.isDirectory()) {
