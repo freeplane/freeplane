@@ -1,4 +1,10 @@
 ==============================
+1.11.6
+==============================
+Update dependencies
+Make build compatible with Gradle 8
+
+==============================
 1.11.5
 ==============================
 Automatic stacked layouts
