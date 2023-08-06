@@ -57,7 +57,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 				@Override
 				protected void init() {
 					super.init();
-					selectedColor = oldDayBackgroundColor;
+					selectedColor = defaultButtonBackgroundColor;
 				}
 			};
 			dayChooser.setEnabled(false);

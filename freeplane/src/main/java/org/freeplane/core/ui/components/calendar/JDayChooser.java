@@ -125,6 +125,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	protected String[] dayNames;
 	protected JPanel dayPanel;
 	protected JButton[] days;
+	private JButton todayButton;
 	protected Color decorationBackgroundColor;
 	protected boolean decorationBackgroundVisible = true;
 	protected boolean decorationBordersVisible;
@@ -136,10 +137,11 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	protected Date maxSelectableDate;
 	protected Date minSelectableDate;
 	protected JMonthChooser monthChooser = null;
-	protected Color oldDayBackgroundColor;
+	protected Color defaultButtonBackgroundColor;
 	protected Color selectedColor;
 	protected JButton selectedDay;
 	protected Color sundayForeground;
+	protected Color todayBackground;
 	protected Calendar today;
 	protected Color weekdayForeground;
 	protected boolean weekOfYearVisible;
@@ -172,6 +174,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		setLayout(new BorderLayout());
 		dayPanel = new JPanel();
 		dayPanel.setLayout(new GridLayout(7, 7));
+		todayBackground = new Color(232, 232, 128);
 		sundayForeground = new Color(164, 0, 0);
 		weekdayForeground = new Color(0, 90, 164);
 		decorationBackgroundColor = new Color(210, 228, 238);
@@ -285,11 +288,11 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	 * Hides and shows the day buttons.
 	 */
 	protected void drawDays() {
-		final Calendar tmpCalendar = (Calendar) calendar.clone();
-		tmpCalendar.set(Calendar.HOUR_OF_DAY, 0);
-		tmpCalendar.set(Calendar.MINUTE, 0);
-		tmpCalendar.set(Calendar.SECOND, 0);
-		tmpCalendar.set(Calendar.MILLISECOND, 0);
+		final Calendar dateCalendar = (Calendar) this.calendar.clone();
+		dateCalendar.set(Calendar.HOUR_OF_DAY, 0);
+		dateCalendar.set(Calendar.MINUTE, 0);
+		dateCalendar.set(Calendar.SECOND, 0);
+		dateCalendar.set(Calendar.MILLISECOND, 0);
 		final Calendar minCal = Calendar.getInstance();
 		minCal.setTime(minSelectableDate);
 		minCal.set(Calendar.HOUR_OF_DAY, 0);
@@ -302,9 +305,9 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		maxCal.set(Calendar.MINUTE, 0);
 		maxCal.set(Calendar.SECOND, 0);
 		maxCal.set(Calendar.MILLISECOND, 0);
-		final int firstDayOfWeek = tmpCalendar.getFirstDayOfWeek();
-		tmpCalendar.set(Calendar.DAY_OF_MONTH, 1);
-		int firstDay = tmpCalendar.get(Calendar.DAY_OF_WEEK) - firstDayOfWeek;
+		final int firstDayOfWeek = dateCalendar.getFirstDayOfWeek();
+		dateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+		int firstDay = dateCalendar.get(Calendar.DAY_OF_WEEK) - firstDayOfWeek;
 		if (firstDay < 0) {
 			firstDay += 7;
 		}
@@ -313,45 +316,57 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 			days[i + 7].setVisible(false);
 			days[i + 7].setText("");
 		}
-		tmpCalendar.add(Calendar.MONTH, 1);
-		final Date firstDayInNextMonth = tmpCalendar.getTime();
-		tmpCalendar.add(Calendar.MONTH, -1);
-		Date day = tmpCalendar.getTime();
+		dateCalendar.add(Calendar.MONTH, 1);
+		final Date firstDayInNextMonth = dateCalendar.getTime();
+		dateCalendar.add(Calendar.MONTH, -1);
+		Date day = dateCalendar.getTime();
 		int n = 0;
+		todayButton = null;
 		final Color foregroundColor = getForeground();
 		while (day.before(firstDayInNextMonth)) {
-			days[i + n + 7].setText(Integer.toString(n + 1));
-			days[i + n + 7].setVisible(true);
-			if ((tmpCalendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR))
-			        && (tmpCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR))) {
-				days[i + n + 7].setForeground(sundayForeground);
+			int paintedButtonIndex = i + n + 7;
+            JButton dayButton = days[paintedButtonIndex];
+            dayButton.setText(Integer.toString(n + 1));
+			dayButton.setVisible(true);
+			boolean paintsToday = isToday(dateCalendar);
+            if (paintsToday) {
+                todayButton = dayButton;
+				dayButton.setForeground(sundayForeground);
 			}
 			else {
-				days[i + n + 7].setForeground(foregroundColor);
+				dayButton.setForeground(foregroundColor);
 			}
 			if ((n + 1) == this.day) {
-				days[i + n + 7].setBackground(selectedColor);
-				selectedDay = days[i + n + 7];
+				dayButton.setBackground(selectedColor);
+				selectedDay = dayButton;
+			}
+            else if (paintsToday){
+                dayButton.setBackground(todayBackground);
+            }
+            else {
+                dayButton.setBackground(defaultButtonBackgroundColor);
+            }
+			if (dateCalendar.before(minCal) || dateCalendar.after(maxCal)) {
+				dayButton.setEnabled(false);
 			}
 			else {
-				days[i + n + 7].setBackground(oldDayBackgroundColor);
-			}
-			if (tmpCalendar.before(minCal) || tmpCalendar.after(maxCal)) {
-				days[i + n + 7].setEnabled(false);
-			}
-			else {
-				days[i + n + 7].setEnabled(true);
+				dayButton.setEnabled(true);
 			}
 			n++;
-			tmpCalendar.add(Calendar.DATE, 1);
-			day = tmpCalendar.getTime();
+			dateCalendar.add(Calendar.DATE, 1);
+			day = dateCalendar.getTime();
 		}
-		for (int k = n + i + 7; k < 49; k++) {
-			days[k].setVisible(false);
-			days[k].setText("");
+		for (int invisibleButtonIndex = n + i + 7; invisibleButtonIndex < 49; invisibleButtonIndex++) {
+			days[invisibleButtonIndex].setVisible(false);
+			days[invisibleButtonIndex].setText("");
 		}
 		drawWeeks();
 	}
+
+    private boolean isToday(final Calendar dateCalendar) {
+        return (dateCalendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR))
+                && (dateCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR));
+    }
 
 	/**
 	 * Hides and shows the week buttons.
@@ -487,7 +502,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	 */
 	protected void init() {
 		final JButton testButton = new JButton();
-		oldDayBackgroundColor = testButton.getBackground();
+		defaultButtonBackgroundColor = testButton.getBackground();
 		selectedColor = new Color(160, 160, 160);
 		final Date date = calendar.getTime();
 		calendar = Calendar.getInstance(locale);
@@ -645,18 +660,18 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		if (d < 1) {
 			d = 1;
 		}
-		final Calendar tmpCalendar = (Calendar) calendar.clone();
-		tmpCalendar.set(Calendar.DAY_OF_MONTH, 1);
-		tmpCalendar.add(Calendar.MONTH, 1);
-		tmpCalendar.add(Calendar.DATE, -1);
-		final int maxDaysInMonth = tmpCalendar.get(Calendar.DATE);
+		final Calendar daysOfMonthCalculator = (Calendar) calendar.clone();
+		daysOfMonthCalculator.set(Calendar.DAY_OF_MONTH, 1);
+		daysOfMonthCalculator.add(Calendar.MONTH, 1);
+		daysOfMonthCalculator.add(Calendar.DATE, -1);
+		final int maxDaysInMonth = daysOfMonthCalculator.get(Calendar.DATE);
 		if (d > maxDaysInMonth) {
 			d = maxDaysInMonth;
 		}
 		final int oldDay = day;
 		day = d;
 		if (selectedDay != null) {
-			selectedDay.setBackground(oldDayBackgroundColor);
+		    selectedDay.setBackground(selectedDay == todayButton ? todayBackground : defaultButtonBackgroundColor);
 			selectedDay.removeMouseListener(this);
 			selectedDay.setMultiClickThreshhold(0);
 			selectedDay.repaint();
@@ -944,17 +959,28 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		drawDays();
 	}
 
-	/**
-	 * Sets the Sunday foreground.
-	 *
-	 * @param sundayForeground
-	 *            The sundayForeground to set
-	 */
-	public void setSundayForeground(final Color sundayForeground) {
-		this.sundayForeground = sundayForeground;
-		drawDayNames();
-		drawDays();
-	}
+    /**
+     * Sets the Sunday foreground.
+     *
+     * @param sundayForeground
+     *            The sundayForeground to set
+     */
+    public void setSundayForeground(final Color sundayForeground) {
+        this.sundayForeground = sundayForeground;
+        drawDayNames();
+        drawDays();
+    }
+
+    /**
+     * Sets the today background.
+     *
+     * @param todayBackground
+     *            the todayBackground to set
+     */
+    public void setTodayBackground(final Color todayBackground) {
+        this.todayBackground = todayBackground;
+        drawDays();
+    }
 
 	/**
 	 * Sets the weekday foreground.

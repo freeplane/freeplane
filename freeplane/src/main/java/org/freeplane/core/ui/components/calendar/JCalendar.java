@@ -636,15 +636,27 @@ public class JCalendar extends JPanel implements PropertyChangeListener, MouseLi
 		dayChooser.setSelectableDateRange(min, max);
 	}
 
-	/**
-	 * Sets the Sunday foreground.
-	 *
-	 * @param sundayForeground
-	 *            the sundayForeground to set
-	 */
-	public void setSundayForeground(final Color sundayForeground) {
-		dayChooser.setSundayForeground(sundayForeground);
-	}
+    /**
+     * Sets the Sunday foreground.
+     *
+     * @param sundayForeground
+     *            the sundayForeground to set
+     */
+    public void setSundayForeground(final Color sundayForeground) {
+        dayChooser.setSundayForeground(sundayForeground);
+    }
+
+    /**
+     * Sets the today background.
+     *
+     * @param todayBackground
+     *            the todayBackground to set
+     */
+    public void setTodayBackground(final Color todayBackground) {
+        dayChooser.setTodayBackground(todayBackground);
+    }
+
+
 
 	/**
 	 * Sets the weekday foreground.
