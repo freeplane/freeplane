@@ -1208,6 +1208,7 @@ public class NodeView extends JComponent implements INodeView {
 		map.preserveRootNodeLocationOnScreen();
 		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		node.remove();
+		map.updateSelectedNode();
 		NodeView preferred = getPreferredVisibleChild(PreferredChild.LAST_SELECTED, childrenSides());
 		if (preferred == null) {
 			preferred = this;
@@ -1650,6 +1651,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (NodeView child : getChildrenViews()) {
 			child.remove();
 		}
+		map.updateSelectedNode();
 		addChildViews();
 		map.revalidateSelecteds();
 		revalidate();
