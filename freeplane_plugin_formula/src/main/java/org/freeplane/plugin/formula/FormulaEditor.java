@@ -34,6 +34,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -140,8 +141,13 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			replacement = mapExplorer.getNodeReferenceSuggestion(node);
 		else
 			replacement = createReference(node);
-		textEditor.replaceSelection(replacement);
+		replaceSelectedText(replacement);
+    }
+
+    private void replaceSelectedText(final String replacement) {
+        textEditor.replaceSelection(replacement);
 	    textEditor.requestFocus();
+	    SwingUtilities.getWindowAncestor(textEditor).toFront();
     }
 
 	private String createReference(final NodeModel node) {
@@ -161,8 +167,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 		if(isCaretInsideStringToken())
 			return;
 		final String replacement = createReference(node) + "['" + rowName + "']";
-		textEditor.replaceSelection(replacement);
-	    textEditor.requestFocus();
+		replaceSelectedText(replacement);
 	}
 
 	private boolean isCaretInsideStringToken() {
