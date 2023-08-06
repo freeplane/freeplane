@@ -16,6 +16,9 @@ import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 public class MapExplorerController  implements IExtension{
 	private static final String TRUE = "true";
 	private static final String GLOBALLY_VISIBLE = "GLOBALLY_VISIBLE";
@@ -96,6 +99,7 @@ public class MapExplorerController  implements IExtension{
 			return  start.getMap().getNodeForID(reference);
 		else if(start != null && reference.startsWith("at(") && reference.endsWith(")")){
 			String path = reference.substring(3, reference.length() - 1);
+			path = URLDecoder.decode(path, StandardCharsets.UTF_8);
 			try {
 				return new MapExplorer(start, path, accessedNodes).getNode();
 			}
