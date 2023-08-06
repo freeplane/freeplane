@@ -93,7 +93,7 @@ import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static boolean ARE_SURVEYS_ENABLED = false;
-	
+
 	enum UserPropertiesStatus{
 	    CURRENT_VERSION_FOUND, OLD_VERSION_FOUND, NOT_FOUND
 	}
@@ -108,8 +108,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private boolean dontLoadLastMaps;
 	private static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String LOAD_LAST_MAP = "load_last_map";
+	private static final String CREATE_NEW_MAP_IF_NO_MAPS_ARE_LOADED = "create_new_map_if_no_maps_are_loaded";
 	final private CommandLineOptions options;
-	
+
 	private final UserPropertiesStatus userPropertiesStatus;
 
 	private static void fixX11AppName() {
@@ -384,7 +385,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			addonsController.setAutoInstallEnabled(true);
 		}
 		final ModeController modeController = Controller.getCurrentModeController();
-		if(userPropertiesStatus != UserPropertiesStatus.CURRENT_VERSION_FOUND 
+		if(userPropertiesStatus != UserPropertiesStatus.CURRENT_VERSION_FOUND
 		        && ! dontLoadLastMaps){
 			final String mapSource = ResourceController.getResourceController().getProperty(
 			        userPropertiesStatus == UserPropertiesStatus.NOT_FOUND ? "tutorial_map" : "latest_features_map"
@@ -406,7 +407,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			return;
 		}
 		controller.selectMode(MModeController.MODENAME);
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
+		if(ResourceController.getResourceController().getBooleanProperty(CREATE_NEW_MAP_IF_NO_MAPS_ARE_LOADED))
+		    MFileManager.getController(modeController).newMapFromDefaultTemplate();
 	}
 
 	private void loadLastMaps() {

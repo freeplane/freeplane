@@ -14,6 +14,7 @@
 				<boolean name="load_last_map" />
 				<boolean name="load_last_maps" />
 				<boolean name="always_load_last_maps" />
+				<boolean name="create_new_map_if_no_maps_are_loaded" />
 				<boolean name="experimental_file_locking_on" />
 				<boolean name="skip_template_selection" />
 			</separator>
