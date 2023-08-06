@@ -125,9 +125,11 @@ public class LayoutController implements IExtension {
 	    ChildNodesLayout layout = getChildNodesLayout(node);
 	    if(node.isRoot() && layout.childNodesAlignment() == ChildNodesAlignment.STACKED_AUTO) {
 	        return ChildNodesLayout.LEFTTORIGHT_BOTHSIDES_CENTERED;
+        } else {
+            NodeModel parentNode = node.getParentNode();
+            if(parentNode != null && layout == ChildNodesLayout.AUTO && parentNode.isRoot())
+                return childrenLayoutHandlers.getProperty(parentNode, StyleOption.FOR_UNSELECTED_NODE);
         }
-	    else if(! node.isRoot() && layout == ChildNodesLayout.AUTO && node.getParentNode().isRoot())
-	        return childrenLayoutHandlers.getProperty(node.getParentNode(), StyleOption.FOR_UNSELECTED_NODE);
         return layout;
 	}
 
