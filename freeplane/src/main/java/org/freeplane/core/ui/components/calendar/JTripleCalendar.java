@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
 public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 	private static class JInfoPanel extends JPanel {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		final private JDayChooser dayChooser;
@@ -50,7 +50,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 			monthYearPanel.add(yearChooser, BorderLayout.CENTER);
 			dayChooser = new JDayChooser(true) {
 				/**
-				 * 
+				 *
 				 */
 				private static final long serialVersionUID = 1L;
 
@@ -61,6 +61,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 				}
 			};
 			dayChooser.setEnabled(false);
+			dayChooser.setFocusable(false);
 			this.add(monthYearPanel, BorderLayout.NORTH);
 			this.add(dayChooser, BorderLayout.CENTER);
 		}
@@ -77,7 +78,7 @@ public class JTripleCalendar extends JPanel implements PropertyChangeListener {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

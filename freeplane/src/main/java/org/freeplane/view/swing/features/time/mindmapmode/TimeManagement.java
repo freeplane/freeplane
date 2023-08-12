@@ -149,7 +149,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				dialog.addWindowFocusListener(new WindowAdapter() {
 					@Override
 					public void windowGainedFocus(WindowEvent e) {
-						calendarComponent.getDayChooser().setFocus();
+						calendarComponent.getDayChooser().requestFocusInWindow();
 					}
 				});
 			}

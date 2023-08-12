@@ -28,16 +28,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.ref.WeakReference;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicButtonUI;
 
@@ -50,7 +53,7 @@ import org.freeplane.core.ui.components.UITools;
  * @version $LastChangedRevision: 104 $
  * @version $LastChangedDate: 2006-06-04 15:20:45 +0200 (So, 04 Jun 2006) $
  */
-public class JDayChooser extends JPanel implements ActionListener, KeyListener, FocusListener, MouseListener {
+public class JDayChooser extends JPanel implements ActionListener, KeyListener {
 	static class JDayButton extends JButton{
 		private static final long serialVersionUID = 1L;
 
@@ -143,11 +146,13 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	protected Color sundayForeground;
 	protected Color todayBackground;
 	protected Calendar today;
+	private Timer todayUpdateTimer;
 	protected Color weekdayForeground;
 	protected boolean weekOfYearVisible;
 	protected JPanel weekPanel;
 	protected JButton[] weeks;
 	protected JYearChooser yearChooser = null;
+
 
 	/**
 	 * Default JDayChooser constructor.
@@ -170,7 +175,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		days = new JButton[49];
 		selectedDay = null;
 		calendar = Calendar.getInstance(locale);
-		today = (Calendar) calendar.clone();
+
 		setLayout(new BorderLayout());
 		dayPanel = new JPanel();
 		dayPanel.setLayout(new GridLayout(7, 7));
@@ -178,6 +183,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		sundayForeground = new Color(164, 0, 0);
 		weekdayForeground = new Color(0, 90, 164);
 		decorationBackgroundColor = new Color(210, 228, 238);
+		addKeyListener(this);
 		for (int y = 0; y < 7; y++) {
 			for (int x = 0; x < 7; x++) {
 				final int index = x + (7 * y);
@@ -203,11 +209,9 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 						}
 					};
 					days[index].addActionListener(this);
-					days[index].addKeyListener(this);
-					days[index].addFocusListener(this);
 				}
 				days[index].setMargin(new Insets(0, 0, 0, 0));
-				days[index].setFocusPainted(false);
+				days[index].setFocusable(false);
 				dayPanel.add(days[index]);
 			}
 		}
@@ -248,6 +252,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	 *            the ActionEvent
 	 */
 	public void actionPerformed(final ActionEvent e) {
+	    requestFocusInWindow();
 		final JButton button = (JButton) e.getSource();
 		final String buttonText = button.getText();
 		final int day = new Integer(buttonText).intValue();
@@ -257,7 +262,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	/**
 	 * Draws the day names of the day columnes.
 	 */
-	private void drawDayNames() {
+	private void updateDayNames() {
 		final int firstDayOfWeek = calendar.getFirstDayOfWeek();
 		final DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(locale);
 		dayNames = dateFormatSymbols.getShortWeekdays();
@@ -287,7 +292,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	/**
 	 * Hides and shows the day buttons.
 	 */
-	protected void drawDays() {
+	protected void updateDays() {
 		final Calendar dateCalendar = (Calendar) this.calendar.clone();
 		dateCalendar.set(Calendar.HOUR_OF_DAY, 0);
 		dateCalendar.set(Calendar.MINUTE, 0);
@@ -386,32 +391,6 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 			}
 		}
 	}
-
-	/**
-	 * JDayChooser is the FocusListener for all day buttons. (Added by Thomas
-	 * Schaefer)
-	 *
-	 * @param e
-	 *            the FocusEvent
-	 */
-	/*
-	 * Code below commented out by Mark Brown on 24 Aug 2004. This code breaks
-	 * the JDateChooser code by triggering the actionPerformed method on the
-	 * next day button. This causes the date chosen to always be incremented by
-	 * one day.
-	 */
-	public void focusGained(final FocusEvent e) {
-	}
-
-	/**
-	 * Does nothing.
-	 *
-	 * @param e
-	 *            the FocusEvent
-	 */
-	public void focusLost(final FocusEvent e) {
-	}
-
 	/**
 	 * Returns the selected day.
 	 *
@@ -507,9 +486,44 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		final Date date = calendar.getTime();
 		calendar = Calendar.getInstance(locale);
 		calendar.setTime(date);
-		drawDayNames();
-		drawDays();
+
+		initToday();
+
+		updateDayNames();
+		updateDays();
 	}
+
+    private void initToday() {
+        if(todayUpdateTimer != null) {
+            todayUpdateTimer.stop();
+            todayUpdateTimer = null;
+        }
+        updateToday();
+    }
+
+    private void updateToday() {
+        today = Calendar.getInstance(locale);
+        updateDays();
+        scheduleNextUpdateForTomorrow();
+    }
+
+    private void scheduleNextUpdateForTomorrow() {
+        Calendar nextDay = (Calendar) today.clone();
+
+        nextDay.set(Calendar.HOUR_OF_DAY, 0);
+        nextDay.set(Calendar.MINUTE, 0);
+        nextDay.set(Calendar.SECOND, 0);
+        nextDay.set(Calendar.MILLISECOND, 0);
+        nextDay.add(Calendar.DAY_OF_YEAR, 1); // Move to the next day
+
+        int delayInMillis = (int) (nextDay.getTimeInMillis() - today.getTimeInMillis());
+
+        WeakReference<JDayChooser> dayChoserReference = new WeakReference<JDayChooser>(this);
+
+        todayUpdateTimer = new Timer(delayInMillis, e -> Optional.ofNullable(dayChoserReference.get()).ifPresent(JDayChooser::updateToday));
+        todayUpdateTimer.setRepeats(false);
+        todayUpdateTimer.start();
+    }
 
 	/**
 	 * Initializes both day names and weeks of the year.
@@ -606,25 +620,6 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	public void keyTyped(final KeyEvent e) {
 	}
 
-	public void mouseClicked(final MouseEvent e) {
-		processMouseEvent(e);
-	}
-
-	public void mouseEntered(final MouseEvent e) {
-		processMouseEvent(e);
-	}
-
-	public void mouseExited(final MouseEvent e) {
-		processMouseEvent(e);
-	}
-
-	public void mousePressed(final MouseEvent e) {
-		processMouseEvent(e);
-	}
-
-	public void mouseReleased(final MouseEvent e) {
-		processMouseEvent(e);
-	}
 
 	/**
 	 * this is needed for JDateChooser.
@@ -645,8 +640,13 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	 *            the new calendar
 	 */
 	public void setCalendar(final Calendar calendar) {
-		this.calendar = calendar;
-		drawDays();
+	    if(todayUpdateTimer != null) {
+	        todayUpdateTimer.stop();
+	        todayUpdateTimer = null;
+	    }
+	    this.calendar = calendar;
+	    this.today = (Calendar) calendar.clone();
+	    updateDays();
 	}
 
 	/**
@@ -666,31 +666,26 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		daysOfMonthCalculator.add(Calendar.DATE, -1);
 		final int maxDaysInMonth = daysOfMonthCalculator.get(Calendar.DATE);
 		if (d > maxDaysInMonth) {
-			d = maxDaysInMonth;
+		    d = maxDaysInMonth;
 		}
 		final int oldDay = day;
 		day = d;
-		if (selectedDay != null) {
-		    selectedDay.setBackground(selectedDay == todayButton ? todayBackground : defaultButtonBackgroundColor);
-			selectedDay.removeMouseListener(this);
-			selectedDay.setMultiClickThreshhold(0);
-			selectedDay.repaint();
-		}
-		for (int i = 7; i < 49; i++) {
-			if (days[i].getText().equals(Integer.toString(day))) {
-				selectedDay = days[i];
-				selectedDay.setMultiClickThreshhold(10000000);
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						selectedDay.addMouseListener(JDayChooser.this);
-					}
-				});
-				selectedDay.setBackground(selectedColor);
-				break;
-			}
+		if(isEnabled()) {
+		    if (selectedDay != null) {
+		        selectedDay.setBackground(selectedDay == todayButton ? todayBackground : defaultButtonBackgroundColor);
+		        selectedDay.paintImmediately(0, 0, selectedDay.getWidth(), selectedDay.getWidth());
+		    }
+		    for (int i = 7; i < 49; i++) {
+		        if (days[i].getText().equals(Integer.toString(day))) {
+		            selectedDay = days[i];
+		            selectedDay.setBackground(selectedColor);
+		            selectedDay.paintImmediately(0, 0, selectedDay.getWidth(), selectedDay.getWidth());
+		            break;
+		        }
+		    }
 		}
 		if (alwaysFireDayProperty) {
-			firePropertyChange(JDayChooser.DAY_PROPERTY, 0, day);
+		    firePropertyChange(JDayChooser.DAY_PROPERTY, 0, day);
 		}
 		else {
 			firePropertyChange(JDayChooser.DAY_PROPERTY, oldDay, day);
@@ -778,15 +773,6 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	}
 
 	/**
-	 * Requests that the selected day also have the focus.
-	 */
-	public void setFocus() {
-		if (selectedDay != null) {
-			selectedDay.requestFocusInWindow();
-		}
-	}
-
-	/**
 	 * Sets the font property.
 	 *
 	 * @param font
@@ -819,7 +805,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 			for (int i = 7; i < 49; i++) {
 				days[i].setForeground(foreground);
 			}
-			drawDays();
+			updateDays();
 		}
 	}
 
@@ -861,8 +847,8 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		else {
 			this.maxDayCharacters = maxDayCharacters;
 		}
-		drawDayNames();
-		drawDays();
+		updateDayNames();
+		updateDays();
 		invalidate();
 	}
 
@@ -881,7 +867,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		else {
 			maxSelectableDate = max;
 		}
-		drawDays();
+		updateDays();
 		return maxSelectableDate;
 	}
 
@@ -900,7 +886,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		else {
 			minSelectableDate = min;
 		}
-		drawDays();
+		updateDays();
 		return minSelectableDate;
 	}
 
@@ -921,7 +907,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 		alwaysFireDayProperty = false;
 		setDay(day);
 		alwaysFireDayProperty = storedMode;
-		drawDays();
+		updateDays();
 	}
 
 	public void setMonthChooser(final JMonthChooser monthChooser) {
@@ -956,7 +942,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 			minSelectableDate = defaultMinSelectableDate;
 			maxSelectableDate = defaultMaxSelectableDate;
 		}
-		drawDays();
+		updateDays();
 	}
 
     /**
@@ -967,8 +953,8 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
      */
     public void setSundayForeground(final Color sundayForeground) {
         this.sundayForeground = sundayForeground;
-        drawDayNames();
-        drawDays();
+        updateDayNames();
+        updateDays();
     }
 
     /**
@@ -979,7 +965,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
      */
     public void setTodayBackground(final Color todayBackground) {
         this.todayBackground = todayBackground;
-        drawDays();
+        updateDays();
     }
 
 	/**
@@ -990,8 +976,8 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	 */
 	public void setWeekdayForeground(final Color weekdayForeground) {
 		this.weekdayForeground = weekdayForeground;
-		drawDayNames();
-		drawDays();
+		updateDayNames();
+		updateDays();
 	}
 
 	/**
@@ -1025,7 +1011,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	 */
 	public void setYear(final int year) {
 		calendar.set(Calendar.YEAR, year);
-		drawDays();
+		updateDays();
 	}
 
 	public void setYearChooser(final JYearChooser yearChooser) {
