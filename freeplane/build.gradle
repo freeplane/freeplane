@@ -33,7 +33,7 @@ dependencies {
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
-	lib  ('org.freeplane.lightdev:simplyhtml:0.19.4') {
+	lib  ('org.freeplane.lightdev:simplyhtml:0.19.5') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
@@ -42,7 +42,7 @@ dependencies {
     lib ':idw-gpl-1.6.1'
 
     maclib 'org.violetlib:vaqua:11'
-    
+
     runtimeOnly files("${project.buildDir}/emoji/xml")
     emoji 'org.freeplane.emoji:twemoji:12.1.4'
 }
