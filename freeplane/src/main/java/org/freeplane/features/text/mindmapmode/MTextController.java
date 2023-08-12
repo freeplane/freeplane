@@ -47,9 +47,13 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.InputMapUIResource;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
@@ -1032,9 +1036,12 @@ public class MTextController extends TextController {
 		}
 
 		private boolean isMenuEvent(KeyEvent e) {
-			return !editInDialog &&
-			        ResourceController.getResourceController()
-			        .getAcceleratorManager().canProcessKeyEvent(e);
+		    if(editInDialog)
+		        return false;
+		    InputMapUIResource defaultInputMap = (InputMapUIResource) UIManager.getDefaults().get("TextField.focusInputMap");
+		    if(DefaultEditorKit.pasteAction.equals(defaultInputMap.get(KeyStroke.getKeyStrokeForEvent(e))))
+		        return false;
+			return ResourceController.getResourceController().getAcceleratorManager().canProcessKeyEvent(e);
 		}
 
 		public void uninstall() {
