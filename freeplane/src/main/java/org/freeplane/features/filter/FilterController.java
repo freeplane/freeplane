@@ -831,7 +831,11 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		getFilterConditions().removeListDataListener(filterChangeListener);
 		showAncestors.removeChangeListener(filterChangeListener);
 		showDescendants.removeChangeListener(filterChangeListener);
-		filterConditions.setSelectedItem(condition(filter));
+		ICondition condition = condition(filter);
+		if(condition instanceof ASelectableCondition)
+		    filterConditions.setSelectedItem(condition);
+		else
+		    filterConditions.setSelectedItem(NO_FILTERING);
         hideMatchingNodes.setSelected(filter.areMatchingNodesHidden());
         showAncestors.setSelected(filter.areAncestorsShown());
 		showDescendants.setSelected(filter.areDescendantsShown());
