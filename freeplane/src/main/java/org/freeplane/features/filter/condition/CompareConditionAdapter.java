@@ -32,7 +32,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * Adapter for Conditions which compare values (</<=/>/>=/=/!=)
- * 
+ *
  * @author ?
  *
  */
@@ -44,7 +44,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	final StringMatchingStrategy stringMatchingStrategy;
 	private int comparisonResult;
 	private boolean error;
-	
+
 	abstract public boolean isEqualityCondition();
 
 	@SuppressWarnings("deprecation")
@@ -64,10 +64,10 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 		    conditionValue = (FormattedNumber)value;
 		    return;
 		}
-		    
+
 		if(value instanceof FormattedDate){
 			final FormattedDate date = (FormattedDate) value;
-			if(date.containsTime() || 
+			if(date.containsTime() ||
 					date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0) {
 				conditionValue = date;
             }
@@ -78,7 +78,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 			return;
 		}
 		conditionValue = value.toString();
-		
+
 	}
 
 	protected CompareConditionAdapter(final Double value) {
@@ -116,7 +116,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	    }
 		if (conditionValue instanceof Number && transformedContent instanceof String) {
 			try {
-				Number number = TextUtils.toNumber((String)transformedContent); 
+				Number number = TextUtils.toNumber((String)transformedContent);
 		        if (conditionValue instanceof FormattedNumber){
 		            return -((FormattedNumber)conditionValue).compareTo(number);
 		        }
@@ -137,7 +137,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 			error = true;
 			return 0;
 		}
-		
+
 		final String normalizedValue = normalizedValue();
 		final String text = normalize(transformedContent);
 		if (isEqualityCondition())
@@ -164,7 +164,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
     }
 
 	protected int compareTo(final Long value) {
-	    return value.compareTo((Long) conditionValue);
+	    return value.compareTo(((Number) conditionValue).longValue());
     }
 
 	@SuppressWarnings("deprecation")
