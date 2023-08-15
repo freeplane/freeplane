@@ -121,9 +121,15 @@ public class PresentationController implements IExtension{
 	private void addMapSelectionListener() {
 		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
 
+
+
 			@Override
+            public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+			    presentationState.stopPresentation();
+            }
+
+            @Override
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
-				presentationState.stopPresentation();
 				if(newMap != null && Controller.getCurrentModeController() == modeController)
 					presentationEditorController.setPresentations(getPresentations(newMap).presentations);
 				else
