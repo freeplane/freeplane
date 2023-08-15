@@ -515,7 +515,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener {
 
         WeakReference<JDayChooser> dayChoserReference = new WeakReference<JDayChooser>(this);
 
-        todayUpdateTimer = new Timer(delayInMillis, e -> Optional.ofNullable(dayChoserReference.get()).ifPresent(JDayChooser::updateToday));
+        todayUpdateTimer = new Timer(delayInMillis + 1000, e -> Optional.ofNullable(dayChoserReference.get()).ifPresent(JDayChooser::updateToday));
         todayUpdateTimer.setRepeats(false);
         todayUpdateTimer.start();
     }
