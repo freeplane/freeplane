@@ -4,10 +4,11 @@ import javax.swing.SizeRequirements;
 import javax.swing.text.Element;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.ImageView;
 import javax.swing.text.html.InlineView;
 import javax.swing.text.html.ParagraphView;
+
+import com.lightdev.app.shtm.SHTMLEditorKit;
 
 @SuppressWarnings("serial")
 public class SynchronousScaledEditorKit extends ScaledEditorKit {
@@ -15,46 +16,46 @@ public class SynchronousScaledEditorKit extends ScaledEditorKit {
 	private static ScaledEditorKit kit;
 	static public ScaledEditorKit create() {
 		if (kit == null) {
-			synchronousFactory = new HTMLEditorKit.HTMLFactory(){
+			synchronousFactory = new SHTMLEditorKit.SHTMLFactory(){
 				public View create(Element elem) {
 					View view = super.create(elem);
 					if(elem.getName().equals("br"))
 						return view;
-                    if(view instanceof InlineView){ 
-                        return new InlineView(elem){ 
-                            public View breakView(int axis, int p0, float pos, float len) { 
+                    if(view instanceof InlineView){
+                        return new InlineView(elem){
+                            public View breakView(int axis, int p0, float pos, float len) {
                                 View fragment = super.breakView(axis, p0, pos, len);
                                 if(this != fragment)
                                     return fragment;
-                                if(axis == View.X_AXIS) { 
-                                    checkPainter(); 
-                                    int p1 = getGlyphPainter().getBoundedPosition(this, p0, pos, len); 
-                                    if(p0 == getStartOffset() && p1 == getEndOffset()) { 
-                                        return this; 
+                                if(axis == View.X_AXIS) {
+                                    checkPainter();
+                                    int p1 = getGlyphPainter().getBoundedPosition(this, p0, pos, len);
+                                    if(p0 == getStartOffset() && p1 == getEndOffset()) {
+                                        return this;
                                     }
-                                    return createFragment(p0, p1); 
-                                } 
-                                return this; 
-                              } 
-                          }; 
-                    } 
-                    else 
-					if (view instanceof ParagraphView) { 
-                        return new ParagraphView(elem) { 
+                                    return createFragment(p0, p1);
+                                }
+                                return this;
+                              }
+                          };
+                    }
+                    else
+					if (view instanceof ParagraphView) {
+                        return new ParagraphView(elem) {
                             protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
                             	if(isContainedInTableCell(elem) )
                             		return super.calculateMinorAxisRequirements(axis, r);
-                                if (r == null) { 
-                                      r = new SizeRequirements(); 
-                                } 
-                                float pref = layoutPool.getPreferredSpan(axis); 
-                                float min = layoutPool.getMinimumSpan(axis); 
-                                // Don't include insets, Box.getXXXSpan will include them. 
-                                  r.minimum = (int)min; 
-                                  r.preferred = Math.max(r.minimum, (int) pref); 
-                                  r.maximum = Integer.MAX_VALUE; 
-                                  r.alignment = 0.5f; 
-                                return r; 
+                                if (r == null) {
+                                      r = new SizeRequirements();
+                                }
+                                float pref = layoutPool.getPreferredSpan(axis);
+                                float min = layoutPool.getMinimumSpan(axis);
+                                // Don't include insets, Box.getXXXSpan will include them.
+                                  r.minimum = (int)min;
+                                  r.preferred = Math.max(r.minimum, (int) pref);
+                                  r.maximum = Integer.MAX_VALUE;
+                                  r.alignment = 0.5f;
+                                return r;
                               }
 
 							private boolean isContainedInTableCell(Element elem) {
@@ -63,11 +64,11 @@ public class SynchronousScaledEditorKit extends ScaledEditorKit {
 									return false;
 								String name = parentElement.getName();
 								return name.equals("td") || name.equals("th");
-							} 
+							}
 
-                          }; 
-                      } 
-                    else 
+                          };
+                      }
+                    else
                     	if (view instanceof ImageView) {
 						((ImageView)view).setLoadsSynchronously(true);
 					}
@@ -78,12 +79,12 @@ public class SynchronousScaledEditorKit extends ScaledEditorKit {
 		}
 		return kit;
 	}
-	
+
 	@Override
 	public ViewFactory getViewFactory() {
 		return synchronousFactory;
 	}
-	
-	
+
+
 
 }
