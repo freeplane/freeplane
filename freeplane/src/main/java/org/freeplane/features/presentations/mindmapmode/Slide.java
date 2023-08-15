@@ -200,7 +200,7 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	public boolean isNodeVisible(NodeModel node) {
-		String id = node.getID();
+		String id = node.createID();
         return id.equals(rootNodeId) || rootNodeId == null && node.isRoot() || selectedNodeIds.contains(id);
 	}
 
