@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -612,7 +613,9 @@ public class EditNodeTextField extends EditNodeBase {
 		final Point textFieldCoordinate = new Point();
 		final MapView mapView = nodeView.getMap();
 		UITools.convertPointToAncestor(textfield, textFieldCoordinate, mapView);
-		textfield.getParent().remove(textfield);
+		Container textFieldParentComponent = textfield.getParent();
+		if(textFieldParentComponent != null)
+		    textFieldParentComponent.remove(textfield);
 		mapView.onEditingFinished(parent);
 		parent.revalidate();
 		parent.repaint();
