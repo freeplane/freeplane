@@ -33,7 +33,7 @@ dependencies {
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
-	lib  ('org.freeplane.lightdev:simplyhtml:0.19.7') {
+	lib  ('org.freeplane.lightdev:simplyhtml:0.19.8') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
