@@ -2,8 +2,16 @@ package org.freeplane.features.map.mindmapmode.clipboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 class TargetFileCreator {
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd-HHmmssSSS");
+	private static String formattedTimestamp() {
+		LocalDateTime currentTime = LocalDateTime.now();
+        String formattedTime = currentTime.format(TIME_FORMATTER);
+		return formattedTime;
+	}
 	File createTargetFile(File mindmapFile, String prototypeName) throws IOException{
 		final String mapFileNameWithExtension = mindmapFile.getName();
 		final String mapFileName = removeExtension(mapFileNameWithExtension);
@@ -16,18 +24,14 @@ class TargetFileCreator {
 					return target;
 			}
 			String sourceFileName = removeExtension(prototypeName);
-			String fileNameTemplate = sourceFileName + "_";
-			while (fileNameTemplate.length() < 3)
-				fileNameTemplate = fileNameTemplate + '_';
+			String fileNameTemplate = sourceFileName + "-" + formattedTimestamp() + "-";
 			mapFilesDirectory.mkdir();
 			File targetFile = File.createTempFile(fileNameTemplate, "."+ getExtension(prototypeName), mapFilesDirectory);
 			return targetFile;
 			
 		} else {
 			String sourceFileName = removeExtension(prototypeName);
-			String fileNameTemplate = mapFileName + "_" + sourceFileName + "_";
-			while (fileNameTemplate.length() < 3)
-				fileNameTemplate = fileNameTemplate + '_';
+			String fileNameTemplate = mapFileName + "_" + sourceFileName + "-" + formattedTimestamp() + "-";
 			File targetFile = File.createTempFile(fileNameTemplate, "."+ getExtension(prototypeName), mindMapDirectory);
 			return targetFile;
 		}

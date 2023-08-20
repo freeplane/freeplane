@@ -341,7 +341,7 @@ class NodeList implements IExtension {
 	protected static final String PAST_REMINDERS_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 
 	private Set<MapModel> listedMaps = Collections.emptySet();
-	
+
 	private boolean showsStyleIcons = false;
 	private int nodeMapColumn = -1;
 	int nodeTextColumn = -1;
@@ -685,8 +685,12 @@ class NodeList implements IExtension {
 					return;
 				}
 				final int selectedRow = lsm.getLeadSelectionIndex();
-				final NodeModel mindMapNode = getMindMapNode(selectedRow);
-				mNodePath.setText(getNodeText(mindMapNode));
+				if(selectedRow >= 0) {
+				    final NodeModel mindMapNode = getMindMapNode(selectedRow);
+				    mNodePath.setText(getNodeText(mindMapNode));
+				}
+				else
+				    mNodePath.setText("");
 			}
 		});
 		final String marshalled = ResourceController.getResourceController().getProperty(
