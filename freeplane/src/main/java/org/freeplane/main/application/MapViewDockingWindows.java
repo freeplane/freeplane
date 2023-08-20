@@ -38,6 +38,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -208,7 +209,35 @@ class MapViewDockingWindows implements IMapViewChangeListener {
             }
 		};
 
+		addTabsPopupMenu(rootWindow);
 
+	}
+
+	private void addTabsPopupMenu(DockingWindow dockingWindow){
+		dockingWindow.setPopupMenuFactory(new WindowPopupMenuFactory() {
+		   public JPopupMenu createPopupMenu(DockingWindow window) {
+			   if(window instanceof ConnectedToMenuView) {
+				   return null;
+			   }
+			   JPopupMenu menu = new JPopupMenu(window.getTitle());
+			   JMenuItem menuItem = new JMenuItem("Rename tab (temporarily)");
+			   menuItem.setToolTipText("Changing the layout of the windows may reset the tab title.");
+			   menuItem.addActionListener(new ActionListener() {
+						  public void actionPerformed(ActionEvent e) {
+							  String newName = JOptionPane.showInputDialog("Input new temporary name: ", window.getName());
+							  if(Objects.equals(newName, "") || newName==null ){
+								  window.setName(null);
+							  } else {
+								  window.setName(newName);
+							  }
+							  addTitleProvider(window);
+						  }
+					  }
+			   );
+			   menu.add(menuItem);
+			   return menu;
+		   }
+	   });
 	}
 
 	private void configureDefaultDockingWindowProperties() {
@@ -319,6 +348,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		else if(mapViews.contains(pNewMap))
 			return;
 		mapViews.add(pNewMap);
+	}
+
+	public void addTitleProvider(DockingWindow window){
+		window.getWindowProperties().setTitleProvider(new CustomWindowTitleProvider());
 	}
 
 	static private View getContainingDockedWindow(final Component pNewMap) {
