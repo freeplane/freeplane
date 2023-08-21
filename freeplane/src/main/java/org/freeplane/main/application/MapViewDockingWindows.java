@@ -224,13 +224,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				   return null;
 			   }
 			   JPopupMenu menu = new JPopupMenu(window.getTitle());
-			   JMenuItem menuItem = new JMenuItem("Rename tab (temporarily)");
-			   menuItem.setToolTipText("Changing the layout of the windows may reset the tab title.");
 			   JMenuItem menuItem = new JMenuItem(TextUtils.getText("TabPopUpMenu.rename.text","Rename"));
 			   menuItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip","Windows layout changes may reset the tab title."));
 			   menuItem.addActionListener(new ActionListener() {
 						  public void actionPerformed(ActionEvent e) {
-							  String newName = JOptionPane.showInputDialog("Input new temporary name: ", window.getName());
 							  String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), window.getName());
 							  if(Objects.equals(newName, "") || newName==null ){
 								  window.setName(null);
