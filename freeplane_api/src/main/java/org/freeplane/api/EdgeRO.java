@@ -13,4 +13,7 @@ public interface EdgeRO {
 	EdgeStyle getType();
 
 	int getWidth();
+
+	boolean isColorSet();
+
 }

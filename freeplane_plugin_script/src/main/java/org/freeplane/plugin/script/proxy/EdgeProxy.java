@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
@@ -40,6 +41,11 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	@Override
 	public int getWidth() {
 		return getEdgeController().getWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	@Override
+	public boolean isColorSet() {
+		return EdgeModel.getModel(getDelegate())==null?false:(EdgeModel.getModel(getDelegate()).getColor() != null);
 	}
 
 	@Override

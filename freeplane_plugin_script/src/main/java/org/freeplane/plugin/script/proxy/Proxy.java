@@ -186,6 +186,10 @@ public interface Proxy {
 		void setType(EdgeStyle type);
 	}
 
+	interface BorderRO extends org.freeplane.api.BorderRO{}
+
+	interface Border extends BorderRO, org.freeplane.api.Border{}
+
 	interface ExternalObjectRO extends org.freeplane.api.ExternalObjectRO { }
 
 	interface ExternalObject extends ExternalObjectRO, org.freeplane.api.ExternalObject { }
