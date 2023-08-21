@@ -61,6 +61,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.mindmapmode.DroppedMindMapOpener;
@@ -225,9 +226,12 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			   JPopupMenu menu = new JPopupMenu(window.getTitle());
 			   JMenuItem menuItem = new JMenuItem("Rename tab (temporarily)");
 			   menuItem.setToolTipText("Changing the layout of the windows may reset the tab title.");
+			   JMenuItem menuItem = new JMenuItem(TextUtils.getText("TabPopUpMenu.rename.text","Rename"));
+			   menuItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip","Windows layout changes may reset the tab title."));
 			   menuItem.addActionListener(new ActionListener() {
 						  public void actionPerformed(ActionEvent e) {
 							  String newName = JOptionPane.showInputDialog("Input new temporary name: ", window.getName());
+							  String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), window.getName());
 							  if(Objects.equals(newName, "") || newName==null ){
 								  window.setName(null);
 							  } else {
