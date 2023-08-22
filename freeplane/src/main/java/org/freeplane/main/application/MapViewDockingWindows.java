@@ -506,6 +506,12 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
     }
 
+
+	private String createTitle(Component mapViewComponent) {
+		return createTitle(mapViewComponent, null);
+	}
+
+	
 	private String createTitle(Component mapViewComponent, String tabTitle) {
 		MapView mapView = (MapView)mapViewComponent;
 		String name = tabTitle!=null?tabTitle:mapView.getName();
