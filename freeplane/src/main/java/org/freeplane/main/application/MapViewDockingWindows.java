@@ -56,6 +56,7 @@ import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import net.infonode.docking.SplitWindow;
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FileOpener;
@@ -220,7 +221,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private void addTabsPopupMenu(DockingWindow dockingWindow){
 		dockingWindow.setPopupMenuFactory(new WindowPopupMenuFactory() {
 		   public JPopupMenu createPopupMenu(DockingWindow window) {
-			   if(window instanceof ConnectedToMenuView) {
+			   if(window instanceof ConnectedToMenuView || window.getWindowParent() instanceof RootWindow || window.getWindowParent() instanceof SplitWindow || window.getChildWindowCount()<=1) {
 				   return null;
 			   }
 			   JPopupMenu menu = new JPopupMenu(window.getTitle());
