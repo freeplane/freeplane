@@ -41,6 +41,7 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
 
     @Override
     public boolean isColorSet() {
-        return NodeBorderModel.getModel(getDelegate())==null?false:(NodeBorderModel.getModel(getDelegate()).getBorderColor() != null);
+        NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
+        return border!=null && border.getBorderColor() != null;
     }
 }

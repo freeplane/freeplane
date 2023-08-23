@@ -45,7 +45,8 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 
 	@Override
 	public boolean isColorSet() {
-		return EdgeModel.getModel(getDelegate())==null?false:(EdgeModel.getModel(getDelegate()).getColor() != null);
+		EdgeModel edge = EdgeModel.getModel(getDelegate());
+		return edge!=null && edge.getColor() != null;
 	}
 
 	@Override
