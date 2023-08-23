@@ -6,20 +6,21 @@ import net.infonode.docking.title.SimpleDockingWindowTitleProvider;
 
 public class CustomWindowTitleProvider implements DockingWindowTitleProvider {
 
-    CustomWindowTitleProvider() {
-    }
+	CustomWindowTitleProvider() {
+	}
 
-    @Override
-    public String getTitle(DockingWindow window){
-        String windowName = window.getName();
-        if (windowName == null) {
-            return SimpleDockingWindowTitleProvider.INSTANCE.getTitle(window);
-        } else {
-            boolean dirty = false;
-            for (int i = 0; i < window.getChildWindowCount(); i++) {
-                dirty = dirty || window.getChildWindow(i).getTitle().endsWith("*");
-            }
-            return windowName + (dirty?" *":"");
-        }
-    }
+	@Override
+	public String getTitle(DockingWindow window){
+		String windowName = window.getName();
+		if (windowName == null || (window instanceof ConnectedToMenuView)) {
+			return SimpleDockingWindowTitleProvider.INSTANCE.getTitle(window);
+		} else {
+			boolean dirty = false;
+			int childWindowsCount = window.getChildWindowCount();
+			for (int i = 0; i < childWindowsCount; i++) {
+				dirty = dirty || window.getChildWindow(i).getTitle().endsWith("*");
+			}
+			return windowName + (childWindowsCount>1?" (" + childWindowsCount + ")":"") +(dirty?" *":"");
+		}
+	}
 }

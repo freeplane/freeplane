@@ -220,29 +220,30 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 	private void addTabsPopupMenu(DockingWindow dockingWindow){
 		dockingWindow.setPopupMenuFactory(new WindowPopupMenuFactory() {
-		   public JPopupMenu createPopupMenu(DockingWindow window) {
-			   if(window instanceof ConnectedToMenuView || window.getWindowParent() instanceof RootWindow || window.getWindowParent() instanceof SplitWindow || window.getChildWindowCount()<=1) {
+			public JPopupMenu createPopupMenu(DockingWindow window) {
+				if( window.getWindowParent() instanceof RootWindow || window.getWindowParent() instanceof SplitWindow) {
 				   return null;
-			   }
-			   JPopupMenu menu = new JPopupMenu(window.getTitle());
-			   JMenuItem menuItem = new JMenuItem(TextUtils.getText("TabPopUpMenu.rename.text","Rename"));
-			   menuItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip","Windows layout changes may reset the tab title."));
-			   menuItem.addActionListener(new ActionListener() {
-						  public void actionPerformed(ActionEvent e) {
-							  String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), window.getName());
-							  if(Objects.equals(newName, "") || newName==null ){
-								  window.setName(null);
-							  } else {
-								  window.setName(newName);
-							  }
-							  addTitleProvider(window);
-						  }
-					  }
-			   );
-			   menu.add(menuItem);
-			   return menu;
-		   }
-	   });
+				}
+				JPopupMenu menu = new JPopupMenu(window.getTitle());
+				JMenuItem menuItem = new JMenuItem(TextUtils.getText("TabPopUpMenu.rename.text","Rename"));
+				menuItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip","Windows layout changes may reset the tab title."));
+			menuItem.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), window.getName());
+								if(Objects.equals(newName, "") || newName==null ){
+									window.setName(null);
+								} else {
+									window.setName(newName);
+								}
+								addTitleProvider(window);
+								setTitle();
+							}
+						}
+				);
+				menu.add(menuItem);
+				return menu;
+			}
+		});
 	}
 
 	private void configureDefaultDockingWindowProperties() {
@@ -355,7 +356,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		mapViews.add(pNewMap);
 	}
 
-	public void addTitleProvider(DockingWindow window){
+	private void addTitleProvider(DockingWindow window){
 		window.getWindowProperties().setTitleProvider(new CustomWindowTitleProvider());
 	}
 
@@ -490,21 +491,21 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		  });
 		timer.setRepeats(false);
 		timer.start();
-    }
+	}
 
 	public void setTitle() {
 		if(loadingLayoutFromObjectInpusStream)
 			return;
 		for (Component mapViewComponent: mapViews) {
 			if (mapViewComponent instanceof MapView ) {
-		        View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
-                if(containingDockedWindow != null){
-                    String title = createTitle(mapViewComponent, containingDockedWindow.getName());
-                    containingDockedWindow.getViewProperties().setTitle(title);
-			    }
-            }
+				View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
+				if(containingDockedWindow != null){
+					String title = createTitle(mapViewComponent, containingDockedWindow.getName());
+					containingDockedWindow.getViewProperties().setTitle(title);
+				}
+			}
 		}
-    }
+	}
 
 
 	private String createTitle(Component mapViewComponent) {
@@ -514,7 +515,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	
 	private String createTitle(Component mapViewComponent, String tabTitle) {
 		MapView mapView = (MapView)mapViewComponent;
-		String name = tabTitle!=null?tabTitle:mapView.getName();
+		String name = tabTitle!=null ? tabTitle : mapView.getName();
 		String title;
 		if(mapView.getModel().isSaved() || mapView.getModel().isReadOnly())
 			title = name;
