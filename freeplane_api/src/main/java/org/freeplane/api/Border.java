@@ -11,4 +11,6 @@ public interface Border extends BorderRO {
      *  @since 1.2 */
     void setColorCode(String rgbString);
 
+    void setWidth(Quantity<LengthUnit> borderWidth);
+
 }

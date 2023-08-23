@@ -1,5 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeBorderModel;
@@ -30,6 +32,11 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
     }
 
     @Override
+    public void setWidth(Quantity<LengthUnit> borderWidth) {
+        getStyleController().setBorderWidth(getDelegate(), borderWidth);
+    }
+
+    @Override
     public Color getColor() {
         return getStyleController().getBorderColor(getDelegate(), LogicalStyleController.StyleOption.FOR_UNSELECTED_NODE);
     }
@@ -44,4 +51,10 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
         NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
         return border!=null && border.getBorderColor() != null;
     }
+
+    @Override
+    public Quantity<LengthUnit> getWidth() {
+        return getStyleController().getBorderWidth(getDelegate(), LogicalStyleController.StyleOption.FOR_UNSELECTED_NODE);
+    }
+
 }
