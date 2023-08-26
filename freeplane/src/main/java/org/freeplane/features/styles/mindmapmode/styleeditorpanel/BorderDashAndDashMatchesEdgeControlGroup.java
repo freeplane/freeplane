@@ -26,6 +26,7 @@ import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.DashVariant;
+import org.freeplane.features.DashVariantRenderedContent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
@@ -49,11 +50,11 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 
 	private RevertingProperty mSetBorderDashMatchesEdgeDash;
 	private BooleanProperty mBorderDashMatchesEdgeDash;
-	
+
 	private BorderDashListener borderDashListener;
 	private BorderDashMatchesEdgeDashListener borderDashMatchesEdgeDashChangeListener;
 	private boolean canEdit;
-	
+
 	private class BorderDashListener extends ControlGroupChangeListener {
 		public BorderDashListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -75,7 +76,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 			mSetBorderDash.setValue(dash != null);
 			mBorderDash.setValue(viewDash.name());
 		}
-		
+
         @Override
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderDash);
@@ -84,7 +85,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
                 enableOrDisableBorderDashControls();
         }
 	}
-	
+
 	private class BorderDashMatchesEdgeDashListener extends ControlGroupChangeListener {
 		public BorderDashMatchesEdgeDashListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -106,30 +107,30 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 			mSetBorderDashMatchesEdgeDash.setValue(match != null);
 			mBorderDashMatchesEdgeDash.setValue(viewMatch);
 		}
-        
+
         @Override
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetBorderDashMatchesEdgeDash);
             StylePropertyAdjuster.adjustPropertyControl(node, mBorderDashMatchesEdgeDash);
         }
 	}
-	
+
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		addBorderDashMatchesEdgeDashControl(formBuilder);
 		addBorderDashControl(formBuilder);
 	}
-	
+
 	private void addBorderDashControl(DefaultFormBuilder formBuilder) {
 		mSetBorderDash = new RevertingProperty();
-		mBorderDash = ComboProperty.of(BORDER_DASH, DashVariant.class);
+		mBorderDash = ComboProperty.of(BORDER_DASH, DashVariant.class, DashVariantRenderedContent::of);
 		borderDashListener = new BorderDashListener(mSetBorderDash, mBorderDash);
 		mSetBorderDash.addPropertyChangeListener(borderDashListener);
 		mBorderDash.addPropertyChangeListener(borderDashListener);
 		mBorderDash.appendToForm(formBuilder);
 		mSetBorderDash.appendToForm(formBuilder);
 	}
-	
+
 	public void addBorderDashMatchesEdgeDashControl(DefaultFormBuilder formBuilder) {
 		mSetBorderDashMatchesEdgeDash = new RevertingProperty();
 		mBorderDashMatchesEdgeDash = new BooleanProperty(BORDER_DASH_MATCHES_EDGE_DASH);

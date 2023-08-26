@@ -27,6 +27,7 @@ import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
+import org.freeplane.features.link.ConnectorShapeRenderedContent;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 
@@ -36,24 +37,24 @@ public class ConnectorShapeControlGroup implements ControlGroup {
 	private BooleanProperty mSetConnectorShape;
 	private ComboProperty mConnectorShape;
 	private ConnectorShapeChangeListener propertyChangeListener;
-	
+
 	private ConnectorModel connector;
-	
+
 	private class ConnectorShapeChangeListener extends ControlGroupChangeListener {
 		public ConnectorShapeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, 
+		void applyValue(final boolean enabled,
 				final PropertyChangeEvent evt) {
-            final MLinkController linkController 
+            final MLinkController linkController
             = (MLinkController) LinkController.getController();
-            linkController.setShape(connector, enabled ? 
+            linkController.setShape(connector, enabled ?
                     Optional.of(ConnectorShape.valueOf(mConnectorShape.getValue())) : Optional.empty());
 
 		}
-		
+
 		@Override
 		void updateValue() {
             final LinkController linkController = LinkController.getController();
@@ -63,17 +64,17 @@ public class ConnectorShapeControlGroup implements ControlGroup {
 				mConnectorShape.setValue(viewShape.name());
 		}
 	}
-	
+
     @Override
     public void updateValue(ConnectorModel connector) {
         this.connector = connector;
         propertyChangeListener.update();
     }
-    
+
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetConnectorShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mConnectorShape = ComboProperty.of("connector_shapes", ConnectorShape.class);
+		mConnectorShape = ComboProperty.of("connector_shapes", ConnectorShape.class, ConnectorShapeRenderedContent::of);
 		mConnectorShape.setNameAsLabelAndToolTip();
 		propertyChangeListener = new ConnectorShapeChangeListener(mSetConnectorShape, mConnectorShape);
 		mSetConnectorShape.addPropertyChangeListener(propertyChangeListener);

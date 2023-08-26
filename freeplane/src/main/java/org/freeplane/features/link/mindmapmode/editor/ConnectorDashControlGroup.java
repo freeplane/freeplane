@@ -26,6 +26,7 @@ import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.DashVariant;
+import org.freeplane.features.DashVariantRenderedContent;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -38,7 +39,7 @@ public class ConnectorDashControlGroup implements ControlGroup {
 	private ComboProperty mConnectorDash;
 	private ConnectorDashChangeListener propertyChangeListener;
 	private ConnectorModel connector;
-	
+
 	private class ConnectorDashChangeListener extends ControlGroupChangeListener {
 		public ConnectorDashChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -46,9 +47,9 @@ public class ConnectorDashControlGroup implements ControlGroup {
 
 		@Override
 		void applyValue(final boolean enabled, final PropertyChangeEvent evt) {
-		    final MLinkController linkController 
+		    final MLinkController linkController
 		    = (MLinkController) LinkController.getController();
-		    linkController.setConnectorDashArray(connector, enabled ? 
+		    linkController.setConnectorDashArray(connector, enabled ?
 		            Optional.of(DashVariant.valueOf(mConnectorDash.getValue()).variant) : Optional.empty());
 		}
 
@@ -71,7 +72,7 @@ public class ConnectorDashControlGroup implements ControlGroup {
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetConnectorDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mConnectorDash = ComboProperty.of("connector_dash", DashVariant.class);
+		mConnectorDash = ComboProperty.of("connector_dash", DashVariant.class, DashVariantRenderedContent::of);
 		propertyChangeListener = new ConnectorDashChangeListener(mSetConnectorDash, mConnectorDash);
 		mSetConnectorDash.addPropertyChangeListener(propertyChangeListener);
 		mConnectorDash.addPropertyChangeListener(propertyChangeListener);
