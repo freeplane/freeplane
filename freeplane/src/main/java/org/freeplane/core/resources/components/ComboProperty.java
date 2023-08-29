@@ -70,27 +70,23 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 
 
 	public static <T extends Enum<T>> ComboProperty of(String name, Class<T> enumClass) {
-		T[] enumConstants = enumClass.getEnumConstants();
-		final Vector<String> choices = new Vector<String>(enumConstants.length);
-		final Vector<Object> displayedItems = new Vector<Object>(enumConstants.length);
-		for(final T enumValue : enumConstants){
-			final String choice = ((Enum<?>)enumValue).name();
-			choices.add(choice);
-			final RenderedContent<T> renderedContent;
-			if(enumValue instanceof RenderedContentSupplier<?>) {
-				final RenderedContentSupplier<T> renderedContentSupplier;
-				renderedContentSupplier = (RenderedContentSupplier<T>)enumValue;
-				renderedContent = renderedContentSupplier.createRenderedContent();
-			}
-			else {
-				renderedContent = RenderedContent.of(enumValue);
-			}
-			displayedItems.add(renderedContent);
-		}
-		ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);
-		comboProperty.setRenderer(RenderedContent.createRenderer());
-		return comboProperty;
+		return of(name, enumClass, RenderedContent::of);
 	}
+
+	public static <T extends Enum<T>> ComboProperty of(String name, Class<T> enumClass, RenderedContentSupplier<T> supplier) {
+        T[] enumConstants = enumClass.getEnumConstants();
+        final Vector<String> choices = new Vector<String>(enumConstants.length);
+        final Vector<Object> displayedItems = new Vector<Object>(enumConstants.length);
+        for(final T enumValue : enumConstants){
+            final String choice = ((Enum<?>)enumValue).name();
+            choices.add(choice);
+            final RenderedContent<T> renderedContent = supplier.createRenderedContent(enumValue);
+            displayedItems.add(renderedContent);
+        }
+        ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);
+        comboProperty.setRenderer(RenderedContent.createRenderer());
+        return comboProperty;
+    }
 	/**
 	 */
 	private void fillPossibleValues(final Collection<String> possibles) {

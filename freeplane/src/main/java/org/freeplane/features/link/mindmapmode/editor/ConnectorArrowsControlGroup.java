@@ -26,6 +26,7 @@ import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.link.ConnectorArrows;
+import org.freeplane.features.link.ConnectorArrowsRenderedContent;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -36,21 +37,21 @@ public class ConnectorArrowsControlGroup implements ControlGroup {
 	private BooleanProperty mSetConnectorArrows;
 	private ComboProperty mConnectorArrows;
 	private ConnectorArrowsChangeListener propertyChangeListener;
-	
+
 	private ConnectorModel connector;
-	
+
 	private class ConnectorArrowsChangeListener extends ControlGroupChangeListener {
 		public ConnectorArrowsChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
-		void applyValue(final boolean enabled, 
+		void applyValue(final boolean enabled,
 				final PropertyChangeEvent evt) {
-            final MLinkController linkController 
+            final MLinkController linkController
             = (MLinkController) LinkController.getController();
             ConnectorArrows arrows = ConnectorArrows.valueOf(mConnectorArrows.getValue());
-            linkController.changeArrowsOfArrowLink(connector, 
+            linkController.changeArrowsOfArrowLink(connector,
                     enabled ? Optional.of(arrows) : Optional.empty());
 
 		}
@@ -70,11 +71,11 @@ public class ConnectorArrowsControlGroup implements ControlGroup {
         this.connector = connector;
         propertyChangeListener.update();
     }
-    
+
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetConnectorArrows = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mConnectorArrows = ComboProperty.of("connector_arrows", ConnectorArrows.class);
+		mConnectorArrows = ComboProperty.of("connector_arrows", ConnectorArrows.class, ConnectorArrowsRenderedContent::of);
 		propertyChangeListener = new ConnectorArrowsChangeListener(mSetConnectorArrows, mConnectorArrows);
 		mSetConnectorArrows.addPropertyChangeListener(propertyChangeListener);
 		mConnectorArrows.addPropertyChangeListener(propertyChangeListener);
