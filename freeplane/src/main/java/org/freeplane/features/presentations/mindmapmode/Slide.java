@@ -492,9 +492,7 @@ public class Slide implements NamedElement<Slide>{
 		else{
 			return null;
 		}
-		return node -> node.getID() == rootNodeId
-		        || node.getID() == placedNodeId
-		        || condition.checkNode(node);
+		return condition;
 	}
 
 	private SelectedViewSnapshotCondition getFilterConditionForSelectedNodes() {

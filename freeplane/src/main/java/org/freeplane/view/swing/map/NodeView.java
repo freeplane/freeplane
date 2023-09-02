@@ -1015,7 +1015,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(isValid())
 			return getContent().isVisible();
 		else
-			return getModel().hasVisibleContent(map.getFilter());
+			return getModel().hasVisibleContent(map.getFilter()) || isRoot();
 	}
 
     public Side side() {
@@ -1093,10 +1093,14 @@ public class NodeView extends JComponent implements INodeView {
 
 		if(property == NodeVisibility.class
 				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES) {
-			final NodeView parentView = getParentView();
-			parentView.setFolded(parentView.isFolded(), true);
-            if(event.getNewValue() == NodeVisibility.HIDDEN && isSelected())
-                FilterController.getCurrentFilterController().selectVisibleNodes(map.getMapSelection());
+		    if(! isRoot()) {
+		        final NodeView parentView = getParentView();
+		        parentView.setFolded(parentView.isFolded(), true);
+		        if(event.getNewValue() == NodeVisibility.HIDDEN && isSelected())
+		            FilterController.getCurrentFilterController().selectVisibleNodes(map.getMapSelection());
+		    }
+		    else
+		        updateIcons();
 			return;
 		}
 
@@ -1110,13 +1114,13 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		if (property.equals(NodeModel.NODE_ICON) || property.equals(HierarchicalIcons.ICONS)) {
-			mainView.updateIcons(this);
+			updateIcons();
 			revalidate();
 			return;
 		}
 		if (property.equals(NodeModel.NODE_ICON_SIZE))
 		{
-			mainView.updateIcons(this);
+			updateIcons();
 			revalidate();
 			return;
 		}
@@ -1703,12 +1707,18 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		updateShortener(textShortened);
-		mainView.updateIcons(this);
+		updateIcons();
 		mainView.updateText(getModel());
 		modelBackgroundColor = styleController().getBackgroundColor(model, getStyleOption());
 		revalidate();
 		repaint();
 	}
+
+
+
+    void updateIcons() {
+        mainView.updateIcons(this);
+    }
 
     private ModeController getModeController() {
         return map.getModeController();

@@ -475,9 +475,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         final Collection<NodeModel> selectedNodes = selection.getSelection();
         final NodeModel[] array = new NodeModel[selectedNodes.size()];
         boolean next = false;
+        NodeModel selectionRoot = selection.getSelectionRoot();
         for(NodeModel node : selectedNodes.toArray(array)){
             if(next){
-                if (!node.hasVisibleContent(filter)) {
+                if (!node.hasVisibleContent(filter) && selectionRoot != node) {
                     selection.toggleSelected(node);
                 }
             }
@@ -485,12 +486,16 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 next = true;
         }
         NodeModel selected = selection.getSelected();
-        if (!selected.hasVisibleContent(filter)) {
+        if (!selected.hasVisibleContent(filter) && selectionRoot != selected) {
             if(selection.getSelection().size() > 1){
                 selection.toggleSelected(selected);
+            } else {
+                NodeModel visibleAncestorOrSelf = selected.getVisibleAncestorOrSelf(filter);
+                if(selectionRoot.isDescendantOf(visibleAncestorOrSelf))
+                        selection.selectAsTheOnlyOneSelected(selectionRoot);
+                else
+                    selection.selectAsTheOnlyOneSelected(visibleAncestorOrSelf);
             }
-            else
-                selection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf(filter));
         }
         selection.setSiblingMaxLevel(selection.getSelected().getNodeLevel(filter));
     }

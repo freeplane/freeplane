@@ -329,7 +329,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		@Override
 		public void selectAsTheOnlyOneSelected(final NodeModel node) {
-			if(node.isVisible(filter))
+			if(node.isVisible(filter) || currentRootView.getModel() == node)
 				display(node);
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
@@ -378,7 +378,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 return;
             final ArrayList<NodeView> views = new ArrayList<NodeView>(nodes.length);
             for(final NodeModel node : nodes) {
-            	if(node != null && node.isVisible(filter)){
+            	if(node != null && (node.isVisible(filter) || currentRootView.getModel() == node)){
             		display(node);
             		final NodeView nodeView = getNodeView(node);
             		if (nodeView != null) {
@@ -1707,7 +1707,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                         && (direction == SelectionDirection.LEFT || direction == SelectionDirection.RIGHT))) {
             final NodeModel oldModel = oldSelected.getModel();
             getModeController().getMapController().unfoldAndScroll(oldModel, filter);
-            if(oldSelected.getModel().hasVisibleContent(filter))
+            if(oldSelected.isContentVisible())
                 return true;
         }
         return false;
@@ -1969,7 +1969,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeView targetView = getDisplayedNodeView(target);
 					final ILinkView arrowLink;
 					final boolean areBothNodesVisible = sourceView != null && targetView != null
-							&& source.hasVisibleContent(filter) && target.hasVisibleContent(filter);
+							&& sourceView.isContentVisible() && targetView.isContentVisible();
 					final boolean showConnector = SHOW_CONNECTOR_LINES == showConnectors
 							|| HIDE_CONNECTOR_LINES == showConnectors
 							|| SHOW_CONNECTORS_FOR_SELECTION == showConnectors && (sourceView != null && sourceView.isSelected()
@@ -2490,7 +2490,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void selectVisibleAncestorOrSelf(NodeView preferred) {
-		while(! preferred.getModel().hasVisibleContent(filter))
+		while(preferred.isContentVisible())
 			preferred = preferred.getParentView();
 		selectAsTheOnlyOneSelected(preferred);
     }
@@ -2780,6 +2780,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    }
         add(mapRootView, ROOT_NODE_COMPONENT_INDEX);
 	    NodeView lastRoot = currentRootView;
+	    currentRootView.invalidate();
 	    currentRootView = mapRootView;
 	    currentRootParentView = null;
 	    if(! temporarily) {
@@ -2796,6 +2797,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private void fireRootChanged() {
         modeController.getMapController().fireMapChanged(
                 new MapChangeEvent(this, getModel(), IMapViewManager.MapChangeEventProperty.MAP_VIEW_ROOT, null, null, false));
+        currentRootView.updateIcons();
     }
 
     static enum RootChange{JUMP_IN, JUMP_OUT, ANY}
@@ -2819,6 +2821,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		else
 		    restoreRootNodeTemporarily();
 		if(currentRootView != newRootView) {
+		    currentRootView.invalidate();
 			currentRootView = newRootView;
 			currentRootParentView = newRootView.getParentView();
 			remove(ROOT_NODE_COMPONENT_INDEX);
@@ -2826,12 +2829,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		else
 		    rootsHistory.clear();
+		if(! nextSelectedNode.isContentVisible())
+		    nextSelectedNode = newRootView;
 		if(newRootWasFolded)
 		    newRootView.fireFoldingChanged();
 		newRootView.resetLayoutPropertiesRecursively();
 		fireRootChanged();
 		if(nextSelectedNode.isDisplayable()) {
-		    if(rootChange == RootChange.JUMP_OUT)
+		    if(nextSelectedNode == selection.selectedNode)
 		        nextSelectedNode.requestFocusInWindow();
 		    else
 		        selectAsTheOnlyOneSelected(nextSelectedNode);
