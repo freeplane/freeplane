@@ -778,8 +778,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return false;
 		}
 		File file = new File(uri.getPath());
-		boolean isFile = uri.getScheme().equals("file");
-		if (isFile) {
+		if (uri.getScheme() == null || uri.getScheme().equals("file")) {
 	        if (!file.exists()) {
 	        	return false;
 	        }
