@@ -778,11 +778,14 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return false;
 		}
 		File file = new File(uri.getPath());
+		final File mapFile = targetNode.getMap().getFile();
+		if (!file.isAbsolute()) {
+			file = new File(mapFile.getParent(), uri.getPath());
+		}
 		if (uri.getScheme() == null || uri.getScheme().equals("file")) {
 	        if (!file.exists()) {
 	        	return false;
 	        }
-	        final File mapFile = targetNode.getMap().getFile();
 	        if (mapFile == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 	        	JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
 	        		TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
@@ -790,7 +793,13 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	        }
 	        if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
 	        	uri = LinkController.toLinkTypeDependantURI(mapFile, file);
-	        }
+	        } else {
+				try {
+					uri = file.getCanonicalFile().toURI();
+				} catch (IOException e) {
+					uri = file.toURI();
+				}
+			}
         }
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node;
