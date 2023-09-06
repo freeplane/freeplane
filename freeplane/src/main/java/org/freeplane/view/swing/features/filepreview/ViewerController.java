@@ -796,12 +796,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	        }
 	        if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
 	        	uri = LinkController.toLinkTypeDependantURI(mapFile, file);
-	        } else {
-				try {
-					uri = file.getCanonicalFile().toURI();
-				} catch (IOException e) {
-					uri = file.toURI();
-				}
+			} else {
+				uri = file.toURI();
 			}
         }
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
