@@ -2490,7 +2490,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void selectVisibleAncestorOrSelf(NodeView preferred) {
-		while(preferred.isContentVisible())
+		while(! preferred.isContentVisible())
 			preferred = preferred.getParentView();
 		selectAsTheOnlyOneSelected(preferred);
     }
