@@ -166,7 +166,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
     public void mouseMoved(final MouseEvent e) {
-		if (isDragActive())
+		if (isDragActive() || e.getClickCount() != 0)
 			return;
 		final MainView mainView = (MainView) e.getSource();
 		final NodeView nodeV = mainView.getNodeView();

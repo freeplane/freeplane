@@ -54,7 +54,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MainView.DragOverRelation;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MNodeDropListener implements DropTargetListener {
@@ -79,6 +78,7 @@ private Timer timer;
 		if (isDragAcceptable(dtde)) {
 			supportFolding(dtde);
 			dtde.acceptDrag(DnDConstants.ACTION_MOVE);
+
 		}
 		else {
 			dtde.rejectDrag();
@@ -88,27 +88,25 @@ private Timer timer;
 	private void supportFolding(final DropTargetDragEvent dtde) {
 		final MainView node = getNode(dtde);
 		if(isInFoldingRegion(dtde)){
-			node.setMouseArea(MouseArea.FOLDING);
 			startUnfoldTimer(node);
 		}
 		else{
-			node.setMouseArea(MouseArea.DEFAULT);
 			stopUnfoldTimer();
 		}
     }
 
 	private boolean isInFoldingRegion(DropTargetDragEvent dtde) {
-		final MainView node = getNode(dtde);
-		return node.isInFoldingRegion(dtde.getLocation());
+	    final MainView node = getNode(dtde);
+	    return node.dragOverRelation(dtde.getLocation()).isChild();
 	}
 
 	@Override
 	public void dragExit(final DropTargetEvent e) {
-		getNode(e).setMouseArea(MouseArea.OUT);
-		stopUnfoldTimer();
-		final MainView mainView = getNode(e);
-		mainView.stopDragOver();
-		mainView.repaint();
+	    MainView node = getNode(e);
+	    stopUnfoldTimer();
+	    final MainView mainView = node;
+	    mainView.stopDragOver();
+	    mainView.repaint();
 	}
 
 	private MainView getNode(final DropTargetEvent e) {

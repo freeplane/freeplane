@@ -675,10 +675,10 @@ public class MainView extends ZoomableLabel {
 
 	@Override
     protected void processMouseEvent(MouseEvent e) {
-	    if(e.getID() == MouseEvent.MOUSE_ENTERED)
-	        lastMouseEventTarget = this;
-	    else if (e.getID() == MouseEvent.MOUSE_EXITED
-	            && lastMouseEventTarget == this)
+	    if(e.getID() == MouseEvent.MOUSE_ENTERED || e.getID() == MouseEvent.MOUSE_MOVED) {
+	        if(e.getClickCount() == 0)
+	            lastMouseEventTarget = this;
+        } else if (lastMouseEventTarget == this && e.getID() == MouseEvent.MOUSE_EXITED)
 	        lastMouseEventTarget = null;
 	    super.processMouseEvent(e);
     }
