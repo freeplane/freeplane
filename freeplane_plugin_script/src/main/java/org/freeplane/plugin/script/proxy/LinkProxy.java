@@ -45,17 +45,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	        if (link == null)
 	            return null;
 	        if (isFileUri(link)) {
-				String uriPathForFile;
-				if ("freeplane".equals(link.getScheme())) {
-					uriPathForFile = link.getPath().replaceFirst("^/ ", "");
-				} else {
-					uriPathForFile = link.getPath();
-				}
-				if (SystemUtils.IS_OS_WINDOWS && uriPathForFile.startsWith("../")) {
-					// Relative URI paths across drives aren't recognized by File, which needs the path
-					// to start with a drive letter, therefore remove all `../` in front of a drive letter
-					uriPathForFile = uriPathForFile.replaceFirst("^(../)+(?=[a-zA-Z]:/)", "");
-				}
+				final String uriPathForFile = calcUriPathForFile(link);
 				final File fileFromUriPath = new File(uriPathForFile);
 				if (fileFromUriPath.isAbsolute()) {
 					return fileFromUriPath;
@@ -70,7 +60,22 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	    }
     }
 
-    private boolean isFileUri(URI link) {
+	private static String calcUriPathForFile(URI link) {
+		String uriPathForFile;
+		if ("freeplane".equals(link.getScheme())) {
+			uriPathForFile = link.getPath().replaceFirst("^/ ", "");
+		} else {
+			uriPathForFile = link.getPath();
+		}
+		if (SystemUtils.IS_OS_WINDOWS && uriPathForFile.startsWith("../")) {
+			// Relative URI paths across drives aren't recognized by File, which needs the path
+			// to start with a drive letter, therefore remove all `../` in front of a drive letter
+			uriPathForFile = uriPathForFile.replaceFirst("^(../)+(?=[a-zA-Z]:/)", "");
+		}
+		return uriPathForFile;
+	}
+
+	private boolean isFileUri(URI link) {
         return link.getScheme() == null || link.getScheme().equals("file") || link.getScheme().equals("freeplane");
     }
 
