@@ -60,7 +60,8 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		final StringBuilder builder = new StringBuilder();
 		builder.append("<html><head><style type=\"text/css\">" //
 		        //doesn't work: + "  table { margin: 1px 0px; border-spacing: 0px; }"//
-		        + "  h1 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 1ex; }"//
+                + "  body { background-color: #EEEEEE; }"//
+                + "  h1 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 1ex; }"//
 		        + "  h2 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 1ex; }"//
 		        + "  h3 { background-color: #B5C8DB; margin-bottom: 0px; margin-top: 1ex; }"//
 		        + "</head><body width=\"600\">");
