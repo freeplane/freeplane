@@ -1,6 +1,15 @@
 package org.freeplane.api;
 
-public interface ConditionalStyle {
+/**
+ * Node's or map's conditional style
+ * <p>
+ * In the Manage Conditional Styles dialog, it's a row in the table.
+ * </p>
+ * <p>
+ * See also {@link ConditionalStyles}
+ * </p>
+ */
+public interface ConditionalStyle extends ConditionalStyleRO {
 
 	/**
 	 * @since 1.11.1
