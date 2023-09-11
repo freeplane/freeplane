@@ -207,6 +207,7 @@ private Timer timer;
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
 		try {
+		    stopUnfoldTimer();
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final MapView mapView = targetNodeView.getMap();
