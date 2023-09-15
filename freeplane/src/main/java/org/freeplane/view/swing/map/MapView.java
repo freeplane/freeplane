@@ -798,9 +798,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	    // Scroll the view port
 	    Rectangle newViewRectangle = new Rectangle(
-	            viewRectangle.x + deltaX, 
-	            viewRectangle.y + deltaY, 
-	            viewRectangle.width, 
+	            viewRectangle.x + deltaX,
+	            viewRectangle.y + deltaY,
+	            viewRectangle.width,
 	            viewRectangle.height);
 	    scrollRectToVisible(newViewRectangle);
 	}
@@ -2834,6 +2834,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 lastRoot.fireFoldingChanged();
             }
         }
+	    lastRoot.updateIcons();
 	}
 
     private void fireRootChanged() {

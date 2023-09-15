@@ -9,11 +9,7 @@
    </cc:Work>
   </rdf:RDF>
  </metadata>
- <g fill="none" stroke-linejoin="round" stroke-width="2">
-  <path d="m3 4v17h17" stroke="#333333"/>
-  <path d="m7 6v11h11" stroke="#0071bc"/>
-  <path d="m11 8v5h5" stroke="#0071bc"/>
-  <path d="m15 5v4h4" stroke="#0071bc"/>
-  <path d="m19 2v3h3" stroke="#0071bc"/>
+ <g>
+  <path d="m19 15.247a7.195 10 0 0 1-7.9608 6.6226 7.195 10 0 0 1-6.0389-9.7895 7.195 10 0 0 1 5.9245-9.9236 7.195 10 0 0 1 8.0367 6.4433l-6.7664 3.3996z" fill="#0071bc" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="0" stroke-width=".666"/>
  </g>
 </svg>

@@ -68,6 +68,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
@@ -477,6 +478,9 @@ public class MainView extends ZoomableLabel {
             //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		    /* fc, 06.10.2003: images? */
 		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model, styleOption);
+		    if(node.isRoot() && ! model.isRoot()) {
+		        iconImages.addIcon(IconStoreFactory.ICON_STORE.getUIIcon("currentRoot.svg"), iconHeight);
+		    }
 		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }
