@@ -778,20 +778,27 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return false;
 		}
 		File file = new File(uri.getPath());
-		boolean isFile = uri.getScheme().equals("file");
-		if (isFile) {
+		final File mapFile = targetNode.getMap().getFile();
+		if (!file.isAbsolute()) {
+			if (mapFile == null) {
+				showWarningMapNotSaved();
+				return false;
+			}
+			file = new File(mapFile.getParent(), uri.getPath());
+		}
+		if (uri.getScheme() == null || uri.getScheme().equals("file")) {
 	        if (!file.exists()) {
 	        	return false;
 	        }
-	        final File mapFile = targetNode.getMap().getFile();
 	        if (mapFile == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
-	        	JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
-	        		TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+				showWarningMapNotSaved();
 	        	return false;
 	        }
 	        if (LinkController.getLinkType() != LinkController.LINK_ABSOLUTE) {
 	        	uri = LinkController.toLinkTypeDependantURI(mapFile, file);
-	        }
+			} else {
+				uri = file.toURI();
+			}
         }
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		final NodeModel node;
@@ -814,4 +821,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	public IViewerFactory getViewerFactory() {
 	    return combiFactory;
     }
+
+	private void showWarningMapNotSaved() {
+		JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
+				TextUtils.getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+	}
 }
