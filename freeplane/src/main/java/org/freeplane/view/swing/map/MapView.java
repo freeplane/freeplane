@@ -584,7 +584,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	}
 
-	private static final int margin = 20;
+	private static final int AUTOSCROLL_MARGIN = (int) (UITools.FONT_SCALE_FACTOR * 40);
 	static boolean printOnWhiteBackground;
 	static private IFreeplanePropertyListener propertyChangeListener;
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
@@ -762,9 +762,51 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	public void autoscroll(final Point cursorLocn) {
-		final Rectangle r = new Rectangle((int) cursorLocn.getX() - MapView.margin, (int) cursorLocn.getY()
-		        - MapView.margin, 1 + 2 * MapView.margin, 1 + 2 * MapView.margin);
-		scrollRectToVisible(r);
+	    final JViewport viewPort = (JViewport) getParent();
+	    Rectangle viewRectangle = viewPort.getViewRect();
+	    if (!viewRectangle.contains(cursorLocn)) {
+	        return;
+	    }
+
+	    int distanceToLeft = cursorLocn.x - viewRectangle.x;
+	    int distanceToRight = viewRectangle.x + viewRectangle.width - cursorLocn.x;
+	    int distanceToTop = cursorLocn.y - viewRectangle.y;
+	    int distanceToBottom = viewRectangle.y + viewRectangle.height - cursorLocn.y;
+
+	    int deltaX = 0;
+	    int deltaY = 0;
+
+	    int distanceToEdge;
+
+	    // Find the closest horizontal edge and calculate the scroll amount
+	    if (distanceToLeft < AUTOSCROLL_MARGIN && distanceToLeft < distanceToRight) {
+	        distanceToEdge = AUTOSCROLL_MARGIN - distanceToLeft;
+	        deltaX = -calculateAutoscrollAmount(distanceToEdge);
+	    } else if (distanceToRight < AUTOSCROLL_MARGIN) {
+	        distanceToEdge = AUTOSCROLL_MARGIN - distanceToRight;
+	        deltaX = calculateAutoscrollAmount(distanceToEdge);
+	    }
+
+	    // Find the closest vertical edge and calculate the scroll amount
+	    if (distanceToTop < AUTOSCROLL_MARGIN && distanceToTop < distanceToBottom) {
+	        distanceToEdge = AUTOSCROLL_MARGIN - distanceToTop;
+	        deltaY = -calculateAutoscrollAmount(distanceToEdge);
+	    } else if (distanceToBottom < AUTOSCROLL_MARGIN) {
+	        distanceToEdge = AUTOSCROLL_MARGIN - distanceToBottom;
+	        deltaY = calculateAutoscrollAmount(distanceToEdge);
+	    }
+
+	    // Scroll the view port
+	    Rectangle newViewRectangle = new Rectangle(
+	            viewRectangle.x + deltaX, 
+	            viewRectangle.y + deltaY, 
+	            viewRectangle.width, 
+	            viewRectangle.height);
+	    scrollRectToVisible(newViewRectangle);
+	}
+
+	private int calculateAutoscrollAmount(int distanceToEdge) {
+	    return distanceToEdge * distanceToEdge * 2 / AUTOSCROLL_MARGIN;
 	}
 
 	boolean frameLayoutCompleted() {
@@ -947,9 +989,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		final Rectangle outer = getBounds();
 		final Rectangle inner = parent.getBounds();
-		return new Insets(inner.y - outer.y + MapView.margin, inner.x - outer.x + MapView.margin, outer.height
-		        - inner.height - inner.y + outer.y + MapView.margin, outer.width - inner.width - inner.x + outer.x
-		        + MapView.margin);
+		return new Insets(inner.y - outer.y + MapView.AUTOSCROLL_MARGIN, inner.x - outer.x + MapView.AUTOSCROLL_MARGIN, outer.height
+		        - inner.height - inner.y + outer.y + MapView.AUTOSCROLL_MARGIN, outer.width - inner.width - inner.x + outer.x
+		        + MapView.AUTOSCROLL_MARGIN);
 	}
 
 	public Rectangle getInnerBounds() {
