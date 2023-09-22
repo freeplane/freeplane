@@ -100,7 +100,7 @@ class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.Exte
 
     private void setUriImpl(final URI uri) {
         if (uri != null)
-            getViewerController().setExternalResource(uri, getDelegate());
+            getViewerController().pasteImage(uri, getDelegate());
     }
 
     @Deprecated

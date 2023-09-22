@@ -804,17 +804,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			node.setSide(MapController.suggestNewChildSide(targetNode, asSibling ? Side.AS_SIBLING : Side.DEFAULT));
 			mapController.insertNode(node, targetNode, asSibling);
 		}
-		setExternalResource(uri, node);
-		return true;
-	}
-
-	public void setExternalResource(URI uri, NodeModel node) {
 		final ExternalResource preview = new ExternalResource(uri);
 		undoableDeactivateHook(node);
 		undoableActivateHook(node, preview);
-		File file = new File(uri.getPath());
 		ProgressIcons.updateExtendedProgressIcons(node, file.getName());
-	}
+		return true;
+    }
 
 	public IViewerFactory getViewerFactory() {
 	    return combiFactory;
