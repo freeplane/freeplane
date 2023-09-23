@@ -154,9 +154,9 @@ class VerticalNodeViewLayoutStrategy {
 						int extraVGap = 0 ;
                         final int childCloudHeigth = CloudHeightCalculator.INSTANCE.getAdditionalCloudHeigth(child);
 						if (childHeight != 0) {
-							boolean childHasVisibleChildren = child.getHeight() > child.getContentHeight() + childCloudHeigth + 2 * spaceAround;
-							if (childHasVisibleChildren) {
-								extraVGap = calculateExtraGapForChildren(minimalDistanceBetweenChildren);
+							final int childChildrenExtraHeight = childHeight - (child.getContentHeight() + childCloudHeigth);
+                            if (childChildrenExtraHeight > 0) {
+								extraVGap = Math.min(childChildrenExtraHeight, calculateExtraGapForChildren(minimalDistanceBetweenChildren));
 							}
 							childContentHeightSum += vGap;
 							if(isFirstVisibleLaidOutChild
