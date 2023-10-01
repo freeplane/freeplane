@@ -2781,13 +2781,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 
-	int calculateComponentIndex(Container parent, int index) {
-		if(parent == currentRootParentView
-				&& index >= calculateCurrentRootNodePosition())
-			return index - 1;
-		else
-			return index;
-	}
+    int calculateComponentIndex(Container parent, int index) {
+        if (parent == currentRootParentView
+                && index > calculateCurrentRootNodePosition())
+            return index - 1;
+        else
+            return index;
+    }
 
 	private int calculateCurrentRootNodePosition() {
 		NodeModel currentRoot = currentRootView.getModel();

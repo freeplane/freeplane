@@ -1164,14 +1164,21 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void onPreNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-        if (nodeDeletionEvent.index >= getComponentCount() - 1) {
-            return;
-        }
-		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
-		if (node == lastSelectedChild) {
-			lastSelectedChild = null;
-			for (int j = nodeDeletionEvent.index + 1; j < getComponentCount(); j++) {
-				final Component c = getComponent(j);
+	    final NodeView mapRootNodeView = map.getRoot();
+        NodeModel mapRootNode = mapRootNodeView.getModel();
+	    final NodeView node;
+	    final int childModeViewIndex;
+	    if(mapRootNode == nodeDeletionEvent.node) {
+            childModeViewIndex = nodeDeletionEvent.index;
+            node = mapRootNodeView;
+	    } else {
+	        childModeViewIndex = map.calculateComponentIndex(this, nodeDeletionEvent.index);
+	        node = (NodeView) getComponent(childModeViewIndex);
+	    }
+	    if (node == lastSelectedChild) {
+	        lastSelectedChild = null;
+	        for (int j = mapRootNode == nodeDeletionEvent.node ? childModeViewIndex : childModeViewIndex + 1; j < getComponentCount(); j++) {
+	            final Component c = getComponent(j);
 				if (!(c instanceof NodeView)) {
 					break;
 				}
@@ -1182,7 +1189,7 @@ public class NodeView extends JComponent implements INodeView {
 				}
 			}
 			if (lastSelectedChild == null) {
-				for (int j = nodeDeletionEvent.index - 1; j >= 0; j--) {
+				for (int j = childModeViewIndex - 1; j >= 0; j--) {
 					final Component c = getComponent(j);
 					if (!(c instanceof NodeView)) {
 						break;
@@ -1197,20 +1204,39 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	@Override
+    @Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
         NodeModel mapRootNode = map.getRoot().getModel();
         if(mapRootNode == nodeDeletionEvent.node)
             map.restoreRootNode(nodeDeletionEvent.index);
         else if (mapRootNode.isDescendantOf(nodeDeletionEvent.node))
             map.restoreRootNode();
-        if (nodeDeletionEvent.index >= getComponentCount() - 1) {
+        if (getComponentCount() <= 1) {
             return;
         }
 
-		numberingChanged(nodeDeletionEvent.index+1);
+        final int childNodeViewIndex;
+        if (model == map.getRoot().getModel().getParentNode()) {
+            if(nodeDeletionEvent.index == getComponentCount() - 1)
+                childNodeViewIndex = nodeDeletionEvent.index - 1;
+            else if(nodeDeletionEvent.index == 0)
+                childNodeViewIndex = nodeDeletionEvent.index;
+            else {
+                final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
+                if(node.getModel() == nodeDeletionEvent.node)
+                    childNodeViewIndex = nodeDeletionEvent.index;
+                else
+                    childNodeViewIndex = nodeDeletionEvent.index - 1;
+            }
+        }
+        else
+            childNodeViewIndex = nodeDeletionEvent.index;
+        final NodeView node = (NodeView) getComponent(childNodeViewIndex);
+        if(node.model != nodeDeletionEvent.node) {
+            throw new IllegalStateException("Inconsistent child node view after deletion");
+        }
+		numberingChanged(childNodeViewIndex+1);
 		map.preserveRootNodeLocationOnScreen();
-		final NodeView node = (NodeView) getComponent(nodeDeletionEvent.index);
 		node.remove();
 		map.updateSelectedNode();
 		NodeView preferred = getPreferredVisibleChild(PreferredChild.LAST_SELECTED, childrenSides());
@@ -1234,8 +1260,11 @@ public class NodeView extends JComponent implements INodeView {
 		if (isFolded()) {
 		    return;
 		}
+		if(child == map.getRoot().getModel())
+		    return;
 		NodeView newChild = addChildView(child, index);
-		numberingChanged(index + 1);
+		if(map.getRoot().getModel().getParentNode() != parent)
+		    numberingChanged(index + 1);
 		if(! SummaryNode.isSummaryNode(child))
 		    lastSelectedChild = newChild;
 		revalidate();
