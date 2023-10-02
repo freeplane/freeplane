@@ -54,6 +54,6 @@ class OpenCurrentMapDirAction extends AFreeplaneAction implements IMapViewChange
 
     public void afterViewChange(Component oldView, Component newView) {
         final MapView mapView = (MapView) newView;
-        setEnabled(mapView != null && mapView.getModel().getFile() != null);
+        setEnabled(mapView != null && mapView.getMap().getFile() != null);
     }
 }

@@ -85,7 +85,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
 
 	private void mouseClickedOnNode(MouseEvent e, MainView mainView) {
 		NodeView nodeView = mainView.getNodeView();
-		final NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getNode();
         switch(e.getClickCount()){
         	case 1:
         		final MapController mapController = Controller.getCurrentModeController().getMapController();
@@ -108,7 +108,7 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
 		if(selectedRow < 0 || selectedRow >= table.getRowCount())
 			return;
 		String rowName = (String) table.getValueAt(selectedRow, 0);
-		final NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getNode();
 		nodeSelector.tableRowSelected(node, rowName);
 	}
 

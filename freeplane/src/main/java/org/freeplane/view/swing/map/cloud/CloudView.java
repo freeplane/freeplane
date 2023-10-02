@@ -115,7 +115,7 @@ abstract public class CloudView {
 	}
 
 	public int getWidth() {
-		final NodeModel node = source.getModel();
+		final NodeModel node = source.getNode();
 		return CloudController.getController(source.getMap().getModeController()).getWidth(node);
 	}
 

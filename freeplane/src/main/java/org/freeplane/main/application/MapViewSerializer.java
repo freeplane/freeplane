@@ -54,10 +54,10 @@ class MapViewSerializer implements ViewSerializer {
     		if (component instanceof MapView) {
     			MapView mapView = (MapView) component;
     			if(mapView.getModeController().getModeName().equals(MModeController.MODENAME) 
-    					&& ! mapView.getModel().containsExtension(DocuMapAttribute.class)){
+    					&& ! mapView.getMap().containsExtension(DocuMapAttribute.class)){
     				out.writeBoolean(true);
     				out.writeUTF(mapView.getModeController().getModeName());
-    				out.writeObject(mapView.getModel().getURL());
+    				out.writeObject(mapView.getMap().getURL());
     				return;
     			}
             }

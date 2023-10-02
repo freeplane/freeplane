@@ -33,7 +33,7 @@ public class AutomaticEdgeStyle {
 		Point coordinate = new Point();
 		final MainView nodeContent = node.getMainView();
 		UITools.convertPointToAncestor(nodeContent, coordinate, rootView);
-		final MapStyleModel mapStyleNodes = MapStyleModel.getExtension(map.getModel());
+		final MapStyleModel mapStyleNodes = MapStyleModel.getExtension(map.getMap());
 
 		final int distance;
 		final int nodeColumnWidth;
@@ -54,11 +54,11 @@ public class AutomaticEdgeStyle {
 			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode, StyleOption.FOR_UNSELECTED_NODE).toBaseUnitsRounded() + LocationModel.DEFAULT_HGAP_PX);
 		}
 		int level = (int) ((float)distance / nodeColumnWidth + 0.5);
-		if(SummaryNode.isHidden(node.getModel()))
+		if(SummaryNode.isHidden(node.getNode()))
 			level++;
 
 		EdgeController edgeController = modeController.getExtension(EdgeController.class);
-		color = edgeController.areEdgeColorsAvailable(map.getModel()) ? edgeController.getEdgeColor(map.getModel(), level) : EdgeController.STANDARD_EDGE_COLOR;
+		color = edgeController.areEdgeColorsAvailable(map.getMap()) ? edgeController.getEdgeColor(map.getMap(), level) : EdgeController.STANDARD_EDGE_COLOR;
 
 
 	}

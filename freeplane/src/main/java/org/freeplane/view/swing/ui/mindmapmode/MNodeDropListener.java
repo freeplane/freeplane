@@ -132,7 +132,7 @@ private Timer timer;
 				public void actionPerformed(ActionEvent e) {
 					if(mainView.isDisplayable()){
 						NodeView nodeView = mainView.getNodeView();
-						final NodeModel node = nodeView.getModel();
+						final NodeModel node = nodeView.getNode();
 						Controller.getCurrentModeController().getMapController().unfold(node, nodeView.getMap().getFilter());
 					}
 				}
@@ -164,7 +164,7 @@ private Timer timer;
 		catch (Exception e) {
 			return dropAction != DnDConstants.ACTION_LINK;
 		}
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getNode();
 		if (dropAction == DnDConstants.ACTION_LINK) {
 			return isFromSameMap(node, droppedNodes);
 		}
@@ -212,7 +212,7 @@ private Timer timer;
 			final NodeView targetNodeView = mainView.getNodeView();
 			final MapView mapView = targetNodeView.getMap();
 			mapView.select();
-			final NodeModel targetNode = targetNodeView.getModel();
+			final NodeModel targetNode = targetNodeView.getNode();
 			final Controller controller = Controller.getCurrentController();
 			int dropAction = getDropAction(dtde);
 			final Transferable t = dtde.getTransferable();

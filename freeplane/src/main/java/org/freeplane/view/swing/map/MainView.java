@@ -280,7 +280,7 @@ public class MainView extends ZoomableLabel {
 
 	public boolean isClickableLink(final double xCoord) {
 		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
+		final NodeModel model = nodeView.getNode();
 		if (NodeLinks.getValidLink(model) == null)
 			return false;
 		return isInIconRegion(xCoord);
@@ -330,12 +330,12 @@ public class MainView extends ZoomableLabel {
 		}
 		Filter filter = nodeView.getMap().getFilter();
 		for (final NodeView childView : nodeView.getChildrenViews()) {
-			if (!childView.getModel().hasVisibleContent(filter)
+			if (!childView.getNode().hasVisibleContent(filter)
 					&& !FoldingMark.FOLDING_CIRCLE_UNFOLDED.equals(foldingMarkType(mapController, childView))) {
 				return FoldingMark.FOLDING_CIRCLE_FOLDED;
 			}
 		}
-		if(nodeView.getModel().isRoot())
+		if(nodeView.getNode().isRoot())
 			return FoldingMark.INVISIBLE;
 		return FoldingMark.FOLDING_CIRCLE_UNFOLDED;
 	}
@@ -380,7 +380,7 @@ public class MainView extends ZoomableLabel {
 			g2.setColor(Color.BLUE);
 			g.fillOval(r.x, r.y, r.width - 1, r.height - 1);
 		}
-		else if (LocationModel.getModel(movedView.getModel()).getHGap().value <= 0) {
+		else if (LocationModel.getModel(movedView.getNode()).getHGap().value <= 0) {
 			g2.setColor(Color.RED);
 			g.fillOval(r.x, r.y, r.width- 1, r.height- 1);
 		}
@@ -406,7 +406,7 @@ public class MainView extends ZoomableLabel {
 		if(TextModificationState.FAILURE.equals(textModified)) {
 			g.setColor(HighlightedTransformedObject.FAILURE_COLOR);
 		}
-		else if (MapView.isElementHighlighted(this, getNodeView().getModel())){
+		else if (MapView.isElementHighlighted(this, getNodeView().getNode())){
 			g.setColor(FilterController.HIGHLIGHT_COLOR);
 		}
 		else if(TextModificationState.HIGHLIGHT.equals(textModified)) {
@@ -466,13 +466,13 @@ public class MainView extends ZoomableLabel {
 
 
     public void updateFont(final NodeView node) {
-        final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel(), node.getStyleOption());
+        final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getNode(), node.getStyleOption());
         setFont(UITools.scale(font));
 	}
 
 	void updateIcons(final NodeView node) {
 	    final MultipleImageIcon iconImages = new MultipleImageIcon();
-	    final NodeModel model = node.getModel();
+	    final NodeModel model = node.getNode();
 		if(node.getMap().showsIcons()) {
 		    StyleOption styleOption = node.getStyleOption();
             //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
@@ -501,8 +501,8 @@ public class MainView extends ZoomableLabel {
 
 	void updateTextColor(final NodeView node) {
 		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
-		Color newForeground = styleController.getColor(node.getModel(), node.getStyleOption());
-		unselectedForeground = node.isSelected() ? styleController.getColor(node.getModel(), StyleOption.FOR_UNSELECTED_NODE)
+		Color newForeground = styleController.getColor(node.getNode(), node.getStyleOption());
+		unselectedForeground = node.isSelected() ? styleController.getColor(node.getNode(), StyleOption.FOR_UNSELECTED_NODE)
 				: newForeground;
 		if(! Objects.equals(getForeground(), newForeground)) {
 			setForeground(newForeground);
@@ -512,7 +512,7 @@ public class MainView extends ZoomableLabel {
 
 	void updateCss(NodeView node) {
 		NodeStyleController styleController = NodeStyleController.getController(node.getMap().getModeController());
-		NodeCss newCss = styleController.getStyleSheet(node.getModel(), node.getStyleOption());
+		NodeCss newCss = styleController.getStyleSheet(node.getNode(), node.getStyleOption());
 		setStyleSheet(newCss.css, newCss.getStyleSheet());
 	}
 
@@ -521,8 +521,8 @@ public class MainView extends ZoomableLabel {
 	void updateHorizontalTextAlignment(NodeView node) {
 		final HorizontalTextAlignment textAlignment = NodeStyleController
 		        .getController(node.getMap().getModeController())
-		        .getHorizontalTextAlignment(node.getModel(), node.getStyleOption());
-		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.getModel().isRoot();
+		        .getHorizontalTextAlignment(node.getNode(), node.getStyleOption());
+		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.getNode().isRoot();
 		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
@@ -579,7 +579,7 @@ public class MainView extends ZoomableLabel {
     public JToolTip createToolTip() {
 		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), FreeplaneTooltip.TEXT_HTML);
         tip.setComponent(this);
-		final URL url = getMap().getModel().getURL();
+		final URL url = getMap().getMap().getURL();
 		if (url != null) {
 			tip.setBase(url);
 		}
@@ -653,7 +653,7 @@ public class MainView extends ZoomableLabel {
 		if (nodeView == null)
 			return "";
 		final ModeController modeController = nodeView.getMap().getModeController();
-		final NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getNode();
 		return modeController.createToolTip(node, this);
     }
 
@@ -692,7 +692,7 @@ public class MainView extends ZoomableLabel {
 			final NodeView nodeView = getNodeView();
 			if(nodeView.isRoot())
 				return false;
-			final NodeModel node = nodeView.getModel();
+			final NodeModel node = nodeView.getNode();
 			if(node.getParentNode() == null ) {
 				return false;
 			}
@@ -712,13 +712,13 @@ public class MainView extends ZoomableLabel {
 
 	boolean hasChildren() {
 	    final NodeView nodeView = getNodeView();
-		final NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getNode();
 		return node.hasChildren();
 	}
 
 	public boolean isInFoldingRegion(Point p) {
 	    NodeView nodeView = getNodeView();
-	    if (!nodeView.getModel().hasChildren())
+	    if (!nodeView.getNode().hasChildren())
 	        return false;
 	    Rectangle foldingRectangleBounds = painter.getFoldingRectangleBounds(nodeView, true);
 	    if(nodeView.usesHorizontalLayout()) {
@@ -856,7 +856,7 @@ public class MainView extends ZoomableLabel {
 
 	public void updateBorder(NodeView nodeView) {
 		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
-		final NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getNode();
 		StyleOption styleOption = nodeView.getStyleOption();
         final Boolean borderWidthMatchesEdgeWidth = controller.getBorderWidthMatchesEdgeWidth(node, styleOption);
 		if(borderWidthMatchesEdgeWidth)

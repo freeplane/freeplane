@@ -185,11 +185,11 @@ class MapScroller {
 				final boolean outlineLayoutSet = map.isOutlineLayoutSet();
 				if(!outlineLayoutSet && ! root.usesHorizontalLayout()) {
 					boolean scrollToTheLeft = false;
-					final List<NodeModel> children = root.getModel().getChildren();
+					final List<NodeModel> children = root.getNode().getChildren();
 					if(! children.isEmpty()){
 						scrollToTheLeft = true;
 						for(NodeModel node :children) {
-							if(node.isTopOrLeft(root.getModel())){
+							if(node.isTopOrLeft(root.getNode())){
 								scrollToTheLeft = false;
 								break;
 							}

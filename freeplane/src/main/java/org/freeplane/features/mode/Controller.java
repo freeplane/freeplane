@@ -110,7 +110,7 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	 * @return
 	 */
 	public MapModel getMap() {
-		return getMapViewManager().getModel();
+		return getMapViewManager().getMap();
 	}
 
 	public IMapViewManager getMapViewManager() {

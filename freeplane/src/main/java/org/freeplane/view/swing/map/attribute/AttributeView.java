@@ -154,7 +154,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	/**
 	 */
 	NodeModel getNode() {
-		return getNodeView().getModel();
+		return getNodeView().getNode();
 	}
 
 	/**

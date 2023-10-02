@@ -83,7 +83,7 @@ public class MExternalImageDropListener implements DropTargetListener {
 		            final File file = transferData.get(0);
 		    		final ViewerController vc = (Controller.getCurrentController().getModeController()
 		    			    .getExtension(ViewerController.class));
-		    		final NodeModel node = nodeView.getModel();
+		    		final NodeModel node = nodeView.getNode();
 					vc.paste(file.toURI(), node);
 	            }
 	            catch (Exception e) {

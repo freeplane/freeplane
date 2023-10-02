@@ -121,7 +121,7 @@ class NodeViewFactory {
 
 	private NodeGeometryModel shapeConfiguration(NodeView node, StyleOption styleOption) {
 	    final ModeController modeController = node.getMap().getModeController();
-	    final NodeModel model = node.getModel();
+	    final NodeModel model = node.getNode();
 	    NodeStyleController styleController = NodeStyleController.getController(modeController);
 	    NodeGeometryModel shapeConfiguration = styleController.getShapeConfiguration(model, styleOption);
 	    if (shapeConfiguration.getShape().equals(NodeStyleShape.combined)) {
@@ -185,7 +185,7 @@ class NodeViewFactory {
 	}
 
 	private void updateNewView(final NodeView newView) {
-		newView.getModel().addViewer(newView);
+		newView.getNode().addViewer(newView);
 		newView.setLayout(SelectableLayout.getInstance());
 		newView.update();
         fireNodeViewCreated(newView);
@@ -211,7 +211,7 @@ class NodeViewFactory {
 		Icon newIcon = null;
 		MapView map = nodeView.getMap();
 		if (map.showNotes()) {
-			final NodeModel model = nodeView.getModel();
+			final NodeModel model = nodeView.getNode();
 			final NoteModel note = NoteModel.getNote(model);
             if (note != null) {
     			String text = note.getText();
@@ -261,7 +261,7 @@ class NodeViewFactory {
 	}
 
 	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
-		NodeModel node = nodeView.getModel();
+		NodeModel node = nodeView.getNode();
 		String detailTextText = DetailModel.getDetailText(node);
 		if (detailTextText == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);

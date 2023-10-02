@@ -186,7 +186,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		final RecentFile recentFile = findRecentFileByMapModel(map);
 		// the next line will only succeed if the map is already opened
 		if(oldView instanceof MapView && newView instanceof MapView
-		        && ((MapView)oldView).getModel() == ((MapView)newView).getModel()) {
+		        && ((MapView)oldView).getMap() == ((MapView)newView).getMap()) {
 		    List<NodeModel> nodes = ((MapView)oldView).getMapSelection().getOrderedSelection();
             ((MapView)newView).getMapSelection().replaceSelection(nodes.toArray(new NodeModel[nodes.size()]));
 		}
@@ -225,7 +225,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	private MapModel getMapModel(final Component mapView) {
 	    final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		return mapViewManager.getModel(mapView);
+		return mapViewManager.getMap(mapView);
     }
 
 	private int getMaxMenuEntries() {
@@ -395,7 +395,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		final NodeView selected = ((MapView) mapView).getSelected();
 		final RecentFile recentFile = findRecentFileByMapModel(getMapModel(mapView));
 		if (selected != null && recentFile != null) {
-			NodeModel selectedNode = selected.getModel();
+			NodeModel selectedNode = selected.getNode();
 			recentFile.lastVisitedNodeId = selectedNode.getID();
 		}
 	}

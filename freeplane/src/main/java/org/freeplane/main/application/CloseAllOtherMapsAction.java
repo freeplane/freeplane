@@ -26,7 +26,7 @@ class CloseAllOtherMapsAction extends AFreeplaneAction{
             final Controller controller = Controller.getCurrentController();
             final MapController mapController = controller.getModeController(MModeController.MODENAME).getMapController();
             final ArrayList<MapModel> maps = new ArrayList<>(mapViewController.getMaps().values());
-            maps.remove(mapViewController.getModel());
+            maps.remove(mapViewController.getMap());
             maps.forEach(mapController::closeWithoutSaving);
         }
     }

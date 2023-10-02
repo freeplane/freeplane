@@ -104,9 +104,9 @@ public interface IMapViewManager {
 
 	public ModeController getModeController(Component newMap);
 
-	public MapModel getModel();
+	public MapModel getMap();
 
-	public MapModel getModel(Component mapView);
+	public MapModel getMap(Component mapView);
 
 	public Component getSelectedComponent();
 

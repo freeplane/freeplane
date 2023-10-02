@@ -178,12 +178,12 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     }
 
     public boolean saveAllModifiedMapsExcept(MapModel mapToKeepOpen) {
-        MapModel currentMap = getModel();
+        MapModel currentMap = getMap();
         if(currentMap != null && currentMap != mapToKeepOpen && ! saveModifiedIfNotCancelled(currentMap))
             return false;
         HashSet<MapModel> otherMaps = new HashSet(getMaps().values());
         otherMaps.remove(mapToKeepOpen);
-        otherMaps.remove(getModel());
+        otherMaps.remove(getMap());
         for (MapModel map : otherMaps){
             if(! saveModifiedIfNotCancelled(map))
                 return false;
@@ -197,7 +197,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
         if (!(map.isSaved() || map.isReadOnly())) {
             changeToMap(map);
             final MapView mapView = getMapView();
-            if(mapView.getModel() != map)
+            if(mapView.getMap() != map)
                 return true;
             final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
             final String title = TextUtils.getText("SaveAction.text");

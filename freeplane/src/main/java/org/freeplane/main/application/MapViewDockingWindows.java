@@ -472,7 +472,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		MapView mapView = (MapView)mapViewComponent;
 		String name = mapView.getName();
 		String title;
-		if(mapView.getModel().isSaved() || mapView.getModel().isReadOnly())
+		if(mapView.getMap().isSaved() || mapView.getMap().isReadOnly())
 			title = name;
 		else
 			title = name + " *";

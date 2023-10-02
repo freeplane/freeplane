@@ -94,10 +94,10 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 	public void calculateLayoutData() {
-		final NodeModel node = view.getModel();
+		final NodeModel node = view.getNode();
 		MapView map = view.getMap();
 		Filter filter = map.getFilter();
-		NodeModel selectionRoot = map.getRoot().getModel();
+		NodeModel selectionRoot = map.getRoot().getNode();
 		viewLevels = view.isFolded() ? SummaryLevels.ignoringChildNodes(selectionRoot, node, filter) : SummaryLevels.of(selectionRoot, node, filter);
 		for(boolean isLeft : viewLevels.sides)
 			calculateLayoutData(isLeft);
@@ -384,7 +384,7 @@ class VerticalNodeViewLayoutStrategy {
 					childHGap = child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 				else
 					childHGap = 0;
-				if(view.getModel().isHiddenSummary() && ! child.getModel().isHiddenSummary())
+				if(view.getNode().isHiddenSummary() && ! child.getNode().isHiddenSummary())
 					childHGap -= child.getZoomed(LocationModel.DEFAULT_HGAP_PX*7/12);
 
 				if(isItem && ! isFreeNode && child.isSubtreeVisible())

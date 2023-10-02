@@ -208,10 +208,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void changeToMap(MapModel map) {
-		if(selectedMapView != null && selectedMapView.getModel().equals(map))
+		if(selectedMapView != null && selectedMapView.getMap().equals(map))
 			return;
 		for (final MapView view : mapViewVector) {
-			if (view.getModel().equals(map)) {
+			if (view.getMap().equals(map)) {
 				changeToMapView(view);
 			}
 		}
@@ -298,8 +298,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
 		for (final MapView mapView : mapViewVector) {
-			if (getModel(mapView) != null) {
-				final URL mapViewUrl = getModel(mapView).getURL();
+			if (getMap(mapView) != null) {
+				final URL mapViewUrl = getMap(mapView).getURL();
 				if (sameFile(urlToCheck, mapViewUrl)) {
 					return mapView.getName();
 				}
@@ -338,7 +338,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return false;
 		}
 		MapView mapView = (MapView) mapViewComponent;
-		final MapModel map = mapView.getModel();
+		final MapModel map = mapView.getMap();
 		final int viewCount = getViews(map).size();
 		if(viewCount == 1) {
 			final MapController mapController = mapView.getModeController().getMapController();
@@ -377,7 +377,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public String createHtmlMap() {
-		final MapModel model = getModel();
+		final MapModel model = getMap();
 		final ClickableImageCreator creator = new ClickableImageCreator(model.getRootNode(), getMapView()
 		    .getModeController(), "FM$1FM");
 		return creator.generateHtml();
@@ -550,7 +550,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public Map<String, MapModel> getMaps() {
 		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
 		for (final MapView mapView : mapViewVector) {
-			returnValue.put(mapView.getName(), getModel(mapView));
+			returnValue.put(mapView.getName(), getMap(mapView));
 		}
 		return Collections.unmodifiableMap(returnValue);
 	}
@@ -598,18 +598,18 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 * @see org.freeplane.core.frame.IMapViewController#getModel()
 	 */
 	@Override
-	public MapModel getModel() {
+	public MapModel getMap() {
 		final MapView mapView = getMapView();
-		return mapView == null ? null : getModel(mapView);
+		return mapView == null ? null : getMap(mapView);
 	}
 
 	@Override
-	public MapModel getModel(final Component mapView) {
-		return ((MapView) mapView).getModel();
+	public MapModel getMap(final Component mapView) {
+		return ((MapView) mapView).getMap();
 	}
 
-	private MapModel getModel(final MapView mapView) {
-		return mapView == null ? null : mapView.getModel();
+	private MapModel getMap(final MapView mapView) {
+		return mapView == null ? null : mapView.getMap();
 	}
 
 	/* (non-Javadoc)
@@ -738,7 +738,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		if (mapView == null) {
 			return;
 		}
-		final MapModel map = mapView.getModel();
+		final MapModel map = mapView.getMap();
 		final MapStyle mapStyle = mapView.getModeController().getExtension(MapStyle.class);
 		if(mapView.getZoom() != zoom){
 			mapView.setZoom(zoom);
@@ -770,7 +770,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public boolean tryToChangeToMapView(URL url) throws MalformedURLException {
-		final MapModel currentMap = getModel();
+		final MapModel currentMap = getMap();
 		if(currentMap != null && url.equals(currentMap.getURL()))
 			return true;
 		final String mapExtensionKey = checkIfFileIsAlreadyOpened(url);
@@ -787,7 +787,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public void updateMapViewName() {
 		final MapView r = getMapView();
-		final String name = r.getModel().getTitle();
+		final String name = r.getMap().getTitle();
 		addToOrChangeInMapViews(name, getMapView());
 		changeToMapView(getMapView());
 		setMapTitles();
@@ -803,7 +803,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
 		for (final MapView mapView : mapViewVector) {
 			if (mapView.getModeController().getModeName().equals(modename)) {
-				returnValue.put(mapView.getName(), getModel(mapView));
+				returnValue.put(mapView.getName(), getMap(mapView));
 			}
 		}
 		return Collections.unmodifiableMap(returnValue);
@@ -813,7 +813,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public List<Component> getViews(final MapModel map) {
 		final LinkedList<Component> list = new LinkedList<Component>();
 		for (final MapView view : mapViewVector) {
-			if (view.getModel().equals(map)) {
+			if (view.getMap().equals(map)) {
 				list.add(view);
 			}
 		}
@@ -1053,7 +1053,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
 			String modeName = formatter.format(messageArguments);
 			String viewName = "";
-			final MapModel model = getModel();
+			final MapModel model = getMap();
 			String frameTitle;
 			String workspaceTitle = ResourceController.getResourceController().getProperty("workspaceTitle");
 			if (model != null) {
@@ -1200,10 +1200,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	    map.setLayoutType(newLayoutType);
 	    ModeController modeController = map.getModeController();
 	    final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
-	    mapStyle.setMapViewLayout(map.getModel(), newLayoutType);
-	    map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getModel(), 0.5f, 0.5f);
+	    mapStyle.setMapViewLayout(map.getMap(), newLayoutType);
+	    map.getMapSelection().preserveNodeLocationOnScreen(map.getSelected().getNode(), 0.5f, 0.5f);
 	    modeController.getMapController().fireMapChanged(
-	            new MapChangeEvent(this, map.getModel(), MapStyle.MAP_LAYOUT, oldLayoutType, newLayoutType));
+	            new MapChangeEvent(this, map.getMap(), MapStyle.MAP_LAYOUT, oldLayoutType, newLayoutType));
 	    final NodeView root = map.getRoot();
 	    invalidateAll(root);
 	    root.revalidate();
