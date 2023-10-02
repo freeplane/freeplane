@@ -22,6 +22,7 @@ package org.freeplane.features.nodestyle;
 import java.awt.Color;
 import java.io.IOException;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
@@ -42,7 +43,6 @@ import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 

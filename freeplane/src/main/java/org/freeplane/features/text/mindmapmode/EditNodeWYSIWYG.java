@@ -42,6 +42,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
@@ -53,7 +54,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeCss;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 

@@ -34,6 +34,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
@@ -44,7 +45,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;

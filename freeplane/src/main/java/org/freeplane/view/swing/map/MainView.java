@@ -50,6 +50,7 @@ import javax.swing.border.Border;
 
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -79,7 +80,6 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;

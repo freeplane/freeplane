@@ -21,8 +21,7 @@ package org.freeplane.features.nodestyle;
 
 import java.awt.Color;
 
-import javax.swing.SwingConstants;
-
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
@@ -33,18 +32,6 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public enum HorizontalTextAlignment {
-		DEFAULT(SwingConstants.LEFT), 
-		LEFT(SwingConstants.LEFT), 
-		RIGHT(SwingConstants.RIGHT), 
-		CENTER(SwingConstants.CENTER);
-		
-		final public int swingConstant;
-
-		HorizontalTextAlignment(int swingConstant){
-			this.swingConstant = swingConstant;}
-	};
-
 	public static NodeStyleModel createNodeStyleModel(final NodeModel node) {
 		NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		if (styleModel == null) {

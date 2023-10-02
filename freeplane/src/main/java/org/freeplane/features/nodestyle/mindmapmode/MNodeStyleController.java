@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -42,7 +43,6 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.LogicalStyleKeys;

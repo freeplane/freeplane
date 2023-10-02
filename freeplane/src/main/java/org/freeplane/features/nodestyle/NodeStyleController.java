@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Collection;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
@@ -42,7 +43,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
