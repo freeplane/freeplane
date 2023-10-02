@@ -221,15 +221,15 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			theme = new LookAndFeelDockingTheme();
 		}
 		DynamicUIManager.getInstance().addListener(new DynamicUIManagerListener() {
-			
+
 			@Override
 			public void propertiesChanging() {
 			}
-			
+
 			@Override
 			public void propertiesChanged() {
 			}
-			
+
 			@Override
 			public void lookAndFeelChanging() {
 				String lf = UIManager.getLookAndFeel().getID();
@@ -246,7 +246,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				rootWindowProperties.replaceSuperObject(theme.getRootWindowProperties(), newTheme.getRootWindowProperties());
 				theme = newTheme;
 			}
-			
+
 			@Override
 			public void lookAndFeelChanged() {
 			}
@@ -254,11 +254,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindowProperties.addSuperObject(theme.getRootWindowProperties());
 
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
-		
+
 		overwrittenProperties.getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(BorderFactory.createEmptyBorder());
 
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
-		
+
 		overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties().getContentPanelProperties()
 		    .getComponentProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(BorderFactory.createEmptyBorder());
 
@@ -414,6 +414,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				loadingLayoutFromObjectInpusStream = false;
 			}
 			rootWindow.getWindowBar(Direction.DOWN).setEnabled(false);
+			setTitle();
 		}
 	}
 

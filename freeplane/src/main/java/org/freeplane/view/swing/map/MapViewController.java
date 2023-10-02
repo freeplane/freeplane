@@ -101,7 +101,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	private boolean setZoomComboBoxRun;
 	private final Controller controller;
 
-	/**
+    /**
 	 * Reference to the current mode as the mapView may be null.
 	 */
 	public MapViewController(Controller controller){
@@ -144,6 +144,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		changeAntialias(antialiasProperty);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusedWindow",this::focusSelectedNode);
 	}
+
+    protected Controller getController() {
+        return controller;
+    }
 
 	private void focusSelectedNode(PropertyChangeEvent evt) {
 		final Window newWindow = (Window) evt.getNewValue();
@@ -338,12 +342,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final int viewCount = getViews(map).size();
 		if(viewCount == 1) {
 			final MapController mapController = mapView.getModeController().getMapController();
-			if(forceCloseWithoutSaving){
+			if(forceCloseWithoutSaving || saveModifiedIfNotCancelled(map)){
 				mapController.closeWithoutSaving(map);
 				return true;
 			}
 			else
-				return map.close();
+				return false;
 
 		}
 		map.removeMapChangeListener(mapView);
@@ -352,7 +356,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return true;
     }
 
-	private void remove(MapView mapView) {
+    private void remove(MapView mapView) {
 		int index = mapViewVector.indexOf(mapView);
 		ResourceController.getResourceController().removePropertyChangeListener(mapView);
 		mapViewVector.remove(mapView);

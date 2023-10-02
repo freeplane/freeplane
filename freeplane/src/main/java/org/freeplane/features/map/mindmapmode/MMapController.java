@@ -25,7 +25,6 @@ import static org.freeplane.features.map.SummaryNodeFlag.SUMMARY;
 import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -47,8 +46,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
-
-import javax.swing.JOptionPane;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -104,7 +101,6 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.NodeAndMapReference;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.features.url.mindmapmode.MapLoader;
@@ -377,34 +373,6 @@ public class MMapController extends MapController {
             }
         };
         Controller.getCurrentModeController().execute(actor, map);
-    }
-
-    public boolean close(final MapModel map) {
-        if (!(map.isSaved() || map.isReadOnly())) {
-            Controller.getCurrentController().getMapViewManager().changeToMap(map);
-            final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
-            final String title = TextUtils.getText("SaveAction.text");
-            Component dialogParent;
-            final Frame viewFrame = UITools.getCurrentFrame();
-            if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
-                dialogParent = viewFrame;
-            else
-                dialogParent = UITools.getCurrentRootComponent();
-            final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
-                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (returnVal == JOptionPane.YES_OPTION) {
-                final boolean savingNotCancelled = ((MFileManager) getModeController().getExtension(UrlManager.class))
-                        .save(map);
-                if (!savingNotCancelled) {
-                    return false;
-                }
-            }
-            else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
-                return false;
-            }
-        }
-        closeWithoutSaving(map);
-        return true;
     }
 
     @Override

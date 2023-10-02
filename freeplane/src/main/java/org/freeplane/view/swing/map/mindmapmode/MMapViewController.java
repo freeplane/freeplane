@@ -20,17 +20,24 @@
 package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
+import java.util.HashSet;
 import java.util.function.Supplier;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
@@ -39,6 +46,8 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;
@@ -162,5 +171,59 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content, boolean editInline) {
         return null;
     }
+
+
+    public boolean saveAllModifiedMaps(){
+        return saveAllModifiedMapsExcept(null);
+    }
+
+    public boolean saveAllModifiedMapsExcept(MapModel mapToKeepOpen) {
+        MapModel currentMap = getModel();
+        if(currentMap != null && currentMap != mapToKeepOpen && ! saveModifiedIfNotCancelled(currentMap))
+            return false;
+        HashSet<MapModel> otherMaps = new HashSet(getMaps().values());
+        otherMaps.remove(mapToKeepOpen);
+        otherMaps.remove(getModel());
+        for (MapModel map : otherMaps){
+            if(! saveModifiedIfNotCancelled(map))
+                return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean saveModifiedIfNotCancelled(final MapModel map) {
+        if (!(map.isSaved() || map.isReadOnly())) {
+            changeToMap(map);
+            final MapView mapView = getMapView();
+            if(mapView.getModel() != map)
+                return true;
+            final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
+            final String title = TextUtils.getText("SaveAction.text");
+            Component dialogParent;
+            final Frame viewFrame = UITools.getCurrentFrame();
+            if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
+                dialogParent = viewFrame;
+            else
+                dialogParent = UITools.getCurrentRootComponent();
+            final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (returnVal == JOptionPane.YES_OPTION) {
+                final UrlManager fileManager = mapView.getModeController()
+                        .getExtension(UrlManager.class);
+                final boolean savingNotCancelled = (fileManager instanceof MFileManager)
+                        && ((MFileManager) fileManager).save(map);
+                if (!savingNotCancelled) {
+                    return false;
+                }
+            }
+            else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

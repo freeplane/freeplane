@@ -275,11 +275,11 @@ public class MapModel {
 	public void setURL(final URL v) {
 		url = v;
 	}
-	
+
 	public boolean hasExternalFileChanged() {
 	    return false;
 	}
-	
+
 	public void updateLastKnownFileModificationTime() {/**/}
 
 	public void unregistryNodes(final NodeModel node) {
@@ -293,14 +293,8 @@ public class MapModel {
 		}
 	}
 
-
 	public NodeChangeAnnouncer getNodeChangeAnnouncer() {
 		return nodeChangeAnnouncer;
-	}
-
-	public boolean close() {
-		Controller.getCurrentModeController().getMapController().closeWithoutSaving(this);
-		return true;
 	}
 
 	public void beforeViewCreated() {
@@ -317,6 +311,6 @@ public class MapModel {
     public INodeDuplicator getNodeDuplicator() {
         return nodeDuplicator;
     }
-	
-	
+
+
 }
