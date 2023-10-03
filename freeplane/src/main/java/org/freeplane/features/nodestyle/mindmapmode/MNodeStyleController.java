@@ -813,13 +813,15 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setTextWritingDirection(final NodeModel node, final TextWritingDirection textDirection) {
-		final TextWritingDirection oldTextAlignment = NodeStyleModel.getTextWritingDirection(node);
+		final TextWritingDirection oldTextDirection = NodeStyleModel.getTextWritingDirection(node);
+		if(textDirection == oldTextDirection)
+			return;
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
 				NodeStyleModel.setTextWritingDirection(node, textDirection);
 				final MapController mapController = getModeController().getMapController();
-				mapController.nodeChanged(node);
+				mapController.nodeChanged(node, TextWritingDirection.class, oldTextDirection, textDirection);
 			}
 
 			@Override
@@ -829,9 +831,9 @@ public class MNodeStyleController extends NodeStyleController {
 
 			@Override
 			public void undo() {
-				NodeStyleModel.setTextWritingDirection(node, oldTextAlignment);
+				NodeStyleModel.setTextWritingDirection(node, oldTextDirection);
 				final MapController mapController = getModeController().getMapController();
-				mapController.nodeChanged(node);
+				mapController.nodeChanged(node, TextWritingDirection.class, textDirection, oldTextDirection);
 			}
 		};
 		getModeController().execute(actor, node.getMap());

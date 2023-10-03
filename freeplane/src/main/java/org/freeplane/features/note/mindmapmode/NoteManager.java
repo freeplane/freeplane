@@ -26,6 +26,7 @@ import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -43,9 +44,11 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.TextController;
 
 class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
@@ -68,9 +71,12 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 
             @Override
             public void nodeChanged(NodeChangeEvent event) {
-                if(event.getNode().equals(node)
-                        && NodeModel.NOTE_TEXT.equals(event.getProperty()))
-                    updateEditor();
+                if(event.getNode().equals(node)) {
+					if (NodeModel.NOTE_TEXT.equals(event.getProperty()))
+						updateEditor();
+					else if (TextWritingDirection.class.equals(event.getProperty()))
+						noteController.getNotePanel().setComponentOrientation(getNoteTextDirection().componentOrientation);
+				}
             }
         });
 
@@ -80,16 +86,12 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 		    	final Object property = event.getProperty();
 		    	if (node != null
 		    			&& node.getMap() == event.getMap() && property.equals(MapStyle.MAP_STYLES)) {
-		    		final ModeController modeController = Controller.getCurrentModeController();
-		    		final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
-		    		noteController.getNotePanel().setComponentOrientation(noteStyleAccessor.getTextWritingDirection().componentOrientation);
+		    		noteController.getNotePanel().setComponentOrientation(getNoteTextDirection().componentOrientation);
 		    	}
 		    }
 
 		});
 	}
-
-
 
 	@Override
     public void onRemove(MapModel map) {
@@ -136,7 +138,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
         Color noteForeground = noteStyleAccessor.getNoteForeground();
         Color noteBackground = noteStyleAccessor.getNoteBackground();
-        final ComponentOrientation componentOrientation = noteStyleAccessor.getTextWritingDirection().componentOrientation;
+        final ComponentOrientation componentOrientation = getNoteTextDirection().componentOrientation;
         notePanel.setComponentOrientation(componentOrientation);
         StringBuilder bodyCssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
         if (ResourceController.getResourceController().getBooleanProperty(
@@ -262,4 +264,15 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
             updateEditor();
         }
     }
+
+
+
+	TextWritingDirection getNoteTextDirection() {
+		if(node ==  null)
+			return TextWritingDirection.DEFAULT;
+		else
+			return Controller.getCurrentModeController()
+					.getExtension(NodeStyleController.class)
+					.getTextWritingDirection(node, StyleOption.FOR_UNSELECTED_NODE);
+	}
 }

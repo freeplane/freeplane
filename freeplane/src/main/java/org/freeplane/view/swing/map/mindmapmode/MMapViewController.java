@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -89,6 +90,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			editNodeWYSIWYG.setPreferredContentSize(preferredSize);
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
+	        final ComponentOrientation componentOrientation = mainView.getComponentOrientation();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
 	            final Font font = getFont(node);
 	            editNodeWYSIWYG.setTitle("edit_long_node");
@@ -97,7 +99,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
 				editNodeWYSIWYG.setTextAlignment(mainView.getHorizontalAlignment());
-				editNodeWYSIWYG.setComponentOrientation(mainView.getComponentOrientation());
+				editNodeWYSIWYG.setComponentOrientation(componentOrientation);
 				editNodeWYSIWYG.setCustomStyleSheet(mainView.getStyleSheet());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
@@ -108,7 +110,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     			final Color detailBackground = map.getDetailBackground();
                 editNodeWYSIWYG.setBackground (detailBackground != null ? detailBackground : nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
                 editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
-                editNodeWYSIWYG.setComponentOrientation(map.getDetailTextWritingDirection().componentOrientation);
+                editNodeWYSIWYG.setComponentOrientation(componentOrientation);
                 editNodeWYSIWYG.setCustomStyleSheet(map.getDetailCss().getStyleSheet());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
@@ -119,7 +121,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
                 final Color noteBackground = map.getNoteBackground();
 				editNodeWYSIWYG.setBackground (noteBackground != null ? noteBackground : map.getBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
-                editNodeWYSIWYG.setComponentOrientation(map.getNoteTextWritingDirection().componentOrientation);
+                editNodeWYSIWYG.setComponentOrientation(componentOrientation);
                 editNodeWYSIWYG.setCustomStyleSheet(map.getNoteCss().getStyleSheet());
 			}
 			return editNodeWYSIWYG;
