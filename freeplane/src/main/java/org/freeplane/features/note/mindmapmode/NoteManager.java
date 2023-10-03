@@ -26,16 +26,18 @@ import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.StyleSheet;
 
-import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
@@ -43,6 +45,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 
 class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
@@ -60,7 +63,8 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 		ResourceController resourceController = ResourceController.getResourceController();
         resourceController.addPropertyChangeListener(this::propertyChanged);
         noteFollowsSelection = resourceController.getBooleanProperty(NOTE_FOLLOWS_SELECTION_PROPERTY);
-        noteController.getModeController().getMapController().addNodeChangeListener(new INodeChangeListener() {
+        final MapController mapController = noteController.getModeController().getMapController();
+		mapController.addNodeChangeListener(new INodeChangeListener() {
 
             @Override
             public void nodeChanged(NodeChangeEvent event) {
@@ -69,6 +73,20 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
                     updateEditor();
             }
         });
+
+		mapController.addMapChangeListener(new IMapChangeListener() {
+		    @Override
+			public void mapChanged(final MapChangeEvent event) {
+		    	final Object property = event.getProperty();
+		    	if (node != null
+		    			&& node.getMap() == event.getMap() && property.equals(MapStyle.MAP_STYLES)) {
+		    		final ModeController modeController = Controller.getCurrentModeController();
+		    		final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
+		    		noteController.getNotePanel().setComponentOrientation(noteStyleAccessor.getTextWritingDirection().componentOrientation);
+		    	}
+		    }
+
+		});
 	}
 
 
@@ -119,6 +137,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         Color noteForeground = noteStyleAccessor.getNoteForeground();
         Color noteBackground = noteStyleAccessor.getNoteBackground();
         final ComponentOrientation componentOrientation = noteStyleAccessor.getTextWritingDirection().componentOrientation;
+        notePanel.setComponentOrientation(componentOrientation);
         StringBuilder bodyCssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
         if (ResourceController.getResourceController().getBooleanProperty(
             MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
@@ -128,7 +147,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         String bodyCssRule = bodyCssBuilder.toString();
         StyleSheet noteStyleSheet = noteStyleAccessor.getNoteStyleSheet();
 		if(node == null) {
-		    notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
+		    notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			return;
 		}
 		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
@@ -144,7 +163,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 						return;
 					}
 					notePanel.removeDocumentListener();
-					notePanel.setEditedContent(note, bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
+					notePanel.setEditedContent(note, bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -153,19 +172,19 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 					});
 				}
 				else
-					notePanel.setViewedContent(transformedContent.toString(), bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
+					notePanel.setViewedContent(transformedContent.toString(), bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			}
 			catch (Throwable e) {
 				LogUtils.warn(e.getMessage());
 				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()),
-				        bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
+				        bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			}
 		} else {
 			String noteContentType = noteController.getNoteContentType(node);
 			if (TextController.isHtmlContentType(noteContentType))
-					notePanel.setEditedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
+					notePanel.setEditedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 			else
-				notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
+				notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
 		}
         notePanel.updateBaseUrl(node.getMap().getURL());
 	}
@@ -243,5 +262,4 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
             updateEditor();
         }
     }
-
 }

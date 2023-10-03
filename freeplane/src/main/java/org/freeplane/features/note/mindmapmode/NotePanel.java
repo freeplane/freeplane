@@ -204,6 +204,18 @@ class NotePanel extends JPanel {
 		return htmlEditorPanel;
 	}
 
+
+
+	@Override
+	public void setComponentOrientation(ComponentOrientation o) {
+		if(o != super.getComponentOrientation()) {
+			htmlEditorPanel.getEditorPane().setComponentOrientation(o);
+			htmlViewerPanel.setComponentOrientation(o);
+			iconViewerPanel.setComponentOrientation(o);
+			super.setComponentOrientation(o);
+		}
+	}
+
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
 	                                    final boolean pressed) {
@@ -247,7 +259,7 @@ class NotePanel extends JPanel {
 
 	}
 
-	void setEditedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background, ComponentOrientation componentOrientation) {
+	void setEditedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background) {
 	    isEditing = true;
 		setVisible(htmlEditorPanel);
 		htmlEditorPanel.setCurrentDocumentContent("");
@@ -255,9 +267,8 @@ class NotePanel extends JPanel {
         updateColors(foreground, background);
         HtmlProcessor.configureUnknownTags(htmlEditorPanel.getDocument());
 		htmlEditorPanel.setCurrentDocumentContent(note);
-		final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
-		editorPane.setComponentOrientation(componentOrientation);
 		if(note.isEmpty()) {
+			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 			editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
             editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		}
@@ -271,7 +282,7 @@ class NotePanel extends JPanel {
         if(! htmlViewerPanel.getContentType().equals(contentType))
             htmlViewerPanel.setContentType(contentType);
     }
-	void setViewedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background, ComponentOrientation componentOrientation) {
+	void setViewedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background) {
 		setVisible(htmlViewerPanel);
 		String contentType = HtmlUtils.isHtml(note) ? CONTENT_TYPE_TEXT_HTML : CONTENT_TYPE_TEXT_PLAIN;
 		htmlViewerPanel.setText("");
@@ -283,7 +294,6 @@ class NotePanel extends JPanel {
         }
 		updateColors(foreground, background);
 		htmlViewerPanel.setText(note);
-		htmlViewerPanel.setComponentOrientation(componentOrientation);
         if(note.isEmpty()) {
             htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
             htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
