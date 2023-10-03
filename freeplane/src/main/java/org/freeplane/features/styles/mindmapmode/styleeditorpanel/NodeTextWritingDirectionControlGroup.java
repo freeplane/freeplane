@@ -79,12 +79,7 @@ class NodeTextWritingDirectionControlGroup implements ControlGroup {
 
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeTextDirection = new RevertingProperty();
-		final Vector<String> possibleTranslations = new Vector<String>(TEXT_DIRECTIONS.length);
-		for (int i = 0; i < TEXT_DIRECTIONS.length; i++) {
-			possibleTranslations.add(TextUtils.getText("TextWritingDirectionAction." + TEXT_DIRECTIONS[i] + ".text"));
-		}
-		Vector<String> translations = possibleTranslations;
-		mNodeTextDirection = new ComboProperty(TEXT_DIRECTION, Arrays.asList(TEXT_DIRECTIONS), translations);
+		mNodeTextDirection = ComboProperty.of(TEXT_DIRECTION, TextWritingDirection.class);
 		propertyChangeListener = new NodeTextDirectionChangeListener(mSetNodeTextDirection, mNodeTextDirection);
 		mSetNodeTextDirection.addPropertyChangeListener(propertyChangeListener);
 		mNodeTextDirection.addPropertyChangeListener(propertyChangeListener);
