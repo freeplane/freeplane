@@ -27,6 +27,7 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 @SelectableAction(checkOnNodeChange = true)
@@ -36,7 +37,7 @@ class TextWritingDirectionAction extends AMultipleNodeAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean textAlignSet;
+	private boolean textDirectionSet;
 
 	/**
 	 */
@@ -47,22 +48,27 @@ class TextWritingDirectionAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		textAlignSet = !isTextWritingDirectionSet();
+		textDirectionSet = !isTextWritingDirectionSetAtTheNode();
 		super.actionPerformed(e);
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController()).setTextWritingDirection(selected, textAlignSet ? textDirection : null);
+		((MNodeStyleController) NodeStyleController.getController()).setTextWritingDirection(selected, textDirectionSet ? textDirection : null);
 	}
 
-	boolean isTextWritingDirectionSet() {
+	private boolean isTextWritingDirectionSetAtTheNode() {
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		return textDirection.equals(NodeStyleModel.getTextWritingDirection(node));
+	}
+
+	private boolean isTextWritingDirectionSetByStyle() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		return textDirection.equals(NodeStyleController.getController().getTextWritingDirection(node, StyleOption.FOR_UNSELECTED_NODE));
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(isTextWritingDirectionSet());
+		setSelected(isTextWritingDirectionSetByStyle());
 	}
 }

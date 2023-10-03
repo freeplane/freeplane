@@ -27,13 +27,14 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 @SelectableAction(checkOnNodeChange = true)
 class HorizontalTextAlignmentAction extends AMultipleNodeAction {
 	private final HorizontalTextAlignment textAlignment;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean textAlignSet;
@@ -47,7 +48,7 @@ class HorizontalTextAlignmentAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		textAlignSet = !isHorizontalTextAlignmentSet();
+		textAlignSet = !isHorizontalTextAlignmentSetAtTheNode();
 		super.actionPerformed(e);
 	}
 
@@ -56,13 +57,18 @@ class HorizontalTextAlignmentAction extends AMultipleNodeAction {
 		((MNodeStyleController) NodeStyleController.getController()).setHorizontalTextAlignment(selected, textAlignSet ? textAlignment : null);
 	}
 
-	boolean isHorizontalTextAlignmentSet() {
+	private boolean isHorizontalTextAlignmentSetAtTheNode() {
+		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		return textAlignment.equals(NodeStyleModel.getHorizontalTextAlignment(node));
+	}
+
+	private boolean isHorizontalTextAlignmentSetByStyle() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		return textAlignment.equals(NodeStyleController.getController().getHorizontalTextAlignment(node, StyleOption.FOR_UNSELECTED_NODE));
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(isHorizontalTextAlignmentSet());
+		setSelected(isHorizontalTextAlignmentSetByStyle());
 	}
 }
