@@ -54,6 +54,7 @@ import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImageIcon;
@@ -526,6 +527,15 @@ public class MainView extends ZoomableLabel {
 		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
+	void updateTextWritingDirection(NodeView node) {
+		final TextWritingDirection textDirection = NodeStyleController
+		        .getController(node.getMap().getModeController())
+		        .getTextWritingDirection(node.getNode(), node.getStyleOption());
+		setComponentOrientation(textDirection.componentOrientation);
+	}
+
+
+
 
 	static enum TextModificationState{NONE, HIGHLIGHT, FAILURE};
 
@@ -579,6 +589,7 @@ public class MainView extends ZoomableLabel {
     public JToolTip createToolTip() {
 		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), FreeplaneTooltip.TEXT_HTML);
         tip.setComponent(this);
+        tip.setComponentOrientation(getComponentOrientation());
 		final URL url = getMap().getMap().getURL();
 		if (url != null) {
 			tip.setBase(url);

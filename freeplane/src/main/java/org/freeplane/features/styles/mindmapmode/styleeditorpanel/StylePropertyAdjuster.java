@@ -34,6 +34,7 @@ class StylePropertyAdjuster {
                         || propertyName.equals(FontNameControlGroup.NODE_FONT_NAME)
                         || propertyName.equals(FontSizeControlGroup.NODE_FONT_SIZE)
                         || propertyName.equals(NodeHorizontalTextAlignmentControlGroup.TEXT_ALIGNMENT)
+                        || propertyName.equals(NodeTextWritingDirectionControlGroup.TEXT_DIRECTION)
                         || propertyName.equals(CssControlGroup.CSS)
                         || propertyName.equals(CssControlGroup.REVERT_CSS);
             }
@@ -53,10 +54,10 @@ class StylePropertyAdjuster {
                         || propertyName.equals(FormatControlGroup.NODE_FORMAT)
                         || propertyName.equals(NodeNumberingControlGroup.NODE_NUMBERING));
             }
-            else 
+            else
                 enable = true;
         }
-        else 
+        else
             enable = true;
         control.setEnabled(enable);
     }

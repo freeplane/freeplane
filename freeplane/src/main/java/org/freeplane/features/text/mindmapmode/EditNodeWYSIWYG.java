@@ -22,6 +22,7 @@ package org.freeplane.features.text.mindmapmode;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -43,6 +44,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.api.HorizontalTextAlignment;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
@@ -214,6 +216,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private Dimension preferredContentSize = PREFERRED_CONTENT_SIZE;
 
 	private int horizontalAlignment = HorizontalTextAlignment.DEFAULT.swingConstant;
+	private ComponentOrientation componentOrientation = TextWritingDirection.DEFAULT.componentOrientation;
 
 	public String getTitle() {
     	return title;
@@ -285,6 +288,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+			editorPane.setComponentOrientation(componentOrientation);
 			if(textColor != null){
 				editorPane.setForeground(textColor);
 				editorPane.setCaretColor(textColor);
@@ -348,5 +352,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 	public void setTextAlignment(int horizontalAlignment) {
 		this.horizontalAlignment = horizontalAlignment;
+	}
+
+	public void setComponentOrientation(ComponentOrientation componentOrientation) {
+		this.componentOrientation = componentOrientation;
 	}
 }

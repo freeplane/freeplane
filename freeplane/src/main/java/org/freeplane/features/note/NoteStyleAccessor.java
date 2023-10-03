@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.api.HorizontalTextAlignment;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -23,6 +24,8 @@ public class NoteStyleAccessor {
 	final private NodeCss noteCss;
 	final private Color noteBackground;
 	final private HorizontalTextAlignment horizontalAlignment;
+	final private TextWritingDirection textDirection;
+
 	public NoteStyleAccessor(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
 		final Controller controller = modeController.getController();
 		MapModel map = controller.getMap();
@@ -36,6 +39,7 @@ public class NoteStyleAccessor {
 			this.noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			this.noteCss = style.getStyleSheet(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			this.horizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+			this.textDirection = style.getTextWritingDirection(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 			final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
 			if(asHtmlFragment)
 				cssRuleBuilder.withHTMLFont(noteFont);
@@ -55,6 +59,7 @@ public class NoteStyleAccessor {
 			this.noteBackground = null;
 			this.noteCss = NodeCss.EMPTY;
 			this.horizontalAlignment = HorizontalTextAlignment.DEFAULT;
+			this.textDirection = TextWritingDirection.DEFAULT;
 		}
 
 	}
@@ -75,7 +80,7 @@ public class NoteStyleAccessor {
     public HorizontalTextAlignment getHorizontalAlignment() {
         return horizontalAlignment;
     }
-
-
-
+    public TextWritingDirection getTextWritingDirection() {
+		return textDirection;
+	}
 }

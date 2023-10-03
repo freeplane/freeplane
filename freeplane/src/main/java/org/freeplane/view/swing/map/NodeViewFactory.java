@@ -283,6 +283,7 @@ class NodeViewFactory {
 		else {
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
+			detailContent.setComponentOrientation(map.getDetailTextWritingDirection().componentOrientation);
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			String text;
 			try {

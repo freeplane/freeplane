@@ -24,6 +24,7 @@ import java.awt.Color;
 import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
@@ -106,6 +107,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getHorizontalTextAlignment();
 	}
 
+	public static TextWritingDirection getTextWritingDirection(final NodeModel node) {
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getTextWritingDirection();
+	}
+
 	public static void setBackgroundColor(final NodeModel node, final Color color) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setBackgroundColor(color);
@@ -135,12 +141,12 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShape(shape);
 	}
-	
+
 	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnit> margin) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withHorizontalMargin(margin));
 	}
-	
+
 	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnit> margin) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withVerticalMargin(margin));
@@ -155,10 +161,15 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(shape);
 	}
-	
+
 	public static void setHorizontalTextAlignment(final NodeModel node, final HorizontalTextAlignment textAlignment) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setHorizontalTextAlignment(textAlignment);
+	}
+
+	public static void setTextWritingDirection(final NodeModel node, final TextWritingDirection textAlignment) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setTextWritingDirection(textAlignment);
 	}
 
 	private Color backgroundColor;
@@ -171,7 +182,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private NodeGeometryModel shapeConfiguration = NodeGeometryModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
-	private  HorizontalTextAlignment horizontalTextAlignment = null;
+	private HorizontalTextAlignment horizontalTextAlignment = null;
+	private TextWritingDirection textWritingDirection = null;
 
 	@Override
 	protected NodeStyleModel clone() {
@@ -201,6 +213,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	        to.setNodeNumbering(nodeNumbering);
 	    if(horizontalTextAlignment != null)
 	    	to.setHorizontalTextAlignment(horizontalTextAlignment);
+	    if(textWritingDirection != null)
+	    	to.setTextWritingDirection(textWritingDirection);
 		return to;
     }
 
@@ -219,7 +233,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public Integer getFontSize() {
 		return fontSize;
 	}
-	
+
 	public Boolean getNodeNumbering() {
 		return nodeNumbering;
 	}
@@ -235,7 +249,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public Boolean isBold() {
 		return isBold;
 	}
-	
+
 	public Boolean isStrikedThrough() {
 		return isStrikedThrough;
 	}
@@ -246,6 +260,10 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public HorizontalTextAlignment getHorizontalTextAlignment() {
 		return horizontalTextAlignment;
+	}
+
+	public TextWritingDirection getTextWritingDirection() {
+		return textWritingDirection;
 	}
 
 	public void setBackgroundColor(final Color color) {
@@ -291,13 +309,17 @@ public class NodeStyleModel implements IExtension, Cloneable {
 			LogUtils.warn("unknown shape " + shape);
 		}
 	}
-	
+
 	public void setShape(final NodeStyleShape shape) {
 		this.setShapeConfiguration(getShapeConfiguration().withShape(shape));
 	}
-	
+
 	public void setHorizontalTextAlignment(final HorizontalTextAlignment textAlignment) {
 		this.horizontalTextAlignment = textAlignment;
+	}
+
+	public void setTextWritingDirection(final TextWritingDirection textWritingDirection) {
+		this.textWritingDirection = textWritingDirection;
 	}
 
 	public NodeGeometryModel getShapeConfiguration() {

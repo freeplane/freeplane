@@ -97,6 +97,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
 				editNodeWYSIWYG.setTextAlignment(mainView.getHorizontalAlignment());
+				editNodeWYSIWYG.setComponentOrientation(mainView.getComponentOrientation());
 				editNodeWYSIWYG.setCustomStyleSheet(mainView.getStyleSheet());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
@@ -107,6 +108,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     			final Color detailBackground = map.getDetailBackground();
                 editNodeWYSIWYG.setBackground (detailBackground != null ? detailBackground : nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
                 editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
+                editNodeWYSIWYG.setComponentOrientation(map.getDetailTextWritingDirection().componentOrientation);
                 editNodeWYSIWYG.setCustomStyleSheet(map.getDetailCss().getStyleSheet());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
@@ -117,6 +119,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
                 final Color noteBackground = map.getNoteBackground();
 				editNodeWYSIWYG.setBackground (noteBackground != null ? noteBackground : map.getBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
+                editNodeWYSIWYG.setComponentOrientation(map.getNoteTextWritingDirection().componentOrientation);
                 editNodeWYSIWYG.setCustomStyleSheet(map.getNoteCss().getStyleSheet());
 			}
 			return editNodeWYSIWYG;

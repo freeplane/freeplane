@@ -103,6 +103,9 @@
 				<Entry name="TextAlignAction.CENTER" />
 				<Entry name="TextAlignAction.RIGHT" />
 				<Entry builder="separator" />
+				<Entry name="TextWritingDirectionAction.LEFT_TO_RIGHT" />
+				<Entry name="TextWritingDirectionAction.RIGHT_TO_LEFT" />
+				<Entry builder="separator" />
 				<Entry accelerator="alt shift F" name="NodeColorAction" />
 				<Entry name="NodeColorBlendAction" />
 				<Entry name="NodeBackgroundColorAction" />
@@ -195,6 +198,11 @@
 			<Entry name="TextAlignAction.LEFT" />
 			<Entry name="TextAlignAction.CENTER" />
 			<Entry name="TextAlignAction.RIGHT" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry>
+			<Entry name="TextWritingDirectionAction.LEFT_TO_RIGHT" />
+			<Entry name="TextWritingDirectionAction.RIGHT_TO_LEFT" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="clouds">

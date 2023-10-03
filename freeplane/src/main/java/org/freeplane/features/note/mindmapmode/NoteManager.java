@@ -20,11 +20,13 @@
 package org.freeplane.features.note.mindmapmode;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -116,6 +118,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
         Color noteForeground = noteStyleAccessor.getNoteForeground();
         Color noteBackground = noteStyleAccessor.getNoteBackground();
+        final ComponentOrientation componentOrientation = noteStyleAccessor.getTextWritingDirection().componentOrientation;
         StringBuilder bodyCssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
         if (ResourceController.getResourceController().getBooleanProperty(
             MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
@@ -125,7 +128,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         String bodyCssRule = bodyCssBuilder.toString();
         StyleSheet noteStyleSheet = noteStyleAccessor.getNoteStyleSheet();
 		if(node == null) {
-		    notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
+		    notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
 			return;
 		}
 		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
@@ -141,7 +144,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 						return;
 					}
 					notePanel.removeDocumentListener();
-					notePanel.setEditedContent(note, bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
+					notePanel.setEditedContent(note, bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -150,19 +153,19 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 					});
 				}
 				else
-					notePanel.setViewedContent(transformedContent.toString(), bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
+					notePanel.setViewedContent(transformedContent.toString(), bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
 			}
 			catch (Throwable e) {
 				LogUtils.warn(e.getMessage());
 				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()),
-				        bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
+				        bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
 			}
 		} else {
 			String noteContentType = noteController.getNoteContentType(node);
 			if (TextController.isHtmlContentType(noteContentType))
-					notePanel.setEditedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
+					notePanel.setEditedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
 			else
-				notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground);
+				notePanel.setViewedContent("", bodyCssRule, noteStyleSheet, noteForeground, noteBackground, componentOrientation);
 		}
         notePanel.updateBaseUrl(node.getMap().getURL());
 	}

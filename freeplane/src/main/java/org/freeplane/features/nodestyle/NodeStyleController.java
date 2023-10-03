@@ -27,6 +27,7 @@ import java.util.Collection;
 import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -74,8 +75,9 @@ public class NodeStyleController implements IExtension {
 	final public ExclusivePropertyChain<NodeGeometryModel, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	final private ExclusivePropertyChain<HorizontalTextAlignment, NodeModel> horizontalTextAlignmentHandlers;
+	final private ExclusivePropertyChain<TextWritingDirection, NodeModel> textWritingDirectionHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
-	
+
 	private static final Quantity<LengthUnit> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnit>(0, LengthUnit.cm);
 	private static final Quantity<LengthUnit> DEFAULT_MAXIMUM_WIDTH = new Quantity<LengthUnit>(10, LengthUnit.cm);
 
@@ -130,31 +132,44 @@ public class NodeStyleController implements IExtension {
 				return NodeGeometryModel.AS_PARENT;
 			}
 		});
-		
+
 		horizontalTextAlignmentHandlers = new ExclusivePropertyChain<>();
 		horizontalTextAlignmentHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
 			public HorizontalTextAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final HorizontalTextAlignment currentValue) {
 				return HorizontalTextAlignment.DEFAULT;
 			}
 		});
-		
+
 		horizontalTextAlignmentHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
 			public HorizontalTextAlignment getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final HorizontalTextAlignment currentValue) {
 				return getHorizontalTextAlignment(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 			}
 		});
-		
+
+		textWritingDirectionHandlers = new ExclusivePropertyChain<>();
+		textWritingDirectionHandlers.addGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<TextWritingDirection, NodeModel>() {
+			public TextWritingDirection getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final TextWritingDirection currentValue) {
+				return TextWritingDirection.DEFAULT;
+			}
+		});
+
+		textWritingDirectionHandlers.addGetter(IPropertyHandler.STYLE, new IPropertyHandler<TextWritingDirection, NodeModel>() {
+			public TextWritingDirection getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final TextWritingDirection currentValue) {
+				return getTextWritingDirection(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
+			}
+		});
+
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder(this);
 		styleBuilder.registerBy(readManager, writeManager);
 	}
-	
+
 	public NodeCss getStyleSheet(NodeModel node, LogicalStyleController.StyleOption option) {
 		return getStyleSheet(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node, option));
 	}
-	
+
 	 private NodeCss getStyleSheet(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : style){
@@ -219,7 +234,7 @@ public class NodeStyleController implements IExtension {
 		}
 		return DEFAULT_MAXIMUM_WIDTH;
 	}
-	
+
 	private Quantity<LengthUnit> getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -239,7 +254,7 @@ public class NodeStyleController implements IExtension {
 		}
 		return DEFAULT_MINIMUM_WIDTH;
 	}
-	
+
 	private Boolean getBorderWidthMatchesEdgeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -259,7 +274,7 @@ public class NodeStyleController implements IExtension {
 		}
 		return false;
 	}
-	
+
 	private Quantity<LengthUnit> getBorderWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -279,8 +294,8 @@ public class NodeStyleController implements IExtension {
 		}
 		return null;
 	}
-	
-	
+
+
 	private Boolean getBorderDashMatchesEdgeDash(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -300,7 +315,7 @@ public class NodeStyleController implements IExtension {
 		}
 		return false;
 	}
-	
+
 	private DashVariant getBorderDash(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -320,8 +335,8 @@ public class NodeStyleController implements IExtension {
 		}
 		return DashVariant.DEFAULT;
 	}
-	
-	
+
+
 	private Boolean getBorderColorMatchesEdgeColor(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -341,7 +356,7 @@ public class NodeStyleController implements IExtension {
 		}
 		return true;
 	}
-	
+
 	private Color getBorderColor(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
@@ -361,7 +376,7 @@ public class NodeStyleController implements IExtension {
 		}
 		return EdgeController.STANDARD_EDGE_COLOR;
 	}
-	
+
 	private static Font getDefaultFont() {
 		final int fontSize = NodeStyleController.getDefaultFontSize();
 		final int fontStyle = NodeStyleController.getDefaultFontStyle();
@@ -411,6 +426,10 @@ public class NodeStyleController implements IExtension {
 
 	public HorizontalTextAlignment getHorizontalTextAlignment(final NodeModel node, StyleOption option) {
 		return horizontalTextAlignmentHandlers.getProperty(node, option);
+	}
+
+	public TextWritingDirection getTextWritingDirection(final NodeModel node, StyleOption option) {
+		return textWritingDirectionHandlers.getProperty(node, option);
 	}
 
 	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic, Boolean strikedThrough) {
@@ -503,6 +522,27 @@ public class NodeStyleController implements IExtension {
 		}
 		return null;
 	}
+
+	private TextWritingDirection getTextWritingDirection(final MapModel map, final Collection<IStyle> style) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : style){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeStyleModel styleModel = NodeStyleModel.getModel(styleNode);
+			if (styleModel == null) {
+				continue;
+			}
+			final TextWritingDirection textAlignment = styleModel.getTextWritingDirection();
+			if (textAlignment == null) {
+				continue;
+			}
+			return textAlignment;
+		}
+		return null;
+	}
+
 	public Font getFont(final NodeModel node, StyleOption option) {
 		final Font font = fontHandlers.getProperty(node, option, null);
 		return font;
@@ -522,7 +562,7 @@ public class NodeStyleController implements IExtension {
 		final NodeGeometryModel shapeConfiguration = shapeHandlers.getProperty(node, option);
 		return shapeConfiguration.getShape();
 	}
-	
+
 	public NodeGeometryModel getShapeConfiguration(NodeModel node, StyleOption option) {
 		final NodeGeometryModel shapeConfiguration = shapeHandlers.getProperty(node, option);
 		return shapeConfiguration;
@@ -549,7 +589,7 @@ public class NodeStyleController implements IExtension {
 			if (format != null) {
 				return format;
 			}
-        } 
+        }
 		// do not return PatternFormat.IDENTITY_PATTERN if parse_data=false because that would
 		// automatically disable all IContentTransformers!
 		return PatternFormat.STANDARD_FORMAT_PATTERN;

@@ -3,6 +3,7 @@ package org.freeplane.features.note.mindmapmode;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -246,7 +247,7 @@ class NotePanel extends JPanel {
 
 	}
 
-	void setEditedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background) {
+	void setEditedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background, ComponentOrientation componentOrientation) {
 	    isEditing = true;
 		setVisible(htmlEditorPanel);
 		htmlEditorPanel.setCurrentDocumentContent("");
@@ -254,9 +255,11 @@ class NotePanel extends JPanel {
         updateColors(foreground, background);
         HtmlProcessor.configureUnknownTags(htmlEditorPanel.getDocument());
 		htmlEditorPanel.setCurrentDocumentContent(note);
+		final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+		editorPane.setComponentOrientation(componentOrientation);
 		if(note.isEmpty()) {
-		    htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-            htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+			editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+            editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		}
 	}
 
@@ -268,7 +271,7 @@ class NotePanel extends JPanel {
         if(! htmlViewerPanel.getContentType().equals(contentType))
             htmlViewerPanel.setContentType(contentType);
     }
-	void setViewedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background) {
+	void setViewedContent(String note, String ownRule, StyleSheet customStyleSheet, Color foreground, Color background, ComponentOrientation componentOrientation) {
 		setVisible(htmlViewerPanel);
 		String contentType = HtmlUtils.isHtml(note) ? CONTENT_TYPE_TEXT_HTML : CONTENT_TYPE_TEXT_PLAIN;
 		htmlViewerPanel.setText("");
@@ -280,6 +283,7 @@ class NotePanel extends JPanel {
         }
 		updateColors(foreground, background);
 		htmlViewerPanel.setText(note);
+		htmlViewerPanel.setComponentOrientation(componentOrientation);
         if(note.isEmpty()) {
             htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
             htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);

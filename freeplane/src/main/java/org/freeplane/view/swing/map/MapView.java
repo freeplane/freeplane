@@ -70,6 +70,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildrenSides;
 import org.freeplane.api.LayoutOrientation;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -637,16 +638,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	final private Selection selection = new Selection();
 	private int siblingMaxLevel;
 	private float zoom = 1F;
-	private Font noteFont;
     private Font detailFont;
-    private int detailHorizontalAlignment;
     private Color detailForeground;
     private Color detailBackground;
     private NodeCss detailCss;
-    private int noteHorizontalAlignment;
+    private int detailHorizontalAlignment;
+    private TextWritingDirection detailTextWritingDirection;
+
+    private Font noteFont;
     private Color noteForeground;
     private Color noteBackground;
     private NodeCss noteCss;
+    private int noteHorizontalAlignment;
+    private TextWritingDirection noteTextWritingDirection;
 	private static String showConnectorsPropertyValue;
 	private static boolean hideSingleEndConnectorsPropertyValue;
 	private String showConnectors;
@@ -1458,6 +1462,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         detailBackground = style.getBackgroundColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailForeground = style.getColor(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailHorizontalAlignment = style.getHorizontalTextAlignment(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+        detailTextWritingDirection = style.getTextWritingDirection(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         detailCss = style.getStyleSheet(detailStyleNode, StyleOption.FOR_UNSELECTED_NODE);
 
         final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
@@ -1465,6 +1470,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         noteBackground = style.getBackgroundColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteForeground = style.getColor(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant;
+        noteTextWritingDirection = style.getTextWritingDirection(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         noteCss = style.getStyleSheet(noteStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         updateSelectionColors();
 	}
@@ -2563,6 +2569,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return noteHorizontalAlignment;
 	}
 
+	public TextWritingDirection getNoteTextWritingDirection() {
+		return noteTextWritingDirection;
+	}
+
    public Font getDetailFont() {
         return detailFont;
     }
@@ -2577,6 +2587,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public int getDetailHorizontalAlignment() {
 		return detailHorizontalAlignment;
+	}
+
+
+	public TextWritingDirection getDetailTextWritingDirection() {
+		return detailTextWritingDirection;
+
 	}
 
 	public boolean isSelected() {
