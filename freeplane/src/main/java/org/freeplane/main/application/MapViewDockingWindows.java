@@ -230,8 +230,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				menuItem.setToolTipText(TextUtils.getText("TabPopUpMenu.rename.tooltip","Windows layout changes may reset the tab title."));
 				menuItem.addActionListener(new ActionListener() {
 				    public void actionPerformed(ActionEvent e) {
-				        String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), window.getName());
-				        JComponent mapView = (JComponent) getContainedMapView(window);
+						JComponent mapView = (JComponent) getContainedMapView(window);
+						String customizedTabName = (String) mapView.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
+						customizedTabName = customizedTabName!=null ? customizedTabName : mapView.getName();
+						String newName = JOptionPane.showInputDialog(TextUtils.getText("TabPopUpMenu.rename.inputDialog","Input new temporary name: "), customizedTabName);
 				        if(Objects.equals(newName, "") || newName==null ){
 				            mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, null);
 				        } else {
