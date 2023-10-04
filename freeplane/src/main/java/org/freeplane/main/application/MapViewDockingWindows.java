@@ -519,10 +519,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
     }
 
     private void updateTitle(Component mapViewComponent) {
-        String title = createTitle(mapViewComponent);
-        View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
-        if(containingDockedWindow != null)
-        	containingDockedWindow.getViewProperties().setTitle(title);
+		View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
+		if(containingDockedWindow != null) {
+			String title = createTitle(mapViewComponent);
+			containingDockedWindow.getViewProperties().setTitle(title);
+		}
     }
 
 	private String createTitle(Component mapViewComponent) {
