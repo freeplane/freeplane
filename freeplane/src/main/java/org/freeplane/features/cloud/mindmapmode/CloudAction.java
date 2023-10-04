@@ -34,14 +34,20 @@ import org.freeplane.features.mode.Controller;
 @SelectableAction(checkOnNodeChange = true)
 class CloudAction extends AMultipleNodeAction {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
+    private boolean hasCloud;
 
     public CloudAction() {
         super("CloudAction");
     }
 
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        hasCloud = !hasCloud();
+        super.actionPerformed(e);
+    }
     /*
      * (non-Javadoc)
      * @see
@@ -51,11 +57,16 @@ class CloudAction extends AMultipleNodeAction {
     @Override
     protected void actionPerformed(final ActionEvent e, final NodeModel node) {
         final MCloudController cloudController = (MCloudController) CloudController.getController();
-        cloudController.setCloud(node, CloudModel.getModel(node) == null);
+        cloudController.setCloud(node, hasCloud);
+    }
+
+    boolean hasCloud() {
+        final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+        return CloudModel.getModel(node) != null;
     }
 
     @Override
     public void setSelected() {
-        setSelected(CloudModel.getModel(Controller.getCurrentModeController().getMapController().getSelectedNode()) != null);
+        setSelected(hasCloud());
     }
 }

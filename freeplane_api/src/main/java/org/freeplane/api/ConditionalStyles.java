@@ -4,9 +4,11 @@ package org.freeplane.api;
  * Node's or map's conditional-styles table:
  * <code>node.conditionalStyles</code> or <code>node.mindMap.conditionalStyles</code> - read-only.
  * <p>
- * In the Manage Conditional Styles dialog it's the entire table. Each row in the table is a separate {@link ConditionalStyle}.
+ * In the Manage Conditional Styles dialog, it's the entire table. Each row in the table is a separate {@link ConditionalStyle}/{@link ConditionalStyleRO}.
  * </p>
+ * <p>
  * Actions known from the Manage Conditional Styles dialog can be called on ConditionalStyles
+ * </p>
  * <pre>
  *     // add a conditional style to the end of the table
  *     node.conditionalStyles.add(
@@ -25,10 +27,32 @@ package org.freeplane.api;
  *     node.conditionalStyles.remove(0)
  *
  *     // remove all, i.e. each ConditionalStyle item
- *     node.conditionalStyles.collect().each { it.remove() }
+ *     node.conditionalStyles.each { it.remove() }
+ * </pre>
+ * <p>
+ * ConditionalStyles can be iterated over, e.g.
+ * </p>
+ * <pre>
+ *     // get a list of conditional styles (ConditionalStyle items)
+ *     node.conditionalStyles.collect()
+ *
+ *     // get a list of conditional styles, each as a string (description)
+ *     node.conditionalStyles.collect { it.toString() }
+ *
+ *     // get the number of conditional styles in the table
+ *     node.conditionalStyles.size()
+ *
+ *     // get the first conditional style in the table
+ *     node.conditionalStyles[0]
+ *
+ *     // find all conditional styles with the style styles.important (aka Important) and deactivate them
+ *     node.conditionalStyles.findAll { it.styleName == 'styles.important' }.each { it.active = false }
+ *
+ *     // find the first conditional style with ScriptCondition (aka Script Filter) and remove it
+ *     node.conditionalStyles.find { it.hasScriptCondition() }?.remove()
  * </pre>
  */
-public interface ConditionalStyles {
+public interface ConditionalStyles extends Iterable<ConditionalStyle> {
 
 	/**
 	 * Adds a conditional style to the end of the table

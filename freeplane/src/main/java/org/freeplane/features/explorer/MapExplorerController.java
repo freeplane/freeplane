@@ -16,6 +16,7 @@ import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
@@ -99,14 +100,16 @@ public class MapExplorerController  implements IExtension{
 			return  start.getMap().getNodeForID(reference);
 		else if(start != null && reference.startsWith("at(") && reference.endsWith(")")){
 			String path = reference.substring(3, reference.length() - 1);
-			path = URLDecoder.decode(path, StandardCharsets.UTF_8);
 			try {
+				path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
 				return new MapExplorer(start, path, accessedNodes).getNode();
 			}
 			catch (NodeNotFoundException e) {
 			}
 			catch (IllegalArgumentException e) {
 				LogUtils.warn("Invalid reference format in" + reference);
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		else {

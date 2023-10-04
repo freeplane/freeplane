@@ -107,7 +107,7 @@ public class MapViewPane extends JPanel implements IFreeplanePropertyListener, I
 
     @Override
     public void mapChanged(MapChangeEvent event) {
-        if (event.getMap() != mapView.getModel()) {
+        if (event.getMap() != mapView.getMap()) {
             return;
         }
         updateMapOverview();

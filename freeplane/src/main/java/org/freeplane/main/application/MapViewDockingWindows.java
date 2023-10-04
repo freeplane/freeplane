@@ -469,6 +469,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				loadingLayoutFromObjectInpusStream = false;
 			}
 			rootWindow.getWindowBar(Direction.DOWN).setEnabled(false);
+			setTitle();
 		}
 	}
 
@@ -531,7 +532,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		String customizedTabName = (String) mapView.getClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY);
 		String name = customizedTabName != null ? customizedTabName : mapView.getName();
 		String title;
-		if(mapView.getModel().isSaved() || mapView.getModel().isReadOnly())
+		if(mapView.getMap().isSaved() || mapView.getMap().isReadOnly())
 			title = name;
 		else
 			title = name + " *";

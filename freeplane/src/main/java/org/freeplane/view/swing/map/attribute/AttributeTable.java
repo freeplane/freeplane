@@ -591,7 +591,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
 			final NodeStyleController nsc = NodeStyleController.getController(modeController);
-			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
+			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getNode(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{
@@ -907,7 +907,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(! SwingUtilities.isDescendingFrom(this, nodeView))
 			return;
 		final MapView mapView = nodeView.getMap();
-        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final EdgeModel edge = EdgeModel.getModel(attributeStyleNode);
         if(edge != null){
@@ -953,7 +953,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
-        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));

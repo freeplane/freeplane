@@ -63,7 +63,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (nodeView == null)
 		    return;
 
-		final NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getNode();
 		final ModeController mc = Controller.getCurrentController().getModeController();
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == MouseEvent.BUTTON1
@@ -212,7 +212,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
         if(! followLink){
         	followLink = node.isClickableLink(e.getX());
         	if(followLink){
-				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel());
+				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getNode());
         	}
         }
         final Cursor requiredCursor;
@@ -273,7 +273,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(foldingController == null)
 			return;
 		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
-		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
+		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getNode());
 		AutoHide.start(popupmenu);
 		new NodePopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
     }

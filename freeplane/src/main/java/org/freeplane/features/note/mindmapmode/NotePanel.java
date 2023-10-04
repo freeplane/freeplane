@@ -3,6 +3,7 @@ package org.freeplane.features.note.mindmapmode;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
@@ -44,7 +46,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -203,6 +204,18 @@ class NotePanel extends JPanel {
 		return htmlEditorPanel;
 	}
 
+
+
+	@Override
+	public void setComponentOrientation(ComponentOrientation o) {
+		if(o != super.getComponentOrientation()) {
+			htmlEditorPanel.getEditorPane().setComponentOrientation(o);
+			htmlViewerPanel.setComponentOrientation(o);
+			iconViewerPanel.setComponentOrientation(o);
+			super.setComponentOrientation(o);
+		}
+	}
+
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
 	                                    final boolean pressed) {
@@ -255,8 +268,9 @@ class NotePanel extends JPanel {
         HtmlProcessor.configureUnknownTags(htmlEditorPanel.getDocument());
 		htmlEditorPanel.setCurrentDocumentContent(note);
 		if(note.isEmpty()) {
-		    htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-            htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+			editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+            editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		}
 	}
 

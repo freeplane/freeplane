@@ -53,10 +53,10 @@ class StylePropertyAdjuster {
                         || propertyName.equals(FormatControlGroup.NODE_FORMAT)
                         || propertyName.equals(NodeNumberingControlGroup.NODE_NUMBERING));
             }
-            else 
+            else
                 enable = true;
         }
-        else 
+        else
             enable = true;
         control.setEnabled(enable);
     }

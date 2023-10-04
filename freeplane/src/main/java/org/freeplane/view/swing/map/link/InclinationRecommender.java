@@ -20,7 +20,7 @@ public class InclinationRecommender {
 
     public InclinationRecommender(LinkController linkController, ConnectorView connectorView) {
         this.linkController = linkController;
-        connector = connectorView.getModel();
+        connector = connectorView.getConnector();
         NodeView source = connectorView.getSource();
         NodeView target = connectorView.getTarget();
         if (!connectorView.isSourceVisible() || !connectorView.isTargetVisible() || source.equals(target)) {

@@ -7,6 +7,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.apache.commons.lang.SystemUtils;
 import org.freeplane.api.Node;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
@@ -43,19 +44,39 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	    try {
 	        if (link == null)
 	            return null;
-	        if (!link.isAbsolute() && isFileUri(link)) {
-	            final File mapFile = getDelegate().getMap().getFile();
-	            return mapFile == null ? null : new File(mapFile.getParent(), link.getPath());
+	        if (isFileUri(link)) {
+				final String uriPathForFile = calcUriPathForFile(link);
+				final File fileFromUriPath = new File(uriPathForFile);
+				if (fileFromUriPath.isAbsolute()) {
+					return fileFromUriPath;
+				} else {
+					final File mapFile = getDelegate().getMap().getFile();
+					return mapFile == null ? null : new File(mapFile.getParent(), uriPathForFile);
+				}
 	        }
 	    	return new File(link);
-	    }
-	    catch (Exception e) {
+	    } catch (Exception e) {
 			return null;
 	    }
     }
 
-    private boolean isFileUri(URI link) {
-        return link.getScheme() == null || link.getScheme().equals("file");
+	private static String calcUriPathForFile(URI link) {
+		String uriPathForFile;
+		if ("freeplane".equals(link.getScheme())) {
+			uriPathForFile = link.getPath().replaceFirst("^/ ", "");
+		} else {
+			uriPathForFile = link.getPath();
+		}
+		if (SystemUtils.IS_OS_WINDOWS && uriPathForFile.startsWith("../")) {
+			// Relative URI paths across drives aren't recognized by File, which needs the path
+			// to start with a drive letter, therefore remove all `../` in front of a drive letter
+			uriPathForFile = uriPathForFile.replaceFirst("^(../)+(?=[a-zA-Z]:/)", "");
+		}
+		return uriPathForFile;
+	}
+
+	private boolean isFileUri(URI link) {
+        return link.getScheme() == null || link.getScheme().equals("file") || link.getScheme().equals("freeplane");
     }
 
 	// LinkRO

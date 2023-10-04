@@ -41,7 +41,9 @@ public class FilterHistory {
 
 	void add(final Filter filter) {
 		final Filter currentFilter = getCurrentFilter();
-		if (filter.canUseFilterResultsFrom(currentFilter)) {
+		if(filter == currentFilter)
+		    return;
+		if (filter.getCondition() == null && currentFilter.getCondition() == null) {
 			filters.previous();
 			filters.remove();
 		}

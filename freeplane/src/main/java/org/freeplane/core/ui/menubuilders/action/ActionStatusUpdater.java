@@ -23,7 +23,7 @@ public class ActionStatusUpdater implements EntryPopupListener {
 		ModeController currentModeController = Controller.getCurrentModeController();
 		if(currentModeController == null)
 			return UserRole.NO_MAP;
-		
+
 		MapModel map = currentController.getMap();
 		UserRole userRole = currentModeController.userRole(map);
 		return userRole;
@@ -33,8 +33,6 @@ public class ActionStatusUpdater implements EntryPopupListener {
 		for (Entry target : submenu.children()) {
 			final AFreeplaneAction action = new EntryAccessor().getAction(target);
 			if (action != null) {
-				if (action.checkEnabledOnPopup())
-					action.setEnabled(userRole);
 				if (action.checkSelectionOnPopup() && action.isEnabled())
 					action.setSelected();
 			}

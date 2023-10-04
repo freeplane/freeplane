@@ -272,7 +272,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	private Properties readUsersPreferences(final Properties defaultPreferences) {
-		final Properties auto = new Properties(defaultPreferences);
+		final Properties auto = new SortedProperties(defaultPreferences);
 		try (InputStream in = new FileInputStream(getUserPreferencesFile())){
 			auto.load(in);
 		}
