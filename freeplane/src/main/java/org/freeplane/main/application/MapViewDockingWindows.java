@@ -109,6 +109,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	final private Vector<Component> mapViews;
 	private boolean mPaneSelectionUpdate = true;
 	private boolean loadingLayoutFromObjectInputStream;
+	private boolean initialTabNameLoadingWasDone;
 	private byte[] emptyConfigurations;
 	private final MapViewSerializer viewSerializer;
 	private DockingWindowsTheme theme;
@@ -470,7 +471,24 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				loadingLayoutFromObjectInputStream = false;
 			}
 			rootWindow.getWindowBar(Direction.DOWN).setEnabled(false);
+			initialTabNameLoadingWasDone = false;
 		}
+	}
+
+	private void loadInitialCustomTabNames(){
+		for (Component mapViewComponent: mapViews) {
+			if (mapViewComponent instanceof MapView ) {
+				View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
+				if(containingDockedWindow != null) {
+					String oldTitle = containingDockedWindow.getViewProperties().getTitle();
+					MapView mapView = (MapView)mapViewComponent;
+					if(oldTitle != null && !oldTitle.equals("") && !oldTitle.equals(mapView.getName())){
+						mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, oldTitle);
+					}
+				}
+			}
+		}
+		initialTabNameLoadingWasDone = true;
 	}
 
 	public void focusMapViewLater(final MapView mapView) {
@@ -513,6 +531,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public void setTitle() {
 		if(loadingLayoutFromObjectInputStream)
 			return;
+		if(!initialTabNameLoadingWasDone){
+			loadInitialCustomTabNames();
+		}
 		for (Component mapViewComponent: mapViews) {
 			if (mapViewComponent instanceof MapView ) {
 	            updateTitle(mapViewComponent);
