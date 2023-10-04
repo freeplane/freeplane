@@ -20,17 +20,25 @@
 package org.freeplane.view.swing.map.mindmapmode;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
+import java.util.HashSet;
 import java.util.function.Supplier;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
@@ -39,6 +47,8 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
+import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;
@@ -80,6 +90,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			editNodeWYSIWYG.setPreferredContentSize(preferredSize);
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
+	        final ComponentOrientation componentOrientation = mainView.getComponentOrientation();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
 	            final Font font = getFont(node);
 	            editNodeWYSIWYG.setTitle("edit_long_node");
@@ -88,6 +99,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTextColor(nodeTextColor);
 				editNodeWYSIWYG.setBackground (nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
 				editNodeWYSIWYG.setTextAlignment(mainView.getHorizontalAlignment());
+				editNodeWYSIWYG.setComponentOrientation(componentOrientation);
 				editNodeWYSIWYG.setCustomStyleSheet(mainView.getStyleSheet());
 			}
 			else if(EditedComponent.DETAIL.equals(editControl.getEditType())){
@@ -98,6 +110,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     			final Color detailBackground = map.getDetailBackground();
                 editNodeWYSIWYG.setBackground (detailBackground != null ? detailBackground : nodeView.getTextBackground(StyleOption.FOR_UNSELECTED_NODE));
                 editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
+                editNodeWYSIWYG.setComponentOrientation(componentOrientation);
                 editNodeWYSIWYG.setCustomStyleSheet(map.getDetailCss().getStyleSheet());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
@@ -108,6 +121,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
                 final Color noteBackground = map.getNoteBackground();
 				editNodeWYSIWYG.setBackground (noteBackground != null ? noteBackground : map.getBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
+                editNodeWYSIWYG.setComponentOrientation(componentOrientation);
                 editNodeWYSIWYG.setCustomStyleSheet(map.getNoteCss().getStyleSheet());
 			}
 			return editNodeWYSIWYG;
@@ -162,5 +176,59 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content, boolean editInline) {
         return null;
     }
+
+
+    public boolean saveAllModifiedMaps(){
+        return saveAllModifiedMapsExcept(null);
+    }
+
+    public boolean saveAllModifiedMapsExcept(MapModel mapToKeepOpen) {
+        MapModel currentMap = getMap();
+        if(currentMap != null && currentMap != mapToKeepOpen && ! saveModifiedIfNotCancelled(currentMap))
+            return false;
+        HashSet<MapModel> otherMaps = new HashSet(getMaps().values());
+        otherMaps.remove(mapToKeepOpen);
+        otherMaps.remove(getMap());
+        for (MapModel map : otherMaps){
+            if(! saveModifiedIfNotCancelled(map))
+                return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean saveModifiedIfNotCancelled(final MapModel map) {
+        if (!(map.isSaved() || map.isReadOnly())) {
+            changeToMap(map);
+            final MapView mapView = getMapView();
+            if(mapView.getMap() != map)
+                return true;
+            final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
+            final String title = TextUtils.getText("SaveAction.text");
+            Component dialogParent;
+            final Frame viewFrame = UITools.getCurrentFrame();
+            if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
+                dialogParent = viewFrame;
+            else
+                dialogParent = UITools.getCurrentRootComponent();
+            final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (returnVal == JOptionPane.YES_OPTION) {
+                final UrlManager fileManager = mapView.getModeController()
+                        .getExtension(UrlManager.class);
+                final boolean savingNotCancelled = (fileManager instanceof MFileManager)
+                        && ((MFileManager) fileManager).save(map);
+                if (!savingNotCancelled) {
+                    return false;
+                }
+            }
+            else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

@@ -213,6 +213,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					});
 					frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 					final MMapViewController mapViewController = new MMapViewController(controller);
+					controller.addAction(new CloseAllMapsAction(mapViewController));
+					controller.addAction(new CloseAllOtherMapsAction(mapViewController));
+
+
 					viewController = new ApplicationViewController(controller, mapViewController, frame);
 					splash = new FreeplaneSplashModern(frame);
 					mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());

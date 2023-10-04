@@ -666,12 +666,12 @@ class NodeList implements IExtension {
 			}
 		});
 		rowSM.addListSelectionListener(new ListSelectionListener() {
-			String getNodeText(final NodeModel node) {
+			String getNodeTextWithAncestorNodes(final NodeModel node) {
 				final String nodeText = TextController.getController().getShortPlainText(node);
 				if (node.isRoot())
 					return nodeText;
 				else
-					return getNodeText(node.getParentNode()) + " -> " + nodeText;
+					return getNodeTextWithAncestorNodes(node.getParentNode()) + " -> " + nodeText;
 			}
 
 			@Override
@@ -687,7 +687,7 @@ class NodeList implements IExtension {
 				final int selectedRow = lsm.getLeadSelectionIndex();
 				if(selectedRow >= 0) {
 				    final NodeModel mindMapNode = getMindMapNode(selectedRow);
-				    mNodePath.setText(getNodeText(mindMapNode));
+				    mNodePath.setText(getNodeTextWithAncestorNodes(mindMapNode));
 				}
 				else
 				    mNodePath.setText("");

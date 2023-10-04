@@ -1,6 +1,8 @@
 package org.freeplane.main.application;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
 import java.text.MessageFormat;
 
 import org.freeplane.core.resources.ResourceController;
@@ -11,6 +13,28 @@ import org.freeplane.features.mode.Controller;
 
 public class Browser {
 	public void openDocument(final Hyperlink link) {
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		if (desktop == null || !desktop.isSupported(Desktop.Action.BROWSE)) {
+			openDocumentNotSupportedByDesktop(link);
+			return;
+		}
+		String uriString = link.toString();
+		final String UNC_PREFIX = "file:////";
+		try {
+			URI uri;
+			if (uriString.startsWith(UNC_PREFIX)) {
+				uriString = "file://" + uriString.substring(UNC_PREFIX.length());
+				uri = new URI(uriString);
+			}
+			else
+				uri = link.getUri();
+			desktop.browse(uri);
+		} catch (Exception e) {
+			openDocumentNotSupportedByDesktop(link);
+		}
+	}
+
+	private void openDocumentNotSupportedByDesktop(final Hyperlink link) {
 		String uriString = link.toString();
 		final String UNC_PREFIX = "file:////";
 		if (uriString.startsWith(UNC_PREFIX)) {

@@ -55,7 +55,7 @@ public class NodePopupMenuDisplayer {
 			if (nodeView == null)
 				return;
 			if (!nodeView.isSelected()) {
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeView.getNode());
 			}
 			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
 			new NodePopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);

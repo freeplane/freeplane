@@ -129,7 +129,7 @@ public class ZoomableLabel extends JLabel {
 				try{
 					final ModeController modeController = map.getModeController();
 					final NodeStyleController nsc = NodeStyleController.getController(modeController);
-					final double maxNodeWidth = nsc.getMaxWidth(node.getModel(), node.getStyleOption()).toBaseUnits();
+					final double maxNodeWidth = nsc.getMaxWidth(node.getNode(), node.getStyleOption()).toBaseUnits();
 					setMaximumWidth(Integer.MAX_VALUE);
 					widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
 				}
@@ -141,7 +141,7 @@ public class ZoomableLabel extends JLabel {
 		}
 		if (isHtml) {
 			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
-				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
+				nodeText = "<html><base href=\"" + map.getMap().getURL() + "\">" + nodeText.substring(6);
 			}
 			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty(
 			    "html_long_node_head");

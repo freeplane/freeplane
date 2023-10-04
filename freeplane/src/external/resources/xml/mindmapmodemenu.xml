@@ -55,7 +55,7 @@
 		<Entry builder="separator" />
 		<Entry builder="childNodesLayout" />
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="9"/>
+		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="11"/>
 		<Entry usedBy="EDITOR" row="2">
 			<Entry name="CloudAction" />
 			<Entry name="CloudColorAction" />
@@ -65,6 +65,9 @@
 			<Entry name="TextAlignAction.LEFT" />
 			<Entry name="TextAlignAction.CENTER" />
 			<Entry name="TextAlignAction.RIGHT" />
+			<Entry builder="separator" />
+			<Entry name="TextWritingDirectionAction.LEFT_TO_RIGHT" />
+			<Entry name="TextWritingDirectionAction.RIGHT_TO_LEFT" />
 			<Entry builder="panel" />
 		</Entry>
 		<Entry builder="main_toolbar_font_name" usedBy="EDITOR" row="1"  width="6"/>
@@ -399,6 +402,9 @@
               <Entry name="TextAlignAction.LEFT" />
               <Entry name="TextAlignAction.CENTER" />
               <Entry name="TextAlignAction.RIGHT" />
+              <Entry builder="separator" />
+              <Entry name="TextWritingDirectionAction.LEFT_TO_RIGHT" />
+              <Entry name="TextWritingDirectionAction.RIGHT_TO_LEFT" />
               <Entry builder="separator" />
               <Entry name="NodeColorAction" accelerator="alt shift F" />
               <Entry name="BlinkingNodeHookAction" />

@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.util.HtmlUtils;
@@ -69,6 +70,8 @@ public class PreferencesIndexer
 				final String propertyName = userObject.getPropertyName();
 				final String translatedText = HtmlUtils.htmlToPlain(userObject.getTranslatedText());
 				if(! propertyName.isEmpty()){
+				    if(ResourceController.getResourceController().getBooleanProperty(propertyName + ".hide"))
+	                    continue;
 				    String tooltipText = HtmlUtils.htmlToPlain(userObject.getTranslatedTooltipText());
 				    String currentTabTranslated = path.get(0);
 				    if(path.size() > 1) {

@@ -5,18 +5,16 @@ import java.util.List;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 
-@SelectableAction(checkOnPopup=true)
 public class NodeEnumerationAction <T extends Enum<T> & IExtension> extends AMultipleNodeAction{
 
 	private static final long serialVersionUID = 1L;
 	private final T value;
 
-	public NodeEnumerationAction(T value) {
+    public NodeEnumerationAction(T value) {
 		super("NodeEnumerationAction." + value.getClass().getSimpleName() + '.' + value.name());
 		this.value = value;
 	}
@@ -24,8 +22,7 @@ public class NodeEnumerationAction <T extends Enum<T> & IExtension> extends AMul
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		setSelected();
-		if(isEnabled())
-			super.actionPerformed(e);
+		super.actionPerformed(e);
 	}
 
 	@Override
@@ -35,12 +32,6 @@ public class NodeEnumerationAction <T extends Enum<T> & IExtension> extends AMul
 			controller.removeProperty(node, getValueClass());
 		else
 			controller.setProperty(node, value);
-	}
-
-	@Override
-	public void setEnabled() {
-		final List<NodeModel> nodes = getNodes();
-		setEnabled(!nodes.isEmpty());
 	}
 
 	@Override
@@ -54,5 +45,8 @@ public class NodeEnumerationAction <T extends Enum<T> & IExtension> extends AMul
 		return (Class<T>) value.getClass();
 	}
 
+    protected T getValue() {
+        return value;
+    }
 
 }

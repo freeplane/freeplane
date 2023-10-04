@@ -109,7 +109,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	public void onViewCreated(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final LatexExtension latexExtension = nodeView.getModel().getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = nodeView.getNode().getExtension(LatexExtension.class);
 		if (latexExtension == null) {
 			return;
 		}
@@ -118,7 +118,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	public void onViewRemoved(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final LatexExtension latexExtension = nodeView.getModel().getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = nodeView.getNode().getExtension(LatexExtension.class);
 		if (latexExtension == null) {
 			return;
 		}

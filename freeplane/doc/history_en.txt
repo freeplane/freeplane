@@ -1,4 +1,17 @@
 ==============================
+1.11.8
+==============================
+Support text writing direction for nodes and styles
+Bug fixes
+==============================
+1.11.7
+==============================
+Indicate jump-in as pin icon shown at the root node
+Improve map autoscroll
+Keep non CSS attributes on span elements
+Bug fixes
+
+==============================
 1.11.6
 ==============================
 Update dependencies

@@ -104,9 +104,9 @@ public interface IMapViewManager {
 
 	public ModeController getModeController(Component newMap);
 
-	public MapModel getModel();
+	public MapModel getMap();
 
-	public MapModel getModel(Component mapView);
+	public MapModel getMap(Component mapView);
 
 	public Component getSelectedComponent();
 
@@ -168,4 +168,12 @@ public interface IMapViewManager {
 	public void usePreviousViewRoot();
 
 	public void setLayout(final Component map, MapViewLayout newLayoutType);
+
+    default boolean saveModifiedIfNotCancelled(MapModel map) {
+        return true;
+    }
+
+    default boolean saveAllModifiedMaps(){
+        return true;
+    }
 }
