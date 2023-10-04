@@ -108,7 +108,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	private RootWindow rootWindow = null;
 	final private Vector<Component> mapViews;
 	private boolean mPaneSelectionUpdate = true;
-	private boolean loadingLayoutFromObjectInpusStream;
+	private boolean loadingLayoutFromObjectInputStream;
 	private byte[] emptyConfigurations;
 	private final MapViewSerializer viewSerializer;
 	private DockingWindowsTheme theme;
@@ -239,9 +239,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				        }
 				        setTitle();
 				    }
-
- 				}
-				        );
+ 				});
 				menu.add(menuItem);
 				return menu;
 			}
@@ -335,11 +333,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		if (pNewMap == null) {
 			return;
 		}
-		if(loadingLayoutFromObjectInpusStream) {
             if(mapViews.contains(pNewMap))
                 return;
             else
                 updateTitle(pNewMap);
+		if(loadingLayoutFromObjectInputStream) {
         } else {
 			for (int i = 0; i < mapViews.size(); ++i) {
 				if (mapViews.get(i) == pNewMap) {
@@ -379,6 +377,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			    DockingUtil.addWindow(newView, lastFocusedChildWindow.getRootWindow());
        }
 	}
+
 	static private Component getContainedMapView(DockingWindow window) {
 	    if (window == null)
 	        return null;
@@ -453,7 +452,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			byte[] bytes = Base64.decodeBase64(encodedBytes);
 			ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
 			try {
-				loadingLayoutFromObjectInpusStream = true;
+				loadingLayoutFromObjectInputStream = true;
 				rootWindow.read(new ObjectInputStream(byteStream));
 			}
 			catch (Exception e) {
@@ -466,7 +465,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			}
 			finally{
 				viewSerializer.removeDummyViews();
-				loadingLayoutFromObjectInpusStream = false;
+				loadingLayoutFromObjectInputStream = false;
 			}
 			rootWindow.getWindowBar(Direction.DOWN).setEnabled(false);
 		}
@@ -510,7 +509,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	}
 
 	public void setTitle() {
-		if(loadingLayoutFromObjectInpusStream)
+		if(loadingLayoutFromObjectInputStream)
 			return;
 		for (Component mapViewComponent: mapViews) {
 			if (mapViewComponent instanceof MapView ) {
