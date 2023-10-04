@@ -102,7 +102,7 @@ import net.infonode.util.Direction;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
 
-	private static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedTabName";
+	protected static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedTabName";
     // // 	final private Controller controller;
 	private static final String OPENED_NOW = "openedNow_1.3.04";
 	private RootWindow rootWindow = null;
@@ -239,6 +239,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 				        } else {
 				            mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, newName);
 				        }
+						addTitleProvider(window); //TODO: revisar
 				        setTitle();
 				    }
  				});
@@ -361,6 +362,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		mapViews.add(pNewMap);
 	}
 
+	private void addTitleProvider(DockingWindow window){
+		window.getWindowProperties().setTitleProvider(new CustomWindowTitleProvider());
+	}
+
 	static private View getContainingDockedWindow(final Component pNewMap) {
 	    return (View) SwingUtilities.getAncestorOfClass(View.class, pNewMap);
     }
@@ -387,13 +392,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	        return getContainedMapView((View) window);
 	    }
 	    else {
-	        for (int i = 0; i < window.getChildWindowCount(); i++) {
-	            Component containedMapView = getContainedMapView(window.getChildWindow(i));
-	            if(containedMapView != null)
-	                return containedMapView;
-	        }
-	    }
-	    return null;
+			return window;
+		}
 	}
 
 	static Component getContainedMapView(View dockedWindow) {
