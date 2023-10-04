@@ -1152,6 +1152,8 @@ public class NodeView extends JComponent implements INodeView {
 	        map.preserveRootNodeLocationOnScreen();
 			fireFoldingChanged();
 		}
+		if(lastSelectedChild != null && isFolded())
+			lastSelectedChild = null;
 	}
 
     void fireFoldingChanged() {
@@ -1164,7 +1166,14 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
 	public void onPreNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-	    final NodeView mapRootNodeView = map.getRoot();
+	    adjustLastSelectedChild(nodeDeletionEvent);
+	}
+
+
+	private void adjustLastSelectedChild(NodeDeletionEvent nodeDeletionEvent) {
+		if(lastSelectedChild == null || isFolded())
+			return;
+		final NodeView mapRootNodeView = map.getRoot();
         NodeModel mapRootNode = mapRootNodeView.getNode();
 	    final NodeView node;
 	    final int childModeViewIndex;
