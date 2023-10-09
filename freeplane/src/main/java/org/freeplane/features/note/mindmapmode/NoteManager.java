@@ -74,8 +74,11 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
                 if(event.getNode().equals(node)) {
 					if (NodeModel.NOTE_TEXT.equals(event.getProperty()))
 						updateEditor();
-					else if (TextWritingDirection.class.equals(event.getProperty()))
-						noteController.getNotePanel().setComponentOrientation(getNoteTextDirection().componentOrientation);
+					else if (TextWritingDirection.class.equals(event.getProperty())) {
+						final NotePanel notePanel = noteController.getNotePanel();
+						if(notePanel != null)
+							notePanel.setComponentOrientation(getNoteTextDirection().componentOrientation);
+					}
 				}
             }
         });
@@ -86,7 +89,9 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 		    	final Object property = event.getProperty();
 		    	if (node != null
 		    			&& node.getMap() == event.getMap() && property.equals(MapStyle.MAP_STYLES)) {
-		    		noteController.getNotePanel().setComponentOrientation(getNoteTextDirection().componentOrientation);
+		    		final NotePanel notePanel = noteController.getNotePanel();
+		    		if(notePanel != null)
+		    			notePanel.setComponentOrientation(getNoteTextDirection().componentOrientation);
 		    	}
 		    }
 

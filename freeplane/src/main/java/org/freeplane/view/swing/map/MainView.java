@@ -91,7 +91,8 @@ import org.freeplane.features.text.TextController;
  * Base class for all node views.
  */
 public class MainView extends ZoomableLabel {
-    private static final long serialVersionUID = 1L;
+    private static final String MOUSE_DRIVEN_NODE_SHIFTS_OPTION_NAME = "mouseDrivenNodeShiftsAreDisabled";
+	private static final long serialVersionUID = 1L;
     private static MainView lastMouseEventTarget = null;
 
     public enum DragOverRelation {
@@ -699,6 +700,8 @@ public class MainView extends ZoomableLabel {
     }
 
     public boolean isInDragRegion(Point p) {
+    	if(ResourceController.getResourceController().getBooleanProperty(MOUSE_DRIVEN_NODE_SHIFTS_OPTION_NAME))
+    		return false;
 		if (p.y >= 0 && p.y < getHeight()){
 			final NodeView nodeView = getNodeView();
 			if(nodeView.isRoot())
