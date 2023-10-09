@@ -220,6 +220,7 @@
 				<boolean name="shouldCenterSmallMaps"/>
 				<boolean name="pasteImagesFromFiles"/>
 				<boolean name="enforceModalEditorDialogs" />
+				<boolean name="mouseDrivenNodeShiftsAreDisabled"/>
 			</separator>
 			<separator name="reminderOptions">
 				<maybe_boolean name="reminder.showPastRemindersOnStart" />
