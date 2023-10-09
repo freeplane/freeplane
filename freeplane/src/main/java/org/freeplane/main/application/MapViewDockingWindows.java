@@ -484,6 +484,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 					String oldTitle = containingDockedWindow.getViewProperties().getTitle();
 					MapView mapView = (MapView)mapViewComponent;
 					if(oldTitle != null && !oldTitle.equals("") && !oldTitle.equals(mapView.getName())){
+						if(oldTitle.endsWith(" *")) {
+							oldTitle = oldTitle.substring(0,oldTitle.length()-2);
+						}
 						mapView.putClientProperty(CUSTOMIZED_TAB_NAME_PROPERTY, oldTitle);
 					}
 				}
