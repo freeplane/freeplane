@@ -337,11 +337,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		if (pNewMap == null) {
 			return;
 		}
+		if(loadingLayoutFromObjectInputStream) {
             if(mapViews.contains(pNewMap))
                 return;
             else
                 updateTitle(pNewMap);
-		if(loadingLayoutFromObjectInputStream) {
         } else {
 			for (int i = 0; i < mapViews.size(); ++i) {
 				if (mapViews.get(i) == pNewMap) {
