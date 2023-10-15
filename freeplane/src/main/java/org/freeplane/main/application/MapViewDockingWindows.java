@@ -84,6 +84,7 @@ import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.ClassicDockingTheme;
 import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.LookAndFeelDockingTheme;
+import net.infonode.docking.title.SimpleDockingWindowTitleProvider;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.gui.DynamicUIManager;
 import net.infonode.gui.DynamicUIManagerListener;
@@ -102,7 +103,7 @@ import net.infonode.util.Direction;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
 
-	protected static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedTabName";
+	private static final String CUSTOMIZED_TAB_NAME_PROPERTY = "customizedTabName";
     // // 	final private Controller controller;
 	private static final String OPENED_NOW = "openedNow_1.3.04";
 	private RootWindow rootWindow = null;
@@ -363,8 +364,22 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		mapViews.add(pNewMap);
 	}
 
+    private String getCustomTitle(DockingWindow window){
+        String windowName = (String) window.getClientProperty(MapViewDockingWindows.CUSTOMIZED_TAB_NAME_PROPERTY);
+        if (windowName == null || (window instanceof ConnectedToMenuView)) {
+            return SimpleDockingWindowTitleProvider.INSTANCE.getTitle(window);
+        } else {
+            boolean dirty = false;
+            int childWindowsCount = window.getChildWindowCount();
+            for (int i = 0; i < childWindowsCount; i++) {
+                dirty = dirty || window.getChildWindow(i).getTitle().endsWith("*");
+            }
+            return windowName + (childWindowsCount>1?" (" + childWindowsCount + ")":"") +(dirty?" *":"");
+        }
+    }
+
 	private void addTitleProvider(DockingWindow window){
-		window.getWindowProperties().setTitleProvider(new CustomWindowTitleProvider());
+		window.getWindowProperties().setTitleProvider(this::getCustomTitle);
 	}
 
 	static private View getContainingDockedWindow(final Component pNewMap) {
