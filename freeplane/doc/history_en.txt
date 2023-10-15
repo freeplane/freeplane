@@ -2,6 +2,7 @@
 1.11.8
 ==============================
 Support text writing direction for nodes and styles
+Custom tab names
 Bug fixes
 ==============================
 1.11.7
