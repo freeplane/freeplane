@@ -369,14 +369,26 @@ class MapViewDockingWindows implements IMapViewChangeListener {
         if (windowName == null || (window instanceof ConnectedToMenuView)) {
             return SimpleDockingWindowTitleProvider.INSTANCE.getTitle(window);
         } else {
-            boolean dirty = false;
-            for (int i = 0; i < window.getChildWindowCount(); i++) {
-                dirty = dirty || window.getChildWindow(i).getTitle().endsWith("*");
-            }
+            boolean dirty = isAnyChildWindowDirty(window);
             int childWindowsCount = getChildWindowsCount(window);
             return windowName + (childWindowsCount>1?" (" + childWindowsCount + ")":"") +(dirty?" *":"");
         }
     }
+
+	private boolean isAnyChildWindowDirty(DockingWindow window){
+		if (window == null)
+			return false;
+		else if (window instanceof View) {
+			return window.getTitle().endsWith("*");
+		}
+		else {
+			for (int i = 0; i < window.getChildWindowCount(); i++) {
+				if (isAnyChildWindowDirty(window.getChildWindow(i)) )
+					return true;
+			}
+		}
+		return false;
+	}
 
 	private int getChildWindowsCount(DockingWindow window){
 		int windowCount = 0;
