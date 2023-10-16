@@ -370,13 +370,28 @@ class MapViewDockingWindows implements IMapViewChangeListener {
             return SimpleDockingWindowTitleProvider.INSTANCE.getTitle(window);
         } else {
             boolean dirty = false;
-            int childWindowsCount = window.getChildWindowCount();
-            for (int i = 0; i < childWindowsCount; i++) {
+            for (int i = 0; i < window.getChildWindowCount(); i++) {
                 dirty = dirty || window.getChildWindow(i).getTitle().endsWith("*");
             }
+            int childWindowsCount = getChildWindowsCount(window);
             return windowName + (childWindowsCount>1?" (" + childWindowsCount + ")":"") +(dirty?" *":"");
         }
     }
+
+	private int getChildWindowsCount(DockingWindow window){
+		int windowCount = 0;
+		if (window == null)
+			return 0;
+		else if (window instanceof View) {
+			return 1;
+		}
+		else {
+			for (int i = 0; i < window.getChildWindowCount(); i++) {
+				windowCount += getChildWindowsCount(window.getChildWindow(i));
+			}
+		}
+		return windowCount;
+	}
 
 	private void addTitleProvider(DockingWindow window){
 		window.getWindowProperties().setTitleProvider(this::getCustomTitle);
