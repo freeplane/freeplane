@@ -36,6 +36,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -268,7 +269,7 @@ public class ModeController extends AController implements FreeplaneActions{
 	public UserRole userRole(MapModel map) {
 		return map != null ? UserRole.EDITOR : UserRole.NO_MAP;
 	}
-	
+
 	public boolean isEditingLocked() {
 		return ResourceController.getResourceController().getBooleanProperty(VIEW_MODE_PROPERTY);
 	}
@@ -412,16 +413,14 @@ public class ModeController extends AController implements FreeplaneActions{
 	}
 	public String createToolTip(final NodeModel node, Component view) {
 		final MapModel map = node.getMap();
-		// perhaps we should use the solution presented in the 3rd answer at
-		// http://stackoverflow.com/questions/3355469/1-pixel-table-border-in-jtextpane-using-html
-		// html/css example: http://www.wer-weiss-was.de/theme35/article3555660.html
 		final Color background = getExtension(MapStyle.class).getBackground(map);
+		final Color textColor = UITools.getTextColorForBackground(background);
 		final StringBuilder style = new StringBuilder( "<style type='text/css'>")
-		        .append(" body { font-size: 10pt;}")
-		        .append(" table {border: 0; border-spacing: 0;}")
+		        .append(" body { font-size: 10pt;")
+		        .append(new CssRuleBuilder().withColor(textColor).withBackground(background))
+		        .append("} table {border: 0; border-spacing: 0;}")
 		        .append(" th, td {border: 1px solid;}")
 		        // FIXME: copy from NoteController.setNoteTooltip() ?
-		        .append(new CssRuleBuilder().withBackground(background))
 		        .append("</style>");
 		final StringBuilder text = new StringBuilder("<html><head>"+style+"</head><body>");
 		boolean tooltipSet = false;
