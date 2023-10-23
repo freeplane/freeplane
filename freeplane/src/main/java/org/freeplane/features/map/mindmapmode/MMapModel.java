@@ -32,8 +32,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.DoAutomaticSave;
 import org.freeplane.features.url.mindmapmode.DummyLockManager;
@@ -52,7 +50,7 @@ public class MMapModel extends MapModel {
 	/**
 	 * The current version and all other version that don't need XML update for
 	 * sure.
-	 * @param nodeDuplicator 
+	 * @param nodeDuplicator
 	 */
 	public MMapModel(INodeDuplicator nodeDuplicator) {
 		super(nodeDuplicator);
@@ -76,7 +74,7 @@ public class MMapModel extends MapModel {
         long lastKnownModificationTime = file != null  && file.exists() ? file.lastModified() : UNKNOWN_MODIFICATION_TIME;
         return lastKnownModificationTime;
     }
-    
+
     public boolean hasExternalFileChanged() {
         long fileModificationTime = getFileModificationTime();
         boolean hasTimeChanged = fileModificationTime != lastKnownModificationTime && fileModificationTime != UNKNOWN_MODIFICATION_TIME;
@@ -168,14 +166,6 @@ public class MMapModel extends MapModel {
 		timer.setRepeats(true);
 		timer.start();
 		this.timerForAutomaticSaving = timer;
-	}
-
-	@Override
-	public boolean close() {
-		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController(MModeController.MODENAME);
-		final MMapController mapController = (MMapController) modeController.getMapController();
-		return mapController.close(this);
 	}
 
 	@Override

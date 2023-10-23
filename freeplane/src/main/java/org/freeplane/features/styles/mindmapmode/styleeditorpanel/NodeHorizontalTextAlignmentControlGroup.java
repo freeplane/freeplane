@@ -23,6 +23,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.Vector;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.util.TextUtils;
@@ -30,7 +31,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 

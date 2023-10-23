@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -13,7 +14,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 

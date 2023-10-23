@@ -20,27 +20,35 @@
 package org.freeplane.features.note.mindmapmode;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
+import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.TextController;
 
 class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
@@ -58,18 +66,37 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 		ResourceController resourceController = ResourceController.getResourceController();
         resourceController.addPropertyChangeListener(this::propertyChanged);
         noteFollowsSelection = resourceController.getBooleanProperty(NOTE_FOLLOWS_SELECTION_PROPERTY);
-        noteController.getModeController().getMapController().addNodeChangeListener(new INodeChangeListener() {
+        final MapController mapController = noteController.getModeController().getMapController();
+		mapController.addNodeChangeListener(new INodeChangeListener() {
 
             @Override
             public void nodeChanged(NodeChangeEvent event) {
-                if(event.getNode().equals(node)
-                        && NodeModel.NOTE_TEXT.equals(event.getProperty()))
-                    updateEditor();
+                if(event.getNode().equals(node)) {
+					if (NodeModel.NOTE_TEXT.equals(event.getProperty()))
+						updateEditor();
+					else if (TextWritingDirection.class.equals(event.getProperty())) {
+						final NotePanel notePanel = noteController.getNotePanel();
+						if(notePanel != null)
+							notePanel.setComponentOrientation(getNoteTextDirection().componentOrientation);
+					}
+				}
             }
         });
+
+		mapController.addMapChangeListener(new IMapChangeListener() {
+		    @Override
+			public void mapChanged(final MapChangeEvent event) {
+		    	final Object property = event.getProperty();
+		    	if (node != null
+		    			&& node.getMap() == event.getMap() && property.equals(MapStyle.MAP_STYLES)) {
+		    		final NotePanel notePanel = noteController.getNotePanel();
+		    		if(notePanel != null)
+		    			notePanel.setComponentOrientation(getNoteTextDirection().componentOrientation);
+		    	}
+		    }
+
+		});
 	}
-
-
 
 	@Override
     public void onRemove(MapModel map) {
@@ -116,6 +143,8 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
         Color noteForeground = noteStyleAccessor.getNoteForeground();
         Color noteBackground = noteStyleAccessor.getNoteBackground();
+        final ComponentOrientation componentOrientation = getNoteTextDirection().componentOrientation;
+        notePanel.setComponentOrientation(componentOrientation);
         StringBuilder bodyCssBuilder = new StringBuilder( "body {").append(noteCssRule).append("}\n");
         if (ResourceController.getResourceController().getBooleanProperty(
             MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
@@ -241,4 +270,14 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         }
     }
 
+
+
+	TextWritingDirection getNoteTextDirection() {
+		if(node ==  null)
+			return TextWritingDirection.DEFAULT;
+		else
+			return Controller.getCurrentModeController()
+					.getExtension(NodeStyleController.class)
+					.getTextWritingDirection(node, StyleOption.FOR_UNSELECTED_NODE);
+	}
 }

@@ -457,7 +457,7 @@ public class EditNodeTextField extends EditNodeBase {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
 				if (linkURL != null) {
 					try {
-						LinkController.getController().loadURI(nodeView.getModel(), LinkController.createHyperlink(linkURL));
+						LinkController.getController().loadURI(nodeView.getNode(), LinkController.createHyperlink(linkURL));
 					} catch (Exception e) {
 						LogUtils.warn(e);
 					}

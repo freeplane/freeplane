@@ -57,7 +57,7 @@ class TextualTooltipRendererFactory {
 	    		if (linkURL != null) {
 	    			try {
 	    				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
-	    				LinkController.getController().loadURI(nodeView.getModel(), LinkController.createHyperlink(linkURL));
+	    				LinkController.getController().loadURI(nodeView.getNode(), LinkController.createHyperlink(linkURL));
 	    			} catch (Exception e) {
 	    				LogUtils.warn(e);
 	    			}

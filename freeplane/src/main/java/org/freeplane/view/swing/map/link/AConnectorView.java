@@ -32,7 +32,7 @@ import org.freeplane.view.swing.map.NodeView;
  * Apr 29, 2010
  */
 abstract class AConnectorView  implements ILinkView {
-	protected final ConnectorModel connectorModel;
+	protected final ConnectorModel viewedConnector;
 	protected final NodeView source;
 	protected final NodeView target;
 
@@ -97,7 +97,7 @@ abstract class AConnectorView  implements ILinkView {
 
 	public AConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
 		super();
-		this.connectorModel = connectorModel;
+		this.viewedConnector = connectorModel;
 		this.source = source;
 		this.target = target;
 	}

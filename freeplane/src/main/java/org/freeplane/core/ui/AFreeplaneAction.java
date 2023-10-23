@@ -58,7 +58,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public void addConstraint(UserRoleConstraint constraint) {
 		this.constraint = this.constraint.and(constraint);
 	}
-	
+
 	protected void setIcon(final String iconKey) {
 		Icon icon = ResourceController.getResourceController().getIcon(iconKey);
 		setIcon(icon);
@@ -112,7 +112,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		}
 		return annotation.checkOnNodeChange();
 	}
-	
+
 	public boolean checkSelectionOnChange() {
 		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
@@ -137,14 +137,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return annotation.checkOnPopup();
 	}
 
-	public boolean checkEnabledOnPopup() {
-		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnPopup();
-	}
-	
 	@Override
 	public String getIconKey() {
 		return key + ".icon";

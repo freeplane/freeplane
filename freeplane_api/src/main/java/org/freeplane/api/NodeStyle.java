@@ -54,8 +54,10 @@ public interface NodeStyle extends NodeStyleRO {
 
     /** @since 1.3.8 */
     void setNumberingEnabled(boolean enabled);
-    
+
     /** @since 1.9.12 */
     void setCss(String css);
 
+    /** @since 1.11.8 */
+    void setHorizontalTextAlignment(HorizontalTextAlignment alignment);
 }

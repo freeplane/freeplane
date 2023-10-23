@@ -80,6 +80,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.api.LengthUnit;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
@@ -591,7 +592,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
 			final NodeStyleController nsc = NodeStyleController.getController(modeController);
-			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
+			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getNode(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{
@@ -706,6 +707,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		editorComponent.setOpaque(true);
 		final Font font = editorComponent.getFont();
 		editorComponent.setFont(font.deriveFont(font.getSize2D() * getZoom()));
+		final NodeView nodeView = getNodeViewAncestor();
+		if(nodeView != null)
+			editorComponent.setComponentOrientation(nodeView.getMainView().getComponentOrientation());
+		else {
+			final TextWritingDirection textDirection = NodeStyleController
+					.getController(Controller.getCurrentModeController())
+					.getTextWritingDirection(node, StyleOption.FOR_UNSELECTED_NODE);
+			editorComponent.setComponentOrientation(textDirection.componentOrientation);
+		}
 		return super.prepareEditor(tce, row, col);
 	}
 
@@ -907,7 +917,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(! SwingUtilities.isDescendingFrom(this, nodeView))
 			return;
 		final MapView mapView = nodeView.getMap();
-        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final EdgeModel edge = EdgeModel.getModel(attributeStyleNode);
         if(edge != null){
@@ -953,7 +963,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
-        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));

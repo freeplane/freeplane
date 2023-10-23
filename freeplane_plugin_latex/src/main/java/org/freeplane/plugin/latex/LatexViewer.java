@@ -68,7 +68,7 @@ class LatexViewer extends JComponent {
 						for (int i = 0; i < lv.getParent().getComponentCount(); i++) {
 							if (lv.getParent().getComponent(i) instanceof MainView) {
 								final MainView mv = (MainView) lv.getParent().getComponent(i);
-								node = mv.getNodeView().getModel();
+								node = mv.getNodeView().getNode();
 								break;
 							}
 						}

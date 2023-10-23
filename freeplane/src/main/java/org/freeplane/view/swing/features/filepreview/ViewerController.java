@@ -193,7 +193,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				return true;
 			}
 			final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, viewer);
-			setZoom(mapView.getModeController(), mapView.getModel(), (ExternalResource) viewer
+			setZoom(mapView.getModeController(), mapView.getMap(), (ExternalResource) viewer
 			    .getClientProperty(ExternalResource.class), 1f);
 			sizeChanged = false;
 			return true;
@@ -289,7 +289,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
 				if (e.getComponent().getParent().getComponent(i) instanceof MainView) {
 					final MainView mv = (MainView) e.getComponent().getParent().getComponent(i);
-					node = mv.getNodeView().getModel();
+					node = mv.getNodeView().getNode();
 					break;
 				}
 			}
@@ -386,7 +386,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
 				final float zoom = mapView.getZoom();
 				final float modelSize = (float) (r / r0 / zoom);
-				setZoom(mapView.getModeController(), mapView.getModel(), (ExternalResource) component
+				setZoom(mapView.getModeController(), mapView.getMap(), (ExternalResource) component
 				    .getClientProperty(ExternalResource.class), modelSize);
 				sizeChanged = false;
 			}
@@ -613,7 +613,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 	void createViewer(final ExternalResource resource, final NodeView view) {
 		MapView map = view.getMap();
-        final JComponent viewer = createViewer(map.getModel(), resource, map.getZoom());
+        final JComponent viewer = createViewer(map.getMap(), resource, map.getZoom());
 		if (imagePopupMenu == null) {
 			imagePopupMenu = new ExternalImagePopupMenu();
 		}
@@ -651,7 +651,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	@Override
 	public void onViewCreated(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final ExternalResource previewUri = nodeView.getModel().getExtension(ExternalResource.class);
+		final ExternalResource previewUri = nodeView.getNode().getExtension(ExternalResource.class);
 		if (previewUri == null) {
 			return;
 		}
@@ -661,7 +661,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	@Override
 	public void onViewRemoved(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final ExternalResource previewUri = nodeView.getModel().getExtension(ExternalResource.class);
+		final ExternalResource previewUri = nodeView.getNode().getExtension(ExternalResource.class);
 		if (previewUri == null) {
 			return;
 		}

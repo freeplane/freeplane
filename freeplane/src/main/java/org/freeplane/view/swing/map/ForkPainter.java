@@ -67,7 +67,7 @@ class ForkPainter extends MainViewPainter {
 	void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		final NodeView nodeView = mainView.getNodeView();
-		if (nodeView.getModel() == null) {
+		if (nodeView.getNode() == null) {
 			return;
 		}
 		mainView.paintBackgound(g);

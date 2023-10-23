@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import org.freeplane.api.Quantity;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.nodestyle.FontUtils;
 
@@ -88,7 +89,11 @@ public class CssRuleBuilder {
 			break;
 		}
 		return this;
-
+	}
+	public CssRuleBuilder withDirection(TextWritingDirection direction) {
+		if(direction == TextWritingDirection.RIGHT_TO_LEFT)
+			rule.append("direction: rtl;");
+		return this;
 	}
 
 	public String toString() {

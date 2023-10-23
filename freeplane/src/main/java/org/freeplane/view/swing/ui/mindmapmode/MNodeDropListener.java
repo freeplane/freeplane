@@ -54,7 +54,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MainView.DragOverRelation;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.MouseArea;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MNodeDropListener implements DropTargetListener {
@@ -79,6 +78,7 @@ private Timer timer;
 		if (isDragAcceptable(dtde)) {
 			supportFolding(dtde);
 			dtde.acceptDrag(DnDConstants.ACTION_MOVE);
+
 		}
 		else {
 			dtde.rejectDrag();
@@ -88,27 +88,25 @@ private Timer timer;
 	private void supportFolding(final DropTargetDragEvent dtde) {
 		final MainView node = getNode(dtde);
 		if(isInFoldingRegion(dtde)){
-			node.setMouseArea(MouseArea.FOLDING);
 			startUnfoldTimer(node);
 		}
 		else{
-			node.setMouseArea(MouseArea.DEFAULT);
 			stopUnfoldTimer();
 		}
     }
 
 	private boolean isInFoldingRegion(DropTargetDragEvent dtde) {
-		final MainView node = getNode(dtde);
-		return node.isInFoldingRegion(dtde.getLocation());
+	    final MainView node = getNode(dtde);
+	    return node.dragOverRelation(dtde.getLocation()).isChild();
 	}
 
 	@Override
 	public void dragExit(final DropTargetEvent e) {
-		getNode(e).setMouseArea(MouseArea.OUT);
-		stopUnfoldTimer();
-		final MainView mainView = getNode(e);
-		mainView.stopDragOver();
-		mainView.repaint();
+	    MainView node = getNode(e);
+	    stopUnfoldTimer();
+	    final MainView mainView = node;
+	    mainView.stopDragOver();
+	    mainView.repaint();
 	}
 
 	private MainView getNode(final DropTargetEvent e) {
@@ -134,7 +132,7 @@ private Timer timer;
 				public void actionPerformed(ActionEvent e) {
 					if(mainView.isDisplayable()){
 						NodeView nodeView = mainView.getNodeView();
-						final NodeModel node = nodeView.getModel();
+						final NodeModel node = nodeView.getNode();
 						Controller.getCurrentModeController().getMapController().unfold(node, nodeView.getMap().getFilter());
 					}
 				}
@@ -166,7 +164,7 @@ private Timer timer;
 		catch (Exception e) {
 			return dropAction != DnDConstants.ACTION_LINK;
 		}
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getNode();
 		if (dropAction == DnDConstants.ACTION_LINK) {
 			return isFromSameMap(node, droppedNodes);
 		}
@@ -209,11 +207,12 @@ private Timer timer;
 	@Override
 	public void drop(final DropTargetDropEvent dtde) {
 		try {
+		    stopUnfoldTimer();
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final MapView mapView = targetNodeView.getMap();
 			mapView.select();
-			final NodeModel targetNode = targetNodeView.getModel();
+			final NodeModel targetNode = targetNodeView.getNode();
 			final Controller controller = Controller.getCurrentController();
 			int dropAction = getDropAction(dtde);
 			final Transferable t = dtde.getTransferable();

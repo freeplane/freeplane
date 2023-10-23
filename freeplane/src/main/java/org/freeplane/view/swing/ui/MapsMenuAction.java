@@ -22,7 +22,9 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
@@ -30,12 +32,17 @@ import org.freeplane.features.mode.Controller;
 @SuppressWarnings("serial")
 @SelectableAction
 class MapsMenuAction extends AFreeplaneAction {
-	public MapsMenuAction(String command) {
-		super("MapsMenuAction." + command, command, null);
+	private static final String MAPS_MENU_ACTION_DOT = "MapsMenuAction.";
+
+	public MapsMenuAction(String command, String title) {
+		super(MAPS_MENU_ACTION_DOT + command, title, null);
 	}
 
 	public void actionPerformed(final ActionEvent menuEvent) {
-		final String mapId = menuEvent.getActionCommand();
+		JAutoRadioButtonMenuItem menuItem = (JAutoRadioButtonMenuItem) menuEvent.getSource();
+		AccelerateableAction accelerateableAction = (AccelerateableAction) menuItem.getAction();
+		AFreeplaneAction action = accelerateableAction.getOriginalAction();
+		final String mapId = ((String) action.getKey()).substring(MAPS_MENU_ACTION_DOT.length());
 		UITools.executeWhenNodeHasFocus(new Runnable() {
 			@Override
 			public void run() {

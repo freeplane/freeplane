@@ -66,7 +66,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			super.mouseDragged(e);
 			return;
 		}
-		ConnectorModel connector = connectorView.getModel();
+		ConnectorModel connector = connectorView.getConnector();
 		final NodeModel target = connector.getTarget();
 		if(target == null) {
 			super.mouseDragged(e);
@@ -93,12 +93,12 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		}
 		if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
 			final Point changedInclination = connector.getStartInclination();
-			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getModel(), connector.getSource(), changedInclination);
+			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getNode(), connector.getSource(), changedInclination);
 			connector.setStartInclination(changedInclination);
 		}
 		if ((sourceView == null || targetView != null) && distSqToTarget <= distSqToSource * 2.25) {
 			final Point changedInclination = connector.getEndInclination();
-			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getModel(), target, changedInclination);
+			connector.changeInclination(deltaX, deltaY, mapView.getRoot().getNode(), target, changedInclination);
 			connector.setEndInclination(changedInclination);
 		}
 		originX = e.getX();
@@ -117,7 +117,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		final Object object = mapView.detectView(new Point(originX, originY));
 		if (object instanceof ConnectorView) {
 			connectorView = ((ConnectorView) object);
-			ConnectorModel connector = connectorView.getModel();
+			ConnectorModel connector = connectorView.getConnector();
 			if(MapStyleModel.isDefaultStyleNode(connector.getSource()))
 			    return;
 			final ConnectorShape shape = linkController().getShape(connector);
@@ -134,7 +134,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 	public void mouseReleased(final MouseEvent e) {
 		super.mouseReleased(e);
 		if (connectorView != null) {
-		    ConnectorModel connector = connectorView.getModel();
+		    ConnectorModel connector = connectorView.getConnector();
 			final Point connectorNewStartPoint = connector.getStartInclination();
 			final Point connectorNewEndPoint = connector.getEndInclination();
 			connector.setStartInclination(connectorOldStartPoint);
@@ -177,7 +177,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 					x = rootContentNormalWidth - x;
 				}
 				final Point pt = new Point(x, y);
-				((MMapController)modeController.getMapController()).addFreeNode(root.getModel(), pt, newNodeIsLeft ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
+				((MMapController)modeController.getMapController()).addFreeNode(root.getNode(), pt, newNodeIsLeft ? Side.TOP_OR_LEFT : Side.BOTTOM_OR_RIGHT);
 			}
 		}
 		else

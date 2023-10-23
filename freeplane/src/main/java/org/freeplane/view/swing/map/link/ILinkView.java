@@ -41,7 +41,7 @@ public interface ILinkView {
 	 * fc: This getter is public, because the view gets the model by click on
 	 * the curve.
 	 */
-	public abstract ConnectorModel getModel();
+	public abstract ConnectorModel getConnector();
 
 	/**
 	 * \param iterativeLevel describes the n-th nested arrowLink that is to be

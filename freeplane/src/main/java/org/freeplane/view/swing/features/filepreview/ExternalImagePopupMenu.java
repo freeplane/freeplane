@@ -176,8 +176,8 @@ class ExternalImagePopupMenu extends JPopupMenu implements MouseListener {
 				if (cmp instanceof MainView) {
 					mv = (MainView) cmp;
 					NodeView nodeView = mv.getNodeView();
-					selectionRoot = nodeView.getMap().getRoot().getModel();
-					node = nodeView.getModel();
+					selectionRoot = nodeView.getMap().getRoot().getNode();
+					node = nodeView.getNode();
 					viewer = (Controller.getCurrentController().getModeController().getExtension(
 					    ViewerController.class));
 					break;

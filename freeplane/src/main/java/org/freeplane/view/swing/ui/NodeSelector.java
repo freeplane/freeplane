@@ -71,9 +71,9 @@ public class NodeSelector {
 		            final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
 		                    mouseEvent.getComponent());
 		            MapView map = nodeV.getMap();
-		            if (nodeV.isDisplayable() && nodeV.getModel().hasVisibleContent(map.getFilter())) {
+		            if (nodeV.isDisplayable() && nodeV.getNode().hasVisibleContent(map.getFilter())) {
 		                map.select();
-		                controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+		                controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getNode());
 		            }
 		        }
 		    }
@@ -145,7 +145,7 @@ public class NodeSelector {
 	public void extendSelection(final MouseEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeView nodeView = getRelatedNodeView(e);
-		final NodeModel newlySelectedNode = nodeView.getModel();
+		final NodeModel newlySelectedNode = nodeView.getNode();
 		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
 		final IMapSelection selection = controller.getSelection();
@@ -170,7 +170,7 @@ public class NodeSelector {
 		final NodeView nodeV = getRelatedNodeView(e);
 		final Controller controller = Controller.getCurrentController();
 		if (!((MapView) controller.getMapViewManager().getMapViewComponent()).isSelected(nodeV)) {
-			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getNode());
 		}
 	}
 

@@ -302,9 +302,7 @@ public interface Proxy {
 
     interface DependencyLookup extends org.freeplane.api.DependencyLookup {}
 
-	interface ConditionalStylesRO extends org.freeplane.api.ConditionalStylesRO {}
-
-	interface ConditionalStyles extends ConditionalStylesRO, org.freeplane.api.ConditionalStyles {}
+	interface ConditionalStyles extends org.freeplane.api.ConditionalStyles {}
 
 	interface ConditionalStyleRO extends org.freeplane.api.ConditionalStyleRO {}
 
