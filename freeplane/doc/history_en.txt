@@ -3,6 +3,7 @@
 ==============================
 Support text writing direction for nodes and styles
 Custom tab names
+Reopen all map views after restart, not just one per map
 Bug fixes
 ==============================
 1.11.7
