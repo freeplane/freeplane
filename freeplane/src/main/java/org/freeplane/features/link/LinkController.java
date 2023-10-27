@@ -59,6 +59,7 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.Configurable;
@@ -79,7 +80,6 @@ import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
@@ -898,14 +898,14 @@ public class LinkController extends SelectionController implements IExtension {
 		return arrows;
 	}
 	
-	public DashVariant getStandardDashVariant() {
+	public Dash getStandardDash() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
-		final DashVariant variant = DashVariant.valueOf(standard);
+		final Dash variant = Dash.valueOf(standard);
 		return variant;
 	}
 	
 	   public int[] getStandardDashArray() {
-	       return getStandardDashVariant().variant;
+	       return getStandardDash().pattern;
 	   }
 
 

@@ -22,11 +22,11 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.features.DashVariant;
-import org.freeplane.features.DashVariantRenderedContent;
+import org.freeplane.features.DashRenderedContent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
@@ -64,15 +64,15 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
 			.getCurrentModeController().getExtension(NodeStyleController.class);
-			styleController.setBorderDash(node, enabled ? DashVariant.valueOf(mBorderDash.getValue()): null);
+			styleController.setBorderDash(node, enabled ? Dash.valueOf(mBorderDash.getValue()): null);
 		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
 			final NodeStyleController styleController = NodeStyleController.getController();
-			final DashVariant dash = nodeBorderModel != null ? nodeBorderModel.getBorderDash() : null;
-			final DashVariant viewDash = styleController.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE);
+			final Dash dash = nodeBorderModel != null ? nodeBorderModel.getBorderDash() : null;
+			final Dash viewDash = styleController.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE);
 			mSetBorderDash.setValue(dash != null);
 			mBorderDash.setValue(viewDash.name());
 		}
@@ -123,7 +123,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 
 	private void addBorderDashControl(DefaultFormBuilder formBuilder) {
 		mSetBorderDash = new RevertingProperty();
-		mBorderDash = ComboProperty.of(BORDER_DASH, DashVariant.class, DashVariantRenderedContent::of);
+		mBorderDash = ComboProperty.of(BORDER_DASH, Dash.class, DashRenderedContent::of);
 		borderDashListener = new BorderDashListener(mSetBorderDash, mBorderDash);
 		mSetBorderDash.addPropertyChangeListener(borderDashListener);
 		mBorderDash.addPropertyChangeListener(borderDashListener);

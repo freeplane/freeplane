@@ -27,12 +27,12 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ObjectRule;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeColorConfiguration;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
@@ -79,7 +79,7 @@ public class MEdgeController extends EdgeController {
 			final int width = fromStyle.getWidth();
 			if(width  != EdgeModel.AUTO_WIDTH)
 			    toStyle.setWidth(width);
-			final DashVariant dash = fromStyle.getDash();
+			final Dash dash = fromStyle.getDash();
 			if (dash != null)
 				toStyle.setDash(dash);
 		}
@@ -174,7 +174,7 @@ public class MEdgeController extends EdgeController {
 	        if (null != getDash(to))
 				return;
 			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
-				final DashVariant dash = getDash(source);
+				final Dash dash = getDash(source);
 				if(dash != null){
 					EdgeModel.createEdgeModel(to).setDash(dash);
 					return;
@@ -182,7 +182,7 @@ public class MEdgeController extends EdgeController {
 			}
         }
 
-		private DashVariant getDash(NodeModel node) {
+		private Dash getDash(NodeModel node) {
 			return modeController.getExtension(EdgeController.class).getDash(node, StyleOption.FOR_UNSELECTED_NODE, false);
 		}
 
@@ -340,9 +340,9 @@ public class MEdgeController extends EdgeController {
 		modeController.execute(actor, node.getMap());
 	}
 
-	public void setDash(final NodeModel node, final DashVariant dash) {
+	public void setDash(final NodeModel node, final Dash dash) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final DashVariant oldDash = EdgeModel.createEdgeModel(node).getDash();
+		final Dash oldDash = EdgeModel.createEdgeModel(node).getDash();
 		if (dash == oldDash) {
 			return;
 		}

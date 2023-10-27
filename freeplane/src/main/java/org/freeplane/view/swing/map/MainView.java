@@ -50,6 +50,7 @@ import javax.swing.border.Border;
 
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.Dash;
 import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.api.LengthUnit;
@@ -63,7 +64,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -202,7 +202,7 @@ public class MainView extends ZoomableLabel {
 	private TextModificationState textModified = TextModificationState.NONE;
 	private MouseArea mouseArea = MouseArea.OUT;
 	private float unzoomedBorderWidth = 1f;
-	private DashVariant dash = DashVariant.DEFAULT;
+	private Dash dash = Dash.DEFAULT;
 	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
 	private Boolean borderColorMatchesEdgeColor = true;
 
@@ -838,7 +838,7 @@ public class MainView extends ZoomableLabel {
 		return Math.max(unzoomedBorderWidth, 1);
 	}
 
-	public DashVariant getDash() {
+	public Dash getDash() {
 		return dash;
 	}
 

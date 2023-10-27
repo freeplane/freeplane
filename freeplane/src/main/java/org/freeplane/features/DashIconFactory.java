@@ -15,19 +15,20 @@ import java.util.EnumMap;
 
 import javax.swing.Icon;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.ui.components.UITools;
 
 public class DashIconFactory {
-	private static EnumMap<DashVariant, Icon> icons = new EnumMap<>(DashVariant.class);
-	private static Icon createIcon(DashVariant dash) {
+	private static EnumMap<Dash, Icon> icons = new EnumMap<>(Dash.class);
+	private static Icon createIcon(Dash dash) {
 		final int LINE_WIDTH = 2;
 		final int ICON_HEIGHT = Math.round(12 * UITools.FONT_SCALE_FACTOR);
 		final int ICON_WIDTH = ICON_HEIGHT * 5;
-		Icon icon = DashIconFactory.createIcon(ICON_WIDTH, ICON_HEIGHT, LINE_WIDTH, dash.variant);
+		Icon icon = DashIconFactory.createIcon(ICON_WIDTH, ICON_HEIGHT, LINE_WIDTH, dash.pattern);
 		return icon;
 	}
 
-	public static Icon iconFor(DashVariant dash) {
+	public static Icon iconFor(Dash dash) {
 		return icons.computeIfAbsent(dash, DashIconFactory::createIcon);
 	}
 

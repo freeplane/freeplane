@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Collection;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -32,7 +33,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.MapController;
@@ -316,7 +316,7 @@ public class NodeStyleController implements IExtension {
 		return false;
 	}
 
-	private DashVariant getBorderDash(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Dash getBorderDash(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -327,13 +327,13 @@ public class NodeStyleController implements IExtension {
 			if (borderModel == null) {
 				continue;
 			}
-			final DashVariant borderDash = borderModel.getBorderDash();
+			final Dash borderDash = borderModel.getBorderDash();
 			if (borderDash == null) {
 				continue;
 			}
 			return borderDash;
 		}
-		return DashVariant.DEFAULT;
+		return Dash.DEFAULT;
 	}
 
 
@@ -657,11 +657,11 @@ public class NodeStyleController implements IExtension {
 		return borderWidth != null ? borderWidth : new Quantity<>(1, LengthUnit.px);
 	}
 
-	public DashVariant getBorderDash(NodeModel node, StyleOption option) {
+	public Dash getBorderDash(NodeModel node, StyleOption option) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node, option);
-		final DashVariant borderDash = getBorderDash(map, style);
+		final Dash borderDash = getBorderDash(map, style);
 		return borderDash;
 	}
 

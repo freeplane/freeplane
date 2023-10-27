@@ -22,6 +22,7 @@ package org.freeplane.features.nodestyle;
 import java.awt.Color;
 import java.io.IOException;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -39,7 +40,6 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
@@ -320,7 +320,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler borderDashHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeBorderModel.setBorderDash(node, DashVariant.valueOf(value));
+				NodeBorderModel.setBorderDash(node, Dash.valueOf(value));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_DASH", borderDashHandler);
@@ -491,7 +491,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (borderDashMatchesEdgeDash != null) {
 			writer.addAttribute("BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDash.toString());
 		}
-		DashVariant borderDash = forceFormatting ? nsc.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderDash();
+		Dash borderDash = forceFormatting ? nsc.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderDash();
 		if (borderDash != null) {
 			writer.addAttribute("BORDER_DASH", borderDash.name());
 		}
