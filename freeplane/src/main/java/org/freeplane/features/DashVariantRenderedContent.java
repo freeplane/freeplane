@@ -13,7 +13,7 @@ public class DashVariantRenderedContent{
 
     static private final EnumMap<DashVariant, RenderedContent<DashVariant>> renderers = new EnumMap<>(DashVariant.class);
     static public RenderedContent<DashVariant> of(DashVariant content) {
-        return renderers.computeIfAbsent(content, key -> new RenderedContent<DashVariant>(key, null, key.icon));
+        return renderers.computeIfAbsent(content, key -> new RenderedContent<DashVariant>(key, null, DashIconFactory.iconFor(key)));
     }
 
 
