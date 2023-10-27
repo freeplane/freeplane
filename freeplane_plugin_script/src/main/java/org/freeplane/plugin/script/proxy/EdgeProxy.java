@@ -5,6 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import java.awt.Color;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
@@ -19,6 +20,10 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 		super(delegate, scriptContext);
 	}
 
+	private MEdgeController getEdgeController() {
+		return (MEdgeController) EdgeController.getController();
+	}
+
 	@Override
 	public Color getColor() {
 		return getEdgeController().getColor(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
@@ -27,20 +32,6 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	@Override
 	public String getColorCode() {
 		return ColorUtils.colorToString(getColor());
-	}
-
-	private MEdgeController getEdgeController() {
-		return (MEdgeController) EdgeController.getController();
-	}
-
-	@Override
-	public EdgeStyle getType() {
-		return getEdgeController().getStyle(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
-	}
-
-	@Override
-	public int getWidth() {
-		return getEdgeController().getWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
 	}
 
 	@Override
@@ -52,6 +43,34 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	@Override
 	public void setColor(final Color color) {
 		getEdgeController().setColor(getDelegate(), color);
+	}
+
+	@Override
+	public EdgeStyle getType() {
+		return getEdgeController().getStyle(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	@Override
+	public boolean isTypeSet() {
+		EdgeModel edge = EdgeModel.getModel(getDelegate());
+		return edge!=null && edge.getStyle() != null;
+
+	}
+
+	@Override
+	public int getWidth() {
+		return getEdgeController().getWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	@Override
+	public boolean isWidthSet() {
+		EdgeModel edge = EdgeModel.getModel(getDelegate());
+		return edge!=null && edge.getWidth() != EdgeModel.AUTO_WIDTH;
+	}
+
+	@Override
+	public void setWidth(final int width) {
+		getEdgeController().setWidth(getDelegate(), width);
 	}
 
 	@Override
@@ -75,7 +94,18 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 	}
 
 	@Override
-	public void setWidth(final int width) {
-		getEdgeController().setWidth(getDelegate(), width);
+	public Dash getDash() {
+		return getEdgeController().getDash(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	@Override
+	public boolean isDashSet() {
+		EdgeModel edge = EdgeModel.getModel(getDelegate());
+		return edge!=null && edge.getDash() != null;
+	}
+
+	@Override
+	public void setDash(Dash dash) {
+		getEdgeController().setDash(getDelegate(), dash);
 	}
 }

@@ -18,4 +18,9 @@ public interface Edge extends EdgeRO {
 
 	/** can be -1 for default, 0 for thin, &gt;0 */
 	void setWidth(int width);
+
+	/**
+	 * @since 1.11.8
+	 */
+	void setDash(Dash dash);
 }

@@ -1,5 +1,6 @@
 package org.freeplane.plugin.script.proxy;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.util.ColorUtils;
@@ -8,6 +9,7 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.plugin.script.ScriptContext;
 
 import java.awt.Color;
@@ -32,11 +34,6 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
     }
 
     @Override
-    public void setWidth(Quantity<LengthUnit> borderWidth) {
-        getStyleController().setBorderWidth(getDelegate(), borderWidth);
-    }
-
-    @Override
     public Color getColor() {
         return getStyleController().getBorderColor(getDelegate(), LogicalStyleController.StyleOption.FOR_UNSELECTED_NODE);
     }
@@ -57,4 +54,31 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
         return getStyleController().getBorderWidth(getDelegate(), LogicalStyleController.StyleOption.FOR_UNSELECTED_NODE);
     }
 
+
+	@Override
+	public boolean isWidthSet() {
+		NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
+		return border!=null && border.getBorderDash() != null;
+	}
+
+    @Override
+    public void setWidth(Quantity<LengthUnit> borderWidth) {
+        getStyleController().setBorderWidth(getDelegate(), borderWidth);
+    }
+
+	@Override
+	public Dash getDash() {
+		return getStyleController().getBorderDash(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+	}
+
+	@Override
+	public boolean isDashSet() {
+		NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
+		return border!=null && border.getBorderDash() != null;
+	}
+
+	@Override
+	public void setDash(Dash dash) {
+		getStyleController().setBorderDash(getDelegate(), dash);
+	}
 }
