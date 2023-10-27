@@ -586,7 +586,7 @@ public class UITools {
     		fdash = new float[dash.length];
     		int i = 0;
     		for(float d : dash){
-    			fdash[i++] = d;
+    			fdash[i++] = d * FONT_SCALE_FACTOR;
     		}
     	}
     	else{
