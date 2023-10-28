@@ -30,12 +30,12 @@ import org.freeplane.features.styles.IStyle;
 public class ConnectorModel extends NodeLinkModel {
 
     final private ConnectorProperties connectorProperties;
-	
+
 	public ConnectorModel(NodeModel source, String targetID) {
 	    this(source, targetID, new ConnectorProperties());
 	}
 	public ConnectorModel(final NodeModel source, final String targetID,
-			final ConnectorArrows connectorEnds, int[] dash, 
+			final ConnectorArrows connectorEnds, int[] dash,
 			final Color color,final int alpha, final ConnectorShape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
 		this(source, targetID, new ConnectorProperties(connectorEnds, dash, color, alpha, shape, width, labelFontFamily, labelFontSize));
@@ -102,8 +102,8 @@ public class ConnectorModel extends NodeLinkModel {
     public void setStyle(IStyle style) {
         connectorProperties.setStyle(style);
     }
-    
-    
+
+
 	public Optional<ConnectorArrows> getArrows() {
 		return connectorProperties.getArrows();
 	}
