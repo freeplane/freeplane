@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 public enum Dash {
 	SOLID(new int[] {}),
-	TIGHT_DOTS(new int[]{3, 3}),
+	CLOSE_DOTS(new int[]{3, 3}),
 	DASHES(new int[]{7, 7}),
 	DISTANT_DOTS(new int[]{2, 7}),
 	DOTS_AND_DASHES(new int[]{2, 7, 7, 7});
