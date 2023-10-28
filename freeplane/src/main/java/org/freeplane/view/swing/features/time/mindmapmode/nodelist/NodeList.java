@@ -45,6 +45,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -363,7 +364,9 @@ class NodeList implements IExtension {
 		mFilterTextSearchField.setEditable(true);
 		final FilterTextDocumentListener listener = new FilterTextDocumentListener();
 		mFilterTextSearchField.addActionListener(listener);
-		final JTextComponent editorComponent = (JTextComponent) mFilterTextSearchField.getEditor().getEditorComponent();
+		final ComboBoxEditor editor = mFilterTextSearchField.getEditor();
+		editor.addActionListener(e -> selectSelectedRows());
+		final JTextComponent editorComponent = (JTextComponent) editor.getEditorComponent();
 		editorComponent.getDocument().addDocumentListener(listener);
 		useRegexInFind = new JCheckBox(TextUtils.getText("regular_expressions"));
 		useRegexInFind.addActionListener(listener);
@@ -475,7 +478,11 @@ class NodeList implements IExtension {
 	}
 
 	private void selectSelectedRows() {
-		selectNodes(tableView.getSelectedRow(), tableView.getSelectedRows());
+		final int selectedRow = tableView.getSelectedRow();
+		if(selectedRow >= 0)
+			selectNodes(selectedRow, tableView.getSelectedRows());
+		else if(tableView.getRowCount() >= 1)
+			selectNodes(0, new int[]{0});
 	}
 
 	public void startup(NodeFilter nodeFilter) {
