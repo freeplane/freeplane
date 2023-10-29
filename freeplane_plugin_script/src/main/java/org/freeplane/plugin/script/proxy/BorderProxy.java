@@ -112,4 +112,22 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
         return getStyleController().getBorderDashMatchesEdgeDash(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
     }
 
+    @Override
+    public boolean isUsesEdgeColorSet() {
+        NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
+        return border!=null && border.getBorderColorMatchesEdgeColor() != null;
+    }
+
+    @Override
+    public boolean isUsesEdgeWidthSet() {
+        NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
+        return border!=null && border.getBorderWidthMatchesEdgeWidth() != null;
+    }
+
+    @Override
+    public boolean isUsesEdgeDashSet() {
+        NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
+        return border!=null && border.getBorderDashMatchesEdgeDash() != null;
+    }
+
 }
