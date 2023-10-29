@@ -58,7 +58,7 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
 	@Override
 	public boolean isWidthSet() {
 		NodeBorderModel border = NodeBorderModel.getModel(getDelegate());
-		return border!=null && border.getBorderDash() != null;
+		return border!=null && border.getBorderWidth() != null;
 	}
 
     @Override
