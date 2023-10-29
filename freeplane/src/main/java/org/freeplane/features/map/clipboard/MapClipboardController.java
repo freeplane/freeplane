@@ -54,6 +54,8 @@ import org.freeplane.features.styles.IStyle;
  * @author Dimitry Polivaev
  */
 public class MapClipboardController implements IExtension, ClipboardController, INodeDuplicator {
+	public static enum CopiedNodeSet {ALL_NODES, FILTERED_NODES}
+
 	public static final String NODESEPARATOR = "<nodeseparator>";
 
 	public static MapClipboardController getController() {
@@ -76,10 +78,16 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	}
 
 	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes) {
+		CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedNodes") ? MapClipboardController.CopiedNodeSet.FILTERED_NODES : MapClipboardController.CopiedNodeSet.ALL_NODES;
+		CopiedNodeSet copiedTextNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedText") ? MapClipboardController.CopiedNodeSet.FILTERED_NODES : MapClipboardController.CopiedNodeSet.ALL_NODES;
+		return copy(selectedNodes, copiedNodeSet, copiedTextNodeSet);
+	}
+
+	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes,
+			CopiedNodeSet copiedNodeSet, CopiedNodeSet copiedTextNodeSet) {
 		try {
-			final String forNodesFlavor = createForNodesFlavor(selectedNodes);
-			CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedText") ? CopiedNodeSet.FILTERED_NODES : CopiedNodeSet.ALL_NODES;
-			final String plainText = MindMapPlainTextWriter.INSTANCE.getAsPlainText(selectedNodes, copiedNodeSet);
+			final String forNodesFlavor = createForNodesFlavor(selectedNodes, copiedNodeSet);
+			final String plainText = MindMapPlainTextWriter.INSTANCE.getAsPlainText(selectedNodes, copiedTextNodeSet);
 			return new MindMapNodesSelection(forNodesFlavor, plainText,
 			    getAsHTML(selectedNodes));
 		}
@@ -96,10 +104,9 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		return copy(selection.getSortedSelection(true));
 	}
 
-	public Transferable copy(final NodeModel node) {
+	public Transferable copy(final NodeModel node, CopiedNodeSet copiedNodeSet) {
 		final StringWriter stringWriter = new StringWriter();
 		try {
-			CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedNodes") ? CopiedNodeSet.FILTERED_NODES : CopiedNodeSet.ALL_NODES;
 			Controller.getCurrentModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, Mode.CLIPBOARD,
 			    copiedNodeSet, true, false);
 		}
@@ -133,7 +140,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		modeController.addAction(new CopyNodeURIAction());
 	}
 
-	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes)
+	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes , CopiedNodeSet copiedNodeSet)
 	        throws UnsupportedFlavorException, IOException {
 		String forNodesFlavor = "";
 		boolean firstLoop = true;
@@ -144,7 +151,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 			else {
 				forNodesFlavor += "<nodeseparator>";
 			}
-			forNodesFlavor += copy(tmpNode).getTransferData(MindMapNodesSelection.mindMapNodesFlavor);
+			forNodesFlavor += copy(tmpNode, copiedNodeSet).getTransferData(MindMapNodesSelection.mindMapNodesFlavor);
 		}
 		return forNodesFlavor;
 	}
@@ -169,7 +176,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	public void saveHTML(final List<NodeModel> branchRootNodes, final File file) throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
 			StandardCharsets.UTF_8));
-		CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedText") ? CopiedNodeSet.FILTERED_NODES : CopiedNodeSet.ALL_NODES;
+		MapClipboardController.CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedText") ? MapClipboardController.CopiedNodeSet.FILTERED_NODES : MapClipboardController.CopiedNodeSet.ALL_NODES;
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), copiedNodeSet, fileout);
 		htmlWriter.configureCharset("UTF-8");
 		htmlWriter.writeHTML(branchRootNodes);
@@ -180,8 +187,8 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		try {
 			final StringWriter writer = new StringWriter();
 			Mode copyMode = source.getUserObject() instanceof IStyle ? Mode.STYLE : Mode.CLIPBOARD;
-			CopiedNodeSet copiedNodeSet = copyMode == Mode.CLIPBOARD &&
-					ResourceController.getResourceController().getBooleanProperty("filtersCopiedNodes") ? CopiedNodeSet.FILTERED_NODES : CopiedNodeSet.ALL_NODES;
+			MapClipboardController.CopiedNodeSet copiedNodeSet = copyMode == Mode.CLIPBOARD &&
+					ResourceController.getResourceController().getBooleanProperty("filtersCopiedNodes") ? MapClipboardController.CopiedNodeSet.FILTERED_NODES : MapClipboardController.CopiedNodeSet.ALL_NODES;
 			modeController.getMapController().getMapWriter()
 			    .writeNodeAsXml(writer, source, copyMode, copiedNodeSet, withChildren, false);
 			final String result = writer.toString();
@@ -198,7 +205,7 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 
 
 	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
-		CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedText") ? CopiedNodeSet.FILTERED_NODES : CopiedNodeSet.ALL_NODES;
+		MapClipboardController.CopiedNodeSet copiedNodeSet = ResourceController.getResourceController().getBooleanProperty("filtersCopiedText") ? MapClipboardController.CopiedNodeSet.FILTERED_NODES : MapClipboardController.CopiedNodeSet.ALL_NODES;
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), copiedNodeSet, fileout);
 		htmlWriter.writeHTML(selectedNodes);
 	}

@@ -26,12 +26,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.WeakHashMap;
-import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 
 public class EncryptionModel implements IExtension {
 	private final static WeakHashMap<NodeModel, List<NodeModel>> hiddenChildren = new WeakHashMap<>();

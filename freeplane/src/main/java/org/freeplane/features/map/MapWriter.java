@@ -31,9 +31,9 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

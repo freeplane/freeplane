@@ -580,7 +580,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 	private void cut(IMapSelection selection) {
 		final List<NodeModel> collection = selection.getSortedSelection(true);
-		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes());
+		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes(), CopiedNodeSet.ALL_NODES, CopiedNodeSet.ALL_NODES);
 		((MMapController) Controller.getCurrentModeController().getMapController()).deleteNodes(collection);
 		setClipboardContents(transferable);
 	}

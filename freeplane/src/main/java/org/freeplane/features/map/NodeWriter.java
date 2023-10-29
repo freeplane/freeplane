@@ -31,7 +31,6 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkBuilder;
@@ -39,6 +38,7 @@ import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.MapWriter.WriterHint;
 import org.freeplane.features.map.NodeModel.Side;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
