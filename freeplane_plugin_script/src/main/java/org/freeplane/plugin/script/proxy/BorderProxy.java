@@ -8,7 +8,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.plugin.script.ScriptContext;
 
@@ -64,6 +63,18 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
     @Override
     public void setWidth(Quantity<LengthUnit> borderWidth) {
         getStyleController().setBorderWidth(getDelegate(), borderWidth);
+    }
+
+    @Override
+    public void setWidth(Integer borderWidth) {
+		Quantity<LengthUnit> borderWidthQuantity = new Quantity<LengthUnit>(borderWidth, LengthUnit.px);
+        setWidth(borderWidthQuantity);
+    }
+
+    @Override
+    public void setWidth(String borderWidth) {
+        Quantity<LengthUnit> borderWidthQuantity = Quantity.fromString(borderWidth, LengthUnit.px);
+        setWidth(borderWidthQuantity);
     }
 
 	@Override

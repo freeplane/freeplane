@@ -17,6 +17,13 @@ public interface Border extends BorderRO {
 
     void setWidth(Quantity<LengthUnit> borderWidth);
 
+    /** sets the border's width in pixels
+     */
+    void setWidth(Integer borderWidth);
+
+    /** sets the border's width using a string to define its value and LengthUnit
+     */
+    void setWidth(String borderWidth);
     void setDash(Dash dash);
 
     void setUsesEdgeColor(Boolean borderColorMatchesEdgeColor);
