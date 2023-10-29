@@ -64,7 +64,7 @@ abstract class ShapedPainter extends MainViewPainter {
 		final Color oldColor = g.getColor();
 		g.setColor(borderColor);
 		final Stroke oldStroke = g.getStroke();
-		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().variant, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().pattern, BasicStroke.JOIN_MITER));
 		paintNodeShape(g);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);

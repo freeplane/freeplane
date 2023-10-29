@@ -84,7 +84,7 @@ class ForkPainter extends MainViewPainter {
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
-		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().variant, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().pattern, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
 		g.setColor(mainView.getBorderColor());
 		Point leftLinePoint = getLeftPoint();

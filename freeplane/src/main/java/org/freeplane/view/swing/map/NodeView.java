@@ -49,13 +49,13 @@ import javax.swing.SwingUtilities;
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.Dash;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.ObjectRule;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.cloud.CloudController;
@@ -138,7 +138,7 @@ public class NodeView extends JComponent implements INodeView {
 	private Color modelBackgroundColor;
 
 	private boolean isFolded;
-	private DashVariant edgeDash = DashVariant.DEFAULT;
+	private Dash edgeDash = Dash.DEFAULT;
 	private final NodeViewLayoutHelper layoutHelper;
     private Side side;
     private ChildNodesAlignment childNodesAlignment;
@@ -1775,7 +1775,7 @@ public class NodeView extends JComponent implements INodeView {
         EdgeStyle newEdgeStyle = edgeController.getStyle(viewedNode, getStyleOption(), false);
         final NodeModel realNode = SummaryNode.getRealNode(viewedNode);
         Integer newEdgeWidth = edgeController.getWidth(realNode, getStyleOption(), false);
-        DashVariant newEdgeDash = edgeController.getDash(realNode, getStyleOption(), false);
+        Dash newEdgeDash = edgeController.getDash(realNode, getStyleOption(), false);
         final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode, getStyleOption());
         if(newEdgeStyle != edgeStyle
                 || ! Objects.equals(newEdgeWidth, edgeWidth)
@@ -1805,13 +1805,13 @@ public class NodeView extends JComponent implements INodeView {
 		return EdgeStyle.values()[0];
     }
 
-	public DashVariant getEdgeDash() {
+	public Dash getEdgeDash() {
 		if(edgeDash != null)
 		    return edgeDash;
 		final NodeView parentView = getParentNodeView();
 		if(parentView != null)
 			return parentView.getEdgeDash();
-		return DashVariant.DEFAULT;
+		return Dash.DEFAULT;
     }
 
 	public int getEdgeWidth() {

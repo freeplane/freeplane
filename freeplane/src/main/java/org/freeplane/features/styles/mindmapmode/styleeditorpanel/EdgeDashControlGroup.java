@@ -21,9 +21,10 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.features.DashVariant;
+import org.freeplane.features.DashRenderedContent;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
@@ -44,7 +45,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 	private RevertingProperty mSetEdgeDash;
 	private ComboProperty mEdgeDash;
 	private EdgeDashChangeListener propertyChangeListener;
-	
+
 	private class EdgeDashChangeListener extends ControlGroupChangeListener {
 		public EdgeDashChangeListener(final RevertingProperty mSet,final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -55,7 +56,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 			final MEdgeController styleController = (MEdgeController) Controller
 			.getCurrentModeController().getExtension(
 					EdgeController.class);
-			styleController.setDash(node, enabled ? DashVariant.valueOf(mEdgeDash.getValue()): null);
+			styleController.setDash(node, enabled ? Dash.valueOf(mEdgeDash.getValue()): null);
 		}
 
 		@Override
@@ -63,13 +64,13 @@ public class EdgeDashControlGroup implements ControlGroup {
 			final EdgeController edgeController = EdgeController.getController();
 			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{
-				final DashVariant dash = edgeModel != null ? edgeModel.getDash() : null;
-				final DashVariant viewDash = edgeController.getDash(node, StyleOption.FOR_UNSELECTED_NODE);
+				final Dash dash = edgeModel != null ? edgeModel.getDash() : null;
+				final Dash viewDash = edgeController.getDash(node, StyleOption.FOR_UNSELECTED_NODE);
 				mSetEdgeDash.setValue(dash != null);
 				mEdgeDash.setValue(viewDash.name());
 			}
 		}
-        
+
         @Override
         void adjustForStyle(NodeModel node) {
             StylePropertyAdjuster.adjustPropertyControl(node, mSetEdgeDash);
@@ -85,7 +86,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetEdgeDash = new RevertingProperty(REVERT_EDGE);
-		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);
+		mEdgeDash = ComboProperty.of(EDGE_DASH, Dash.class, DashRenderedContent::of);
 		propertyChangeListener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
 		mSetEdgeDash.addPropertyChangeListener(propertyChangeListener);
 		mEdgeDash.addPropertyChangeListener(propertyChangeListener);

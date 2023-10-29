@@ -34,6 +34,8 @@ public interface NodeStyleRO {
 
 	Edge getEdge();
 
+	Border getBorder();
+
 	Font getFont();
 
 	/** @deprecated since 1.2 - use {@link #getTextColor()} instead. */

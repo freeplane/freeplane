@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -32,7 +33,6 @@ import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -942,8 +942,8 @@ public class MNodeStyleController extends NodeStyleController {
 
     }
 
-	public void setBorderDash(final NodeModel node, final DashVariant borderDash) {
-		final DashVariant oldBorderDash = NodeBorderModel.getBorderDash(node);
+	public void setBorderDash(final NodeModel node, final Dash borderDash) {
+		final Dash oldBorderDash = NodeBorderModel.getBorderDash(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {

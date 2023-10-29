@@ -28,9 +28,9 @@ import java.awt.Stroke;
 
 import org.freeplane.api.ChildNodesAlignment;
 import org.freeplane.api.ChildrenSides;
+import org.freeplane.api.Dash;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.DashVariant;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.MapView;
@@ -231,8 +231,8 @@ public abstract class EdgeView {
         if (dash != null) {
             return dash;
         }
-        final DashVariant dash = target.getEdgeDash();
-        return dash.variant;
+        final Dash dash = target.getEdgeDash();
+        return dash.pattern;
     }
 
     public void setDash(final int[] dash) {

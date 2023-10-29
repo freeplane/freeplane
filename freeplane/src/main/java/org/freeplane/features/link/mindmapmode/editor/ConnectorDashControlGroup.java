@@ -22,10 +22,11 @@ package org.freeplane.features.link.mindmapmode.editor;
 import java.beans.PropertyChangeEvent;
 import java.util.Optional;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.features.DashVariant;
+import org.freeplane.features.DashRenderedContent;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -38,7 +39,7 @@ public class ConnectorDashControlGroup implements ControlGroup {
 	private ComboProperty mConnectorDash;
 	private ConnectorDashChangeListener propertyChangeListener;
 	private ConnectorModel connector;
-	
+
 	private class ConnectorDashChangeListener extends ControlGroupChangeListener {
 		public ConnectorDashChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -46,19 +47,19 @@ public class ConnectorDashControlGroup implements ControlGroup {
 
 		@Override
 		void applyValue(final boolean enabled, final PropertyChangeEvent evt) {
-		    final MLinkController linkController 
+		    final MLinkController linkController
 		    = (MLinkController) LinkController.getController();
-		    linkController.setConnectorDashArray(connector, enabled ? 
-		            Optional.of(DashVariant.valueOf(mConnectorDash.getValue()).variant) : Optional.empty());
+		    linkController.setConnectorDashArray(connector, enabled ?
+		            Optional.of(Dash.valueOf(mConnectorDash.getValue()).pattern) : Optional.empty());
 		}
 
 		@Override
 		void updateValue() {
 		    final LinkController linkController = LinkController.getController();
 		    final Optional<int[]> ownDash = connector.getDash();
-		    final Optional<DashVariant> viewDash = DashVariant.of(linkController.getDashArray(connector));
+		    final Optional<Dash> viewDash = Dash.of(linkController.getDashArray(connector));
 		    mSetConnectorDash.setValue(ownDash.isPresent());
-		    viewDash.map(DashVariant::name).ifPresent(mConnectorDash::setValue);
+		    viewDash.map(Dash::name).ifPresent(mConnectorDash::setValue);
 		}
 	}
 
@@ -71,7 +72,7 @@ public class ConnectorDashControlGroup implements ControlGroup {
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetConnectorDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mConnectorDash = ComboProperty.of("connector_dash", DashVariant.class);
+		mConnectorDash = ComboProperty.of("connector_dash", Dash.class, DashRenderedContent::of);
 		propertyChangeListener = new ConnectorDashChangeListener(mSetConnectorDash, mConnectorDash);
 		mSetConnectorDash.addPropertyChangeListener(propertyChangeListener);
 		mConnectorDash.addPropertyChangeListener(propertyChangeListener);

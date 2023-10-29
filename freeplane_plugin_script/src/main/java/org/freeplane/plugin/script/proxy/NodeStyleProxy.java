@@ -111,6 +111,10 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return new EdgeProxy(getDelegate(), getScriptContext());
 	}
 
+	public Proxy.Border getBorder(){
+		return new BorderProxy(getDelegate(), getScriptContext());
+	}
+
 	public Proxy.Font getFont() {
 		return new FontProxy(getDelegate(), getScriptContext());
 	}
