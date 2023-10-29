@@ -35,7 +35,7 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
 
     @Override
     public Color getColor() {
-        return getStyleController().getBorderColor(getDelegate(), LogicalStyleController.StyleOption.FOR_UNSELECTED_NODE);
+        return getStyleController().getBorderColor(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
 
     @Override
     public Quantity<LengthUnit> getWidth() {
-        return getStyleController().getBorderWidth(getDelegate(), LogicalStyleController.StyleOption.FOR_UNSELECTED_NODE);
+        return getStyleController().getBorderWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
     }
 
 
@@ -81,4 +81,35 @@ public class BorderProxy extends AbstractProxy<NodeModel> implements Proxy.Borde
 	public void setDash(Dash dash) {
 		getStyleController().setBorderDash(getDelegate(), dash);
 	}
+
+    @Override
+    public void setUsesEdgeColor(Boolean borderColorMatchesEdgeColor){
+        getStyleController().setBorderColorMatchesEdgeColor(getDelegate(), borderColorMatchesEdgeColor);
+    }
+
+    @Override
+    public void setUsesEdgeWidth(Boolean borderWidthMatchesEdgeWidth){
+        getStyleController().setBorderWidthMatchesEdgeWidth(getDelegate(), borderWidthMatchesEdgeWidth);
+    }
+
+    @Override
+    public void setUsesEdgeDash(Boolean borderDashMatchesEdgeDash){
+        getStyleController().setBorderDashMatchesEdgeDash(getDelegate(), borderDashMatchesEdgeDash);
+    }
+
+    @Override
+    public boolean getUsesEdgeColor(){
+        return getStyleController().getBorderColorMatchesEdgeColor(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+    }
+
+    @Override
+    public boolean getUsesEdgeWidth(){
+        return getStyleController().getBorderWidthMatchesEdgeWidth(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+    }
+
+    @Override
+    public boolean getUsesEdgeDash(){
+        return getStyleController().getBorderDashMatchesEdgeDash(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+    }
+
 }

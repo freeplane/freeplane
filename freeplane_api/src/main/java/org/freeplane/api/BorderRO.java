@@ -26,4 +26,10 @@ public interface BorderRO {
 
     boolean isDashSet();
 
+    boolean getUsesEdgeColor();
+
+    boolean getUsesEdgeWidth();
+
+    boolean getUsesEdgeDash();
+
 }

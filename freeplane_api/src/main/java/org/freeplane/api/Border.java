@@ -18,4 +18,11 @@ public interface Border extends BorderRO {
     void setWidth(Quantity<LengthUnit> borderWidth);
 
     void setDash(Dash dash);
+
+    void setUsesEdgeColor(Boolean borderColorMatchesEdgeColor);
+
+    void setUsesEdgeWidth(Boolean borderColorMatchesEdgeColor);
+
+    void setUsesEdgeDash(Boolean borderColorMatchesEdgeColor);
+
 }
