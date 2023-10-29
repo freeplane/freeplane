@@ -86,6 +86,7 @@ class FindAction extends AFreeplaneAction {
 			final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(findPreviousAction);
 			applyFindPreviousBtn.setToolTipText(KeystrokeDescriber.createKeystrokeDescription(keyStrokePrevious));
 			final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(findNextAction);
+			editor.setEnterKeyActionListener(findNextAction);
 			applyFindNextBtn.setToolTipText(KeystrokeDescriber.createKeystrokeDescription(keyStrokeNext));
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.anchor = GridBagConstraints.NORTHWEST;

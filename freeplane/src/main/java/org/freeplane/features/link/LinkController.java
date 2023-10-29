@@ -22,6 +22,7 @@ package org.freeplane.features.link;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
@@ -152,7 +153,7 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		return toHyperlink(object);
 	}
-	
+
 	private static Hyperlink toHyperlink(Object object) {
 		if (object instanceof Hyperlink)
 			return (Hyperlink)object;
@@ -373,8 +374,8 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		});
 	}
-	
-	private <T> T getProperty(ConnectorModel connector, 
+
+	private <T> T getProperty(ConnectorModel connector,
 	        Function<ConnectorModel, Optional<T>> connectorFunction,
 	        Supplier<T> defaultValue) {
 	    Optional<T> ownValue = connectorFunction.apply(connector);
@@ -397,7 +398,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    return NodeLinks.getSelfConnector(defaultStyleNode)
 	    .flatMap(connectorFunction)
 	    .orElseGet(defaultValue);
-	    
+
 	}
 
 	public Color getColor(final ConnectorModel connector) {
@@ -427,7 +428,7 @@ public class LinkController extends SelectionController implements IExtension {
     public String getTargetLabel(ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getTargetLabel, () -> "");
     }
-    
+
    public String getLabelFontFamily(ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getLabelFontFamily, this::getStandardLabelFontFamily);
     }
@@ -897,13 +898,13 @@ public class LinkController extends SelectionController implements IExtension {
 		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
 		return arrows;
 	}
-	
+
 	public Dash getStandardDash() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
 		final Dash variant = Dash.valueOf(standard);
 		return variant;
 	}
-	
+
 	   public int[] getStandardDashArray() {
 	       return getStandardDash().pattern;
 	   }
@@ -941,10 +942,10 @@ public class LinkController extends SelectionController implements IExtension {
     private static final String DECORATED_LINK_LOCAL_ICON = "decorated_link_local_icon";
 
 	public static enum LinkType{
-		LOCAL(LINK_LOCAL_ICON, DECORATED_LINK_LOCAL_ICON), 
-		MAIL(MAIL_ICON, DECORATED_MAIL_ICON), 
-		EXECUTABLE(EXECUTABLE_ICON ,DECORATED_EXECUTABLE_ICON), 
-		MENU(MENUITEM_ICON, DECORATED_MENUITEM_ICON), 
+		LOCAL(LINK_LOCAL_ICON, DECORATED_LINK_LOCAL_ICON),
+		MAIL(MAIL_ICON, DECORATED_MAIL_ICON),
+		EXECUTABLE(EXECUTABLE_ICON ,DECORATED_EXECUTABLE_ICON),
+		MENU(MENUITEM_ICON, DECORATED_MENUITEM_ICON),
 		DEFAULT(LINK_ICON, DECORATED_LINK_ICON);
         LinkType(String iconKey, String decoratedIconKey){
                 this.icon =  ResourceController.getResourceController().getIcon(iconKey);
@@ -994,7 +995,7 @@ public class LinkController extends SelectionController implements IExtension {
 	        return false;
 	    }
         return iconsForLink.stream().map(name -> "links/" + name).anyMatch(iconName::equals);
-	    
+
 	}
 	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImageIcon iconImages, NodeModel node, StyleOption option)
 	{
@@ -1008,7 +1009,7 @@ public class LinkController extends SelectionController implements IExtension {
 	        }
 	        else {
 	            final LinkType linkType = getLinkType(link, node);
-	            if(linkType != null && linkType.decoratedIcon != null) 
+	            if(linkType != null && linkType.decoratedIcon != null)
 	                iconImages.addLinkIcon(linkType.decoratedIcon, node, option);
 	            for(String iconName : iconsForLink) {
 	                MindIcon icon = IconStoreFactory.ICON_STORE.getMindIcon("links/" + iconName);
@@ -1093,4 +1094,20 @@ public class LinkController extends SelectionController implements IExtension {
 			loadHyperlink(uri);
 	}
 
+	public Point getStartInclination(ConnectorModel connector) {
+		return getProperty(connector, c -> Optional.ofNullable(c.getStartInclination()), () -> null);
+	}
+
+	public boolean isStartInclinationSet(ConnectorModel connector) {
+		return connector.getStartInclination() != null;
+	}
+
+	public Point getEndInclination(ConnectorModel connector) {
+		return getProperty(connector, c -> Optional.ofNullable(c.getEndInclination()), () -> null);
+	}
+
+
+	public boolean isEndInclinationSet(ConnectorModel connector) {
+		return connector.getEndInclination() != null;
+	}
 }

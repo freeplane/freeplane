@@ -118,8 +118,6 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		if (object instanceof ConnectorView) {
 			connectorView = ((ConnectorView) object);
 			ConnectorModel connector = connectorView.getConnector();
-			if(MapStyleModel.isDefaultStyleNode(connector.getSource()))
-			    return;
 			final ConnectorShape shape = linkController().getShape(connector);
 			if (ConnectorShape.EDGE_LIKE.equals(shape)) {
 				return;
@@ -183,6 +181,6 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		else
 			super.mouseClicked(e);
     }
-	
-	
+
+
 }
