@@ -38,6 +38,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.encrypt.PasswordStrategy;
@@ -1320,7 +1321,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
     @Override
     public String getBranchAsTextOutline() {
-        return MindMapPlainTextWriter.INSTANCE.getAsPlainText(Collections.singletonList(getDelegate()));
+        return MindMapPlainTextWriter.INSTANCE.getAsPlainText(Collections.singletonList(getDelegate()), CopiedNodeSet.ALL_NODES);
     }
 
     @Override

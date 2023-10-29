@@ -39,6 +39,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.IconController;
@@ -146,14 +147,16 @@ class MindMapHTMLWriter {
 	private final TextController textController;
 	private final CloudController clouds;
 	private final Filter filter;
+	private final CopiedNodeSet copiedNodeSet;
 
 	private boolean writeFoldingCode;
 	private Font defaultFont;
 	private Color defaultColor;
 	private String charset;
 
-	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
+	MindMapHTMLWriter(final MapController mapController, CopiedNodeSet copiedNodeSet, final Writer fileout) {
 		this.mapController = mapController;
+		this.copiedNodeSet = copiedNodeSet;
 		ModeController modeController = mapController.getModeController();
 		nodeStyleController = NodeStyleController.getController(modeController);
 		clouds = CloudController.getController(modeController);
@@ -355,7 +358,7 @@ class MindMapHTMLWriter {
 					throws IOException {
 
 		Color cloudColor = getWrittenCloudColor(node, ancestorCloudColor);
-		if (!node.hasVisibleContent(filter)) {
+		if (copiedNodeSet == CopiedNodeSet.FILTERED_NODES && !node.hasVisibleContent(filter)) {
 			for (final NodeModel child : node.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, cloudColor, isListElement, depth);
 			}

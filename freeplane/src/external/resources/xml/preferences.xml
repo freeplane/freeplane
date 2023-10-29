@@ -213,6 +213,8 @@
 					<choice value="ADD_SIBLING" />
 					<choice value="ADD_CHILD" />
 				</combo>
+				<boolean name="filtersCopiedNodes"/>
+				<boolean name="filtersCopiedText"/>
 				<boolean name="copyFormatToNewSibling"/>
 				<boolean name="copyFormatToNewChild"/>
 				<boolean name="copyFormatToNewNodeIncludesIcons"/>

@@ -76,6 +76,7 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.DocuMapAttribute;
 import org.freeplane.features.map.MapChangeEvent;
@@ -867,7 +868,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out,//
 				StandardCharsets.UTF_8));
 			Controller.getCurrentModeController().getMapController().getMapWriter()
-			    .writeMapAsXml(map, fileout, Mode.FILE, true, false);
+			    .writeMapAsXml(map, fileout, Mode.FILE, CopiedNodeSet.ALL_NODES, false);
 		}
 		finally {
 			if (lock != null && lock.isValid())

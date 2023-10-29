@@ -31,6 +31,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -58,20 +59,12 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
-	private boolean saveInvisible;
+	private CopiedNodeSet copiedNodeSet;
 	final WriteManager writeManager;
 
 	public MapWriter(final MapController mapController) {
 		this.mapController = mapController;
 		writeManager = mapController.getWriteManager();
-	}
-
-	public boolean isSaveInvisible() {
-		return saveInvisible;
-	}
-
-	public void setSaveInvisible(final boolean saveInvisible) {
-		this.saveInvisible = saveInvisible;
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
@@ -85,10 +78,10 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		final MapModel map = (MapModel) node;
 		writer.addExtensionNodes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 		final NodeModel rootNode = map.getRootNode();
-		writeNode(writer, rootNode, saveInvisible, true);
+		writeNode(writer, rootNode, copiedNodeSet, true);
 	}
 
-	public void writeMapAsXml(final MapModel map, final Writer fileout, final Mode mode, final boolean saveInvisible,
+	public void writeMapAsXml(final MapModel map, final Writer fileout, final Mode mode, final CopiedNodeSet copiedNodeSet,
 	                          final boolean forceFormat) throws IOException {
 		final TreeXmlWriter xmlWriter = createTreeWriter(fileout);
 		xmlWriter.setHint(Hint.MODE, mode);
@@ -96,13 +89,13 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 			xmlWriter.setHint(WriterHint.FORCE_FORMATTING);
 		}
 		final XMLElement xmlMap = new XMLElement("map");
-		setSaveInvisible(saveInvisible);
+		this.copiedNodeSet = copiedNodeSet;
 		xmlWriter.addElement(map, xmlMap);
 		xmlWriter.flush();
 		fileout.close();
 	}
 
-	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node, final boolean writeInvisible,
+	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node, CopiedNodeSet copiedNodeSet,
 	                       final boolean writeChildren) throws IOException {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
 		final Object mode = xmlWriter.getHint(Hint.MODE);
@@ -116,13 +109,13 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		if (oldNodeWriter != null)
 			oldNodeWriter.unregisterFrom(writeManager);
 		LinkBuilder currentLinkBuilder = new LinkBuilder(mapController.getModeController().getExtension(LinkController.class));
-		currentNodeWriter = new NodeWriter(mapController, currentLinkBuilder, nodeTag, writeChildren, writeInvisible);
+		currentNodeWriter = new NodeWriter(mapController, currentLinkBuilder, nodeTag, writeChildren, copiedNodeSet);
 		try {
 			currentNodeWriter.registerBy(writeManager);
 			xmlWriter.addElement(node, nodeTag);
 		}
 		finally {
-			
+
 			currentNodeWriter.unregisterFrom(writeManager);
 				if (oldNodeWriter != null)
 				oldNodeWriter.registerBy(writeManager);
@@ -131,13 +124,13 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	public void writeNodeAsXml(final Writer writer, final NodeModel node, final Mode mode,
-	                           final boolean writeInvisible, final boolean writeChildren, boolean forceFormat) throws IOException {
+	                           final CopiedNodeSet copiedNodeSet, final boolean writeChildren, boolean forceFormat) throws IOException {
 		final TreeXmlWriter xmlWriter = createTreeWriter(writer);
 		xmlWriter.setHint(Hint.MODE, mode);
 		if (forceFormat) {
 			xmlWriter.setHint(WriterHint.FORCE_FORMATTING);
 		}
-		writeNode(xmlWriter, node, writeInvisible, writeChildren);
+		writeNode(xmlWriter, node, copiedNodeSet, writeChildren);
 		xmlWriter.flush();
 	}
 

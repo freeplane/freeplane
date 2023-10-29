@@ -18,7 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.features.map;
-
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.io.FileNotFoundException;
@@ -55,6 +54,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.Filter;
@@ -75,7 +75,6 @@ import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.NodeView;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -731,13 +730,13 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
 			throws IOException {
-		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
+		getMapWriter().writeMapAsXml(map, fileout, mode, CopiedNodeSet.FILTERED_NODES, forceFormat);
 	}
 
 	public void getFilteredXml(Collection<NodeModel> nodes, final Writer fileout, final Mode mode, final boolean forceFormat)
 			throws IOException {
 		for(NodeModel node :nodes)
-		getMapWriter().writeNodeAsXml(fileout, node, mode, false, true, forceFormat);
+		getMapWriter().writeNodeAsXml(fileout, node, mode, CopiedNodeSet.FILTERED_NODES, true, forceFormat);
 	}
 
 	public MapReader getMapReader() {

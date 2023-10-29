@@ -55,6 +55,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -204,7 +205,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			final NodeModel rootNode = styleMap.getRootNode();
 			final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 			try {
-				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true, forceFormatting);
+				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, CopiedNodeSet.ALL_NODES, true, forceFormatting);
 			}
 			catch (final IOException e) {
 				e.printStackTrace();

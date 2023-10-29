@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.WeakHashMap;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
@@ -126,7 +127,7 @@ public class EncryptionModel implements IExtension {
 			final StringWriter sWriter = new StringWriter();
 			for (final Iterator<NodeModel> i = childNodes.listIterator(); i.hasNext();) {
 				final NodeModel child = i.next();
-				mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
+				mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, CopiedNodeSet.ALL_NODES, true, false);
 				if (i.hasNext()) {
 					sWriter.write(MapClipboardController.NODESEPARATOR);
 				}

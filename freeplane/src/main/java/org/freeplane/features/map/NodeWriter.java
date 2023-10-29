@@ -31,6 +31,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.clipboard.ClipboardController.CopiedNodeSet;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkBuilder;
@@ -46,7 +47,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	final private MapController mapController;
 	final private boolean shouldWriteChildren;
 	private final boolean writeFolded;
-	final private boolean writeInvisible;
+	final private CopiedNodeSet copiedNodeSet;
 	private XMLElement xmlNode;
 	final private String nodeTag;
 
@@ -61,13 +62,13 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	private final LinkBuilder linkBuilder;
 
 	public NodeWriter(final MapController mapController, LinkBuilder linkBuilder, final String nodeTag, final boolean writeChildren,
-	                  final boolean writeInvisible) {
+	                  final CopiedNodeSet copiedNodeSet) {
 		this.linkBuilder = linkBuilder;
 		alreadyWrittenSharedContent = new HashMap<SharedNodeData, NodeModel>();
 		this.mapController = mapController;
 		this.shouldWriteChildren = writeChildren;
 		this.mayWriteChildren = true;
-		this.writeInvisible = writeInvisible;
+		this.copiedNodeSet = copiedNodeSet;
 		this.nodeTag = nodeTag;
 		final String saveFolding = ResourceController.getResourceController().getProperty(
 		    NodeBuilder.RESOURCES_SAVE_FOLDING);
@@ -77,7 +78,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
 		for (final NodeModel child: node.getChildren()) {
-		if (writeInvisible || child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
+		if (copiedNodeSet == CopiedNodeSet.ALL_NODES || child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writer.setHint(WriterHint.ALREADY_WRITTEN, isAlreadyWritten(child));
 				writer.addElement(child, nodeTag);
 			}
