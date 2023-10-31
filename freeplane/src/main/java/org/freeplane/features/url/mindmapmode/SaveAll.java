@@ -17,17 +17,13 @@
  */
 package org.freeplane.features.url.mindmapmode;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.url.UrlManager;
 
 /**
  * @author foltin
@@ -35,7 +31,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class SaveAll extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -47,26 +43,10 @@ public class SaveAll extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final Component initialMapView = controller.getMapViewManager().getMapViewComponent();
-		final Map<String, MapModel> mapViews = getMapViews();
-		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
-		while (iterator.hasNext()) {
-			final Entry<String, MapModel> entry = iterator.next();
-			controller.getMapViewManager().changeToMapView(entry.getKey());
-			final ModeController modeController = controller.getModeController();
-			if (modeController instanceof MModeController) {
-				((MModeController) modeController).save();
-			}
+		final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
+		MFileManager fileManager = (MFileManager) UrlManager.getController();
+		for(MapModel map : maps.values()) {
+			fileManager.save(map);
 		}
-		if (initialMapView != null) {
-			controller.getMapViewManager().changeToMapView(initialMapView);
-		}
-	}
-
-	/**
-	 */
-	private Map<String, MapModel> getMapViews() {
-		return Controller.getCurrentController().getMapViewManager().getMaps();
 	}
 }
