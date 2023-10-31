@@ -118,10 +118,10 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 				styleGroup = MapStyleModel.STYLES_AUTOMATIC_LAYOUT;
 				break;
 		}
-		return styleGroup!=""? getStyleNodes(styleGroup):null;
+		return styleGroup!=""? getStyleGroupNodes(styleGroup):null;
 	}
 
-	private List<? extends org.freeplane.api.Node> getStyleNodes(String styleGroup) {
+	private List<? extends org.freeplane.api.Node> getStyleGroupNodes(String styleGroup) {
 		MapStyleModel styleModel = MapStyleModel.getExtension(getDelegate());
 		MapModel styleMap = styleModel.getStyleMap();
 		NodeModel styleNodeGroup = styleModel.getStyleNodeGroup(styleMap, styleGroup);
