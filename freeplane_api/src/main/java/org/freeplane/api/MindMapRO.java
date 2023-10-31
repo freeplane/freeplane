@@ -42,6 +42,17 @@ public interface MindMapRO {
 
 	/** returns a list with the nodes of the specified group from the styleMap
 	 *
+	 * <b>Example:</b>
+	 * <pre>
+	 * import org.freeplane.api.StyleGroup
+	 *
+	 * def map = node.mindMap
+	 *
+	 * println "Predefined styles       : ${ map.getStyleNodes( StyleGroup.PREDEFINED       ) } \n"
+	 * println "User defined styles     : ${ map.getStyleNodes( StyleGroup.USER_DEFINED     ) } \n"
+	 * println "Automatic layout styles : ${ map.getStyleNodes( StyleGroup.AUTOMATIC_LAYOUT ) } \n"
+	 * </pre>
+	 *
 	 * @param group StyleGroup.PREDEFINED, USER_DEFINED or AUTOMATIC_LAYOUT
 	 * @since 1.11.8
 	 * @return list of nodes
