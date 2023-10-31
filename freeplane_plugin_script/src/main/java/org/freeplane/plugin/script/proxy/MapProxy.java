@@ -4,6 +4,7 @@ import groovy.lang.Closure;
 import org.freeplane.api.ConditionalStyles;
 import org.freeplane.api.NodeChangeListener;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.api.StyleGroup;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.filter.Filter;
@@ -101,6 +102,31 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	@Override
 	public ConditionalStyles getConditionalStyles() {
 		return new MapConditionalStylesProxy(getDelegate(), getScriptContext());
+	}
+
+	@Override
+	public List<? extends org.freeplane.api.Node> getStyleNodes(StyleGroup group) {
+		String styleGroup = "";
+		switch(group){
+			case PREDEFINED:
+				styleGroup = MapStyleModel.STYLES_PREDEFINED;
+				break;
+			case USER_DEFINED:
+				styleGroup = MapStyleModel.STYLES_USER_DEFINED;
+				break;
+			case AUTOMATIC_LAYOUT:
+				styleGroup = MapStyleModel.STYLES_AUTOMATIC_LAYOUT;
+				break;
+		}
+		return styleGroup!=""? getStyleNodes(styleGroup):null;
+	}
+
+	private List<? extends org.freeplane.api.Node> getStyleNodes(String styleGroup) {
+		MapStyleModel styleModel = MapStyleModel.getExtension(getDelegate());
+		MapModel styleMap = styleModel.getStyleMap();
+		NodeModel styleNodeGroup = styleModel.getStyleNodeGroup(styleMap, styleGroup);
+		NodeProxy styleGroupParentNode = new NodeProxy(styleNodeGroup, getScriptContext());
+		return styleGroupParentNode.getChildren();
 	}
 
 	// Map: R/W
