@@ -17,12 +17,15 @@
  */
 package org.freeplane.features.url.mindmapmode;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.UrlManager;
 
 /**
@@ -43,10 +46,22 @@ public class SaveAll extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps();
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final Component initialMapView = mapViewManager.getMapViewComponent();
+		final Map<String, MapModel> maps = mapViewManager.getMaps();
+		final MapModel currentMap = mapViewManager.getMap();
 		MFileManager fileManager = (MFileManager) UrlManager.getController();
-		for(MapModel map : maps.values()) {
-			fileManager.save(map);
+		for(Entry<String, MapModel> mapEntry: maps.entrySet()) {
+			MapModel map = mapEntry.getValue();
+			if(map != currentMap && ! map.isSaved()) {
+				if(map.isReadOnly() || map.getURL() == null)
+					mapViewManager.changeToMapView(mapEntry.getKey());
+				fileManager.save(map);
+			}
 		}
+		if (initialMapView != null) {
+			mapViewManager.changeToMapView(initialMapView);
+		}
+		fileManager.save(currentMap);
 	}
 }
