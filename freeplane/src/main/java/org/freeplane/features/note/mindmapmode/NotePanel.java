@@ -372,12 +372,12 @@ class NotePanel extends JPanel {
 			htmlEditorPanel.getDocument().removeDocumentListener(noteDocumentListener);
 	}
 
-	private boolean requestFocusInEditorPane() {
+	private void requestFocusInEditorPane() {
 		if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 			final JEditorPane editorPane = getEditorPane();
 			editorPane.setCaretPosition(editorPane.getDocument().getLength());
 		}
-		return getMostRecentFocusOwner().requestFocusInWindow();
+		 getMostRecentFocusOwner().requestFocus();
 	}
 
 	void installDocumentListener() {
@@ -418,7 +418,7 @@ class NotePanel extends JPanel {
             Component view = viewerScrollPanel.getViewport().getView();
             JEditorPane textPane = MTextController.getController().createEditorPane(() -> viewerScrollPanel, node, note, note.getTextOr(""));
             if(textPane != null) {
-                textPane.requestFocusInWindow();
+                textPane.requestFocus();
                 textPane.addFocusListener(sourcePanelFocusListener);
                 textPane.getDocument().addDocumentListener(noteDocumentListener);
                 textPane.addKeyListener(new KeyListener() {
