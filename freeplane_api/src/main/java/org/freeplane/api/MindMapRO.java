@@ -2,6 +2,7 @@ package org.freeplane.api;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.List;
 
 /** The map a node belongs to: <code>node.map</code> - read-only. 
  * 
@@ -38,4 +39,11 @@ public interface MindMapRO {
 
 	/** @since 1.11.1 */
 	ConditionalStyles getConditionalStyles();
+
+	/** returns list with the user defined styles names of the map
+	 * @since 1.11.8
+	 * @return list of String
+	 */
+	List<String> getUserDefinedStylesNames();
+
 }
