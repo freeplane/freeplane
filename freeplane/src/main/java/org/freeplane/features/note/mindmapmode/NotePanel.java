@@ -73,7 +73,7 @@ class NotePanel extends JPanel {
     private final NoteManager noteManager;
     private final StyleSheet ownStyleSheet;
 
-    private FocusListener sourcePanelFocusListener;
+    private FocusListener textPanelFocusListener;
 
     private boolean isEditing = false;
 
@@ -171,15 +171,13 @@ class NotePanel extends JPanel {
 			}
 		});
 
-		sourcePanelFocusListener = new FocusListener() {
+		textPanelFocusListener = new FocusListener() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if(isEditing && ! e.isTemporary()){
-				    noteManager.saveNote();
-				    if(viewerScrollPanel.isVisible())
-				        noteManager.updateEditor();
-
+				if (isEditing && e.getOppositeComponent() != null) {
+					noteManager.saveNote();
+				    noteManager.updateEditor();
 				}
 			}
 
@@ -187,7 +185,6 @@ class NotePanel extends JPanel {
 			public void focusGained(FocusEvent e) {
 			}
 		};
-        htmlEditorPanel.getSourceEditorPane().addFocusListener(sourcePanelFocusListener);
 //		setDefaultFont();
 		htmlEditorPanel.setOpenHyperlinkHandler(new ActionListener() {
 			@Override
@@ -419,7 +416,7 @@ class NotePanel extends JPanel {
             JEditorPane textPane = MTextController.getController().createEditorPane(() -> viewerScrollPanel, node, note, note.getTextOr(""));
             if(textPane != null) {
                 textPane.requestFocus();
-                textPane.addFocusListener(sourcePanelFocusListener);
+                textPane.addFocusListener(textPanelFocusListener);
                 textPane.getDocument().addDocumentListener(noteDocumentListener);
                 textPane.addKeyListener(new KeyListener() {
 
