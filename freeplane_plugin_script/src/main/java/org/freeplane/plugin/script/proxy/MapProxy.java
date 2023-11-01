@@ -29,6 +29,8 @@ import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -101,6 +103,23 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	@Override
 	public ConditionalStyles getConditionalStyles() {
 		return new MapConditionalStylesProxy(getDelegate(), getScriptContext());
+	}
+
+	@Override
+	public List<String> getUserDefinedStylesNames() {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(getDelegate());
+		final MapModel styleMap = styleModel.getStyleMap();
+		final NodeModel styleNodeGroup = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
+		final List<NodeModel> nodes = styleNodeGroup.getChildren();
+		int size = nodes.size();
+		if (size == 0) {
+			return Collections.emptyList();
+		}
+		final ArrayList<String> list = new ArrayList<String>(size);
+		for (final NodeModel node : nodes) {
+			list.add(node.getText());
+		}
+		return Collections.unmodifiableList(list);
 	}
 
 	// Map: R/W
