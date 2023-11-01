@@ -158,12 +158,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	private class MyMouseListener implements MouseListener, MouseMotionListener {
 		private boolean sizeChanged = false;
 		private Point basePoint = null;
+		private Dimension baseSize = null;
 		private boolean isActive() {
 			return basePoint != null;
-		}
-
-		private void setBasePoint(Point basePoint) {
-			this.basePoint = basePoint;
 		}
 
 		@Override
@@ -363,7 +360,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 					return;
 				}
 				final Point point = e.getPoint();
-				setBasePoint(new Point (component.getWidth() - point.x, component.getHeight() - point.y));
+				this.basePoint = new Point (component.getWidth() - point.x, component.getHeight() - point.y);
+				this.baseSize = component.getSize();
 				return;
 			}
 			else {
@@ -376,24 +374,32 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		public void mouseReleased(final MouseEvent e) {
 			if (sizeChanged) {
 				final JComponent component = (JComponent) e.getComponent();
-				final int x = component.getWidth();
-				final int y = component.getHeight();
-				final double r = Math.sqrt(x * x + y * y);
-				final Dimension originalSize = ((ScalableComponent) component).getOriginalSize();
-				final int w = originalSize.width;
-				final int h = originalSize.height;
-				final double r0 = Math.sqrt(w * w + h * h);
-				final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
-				final float zoom = mapView.getZoom();
-				final float modelSize = (float) (r / r0 / zoom);
-				setZoom(mapView.getModeController(), mapView.getMap(), (ExternalResource) component
-				    .getClientProperty(ExternalResource.class), modelSize);
+				final int newWidth = component.getWidth();
+				final int newHeight = component.getHeight();
+				final float w = baseSize.width;
+				final float h = baseSize.height;
+				float scalingFactor = Math.max(newWidth / w, newHeight / h);
+
+				if(newWidth != baseSize.width || newHeight != baseSize.height) {
+					if (scalingFactor > 0 && Math.abs(scalingFactor - 1) > 0.01) {
+						final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
+						final ExternalResource zoomedResource = (ExternalResource) component
+								.getClientProperty(ExternalResource.class);
+						float newZoom = zoomedResource.getZoom() * scalingFactor;
+						setZoom(mapView.getModeController(), mapView.getMap(), zoomedResource, newZoom);
+					}
+					else {
+						component.revalidate();
+						component.repaint();
+					}
+				}
 				sizeChanged = false;
 			}
 			else {
 				imagePopupMenu.maybeShowPopup(e);
 			}
-			setBasePoint(null);
+			this.basePoint = null;
+			this.baseSize = null;
 			setCursor(e);
 		}
 
@@ -406,28 +412,37 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			setSize(component, basePoint.x + e.getX(), basePoint.y + e.getY());
 		}
 
-		private void setSize(final JComponent component, int x, int y) {
+		private void setSize(final JComponent component, int newWidth, int newHeight) {
 			final int cursorType = component.getCursor().getType();
 			sizeChanged = true;
 			final Dimension size;
 			switch (cursorType) {
 				case Cursor.SE_RESIZE_CURSOR:
+					newWidth = Math.max(newWidth, 2*BORDER_SIZE);
+					newHeight = Math.max(newHeight, 2*BORDER_SIZE);
 					final Dimension minimumSize = new Dimension(10, 10);
-					if (x <= 2*BORDER_SIZE || y <= 2*BORDER_SIZE) {
-						return;
-					}
-					final double r = Math.sqrt(x * x + y * y);
-					final Dimension preferredSize = ((ScalableComponent) component).getOriginalSize();
-					final int width = preferredSize.width;
-					final int height = preferredSize.height;
-					final double r0 = Math.sqrt(width * width + height * height);
-					x = (int) (width * r / r0);
-					y = (int) (height * r / r0);
+					final float baseWidth = baseSize.width;
+					final float baseHeight = baseSize.height;
+					float scalingFactor = Math.max(newWidth / baseWidth, newHeight / baseHeight);
+					newWidth = (int) (baseWidth * scalingFactor);
+					newHeight = (int) (baseHeight * scalingFactor);
 					final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
-					if (x < mapView.getZoomed(minimumSize.width) || y < mapView.getZoomed(minimumSize.height)) {
-						return;
+					if (scalingFactor < 1) {
+						final int minimumWidth = mapView.getZoomed(minimumSize.width);
+						final int minimumHeight = mapView.getZoomed(minimumSize.height);
+						if (newWidth < minimumWidth || newHeight < minimumHeight) {
+							if(baseWidth <= minimumWidth || baseHeight <= minimumHeight)
+								size = baseSize;
+							else {
+								setSize(component, minimumWidth, minimumHeight);
+								return;
+							}
+						} else {
+							size = new Dimension(newWidth, newHeight);
+						}
+					} else {
+						size = new Dimension(newWidth, newHeight);
 					}
-					size = new Dimension(x, y);
 					((ScalableComponent) component).setDraftViewerSize(size);
 					component.revalidate();
 					break;
