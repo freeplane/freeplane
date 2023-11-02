@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 
+import org.freeplane.api.Dash;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class RectanglePainter extends ShapedPainter {
@@ -34,14 +35,16 @@ class RectanglePainter extends ShapedPainter {
 
 	@Override
 	void paintNodeShape(final Graphics2D g) {
-		final int zoomedEdgeWidth = (int) mainView.getPaintedBorderWidth();
+		final int zoomedEdgeWidth = mainView.getPaintedBorderWidth();
 		g.drawRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, mainView.getWidth() - zoomedEdgeWidth, mainView.getHeight() - zoomedEdgeWidth);
 	}
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight());
+		final int borderWidth = mainView.getPaintedBorderWidth();
+		final int overlapWidth = mainView.getDash() == Dash.SOLID  ? 1 : 0;
+		graphics.fillRect(borderWidth, borderWidth, mainView.getWidth() - 2 * borderWidth + overlapWidth, mainView.getHeight() - 2 * borderWidth + overlapWidth);
 	}
 
 

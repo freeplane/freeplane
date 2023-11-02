@@ -829,9 +829,9 @@ public class MainView extends ZoomableLabel {
 		return edgeWidth;
 	}
 
-	public float getPaintedBorderWidth() {
+	public int getPaintedBorderWidth() {
 		final float zoomedLineWidth = getNodeView().getMap().getZoom() * unzoomedBorderWidth;
-		return Math.max(zoomedLineWidth, 1);
+		return (int) Math.max(zoomedLineWidth, 1);
 	}
 
 	public float getUnzoomedBorderWidth() {

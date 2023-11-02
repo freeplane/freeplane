@@ -27,15 +27,13 @@ abstract class ShapedPainter extends MainViewPainter {
 	}
 
 	@Override
-    public
-	Point getLeftPoint() {
+    public Point getLeftPoint() {
 		final Point in = new Point(0, mainView.getHeight() / 2);
 		return in;
 	}
 
 	@Override
-    public
-	Point getRightPoint() {
+    public Point getRightPoint() {
 		final Point in = getLeftPoint();
 		in.x = mainView.getWidth() - 1;
 		return in;

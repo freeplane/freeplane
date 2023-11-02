@@ -25,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 
 import org.freeplane.features.nodestyle.NodeGeometryModel;
+import org.freeplane.view.swing.map.VariableInsetsPainter.PaintOperation;
 
 class NarrowHexagonPainter extends VariableInsetsPainter {
 	private static final double HORIZONTAL_MARGIN_FACTOR = 1.0;
@@ -65,11 +66,11 @@ class NarrowHexagonPainter extends VariableInsetsPainter {
 
 	@Override
 	void paintNodeShape(final Graphics2D g) {
-		Polygon polygon = getPaintedShape();
+		Polygon polygon = getPaintedShape(PaintOperation.DRAW);
 		g.draw(polygon);
 	}
 
-	Polygon getPaintedShape() {
+	Polygon getPaintedShape(PaintOperation operation) {
 		double[] xCoords;
 		double[] yCoords;
 		if(getShapeConfiguration().isUniform()){
@@ -81,12 +82,12 @@ class NarrowHexagonPainter extends VariableInsetsPainter {
 			xCoords = new double[]{0, 1/2f, 1, 1, 1/2f, 0};
 			yCoords = new double[]{zoomedVerticalInset, 0, zoomedVerticalInset, 1-zoomedVerticalInset, 1, 1-zoomedVerticalInset};
 		}
-		return polygonOf(xCoords, yCoords);
+		return polygonOf(xCoords, yCoords, operation);
 	}
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fill(getPaintedShape());
+		graphics.fill(getPaintedShape(PaintOperation.FILL));
 	}
 }

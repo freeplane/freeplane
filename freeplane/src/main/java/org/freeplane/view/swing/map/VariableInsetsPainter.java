@@ -23,9 +23,21 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Polygon;
 
+import org.freeplane.api.Dash;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 abstract class VariableInsetsPainter extends ShapedPainter {
+	enum PaintOperation {
+		DRAW(1), FILL(2);
+
+		final int borderWidthFactor;
+
+		private PaintOperation(int borderWidthFactor) {
+			this.borderWidthFactor = borderWidthFactor;
+		}
+
+	}
+
 	private double zoomedVerticalInset;
 	private double zoomedHorizontalInset;
 
@@ -135,8 +147,8 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		return y;
 	}
 
-	Polygon polygonOf(double[] xCoords, double[] yCoords) {
-		int edgeWidthOffset = (int) mainView.getPaintedBorderWidth();
+	Polygon polygonOf(double[] xCoords, double[] yCoords, PaintOperation operation) {
+		int edgeWidthOffset = mainView.getDash() != Dash.SOLID ?  mainView.getPaintedBorderWidth() * operation.borderWidthFactor : mainView.getPaintedBorderWidth();
 		final Polygon polygon = new Polygon(toInt(xCoords, edgeWidthOffset/2, mainView.getWidth() - edgeWidthOffset),
 			toInt(yCoords, edgeWidthOffset/2, mainView.getHeight() - edgeWidthOffset), xCoords.length);
 		return polygon;

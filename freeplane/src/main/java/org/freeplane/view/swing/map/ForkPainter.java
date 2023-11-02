@@ -21,24 +21,25 @@ package org.freeplane.view.swing.map;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
-class ForkPainter extends MainViewPainter {
+class ForkPainter extends ShapedPainter {
 
 	ForkPainter(MainView mainView) {
-		super(mainView);
+		super(mainView, NodeGeometryModel.FORK);
 	}
 
 	@Override
+	public
     Point getLeftPoint() {
-		int edgeWidth = (int)mainView.getPaintedBorderWidth();
+		int edgeWidth = mainView.getPaintedBorderWidth();
 		final Point in = new Point(0, mainView.getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -58,31 +59,19 @@ class ForkPainter extends MainViewPainter {
 	@Override
     public
 	Point getRightPoint() {
-		int edgeWidth = (int)mainView.getPaintedBorderWidth();
-		final Point in = new Point(mainView.getWidth() - 1, mainView.getHeight() - edgeWidth / 2);
+		int borderWidth = mainView.getPaintedBorderWidth();
+		final Point in = new Point(mainView.getWidth() - 1, mainView.getHeight() - borderWidth / 2);
 		return in;
 	}
 
 	@Override
-	void paintComponent(final Graphics graphics) {
-		final Graphics2D g = (Graphics2D) graphics;
-		final NodeView nodeView = mainView.getNodeView();
-		if (nodeView.getNode() == null) {
-			return;
-		}
-		mainView.paintBackgound(g);
-		mainView.paintDragOver(g);
-		super.paintComponent(g);
-	}
-
-	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
-		graphics.setColor(color);
-		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight() - (int)mainView.getPaintedBorderWidth());
+		graphics.setColor(Color.DARK_GRAY);
+		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight() - mainView.getPaintedBorderWidth() +  (mainView.getDash() == Dash.SOLID  ? 1 : 0));
 	}
 
 	@Override
-	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
+	void paintNodeShape(final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
 		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().pattern, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
@@ -91,7 +80,6 @@ class ForkPainter extends MainViewPainter {
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + mainView.getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);
-		super.paintDecoration(nodeView, g);
     }
 
     @Override
@@ -114,10 +102,4 @@ class ForkPainter extends MainViewPainter {
 	int getSingleChildShift() {
 		return SINGLE_CHILD_SHIFT;
 	}
-
-	@Override
-	NodeGeometryModel getShapeConfiguration() {
-		return NodeGeometryModel.FORK;
-	}
-
 }
