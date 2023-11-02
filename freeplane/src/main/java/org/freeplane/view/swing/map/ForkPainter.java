@@ -66,7 +66,7 @@ class ForkPainter extends ShapedPainter {
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
-		graphics.setColor(Color.DARK_GRAY);
+		graphics.setColor(color);
 		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight() - mainView.getPaintedBorderWidth() +  (mainView.getDash() == Dash.SOLID  ? 1 : 0));
 	}
 
@@ -75,7 +75,8 @@ class ForkPainter extends ShapedPainter {
 		final Stroke oldStroke = g.getStroke();
 		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().pattern, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
-		g.setColor(mainView.getBorderColor());
+		Color borderColor = mainView.getBorderColor();
+		g.setColor(borderColor);
 		Point leftLinePoint = getLeftPoint();
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + mainView.getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);
