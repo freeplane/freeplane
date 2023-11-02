@@ -63,7 +63,7 @@ class NoteBuilder implements IElementContentHandler {
 	                    ContentSyntax.XML.prefix);
 	            note.setContentType(ContentSyntax.specificType(contentType));
 
-				((NodeModel) node).addExtension((IExtension) note);
+				((NodeModel) node).addExtension(note);
 			}
 		}
 	}

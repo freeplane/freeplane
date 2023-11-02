@@ -84,7 +84,7 @@ class MapViewSerializer implements ViewSerializer {
                 }
                 else {
                 	mapController.createMapView(mapViewComponent.getMap());
-                	pNewMap = (MapView) controller.getMapViewManager().getMapViewComponent();
+                	pNewMap = controller.getMapViewManager().getMapViewComponent();
                 }
     			return newDockedView(pNewMap, pNewMap.getName());
     		}

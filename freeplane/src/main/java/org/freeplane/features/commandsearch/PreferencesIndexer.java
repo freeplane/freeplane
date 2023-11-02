@@ -62,7 +62,7 @@ public class PreferencesIndexer
 
 	public void load(final TreeNode parent, int level) {
 		@SuppressWarnings("unchecked")
-		Enumeration<DefaultMutableTreeNode> children = (Enumeration<DefaultMutableTreeNode>) parent.children();
+		Enumeration<DefaultMutableTreeNode> children = parent.children();
 		while(children.hasMoreElements()) {
 			final DefaultMutableTreeNode child = children.nextElement();
 			final IPropertyControlCreator userObject = (IPropertyControlCreator)child.getUserObject();

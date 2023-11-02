@@ -58,7 +58,7 @@ public class MouseInsideListener extends MouseAdapter implements MouseMotionList
 
 	private void recursivelyAddMouseInsideListener(Component c) {
         c.addMouseListener(this);
-        c.addMouseMotionListener((MouseMotionListener) this);
+        c.addMouseMotionListener(this);
         if(c instanceof Container){
         	Container container = (Container) c;
         	for(Component childComponent : container.getComponents())
@@ -67,7 +67,7 @@ public class MouseInsideListener extends MouseAdapter implements MouseMotionList
     }
 	private void recursivelyRemoveMouseInsideListener(Component c) {
         c.removeMouseListener(this);
-        c.removeMouseMotionListener((MouseMotionListener) this);
+        c.removeMouseMotionListener(this);
         if(c instanceof Container){
         	Container container = (Container) c;
         	for(Component childComponent : container.getComponents())
