@@ -47,10 +47,10 @@ class RectanglePainter extends ShapedPainter {
 
 	@Override
 	Insets getInsets(){
-		int edgeWidthInset = (int) (mainView.getUnzoomedBorderWidth() - 1);
+		int borderWidthInset = (int) (mainView.getUnzoomedBorderWidth() - 1);
     	final NodeGeometryModel shapeConfiguration = getShapeConfiguration();
-    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded() + edgeWidthInset;
-    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded() + edgeWidthInset;
+    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded() + borderWidthInset;
+    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded() + borderWidthInset;
     	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
     }
 

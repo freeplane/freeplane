@@ -101,13 +101,11 @@ class ForkPainter extends MainViewPainter {
 
 	@Override
     Insets getInsets(Insets insets) {
-    	final NodeView nodeView = mainView.getNodeView();
-        int edgeWidth = nodeView.getEdgeWidth();
-        edgeWidth = Math.round(mainView.getUnzoomedBorderWidth());
+        int borderWidth =  Math.round(mainView.getUnzoomedBorderWidth());
 		if(insets == null)
-    		insets = new Insets(0, 2, edgeWidth, 2);
+    		insets = new Insets(0, 2, borderWidth, 2);
     	else
-    		insets.set(0, 2, edgeWidth, 2);
+    		insets.set(0, 2, borderWidth, 2);
         return insets;
     }
 	private final static int SINGLE_CHILD_SHIFT = -2;
