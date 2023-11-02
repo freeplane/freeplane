@@ -39,8 +39,8 @@ class ForkPainter extends ShapedPainter {
 	@Override
 	public
     Point getLeftPoint() {
-		int edgeWidth = mainView.getPaintedBorderWidth();
-		final Point in = new Point(0, mainView.getHeight() - edgeWidth / 2);
+		int borderWidth = mainView.getPaintedBorderWidth();
+		final Point in = new Point(0, mainView.getHeight() - 1 - borderWidth / 2);
 		return in;
 	}
 
@@ -60,14 +60,14 @@ class ForkPainter extends ShapedPainter {
     public
 	Point getRightPoint() {
 		int borderWidth = mainView.getPaintedBorderWidth();
-		final Point in = new Point(mainView.getWidth() - 1, mainView.getHeight() - borderWidth / 2);
+		final Point in = new Point(mainView.getWidth() - 1, mainView.getHeight() - 1 - borderWidth / 2);
 		return in;
 	}
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight() - mainView.getPaintedBorderWidth() +  (mainView.getDash() == Dash.SOLID  ? 1 : 0));
+		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight() - mainView.getPaintedBorderWidth());
 	}
 
 	@Override
