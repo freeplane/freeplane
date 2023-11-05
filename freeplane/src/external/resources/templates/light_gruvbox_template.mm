@@ -34,6 +34,7 @@
 <font SIZE="12" ITALIC="false"/>
 <edge COLOR="#cc241d"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="styles.flower" STYLE="oval" BORDER_DASH="CLOSE_DOTS" COLOR="#ffffff" BACKGROUND_COLOR="#255aba" TEXT_ALIGN="CENTER" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="22 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#f9d71c" BORDER_DASH_LIKE_EDGE="false"  MIN_WIDTH="3 cm" MAX_WIDTH="6 cm" />
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#fdf6e3" BACKGROUND_COLOR="#282828" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="10 pt" SHAPE_VERTICAL_MARGIN="10 pt" BORDER_WIDTH="3.1 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#2c2b29" BORDER_DASH_LIKE_EDGE="true">

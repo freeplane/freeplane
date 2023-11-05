@@ -7,7 +7,7 @@ Reopen all map views after restart, not just one per map
 Extend script API to configure node edges and node borders
 Add option Apply filter when copying nodes as map nodes (default: false)
 Add option Apply filter when copying nodes as map text (default: true)
-Flower-like nodes (combining non-solid node borders with big border widths)
+Flower-like nodes (new node style "Flower" combines non-solid node borders with big border widths)
 Bug fixes
 ==============================
 1.11.7
