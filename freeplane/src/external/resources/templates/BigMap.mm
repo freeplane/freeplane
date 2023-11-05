@@ -38,6 +38,7 @@
 <arrowlink COLOR="#0000ff" TRANSPARENCY="255" DESTINATION="ID_1358928635"/>
 <edge COLOR="#0000cc"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="styles.flower" STYLE="oval" BORDER_DASH="CLOSE_DOTS" COLOR="#ffffff" BACKGROUND_COLOR="#255aba" TEXT_ALIGN="CENTER" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="22 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#f9d71c" BORDER_DASH_LIKE_EDGE="false"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="bottom_or_right" STYLE="bubble">
 <font SIZE="9"/>
