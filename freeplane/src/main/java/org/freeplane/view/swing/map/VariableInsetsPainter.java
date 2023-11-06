@@ -59,7 +59,7 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		}
 		final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(mainView.getMaximumWidth());
 		final double widthWithMargin = Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getMinimumHorizontalInset());
-		prefSize.width =  mainView.limitWidth((int) Math.ceil(widthWithMargin));
+		prefSize.width =  mainView.limitWidth((int) Math.ceil(widthWithMargin), mainView.getPaintedBorderWidth());
 		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getMinimumVerticalInset()));
 		return prefSize;
 	}

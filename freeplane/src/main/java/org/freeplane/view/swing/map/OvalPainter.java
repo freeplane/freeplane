@@ -77,7 +77,7 @@ class OvalPainter extends VariableInsetsPainter {
 			double w = prefSize.width + getMinimumHorizontalInset();
 			double h = prefSize.height + getMinimumVerticalInset();
 			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h)));
-			prefSize.width = prefSize.height = mainView.limitWidth(diameter);
+			prefSize.width = prefSize.height = mainView.limitWidth(diameter, mainView.getPaintedBorderWidth());
 			return prefSize;
 		}
 		else

@@ -279,20 +279,24 @@ public class ZoomableLabel extends JLabel {
 		this.minimumWidth = minimumWidth;
 	}
 
-	protected int limitWidth(int width) {
-		if(width < getMinimumWidth())
-			return getMinimumWidth();
-		else if(width > getMaximumWidth())
-			return getMaximumWidth();
+	protected int limitWidth(int width, int borderWidth) {
+		final int minimumWidth = getMinimumWidth() + 2 * borderWidth;
+		final int maximumWidth = getMaximumWidth();
+		if(width < minimumWidth)
+			return Math.min(minimumWidth, maximumWidth);
+		else if(width > maximumWidth)
+			return maximumWidth;
 		else
 			return width;
 	}
 
-	protected double limitWidth(double width) {
-		if(width < getMinimumWidth())
-			return getMinimumWidth();
-		else if(width > getMaximumWidth())
-			return getMaximumWidth();
+	protected double limitWidth(double width, int borderWidth) {
+		final int minimumWidth = getMinimumWidth() + 2 * borderWidth;
+		final int maximumWidth = getMaximumWidth();
+		if(width < minimumWidth)
+			return Math.min(minimumWidth, maximumWidth);
+		else if(width > maximumWidth)
+			return maximumWidth;
 		else
 			return width;
 	}

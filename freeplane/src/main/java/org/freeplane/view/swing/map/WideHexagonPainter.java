@@ -55,7 +55,7 @@ class WideHexagonPainter extends VariableInsetsPainter {
 			double w = prefSize.width + getMinimumHorizontalInset();
 			double h = prefSize.height + getMinimumVerticalInset();
 			double diameter = Math.sqrt(w * w + h * h);
-			double width = mainView.limitWidth (diameter/ UNIFORM_HEIGHT_TO_WIDTH_RELATION);
+			double width = mainView.limitWidth (diameter/ UNIFORM_HEIGHT_TO_WIDTH_RELATION, mainView.getPaintedBorderWidth());
 			prefSize.width = (int) Math.ceil(width);
 			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			return prefSize;

@@ -54,7 +54,7 @@ class NarrowHexagonPainter extends VariableInsetsPainter {
 		if(getShapeConfiguration().isUniform()){
 			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(mainView.getMaximumWidth());
 			double width = Math.ceil(prefSize.width + getMinimumHorizontalInset());
-			width = mainView.limitWidth(width);
+			width = mainView.limitWidth(width, mainView.getPaintedBorderWidth());
 			prefSize.width = (int) width;
 			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			return prefSize;

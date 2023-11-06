@@ -69,7 +69,7 @@ class RectanglePainter extends ShapedPainter {
 			return preferredSize;
 		}
 
-		preferredSize.width = mainView.limitWidth(preferredSize.width);
+		preferredSize.width = mainView.limitWidth(preferredSize.width, mainView.getPaintedBorderWidth());
 
 		if(getShapeConfiguration().isUniform()) {
 			if(preferredSize.width < preferredSize.height)
