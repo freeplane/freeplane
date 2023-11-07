@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<FreeplaneUIEntries>
+	<Entry builder="main_menu">
+		<Entry name="file">
+			<Entry name="lastOpenedMaps">
+				<Entry builder="lastOpenedMaps" />
+			</Entry>
+			<Entry name="PageAction" />
+			<Entry name="PrintPreviewAction" />
+			<Entry accelerator="control P" name="PrintAction" />
+			<Entry accelerator="control W" name="CloseAction" />
+			<Entry accelerator="control Q" name="QuitAction" builder="MB_QuitAction" />
+		</Entry>
+		<Entry name="edit">
+			<Entry name="find">
+				<Entry accelerator="control G" name="FindAction" />
+				<Entry name="FindNextAction"  accelerator="control shift G" />
+				<Entry name="FindPreviousAction" />
+				<Entry name="OpenPathAction" />
+			</Entry>
+		</Entry>
+		<Entry name="view">
+			<Entry name="zoom">
+				<Entry accelerator="alt UP" name="ZoomInAction" />
+				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
+			</Entry>
+			<Entry name="menu_scroll_map">
+				<Entry name="FreeScrollAction.LEFT" />
+				<Entry name="FreeScrollAction.UP" />
+				<Entry name="FreeScrollAction.RIGHT" />
+				<Entry name="FreeScrollAction.DOWN" />
+				<Entry accelerator="alt W" name="MoveSelectedNodeAction.LEFT" />
+				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
+				<Entry accelerator="alt E" name="MoveSelectedNodeAction.RIGHT" />
+				<Entry name="MoveSelectedNodeAction.TOP" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM" />
+				<Entry name="MoveSelectedNodeAction.TOP_LEFT" />
+				<Entry name="MoveSelectedNodeAction.TOP_RIGHT" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM_LEFT" />
+				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
+			</Entry>
+			<Entry name="controls">
+				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleToolbarAction" />
+				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
+				<Entry name="ToggleScrollbarsAction" />
+				<Entry name="ToggleMapOverviewAction" />
+				<Entry name="SetBooleanPropertyAction.spotlight" />
+			</Entry>
+			<Entry name="menu_viewmode">
+				<Entry name="ViewLayoutTypeAction.OUTLINE" />
+				<Entry name="ShowSelectionAsRectangleAction" />
+				<Entry name="SetBooleanPropertyAction.show_icons" />
+				<Entry name="SetBooleanPropertyAction.show_connectors" />
+				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
+				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
+				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
+				<Entry name="map_overview" >
+					<Entry name="SetStringPropertyAction.map_overview_bounds." />
+					<Entry builder="radio_button_group" name="map_overview_attach_point" textKey="map_overview_attach_point">
+						<Entry name="SetStringPropertyAction.map_overview_attach_point.SOUTH_EAST" />
+						<Entry name="SetStringPropertyAction.map_overview_attach_point.SOUTH_WEST" />
+						<Entry name="SetStringPropertyAction.map_overview_attach_point.NORTH_EAST" />
+						<Entry name="SetStringPropertyAction.map_overview_attach_point.NORTH_WEST" />
+					</Entry>
+				</Entry>
+			</Entry>
+		</Entry>
+		<Entry name="navigate">
+			<Entry name="navigate">
+				<Entry name="NavigationPreviousMapAction" />
+				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
+				<Entry name="fold">
+					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
+				</Entry>
+			</Entry>
+			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
+			<Entry name="FreeSelectNodeAction.LEFT" />
+			<Entry name="FreeSelectNodeAction.UP" />
+			<Entry name="FreeSelectNodeAction.RIGHT" />
+			<Entry name="FreeSelectNodeAction.DOWN" />
+			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
+			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
+		</Entry>
+		<Entry name="filter">
+			<Entry name="UndoFilterAction" />
+			<Entry name="RedoFilterAction" />
+			<Entry name="ReapplyFilterAction" />
+			<Entry name="QuickFilterAction" />
+            <Entry name="QuickAndFilterAction" />
+            <Entry name="QuickOrFilterAction" />
+			<Entry name="ApplySelectedViewConditionAction" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="EditFilterAction" />
+			<Entry builder="separator" />
+            <Entry name="HideMatchingNodesAction" />
+			<Entry name="ShowAncestorsAction" />
+			<Entry name="ShowDescendantsAction" />
+			<Entry name="ApplyToVisibleAction" />
+			<Entry builder="separator" />
+			<Entry name="QuickHighlightAction" />
+			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.FORWARD" />
+		</Entry>
+		<Entry name="mindmaps">
+			<Entry name="modes" builder="navigate_modes,radio_button_group" />
+			<Entry builder="separator" />
+			<Entry name="maps" processOnPopup="true">
+				<Entry builder="navigate_maps,radio_button_group" />
+			</Entry>
+		</Entry>
+		<Entry name="help" textKey="menu_help">
+			<Entry name="web_resources">
+				<Entry name="OpenFreeplaneSiteAction" />
+                <Entry name="AskForHelp" />
+				<Entry name="ReportBugAction" />
+				<Entry name="RequestFeatureAction" />
+			</Entry>
+			<Entry name="AboutAction" />
+			<Entry accelerator="F1" name="DocumentationAction" />
+            <Entry name="FreeplaneHandbook" />
+		</Entry>
+	</Entry>
+	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
+		<Entry builder="navigate_maps,radio_button_group" />
+		<Entry builder="separator" />
+		<Entry name="ToggleMenubarAction" />
+		<Entry name="ToggleToolbarAction" />
+		<Entry name="ShowFilterToolbarAction" />
+		<Entry name="ToggleScrollbarsAction" />
+		<Entry name="ToggleMapOverviewAction" />
+		<Entry name="ViewLayoutTypeAction.OUTLINE" />
+		<Entry accelerator="ESCAPE" name="MoveToRootAction" />
+	</Entry>
+	<Entry name="node_popup" builder="node_popup">
+		<Entry name="CenterAction" />
+	</Entry>
+	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry builder="separator" />
+		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
+		<Entry name="PrintAction" row="2"/>
+		<Entry name="CloseAction" row="2"/>
+	</Entry>
+</FreeplaneUIEntries>
