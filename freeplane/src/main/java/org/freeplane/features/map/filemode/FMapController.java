@@ -54,4 +54,7 @@ public class FMapController extends MapController {
 	public void newMap(File file) {
 		newMap(new File[]{file});
 	}
+
+	@Override
+    protected void fireFoldingChanged(final NodeModel node) {/**/}
 }

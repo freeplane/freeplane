@@ -503,14 +503,14 @@ implements IExtension, NodeChangeAnnouncer{
 				null, false, false));
     }
 
-	private void fireFoldingChanged(final NodeModel node) {
+	protected void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
 	    	final MapModel map = node.getMap();
 	    	setSaved(map, false);
 	    }
     }
 
-	private boolean isFoldingPersistentAlways() {
+	protected boolean isFoldingPersistentAlways() {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 		return resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
 	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING);

@@ -25,6 +25,10 @@ import org.freeplane.features.map.codeexplorermode.CodeMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.JavaPackage;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
+
 public class CodeModeController extends ModeController {
 	static public final String MODENAME = "CodeExplorer";
 
@@ -42,7 +46,9 @@ public class CodeModeController extends ModeController {
 		final Controller controller = getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
-			((CodeMapController) getMapController()).newMap(File.listRoots());
+			JavaClasses importedClasses = new ClassFileImporter().importPackages("org.freeplane");
+			JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
+			((CodeMapController) getMapController()).newMap(rootPackage);
 		}
 		super.startup();
 	}
