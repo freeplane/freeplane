@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
+import org.jgrapht.graph.AsSubgraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -62,70 +65,69 @@ public class PreferenceOrdering<V> {
 
 
     public List<V> findStrongestOrdering() {
-        // Find and break cycles
-        JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(graph);
-        List<List<V>> cycles = cycleFinder.findSimpleCycles();
 
-        while (!cycles.isEmpty()) {
-            List<V> firstCycle = cycles.get(0);
-            System.out.println("Cycle detected: " + firstCycle);
+        // Compute Connected Components
+        ConnectivityInspector<V, DefaultWeightedEdge> connectivityInspector = new ConnectivityInspector<>(graph);
+        List<Set<V>> connectedSets = connectivityInspector.connectedSets();
 
-            DefaultWeightedEdge minWeightEdge = findMinWeightEdge(graph, firstCycle);
-            if (minWeightEdge != null) {
-                V source = graph.getEdgeSource(minWeightEdge);
-                V target = graph.getEdgeTarget(minWeightEdge);
-                graph.removeEdge(minWeightEdge);
-                System.out.println("Removing edge: " + source + " -> " + target);
+        // Sort the connected components in descending order by size
+        connectedSets.sort((set1, set2) -> Integer.compare(set2.size(), set1.size()));
 
-                // Remove the first cycle from the list, since the edge removal will break it
-                cycles.remove(0);
+        List<V> finalOrdering = new ArrayList<>();
 
-                // Remove all cycles containing the removed edge
-                cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
+        // Process each SCG
+        for (Set<V> scgSet : connectedSets) {
+            // Create a subgraph for the SCG
+            Graph<V, DefaultWeightedEdge> subgraph = new AsSubgraph<>(graph, scgSet);
 
-                if (cycles.isEmpty())
-                    cycles = cycleFinder.findSimpleCycles();
-            } else {
-                // Handle the error condition, potentially with a break or continue statement
-                System.err.println("Error: Could not find a minimum weight edge in the cycle.");
-                // Decide on how to handle this situation - for example, you could just break out of the loop
-                break;
+            // Find and break cycles within the SCG
+            JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(subgraph);
+            List<List<V>> cycles = cycleFinder.findSimpleCycles();
+
+            while (!cycles.isEmpty()) {
+                List<V> firstCycle = cycles.get(0);
+                DefaultWeightedEdge minWeightEdge = findMinWeightEdge(subgraph, firstCycle);
+                if (minWeightEdge != null) {
+                    V source = subgraph.getEdgeSource(minWeightEdge);
+                    V target = subgraph.getEdgeTarget(minWeightEdge);
+                    subgraph.removeEdge(minWeightEdge);
+
+                    // Remove the first cycle from the list, since the edge removal will break it
+                    cycles.remove(0);
+
+                    // Remove all cycles containing the removed edge
+                    cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
+
+                    if (cycles.isEmpty())
+                        cycles = cycleFinder.findSimpleCycles();
+                } else {
+                    // If no edge is found, it should break and avoid an infinite loop
+                    break;
+                }
+            }
+
+            // Determine the ordering within the SCG based on the remaining weights
+            Map<V, Double> scgOrderingWeights = new HashMap<>();
+            for (V vertex : scgSet) {
+                double netWeight = subgraph.outgoingEdgesOf(vertex).stream()
+                        .mapToDouble(subgraph::getEdgeWeight).sum()
+                        - subgraph.incomingEdgesOf(vertex).stream()
+                        .mapToDouble(subgraph::getEdgeWeight).sum();
+                scgOrderingWeights.put(vertex, netWeight);
+            }
+
+            // Sort the vertices within the SCG based on net weights
+            List<Map.Entry<V, Double>> scgSortedEntries = new ArrayList<>(scgOrderingWeights.entrySet());
+            scgSortedEntries.sort(Map.Entry.<V, Double>comparingByValue().reversed());
+
+            // Add the sorted vertices to the final ordering
+            for (Map.Entry<V, Double> entry : scgSortedEntries) {
+                finalOrdering.add(entry.getKey());
             }
         }
 
-        System.out.println("Graph after cycles have been reduced:");
-        for (DefaultWeightedEdge edge : graph.edgeSet()) {
-            System.out.println(graph.getEdgeSource(edge) + " -> " + graph.getEdgeTarget(edge) + " : " + graph.getEdgeWeight(edge));
-        }
-
-        // Determine the ordering based on the remaining weights
-        Map<V, Double> orderingWeights = new HashMap<>();
-        for (V vertex : graph.vertexSet()) {
-            double netWeight = graph.outgoingEdgesOf(vertex).stream()
-                    .mapToDouble(graph::getEdgeWeight).sum()
-                    - graph.incomingEdgesOf(vertex).stream()
-                    .mapToDouble(graph::getEdgeWeight).sum();
-            orderingWeights.put(vertex, netWeight);
-        }
-
-        // Sort the vertices based on the net weights
-        List<Map.Entry<V, Double>> sortedEntries = new ArrayList<>(orderingWeights.entrySet());
-        sortedEntries.sort(Map.Entry.<V, Double>comparingByValue().reversed());
-
-        System.out.println("Final ordering and weights:");
-        for (Map.Entry<V, Double> entry : sortedEntries) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
-
-        // Extract the sorted node names
-        List<V> sortedNodes = new ArrayList<>();
-        for (Map.Entry<V, Double> entry : sortedEntries) {
-            sortedNodes.add(entry.getKey());
-        }
-
-        return sortedNodes;
+        return finalOrdering;
     }
-
     private boolean cycleContainsEdge(V source, V target, List<V> cycle) {
         // Check if the cycle contains the source
         int sourceIndex = cycle.indexOf(source);
