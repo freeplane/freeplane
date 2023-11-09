@@ -1,15 +1,14 @@
 package org.freeplane.features.map.codeexplorermode;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.extension.Configurable;
-import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
@@ -106,12 +105,14 @@ class JavaPackageNodeModel extends CodeNodeModel {
 
     @Override
     Collection<CodeConnectorModel> getOutgoingLinks(Configurable component) {
-        if(hasChildren() && ! isFolded())
-            return Collections.emptyList();
         MapView mapView = (MapView) component;
-        Map<String, Long> dependencies = javaPackage.getClassDependenciesFromThisPackageTree().stream()
-                .filter(dep -> isTargetVisibleWithNoChildViews(mapView, dep))
-                .collect(Collectors.groupingBy(this::getTargetPackageName , Collectors.counting()));
+        Set<Dependency> packageDependencies = includesDependenciesForChildPackages(mapView)
+                ? javaPackage.getClassDependenciesFromThisPackageTree()
+                        : javaPackage.getClassDependenciesFromThisPackage();
+        Map<String, Long> dependencies = packageDependencies.stream()
+                .map(dep -> getVisibleTargetPackageName(mapView, dep))
+                .filter(name -> name != null)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
             .map(e -> new CodeConnectorModel(this, e.getKey(), e.getValue().intValue()))
             .collect(Collectors.toList());
@@ -119,14 +120,28 @@ class JavaPackageNodeModel extends CodeNodeModel {
 
     }
 
-    private boolean isTargetVisibleWithNoChildViews(MapView mapView, Dependency dep) {
-        String targetPackageName = getTargetPackageName(dep);
-        NodeModel targetNode = getMap().getNodeForID(targetPackageName);
-        NodeView targetView = mapView.getNodeView(targetNode);
-        return targetView != null && (targetView.isFolded() || ! targetNode.hasChildren());
+    private boolean includesDependenciesForChildPackages(MapView mapView) {
+        return mapView.getNodeView(this).isFolded();
     }
 
-    private String getTargetPackageName(Dependency dep) {
-        return dep.getTargetClass().getPackage().getName();
+    private String getVisibleTargetPackageName(MapView mapView, Dependency dep) {
+        JavaPackage targetPackage = dep.getTargetClass().getPackage();
+        return getVisibleTargetPackageName(mapView, targetPackage);
+    }
+
+    private String getVisibleTargetPackageName(MapView mapView, JavaPackage targetPackage) {
+        for(;;) {
+            String targetPackageName = targetPackage.getName();
+            NodeModel targetNode = getMap().getNodeForID(targetPackageName);
+            if(targetNode != null) {
+                NodeView targetView = mapView.getNodeView(targetNode);
+                if(targetView != null)
+                    return targetPackageName;
+            }
+            Optional<JavaPackage> parent = targetPackage.getParent();
+            if(! parent.isPresent())
+                return null;
+            targetPackage = parent.get();
+        }
     }
 }

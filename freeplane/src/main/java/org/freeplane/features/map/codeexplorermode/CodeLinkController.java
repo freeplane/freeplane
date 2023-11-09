@@ -101,7 +101,7 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public ConnectorArrows getArrows(ConnectorModel connector) {
-        return ConnectorArrows.FORWARD;
+        return areConnectorNodesSelected(connector) ? ConnectorArrows.FORWARD : ConnectorArrows.NONE;
     }
 
     @Override
