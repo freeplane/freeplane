@@ -1207,4 +1207,8 @@ public class MMapController extends MapController {
         }
     }
 
+    public NodeModel newNode(final Object userObject, final MapModel map) {
+        return new NodeModel(userObject, map);
+    }
+
 }

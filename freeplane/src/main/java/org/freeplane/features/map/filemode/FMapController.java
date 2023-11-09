@@ -46,11 +46,6 @@ public class FMapController extends MapController {
 		return fileMapModel;
 	}
 
-	@Override
-	public NodeModel newNode(final Object userObject, final MapModel map) {
-		return new FNodeModel((File) userObject, map);
-	}
-
 	public void newMap(File file) {
 		newMap(new File[]{file});
 	}
