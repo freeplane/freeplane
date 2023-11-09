@@ -12,7 +12,6 @@ import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.alg.cycle.CycleDetector;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
 import org.jgrapht.graph.AsSubgraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
@@ -75,22 +74,22 @@ public class PreferenceOrdering<V> {
 
         List<V> finalOrdering = new ArrayList<>();
 
-        // Process each SCG
-        for (Set<V> scgSet : connectedSets) {
-            // Create a subgraph for the SCG
-            Graph<V, DefaultWeightedEdge> subgraph = new AsSubgraph<>(graph, scgSet);
+        // Process each connected set
+        for (Set<V> connectedSet : connectedSets) {
+            // Create a subgraph for the connected set
+            Graph<V, DefaultWeightedEdge> connectedSubgraph = new AsSubgraph<>(graph, connectedSet);
 
             // Find and break cycles within the SCG
-            JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(subgraph);
+            JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
             List<List<V>> cycles = cycleFinder.findSimpleCycles();
 
             while (!cycles.isEmpty()) {
                 List<V> firstCycle = cycles.get(0);
-                DefaultWeightedEdge minWeightEdge = findMinWeightEdge(subgraph, firstCycle);
+                DefaultWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
                 if (minWeightEdge != null) {
-                    V source = subgraph.getEdgeSource(minWeightEdge);
-                    V target = subgraph.getEdgeTarget(minWeightEdge);
-                    subgraph.removeEdge(minWeightEdge);
+                    V source = connectedSubgraph.getEdgeSource(minWeightEdge);
+                    V target = connectedSubgraph.getEdgeTarget(minWeightEdge);
+                    connectedSubgraph.removeEdge(minWeightEdge);
 
                     // Remove the first cycle from the list, since the edge removal will break it
                     cycles.remove(0);
@@ -109,8 +108,8 @@ public class PreferenceOrdering<V> {
                 System.out.println("Unexpected cycle found:");
                 System.out.println(x);
                 System.out.println("Complete graph:");
-                for (DefaultWeightedEdge edge : graph.edgeSet()) {
-                    System.out.println(graph.getEdgeSource(edge) + " -> " + graph.getEdgeTarget(edge) + " : " + graph.getEdgeWeight(edge));
+                for (DefaultWeightedEdge edge : connectedSubgraph.edgeSet()) {
+                    System.out.println(connectedSubgraph.getEdgeSource(edge) + " -> " + connectedSubgraph.getEdgeTarget(edge) + " : " + connectedSubgraph.getEdgeWeight(edge));
                 }
 
                 throw new IllegalStateException("The graph has cycles");
@@ -118,13 +117,14 @@ public class PreferenceOrdering<V> {
 
             // Perform topological sort
             TopologicalOrderIterator<V, DefaultWeightedEdge> topologicalOrderIterator =
-                    new TopologicalOrderIterator<>(graph);
+                    new TopologicalOrderIterator<>(connectedSubgraph);
 
             // Add the sorted vertices to the final ordering
-
+            System.out.println("Final ordering");
             while (topologicalOrderIterator.hasNext()) {
                 V node = topologicalOrderIterator.next();
                 finalOrdering.add(node);
+                System.out.println(node);
             }
         }
 
