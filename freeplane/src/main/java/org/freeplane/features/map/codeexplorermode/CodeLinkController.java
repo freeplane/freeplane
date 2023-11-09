@@ -32,6 +32,10 @@ public class CodeLinkController extends LinkController {
 
     private static final Color VISIBLE_CONNECTOR_COLOR = Color.GREEN;
 
+    private static final Point backwardsConnectorStartInclination = new Point(40, 5);
+    private static final Point upwardsConnectorStartInclination = new Point(-backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
+
+
     public CodeLinkController(ModeController modeController) {
         super(modeController);
     }
@@ -50,7 +54,7 @@ public class CodeLinkController extends LinkController {
     @Override
     public int getWidth(ConnectorModel connector) {
         return areConnectorNodesSelected(connector) ?
-                1 + (int) Math.log(((CodeConnectorModel)connector).weight())
+                1 + (int) Math.log10(((CodeConnectorModel)connector).weight())
                 : 1;
 
     }
@@ -141,7 +145,7 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public Point getStartInclination(ConnectorModel connector) {
-        return null;
+        return ((CodeConnectorModel)connector).goesUp() ? upwardsConnectorStartInclination : backwardsConnectorStartInclination;
     }
 
     @Override

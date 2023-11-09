@@ -11,12 +11,19 @@ import org.freeplane.features.map.NodeModel;
 class CodeConnectorModel extends ConnectorModel {
 
     private final int weight;
-    CodeConnectorModel(NodeModel source, String targetID, int weight) {
+    private final boolean goesUp;
+    CodeConnectorModel(NodeModel source, String targetID, int weight, boolean goesUp) {
         super(source, targetID);
         this.weight = weight;
+        this.goesUp = goesUp;
     }
-    public int weight() {
+
+    int weight() {
         return weight;
+    }
+
+    boolean goesUp() {
+        return goesUp;
     }
 
 }
