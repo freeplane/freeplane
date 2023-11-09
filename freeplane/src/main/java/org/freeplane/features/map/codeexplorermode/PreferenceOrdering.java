@@ -98,13 +98,23 @@ public class PreferenceOrdering<V> {
                     // Remove all cycles containing the removed edge
                     cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
 
-                    if (cycles.isEmpty())
-                        cycles = cycleFinder.findSimpleCycles();
                 } else {
                     // If no edge is found, it should break and avoid an infinite loop
                     break;
                 }
             }
+
+            // Check for cycles
+           cycleFinder.findSimpleCycles(x -> {
+                System.out.println("Unexpected cycle found:");
+                System.out.println(x);
+                System.out.println("Complete graph:");
+                for (DefaultWeightedEdge edge : graph.edgeSet()) {
+                    System.out.println(graph.getEdgeSource(edge) + " -> " + graph.getEdgeTarget(edge) + " : " + graph.getEdgeWeight(edge));
+                }
+
+                throw new IllegalStateException("The graph has cycles");
+            });
 
             // Perform topological sort
             TopologicalOrderIterator<V, DefaultWeightedEdge> topologicalOrderIterator =
