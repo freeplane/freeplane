@@ -7,17 +7,17 @@ package org.freeplane.features.map.codeexplorermode;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.cycle.CycleDetector;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
 import org.jgrapht.graph.AsSubgraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.traverse.TopologicalOrderIterator;
 
 public class PreferenceOrdering<V> {
 
@@ -106,23 +106,15 @@ public class PreferenceOrdering<V> {
                 }
             }
 
-            // Determine the ordering within the SCG based on the remaining weights
-            Map<V, Double> scgOrderingWeights = new HashMap<>();
-            for (V vertex : scgSet) {
-                double netWeight = subgraph.outgoingEdgesOf(vertex).stream()
-                        .mapToDouble(subgraph::getEdgeWeight).sum()
-                        - subgraph.incomingEdgesOf(vertex).stream()
-                        .mapToDouble(subgraph::getEdgeWeight).sum();
-                scgOrderingWeights.put(vertex, netWeight);
-            }
-
-            // Sort the vertices within the SCG based on net weights
-            List<Map.Entry<V, Double>> scgSortedEntries = new ArrayList<>(scgOrderingWeights.entrySet());
-            scgSortedEntries.sort(Map.Entry.<V, Double>comparingByValue().reversed());
+            // Perform topological sort
+            TopologicalOrderIterator<V, DefaultWeightedEdge> topologicalOrderIterator =
+                    new TopologicalOrderIterator<>(graph);
 
             // Add the sorted vertices to the final ordering
-            for (Map.Entry<V, Double> entry : scgSortedEntries) {
-                finalOrdering.add(entry.getKey());
+
+            while (topologicalOrderIterator.hasNext()) {
+                V node = topologicalOrderIterator.next();
+                finalOrdering.add(node);
             }
         }
 
