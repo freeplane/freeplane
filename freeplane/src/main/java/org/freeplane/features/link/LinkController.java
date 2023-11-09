@@ -1098,16 +1098,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return getProperty(connector, c -> Optional.ofNullable(c.getStartInclination()), () -> null);
 	}
 
-	public boolean isStartInclinationSet(ConnectorModel connector) {
-		return connector.getStartInclination() != null;
-	}
-
 	public Point getEndInclination(ConnectorModel connector) {
 		return getProperty(connector, c -> Optional.ofNullable(c.getEndInclination()), () -> null);
-	}
-
-
-	public boolean isEndInclinationSet(ConnectorModel connector) {
-		return connector.getEndInclination() != null;
 	}
 }
