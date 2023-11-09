@@ -113,10 +113,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 		void paste(final NodeModel target) {
 			final String text = cleanHtml(textFromClipboard);
-			final NodeModel node = Controller.getCurrentModeController().getMapController().newNode(text,
-					Controller.getCurrentController().getMap());
-			node.setSide(MapController.suggestNewChildSide(target, Side.DEFAULT));
 			MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+			final NodeModel node = mapController.newNode(text, Controller.getCurrentController().getMap());
+			node.setSide(MapController.suggestNewChildSide(target, Side.DEFAULT));
             mapController.insertNode(node, target);
 		}
 

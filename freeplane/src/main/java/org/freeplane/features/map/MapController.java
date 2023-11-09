@@ -891,10 +891,6 @@ implements IExtension, NodeChangeAnnouncer{
         return modeController.getExtension(MapClipboardController.class);
     }
 
-	public NodeModel newNode(final Object userObject, final MapModel map) {
-		return new NodeModel(userObject, map);
-	}
-
 	@Override
 	public void nodeChanged(final NodeModel node) {
 		nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
