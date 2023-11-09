@@ -19,6 +19,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.codeexplorermode.CodeLayoutController;
 import org.freeplane.features.map.codeexplorermode.CodeLinkController;
 import org.freeplane.features.map.codeexplorermode.CodeMapController;
 import org.freeplane.features.map.filemode.CenterAction;
@@ -61,7 +62,7 @@ public class CodeModeControllerFactory {
 		LinkController.install(new CodeLinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		LocationController.install(new LocationController());
-		LayoutController.install(new LayoutController());
+		LayoutController.install(new CodeLayoutController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);
 		NodeStyleController.getController().shapeHandlers.addGetter(new Integer(0), new IPropertyHandler<NodeGeometryModel, NodeModel>() {
