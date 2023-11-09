@@ -25,10 +25,5 @@ public class CodeMapController extends MapController {
 	}
 
 	@Override
-	public NodeModel newNode(final Object userObject, final MapModel map) {
-		return new JavaPackageNodeModel((JavaPackage) userObject, map);
-	}
-
-	@Override
     protected void fireFoldingChanged(final NodeModel node) {/**/}
 }
