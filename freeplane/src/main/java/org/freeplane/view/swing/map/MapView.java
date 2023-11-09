@@ -664,6 +664,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final INodeChangeListener connectorChangeListener;
 	private boolean scrollsViewAfterLayout = true;
 	private boolean allowsCompactLayout;
+    private boolean repaintsViewOnSelectionChange;
+
     public static final int SCROLL_VELOCITY_PX = (int) (UITools.FONT_SCALE_FACTOR  * 10);
 
 	static {
@@ -932,7 +934,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(! node.isShowing())
 			return;
 		node.update();
-		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors)
+		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors || repaintsViewOnSelectionChange)
 			repaint(getVisibleRect());
 		else
 			node.repaintSelected();
@@ -2896,4 +2898,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return getZoomed(draggingAreaWidth);
 	}
 
+    public boolean repaintsViewOnSelectionChange() {
+        return repaintsViewOnSelectionChange;
+    }
+
+    public void setRepaintsViewOnSelectionChange(boolean repaintsViewOnSelectionChange) {
+        this.repaintsViewOnSelectionChange = repaintsViewOnSelectionChange;
+    }
 }
