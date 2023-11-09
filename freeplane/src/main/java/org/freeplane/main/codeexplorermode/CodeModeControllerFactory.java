@@ -19,6 +19,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.codeexplorermode.CodeLinkController;
 import org.freeplane.features.map.codeexplorermode.CodeMapController;
 import org.freeplane.features.map.filemode.CenterAction;
 import org.freeplane.features.map.filemode.OpenPathAction;
@@ -32,9 +33,11 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
+import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 public class CodeModeControllerFactory {
@@ -55,7 +58,7 @@ public class CodeModeControllerFactory {
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		new TextController(modeController).install(modeController);
-		LinkController.install(new LinkController(modeController));
+		LinkController.install(new CodeLinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		LocationController.install(new LocationController());
 		LayoutController.install(new LayoutController());
@@ -84,6 +87,15 @@ public class CodeModeControllerFactory {
 			    }));
 
 		NodeHistory.install(modeController);
+
+		controller.getMapViewManager().addMapViewChangeListener(new IMapViewChangeListener() {
+
+            @Override
+            public void afterViewCreated(Component oldView, Component newView) {
+                ((MapView)newView).setRepaintsViewOnSelectionChange(true);
+            }
+
+        });
 		return modeController;
 	}
 }
