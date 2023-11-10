@@ -120,11 +120,9 @@ public class PreferenceOrdering<V> {
                     new TopologicalOrderIterator<>(connectedSubgraph);
 
             // Add the sorted vertices to the final ordering
-            System.out.println("Final ordering");
             while (topologicalOrderIterator.hasNext()) {
                 V node = topologicalOrderIterator.next();
                 finalOrdering.add(node);
-                System.out.println(node);
             }
         }
 
