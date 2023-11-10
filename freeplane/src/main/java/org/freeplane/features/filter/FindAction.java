@@ -78,6 +78,7 @@ class FindAction extends AFreeplaneAction {
 		}
 		KeyStroke keyStrokePrevious = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK);
 		KeyStroke keyStrokeNext = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK);
+		final NodeModel start = selection.getSelected();
 		if (editor == null) {
 			editor = new FilterConditionEditor(FilterController.getCurrentFilterController(), 5, Variant.SEARCH_DIALOG, new JPanel());
 			editor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(5, 0, 5, 0)));
@@ -139,11 +140,8 @@ class FindAction extends AFreeplaneAction {
 		});
 		searchStart = selection.getSelected();
 		subtreeRoot = selection.getSelectionRoot();
-
-		JOptionPane.showOptionDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
-				editorPanel, TextUtils.getText("FindAction.text"), JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-				null, new Object[]{}, null);
-
+		UITools.showConfirmDialog(start, editorPanel, TextUtils.getText("FindAction.text"),
+		    JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE);
 		searchStart = subtreeRoot = null;
 		final Container parent = editorPanel.getParent();
 		if (parent != null) {
