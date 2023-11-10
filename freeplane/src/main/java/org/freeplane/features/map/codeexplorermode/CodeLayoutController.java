@@ -12,6 +12,6 @@ import org.freeplane.features.map.NodeModel;
 public class CodeLayoutController extends LayoutController {
     @Override
     public ChildNodesLayout getChildNodesLayout(NodeModel node) {
-        return ChildNodesLayout.TOPTOBOTTOM_RIGHT_FIRST;
+        return ChildNodesLayout.TOPTOBOTTOM_RIGHT_BOTTOM;
     }
 }
