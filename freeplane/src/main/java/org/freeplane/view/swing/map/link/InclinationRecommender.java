@@ -58,8 +58,8 @@ public class InclinationRecommender {
     	final Point endInclinationByStyle = linkController.getEndInclination(connector);
     	if(endInclinationByStyle != null)
     		return endInclinationByStyle;
-        Point endInclination = new Point(calcStartInclination());
-        endInclination.y = -endInclination.y;
+        Point startInclination = calcStartInclination();
+        Point endInclination = new Point(startInclination.x, -startInclination.y);
         if (selfLink) {
             fixInclineIfLoopNode(endInclination);
         }
