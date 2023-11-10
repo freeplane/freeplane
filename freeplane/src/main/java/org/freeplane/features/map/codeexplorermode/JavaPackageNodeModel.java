@@ -24,13 +24,13 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 class JavaPackageNodeModel extends CodeNodeModel {
 	final private JavaPackage javaPackage;
 
-	public JavaPackageNodeModel(final JavaPackage javaPackage, final MapModel map) {
+	public JavaPackageNodeModel(final JavaPackage javaPackage, final MapModel map, boolean showsFullPackageName) {
 		super(map);
 		this.javaPackage = javaPackage;
 		Set<JavaPackage> subpackages = javaPackage.getSubpackages();
 		setFolded(! subpackages.isEmpty());
 		setID(javaPackage.getName());
-		setText(javaPackage.getRelativeName());
+		setText(showsFullPackageName ? javaPackage.getName() : javaPackage.getRelativeName());
 	}
 
 	@Override
@@ -57,7 +57,7 @@ class JavaPackageNodeModel extends CodeNodeModel {
 	            List<JavaPackage> orderedPackages = preferenceOrdering.findStrongestOrdering();
                 for (JavaPackage childPackage : orderedPackages) {
                     MapModel map = getMap();
-                    final JavaPackageNodeModel node = new JavaPackageNodeModel(childPackage, map);
+                    final JavaPackageNodeModel node = new JavaPackageNodeModel(childPackage, map, false);
                     children.add(node);
                     node.setParent(this);
                 }
