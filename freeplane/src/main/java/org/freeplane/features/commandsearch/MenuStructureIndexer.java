@@ -20,6 +20,7 @@ package org.freeplane.features.commandsearch;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
@@ -38,6 +39,10 @@ public class MenuStructureIndexer {
     public MenuStructureIndexer()
     {
         loadMenuItems();
+
+        if(false)
+            System.out.println(
+                menuItems.stream().map(x -> x.getDisplayedText()).collect(Collectors.joining("\n")));
     }
 
     public List<MenuItem> getMenuItems()
