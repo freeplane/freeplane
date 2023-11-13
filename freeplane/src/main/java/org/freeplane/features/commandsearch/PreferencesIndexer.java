@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -45,6 +46,10 @@ public class PreferencesIndexer
     	prefs = new LinkedList<>();
     	path = new ArrayList<>(2);
         load();
+
+        if(false)
+            System.out.println(
+                prefs.stream().map(x -> x.getDisplayedText()).collect(Collectors.joining("\n")));
     }
 
     public List<PreferencesItem> getPrefs()
