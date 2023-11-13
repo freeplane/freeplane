@@ -23,8 +23,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.codeexplorermode.CodeLayoutController;
 import org.freeplane.features.map.codeexplorermode.CodeLinkController;
 import org.freeplane.features.map.codeexplorermode.CodeMapController;
-import org.freeplane.features.map.filemode.CenterAction;
-import org.freeplane.features.map.filemode.OpenPathAction;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IPropertyHandler;
@@ -73,8 +71,6 @@ public class CodeModeControllerFactory {
 			    return NodeGeometryModel.FORK;
 		    }
 		});
-		modeController.addAction(new CenterAction());
-		modeController.addAction(new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		UIComponentVisibilityDispatcher.install(toolBar, "toolbarVisible");
