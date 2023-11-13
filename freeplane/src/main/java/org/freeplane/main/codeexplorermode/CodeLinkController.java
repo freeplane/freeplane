@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.features.map.codeexplorermode;
+package org.freeplane.main.codeexplorermode;
 
 import java.awt.Color;
 import java.awt.Component;

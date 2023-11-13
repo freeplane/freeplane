@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.features.map.codeexplorermode;
+package org.freeplane.main.codeexplorermode;
 
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.features.layout.LayoutController;
