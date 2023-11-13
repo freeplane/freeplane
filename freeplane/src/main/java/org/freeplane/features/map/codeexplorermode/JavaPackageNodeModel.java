@@ -44,7 +44,7 @@ class JavaPackageNodeModel extends CodeNodeModel {
 	    if (children.isEmpty()) {
 	        final Set<JavaPackage> packages = javaPackage.getSubpackages();
 	        if(! packages.isEmpty()) {
-	            PreferenceOrdering<JavaPackage> preferenceOrdering = new PreferenceOrdering<JavaPackage>();
+	            GraphNodeSort<JavaPackage> preferenceOrdering = new GraphNodeSort<JavaPackage>();
 	            for (JavaPackage childPackage : packages) {
 	                preferenceOrdering.addNode(childPackage);
 	                Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
@@ -54,7 +54,7 @@ class JavaPackageNodeModel extends CodeNodeModel {
 	                .forEach(e -> preferenceOrdering.addEdge(childPackage, e.getKey(), e.getValue()));
 	            }
 
-	            List<JavaPackage> orderedPackages = preferenceOrdering.findStrongestOrdering();
+	            List<JavaPackage> orderedPackages = preferenceOrdering.sortNodes();
                 for (JavaPackage childPackage : orderedPackages) {
                     MapModel map = getMap();
                     final JavaPackageNodeModel node = new JavaPackageNodeModel(childPackage, map, false);

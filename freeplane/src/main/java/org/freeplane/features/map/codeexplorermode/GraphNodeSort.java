@@ -18,7 +18,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 
-public class PreferenceOrdering<V> {
+public class GraphNodeSort<V> {
 
 
     private final Graph<V, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
@@ -63,7 +63,7 @@ public class PreferenceOrdering<V> {
     }
 
 
-    public List<V> findStrongestOrdering() {
+    public List<V> sortNodes() {
 
         // Compute Connected Components
         ConnectivityInspector<V, DefaultWeightedEdge> connectivityInspector = new ConnectivityInspector<>(graph);
@@ -157,11 +157,11 @@ public class PreferenceOrdering<V> {
 
 
     public static void main(String[] args) {
-        PreferenceOrdering<String> preferenceOrdering = new PreferenceOrdering<String>();
+        GraphNodeSort<String> preferenceOrdering = new GraphNodeSort<String>();
         preferenceOrdering.addEdge("a", "b", 30);
         preferenceOrdering.addEdge("b", "c", 20);
         preferenceOrdering.addEdge("c", "a", 10);
-        List<String> ordering = preferenceOrdering.findStrongestOrdering();
+        List<String> ordering = preferenceOrdering.sortNodes();
         System.out.println(ordering);
     }
 }
