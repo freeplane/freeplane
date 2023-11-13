@@ -24,13 +24,13 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 class JavaPackageNodeModel extends CodeNodeModel {
 	final private JavaPackage javaPackage;
 
-	public JavaPackageNodeModel(final JavaPackage javaPackage, final MapModel map, boolean showsFullPackageName) {
+	public JavaPackageNodeModel(final JavaPackage javaPackage, final MapModel map, String text) {
 		super(map);
 		this.javaPackage = javaPackage;
 		Set<JavaPackage> subpackages = javaPackage.getSubpackages();
 		setFolded(! subpackages.isEmpty());
 		setID(javaPackage.getName());
-		setText(showsFullPackageName ? javaPackage.getName() : javaPackage.getRelativeName());
+		setText(text);
 	}
 
 	@Override
@@ -56,14 +56,22 @@ class JavaPackageNodeModel extends CodeNodeModel {
 
 	            List<JavaPackage> orderedPackages = preferenceOrdering.sortNodes();
                 for (JavaPackage childPackage : orderedPackages) {
-                    MapModel map = getMap();
-                    final JavaPackageNodeModel node = new JavaPackageNodeModel(childPackage, map, false);
+                    final JavaPackageNodeModel node = createChildPackageNode(childPackage, "");
                     children.add(node);
                     node.setParent(this);
                 }
             }
 	    }
 	}
+
+    private JavaPackageNodeModel createChildPackageNode(JavaPackage childPackage, String parentName) {
+        String childPackageName = childPackage.getRelativeName();
+        Set<JavaPackage> subpackages = childPackage.getSubpackages();
+        if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
+            return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
+        else
+            return new JavaPackageNodeModel(childPackage, getMap(), parentName + childPackageName);
+    }
 
     private JavaPackage getTargetChildPackage(Dependency dep) {
         JavaClass targetClass = dep.getTargetClass();

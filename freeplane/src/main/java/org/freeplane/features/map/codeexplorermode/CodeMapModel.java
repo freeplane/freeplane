@@ -12,7 +12,7 @@ class CodeMapModel extends MapModel {
 		// create empty attribute registry
 		AttributeRegistry.getRegistry(this);
 
-		setRoot(new JavaPackageNodeModel(rootPackage, this, true));
+		setRoot(new JavaPackageNodeModel(rootPackage, this, rootPackage.getName()));
 		getRootNode().setFolded(false);
 	}
 
