@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
+	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry builder="separator" />
+		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
+		<Entry name="PrintAction" row="2"/>
+		<Entry name="CloseAction" row="2"/>
+		<Entry builder="separator" />
+		<Entry row="1">
+			<Entry name="JumpInAction"/>
+			<Entry name="UnfoldOneLevelAction" />
+			<Entry name="UnfoldAllAction" />
+		</Entry>
+		<Entry row="2">
+			<Entry name="JumpOutAction"/>
+			<Entry name="FoldOneLevelAction" />
+			<Entry name="FoldAllAction" />
+		</Entry>
+	</Entry>
 	<Entry builder="main_menu">
 		<Entry name="file">
 			<Entry name="lastOpenedMaps">
@@ -137,11 +154,5 @@
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
 		<Entry name="CenterAction" />
-	</Entry>
-	<Entry name="main_toolbar" builder="toolbar,ignore">
-		<Entry builder="separator" />
-		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
-		<Entry name="PrintAction" row="2"/>
-		<Entry name="CloseAction" row="2"/>
 	</Entry>
 </FreeplaneUIEntries>

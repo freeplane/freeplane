@@ -18,6 +18,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.codeexplorermode.CodeLayoutController;
 import org.freeplane.features.map.codeexplorermode.CodeLinkController;
@@ -59,6 +60,7 @@ public class CodeModeControllerFactory {
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		new TextController(modeController).install(modeController);
+		FoldingController.install(new FoldingController());
 		LinkController.install(new CodeLinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		LocationController.install(new LocationController());

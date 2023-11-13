@@ -383,8 +383,6 @@ public class MMapController extends MapController {
 
     private void createActions(ModeController modeController) {
         modeController.addAction(new NewMapViewAction());
-        modeController.addAction(new JumpInAction());
-        modeController.addAction(new JumpOutAction());
         modeController.addAction(new NewSiblingAction());
         modeController.addAction(new NewPreviousSiblingAction());
         modeController.addAction(new NewChildAction());
