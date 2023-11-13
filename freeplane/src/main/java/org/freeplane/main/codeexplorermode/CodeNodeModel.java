@@ -72,7 +72,12 @@ abstract class CodeNodeModel extends NodeModel{
     }
 
     JavaClass findEnclosingNamedClass(JavaClass javaClass) {
-        JavaClass namedClass = javaClass.isAnonymousClass() ? findEnclosingNamedClass(javaClass.getEnclosingClass().get()) : javaClass;
-        return namedClass;
+        if (javaClass.isAnonymousClass())
+            return findEnclosingNamedClass(javaClass.getEnclosingClass().get());
+        else
+            if(javaClass.isArray())
+                return javaClass.getBaseComponentType();
+            else
+                return javaClass;
     }
 }
