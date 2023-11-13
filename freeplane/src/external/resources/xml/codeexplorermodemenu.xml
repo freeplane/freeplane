@@ -153,6 +153,8 @@
 		<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
-		<Entry name="CenterAction" />
+		<Entry name="goto" processOnPopup="true">
+			 <Entry builder="link_actions" />
+		</Entry>
 	</Entry>
 </FreeplaneUIEntries>
