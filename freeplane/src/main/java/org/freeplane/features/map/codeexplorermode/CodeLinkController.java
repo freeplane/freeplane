@@ -136,7 +136,10 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public Component getPopupForModel(Object obj) {
-        return new JLabel("To be done");
+        if(obj instanceof CodeConnectorModel)
+            return new JLabel("To be done");
+        else
+            return null;
 
     }
 
