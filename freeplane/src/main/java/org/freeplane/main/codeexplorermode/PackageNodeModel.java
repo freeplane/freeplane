@@ -14,7 +14,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -43,20 +42,30 @@ class PackageNodeModel extends CodeNodeModel {
 	    List<NodeModel> children = super.getChildrenInternal();
 	    if (children.isEmpty()) {
 	        final Set<JavaPackage> packages = javaPackage.getSubpackages();
-	        if(! packages.isEmpty()) {
-	            GraphNodeSort<JavaPackage> preferenceOrdering = new GraphNodeSort<JavaPackage>();
+	        boolean hasSubpackages = ! packages.isEmpty();
+            boolean hasClasses = ! javaPackage.getClasses().isEmpty();
+            if(hasSubpackages) {
+	            GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
 	            for (JavaPackage childPackage : packages) {
-	                preferenceOrdering.addNode(childPackage);
+	                childNodes.addNode(childPackage);
 	                Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
 	                        .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
 	                dependencies.entrySet().stream()
 	                .filter(e -> e.getKey().getParent().isPresent())
-	                .forEach(e -> preferenceOrdering.addEdge(childPackage, e.getKey(), e.getValue()));
+	                .forEach(e -> childNodes.addEdge(childPackage, e.getKey(), e.getValue()));
+	            }
+	            if(hasClasses) {
+	                childNodes.addNode(javaPackage);
+	                Map<JavaPackage, Long> dependencies = javaPackage.getClassDependenciesFromThisPackage().stream()
+                            .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
+                    dependencies.entrySet().stream()
+                    .filter(e -> e.getKey().getParent().isPresent())
+                    .forEach(e -> childNodes.addEdge(javaPackage, e.getKey(), e.getValue()));
 	            }
 
-	            List<JavaPackage> orderedPackages = preferenceOrdering.sortNodes();
+	            List<JavaPackage> orderedPackages = childNodes.sortNodes();
                 for (JavaPackage childPackage : orderedPackages) {
-                    final PackageNodeModel node = createChildPackageNode(childPackage, "");
+                    final CodeNodeModel node = createChildPackageNode(childPackage, "");
                     children.add(node);
                     node.setParent(this);
                 }
@@ -64,10 +73,13 @@ class PackageNodeModel extends CodeNodeModel {
 	    }
 	}
 
-    private PackageNodeModel createChildPackageNode(JavaPackage childPackage, String parentName) {
+    private CodeNodeModel createChildPackageNode(JavaPackage childPackage, String parentName) {
         String childPackageName = childPackage.getRelativeName();
         Set<JavaPackage> subpackages = childPackage.getSubpackages();
-        if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
+        if(childPackage == javaPackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
+            return new ClassesNodeModel(childPackage, getMap());
+        }
+        else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
             return new PackageNodeModel(childPackage, getMap(), parentName + childPackageName);
@@ -91,7 +103,11 @@ class PackageNodeModel extends CodeNodeModel {
 
 	@Override
 	public int getChildCount(){
-		return javaPackage.getSubpackages().size();
+	    int knownCount = super.getChildrenInternal().size();
+	    if(knownCount > 0)
+	        return knownCount;
+	    else
+	        return javaPackage.getSubpackages().size() + (javaPackage.getClasses().isEmpty() ? 0 : 1);
 	}
 
 
@@ -120,7 +136,7 @@ class PackageNodeModel extends CodeNodeModel {
                 ? javaPackage.getClassDependenciesFromThisPackageTree()
                         : javaPackage.getClassDependenciesFromThisPackage();
         Map<String, Long> dependencies = packageDependencies.stream()
-                .map(dep -> getVisibleTargetPackageName(mapView, dep))
+                .map(dep -> getVisibleTargetName(mapView, dep))
                 .filter(name -> name != null)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
@@ -135,30 +151,5 @@ class PackageNodeModel extends CodeNodeModel {
         NodeModel target = getMap().getNodeForID(targetId);
         NodeRelativePath nodeRelativePath = new NodeRelativePath(this, target);
         return new CodeConnectorModel(this, targetId, e.getValue().intValue(), nodeRelativePath.compareNodePositions() > 0);
-    }
-
-    private boolean includesDependenciesForChildPackages(MapView mapView) {
-        return mapView.getNodeView(this).isFolded();
-    }
-
-    private String getVisibleTargetPackageName(MapView mapView, Dependency dep) {
-        JavaPackage targetPackage = dep.getTargetClass().getPackage();
-        return getVisibleTargetPackageName(mapView, targetPackage);
-    }
-
-    private String getVisibleTargetPackageName(MapView mapView, JavaPackage targetPackage) {
-        for(;;) {
-            String targetPackageName = targetPackage.getName();
-            NodeModel targetNode = getMap().getNodeForID(targetPackageName);
-            if(targetNode != null) {
-                NodeView targetView = mapView.getNodeView(targetNode);
-                if(targetView != null)
-                    return targetPackageName;
-            }
-            Optional<JavaPackage> parent = targetPackage.getParent();
-            if(! parent.isPresent())
-                return null;
-            targetPackage = parent.get();
-        }
     }
 }

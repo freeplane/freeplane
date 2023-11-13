@@ -157,11 +157,11 @@ public class GraphNodeSort<V> {
 
 
     public static void main(String[] args) {
-        GraphNodeSort<String> preferenceOrdering = new GraphNodeSort<String>();
-        preferenceOrdering.addEdge("a", "b", 30);
-        preferenceOrdering.addEdge("b", "c", 20);
-        preferenceOrdering.addEdge("c", "a", 10);
-        List<String> ordering = preferenceOrdering.sortNodes();
+        GraphNodeSort<String> nodeSort = new GraphNodeSort<String>();
+        nodeSort.addEdge("a", "b", 30);
+        nodeSort.addEdge("b", "c", 20);
+        nodeSort.addEdge("c", "a", 10);
+        List<String> ordering = nodeSort.sortNodes();
         System.out.println(ordering);
     }
 }
