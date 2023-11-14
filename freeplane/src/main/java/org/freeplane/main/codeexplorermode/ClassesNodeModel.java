@@ -1,6 +1,5 @@
 package org.freeplane.main.codeexplorermode;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +7,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -88,25 +85,18 @@ class ClassesNodeModel extends CodeNodeModel {
 	}
 
     @Override
-    Collection<CodeConnectorModel> getOutgoingLinks(Configurable component) {
-        MapView mapView = (MapView) component;
-        if(includesDependenciesForChildPackages(mapView)) {
-            Set<Dependency> packageDependencies = javaPackage.getClassDependenciesFromThisPackage();
-            return toConnectors(packageDependencies, mapView);
-        }
-        else
-            return Collections.emptyList();
+    Set<Dependency> getOutgoingDependencyCandidates(boolean includesDependenciesForChildPackages) {
+        Set<Dependency> dependencies = includesDependenciesForChildPackages
+                ? javaPackage.getClassDependenciesFromThisPackage()
+                        : Collections.emptySet();
+        return dependencies;
     }
 
     @Override
-    Collection<CodeConnectorModel> getIncomingLinks(Configurable component) {
-        MapView mapView = (MapView) component;
-        if(includesDependenciesForChildPackages(mapView)) {
-            Set<Dependency> packageDependencies = javaPackage.getClassDependenciesToThisPackage();
-            return toConnectors(packageDependencies, mapView);
-        }
-        else
-            return Collections.emptyList();
+    Set<Dependency> getIncomingDependencyCandidates(boolean includesDependenciesForChildPackages) {
+        return includesDependenciesForChildPackages
+                ? javaPackage.getClassDependenciesToThisPackage()
+                        : Collections.emptySet();
     }
 
     private JavaClass getTargetClass(Dependency dependency) {

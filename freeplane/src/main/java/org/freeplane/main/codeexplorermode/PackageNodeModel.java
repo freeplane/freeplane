@@ -1,16 +1,13 @@
 package org.freeplane.main.codeexplorermode;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -127,22 +124,17 @@ class PackageNodeModel extends CodeNodeModel {
 	}
 
     @Override
-    Collection<CodeConnectorModel> getOutgoingLinks(Configurable component) {
-        MapView mapView = (MapView) component;
-        Set<Dependency> packageDependencies = includesDependenciesForChildPackages(mapView)
+    Set<Dependency> getOutgoingDependencyCandidates(boolean includesDependenciesForChildPackages) {
+        Set<Dependency> dependencies = includesDependenciesForChildPackages
                 ? javaPackage.getClassDependenciesFromThisPackageTree()
                         : javaPackage.getClassDependenciesFromThisPackage();
-        List<CodeConnectorModel> connectors = toConnectors(packageDependencies, mapView);
-        return connectors;
+        return dependencies;
     }
 
     @Override
-    Collection<CodeConnectorModel> getIncomingLinks(Configurable component) {
-        MapView mapView = (MapView) component;
-        Set<Dependency> packageDependencies = includesDependenciesForChildPackages(mapView)
+    Set<Dependency> getIncomingDependencyCandidates(boolean includesDependenciesForChildPackages) {
+        return includesDependenciesForChildPackages
                 ? javaPackage.getClassDependenciesToThisPackageTree()
                         : javaPackage.getClassDependenciesToThisPackage();
-        List<CodeConnectorModel> connectors = toConnectors(packageDependencies, mapView);
-        return connectors;
     }
 }

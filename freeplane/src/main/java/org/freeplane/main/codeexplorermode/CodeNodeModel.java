@@ -5,22 +5,20 @@
  */
 package org.freeplane.main.codeexplorermode;
 
-import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.freeplane.core.extension.Configurable;
-import org.freeplane.features.link.NodeLinkModel;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -31,34 +29,57 @@ abstract class CodeNodeModel extends NodeModel{
     CodeNodeModel(MapModel map) {
         super(map);
     }
+    abstract Set<Dependency> getOutgoingDependencyCandidates(boolean includesDependenciesForChildPackages);
+    abstract Set<Dependency> getIncomingDependencyCandidates(boolean includesDependenciesForChildPackages);
 
-    boolean includesDependenciesForChildPackages(MapView mapView) {
-        return mapView.getNodeView(this).isFolded();
+    boolean includesDependenciesForChildPackages(IMapSelection mapSelection) {
+        return mapSelection.isFolded(this);
     }
 
 
-    abstract Collection<? extends CodeConnectorModel> getOutgoingLinks(Configurable component);
-    abstract Collection<? extends CodeConnectorModel> getIncomingLinks(Configurable component);
+    List<CodeConnectorModel> getOutgoingLinks(IMapSelection selection) {
+        boolean includesDependenciesForChildPackages = includesDependenciesForChildPackages(selection);
+        Set<Dependency> dependencies = getOutgoingDependencyCandidates(includesDependenciesForChildPackages);
+        List<CodeConnectorModel> connectors = toConnectors(dependencies, selection);
+        return connectors;
+    }
+    List<CodeConnectorModel> getIncomingLinks(IMapSelection selection) {
+        boolean includesDependenciesForChildPackages = includesDependenciesForChildPackages(selection);
+        Set<Dependency> dependencies = getIncomingDependencyCandidates(includesDependenciesForChildPackages);
+        List<CodeConnectorModel> connectors = toConnectors(dependencies, selection);
+        return connectors;
+    }
 
-    String getVisibleTargetName(MapView mapView, Dependency dep) {
+
+    Set<Dependency> getOutgoingDependencies(IMapSelection selection) {
+        boolean includesDependenciesForChildPackages = includesDependenciesForChildPackages(selection);
+        Set<Dependency> dependencies = getOutgoingDependencyCandidates(includesDependenciesForChildPackages);
+        return filter(dependencies, selection);
+    }
+    Set<Dependency> getIncomingDependencies(IMapSelection selection) {
+        boolean includesDependenciesForChildPackages = includesDependenciesForChildPackages(selection);
+        Set<Dependency> dependencies = getIncomingDependencyCandidates(includesDependenciesForChildPackages);
+        return filter(dependencies, selection);
+    }
+
+    String getVisibleTargetName(IMapSelection mapSelection, Dependency dep) {
         JavaClass targetClass = findEnclosingNamedClass(dep.getTargetClass());
         String targetClassId = targetClass.getName();
-        if(isVisible(mapView, targetClassId))
+        if(isVisible(mapSelection, targetClassId))
             return targetClassId;
         JavaPackage targetPackage = targetClass.getPackage();
         String targetPackageId = targetPackage.getName() + ".package";
-        if(isVisible(mapView, targetPackageId))
+        if(isVisible(mapSelection, targetPackageId))
             return targetPackageId;
-        return getVisibleContainingPackageName(mapView, targetPackage);
+        return getVisibleContainingPackageName(mapSelection, targetPackage);
     }
 
-    private String getVisibleContainingPackageName(MapView mapView, JavaPackage targetPackage) {
+    private String getVisibleContainingPackageName(IMapSelection mapSelection, JavaPackage targetPackage) {
         for(;;) {
             String targetPackageName = targetPackage.getName();
-            NodeModel targetNode = mapView.getMap().getNodeForID(targetPackageName);
+            NodeModel targetNode = mapSelection.getMap().getNodeForID(targetPackageName);
             if(targetNode != null) {
-                NodeView targetView = mapView.getNodeView(targetNode);
-                if(targetView != null)
+                if(mapSelection.isVisible(targetNode))
                     return targetPackageName;
             }
             Optional<JavaPackage> parent = targetPackage.getParent();
@@ -68,12 +89,11 @@ abstract class CodeNodeModel extends NodeModel{
         }
     }
 
-    private boolean isVisible(MapView mapView, String targetId) {
+    private boolean isVisible(IMapSelection mapSelection, String targetId) {
         boolean isVisible = false;
-        NodeModel targetNode = mapView.getMap().getNodeForID(targetId);
+        NodeModel targetNode = mapSelection.getMap().getNodeForID(targetId);
         if(targetNode != null) {
-            NodeView targetView = mapView.getNodeView(targetNode);
-            if(targetView != null)
+            if(mapSelection.isVisible(targetNode))
                 isVisible = true;
         }
         return isVisible;
@@ -90,13 +110,29 @@ abstract class CodeNodeModel extends NodeModel{
     }
 
 
-    List<CodeConnectorModel> toConnectors(Set<Dependency> packageDependencies,
-            MapView mapView) {
-        Map<String, Long> dependencies = packageDependencies.stream()
-                .map(dep -> getVisibleTargetName(mapView, dep))
+    private Set<Dependency> filter(Set<Dependency> dependencies,
+            IMapSelection mapSelection) {
+        if(dependencies.isEmpty())
+            return dependencies;
+
+        Set<Dependency> filteredDependencies = new HashSet<>();
+        for(Dependency dependency : dependencies) {
+            String visibleTargetName = getVisibleTargetName(mapSelection, dependency);
+            if(visibleTargetName != null && ! visibleTargetName.equals(getID()))
+                filteredDependencies.add(dependency);
+        }
+        return filteredDependencies;
+    }
+
+    private List<CodeConnectorModel> toConnectors(Set<Dependency> dependencies,
+            IMapSelection mapSelection) {
+        if(dependencies.isEmpty())
+            return Collections.emptyList();
+        Map<String, Long> countedDependencies = dependencies.stream()
+                .map(dep -> getVisibleTargetName(mapSelection, dep))
                 .filter(name -> name != null && ! name.equals(getID()))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
+        List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .map(this::createConnector)
             .collect(Collectors.toList());
         return connectors;

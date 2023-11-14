@@ -27,6 +27,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.view.swing.map.MapView;
 
 public class CodeLinkController extends LinkController {
 
@@ -130,8 +131,7 @@ public class CodeLinkController extends LinkController {
     @Override
     public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node,
             Configurable component) {
-        return ((CodeNodeModel)node).getOutgoingLinks(component);
-
+        return ((CodeNodeModel)node).getOutgoingLinks(((MapView)component).getMapSelection());
     }
 
     @Override
