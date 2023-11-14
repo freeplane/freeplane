@@ -48,7 +48,7 @@ class ClassesNodeModel extends CodeNodeModel {
                     nodeSort.addNode(edgeStart);
 	                Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
 	                        .map(this::getTargetClass)
-	                        .filter(jc -> jc.getPackage().equals(javaPackage))
+	                        .filter(jc -> ! jc.equals(edgeStart) && jc.getPackage().equals(javaPackage))
 	                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
 	                dependencies.entrySet().stream()

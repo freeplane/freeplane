@@ -68,7 +68,7 @@ class ClassNodeModel extends CodeNodeModel {
         Set<Dependency> classDependencies = javaClass.getDirectDependenciesFromSelf();
         Map<String, Long> dependencies = classDependencies.stream()
                 .map(dep -> getVisibleTargetName(mapView, dep))
-                .filter(name -> name != null)
+                .filter(name -> name != null && ! name.equals(getID()))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
             .map(this::createConnector)
