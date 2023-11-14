@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
 
@@ -69,10 +70,10 @@ public class SelectionController {
 		nodeSelectionListeners.remove(listener);
 	}
 
-    public void onSelectionChange() {
+    public void onSelectionChange(IMapSelection selection) {
         final ArrayList<INodeSelectionListener> copy = new ArrayList<INodeSelectionListener>(nodeSelectionListeners);
         for (final INodeSelectionListener listener : copy) {
-            listener.onSelectionSetChange();
+            listener.onSelectionSetChange(selection);
         }
     }
 }

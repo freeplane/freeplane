@@ -36,5 +36,5 @@ public interface INodeSelectionListener {
     /**
      * Is sent when selected node set changes.
      */
-	default void onSelectionSetChange() {/**/}
+	default void onSelectionSetChange(@SuppressWarnings("unused") IMapSelection selection) {/**/}
 }
