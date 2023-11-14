@@ -19,8 +19,6 @@
  */
 package org.freeplane.main.codeexplorermode;
 
-import java.io.File;
-
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -33,6 +31,7 @@ public class CodeModeController extends ModeController {
 
 	public CodeModeController(final Controller controller) {
 		super(controller);
+		addExtension(CodeProjectController.class, new CodeProjectController(this));
 	}
 
 	@Override
@@ -50,7 +49,12 @@ public class CodeModeController extends ModeController {
 			((CodeMapController) getMapController()).newMap(rootPackage);
 		}
 		super.startup();
+		getExtension(CodeProjectController.class).startupController();
 	}
-	
-	
+
+	@Override
+	public void shutdown() {
+	    getExtension(CodeProjectController.class).shutdownController();
+	    super.shutdown();
+	}
 }
