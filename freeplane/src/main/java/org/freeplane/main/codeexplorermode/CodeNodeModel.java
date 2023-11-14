@@ -6,12 +6,19 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -30,7 +37,8 @@ abstract class CodeNodeModel extends NodeModel{
     }
 
 
-    abstract Collection<? extends NodeLinkModel> getOutgoingLinks(Configurable component);
+    abstract Collection<? extends CodeConnectorModel> getOutgoingLinks(Configurable component);
+    abstract Collection<? extends CodeConnectorModel> getIncomingLinks(Configurable component);
 
     String getVisibleTargetName(MapView mapView, Dependency dep) {
         JavaClass targetClass = findEnclosingNamedClass(dep.getTargetClass());
@@ -80,4 +88,25 @@ abstract class CodeNodeModel extends NodeModel{
             else
                 return javaClass;
     }
+
+
+    List<CodeConnectorModel> toConnectors(Set<Dependency> packageDependencies,
+            MapView mapView) {
+        Map<String, Long> dependencies = packageDependencies.stream()
+                .map(dep -> getVisibleTargetName(mapView, dep))
+                .filter(name -> name != null && ! name.equals(getID()))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
+            .map(this::createConnector)
+            .collect(Collectors.toList());
+        return connectors;
+    }
+
+    private CodeConnectorModel createConnector(Entry<String, Long> e) {
+        String targetId = e.getKey();
+        NodeModel target = getMap().getNodeForID(targetId);
+        NodeRelativePath nodeRelativePath = new NodeRelativePath(this, target);
+        return new CodeConnectorModel(this, targetId, e.getValue().intValue(), nodeRelativePath.compareNodePositions() > 0);
+    }
+
 }

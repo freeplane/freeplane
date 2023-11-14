@@ -66,21 +66,13 @@ class ClassNodeModel extends CodeNodeModel {
     Collection<CodeConnectorModel> getOutgoingLinks(Configurable component) {
         MapView mapView = (MapView) component;
         Set<Dependency> classDependencies = javaClass.getDirectDependenciesFromSelf();
-        Map<String, Long> dependencies = classDependencies.stream()
-                .map(dep -> getVisibleTargetName(mapView, dep))
-                .filter(name -> name != null && ! name.equals(getID()))
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
-            .map(this::createConnector)
-            .collect(Collectors.toList());
-        return connectors;
-
+        return toConnectors(classDependencies, mapView);
     }
 
-    private CodeConnectorModel createConnector(Entry<String, Long> e) {
-        String targetId = e.getKey();
-        NodeModel target = getMap().getNodeForID(targetId);
-        NodeRelativePath nodeRelativePath = new NodeRelativePath(this, target);
-        return new CodeConnectorModel(this, targetId, e.getValue().intValue(), nodeRelativePath.compareNodePositions() > 0);
+    @Override
+    Collection<CodeConnectorModel> getIncomingLinks(Configurable component) {
+        MapView mapView = (MapView) component;
+        Set<Dependency> classDependencies = javaClass.getDirectDependenciesToSelf();
+        return toConnectors(classDependencies, mapView);
     }
 }

@@ -3,16 +3,13 @@ package org.freeplane.main.codeexplorermode;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -135,21 +132,17 @@ class PackageNodeModel extends CodeNodeModel {
         Set<Dependency> packageDependencies = includesDependenciesForChildPackages(mapView)
                 ? javaPackage.getClassDependenciesFromThisPackageTree()
                         : javaPackage.getClassDependenciesFromThisPackage();
-        Map<String, Long> dependencies = packageDependencies.stream()
-                .map(dep -> getVisibleTargetName(mapView, dep))
-                .filter(name -> name != null)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        List<CodeConnectorModel> connectors = dependencies.entrySet().stream()
-            .map(this::createConnector)
-            .collect(Collectors.toList());
+        List<CodeConnectorModel> connectors = toConnectors(packageDependencies, mapView);
         return connectors;
-
     }
 
-    private CodeConnectorModel createConnector(Entry<String, Long> e) {
-        String targetId = e.getKey();
-        NodeModel target = getMap().getNodeForID(targetId);
-        NodeRelativePath nodeRelativePath = new NodeRelativePath(this, target);
-        return new CodeConnectorModel(this, targetId, e.getValue().intValue(), nodeRelativePath.compareNodePositions() > 0);
+    @Override
+    Collection<CodeConnectorModel> getIncomingLinks(Configurable component) {
+        MapView mapView = (MapView) component;
+        Set<Dependency> packageDependencies = includesDependenciesForChildPackages(mapView)
+                ? javaPackage.getClassDependenciesToThisPackageTree()
+                        : javaPackage.getClassDependenciesToThisPackage();
+        List<CodeConnectorModel> connectors = toConnectors(packageDependencies, mapView);
+        return connectors;
     }
 }
