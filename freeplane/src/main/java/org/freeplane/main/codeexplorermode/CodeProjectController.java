@@ -22,28 +22,30 @@ package org.freeplane.main.codeexplorermode;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev
  */
-class CodeProjectController implements IExtension, INodeSelectionListener, IMapSelectionListener {
+class CodeProjectController implements IExtension {
 
     public static CodeProjectController getController() {
 	    return (CodeProjectController) CodeProjectController.getController();
 	}
 
     private CodeInformationPanel informationPanel;
+    private CodeModeController modeController;
     /**
 	 * @param modeController
 	 */
 	public CodeProjectController(CodeModeController modeController) {
 		super();
+        this.modeController = modeController;
 	}
 
 	void hideControlPanel() {
-		Controller.getCurrentModeController().getController().getViewController().removeSplitPane();
+		modeController.getController().getViewController().removeSplitPane();
 	}
 
 
@@ -51,14 +53,16 @@ class CodeProjectController implements IExtension, INodeSelectionListener, IMapS
 		if (informationPanel == null) {
 			informationPanel = new CodeInformationPanel();
 		}
-		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(informationPanel);
+		modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
 		informationPanel.setVisible(true);
 		informationPanel.revalidate();
 	}
 
 	public void shutdownController() {
-		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
-		Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(this);
+	    if(informationPanel != null) {
+	        modeController.getMapController().removeNodeSelectionListener(informationPanel);
+	        Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(informationPanel);
+	    }
 		if (informationPanel == null) {
 		    return;
 		}
@@ -67,10 +71,13 @@ class CodeProjectController implements IExtension, INodeSelectionListener, IMapS
 	}
 
 	public void startupController() {
-		final ModeController modeController = Controller.getCurrentModeController();
-			showControlPanel();
-		modeController.getMapController().addNodeSelectionListener(this);
-		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(this);
+	    showControlPanel();
+	    if(informationPanel != null) {
+	        modeController.getMapController().addNodeSelectionListener(informationPanel);
+	        Controller.getCurrentController().getMapViewManager().addMapSelectionListener(informationPanel);
+	        informationPanel.update();
+	    }
 	}
+
 
 }
