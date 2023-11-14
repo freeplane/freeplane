@@ -17,13 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mode.codeexplorermode;
+package org.freeplane.main.codeexplorermode;
 
 import java.io.File;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.main.codeexplorermode.CodeMapController;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
@@ -52,4 +51,6 @@ public class CodeModeController extends ModeController {
 		}
 		super.startup();
 	}
+	
+	
 }

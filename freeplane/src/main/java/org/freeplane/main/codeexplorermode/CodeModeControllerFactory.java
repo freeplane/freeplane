@@ -23,7 +23,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IPropertyHandler;
-import org.freeplane.features.mode.codeexplorermode.CodeModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
