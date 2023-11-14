@@ -58,7 +58,7 @@ public class SelectionController {
 		}
 	}
 
-	public void onSelect(final NodeModel node) {
+    public void onSelect(final NodeModel node) {
 		final ArrayList<INodeSelectionListener> copy = new ArrayList<INodeSelectionListener>(nodeSelectionListeners);
 		for (final INodeSelectionListener listener : copy) {
 			listener.onSelect(node);
@@ -68,4 +68,11 @@ public class SelectionController {
 	public void removeNodeSelectionListener(final INodeSelectionListener listener) {
 		nodeSelectionListeners.remove(listener);
 	}
+
+    public void onSelectionChange() {
+        final ArrayList<INodeSelectionListener> copy = new ArrayList<INodeSelectionListener>(nodeSelectionListeners);
+        for (final INodeSelectionListener listener : copy) {
+            listener.onSelectionSetChange();
+        }
+    }
 }
