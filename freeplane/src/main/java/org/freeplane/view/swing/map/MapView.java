@@ -408,6 +408,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         public void setFilter(Filter filter) {
 	        MapView.this.filter = filter;
 	    }
+
+        @Override
+        public boolean isFolded(NodeModel node) {
+            NodeView nodeView = getNodeView(node);
+            return nodeView != null ? nodeView.isFolded() : node.isFolded();
+        }
+
+        @Override
+        public boolean isVisible(NodeModel node) {
+            NodeView nodeView = getNodeView(node);
+            return nodeView != null
+                    && nodeView.isContentVisible()
+                    && SwingUtilities.isDescendingFrom(nodeView, currentRootView);
+        }
 	}
 
 	private class Selection {
@@ -615,7 +629,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         private void fireSelectionChanged() {
             if(selectionChanged) {
                 selectionChanged = false;
-                modeController.getMapController().onSelectionChange();
+                modeController.getMapController().onSelectionChange(getMapSelection());
             }
         }
 
