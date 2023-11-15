@@ -75,7 +75,7 @@ class CodeLinkController extends LinkController {
 
     @Override
     public int getOpacity(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ? 255 : 30;
+        return areConnectorNodesSelected(connector) ? 128 : 30;
     }
 
     @Override
