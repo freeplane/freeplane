@@ -20,20 +20,12 @@
 package org.freeplane.main.codeexplorermode;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.map.IMapSelectionListener;
-import org.freeplane.features.map.INodeSelectionListener;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
  */
 class CodeProjectController implements IExtension {
-
-    public static CodeProjectController getController() {
-	    return (CodeProjectController) CodeProjectController.getController();
-	}
-
     private CodeInformationPanel informationPanel;
     private CodeModeController modeController;
     /**
@@ -44,12 +36,12 @@ class CodeProjectController implements IExtension {
         this.modeController = modeController;
 	}
 
-	void hideControlPanel() {
+	private void hideControlPanel() {
 		modeController.getController().getViewController().removeSplitPane();
 	}
 
 
-	void showControlPanel() {
+	private void showControlPanel() {
 		if (informationPanel == null) {
 			informationPanel = new CodeInformationPanel();
 		}

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -124,17 +125,12 @@ class PackageNodeModel extends CodeNodeModel {
 	}
 
     @Override
-    Set<Dependency> getOutgoingDependencyCandidates(boolean includesDependenciesForChildPackages) {
-        Set<Dependency> dependencies = includesDependenciesForChildPackages
-                ? javaPackage.getClassDependenciesFromThisPackageTree()
-                        : javaPackage.getClassDependenciesFromThisPackage();
-        return dependencies;
+    Stream<Dependency> getOutgoingDependencies() {
+        return javaPackage.getClassDependenciesFromThisPackageTree().stream();
     }
 
     @Override
-    Set<Dependency> getIncomingDependencyCandidates(boolean includesDependenciesForChildPackages) {
-        return includesDependenciesForChildPackages
-                ? javaPackage.getClassDependenciesToThisPackageTree()
-                        : javaPackage.getClassDependenciesToThisPackage();
+    Stream<Dependency> getIncomingDependencies() {
+        return javaPackage.getClassDependenciesToThisPackageTree().stream();
     }
 }

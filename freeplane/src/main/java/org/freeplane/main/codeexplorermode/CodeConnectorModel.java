@@ -25,5 +25,4 @@ class CodeConnectorModel extends ConnectorModel {
     boolean goesUp() {
         return goesUp;
     }
-
 }

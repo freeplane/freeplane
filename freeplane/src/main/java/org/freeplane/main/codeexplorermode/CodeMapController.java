@@ -7,8 +7,8 @@ import org.freeplane.features.mode.Controller;
 
 import com.tngtech.archunit.core.domain.JavaPackage;
 
-public class CodeMapController extends MapController {
-	public CodeMapController(CodeModeController modeController) {
+class CodeMapController extends MapController {
+	CodeMapController(CodeModeController modeController) {
 		super(modeController);
 	}
 
@@ -16,7 +16,7 @@ public class CodeMapController extends MapController {
 		return (CodeModeController) Controller.getCurrentModeController();
 	}
 
-	public MapModel newMap(final JavaPackage rootPackage) {
+	MapModel newMap(final JavaPackage rootPackage) {
 		final CodeMapModel codeMapModel = new CodeMapModel(getModeController().getMapController().duplicator(), rootPackage);
 		fireMapCreated(codeMapModel);
 		createMapView(codeMapModel);

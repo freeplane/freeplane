@@ -29,7 +29,7 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 public class CodeModeController extends ModeController {
 	static public final String MODENAME = "CodeExplorer";
 
-	public CodeModeController(final Controller controller) {
+	CodeModeController(final Controller controller) {
 		super(controller);
 		addExtension(CodeProjectController.class, new CodeProjectController(this));
 	}

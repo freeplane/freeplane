@@ -1,37 +1,39 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
+import java.awt.Rectangle;
 import java.util.Comparator;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
+import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 import com.tngtech.archunit.core.domain.Dependency;
 
 class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener{
 
-    enum SortOrder {
+    private enum SortOrder {
         SOURCE(Comparator.<Dependency, String>comparing(dep -> dep.getOriginClass().getName())),
         TARGET(Comparator.<Dependency, String>comparing(dep -> dep.getTargetClass().getName()));
         final Comparator<Dependency> comparator;
@@ -45,10 +47,10 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
     private static final long serialVersionUID = 1L;
     private static final Icon filterIcon = ResourceController.getResourceController().getIcon("filterDependencyIncormation.icon");
     private final JTextField filterField;
-    private final JList<String> depencencyViewer;
+    private final JTable dependencyViewer;
     private final JLabel countLabel;
     private SortOrder sortOrder;
-    private ArrayList<Dependency> allDependencies;
+    private List<Dependency> allDependencies;
 
     CodeInformationPanel() {
      // Create the top panel for sorting options
@@ -77,8 +79,15 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
         countLabel = new JLabel();
         topPanel.add(countLabel);
 
-        depencencyViewer = new JList<>();
-        JScrollPane scrollPane = new JScrollPane(depencencyViewer);
+        dependencyViewer = new JTable();
+        dependencyViewer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        dependencyViewer.getTableHeader().setVisible(false);
+        dependencyViewer.getTableHeader().setPreferredSize(new Dimension(-1, 0));
+        JTextField cellEditor = new JTextField();
+        cellEditor.setEditable(false);
+        dependencyViewer.setDefaultEditor(Object.class, new DefaultCellEditor(cellEditor));
+
+        JScrollPane scrollPane = new JScrollPane(dependencyViewer);
 
         setLayout(new BorderLayout());
         add(topPanel, BorderLayout.NORTH);
@@ -88,6 +97,7 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
     private void update(SortOrder sortOrder) {
         if(this.sortOrder != sortOrder) {
             this.sortOrder = sortOrder;
+            sortAndFilter();
         }
     }
 
@@ -108,26 +118,17 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
     }
 
 
-    void update(IMapSelection selection) {
-        Set<NodeModel> nodes = selection.getSelection();
-        if(nodes.size() == 1) {
-            CodeNodeModel selectedNode = (CodeNodeModel) selection.getSelected();
-            Set<Dependency> outgoingDependencies = selectedNode.getOutgoingDependencies(selection);
-            Set<Dependency> incomingDependencies = selectedNode.getIncomingDependencies(selection);
-            allDependencies = new ArrayList<Dependency>(outgoingDependencies.size() + incomingDependencies.size());
-            allDependencies.addAll(outgoingDependencies);
-            allDependencies.addAll(incomingDependencies);
-        }
-        else {
-            allDependencies = nodes.stream()
-                .map(node -> ((CodeNodeModel)node).getOutgoingDependencies(selection))
-                .flatMap(Set::stream)
-                .collect(Collectors.toCollection(ArrayList::new));
-        }
+    private void update(IMapSelection selection) {
+        this.allDependencies = new DependencySelection(selection).getSelectedDependencies();
         sortAndFilter();
     }
 
-    void sortAndFilter() {
+    private CodeLinkController linkController() {
+        return (CodeLinkController)Controller.getCurrentModeController()
+                .getExtension(LinkController.class);
+    }
+
+    private void sortAndFilter() {
         allDependencies.sort(sortOrder.comparator);
         filterAndSetDescriptions();
 
@@ -139,13 +140,31 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
         String[] filteredWords = filterField.getText().trim().split("\\W+");
         Stream<String> filteredDescriptions  = filteredWords.length >= 1 && ! filteredWords[0].isEmpty()
                 ? allDescripions.filter(t -> filter(t, filteredWords)) : allDescripions;
-        DefaultListModel<String> newDataModel = new DefaultListModel<>();
-        filteredDescriptions.forEach(newDataModel::addElement);
-        String selectedValue = depencencyViewer.getSelectedValue();
-        int newSelectedIndex = newDataModel.indexOf(selectedValue);
-        depencencyViewer.setModel(newDataModel);
-        depencencyViewer.setSelectedIndex(newSelectedIndex >= 0 ? newSelectedIndex : 0);
-        countLabel.setText("( " + newDataModel.getSize() + " / " + allDependencies.size() + " )");
+        DefaultTableModel newTableModel = new DefaultTableModel(new Object[]{"Dependencies"}, 0);
+
+        filteredDescriptions.forEach(description -> newTableModel.addRow(new Object[]{description}));
+
+        // Step 4: Manage Selections
+        int selectedRow = dependencyViewer.getSelectedRow();
+        String selectedValue = selectedRow >= 0 ? (String) dependencyViewer.getValueAt(selectedRow, 0) : null;
+
+        // Step 3: Set the Model for JTable
+        dependencyViewer.setModel(newTableModel);
+
+        int newSelectedIndex = -1;
+        if(selectedValue != null)
+            for (int i = 0; i < newTableModel.getRowCount(); i++) {
+                if (newTableModel.getValueAt(i, 0).equals(selectedValue)) {
+                    newSelectedIndex = i;
+                    break;
+                }
+            }
+
+        // Step 5: Ensure Row Visibility
+        if (newSelectedIndex != -1) {
+            dependencyViewer.setRowSelectionInterval(newSelectedIndex, newSelectedIndex);
+            dependencyViewer.scrollRectToVisible(new Rectangle(dependencyViewer.getCellRect(newSelectedIndex, 0, true)));
+        }        countLabel.setText("( " + newTableModel.getRowCount() + " / " + allDependencies.size() + " )");
     }
 
     private boolean filter(String description, String[] filteredWords) {

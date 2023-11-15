@@ -1,11 +1,12 @@
 package org.freeplane.main.codeexplorermode;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -38,11 +39,14 @@ class ClassesNodeModel extends CodeNodeModel {
 	        final Set<JavaClass> classes = javaPackage.getClasses();
 	        if(! classes.isEmpty()) {
 	            GraphNodeSort<JavaClass> nodeSort = new GraphNodeSort<JavaClass>();
+	            Map<JavaClass, ClassNodeModel> nodes = new HashMap<>();
 	            for (JavaClass javaClass : classes) {
 	                JavaClass edgeStart = findEnclosingNamedClass(javaClass);
+	                ClassNodeModel node = nodes.computeIfAbsent(edgeStart, x -> new ClassNodeModel(edgeStart, getMap()));
+	                node.registerInnerClass(javaClass);
                     nodeSort.addNode(edgeStart);
 	                Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
-	                        .map(this::getTargetClass)
+	                        .map(CodeNodeModel::getTargetNodeClass)
 	                        .filter(jc -> ! jc.equals(edgeStart) && jc.getPackage().equals(javaPackage))
 	                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -52,7 +56,7 @@ class ClassesNodeModel extends CodeNodeModel {
 
 	            List<JavaClass> orderedClasses = nodeSort.sortNodes();
                 for (JavaClass childClass : orderedClasses) {
-                    final ClassNodeModel node = new ClassNodeModel(childClass, getMap());
+                    final ClassNodeModel node = nodes.get(childClass);
                     children.add(node);
                     node.setParent(this);
                 }
@@ -85,21 +89,12 @@ class ClassesNodeModel extends CodeNodeModel {
 	}
 
     @Override
-    Set<Dependency> getOutgoingDependencyCandidates(boolean includesDependenciesForChildPackages) {
-        Set<Dependency> dependencies = includesDependenciesForChildPackages
-                ? javaPackage.getClassDependenciesFromThisPackage()
-                        : Collections.emptySet();
-        return dependencies;
+    Stream<Dependency> getOutgoingDependencies() {
+        return javaPackage.getClassDependenciesFromThisPackage().stream();
     }
 
     @Override
-    Set<Dependency> getIncomingDependencyCandidates(boolean includesDependenciesForChildPackages) {
-        return includesDependenciesForChildPackages
-                ? javaPackage.getClassDependenciesToThisPackage()
-                        : Collections.emptySet();
-    }
-
-    private JavaClass getTargetClass(Dependency dependency) {
-        return findEnclosingNamedClass(dependency.getTargetClass());
+    Stream<Dependency> getIncomingDependencies() {
+        return javaPackage.getClassDependenciesToThisPackage().stream();
     }
 }

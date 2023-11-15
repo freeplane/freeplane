@@ -10,7 +10,12 @@ import java.awt.Component;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -23,13 +28,18 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MapView;
 
-public class CodeLinkController extends LinkController {
+import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
+
+class CodeLinkController extends LinkController {
 
     private static final Color VISIBLE_CONNECTOR_COLOR = Color.GREEN;
 
@@ -39,7 +49,7 @@ public class CodeLinkController extends LinkController {
     private static final Point upwardsConnectorEndInclination = new Point(upwardsConnectorStartInclination.x, -upwardsConnectorStartInclination.y);
 
 
-    public CodeLinkController(ModeController modeController) {
+    CodeLinkController(ModeController modeController) {
         super(modeController);
     }
 
@@ -75,10 +85,15 @@ public class CodeLinkController extends LinkController {
     }
 
     private boolean areConnectorNodesSelected(ConnectorModel connector) {
-        Set<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
-        return selection.size() == 1 && (selection.contains(connector.getSource()) || selection.contains(connector.getTarget()))
-                || selection.size() > 1 && (selection.contains(connector.getSource()) && selection.contains(connector.getTarget()));
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        return areConnectorNodesSelected((CodeConnectorModel)connector, selection);
     }
+
+    private boolean areConnectorNodesSelected(CodeConnectorModel connector, IMapSelection selection) {
+         CodeNodeModel source = (CodeNodeModel) connector.getSource();
+         CodeNodeModel target = (CodeNodeModel) connector.getTarget();
+         return isConnectorSelected(selection, source, target);
+     }
 
     @Override
     public String getSourceLabel(ConnectorModel connector) {
@@ -131,7 +146,14 @@ public class CodeLinkController extends LinkController {
     @Override
     public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node,
             Configurable component) {
-        return ((CodeNodeModel)node).getOutgoingLinks(((MapView)component).getMapSelection());
+        IMapSelection selection = ((MapView)component).getMapSelection();
+        if (node.isLeaf() || selection.isFolded(node)) {
+            Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependencies();
+            List<CodeConnectorModel> connectors = toConnectors(node, dependencies, Dependency::getTargetClass, selection);
+            return connectors;
+        }
+        else
+            return Collections.emptyList();
     }
 
     @Override
@@ -157,5 +179,50 @@ public class CodeLinkController extends LinkController {
     public Point getEndInclination(ConnectorModel connector) {
         return ((CodeConnectorModel)connector).goesUp() ? upwardsConnectorEndInclination : backwardsConnectorEndInclination;
     }
+
+
+    private List<CodeConnectorModel> toConnectors(NodeModel source, Stream<Dependency> dependencies,
+            Function<Dependency, JavaClass> dependencyToJavaClass,
+            IMapSelection mapSelection) {
+        DependencySelection dependencySelection = new DependencySelection(mapSelection);
+        Map<String, Long> countedDependencies = dependencies
+                .map(dep -> dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep)))
+                .filter(name -> name != null && ! name.equals(source.getID()))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
+            .map(e -> createConnector(source, e.getKey(), e.getValue().intValue()))
+            .collect(Collectors.toList());
+        return connectors;
+    }
+
+    private CodeConnectorModel createConnector(NodeModel source, String targetId, int weight) {
+        NodeModel target = source.getMap().getNodeForID(targetId);
+        NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
+        return new CodeConnectorModel(source, targetId, weight, nodeRelativePath.compareNodePositions() > 0);
+    }
+
+    private boolean isConnectorSelected(IMapSelection selection, CodeNodeModel source, CodeNodeModel target) {
+        if(selection.getSelection().contains(source.getMap().getRootNode()))
+            return true;
+        List<NodeModel> selectedNodes = selection.getSortedSelection(true);
+        Optional<NodeModel> selectedSourceDescendantOrSource = findSelectedDescendantOrSelf(source, selectedNodes);
+        boolean isSourceSelected = selectedSourceDescendantOrSource.isPresent();
+        if (selectedNodes.size() == 1 && isSourceSelected)
+            return ! target.isDescendantOf(selectedSourceDescendantOrSource.get());
+        Optional<NodeModel> selectedTargetDescendantOrTarget = findSelectedDescendantOrSelf(target, selectedNodes);
+        boolean isTargetSelected = selectedTargetDescendantOrTarget.isPresent();
+        if (selectedNodes.size() == 1)
+            return isTargetSelected && ! source.isDescendantOf(selectedTargetDescendantOrTarget.get());
+        else if (selectedNodes.size() > 1 && (isSourceSelected && isTargetSelected))
+            return selectedSourceDescendantOrSource.get() != selectedTargetDescendantOrTarget.get();
+        else
+            return false;
+    }
+
+     private Optional<NodeModel> findSelectedDescendantOrSelf(NodeModel node, List<NodeModel> selectedNodes) {
+         return selectedNodes.stream()
+                 .filter(n -> node == n || node.isDescendantOf(n))
+                 .findAny();
+     }
 
 }
