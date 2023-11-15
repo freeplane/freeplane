@@ -7,6 +7,7 @@ package org.freeplane.main.codeexplorermode;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +44,7 @@ class CodeLinkController extends LinkController {
 
     private static final Color VISIBLE_CONNECTOR_COLOR = Color.GREEN;
 
-    private static final Point backwardsConnectorStartInclination = new Point(100, 10);
+    private static final Point backwardsConnectorStartInclination = new Point(150, 15);
     private static final Point upwardsConnectorStartInclination = new Point(-backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
     private static final Point backwardsConnectorEndInclination = new Point(backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
     private static final Point upwardsConnectorEndInclination = new Point(upwardsConnectorStartInclination.x, -upwardsConnectorStartInclination.y);
@@ -113,7 +114,17 @@ class CodeLinkController extends LinkController {
 
     @Override
     public int getLabelFontSize(ConnectorModel connector) {
-        return getStandardLabelFontSize();
+        return 8;
+    }
+
+    @Override
+    public int getLabelFontStyle(ConnectorModel connector) {
+       return Font.BOLD;
+    }
+
+    @Override
+    public Color getLabelColor(ConnectorModel connector) {
+       return Color.BLACK;
     }
 
     @Override
