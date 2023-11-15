@@ -25,7 +25,6 @@ class DependencySelection {
     private final IMapSelection selection;
     private MapModel map;
     private Set<NodeModel> selectedNodeSet;
-    private int selectedSubtreesCount;
 
     DependencySelection(IMapSelection selection) {
         this.selection = selection;
@@ -33,8 +32,8 @@ class DependencySelection {
 
     List<Dependency> getSelectedDependencies() {
         List<Dependency> allDependencies;
-        Set<NodeModel> nodes = selection.getSelection();
-        selectedSubtreesCount = nodes.size();
+        Set<NodeModel> nodes = getSelectedNodeSet();
+        int selectedSubtreesCount = nodes.size();
         if(selectedSubtreesCount == 1) {
             CodeNodeModel selectedNode = (CodeNodeModel) selection.getSelected();
             Set<Dependency> outgoingDependencies = getOutgoingDependencies(selectedNode);
@@ -45,8 +44,10 @@ class DependencySelection {
         }
         else {
             allDependencies = nodes.stream()
-                    .map(node -> getOutgoingDependencies((CodeNodeModel)node))
-                    .flatMap(Set::stream)
+                    .flatMap(node ->
+                        Stream.concat(
+                                getOutgoingDependencies((CodeNodeModel)node).stream(),
+                                getIncomingDependencies((CodeNodeModel)node).stream()))
                     .distinct()
                     .collect(Collectors.toCollection(ArrayList::new));
         }
@@ -77,27 +78,16 @@ class DependencySelection {
 
      private Set<Dependency> dependenciesBetweenDifferentElements(Stream<Dependency> dependencies) {
          Set<Dependency> filteredDependencies = dependencies
-                         .filter(dependency -> connectsDifferentElements(dependency))
-                         .collect(Collectors.toSet());
+                 .filter(dependency -> connectsDifferentElements(dependency))
+                 .collect(Collectors.toSet());
          return filteredDependencies;
      }
-     private boolean connectsDifferentElements(Dependency dependency) {
-         String visibleOriginId = getVisibleNodeId(dependency.getOriginClass());
-         String visibleTargetId = getVisibleNodeId(dependency.getTargetClass());
-         if (visibleOriginId == null  || visibleTargetId == null || visibleOriginId.equals(visibleTargetId))
-             return false;
-         if (selectedSubtreesCount == 1)
-             return true;
-         NodeModel visibleOrigin = findSelectedAncestorOrSelf(visibleOriginId);
-         if(visibleOrigin ==  null)
-             return false;
-         NodeModel visibleTarget = findSelectedAncestorOrSelf(visibleTargetId);
-         return visibleTarget != null && visibleTarget != visibleOrigin && ! visibleTarget.isDescendantOf(visibleOrigin) && ! visibleOrigin.isDescendantOf(visibleTarget);
-     }
+     private NodeModel getNode(String id) {
+         return getMap().getNodeForID(id);
+    }
 
-    private NodeModel findSelectedAncestorOrSelf(String id) {
-        NodeModel node = getMap().getNodeForID(id);
-         while(node != null && ! selectionContains(node))
+    private NodeModel findSelectedAncestorOrSelf(NodeModel node) {
+        while(node != null && ! selectionContains(node))
              node = node.getParentNode();
          return node;
     }
@@ -122,7 +112,7 @@ class DependencySelection {
     private HasName getVisibleContainingPackage(JavaPackage targetPackage) {
          for(;;) {
              String targetPackageName = targetPackage.getName();
-             NodeModel targetNode = getMap().getNodeForID(targetPackageName);
+             NodeModel targetNode = getNode(targetPackageName);
              if(targetNode != null) {
                  if(selection.isVisible(targetNode))
                      return targetPackage;
@@ -136,7 +126,7 @@ class DependencySelection {
 
      private boolean isVisible(String targetId) {
          boolean isVisible = false;
-         NodeModel targetNode = getMap().getNodeForID(targetId);
+         NodeModel targetNode = getNode(targetId);
          if(targetNode != null) {
              if(selection.isVisible(targetNode))
                  isVisible = true;
@@ -144,4 +134,39 @@ class DependencySelection {
          return isVisible;
      }
 
+     private boolean connectsDifferentElements(Dependency dependency) {
+         String visibleOriginId = getVisibleNodeId(dependency.getOriginClass());
+         String visibleTargetId = getVisibleNodeId(dependency.getTargetClass());
+         if (visibleOriginId == null  || visibleTargetId == null || visibleOriginId.equals(visibleTargetId))
+             return false;
+         if (getSelectedNodeSet().size() == 1)
+             return true;
+         NodeModel visibleOrigin = getNode(visibleOriginId);
+         NodeModel selectedVisibleOrigin = findSelectedAncestorOrSelf(visibleOrigin);
+         if(selectedVisibleOrigin ==  null)
+             return false;
+         NodeModel visibleTarget = getNode(visibleTargetId);
+         NodeModel selectedVisibleTarget = findSelectedAncestorOrSelf(visibleTarget);
+         return selectedVisibleTarget != null && selectedVisibleTarget != selectedVisibleOrigin
+                 && (! visibleTarget.isDescendantOf(selectedVisibleOrigin) || ! visibleOrigin.isDescendantOf(selectedVisibleTarget));
+     }
+
+     boolean isConnectorSelected(CodeNodeModel source, CodeNodeModel target) {
+         Set<NodeModel> selectedNodes = getSelectedNodeSet();
+         boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
+         if(isOnlyOneNodeSelected && selection.getSelected().isRoot())
+             return false;
+         NodeModel selectedSourceAncestorOrSource = findSelectedAncestorOrSelf(source);
+         boolean isSourceSelected = selectedSourceAncestorOrSource != null;
+         if (isOnlyOneNodeSelected && isSourceSelected)
+             return ! target.isDescendantOf(selectedSourceAncestorOrSource);
+         NodeModel selectedTargetAncestorOrTarget = findSelectedAncestorOrSelf(target);
+         boolean isTargetSelected = selectedTargetAncestorOrTarget != null;
+         if (isOnlyOneNodeSelected)
+             return isTargetSelected && ! source.isDescendantOf(selectedTargetAncestorOrTarget);
+         else if (isSourceSelected && isTargetSelected)
+             return selectedSourceAncestorOrSource != selectedTargetAncestorOrTarget;
+         else
+             return false;
+     }
  }

@@ -93,7 +93,7 @@ class CodeLinkController extends LinkController {
     private boolean areConnectorNodesSelected(CodeConnectorModel connector, IMapSelection selection) {
          CodeNodeModel source = (CodeNodeModel) connector.getSource();
          CodeNodeModel target = (CodeNodeModel) connector.getTarget();
-         return isConnectorSelected(selection, source, target);
+         return  new DependencySelection(selection).isConnectorSelected(source, target);
      }
 
     @Override
@@ -212,28 +212,5 @@ class CodeLinkController extends LinkController {
         return new CodeConnectorModel(source, targetId, weight, nodeRelativePath.compareNodePositions() > 0);
     }
 
-    private boolean isConnectorSelected(IMapSelection selection, CodeNodeModel source, CodeNodeModel target) {
-        if(selection.getSelection().contains(source.getMap().getRootNode()))
-            return true;
-        List<NodeModel> selectedNodes = selection.getSortedSelection(true);
-        Optional<NodeModel> selectedSourceDescendantOrSource = findSelectedDescendantOrSelf(source, selectedNodes);
-        boolean isSourceSelected = selectedSourceDescendantOrSource.isPresent();
-        if (selectedNodes.size() == 1 && isSourceSelected)
-            return ! target.isDescendantOf(selectedSourceDescendantOrSource.get());
-        Optional<NodeModel> selectedTargetDescendantOrTarget = findSelectedDescendantOrSelf(target, selectedNodes);
-        boolean isTargetSelected = selectedTargetDescendantOrTarget.isPresent();
-        if (selectedNodes.size() == 1)
-            return isTargetSelected && ! source.isDescendantOf(selectedTargetDescendantOrTarget.get());
-        else if (selectedNodes.size() > 1 && (isSourceSelected && isTargetSelected))
-            return selectedSourceDescendantOrSource.get() != selectedTargetDescendantOrTarget.get();
-        else
-            return false;
-    }
-
-     private Optional<NodeModel> findSelectedDescendantOrSelf(NodeModel node, List<NodeModel> selectedNodes) {
-         return selectedNodes.stream()
-                 .filter(n -> node == n || node.isDescendantOf(n))
-                 .findAny();
-     }
 
 }
