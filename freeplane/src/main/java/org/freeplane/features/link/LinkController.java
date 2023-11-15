@@ -401,9 +401,17 @@ public class LinkController extends SelectionController implements IExtension {
 
 	}
 
-	public Color getColor(final ConnectorModel connector) {
-		return getProperty(connector, ConnectorModel::getColor, this::getStandardConnectorColor);
-	}
+    public Color getColor(final ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getColor, this::getStandardConnectorColor);
+    }
+
+    public Color getLabelColor(@SuppressWarnings("unused") final ConnectorModel connector) {
+        return null;
+    }
+
+    public int getLabelFontStyle(@SuppressWarnings("unused") final ConnectorModel connector) {
+        return 0;
+    }
 
 	public int[] getDashArray(final ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getDash, this::getStandardDashArray);
