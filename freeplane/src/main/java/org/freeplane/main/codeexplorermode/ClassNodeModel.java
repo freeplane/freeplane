@@ -24,9 +24,16 @@ class ClassNodeModel extends CodeNodeModel {
         this.innerClasses = null;
 		setFolded(false);
 		setID(javaClass.getName());
-		String simpleName = javaClass.getSimpleName();
-        setText(simpleName);
+		String nodeText = nodeText(javaClass);
+        setText(nodeText);
 	}
+
+    private static String nodeText(final JavaClass javaClass) {
+        String simpleName = javaClass.getSimpleName();
+        return javaClass.getEnclosingClass()
+                .map(ec -> nodeText(ec) + "." + simpleName)
+                .orElse(simpleName);
+    }
 
 	@Override
 	public int getChildCount(){
