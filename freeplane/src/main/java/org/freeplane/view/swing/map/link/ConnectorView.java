@@ -63,7 +63,7 @@ public class ConnectorView extends AConnectorView{
 	private Rectangle sourceTextRectangle;
 	private Rectangle middleTextRectangle;
 	private Rectangle targetTextRectangle;
-	final private Color textColor;
+	final private Color connectorColor;
 	final private Color color;
 	final private BasicStroke stroke;
 	final private Color bgColor;
@@ -72,10 +72,10 @@ public class ConnectorView extends AConnectorView{
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
 		linkController = getLinkController();
-		textColor = linkController.getColor(connectorModel);
+		connectorColor = linkController.getColor(connectorModel);
 		this.bgColor =bgColor;
 		final int alpha = linkController.getOpacity(connectorModel);
-		color =  ColorUtils.alphaToColor(alpha, textColor);
+		color =  ColorUtils.alphaToColor(alpha, connectorColor);
 
 		final int width = linkController.getWidth(connectorModel);
 		if (!isSourceVisible() || !isTargetVisible()) {
@@ -85,8 +85,8 @@ public class ConnectorView extends AConnectorView{
 			stroke = UITools.createStroke(width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
 		}
 	}
-	
-	
+
+
 //    public void setShowsControlPoints(boolean showsControlPoints) {
 //        this.showsControlPoints = showsControlPoints;
 //    }
@@ -126,10 +126,10 @@ public class ConnectorView extends AConnectorView{
 		else {
 			y = endPoint.y - textHeight - LABEL_GAP;
 		}
-		textPainter.draw(x, y, textColor, bgColor);
+		textPainter.draw(x, y, g.getColor(), bgColor);
 		return new Rectangle(x, y, textWidth, textHeight);
 	}
-	
+
 	private Rectangle drawMiddleLabel(final Graphics2D g, final String text, final Point centerPoint) {
 		if (text == null || text.equals("")) {
 			return null;
@@ -139,7 +139,7 @@ public class ConnectorView extends AConnectorView{
 		final int x = centerPoint.x - textWidth / 2;
 		final int textHeight = textPainter.getTextHeight();
 		int y = centerPoint.y - textHeight/2;
-		textPainter.draw(x, y, textColor, bgColor);
+		textPainter.draw(x, y, g.getColor(), bgColor);
 		return new Rectangle(x, y, textWidth, textHeight);
 	}
 
@@ -222,9 +222,9 @@ public class ConnectorView extends AConnectorView{
 
 
 	/**
-	 * Computes the intersection between two lines. The calculated point is approximate, 
+	 * Computes the intersection between two lines. The calculated point is approximate,
 	 * since integers are used. If you need a more precise result, use doubles
-	 * everywhere. 
+	 * everywhere.
 	 * (c) 2007 Alexander Hristov. Use Freely (LGPL license). http://www.ahristov.com
 	 *
 	 * @param x1 Point 1 of Line 1
@@ -372,11 +372,11 @@ public class ConnectorView extends AConnectorView{
 		            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
 		        else
 		            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
-		    } 
+		    }
 		    if (arrowLinkCurve != null) {
 		        g.draw(arrowLinkCurve);
 		    }
-		} 
+		}
 		if (isSourceVisible() && !(showsConnectors && linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE))) {
 			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
@@ -396,7 +396,7 @@ public class ConnectorView extends AConnectorView{
 		if(showsConnectors) {
 			boolean showsControlPoints = showsControlPoints();
             if (showsControlPoints) {
-				g.setColor(textColor);
+				g.setColor(connectorColor);
 				g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 			}
 			if (showsControlPoints || !isSourceVisible() || !isTargetVisible()) {
@@ -419,14 +419,14 @@ public class ConnectorView extends AConnectorView{
 	}
 
     public void enableControlPoints() {
-        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));  
+        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));
     }
 
 
     public void disableControlPoints() {
         MapView map = getMap();
         if(showsControlPoints())
-            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);  
+            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
     }
 
 	private boolean showsControlPoints() {
@@ -448,7 +448,7 @@ public class ConnectorView extends AConnectorView{
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final String sourceLabel = linkController.getSourceLabel(viewedConnector);
 		final String middleLabel;
-	      if(source != null && MapStyleModel.isDefaultStyleNode(source.getNode())) 
+	      if(source != null && MapStyleModel.isDefaultStyleNode(source.getNode()))
 	          middleLabel = TextUtils.getText("connector");
 	      else
 	          middleLabel = linkController.getMiddleLabel(viewedConnector);
@@ -463,6 +463,12 @@ public class ConnectorView extends AConnectorView{
         final int fontSize = Math.round (linkController.getLabelFontSize(viewedConnector) * UITools.FONT_SCALE_FACTOR);
         final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
         g.setFont(linksFont);
+
+        Color labelColor = linkController.getLabelColor(viewedConnector);
+        if(labelColor != null)
+            g.setColor(labelColor);
+        else
+            g.setColor(connectorColor);
 
 		if (startPoint != null) {
 			sourceTextRectangle = drawEndPointText(g, sourceLabel, startPoint, startPoint2);
