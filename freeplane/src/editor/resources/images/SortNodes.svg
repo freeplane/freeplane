@@ -1,173 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="24"
-   height="24"
-   viewBox="0 0 24 24"
-   version="1.1"
-   id="svg10437"
-   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
-   sodipodi:docname="SortNodes.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <defs
-     id="defs10431">
-    <linearGradient
-       id="a"
-       y2="377.6"
-       gradientUnits="userSpaceOnUse"
-       x2="142.38"
-       gradientTransform="matrix(-3.6318e-4,-0.40809,0.31921,-4.2146e-4,-109.54,72.11001)"
-       y1="388.92"
-       x1="160.7">
-      <stop
-         stop-color="#36d200"
-         offset="0"
-         id="stop828" />
-      <stop
-         stop-color="#fff"
-         offset="1"
-         id="stop830" />
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24 24" version="1.1" id="svg10437" inkscape:version="1.1.2 (b8e25be833, 2022-02-05)" sodipodi:docname="SortNodes.svg">
+  <defs id="defs10431">
+    <linearGradient id="a" y2="377.6" gradientUnits="userSpaceOnUse" x2="142.38" gradientTransform="matrix(-3.6318e-4,-0.40809,0.31921,-4.2146e-4,-109.54,72.11001)" y1="388.92" x1="160.7">
+      <stop stop-color="#36d200" offset="0" id="stop828"/>
+      <stop stop-color="#fff" offset="1" id="stop830"/>
     </linearGradient>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="9.828297"
-     inkscape:cx="2.3910551"
-     inkscape:cy="-3.5611459"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     inkscape:pagecheckerboard="0"
-     showgrid="true"
-     units="px"
-     showguides="true"
-     inkscape:guide-bbox="true"
-     inkscape:snap-global="true"
-     inkscape:snap-bbox="true"
-     inkscape:snap-page="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:snap-grids="true">
-    <sodipodi:guide
-       position="0,22"
-       orientation="0,1"
-       id="guide10894"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="22,24"
-       orientation="-1,0"
-       id="guide10978"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="11.065513,2"
-       orientation="0,1"
-       id="guide10982"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="2,22"
-       orientation="-1,0"
-       id="guide10986"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <inkscape:grid
-       type="xygrid"
-       id="grid826" />
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="9.828297" inkscape:cx="2.3910551" inkscape:cy="-3.5611459" inkscape:document-units="px" inkscape:current-layer="layer1" inkscape:pagecheckerboard="0" showgrid="true" units="px" showguides="true" inkscape:guide-bbox="true" inkscape:snap-global="true" inkscape:snap-bbox="true" inkscape:snap-page="true" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:snap-grids="true">
+    <sodipodi:guide position="0,22" orientation="0,1" id="guide10894" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="22,24" orientation="-1,0" id="guide10978" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="11.065513,2" orientation="0,1" id="guide10982" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="2,22" orientation="-1,0" id="guide10986" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <inkscape:grid type="xygrid" id="grid826"/>
   </sodipodi:namedview>
-  <metadata
-     id="metadata10434">
+  <metadata id="metadata10434">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <rect
-       style="color:#000000;stroke-width:1"
-       height="16"
-       width="16"
-       y="1.9999954"
-       x="2"
-       fill="none"
-       id="rect837" />
-    <rect
-       style="color:#000000;stroke-width:1"
-       height="16"
-       width="16"
-       y="1.9999954"
-       x="2"
-       fill="none"
-       id="rect839" />
-    <text
-       style="font-size:12.4506px;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#0071bc;fill-opacity:1;stroke:#0071bc;stroke-width:0.500001;stroke-opacity:1"
-       line-height="125%"
-       y="11.166862"
-       x="2.2487376"
-       xml:space="preserve"
-       id="text843"
-       transform="scale(1.0060533,0.99398312)"><tspan
-         y="11.166862"
-         x="2.2487376"
-         stroke-width="0.29281"
-         id="tspan841"
-         style="fill:#0071bc;fill-opacity:1;stroke:#0071bc;stroke-width:0.500001;stroke-opacity:1">A</tspan></text>
-    <text
-       style="font-size:12.4506px;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#333333;stroke:#333333;stroke-width:0.500001"
-       line-height="125%"
-       y="21.887207"
-       x="2.6286998"
-       xml:space="preserve"
-       id="text847"
-       transform="scale(1.0060533,0.99398312)"><tspan
-         y="21.887207"
-         x="2.6286998"
-         stroke-width="0.29281"
-         id="tspan845"
-         style="stroke-width:0.500001;fill:#333333;stroke:#333333">Z</tspan></text>
-    <g
-       id="g7253"
-       transform="translate(1.5)"
-       style="stroke-width:1;fill:#333333">
-      <rect
-         x="14.5"
-         y="4"
-         width="1.9999999"
-         height="11"
-         id="rect6869"
-         style="stroke-width:1;fill:#333333" />
-      <path
-         id="polyline6871"
-         style="stroke-width:0.870235;fill:#333333"
-         transform="matrix(1,0,0,1.320472,9.0000001,5.0771671)"
-         d="m 10.5,6.0695549 -4,3.7865248 -4,-3.7865248"
-         sodipodi:nodetypes="ccc" />
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <rect style="color:#000000;stroke-width:1" height="16" width="16" y="1.9999954" x="2" fill="none" id="rect837"/>
+    <rect style="color:#000000;stroke-width:1" height="16" width="16" y="1.9999954" x="2" fill="none" id="rect839"/>
+    <text style="font-size:12.4506px;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#0071bc;fill-opacity:1;stroke:#0071bc;stroke-width:0.500001;stroke-opacity:1" line-height="125%" y="11.166862" x="2.2487376" xml:space="preserve" id="text843" transform="scale(1.0060533,0.99398312)"><tspan y="11.166862" x="2.2487376" stroke-width="0.29281" id="tspan841" style="fill:#0071bc;fill-opacity:1;stroke:#0071bc;stroke-width:0.500001;stroke-opacity:1">A</tspan></text>
+    <text style="font-size:12.4506px;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#333333;stroke:#333333;stroke-width:0.500001" line-height="125%" y="21.887207" x="2.6286998" xml:space="preserve" id="text847" transform="scale(1.0060533,0.99398312)"><tspan y="21.887207" x="2.6286998" stroke-width="0.29281" id="tspan845" style="stroke-width:0.500001;fill:#333333;stroke:#333333">Z</tspan></text>
+    <g id="g7253" transform="translate(1.5)" style="stroke-width:1;fill:#333333">
+      <rect x="14.5" y="4" width="1.9999999" height="11" id="rect6869" style="stroke-width:1;fill:#333333"/>
+      <path id="polyline6871" style="stroke-width:0.870235;fill:#333333" transform="matrix(1,0,0,1.320472,9.0000001,5.0771671)" d="m 10.5,6.0695549 -4,3.7865248 -4,-3.7865248" sodipodi:nodetypes="ccc"/>
     </g>
   </g>
 </svg>
