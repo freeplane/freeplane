@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.map.AncestorRemover;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -35,27 +36,16 @@ class DependencySelection {
 
     List<Dependency> getSelectedDependencies() {
         List<Dependency> allDependencies;
-        Set<NodeModel> nodes = getSelectedNodeSet();
-        int selectedSubtreesCount = nodes.size();
-        if(selectedSubtreesCount == 1) {
-            CodeNodeModel selectedNode = (CodeNodeModel) selection.getSelected();
-            Set<Dependency> outgoingDependencies = getOutgoingDependencies(selectedNode);
-            Set<Dependency> incomingDependencies = getIncomingDependencies(selectedNode);
-            allDependencies = new ArrayList<Dependency>(outgoingDependencies.size() + incomingDependencies.size());
-            allDependencies.addAll(outgoingDependencies);
-            allDependencies.addAll(incomingDependencies);
-        }
-        else {
-            allDependencies = nodes.stream()
-                    .flatMap(node ->
-                        Stream.concat(
-                                getOutgoingDependencies((CodeNodeModel)node).stream(),
-                                getIncomingDependencies((CodeNodeModel)node).stream()))
-                    .distinct()
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }
-         return allDependencies;
-     }
+        Set<NodeModel> nodes = AncestorRemover.removeAncestors(getSelectedNodeSet());
+        allDependencies = nodes.stream()
+                .flatMap(node ->
+                Stream.concat(
+                        getOutgoingDependencies((CodeNodeModel)node).stream(),
+                        getIncomingDependencies((CodeNodeModel)node).stream()))
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+        return allDependencies;
+    }
 
     String getVisibleNodeId(JavaClass javaClass) {
         JavaClass targetClass = CodeNodeModel.findEnclosingNamedClass(javaClass);
