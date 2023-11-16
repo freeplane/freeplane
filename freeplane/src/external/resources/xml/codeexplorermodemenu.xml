@@ -38,6 +38,7 @@
 			</Entry>
 		</Entry>
 		<Entry name="view">
+			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
@@ -66,7 +67,6 @@
 				<Entry name="SetBooleanPropertyAction.spotlight" />
 			</Entry>
 			<Entry name="menu_viewmode">
-				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.show_icons" />
 				<Entry name="SetBooleanPropertyAction.show_connectors" />
@@ -84,23 +84,46 @@
 				</Entry>
 			</Entry>
 		</Entry>
-		<Entry name="navigate">
-			<Entry name="navigate">
-				<Entry name="NavigationPreviousMapAction" />
-				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
-				<Entry name="fold">
-					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
-					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
-					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
-				</Entry>
+		<Entry name="navigate" builder="menu_navigate">
+			<Entry name="NavigationPreviousMapAction" />
+			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="fold">
+				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry name="ToggleChildrenFoldedAction" accelerator="control SPACE" />
+				<Entry name="UnfoldOneLevelAction" accelerator="alt PAGE_DOWN" />
+				<Entry name="FoldOneLevelAction" accelerator="alt PAGE_UP" />
+				<Entry name="UnfoldAllAction" accelerator="alt END" />
+				<Entry name="FoldAllAction" accelerator="alt HOME" />
+				<Entry builder="separator" />
+				<Entry name="SetAlwaysUnfoldedNodeFlagsAction" />
+				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
+				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
-			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
+			<Entry builder="separator" />
+			<Entry name="SelectAllAction" accelerator="control A" />
+			<Entry name="SelectBranchAction" accelerator="control shift A" />
+			<Entry builder="separator" />
+			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
+			<Entry name="GotoNodeAction" />
+			<Entry name="JumpInAction"  accelerator="shift ESCAPE"/>
+			<Entry name="JumpOutAction"  accelerator="control ESCAPE"/>
 			<Entry name="FreeSelectNodeAction.LEFT" />
 			<Entry name="FreeSelectNodeAction.UP" />
 			<Entry name="FreeSelectNodeAction.RIGHT" />
 			<Entry name="FreeSelectNodeAction.DOWN" />
-			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
-			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
+			<Entry name="NextNodeAction.BACK" accelerator="control alt LEFT" />
+			<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
+			<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
+			<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+			<Entry name="NotFoldingNextPresentationItemAction" accelerator="control alt SPACE" />
+			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
+			<Entry name="BackAction" accelerator="alt LEFT" />
+			<Entry name="ForwardAction" accelerator="alt RIGHT" />
+			<Entry name="links">
+				<Entry name="FollowLinkAction" accelerator="control ENTER" />
+				<Entry builder="menu_goto_links" />
+			</Entry>
 		</Entry>
 		<Entry name="filter">
 			<Entry name="UndoFilterAction" />
@@ -144,13 +167,13 @@
 	</Entry>
 	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
 		<Entry builder="navigate_maps,radio_button_group" />
+		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		<Entry builder="separator" />
 		<Entry name="ToggleMenubarAction" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />
 		<Entry name="ToggleMapOverviewAction" />
-		<Entry name="ViewLayoutTypeAction.OUTLINE" />
 		<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
