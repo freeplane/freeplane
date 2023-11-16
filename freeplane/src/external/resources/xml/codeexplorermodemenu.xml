@@ -16,6 +16,7 @@
 			<Entry name="FoldOneLevelAction" />
 			<Entry name="FoldAllAction" />
 		</Entry>
+		<Entry builder="separator" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 	</Entry>
 	<Entry builder="main_menu">
@@ -38,7 +39,6 @@
 			</Entry>
 		</Entry>
 		<Entry name="view">
-			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
@@ -83,6 +83,7 @@
 					</Entry>
 				</Entry>
 			</Entry>
+			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
@@ -167,6 +168,7 @@
 	</Entry>
 	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
 		<Entry builder="navigate_maps,radio_button_group" />
+		<Entry builder="separator" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		<Entry builder="separator" />
 		<Entry name="ToggleMenubarAction" />
