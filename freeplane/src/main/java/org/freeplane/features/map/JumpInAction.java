@@ -17,16 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.map.mindmapmode;
+package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-class JumpOutAction extends AFreeplaneAction {
+class JumpInAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
@@ -35,17 +33,18 @@ class JumpOutAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	public JumpOutAction() {
-		super("JumpOutAction");
+	public JumpInAction() {
+		super("JumpInAction");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		Controller currentController = Controller.getCurrentController();
+		final IMapSelection selection = currentController.getSelection();
 		if(selection != null) {
-			NodeModel rootNode = selection.getMap().getRootNode();
-			if(selection.getSelectionRoot() != rootNode)
-				Controller.getCurrentController().getMapViewManager().usePreviousViewRoot();
-		}
+			NodeModel viewRoot = selection.getSelected();
+			viewRoot.setChildNodeSidesAsNow();
+			currentController.getMapViewManager().setViewRoot(viewRoot);
+		} 
 	}
 }
