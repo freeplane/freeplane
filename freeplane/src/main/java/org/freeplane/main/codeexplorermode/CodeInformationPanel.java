@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.link.LinkController;
@@ -31,7 +32,7 @@ import org.freeplane.features.mode.Controller;
 
 import com.tngtech.archunit.core.domain.Dependency;
 
-class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener{
+class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
     private enum SortOrder {
         SOURCE(Comparator.<Dependency, String>comparing(dep -> dep.getOriginClass().getName())),
@@ -169,5 +170,17 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
 
     private boolean filter(String description, String[] filteredWords) {
         return Stream.of(filteredWords).allMatch(description::contains);
+    }
+
+    @Override
+    public void propertyChanged(String propertyName, String newValue, String oldValue) {
+        if(propertyName.equals("code_showOutsideDependencies")) {
+            Controller controller = Controller.getCurrentController();
+            IMapSelection selection = controller.getSelection();
+            if (selection.getMap() instanceof CodeMapModel) {
+                update(selection);
+                controller.getMapViewManager().getMapViewComponent().repaint();
+            }
+        }
     }
 }

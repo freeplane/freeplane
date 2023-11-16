@@ -16,6 +16,7 @@
 			<Entry name="FoldOneLevelAction" />
 			<Entry name="FoldAllAction" />
 		</Entry>
+		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 	</Entry>
 	<Entry builder="main_menu">
 		<Entry name="file">

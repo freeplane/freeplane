@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -25,9 +26,11 @@ class DependencySelection {
     private final IMapSelection selection;
     private MapModel map;
     private Set<NodeModel> selectedNodeSet;
+    private final boolean showsOutsideDependencies;
 
     DependencySelection(IMapSelection selection) {
         this.selection = selection;
+        showsOutsideDependencies = ResourceController.getResourceController().getBooleanProperty("code_showOutsideDependencies", true);
     }
 
     List<Dependency> getSelectedDependencies() {
@@ -139,7 +142,7 @@ class DependencySelection {
          String visibleTargetId = getVisibleNodeId(dependency.getTargetClass());
          if (visibleOriginId == null  || visibleTargetId == null || visibleOriginId.equals(visibleTargetId))
              return false;
-         if (getSelectedNodeSet().size() == 1)
+         if (getSelectedNodeSet().size() == 1 || this.showsOutsideDependencies)
              return true;
          NodeModel visibleOrigin = getNode(visibleOriginId);
          NodeModel selectedVisibleOrigin = findSelectedAncestorOrSelf(visibleOrigin);
@@ -158,11 +161,12 @@ class DependencySelection {
              return false;
          NodeModel selectedSourceAncestorOrSource = findSelectedAncestorOrSelf(source);
          boolean isSourceSelected = selectedSourceAncestorOrSource != null;
-         if (isOnlyOneNodeSelected && isSourceSelected)
+         boolean showsOutsideDependencies = isOnlyOneNodeSelected || this.showsOutsideDependencies;
+         if (showsOutsideDependencies && isSourceSelected)
              return ! target.isDescendantOf(selectedSourceAncestorOrSource);
          NodeModel selectedTargetAncestorOrTarget = findSelectedAncestorOrSelf(target);
          boolean isTargetSelected = selectedTargetAncestorOrTarget != null;
-         if (isOnlyOneNodeSelected)
+         if (showsOutsideDependencies)
              return isTargetSelected && ! source.isDescendantOf(selectedTargetAncestorOrTarget);
          else if (isSourceSelected && isTargetSelected)
              return selectedSourceAncestorOrSource != selectedTargetAncestorOrTarget;

@@ -20,6 +20,7 @@
 package org.freeplane.main.codeexplorermode;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -42,33 +43,26 @@ class CodeProjectController implements IExtension {
 
 
 	private void showControlPanel() {
-		if (informationPanel == null) {
-			informationPanel = new CodeInformationPanel();
-		}
-		modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
-		informationPanel.setVisible(true);
-		informationPanel.revalidate();
+	    informationPanel = new CodeInformationPanel();
+	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
+	    informationPanel.setVisible(true);
+	    informationPanel.revalidate();
 	}
 
 	public void shutdownController() {
-	    if(informationPanel != null) {
-	        modeController.getMapController().removeNodeSelectionListener(informationPanel);
-	        Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(informationPanel);
-	    }
-		if (informationPanel == null) {
-		    return;
-		}
-		hideControlPanel();
-		informationPanel = null;
+	    modeController.getMapController().removeNodeSelectionListener(informationPanel);
+	    Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(informationPanel);
+	    ResourceController.getResourceController().removePropertyChangeListener(informationPanel);
+	    hideControlPanel();
+	    informationPanel = null;
 	}
 
 	public void startupController() {
 	    showControlPanel();
-	    if(informationPanel != null) {
-	        modeController.getMapController().addNodeSelectionListener(informationPanel);
-	        Controller.getCurrentController().getMapViewManager().addMapSelectionListener(informationPanel);
-	        informationPanel.update();
-	    }
+	    modeController.getMapController().addNodeSelectionListener(informationPanel);
+	    Controller.getCurrentController().getMapViewManager().addMapSelectionListener(informationPanel);
+	    ResourceController.getResourceController().addPropertyChangeListener(informationPanel);
+	    informationPanel.update();
 	}
 
 
