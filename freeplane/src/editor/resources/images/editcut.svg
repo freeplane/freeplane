@@ -1,130 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="24"
-   height="24"
-   viewBox="0 0 24 24"
-   version="1.1"
-   id="svg10437"
-   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
-   sodipodi:docname="editcut.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <defs
-     id="defs10431" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="21.783545"
-     inkscape:cx="-0.75745247"
-     inkscape:cy="12.211052"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     inkscape:pagecheckerboard="0"
-     showgrid="true"
-     units="px"
-     showguides="true"
-     inkscape:guide-bbox="true"
-     inkscape:snap-global="false"
-     inkscape:snap-bbox="true"
-     inkscape:snap-page="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:snap-grids="false"
-     inkscape:snap-others="true"
-     inkscape:bbox-paths="true"
-     inkscape:snap-intersection-paths="true"
-     inkscape:bbox-nodes="true"
-     inkscape:snap-object-midpoints="true"
-     inkscape:object-paths="true">
-    <sodipodi:guide
-       position="0,22"
-       orientation="0,1"
-       id="guide10894"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="22,24"
-       orientation="-1,0"
-       id="guide10978"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="11.065513,2"
-       orientation="0,1"
-       id="guide10982"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="2,22"
-       orientation="-1,0"
-       id="guide10986"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <inkscape:grid
-       type="xygrid"
-       id="grid1531" />
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24 24" version="1.1" id="svg10437" inkscape:version="1.1.2 (b8e25be833, 2022-02-05)" sodipodi:docname="editcut.svg">
+  <defs id="defs10431"/>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="21.783545" inkscape:cx="-0.75745247" inkscape:cy="12.211052" inkscape:document-units="px" inkscape:current-layer="layer1" inkscape:pagecheckerboard="0" showgrid="true" units="px" showguides="true" inkscape:guide-bbox="true" inkscape:snap-global="false" inkscape:snap-bbox="true" inkscape:snap-page="false" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:snap-grids="false" inkscape:snap-others="true" inkscape:bbox-paths="true" inkscape:snap-intersection-paths="true" inkscape:bbox-nodes="true" inkscape:snap-object-midpoints="true" inkscape:object-paths="true">
+    <sodipodi:guide position="0,22" orientation="0,1" id="guide10894" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="22,24" orientation="-1,0" id="guide10978" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="11.065513,2" orientation="0,1" id="guide10982" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="2,22" orientation="-1,0" id="guide10986" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <inkscape:grid type="xygrid" id="grid1531"/>
   </sodipodi:namedview>
-  <metadata
-     id="metadata10434">
+  <metadata id="metadata10434">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <path
-       id="path2022"
-       style="color:#000000;fill:#333333;stroke-width:1;-inkscape-stroke:none"
-       d="m 13.214736,10.551143 3.028041,-5.0498112 0.294149,-0.4971344 c 0,0 0.577635,-0.8736888 0.342311,-1.698127 C 16.682205,2.61579 16.013171,2.1178186 16.013171,2.1178186 l -3.926134,6.5493641 z"
-       sodipodi:nodetypes="cccsccc" />
-    <path
-       id="path4250"
-       style="color:#000000;fill:#333333;stroke-width:1;-inkscape-stroke:none"
-       d="M 11.494876,9.6629848 7.2943151,16.659338 8.9555903,17.655281 12.637677,11.527116 Z"
-       sodipodi:nodetypes="ccccc" />
-    <path
-       style="color:#000000;fill:#333333;stroke-width:1;-inkscape-stroke:none"
-       d="m 7.0180667,2.1178186 c 0,0 -0.645612,0.4961046 -0.8660653,1.1882518 -0.2914379,0.9150145 0.6848514,2.276173 0.6848514,2.276173 l 7.2387952,12.0730376 1.661275,-0.995943 z"
-       id="path2137"
-       sodipodi:nodetypes="cscccc" />
-    <ellipse
-       style="fill:none;stroke:#0071bc;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:markers stroke fill;stop-color:#000000"
-       id="circle1987"
-       cx="16.398491"
-       cy="18.650553"
-       rx="2.3828402"
-       ry="2.384495" />
-    <ellipse
-       style="fill:none;stroke:#0071bc;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:markers stroke fill;stop-color:#000000"
-       id="circle1904"
-       cx="7.6015072"
-       cy="18.650553"
-       rx="2.3828402"
-       ry="2.384495" />
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <path id="path2022" style="color:#000000;fill:#333333;stroke-width:1;-inkscape-stroke:none" d="m 13.214736,10.551143 3.028041,-5.0498112 0.294149,-0.4971344 c 0,0 0.577635,-0.8736888 0.342311,-1.698127 C 16.682205,2.61579 16.013171,2.1178186 16.013171,2.1178186 l -3.926134,6.5493641 z" sodipodi:nodetypes="cccsccc"/>
+    <path id="path4250" style="color:#000000;fill:#333333;stroke-width:1;-inkscape-stroke:none" d="M 11.494876,9.6629848 7.2943151,16.659338 8.9555903,17.655281 12.637677,11.527116 Z" sodipodi:nodetypes="ccccc"/>
+    <path style="color:#000000;fill:#333333;stroke-width:1;-inkscape-stroke:none" d="m 7.0180667,2.1178186 c 0,0 -0.645612,0.4961046 -0.8660653,1.1882518 -0.2914379,0.9150145 0.6848514,2.276173 0.6848514,2.276173 l 7.2387952,12.0730376 1.661275,-0.995943 z" id="path2137" sodipodi:nodetypes="cscccc"/>
+    <ellipse style="fill:none;stroke:#0071bc;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:markers stroke fill;stop-color:#000000" id="circle1987" cx="16.398491" cy="18.650553" rx="2.3828402" ry="2.384495"/>
+    <ellipse style="fill:none;stroke:#0071bc;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;paint-order:markers stroke fill;stop-color:#000000" id="circle1904" cx="7.6015072" cy="18.650553" rx="2.3828402" ry="2.384495"/>
   </g>
 </svg>

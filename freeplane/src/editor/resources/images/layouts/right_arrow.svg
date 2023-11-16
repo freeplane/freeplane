@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="6" height="24" version="1.1" viewBox="0 0 6 24" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 6 24">
  <g fill="#333333">
   <path d="m2.8099 12h12.068" color="#000000" stroke-width="2"/>
   <path d="m0.41899 11v2h2.7516v-2z" color="#000000" stroke-width=".4775"/>

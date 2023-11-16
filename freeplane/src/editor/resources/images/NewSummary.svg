@@ -1,132 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="24"
-   height="24"
-   viewBox="0 0 24 24"
-   version="1.1"
-   id="svg10437"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   sodipodi:docname="NewSummary.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <defs
-     id="defs10431" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="15.538184"
-     inkscape:cx="11.037326"
-     inkscape:cy="12.421014"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     units="px"
-     showguides="true"
-     inkscape:guide-bbox="true"
-     inkscape:snap-global="true"
-     inkscape:snap-bbox="true"
-     inkscape:snap-page="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1">
-    <sodipodi:guide
-       position="0,22"
-       orientation="0,1"
-       id="guide10894"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="22,24"
-       orientation="-1,0"
-       id="guide10978"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="11.065513,2"
-       orientation="0,1"
-       id="guide10982"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-    <sodipodi:guide
-       position="2,22"
-       orientation="-1,0"
-       id="guide10986"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 24 24" version="1.1" id="svg10437" inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)" sodipodi:docname="NewSummary.svg">
+  <defs id="defs10431"/>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="15.538184" inkscape:cx="11.037326" inkscape:cy="12.421014" inkscape:document-units="px" inkscape:current-layer="layer1" inkscape:pagecheckerboard="0" showgrid="false" units="px" showguides="true" inkscape:guide-bbox="true" inkscape:snap-global="true" inkscape:snap-bbox="true" inkscape:snap-page="true" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1">
+    <sodipodi:guide position="0,22" orientation="0,1" id="guide10894" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="22,24" orientation="-1,0" id="guide10978" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="11.065513,2" orientation="0,1" id="guide10982" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
+    <sodipodi:guide position="2,22" orientation="-1,0" id="guide10986" inkscape:label="" inkscape:locked="false" inkscape:color="rgb(0,0,255)"/>
   </sodipodi:namedview>
-  <metadata
-     id="metadata10434">
+  <metadata id="metadata10434">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <g
-       id="g1811"
-       transform="translate(0,-0.02960514)"
-       style="stroke:#333333">
-      <path
-         d="M 2.502877,5.4314138 H 4.262493 A 2.5742539,2.5691748 0 0 1 6.847609,8.0005886 V 15.859879 A 2.5851158,2.5800152 0 0 1 4.262493,18.439894 H 2.502877"
-         style="fill:none;stroke:#333333;stroke-width:2px;stroke-miterlimit:10"
-         id="path826" />
-      <path
-         d="M 7.847609,11.935642 H 2"
-         style="fill:none;stroke:#333333;stroke-width:2px;stroke-miterlimit:10"
-         id="path1133"
-         sodipodi:nodetypes="cc" />
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <g id="g1811" transform="translate(0,-0.02960514)" style="stroke:#333333">
+      <path d="M 2.502877,5.4314138 H 4.262493 A 2.5742539,2.5691748 0 0 1 6.847609,8.0005886 V 15.859879 A 2.5851158,2.5800152 0 0 1 4.262493,18.439894 H 2.502877" style="fill:none;stroke:#333333;stroke-width:2px;stroke-miterlimit:10" id="path826"/>
+      <path d="M 7.847609,11.935642 H 2" style="fill:none;stroke:#333333;stroke-width:2px;stroke-miterlimit:10" id="path1133" sodipodi:nodetypes="cc"/>
     </g>
-    <g
-       id="g1807"
-       transform="translate(7,5.4060373)">
-      <rect
-         x="-15"
-         y="-10"
-         width="13"
-         height="7"
-         rx="1.87"
-         style="fill:#0071bc"
-         id="rect830"
-         transform="scale(-1)" />
-      <line
-         x1="8.5"
-         y1="9"
-         x2="8.5"
-         y2="4"
-         style="fill:none;stroke:#ffffff;stroke-miterlimit:10"
-         id="line832" />
-      <line
-         x1="11"
-         y1="6.5"
-         x2="6"
-         y2="6.5"
-         style="fill:none;stroke:#ffffff;stroke-miterlimit:10"
-         id="line834" />
+    <g id="g1807" transform="translate(7,5.4060373)">
+      <rect x="-15" y="-10" width="13" height="7" rx="1.87" style="fill:#0071bc" id="rect830" transform="scale(-1)"/>
+      <line x1="8.5" y1="9" x2="8.5" y2="4" style="fill:none;stroke:#ffffff;stroke-miterlimit:10" id="line832"/>
+      <line x1="11" y1="6.5" x2="6" y2="6.5" style="fill:none;stroke:#ffffff;stroke-miterlimit:10" id="line834"/>
     </g>
   </g>
 </svg>

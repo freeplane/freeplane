@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="31.948" width="32" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 31.99965 31.947845" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 31.99965 31.947845">
 <defs>
 <linearGradient id="a" y2="378.15" gradientUnits="userSpaceOnUse" y1="343.67" gradientTransform="matrix(.034458 -.0045512 .0045512 .034458 50.49 502)" x2="181.28" x1="171.37">
 <stop stop-color="#c8c800" offset="0"/>

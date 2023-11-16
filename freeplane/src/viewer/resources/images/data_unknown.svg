@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   version="1.1"
-   viewBox="0 0 24 24"
-   data-name="Layer 2"
-   id="Layer_2">
-  <metadata
-     id="metadata826">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 24 24" data-name="Layer 2" id="Layer_2">
+  <metadata id="metadata826">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <defs
-     id="defs824" />
-  <g
-     id="text830"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#333333;fill-opacity:1;stroke:none"
-     aria-label="?">
-    <path
-       id="path851"
-       style=""
-       d="m 12.786667,14.279999 c 0,-0.88 0.09333,-1.026666 0.893333,-1.586666 1.24,-0.88 1.6,-1.466667 1.6,-2.586667 0,-1.8133334 -1.36,-3.0666667 -3.32,-3.0666667 -1.146667,0 -2.0399999,0.4 -2.6133332,1.1866667 -0.44,0.5866666 -0.6133334,1.2266666 -0.6266667,2.32 h 1.8133329 c 0,-1.2000001 0.56,-1.9333334 1.48,-1.9333334 0.786667,0 1.386667,0.6533333 1.386667,1.5333334 0,0.6 -0.16,0.853333 -0.933333,1.493333 -1.066667,0.906667 -1.373334,1.506667 -1.333334,2.64 z M 13,15.013332 h -2 v 1.946667 h 2 z" />
+  <defs id="defs824"/>
+  <g id="text830" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#333333;fill-opacity:1;stroke:none" aria-label="?">
+    <path id="path851" style="" d="m 12.786667,14.279999 c 0,-0.88 0.09333,-1.026666 0.893333,-1.586666 1.24,-0.88 1.6,-1.466667 1.6,-2.586667 0,-1.8133334 -1.36,-3.0666667 -3.32,-3.0666667 -1.146667,0 -2.0399999,0.4 -2.6133332,1.1866667 -0.44,0.5866666 -0.6133334,1.2266666 -0.6266667,2.32 h 1.8133329 c 0,-1.2000001 0.56,-1.9333334 1.48,-1.9333334 0.786667,0 1.386667,0.6533333 1.386667,1.5333334 0,0.6 -0.16,0.853333 -0.933333,1.493333 -1.066667,0.906667 -1.373334,1.506667 -1.333334,2.64 z M 13,15.013332 h -2 v 1.946667 h 2 z"/>
   </g>
 </svg>

@@ -1,16 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   id="Layer_2"
-   data-name="Layer 2"
-   viewBox="0 0 24 24"
-   version="1.1"
-   xml:space="preserve"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-     id="defs7" /><path
-     id="path2"
-     style="fill:#333"
-     d="M 8 2 L 3 5.5 L 8 9 L 8 7 L 11.25 7 A 4.88 4.88 0 0 1 15.677734 10.130859 C 16.114548 10.04636 16.55883 9.9984538 17.003906 10 C 17.620046 10.000479 18.234143 10.087092 18.828125 10.25 A 7.89 7.89 0 0 0 11.25 4 L 8 4 L 8 2 z M 8 15 L 3 18.5 L 8 22 L 8 20 L 10.693359 20 C 10.247687 19.065218 10 18.035996 10 17 L 8 17 L 8 15 z " /><path
-     id="path3388"
-     style="fill:#0071bc"
-     d="m 17,12 a 4.94,4.94 0 0 0 -3,1 5,5 0 0 0 0,8 4.94,4.94 0 0 0 3,1 5.0000001,5.0000001 0 0 0 0,-10 z m -1,2 h 2 v 2 h 2 v 2 h -2 v 2 h -2 v -2 h -2 v -2 h 2 z" /></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" id="Layer_2" data-name="Layer 2" viewBox="0 0 24 24" version="1.1" xml:space="preserve"><defs id="defs7"/><path id="path2" style="fill:#333" d="M 8 2 L 3 5.5 L 8 9 L 8 7 L 11.25 7 A 4.88 4.88 0 0 1 15.677734 10.130859 C 16.114548 10.04636 16.55883 9.9984538 17.003906 10 C 17.620046 10.000479 18.234143 10.087092 18.828125 10.25 A 7.89 7.89 0 0 0 11.25 4 L 8 4 L 8 2 z M 8 15 L 3 18.5 L 8 22 L 8 20 L 10.693359 20 C 10.247687 19.065218 10 18.035996 10 17 L 8 17 L 8 15 z "/><path id="path3388" style="fill:#0071bc" d="m 17,12 a 4.94,4.94 0 0 0 -3,1 5,5 0 0 0 0,8 4.94,4.94 0 0 0 3,1 5.0000001,5.0000001 0 0 0 0,-10 z m -1,2 h 2 v 2 h 2 v 2 h -2 v 2 h -2 v -2 h -2 v -2 h 2 z"/></svg>
