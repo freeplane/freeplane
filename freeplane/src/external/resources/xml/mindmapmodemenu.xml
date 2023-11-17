@@ -250,6 +250,8 @@
               <Entry name="AddLocalLinkAction" accelerator="alt shift L" />
               <Entry name="AddMenuItemLinkAction" />
               <Entry name="AddExecutionLinkAction" />
+			  <Entry builder="separator" />
+			  <Entry name="CommandToNodeHotKeyAction" accelerator="control shift F2" />
               <Entry builder="separator" />
               <Entry name="SetLinkAnchorAction" />
               <Entry name="MakeLinkFromAnchorAction" />

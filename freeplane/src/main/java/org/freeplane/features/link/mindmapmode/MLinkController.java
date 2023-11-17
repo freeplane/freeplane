@@ -55,6 +55,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.commandtonode.CommandToNodeHotKeyAction;
 import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
@@ -410,6 +411,7 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new MakeLinkFromAnchorAction());
         modeController.addAction(new ClearLinkAnchorAction());
         modeController.addAction(new AddSelfConnectorAction());
+        modeController.addAction(new CommandToNodeHotKeyAction());
 	}
 
 	@Override
