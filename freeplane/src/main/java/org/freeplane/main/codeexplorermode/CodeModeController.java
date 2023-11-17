@@ -44,9 +44,7 @@ public class CodeModeController extends ModeController {
 		final Controller controller = getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
-			JavaClasses importedClasses = new ClassFileImporter().importPackages("org.freeplane");
-			JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
-			((CodeMapController) getMapController()).newMap(rootPackage);
+			((CodeMapController) getMapController()).newMap();
 		}
 		super.startup();
 		getExtension(CodeProjectController.class).startupController();

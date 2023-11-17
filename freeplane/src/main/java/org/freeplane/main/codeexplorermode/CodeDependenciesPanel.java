@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -32,7 +33,7 @@ import org.freeplane.features.mode.Controller;
 
 import com.tngtech.archunit.core.domain.Dependency;
 
-class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
+class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
     private enum SortOrder {
         SOURCE(Comparator.<Dependency, String>comparing(dep -> dep.getOriginClass().getName())),
@@ -53,7 +54,7 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
     private SortOrder sortOrder;
     private List<Dependency> allDependencies;
 
-    CodeInformationPanel() {
+    CodeDependenciesPanel() {
      // Create the top panel for sorting options
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -120,7 +121,9 @@ class CodeInformationPanel extends JPanel implements INodeSelectionListener, IMa
 
 
     private void update(IMapSelection selection) {
-        this.allDependencies = new DependencySelection(selection).getSelectedDependencies();
+        this.allDependencies = selection == null
+                ? Collections.emptyList() :
+                    new DependencySelection(selection).getSelectedDependencies();
         sortAndFilter();
     }
 

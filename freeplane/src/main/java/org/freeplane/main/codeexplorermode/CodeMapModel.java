@@ -3,21 +3,31 @@ package org.freeplane.main.codeexplorermode;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
-
-import com.tngtech.archunit.core.domain.JavaPackage;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.MapStyleModel;
 
 class CodeMapModel extends MapModel {
-	public CodeMapModel(INodeDuplicator nodeDuplicator, final JavaPackage rootPackage) {
-		super(nodeDuplicator);
-		// create empty attribute registry
-		AttributeRegistry.getRegistry(this);
+    public CodeMapModel(INodeDuplicator nodeDuplicator) {
+        super(nodeDuplicator);
+        AttributeRegistry.getRegistry(this);
 
-		setRoot(new PackageNodeModel(rootPackage, this, rootPackage.getName()));
-		getRootNode().setFolded(false);
-	}
+        setRoot(new EmptyNodeModel(this, "No locations selected"));
+        getRootNode().setFolded(false);
+    }
+    @Override
+    public String getTitle() {
+        return "Code: " + getRootNode().toString();
+    }
+    @Override
+    public void setRoot(NodeModel newRoot) {
+        NodeModel oldRoot = getRootNode();
+        if(oldRoot != null) {
+            MapStyleModel mapStyles = oldRoot.getExtension(MapStyleModel.class);
+            if(mapStyles != null)
+                newRoot.addExtension(mapStyles);
+        }
+        super.setRoot(newRoot);
+    }
 
-	@Override
-	public String getTitle() {
-		return "Code: " + getRootNode().toString();
-	}
+
 }

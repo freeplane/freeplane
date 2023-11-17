@@ -19,6 +19,8 @@
  */
 package org.freeplane.main.codeexplorermode;
 
+import javax.swing.JTabbedPane;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
@@ -27,8 +29,9 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  */
 class CodeProjectController implements IExtension {
-    private CodeInformationPanel informationPanel;
+    private CodeDependenciesPanel codeDependenciesPanel;
     private CodeModeController modeController;
+    private JTabbedPane informationPanel;
     /**
 	 * @param modeController
 	 */
@@ -43,26 +46,31 @@ class CodeProjectController implements IExtension {
 
 
 	private void showControlPanel() {
-	    informationPanel = new CodeInformationPanel();
+	    informationPanel = new JTabbedPane();
+	    codeDependenciesPanel = new CodeDependenciesPanel();
+        informationPanel.addTab("Configurations", new CodeExplorerConfigurator(CodeExplorerConfigurations.deserialize("")));
+        informationPanel.addTab("Dependencies", codeDependenciesPanel);
+
 	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
 	    informationPanel.setVisible(true);
 	    informationPanel.revalidate();
 	}
 
 	public void shutdownController() {
-	    modeController.getMapController().removeNodeSelectionListener(informationPanel);
-	    Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(informationPanel);
-	    ResourceController.getResourceController().removePropertyChangeListener(informationPanel);
+	    modeController.getMapController().removeNodeSelectionListener(codeDependenciesPanel);
+	    Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(codeDependenciesPanel);
+	    ResourceController.getResourceController().removePropertyChangeListener(codeDependenciesPanel);
 	    hideControlPanel();
 	    informationPanel = null;
+	    codeDependenciesPanel = null;
 	}
 
 	public void startupController() {
 	    showControlPanel();
-	    modeController.getMapController().addNodeSelectionListener(informationPanel);
-	    Controller.getCurrentController().getMapViewManager().addMapSelectionListener(informationPanel);
-	    ResourceController.getResourceController().addPropertyChangeListener(informationPanel);
-	    informationPanel.update();
+	    modeController.getMapController().addNodeSelectionListener(codeDependenciesPanel);
+	    Controller.getCurrentController().getMapViewManager().addMapSelectionListener(codeDependenciesPanel);
+	    ResourceController.getResourceController().addPropertyChangeListener(codeDependenciesPanel);
+	    codeDependenciesPanel.update();
 	}
 
 

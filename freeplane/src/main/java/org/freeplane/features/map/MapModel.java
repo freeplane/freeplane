@@ -246,6 +246,7 @@ public class MapModel {
 	}
 
 	public void setRoot(final NodeModel root) {
+	    nodes.clear();
 		this.root = root;
 		root.attach();
 		root.setMap(this);
