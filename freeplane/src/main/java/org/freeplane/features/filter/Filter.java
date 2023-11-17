@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.WeakHashMap;
 
@@ -186,12 +187,16 @@ public class Filter implements IExtension {
 	private boolean filterChildren(final NodeModel node,
 	                               final boolean hasMatchingAncestor, final boolean hasHiddenAncestor) {
 		boolean hasMatchingDescendant = false;
-		for (final NodeModel child : node.getChildren()) {
+		for (final NodeModel child : children(node)) {
 			hasMatchingDescendant = applyFilter(child, hasMatchingAncestor, hasHiddenAncestor,
 			    hasMatchingDescendant);
 		}
 		return hasMatchingDescendant;
 	}
+
+    protected List<NodeModel> children(final NodeModel node) {
+        return node.getChildren();
+    }
 
 	public ICondition getCondition() {
 		return condition;
@@ -264,7 +269,7 @@ public class Filter implements IExtension {
     }
 
     private void showDescendants(NodeModel node) {
-        for (NodeModel child : node.getChildren()) {
+        for (NodeModel child : children(node)) {
             FilterInfo filterInfo = getFilterInfo(child);
             filterInfo.add(FilterInfo.FILTER_SHOW_AS_DESCENDANT);
             showDescendants(child);
