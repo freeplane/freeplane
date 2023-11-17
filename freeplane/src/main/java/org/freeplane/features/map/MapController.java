@@ -603,7 +603,8 @@ implements IExtension, NodeChangeAnnouncer{
 		modeController.addAction(new ShowNextChildAction());
 		modeController.addAction(new GotoNodeAction());
 		modeController.addAction(new CloseAction());
-
+        modeController.addAction(new JumpInAction());
+        modeController.addAction(new JumpOutAction());
 	}
 
 	public void displayNode(final NodeModel node) {
