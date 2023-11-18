@@ -24,14 +24,19 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 class DependencySelection {
+
     private final IMapSelection selection;
     private MapModel map;
     private Set<NodeModel> selectedNodeSet;
     private final boolean showsOutsideDependencies;
 
     DependencySelection(IMapSelection selection) {
+        this(selection, ResourceController.getResourceController().getBooleanProperty("code_showOutsideDependencies", true));
+    }
+
+    DependencySelection(IMapSelection selection, boolean showsOutsideDependencies) {
         this.selection = selection;
-        showsOutsideDependencies = ResourceController.getResourceController().getBooleanProperty("code_showOutsideDependencies", true);
+        this.showsOutsideDependencies = showsOutsideDependencies;
     }
 
     List<Dependency> getSelectedDependencies() {
@@ -45,6 +50,47 @@ class DependencySelection {
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allDependencies;
+    }
+
+    List<JavaClass> getSelectedClasses() {
+        List<JavaClass> allClasses;
+        Set<NodeModel> nodes = AncestorRemover.removeAncestors(getSelectedNodeSet());
+        allClasses = nodes.stream()
+                .flatMap(node ->
+                Stream.concat(
+                        getOutgoingDependencies((CodeNodeModel)node).stream(),
+                        getIncomingDependencies((CodeNodeModel)node).stream()))
+                .flatMap(this::dependentClasses)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+        return allClasses;
+    }
+
+    private Stream<JavaClass> dependentClasses(Dependency dependency) {
+        JavaClass origin = CodeNodeModel.findEnclosingNamedClass(dependency.getOriginClass());
+        JavaClass target = CodeNodeModel.findEnclosingNamedClass(dependency.getTargetClass());
+        NodeModel selectedOrigin = findSelectedAncestorOrSelf(origin);
+        NodeModel selectedTarget = findSelectedAncestorOrSelf(target);
+        if (selectedOrigin != selectedTarget) {
+            if(selectedOrigin != null && selectedTarget != null)
+                return Stream.of(origin, target);
+            else if(selectedOrigin != null)
+                return Stream.of(origin);
+            else
+                return Stream.of(target);
+        } else {
+            return Stream.empty();
+        }
+    }
+
+    private NodeModel findSelectedAncestorOrSelf(JavaClass jc) {
+        String visibleNodeId = getVisibleNodeId(jc);
+        NodeModel node = getNode(visibleNodeId);
+        if(node == null)
+            return null;
+        else
+            return findSelectedAncestorOrSelf(node);
+
     }
 
     String getVisibleNodeId(JavaClass javaClass) {
@@ -84,6 +130,7 @@ class DependencySelection {
              node = node.getParentNode();
          return node;
     }
+
 
     private boolean selectionContains(NodeModel node) {
         return getSelectedNodeSet().contains(node);

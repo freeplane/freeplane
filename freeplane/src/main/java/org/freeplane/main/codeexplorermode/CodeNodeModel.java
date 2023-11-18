@@ -21,6 +21,10 @@ abstract class CodeNodeModel extends NodeModel{
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
 
+    Stream<Dependency> getIncomingAndOutgoingDependencies(){
+        return Stream.concat(getIncomingDependencies(), getOutgoingDependencies());
+    }
+
 
     static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
         if (javaClass.isAnonymousClass())

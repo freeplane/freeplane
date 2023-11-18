@@ -12,14 +12,26 @@
 			<Entry name="UnfoldAllAction" />
 		</Entry>
 		<Entry row="2">
-			<Entry name="JumpOutAction"/>
+			<Entry name="JumpOutAction" />
 			<Entry name="FoldOneLevelAction" />
 			<Entry name="FoldAllAction" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
-	</Entry>
-	<Entry builder="main_menu">
+		<Entry row="1">
+			<Entry name="code.FilterSelectedCodeNodesAction" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE" />
+		</Entry>
+		<Entry row="2">
+			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED" />
+		</Entry>
+		</Entry>
+		<Entry builder="main_menu">
 		<Entry name="file">
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />

@@ -1,26 +1,30 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.awt.EventQueue;
-import java.io.File;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.main.codeexplorermode.ShowDependingNodesAction.DependencyDirection;
+import org.freeplane.main.codeexplorermode.ShowDependingNodesAction.NodeSelection;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-import com.tngtech.archunit.core.importer.Location;
 
 class CodeMapController extends MapController {
 	CodeMapController(CodeModeController modeController) {
 		super(modeController);
+		modeController.addAction(new FilterSelectedCodeNodesAction());
+		for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
+	        for(NodeSelection selection: ShowDependingNodesAction.NodeSelection.values()) {
+	            modeController.addAction(new ShowDependingNodesAction(direction, selection));
+	        }
+
+		}
 	}
 
 	public CodeModeController getCodeModeController() {
@@ -45,7 +49,7 @@ class CodeMapController extends MapController {
 
 	    IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 	    MapView mapView = (MapView) mapViewManager.getMapViewComponent();
-	    mapView.setRootNode(map.getRootNode());
+	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
 	        JavaPackage rootPackage;
@@ -62,7 +66,7 @@ class CodeMapController extends MapController {
 	            PackageNodeModel newRoot = new PackageNodeModel(rootPackage, map, rootPackage.getName());
 	            newRoot.setFolded(false);
 	            map.setRoot(newRoot);
-	            mapView.setRootNode(map.getRootNode());
+	            mapView.mapRootNodeChanged();
 	            mapViewManager.updateMapViewName();
 	        });
 	    }, "Load explored packages").start();
