@@ -518,7 +518,7 @@ public class MapStyleModel implements IExtension {
                     targetStyleNode = new NodeModel(styleMap);
                     targetStyleNode.setUserObject(source.getUserObject());
                     targetGroupNode.insert(targetStyleNode);
-                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);         
+                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);
                     addStyleNode(targetStyleNode);
                 }
             }
@@ -528,10 +528,11 @@ public class MapStyleModel implements IExtension {
             addStyleNode(targetStyleNode);
         } else {
             modeController.removeExtensions(LogicalStyleKeys.NODE_STYLE, targetStyleNode, targetStyleNode);
+            modeController.removeExtensions(MIconController.Keys.ICONS, targetStyleNode, targetStyleNode);
         }
-		modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode); //copy Style
-		modeController.copyExtensions(MIconController.Keys.ICONS, copiedStyleNode, targetStyleNode);  //copy Icons
-		MAttributeController.getController().copyAttributesToNode(copiedStyleNode, targetStyleNode);  //copy Attributes
+		modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
+		modeController.copyExtensions(MIconController.Keys.ICONS, copiedStyleNode, targetStyleNode);
+		MAttributeController.getController().copyAttributesToNode(copiedStyleNode, targetStyleNode);
     }
 
 }
