@@ -151,7 +151,17 @@ class CodeLinkController extends LinkController {
 
     @Override
     public Collection<? extends NodeLinkModel> getLinksTo(NodeModel node, Configurable component) {
-       return Collections.emptyList();
+        IMapSelection selection = ((MapView)component).getMapSelection();
+        if (node.isLeaf() || selection.isFolded(node)) {
+            Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependencies();
+            Map<String, Long> countedDependencies = countDependencies(node, selection, dependencies, Dependency::getOriginClass);
+            List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
+                .map(e -> createConnector(node.getMap().getNodeForID(e.getKey()), node.getID(), e.getValue().intValue()))
+                .collect(Collectors.toList());
+            return connectors;
+        }
+        else
+            return Collections.emptyList();
     }
 
     @Override
@@ -160,11 +170,24 @@ class CodeLinkController extends LinkController {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependencies();
-            List<CodeConnectorModel> connectors = toConnectors(node, dependencies, Dependency::getTargetClass, selection);
+            Map<String, Long> countedDependencies = countDependencies(node, selection, dependencies, Dependency::getTargetClass);
+            List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
+                .map(e -> createConnector(node, e.getKey(), e.getValue().intValue()))
+                .collect(Collectors.toList());
             return connectors;
         }
         else
             return Collections.emptyList();
+    }
+
+    private Map<String, Long> countDependencies(NodeModel node, IMapSelection selection,
+            Stream<Dependency> dependencies, Function<Dependency, JavaClass> dependencyToJavaClass) {
+        DependencySelection dependencySelection = new DependencySelection(selection);
+        Map<String, Long> countedDependencies = dependencies
+                .map(dep -> dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep)))
+                .filter(name -> name != null && ! name.equals(node.getID()))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return countedDependencies;
     }
 
     @Override
@@ -191,20 +214,6 @@ class CodeLinkController extends LinkController {
         return ((CodeConnectorModel)connector).goesUp() ? upwardsConnectorEndInclination : backwardsConnectorEndInclination;
     }
 
-
-    private List<CodeConnectorModel> toConnectors(NodeModel source, Stream<Dependency> dependencies,
-            Function<Dependency, JavaClass> dependencyToJavaClass,
-            IMapSelection mapSelection) {
-        DependencySelection dependencySelection = new DependencySelection(mapSelection);
-        Map<String, Long> countedDependencies = dependencies
-                .map(dep -> dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep)))
-                .filter(name -> name != null && ! name.equals(source.getID()))
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
-            .map(e -> createConnector(source, e.getKey(), e.getValue().intValue()))
-            .collect(Collectors.toList());
-        return connectors;
-    }
 
     private CodeConnectorModel createConnector(NodeModel source, String targetId, int weight) {
         NodeModel target = source.getMap().getNodeForID(targetId);
