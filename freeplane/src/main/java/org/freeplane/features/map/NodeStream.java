@@ -7,10 +7,10 @@ import java.util.stream.StreamSupport;
 
 public class NodeStream {
     public static Stream<NodeModel> bottomUpOf(NodeModel node) {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(NodeIterator.bottomUpOf(node), Spliterator.ORDERED), false);
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(NodeIterator.bottomUpOf(node, NodeModel::getChildren), Spliterator.ORDERED), false);
     }
 
     public static Stream<NodeModel> of(NodeModel node) {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(NodeIterator.of(node), Spliterator.ORDERED), false);
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(NodeIterator.of(node, NodeModel::getChildren), Spliterator.ORDERED), false);
     }
 }
