@@ -28,7 +28,7 @@ public class SelectedViewCondition extends ASelectableCondition implements Condi
 	private static final String NAME = "selected_view_condition";
 	private static String description;
 
-	public static ASelectableCondition CreateCondition() {
+	public static ASelectableCondition createCondition() {
 		return new SelectedViewCondition();
 	}
 

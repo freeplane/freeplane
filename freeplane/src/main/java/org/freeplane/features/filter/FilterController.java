@@ -328,7 +328,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final ASelectableCondition noFiltering = NO_FILTERING;
 		filterConditions.insertElementAt(noFiltering, 0);
 		if (selectedViewCondition == null) {
-			selectedViewCondition = SelectedViewCondition.CreateCondition();
+			selectedViewCondition = SelectedViewCondition.createCondition();
 		}
 		filterConditions.insertElementAt(selectedViewCondition, 1);
 		if (filterConditions.getSelectedItem() == null) {
