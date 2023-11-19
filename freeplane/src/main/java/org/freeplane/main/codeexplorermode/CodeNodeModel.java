@@ -43,6 +43,10 @@ abstract class CodeNodeModel extends NodeModel{
         return Stream.concat(getIncomingDependenciesWithKnownTargets(), getOutgoingDependenciesWithKnownTargets());
     }
 
+    String formatClassCount(long classCount) {
+        return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
+    }
+
     static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
         if (javaClass.isAnonymousClass())
             return findEnclosingNamedClass(javaClass.getEnclosingClass().get());

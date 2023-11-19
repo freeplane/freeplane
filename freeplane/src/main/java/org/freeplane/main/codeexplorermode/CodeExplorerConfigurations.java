@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.freeplane.features.map.MapModel;
+
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -91,7 +93,7 @@ class CodeExplorerConfiguration {
         return new CodeExplorerConfiguration(projectName, locations);
     }
 
-    public JavaPackage importPackages() {
+    public PackageNodeModel importPackages(MapModel map) {
         Collection<Location> locations = getLocations().stream()
                 .map(File::toURI)
                 .map(Location::of)
@@ -101,6 +103,6 @@ class CodeExplorerConfiguration {
         JavaPackage rootPackage = importedClasses.getDefaultPackage();
         while(rootPackage.getClasses().isEmpty() && rootPackage.getSubpackages().size() == 1)
             rootPackage = rootPackage.getSubpackages().iterator().next();
-        return rootPackage;
+        return new PackageNodeModel(rootPackage, map, getProjectName());
     }
 }

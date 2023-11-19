@@ -19,7 +19,7 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 class ClassesNodeModel extends CodeNodeModel {
 	final private JavaPackage javaPackage;
 
-	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map) {
+	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, String text) {
 		super(map);
 		this.javaPackage = javaPackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
@@ -27,7 +27,7 @@ class ClassesNodeModel extends CodeNodeModel {
         long classCount = javaPackage.getClasses().stream()
                 .filter(jc -> isNamed(jc))
                 .count();
-		setText(javaPackage.getRelativeName() + " (" + classCount + " classes)");
+		setText(text + formatClassCount(classCount));
 	}
 
 	@Override

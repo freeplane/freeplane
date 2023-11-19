@@ -52,18 +52,19 @@ class CodeMapController extends MapController {
 	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
-	        JavaPackage rootPackage;
+
+	        PackageNodeModel newRoot;
 	        if(codeExplorerConfiguration != null) {
-	            rootPackage = codeExplorerConfiguration.importPackages();
+	            newRoot = codeExplorerConfiguration.importPackages(map);
 	        }
 	        else {
 	            ClassFileImporter classFileImporter = new ClassFileImporter();
 	            JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-	            rootPackage = importedClasses.getPackage("org.freeplane");
+	            JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
+	            newRoot = new PackageNodeModel(rootPackage, map, "demo");
 	        }
 
 	        EventQueue.invokeLater(() -> {
-	            PackageNodeModel newRoot = new PackageNodeModel(rootPackage, map, rootPackage.getName());
 	            newRoot.setFolded(false);
 	            map.setRoot(newRoot);
 	            mapView.mapRootNodeChanged();

@@ -27,7 +27,7 @@ class PackageNodeModel extends CodeNodeModel {
 		        .filter(CodeNodeModel::isNamed)
 		        .count();
 		setID(javaPackage.getName());
-		setText(text + " (" + classCount + ")");
+		setText(text + formatClassCount(classCount));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ class PackageNodeModel extends CodeNodeModel {
         String childPackageName = childPackage.getRelativeName();
         Set<JavaPackage> subpackages = childPackage.getSubpackages();
         if(childPackage == javaPackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            return new ClassesNodeModel(childPackage, getMap());
+            return new ClassesNodeModel(childPackage, getMap(), childPackage == javaPackage ? "package" : childPackage.getRelativeName());
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
