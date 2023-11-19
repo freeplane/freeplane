@@ -36,10 +36,13 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
+import com.tngtech.archunit.ArchConfiguration;
+
 public class CodeModeControllerFactory {
 	static private CodeModeController modeController;
 
 	static public CodeModeController createModeController() {
+	    ArchConfiguration.get().setResolveMissingDependenciesFromClassPath(false);
 		final Controller controller = Controller.getCurrentController();
 		modeController = new CodeModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);

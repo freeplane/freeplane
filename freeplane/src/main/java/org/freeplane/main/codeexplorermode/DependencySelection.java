@@ -107,11 +107,11 @@ class DependencySelection {
     }
 
      private Set<Dependency> getOutgoingDependencies(CodeNodeModel node) {
-         Stream<Dependency> dependencies = node.getOutgoingDependencies();
+         Stream<Dependency> dependencies = node.getOutgoingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
      private Set<Dependency> getIncomingDependencies(CodeNodeModel node) {
-         Stream<Dependency> dependencies = node.getIncomingDependencies();
+         Stream<Dependency> dependencies = node.getIncomingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
 

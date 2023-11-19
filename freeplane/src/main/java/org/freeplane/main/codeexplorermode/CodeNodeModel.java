@@ -15,6 +15,10 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 abstract class CodeNodeModel extends NodeModel{
 
+    static boolean isTargetSourceKnown(Dependency dep) {
+        return dep.getTargetClass().getSource().isPresent();
+    }
+
     CodeNodeModel(MapModel map) {
         super(map);
     }
@@ -25,6 +29,15 @@ abstract class CodeNodeModel extends NodeModel{
         return Stream.concat(getIncomingDependencies(), getOutgoingDependencies());
     }
 
+    Stream<Dependency> getOutgoingDependenciesWithKnownTargets(){
+        return getOutgoingDependencies().filter(CodeNodeModel::isTargetSourceKnown);
+    }
+    Stream<Dependency> getIncomingDependenciesWithKnownTargets(){
+        return getIncomingDependencies().filter(CodeNodeModel::isTargetSourceKnown);
+    }
+    Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
+        return Stream.concat(getIncomingDependenciesWithKnownTargets(), getOutgoingDependenciesWithKnownTargets());
+    }
 
     static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
         if (javaClass.isAnonymousClass())

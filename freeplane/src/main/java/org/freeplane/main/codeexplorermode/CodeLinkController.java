@@ -153,7 +153,7 @@ class CodeLinkController extends LinkController {
     public Collection<? extends NodeLinkModel> getLinksTo(NodeModel node, Configurable component) {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
-            Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependencies();
+            Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets();
             Map<String, Long> countedDependencies = countDependencies(node, selection, dependencies, Dependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
                 .map(e -> createConnector(node.getMap().getNodeForID(e.getKey()), node.getID(), e.getValue().intValue()))
@@ -169,7 +169,7 @@ class CodeLinkController extends LinkController {
             Configurable component) {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
-            Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependencies();
+            Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets();
             Map<String, Long> countedDependencies = countDependencies(node, selection, dependencies, Dependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
                 .map(e -> createConnector(node, e.getKey(), e.getValue().intValue()))

@@ -50,9 +50,9 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     private NodeSelection nodeSelection;
 
     enum DependencyDirection {
-        INCOMING(CodeNodeModel::getIncomingDependencies),
-        OUTGOING(CodeNodeModel::getOutgoingDependencies),
-        INCOMING_AND_OUTGOING(CodeNodeModel::getIncomingAndOutgoingDependencies);
+        INCOMING(CodeNodeModel::getIncomingDependenciesWithKnownTargets),
+        OUTGOING(CodeNodeModel::getOutgoingDependenciesWithKnownTargets),
+        INCOMING_AND_OUTGOING(CodeNodeModel::getIncomingAndOutgoingDependenciesWithKnownTargets);
 
         final Function<CodeNodeModel, Stream<Dependency>> nodeDependencies;
 
