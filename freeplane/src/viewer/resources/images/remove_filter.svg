@@ -9,12 +9,12 @@
    </cc:Work>
   </rdf:RDF>
  </metadata>
- <g transform="translate(.17244 .48791)" fill="#333333" stroke="#333333" data-name="Layer 2">
-  <polygon points="12 12.62 22 2 2 2"/>
-  <polygon points="14 19 10 22 10 10 14 10"/>
+ <g transform="matrix(.73837 0 0 .73757 3.1395 4.5354)" fill="#333333" stroke="#333333" stroke-width="1.355" data-name="Layer 2">
+  <polygon points="22 2 2 2 12 12.62"/>
+  <polygon points="10 10 14 10 14 19 10 22"/>
  </g>
- <g transform="matrix(1.2668 0 0 1.2668 25.407 -10.034)" fill="#0071bc" stroke-width=".78939">
-  <rect transform="rotate(44.983)" x="2.795" y="11.284" width="4.0272" height="17.001" rx=".24903" ry=".24903" stop-color="#000000" style="paint-order:markers stroke fill"/>
-  <rect transform="rotate(134.98)" x="17.771" y="-13.309" width="4.0272" height="17.001" rx=".24903" ry=".24903" stop-color="#000000" style="paint-order:markers stroke fill"/>
+ <g transform="matrix(4.8145 0 0 4.8145 -8.7741 -6.8816)" fill="#0071bc" stroke-width=".20771">
+  <rect transform="rotate(44.983)" x="5.6615" y="-1.8585" width=".88146" height="3.7211" rx=".065526" ry=".065526" stop-color="#000000" stroke-width=".041542" style="paint-order:markers stroke fill"/>
+  <rect transform="rotate(134.98)" x="-.4384" y="-7.963" width=".88146" height="3.7211" rx=".065526" ry=".065526" stop-color="#000000" style="paint-order:markers stroke fill"/>
  </g>
 </svg>
