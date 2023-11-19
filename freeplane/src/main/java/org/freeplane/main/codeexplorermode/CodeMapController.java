@@ -8,7 +8,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.main.codeexplorermode.ShowDependingNodesAction.DependencyDirection;
-import org.freeplane.main.codeexplorermode.ShowDependingNodesAction.NodeSelection;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
@@ -16,16 +15,16 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 class CodeMapController extends MapController {
-	CodeMapController(CodeModeController modeController) {
-		super(modeController);
-		modeController.addAction(new FilterSelectedCodeNodesAction());
-		for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
-	        for(NodeSelection selection: ShowDependingNodesAction.NodeSelection.values()) {
-	            modeController.addAction(new ShowDependingNodesAction(direction, selection));
-	        }
-
-		}
-	}
+    CodeMapController(CodeModeController modeController) {
+        super(modeController);
+        modeController.addAction(new FilterSelectedCodeNodesAction());
+        for(CodeNodeSelection selection: CodeNodeSelection.values()) {
+            for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
+                modeController.addAction(new ShowDependingNodesAction(direction, selection));
+            }
+            modeController.addAction(new FilterCyclesAction(selection));
+        }
+    }
 
 	public CodeModeController getCodeModeController() {
 		return (CodeModeController) Controller.getCurrentModeController();

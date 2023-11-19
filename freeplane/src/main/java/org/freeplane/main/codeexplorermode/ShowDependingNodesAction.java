@@ -21,12 +21,9 @@ package org.freeplane.main.codeexplorermode;
 
 import java.awt.event.ActionEvent;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
@@ -34,20 +31,18 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.NodeIterator;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.thirdparty.com.google.common.base.Supplier;
 
 @SuppressWarnings("serial")
 class ShowDependingNodesAction extends AFreeplaneAction {
+    MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 
     private DependencyDirection dependencyDirection;
-    private NodeSelection nodeSelection;
+    private CodeNodeSelection codeNodeSelection;
 
     enum DependencyDirection {
         INCOMING(CodeNodeModel::getIncomingDependenciesWithKnownTargets),
@@ -61,32 +56,6 @@ class ShowDependingNodesAction extends AFreeplaneAction {
         }
     }
 
-    enum NodeSelection {
-        VISIBLE(ShowDependingNodesAction::visibleNodes),
-        SELECTED(ShowDependingNodesAction::selectedNodes);
-
-        private final Supplier<Stream<CodeNodeModel>> nodeSupplier;
-
-        private NodeSelection(Supplier<Stream<CodeNodeModel>> nodeSupplier) {
-            this.nodeSupplier = nodeSupplier;
-        }
-
-    }
-
-    static Stream<CodeNodeModel> selectedNodes(){
-        return Controller.getCurrentController().getSelection().getSelection().stream().map(CodeNodeModel.class::cast);
-    }
-
-
-    static Stream<CodeNodeModel> visibleNodes(){
-        MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-        NodeIterator<NodeView> nodeViewIterator = NodeIterator.of(mapView.getRoot(), NodeView::getChildrenViews);
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(nodeViewIterator, Spliterator.ORDERED), false)
-                .filter(NodeView::isContentVisible)
-                .map(NodeView::getNode)
-                .map(CodeNodeModel.class::cast);
-    }
-
     private static Stream<JavaClass> dependentClasses(Dependency dependency) {
         JavaClass origin = CodeNodeModel.findEnclosingNamedClass(dependency.getOriginClass());
         JavaClass target = CodeNodeModel.findEnclosingNamedClass(dependency.getTargetClass());
@@ -95,14 +64,14 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
 
     ShowDependingNodesAction(DependencyDirection dependencyDirection,
-            NodeSelection nodeSelection) {
-	    super("code.ShowDependingNodesAction." + dependencyDirection + "." + nodeSelection,
+            CodeNodeSelection codeNodeSelection) {
+	    super("code.ShowDependingNodesAction." + dependencyDirection + "." + codeNodeSelection,
 	            TextUtils.format("code.ShowDependingNodesAction.text",
 	                    TextUtils.getRawText("code." + dependencyDirection),
-	                    TextUtils.getRawText("code." + nodeSelection)),
+	                    TextUtils.getRawText("code." + codeNodeSelection)),
 	            null);
         this.dependencyDirection = dependencyDirection;
-        this.nodeSelection = nodeSelection;
+        this.codeNodeSelection = codeNodeSelection;
     }
 
 	@Override
@@ -110,7 +79,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	    IMapSelection selection = Controller.getCurrentController().getSelection();
 	    if(selection.getFilter().getCondition() == null)
 	        return;
-        Set<String> dependentNodeIDs = nodeSelection.nodeSupplier.get()
+        Set<String> dependentNodeIDs = codeNodeSelection.get()
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)
 	            .map(JavaClass::getName)

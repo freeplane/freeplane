@@ -44,7 +44,7 @@ class DependencySnapshotCondition extends ASelectableCondition {
 	@Override
     protected String createDescription() {
 		if (DependencySnapshotCondition.description == null) {
-			DependencySnapshotCondition.description = TextUtils.getText("filter_dependencies_snapshot");
+			DependencySnapshotCondition.description = TextUtils.getText("code.filter_dependencies_snapshot");
 		}
 		return DependencySnapshotCondition.description;
     }

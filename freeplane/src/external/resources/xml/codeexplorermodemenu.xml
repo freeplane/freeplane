@@ -20,15 +20,27 @@
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		<Entry row="1">
 			<Entry name="code.FilterSelectedCodeNodesAction" />
+		</Entry>
+		<Entry row="2">
+			<Entry name="ApplyNoFilteringAction" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry row="1">
 			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE" />
 		</Entry>
 		<Entry row="2">
-			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry row="1">
+			<Entry name="code.Filter.VISIBLE.CyclesAction" />
+		</Entry>
+		<Entry row="2">
+			<Entry name="code.Filter.SELECTED.CyclesAction" />
 		</Entry>
 		</Entry>
 		<Entry builder="main_menu">
