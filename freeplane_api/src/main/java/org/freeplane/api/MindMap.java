@@ -2,6 +2,7 @@ package org.freeplane.api;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -155,4 +156,85 @@ public interface MindMap extends MindMapRO {
      * @since 1.9.8
      */
     void copyConditionalStylesFrom(MindMap source, String styleName);
+
+    /**
+     *
+     * Copies one or more user styles from another mind map into this one.
+     *
+     * @param source mind map containing the desired style(s)
+     * @param includeConditionalRules whether to include conditional style rules or not.
+     * @param styleNameFilters one or more strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules, String... styleNameFilters);
+
+    /**
+     *
+     * Copies one or more user styles from another mind map into this one.
+     *
+     * @param source mind map containing the desired style(s)
+     * @param includeConditionalRules whether to include conditional style rules or not.
+     * @param styleNameFilters ArrayList of strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules, ArrayList<String> styleNameFilters);
+
+    /**
+     *
+     * Copies all user styles and their conditional style rules from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code     copyUserStylesFrom(source, true, ".*")}
+     *
+     * @param source mind map containing the desired style(s)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source);
+
+    /**
+     *
+     * Copies one or more user styles and their conditional style rules from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code     copyUserStylesFrom(source, true, styleNameFilters)}
+     *
+     * @param source mind map containing the desired style(s)
+     * @param styleNameFilters one or more strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, String... styleNameFilters);
+
+    /**
+     *
+     * Copies one or more user styles and their conditional style rules from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code     copyUserStylesFrom(source, true, styleNameFilters)}
+     *
+     * @param source mind map containing the desired style(s)
+     * @param styleNameFilters ArrayList of strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, ArrayList<String> styleNameFilters);
+
+    /**
+     *
+     * Copies all user styles from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code    copyUserStylesFrom(source, includeConditionalRules, ".*")}
+     *
+     *
+     * @param source mind map containing the desired style(s)
+     * @param includeConditionalRules whether to include conditional style rules or not.
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules);
 }
