@@ -142,19 +142,15 @@ public interface MindMap extends MindMapRO {
 	
     /**
      * 
-     * Returns all style names/translation keys active for the node.
-     * 
-     * @see getName()
-     * 
+     * Copies a style from another mind map into this mind map.
+     *
      * @since 1.9.8
      */
 	void copyStyleFrom(MindMap source, String styleName);
 
     /**
-     * 
-     * Returns all style names/translation keys active for the node.
-     * 
-     * @see getName()
+     *
+     * Copies a style and its conditional style rules from another mind map into this mind map.
      * 
      * @since 1.9.8
      */
