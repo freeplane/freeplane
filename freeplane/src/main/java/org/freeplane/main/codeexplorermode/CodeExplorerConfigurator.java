@@ -20,28 +20,44 @@ import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
-
-import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaPackage;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class CodeExplorerConfigurator extends JPanel {
 
+    private static final String CODE_EXPLORER_CONFIGURATION_PROPERTY = "code_explorer_configuration";
     private static final long serialVersionUID = 1L;
-    private DefaultTableModel configurationsModel;
-    private DefaultTableModel locationsModel;
+    private DefaultTableModel configTableModel;
+    private DefaultTableModel locationsTableModel;
     private JTable configTable;
-    private JTable locationTable;
-    private CodeExplorerConfigurations explorerConfigurations;
+    private JTable locationsTable;
+    private final CodeExplorerConfigurations explorerConfigurations;
 
-    public CodeExplorerConfigurator(CodeExplorerConfigurations explorerConfigurations) {
-        this.explorerConfigurations = explorerConfigurations;
+    public CodeExplorerConfigurator() {
+        this.explorerConfigurations = loadConfigurations();
         initializeComponents();
-        loadConfigurations();
+        updateConfigurationsTable(explorerConfigurations);
     }
+
+    private CodeExplorerConfigurations loadConfigurations() {
+        String codeExplorerConfiguration = ResourceController.getResourceController().getProperty(CODE_EXPLORER_CONFIGURATION_PROPERTY, "");
+        CodeExplorerConfigurations explorerConfigurations = CodeExplorerConfigurations.deserialize(codeExplorerConfiguration);
+        return explorerConfigurations;
+    }
+
+    private void saveConfigurationsProperty() {
+        String spec = explorerConfigurations.serialize();
+        ResourceController.getResourceController().setProperty(CODE_EXPLORER_CONFIGURATION_PROPERTY, spec);
+    }
+
+    private void updateConfigurationsTable(CodeExplorerConfigurations explorerConfigurations) {
+        configTableModel.setRowCount(0); // Clear existing data
+        for (CodeExplorerConfiguration config : explorerConfigurations.getConfigurations()) {
+            configTableModel.addRow(new Object[]{config.getProjectName()});
+        }
+    }
+
 
     private void initializeComponents() {
         createConfigurationsPanel();
@@ -53,19 +69,19 @@ public class CodeExplorerConfigurator extends JPanel {
         JPanel configPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createGridBagConstraints();
 
-        configurationsModel = new DefaultTableModel(new Object[]{"Configurations"}, 0);
-        configTable = new JTable(configurationsModel);
+        configTableModel = new DefaultTableModel(new Object[]{"Configurations"}, 0);
+        configTable = new JTable(configTableModel);
         configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
         addComponentToPanel(configTableScrollPane, configPanel, gbc, 0, 0, 1, 1);
 
-        configTable.getSelectionModel().addListSelectionListener(e -> updateLocationsModel());
+        configTable.getSelectionModel().addListSelectionListener(e -> updateLocationsTable());
 
-        configurationsModel.addTableModelListener(new TableModelListener() {
+        configTableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 if (e.getType() == TableModelEvent.UPDATE) {
-                    updateConfigurationsModel();
+                    updateConfigurationName();
                 }
             }
         });
@@ -76,29 +92,23 @@ public class CodeExplorerConfigurator extends JPanel {
     }
 
 
-    private void loadConfigurations() {
-        configurationsModel.setRowCount(0); // Clear existing data
-        for (CodeExplorerConfiguration config : explorerConfigurations.getConfigurations()) {
-            configurationsModel.addRow(new Object[]{config.getProjectName()});
-        }
-    }
-
-    private void updateConfigurationsModel() {
+    private void updateConfigurationName() {
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
-            String projectName = (String) configurationsModel.getValueAt(selectedRow, 0);
+            String projectName = (String) configTableModel.getValueAt(selectedRow, 0);
             CodeExplorerConfiguration config = getConfiguration(selectedRow);
             config.setProjectName(projectName);
+            saveConfigurationsProperty();
         }
     }
 
-    private void updateLocationsModel() {
-        locationsModel.setRowCount(0); // Clear existing data
+    private void updateLocationsTable() {
+        locationsTableModel.setRowCount(0); // Clear existing data
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
             CodeExplorerConfiguration config = getConfiguration(selectedRow);
             for (File location : config.getLocations()) {
-                locationsModel.addRow(new Object[]{location.getAbsolutePath()});
+                locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
         }
     }
@@ -137,8 +147,8 @@ public class CodeExplorerConfigurator extends JPanel {
     private void addNewConfiguration() {
         CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration("", new ArrayList<>());
         explorerConfigurations.getConfigurations().add(newConfig);
-        configurationsModel.addRow(new Object[]{newConfig.getProjectName()});
-        if(configurationsModel.getRowCount() == 1)
+        configTableModel.addRow(new Object[]{newConfig.getProjectName()});
+        if(configTableModel.getRowCount() == 1)
             configTable.setRowSelectionInterval(0, 0);
         configTable.editCellAt(configTable.getRowCount() - 1, 0);
         configTable.getEditorComponent().requestFocusInWindow();
@@ -147,14 +157,15 @@ public class CodeExplorerConfigurator extends JPanel {
     private void deleteSelectedConfiguration() {
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
-            configurationsModel.removeRow(selectedRow);
+            configTableModel.removeRow(selectedRow);
             explorerConfigurations.getConfigurations().remove(selectedRow);
-            int rowCount = configurationsModel.getRowCount();
+            saveConfigurationsProperty();
+            int rowCount = configTableModel.getRowCount();
             if(selectedRow < rowCount)
                 configTable.setRowSelectionInterval(selectedRow, selectedRow);
             else if (rowCount > 0)
                 configTable.setRowSelectionInterval(rowCount-1, rowCount-1);
-            updateLocationsModel();
+            updateLocationsTable();
         }
     }
 
@@ -162,10 +173,10 @@ public class CodeExplorerConfigurator extends JPanel {
         JPanel locationsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createGridBagConstraints();
 
-        locationsModel = new DefaultTableModel(new Object[]{"Locations"}, 0);
-        locationTable = new JTable(locationsModel);
-        locationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane locationsTableScrollPane = new JScrollPane(locationTable);
+        locationsTableModel = new DefaultTableModel(new Object[]{"Locations"}, 0);
+        locationsTable = new JTable(locationsTableModel);
+        locationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
         addComponentToPanel(locationsTableScrollPane, locationsPanel, gbc, 0, 0, 1, 1);
 
         JPanel locationsButtonsPanel = createLocationsButtonsPanel();
@@ -178,7 +189,7 @@ public class CodeExplorerConfigurator extends JPanel {
         JButton addJarsButton = new JButton("Add JARs and folders...");
         addJarsButton.addActionListener(e -> addJarsAndFolders());
         JButton removeLocationsButton = new JButton("Remove location...");
-        removeLocationsButton.addActionListener(e -> removeSelectedLocation());
+        removeLocationsButton.addActionListener(e -> deleteSelectedLocation());
         locationsButtonsPanel.add(addJarsButton);
         locationsButtonsPanel.add(removeLocationsButton);
         return locationsButtonsPanel;
@@ -199,22 +210,24 @@ public class CodeExplorerConfigurator extends JPanel {
             if (selectedConfigRow >= 0) {
                 CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
                 for (File file : files) {
-                    locationsModel.addRow(new Object[]{file.getAbsolutePath()});
+                    locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
                     selectedConfig.getLocations().add(file);
                 }
             }
+            saveConfigurationsProperty();
         }
     }
 
-    private void removeSelectedLocation() {
-        int selectedIndex = locationTable.getSelectedRow();
+    private void deleteSelectedLocation() {
+        int selectedIndex = locationsTable.getSelectedRow();
         if (selectedIndex != -1) {
-            locationsModel.removeRow(selectedIndex);
+            locationsTableModel.removeRow(selectedIndex);
             int selectedConfigRow = getSelectedConfigurationIndex();
             if (selectedConfigRow >= 0) {
                 CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
                 config.getLocations().remove(selectedIndex);
             }
+            saveConfigurationsProperty();
         }
     }
     private void layoutPanels() {
@@ -240,8 +253,8 @@ public class CodeExplorerConfigurator extends JPanel {
 
     public List<File> getSelectedLocations() {
         List<File> paths = new ArrayList<>();
-        for (int i = 0; i < locationsModel.getRowCount(); i++) {
-            paths.add(new File(locationsModel.getValueAt(i, 0).toString()));
+        for (int i = 0; i < locationsTableModel.getRowCount(); i++) {
+            paths.add(new File(locationsTableModel.getValueAt(i, 0).toString()));
         }
         return paths;
     }

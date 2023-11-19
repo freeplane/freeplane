@@ -48,7 +48,7 @@ class CodeProjectController implements IExtension {
 	private void showControlPanel() {
 	    informationPanel = new JTabbedPane();
 	    codeDependenciesPanel = new CodeDependenciesPanel();
-        informationPanel.addTab("Configurations", new CodeExplorerConfigurator(CodeExplorerConfigurations.deserialize("")));
+        informationPanel.addTab("Configurations", new CodeExplorerConfigurator());
         informationPanel.addTab("Dependencies", codeDependenciesPanel);
 
 	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
