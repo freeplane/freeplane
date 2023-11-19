@@ -23,8 +23,11 @@ class PackageNodeModel extends CodeNodeModel {
 		this.javaPackage = javaPackage;
 		Set<JavaPackage> subpackages = javaPackage.getSubpackages();
 		setFolded(! subpackages.isEmpty());
+		long classCount = javaPackage.getClassesInPackageTree().stream()
+		        .filter(CodeNodeModel::isNamed)
+		        .count();
 		setID(javaPackage.getName());
-		setText(text);
+		setText(text + " (" + classCount + ")");
 	}
 
 	@Override

@@ -24,7 +24,10 @@ class ClassesNodeModel extends CodeNodeModel {
 		this.javaPackage = javaPackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
 		setID(javaPackage.getName() + ".package");
-		setText(javaPackage.getRelativeName() + " classes");
+        long classCount = javaPackage.getClasses().stream()
+                .filter(jc -> isNamed(jc))
+                .count();
+		setText(javaPackage.getRelativeName() + " (" + classCount + " classes)");
 	}
 
 	@Override

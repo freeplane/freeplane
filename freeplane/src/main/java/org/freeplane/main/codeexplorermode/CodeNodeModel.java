@@ -15,6 +15,10 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 abstract class CodeNodeModel extends NodeModel{
 
+    static boolean isNamed(JavaClass jc) {
+        return ! jc.isAnonymousClass() && ! jc.isArray();
+    }
+
     static boolean isTargetSourceKnown(Dependency dep) {
         return dep.getTargetClass().getSource().isPresent();
     }
