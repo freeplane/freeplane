@@ -21,7 +21,6 @@ package org.freeplane.main.codeexplorermode;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -36,11 +35,17 @@ import org.freeplane.view.swing.map.MapView;
 
 @SuppressWarnings("serial")
 class FilterCyclesAction extends AFreeplaneAction {
-	private CodeNodeSelection selection;
+    enum Action{
+        FILTER, SELECT
+    }
 
-    public FilterCyclesAction(CodeNodeSelection selection) {
-	    super("code.Filter." + selection + ".CyclesAction");
+	private final CodeNodeSelection selection;
+    private final Action action;
+
+    public FilterCyclesAction(CodeNodeSelection selection, Action action) {
+	    super("code." + action + "." + selection + ".CyclesAction");
         this.selection = selection;
+        this.action = action;
     }
 
 	@Override
@@ -56,12 +61,22 @@ class FilterCyclesAction extends AFreeplaneAction {
         .flatMap(node -> linkController.getLinksFrom(node, mapView).stream())
         .forEach(connector -> cycles.addEdge(connector.getSource(), connector.getTarget()));
 
-        Set<NodeModel> cycleNodes = cycles.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toSet());
+        List<NodeModel> cycleNodes = cycles.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toList());
         if(! cycleNodes.isEmpty()) {
-            ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
-            Filter filter = new Filter(condition, false, true, false, false, null);
-            FilterController filterController = FilterController.getCurrentFilterController();
-            filterController.applyFilter(mapView.getMap(), false, filter);
+            switch(action) {
+            case FILTER: {
+                ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
+                Filter filter = new Filter(condition, false, true, false, false, null);
+                FilterController filterController = FilterController.getCurrentFilterController();
+                filterController.applyFilter(mapView.getMap(), false, filter);
+                break;
+            }
+            case SELECT: {
+                NodeModel[] nodesAsArray = cycleNodes.toArray(new NodeModel[cycleNodes.size()]);
+                Controller.getCurrentController().getSelection().replaceSelection(nodesAsArray);
+                break;
+            }
+            }
         }
 	}
 }
