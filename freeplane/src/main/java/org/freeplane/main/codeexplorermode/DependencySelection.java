@@ -96,12 +96,24 @@ class DependencySelection {
     String getVisibleNodeId(JavaClass javaClass) {
         JavaClass targetClass = CodeNodeModel.findEnclosingNamedClass(javaClass);
         String targetClassId = targetClass.getName();
-        if(isVisible(targetClassId))
+        switch(visibility(targetClassId)) {
+        case VISIBLE:
             return targetClassId;
+        case HIDDEN_BY_FILTER:
+            return null;
+        default:
+            break;
+        }
         JavaPackage targetPackage = targetClass.getPackage();
         String targetPackageClassesId = targetPackage.getName() + ".package";
-        if(isVisible(targetPackageClassesId))
+        switch(visibility(targetPackageClassesId)) {
+        case VISIBLE:
             return targetPackageClassesId;
+        case HIDDEN_BY_FILTER:
+            return null;
+        default:
+            break;
+        }
         HasName visiblePackage = getVisibleContainingPackage(targetPackage);
         return visiblePackage == null ? null : visiblePackage.getName();
     }
@@ -156,6 +168,8 @@ class DependencySelection {
              if(targetNode != null) {
                  if(selection.isVisible(targetNode))
                      return targetPackage;
+                 if(! targetNode.isVisible(selection.getFilter()))
+                     return null;
              }
              Optional<JavaPackage> parent = targetPackage.getParent();
              if(! parent.isPresent())
@@ -164,18 +178,20 @@ class DependencySelection {
          }
      }
 
-     private boolean isVisible(String targetId) {
-         boolean isVisible = false;
-         NodeModel targetNode = getNode(targetId);
-         if(targetNode != null) {
-             if(selection.isVisible(targetNode))
-                 isVisible = true;
-         }
-         return isVisible;
-     }
+    enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING , UNKNOWN}
+    private Visibility visibility(String targetId) {
+        NodeModel targetNode = getNode(targetId);
+        if(targetNode == null)
+            return Visibility.UNKNOWN;
+        if(selection.isVisible(targetNode))
+            return Visibility.VISIBLE;
+        if(! targetNode.isVisible(selection.getFilter()))
+            return Visibility.HIDDEN_BY_FILTER;
+        return Visibility.HIDDEN_BY_FOLDING;
+    }
 
-     private boolean connectsDifferentElements(Dependency dependency) {
-         String visibleOriginId = getVisibleNodeId(dependency.getOriginClass());
+    private boolean connectsDifferentElements(Dependency dependency) {
+        String visibleOriginId = getVisibleNodeId(dependency.getOriginClass());
          String visibleTargetId = getVisibleNodeId(dependency.getTargetClass());
          if (visibleOriginId == null  || visibleTargetId == null || visibleOriginId.equals(visibleTargetId))
              return false;

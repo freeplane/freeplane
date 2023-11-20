@@ -131,6 +131,11 @@ class PackageNodeModel extends CodeNodeModel {
 	}
 
     @Override
+    Set<JavaClass> getClassesInPackageTree() {
+        return javaPackage.getClassesInPackageTree();
+    }
+
+    @Override
     Stream<Dependency> getOutgoingDependencies() {
         return javaPackage.getClassDependenciesFromThisPackageTree().stream();
     }

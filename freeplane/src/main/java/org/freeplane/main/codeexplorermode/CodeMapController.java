@@ -22,9 +22,8 @@ class CodeMapController extends MapController {
             for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
                 modeController.addAction(new ShowDependingNodesAction(direction, selection));
             }
-            for(FilterCyclesAction.Action action: FilterCyclesAction.Action.values()) {
-                modeController.addAction(new FilterCyclesAction(selection, action));
-            }
+            modeController.addAction(new SelectCyclesAction(selection));
+            modeController.addAction(new FilterCyclesAction(selection));
         }
     }
 

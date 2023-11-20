@@ -63,6 +63,11 @@ class ClassNodeModel extends CodeNodeModel {
 	}
 
     @Override
+    Set<JavaClass> getClassesInPackageTree() {
+        return Collections.singleton(javaClass);
+    }
+
+    @Override
     Stream<Dependency> getOutgoingDependencies() {
         return getDependencies(JavaClass::getDirectDependenciesFromSelf);
     }

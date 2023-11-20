@@ -67,7 +67,7 @@ class CodeLinkController extends LinkController {
     @Override
     public int getWidth(ConnectorModel connector) {
         return areConnectorNodesSelected(connector) ?
-                1 + (int) Math.log10(((CodeConnectorModel)connector).weight())
+                1 + (int) (3 * Math.log10(((CodeConnectorModel)connector).weight()))
                 : 1;
 
     }
@@ -90,10 +90,11 @@ class CodeLinkController extends LinkController {
     }
 
     private boolean areConnectorNodesSelected(CodeConnectorModel connector, IMapSelection selection) {
-         CodeNodeModel source = (CodeNodeModel) connector.getSource();
-         CodeNodeModel target = (CodeNodeModel) connector.getTarget();
-         return  new DependencySelection(selection).isConnectorSelected(source, target);
-     }
+        CodeNodeModel source = (CodeNodeModel) connector.getSource();
+        CodeNodeModel target = (CodeNodeModel) connector.getTarget();
+        boolean connectorSelected = new DependencySelection(selection).isConnectorSelected(source, target);
+        return connectorSelected;
+    }
 
     @Override
     public String getSourceLabel(ConnectorModel connector) {
@@ -152,8 +153,10 @@ class CodeLinkController extends LinkController {
     public Collection<? extends NodeLinkModel> getLinksTo(NodeModel node, Configurable component) {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
-            Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets();
-            Map<String, Long> countedDependencies = countDependencies(node, selection, dependencies, Dependency::getOriginClass);
+            DependencySelection dependencySelection = new DependencySelection(selection);
+            Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets()
+                    .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getTargetClass()));
+            Map<String, Long> countedDependencies = countDependencies(node, dependencySelection, dependencies, Dependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
                 .map(e -> createConnector(node.getMap().getNodeForID(e.getKey()), node.getID(), e.getValue().intValue()))
                 .collect(Collectors.toList());
@@ -168,8 +171,10 @@ class CodeLinkController extends LinkController {
             Configurable component) {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
-            Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets();
-            Map<String, Long> countedDependencies = countDependencies(node, selection, dependencies, Dependency::getTargetClass);
+            DependencySelection dependencySelection = new DependencySelection(selection);
+            Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets()
+                    .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getOriginClass()));
+            Map<String, Long> countedDependencies = countDependencies(node, dependencySelection, dependencies, Dependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
                 .map(e -> createConnector(node, e.getKey(), e.getValue().intValue()))
                 .collect(Collectors.toList());
@@ -179,9 +184,8 @@ class CodeLinkController extends LinkController {
             return Collections.emptyList();
     }
 
-    private Map<String, Long> countDependencies(NodeModel node, IMapSelection selection,
+    private Map<String, Long> countDependencies(NodeModel node, DependencySelection dependencySelection,
             Stream<Dependency> dependencies, Function<Dependency, JavaClass> dependencyToJavaClass) {
-        DependencySelection dependencySelection = new DependencySelection(selection);
         Map<String, Long> countedDependencies = dependencies
                 .map(dep -> dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep)))
                 .filter(name -> name != null && ! name.equals(node.getID()))

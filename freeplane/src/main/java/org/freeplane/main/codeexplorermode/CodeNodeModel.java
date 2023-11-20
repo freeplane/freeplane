@@ -7,6 +7,7 @@ package org.freeplane.main.codeexplorermode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.freeplane.features.icon.NamedIcon;
@@ -43,6 +44,7 @@ abstract class CodeNodeModel extends NodeModel{
 
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
+    abstract Set<JavaClass> getClassesInPackageTree();
 
     Stream<Dependency> getIncomingAndOutgoingDependencies(){
         return Stream.concat(getIncomingDependencies(), getOutgoingDependencies());

@@ -7,33 +7,31 @@ package org.freeplane.main.codeexplorermode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
-public class LimitedJohnsonSimpleCycles<V>{
+public class GraphCycleFinder<V>{
 
     private static final CycleSearchStopException CYCLE_SEARCH_STOP_EXCEPTION = new CycleSearchStopException();
+    private enum StopEdgeNode{START, STOP}
 
     static private class CycleSearchStopException extends RuntimeException{
         private static final long serialVersionUID = 1L;
     }
 
-    private final Graph<V, DefaultEdge> graph;
-    private final V stopEdgeOrigin;
-    private final V stopEdgeTarget;
-
-
-    public LimitedJohnsonSimpleCycles(Supplier<V> separatorNodeSupplier) {
+    private final Graph<Object, DefaultEdge> graph;
+    public GraphCycleFinder() {
         this.graph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        this.stopEdgeOrigin = separatorNodeSupplier.get();
-        this.stopEdgeTarget = separatorNodeSupplier.get();
     }
 
     public DefaultEdge addEdge(V source, V target) {
+        return addEdgeObject(source, target);
+    }
+
+    DefaultEdge addEdgeObject(Object source, Object target) {
         graph.addVertex(source);
         graph.addVertex(target);
         return graph.addEdge(source, target);
@@ -44,19 +42,22 @@ public class LimitedJohnsonSimpleCycles<V>{
     }
 
     public void stopSearchHere() {
-        addEdge(stopEdgeOrigin, stopEdgeTarget);
+        addEdgeObject(StopEdgeNode.START, StopEdgeNode.STOP);
     }
 
     public List<List<V>> findSimpleCycles()
     {
         List<List<V>> result = new ArrayList<>();
-        JohnsonSimpleCycles<V, DefaultEdge> cycleFinder = new JohnsonSimpleCycles<>(graph);
+        JohnsonSimpleCycles<Object, DefaultEdge> cycleFinder = new JohnsonSimpleCycles<>(graph);
         try {
             cycleFinder.findSimpleCycles(cycle -> {
-                if(cycle.get(0).equals(stopEdgeOrigin))
+                if(cycle.get(0) == StopEdgeNode.START)
                     throw CYCLE_SEARCH_STOP_EXCEPTION;
-                else
-                    result.add(cycle);
+                else {
+                    @SuppressWarnings("unchecked")
+                    List<V> typedCycle = (List<V>) cycle;
+                    result.add(typedCycle);
+                }
             });
         } catch (CycleSearchStopException e) {/**/}
         return result;

@@ -2,12 +2,14 @@ package org.freeplane.main.codeexplorermode;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
 
 
 class EmptyNodeModel extends CodeNodeModel {
@@ -38,6 +40,11 @@ class EmptyNodeModel extends CodeNodeModel {
 	public String toString() {
 		return getText();
 	}
+
+    @Override
+    Set<JavaClass> getClassesInPackageTree() {
+        return Collections.emptySet();
+    }
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
