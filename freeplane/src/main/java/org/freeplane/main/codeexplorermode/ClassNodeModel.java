@@ -12,11 +12,17 @@ import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaModifier;
 
 
 class ClassNodeModel extends CodeNodeModel {
     private final JavaClass javaClass;
     private Set<JavaClass> innerClasses;
+    static final String ANNOTATION_ICON_NAME = "code_annotation";
+    static final String INTERFACE_ICON_NAME = "code_interface";
+    static final String ABSTRACT_CLASS_ICON_NAME = "code_abstractClass";
+    static final String CLASS_ICON_NAME = "code_class";
+    static final String ENUM_ICON_NAME = "code_enum";
 
 	ClassNodeModel(final JavaClass javaClass, final MapModel map) {
 		super(map);
@@ -86,4 +92,17 @@ class ClassNodeModel extends CodeNodeModel {
         innerClasses.add(innerClass);
     }
 
+
+    @Override
+    String getUIIconName() {
+        if(javaClass.isInterface())
+            return INTERFACE_ICON_NAME;
+        if(javaClass.isEnum())
+            return ENUM_ICON_NAME;
+        if(javaClass.getModifiers().contains(JavaModifier.ABSTRACT))
+            return ABSTRACT_CLASS_ICON_NAME;
+        if(javaClass.isAnnotation())
+            return ANNOTATION_ICON_NAME;
+        return CLASS_ICON_NAME;
+    }
 }

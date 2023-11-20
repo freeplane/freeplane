@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -17,6 +19,7 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 
 class PackageNodeModel extends CodeNodeModel {
 	final private JavaPackage javaPackage;
+    static final String UI_ICON_NAME = "code_package";
 
 	public PackageNodeModel(final JavaPackage javaPackage, final MapModel map, String text) {
 		super(map);
@@ -75,7 +78,7 @@ class PackageNodeModel extends CodeNodeModel {
         String childPackageName = childPackage.getRelativeName();
         Set<JavaPackage> subpackages = childPackage.getSubpackages();
         if(childPackage == javaPackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            return new ClassesNodeModel(childPackage, getMap(), childPackage == javaPackage ? "package" : childPackage.getRelativeName());
+            return new ClassesNodeModel(childPackage, getMap(), childPackage == javaPackage);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
@@ -135,5 +138,10 @@ class PackageNodeModel extends CodeNodeModel {
     @Override
     Stream<Dependency> getIncomingDependencies() {
         return javaPackage.getClassDependenciesToThisPackageTree().stream();
+    }
+
+    @Override
+    String getUIIconName() {
+        return UI_ICON_NAME;
     }
 }

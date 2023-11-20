@@ -12,7 +12,9 @@ import com.tngtech.archunit.core.domain.Dependency;
 
 class EmptyNodeModel extends CodeNodeModel {
 
-	EmptyNodeModel(final MapModel map, String text) {
+	static final String UI_ICON_NAME = "code_empty";
+
+    EmptyNodeModel(final MapModel map, String text) {
 		super(map);
         setText(text);
 	}
@@ -45,5 +47,10 @@ class EmptyNodeModel extends CodeNodeModel {
     @Override
     Stream<Dependency> getIncomingDependencies() {
         return Stream.empty();
+    }
+
+    @Override
+    String getUIIconName() {
+        return UI_ICON_NAME;
     }
 }

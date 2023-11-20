@@ -53,7 +53,7 @@ public class CodeModeControllerFactory {
 		new CodeMapController(modeController);
 		UrlManager.install(new UrlManager());
 		MapIO.install(modeController);
-		new IconController(modeController).install(modeController);
+		new CodeIconController(modeController).install(modeController);
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
 		new TextController(modeController).install(modeController);

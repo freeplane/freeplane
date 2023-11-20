@@ -5,8 +5,13 @@
  */
 package org.freeplane.main.codeexplorermode;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
+import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -26,6 +31,16 @@ abstract class CodeNodeModel extends NodeModel{
     CodeNodeModel(MapModel map) {
         super(map);
     }
+
+
+    @Override
+    public List<NamedIcon> getIcons() {
+        UIIcon uiIcon = IconStoreFactory.ICON_STORE.getUIIcon(getUIIconName());
+        return Collections.singletonList(uiIcon);
+    }
+
+    abstract String getUIIconName();
+
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
 

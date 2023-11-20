@@ -18,16 +18,21 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 
 class ClassesNodeModel extends CodeNodeModel {
 	final private JavaPackage javaPackage;
+    static final String UI_CHILD_PACKAGE_ICON_NAME = "code_classes";
+    static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
+    private final boolean samePackage;
 
-	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, String text) {
+	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, boolean samePackage) {
 		super(map);
 		this.javaPackage = javaPackage;
+        this.samePackage = samePackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
 		setID(javaPackage.getName() + ".package");
         long classCount = javaPackage.getClasses().stream()
                 .filter(jc -> isNamed(jc))
                 .count();
-		setText(text + formatClassCount(classCount));
+		String text = samePackage ? "package" : javaPackage.getRelativeName();
+        setText(text + formatClassCount(classCount));
 	}
 
 	@Override
@@ -99,5 +104,13 @@ class ClassesNodeModel extends CodeNodeModel {
     @Override
     Stream<Dependency> getIncomingDependencies() {
         return javaPackage.getClassDependenciesToThisPackage().stream();
+    }
+
+
+    @Override
+    String getUIIconName() {
+        return samePackage
+                ? UI_SAME_PACKAGE_ICON_NAME
+                        : UI_CHILD_PACKAGE_ICON_NAME;
     }
 }
