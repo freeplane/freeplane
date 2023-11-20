@@ -44,11 +44,13 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -516,7 +518,7 @@ public class MapStyleModel implements IExtension {
                     targetStyleNode = new NodeModel(styleMap);
                     targetStyleNode.setUserObject(source.getUserObject());
                     targetGroupNode.insert(targetStyleNode);
-                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);         
+                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);
                     addStyleNode(targetStyleNode);
                 }
             }
@@ -526,8 +528,10 @@ public class MapStyleModel implements IExtension {
             addStyleNode(targetStyleNode);
         } else {
             modeController.removeExtensions(LogicalStyleKeys.NODE_STYLE, targetStyleNode, targetStyleNode);
+            modeController.removeExtensions(MIconController.Keys.ICONS, targetStyleNode, targetStyleNode);
         }
-        modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
+		modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
+		modeController.copyExtensions(MIconController.Keys.ICONS, copiedStyleNode, targetStyleNode);
     }
 
 }
