@@ -18,8 +18,9 @@ import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.properties.HasName;
 
-abstract class CodeNodeModel extends NodeModel{
+abstract class CodeNodeModel extends NodeModel {
 
     static boolean isNamed(JavaClass jc) {
         return ! jc.isAnonymousClass() && ! jc.isArray();
@@ -36,24 +37,11 @@ abstract class CodeNodeModel extends NodeModel{
         this.subgroupIndex = subgroupIndex;
     }
 
-
-
-
-    public int getSubgroupIndex() {
-        return subgroupIndex;
-    }
-
-    @Override
-    public List<NamedIcon> getIcons() {
-        UIIcon uiIcon = IconStoreFactory.ICON_STORE.getUIIcon(getUIIconName());
-        return Collections.singletonList(uiIcon);
-    }
-
-    abstract String getUIIconName();
-
+    abstract HasName getElementInScope(JavaClass dependencyClass);
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
     abstract Set<JavaClass> getClassesInPackageTree();
+    abstract String getUIIconName();
 
     Stream<Dependency> getIncomingAndOutgoingDependencies(){
         return Stream.concat(getIncomingDependencies(), getOutgoingDependencies());
@@ -67,6 +55,16 @@ abstract class CodeNodeModel extends NodeModel{
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
         return Stream.concat(getIncomingDependenciesWithKnownTargets(), getOutgoingDependenciesWithKnownTargets());
+    }
+
+    public int getSubgroupIndex() {
+        return subgroupIndex;
+    }
+
+    @Override
+    public List<NamedIcon> getIcons() {
+        UIIcon uiIcon = IconStoreFactory.ICON_STORE.getUIIcon(getUIIconName());
+        return Collections.singletonList(uiIcon);
     }
 
     String formatClassCount(long classCount) {

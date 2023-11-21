@@ -10,6 +10,7 @@ import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class EmptyNodeModel extends CodeNodeModel {
@@ -60,4 +61,11 @@ class EmptyNodeModel extends CodeNodeModel {
     String getUIIconName() {
         return UI_ICON_NAME;
     }
+
+    @Override
+    HasName getElementInScope(JavaClass dependencyClass) {
+        return null;
+    }
+
+
 }

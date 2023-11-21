@@ -13,6 +13,7 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
+import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassNodeModel extends CodeNodeModel {
@@ -109,5 +110,17 @@ class ClassNodeModel extends CodeNodeModel {
         if(javaClass.isAnnotation())
             return ANNOTATION_ICON_NAME;
         return CLASS_ICON_NAME;
+    }
+
+    @Override
+    HasName getElementInScope(JavaClass dependencyClass) {
+        if(isContainedInScope(dependencyClass))
+            return dependencyClass.getPackage();
+        else
+            return null;
+    }
+
+    private boolean isContainedInScope(JavaClass dependencyClass) {
+        return dependencyClass.getPackage().equals(javaClass.getPackage());
     }
 }
