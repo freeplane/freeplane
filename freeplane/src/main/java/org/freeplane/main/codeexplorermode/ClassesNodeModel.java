@@ -2,6 +2,7 @@ package org.freeplane.main.codeexplorermode;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +16,6 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
-import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNodeModel extends CodeNodeModel {
@@ -130,32 +130,61 @@ class ClassesNodeModel extends CodeNodeModel {
 
     @Override
     Set<CodeNodeModel> findCyclicDependencies() {
-        GraphCycleFinder<CodeNodeModel> cycles = new GraphCycleFinder<CodeNodeModel>();
-        cycles.addNode(this);
-        cycles.stopSearchHere();
-        cycles.exploreGraph(Collections.singleton(this),
+        GraphCycleFinder<ClassesNodeModel> cycleFinder = new GraphCycleFinder<ClassesNodeModel>();
+        cycleFinder.addNode(this);
+        cycleFinder.stopSearchHere();
+        cycleFinder.exploreGraph(Collections.singleton(this),
                 this::connectedTargetNodesInTheSameScope,
                 this::connectedOriginNodesInTheSameScope);
-        return cycles.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toSet());
+        List<List<ClassesNodeModel>> cycles = cycleFinder.findSimpleCycles();
+        Map<JavaPackage, Set<JavaPackage>> origins = new HashMap<>();
+        Map<JavaPackage, Set<JavaPackage>> targets = new HashMap<>();
+        for(List<ClassesNodeModel> cycle : cycles) {
+            for(int n = 0; n < cycle.size(); n++) {
+                JavaPackage origin = cycle.get(n).javaPackage;
+                JavaPackage target = cycle.get((n+1) % cycle.size()).javaPackage;
+                origins.computeIfAbsent(target, x -> new HashSet<>()).add(origin);
+                targets.computeIfAbsent(origin, x -> new HashSet<>()).add(target);
+            }
+        }
+        return cycles.stream().flatMap(List::stream)
+                .distinct()
+                .flatMap(packageNode ->
+                    Stream.concat(
+                            packageNode.getOutgoingDependenciesWithKnownTargets()
+                            .map(Dependency::getTargetClass)
+                            .filter(targetClass -> targets.get(packageNode.javaPackage).contains(targetClass.getPackage())),
+                            packageNode.getIncomingDependenciesWithKnownTargets()
+                            .map(Dependency::getOriginClass)
+                            .filter(originClass -> origins.get(packageNode.javaPackage).contains(originClass.getPackage()))
+                            )
+                )
+                .map(CodeNodeModel::findEnclosingNamedClass)
+                .map(JavaClass::getName)
+                .map(getMap()::getNodeForID)
+                .map(ClassNodeModel.class::cast)
+                .collect(Collectors.toSet());
     }
 
-    private Stream<CodeNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {
+
+    private Stream<ClassesNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
         .map(Dependency::getOriginClass);
         return nodesContainedInScope(originClasses);
     }
 
-    private Stream<CodeNodeModel> connectedTargetNodesInTheSameScope(CodeNodeModel node) {
+    private Stream<ClassesNodeModel> connectedTargetNodesInTheSameScope(CodeNodeModel node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
         return nodesContainedInScope(targetClasses);
     }
-    private Stream<CodeNodeModel> nodesContainedInScope(Stream<JavaClass> originClasses) {
-        return originClasses
+    private Stream<ClassesNodeModel> nodesContainedInScope(Stream<JavaClass> originClasses) {
+        Stream<ClassesNodeModel> packageNodes = originClasses
         .map(JavaClass::getPackage)
         .map(JavaPackage::getName)
         .map(id -> id + ".package")
         .map(getMap()::getNodeForID)
-        .map(CodeNodeModel.class::cast);
+        .map(ClassesNodeModel.class::cast);
+        return packageNodes;
     }
 }
