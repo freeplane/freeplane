@@ -29,6 +29,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.commandtonode.CommandToNode;
 import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
@@ -44,6 +45,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 	final private AFreeplaneAction originalAction;
     private static JDialog setAcceleratorOnNextClickActionDialog;
     private static KeyStroke acceleratorForNextClickedAction;
+    private static JDialog newNodeLinkedToMenuItemDialog;
 
 	public static boolean isNewAcceleratorOnNextClickEnabled() {
 		return setAcceleratorOnNextClickActionDialog != null;
@@ -77,19 +79,46 @@ public class AccelerateableAction implements IFreeplaneAction {
 		this.originalAction = originalAction;
 	}
 
+    public static boolean isNewNodeLinkedToMenuItemEnabled() {
+        return newNodeLinkedToMenuItemDialog != null;
+    }
+
+    public static void newNodeLinkedToMenuItemOnNextClick() {
+        if(AccelerateableAction.isNewNodeLinkedToMenuItemEnabled()){
+            return;
+        }
+        String title = TextUtils.getText("NewNodeLinkedToMenu.dialogTitle");
+        String text  = TextUtils.getText("NewNodeLinkedToMenu.dialogText");
+        final Component frame = Controller.getCurrentController().getViewController().getMenuComponent();
+        newNodeLinkedToMenuItemDialog = UITools.createCancelDialog(frame, title, text);
+        newNodeLinkedToMenuItemDialog.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(final ComponentEvent e) {
+                newNodeLinkedToMenuItemDialog = null;
+            }
+        });
+        newNodeLinkedToMenuItemDialog.setVisible(true);
+    }
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
+		final boolean newNodeLinkedToMenuItemEnabled = AccelerateableAction.isNewNodeLinkedToMenuItemEnabled();
 		final KeyStroke newAccelerator = acceleratorForNextClickedAction;
 		if (newAcceleratorOnNextClickEnabled) {
 			getAcceleratorOnNextClickActionDialog().setVisible(false);
 		}
 		final Object source = e.getSource();
-		if ((newAcceleratorOnNextClickEnabled || 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))
+		if ((newAcceleratorOnNextClickEnabled || (0 != (e.getModifiers() & ActionEvent.CTRL_MASK) && 0 == (e.getModifiers() & ActionEvent.SHIFT_MASK)))
 		        && ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed())) {
 			getAcceleratorManager().newAccelerator(getOriginalAction(), newAccelerator);
 			return;
 		}
+		if ((newNodeLinkedToMenuItemEnabled || (0 != (e.getModifiers() & ActionEvent.CTRL_MASK) && 0 != (e.getModifiers() & ActionEvent.SHIFT_MASK)))
+				&& ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed()) ){
+            CommandToNode.insertNode(getOriginalAction());
+            return;
+        }
 		originalAction.actionPerformed(e);
 	}
 
