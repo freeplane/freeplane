@@ -103,6 +103,6 @@ class CodeExplorerConfiguration {
         JavaPackage rootPackage = importedClasses.getDefaultPackage();
         while(rootPackage.getClasses().isEmpty() && rootPackage.getSubpackages().size() == 1)
             rootPackage = rootPackage.getSubpackages().iterator().next();
-        return new PackageNodeModel(rootPackage, map, getProjectName());
+        return new PackageNodeModel(rootPackage, map, getProjectName(), 0);
     }
 }

@@ -29,10 +29,19 @@ abstract class CodeNodeModel extends NodeModel{
         return dep.getTargetClass().getSource().isPresent();
     }
 
-    CodeNodeModel(MapModel map) {
+    final private int subgroupIndex;
+
+    CodeNodeModel(MapModel map, int subgroupIndex) {
         super(map);
+        this.subgroupIndex = subgroupIndex;
     }
 
+
+
+
+    public int getSubgroupIndex() {
+        return subgroupIndex;
+    }
 
     @Override
     public List<NamedIcon> getIcons() {

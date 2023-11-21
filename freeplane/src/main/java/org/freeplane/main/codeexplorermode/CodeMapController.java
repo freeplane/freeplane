@@ -61,7 +61,7 @@ class CodeMapController extends MapController {
 	            ClassFileImporter classFileImporter = new ClassFileImporter();
 	            JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
 	            JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
-	            newRoot = new PackageNodeModel(rootPackage, map, "demo");
+	            newRoot = new PackageNodeModel(rootPackage, map, "demo", 0);
 	        }
 
 	        EventQueue.invokeLater(() -> {

@@ -63,7 +63,7 @@ public class GraphNodeSort<V> {
     }
 
 
-    public List<V> sortNodes() {
+    public List<List<V>> sortNodes() {
 
         // Compute Connected Components
         ConnectivityInspector<V, DefaultWeightedEdge> connectivityInspector = new ConnectivityInspector<>(graph);
@@ -72,7 +72,7 @@ public class GraphNodeSort<V> {
         // Sort the connected components in descending order by size
         connectedSets.sort((set1, set2) -> Integer.compare(set2.size(), set1.size()));
 
-        List<V> finalOrdering = new ArrayList<>();
+        List<List<V>> finalOrdering = new ArrayList<>();
 
         // Process each connected set
         for (Set<V> connectedSet : connectedSets) {
@@ -103,26 +103,15 @@ public class GraphNodeSort<V> {
                 }
             }
 
-            // Check for cycles
-           cycleFinder.findSimpleCycles(x -> {
-                System.out.println("Unexpected cycle found:");
-                System.out.println(x);
-                System.out.println("Complete graph:");
-                for (DefaultWeightedEdge edge : connectedSubgraph.edgeSet()) {
-                    System.out.println(connectedSubgraph.getEdgeSource(edge) + " -> " + connectedSubgraph.getEdgeTarget(edge) + " : " + connectedSubgraph.getEdgeWeight(edge));
-                }
-
-                throw new IllegalStateException("The graph has cycles");
-            });
-
             // Perform topological sort
             TopologicalOrderIterator<V, DefaultWeightedEdge> topologicalOrderIterator =
                     new TopologicalOrderIterator<>(connectedSubgraph);
-
+            List<V> subgroupOrdering = new ArrayList<>();
+            finalOrdering.add(subgroupOrdering);
             // Add the sorted vertices to the final ordering
             while (topologicalOrderIterator.hasNext()) {
                 V node = topologicalOrderIterator.next();
-                finalOrdering.add(node);
+                subgroupOrdering.add(node);
             }
         }
 
@@ -161,7 +150,7 @@ public class GraphNodeSort<V> {
         nodeSort.addEdge("a", "b", 30);
         nodeSort.addEdge("b", "c", 20);
         nodeSort.addEdge("c", "a", 10);
-        List<String> ordering = nodeSort.sortNodes();
+        List<List<String>> ordering = nodeSort.sortNodes();
         System.out.println(ordering);
     }
 }

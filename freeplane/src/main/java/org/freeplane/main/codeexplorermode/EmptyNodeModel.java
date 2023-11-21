@@ -17,7 +17,7 @@ class EmptyNodeModel extends CodeNodeModel {
 	static final String UI_ICON_NAME = "code_empty";
 
     EmptyNodeModel(final MapModel map, String text) {
-		super(map);
+		super(map, 0);
         setText(text);
 	}
 	@Override

@@ -7,8 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.freeplane.features.icon.NamedIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -21,8 +19,8 @@ class PackageNodeModel extends CodeNodeModel {
 	final private JavaPackage javaPackage;
     static final String UI_ICON_NAME = "code_package";
 
-	public PackageNodeModel(final JavaPackage javaPackage, final MapModel map, String text) {
-		super(map);
+	public PackageNodeModel(final JavaPackage javaPackage, final MapModel map, String text, int subgroupIndex) {
+		super(map, subgroupIndex);
 		this.javaPackage = javaPackage;
 		Set<JavaPackage> subpackages = javaPackage.getSubpackages();
 		setFolded(! subpackages.isEmpty());
@@ -64,26 +62,28 @@ class PackageNodeModel extends CodeNodeModel {
                     .forEach(e -> childNodes.addEdge(javaPackage, e.getKey(), e.getValue()));
 	            }
 
-	            List<JavaPackage> orderedPackages = childNodes.sortNodes();
-                for (JavaPackage childPackage : orderedPackages) {
-                    final CodeNodeModel node = createChildPackageNode(childPackage, "");
-                    children.add(node);
-                    node.setParent(this);
-                }
+	            List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
+	            for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
+	                for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {
+	                    final CodeNodeModel node = createChildPackageNode(childPackage, "", subgroupIndex);
+	                    children.add(node);
+	                    node.setParent(this);
+	                }
+	            }
             }
 	    }
 	}
 
-    private CodeNodeModel createChildPackageNode(JavaPackage childPackage, String parentName) {
+    private CodeNodeModel createChildPackageNode(JavaPackage childPackage, String parentName, int subgroupIndex) {
         String childPackageName = childPackage.getRelativeName();
         Set<JavaPackage> subpackages = childPackage.getSubpackages();
         if(childPackage == javaPackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            return new ClassesNodeModel(childPackage, getMap(), childPackage == javaPackage);
+            return new ClassesNodeModel(childPackage, getMap(), childPackage == javaPackage, subgroupIndex);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
-            return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
+            return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".", subgroupIndex);
         else
-            return new PackageNodeModel(childPackage, getMap(), parentName + childPackageName);
+            return new PackageNodeModel(childPackage, getMap(), parentName + childPackageName, subgroupIndex);
     }
 
     private JavaPackage getTargetChildPackage(Dependency dep) {
