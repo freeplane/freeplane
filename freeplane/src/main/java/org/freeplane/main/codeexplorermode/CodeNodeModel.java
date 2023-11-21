@@ -18,7 +18,6 @@ import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.properties.HasName;
 
 abstract class CodeNodeModel extends NodeModel {
 
@@ -37,7 +36,7 @@ abstract class CodeNodeModel extends NodeModel {
         this.subgroupIndex = subgroupIndex;
     }
 
-    abstract HasName getElementInScope(JavaClass dependencyClass);
+    Set<CodeNodeModel> findCyclicDependencies() {return Collections.emptySet();}
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
     abstract Set<JavaClass> getClassesInPackageTree();

@@ -31,7 +31,7 @@ public class SelectedViewSnapshotCondition extends ASelectableCondition {
 
 	HashSet<NodeModel> selectedNodes;
 
-	public SelectedViewSnapshotCondition(Collection<NodeModel> selectedNodes) {
+	public SelectedViewSnapshotCondition(Collection<? extends NodeModel> selectedNodes) {
 		super();
 		this.selectedNodes = new HashSet<NodeModel>();
 		this.selectedNodes.addAll(selectedNodes);
@@ -53,7 +53,7 @@ public class SelectedViewSnapshotCondition extends ASelectableCondition {
     protected String getName() {
 	    return NAME;
    }
-    
+
     @Override
     public boolean canBePersisted() {
         return false;

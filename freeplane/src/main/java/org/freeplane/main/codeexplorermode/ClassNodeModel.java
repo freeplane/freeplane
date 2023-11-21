@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.features.map.MapModel;
@@ -13,7 +14,6 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
-import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassNodeModel extends CodeNodeModel {
@@ -113,11 +113,34 @@ class ClassNodeModel extends CodeNodeModel {
     }
 
     @Override
-    HasName getElementInScope(JavaClass dependencyClass) {
-        if(isContainedInScope(dependencyClass))
-            return dependencyClass.getPackage();
-        else
-            return null;
+    Set<CodeNodeModel> findCyclicDependencies() {
+        GraphCycleFinder<CodeNodeModel> cycles = new GraphCycleFinder<CodeNodeModel>();
+        cycles.addNode(this);
+        cycles.stopSearchHere();
+        cycles.exploreGraph(Collections.singleton(this),
+                this::connectedTargetNodesInTheSameScope,
+                this::connectedOriginNodesInTheSameScope);
+        return cycles.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toSet());
+    }
+
+    private Stream<CodeNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {
+        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
+        .map(Dependency::getOriginClass);
+        return nodesContainedInScope(originClasses);
+    }
+
+    private Stream<CodeNodeModel> connectedTargetNodesInTheSameScope(CodeNodeModel node) {
+        Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
+        .map(Dependency::getTargetClass);
+        return nodesContainedInScope(targetClasses);
+    }
+    private Stream<CodeNodeModel> nodesContainedInScope(Stream<JavaClass> originClasses) {
+        return originClasses
+        .filter(this::isContainedInScope)
+        .map(CodeNodeModel::findEnclosingNamedClass)
+        .map(JavaClass::getName)
+        .map(getMap()::getNodeForID)
+        .map(CodeNodeModel.class::cast);
     }
 
     private boolean isContainedInScope(JavaClass dependencyClass) {

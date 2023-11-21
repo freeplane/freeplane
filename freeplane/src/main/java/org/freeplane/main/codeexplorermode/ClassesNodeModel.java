@@ -1,5 +1,6 @@
 package org.freeplane.main.codeexplorermode;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,8 +127,35 @@ class ClassesNodeModel extends CodeNodeModel {
                         : UI_CHILD_PACKAGE_ICON_NAME;
     }
 
+
     @Override
-    HasName getElementInScope(JavaClass dependencyClass) {
-        return dependencyClass.getPackage();
+    Set<CodeNodeModel> findCyclicDependencies() {
+        GraphCycleFinder<CodeNodeModel> cycles = new GraphCycleFinder<CodeNodeModel>();
+        cycles.addNode(this);
+        cycles.stopSearchHere();
+        cycles.exploreGraph(Collections.singleton(this),
+                this::connectedTargetNodesInTheSameScope,
+                this::connectedOriginNodesInTheSameScope);
+        return cycles.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toSet());
+    }
+
+    private Stream<CodeNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {
+        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
+        .map(Dependency::getOriginClass);
+        return nodesContainedInScope(originClasses);
+    }
+
+    private Stream<CodeNodeModel> connectedTargetNodesInTheSameScope(CodeNodeModel node) {
+        Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
+        .map(Dependency::getTargetClass);
+        return nodesContainedInScope(targetClasses);
+    }
+    private Stream<CodeNodeModel> nodesContainedInScope(Stream<JavaClass> originClasses) {
+        return originClasses
+        .map(JavaClass::getPackage)
+        .map(JavaPackage::getName)
+        .map(id -> id + ".package")
+        .map(getMap()::getNodeForID)
+        .map(CodeNodeModel.class::cast);
     }
 }

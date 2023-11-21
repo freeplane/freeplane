@@ -6,7 +6,10 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
@@ -23,6 +26,7 @@ public class GraphCycleFinder<V>{
     }
 
     private final Graph<Object, DefaultEdge> graph;
+
     public GraphCycleFinder() {
         this.graph = new DefaultDirectedGraph<>(DefaultEdge.class);
     }
@@ -45,6 +49,13 @@ public class GraphCycleFinder<V>{
         addEdgeObject(StopEdgeNode.START, StopEdgeNode.STOP);
         addEdgeObject(StopEdgeNode.STOP, StopEdgeNode.START);
 
+    }
+
+    public void exploreGraph(
+            Iterable<V> startVertices,
+            Function<V, Stream<V>> outgoingEdgesProvider,
+            Function<V, Stream<V>> incomingEdgesProvider) {
+        GraphExplorer.exploreGraph(graph, startVertices, outgoingEdgesProvider, incomingEdgesProvider);
     }
 
     public List<List<V>> findSimpleCycles()

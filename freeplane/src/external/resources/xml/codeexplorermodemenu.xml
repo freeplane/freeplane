@@ -37,12 +37,10 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
-			<Entry name="code.FILTER.VISIBLE.CyclesAction" />
-			<Entry name="code.SELECT.VISIBLE.CyclesAction" />
+			<Entry name="code.FilterCyclesAction" />
 		</Entry>
 		<Entry row="2">
-			<Entry name="code.FILTER.SELECTED.CyclesAction" />
-			<Entry name="code.SELECT.SELECTED.CyclesAction" />
+			<Entry name="code.SelectCyclesAction" />
 		</Entry>
 		</Entry>
 		<Entry builder="main_menu">

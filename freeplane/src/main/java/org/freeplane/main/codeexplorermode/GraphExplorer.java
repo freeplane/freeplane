@@ -7,16 +7,16 @@ package org.freeplane.main.codeexplorermode;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.traverse.DepthFirstIterator;
 
 public class GraphExplorer {
 
     private static final class BothDirectionsIterator<V, E> extends DepthFirstIterator<V, E> {
-        private BothDirectionsIterator(Graph<V, E> g) {
-            super(g);
+        private BothDirectionsIterator(Graph<V, E> g, Iterable<V> startVertices) {
+            super(g, startVertices);
         }
 
         @Override
@@ -38,27 +38,30 @@ public class GraphExplorer {
         }
     }
 
-    static public <V, E> void exploreGraph(V startVertex, Class<E> edgeClass, Function<V, Set<V>> outgoingEdgesProvider, Function<V, Set<V>> incomingEdgesProvider) {
-        Graph<V, E> graph = new DefaultDirectedGraph<>(edgeClass);
-        DepthFirstIterator<V, E> iterator = new BothDirectionsIterator<V, E>(graph);
-
-        graph.addVertex(startVertex);
-
+    static <V, E> void exploreGraph(Graph<Object, E> graph,
+            Iterable<V> startVertices,
+            Function<V, Stream<V>> outgoingEdgesProvider,
+            Function<V, Stream<V>> incomingEdgesProvider) {
+        Class<?> vertexClass = startVertices.iterator().next().getClass();
+        DepthFirstIterator<Object, E> iterator = new BothDirectionsIterator<>(graph, (Iterable<Object>)startVertices);
         while (iterator.hasNext()) {
-            V currentElement = iterator.next();
+            Object currentElement = iterator.next();
 
-            Set<V> outgoingElements = outgoingEdgesProvider.apply(currentElement);
-            outgoingElements.forEach(outgoingElement -> {
-                graph.addVertex(outgoingElement);
-                graph.addEdge(currentElement, outgoingElement);
-            });
+            if(vertexClass.isInstance(currentElement)) {
+                @SuppressWarnings("unchecked")
+                Stream<V> outgoingElements = outgoingEdgesProvider.apply((V)currentElement);
+                outgoingElements.forEach(outgoingElement -> {
+                    graph.addVertex(outgoingElement);
+                    graph.addEdge(currentElement, outgoingElement);
+                });
 
-            Set<V> incomingElements = incomingEdgesProvider.apply(currentElement);
-            incomingElements.forEach(incomingElement -> {
-                graph.addVertex(incomingElement);
-                graph.addEdge(incomingElement, currentElement);
-            });
+                @SuppressWarnings("unchecked")
+                Stream<V> incomingElements = incomingEdgesProvider.apply((V)currentElement);
+                incomingElements.forEach(incomingElement -> {
+                    graph.addVertex(incomingElement);
+                    graph.addEdge(incomingElement, currentElement);
+                });
+            }
         }
-
     }
 }

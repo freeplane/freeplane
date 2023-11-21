@@ -13,7 +13,6 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
-import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class PackageNodeModel extends CodeNodeModel {
@@ -152,7 +151,11 @@ class PackageNodeModel extends CodeNodeModel {
     }
 
     @Override
-    HasName getElementInScope(JavaClass dependencyClass) {
-        return null;
+    Set<CodeNodeModel> findCyclicDependencies() {
+        CodeNodeModel classes = (CodeNodeModel) getMap().getNodeForID(getID() + ".package");
+        if(classes != null)
+            return classes.findCyclicDependencies();
+        else
+            return super.findCyclicDependencies();
     }
 }

@@ -20,57 +20,32 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.view.swing.map.MapView;
-
-import com.tngtech.archunit.core.domain.JavaClass;
 
 @SuppressWarnings("serial")
 class FilterCyclesAction extends AFreeplaneAction {
-	private final CodeNodeSelection selection;
 
-    public FilterCyclesAction(CodeNodeSelection selection) {
-	    super("code.FILTER" + "." + selection + ".CyclesAction");
-        this.selection = selection;
+    public FilterCyclesAction() {
+	    super("code.FilterCyclesAction");
     }
 
-	@Override
+    @Override
     public void actionPerformed(ActionEvent e) {
-        Controller controller = Controller.getCurrentController();
-        MapView mapView = (MapView) controller.getMapViewManager().getMapViewComponent();
-        GraphCycleFinder<String> cycleFinder = new GraphCycleFinder<>();
-        if(selection == CodeNodeSelection.SELECTED) {
-            selection.get()
-            .flatMap(node -> node.getClassesInPackageTree().stream())
-            .map(CodeNodeModel::findEnclosingNamedClass)
-            .map(JavaClass::getName)
-            .forEach(cycleFinder::addNode);
-            cycleFinder.stopSearchHere();
-        }
+        CodeNodeModel node = (CodeNodeModel) Controller.getCurrentController().getSelection().getSelected();
 
-        CodeNodeStream.visibleNodes(mapView)
-        .map(CodeNodeModel.class::cast)
-        .flatMap(CodeNodeModel::getOutgoingDependenciesWithKnownTargets)
-        .forEach(dep -> cycleFinder.addEdge(
-                CodeNodeModel.findEnclosingNamedClass(dep.getOriginClass()).getName(),
-                CodeNodeModel.findEnclosingNamedClass(dep.getTargetClass()).getName()));
-
-        Set<String> cycleNodes = cycleFinder.findSimpleCycles().stream()
-                .flatMap(List::stream)
-                .collect(Collectors.toSet());
+        Set<CodeNodeModel> cycleNodes = node.findCyclicDependencies();
         if(! cycleNodes.isEmpty()) {
-            ASelectableCondition condition = new DependencySnapshotCondition(cycleNodes);
+            ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
             Filter filter = new Filter(condition, false, true, false, false, null);
             FilterController filterController = FilterController.getCurrentFilterController();
-            filterController.applyFilter(mapView.getMap(), false, filter);
+            filterController.applyFilter(node.getMap(), false, filter);
         }
-	}
+    }
 }
