@@ -18,7 +18,7 @@ public class CommandToNode {
 
     public static void insertNode(AFreeplaneAction action) {
         if (action == null) {
-            showMessageInStatusLine("CommandToNode.NoCommandFound");
+            showMessageInStatusLine("NewNodeLinkedToMenu.NoCommandFound");
             return;
         }
         MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
@@ -31,7 +31,7 @@ public class CommandToNode {
         String nodeLink = LINK_STARTING_TEXT + action.getKey();
         try {
             ((MLinkController) LinkController.getController()).setLink(newNodeModel, new URI(nodeLink), LinkController.LINK_ABSOLUTE);
-            showMessageInStatusLine("CommandToNode.NodeInserted");
+            showMessageInStatusLine("NewNodeLinkedToMenu.NodeInserted");
         } catch (final URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }
