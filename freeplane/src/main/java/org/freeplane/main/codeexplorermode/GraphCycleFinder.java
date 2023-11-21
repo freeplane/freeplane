@@ -43,6 +43,8 @@ public class GraphCycleFinder<V>{
 
     public void stopSearchHere() {
         addEdgeObject(StopEdgeNode.START, StopEdgeNode.STOP);
+        addEdgeObject(StopEdgeNode.STOP, StopEdgeNode.START);
+
     }
 
     public List<List<V>> findSimpleCycles()
