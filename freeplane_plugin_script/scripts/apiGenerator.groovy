@@ -262,6 +262,17 @@ def createChild(Proxy.Node parent, text, link) {
     return result
 }
 
+def noDuplicatedMapName(name){
+    def names = ([] + c.openMindMaps*.name + c.openMindMaps*.root*.text).unique().sort()
+	println names
+    def i = 1
+    def nombre = name
+    while (names.contains(nombre)){
+        nombre = "${name} x${i++}".toString()
+    }
+    return nombre
+}
+
 // == MAIN ==
 def showIcons = true
 this.freeplaneApiBase = new File(ResourceController.resourceController.installationBaseDir).toURI().toString() + 'doc/api';
@@ -281,6 +292,7 @@ if(newMap == null) {
     return
 }
 def oldName = newMap.name
+MAP_NAME = noDuplicatedMapName(MAP_NAME)  //added
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
 newMap.root.style.font.bold = true
