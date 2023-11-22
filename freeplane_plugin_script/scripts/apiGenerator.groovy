@@ -382,6 +382,7 @@ makeApi(proxy, HorizontalTextAlignment.class)
 makeApi(proxy, LayoutOrientation.class)
 makeApi(proxy, NodeToComparableMapper.class)
 makeApi(proxy, TextWritingDirection.class)
+proxy.sortChildrenBy{it.plainText}
 
 def utils = createChild(newMap.root, UTILITES_NODE, null)
 initHeading(utils)
@@ -405,6 +406,7 @@ makeApi(utils, FreeplaneScriptBaseClass.ConfigProperties.class)
 makeApi(utils, FreeplaneVersion.class)
 //org.freeplane.launcher
 makeApi(utils, Launcher.class)
+utils.sortChildrenBy{it.plainText}
 
 def icons = newMap.root.createChild(ICONS_NODE)
 initHeading(icons)
