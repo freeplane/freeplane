@@ -7,6 +7,7 @@
 // (at your option) any later version.
 
 import java.lang.reflect.Method
+import java.lang.reflect.Field
 
 import org.freeplane.api.Dependencies
 import org.freeplane.api.LengthUnit
@@ -108,6 +109,13 @@ def makeApi(Proxy.Node node, Class clazz) {
     }
     else { // skip methods and properties for enums
         TreeMap<String, Map<String, Object>> memberMap = new TreeMap<String, Map<String, Object>>()
+        clazz.getFields().findAll {
+            it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
+                    it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
+        }.each {
+            addField(memberMap, it, clazz);
+        }
+    
         clazz.getMethods().findAll {
             it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
                     it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
@@ -151,7 +159,7 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
         memberNode = classNode.createChild(attribs['method'])
         memberNode.icons.add('bookmark')
     }
-    else {
+    else if (attribs['read'] || attribs['write']){
         // property
         def mode = (attribs['type_read'] ? 'r' : '') + (attribs['type_write'] ? 'w' : '')
         def type = attribs['type_read'] ? attribs['type_read'] : attribs['type_write']
@@ -166,6 +174,11 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
                 methodNode.icons.add('bookmark')
             }
         }
+    }
+    else {
+        memberNode = classNode.createChild(formatField(attribs))
+        memberNode.icons.add(attribs['enumConstant']?'list':'info')
+        memberNode.details = (attribs['enumConstant']?'enum':'constant')
     }
     if (attribs['deprecated']) {
         memberNode.icons.add('closed')
@@ -204,6 +217,22 @@ def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
     propertyMap['deprecated'] = isDeprecated(method)
 }
 
+def addField(Map<String, Map<String, Object>> memberMap, Field field, Class clazz) {
+    def propertyMap = getOrCreatePropertiesMap(memberMap, formatFieldKey(field))    
+    propertyMap['enumConstant'] = field.isEnumConstant()
+    propertyMap['return_type'] = field.getType()
+    propertyMap['name'] = field.getName()
+    propertyMap['value'] = clazz.getProperties().get(field.getName())
+}
+
+def formatFieldKey(Field field){
+    return "_ ${field.name}"
+}
+
+def formatField(Map att){
+    return "<html><body><b>${formatReturnType(att['return_type'] )}.${att['name']}</b> =   ${att['value']}</body></html>".toString()
+}
+ 
 def formatProperty(String property, String type, String mode) {
     return "<html><body><b>${property}</b>: ${type} (${mode})</body></html>".toString()
     // Plain text:
