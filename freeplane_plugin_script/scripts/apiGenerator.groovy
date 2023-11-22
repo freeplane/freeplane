@@ -187,7 +187,7 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
 }
 
 def typeToString(Class clazz) {
-    return clazz.name.split(/\./).getAt(-1).replace('Proxy$', '').replace('$', '.') //changed
+    return clazz.name.split(/\./).getAt(-1).replace('Proxy$', '').replace('$', '.')
 }
 
 // returns a value if this method is a getter or setter otherwise it returns null
@@ -317,7 +317,6 @@ def createChild(Proxy.Node parent, text, link) {
 
 def noDuplicatedMapName(name){
     def names = ([] + c.openMindMaps*.name + c.openMindMaps*.root*.text).unique().sort()
-	println names
     def i = 1
     def nombre = name
     while (names.contains(nombre)){
@@ -345,7 +344,7 @@ if(newMap == null) {
     return
 }
 def oldName = newMap.name
-MAP_NAME = noDuplicatedMapName(MAP_NAME)  //added
+MAP_NAME = noDuplicatedMapName(MAP_NAME)
 newMap.name = MAP_NAME
 newMap.root.text = MAP_NAME
 newMap.root.style.font.bold = true
