@@ -2,6 +2,7 @@ package org.freeplane.main.codeexplorermode;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -114,13 +115,14 @@ class ClassNodeModel extends CodeNodeModel {
 
     @Override
     Set<CodeNodeModel> findCyclicDependencies() {
-        GraphCycleFinder<CodeNodeModel> cycles = new GraphCycleFinder<CodeNodeModel>();
-        cycles.addNode(this);
-        cycles.stopSearchHere();
-        cycles.exploreGraph(Collections.singleton(this),
+        GraphCycleFinder<CodeNodeModel> cycleFinder = new GraphCycleFinder<CodeNodeModel>();
+        cycleFinder.addNode(this);
+        cycleFinder.stopSearchHere();
+        cycleFinder.exploreGraph(Collections.singleton(this),
                 this::connectedTargetNodesInTheSameScope,
                 this::connectedOriginNodesInTheSameScope);
-        return cycles.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toSet());
+        LinkedHashSet<CodeNodeModel> cycles = cycleFinder.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toCollection(LinkedHashSet::new));
+        return cycles;
     }
 
     private Stream<CodeNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {

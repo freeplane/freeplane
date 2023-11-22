@@ -53,6 +53,13 @@ abstract class CodeNodeModel extends NodeModel {
         this.subgroupIndex = subgroupIndex;
     }
 
+
+
+    @Override
+    public CodeNodeModel getParentNode() {
+        return (CodeNodeModel) super.getParentNode();
+    }
+
     Set<CodeNodeModel> findCyclicDependencies() {return Collections.emptySet();}
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
