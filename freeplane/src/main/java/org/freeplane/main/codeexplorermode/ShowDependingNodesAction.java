@@ -20,6 +20,7 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,7 +31,9 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 
@@ -39,10 +42,20 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 @SuppressWarnings("serial")
 class ShowDependingNodesAction extends AFreeplaneAction {
+    enum Depth{NO_RECURSION(1), MAXIMUM_RECURSION(10000);
+
+    final int depth;
+
+    Depth(int depth) {
+        this.depth = depth;
+        // TODO Auto-generated constructor stub
+    }}
     MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 
     private DependencyDirection dependencyDirection;
     private CodeNodeSelection codeNodeSelection;
+
+    private final int maximumRecursionDepth;
 
     enum DependencyDirection {
         INCOMING(CodeNodeModel::getIncomingDependenciesWithKnownTargets),
@@ -64,30 +77,54 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
 
     ShowDependingNodesAction(DependencyDirection dependencyDirection,
-            CodeNodeSelection codeNodeSelection) {
-	    super("code.ShowDependingNodesAction." + dependencyDirection + "." + codeNodeSelection,
-	            TextUtils.format("code.ShowDependingNodesAction.text",
-	                    TextUtils.getRawText("code." + dependencyDirection),
-	                    TextUtils.getRawText("code." + codeNodeSelection)),
+            CodeNodeSelection codeNodeSelection, Depth recursionDepth) {
+	    super("code.ShowDependingNodesAction." + dependencyDirection + "." + codeNodeSelection + "." + recursionDepth,
+	            formatActionText(dependencyDirection, codeNodeSelection, recursionDepth),
 	            null);
         this.dependencyDirection = dependencyDirection;
         this.codeNodeSelection = codeNodeSelection;
+        this.maximumRecursionDepth = recursionDepth.depth;
+    }
+
+
+    static String formatActionText(DependencyDirection dependencyDirection,
+            CodeNodeSelection codeNodeSelection, Depth recursionDepth) {
+        return TextUtils.format("code.ShowDependingNodesAction." + recursionDepth + ".text",
+                TextUtils.getRawText("code." + dependencyDirection),
+                TextUtils.getRawText("code." + codeNodeSelection));
     }
 
 	@Override
     public void actionPerformed(ActionEvent e) {
 	    IMapSelection selection = Controller.getCurrentController().getSelection();
-	    if(selection.getFilter().getCondition() == null)
+	    ICondition currentCondition = selection.getFilter().getCondition();
+	    if(currentCondition == null)
 	        return;
-        Set<String> dependentNodeIDs = codeNodeSelection.get()
+	    MapModel map = selection.getMap();
+	    ((CodeNodeModel)map.getRootNode()).loadSubtree();
+	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get());
+	    for(int recursionCounter = 1; recursionCounter < maximumRecursionDepth;recursionCounter++) {
+	        Set<String> next = dependencies(dependentNodeIDs.stream().map(map::getNodeForID).map(CodeNodeModel.class::cast));
+	        next.removeAll(dependentNodeIDs);
+	        if(next.isEmpty())
+	            break;
+	        dependentNodeIDs.addAll(next);
+	    }
+	    dependentNodeIDs.removeIf(id -> currentCondition.checkNode(map.getNodeForID(id)));
+        FilterController filterController = FilterController.getCurrentFilterController();
+        ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
+                currentCondition);
+	    Filter filter = new Filter(condition, false, true, false, false, null);
+        filterController.applyFilter(map, false, filter);
+	}
+
+
+    HashSet<String> dependencies(Stream<CodeNodeModel> startingNodes) {
+        return startingNodes
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)
 	            .map(JavaClass::getName)
-	            .collect(Collectors.toSet());
-        ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs);
-	    Filter filter = new Filter(condition, false, true, false, false, null);
-	    FilterController filterController = FilterController.getCurrentFilterController();
-        filterController.applyFilter(selection.getMap(), false, filter);
-	}
+	            .collect(Collectors.toCollection(HashSet::new));
+    }
 
 }

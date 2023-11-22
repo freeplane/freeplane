@@ -23,22 +23,28 @@ import java.util.Set;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.NodeModel;
 
 class DependencySnapshotCondition extends ASelectableCondition {
 	private static final String NAME = "dependencies_snapshot";
 	private static String description;
 
-	Set<String> dependentNodeIDs;
+	private final Set<String> dependentNodeIDs;
+    private final ICondition baseCondition;
 
-	public DependencySnapshotCondition(Set<String> dependentNodeIDs) {
+    public DependencySnapshotCondition(Set<String> dependentNodeIDs) {
+        this(dependentNodeIDs, null);
+    }
+	public DependencySnapshotCondition(Set<String> dependentNodeIDs, ICondition baseCondition) {
 		super();
-		this.dependentNodeIDs = dependentNodeIDs;
+        this.baseCondition = baseCondition;
+        this.dependentNodeIDs = dependentNodeIDs;
 	}
 
 	@Override
     public boolean checkNode(final NodeModel node) {
-		return dependentNodeIDs.contains(node.getID());
+		return dependentNodeIDs.contains(node.getID()) || baseCondition != null && baseCondition.checkNode(node);
 	}
 
 	@Override

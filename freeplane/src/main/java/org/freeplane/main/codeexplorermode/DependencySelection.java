@@ -58,39 +58,11 @@ class DependencySelection {
         allClasses = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        getOutgoingDependencies((CodeNodeModel)node).stream(),
-                        getIncomingDependencies((CodeNodeModel)node).stream()))
-                .flatMap(this::dependentClasses)
+                        ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets().map(Dependency::getOriginClass),
+                        ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets().map(Dependency::getTargetClass)))
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allClasses;
-    }
-
-    private Stream<JavaClass> dependentClasses(Dependency dependency) {
-        JavaClass origin = CodeNodeModel.findEnclosingNamedClass(dependency.getOriginClass());
-        JavaClass target = CodeNodeModel.findEnclosingNamedClass(dependency.getTargetClass());
-        NodeModel selectedOrigin = findSelectedAncestorOrSelf(origin);
-        NodeModel selectedTarget = findSelectedAncestorOrSelf(target);
-        if (selectedOrigin != selectedTarget) {
-            if(selectedOrigin != null && selectedTarget != null)
-                return Stream.of(origin, target);
-            else if(selectedOrigin != null)
-                return Stream.of(origin);
-            else
-                return Stream.of(target);
-        } else {
-            return Stream.empty();
-        }
-    }
-
-    private NodeModel findSelectedAncestorOrSelf(JavaClass jc) {
-        String visibleNodeId = getVisibleNodeId(jc);
-        NodeModel node = getNode(visibleNodeId);
-        if(node == null)
-            return null;
-        else
-            return findSelectedAncestorOrSelf(node);
-
     }
 
     String getVisibleNodeId(JavaClass javaClass) {

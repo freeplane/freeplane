@@ -61,4 +61,8 @@ class EmptyNodeModel extends CodeNodeModel {
     String getUIIconName() {
         return UI_ICON_NAME;
     }
+    @Override
+    protected boolean initializeChildNodes() {
+        return false;
+    }
 }

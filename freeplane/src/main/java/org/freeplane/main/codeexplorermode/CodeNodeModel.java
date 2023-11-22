@@ -20,6 +20,23 @@ import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 abstract class CodeNodeModel extends NodeModel {
+    static String formatClassCount(long classCount) {
+        return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
+    }
+
+    static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
+        if (javaClass.isAnonymousClass())
+            return findEnclosingNamedClass(javaClass.getEnclosingClass().get());
+        else
+            if(javaClass.isArray())
+                return javaClass.getBaseComponentType();
+            else
+                return javaClass;
+    }
+
+    static JavaClass getTargetNodeClass(Dependency dependency) {
+        return findEnclosingNamedClass(dependency.getTargetClass());
+    }
 
     static boolean isNamed(JavaClass jc) {
         return ! jc.isAnonymousClass() && ! jc.isArray();
@@ -66,22 +83,10 @@ abstract class CodeNodeModel extends NodeModel {
         return Collections.singletonList(uiIcon);
     }
 
-    String formatClassCount(long classCount) {
-        return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
-    }
+    abstract protected boolean initializeChildNodes();
 
-    static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
-        if (javaClass.isAnonymousClass())
-            return findEnclosingNamedClass(javaClass.getEnclosingClass().get());
-        else
-            if(javaClass.isArray())
-                return javaClass.getBaseComponentType();
-            else
-                return javaClass;
+    void loadSubtree() {
+        if(initializeChildNodes())
+            getChildrenInternal().forEach(node -> ((CodeNodeModel)node).loadSubtree());
     }
-
-    static JavaClass getTargetNodeClass(Dependency dependency) {
-        return findEnclosingNamedClass(dependency.getTargetClass());
-    }
-
 }

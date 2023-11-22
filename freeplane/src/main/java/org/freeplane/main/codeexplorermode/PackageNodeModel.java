@@ -37,41 +37,42 @@ class PackageNodeModel extends CodeNodeModel {
 		return super.getChildren();
 	}
 
-	private void initializeChildNodes() {
+	protected boolean initializeChildNodes() {
 	    List<NodeModel> children = super.getChildrenInternal();
-	    if (children.isEmpty()) {
-	        final Set<JavaPackage> packages = javaPackage.getSubpackages();
-	        boolean hasSubpackages = ! packages.isEmpty();
-            boolean hasClasses = ! javaPackage.getClasses().isEmpty();
-            if(hasSubpackages) {
-	            GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
-	            for (JavaPackage childPackage : packages) {
-	                childNodes.addNode(childPackage);
-	                Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
-	                        .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
-	                dependencies.entrySet().stream()
-	                .filter(e -> e.getKey().getParent().isPresent())
-	                .forEach(e -> childNodes.addEdge(childPackage, e.getKey(), e.getValue()));
-	            }
-	            if(hasClasses) {
-	                childNodes.addNode(javaPackage);
-	                Map<JavaPackage, Long> dependencies = javaPackage.getClassDependenciesFromThisPackage().stream()
-                            .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
-                    dependencies.entrySet().stream()
-                    .filter(e -> e.getKey().getParent().isPresent())
-                    .forEach(e -> childNodes.addEdge(javaPackage, e.getKey(), e.getValue()));
-	            }
-
-	            List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
-	            for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
-	                for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {
-	                    final CodeNodeModel node = createChildPackageNode(childPackage, "", subgroupIndex);
-	                    children.add(node);
-	                    node.setParent(this);
-	                }
-	            }
-            }
+	    if (!children.isEmpty())
+	        return false;
+	    final Set<JavaPackage> packages = javaPackage.getSubpackages();
+	    boolean hasSubpackages = ! packages.isEmpty();
+	    boolean hasClasses = ! javaPackage.getClasses().isEmpty();
+	    if(! hasSubpackages)
+	        return false;
+	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
+	    for (JavaPackage childPackage : packages) {
+	        childNodes.addNode(childPackage);
+	        Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
+	                .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
+	        dependencies.entrySet().stream()
+	        .filter(e -> e.getKey().getParent().isPresent())
+	        .forEach(e -> childNodes.addEdge(childPackage, e.getKey(), e.getValue()));
 	    }
+	    if(hasClasses) {
+	        childNodes.addNode(javaPackage);
+	        Map<JavaPackage, Long> dependencies = javaPackage.getClassDependenciesFromThisPackage().stream()
+	                .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
+	        dependencies.entrySet().stream()
+	        .filter(e -> e.getKey().getParent().isPresent())
+	        .forEach(e -> childNodes.addEdge(javaPackage, e.getKey(), e.getValue()));
+	    }
+
+	    List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
+	    for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
+	        for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {
+	            final CodeNodeModel node = createChildPackageNode(childPackage, "", subgroupIndex);
+	            children.add(node);
+	            node.setParent(this);
+	        }
+	    }
+	    return true;
 	}
 
     private CodeNodeModel createChildPackageNode(JavaPackage childPackage, String parentName, int subgroupIndex) {

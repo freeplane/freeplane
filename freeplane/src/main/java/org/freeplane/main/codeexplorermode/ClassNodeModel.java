@@ -146,4 +146,9 @@ class ClassNodeModel extends CodeNodeModel {
     private boolean isContainedInScope(JavaClass dependencyClass) {
         return dependencyClass.getPackage().equals(javaClass.getPackage());
     }
+
+    @Override
+    protected boolean initializeChildNodes() {
+        return false;
+    }
 }

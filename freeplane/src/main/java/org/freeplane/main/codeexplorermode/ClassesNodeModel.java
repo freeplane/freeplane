@@ -43,7 +43,8 @@ class ClassesNodeModel extends CodeNodeModel {
 		return super.getChildren();
 	}
 
-	private void initializeChildNodes() {
+	@Override
+    protected boolean initializeChildNodes() {
 	    List<NodeModel> children = super.getChildrenInternal();
 	    if (children.isEmpty()) {
 	        final Set<JavaClass> classes = javaPackage.getClasses();
@@ -78,6 +79,7 @@ class ClassesNodeModel extends CodeNodeModel {
 
             }
 	    }
+	    return false;
 	}
 
 	@Override

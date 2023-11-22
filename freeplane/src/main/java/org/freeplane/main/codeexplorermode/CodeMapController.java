@@ -17,10 +17,12 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 class CodeMapController extends MapController {
     CodeMapController(CodeModeController modeController) {
         super(modeController);
-        modeController.addAction(new FilterSelectedCodeNodesAction());
+        modeController.addAction(new ShowOnlySelectedCodeNodesAction());
         for(CodeNodeSelection selection: CodeNodeSelection.values()) {
             for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
-                modeController.addAction(new ShowDependingNodesAction(direction, selection));
+                for(ShowDependingNodesAction.Depth maximumDepth : ShowDependingNodesAction.Depth.values()) {
+                    modeController.addAction(new ShowDependingNodesAction(direction, selection, maximumDepth));
+                }
             }
         }
         modeController.addAction(new SelectCyclesAction());
