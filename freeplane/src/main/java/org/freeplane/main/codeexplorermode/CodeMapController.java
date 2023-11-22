@@ -25,6 +25,7 @@ class CodeMapController extends MapController {
                 }
             }
         }
+        modeController.addAction(new ShowAllClassesAction());
         modeController.addAction(new SelectCyclesAction());
         modeController.addAction(new FilterCyclesAction());
     }

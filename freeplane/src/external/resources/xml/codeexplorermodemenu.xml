@@ -22,7 +22,7 @@
 			<Entry name="code.ShowOnlySelectedCodeNodesAction" />
 		</Entry>
 		<Entry row="2">
-			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="code.ShowAllClassesAction" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
@@ -156,6 +156,27 @@
 				<Entry builder="menu_goto_links" />
 			</Entry>
 		</Entry>
+			<Entry name="code.explore">
+			<Entry name="code.ShowOnlySelectedCodeNodesAction" />
+			<Entry name="code.ShowAllClassesAction" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry builder="separator" />
+			<Entry name="code.FilterCyclesAction" />
+			<Entry name="code.SelectCyclesAction" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+		</Entry>
 		<Entry name="filter">
 			<Entry name="UndoFilterAction" />
 			<Entry name="RedoFilterAction" />
@@ -213,14 +234,8 @@
 		<Entry name="JumpOutAction" />
 		<Entry builder="separator" />
 		<Entry name="code.ShowOnlySelectedCodeNodesAction" />
-		<Entry name="ApplyNoFilteringAction" />
+		<Entry name="code.ShowAllClassesAction" />
 		<Entry builder="separator" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 		<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 		<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
 		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
@@ -230,9 +245,16 @@
 		<Entry builder="separator" />
 		<Entry name="code.FilterCyclesAction" />
 		<Entry name="code.SelectCyclesAction" />
-
+		<Entry builder="separator" />
+		<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
+		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
+		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
+		<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
+		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+		<Entry builder="separator" />
 		<Entry name="goto" processOnPopup="true">
-			 <Entry builder="link_actions" />
+			<Entry builder="link_actions" />
 		</Entry>
 	</Entry>
 </FreeplaneUIEntries>
