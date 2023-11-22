@@ -79,7 +79,7 @@ def makeApi(Proxy.Node node, Class clazz) {
     classNode.style.font.bold = true
     if(clazz.isEnum()) {
         clazz.getEnumConstants().each {
-            classNode.createChild(it)
+            classNode.createChild("${clazz.simpleName}.${it.name()}:   $it".toString())
         }
     }
     else { // skip methods and properties for enums
@@ -150,7 +150,7 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
 }
 
 def typeToString(Class clazz) {
-    return clazz.simpleName.replace('Proxy$', '')
+    return clazz.name.split(/\./).getAt(-1).replace('Proxy$', '').replace('$', '.') //changed
 }
 
 // returns a value if this method is a getter or setter otherwise it returns null
@@ -181,7 +181,7 @@ def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
 }
 
 def formatProperty(String property, String type, String mode) {
-    return "<html><body><b>${property}</b>: ${type} (${mode})"
+    return "<html><body><b>${property}</b>: ${type} (${mode})</body></html>".toString()
     // Plain text:
     //    return "${property}: ${type} (${mode})"
 }
@@ -219,7 +219,7 @@ def formatMethod(Method method) {
     def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
     return '<html><body>' + formatReturnType(method.returnType) +
             ' <b>' + method.name + '</b>' +
-            '(' + parameters.join(', ') + ')'
+            '(' + parameters.join(', ') + ')' +'</body></html>'
 }
 
 def isGetter(Method method) {
