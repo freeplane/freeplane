@@ -263,6 +263,7 @@ def createChild(Proxy.Node parent, text, link) {
 }
 
 // == MAIN ==
+def showIcons = true
 this.freeplaneApiBase = new File(ResourceController.resourceController.installationBaseDir).toURI().toString() + 'doc/api';
 def MAP_NAME = textUtils.getText('scripting_api_generator_title')
 def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
@@ -349,6 +350,7 @@ bundle.getKeys().toList()
             def translationAndKey = it.split('@@@')
             def tnode = icons.createChild(translationAndKey[0])
             tnode.createChild(translationAndKey[1])
+            if (showIcons) tnode.icons.add(translationAndKey[1])
         }
 icons.folded = true
 
