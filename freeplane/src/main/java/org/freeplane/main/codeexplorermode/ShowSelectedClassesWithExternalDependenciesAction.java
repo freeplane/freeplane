@@ -33,10 +33,10 @@ import org.freeplane.features.mode.Controller;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 @SuppressWarnings("serial")
-class ShowOnlySelectedCodeNodesAction extends AFreeplaneAction {
+class ShowSelectedClassesWithExternalDependenciesAction extends AFreeplaneAction {
 
-	public ShowOnlySelectedCodeNodesAction() {
-	    super("code.ShowOnlySelectedCodeNodesAction");
+	public ShowSelectedClassesWithExternalDependenciesAction() {
+	    super("code.ShowSelectedClassesWithExternalDependenciesAction");
     }
 
 	@Override

@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 @SuppressWarnings("serial")
@@ -41,7 +40,11 @@ class SelectCyclesAction extends AFreeplaneAction {
 
 	        Set<CodeNodeModel> cycleNodes = node.findCyclicDependencies();
 	        if(! cycleNodes.isEmpty()) {
-	            selection.replaceSelection(cycleNodes.toArray(new NodeModel[cycleNodes.size()]));
+	            DependencySelection dependencySelection = new DependencySelection(selection);
+	            CodeNodeModel[] newSelection = cycleNodes.stream()
+	            .map(dependencySelection::findVisibleAncestorOrSelf)
+	            .toArray(CodeNodeModel[]::new);
+	            selection.replaceSelection(newSelection);
 	        }
  	}
 }

@@ -115,6 +115,11 @@ class DependencySelection {
          return node;
     }
 
+    NodeModel findVisibleAncestorOrSelf(NodeModel node) {
+        while(node != null && ! selection.isVisible(node))
+             node = node.getParentNode();
+         return node;
+    }
 
     private boolean selectionContains(NodeModel node) {
         return getSelectedNodeSet().contains(node);

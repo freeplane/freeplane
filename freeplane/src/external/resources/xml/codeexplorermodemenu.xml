@@ -19,7 +19,7 @@
 		<Entry builder="separator" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		<Entry row="1">
-			<Entry name="code.ShowOnlySelectedCodeNodesAction" />
+			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 		</Entry>
 		<Entry row="2">
 			<Entry name="code.ShowAllClassesAction" />
@@ -157,7 +157,7 @@
 			</Entry>
 		</Entry>
 			<Entry name="code.explore">
-			<Entry name="code.ShowOnlySelectedCodeNodesAction" />
+			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 			<Entry name="code.ShowAllClassesAction" />
 			<Entry builder="separator" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
@@ -233,7 +233,7 @@
 		<Entry name="JumpInAction"/>
 		<Entry name="JumpOutAction" />
 		<Entry builder="separator" />
-		<Entry name="code.ShowOnlySelectedCodeNodesAction" />
+		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 		<Entry name="code.ShowAllClassesAction" />
 		<Entry builder="separator" />
 		<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
