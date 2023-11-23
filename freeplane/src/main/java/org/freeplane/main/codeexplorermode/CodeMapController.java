@@ -2,6 +2,7 @@ package org.freeplane.main.codeexplorermode;
 
 import java.awt.EventQueue;
 
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -72,6 +73,7 @@ class CodeMapController extends MapController {
 	            map.setRoot(newRoot);
 	            mapView.mapRootNodeChanged();
 	            mapViewManager.updateMapViewName();
+	            FilterController.getCurrentFilterController().mapRootNodeChanged(map);
 	        });
 	    }, "Load explored packages").start();
 
