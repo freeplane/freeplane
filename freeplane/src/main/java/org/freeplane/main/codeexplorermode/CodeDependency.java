@@ -74,9 +74,13 @@ class CodeDependency {
         arraysMatcher.appendTail(result);
 
         description = result.toString()
-                .replace('$', '.')
-                .replaceFirst(":\\d+\\)$", ")");
+                .replace('$', '.');
         return description;
+    }
+
+    private String getDescriptionForComparison() {
+        return getDescription()
+                .replaceFirst(":\\d+\\)$", ")");
     }
 
     boolean descriptionContains(String string) {
@@ -118,7 +122,7 @@ class CodeDependency {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOriginClass(), getTargetClass(), getDescription());
+        return Objects.hash(getOriginClass(), getTargetClass(), getDescriptionForComparison());
     }
     @Override
     public boolean equals(Object obj) {
@@ -132,7 +136,7 @@ class CodeDependency {
         return hashCode == other.hashCode
                 && Objects.equals(getOriginClass(), other.getOriginClass())
                 && Objects.equals(getTargetClass(), other.getTargetClass())
-                && Objects.equals(getDescription(), other.getDescription());
+                && Objects.equals(getDescriptionForComparison(), other.getDescriptionForComparison());
     }
     @Override
     public String toString() {
