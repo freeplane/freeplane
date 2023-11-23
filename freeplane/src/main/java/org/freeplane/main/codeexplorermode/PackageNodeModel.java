@@ -50,6 +50,7 @@ class PackageNodeModel extends CodeNodeModel {
 	    for (JavaPackage childPackage : packages) {
 	        childNodes.addNode(childPackage);
 	        Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
+	                .filter(dep -> dep.getTargetClass().getSource().isPresent())
 	                .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
 	        dependencies.entrySet().stream()
 	        .filter(e -> e.getKey().getParent().isPresent())
