@@ -1,58 +1,83 @@
 package org.freeplane.main.codeexplorermode;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
-import org.freeplane.features.link.LinkController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
-import com.tngtech.archunit.core.domain.Dependency;
-
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
-    private enum SortOrder {
-        SOURCE(Comparator.<Dependency, String>comparing(dep -> dep.getOriginClass().getName())),
-        TARGET(Comparator.<Dependency, String>comparing(dep -> dep.getTargetClass().getName()));
-        final Comparator<Dependency> comparator;
-
-        private SortOrder(Comparator<Dependency> comparator) {
-            this.comparator = comparator;
-        }
-
-    }
+    private static final String[] COLUMN_NAMES = new String[]{"GoesUp", "Origin", "Target","Dependency"};
 
     private static final long serialVersionUID = 1L;
     private static final Icon filterIcon = ResourceController.getResourceController().getIcon("filterDependencyIncormation.icon");
     private final JTextField filterField;
     private final JTable dependencyViewer;
     private final JLabel countLabel;
-    private SortOrder sortOrder;
-    private List<Dependency> allDependencies;
+    private List<CodeDependency> allDependencies;
+
+    class DependenciesWrapper extends AbstractTableModel {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public int getRowCount() {
+            return allDependencies.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return COLUMN_NAMES.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            CodeDependency row = allDependencies.get(rowIndex);
+            switch (columnIndex) {
+                case 0: return row.goesUp();
+                case 1: return row.getOriginClass().getName();
+                case 2: return row.getTargetClass().getName();
+                case 3: return row.getDescription();
+                default: return null;
+            }
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return COLUMN_NAMES[column];
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return columnIndex > 0;
+        }
+    }
 
     CodeDependenciesPanel() {
      // Create the top panel for sorting options
@@ -60,31 +85,35 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // Add components to the top panel
-        topPanel.add(TranslatedElementFactory.createLabel("code.sort_by"));
-        JRadioButton sourceButton = TranslatedElementFactory.createRadioButton("code.source");
-        sourceButton.setSelected(true);
-        sortOrder = SortOrder.SOURCE;
-        sourceButton.addActionListener(e -> update(SortOrder.SOURCE));
-        JRadioButton targetButton = TranslatedElementFactory.createRadioButton("code.target");
-        targetButton.addActionListener(e -> update(SortOrder.TARGET));
-        // Group the radio buttons
-        ButtonGroup group = new ButtonGroup();
-        group.add(sourceButton);
-        group.add(targetButton);
-        topPanel.add(sourceButton);
-        topPanel.add(targetButton);
 
         topPanel.add(new JLabel(filterIcon));
-        filterField = new JTextField(40);
-        filterField.addActionListener(e -> filterAndSetDescriptions());
+        filterField = new JTextField(100);
+        filterField.addActionListener(e -> updateDependencyFilter());
         topPanel.add(filterField);
         countLabel = new JLabel();
         topPanel.add(countLabel);
 
         dependencyViewer = new JTable();
+        allDependencies = Collections.emptyList();
+        DependenciesWrapper dataModel = new DependenciesWrapper();
+        dependencyViewer.setModel(dataModel);
+        TableColumnModel columnModel = dependencyViewer.getColumnModel();
+        updateColumn(columnModel, 0, 100);
+        updateColumn(columnModel, 1, 400);
+        updateColumn(columnModel, 2, 400);
+        updateColumn(columnModel, 3, 1000);
         dependencyViewer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        dependencyViewer.getTableHeader().setVisible(false);
-        dependencyViewer.getTableHeader().setPreferredSize(new Dimension(-1, 0));
+
+        TableRowSorter<DependenciesWrapper> sorter = new TableRowSorter<>(dataModel);
+
+        sorter.addRowSorterListener(e -> {
+            if (e.getType() == RowSorterEvent.Type.SORT_ORDER_CHANGED) {
+                SwingUtilities.invokeLater(this::scrollSelectedToVisible);
+            }
+        });
+
+        dependencyViewer.setRowSorter(sorter);
+
         JTextField cellEditor = new JTextField();
         cellEditor.setEditable(false);
         dependencyViewer.setDefaultEditor(Object.class, new DefaultCellEditor(cellEditor));
@@ -96,11 +125,37 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void update(SortOrder sortOrder) {
-        if(this.sortOrder != sortOrder) {
-            this.sortOrder = sortOrder;
-            sortAndFilter();
+    private void updateDependencyFilter() {
+        String[] filteredWords = filterField.getText().trim().split("\\W+");
+        @SuppressWarnings("unchecked")
+        TableRowSorter<DependenciesWrapper> rowSorter = (TableRowSorter<DependenciesWrapper>)dependencyViewer.getRowSorter();
+        if(filteredWords.length == 1 && filteredWords[0].isEmpty())
+            rowSorter.setRowFilter(null);
+        else {
+            RowFilter<DependenciesWrapper, Integer> dependencyFilter = new RowFilter<DependenciesWrapper, Integer>() {
+                @Override
+                public boolean include(RowFilter.Entry<? extends DependenciesWrapper, ? extends Integer> entry) {
+                    CodeDependency row = allDependencies.get(entry.getIdentifier());
+                    return containsAny(row, filteredWords);
+                }
+
+                private boolean containsAny(CodeDependency description, String[] filteredWords) {
+                    return Stream.of(filteredWords).allMatch(w ->
+                    description.descriptionContains(w));
+                }
+            };
+
+            rowSorter.setRowFilter(dependencyFilter);
         }
+        scrollSelectedToVisible();
+        countLabel.setText("( " + rowSorter.getViewRowCount() + " / " + rowSorter.getModelRowCount() + " )");
+    }
+
+    private void updateColumn(TableColumnModel columns, int index, int columnWidth) {
+        int scaledWidth = (int) (columnWidth*UITools.FONT_SCALE_FACTOR);
+        TableColumn columnModel = columns.getColumn(index);
+        columnModel.setWidth(scaledWidth);
+        columnModel.setPreferredWidth(scaledWidth);
     }
 
     @Override
@@ -121,58 +176,36 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
 
     private void update(IMapSelection selection) {
+        int selectedRow = dependencyViewer.getSelectedRow();
+        int selectedDataIndex = selectedRow < 0 ? -1 : dependencyViewer.convertRowIndexToModel(selectedRow);
+        CodeDependency selectedValue = selectedDataIndex < 0 ? null : allDependencies.get(selectedDataIndex);
         this.allDependencies = selection == null
                 ? Collections.emptyList() :
                     new DependencySelection(selection).getSelectedDependencies();
-        sortAndFilter();
-    }
-
-    private CodeLinkController linkController() {
-        return (CodeLinkController)Controller.getCurrentModeController()
-                .getExtension(LinkController.class);
-    }
-
-    private void sortAndFilter() {
-        allDependencies.sort(sortOrder.comparator);
-        filterAndSetDescriptions();
-
-    }
-
-    private void filterAndSetDescriptions() {
-        Stream<String> allDescripions = allDependencies.stream()
-                .map(Dependency::getDescription);
-        String[] filteredWords = filterField.getText().trim().split("\\W+");
-        Stream<String> filteredDescriptions  = filteredWords.length >= 1 && ! filteredWords[0].isEmpty()
-                ? allDescripions.filter(t -> filter(t, filteredWords)) : allDescripions;
-        DefaultTableModel newTableModel = new DefaultTableModel(new Object[]{"Dependencies"}, 0);
-
-        filteredDescriptions.forEach(description -> newTableModel.addRow(new Object[]{description}));
-
-        // Step 4: Manage Selections
-        int selectedRow = dependencyViewer.getSelectedRow();
-        String selectedValue = selectedRow >= 0 ? (String) dependencyViewer.getValueAt(selectedRow, 0) : null;
-
-        // Step 3: Set the Model for JTable
-        dependencyViewer.setModel(newTableModel);
-
-        int newSelectedIndex = -1;
-        if(selectedValue != null)
-            for (int i = 0; i < newTableModel.getRowCount(); i++) {
-                if (newTableModel.getValueAt(i, 0).equals(selectedValue)) {
-                    newSelectedIndex = i;
-                    break;
+        ((DependenciesWrapper)dependencyViewer.getModel()).fireTableDataChanged();
+        updateRowCountLabel();
+        if(selectedValue != null) {
+            int newSelectedDataIndex = allDependencies.indexOf(selectedValue);
+            if(newSelectedDataIndex >= 0) {
+                int newSelectedRow = dependencyViewer.convertRowIndexToView(newSelectedDataIndex);
+                if(newSelectedRow != -1) {
+                    dependencyViewer.setRowSelectionInterval(newSelectedRow, newSelectedRow);
+                    SwingUtilities.invokeLater(this::scrollSelectedToVisible);
                 }
             }
+        }
 
-        // Step 5: Ensure Row Visibility
-        if (newSelectedIndex != -1) {
-            dependencyViewer.setRowSelectionInterval(newSelectedIndex, newSelectedIndex);
-            dependencyViewer.scrollRectToVisible(new Rectangle(dependencyViewer.getCellRect(newSelectedIndex, 0, true)));
-        }        countLabel.setText("( " + newTableModel.getRowCount() + " / " + allDependencies.size() + " )");
     }
 
-    private boolean filter(String description, String[] filteredWords) {
-        return Stream.of(filteredWords).allMatch(description::contains);
+    private void updateRowCountLabel() {
+        countLabel.setText("( " + dependencyViewer.getRowCount() + " / " + allDependencies.size() + " )");
+    }
+
+    private void scrollSelectedToVisible() {
+        int selectedRowOnView = dependencyViewer.getSelectedRow();
+        if (selectedRowOnView != -1) {
+            dependencyViewer.scrollRectToVisible(new Rectangle(dependencyViewer.getCellRect(selectedRowOnView, 0, true)));
+        }
     }
 
     @Override

@@ -36,7 +36,7 @@ class ClassNodeModel extends CodeNodeModel {
         setText(nodeText);
 	}
 
-    private static String nodeText(final JavaClass javaClass) {
+    static String nodeText(final JavaClass javaClass) {
         String simpleName = javaClass.getSimpleName();
         return javaClass.getEnclosingClass()
                 .map(ec -> nodeText(ec) + "." + simpleName)

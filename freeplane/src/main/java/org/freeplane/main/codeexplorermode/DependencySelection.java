@@ -17,6 +17,7 @@ import org.freeplane.features.map.AncestorRemover;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -24,7 +25,7 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 class DependencySelection {
-    private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING , UNKNOWN}
+    private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING, UNKNOWN}
 
     private final IMapSelection selection;
     private MapModel map;
@@ -40,17 +41,27 @@ class DependencySelection {
         this.showsOutsideDependencies = showsOutsideDependencies;
     }
 
-    List<Dependency> getSelectedDependencies() {
-        List<Dependency> allDependencies;
+    List<CodeDependency> getSelectedDependencies() {
         Set<NodeModel> nodes = AncestorRemover.removeAncestors(getSelectedNodeSet());
-        allDependencies = nodes.stream()
+        List<CodeDependency> allDependencies = CodeDependency.distinct(nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
                         getOutgoingDependencies((CodeNodeModel)node).stream(),
                         getIncomingDependencies((CodeNodeModel)node).stream()))
-                .distinct()
+                .map(dep -> {
+                    CodeNodeModel originNode = getExistingNode(dep.getOriginClass());
+                    CodeNodeModel targetNode = getExistingNode(dep.getTargetClass());
+                    NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
+                    boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
+                    return new CodeDependency(dep, goesUp);
+                }))
                 .collect(Collectors.toCollection(ArrayList::new));
         return allDependencies;
+    }
+
+    private CodeNodeModel getExistingNode(JavaClass javaClass) {
+        String existingNodeId = getExistingNodeId(javaClass);
+        return existingNodeId == null ? null : (CodeNodeModel) getMap().getNodeForID(existingNodeId);
     }
 
     List<JavaClass> getSelectedClasses() {
@@ -67,27 +78,43 @@ class DependencySelection {
     }
 
     String getVisibleNodeId(JavaClass javaClass) {
+        return getExistingNodeId(javaClass, true);
+    }
+
+    String getExistingNodeId(JavaClass javaClass) {
+        return getExistingNodeId(javaClass, false);
+    }
+
+    private String getExistingNodeId(JavaClass javaClass, boolean visibleOnly) {
         JavaClass targetClass = CodeNodeModel.findEnclosingNamedClass(javaClass);
         String targetClassId = targetClass.getName();
-        switch(visibility(targetClassId)) {
-        case VISIBLE:
+        if(! visibleOnly && getNode(targetClassId) != null)
             return targetClassId;
-        case HIDDEN_BY_FILTER:
-            return null;
-        default:
-            break;
+        if(visibleOnly) {
+            switch(visibility(targetClassId)) {
+            case VISIBLE:
+                return targetClassId;
+            case HIDDEN_BY_FILTER:
+                return null;
+            default:
+                break;
+            }
         }
         JavaPackage targetPackage = targetClass.getPackage();
         String targetPackageClassesId = targetPackage.getName() + ".package";
-        switch(visibility(targetPackageClassesId)) {
-        case VISIBLE:
+        if(! visibleOnly && getNode(targetPackageClassesId) != null)
             return targetPackageClassesId;
-        case HIDDEN_BY_FILTER:
-            return null;
-        default:
-            break;
+        if(visibleOnly) {
+            switch(visibility(targetPackageClassesId)) {
+            case VISIBLE:
+                return targetPackageClassesId;
+            case HIDDEN_BY_FILTER:
+                return null;
+            default:
+                break;
+            }
         }
-        HasName visiblePackage = getVisibleContainingPackage(targetPackage);
+        HasName visiblePackage = getContainingPackage(targetPackage, visibleOnly);
         return visiblePackage == null ? null : visiblePackage.getName();
     }
 
@@ -139,12 +166,12 @@ class DependencySelection {
     }
 
 
-    private HasName getVisibleContainingPackage(JavaPackage targetPackage) {
+    private HasName getContainingPackage(JavaPackage targetPackage, boolean visibleOnly) {
          for(;;) {
              String targetPackageName = targetPackage.getName();
              NodeModel targetNode = getNode(targetPackageName);
              if(targetNode != null) {
-                 if(selection.isVisible(targetNode))
+                 if(! visibleOnly || selection.isVisible(targetNode))
                      return targetPackage;
                  if(! targetNode.isVisible(selection.getFilter()))
                      return null;
