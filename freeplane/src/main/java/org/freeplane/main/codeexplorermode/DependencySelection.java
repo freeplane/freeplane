@@ -24,6 +24,7 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 class DependencySelection {
+    private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING , UNKNOWN}
 
     private final IMapSelection selection;
     private MapModel map;
@@ -155,7 +156,6 @@ class DependencySelection {
          }
      }
 
-    enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING , UNKNOWN}
     private Visibility visibility(String targetId) {
         NodeModel targetNode = getNode(targetId);
         if(targetNode == null)
