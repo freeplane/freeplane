@@ -506,7 +506,7 @@ implements IExtension, NodeChangeAnnouncer{
 	protected void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
 	    	final MapModel map = node.getMap();
-	    	setSaved(map, false);
+	    	mapSaved(map, false);
 	    }
     }
 
@@ -638,7 +638,7 @@ implements IExtension, NodeChangeAnnouncer{
 	public void fireMapChanged(final MapChangeEvent event) {
 		final MapModel map = event.getMap();
 		if (map != null && event.setsDirtyFlag()) {
-			setSaved(map, false);
+			mapSaved(map, false);
 		}
 		sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
@@ -922,7 +922,7 @@ implements IExtension, NodeChangeAnnouncer{
 		final NodeModel node = nodeChangeEvent.getNode();
 		final MapModel map = node.getMap();
 		if(nodeChangeEvent.setsDirtyFlag())
-			setSaved(map, false);
+			mapSaved(map, false);
 		if (nodeChangeEvent.updatesModificationTime() && !map.isUndoActionRunning()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
@@ -1183,7 +1183,7 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
-	public void setSaved(final MapModel mapModel, final boolean saved) {
+	public void mapSaved(final MapModel mapModel, final boolean saved) {
 		mapModel.setSaved(saved);
 	}
 

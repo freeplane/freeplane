@@ -116,7 +116,7 @@ public class MNoteController extends NoteController {
 			final MapController mapController = modeController.getMapController();
 			final MapModel map = modeController.getController().getMap();
 			if(map != null) {
-				mapController.setSaved(map, false);
+				mapController.mapSaved(map, false);
 			}
 		}
 

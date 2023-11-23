@@ -763,7 +763,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		if(! urlAfter.equals(urlBefore))
 			mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter, false));
-		mapController.setSaved(map, true);
+		mapController.mapSaved(map, true);
 		return true;
 	}
 

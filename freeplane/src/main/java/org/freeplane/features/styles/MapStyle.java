@@ -766,7 +766,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setZoom(zoom);
-		Controller.getCurrentModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 	}
 
 	public float getZoom(final MapModel map) {
@@ -781,7 +781,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setMapViewLayout(layout);
-		Controller.getCurrentModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 	}
 
 	public void setBackgroundColor(final MapStyleModel model, final Color color) {

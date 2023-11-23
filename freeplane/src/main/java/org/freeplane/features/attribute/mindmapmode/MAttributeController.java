@@ -238,7 +238,7 @@ public class MAttributeController extends AttributeController {
 			registry.getTableModel().fireTableRowsInserted(index, index);
 			if (manual || visible) {
 				final ModeController modeController = Controller.getCurrentModeController();
-				modeController.getMapController().setSaved(map, false);
+				modeController.getMapController().mapSaved(map, false);
 			}
 		}
 
@@ -252,7 +252,7 @@ public class MAttributeController extends AttributeController {
 			registry.unregistry(name);
 			if (manual) {
 				final ModeController modeController = Controller.getCurrentModeController();
-				modeController.getMapController().setSaved(map, false);
+				modeController.getMapController().mapSaved(map, false);
 			}
 		}
 	}

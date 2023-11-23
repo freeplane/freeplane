@@ -182,7 +182,7 @@ public class EncryptionController implements IExtension {
 			}
 
 			private void fireEncryptionChangedEvent() {
-				Controller.getCurrentModeController().getMapController().setSaved(node.getMap(), false);
+				Controller.getCurrentModeController().getMapController().mapSaved(node.getMap(), false);
 				EncryptionController.this.fireEncryptionChangedEvent(node);
 			}
 		};

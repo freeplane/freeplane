@@ -149,7 +149,7 @@ public class PresentationController implements IExtension{
 				@Override
 				public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 					if(event.eventType == COLLECTION_SIZE_CHANGED)
-						modeController.getMapController().setSaved(map, false);
+						modeController.getMapController().mapSaved(map, false);
 				}
 			};
 			mapPresentations.presentations.addCollectionChangeListener(presentationCollectionChangeListener);
@@ -166,7 +166,7 @@ public class PresentationController implements IExtension{
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
 				if(event.eventType == COLLECTION_SIZE_CHANGED)
-					modeController.getMapController().setSaved(map, false);
+					modeController.getMapController().mapSaved(map, false);
 				else if(event.eventType == SELECTION_CHANGED)
 					presentationState.changeSlide();
 			}
@@ -195,7 +195,7 @@ public class PresentationController implements IExtension{
 			final SlideChangeListener slideChangeListener = new SlideChangeListener() {
 				@Override
 				public void onSlideModelChange(SlideChangeEvent changeEvent) {
-					modeController.getMapController().setSaved(map, false);
+					modeController.getMapController().mapSaved(map, false);
 					presentationState.changeSlide();
 				}
 			};

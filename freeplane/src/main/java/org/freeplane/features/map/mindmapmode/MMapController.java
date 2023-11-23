@@ -499,7 +499,7 @@ public class MMapController extends MapController {
         final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(parent, child, index);
         firePreNodeDelete(nodeDeletionEvent);
         final MapModel map = parent.getMap();
-        setSaved(map, false);
+        mapSaved(map, false);
         parent.remove(index);
         fireNodeDeleted(nodeDeletionEvent);
         deleteSingleSummaryNode(nodeDeletionEvent.parent);
@@ -535,7 +535,7 @@ public class MMapController extends MapController {
 
     @Override
     public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-        setSaved(parent.getMap(), false);
+        mapSaved(parent.getMap(), false);
         super.insertNodeIntoWithoutUndo(newNode, parent, index);
     }
 
@@ -832,7 +832,7 @@ public class MMapController extends MapController {
         fireNodeMoved(nodeMoveEvent);
         if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
             deleteSingleSummaryNode(nodeMoveEvent.oldParent);
-       setSaved(newParent.getMap(), false);
+       mapSaved(newParent.getMap(), false);
         return newIndex;
     }
 
@@ -942,7 +942,7 @@ public class MMapController extends MapController {
 
 
     @Override
-    public void setSaved(final MapModel mapModel, final boolean saved) {
+    public void mapSaved(final MapModel mapModel, final boolean saved) {
         final boolean setTitle = saved != mapModel.isSaved() || mapModel.isReadOnly();
         mapModel.setSaved(saved);
         if (setTitle) {
