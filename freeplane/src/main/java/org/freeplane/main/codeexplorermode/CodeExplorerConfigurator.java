@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.Controller;
 
 public class CodeExplorerConfigurator extends JPanel {
@@ -115,11 +116,11 @@ public class CodeExplorerConfigurator extends JPanel {
 
     private JPanel createConfigButtonsPanel() {
         JPanel configButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addConfigurationButton = new JButton("Add");
+        JButton addConfigurationButton = TranslatedElementFactory.createButton("code.add");
         addConfigurationButton.addActionListener(e -> addNewConfiguration());
-        JButton deleteConfigurationButton = new JButton("Delete");
+        JButton deleteConfigurationButton = TranslatedElementFactory.createButton("code.delete");
         deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
-        JButton exploreConfigurationButton = new JButton("Explore");
+        JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
         exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
         configButtonsPanel.add(addConfigurationButton);
         configButtonsPanel.add(deleteConfigurationButton);
@@ -186,9 +187,9 @@ public class CodeExplorerConfigurator extends JPanel {
 
     private JPanel createLocationsButtonsPanel() {
         JPanel locationsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addJarsButton = new JButton("Add JARs and folders...");
+        JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
         addJarsButton.addActionListener(e -> addJarsAndFolders());
-        JButton removeLocationsButton = new JButton("Remove location...");
+        JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
         removeLocationsButton.addActionListener(e -> deleteSelectedLocation());
         locationsButtonsPanel.add(addJarsButton);
         locationsButtonsPanel.add(removeLocationsButton);
@@ -201,7 +202,7 @@ public class CodeExplorerConfigurator extends JPanel {
         JFileChooser fileChooser = UITools.newFileChooser(null);
         fileChooser.setMultiSelectionEnabled(true);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("JAR Files", "jar");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("jar", "jar");
         fileChooser.setFileFilter(filter);
         int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
         if (option == JFileChooser.APPROVE_OPTION) {

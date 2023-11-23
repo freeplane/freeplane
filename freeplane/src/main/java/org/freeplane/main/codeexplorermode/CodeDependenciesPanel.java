@@ -60,7 +60,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         // Add components to the top panel
-        topPanel.add(new JLabel("Sort by:"));
+        topPanel.add(TranslatedElementFactory.createLabel("code.sort_by"));
         JRadioButton sourceButton = TranslatedElementFactory.createRadioButton("code.source");
         sourceButton.setSelected(true);
         sortOrder = SortOrder.SOURCE;
