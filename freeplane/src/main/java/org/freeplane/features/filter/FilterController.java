@@ -344,13 +344,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	 */
 	@Override
 	public void afterViewChange(Component oldView, Component newView) {
-		if(filterToolbar == null){
-			return;
-		}
 		updateUILater();
 	}
 
 	private void updateUILater() {
+        if(filterToolbar == null){
+            return;
+        }
 		mapChangeCounter++;
 		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			@Override
@@ -963,4 +963,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		return NO_FILTERING != selectedCondition && null != selectedCondition;
 	}
 
+    public void mapRootNodeChanged(MapModel map) {
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection != null && map.equals(selection.getMap()))
+            updateUILater();
+    }
 }
