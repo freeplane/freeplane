@@ -1183,9 +1183,7 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
-	public void mapSaved(final MapModel mapModel, final boolean saved) {
-		mapModel.setSaved(saved);
-	}
+	public void mapSaved(@SuppressWarnings("unused") final MapModel mapModel, @SuppressWarnings("unused") final boolean saved) {/**/}
 
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {
