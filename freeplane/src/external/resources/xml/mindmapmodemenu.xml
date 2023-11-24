@@ -332,6 +332,7 @@
 					<Entry name="SetStringPropertyAction.show_connectors.true" />
 					<Entry name="SetStringPropertyAction.show_connectors.false" />
 					<Entry name="SetStringPropertyAction.show_connectors.for_selection" />
+					<Entry name="SetStringPropertyAction.show_connectors.for_selection_and_arrows" />
 					<Entry name="SetStringPropertyAction.show_connectors.never" />
 				</Entry>
 				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />

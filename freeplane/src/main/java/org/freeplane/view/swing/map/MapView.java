@@ -650,6 +650,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private static final String HIDE_CONNECTORS = "never".intern();
 	private static final String SHOW_CONNECTORS_FOR_SELECTION = "for_selection".intern();
+	private static final String SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS = "for_selection_and_arrows".intern();
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
 	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
 	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
@@ -984,7 +985,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(! node.isShowing())
 			return;
 		node.update();
-		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors || repaintsViewOnSelectionChange)
+		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors || SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS == showConnectors || repaintsViewOnSelectionChange)
 			repaint(getVisibleRect());
 		else
 			node.repaintSelected();
@@ -2068,8 +2069,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 							&& sourceView.isContentVisible() && targetView.isContentVisible();
 					final boolean showConnector = SHOW_CONNECTOR_LINES == showConnectors
 							|| HIDE_CONNECTOR_LINES == showConnectors
-							|| SHOW_CONNECTORS_FOR_SELECTION == showConnectors && (sourceView != null && sourceView.isSelected()
-							|| targetView != null && targetView.isSelected());
+							|| SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS == showConnectors
+							|| (SHOW_CONNECTORS_FOR_SELECTION == showConnectors )
+									&& (sourceView != null && sourceView.isSelected() || targetView != null && targetView.isSelected()) ;
 					if(showConnector) {
 						LinkController linkController = LinkController.getController(getModeController());
                         if (areBothNodesVisible
@@ -2725,8 +2727,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		parentView.setFolded(false);
 	}
 
-	public boolean showsConnectorLines() {
-		return HIDE_CONNECTOR_LINES != showConnectors;
+	public boolean showsConnectorLines(boolean isSelected) {
+		return (HIDE_CONNECTOR_LINES != showConnectors && SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS != showConnectors)
+				|| (isSelected && SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS == showConnectors);
 	}
 
 	public boolean showsIcons() {

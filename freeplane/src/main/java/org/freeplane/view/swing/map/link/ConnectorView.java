@@ -327,7 +327,7 @@ public class ConnectorView extends AConnectorView{
 			endPoint2.translate(((targetIsLeft) ? -1 : 1) * map.getZoomed(endInclination.x), map
 				.getZoomed(endInclination.y));
 		}
-		final boolean showsConnectors = map.showsConnectorLines();
+		final boolean showsConnectors = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected()));
 		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint, showsConnectors);
 		if(showsConnectors) {
 			drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
