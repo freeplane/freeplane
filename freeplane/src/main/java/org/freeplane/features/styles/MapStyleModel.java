@@ -531,10 +531,7 @@ public class MapStyleModel implements IExtension {
         } else {
             modeController.removeExtensions(LogicalStyleKeys.NODE_STYLE, targetStyleNode, targetStyleNode);
             modeController.removeExtensions(MIconController.Keys.ICONS, targetStyleNode, targetStyleNode);
-            NodeAttributeTableModel nodeAttributeTableModel = NodeAttributeTableModel.getModel(targetStyleNode);
-            while (nodeAttributeTableModel.getRowCount() > 0) {
-                mAttributeController.performRemoveRow(targetStyleNode, nodeAttributeTableModel, 0);
-            }
+            targetStyleNode.removeExtension(NodeAttributeTableModel.class);
         }
         modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
         modeController.copyExtensions(MIconController.Keys.ICONS, copiedStyleNode, targetStyleNode);
