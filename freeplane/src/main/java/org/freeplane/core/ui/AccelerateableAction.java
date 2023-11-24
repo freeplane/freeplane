@@ -111,7 +111,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 		final Object source = e.getSource();
         if ((newNodeLinkedToMenuItemEnabled)
                 && ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed()) ){
-            newNodeLinkedToMenuItemDialog.setVisible(false);
+//            newNodeLinkedToMenuItemDialog.setVisible(false);
             CommandToNode.insertNode(getOriginalAction());
             return;
         }
