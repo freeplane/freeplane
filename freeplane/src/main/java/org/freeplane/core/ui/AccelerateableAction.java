@@ -109,16 +109,17 @@ public class AccelerateableAction implements IFreeplaneAction {
 			getAcceleratorOnNextClickActionDialog().setVisible(false);
 		}
 		final Object source = e.getSource();
-		if ((newAcceleratorOnNextClickEnabled || (0 != (e.getModifiers() & ActionEvent.CTRL_MASK) && 0 == (e.getModifiers() & ActionEvent.SHIFT_MASK)))
+        if ((newNodeLinkedToMenuItemEnabled)
+                && ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed()) ){
+            newNodeLinkedToMenuItemDialog.setVisible(false);
+            CommandToNode.insertNode(getOriginalAction());
+            return;
+        }
+		if ((newAcceleratorOnNextClickEnabled || 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))
 		        && ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed())) {
 			getAcceleratorManager().newAccelerator(getOriginalAction(), newAccelerator);
 			return;
 		}
-		if ((newNodeLinkedToMenuItemEnabled || (0 != (e.getModifiers() & ActionEvent.CTRL_MASK) && 0 != (e.getModifiers() & ActionEvent.SHIFT_MASK)))
-				&& ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed()) ){
-            CommandToNode.insertNode(getOriginalAction());
-            return;
-        }
 		originalAction.actionPerformed(e);
 	}
 
