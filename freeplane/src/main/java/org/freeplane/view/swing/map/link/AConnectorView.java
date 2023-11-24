@@ -55,6 +55,10 @@ abstract class AConnectorView  implements ILinkView {
 	 * @param d 
      */
     protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size) {
+		paintArrow(from, to, g, size, true);
+	}
+
+	protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size, final boolean isArrowsPoint) {
     	int dx, dy;
     	double dxn, dyn;
     	dx = from.x - to.x;
@@ -67,10 +71,18 @@ abstract class AConnectorView  implements ILinkView {
     	dyn = size * dy / length;
     	final double arrowWidth = .5f;
     	final Polygon p = new Polygon();
-    	p.addPoint((to.x), (to.y));
-    	p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
-    	p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
-    	p.addPoint((to.x), (to.y));
+    	if(isArrowsPoint) {
+    		p.addPoint((to.x), (to.y));
+    		p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
+    		p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
+    		p.addPoint((to.x), (to.y));
+    	} else {
+    		p.addPoint((int) (to.x + dxn), (int) (to.y + dyn));
+    		p.addPoint((int) (to.x + arrowWidth * dyn), (int) (to.y - arrowWidth * dxn));
+    		p.addPoint((int) (to.x + dxn*0.7), (int) (to.y + dyn*0.7));
+    		p.addPoint((int) (to.x - arrowWidth * dyn), (int) (to.y + arrowWidth * dxn));
+    		p.addPoint((int) (to.x + dxn), (int) (to.y + dyn));
+    	}
     	g.fillPolygon(p);
     	g.drawPolygon(p);
     }

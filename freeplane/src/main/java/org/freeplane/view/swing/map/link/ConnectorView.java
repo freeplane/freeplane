@@ -377,21 +377,23 @@ public class ConnectorView extends AConnectorView{
 		        g.draw(arrowLinkCurve);
 		    }
 		}
-		if (isSourceVisible() && !(showsConnectors && linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE))) {
+		boolean isStartArrowTypeNone = linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE);
+		if (isSourceVisible() && !(showsConnectors && isStartArrowTypeNone)) {
 			if(!selfLink && isLine && endPoint != null)
-				paintArrow(g, endPoint, startPoint);
+				paintArrow(g, endPoint, startPoint, !isStartArrowTypeNone);
 			else
-				paintArrow(g, startPoint2, startPoint);
+				paintArrow(g, startPoint2, startPoint, !isStartArrowTypeNone);
 		}
-		if (isTargetVisible() && !(showsConnectors && linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE))) {
+		boolean isEndArrowTypeNone = linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE);
+		if (isTargetVisible() && !(showsConnectors && isEndArrowTypeNone)) {
 			if(isLine && startPoint != null) {
-                            if (selfLink)
-				paintArrow(g, startPoint, startPoint2);
-                            else
-				paintArrow(g, startPoint, endPoint);
-                        }
+				if (selfLink)
+					paintArrow(g, startPoint, startPoint2, !isEndArrowTypeNone);
+				else
+					paintArrow(g, startPoint, endPoint, !isEndArrowTypeNone);
+			}
 			else
-				paintArrow(g, endPoint2, endPoint);
+				paintArrow(g, endPoint2, endPoint, !isEndArrowTypeNone);
 		}
 		if(showsConnectors) {
 			boolean showsControlPoints = showsControlPoints();
@@ -442,8 +444,12 @@ public class ConnectorView extends AConnectorView{
     }
 
 	private void paintArrow(final Graphics2D g, Point from, Point to) {
-	    paintArrow(from, to, g, getZoom() * 10);
-    }
+		paintArrow( g, from, to, true);
+	}
+
+	private void paintArrow(final Graphics2D g, Point from, Point to, boolean isArrowPoint) {
+		paintArrow(from, to, g, getZoom() * 10, isArrowPoint);
+	}
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final String sourceLabel = linkController.getSourceLabel(viewedConnector);
