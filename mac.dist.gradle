@@ -48,7 +48,7 @@ task macosapp_input {
 
   def macosapp_copyvolumeicon= tasks.create ("macosapp_copyvolumeicon", Copy) {
     from file ('freeplane_framework/mac-appbundler/freeplane.icns')
-    into file('build/macosapp/app-resource-dir')
+    into file('build/macosapp/dmg-resource-dir')
     rename { String fileName ->
       'Freeplane-volume.icns'
     }
@@ -64,11 +64,12 @@ def defineMacBuildTasks =  { architecture ->
 
    def jpackage_macosxapp = tasks.create ("jpackage_macosxapp_${architecture}", Exec) {
    	commandLine jpackage,
-   	 '--name' , 'Freeplane',
+        	 '--name' , 'Freeplane',
    	 '--type', 'app-image',
      '--icon', 'freeplane_framework/mac-appbundler/freeplane.icns',
      '--app-version', majorVersion,
      '--java-options', '-Xmx512m',
+     '--java-options', '-Djava.security.manager=allow',
      '--java-options', '-Dapple.laf.useScreenMenuBar=false',
      '--java-options', '-Xdock:name=Freeplane',
      '--java-options', '--add-exports', 
@@ -128,10 +129,11 @@ def defineMacBuildTasks =  { architecture ->
   def signMacApp= tasks.create ("signMacApp_${architecture}", Exec) {
         onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
  
-        commandLine 'bash', '-e', '-c', """
-            codesign --deep -f --preserve-metadata=entitlements --force -vvv --options runtime -s "Developer ID Application: ${macAppProperties['macapp.codesign.identity']}" -v build/macosapp/app-image-${architecture}/Freeplane.app/Contents/runtime/Contents/MacOS/libjli.dylib
-            codesign --deep -f --preserve-metadata=entitlements --force -vvv --options runtime -s "Developer ID Application: ${macAppProperties['macapp.codesign.identity']}" -v build/macosapp/app-image-${architecture}/Freeplane.app
-        """
+   	commandLine jpackage,
+     '--type', 'app-image',
+     '--app-image', "build/macosapp/app-image-${architecture}/Freeplane.app",
+     '--mac-sign',
+     '--mac-signing-key-user-name', macAppProperties['macapp.codesign.identity']
         dependsOn macosapp_makeapp
     }
 
@@ -146,10 +148,10 @@ def defineMacBuildTasks =  { architecture ->
         '--name' , 'Freeplane',
         '--type', 'dmg',
         '--app-version', majorVersion,
-        '--app-image', "build/macosapp/app-image-${architecture}",
+        '--app-image', "build/macosapp/app-image-${architecture}/Freeplane.app",
         '--mac-package-identifier', 'org.freeplane.core',
         '--mac-package-name', 'Freeplane',
-        '--resource-dir', 'build/macosapp/app-resource-dir',
+        '--resource-dir', 'build/macosapp/dmg-resource-dir',
         '--dest', globalDist
 
         dependsOn signMacApp, macosapp_copyvolumeicon
