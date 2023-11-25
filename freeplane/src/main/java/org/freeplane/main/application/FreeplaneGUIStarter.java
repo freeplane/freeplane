@@ -84,8 +84,6 @@ import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.survey.FreeplaneSurveyProperties;
 import org.freeplane.main.application.survey.SurveyRunner;
 import org.freeplane.main.application.survey.SurveyStarter;
-import org.freeplane.main.codeexplorermode.CodeModeController;
-import org.freeplane.main.codeexplorermode.CodeModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
@@ -286,16 +284,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		    .getController(controller)
 		    .getMenuBuilder(), new ChildActionEntryRemover(controller));
 		FModeControllerFactory.createModeController();
-		CodeModeControllerFactory.createModeController();
     }
 
 	@Override
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
-		LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
-	    buildMenus(controller, plugins, CodeModeController.MODENAME, "/xml/codeexplorermodemenu.xml");
-	    ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {

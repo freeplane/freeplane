@@ -37,6 +37,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.application.CommandLineParser;
@@ -193,6 +195,7 @@ class ActivatorImpl implements BundleActivator {
 			@Override
 			public void run() {
 				starter.createModeControllers(controller);
+		        LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 				installControllerExtensions(context, controller, options);
 				if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 					controller.fireStartupFinished();
@@ -208,6 +211,7 @@ class ActivatorImpl implements BundleActivator {
 				}
 				FilterController.getController(controller).loadDefaultConditions();
 				starter.buildMenus(controller, plugins);
+                ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
 				starter.createFrame();
 			}
 		});

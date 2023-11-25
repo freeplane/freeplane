@@ -41,9 +41,6 @@ dependencies {
     lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
 
-    lib 'com.tngtech.archunit:archunit:1.2.0'
-    lib 'org.jgrapht:jgrapht-core:1.5.2'
-
     maclib 'org.violetlib:vaqua:11'
 
     runtimeOnly files("${project.buildDir}/emoji/xml")
@@ -137,6 +134,7 @@ ext.bundleExports = """\
                     org.freeplane.features.filter.condition,
                     org.freeplane.features.format,
                     org.freeplane.features.help,
+                    org.freeplane.features.highlight,
                     org.freeplane.features.icon,
                     org.freeplane.features.icon.factory,
                     org.freeplane.features.icon.mindmapmode,

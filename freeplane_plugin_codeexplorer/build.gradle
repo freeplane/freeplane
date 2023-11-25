@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':freeplane')
+    lib 'com.tngtech.archunit:archunit:1.2.0'
+    lib 'org.jgrapht:jgrapht-core:1.5.2'
+}
