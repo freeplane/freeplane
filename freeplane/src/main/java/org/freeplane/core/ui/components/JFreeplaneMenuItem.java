@@ -1,14 +1,11 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-
-import org.freeplane.core.ui.AccelerateableAction;
 
 public class JFreeplaneMenuItem extends JMenuItem implements IKeyBindingManager {
 	public JFreeplaneMenuItem() {
@@ -55,13 +52,4 @@ public class JFreeplaneMenuItem extends JMenuItem implements IKeyBindingManager 
 	public boolean isKeyBindingProcessed() {
 		return isKeyBindingProcessed;
 	}
-
-	protected void processMouseEvent(MouseEvent e){
-		if (e.getID() == MouseEvent.MOUSE_RELEASED && contains(e.getPoint()) && AccelerateableAction.isNewNodeLinkedToMenuItemEnabled() ) {
-			doClick();
-		} else {
-			super.processMouseEvent(e);
-		}
-	}
-
 }
