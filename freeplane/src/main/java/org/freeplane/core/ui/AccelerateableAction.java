@@ -88,9 +88,10 @@ public class AccelerateableAction implements IFreeplaneAction {
             return;
         }
         String title = TextUtils.getText("NewNodeLinkedToMenu.dialogTitle");
-        String text  = TextUtils.getText("NewNodeLinkedToMenu.dialogText");
+        String doneButtonText = TextUtils.getText("done");
+        String text  = TextUtils.format("NewNodeLinkedToMenu.dialogText", doneButtonText);
         final Component frame = Controller.getCurrentController().getViewController().getMenuComponent();
-        newNodeLinkedToMenuItemDialog = UITools.createCancelDialog(frame, title, text);
+        newNodeLinkedToMenuItemDialog = UITools.createCancelDialog(frame, title, text, doneButtonText);
         newNodeLinkedToMenuItemDialog.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentHidden(final ComponentEvent e) {
