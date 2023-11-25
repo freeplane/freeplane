@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-class CodeDependency {
+public class CodeDependency {
     private static final Pattern ARRAYS = Pattern.compile("\\[+L?([\\w$]+);?");
     private static final Pattern PACKAGES = Pattern.compile("(?<=\\b|\\[L)(?:[a-z0-9_]+\\.)+");
     static Stream<CodeDependency> distinct(Stream<CodeDependency> stream) {
@@ -41,14 +41,14 @@ class CodeDependency {
         this.goesUp = goesUp;
         this.hashCode = Objects.hash(getOriginClass(), getTargetClass(), getDescription());
     }
-    JavaClass getOriginClass() {
+    public JavaClass getOriginClass() {
         return dependency.getOriginClass();
     }
-    JavaClass getTargetClass() {
+    public JavaClass getTargetClass() {
         return dependency.getTargetClass();
     }
 
-    boolean goesUp() {
+    public boolean goesUp() {
         return goesUp;
     }
 
@@ -56,7 +56,7 @@ class CodeDependency {
         return dependency;
     }
 
-    String getDescription() {
+    public String getDescription() {
         JavaClass originClass = getOriginClass();
         JavaClass targetClass = getTargetClass();
         String description = dependency.getDescription()
@@ -83,7 +83,7 @@ class CodeDependency {
                 .replaceFirst(":\\d+\\)$", ")");
     }
 
-    boolean descriptionContains(String string) {
+    public boolean descriptionContains(String string) {
         return dependency.getDescription().contains(string);
     }
 

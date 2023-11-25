@@ -24,7 +24,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
-class DependencySelection {
+public class DependencySelection {
     private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING, UNKNOWN}
 
     private final IMapSelection selection;
@@ -32,16 +32,16 @@ class DependencySelection {
     private Set<NodeModel> selectedNodeSet;
     private final boolean showsOutsideDependencies;
 
-    DependencySelection(IMapSelection selection) {
+    public DependencySelection(IMapSelection selection) {
         this(selection, ResourceController.getResourceController().getBooleanProperty("code_showOutsideDependencies", true));
     }
 
-    DependencySelection(IMapSelection selection, boolean showsOutsideDependencies) {
+    public DependencySelection(IMapSelection selection, boolean showsOutsideDependencies) {
         this.selection = selection;
         this.showsOutsideDependencies = showsOutsideDependencies;
     }
 
-    List<CodeDependency> getSelectedDependencies() {
+    public List<CodeDependency> getSelectedDependencies() {
         Set<NodeModel> nodes = AncestorRemover.removeAncestors(getSelectedNodeSet());
         List<CodeDependency> allDependencies = CodeDependency.distinct(nodes.stream()
                 .flatMap(node ->
@@ -77,7 +77,7 @@ class DependencySelection {
         return allClasses;
     }
 
-    String getVisibleNodeId(JavaClass javaClass) {
+    public String getVisibleNodeId(JavaClass javaClass) {
         return getExistingNodeId(javaClass, true);
     }
 

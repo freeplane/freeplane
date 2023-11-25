@@ -1,4 +1,4 @@
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -31,10 +31,9 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-
-import com.tngtech.archunit.core.domain.JavaClass;
+import org.freeplane.plugin.codeexplorer.CodeDependency;
+import org.freeplane.plugin.codeexplorer.DependencySelection;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
@@ -164,8 +163,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
     @Override
     public void afterMapChange(MapModel oldMap, MapModel newMap) {
-        if(newMap instanceof CodeMapModel)
-            update();
+        update();
     }
 
     void update() {
@@ -222,10 +220,8 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         if(propertyName.equals("code_showOutsideDependencies")) {
             Controller controller = Controller.getCurrentController();
             IMapSelection selection = controller.getSelection();
-            if (selection.getMap() instanceof CodeMapModel) {
-                update(selection);
-                controller.getMapViewManager().getMapViewComponent().repaint();
-            }
+            update(selection);
+            controller.getMapViewManager().getMapViewComponent().repaint();
         }
     }
 

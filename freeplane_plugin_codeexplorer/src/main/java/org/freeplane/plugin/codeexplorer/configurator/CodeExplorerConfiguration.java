@@ -1,9 +1,9 @@
 /*
- * Created on 17 Nov 2023
+ * Created on 25 Nov 2023
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,45 +13,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.Location;
 
-public class CodeExplorerConfigurations {
-    private static final String CONFIGURATION_DELIMITER = "\n";
-    private List<CodeExplorerConfiguration> configurations;
-
-    public CodeExplorerConfigurations(List<CodeExplorerConfiguration> configurations) {
-        this.configurations = configurations;
-    }
-
-    public List<CodeExplorerConfiguration> getConfigurations() {
-        return configurations;
-    }
-
-    public void setConfigurations(List<CodeExplorerConfiguration> configurations) {
-        this.configurations = configurations;
-    }
-
-    public String serialize() {
-        return configurations.stream()
-                .map(CodeExplorerConfiguration::serialize)
-                .collect(Collectors.joining(CONFIGURATION_DELIMITER));
-    }
-
-    public static CodeExplorerConfigurations deserialize(String serialized) {
-        List<CodeExplorerConfiguration> configurations = serialized.isEmpty()
-                ? new ArrayList<>()
-                : Arrays.stream(serialized.split(CONFIGURATION_DELIMITER))
-                .map(CodeExplorerConfiguration::deserialize)
-                .collect(Collectors.toCollection(ArrayList::new));
-        return new CodeExplorerConfigurations(configurations);
-    }
-}
-
-class CodeExplorerConfiguration {
+public class CodeExplorerConfiguration {
     private static final String PROJECT_PART_DELIMITER = "\t";
     private String projectName;
     private List<File> locations;
@@ -95,7 +64,7 @@ class CodeExplorerConfiguration {
         return new CodeExplorerConfiguration(projectName, locations);
     }
 
-    public PackageNodeModel importPackages(MapModel map) {
+    public JavaPackage importPackages() {
         Collection<Location> locations = getLocations().stream()
                 .map(File::toURI)
                 .map(Location::of)
@@ -105,6 +74,6 @@ class CodeExplorerConfiguration {
         JavaPackage rootPackage = importedClasses.getDefaultPackage();
         while(rootPackage.getClasses().isEmpty() && rootPackage.getSubpackages().size() == 1)
             rootPackage = rootPackage.getSubpackages().iterator().next();
-        return new PackageNodeModel(rootPackage, map, getProjectName(), 0);
+        return rootPackage;
     }
 }

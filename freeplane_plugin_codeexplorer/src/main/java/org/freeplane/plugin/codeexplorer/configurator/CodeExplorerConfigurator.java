@@ -1,4 +1,4 @@
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -24,6 +24,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.codeexplorer.CodeModeController;
 
 public class CodeExplorerConfigurator extends JPanel {
 
@@ -129,9 +130,9 @@ public class CodeExplorerConfigurator extends JPanel {
     }
 
     private void exploreSelectedConfiguration() {
-        CodeMapController mapController = (CodeMapController) Controller.getCurrentModeController().getMapController();
+        CodeExplorer codeExplorer = ((CodeModeController) Controller.getCurrentModeController()).getCodeExplorer();
         int selectedConfigurationIndex = getSelectedConfigurationIndex();
-        mapController.explore(getConfiguration(selectedConfigurationIndex));
+        codeExplorer.explore(getConfiguration(selectedConfigurationIndex));
     }
 
     private CodeExplorerConfiguration getConfiguration(int selectedConfigurationIndex) {

@@ -14,13 +14,15 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.plugin.codeexplorer.ShowDependingNodesAction.DependencyDirection;
+import org.freeplane.plugin.codeexplorer.configurator.CodeExplorer;
+import org.freeplane.plugin.codeexplorer.configurator.CodeExplorerConfiguration;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-class CodeMapController extends MapController {
+class CodeMapController extends MapController implements CodeExplorer{
     CodeMapController(CodeModeController modeController) {
         super(modeController);
         modeController.addAction(new ShowSelectedClassesWithExternalDependenciesAction());
@@ -63,7 +65,8 @@ class CodeMapController extends MapController {
 	@Override
 	protected void fireFoldingChanged(final NodeModel node) {/**/}
 
-	void explore(CodeExplorerConfiguration codeExplorerConfiguration) {
+	@Override
+    public void explore(CodeExplorerConfiguration codeExplorerConfiguration) {
 	    CodeMapModel map = (CodeMapModel) Controller.getCurrentController().getSelection().getMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
 	    map.setRoot(emptyRoot);
@@ -74,9 +77,10 @@ class CodeMapController extends MapController {
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
 
-	        PackageNodeModel newRoot;
+	        NodeModel newRoot;
 	        if(codeExplorerConfiguration != null) {
-	            newRoot = codeExplorerConfiguration.importPackages(map);
+	            JavaPackage rootPackage = codeExplorerConfiguration.importPackages();
+	            newRoot = new PackageNodeModel(rootPackage, map, codeExplorerConfiguration.getProjectName(), 0);
 	        }
 	        else {
 	            ClassFileImporter classFileImporter = new ClassFileImporter();

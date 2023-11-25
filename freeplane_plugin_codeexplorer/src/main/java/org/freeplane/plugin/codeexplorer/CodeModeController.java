@@ -21,6 +21,8 @@ package org.freeplane.plugin.codeexplorer;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.codeexplorer.configurator.CodeExplorer;
+import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 
 public class CodeModeController extends ModeController {
 	static public final String MODENAME = "CodeExplorer";
@@ -51,4 +53,8 @@ public class CodeModeController extends ModeController {
 	    getExtension(CodeProjectController.class).shutdownController();
 	    super.shutdown();
 	}
+
+    public CodeExplorer getCodeExplorer() {
+        return (CodeMapController) getMapController();
+    }
 }

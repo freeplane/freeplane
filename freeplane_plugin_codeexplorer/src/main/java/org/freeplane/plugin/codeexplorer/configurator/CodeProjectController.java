@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.Graphics2D;
 import java.util.stream.Stream;
@@ -32,21 +32,24 @@ import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.codeexplorer.CodeDependency;
+import org.freeplane.plugin.codeexplorer.DependencySelection;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
  * @author Dimitry Polivaev
  */
-class CodeProjectController implements IExtension {
+public class CodeProjectController implements IExtension {
     private CodeDependenciesPanel codeDependenciesPanel;
-    private CodeModeController modeController;
+    private ModeController modeController;
     private JTabbedPane informationPanel;
     private CodeDependency selectedDependency;
     /**
 	 * @param modeController
 	 */
-	public CodeProjectController(CodeModeController modeController) {
+	public CodeProjectController(ModeController modeController) {
 		super();
         this.modeController = modeController;
         Controller controller = modeController.getController();
