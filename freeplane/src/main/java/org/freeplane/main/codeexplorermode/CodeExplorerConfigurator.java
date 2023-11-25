@@ -96,7 +96,7 @@ public class CodeExplorerConfigurator extends JPanel {
     private void updateConfigurationName() {
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
-            String projectName = (String) configTableModel.getValueAt(selectedRow, 0);
+            String projectName = ((String) configTableModel.getValueAt(selectedRow, 0)).trim();
             CodeExplorerConfiguration config = getConfiguration(selectedRow);
             config.setProjectName(projectName);
             saveConfigurationsProperty();
