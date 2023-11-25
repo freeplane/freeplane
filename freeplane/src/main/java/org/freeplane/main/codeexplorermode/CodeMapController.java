@@ -1,12 +1,17 @@
 package org.freeplane.main.codeexplorermode;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+
+import javax.swing.UIManager;
 
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.main.codeexplorermode.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.view.swing.map.MapView;
@@ -39,6 +44,18 @@ class CodeMapController extends MapController {
     public MapModel newMap() {
 	    final CodeMapModel codeMapModel = new CodeMapModel(getModeController().getMapController().duplicator());
 	    fireMapCreated(codeMapModel);
+	    Color background = UIManager.getColor("Panel.background");
+	    Color foreground = UIManager.getColor("Panel.foreground");
+	    MapStyleModel mapStyleModel = MapStyleModel.getExtension(codeMapModel);
+	    NodeModel defaultStyleNode = mapStyleModel.getDefaultStyleNode();
+	    if(background != null && foreground != null) {
+	        mapStyleModel.setBackgroundColor(background);
+	        NodeStyleModel.createNodeStyleModel(defaultStyleNode).setColor(foreground);
+	    }
+	    else {
+	        mapStyleModel.setBackgroundColor(Color.WHITE);
+	        NodeStyleModel.createNodeStyleModel(defaultStyleNode).setColor(Color.BLACK);
+	    }
 	    createMapView(codeMapModel);
 	    return codeMapModel;
 	}

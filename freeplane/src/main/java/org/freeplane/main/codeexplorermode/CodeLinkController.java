@@ -34,6 +34,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -55,7 +57,12 @@ class CodeLinkController extends LinkController {
 
     @Override
     public Color getColor(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ? VISIBLE_CONNECTOR_COLOR : Color.BLACK;
+        return areConnectorNodesSelected(connector) ? VISIBLE_CONNECTOR_COLOR :
+            getMapDefaultNodeTextColor(connector);
+    }
+
+    protected Color getMapDefaultNodeTextColor(ConnectorModel connector) {
+        return MapStyleModel.getExtension(connector.getSource().getMap()).getDefaultStyleNode().getExtension(NodeStyleModel.class).getColor();
     }
 
     @Override
@@ -124,7 +131,7 @@ class CodeLinkController extends LinkController {
 
     @Override
     public Color getLabelColor(ConnectorModel connector) {
-       return Color.BLACK;
+       return getMapDefaultNodeTextColor(connector);
     }
 
     @Override
