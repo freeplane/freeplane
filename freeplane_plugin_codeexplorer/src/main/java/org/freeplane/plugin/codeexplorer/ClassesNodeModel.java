@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -54,10 +53,8 @@ class ClassesNodeModel extends CodeNodeModel {
                     JavaClass edgeStart = findEnclosingNamedClass(javaClass);
                     nodeSort.addNode(edgeStart);
                     Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
-                            .map(CodeNodeModel::getTargetNodeClass)
-                            .filter(jc -> ! jc.equals(edgeStart) && jc.getPackage().equals(javaPackage))
-                            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
+                            .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
+                            .collect(Collectors.groupingBy(CodeNodeModel::getTargetNodeClass, Collectors.counting()));
                     dependencies.entrySet().stream()
                     .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
                 }
@@ -81,6 +78,11 @@ class ClassesNodeModel extends CodeNodeModel {
 	    }
 	    return false;
 	}
+
+    private boolean goesOutsideEnclosingOriginClass(JavaClass edgeStart, Dependency dependency) {
+        JavaClass jc = getTargetNodeClass(dependency);
+        return ! jc.equals(edgeStart) && jc.getPackage().equals(javaPackage);
+    }
 
 	@Override
 	public int getChildCount(){
