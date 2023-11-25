@@ -34,6 +34,7 @@ import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -87,6 +88,9 @@ public class AccelerateableAction implements IFreeplaneAction {
         if(AccelerateableAction.isNewNodeLinkedToMenuItemEnabled()){
             return;
         }
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection == null)
+            return;
         String title = TextUtils.getText("NewNodeLinkedToMenu.dialogTitle");
         String doneButtonText = TextUtils.getText("done");
         String text  = TextUtils.format("NewNodeLinkedToMenu.dialogText", doneButtonText);
@@ -98,6 +102,7 @@ public class AccelerateableAction implements IFreeplaneAction {
                 newNodeLinkedToMenuItemDialog = null;
             }
         });
+        UITools.setDialogLocationRelativeTo(newNodeLinkedToMenuItemDialog, selection.getSelected());
         newNodeLinkedToMenuItemDialog.setVisible(true);
     }
 
@@ -112,7 +117,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 		final Object source = e.getSource();
         if ((newNodeLinkedToMenuItemEnabled)
                 && ! (source instanceof IKeyBindingManager &&((IKeyBindingManager) source).isKeyBindingProcessed()) ){
-            CommandToNode.insertNode(getOriginalAction());
+            CommandToNode.insertNode(getOriginalAction(), newNodeLinkedToMenuItemDialog);
             return;
         }
 		if ((newAcceleratorOnNextClickEnabled || 0 != (e.getModifiers() & ActionEvent.CTRL_MASK))

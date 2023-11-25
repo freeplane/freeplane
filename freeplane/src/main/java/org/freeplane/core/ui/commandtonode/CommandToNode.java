@@ -3,10 +3,16 @@ package org.freeplane.core.ui.commandtonode;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.AccelerateableAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -16,7 +22,7 @@ public class CommandToNode {
     private static final int MAX_TEXT_LENGTH = 50;
     private static final String LINK_STARTING_TEXT = "menuitem:_";
 
-    public static void insertNode(AFreeplaneAction action) {
+    public static void insertNode(AFreeplaneAction action, JDialog newNodeLinkedToMenuItemDialog) {
         if (action == null) {
             showMessageInStatusLine("NewNodeLinkedToMenu.NoCommandFound");
             return;
@@ -24,13 +30,19 @@ public class CommandToNode {
         MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
         NodeModel parent = mapController.getSelectedNode();
         String nodeText = getCommandText(action);
-        NodeModel newNodeModel = new NodeModel(nodeText, parent.getMap());
+        NodeModel menuItemNode = new NodeModel(nodeText, parent.getMap());
         if (parent.isRoot())
-            newNodeModel.setSide(MapController.suggestNewChildSide(parent, NodeModel.Side.DEFAULT));
-        mapController.insertNode(newNodeModel, parent, parent.getChildCount());
+            menuItemNode.setSide(MapController.suggestNewChildSide(parent, NodeModel.Side.DEFAULT));
+        mapController.insertNode(menuItemNode, parent, parent.getChildCount());
+        Controller.getCurrentController().getMapViewManager().displayOnCurrentView(menuItemNode);
+        SwingUtilities.invokeLater(() -> {
+            IMapSelection selection = Controller.getCurrentController().getSelection();
+            selection.scrollNodeToVisible(menuItemNode);
+            UITools.setDialogLocationRelativeTo(newNodeLinkedToMenuItemDialog, menuItemNode);
+        });
         String nodeLink = LINK_STARTING_TEXT + action.getKey();
         try {
-            ((MLinkController) LinkController.getController()).setLink(newNodeModel, new URI(nodeLink), LinkController.LINK_ABSOLUTE);
+            ((MLinkController) LinkController.getController()).setLink(menuItemNode, new URI(nodeLink), LinkController.LINK_ABSOLUTE);
             showMessageInStatusLine("NewNodeLinkedToMenu.NodeInserted");
         } catch (final URISyntaxException e) {
             throw new IllegalArgumentException(e);
