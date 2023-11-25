@@ -49,7 +49,7 @@ class CodeMapController extends MapController {
 	    MapStyleModel mapStyleModel = MapStyleModel.getExtension(codeMapModel);
 	    NodeModel defaultStyleNode = mapStyleModel.getDefaultStyleNode();
 	    if(background != null && foreground != null) {
-	        mapStyleModel.setBackgroundColor(background);
+	        mapStyleModel.setBackgroundColor(background.darker());
 	        NodeStyleModel.createNodeStyleModel(defaultStyleNode).setColor(foreground);
 	    }
 	    else {
