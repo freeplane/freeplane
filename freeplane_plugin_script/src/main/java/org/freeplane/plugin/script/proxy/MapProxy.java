@@ -105,6 +105,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 		return new MapConditionalStylesProxy(getDelegate(), getScriptContext());
 	}
 
+    // MapRO: R
 	@Override
 	public List<String> getUserDefinedStylesNames() {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(getDelegate());
@@ -360,4 +361,49 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
         }
         controller.refreshMapLaterUndoable(getDelegate());
     }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, boolean includeConditionalRules, String... styleNameFilters) {
+        List<String> styleNames = source.getUserDefinedStylesNames();
+        ArrayList<String> styleNamesToImport = new ArrayList<>();
+        for(String name: styleNames) {
+            for (String filter : styleNameFilters){
+                if(name.matches(filter)) {
+                    styleNamesToImport.add(name);
+                    copyStyleFrom(source, name);
+                    if(includeConditionalRules){
+                        copyConditionalStylesFrom(source, name);
+                    }
+                    break;
+                }
+            }
+        }
+        return styleNamesToImport;
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, boolean includeConditionalRules, ArrayList<String> styleNameFilters) {
+        return copyUserStylesFrom( source, includeConditionalRules, styleNameFilters.toArray(new String[0]));
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source) {
+        return copyUserStylesFrom( source, true);
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, String... styleNameFilters) {
+        return copyUserStylesFrom( source, true, styleNameFilters);
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, ArrayList<String> styleNameFilters) {
+        return copyUserStylesFrom( source, styleNameFilters.toArray(new String[0]));
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, boolean includeConditionalRules) {
+        return copyUserStylesFrom( source, includeConditionalRules, ".*");
+    }
+
 }
