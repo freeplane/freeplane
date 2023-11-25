@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import javax.swing.DefaultCellEditor;
@@ -30,7 +31,10 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+
+import com.tngtech.archunit.core.domain.JavaClass;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
@@ -176,9 +180,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
 
     private void update(IMapSelection selection) {
-        int selectedRow = dependencyViewer.getSelectedRow();
-        int selectedDataIndex = selectedRow < 0 ? -1 : dependencyViewer.convertRowIndexToModel(selectedRow);
-        CodeDependency selectedValue = selectedDataIndex < 0 ? null : allDependencies.get(selectedDataIndex);
+        CodeDependency selectedValue = getSelectedDependency();
         this.allDependencies = selection == null
                 ? Collections.emptyList() :
                     new DependencySelection(selection).getSelectedDependencies();
@@ -195,6 +197,13 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             }
         }
 
+    }
+
+    private CodeDependency getSelectedDependency() {
+        int selectedRow = dependencyViewer.getSelectedRow();
+        int selectedDataIndex = selectedRow < 0 ? -1 : dependencyViewer.convertRowIndexToModel(selectedRow);
+        CodeDependency selectedValue = selectedDataIndex < 0 ? null : allDependencies.get(selectedDataIndex);
+        return selectedValue;
     }
 
     private void updateRowCountLabel() {
@@ -218,5 +227,13 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
                 controller.getMapViewManager().getMapViewComponent().repaint();
             }
         }
+    }
+
+    void addDependencySelectionCallback(Consumer<CodeDependency> listener) {
+        dependencyViewer.getSelectionModel().addListSelectionListener(
+                e -> {
+                    if(!e.getValueIsAdjusting())
+                        listener.accept(getSelectedDependency());
+                });
     }
 }

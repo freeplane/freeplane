@@ -19,11 +19,21 @@
  */
 package org.freeplane.main.codeexplorermode;
 
+import java.awt.Graphics2D;
+import java.util.stream.Stream;
+
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.highlight.HighlightController;
+import org.freeplane.features.highlight.NodeHighlighter;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+
+import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
  * @author Dimitry Polivaev
@@ -32,12 +42,28 @@ class CodeProjectController implements IExtension {
     private CodeDependenciesPanel codeDependenciesPanel;
     private CodeModeController modeController;
     private JTabbedPane informationPanel;
+    private CodeDependency selectedDependency;
     /**
 	 * @param modeController
 	 */
 	public CodeProjectController(CodeModeController modeController) {
 		super();
         this.modeController = modeController;
+        Controller controller = modeController.getController();
+        controller.getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
+            @Override
+            public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
+                return !isPrinting
+                        && modeController == Controller.getCurrentModeController()
+                        && isDependencySelectedForNode(node);
+            }
+
+            @Override
+            public void configure(NodeModel node, Graphics2D g, boolean isPrinting) {
+                g.setColor(FilterController.HIGHLIGHT_COLOR);
+            }
+        });
+
 	}
 
 	private void hideControlPanel() {
@@ -48,6 +74,8 @@ class CodeProjectController implements IExtension {
 	private void showControlPanel() {
 	    informationPanel = new JTabbedPane();
 	    codeDependenciesPanel = new CodeDependenciesPanel();
+	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
+
         informationPanel.addTab("Configurations", new CodeExplorerConfigurator());
         informationPanel.addTab("Dependencies", codeDependenciesPanel);
 
@@ -56,6 +84,14 @@ class CodeProjectController implements IExtension {
 	    informationPanel.revalidate();
 	}
 
+    public void startupController() {
+        showControlPanel();
+        modeController.getMapController().addNodeSelectionListener(codeDependenciesPanel);
+        Controller.getCurrentController().getMapViewManager().addMapSelectionListener(codeDependenciesPanel);
+        ResourceController.getResourceController().addPropertyChangeListener(codeDependenciesPanel);
+        codeDependenciesPanel.update();
+    }
+
 	public void shutdownController() {
 	    modeController.getMapController().removeNodeSelectionListener(codeDependenciesPanel);
 	    Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(codeDependenciesPanel);
@@ -63,15 +99,26 @@ class CodeProjectController implements IExtension {
 	    hideControlPanel();
 	    informationPanel = null;
 	    codeDependenciesPanel = null;
+	    selectedDependency = null;
 	}
 
-	public void startupController() {
-	    showControlPanel();
-	    modeController.getMapController().addNodeSelectionListener(codeDependenciesPanel);
-	    Controller.getCurrentController().getMapViewManager().addMapSelectionListener(codeDependenciesPanel);
-	    ResourceController.getResourceController().addPropertyChangeListener(codeDependenciesPanel);
-	    codeDependenciesPanel.update();
-	}
+    private boolean isDependencySelectedForNode(NodeModel node) {
+        if(selectedDependency == null)
+            return false;
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection == null || node.getMap() != selection.getMap())
+            return false;
+        DependencySelection dependencySelection = new DependencySelection(selection);
+        JavaClass[] dependencyClasses =  { selectedDependency.getOriginClass(), selectedDependency.getTargetClass()};
+        return Stream.of(dependencyClasses)
+                .anyMatch(javaClass -> node.getID().equals(dependencySelection.getVisibleNodeId(javaClass)));
+    }
+
+    private void updateSelectedDependency(CodeDependency selectedDependency) {
+        this.selectedDependency = selectedDependency;
+        modeController.getController().getMapViewManager().getMapViewComponent().repaint();
+    }
+
 
 
 }
