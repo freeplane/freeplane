@@ -37,7 +37,8 @@ class PackageNodeModel extends CodeNodeModel {
 		return super.getChildren();
 	}
 
-	protected boolean initializeChildNodes() {
+	@Override
+    protected boolean initializeChildNodes() {
 	    List<NodeModel> children = super.getChildrenInternal();
 	    if (!children.isEmpty())
 	        return false;
@@ -51,7 +52,7 @@ class PackageNodeModel extends CodeNodeModel {
 	        childNodes.addNode(childPackage);
 	        Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
 	                .filter(dep -> dep.getTargetClass().getSource().isPresent())
-	                .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
+	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
 	        dependencies.entrySet().stream()
 	        .filter(e -> e.getKey().getParent().isPresent())
 	        .forEach(e -> childNodes.addEdge(childPackage, e.getKey(), e.getValue()));
@@ -59,7 +60,7 @@ class PackageNodeModel extends CodeNodeModel {
 	    if(hasClasses) {
 	        childNodes.addNode(javaPackage);
 	        Map<JavaPackage, Long> dependencies = javaPackage.getClassDependenciesFromThisPackage().stream()
-	                .collect(Collectors.groupingBy(this::getTargetChildPackage, Collectors.counting()));
+	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
 	        dependencies.entrySet().stream()
 	        .filter(e -> e.getKey().getParent().isPresent())
 	        .forEach(e -> childNodes.addEdge(javaPackage, e.getKey(), e.getValue()));
@@ -88,18 +89,20 @@ class PackageNodeModel extends CodeNodeModel {
             return new PackageNodeModel(childPackage, getMap(), parentName + childPackageName, subgroupIndex);
     }
 
-    private JavaPackage getTargetChildPackage(Dependency dep) {
+    private JavaPackage getTargetChildNodePackage(Dependency dep) {
         JavaClass targetClass = dep.getTargetClass();
-        return getChildPackage(targetClass);
+        return getChildNodePackage(targetClass);
     }
 
-    private JavaPackage getChildPackage(JavaClass javaClass) {
-        JavaPackage subpackage = javaClass.getPackage();
+    private JavaPackage getChildNodePackage(JavaClass javaClass) {
+        JavaPackage childNodePackage = javaClass.getPackage();
+        if(childNodePackage.equals(javaPackage))
+            return childNodePackage;
         for(;;) {
-            Optional<JavaPackage> parent = subpackage.getParent();
+            Optional<JavaPackage> parent = childNodePackage.getParent();
             if(! parent.isPresent() || parent.get().equals(javaPackage))
-                return subpackage;
-            subpackage = parent.get();
+                return childNodePackage;
+            childNodePackage = parent.get();
         }
 
     }
