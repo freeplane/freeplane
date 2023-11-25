@@ -572,7 +572,7 @@ public class NodeView extends JComponent implements INodeView {
 			parentView = parentView.getParentView();
 		}
 	    if(sibling.getChildNodesAlignment().isStacked() && ! sibling.usesHorizontalLayout())
-	        return sibling;
+            return sibling.isRoot() ? this : sibling;
 		while (sibling.getNode().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()
 		        && sibling.layoutOrientation() == requiredLayoutOrientation) {
 			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null,
@@ -582,10 +582,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 			sibling = first;
 		}
-		if (sibling.isRoot() ) {
-			return this;
-		}
-		return sibling;
+		return sibling.isRoot() ? this : sibling;
 	}
 
 	public NodeView getParentView() {
