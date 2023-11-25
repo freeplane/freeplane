@@ -20,6 +20,7 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.Location;
 
 public class CodeExplorerConfigurations {
+    private static final String CONFIGURATION_DELIMITER = "\n";
     private List<CodeExplorerConfiguration> configurations;
 
     public CodeExplorerConfigurations(List<CodeExplorerConfiguration> configurations) {
@@ -37,13 +38,13 @@ public class CodeExplorerConfigurations {
     public String serialize() {
         return configurations.stream()
                 .map(CodeExplorerConfiguration::serialize)
-                .collect(Collectors.joining("||"));
+                .collect(Collectors.joining(CONFIGURATION_DELIMITER));
     }
 
     public static CodeExplorerConfigurations deserialize(String serialized) {
         List<CodeExplorerConfiguration> configurations = serialized.isEmpty()
                 ? new ArrayList<>()
-                : Arrays.stream(serialized.split("\\|\\|"))
+                : Arrays.stream(serialized.split(CONFIGURATION_DELIMITER))
                 .map(CodeExplorerConfiguration::deserialize)
                 .collect(Collectors.toCollection(ArrayList::new));
         return new CodeExplorerConfigurations(configurations);
@@ -51,6 +52,7 @@ public class CodeExplorerConfigurations {
 }
 
 class CodeExplorerConfiguration {
+    private static final String PROJECT_PART_DELIMITER = "\t";
     private String projectName;
     private List<File> locations;
 
@@ -80,14 +82,14 @@ class CodeExplorerConfiguration {
     public String serialize() {
         String locationsString = locations.stream()
                 .map(File::getPath)
-                .collect(Collectors.joining(";"));
-        return projectName + "|" + locationsString;
+                .collect(Collectors.joining(PROJECT_PART_DELIMITER));
+        return projectName + PROJECT_PART_DELIMITER + locationsString;
     }
 
     public static CodeExplorerConfiguration deserialize(String serialized) {
-        String[] parts = serialized.split("\\|", 2);
+        String[] parts = serialized.split(PROJECT_PART_DELIMITER);
         String projectName = parts[0];
-        List<File> locations = Arrays.stream(parts[1].split(";"))
+        List<File> locations = Arrays.stream(parts).skip(1)
                 .map(File::new)
                 .collect(Collectors.toCollection(ArrayList::new));
         return new CodeExplorerConfiguration(projectName, locations);
