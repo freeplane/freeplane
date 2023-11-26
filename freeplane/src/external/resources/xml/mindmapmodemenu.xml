@@ -224,6 +224,7 @@
               <Entry name="NewParentNode" accelerator="shift TAB" />
               <Entry name="NewFreeNodeAction" />
               <Entry name="NewSummaryAction" accelerator="control shift TAB"/>
+              <Entry name="NewNodeLinkedToMenuItemOnNextClickAction" />
               <Entry builder="separator" />
               <Entry name="DeleteAction" accelerator="DELETE" />
             </Entry>
@@ -250,6 +251,8 @@
               <Entry name="AddLocalLinkAction" accelerator="alt shift L" />
               <Entry name="AddMenuItemLinkAction" />
               <Entry name="AddExecutionLinkAction" />
+              <Entry builder="separator" />
+              <Entry name="NewNodeLinkedToMenuItemOnNextClickAction" />
               <Entry builder="separator" />
               <Entry name="SetLinkAnchorAction" />
               <Entry name="MakeLinkFromAnchorAction" />

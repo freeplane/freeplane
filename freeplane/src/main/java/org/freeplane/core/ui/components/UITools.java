@@ -608,11 +608,16 @@ public class UITools {
 		}
 	}
 
-	public static JDialog createCancelDialog(final Component component, final String titel, final String text) {
-        final String[] options = { TextUtils.getText("cancel") };
+	public static JDialog createCancelDialog(final Component component, final String title, final String text) {
+        return createCancelDialog(component, title, text, TextUtils.getText("cancel"));
+    }
+
+    public static JDialog createCancelDialog(final Component component, final String title,
+            final String text, String buttonText) {
+        final String[] options = { buttonText };
     	final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
     	    options);
-    	JDialog dialog = infoPane.createDialog(component, titel);
+    	JDialog dialog = infoPane.createDialog(component, title);
     	dialog.setModal(false);
     	return dialog;
     }
