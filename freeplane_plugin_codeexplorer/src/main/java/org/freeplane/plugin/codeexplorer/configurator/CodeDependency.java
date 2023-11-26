@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,10 +12,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.freeplane.plugin.codeexplorer.map.ClassNodeModel;
+
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public class CodeDependency {
+class CodeDependency {
     private static final Pattern ARRAYS = Pattern.compile("\\[+L?([\\w$]+);?");
     private static final Pattern PACKAGES = Pattern.compile("(?<=\\b|\\[L)(?:[a-z0-9_]+\\.)+");
     static Stream<CodeDependency> distinct(Stream<CodeDependency> stream) {
@@ -34,12 +36,10 @@ public class CodeDependency {
 
     private final Dependency dependency;
     private final boolean goesUp;
-    private final int hashCode;
     CodeDependency(Dependency dependendy, boolean goesUp) {
         super();
         this.dependency = dependendy;
         this.goesUp = goesUp;
-        this.hashCode = Objects.hash(getOriginClass(), getTargetClass(), getDescription());
     }
     public JavaClass getOriginClass() {
         return dependency.getOriginClass();
@@ -78,8 +78,8 @@ public class CodeDependency {
         return description;
     }
 
-    private String getDescriptionForComparison() {
-        return getDescription()
+    static String getDescriptionForComparison(Dependency dependency) {
+        return dependency.getDescription()
                 .replaceFirst(":\\d+\\)$", ")");
     }
 
@@ -119,10 +119,13 @@ public class CodeDependency {
         }
         return descriptor;
     }
-
+    @Override
+    public String toString() {
+        return "CodeDependency [dependency=" + dependency + ", goesUp=" + goesUp + "]";
+    }
     @Override
     public int hashCode() {
-        return Objects.hash(getOriginClass(), getTargetClass(), getDescriptionForComparison());
+        return dependency.hashCode();
     }
     @Override
     public boolean equals(Object obj) {
@@ -133,14 +136,7 @@ public class CodeDependency {
         if (getClass() != obj.getClass())
             return false;
         CodeDependency other = (CodeDependency) obj;
-        return hashCode == other.hashCode
-                && Objects.equals(getOriginClass(), other.getOriginClass())
-                && Objects.equals(getTargetClass(), other.getTargetClass())
-                && Objects.equals(getDescriptionForComparison(), other.getDescriptionForComparison());
-    }
-    @Override
-    public String toString() {
-        return "CodeDependency [dependency=" + dependency + ", goesUp=" + goesUp + "]";
+        return Objects.equals(dependency, other.dependency);
     }
 
 

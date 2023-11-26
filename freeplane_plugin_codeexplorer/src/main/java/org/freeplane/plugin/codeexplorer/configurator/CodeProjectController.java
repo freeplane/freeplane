@@ -33,8 +33,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.plugin.codeexplorer.CodeDependency;
-import org.freeplane.plugin.codeexplorer.DependencySelection;
+import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 

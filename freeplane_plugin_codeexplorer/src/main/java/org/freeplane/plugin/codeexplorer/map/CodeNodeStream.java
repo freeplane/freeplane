@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Spliterator;
 import java.util.Spliterators;

@@ -1,4 +1,4 @@
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,7 +17,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
 
 
-class ClassNodeModel extends CodeNodeModel {
+public class ClassNodeModel extends CodeNodeModel {
     private final JavaClass javaClass;
     private Set<JavaClass> innerClasses;
     static final String ANNOTATION_ICON_NAME = "code_annotation";
@@ -36,7 +36,7 @@ class ClassNodeModel extends CodeNodeModel {
         setText(nodeText);
 	}
 
-    static String nodeText(final JavaClass javaClass) {
+    public static String nodeText(final JavaClass javaClass) {
         String simpleName = javaClass.getSimpleName();
         return javaClass.getEnclosingClass()
                 .map(ec -> nodeText(ec) + "." + simpleName)

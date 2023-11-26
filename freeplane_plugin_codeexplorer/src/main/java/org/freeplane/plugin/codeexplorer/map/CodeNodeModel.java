@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-abstract class CodeNodeModel extends NodeModel {
+public abstract class CodeNodeModel extends NodeModel {
     static String formatClassCount(long classCount) {
         return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
     }
@@ -70,10 +70,10 @@ abstract class CodeNodeModel extends NodeModel {
         return Stream.concat(getIncomingDependencies(), getOutgoingDependencies());
     }
 
-    Stream<Dependency> getOutgoingDependenciesWithKnownTargets(){
+    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(){
         return getOutgoingDependencies().filter(CodeNodeModel::isTargetSourceKnown);
     }
-    Stream<Dependency> getIncomingDependenciesWithKnownTargets(){
+    public Stream<Dependency> getIncomingDependenciesWithKnownTargets(){
         return getIncomingDependencies().filter(CodeNodeModel::isTargetSourceKnown);
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){

@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.connectors;
 
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.map.NodeModel;

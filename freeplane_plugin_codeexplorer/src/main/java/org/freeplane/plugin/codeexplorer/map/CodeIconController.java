@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collection;
 
@@ -14,7 +14,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
-class CodeIconController extends IconController{
+public class CodeIconController extends IconController{
     static {
         IconStoreFactory.INSTANCE.createStateIcon(EmptyNodeModel.UI_ICON_NAME, "code/generated.svg");
         IconStoreFactory.INSTANCE.createStateIcon(PackageNodeModel.UI_ICON_NAME, "code/folder.svg");
@@ -27,7 +27,7 @@ class CodeIconController extends IconController{
         IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ANNOTATION_ICON_NAME, "code/annotation.svg");
     }
 
-    CodeIconController(ModeController modeController) {
+    public CodeIconController(ModeController modeController) {
         super(modeController);
     }
 

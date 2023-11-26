@@ -12,9 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;

@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,25 +41,18 @@ public class DependencySelection {
         this.showsOutsideDependencies = showsOutsideDependencies;
     }
 
-    public List<CodeDependency> getSelectedDependencies() {
+    public Stream<Dependency> getSelectedDependencies() {
         Set<NodeModel> nodes = AncestorRemover.removeAncestors(getSelectedNodeSet());
-        List<CodeDependency> allDependencies = CodeDependency.distinct(nodes.stream()
+        Stream<Dependency> allDependencies = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
                         getOutgoingDependencies((CodeNodeModel)node).stream(),
                         getIncomingDependencies((CodeNodeModel)node).stream()))
-                .map(dep -> {
-                    CodeNodeModel originNode = getExistingNode(dep.getOriginClass());
-                    CodeNodeModel targetNode = getExistingNode(dep.getTargetClass());
-                    NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
-                    boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
-                    return new CodeDependency(dep, goesUp);
-                }))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .distinct();
         return allDependencies;
     }
 
-    private CodeNodeModel getExistingNode(JavaClass javaClass) {
+    public CodeNodeModel getExistingNode(JavaClass javaClass) {
         String existingNodeId = getExistingNodeId(javaClass);
         return existingNodeId == null ? null : (CodeNodeModel) getMap().getNodeForID(existingNodeId);
     }
@@ -211,7 +204,7 @@ public class DependencySelection {
                  && (! visibleTarget.isDescendantOf(selectedVisibleOrigin) || ! visibleOrigin.isDescendantOf(selectedVisibleTarget));
      }
 
-     boolean isConnectorSelected(CodeNodeModel source, CodeNodeModel target) {
+     public boolean isConnectorSelected(CodeNodeModel source, CodeNodeModel target) {
          Set<NodeModel> selectedNodes = getSelectedNodeSet();
          boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
          if(isOnlyOneNodeSelected && selection.getSelected().isRoot())

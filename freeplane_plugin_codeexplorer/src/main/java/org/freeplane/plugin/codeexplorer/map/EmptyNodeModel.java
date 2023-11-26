@@ -1,4 +1,4 @@
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collections;
 import java.util.List;

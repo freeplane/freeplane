@@ -3,9 +3,11 @@ package org.freeplane.plugin.codeexplorer.configurator;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.swing.DefaultCellEditor;
@@ -31,9 +33,10 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.codeexplorer.CodeDependency;
-import org.freeplane.plugin.codeexplorer.DependencySelection;
+import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
@@ -181,7 +184,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         CodeDependency selectedValue = getSelectedDependency();
         this.allDependencies = selection == null
                 ? Collections.emptyList() :
-                    new DependencySelection(selection).getSelectedDependencies();
+                    selectedDependencies(new DependencySelection(selection));
         ((DependenciesWrapper)dependencyViewer.getModel()).fireTableDataChanged();
         updateRowCountLabel();
         if(selectedValue != null) {
@@ -195,6 +198,17 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             }
         }
 
+    }
+
+    private List<CodeDependency> selectedDependencies(DependencySelection dependencySelection) {
+        return dependencySelection.getSelectedDependencies().map(dep -> {
+            NodeModel originNode = dependencySelection.getExistingNode(dep.getOriginClass());
+            NodeModel targetNode = dependencySelection.getExistingNode(dep.getTargetClass());
+            NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
+            boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
+            return new CodeDependency(dep, goesUp);
+        })
+        .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private CodeDependency getSelectedDependency() {

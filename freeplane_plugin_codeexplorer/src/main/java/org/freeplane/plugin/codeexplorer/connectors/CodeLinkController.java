@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.connectors;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -36,12 +36,14 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.plugin.codeexplorer.map.CodeNodeModel;
+import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-class CodeLinkController extends LinkController {
+public class CodeLinkController extends LinkController {
 
     private static final Color VISIBLE_CONNECTOR_COLOR = Color.GREEN;
 
@@ -51,7 +53,7 @@ class CodeLinkController extends LinkController {
     private static final Point upwardsConnectorEndInclination = new Point(upwardsConnectorStartInclination.x, -upwardsConnectorStartInclination.y);
 
 
-    CodeLinkController(ModeController modeController) {
+    public CodeLinkController(ModeController modeController) {
         super(modeController);
     }
 

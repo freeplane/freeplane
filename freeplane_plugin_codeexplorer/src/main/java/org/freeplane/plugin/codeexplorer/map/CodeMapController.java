@@ -1,4 +1,4 @@
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -10,20 +10,21 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.plugin.codeexplorer.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.configurator.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.configurator.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.view.swing.map.MapView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-class CodeMapController extends MapController implements CodeExplorer{
-    CodeMapController(CodeModeController modeController) {
+public class CodeMapController extends MapController implements CodeExplorer{
+    public CodeMapController(ModeController modeController) {
         super(modeController);
         modeController.addAction(new ShowSelectedClassesWithExternalDependenciesAction());
         for(CodeNodeSelection selection: CodeNodeSelection.values()) {
@@ -37,10 +38,6 @@ class CodeMapController extends MapController implements CodeExplorer{
         modeController.addAction(new SelectCyclesAction());
         modeController.addAction(new FilterCyclesAction());
     }
-
-	public CodeModeController getCodeModeController() {
-		return (CodeModeController) Controller.getCurrentModeController();
-	}
 
 	@Override
     public MapModel newMap() {

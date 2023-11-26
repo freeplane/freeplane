@@ -1,4 +1,4 @@
-package org.freeplane.plugin.codeexplorer;
+package org.freeplane.plugin.codeexplorer.map;
 
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.INodeDuplicator;
