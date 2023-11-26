@@ -103,12 +103,16 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	    MapModel map = selection.getMap();
 	    ((CodeNodeModel)map.getRootNode()).loadSubtree();
 	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get());
-	    for(int recursionCounter = 1; recursionCounter < maximumRecursionDepth;recursionCounter++) {
+	    for(int recursionCounter = allNodesSatisfyFilter(selection, dependentNodeIDs) ? 0 : 1;
+	        recursionCounter < maximumRecursionDepth;
+	        recursionCounter++) {
 	        Set<String> next = dependencies(dependentNodeIDs.stream().map(map::getNodeForID).map(CodeNodeModel.class::cast));
 	        next.removeAll(dependentNodeIDs);
 	        if(next.isEmpty())
 	            break;
 	        dependentNodeIDs.addAll(next);
+	        if(allNodesSatisfyFilter(selection, next))
+	            recursionCounter--;
 	    }
 	    dependentNodeIDs.removeIf(id -> currentCondition.checkNode(map.getNodeForID(id)));
         FilterController filterController = FilterController.getCurrentFilterController();
@@ -117,6 +121,11 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	    Filter filter = new Filter(condition, false, true, false, false, null);
         filterController.applyFilter(map, false, filter);
 	}
+
+
+    private boolean allNodesSatisfyFilter(IMapSelection selection, Set<String> dependentNodeIDs) {
+        return dependentNodeIDs.stream().allMatch(id -> selection.getMap().getNodeForID(id).isVisible(selection.getFilter()));
+    }
 
 
     HashSet<String> dependencies(Stream<CodeNodeModel> startingNodes) {
