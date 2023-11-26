@@ -5,12 +5,9 @@
  */
 package org.freeplane.plugin.codeexplorer.configurator;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.freeplane.plugin.codeexplorer.map.ClassNodeModel;
 
@@ -20,19 +17,6 @@ import com.tngtech.archunit.core.domain.JavaClass;
 class CodeDependency {
     private static final Pattern ARRAYS = Pattern.compile("\\[+L?([\\w$]+);?");
     private static final Pattern PACKAGES = Pattern.compile("(?<=\\b|\\[L)(?:[a-z0-9_]+\\.)+");
-    static Stream<CodeDependency> distinct(Stream<CodeDependency> stream) {
-        Map<CodeDependency, CodeDependency> seen = new LinkedHashMap<>();
-
-        stream.forEachOrdered(element ->
-        seen.compute(element,
-                (key, existing) ->
-                existing == null ? element :
-                (element.equals(existing) ? existing.dependency.compareTo(element.dependency) < 0 ? existing : element
-                        : element
-        )));
-
-        return seen.values().stream();
-    }
 
     private final Dependency dependency;
     private final boolean goesUp;
@@ -76,11 +60,6 @@ class CodeDependency {
         description = result.toString()
                 .replace('$', '.');
         return description;
-    }
-
-    static String getDescriptionForComparison(Dependency dependency) {
-        return dependency.getDescription()
-                .replaceFirst(":\\d+\\)$", ")");
     }
 
     public boolean descriptionContains(String string) {

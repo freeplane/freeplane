@@ -20,6 +20,7 @@ import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 public abstract class CodeNodeModel extends NodeModel {
+
     static String formatClassCount(long classCount) {
         return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
     }

@@ -50,8 +50,10 @@ class PackageNodeModel extends CodeNodeModel {
 	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
 	    for (JavaPackage childPackage : packages) {
 	        childNodes.addNode(childPackage);
+	        DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
 	        Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
 	                .filter(dep -> dep.getTargetClass().getSource().isPresent())
+	                .map(filter::knownDependency)
 	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
 	        dependencies.entrySet().stream()
 	        .filter(e -> e.getKey().getParent().isPresent())
@@ -59,7 +61,9 @@ class PackageNodeModel extends CodeNodeModel {
 	    }
 	    if(hasClasses) {
 	        childNodes.addNode(javaPackage);
+	        DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
 	        Map<JavaPackage, Long> dependencies = javaPackage.getClassDependenciesFromThisPackage().stream()
+	                .map(filter::knownDependency)
 	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
 	        dependencies.entrySet().stream()
 	        .filter(e -> e.getKey().getParent().isPresent())

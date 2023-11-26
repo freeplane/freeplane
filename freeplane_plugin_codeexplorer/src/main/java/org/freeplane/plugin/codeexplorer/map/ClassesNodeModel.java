@@ -52,8 +52,10 @@ class ClassesNodeModel extends CodeNodeModel {
                 for (JavaClass javaClass : classes) {
                     JavaClass edgeStart = findEnclosingNamedClass(javaClass);
                     nodeSort.addNode(edgeStart);
+                    DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
                     Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
                             .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
+                            .map(filter::knownDependency)
                             .collect(Collectors.groupingBy(CodeNodeModel::getTargetNodeClass, Collectors.counting()));
                     dependencies.entrySet().stream()
                     .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
