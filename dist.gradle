@@ -47,7 +47,7 @@ task cleanDist(type: Delete) {
 clean.dependsOn cleanDist
 
 task createGitTag(type: Exec) {
-	def tag = "${versionStatus.empty ? 'release':versionStatus}-$majorVersion${(minorVersion.empty || minorVersion.startsWith('u')) ? minorVersion :'-pre'+minorVersion}"
+	def tag = "${versionStatus.empty ? 'release':versionStatus}-$distVersion"
     ignoreExitValue = true
 	doFirst {
 		println "> Press enter to create tag $tag"
