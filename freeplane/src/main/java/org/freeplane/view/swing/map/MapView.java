@@ -2114,9 +2114,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				continue;
 			}
 			final NodeView child = (NodeView) component;
+			if(!child.isSubtreeVisible())
+			    continue;
 			if (!isPrinting) {
-				if(!child.isSubtreeVisible())
-					continue;
 				final Rectangle bounds = SwingUtilities.convertRectangle(source, child.getBounds(), this);
 				final JViewport vp = (JViewport) getParent();
 				final Rectangle viewRect = vp.getViewRect();
