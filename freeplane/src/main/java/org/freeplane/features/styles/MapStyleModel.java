@@ -535,7 +535,7 @@ public class MapStyleModel implements IExtension {
         }
         modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
         modeController.copyExtensions(MIconController.Keys.ICONS, copiedStyleNode, targetStyleNode);
-        mAttributeController.copyAttributesToNode(copiedStyleNode, targetStyleNode);
+        mAttributeController.copyAttributesToNode(copiedStyleNode, targetStyleNode, true);
     }
 
 }

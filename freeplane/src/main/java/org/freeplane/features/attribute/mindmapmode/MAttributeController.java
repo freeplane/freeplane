@@ -879,7 +879,12 @@ public class MAttributeController extends AttributeController {
 		performSetValueAt(node, model, pAttribute.getValue(), pPosition, 1);
 	}
 
-    public void copyAttributesToNode(NodeModel source, NodeModel target) {
+
+	public void copyAttributesToNode(NodeModel source, NodeModel target) {
+		copyAttributesToNode(source, target, false);
+	}
+
+	public void copyAttributesToNode(NodeModel source, NodeModel target, boolean doDisableFormula) {
         if (source == null)
             return;
         final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(source);
@@ -888,9 +893,19 @@ public class MAttributeController extends AttributeController {
         final int attributeTableLength = model.getAttributeTableLength();
         for(int i = 0; i < attributeTableLength; i++){
             final Attribute attribute = model.getAttribute(i);
-            addAttribute(target, new Attribute(attribute.getName(), attribute.getValue()));
+            addAttribute(target, new Attribute(attribute.getName(), cleanAttributeValue(attribute.getValue(), doDisableFormula)));
         }
     }
+
+	private Object cleanAttributeValue(Object value, boolean doDisableFormula){
+		if(doDisableFormula && value instanceof String){
+			if( ((String) value).trim().startsWith("=") ){
+				return "_" + (String) value;
+			}
+		}
+		return value;
+	}
+
 	@Override
 	public boolean canEdit() {
 	    return true;
