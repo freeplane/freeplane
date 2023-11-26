@@ -6,15 +6,14 @@
 package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleDirectedGraph;
 
 public class GraphCycleFinder<V>{
 
@@ -28,7 +27,7 @@ public class GraphCycleFinder<V>{
     private final Graph<Object, DefaultEdge> graph;
 
     public GraphCycleFinder() {
-        this.graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+        this.graph = new SimpleDirectedGraph<>(DefaultEdge.class);
     }
 
     public DefaultEdge addEdge(V source, V target) {
