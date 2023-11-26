@@ -44,7 +44,11 @@ public abstract class CodeNodeModel extends NodeModel {
     }
 
     static boolean isTargetSourceKnown(Dependency dep) {
-        return dep.getTargetClass().getSource().isPresent();
+        return isClassSourceKnown(dep.getTargetClass());
+    }
+
+    static boolean isClassSourceKnown(JavaClass javaClass) {
+        return javaClass.getSource().isPresent();
     }
 
     final private int subgroupIndex;

@@ -46,7 +46,8 @@ class ClassesNodeModel extends CodeNodeModel {
     protected boolean initializeChildNodes() {
 	    List<NodeModel> children = super.getChildrenInternal();
 	    if (children.isEmpty()) {
-	        final Set<JavaClass> classes = javaPackage.getClasses();
+	        final List<JavaClass> classes = javaPackage.getClasses().stream()
+	                .filter(CodeNodeModel::isClassSourceKnown).collect(Collectors.toList());
 	        if(! classes.isEmpty()) {
 	            GraphNodeSort<JavaClass> nodeSort = new GraphNodeSort<JavaClass>();
                 for (JavaClass javaClass : classes) {
