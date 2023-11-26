@@ -2,6 +2,9 @@
 1.11.9
 ==============================
 Allow all launchers to use Java up to version 21
+Update scripting api generator
+Introduce new action to easily add new nodes linked to menu commands
+New API method to copy user styles from another map
 
 ==============================
 1.11.8
