@@ -58,10 +58,14 @@ public class JFreeplaneMenuItem extends JMenuItem implements IKeyBindingManager 
 
 	protected void processMouseEvent(MouseEvent e){
 		if (e.getID() == MouseEvent.MOUSE_RELEASED && contains(e.getPoint()) && AccelerateableAction.isNewNodeLinkedToMenuItemEnabled() ) {
-			doClick();
+			doClickAndKeepTheMenuOpen();
 		} else {
 			super.processMouseEvent(e);
 		}
 	}
+
+    private void doClickAndKeepTheMenuOpen() {
+        doClick();
+    }
 
 }
