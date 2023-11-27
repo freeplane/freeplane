@@ -34,7 +34,6 @@ import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
-import org.freeplane.plugin.codeexplorer.map.CodeIconController;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;

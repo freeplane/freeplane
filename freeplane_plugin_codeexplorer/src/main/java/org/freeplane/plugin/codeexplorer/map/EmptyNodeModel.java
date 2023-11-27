@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -14,7 +15,9 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class EmptyNodeModel extends CodeNodeModel {
-
+    static {
+        IconStoreFactory.INSTANCE.createStateIcon(EmptyNodeModel.UI_ICON_NAME, "code/generated.svg");
+    }
 	static final String UI_ICON_NAME = "code_empty";
 
     EmptyNodeModel(final MapModel map, String text) {

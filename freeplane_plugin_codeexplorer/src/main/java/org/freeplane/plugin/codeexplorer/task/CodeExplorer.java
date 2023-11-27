@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.plugin.codeexplorer.task;
 
 public interface CodeExplorer {
 

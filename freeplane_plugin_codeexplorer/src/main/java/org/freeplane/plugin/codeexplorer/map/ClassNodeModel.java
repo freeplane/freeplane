@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
@@ -20,7 +21,13 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 public class ClassNodeModel extends CodeNodeModel {
-    private final JavaClass javaClass;
+    static {
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.INTERFACE_ICON_NAME, "code/interface.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ABSTRACT_CLASS_ICON_NAME, "code/classAbstract.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.CLASS_ICON_NAME, "code/class.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ENUM_ICON_NAME, "code/enum.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ANNOTATION_ICON_NAME, "code/annotation.svg");
+    }    private final JavaClass javaClass;
     private Set<JavaClass> innerClasses;
     static final String ANNOTATION_ICON_NAME = "code_annotation";
     static final String INTERFACE_ICON_NAME = "code_interface";

@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+
 public class CodeExplorerConfigurations {
     private static final String CONFIGURATION_DELIMITER = "\n";
     private List<CodeExplorerConfiguration> configurations;

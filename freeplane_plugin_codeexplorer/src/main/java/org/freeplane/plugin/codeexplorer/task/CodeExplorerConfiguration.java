@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +18,15 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.Location;
 
 public class CodeExplorerConfiguration {
+    public static CodeExplorerConfiguration deserialize(String serialized) {
+        String[] parts = serialized.split(PROJECT_PART_DELIMITER);
+        String projectName = parts[0];
+        List<File> locations = Arrays.stream(parts).skip(1)
+                .map(File::new)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return new CodeExplorerConfiguration(projectName, locations);
+    }
+
     private static final String PROJECT_PART_DELIMITER = "\t";
     private String projectName;
     private List<File> locations;
@@ -45,20 +54,11 @@ public class CodeExplorerConfiguration {
         this.locations = locations;
     }
 
-    String serialize() {
+    public String serialize() {
         String locationsString = locations.stream()
                 .map(File::getPath)
                 .collect(Collectors.joining(PROJECT_PART_DELIMITER));
         return projectName + PROJECT_PART_DELIMITER + locationsString;
-    }
-
-    static CodeExplorerConfiguration deserialize(String serialized) {
-        String[] parts = serialized.split(PROJECT_PART_DELIMITER);
-        String projectName = parts[0];
-        List<File> locations = Arrays.stream(parts).skip(1)
-                .map(File::new)
-                .collect(Collectors.toCollection(ArrayList::new));
-        return new CodeExplorerConfiguration(projectName, locations);
     }
 
     public JavaPackage importPackages() {

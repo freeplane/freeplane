@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
@@ -21,7 +22,10 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNodeModel extends CodeNodeModel {
-	final private JavaPackage javaPackage;
+    static {
+        IconStoreFactory.INSTANCE.createStateIcon(ClassesNodeModel.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassesNodeModel.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
+    }	final private JavaPackage javaPackage;
     static final String UI_CHILD_PACKAGE_ICON_NAME = "code_classes";
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;

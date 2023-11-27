@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
@@ -19,7 +20,9 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 class PackageNodeModel extends CodeNodeModel {
     static final String UI_ICON_NAME = "code_package";
-
+    static {
+        IconStoreFactory.INSTANCE.createStateIcon(PackageNodeModel.UI_ICON_NAME, "code/folder.svg");
+    }
     private static boolean containsAnalyzedClassesInPackageTree(JavaPackage javaPackage) {
         return javaPackage.getClassesInPackageTree().stream().anyMatch(CodeNodeModel::isClassSourceKnown);
     }

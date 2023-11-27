@@ -24,6 +24,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 class CodeExplorerConfigurator extends JPanel {
 

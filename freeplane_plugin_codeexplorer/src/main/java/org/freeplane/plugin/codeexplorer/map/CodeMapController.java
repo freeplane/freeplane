@@ -17,9 +17,9 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.plugin.codeexplorer.configurator.CodeExplorer;
-import org.freeplane.plugin.codeexplorer.configurator.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
