@@ -2787,12 +2787,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	boolean isRoot(NodeView nodeView) {
-		return nodeView == currentRootView;
+	    return nodeView == currentRootView;
 	}
 
 	public void mapRootNodeChanged() {
+	    Point rootLocationOnScreen = isShowing() ? getRoot().getMainView().getLocationOnScreen() : null;
 	    setRootNode(getMap().getRootNode());
 	    filter = Filter.createTransparentFilter();
+	    if(rootLocationOnScreen != null) {
+	        Point newRootLocationOnScreen = getRoot().getMainView().getLocationOnScreen();
+	        Rectangle visibleRect = getVisibleRect();
+	        visibleRect.translate(newRootLocationOnScreen.x - rootLocationOnScreen.x, newRootLocationOnScreen.y - rootLocationOnScreen.y);
+	        scrollRectToVisible(visibleRect);
+	        preserveRootNodeLocationOnScreen();
+	    }
 	}
 
 	void setRootNode(NodeModel node) {
