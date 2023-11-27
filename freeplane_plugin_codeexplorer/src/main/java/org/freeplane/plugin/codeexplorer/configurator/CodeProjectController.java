@@ -45,6 +45,7 @@ public class CodeProjectController implements IExtension {
     private ModeController modeController;
     private JTabbedPane informationPanel;
     private CodeDependency selectedDependency;
+    private CodeExplorerConfigurator configurator;
     /**
 	 * @param modeController
 	 */
@@ -65,6 +66,7 @@ public class CodeProjectController implements IExtension {
                 g.setColor(FilterController.HIGHLIGHT_COLOR);
             }
         });
+        modeController.addAction(new RunAnalysisAction(this));
 
 	}
 
@@ -78,7 +80,8 @@ public class CodeProjectController implements IExtension {
 	    codeDependenciesPanel = new CodeDependenciesPanel();
 	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
 
-        informationPanel.addTab("Configurations", new CodeExplorerConfigurator());
+        configurator = new CodeExplorerConfigurator(this);
+        informationPanel.addTab("Configurations", configurator);
         informationPanel.addTab("Dependencies", codeDependenciesPanel);
 
 	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
@@ -100,6 +103,7 @@ public class CodeProjectController implements IExtension {
 	    ResourceController.getResourceController().removePropertyChangeListener(codeDependenciesPanel);
 	    hideControlPanel();
 	    informationPanel = null;
+	    configurator = null;
 	    codeDependenciesPanel = null;
 	    selectedDependency = null;
 	}
@@ -120,6 +124,20 @@ public class CodeProjectController implements IExtension {
         this.selectedDependency = selectedDependency;
         modeController.getController().getMapViewManager().getMapViewComponent().repaint();
     }
+
+    void exploreSelectedConfiguration() {
+        if(configurator != null) {
+            CodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
+            exploreConfiguration(selectedConfiguration);
+        }
+    }
+
+    void exploreConfiguration(CodeExplorerConfiguration selectedConfiguration) {
+        CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
+        codeExplorer.explore(selectedConfiguration);
+    }
+
+
 
 
 

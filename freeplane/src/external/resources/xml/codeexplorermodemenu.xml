@@ -2,10 +2,11 @@
 <FreeplaneUIEntries>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "3"/>
+		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
 		<Entry name="PrintAction" row="2"/>
 		<Entry name="CloseAction" row="2"/>
-		<Entry name="code.CopyQualifiedName" row="2"/>
+		<Entry name="code.CopyQualifiedName" row="1"/>
+		<Entry name="code.RunAnalysisAction" row="2"/>
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="JumpInAction"/>
@@ -158,7 +159,9 @@
 				<Entry builder="menu_goto_links" />
 			</Entry>
 		</Entry>
-			<Entry name="code.explore">
+		<Entry name="code.explore">
+			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
+			<Entry builder="separator" />
 			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 			<Entry name="code.ShowAllClassesAction" />
 			<Entry name="code.FilterCyclesAction" />

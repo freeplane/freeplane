@@ -34,8 +34,10 @@ class CodeExplorerConfigurator extends JPanel {
     private JTable configTable;
     private JTable locationsTable;
     private final CodeExplorerConfigurations explorerConfigurations;
+    private final CodeProjectController codeProjectController;
 
-    CodeExplorerConfigurator() {
+    CodeExplorerConfigurator(CodeProjectController codeProjectController) {
+        this.codeProjectController = codeProjectController;
         this.explorerConfigurations = loadConfigurations();
         initializeComponents();
         updateConfigurationsTable(explorerConfigurations);
@@ -121,17 +123,17 @@ class CodeExplorerConfigurator extends JPanel {
         JButton deleteConfigurationButton = TranslatedElementFactory.createButton("code.delete");
         deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
         JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
-        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+        exploreConfigurationButton.addActionListener(e -> codeProjectController.exploreConfiguration(getSelectedConfiguration()));
         configButtonsPanel.add(addConfigurationButton);
         configButtonsPanel.add(deleteConfigurationButton);
         configButtonsPanel.add(exploreConfigurationButton);
         return configButtonsPanel;
     }
 
-    private void exploreSelectedConfiguration() {
-        CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
+    CodeExplorerConfiguration getSelectedConfiguration() {
         int selectedConfigurationIndex = getSelectedConfigurationIndex();
-        codeExplorer.explore(getConfiguration(selectedConfigurationIndex));
+        CodeExplorerConfiguration selectedConfiguration = getConfiguration(selectedConfigurationIndex);
+        return selectedConfiguration;
     }
 
     private CodeExplorerConfiguration getConfiguration(int selectedConfigurationIndex) {
