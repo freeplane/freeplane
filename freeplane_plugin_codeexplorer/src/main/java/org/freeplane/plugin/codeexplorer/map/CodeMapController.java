@@ -2,10 +2,13 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.UIManager;
 
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -18,6 +21,7 @@ import org.freeplane.plugin.codeexplorer.configurator.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.configurator.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
@@ -65,12 +69,20 @@ public class CodeMapController extends MapController implements CodeExplorer{
 
 	@Override
     public void explore(CodeExplorerConfiguration codeExplorerConfiguration) {
-	    CodeMapModel map = (CodeMapModel) Controller.getCurrentController().getSelection().getMap();
+	    Controller currentController = Controller.getCurrentController();
+        IMapSelection selection = currentController.getSelection();
+	    List<String> orderedSelectionIds = selection.getOrderedSelectionIds();
+	    IMapViewManager mapViewManager = currentController.getMapViewManager();
+	    MapView mapView = (MapView) mapViewManager.getMapViewComponent();
+	    List<String> unfoldedNodeIDs = CodeNodeStream.nodeViews(mapView)
+	            .filter(nv -> ! nv.isFolded())
+	            .map(NodeView::getNode)
+	            .map(NodeModel::getID)
+	            .collect(Collectors.toList());
+        CodeMapModel map = (CodeMapModel) selection.getMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
 	    map.setRoot(emptyRoot);
 
-	    IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-	    MapView mapView = (MapView) mapViewManager.getMapViewComponent();
 	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
@@ -93,9 +105,32 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            mapView.mapRootNodeChanged();
 	            mapViewManager.updateMapViewName();
 	            FilterController.getCurrentFilterController().mapRootNodeChanged(map);
+
+	            unfoldedNodeIDs.stream()
+                .map(id -> getExistingAncestorOrSelfNode(map, id))
+                .filter(x -> x != null)
+                .forEach(node -> node.setFolded(false));
+
+	            NodeModel[] newSelection = orderedSelectionIds.stream()
+	                    .map(id -> getExistingAncestorOrSelfNode(map, id))
+	                    .filter(x -> x != null)
+	                    .distinct()
+	                    .toArray(NodeModel[]::new);
+	            if(newSelection.length > 0)
+	                selection.replaceSelection(newSelection);
 	        });
 	    }, "Load explored packages").start();
 
 	}
+
+    private CodeNodeModel getExistingAncestorOrSelfNode(MapModel map, String id) {
+        NodeModel node = map.getNodeForID(id);
+        if(node != null)
+            return (CodeNodeModel) node;
+        int lastDelimiterPosition = id.lastIndexOf('.');
+        if(lastDelimiterPosition > 0)
+            return getExistingAncestorOrSelfNode(map, id.substring(0, lastDelimiterPosition));
+        return null;
+    }
 
 }

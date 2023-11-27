@@ -22,10 +22,16 @@ public class CodeNodeStream {
     }
 
     static Stream<CodeNodeModel> visibleNodes(MapView mapView){
-        NodeIterator<NodeView> nodeViewIterator = NodeIterator.of(mapView.getRoot(), NodeView::getChildrenViews);
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(nodeViewIterator, Spliterator.ORDERED), false)
+        Stream<NodeView> nodeViews = nodeViews(mapView);
+        return nodeViews
                 .filter(NodeView::isContentVisible)
                 .map(NodeView::getNode)
                 .map(CodeNodeModel.class::cast);
+    }
+
+    static Stream<NodeView> nodeViews(MapView mapView) {
+        NodeIterator<NodeView> nodeViewIterator = NodeIterator.of(mapView.getRoot(), NodeView::getChildrenViews);
+        Stream<NodeView> nodeViews = StreamSupport.stream(Spliterators.spliteratorUnknownSize(nodeViewIterator, Spliterator.ORDERED), false);
+        return nodeViews;
     }
 }
