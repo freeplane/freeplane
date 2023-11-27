@@ -109,6 +109,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         updateColumn(columnModel, 2, 400);
         updateColumn(columnModel, 3, 1000);
         dependencyViewer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        dependencyViewer.setCellSelectionEnabled(true);
 
         TableRowSorter<DependenciesWrapper> sorter = new TableRowSorter<>(dataModel);
 
@@ -182,6 +183,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
     private void update(IMapSelection selection) {
         CodeDependency selectedValue = getSelectedDependency();
+        int selectedColumn = dependencyViewer.getSelectedColumn();
         this.allDependencies = selection == null
                 ? Collections.emptyList() :
                     selectedDependencies(new DependencySelection(selection));
@@ -193,6 +195,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
                 int newSelectedRow = dependencyViewer.convertRowIndexToView(newSelectedDataIndex);
                 if(newSelectedRow != -1) {
                     dependencyViewer.setRowSelectionInterval(newSelectedRow, newSelectedRow);
+                    dependencyViewer.setColumnSelectionInterval(selectedColumn, selectedColumn);
                     SwingUtilities.invokeLater(this::scrollSelectedToVisible);
                 }
             }
