@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.map;
+package org.freeplane.plugin.codeexplorer.graph;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;

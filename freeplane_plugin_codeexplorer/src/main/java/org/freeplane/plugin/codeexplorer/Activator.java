@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
-import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 

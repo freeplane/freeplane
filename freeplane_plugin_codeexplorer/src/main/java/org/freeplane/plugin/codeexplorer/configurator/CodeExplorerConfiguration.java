@@ -45,14 +45,14 @@ public class CodeExplorerConfiguration {
         this.locations = locations;
     }
 
-    public String serialize() {
+    String serialize() {
         String locationsString = locations.stream()
                 .map(File::getPath)
                 .collect(Collectors.joining(PROJECT_PART_DELIMITER));
         return projectName + PROJECT_PART_DELIMITER + locationsString;
     }
 
-    public static CodeExplorerConfiguration deserialize(String serialized) {
+    static CodeExplorerConfiguration deserialize(String serialized) {
         String[] parts = serialized.split(PROJECT_PART_DELIMITER);
         String projectName = parts[0];
         List<File> locations = Arrays.stream(parts).skip(1)

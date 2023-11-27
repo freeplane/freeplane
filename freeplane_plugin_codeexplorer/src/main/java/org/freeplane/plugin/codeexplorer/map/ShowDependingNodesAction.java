@@ -87,7 +87,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     }
 
 
-    static String formatActionText(DependencyDirection dependencyDirection,
+    private static String formatActionText(DependencyDirection dependencyDirection,
             CodeNodeSelection codeNodeSelection, Depth recursionDepth) {
         return TextUtils.format("code.ShowDependingNodesAction." + recursionDepth + ".text",
                 TextUtils.getRawText("code." + dependencyDirection),
@@ -128,7 +128,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     }
 
 
-    HashSet<String> dependencies(Stream<CodeNodeModel> startingNodes) {
+    private HashSet<String> dependencies(Stream<CodeNodeModel> startingNodes) {
         return startingNodes
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)

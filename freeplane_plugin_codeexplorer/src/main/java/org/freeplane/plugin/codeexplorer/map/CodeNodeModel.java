@@ -44,7 +44,7 @@ public abstract class CodeNodeModel extends NodeModel {
         return ! jc.isAnonymousClass() && ! jc.isArray();
     }
 
-    static boolean isTargetSourceKnown(Dependency dep) {
+    private static boolean isTargetSourceKnown(Dependency dep) {
         return isClassSourceKnown(dep.getTargetClass());
     }
 

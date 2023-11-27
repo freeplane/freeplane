@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;

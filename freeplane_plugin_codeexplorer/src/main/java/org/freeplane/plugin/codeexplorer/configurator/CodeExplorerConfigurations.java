@@ -26,13 +26,13 @@ public class CodeExplorerConfigurations {
         this.configurations = configurations;
     }
 
-    public String serialize() {
+    String serialize() {
         return configurations.stream()
                 .map(CodeExplorerConfiguration::serialize)
                 .collect(Collectors.joining(CONFIGURATION_DELIMITER));
     }
 
-    public static CodeExplorerConfigurations deserialize(String serialized) {
+    static CodeExplorerConfigurations deserialize(String serialized) {
         List<CodeExplorerConfiguration> configurations = serialized.isEmpty()
                 ? new ArrayList<>()
                 : Arrays.stream(serialized.split(CONFIGURATION_DELIMITER))

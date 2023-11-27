@@ -25,7 +25,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.Controller;
 
-public class CodeExplorerConfigurator extends JPanel {
+class CodeExplorerConfigurator extends JPanel {
 
     private static final String CODE_EXPLORER_CONFIGURATION_PROPERTY = "code_explorer_configuration";
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class CodeExplorerConfigurator extends JPanel {
     private JTable locationsTable;
     private final CodeExplorerConfigurations explorerConfigurations;
 
-    public CodeExplorerConfigurator() {
+    CodeExplorerConfigurator() {
         this.explorerConfigurations = loadConfigurations();
         initializeComponents();
         updateConfigurationsTable(explorerConfigurations);
