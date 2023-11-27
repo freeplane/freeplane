@@ -34,6 +34,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 }
             }
         }
+        modeController.addAction(new CopyQualifiedName());
         modeController.addAction(new ShowAllClassesAction());
         modeController.addAction(new SelectCyclesAction());
         modeController.addAction(new FilterCyclesAction());

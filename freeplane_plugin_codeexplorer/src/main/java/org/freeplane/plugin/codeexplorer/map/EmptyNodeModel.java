@@ -65,4 +65,8 @@ class EmptyNodeModel extends CodeNodeModel {
     protected boolean initializeChildNodes() {
         return false;
     }
+    @Override
+    HasName getCodeElement() {
+        return () -> "";
+    }
 }

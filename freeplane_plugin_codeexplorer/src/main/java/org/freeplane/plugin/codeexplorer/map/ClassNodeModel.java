@@ -15,6 +15,7 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
+import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 public class ClassNodeModel extends CodeNodeModel {
@@ -41,6 +42,11 @@ public class ClassNodeModel extends CodeNodeModel {
         return javaClass.getEnclosingClass()
                 .map(ec -> nodeText(ec) + "." + simpleName)
                 .orElse(simpleName);
+    }
+
+    @Override
+    HasName getCodeElement() {
+        return javaClass;
     }
 
 	@Override

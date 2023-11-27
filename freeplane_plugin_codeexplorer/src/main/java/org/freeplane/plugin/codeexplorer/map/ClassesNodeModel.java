@@ -15,6 +15,7 @@ import org.freeplane.features.map.NodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
+import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNodeModel extends CodeNodeModel {
@@ -41,6 +42,11 @@ class ClassesNodeModel extends CodeNodeModel {
 		initializeChildNodes();
 		return super.getChildren();
 	}
+
+    @Override
+    HasName getCodeElement() {
+        return javaPackage;
+    }
 
 	@Override
     protected boolean initializeChildNodes() {
