@@ -2063,6 +2063,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeModel source = ref.getSource();
 					final NodeView sourceView = getDisplayedNodeView(source);
 					final NodeView targetView = getDisplayedNodeView(target);
+					if(! isConnectorVisibleOnView(sourceView, targetView))
+					    continue;
 					final ILinkView arrowLink;
 					final boolean areBothNodesVisible = sourceView != null && targetView != null
 							&& sourceView.isContentVisible() && targetView.isContentVisible();
@@ -2092,7 +2094,34 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	private void paintConnectors(final Graphics2D graphics) {
+	private boolean isConnectorVisibleOnView(NodeView sourceView, NodeView targetView) {
+	    if(isPrinting)
+	        return true;
+
+        Rectangle sourceRectangle = sourceView != null && sourceView.isContentVisible()
+                ? SwingUtilities.convertRectangle(sourceView, sourceView.getMainView().getBounds(), this)
+                        : null;
+
+        Rectangle targetRectangle = sourceView != null && sourceView.isContentVisible()
+                ? SwingUtilities.convertRectangle(targetView, targetView.getMainView().getBounds(), this)
+                        : null;
+
+        if(sourceRectangle == null && targetRectangle == null)
+            return false;
+
+        Rectangle connectorRectangle = sourceRectangle == null ? targetRectangle :
+            targetRectangle == null ? sourceRectangle : sourceRectangle.union(targetRectangle);
+
+        final JViewport vp = (JViewport) getParent();
+        final Rectangle viewRect = vp.getViewRect();
+        viewRect.x -= viewRect.width;
+        viewRect.y -= viewRect.height;
+        viewRect.width *= 3;
+        viewRect.height *= 3;
+        return viewRect.intersects(connectorRectangle);
+	}
+
+    private void paintConnectors(final Graphics2D graphics) {
 		arrowLinkViews = new Vector<ILinkView>();
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(
 		    graphics);
@@ -2116,18 +2145,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final NodeView child = (NodeView) component;
 			if(!child.isSubtreeVisible())
 			    continue;
-			if (!isPrinting) {
-				final Rectangle bounds = SwingUtilities.convertRectangle(source, child.getBounds(), this);
-				final JViewport vp = (JViewport) getParent();
-				final Rectangle viewRect = vp.getViewRect();
-				viewRect.x -= viewRect.width;
-				viewRect.y -= viewRect.height;
-				viewRect.width *= 3;
-				viewRect.height *= 3;
-				if (!viewRect.intersects(bounds)) {
-					continue;
-				}
-			}
 			paintConnectors(child, graphics, alreadyPaintedConnectors);
 		}
 	}
