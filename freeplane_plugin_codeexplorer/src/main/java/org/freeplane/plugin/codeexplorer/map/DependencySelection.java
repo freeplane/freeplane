@@ -15,9 +15,9 @@ import java.util.stream.Stream;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.AncestorRemover;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -28,7 +28,7 @@ public class DependencySelection {
     private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING, UNKNOWN}
 
     private final IMapSelection selection;
-    private MapModel map;
+    private CodeMapModel map;
     private Set<NodeModel> selectedNodeSet;
     private final boolean showsOutsideDependencies;
 
@@ -152,12 +152,11 @@ public class DependencySelection {
         return selectedNodeSet;
     }
 
-    private MapModel getMap() {
+    CodeMapModel getMap() {
         if(map == null)
-            map = selection.getMap();
+            map = (CodeMapModel) selection.getMap();
         return map;
     }
-
 
     private HasName getContainingPackage(JavaPackage targetPackage, boolean visibleOnly) {
          for(;;) {
@@ -223,4 +222,13 @@ public class DependencySelection {
          else
              return false;
      }
+
+     public CodeDependency toCodeDependency(Dependency dependency) {
+         NodeModel originNode = getExistingNode(dependency.getOriginClass());
+         NodeModel targetNode = getExistingNode(dependency.getTargetClass());
+         NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
+         boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
+         return new CodeDependency(dependency, goesUp, getMap().judge(dependency, goesUp));
+     }
+
  }

@@ -9,10 +9,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Point;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.extension.Configurable;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
@@ -36,6 +40,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import org.freeplane.plugin.codeexplorer.map.CodeNodeModel;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.view.swing.map.MapView;
@@ -45,13 +51,37 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 public class CodeLinkController extends LinkController {
 
-    private static final Color VISIBLE_CONNECTOR_COLOR = Color.GREEN;
+    private static final EnumMap<DependencyVerdict, Color> connectorColors;
+    static {
+        connectorColors = new EnumMap<DependencyVerdict, Color>(DependencyVerdict.class);
+        connectorColors.put(DependencyVerdict.ALLOWED, Color.GREEN);
+        connectorColors.put(DependencyVerdict.FORBIDDEN, Color.RED);
+        connectorColors.put(DependencyVerdict.IGNORED, Color.GRAY);
+    }
 
-    private static final Point backwardsConnectorStartInclination = new Point(150, 15);
-    private static final Point upwardsConnectorStartInclination = new Point(-backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
-    private static final Point backwardsConnectorEndInclination = new Point(backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
-    private static final Point upwardsConnectorEndInclination = new Point(upwardsConnectorStartInclination.x, -upwardsConnectorStartInclination.y);
-
+    private static final EnumMap<DependencyVerdict, Point> backwardsConnectorStartInclinations;
+    private static final EnumMap<DependencyVerdict, Point> upwardsConnectorStartInclinations;
+    private static final EnumMap<DependencyVerdict, Point> backwardsConnectorEndInclinations;
+    private static final EnumMap<DependencyVerdict, Point> upwardsConnectorEndInclinations;
+    static {
+        backwardsConnectorStartInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
+        backwardsConnectorStartInclinations.put(DependencyVerdict.ALLOWED, new Point(150, 15));
+        backwardsConnectorStartInclinations.put(DependencyVerdict.FORBIDDEN, new Point(200, 15));
+        backwardsConnectorStartInclinations.put(DependencyVerdict.IGNORED, new Point(250, 15));
+        upwardsConnectorStartInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
+        backwardsConnectorEndInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
+        upwardsConnectorEndInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
+        for(Entry<DependencyVerdict, Point> entry : backwardsConnectorStartInclinations.entrySet()) {
+           DependencyVerdict verdict = entry.getKey();
+            Point backwardsConnectorStartInclination = entry.getValue();
+            Point upwardsConnectorStartInclination = new Point(-backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
+            Point backwardsConnectorEndInclination = new Point(backwardsConnectorStartInclination.x, -backwardsConnectorStartInclination.y);
+            Point upwardsConnectorEndInclination = new Point(upwardsConnectorStartInclination.x, -upwardsConnectorStartInclination.y);
+            upwardsConnectorStartInclinations.put(verdict, upwardsConnectorStartInclination);
+            backwardsConnectorEndInclinations.put(verdict, backwardsConnectorEndInclination);
+            upwardsConnectorEndInclinations.put(verdict, upwardsConnectorEndInclination);
+        }
+    }
 
     public CodeLinkController(ModeController modeController) {
         super(modeController);
@@ -59,11 +89,14 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public Color getColor(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ? VISIBLE_CONNECTOR_COLOR :
-            getMapDefaultNodeTextColor(connector);
+        if (areConnectorNodesSelected(connector)) {
+            Color color = connectorColors.get(((CodeConnectorModel)connector).dependencyVerdict());
+            return UITools.isLightLookAndFeelInstalled() ?  color.darker() : color.brighter();
+        } else
+            return getMapDefaultNodeTextColor(connector);
     }
 
-    protected Color getMapDefaultNodeTextColor(ConnectorModel connector) {
+    private Color getMapDefaultNodeTextColor(ConnectorModel connector) {
         return MapStyleModel.getExtension(connector.getSource().getMap()).getDefaultStyleNode().getExtension(NodeStyleModel.class).getColor();
     }
 
@@ -75,15 +108,19 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public int getWidth(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ?
-                1 + (int) (3 * Math.log10(((CodeConnectorModel)connector).weight()))
+        CodeConnectorModel codeConnector = (CodeConnectorModel)connector;
+        return  codeConnector.dependencyVerdict() != DependencyVerdict.IGNORED
+                    && areConnectorNodesSelected(codeConnector) ?
+                1 + (int) (3 * Math.log10(codeConnector.weight()))
                 : 1;
 
     }
 
     @Override
     public int getOpacity(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ? 128 : 30;
+        CodeConnectorModel codeConnector = (CodeConnectorModel)connector;
+        return codeConnector.dependencyVerdict() != DependencyVerdict.IGNORED
+                && areConnectorNodesSelected(codeConnector) ? 128 : 30;
     }
 
     @Override
@@ -165,10 +202,13 @@ public class CodeLinkController extends LinkController {
             DependencySelection dependencySelection = new DependencySelection(selection);
             Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets()
                     .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getTargetClass()));
-            Map<String, Long> countedDependencies = countDependencies(node, dependencySelection, dependencies, Dependency::getOriginClass);
+            Map<DependencyVerdict, Map<String, Long>> countedDependencies = countDependencies(node, dependencySelection, dependencies, CodeDependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
-                .map(e -> createConnector(node.getMap().getNodeForID(e.getKey()), node.getID(), e.getValue().intValue()))
-                .collect(Collectors.toList());
+            .flatMap(targetsByVerdict ->
+                targetsByVerdict.getValue().entrySet().stream()
+                    .map(countedTargets -> createConnector(node.getMap().getNodeForID(countedTargets.getKey()), node.getID(), targetsByVerdict.getKey(), countedTargets.getValue().intValue()))
+            )
+            .collect(Collectors.toList());
             return connectors;
         }
         else
@@ -183,22 +223,35 @@ public class CodeLinkController extends LinkController {
             DependencySelection dependencySelection = new DependencySelection(selection);
             Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets()
                     .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getOriginClass()));
-            Map<String, Long> countedDependencies = countDependencies(node, dependencySelection, dependencies, Dependency::getTargetClass);
+            Map<DependencyVerdict, Map<String, Long>> countedDependencies = countDependencies(node, dependencySelection, dependencies, CodeDependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
-                .map(e -> createConnector(node, e.getKey(), e.getValue().intValue()))
-                .collect(Collectors.toList());
+            .flatMap(targetsByVerdict ->
+                targetsByVerdict.getValue().entrySet().stream()
+                    .map(countedTargets -> createConnector(node, countedTargets.getKey(), targetsByVerdict.getKey(), countedTargets.getValue().intValue()))
+            )
+            .collect(Collectors.toList());
+
             return connectors;
         }
         else
             return Collections.emptyList();
     }
 
-    private Map<String, Long> countDependencies(NodeModel node, DependencySelection dependencySelection,
-            Stream<Dependency> dependencies, Function<Dependency, JavaClass> dependencyToJavaClass) {
-        Map<String, Long> countedDependencies = dependencies
-                .map(dep -> dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep)))
-                .filter(name -> name != null && ! name.equals(node.getID()))
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    private Map<DependencyVerdict, Map<String, Long>> countDependencies(NodeModel node, DependencySelection dependencySelection,
+            Stream<Dependency> dependencies, Function<CodeDependency, JavaClass> dependencyToJavaClass) {
+        Map<DependencyVerdict, Map<String, Long>> countedDependencies = dependencies
+                .map(dependencySelection::toCodeDependency)
+                .map(dep -> new AbstractMap.SimpleEntry<>(dep.dependencyVerdict(),
+                        dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep))))
+                .filter(e -> e.getValue() != null && ! e.getValue().equals(node.getID()))
+                .collect(Collectors.groupingBy(
+                        Entry::getKey,
+                        Collectors.groupingBy(
+                            Entry::getValue,
+                            Collectors.counting()
+                        )
+                    )
+                );
         return countedDependencies;
     }
 
@@ -218,19 +271,24 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public Point getStartInclination(ConnectorModel connector) {
-        return ((CodeConnectorModel)connector).goesUp() ? upwardsConnectorStartInclination : backwardsConnectorStartInclination;
+        CodeConnectorModel codeConnector = (CodeConnectorModel)connector;
+        return (codeConnector.goesUp() ? upwardsConnectorStartInclinations : backwardsConnectorStartInclinations)
+                .get(codeConnector.dependencyVerdict());
     }
 
     @Override
     public Point getEndInclination(ConnectorModel connector) {
-        return ((CodeConnectorModel)connector).goesUp() ? upwardsConnectorEndInclination : backwardsConnectorEndInclination;
+        CodeConnectorModel codeConnector = (CodeConnectorModel)connector;
+        return (codeConnector.goesUp() ? upwardsConnectorEndInclinations : backwardsConnectorEndInclinations)
+                .get(codeConnector.dependencyVerdict());
     }
 
 
-    private CodeConnectorModel createConnector(NodeModel source, String targetId, int weight) {
+    private CodeConnectorModel createConnector(NodeModel source, String targetId, DependencyVerdict verdict, int weight) {
         NodeModel target = source.getMap().getNodeForID(targetId);
         NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
-        return new CodeConnectorModel(source, targetId, weight, nodeRelativePath.compareNodePositions() > 0);
+        boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
+        return new CodeConnectorModel(source, targetId, weight, verdict, goesUp);
     }
 
 

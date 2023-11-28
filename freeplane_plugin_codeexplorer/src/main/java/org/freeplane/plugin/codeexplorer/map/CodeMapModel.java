@@ -5,8 +5,15 @@ import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
+
+import com.tngtech.archunit.core.domain.Dependency;
 
 class CodeMapModel extends MapModel {
+
+    private DependencyJudge judge = DependencyJudge.of("");
+
     public CodeMapModel(INodeDuplicator nodeDuplicator) {
         super(nodeDuplicator);
         AttributeRegistry.getRegistry(this);
@@ -18,6 +25,11 @@ class CodeMapModel extends MapModel {
     public String getTitle() {
         return "Code: " + getRootNode().toString();
     }
+
+    public void setRules(String rules) {
+        this.judge = DependencyJudge.of(rules);
+    }
+
     @Override
     public void setRoot(NodeModel newRoot) {
         NodeModel oldRoot = getRootNode();
@@ -27,6 +39,10 @@ class CodeMapModel extends MapModel {
                 newRoot.addExtension(mapStyles);
         }
         super.setRoot(newRoot);
+    }
+
+    DependencyVerdict judge(Dependency dependency, boolean goesUp) {
+        return judge.judge(dependency, goesUp);
     }
 
 

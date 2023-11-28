@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.plugin.codeexplorer.dependencies;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -14,16 +14,18 @@ import org.freeplane.plugin.codeexplorer.map.ClassNodeModel;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-class CodeDependency {
+public class CodeDependency {
     private static final Pattern ARRAYS = Pattern.compile("\\[+L?([\\w$]+);?");
     private static final Pattern PACKAGES = Pattern.compile("(?<=\\b|\\[L)(?:[a-z0-9_]+\\.)+");
 
     private final Dependency dependency;
     private final boolean goesUp;
-    CodeDependency(Dependency dependendy, boolean goesUp) {
+    private final DependencyVerdict dependencyVerdict;
+    public CodeDependency(Dependency dependendy, boolean goesUp, DependencyVerdict dependencyVerdict) {
         super();
         this.dependency = dependendy;
         this.goesUp = goesUp;
+        this.dependencyVerdict = dependencyVerdict;
     }
     public JavaClass getOriginClass() {
         return dependency.getOriginClass();
@@ -32,11 +34,15 @@ class CodeDependency {
         return dependency.getTargetClass();
     }
 
+    public DependencyVerdict dependencyVerdict() {
+        return dependencyVerdict;
+    }
+
     public boolean goesUp() {
         return goesUp;
     }
 
-    Dependency getDependency() {
+    public Dependency getDependency() {
         return dependency;
     }
 
@@ -63,7 +69,11 @@ class CodeDependency {
     }
 
     public boolean descriptionContains(String string) {
-        return dependency.getDescription().contains(string);
+        return dependency.getDescription().contains(string) || describeVerdict().contains(string);
+    }
+
+    public String describeVerdict() {
+        return dependencyVerdict.name().toLowerCase() + " (goes " +  (goesUp ? "up" : "down") + ")";
     }
 
     private static String convertArrayDescriptor(String descriptor) {
@@ -117,6 +127,4 @@ class CodeDependency {
         CodeDependency other = (CodeDependency) obj;
         return Objects.equals(dependency, other.dependency);
     }
-
-
 }

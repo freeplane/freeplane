@@ -8,5 +8,5 @@ package org.freeplane.plugin.codeexplorer.task;
 public interface CodeExplorer {
 
     void explore(CodeExplorerConfiguration configuration);
-
+    void setRules(String rules);
 }

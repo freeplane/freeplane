@@ -21,15 +21,26 @@ public class CodeExplorerConfiguration {
     public static CodeExplorerConfiguration deserialize(String serialized) {
         String[] parts = serialized.split(PROJECT_PART_DELIMITER);
         String projectName = parts[0];
-        List<File> locations = Arrays.stream(parts).skip(1)
+        String rules = parts.length > 1 ? parts[parts.length - 1] : "";
+        List<File> locations = Arrays.stream(parts)
+                .limit(parts.length - 1)
+                .skip(1)
                 .map(File::new)
                 .collect(Collectors.toCollection(ArrayList::new));
-        return new CodeExplorerConfiguration(projectName, locations);
+        if(! rules.contains("->")) {
+            File file = new File(rules);
+            if (file.exists()) {
+                locations.add(file);
+                rules = "";
+            }
+        }
+        return new CodeExplorerConfiguration(projectName, locations, rules.replace(';', '\n'));
     }
 
     private static final String PROJECT_PART_DELIMITER = "\t";
     private String projectName;
     private List<File> locations;
+    private String dependencyJudgeRules;
 
 
 
@@ -49,16 +60,28 @@ public class CodeExplorerConfiguration {
         this.locations = locations;
     }
 
-    public CodeExplorerConfiguration(String projectName, List<File> locations) {
+
+
+    public String getDependencyJudgeRules() {
+        return dependencyJudgeRules;
+    }
+
+    public void setDependencyJudgeRules(String dependencyJudgeRules) {
+        this.dependencyJudgeRules = dependencyJudgeRules;
+    }
+
+    public CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
         this.projectName = projectName;
         this.locations = locations;
+        this.dependencyJudgeRules = dependencyJudgeRules;
     }
 
     public String serialize() {
         String locationsString = locations.stream()
                 .map(File::getPath)
                 .collect(Collectors.joining(PROJECT_PART_DELIMITER));
-        return projectName + PROJECT_PART_DELIMITER + locationsString;
+        return projectName + PROJECT_PART_DELIMITER + locationsString + PROJECT_PART_DELIMITER
+                + dependencyJudgeRules.replace('\n', ';').replace('\t', ' ');
     }
 
     public JavaPackage importPackages() {

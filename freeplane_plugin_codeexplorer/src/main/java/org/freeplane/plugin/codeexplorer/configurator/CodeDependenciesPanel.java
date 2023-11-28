@@ -33,14 +33,13 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
-    private static final String[] COLUMN_NAMES = new String[]{"GoesUp", "Origin", "Target","Dependency"};
+    private static final String[] COLUMN_NAMES = new String[]{"Judgement", "Origin", "Target","Dependency"};
 
     private static final long serialVersionUID = 1L;
     private static final Icon filterIcon = ResourceController.getResourceController().getIcon("filterDependencyIncormation.icon");
@@ -49,7 +48,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     private final JLabel countLabel;
     private List<CodeDependency> allDependencies;
 
-    class DependenciesWrapper extends AbstractTableModel {
+    private class DependenciesWrapper extends AbstractTableModel {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -66,7 +65,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         public Object getValueAt(int rowIndex, int columnIndex) {
             CodeDependency row = allDependencies.get(rowIndex);
             switch (columnIndex) {
-                case 0: return row.goesUp();
+                case 0: return row.describeVerdict();
                 case 1: return row.getOriginClass().getName();
                 case 2: return row.getTargetClass().getName();
                 case 3: return row.getDescription();
@@ -146,9 +145,9 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
                     return containsAny(row, filteredWords);
                 }
 
-                private boolean containsAny(CodeDependency description, String[] filteredWords) {
+                private boolean containsAny(CodeDependency dependency, String[] filteredWords) {
                     return Stream.of(filteredWords).allMatch(w ->
-                    description.descriptionContains(w));
+                    dependency.descriptionContains(w));
                 }
             };
 
@@ -204,13 +203,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     }
 
     private List<CodeDependency> selectedDependencies(DependencySelection dependencySelection) {
-        return dependencySelection.getSelectedDependencies().map(dep -> {
-            NodeModel originNode = dependencySelection.getExistingNode(dep.getOriginClass());
-            NodeModel targetNode = dependencySelection.getExistingNode(dep.getTargetClass());
-            NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
-            boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
-            return new CodeDependency(dep, goesUp);
-        })
+        return dependencySelection.getSelectedDependencies().map(dependencySelection::toCodeDependency)
         .collect(Collectors.toCollection(ArrayList::new));
     }
 

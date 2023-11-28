@@ -82,7 +82,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         CodeMapModel map = (CodeMapModel) selection.getMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
 	    map.setRoot(emptyRoot);
-
+	    map.setRules(codeExplorerConfiguration.getDependencyJudgeRules());
 	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
@@ -131,6 +131,18 @@ public class CodeMapController extends MapController implements CodeExplorer{
         if(lastDelimiterPosition > 0)
             return getExistingAncestorOrSelfNode(map, id.substring(0, lastDelimiterPosition));
         return null;
+    }
+
+    @Override
+    public void setRules(String rules) {
+        Controller currentController = Controller.getCurrentController();
+        IMapSelection selection = currentController.getSelection();
+        CodeMapModel map = (CodeMapModel) selection.getMap();
+        map.setRules(rules);
+        IMapViewManager mapViewManager = currentController.getMapViewManager();
+        MapView mapView = (MapView) mapViewManager.getMapViewComponent();
+        mapView.repaint();
+
     }
 
 }

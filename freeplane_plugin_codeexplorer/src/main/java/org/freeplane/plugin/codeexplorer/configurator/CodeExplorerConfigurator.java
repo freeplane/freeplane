@@ -11,10 +11,13 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -35,6 +38,7 @@ class CodeExplorerConfigurator extends JPanel {
     private JTable locationsTable;
     private final CodeExplorerConfigurations explorerConfigurations;
     private final CodeProjectController codeProjectController;
+    private JTextArea rules;
 
     CodeExplorerConfigurator(CodeProjectController codeProjectController) {
         this.codeProjectController = codeProjectController;
@@ -78,7 +82,7 @@ class CodeExplorerConfigurator extends JPanel {
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
         addComponentToPanel(configTableScrollPane, configPanel, gbc, 0, 0, 1, 1);
 
-        configTable.getSelectionModel().addListSelectionListener(e -> updateLocationsTable());
+        configTable.getSelectionModel().addListSelectionListener(e -> updateConfiguration());
 
         configTableModel.addTableModelListener(new TableModelListener() {
             @Override
@@ -98,7 +102,7 @@ class CodeExplorerConfigurator extends JPanel {
 
 
     private void updateConfigurationNames(int firstRow, int lastRow) {
-        for (int row = firstRow; row < lastRow; row++) {
+        for (int row = firstRow; row <= lastRow; row++) {
             updateConfigurationName(row);
         }
         saveConfigurationsProperty();
@@ -110,7 +114,7 @@ class CodeExplorerConfigurator extends JPanel {
         config.setProjectName(projectName);
     }
 
-    private void updateLocationsTable() {
+    private void updateConfiguration() {
         locationsTableModel.setRowCount(0); // Clear existing data
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
@@ -118,7 +122,10 @@ class CodeExplorerConfigurator extends JPanel {
             for (File location : config.getLocations()) {
                 locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
+            rules.setText(config.getDependencyJudgeRules());
         }
+        else
+            rules.setText("");
     }
 
     private JPanel createConfigButtonsPanel() {
@@ -128,11 +135,16 @@ class CodeExplorerConfigurator extends JPanel {
         JButton deleteConfigurationButton = TranslatedElementFactory.createButton("code.delete");
         deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
         JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
-        exploreConfigurationButton.addActionListener(e -> codeProjectController.exploreConfiguration(getSelectedConfiguration()));
+        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
         configButtonsPanel.add(addConfigurationButton);
         configButtonsPanel.add(deleteConfigurationButton);
         configButtonsPanel.add(exploreConfigurationButton);
         return configButtonsPanel;
+    }
+
+    private void exploreSelectedConfiguration() {
+        setDependencyJudgeRules(rules.getText());
+        codeProjectController.exploreConfiguration(getSelectedConfiguration());
     }
 
     CodeExplorerConfiguration getSelectedConfiguration() {
@@ -153,7 +165,7 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void addNewConfiguration() {
-        CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration("", new ArrayList<>());
+        CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration("", new ArrayList<>(), "");
         explorerConfigurations.getConfigurations().add(newConfig);
         configTableModel.addRow(new Object[]{newConfig.getProjectName()});
         int newRow = configTable.getRowCount() - 1;
@@ -173,7 +185,7 @@ class CodeExplorerConfigurator extends JPanel {
                 configTable.setRowSelectionInterval(selectedRow, selectedRow);
             else if (rowCount > 0)
                 configTable.setRowSelectionInterval(rowCount-1, rowCount-1);
-            updateLocationsTable();
+            updateConfiguration();
         }
     }
 
@@ -191,6 +203,59 @@ class CodeExplorerConfigurator extends JPanel {
         addComponentToPanel(locationsButtonsPanel, locationsPanel, gbc, 0, 1, 1, 0);
         return locationsPanel;
     }
+
+
+    private JPanel createRulesPanel() {
+        JPanel rulesPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createGridBagConstraints();
+
+        JLabel rulesLabel = new JLabel("Rules");
+        rulesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        addComponentToPanel(rulesLabel, rulesPanel, gbc, 0, 0, 1, 0);
+
+        rules = new JTextArea();
+        JScrollPane rulesTableScrollPane = new JScrollPane(rules);
+        addComponentToPanel(rulesTableScrollPane, rulesPanel, gbc, 0, 1, 1, 1);
+
+        JPanel rulesButtonsPanel = createRulesButtonsPanel();
+        addComponentToPanel(rulesButtonsPanel, rulesPanel, gbc, 0, 2, 1, 0);
+
+        return rulesPanel;
+    }
+
+    private JPanel createRulesButtonsPanel() {
+        JPanel rulesButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton applyButton = new JButton("Apply");
+        applyButton.addActionListener(e ->
+            setDependencyJudgeRules(rules.getText())
+        );
+        JButton revertButton = new JButton("Revert");
+        revertButton.addActionListener(e ->
+            rules.setText(getSelectedConfiguration().getDependencyJudgeRules())
+        );
+        rulesButtonsPanel.add(applyButton);
+        rulesButtonsPanel.add(revertButton);
+
+        applyButton.setEnabled(false);
+        revertButton.setEnabled(false);
+
+        configTable.getSelectionModel().addListSelectionListener(l -> {
+            boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
+            applyButton.setEnabled(isSelectionValid);
+            revertButton.setEnabled(isSelectionValid);
+        });
+        return rulesButtonsPanel;
+    }
+
+    private void setDependencyJudgeRules(String rules) {
+        CodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
+        if(! selectedConfiguration.getDependencyJudgeRules().equals(rules)) {
+            selectedConfiguration.setDependencyJudgeRules(rules);
+            saveConfigurationsProperty();
+            codeProjectController.setDependencyJudgeRules(rules);
+        }
+    }
+
 
     private JPanel createLocationsButtonsPanel() {
         JPanel locationsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -247,9 +312,10 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
     private void layoutPanels() {
-        setLayout(new GridLayout(1, 2));
+        setLayout(new GridLayout(1, 3));
         add(createConfigurationsPanel());
         add(createLocationsPanel());
+        add(createRulesPanel());
     }
 
     private GridBagConstraints createGridBagConstraints() {

@@ -26,7 +26,7 @@ public abstract class CodeNodeModel extends NodeModel {
         return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
     }
 
-    static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
+    public static JavaClass findEnclosingNamedClass(JavaClass javaClass) {
         if (javaClass.isAnonymousClass())
             return findEnclosingNamedClass(javaClass.getEnclosingClass().get());
         else
