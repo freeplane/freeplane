@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 class CodeExplorerConfigurator extends JPanel {
@@ -233,8 +234,13 @@ class CodeExplorerConfigurator extends JPanel {
         revertButton.addActionListener(e ->
             rules.setText(getSelectedConfiguration().getDependencyJudgeRules())
         );
+        JButton helpButton = new JButton("Help");
+        helpButton.addActionListener(e ->
+            DependencyJudge.showHelp("")
+        );
         rulesButtonsPanel.add(applyButton);
         rulesButtonsPanel.add(revertButton);
+        rulesButtonsPanel.add(helpButton);
 
         applyButton.setEnabled(false);
         revertButton.setEnabled(false);

@@ -256,19 +256,19 @@ public class UITools {
 		return acceleratorText;
 	}
 
-	static public void informationMessage(final String message) {
+	static public void informationMessage(final Object message) {
 		UITools.informationMessage(UITools.getCurrentRootComponent(), message);
 	}
 
-	static public void informationMessage(final Component frame, final String message) {
+	static public void informationMessage(final Component frame, final Object message) {
 		UITools.informationMessage(frame, message, "Freeplane");
 	}
 
-	static public void informationMessage(final Component frame, final String message, final String title) {
+	static public void informationMessage(final Component frame, final Object message, final String title) {
 		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void informationMessage(final Component frame, final String text, final String title, final int type) {
+	public static void informationMessage(final Component frame, final Object text, final String title, final int type) {
 		JOptionPane.showMessageDialog(frame, text, title, type);
 	}
 

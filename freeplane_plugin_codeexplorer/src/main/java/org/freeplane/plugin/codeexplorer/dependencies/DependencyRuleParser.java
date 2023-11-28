@@ -17,8 +17,11 @@ class DependencyRuleParser {
         List<DependencyRule> rules = new ArrayList<>();
         String[] dslRules = dsl.split("\\n\\s*");
 
-        for (String dslRule : dslRules) {
-            Matcher matcher = DependencyJudge.DEPENDENCY_RULE_PATTERN.matcher(dslRule.trim());
+        for (String dslRuleLine : dslRules) {
+            String dslRule = dslRuleLine.trim();
+            Matcher matcher = DependencyJudge.DEPENDENCY_RULE_PATTERN.matcher(dslRule);
+            if(dslRule.isEmpty() || dslRule.startsWith("#") || dslRule.startsWith("//"))
+                continue;
             if (matcher.find()) {
                 DependencyVerdict type = DependencyVerdict.parseVerdict(matcher.group(1));
                 String originPattern = matcher.group(2);
@@ -32,6 +35,9 @@ class DependencyRuleParser {
                 DependencyRule rule = new DependencyRule(type, originMatcher, targetMatcher, dependencyDirection);
                 rules.add(rule);
             }
+            else
+                throw new IllegalArgumentException("Invalid rule " + dslRule);
+
         }
         return rules;
     }

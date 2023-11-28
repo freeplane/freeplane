@@ -17,6 +17,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
@@ -82,7 +83,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         CodeMapModel map = (CodeMapModel) selection.getMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
 	    map.setRoot(emptyRoot);
-	    map.setRules(codeExplorerConfiguration.getDependencyJudgeRules());
+	    setRules(codeExplorerConfiguration.getDependencyJudgeRules());
 	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
@@ -138,7 +139,12 @@ public class CodeMapController extends MapController implements CodeExplorer{
         Controller currentController = Controller.getCurrentController();
         IMapSelection selection = currentController.getSelection();
         CodeMapModel map = (CodeMapModel) selection.getMap();
-        map.setRules(rules);
+        try {
+            map.setRules(rules);
+        } catch (IllegalArgumentException e) {
+            String text = e.getMessage();
+            DependencyJudge.showHelp(text);
+        }
         IMapViewManager mapViewManager = currentController.getMapViewManager();
         MapView mapView = (MapView) mapViewManager.getMapViewComponent();
         mapView.repaint();

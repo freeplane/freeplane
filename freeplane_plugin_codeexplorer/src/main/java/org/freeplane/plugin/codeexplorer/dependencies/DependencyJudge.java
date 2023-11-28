@@ -7,6 +7,10 @@ package org.freeplane.plugin.codeexplorer.dependencies;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.swing.JTextArea;
+
+import org.freeplane.core.ui.components.UITools;
+
 import com.tngtech.archunit.core.domain.Dependency;
 
 /**
@@ -14,12 +18,15 @@ import com.tngtech.archunit.core.domain.Dependency;
  * It utilizes a domain-specific language (DSL) to define allowed, forbidden, or ignored dependencies.
  *
  * DSL Format:
- * -> Rules are defined in the format: [type] [originPattern] [direction] [targetPattern]
- * -> Types: allow, forbid, ignore
+ * -> Rules are defined in the format: [command] [originPattern] [direction] [targetPattern]
+ * -> Commands: allow, forbid, ignore
  * -> Direction: ->^v, ->v, ->^ (representing bidirectional, downward, upward respectively)
  * -> Patterns: follow AspectJ->like syntax for matching package names
  *
  * Example DSL:
+ *   # comment line
+ *   // another comment line
+ *
  *   allow *.service.* ->^v *.repository.*
  *   forbid *.*.controller*.. ->^ ..model..
  *   ignore ..util.. ->v ..*Helper..
@@ -71,5 +78,25 @@ public class DependencyJudge {
             }
         }
         return goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED;
+    }
+
+    public static void showHelp(String text) {
+        JTextArea helpText = new JTextArea((text.trim().isEmpty() ? "" : text + "\n\n")
+                 +"Rule Format:\n"
+                 + "-> Rules are defined one per line in the format:\n"
+                 + " [command] [originPattern] [direction] [targetPattern]\n\n"
+                 + "-> Commands: allow, forbid, ignore\n"
+                 + "-> Direction: ->^v, ->v, ->^ (representing bidirectional, downward, upward respectively)\n"
+                 + "-> Patterns: follow AspectJ->like syntax for matching package names\n\n"
+                 + "# comment line\n"
+                 + "// another comment line\n\n"
+                 + "Examples:\n"
+                 + "\n"
+                 + "  allow *.service.* ->^v *.repository.*\n"
+                 + "  forbid *.*.controller*.. ->^ ..model..\n"
+                 + "  ignore ..util.. ->v ..*Helper..\n"
+                 + "");
+        helpText.setEditable(false);
+        UITools.informationMessage(helpText);
     }
 }
