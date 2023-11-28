@@ -137,6 +137,8 @@ class PackageNodeModel extends CodeNodeModel {
 
 	@Override
 	public int getChildCount(){
+	    if(classCount == 0)
+	        return 0;
 	    int knownCount = super.getChildrenInternal().size();
 	    if(knownCount > 0)
 	        return knownCount;
@@ -154,7 +156,7 @@ class PackageNodeModel extends CodeNodeModel {
 
 	@Override
 	public boolean hasChildren() {
-    	return ! javaPackage.getSubpackages().isEmpty();
+    	return classCount > 0;
 	}
 
 
