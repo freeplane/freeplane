@@ -83,8 +83,10 @@ class CodeExplorerConfigurator extends JPanel {
         configTableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (e.getType() == TableModelEvent.UPDATE) {
-                    updateConfigurationName();
+                int firstRow = e.getFirstRow();
+                if (e.getType() == TableModelEvent.UPDATE && firstRow >= 0) {
+                    int lastRow = e.getLastRow();
+                    updateConfigurationNames(firstRow, lastRow);
                 }
             }
         });
@@ -95,14 +97,17 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
 
-    private void updateConfigurationName() {
-        int selectedRow = getSelectedConfigurationIndex();
-        if (selectedRow >= 0) {
-            String projectName = ((String) configTableModel.getValueAt(selectedRow, 0)).trim();
-            CodeExplorerConfiguration config = getConfiguration(selectedRow);
-            config.setProjectName(projectName);
-            saveConfigurationsProperty();
+    private void updateConfigurationNames(int firstRow, int lastRow) {
+        for (int row = firstRow; row < lastRow; row++) {
+            updateConfigurationName(row);
         }
+        saveConfigurationsProperty();
+    }
+
+    private void updateConfigurationName(int row) {
+        String projectName = ((String) configTableModel.getValueAt(row, 0)).trim();
+        CodeExplorerConfiguration config = getConfiguration(row);
+        config.setProjectName(projectName);
     }
 
     private void updateLocationsTable() {
@@ -151,9 +156,9 @@ class CodeExplorerConfigurator extends JPanel {
         CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration("", new ArrayList<>());
         explorerConfigurations.getConfigurations().add(newConfig);
         configTableModel.addRow(new Object[]{newConfig.getProjectName()});
-        if(configTableModel.getRowCount() == 1)
-            configTable.setRowSelectionInterval(0, 0);
-        configTable.editCellAt(configTable.getRowCount() - 1, 0);
+        int newRow = configTable.getRowCount() - 1;
+        configTable.setRowSelectionInterval(newRow, newRow);
+        configTable.editCellAt(newRow, 0);
         configTable.getEditorComponent().requestFocusInWindow();
     }
 
