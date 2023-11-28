@@ -51,7 +51,7 @@
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 		</Entry>
 		</Entry>
-		<Entry builder="main_menu">
+		<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
@@ -210,6 +210,8 @@
 			</Entry>
 		</Entry>
 		<Entry name="help" textKey="menu_help">
+            <Entry name="CommandSearchAction" accelerator="control F1" />
+            <Entry builder="separator" />
 			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
                 <Entry name="AskForHelp" />
@@ -219,6 +221,7 @@
 			<Entry name="AboutAction" />
 			<Entry accelerator="F1" name="DocumentationAction" />
             <Entry name="FreeplaneHandbook" />
+            <Entry name="HotKeyInfoAction" />
 		</Entry>
 	</Entry>
 	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
