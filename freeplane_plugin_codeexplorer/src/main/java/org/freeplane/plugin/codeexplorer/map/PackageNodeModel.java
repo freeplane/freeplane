@@ -108,7 +108,7 @@ class PackageNodeModel extends CodeNodeModel {
         String childPackageName = childPackage.getRelativeName();
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
         if(childPackage == javaPackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            String childName = childPackage == javaPackage ? "package" : parentName + childPackage.getRelativeName();
+            String childName = childPackage == javaPackage ? ClassesNodeModel.PACKAGE : parentName + childPackage.getRelativeName();
             return new ClassesNodeModel(childPackage, getMap(), childName, subgroupIndex);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
