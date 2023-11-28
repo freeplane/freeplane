@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -197,6 +196,8 @@ class CodeExplorerConfigurator extends JPanel {
         locationsTableModel = new DefaultTableModel(new Object[]{"Locations"}, 0);
         locationsTable = new JTable(locationsTableModel);
         locationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
+        locationsTable.getColumnModel().getColumn(0).setCellRenderer(rightAlignRenderer);
         JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
         addComponentToPanel(locationsTableScrollPane, locationsPanel, gbc, 0, 0, 1, 1);
 
@@ -205,6 +206,63 @@ class CodeExplorerConfigurator extends JPanel {
         return locationsPanel;
     }
 
+
+
+
+    private JPanel createLocationsButtonsPanel() {
+        JPanel locationsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
+        addJarsButton.addActionListener(e -> addJarsAndFolders());
+        JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
+        removeLocationsButton.addActionListener(e -> deleteSelectedLocation());
+        locationsButtonsPanel.add(addJarsButton);
+        locationsButtonsPanel.add(removeLocationsButton);
+        addJarsButton.setEnabled(false);
+        removeLocationsButton.setEnabled(false);
+
+        configTable.getSelectionModel().addListSelectionListener(l -> {
+            boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
+            addJarsButton.setEnabled(isSelectionValid);
+            removeLocationsButton.setEnabled(isSelectionValid);
+        });
+        return locationsButtonsPanel;
+    }
+
+    private void addJarsAndFolders() {
+        if(configTable.getRowCount() == 0)
+            addNewConfiguration();
+        JFileChooser fileChooser = UITools.newFileChooser(null);
+        fileChooser.setMultiSelectionEnabled(true);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("jar", "jar");
+        fileChooser.setFileFilter(filter);
+        int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File[] files = fileChooser.getSelectedFiles();
+            int selectedConfigRow = getSelectedConfigurationIndex();
+            if (selectedConfigRow >= 0) {
+                CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
+                for (File file : files) {
+                    locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
+                    selectedConfig.getLocations().add(file);
+                }
+            }
+            saveConfigurationsProperty();
+        }
+    }
+
+    private void deleteSelectedLocation() {
+        int selectedIndex = locationsTable.getSelectedRow();
+        if (selectedIndex != -1) {
+            locationsTableModel.removeRow(selectedIndex);
+            int selectedConfigRow = getSelectedConfigurationIndex();
+            if (selectedConfigRow >= 0) {
+                CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
+                config.getLocations().remove(selectedIndex);
+            }
+            saveConfigurationsProperty();
+        }
+    }
 
     private JPanel createRulesPanel() {
         JPanel rulesPanel = new JPanel(new GridBagLayout());
@@ -262,66 +320,24 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
 
-
-    private JPanel createLocationsButtonsPanel() {
-        JPanel locationsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
-        addJarsButton.addActionListener(e -> addJarsAndFolders());
-        JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
-        removeLocationsButton.addActionListener(e -> deleteSelectedLocation());
-        locationsButtonsPanel.add(addJarsButton);
-        locationsButtonsPanel.add(removeLocationsButton);
-        addJarsButton.setEnabled(false);
-        removeLocationsButton.setEnabled(false);
-
-        configTable.getSelectionModel().addListSelectionListener(l -> {
-            boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
-            addJarsButton.setEnabled(isSelectionValid);
-            removeLocationsButton.setEnabled(isSelectionValid);
-        });
-        return locationsButtonsPanel;
-    }
-
-    private void addJarsAndFolders() {
-        if(configTable.getRowCount() == 0)
-            addNewConfiguration();
-        JFileChooser fileChooser = UITools.newFileChooser(null);
-        fileChooser.setMultiSelectionEnabled(true);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("jar", "jar");
-        fileChooser.setFileFilter(filter);
-        int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File[] files = fileChooser.getSelectedFiles();
-            int selectedConfigRow = getSelectedConfigurationIndex();
-            if (selectedConfigRow >= 0) {
-                CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
-                for (File file : files) {
-                    locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
-                    selectedConfig.getLocations().add(file);
-                }
-            }
-            saveConfigurationsProperty();
-        }
-    }
-
-    private void deleteSelectedLocation() {
-        int selectedIndex = locationsTable.getSelectedRow();
-        if (selectedIndex != -1) {
-            locationsTableModel.removeRow(selectedIndex);
-            int selectedConfigRow = getSelectedConfigurationIndex();
-            if (selectedConfigRow >= 0) {
-                CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
-                config.getLocations().remove(selectedIndex);
-            }
-            saveConfigurationsProperty();
-        }
-    }
     private void layoutPanels() {
-        setLayout(new GridLayout(1, 3));
-        add(createConfigurationsPanel());
-        add(createLocationsPanel());
-        add(createRulesPanel());
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(createConfigurationsPanel(), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 2;
+        add(createLocationsPanel(), gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 1;
+        add(createRulesPanel(), gbc);
     }
 
     private GridBagConstraints createGridBagConstraints() {
