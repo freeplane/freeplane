@@ -63,6 +63,7 @@ public class CodeExplorerConfiguration {
 
     public JavaPackage importPackages() {
         Collection<Location> locations = getLocations().stream()
+                .map(this::findClasses)
                 .map(File::toURI)
                 .map(Location::of)
                 .collect(Collectors.toList());
@@ -72,5 +73,12 @@ public class CodeExplorerConfiguration {
         while(rootPackage.getClasses().isEmpty() && rootPackage.getSubpackages().size() == 1)
             rootPackage = rootPackage.getSubpackages().iterator().next();
         return rootPackage;
+    }
+
+    private File findClasses(File file) {
+        if(!file.isDirectory())
+            return file;
+        File mavenTargetClasses = new File(file, "target/classes");
+        return mavenTargetClasses.isDirectory() ? mavenTargetClasses : file;
     }
 }
