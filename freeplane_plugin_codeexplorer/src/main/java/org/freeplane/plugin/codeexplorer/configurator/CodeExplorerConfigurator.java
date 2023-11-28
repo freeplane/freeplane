@@ -23,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
-import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 class CodeExplorerConfigurator extends JPanel {
@@ -196,6 +195,14 @@ class CodeExplorerConfigurator extends JPanel {
         removeLocationsButton.addActionListener(e -> deleteSelectedLocation());
         locationsButtonsPanel.add(addJarsButton);
         locationsButtonsPanel.add(removeLocationsButton);
+        addJarsButton.setEnabled(false);
+        removeLocationsButton.setEnabled(false);
+
+        configTable.getSelectionModel().addListSelectionListener(l -> {
+            boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
+            addJarsButton.setEnabled(isSelectionValid);
+            removeLocationsButton.setEnabled(isSelectionValid);
+        });
         return locationsButtonsPanel;
     }
 
