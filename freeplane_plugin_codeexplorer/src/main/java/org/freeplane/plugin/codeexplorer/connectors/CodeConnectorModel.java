@@ -5,6 +5,8 @@
  */
 package org.freeplane.plugin.codeexplorer.connectors;
 
+import java.util.Objects;
+
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
@@ -32,4 +34,26 @@ class CodeConnectorModel extends ConnectorModel {
     public DependencyVerdict dependencyVerdict() {
         return dependencyVerdict;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(dependencyVerdict);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CodeConnectorModel other = (CodeConnectorModel) obj;
+        return dependencyVerdict == other.dependencyVerdict;
+    }
+
+
 }
