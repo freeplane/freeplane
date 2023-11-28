@@ -44,6 +44,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.commandsearch.CommandSearchAction;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.ITooltipProvider;
@@ -93,6 +94,8 @@ public class ModeController extends AController implements FreeplaneActions{
     private void createActions() {
         addAction(new SelectBranchAction());
         addAction(new SelectAllAction());
+        addAction(new CommandSearchAction());
+
     }
 
 	@Override

@@ -60,7 +60,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
-import org.freeplane.features.commandsearch.CommandSearchAction;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
@@ -392,7 +391,6 @@ public class MMapController extends MapController {
         modeController.addAction(new NodeUpAction());
         modeController.addAction(new NodeDownAction());
         modeController.addAction(new ConvertCloneToIndependentNodeAction());
-        modeController.addAction(new CommandSearchAction());
     }
 
     public void deleteNode(NodeModel node) {
