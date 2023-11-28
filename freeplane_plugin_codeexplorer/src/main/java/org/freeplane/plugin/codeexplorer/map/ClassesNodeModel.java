@@ -30,17 +30,16 @@ class ClassesNodeModel extends CodeNodeModel {
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;
 
-	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, boolean samePackage, int subgroupIndex) {
+	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, String name, int subgroupIndex) {
 		super(map, subgroupIndex);
 		this.javaPackage = javaPackage;
-        this.samePackage = samePackage;
+        this.samePackage = name.equals("package");
 		setFolded(! javaPackage.getClasses().isEmpty());
 		setID(javaPackage.getName() + ".package");
         long classCount = javaPackage.getClasses().stream()
                 .filter(jc -> isNamed(jc))
                 .count();
-		String text = samePackage ? "package" : javaPackage.getRelativeName();
-        setText(text + formatClassCount(classCount));
+        setText(name + formatClassCount(classCount));
 	}
 
 	@Override
