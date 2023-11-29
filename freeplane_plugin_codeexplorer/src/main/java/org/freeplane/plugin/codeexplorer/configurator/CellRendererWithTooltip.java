@@ -22,7 +22,9 @@ class CellRendererWithTooltip extends DefaultTableCellRenderer {
                                                    boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if (getPreferredSize().width > table.getColumnModel().getColumn(column).getWidth()) {
+        int preferredWidth = getPreferredSize().width;
+        if (preferredWidth > table.getColumnModel().getColumn(column).getWidth()
+                || preferredWidth > table.getParent().getWidth()) {
             setToolTipText(getText());
         } else {
             setToolTipText(null);

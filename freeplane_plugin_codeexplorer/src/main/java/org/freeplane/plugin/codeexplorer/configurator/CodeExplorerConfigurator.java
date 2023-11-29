@@ -21,6 +21,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -73,14 +75,19 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private JPanel createConfigurationsPanel() {
+
         JPanel configPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createGridBagConstraints();
 
-        configTableModel = new DefaultTableModel(new Object[]{"Configurations"}, 0);
+        JLabel locationsLabel = new JLabel("Configurations");
+        locationsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        addComponentToPanel(locationsLabel, configPanel, gbc, 0, 0, 1, 0);
+
+        configTableModel = new DefaultTableModel(new Object[]{""}, 0);
         configTable = new JTable(configTableModel);
         configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
-        addComponentToPanel(configTableScrollPane, configPanel, gbc, 0, 0, 1, 1);
+        addComponentToPanel(configTableScrollPane, configPanel, gbc, 0, 1, 1, 1);
 
         configTable.getSelectionModel().addListSelectionListener(e -> updateConfiguration());
 
@@ -96,7 +103,7 @@ class CodeExplorerConfigurator extends JPanel {
         });
 
         JPanel configButtonsPanel = createConfigButtonsPanel();
-        addComponentToPanel(configButtonsPanel, configPanel, gbc, 0, 1, 1, 0);
+        addComponentToPanel(configButtonsPanel, configPanel, gbc, 0, 2, 1, 0);
         return configPanel;
     }
 
@@ -189,20 +196,38 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
 
+    @SuppressWarnings("serial")
     private JPanel createLocationsPanel() {
         JPanel locationsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createGridBagConstraints();
 
-        locationsTableModel = new DefaultTableModel(new Object[]{"Locations"}, 0);
-        locationsTable = new JTable(locationsTableModel);
+        JLabel locationsLabel = new JLabel("Locations");
+        locationsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        addComponentToPanel(locationsLabel, locationsPanel, gbc, 0, 0, 1, 0);
+
+        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0);
+        locationsTable = new JTable(locationsTableModel){
+            {
+                setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            }
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component component = super.prepareRenderer(renderer, row, column);
+                int rendererWidth = component.getPreferredSize().width;
+                TableColumn tableColumn = getColumnModel().getColumn(column);
+                tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, getParent().getWidth()));
+                return component;
+             }
+         };
+        locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
         locationsTable.getColumnModel().getColumn(0).setCellRenderer(rightAlignRenderer);
         JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
-        addComponentToPanel(locationsTableScrollPane, locationsPanel, gbc, 0, 0, 1, 1);
+        addComponentToPanel(locationsTableScrollPane, locationsPanel, gbc, 0, 1, 1, 1);
 
         JPanel locationsButtonsPanel = createLocationsButtonsPanel();
-        addComponentToPanel(locationsButtonsPanel, locationsPanel, gbc, 0, 1, 1, 0);
+        addComponentToPanel(locationsButtonsPanel, locationsPanel, gbc, 0, 2, 1, 0);
         return locationsPanel;
     }
 
