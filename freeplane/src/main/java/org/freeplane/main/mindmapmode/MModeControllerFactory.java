@@ -38,6 +38,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.commandtonode.NewNodeLinkedToMenuItemOnNextClickAction;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -294,6 +295,7 @@ public class MModeControllerFactory {
 		controller.addAction(new ToggleToolbarAction("ToggleFBarAction", "/fbuttons"));
 		SModeControllerFactory.install();
 		modeController.addAction(new SetAcceleratorOnNextClickAction());
+		modeController.addAction(new NewNodeLinkedToMenuItemOnNextClickAction());
 		modeController.addAction(new ShowNotesInMapAction());
 		//userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		ResourceController.getResourceController().getAcceleratorManager().addAcceleratorChangeListener(modeController, fButtonToolBar);

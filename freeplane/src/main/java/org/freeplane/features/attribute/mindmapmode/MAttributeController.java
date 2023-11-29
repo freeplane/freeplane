@@ -615,7 +615,7 @@ public class MAttributeController extends AttributeController {
 					setAttribute(pNode, i, newAttribute);
 				}
 				else {
-					removeAttribute(pNode, i);
+					performRemoveAttribute(pNode, i);
 				}
 				return i;
 			}
@@ -867,7 +867,7 @@ public class MAttributeController extends AttributeController {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public void removeAttribute(final NodeModel node, final int pPosition) {
+	public void performRemoveAttribute(final NodeModel node, final int pPosition) {
 		createAttributeTableModel(node);
 		performRemoveRow(node, NodeAttributeTableModel.getModel(node), pPosition);
 	}

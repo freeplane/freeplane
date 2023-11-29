@@ -254,7 +254,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		if (index == -1) {
 			return false;
 		}
-		getAttributeController().removeAttribute(getDelegate(), index);
+		getAttributeController().performRemoveAttribute(getDelegate(), index);
 		return true;
 	}
 
@@ -273,7 +273,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		// do it backwards in order not to invalidate the first indexes
 		for (int i = toRemove.size() - 1; i >= 0; --i) {
-			getAttributeController().removeAttribute(getDelegate(), toRemove.get(i));
+			getAttributeController().performRemoveAttribute(getDelegate(), toRemove.get(i));
 		}
 		return !toRemove.isEmpty();
 	}
@@ -281,7 +281,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	@Override
 	public void remove(final int index) {
         getAndCheckNodeAttributeTableModelForIndex(index, "remove:");
-		getAttributeController().removeAttribute(getDelegate(), index);
+		getAttributeController().performRemoveAttribute(getDelegate(), index);
 	}
 
 	@Override
@@ -289,7 +289,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
 		final int size = attributeTableModel.getRowCount();
 		for (int i = size - 1; i >= 0; i--) {
-			getAttributeController().removeAttribute(getDelegate(), i);
+			getAttributeController().performRemoveAttribute(getDelegate(), i);
 		}
 	}
 

@@ -2,6 +2,7 @@ package org.freeplane.features.link;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.swing.Action;
 
@@ -31,29 +32,17 @@ class LinkMenuBuilder implements EntryVisitor {
 			return;
 		final NodeModel node = selection.getSelected();
 		Configurable mapViewComponent = controller.getMapViewManager().getMapViewConfiguration();
-		Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(linkController.getLinksFrom(node, mapViewComponent));
-		links.addAll(linkController.getLinksTo(node, mapViewComponent));
+		Set<String> links = linkController.getLinksFrom(node, mapViewComponent).stream().map(NodeLinkModel::getTargetID).collect(Collectors.toCollection(LinkedHashSet::new));
+		linkController.getLinksTo(node, mapViewComponent).stream().map(NodeLinkModel::getSource).map(NodeModel::createID).forEach(links::add);
+		links.remove(node.getID());
 		boolean firstAction = true;
-		for (NodeLinkModel link : links) {
-			final String targetID = link.getTargetID();
-			final NodeModel target;
-			if (node.getID().equals(targetID)) {
-				if (link instanceof ConnectorModel) {
-					ConnectorModel cm = (ConnectorModel) link;
-					target = cm.getSource();
-					if (node.equals(target))
-						continue;
-				}
-				else
-					continue;
-			}
-			else
-				target = node.getMap().getNodeForID(targetID);
+		for (String targetID : links) {
+		    NodeModel target = node.getMap().getNodeForID(targetID);
+		    if(target ==  null)
+		        continue;
 			final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(linkController, target);
 			gotoLinkNodeAction.configureText("follow_graphical_link", target);
-			if (!(link instanceof ConnectorModel)) {
-				gotoLinkNodeAction.putValue(Action.SMALL_ICON, LinkController.LinkType.LOCAL.icon);
-			}
+
 			if (firstAction) {
 				entry.addChild(new Entry().setBuilders("separator"));
 				firstAction = false;
