@@ -39,7 +39,7 @@ import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
-    private static final String[] COLUMN_NAMES = new String[]{"Judgement", "Origin", "Target","Dependency"};
+    private static final String[] COLUMN_NAMES = new String[]{"Verdict", "Origin", "Target","Dependency"};
 
     private static final long serialVersionUID = 1L;
     private static final Icon filterIcon = ResourceController.getResourceController().getIcon("filterDependencyIncormation.icon");
@@ -103,7 +103,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         DependenciesWrapper dataModel = new DependenciesWrapper();
         dependencyViewer.setModel(dataModel);
         TableColumnModel columnModel = dependencyViewer.getColumnModel();
-        updateColumn(columnModel, 0, 100);
+        updateColumn(columnModel, 0, 200);
         updateColumn(columnModel, 1, 400);
         updateColumn(columnModel, 2, 400);
         updateColumn(columnModel, 3, 1000);
