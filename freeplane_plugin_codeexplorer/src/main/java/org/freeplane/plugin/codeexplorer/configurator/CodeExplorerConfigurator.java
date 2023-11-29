@@ -143,7 +143,7 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void exploreSelectedConfiguration() {
-        setDependencyJudgeRules(rules.getText());
+        setDependencyJudgeRules();
         codeProjectController.exploreConfiguration(getSelectedConfiguration());
     }
 
@@ -286,7 +286,7 @@ class CodeExplorerConfigurator extends JPanel {
         JPanel rulesButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(e ->
-            setDependencyJudgeRules(rules.getText())
+            setDependencyJudgeRules()
         );
         JButton revertButton = new JButton("Revert");
         revertButton.addActionListener(e ->
@@ -311,12 +311,19 @@ class CodeExplorerConfigurator extends JPanel {
         return rulesButtonsPanel;
     }
 
-    private void setDependencyJudgeRules(String rules) {
+    private void setDependencyJudgeRules() {
         CodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
-        if(! selectedConfiguration.getDependencyJudgeRules().equals(rules)) {
-            selectedConfiguration.setDependencyJudgeRules(rules);
-            saveConfigurationsProperty();
-            codeProjectController.setDependencyJudgeRules(rules);
+        String ruleSpecification = rules.getText();
+        if(! selectedConfiguration.getDependencyJudgeRules().equals(ruleSpecification)) {
+            try {
+                selectedConfiguration.setDependencyJudgeRules(ruleSpecification);
+                saveConfigurationsProperty();
+                codeProjectController.setJudge(selectedConfiguration.getDependencyJudge());
+
+            } catch (IllegalArgumentException e) {
+                String text = e.getMessage();
+                DependencyJudge.showHelp(text);
+            }
         }
     }
 

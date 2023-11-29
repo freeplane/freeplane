@@ -5,8 +5,9 @@
  */
 package org.freeplane.plugin.codeexplorer.task;
 
-public interface CodeExplorer {
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
+public interface CodeExplorer {
     void explore(CodeExplorerConfiguration configuration);
-    void setRules(String rules);
+    void setJudge(DependencyJudge judge);
 }

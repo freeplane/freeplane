@@ -83,7 +83,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         CodeMapModel map = (CodeMapModel) selection.getMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
 	    map.setRoot(emptyRoot);
-	    setRules(codeExplorerConfiguration.getDependencyJudgeRules());
+	    setJudge(codeExplorerConfiguration.getDependencyJudge());
 	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
@@ -135,16 +135,11 @@ public class CodeMapController extends MapController implements CodeExplorer{
     }
 
     @Override
-    public void setRules(String rules) {
+    public void setJudge(DependencyJudge judge) {
         Controller currentController = Controller.getCurrentController();
         IMapSelection selection = currentController.getSelection();
         CodeMapModel map = (CodeMapModel) selection.getMap();
-        try {
-            map.setRules(rules);
-        } catch (IllegalArgumentException e) {
-            String text = e.getMessage();
-            DependencyJudge.showHelp(text);
-        }
+        map.setJudge(judge);
         IMapViewManager mapViewManager = currentController.getMapViewManager();
         MapView mapView = (MapView) mapViewManager.getMapViewComponent();
         mapView.repaint();

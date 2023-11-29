@@ -26,8 +26,8 @@ class CodeMapModel extends MapModel {
         return "Code: " + getRootNode().toString();
     }
 
-    public void setRules(String rules) {
-        this.judge = DependencyJudge.of(rules);
+    public void setJudge(DependencyJudge judge) {
+        this.judge = judge;
     }
 
     @Override

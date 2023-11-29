@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
+
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -41,6 +43,7 @@ public class CodeExplorerConfiguration {
     private String projectName;
     private List<File> locations;
     private String dependencyJudgeRules;
+    private DependencyJudge judge;
 
 
 
@@ -67,13 +70,15 @@ public class CodeExplorerConfiguration {
     }
 
     public void setDependencyJudgeRules(String dependencyJudgeRules) {
+        this.judge = DependencyJudge.of(dependencyJudgeRules);
         this.dependencyJudgeRules = dependencyJudgeRules;
     }
 
     public CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
         this.projectName = projectName;
         this.locations = locations;
-        this.dependencyJudgeRules = dependencyJudgeRules;
+        setDependencyJudgeRules("");
+        setDependencyJudgeRules(dependencyJudgeRules);
     }
 
     public String serialize() {
@@ -103,5 +108,9 @@ public class CodeExplorerConfiguration {
             return file;
         File mavenTargetClasses = new File(file, "target/classes");
         return mavenTargetClasses.isDirectory() ? mavenTargetClasses : file;
+    }
+
+    public DependencyJudge getDependencyJudge() {
+        return judge;
     }
 }

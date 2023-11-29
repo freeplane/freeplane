@@ -34,6 +34,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
@@ -140,8 +141,8 @@ public class CodeProjectController implements IExtension {
         codeExplorer.explore(selectedConfiguration);
     }
 
-    void setDependencyJudgeRules(String rules) {
+    void setJudge(DependencyJudge judge) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-        codeExplorer.setRules(rules);
+        codeExplorer.setJudge(judge);
     }
 }
