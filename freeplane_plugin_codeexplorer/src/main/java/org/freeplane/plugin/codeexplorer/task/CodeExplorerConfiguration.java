@@ -78,7 +78,11 @@ public class CodeExplorerConfiguration {
         this.projectName = projectName;
         this.locations = locations;
         setDependencyJudgeRules("");
-        setDependencyJudgeRules(dependencyJudgeRules);
+        try {
+            setDependencyJudgeRules(dependencyJudgeRules);
+        } catch (IllegalArgumentException e) {
+            // silently ignore bad rules
+        }
     }
 
     public String serialize() {
