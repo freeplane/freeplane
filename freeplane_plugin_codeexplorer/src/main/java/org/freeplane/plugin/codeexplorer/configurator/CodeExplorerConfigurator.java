@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
@@ -196,19 +197,40 @@ class CodeExplorerConfigurator extends JPanel {
                 setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             }
             @Override
-            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-                Component component = super.prepareRenderer(renderer, row, column);
-                int rendererWidth = component.getPreferredSize().width;
-                TableColumn tableColumn = getColumnModel().getColumn(column);
-                tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, getParent().getWidth()));
-                return component;
-             }
-         };
+            public void tableChanged(TableModelEvent e) {
+                super.tableChanged(e);
+                resizeAndRepaint();
+            }
+            @Override
+            public void doLayout() {
+                for(int column = 0; column < getColumnCount(); column ++){
+                    int  width = getParent().getWidth();
+                    for (int row = 0; row < getRowCount(); row++) {
+                        TableCellRenderer renderer = getCellRenderer(row, column);
+                        Component comp = prepareRenderer(renderer, row, column);
+                        width = Math.max (comp.getPreferredSize().width, width);
+                    }
+                    TableColumn col = new TableColumn();
+                    col = getColumnModel().getColumn(column);
+                    col.setPreferredWidth(width);
+                }
+                super.doLayout();
+            }
+        };
         locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
         locationsTable.getColumnModel().getColumn(0).setCellRenderer(rightAlignRenderer);
         JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
+        locationsTableScrollPane.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                locationsTable.revalidate();
+                locationsTable.repaint();
+            }
+
+        });
         addComponentToPanel(locationsTableScrollPane, locationsPanel, gbc, 0, 1, 1, 1);
 
         JPanel locationsButtonsPanel = createLocationsButtonsPanel();
