@@ -6,22 +6,32 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class CodeExplorerConfigurations {
+
+
     private static final File DEFAULT_CONFIGURATION_FILE = new File(Compat.getApplicationUserDirectory(), "codeExplorer.json");
     private List<CodeExplorerConfiguration> configurations;
-    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final static Gson OBJECT_MAPPER = new GsonBuilder()
+            .registerTypeAdapter(File.class, new FileTypeAdapter())
+            .setPrettyPrinting()
+            .create();
+    private final static Type CONFIGURATIONS_TYPE = new TypeToken<List<CodeExplorerConfiguration>>() {/**/}.getType();
 
 
     public CodeExplorerConfigurations(List<CodeExplorerConfiguration> configurations) {
@@ -41,8 +51,8 @@ public class CodeExplorerConfigurations {
     }
 
     void saveConfiguration(File file) {
-        try {
-            OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValue(file, configurations);
+        try (FileWriter writer = new FileWriter(file)){
+            OBJECT_MAPPER.toJson(configurations, writer);
         } catch (IOException e) {
             LogUtils.severe(e);
         }
@@ -55,14 +65,18 @@ public class CodeExplorerConfigurations {
 
     static CodeExplorerConfigurations loadConfigurations(File configurationFile) {
         List<CodeExplorerConfiguration> configurations;
-        try {
-           configurations = !configurationFile.exists()
-                    ? new ArrayList<>()
-                    : OBJECT_MAPPER.readValue(configurationFile, new TypeReference<List<CodeExplorerConfiguration>>() {/**/});
+        configurations = !configurationFile.exists()
+                ? new ArrayList<>()
+                        : fromJsonFile(configurationFile);
+        return new CodeExplorerConfigurations(configurations);
+    }
+
+    private static List<CodeExplorerConfiguration> fromJsonFile(File configurationFile){
+        try (FileReader reader = new FileReader(configurationFile)) {
+            return OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
         } catch (IOException e) {
             LogUtils.severe(e);
-            configurations = new ArrayList<>();
+            return Collections.emptyList();
         }
-        return new CodeExplorerConfigurations(configurations);
     }
 }

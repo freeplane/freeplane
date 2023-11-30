@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -71,7 +70,6 @@ public class CodeExplorerConfiguration {
         this.dependencyJudgeRules = dependencyJudgeRules;
     }
 
-    @JsonIgnore
     public DependencyJudge getDependencyJudge() {
         return judge;
     }
