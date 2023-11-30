@@ -25,7 +25,8 @@ import com.google.gson.reflect.TypeToken;
 public class CodeExplorerConfigurations {
 
 
-    private static final File DEFAULT_CONFIGURATION_FILE = new File(Compat.getApplicationUserDirectory(), "codeExplorer.json");
+    private static final String CODE_EXPLORER_JSON_FILE = "codeExplorer.json";
+    private static final File DEFAULT_CONFIGURATION_FILE = new File(Compat.getApplicationUserDirectory(), CODE_EXPLORER_JSON_FILE);
     private List<CodeExplorerConfiguration> configurations;
     private final static Gson OBJECT_MAPPER = new GsonBuilder()
             .registerTypeAdapter(File.class, new FileTypeAdapter())
