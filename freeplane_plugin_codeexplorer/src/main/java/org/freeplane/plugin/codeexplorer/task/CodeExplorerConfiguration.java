@@ -7,45 +7,44 @@ package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.Location;
 
 public class CodeExplorerConfiguration {
-    public static CodeExplorerConfiguration deserialize(String serialized) {
-        String[] parts = serialized.split(PROJECT_PART_DELIMITER);
-        String projectName = parts[0];
-        String rules = parts.length > 1 ? parts[parts.length - 1] : "";
-        List<File> locations = Arrays.stream(parts)
-                .limit(parts.length - 1)
-                .skip(1)
-                .map(File::new)
-                .collect(Collectors.toCollection(ArrayList::new));
-        if(! rules.contains("->")) {
-            File file = new File(rules);
-            if (file.exists()) {
-                locations.add(file);
-                rules = "";
-            }
-        }
-        return new CodeExplorerConfiguration(projectName, locations, rules.replace(';', '\n'));
-    }
 
-    private static final String PROJECT_PART_DELIMITER = "\t";
     private String projectName;
     private List<File> locations;
     private String dependencyJudgeRules;
-    private DependencyJudge judge;
 
+    transient private DependencyJudge judge;
 
+    public CodeExplorerConfiguration() {
+        this("", new ArrayList<>(), "");
+    }
+
+    public CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
+        this.projectName = projectName;
+        this.locations = locations.stream()
+                .map(File::getAbsoluteFile)
+                .collect(Collectors.toList());
+        setDependencyJudgeRules("");
+        if(! dependencyJudgeRules.isEmpty()) {
+            try {
+                setDependencyJudgeRules(dependencyJudgeRules);
+            } catch (IllegalArgumentException e) {
+                // silently ignore bad rules
+            }
+        }
+    }
 
     public String getProjectName() {
         return projectName;
@@ -63,8 +62,6 @@ public class CodeExplorerConfiguration {
         this.locations = locations;
     }
 
-
-
     public String getDependencyJudgeRules() {
         return dependencyJudgeRules;
     }
@@ -74,23 +71,9 @@ public class CodeExplorerConfiguration {
         this.dependencyJudgeRules = dependencyJudgeRules;
     }
 
-    public CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
-        this.projectName = projectName;
-        this.locations = locations;
-        setDependencyJudgeRules("");
-        try {
-            setDependencyJudgeRules(dependencyJudgeRules);
-        } catch (IllegalArgumentException e) {
-            // silently ignore bad rules
-        }
-    }
-
-    public String serialize() {
-        String locationsString = locations.stream()
-                .map(File::getPath)
-                .collect(Collectors.joining(PROJECT_PART_DELIMITER));
-        return projectName + PROJECT_PART_DELIMITER + locationsString + PROJECT_PART_DELIMITER
-                + dependencyJudgeRules.replace('\n', ';').replace('\t', ' ');
+    @JsonIgnore
+    public DependencyJudge getDependencyJudge() {
+        return judge;
     }
 
     public JavaPackage importPackages() {
@@ -112,9 +95,5 @@ public class CodeExplorerConfiguration {
             return file;
         File mavenTargetClasses = new File(file, "target/classes");
         return mavenTargetClasses.isDirectory() ? mavenTargetClasses : file;
-    }
-
-    public DependencyJudge getDependencyJudge() {
-        return judge;
     }
 }
