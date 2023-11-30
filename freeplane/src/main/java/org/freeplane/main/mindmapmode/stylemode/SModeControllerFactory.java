@@ -31,6 +31,7 @@ import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
@@ -95,6 +96,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
@@ -122,7 +124,15 @@ public class SModeControllerFactory {
 
 	Controller createController(final JDialog dialog) {
 		Controller currentController = Controller.getCurrentController();
-		final Controller controller = new Controller(ResourceController.getResourceController());
+		final Controller controller = new Controller(ResourceController.getResourceController()) {
+
+		    @Override
+            public void quit() {
+		        if(((SModeController) getModeController()).tryToCloseDialog())
+		            SwingUtilities.invokeLater(currentController::quit);
+		    }
+
+		};
 		Controller.setCurrentController(controller);
 		final MapViewController mapViewController = new MMapViewController(controller);
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
@@ -195,7 +205,7 @@ public class SModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		if (extentionInstaller != null)
-			extentionInstaller.installExtensions(controller);
+			extentionInstaller.installExtensions(controller, Context.STYLE);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		modeController.addAction(new ShowFormatPanelAction());
