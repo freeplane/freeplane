@@ -251,7 +251,7 @@ class CodeExplorerConfigurator extends JPanel {
                 CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
                 for (File file : files) {
                     locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
-                    selectedConfig.getLocations().add(file);
+                    selectedConfig.addLocation(file);
                 }
             }
         }

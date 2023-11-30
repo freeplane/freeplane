@@ -33,7 +33,8 @@ public class CodeExplorerConfiguration {
     public CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
         this.projectName = projectName;
         this.locations = locations.stream()
-                .map(File::getAbsoluteFile)
+                .map(File::getAbsolutePath)
+                .map(File::new)
                 .collect(Collectors.toList());
         setDependencyJudgeRules("");
         if(! dependencyJudgeRules.isEmpty()) {
@@ -93,5 +94,9 @@ public class CodeExplorerConfiguration {
             return file;
         File mavenTargetClasses = new File(file, "target/classes");
         return mavenTargetClasses.isDirectory() ? mavenTargetClasses : file;
+    }
+
+    public void addLocation(File file) {
+        locations.add(new File(file.getAbsolutePath()));
     }
 }
