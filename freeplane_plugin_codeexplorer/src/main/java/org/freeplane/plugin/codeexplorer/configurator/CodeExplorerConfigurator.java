@@ -23,8 +23,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
@@ -192,31 +191,7 @@ class CodeExplorerConfigurator extends JPanel {
         addComponentToPanel(locationsLabel, locationsPanel, gbc, 0, 0, 1, 0);
 
         locationsTableModel = new DefaultTableModel(new Object[]{""}, 0);
-        locationsTable = new JTable(locationsTableModel){
-            {
-                setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            }
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                super.tableChanged(e);
-                resizeAndRepaint();
-            }
-            @Override
-            public void doLayout() {
-                for(int column = 0; column < getColumnCount(); column ++){
-                    int  width = getParent().getWidth();
-                    for (int row = 0; row < getRowCount(); row++) {
-                        TableCellRenderer renderer = getCellRenderer(row, column);
-                        Component comp = prepareRenderer(renderer, row, column);
-                        width = Math.max (comp.getPreferredSize().width, width);
-                    }
-                    TableColumn col = new TableColumn();
-                    col = getColumnModel().getColumn(column);
-                    col.setPreferredWidth(width);
-                }
-                super.doLayout();
-            }
-        };
+        locationsTable = new AutoResizedTable(locationsTableModel);
         locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
