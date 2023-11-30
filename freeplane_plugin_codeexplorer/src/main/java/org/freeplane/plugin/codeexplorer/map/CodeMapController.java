@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.UIManager;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
@@ -14,6 +16,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
@@ -53,14 +56,17 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    Color foreground = UIManager.getColor("Panel.foreground");
 	    MapStyleModel mapStyleModel = MapStyleModel.getExtension(codeMapModel);
 	    NodeModel defaultStyleNode = mapStyleModel.getDefaultStyleNode();
-	    if(background != null && foreground != null) {
+	    NodeStyleModel nodeStyle = NodeStyleModel.createNodeStyleModel(defaultStyleNode);
+	    nodeStyle.setFontSize(10);
+        if(background != null && foreground != null) {
 	        mapStyleModel.setBackgroundColor(background.darker());
-	        NodeStyleModel.createNodeStyleModel(defaultStyleNode).setColor(foreground);
+	        nodeStyle.setColor(foreground);
 	    }
 	    else {
 	        mapStyleModel.setBackgroundColor(Color.WHITE);
-	        NodeStyleModel.createNodeStyleModel(defaultStyleNode).setColor(Color.BLACK);
+	        nodeStyle.setColor(Color.BLACK);
 	    }
+	    NodeSizeModel.createNodeSizeModel(defaultStyleNode).setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
 	    createMapView(codeMapModel);
 	    return codeMapModel;
 	}
