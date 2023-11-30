@@ -251,7 +251,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 
 		@Override
-		public void installExtensions(Controller controller) {
+		public void installExtensions(Controller controller, Context extensionsContext) {
 			try {
 				final ServiceReference[] controllerProviders = context.getServiceReferences(
 				    IControllerExtensionProvider.class.getName(), null);
@@ -260,7 +260,7 @@ class ActivatorImpl implements BundleActivator {
 						final ServiceReference controllerProvider = controllerProviders[i];
 						final IControllerExtensionProvider service = (IControllerExtensionProvider) context
 						    .getService(controllerProvider);
-						service.installExtension(controller, options);
+						service.installExtension(controller, options, extensionsContext);
 						context.ungetService(controllerProvider);
 					}
 				}
@@ -296,7 +296,7 @@ class ActivatorImpl implements BundleActivator {
 	private void installControllerExtensions(final BundleContext context, final Controller controller, CommandLineOptions options) {
 		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context, options);
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
-		osgiExtentionInstaller.installExtensions(controller);
+		osgiExtentionInstaller.installExtensions(controller, ExtensionInstaller.Context.MAIN);
 	}
 
 
