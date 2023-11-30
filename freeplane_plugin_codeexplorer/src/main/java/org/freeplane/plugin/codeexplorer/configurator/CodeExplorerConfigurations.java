@@ -5,9 +5,12 @@
  */
 package org.freeplane.plugin.codeexplorer.configurator;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
@@ -16,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CodeExplorerConfigurations {
+    private static final File DEFAULT_CONFIGURATION_FILE = new File(Compat.getApplicationUserDirectory(), "codeExplorer.json");
     private List<CodeExplorerConfiguration> configurations;
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -32,23 +36,30 @@ public class CodeExplorerConfigurations {
         this.configurations = configurations;
     }
 
-    String serialize() {
+    void saveConfiguration() {
+        saveConfiguration(DEFAULT_CONFIGURATION_FILE);
+    }
+
+    void saveConfiguration(File file) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(configurations);
-        } catch (JsonProcessingException e) {
+            OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValue(file, configurations);
+        } catch (IOException e) {
             LogUtils.severe(e);
-            return "";
         }
     }
 
-    static CodeExplorerConfigurations deserialize(String serialized) {
+    static CodeExplorerConfigurations loadConfigurations() {
+        File configurationFile = DEFAULT_CONFIGURATION_FILE;
+        return loadConfigurations(configurationFile);
+    }
+
+    static CodeExplorerConfigurations loadConfigurations(File configurationFile) {
         List<CodeExplorerConfiguration> configurations;
         try {
-           configurations = serialized.trim().isEmpty()
+           configurations = !configurationFile.exists()
                     ? new ArrayList<>()
-                    : OBJECT_MAPPER.readValue(serialized, new TypeReference<List<CodeExplorerConfiguration>>() {
-                    });
-        } catch (JsonProcessingException e) {
+                    : OBJECT_MAPPER.readValue(configurationFile, new TypeReference<List<CodeExplorerConfiguration>>() {/**/});
+        } catch (IOException e) {
             LogUtils.severe(e);
             configurations = new ArrayList<>();
         }

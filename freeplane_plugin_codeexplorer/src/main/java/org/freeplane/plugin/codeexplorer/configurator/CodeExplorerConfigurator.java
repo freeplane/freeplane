@@ -32,33 +32,20 @@ import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 class CodeExplorerConfigurator extends JPanel {
 
-    private static final String CODE_EXPLORER_CONFIGURATION_PROPERTY = "code_explorer_configuration";
     private static final long serialVersionUID = 1L;
     private DefaultTableModel configTableModel;
     private DefaultTableModel locationsTableModel;
     private JTable configTable;
     private JTable locationsTable;
-    private final CodeExplorerConfigurations explorerConfigurations;
     private final CodeProjectController codeProjectController;
     private JTextArea rules;
 
     CodeExplorerConfigurator(CodeProjectController codeProjectController) {
         this.codeProjectController = codeProjectController;
-        this.explorerConfigurations = loadConfigurations();
         initializeComponents();
-        updateConfigurationsTable(explorerConfigurations);
+        updateConfigurationsTable(explorerConfigurations());
     }
 
-    private CodeExplorerConfigurations loadConfigurations() {
-        String codeExplorerConfiguration = ResourceController.getResourceController().getProperty(CODE_EXPLORER_CONFIGURATION_PROPERTY, "");
-        CodeExplorerConfigurations explorerConfigurations = CodeExplorerConfigurations.deserialize(codeExplorerConfiguration);
-        return explorerConfigurations;
-    }
-
-    private void saveConfigurationsProperty() {
-        String spec = explorerConfigurations.serialize();
-        ResourceController.getResourceController().setProperty(CODE_EXPLORER_CONFIGURATION_PROPERTY, spec);
-    }
 
     private void updateConfigurationsTable(CodeExplorerConfigurations explorerConfigurations) {
         configTableModel.setRowCount(0); // Clear existing data
@@ -112,7 +99,6 @@ class CodeExplorerConfigurator extends JPanel {
         for (int row = firstRow; row <= lastRow; row++) {
             updateConfigurationName(row);
         }
-        saveConfigurationsProperty();
     }
 
     private void updateConfigurationName(int row) {
@@ -162,7 +148,7 @@ class CodeExplorerConfigurator extends JPanel {
 
     private CodeExplorerConfiguration getConfiguration(int selectedConfigurationIndex) {
         if(selectedConfigurationIndex >= 0)
-            return explorerConfigurations.getConfigurations().get(selectedConfigurationIndex);
+            return explorerConfigurations().getConfigurations().get(selectedConfigurationIndex);
         else
             return null;
     }
@@ -173,7 +159,7 @@ class CodeExplorerConfigurator extends JPanel {
 
     private void addNewConfiguration() {
         CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration("", new ArrayList<>(), "");
-        explorerConfigurations.getConfigurations().add(newConfig);
+        explorerConfigurations().getConfigurations().add(newConfig);
         configTableModel.addRow(new Object[]{newConfig.getProjectName()});
         int newRow = configTable.getRowCount() - 1;
         configTable.setRowSelectionInterval(newRow, newRow);
@@ -185,8 +171,7 @@ class CodeExplorerConfigurator extends JPanel {
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
             configTableModel.removeRow(selectedRow);
-            explorerConfigurations.getConfigurations().remove(selectedRow);
-            saveConfigurationsProperty();
+            explorerConfigurations().getConfigurations().remove(selectedRow);
             int rowCount = configTableModel.getRowCount();
             if(selectedRow < rowCount)
                 configTable.setRowSelectionInterval(selectedRow, selectedRow);
@@ -272,7 +257,6 @@ class CodeExplorerConfigurator extends JPanel {
                     selectedConfig.getLocations().add(file);
                 }
             }
-            saveConfigurationsProperty();
         }
     }
 
@@ -285,7 +269,6 @@ class CodeExplorerConfigurator extends JPanel {
                 CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
                 config.getLocations().remove(selectedIndex);
             }
-            saveConfigurationsProperty();
         }
     }
 
@@ -342,7 +325,6 @@ class CodeExplorerConfigurator extends JPanel {
         if(! selectedConfiguration.getDependencyJudgeRules().equals(ruleSpecification)) {
             try {
                 selectedConfiguration.setDependencyJudgeRules(ruleSpecification);
-                saveConfigurationsProperty();
                 codeProjectController.setJudge(selectedConfiguration.getDependencyJudge());
 
             } catch (IllegalArgumentException e) {
@@ -393,5 +375,10 @@ class CodeExplorerConfigurator extends JPanel {
             paths.add(new File(locationsTableModel.getValueAt(i, 0).toString()));
         }
         return paths;
+    }
+
+
+    private CodeExplorerConfigurations explorerConfigurations() {
+        return codeProjectController.explorerConfigurations();
     }
 }

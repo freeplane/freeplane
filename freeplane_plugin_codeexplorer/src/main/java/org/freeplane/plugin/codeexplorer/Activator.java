@@ -7,10 +7,12 @@ import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
+import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
+    private CodeModeController modeController;
 
 	/*
 	 * (non-Javadoc)
@@ -25,10 +27,12 @@ public class Activator implements BundleActivator {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		context.registerService(IControllerExtensionProvider.class.getName(),
 		    new IControllerExtensionProvider() {
-			    @Override
+
+                @Override
 				public void installExtension(Controller controller, CommandLineOptions options, ExtensionInstaller.Context context) {
-			        if(context == Context.MAIN)
-			            CodeModeControllerFactory.createModeController();
+			        if(context == Context.MAIN && modeController == null) {
+                        modeController = CodeModeControllerFactory.createModeController();
+                    }
 			    }
 
 		    }, props);
@@ -40,5 +44,8 @@ public class Activator implements BundleActivator {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
+	    if(modeController != null) {
+	        modeController.getExtension(CodeProjectController.class).saveConfiguration();
+	    }
 	}
 }

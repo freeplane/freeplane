@@ -15,24 +15,26 @@ import org.junit.Test;
 
 public class CodeExplorerConfigurationsTest {
 
-    private static String serialize(CodeExplorerConfiguration singleConfiguration) {
-        return new CodeExplorerConfigurations(Collections.singletonList(singleConfiguration)).serialize();
+    private static final File CONFIGURATION_FILE = new File("configurationFile.json");
+
+    private static void serialize(CodeExplorerConfiguration singleConfiguration) {
+        new CodeExplorerConfigurations(Collections.singletonList(singleConfiguration)).saveConfiguration(CONFIGURATION_FILE);
     }
 
-    private static CodeExplorerConfiguration deserialize(String string) {
-        return CodeExplorerConfigurations.deserialize(string).getConfigurations().get(0);
+    private static CodeExplorerConfiguration deserialize() {
+        return CodeExplorerConfigurations.loadConfigurations(CONFIGURATION_FILE).getConfigurations().get(0);
     }
 
     @Test
     public void createsConfigurationFromEmptyString() throws Exception {
-        Assertions.assertThat(CodeExplorerConfigurations.deserialize("").getConfigurations()).isEmpty();
+        Assertions.assertThat(CodeExplorerConfigurations.loadConfigurations(new File("unknown.json")).getConfigurations()).isEmpty();
     }
 
     @Test
     public void serializesAndDeserializesEmptyConfigurations() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("", Collections.emptyList(), "");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }
@@ -40,8 +42,8 @@ public class CodeExplorerConfigurationsTest {
     @Test
     public void serializesAndDeserializesConfigurationContainingProjectName() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("project name", Collections.emptyList(), "");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }
@@ -49,8 +51,8 @@ public class CodeExplorerConfigurationsTest {
     @Test
     public void serializesAndDeserializesConfigurationContainingProjectNameWithTab() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("project\tname", Collections.emptyList(), "");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }
@@ -58,8 +60,8 @@ public class CodeExplorerConfigurationsTest {
     @Test
     public void serializesAndDeserializesConfigurationContainingRules() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("", Collections.emptyList(), " a ->^ b\n b ->v c");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }
@@ -67,8 +69,8 @@ public class CodeExplorerConfigurationsTest {
     @Test
     public void serializesAndDeserializesConfigurationContainingProjectNameAndRules() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("project name", Collections.emptyList(), " a ->^ b\n b ->v c");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }
@@ -77,8 +79,8 @@ public class CodeExplorerConfigurationsTest {
     public void serializesAndDeserializesConfigurationContainingLocations() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("",
                 Arrays.asList(new File("a"), new File("b")), "");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }
@@ -87,8 +89,8 @@ public class CodeExplorerConfigurationsTest {
     public void serializesAndDeserializesConfigurationContainingLocationsAndRules() throws Exception {
         CodeExplorerConfiguration uut = new CodeExplorerConfiguration("",
                 Arrays.asList(new File("a"), new File("b")), "");
-        String serialized = serialize(uut);
-        Assertions.assertThat(deserialize(serialized))
+        serialize(uut);
+        Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
         .isEqualTo(uut);
     }

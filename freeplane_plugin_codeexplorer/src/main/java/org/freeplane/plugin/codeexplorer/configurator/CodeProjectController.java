@@ -45,17 +45,22 @@ import com.tngtech.archunit.core.domain.JavaClass;
  * @author Dimitry Polivaev
  */
 public class CodeProjectController implements IExtension {
+    private static final String CODE_EXPLORER_CONFIGURATION_PROPERTY = "code_explorer_configuration";
+
     private CodeDependenciesPanel codeDependenciesPanel;
     private ModeController modeController;
     private JTabbedPane informationPanel;
     private CodeDependency selectedDependency;
     private CodeExplorerConfigurator configurator;
+    private CodeExplorerConfigurations explorerConfigurations;
     /**
 	 * @param modeController
 	 */
 	public CodeProjectController(ModeController modeController) {
 		super();
         this.modeController = modeController;
+        this.explorerConfigurations = CodeExplorerConfigurations.loadConfigurations();
+
         Controller controller = modeController.getController();
         controller.getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
             @Override
@@ -144,5 +149,13 @@ public class CodeProjectController implements IExtension {
     void setJudge(DependencyJudge judge) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
         codeExplorer.setJudge(judge);
+    }
+
+    public void saveConfiguration() {
+        explorerConfigurations.saveConfiguration();
+    }
+
+    public CodeExplorerConfigurations explorerConfigurations() {
+        return explorerConfigurations;
     }
 }
