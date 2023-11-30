@@ -4,6 +4,8 @@ import java.util.Hashtable;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.CommandLineOptions;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -24,8 +26,9 @@ public class Activator implements BundleActivator {
 		context.registerService(IControllerExtensionProvider.class.getName(),
 		    new IControllerExtensionProvider() {
 			    @Override
-				public void installExtension(Controller controller, CommandLineOptions options) {
-			        CodeModeControllerFactory.createModeController();
+				public void installExtension(Controller controller, CommandLineOptions options, ExtensionInstaller.Context context) {
+			        if(context == Context.MAIN)
+			            CodeModeControllerFactory.createModeController();
 			    }
 
 		    }, props);
