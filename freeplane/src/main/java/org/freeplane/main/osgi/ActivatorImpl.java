@@ -54,6 +54,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.launch.Framework;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
 
@@ -91,6 +92,7 @@ class ActivatorImpl implements BundleActivator {
 			if(userDirectory != null)
 				System.setProperty("user.dir", userDirectory);
 			startFramework(context);
+	        addShutdownHook(context);
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
@@ -101,6 +103,27 @@ class ActivatorImpl implements BundleActivator {
 			throw e;
 		}
 	}
+
+    private void addShutdownHook(final BundleContext context) {
+        Thread hook = new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Shutdown hook invoked, stopping OSGi Framework.");
+                try {
+                    Framework systemBundle = context.getBundle(0).adapt(Framework.class);
+                    systemBundle.stop();
+                    systemBundle.waitForStop(20000);
+                    System.out.println("Done");
+
+                } catch (Exception e) {
+                    System.err.println("Failed to cleanly shutdown OSGi Framework: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        };
+        System.out.println("Installing shutdown hook.");
+        Runtime.getRuntime().addShutdownHook(hook);
+    }
 
 	private void loadPlugins(final BundleContext context) {
 		final String installationBaseDir = ApplicationResourceController.INSTALLATION_BASE_DIRECTORY;
@@ -293,18 +316,6 @@ class ActivatorImpl implements BundleActivator {
 
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		starter.stop();
-		final Bundle[] bundles = context.getBundles();
-		for (int i = 0; i < bundles.length; i++) {
-			final Bundle bundle = bundles[i];
-			if (bundle.getState() >= Bundle.ACTIVE && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
-				try {
-					bundle.stop();
-				}
-				catch (final Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        starter.stop();
 	}
 }

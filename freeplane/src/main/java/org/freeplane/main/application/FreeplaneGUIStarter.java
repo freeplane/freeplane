@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -70,7 +69,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
 import org.freeplane.features.mode.filemode.FModeController;
-import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.print.PrintController;
 import org.freeplane.features.styles.LogicalStyleFilterController;
@@ -472,28 +470,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         	System.err.println("File " + fileArgument + " not loaded");
         }
     }
-
-   @Override
-	public void stop() {
-		try {
-			if (EventQueue.isDispatchThread()) {
-				Controller.getCurrentController().shutdown();
-				return;
-			}
-			EventQueue.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					Controller.getCurrentController().shutdown();
-				}
-			});
-		}
-		catch (final InterruptedException e) {
-			LogUtils.severe(e);
-		}
-		catch (final InvocationTargetException e) {
-			LogUtils.severe(e);
-		}
-	}
+	public void stop() {/**/}
 
 	@Override
 	public ResourceController getResourceController() {

@@ -30,8 +30,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -42,7 +40,6 @@ import javax.swing.JWindow;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.mode.Controller;
 
 public class FreeplaneSplashModern extends JWindow {
 	/**
@@ -126,20 +123,4 @@ public class FreeplaneSplashModern extends JWindow {
 	public void paintImmediately() {
 	    ((JComponent) getRootPane()).paintImmediately(0, 0, getWidth(), getHeight());
     }
-
-	static public void main(String[] args){
-		ApplicationResourceController applicationResourceController = new ApplicationResourceController();
-		Controller controller = new Controller(applicationResourceController);
-		Controller.setCurrentController(controller);
-		FreeplaneSplashModern freeplaneSplashModern = new FreeplaneSplashModern(null);
-		freeplaneSplashModern.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("x = " + e.getX() + " y = " + e.getY());
-				if(e.getClickCount() == 2)
-					System.exit(0);
-			}
-		});
-		freeplaneSplashModern.setVisible(true);
-	}
 }
