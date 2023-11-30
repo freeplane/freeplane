@@ -107,9 +107,10 @@ class PackageNodeModel extends CodeNodeModel {
     private CodeNodeModel createChildPackageNode(JavaPackage childPackage, String parentName, int subgroupIndex) {
         String childPackageName = childPackage.getRelativeName();
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
-        if(childPackage == javaPackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            String childName = childPackage == javaPackage ? ClassesNodeModel.PACKAGE : parentName + childPackage.getRelativeName();
-            return new ClassesNodeModel(childPackage, getMap(), childName, subgroupIndex);
+        boolean samePackage = childPackage == javaPackage;
+        if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
+            String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
+            return new ClassesNodeModel(childPackage, getMap(), childName, samePackage, subgroupIndex);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".", subgroupIndex);

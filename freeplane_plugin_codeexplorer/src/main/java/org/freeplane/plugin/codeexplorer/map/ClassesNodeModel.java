@@ -22,7 +22,6 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNodeModel extends CodeNodeModel {
-    static final String PACKAGE = "package";
     static {
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNodeModel.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNodeModel.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
@@ -31,10 +30,10 @@ class ClassesNodeModel extends CodeNodeModel {
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;
 
-	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, String name, int subgroupIndex) {
+	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, String name, boolean samePackage, int subgroupIndex) {
 		super(map, subgroupIndex);
 		this.javaPackage = javaPackage;
-        this.samePackage = name.equals(PACKAGE);
+        this.samePackage = samePackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
 		setID(javaPackage.getName() + ".package");
         long classCount = javaPackage.getClasses().stream()
