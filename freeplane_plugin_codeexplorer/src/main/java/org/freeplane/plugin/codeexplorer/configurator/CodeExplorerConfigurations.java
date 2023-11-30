@@ -20,6 +20,7 @@ import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 public class CodeExplorerConfigurations {
@@ -75,7 +76,7 @@ public class CodeExplorerConfigurations {
     private static List<CodeExplorerConfiguration> fromJsonFile(File configurationFile){
         try (FileReader reader = new FileReader(configurationFile)) {
             return OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
-        } catch (IOException e) {
+        } catch (IOException|JsonParseException e) {
             LogUtils.severe(e);
             return Collections.emptyList();
         }
