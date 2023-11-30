@@ -379,7 +379,6 @@ class ApplicationViewController extends FrameController {
 		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", -1);
 		final Rectangle frameBounds = UITools.getValidFrameBounds(frame, win_x, win_y, win_width, win_height);
         frame.setBounds(frameBounds);
-        frame.setPreferredSize(frameBounds.getSize());
 		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
 
