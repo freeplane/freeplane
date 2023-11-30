@@ -377,8 +377,11 @@ class ApplicationViewController extends FrameController {
 		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", -1);
 		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", -1);
 		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", -1);
-		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
-		applyFrameSize(frame, win_x, win_y);
+		final Rectangle frameBounds = UITools.getValidFrameBounds(frame, win_x, win_y, win_width, win_height);
+        frame.setBounds(frameBounds);
+        frame.setPreferredSize(frameBounds.getSize());
+		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
+
 
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
@@ -386,20 +389,6 @@ class ApplicationViewController extends FrameController {
 		frame.setExtendedState(win_state);
 	}
 
-	private void applyFrameSize(final JFrame frame, int win_x, int win_y) {
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		Rectangle r = env.getMaximumWindowBounds();
-		for(GraphicsDevice device : env.getScreenDevices()) {
-			if(!device.equals(env.getDefaultScreenDevice())) {
-				Rectangle bounds = device.getDefaultConfiguration().getBounds();
-				r.add(bounds);
-			}
-		}
-		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
-		frame.setPreferredSize(new Dimension(Math.min(r.width, frame.getBounds().width), Math.min(r.height, frame.getBounds().height)));
-//		frame.setLocation(Math.max(r.x, frame.getBounds().x), Math.max(r.y, frame.getBounds().y));
-		frame.setLocation(Math.max(r.x, win_x), Math.max(r.y, win_y));
-	}
 
 	public void openMapsOnStart() {
 	    mapViewWindows.loadLayout();
