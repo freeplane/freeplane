@@ -6,16 +6,23 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
 import org.assertj.core.api.Assertions;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.junit.After;
 import org.junit.Test;
 
 public class CodeExplorerConfigurationsTest {
 
-    private static final File CONFIGURATION_FILE = new File("configurationFile.json");
+    private static File CONFIGURATION_FILE;
+    static {
+        try {
+            CONFIGURATION_FILE = File.createTempFile("configurationFile", ".json");
+        } catch (IOException e) {/**/}
+    }
 
     private static void serialize(CodeExplorerConfiguration singleConfiguration) {
         new CodeExplorerConfigurations(Collections.singletonList(singleConfiguration)).saveConfiguration(CONFIGURATION_FILE);
@@ -23,6 +30,11 @@ public class CodeExplorerConfigurationsTest {
 
     private static CodeExplorerConfiguration deserialize() {
         return CodeExplorerConfigurations.loadConfigurations(CONFIGURATION_FILE).getConfigurations().get(0);
+    }
+
+    @After
+    public void deleteTestFile() {
+        CONFIGURATION_FILE.delete();
     }
 
     @Test
