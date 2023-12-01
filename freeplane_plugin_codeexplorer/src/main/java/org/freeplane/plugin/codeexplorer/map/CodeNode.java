@@ -13,14 +13,16 @@ import java.util.stream.Stream;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.Source;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 public abstract class CodeNode extends NodeModel {
+
+    protected final int subprojectIndex;
 
     static String formatClassCount(long classCount) {
         return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
@@ -34,6 +36,10 @@ public abstract class CodeNode extends NodeModel {
                 return javaClass.getBaseComponentType();
             else
                 return javaClass;
+    }
+
+    static String idWithSubprojectIndex(String idWithoutIndex, int subprojectIndex) {
+        return idWithoutIndex + "[" + subprojectIndex + "]";
     }
 
     static JavaClass getTargetNodeClass(Dependency dependency) {
@@ -52,11 +58,26 @@ public abstract class CodeNode extends NodeModel {
         return javaClass.getSource().isPresent();
     }
 
-    CodeNode(MapModel map) {
+
+    static boolean classesBelongToTheSamePackage(JavaClass first, JavaClass second) {
+        return second.getPackage().equals(first.getPackage());
+    }
+
+    static boolean classesBelongToTheSamePackage(Dependency dependency) {
+        return classesBelongToTheSamePackage(dependency.getOriginClass(), dependency.getTargetClass());
+    }
+
+    CodeNode(CodeMap map,  int subprojectIndex) {
         super(map);
+        this.subprojectIndex = subprojectIndex;
     }
 
 
+
+    @Override
+    public CodeMap getMap() {
+         return (CodeMap) super.getMap();
+    }
 
     @Override
     public CodeNode getParentNode() {
@@ -66,6 +87,27 @@ public abstract class CodeNode extends NodeModel {
 
     String getCodeElementName() {
         return getCodeElement().getName();
+    }
+
+    void setIdWithIndex(String idWithoutIndex) {
+        setID(idWithSubprojectIndex(idWithoutIndex));
+    }
+
+    String idWithSubprojectIndex(String idWithoutIndex) {
+        return idWithSubprojectIndex(idWithoutIndex, subprojectIndex);
+    }
+
+    boolean belongsToSameSubproject(JavaClass javaClass) {
+        int anotherSubprojectIndex = subprojectIndexOf(javaClass);
+        return anotherSubprojectIndex == subprojectIndex;
+    }
+
+    int subprojectIndexOf(JavaClass javaClass) {
+        return getMap().subprojectIndexOf(javaClass);
+    }
+
+    boolean belongsToOtherSubproject(JavaClass javaClass) {
+        return ! belongsToSameSubproject(javaClass);
     }
 
     abstract HasName getCodeElement();

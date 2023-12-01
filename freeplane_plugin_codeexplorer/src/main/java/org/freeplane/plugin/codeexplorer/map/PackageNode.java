@@ -1,5 +1,6 @@
 package org.freeplane.plugin.codeexplorer.map;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,7 +9,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 
@@ -23,30 +23,52 @@ class PackageNode extends CodeNode {
     static {
         IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_ICON_NAME, "code/folder.svg");
     }
-    private static boolean containsAnalyzedClassesInPackageTree(JavaPackage javaPackage) {
-        return javaPackage.getClassesInPackageTree().stream().anyMatch(CodeNode::isClassSourceKnown);
-    }
-
     private final JavaPackage javaPackage;
     private final long classCount;
 
-	public PackageNode(final JavaPackage javaPackage, final MapModel map, String text) {
-		super(map);
-		this.javaPackage = javaPackage;
-		this.classCount = javaPackage.getClassesInPackageTree().stream()
-		        .filter(CodeNode::isClassSourceKnown)
-		        .filter(CodeNode::isNamed)
-		        .count();
-		setID(javaPackage.getName());
-		setText(text + formatClassCount(classCount));
+    public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex) {
+        super(map, subprojectIndex);
+        this.javaPackage = javaPackage;
+        this.classCount = getClassesInTree()
+                .filter(CodeNode::isNamed)
+                .count();
+        setIdWithIndex(javaPackage.getName());
+        setText(text + formatClassCount(classCount));
         setFolded(classCount > 0);
-	}
+    }
 
-	@Override
-	public List<NodeModel> getChildren() {
-		initializeChildNodes();
-		return super.getChildren();
-	}
+    private Stream<JavaClass> getClassesInTree() {
+        return getClassesInTree(javaPackage);
+    }
+
+    private Stream<JavaClass> getClassesInTree(JavaPackage somePackage) {
+        return somePackage.getClassesInPackageTree().stream()
+                .filter(this::belongsToSameSubproject);
+    }
+    private Stream<JavaClass> getClasses() {
+        return getClasses(javaPackage);
+    }
+
+    private Stream<JavaClass> getClasses(JavaPackage somePackage) {
+        return somePackage.getClasses().stream()
+                .filter(this::belongsToSameSubproject);
+    }
+    private List<JavaPackage> relevantSubpackages(JavaPackage somePackage) {
+        return somePackage.getSubpackages()
+                .stream()
+                .filter(this::containsAnalyzedClassesInPackageTree)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private boolean containsAnalyzedClassesInPackageTree(JavaPackage somePackage) {
+        return getClassesInTree(somePackage).anyMatch(x -> true);
+    }
+
+    @Override
+    public List<NodeModel> getChildren() {
+        initializeChildNodes();
+        return super.getChildren();
+    }
 
     @Override
     HasName getCodeElement() {
@@ -60,30 +82,25 @@ class PackageNode extends CodeNode {
 	        return false;
 	    final List<JavaPackage> packages = relevantSubpackages(javaPackage);
 	    boolean hasSubpackages = ! packages.isEmpty();
-	    boolean hasClasses = javaPackage.getClasses().stream().anyMatch(CodeNode::isClassSourceKnown);
 	    if(! hasSubpackages)
 	        return false;
+	    boolean hasClasses = getClasses().anyMatch(x -> true);
+	    if(hasClasses)
+	        packages.add(javaPackage);
 	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
 	    for (JavaPackage childPackage : packages) {
 	        childNodes.addNode(childPackage);
 	        DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
-	        Map<JavaPackage, Long> dependencies = childPackage.getClassDependenciesFromThisPackageTree().stream()
-	                .filter(dep -> dep.getTargetClass().getSource().isPresent())
+	        Stream<Dependency> packageDependencies = (childPackage != javaPackage
+	                ? getClassDependenciesFromPackageTree(childPackage)
+	                        : getClassDependenciesFromPackage(childPackage))
+	                .filter(dep -> belongsToSameSubproject(dep.getTargetClass()));
+            Map<JavaPackage, Long> dependencies = packageDependencies
 	                .map(filter::knownDependency)
 	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
 	        dependencies.entrySet().stream()
 	        .filter(e -> e.getKey().getParent().isPresent())
 	        .forEach(e -> childNodes.addEdge(childPackage, e.getKey(), e.getValue()));
-	    }
-	    if(hasClasses) {
-	        childNodes.addNode(javaPackage);
-	        DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
-	        Map<JavaPackage, Long> dependencies = javaPackage.getClassDependenciesFromThisPackage().stream()
-	                .map(filter::knownDependency)
-	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
-	        dependencies.entrySet().stream()
-	        .filter(e -> e.getKey().getParent().isPresent())
-	        .forEach(e -> childNodes.addEdge(javaPackage, e.getKey(), e.getValue()));
 	    }
 
 	    List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
@@ -97,25 +114,41 @@ class PackageNode extends CodeNode {
 	    return true;
 	}
 
-    private static List<JavaPackage> relevantSubpackages(JavaPackage javaPackage) {
-        return javaPackage.getSubpackages()
-	            .stream()
-	            .filter(PackageNode::containsAnalyzedClassesInPackageTree)
-	            .collect(Collectors.toList());
+    private Stream<Dependency> getClassDependenciesFromPackage(JavaPackage somePackage) {
+        Set<JavaClass> classesInTree = getClasses(somePackage).collect(Collectors.toSet());
+        return getClassDependenciesFrom(classesInTree);
     }
 
+    private Stream<Dependency> getClassDependenciesFromPackageTree(JavaPackage somePackage) {
+        Set<JavaClass> classesInTree = getClassesInTree(somePackage).collect(Collectors.toSet());
+        return getClassDependenciesFrom(classesInTree);
+    }
+
+    private Stream<Dependency> getClassDependenciesFrom(Set<JavaClass> classesInTree) {
+        return classesInTree.stream()
+                .flatMap(javaClass -> javaClass.getDirectDependenciesFromSelf().stream())
+                .filter(dependency -> !classesInTree.contains(dependency.getTargetClass()));
+    }
+
+
+    private Stream<Dependency> getClassDependenciesToPackageTree(JavaPackage somePackage) {
+        Set<JavaClass> classesInTree = getClassesInTree(somePackage).collect(Collectors.toSet());
+        return classesInTree.stream()
+                .flatMap(javaClass -> javaClass.getDirectDependenciesToSelf().stream())
+                .filter(dependency -> !classesInTree.contains(dependency.getOriginClass()));
+    }
     private CodeNode createChildPackageNode(JavaPackage childPackage, String parentName) {
         String childPackageName = childPackage.getRelativeName();
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
         boolean samePackage = childPackage == javaPackage;
         if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
             String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
-            return new ClassesNode(childPackage, getMap(), childName, samePackage);
+            return new ClassesNode(childPackage, getMap(), childName, samePackage, subprojectIndex);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
-            return new PackageNode(childPackage, getMap(), parentName + childPackageName);
+            return new PackageNode(childPackage, getMap(), parentName + childPackageName, subprojectIndex);
     }
 
     private JavaPackage getTargetChildNodePackage(Dependency dep) {
@@ -168,12 +201,12 @@ class PackageNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return javaPackage.getClassDependenciesFromThisPackageTree().stream();
+        return getClassDependenciesFromPackageTree(javaPackage);
     }
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return javaPackage.getClassDependenciesToThisPackageTree().stream();
+        return getClassDependenciesToPackageTree(javaPackage);
     }
 
     @Override
@@ -183,7 +216,8 @@ class PackageNode extends CodeNode {
 
     @Override
     Set<CodeNode> findCyclicDependencies() {
-        CodeNode classes = (CodeNode) getMap().getNodeForID(getID() + ".package");
+        String id = idWithSubprojectIndex(javaPackage.getName() + ".package");
+        CodeNode classes = (CodeNode) getMap().getNodeForID(id);
         if(classes != null)
             return classes.findCyclicDependencies();
         else

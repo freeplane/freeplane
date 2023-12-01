@@ -90,7 +90,8 @@ public class CodeLinkController extends LinkController {
     @Override
     public Color getColor(ConnectorModel connector) {
         if (areConnectorNodesSelected(connector)) {
-            Color color = connectorColors.get(((CodeConnectorModel)connector).dependencyVerdict());
+            DependencyVerdict dependencyVerdict = ((CodeConnectorModel)connector).dependencyVerdict();
+            Color color = connectorColors.get(dependencyVerdict);
             return UITools.isLightLookAndFeelInstalled() ?  color.darker() : color.brighter();
         } else
             return getMapDefaultNodeTextColor(connector);

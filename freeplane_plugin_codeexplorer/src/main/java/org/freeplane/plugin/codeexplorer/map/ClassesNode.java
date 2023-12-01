@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
@@ -30,17 +29,22 @@ class ClassesNode extends CodeNode {
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;
 
-	public ClassesNode(final JavaPackage javaPackage, final MapModel map, String name, boolean samePackage) {
-		super(map);
+	public ClassesNode(final JavaPackage javaPackage, final CodeMap map, String name, boolean samePackage, int subprojectIndex) {
+		super(map, subprojectIndex);
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
-		setID(javaPackage.getName() + ".package");
-        long classCount = javaPackage.getClasses().stream()
+		setIdWithIndex(javaPackage.getName() + ".package");
+        long classCount = getClasses()
                 .filter(jc -> isNamed(jc))
                 .count();
         setText(name + formatClassCount(classCount));
 	}
+
+    private Stream<JavaClass> getClasses() {
+        return javaPackage.getClasses().stream()
+                .filter(this::belongsToSameSubproject);
+    }
 
 	@Override
 	public List<NodeModel> getChildren() {
@@ -57,8 +61,8 @@ class ClassesNode extends CodeNode {
     protected boolean initializeChildNodes() {
 	    List<NodeModel> children = super.getChildrenInternal();
 	    if (children.isEmpty()) {
-	        final List<JavaClass> classes = javaPackage.getClasses().stream()
-	                .filter(CodeNode::isClassSourceKnown).collect(Collectors.toList());
+	        final List<JavaClass> classes = getClasses()
+	                .collect(Collectors.toList());
 	        if(! classes.isEmpty()) {
 	            GraphNodeSort<JavaClass> nodeSort = new GraphNodeSort<JavaClass>();
                 for (JavaClass javaClass : classes) {
@@ -68,6 +72,8 @@ class ClassesNode extends CodeNode {
                     Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
                             .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
                             .map(filter::knownDependency)
+                            .filter(CodeNode::classesBelongToTheSamePackage)
+                            .filter(dep -> belongsToSameSubproject(dep.getTargetClass()))
                             .collect(Collectors.groupingBy(CodeNode::getTargetNodeClass, Collectors.counting()));
                     dependencies.entrySet().stream()
                     .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
@@ -76,7 +82,7 @@ class ClassesNode extends CodeNode {
                 List<List<JavaClass>> orderedClasses = nodeSort.sortNodes();
                 for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
                     for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
-                        final ClassNode node = new ClassNode(childClass, getMap());
+                        final ClassNode node = new ClassNode(childClass, getMap(), subprojectIndex);
                         nodes.put(childClass, node);
                         children.add(node);
                         node.setParent(this);
@@ -95,15 +101,8 @@ class ClassesNode extends CodeNode {
 
     private boolean goesOutsideEnclosingOriginClass(JavaClass edgeStart, Dependency dependency) {
         JavaClass jc = getTargetNodeClass(dependency);
-        return ! jc.equals(edgeStart) && jc.getPackage().equals(javaPackage);
+        return ! jc.equals(edgeStart);
     }
-
-	@Override
-	public int getChildCount(){
-		return super.getChildCount();
-	}
-
-
 
     @Override
 	protected List<NodeModel> getChildrenInternal() {
@@ -124,12 +123,18 @@ class ClassesNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return javaPackage.getClassDependenciesFromThisPackage().stream();
+        return getClasses()
+                .flatMap(c -> c.getDirectDependenciesFromSelf().stream())
+                .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
+                        || subprojectIndexOf(dep.getTargetClass()) != subprojectIndex);
     }
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return javaPackage.getClassDependenciesToThisPackage().stream();
+        return getClasses()
+                .flatMap(c -> c.getDirectDependenciesToSelf().stream())
+                .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
+                        || subprojectIndexOf(dep.getOriginClass()) != subprojectIndex);
     }
 
 
@@ -174,6 +179,7 @@ class ClassesNode extends CodeNode {
                 )
                 .map(CodeNode::findEnclosingNamedClass)
                 .map(JavaClass::getName)
+                .map(this::idWithSubprojectIndex)
                 .map(getMap()::getNodeForID)
                 .map(ClassNode.class::cast)
                 .collect(Collectors.toSet());
@@ -196,7 +202,9 @@ class ClassesNode extends CodeNode {
         .map(JavaClass::getPackage)
         .map(JavaPackage::getName)
         .map(id -> id + ".package")
+        .map(this::idWithSubprojectIndex)
         .map(getMap()::getNodeForID)
+        .filter(node -> node != null)
         .map(ClassesNode.class::cast);
         return packageNodes;
     }

@@ -79,22 +79,24 @@ public class DependencySelection {
     }
 
     private String getExistingNodeId(JavaClass javaClass, boolean visibleOnly) {
-        JavaClass targetClass = CodeNode.findEnclosingNamedClass(javaClass);
-        String targetClassId = targetClass.getName();
-        if(! visibleOnly && getNode(targetClassId) != null)
-            return targetClassId;
+        JavaClass nodeClass = CodeNode.findEnclosingNamedClass(javaClass);
+        String nodeClassName = nodeClass.getName();
+        int subprojectIndex = getMap().subprojectIndexOf(nodeClass);
+        String nodeClassId = CodeNode.idWithSubprojectIndex(nodeClassName, subprojectIndex);
+        if(! visibleOnly && getNode(nodeClassId) != null)
+            return nodeClassId;
         if(visibleOnly) {
-            switch(visibility(targetClassId)) {
+            switch(visibility(nodeClassId)) {
             case VISIBLE:
-                return targetClassId;
+                return nodeClassId;
             case HIDDEN_BY_FILTER:
                 return null;
             default:
                 break;
             }
         }
-        JavaPackage targetPackage = targetClass.getPackage();
-        String targetPackageClassesId = targetPackage.getName() + ".package";
+        JavaPackage targetPackage = nodeClass.getPackage();
+        String targetPackageClassesId = CodeNode.idWithSubprojectIndex(targetPackage.getName() + ".package", subprojectIndex);
         if(! visibleOnly && getNode(targetPackageClassesId) != null)
             return targetPackageClassesId;
         if(visibleOnly) {
@@ -107,8 +109,8 @@ public class DependencySelection {
                 break;
             }
         }
-        HasName visiblePackage = getContainingPackage(targetPackage, visibleOnly);
-        return visiblePackage == null ? null : visiblePackage.getName();
+        String packageNodeId = getContainingPackageNodeId(targetPackage, visibleOnly, subprojectIndex);
+        return packageNodeId;
     }
 
      private Set<Dependency> getOutgoingDependencies(CodeNode node) {
@@ -158,13 +160,13 @@ public class DependencySelection {
         return map;
     }
 
-    private HasName getContainingPackage(JavaPackage targetPackage, boolean visibleOnly) {
+    private String getContainingPackageNodeId(JavaPackage targetPackage, boolean visibleOnly, int subprojectIndex) {
          for(;;) {
-             String targetPackageName = targetPackage.getName();
-             NodeModel targetNode = getNode(targetPackageName);
+             String targetPackageId = CodeNode.idWithSubprojectIndex(targetPackage.getName(), subprojectIndex);
+             NodeModel targetNode = getNode(targetPackageId);
              if(targetNode != null) {
                  if(! visibleOnly || selection.isVisible(targetNode))
-                     return targetPackage;
+                     return targetPackageId;
                  if(! targetNode.isVisible(selection.getFilter()))
                      return null;
              }
@@ -175,8 +177,8 @@ public class DependencySelection {
          }
      }
 
-    private Visibility visibility(String targetId) {
-        NodeModel targetNode = getNode(targetId);
+    private Visibility visibility(String targetNodeId) {
+        NodeModel targetNode = getNode(targetNodeId);
         if(targetNode == null)
             return Visibility.UNKNOWN;
         if(selection.isVisible(targetNode))

@@ -2,6 +2,7 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,13 +98,13 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	        NodeModel newRoot;
 	        if(codeExplorerConfiguration != null) {
 	            JavaPackage rootPackage = codeExplorerConfiguration.importPackages();
-	            newRoot = new PackageNode(rootPackage, map, codeExplorerConfiguration.getProjectName());
+	            newRoot = new ProjectRootNode(map, rootPackage, codeExplorerConfiguration);
 	        }
 	        else {
 	            ClassFileImporter classFileImporter = new ClassFileImporter();
 	            JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
 	            JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
-	            newRoot = new PackageNode(rootPackage, map, "demo");
+	            newRoot = new ProjectRootNode(map, rootPackage, new CodeExplorerConfiguration("demo", new ArrayList<>(), ""));
 	        }
 
 	        EventQueue.invokeLater(() -> {

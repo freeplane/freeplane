@@ -55,5 +55,13 @@ class CodeConnectorModel extends ConnectorModel {
         return dependencyVerdict == other.dependencyVerdict;
     }
 
+    @Override
+    public String toString() {
+        return "CodeConnectorModel ["
+                +  super.toString()
+                + ", weight=" + weight + ", goesUp=" + goesUp
+                + ", dependencyVerdict=" + dependencyVerdict + "]";
+    }
+
 
 }

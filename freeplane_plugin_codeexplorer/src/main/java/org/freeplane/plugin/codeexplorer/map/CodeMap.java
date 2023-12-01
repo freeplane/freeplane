@@ -9,6 +9,7 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
 
 class CodeMap extends MapModel {
 
@@ -45,5 +46,7 @@ class CodeMap extends MapModel {
         return judge.judge(dependency, goesUp);
     }
 
-
+    public int subprojectIndexOf(JavaClass javaClass) {
+        return ((ProjectRootNode)getRootNode()).subprojectIndexOf(javaClass);
+    }
 }

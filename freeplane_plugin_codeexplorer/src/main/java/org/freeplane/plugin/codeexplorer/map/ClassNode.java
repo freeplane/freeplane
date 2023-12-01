@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 
@@ -35,12 +34,12 @@ public class ClassNode extends CodeNode {
     static final String CLASS_ICON_NAME = "code_class";
     static final String ENUM_ICON_NAME = "code_enum";
 
-	ClassNode(final JavaClass javaClass, final MapModel map) {
-		super(map);
+	ClassNode(final JavaClass javaClass, final CodeMap map, int subprojectIndex) {
+		super(map, subprojectIndex);
         this.javaClass = javaClass;
         this.innerClasses = null;
 		setFolded(false);
-		setID(javaClass.getName());
+		setIdWithIndex(javaClass.getName());
 		String nodeText = nodeText(javaClass);
         setText(nodeText);
 	}
@@ -150,12 +149,14 @@ public class ClassNode extends CodeNode {
         .filter(this::isContainedInScope)
         .map(CodeNode::findEnclosingNamedClass)
         .map(JavaClass::getName)
+        .map(this::idWithSubprojectIndex)
         .map(getMap()::getNodeForID)
         .map(CodeNode.class::cast);
     }
 
     private boolean isContainedInScope(JavaClass dependencyClass) {
-        return dependencyClass.getPackage().equals(javaClass.getPackage());
+        return  dependencyClass.getPackage().equals(javaClass.getPackage())
+                && belongsToSameSubproject(dependencyClass);
     }
 
     @Override
