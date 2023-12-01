@@ -52,11 +52,8 @@ public abstract class CodeNode extends NodeModel {
         return javaClass.getSource().isPresent();
     }
 
-    final private int subgroupIndex;
-
-    CodeNode(MapModel map, int subgroupIndex) {
+    CodeNode(MapModel map) {
         super(map);
-        this.subgroupIndex = subgroupIndex;
     }
 
 
@@ -91,10 +88,6 @@ public abstract class CodeNode extends NodeModel {
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
         return Stream.concat(getIncomingDependenciesWithKnownTargets(), getOutgoingDependenciesWithKnownTargets());
-    }
-
-    public int getSubgroupIndex() {
-        return subgroupIndex;
     }
 
     @Override

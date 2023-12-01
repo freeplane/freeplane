@@ -30,8 +30,8 @@ class ClassesNode extends CodeNode {
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;
 
-	public ClassesNode(final JavaPackage javaPackage, final MapModel map, String name, boolean samePackage, int subgroupIndex) {
-		super(map, subgroupIndex);
+	public ClassesNode(final JavaPackage javaPackage, final MapModel map, String name, boolean samePackage) {
+		super(map);
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
@@ -76,7 +76,7 @@ class ClassesNode extends CodeNode {
                 List<List<JavaClass>> orderedClasses = nodeSort.sortNodes();
                 for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
                     for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
-                        final ClassNode node = new ClassNode(childClass, getMap(), subgroupIndex);
+                        final ClassNode node = new ClassNode(childClass, getMap());
                         nodes.put(childClass, node);
                         children.add(node);
                         node.setParent(this);

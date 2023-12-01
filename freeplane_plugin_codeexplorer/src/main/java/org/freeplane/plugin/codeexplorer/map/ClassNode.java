@@ -35,8 +35,8 @@ public class ClassNode extends CodeNode {
     static final String CLASS_ICON_NAME = "code_class";
     static final String ENUM_ICON_NAME = "code_enum";
 
-	ClassNode(final JavaClass javaClass, final MapModel map, int subgroupIndex) {
-		super(map, subgroupIndex);
+	ClassNode(final JavaClass javaClass, final MapModel map) {
+		super(map);
         this.javaClass = javaClass;
         this.innerClasses = null;
 		setFolded(false);

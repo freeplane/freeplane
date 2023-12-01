@@ -30,8 +30,8 @@ class PackageNode extends CodeNode {
     private final JavaPackage javaPackage;
     private final long classCount;
 
-	public PackageNode(final JavaPackage javaPackage, final MapModel map, String text, int subgroupIndex) {
-		super(map, subgroupIndex);
+	public PackageNode(final JavaPackage javaPackage, final MapModel map, String text) {
+		super(map);
 		this.javaPackage = javaPackage;
 		this.classCount = javaPackage.getClassesInPackageTree().stream()
 		        .filter(CodeNode::isClassSourceKnown)
@@ -89,7 +89,7 @@ class PackageNode extends CodeNode {
 	    List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
 	    for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
 	        for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {
-	            final CodeNode node = createChildPackageNode(childPackage, "", subgroupIndex);
+	            final CodeNode node = createChildPackageNode(childPackage, "");
 	            children.add(node);
 	            node.setParent(this);
 	        }
@@ -104,18 +104,18 @@ class PackageNode extends CodeNode {
 	            .collect(Collectors.toList());
     }
 
-    private CodeNode createChildPackageNode(JavaPackage childPackage, String parentName, int subgroupIndex) {
+    private CodeNode createChildPackageNode(JavaPackage childPackage, String parentName) {
         String childPackageName = childPackage.getRelativeName();
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
         boolean samePackage = childPackage == javaPackage;
         if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
             String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
-            return new ClassesNode(childPackage, getMap(), childName, samePackage, subgroupIndex);
+            return new ClassesNode(childPackage, getMap(), childName, samePackage);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
-            return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".", subgroupIndex);
+            return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
-            return new PackageNode(childPackage, getMap(), parentName + childPackageName, subgroupIndex);
+            return new PackageNode(childPackage, getMap(), parentName + childPackageName);
     }
 
     private JavaPackage getTargetChildNodePackage(Dependency dep) {

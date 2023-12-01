@@ -97,13 +97,13 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	        NodeModel newRoot;
 	        if(codeExplorerConfiguration != null) {
 	            JavaPackage rootPackage = codeExplorerConfiguration.importPackages();
-	            newRoot = new PackageNode(rootPackage, map, codeExplorerConfiguration.getProjectName(), 0);
+	            newRoot = new PackageNode(rootPackage, map, codeExplorerConfiguration.getProjectName());
 	        }
 	        else {
 	            ClassFileImporter classFileImporter = new ClassFileImporter();
 	            JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
 	            JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
-	            newRoot = new PackageNode(rootPackage, map, "demo", 0);
+	            newRoot = new PackageNode(rootPackage, map, "demo");
 	        }
 
 	        EventQueue.invokeLater(() -> {
