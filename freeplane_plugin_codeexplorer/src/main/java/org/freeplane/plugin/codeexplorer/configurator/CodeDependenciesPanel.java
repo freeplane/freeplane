@@ -92,11 +92,11 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         // Add components to the top panel
 
         topPanel.add(new JLabel(filterIcon));
+        countLabel = new JLabel();
+        topPanel.add(countLabel);
         filterField = new JTextField(100);
         filterField.addActionListener(e -> updateDependencyFilter());
         topPanel.add(filterField);
-        countLabel = new JLabel();
-        topPanel.add(countLabel);
 
         dependencyViewer = new JTable();
         allDependencies = Collections.emptyList();
