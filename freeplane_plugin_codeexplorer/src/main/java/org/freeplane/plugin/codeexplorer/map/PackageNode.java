@@ -18,24 +18,24 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
-class PackageNodeModel extends CodeNodeModel {
+class PackageNode extends CodeNode {
     static final String UI_ICON_NAME = "code_package";
     static {
-        IconStoreFactory.INSTANCE.createStateIcon(PackageNodeModel.UI_ICON_NAME, "code/folder.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_ICON_NAME, "code/folder.svg");
     }
     private static boolean containsAnalyzedClassesInPackageTree(JavaPackage javaPackage) {
-        return javaPackage.getClassesInPackageTree().stream().anyMatch(CodeNodeModel::isClassSourceKnown);
+        return javaPackage.getClassesInPackageTree().stream().anyMatch(CodeNode::isClassSourceKnown);
     }
 
     private final JavaPackage javaPackage;
     private final long classCount;
 
-	public PackageNodeModel(final JavaPackage javaPackage, final MapModel map, String text, int subgroupIndex) {
+	public PackageNode(final JavaPackage javaPackage, final MapModel map, String text, int subgroupIndex) {
 		super(map, subgroupIndex);
 		this.javaPackage = javaPackage;
 		this.classCount = javaPackage.getClassesInPackageTree().stream()
-		        .filter(CodeNodeModel::isClassSourceKnown)
-		        .filter(CodeNodeModel::isNamed)
+		        .filter(CodeNode::isClassSourceKnown)
+		        .filter(CodeNode::isNamed)
 		        .count();
 		setID(javaPackage.getName());
 		setText(text + formatClassCount(classCount));
@@ -60,7 +60,7 @@ class PackageNodeModel extends CodeNodeModel {
 	        return false;
 	    final List<JavaPackage> packages = relevantSubpackages(javaPackage);
 	    boolean hasSubpackages = ! packages.isEmpty();
-	    boolean hasClasses = javaPackage.getClasses().stream().anyMatch(CodeNodeModel::isClassSourceKnown);
+	    boolean hasClasses = javaPackage.getClasses().stream().anyMatch(CodeNode::isClassSourceKnown);
 	    if(! hasSubpackages)
 	        return false;
 	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
@@ -89,7 +89,7 @@ class PackageNodeModel extends CodeNodeModel {
 	    List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
 	    for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
 	        for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {
-	            final CodeNodeModel node = createChildPackageNode(childPackage, "", subgroupIndex);
+	            final CodeNode node = createChildPackageNode(childPackage, "", subgroupIndex);
 	            children.add(node);
 	            node.setParent(this);
 	        }
@@ -100,22 +100,22 @@ class PackageNodeModel extends CodeNodeModel {
     private static List<JavaPackage> relevantSubpackages(JavaPackage javaPackage) {
         return javaPackage.getSubpackages()
 	            .stream()
-	            .filter(PackageNodeModel::containsAnalyzedClassesInPackageTree)
+	            .filter(PackageNode::containsAnalyzedClassesInPackageTree)
 	            .collect(Collectors.toList());
     }
 
-    private CodeNodeModel createChildPackageNode(JavaPackage childPackage, String parentName, int subgroupIndex) {
+    private CodeNode createChildPackageNode(JavaPackage childPackage, String parentName, int subgroupIndex) {
         String childPackageName = childPackage.getRelativeName();
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
         boolean samePackage = childPackage == javaPackage;
         if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
             String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
-            return new ClassesNodeModel(childPackage, getMap(), childName, samePackage, subgroupIndex);
+            return new ClassesNode(childPackage, getMap(), childName, samePackage, subgroupIndex);
         }
         else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".", subgroupIndex);
         else
-            return new PackageNodeModel(childPackage, getMap(), parentName + childPackageName, subgroupIndex);
+            return new PackageNode(childPackage, getMap(), parentName + childPackageName, subgroupIndex);
     }
 
     private JavaPackage getTargetChildNodePackage(Dependency dep) {
@@ -167,11 +167,6 @@ class PackageNodeModel extends CodeNodeModel {
 	}
 
     @Override
-    Set<JavaClass> getClassesInPackageTree() {
-        return javaPackage.getClassesInPackageTree();
-    }
-
-    @Override
     Stream<Dependency> getOutgoingDependencies() {
         return javaPackage.getClassDependenciesFromThisPackageTree().stream();
     }
@@ -187,8 +182,8 @@ class PackageNodeModel extends CodeNodeModel {
     }
 
     @Override
-    Set<CodeNodeModel> findCyclicDependencies() {
-        CodeNodeModel classes = (CodeNodeModel) getMap().getNodeForID(getID() + ".package");
+    Set<CodeNode> findCyclicDependencies() {
+        CodeNode classes = (CodeNode) getMap().getNodeForID(getID() + ".package");
         if(classes != null)
             return classes.findCyclicDependencies();
         else

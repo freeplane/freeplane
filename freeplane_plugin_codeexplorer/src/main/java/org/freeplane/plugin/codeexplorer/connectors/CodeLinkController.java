@@ -42,7 +42,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
-import org.freeplane.plugin.codeexplorer.map.CodeNodeModel;
+import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.view.swing.map.MapView;
 
@@ -136,8 +136,8 @@ public class CodeLinkController extends LinkController {
     }
 
     private boolean areConnectorNodesSelected(CodeConnectorModel connector, IMapSelection selection) {
-        CodeNodeModel source = (CodeNodeModel) connector.getSource();
-        CodeNodeModel target = (CodeNodeModel) connector.getTarget();
+        CodeNode source = (CodeNode) connector.getSource();
+        CodeNode target = (CodeNode) connector.getTarget();
         boolean connectorSelected = new DependencySelection(selection).isConnectorSelected(source, target);
         return connectorSelected;
     }
@@ -200,7 +200,7 @@ public class CodeLinkController extends LinkController {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
-            Stream<Dependency> dependencies = ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets()
+            Stream<Dependency> dependencies = ((CodeNode)node).getIncomingDependenciesWithKnownTargets()
                     .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getTargetClass()));
             Map<DependencyVerdict, Map<String, Long>> countedDependencies = countDependencies(node, dependencySelection, dependencies, CodeDependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
@@ -221,7 +221,7 @@ public class CodeLinkController extends LinkController {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
-            Stream<Dependency> dependencies = ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets()
+            Stream<Dependency> dependencies = ((CodeNode)node).getOutgoingDependenciesWithKnownTargets()
                     .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getOriginClass()));
             Map<DependencyVerdict, Map<String, Long>> countedDependencies = countDependencies(node, dependencySelection, dependencies, CodeDependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()

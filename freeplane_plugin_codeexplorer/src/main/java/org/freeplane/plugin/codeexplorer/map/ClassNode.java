@@ -20,13 +20,13 @@ import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
-public class ClassNodeModel extends CodeNodeModel {
+public class ClassNode extends CodeNode {
     static {
-        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.INTERFACE_ICON_NAME, "code/interface.svg");
-        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ABSTRACT_CLASS_ICON_NAME, "code/classAbstract.svg");
-        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.CLASS_ICON_NAME, "code/class.svg");
-        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ENUM_ICON_NAME, "code/enum.svg");
-        IconStoreFactory.INSTANCE.createStateIcon(ClassNodeModel.ANNOTATION_ICON_NAME, "code/annotation.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNode.INTERFACE_ICON_NAME, "code/interface.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNode.ABSTRACT_CLASS_ICON_NAME, "code/classAbstract.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNode.CLASS_ICON_NAME, "code/class.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNode.ENUM_ICON_NAME, "code/enum.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassNode.ANNOTATION_ICON_NAME, "code/annotation.svg");
     }    private final JavaClass javaClass;
     private Set<JavaClass> innerClasses;
     static final String ANNOTATION_ICON_NAME = "code_annotation";
@@ -35,7 +35,7 @@ public class ClassNodeModel extends CodeNodeModel {
     static final String CLASS_ICON_NAME = "code_class";
     static final String ENUM_ICON_NAME = "code_enum";
 
-	ClassNodeModel(final JavaClass javaClass, final MapModel map, int subgroupIndex) {
+	ClassNode(final JavaClass javaClass, final MapModel map, int subgroupIndex) {
 		super(map, subgroupIndex);
         this.javaClass = javaClass;
         this.innerClasses = null;
@@ -77,11 +77,6 @@ public class ClassNodeModel extends CodeNodeModel {
 	public String toString() {
 		return getText();
 	}
-
-    @Override
-    Set<JavaClass> getClassesInPackageTree() {
-        return Collections.singleton(javaClass);
-    }
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
@@ -128,35 +123,35 @@ public class ClassNodeModel extends CodeNodeModel {
     }
 
     @Override
-    Set<CodeNodeModel> findCyclicDependencies() {
-        GraphCycleFinder<CodeNodeModel> cycleFinder = new GraphCycleFinder<CodeNodeModel>();
+    Set<CodeNode> findCyclicDependencies() {
+        GraphCycleFinder<CodeNode> cycleFinder = new GraphCycleFinder<CodeNode>();
         cycleFinder.addNode(this);
         cycleFinder.stopSearchHere();
         cycleFinder.exploreGraph(Collections.singleton(this),
                 this::connectedTargetNodesInTheSameScope,
                 this::connectedOriginNodesInTheSameScope);
-        LinkedHashSet<CodeNodeModel> cycles = cycleFinder.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toCollection(LinkedHashSet::new));
+        LinkedHashSet<CodeNode> cycles = cycleFinder.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toCollection(LinkedHashSet::new));
         return cycles;
     }
 
-    private Stream<CodeNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {
+    private Stream<CodeNode> connectedOriginNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
         .map(Dependency::getOriginClass);
         return nodesContainedInScope(originClasses);
     }
 
-    private Stream<CodeNodeModel> connectedTargetNodesInTheSameScope(CodeNodeModel node) {
+    private Stream<CodeNode> connectedTargetNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
         return nodesContainedInScope(targetClasses);
     }
-    private Stream<CodeNodeModel> nodesContainedInScope(Stream<JavaClass> originClasses) {
+    private Stream<CodeNode> nodesContainedInScope(Stream<JavaClass> originClasses) {
         return originClasses
         .filter(this::isContainedInScope)
-        .map(CodeNodeModel::findEnclosingNamedClass)
+        .map(CodeNode::findEnclosingNamedClass)
         .map(JavaClass::getName)
         .map(getMap()::getNodeForID)
-        .map(CodeNodeModel.class::cast);
+        .map(CodeNode.class::cast);
     }
 
     private boolean isContainedInScope(JavaClass dependencyClass) {

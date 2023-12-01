@@ -34,13 +34,13 @@ class CopyQualifiedName extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final CodeNodeModel node = (CodeNodeModel) Controller.getCurrentModeController().getMapController().getSelectedNode();
+		final CodeNode node = (CodeNode) Controller.getCurrentModeController().getMapController().getSelectedNode();
 		copyCodeElementName(node);
 	}
 
 	/**
 	 */
-	private void copyCodeElementName(final CodeNodeModel node) {
+	private void copyCodeElementName(final CodeNode node) {
 	    ClipboardAccessor.getInstance().setClipboardContents(node.getCodeElementName());
 	}
 }

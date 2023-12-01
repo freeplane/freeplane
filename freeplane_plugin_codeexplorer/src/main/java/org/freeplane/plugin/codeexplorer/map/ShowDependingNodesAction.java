@@ -58,20 +58,20 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     private final int maximumRecursionDepth;
 
     enum DependencyDirection {
-        INCOMING(CodeNodeModel::getIncomingDependenciesWithKnownTargets),
-        OUTGOING(CodeNodeModel::getOutgoingDependenciesWithKnownTargets),
-        INCOMING_AND_OUTGOING(CodeNodeModel::getIncomingAndOutgoingDependenciesWithKnownTargets);
+        INCOMING(CodeNode::getIncomingDependenciesWithKnownTargets),
+        OUTGOING(CodeNode::getOutgoingDependenciesWithKnownTargets),
+        INCOMING_AND_OUTGOING(CodeNode::getIncomingAndOutgoingDependenciesWithKnownTargets);
 
-        final Function<CodeNodeModel, Stream<Dependency>> nodeDependencies;
+        final Function<CodeNode, Stream<Dependency>> nodeDependencies;
 
-        private DependencyDirection(Function< CodeNodeModel, Stream<Dependency>> nodeDependencies) {
+        private DependencyDirection(Function< CodeNode, Stream<Dependency>> nodeDependencies) {
             this.nodeDependencies = nodeDependencies;
         }
     }
 
     private static Stream<JavaClass> dependentClasses(Dependency dependency) {
-        JavaClass origin = CodeNodeModel.findEnclosingNamedClass(dependency.getOriginClass());
-        JavaClass target = CodeNodeModel.findEnclosingNamedClass(dependency.getTargetClass());
+        JavaClass origin = CodeNode.findEnclosingNamedClass(dependency.getOriginClass());
+        JavaClass target = CodeNode.findEnclosingNamedClass(dependency.getTargetClass());
         return origin != target ? Stream.of(origin, target) : Stream.empty();
     }
 
@@ -101,12 +101,12 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	    if(currentCondition == null)
 	        return;
 	    MapModel map = selection.getMap();
-	    ((CodeNodeModel)map.getRootNode()).loadSubtree();
+	    ((CodeNode)map.getRootNode()).loadSubtree();
 	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get());
 	    for(int recursionCounter = allNodesSatisfyFilter(selection, dependentNodeIDs) ? 0 : 1;
 	        recursionCounter < maximumRecursionDepth;
 	        recursionCounter++) {
-	        Set<String> next = dependencies(dependentNodeIDs.stream().map(map::getNodeForID).map(CodeNodeModel.class::cast));
+	        Set<String> next = dependencies(dependentNodeIDs.stream().map(map::getNodeForID).map(CodeNode.class::cast));
 	        next.removeAll(dependentNodeIDs);
 	        if(next.isEmpty())
 	            break;
@@ -128,7 +128,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     }
 
 
-    private HashSet<String> dependencies(Stream<CodeNodeModel> startingNodes) {
+    private HashSet<String> dependencies(Stream<CodeNode> startingNodes) {
         return startingNodes
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)

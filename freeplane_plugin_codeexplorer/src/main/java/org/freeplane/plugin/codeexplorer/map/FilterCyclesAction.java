@@ -38,9 +38,9 @@ class FilterCyclesAction extends AFreeplaneAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        CodeNodeModel node = (CodeNodeModel) Controller.getCurrentController().getSelection().getSelected();
+        CodeNode node = (CodeNode) Controller.getCurrentController().getSelection().getSelected();
 
-        Set<CodeNodeModel> cycleNodes = node.findCyclicDependencies();
+        Set<CodeNode> cycleNodes = node.findCyclicDependencies();
         if(! cycleNodes.isEmpty()) {
             ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
             Filter filter = new Filter(condition, false, true, false, false, null);

@@ -20,7 +20,7 @@ import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
-public abstract class CodeNodeModel extends NodeModel {
+public abstract class CodeNode extends NodeModel {
 
     static String formatClassCount(long classCount) {
         return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
@@ -54,7 +54,7 @@ public abstract class CodeNodeModel extends NodeModel {
 
     final private int subgroupIndex;
 
-    CodeNodeModel(MapModel map, int subgroupIndex) {
+    CodeNode(MapModel map, int subgroupIndex) {
         super(map);
         this.subgroupIndex = subgroupIndex;
     }
@@ -62,8 +62,8 @@ public abstract class CodeNodeModel extends NodeModel {
 
 
     @Override
-    public CodeNodeModel getParentNode() {
-        return (CodeNodeModel) super.getParentNode();
+    public CodeNode getParentNode() {
+        return (CodeNode) super.getParentNode();
     }
 
 
@@ -74,10 +74,9 @@ public abstract class CodeNodeModel extends NodeModel {
     abstract HasName getCodeElement();
 
 
-    Set<CodeNodeModel> findCyclicDependencies() {return Collections.emptySet();}
+    Set<CodeNode> findCyclicDependencies() {return Collections.emptySet();}
     abstract Stream<Dependency> getOutgoingDependencies();
     abstract Stream<Dependency> getIncomingDependencies();
-    abstract Set<JavaClass> getClassesInPackageTree();
     abstract String getUIIconName();
 
     Stream<Dependency> getIncomingAndOutgoingDependencies(){
@@ -85,10 +84,10 @@ public abstract class CodeNodeModel extends NodeModel {
     }
 
     public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(){
-        return getOutgoingDependencies().filter(CodeNodeModel::isTargetSourceKnown);
+        return getOutgoingDependencies().filter(CodeNode::isTargetSourceKnown);
     }
     public Stream<Dependency> getIncomingDependenciesWithKnownTargets(){
-        return getIncomingDependencies().filter(CodeNodeModel::isTargetSourceKnown);
+        return getIncomingDependencies().filter(CodeNode::isTargetSourceKnown);
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
         return Stream.concat(getIncomingDependenciesWithKnownTargets(), getOutgoingDependenciesWithKnownTargets());
@@ -108,6 +107,6 @@ public abstract class CodeNodeModel extends NodeModel {
 
     void loadSubtree() {
         if(initializeChildNodes())
-            getChildrenInternal().forEach(node -> ((CodeNodeModel)node).loadSubtree());
+            getChildrenInternal().forEach(node -> ((CodeNode)node).loadSubtree());
     }
 }

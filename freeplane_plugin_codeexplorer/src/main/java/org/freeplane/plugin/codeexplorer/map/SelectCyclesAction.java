@@ -36,14 +36,14 @@ class SelectCyclesAction extends AFreeplaneAction {
 	@Override
     public void actionPerformed(ActionEvent e) {
 	       IMapSelection selection = Controller.getCurrentController().getSelection();
-        CodeNodeModel node = (CodeNodeModel) selection.getSelected();
+        CodeNode node = (CodeNode) selection.getSelected();
 
-	        Set<CodeNodeModel> cycleNodes = node.findCyclicDependencies();
+	        Set<CodeNode> cycleNodes = node.findCyclicDependencies();
 	        if(! cycleNodes.isEmpty()) {
 	            DependencySelection dependencySelection = new DependencySelection(selection);
-	            CodeNodeModel[] newSelection = cycleNodes.stream()
+	            CodeNode[] newSelection = cycleNodes.stream()
 	            .map(dependencySelection::findVisibleAncestorOrSelf)
-	            .toArray(CodeNodeModel[]::new);
+	            .toArray(CodeNode[]::new);
 	            selection.replaceSelection(newSelection);
 	        }
  	}

@@ -5,7 +5,7 @@
  */
 package org.freeplane.plugin.codeexplorer.dependencies;
 
-import org.freeplane.plugin.codeexplorer.map.CodeNodeModel;
+import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.PackageMatcher;
@@ -24,8 +24,8 @@ class DependencyRule {
     }
 
     boolean matches(Dependency dependency, boolean goesUp) {
-        return this.originMatcher.matches(CodeNodeModel.findEnclosingNamedClass(dependency.getOriginClass()).getName()) &&
-               this.targetMatcher.matches(CodeNodeModel.findEnclosingNamedClass(dependency.getTargetClass()).getName()) &&
+        return this.originMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getOriginClass()).getName()) &&
+               this.targetMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getTargetClass()).getName()) &&
                this.dependencyDirection.matches(goesUp);
     }
 }

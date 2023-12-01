@@ -17,16 +17,16 @@ import org.freeplane.view.swing.map.NodeView;
 
 public class CodeNodeStream {
 
-    static Stream<CodeNodeModel> selectedNodes(IMapSelection selection){
-        return selection.getSelection().stream().map(CodeNodeModel.class::cast);
+    static Stream<CodeNode> selectedNodes(IMapSelection selection){
+        return selection.getSelection().stream().map(CodeNode.class::cast);
     }
 
-    static Stream<CodeNodeModel> visibleNodes(MapView mapView){
+    static Stream<CodeNode> visibleNodes(MapView mapView){
         Stream<NodeView> nodeViews = nodeViews(mapView);
         return nodeViews
                 .filter(NodeView::isContentVisible)
                 .map(NodeView::getNode)
-                .map(CodeNodeModel.class::cast);
+                .map(CodeNode.class::cast);
     }
 
     static Stream<NodeView> nodeViews(MapView mapView) {

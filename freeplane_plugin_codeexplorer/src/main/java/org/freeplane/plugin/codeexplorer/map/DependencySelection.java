@@ -28,7 +28,7 @@ public class DependencySelection {
     private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING, UNKNOWN}
 
     private final IMapSelection selection;
-    private CodeMapModel map;
+    private CodeMap map;
     private Set<NodeModel> selectedNodeSet;
     private final boolean showsOutsideDependencies;
 
@@ -46,15 +46,15 @@ public class DependencySelection {
         Stream<Dependency> allDependencies = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        getOutgoingDependencies((CodeNodeModel)node).stream(),
-                        getIncomingDependencies((CodeNodeModel)node).stream()))
+                        getOutgoingDependencies((CodeNode)node).stream(),
+                        getIncomingDependencies((CodeNode)node).stream()))
                 .distinct();
         return allDependencies;
     }
 
-    public CodeNodeModel getExistingNode(JavaClass javaClass) {
+    public CodeNode getExistingNode(JavaClass javaClass) {
         String existingNodeId = getExistingNodeId(javaClass);
-        return existingNodeId == null ? null : (CodeNodeModel) getMap().getNodeForID(existingNodeId);
+        return existingNodeId == null ? null : (CodeNode) getMap().getNodeForID(existingNodeId);
     }
 
     List<JavaClass> getSelectedClasses() {
@@ -63,8 +63,8 @@ public class DependencySelection {
         allClasses = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        ((CodeNodeModel)node).getOutgoingDependenciesWithKnownTargets().map(Dependency::getOriginClass),
-                        ((CodeNodeModel)node).getIncomingDependenciesWithKnownTargets().map(Dependency::getTargetClass)))
+                        ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().map(Dependency::getOriginClass),
+                        ((CodeNode)node).getIncomingDependenciesWithKnownTargets().map(Dependency::getTargetClass)))
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allClasses;
@@ -79,7 +79,7 @@ public class DependencySelection {
     }
 
     private String getExistingNodeId(JavaClass javaClass, boolean visibleOnly) {
-        JavaClass targetClass = CodeNodeModel.findEnclosingNamedClass(javaClass);
+        JavaClass targetClass = CodeNode.findEnclosingNamedClass(javaClass);
         String targetClassId = targetClass.getName();
         if(! visibleOnly && getNode(targetClassId) != null)
             return targetClassId;
@@ -111,11 +111,11 @@ public class DependencySelection {
         return visiblePackage == null ? null : visiblePackage.getName();
     }
 
-     private Set<Dependency> getOutgoingDependencies(CodeNodeModel node) {
+     private Set<Dependency> getOutgoingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getOutgoingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
-     private Set<Dependency> getIncomingDependencies(CodeNodeModel node) {
+     private Set<Dependency> getIncomingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getIncomingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
@@ -152,9 +152,9 @@ public class DependencySelection {
         return selectedNodeSet;
     }
 
-    CodeMapModel getMap() {
+    CodeMap getMap() {
         if(map == null)
-            map = (CodeMapModel) selection.getMap();
+            map = (CodeMap) selection.getMap();
         return map;
     }
 
@@ -203,7 +203,7 @@ public class DependencySelection {
                  && (! visibleTarget.isDescendantOf(selectedVisibleOrigin) || ! visibleOrigin.isDescendantOf(selectedVisibleTarget));
      }
 
-     public boolean isConnectorSelected(CodeNodeModel source, CodeNodeModel target) {
+     public boolean isConnectorSelected(CodeNode source, CodeNode target) {
          Set<NodeModel> selectedNodes = getSelectedNodeSet();
          boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
          if(isOnlyOneNodeSelected && selection.getSelected().isRoot())

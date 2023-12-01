@@ -10,11 +10,11 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 
 import com.tngtech.archunit.core.domain.Dependency;
 
-class CodeMapModel extends MapModel {
+class CodeMap extends MapModel {
 
     private DependencyJudge judge = DependencyJudge.of("");
 
-    public CodeMapModel(INodeDuplicator nodeDuplicator) {
+    public CodeMap(INodeDuplicator nodeDuplicator) {
         super(nodeDuplicator);
         AttributeRegistry.getRegistry(this);
 

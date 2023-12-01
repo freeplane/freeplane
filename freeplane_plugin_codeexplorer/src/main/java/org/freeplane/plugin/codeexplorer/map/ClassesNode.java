@@ -21,16 +21,16 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
-class ClassesNodeModel extends CodeNodeModel {
+class ClassesNode extends CodeNode {
     static {
-        IconStoreFactory.INSTANCE.createStateIcon(ClassesNodeModel.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
-        IconStoreFactory.INSTANCE.createStateIcon(ClassesNodeModel.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
     }	final private JavaPackage javaPackage;
     static final String UI_CHILD_PACKAGE_ICON_NAME = "code_classes";
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;
 
-	public ClassesNodeModel(final JavaPackage javaPackage, final MapModel map, String name, boolean samePackage, int subgroupIndex) {
+	public ClassesNode(final JavaPackage javaPackage, final MapModel map, String name, boolean samePackage, int subgroupIndex) {
 		super(map, subgroupIndex);
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
@@ -58,7 +58,7 @@ class ClassesNodeModel extends CodeNodeModel {
 	    List<NodeModel> children = super.getChildrenInternal();
 	    if (children.isEmpty()) {
 	        final List<JavaClass> classes = javaPackage.getClasses().stream()
-	                .filter(CodeNodeModel::isClassSourceKnown).collect(Collectors.toList());
+	                .filter(CodeNode::isClassSourceKnown).collect(Collectors.toList());
 	        if(! classes.isEmpty()) {
 	            GraphNodeSort<JavaClass> nodeSort = new GraphNodeSort<JavaClass>();
                 for (JavaClass javaClass : classes) {
@@ -68,15 +68,15 @@ class ClassesNodeModel extends CodeNodeModel {
                     Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
                             .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
                             .map(filter::knownDependency)
-                            .collect(Collectors.groupingBy(CodeNodeModel::getTargetNodeClass, Collectors.counting()));
+                            .collect(Collectors.groupingBy(CodeNode::getTargetNodeClass, Collectors.counting()));
                     dependencies.entrySet().stream()
                     .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
                 }
-	            Map<JavaClass, ClassNodeModel> nodes = new HashMap<>();
+	            Map<JavaClass, ClassNode> nodes = new HashMap<>();
                 List<List<JavaClass>> orderedClasses = nodeSort.sortNodes();
                 for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
                     for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
-                        final ClassNodeModel node = new ClassNodeModel(childClass, getMap(), subgroupIndex);
+                        final ClassNode node = new ClassNode(childClass, getMap(), subgroupIndex);
                         nodes.put(childClass, node);
                         children.add(node);
                         node.setParent(this);
@@ -84,7 +84,7 @@ class ClassesNodeModel extends CodeNodeModel {
                 }
 	            for (JavaClass javaClass : classes) {
 	                JavaClass enclosingClass = findEnclosingNamedClass(javaClass);
-	                ClassNodeModel node = nodes.get(enclosingClass);
+	                ClassNode node = nodes.get(enclosingClass);
 	                node.registerInnerClass(javaClass);
 	            }
 
@@ -123,11 +123,6 @@ class ClassesNodeModel extends CodeNodeModel {
 	}
 
     @Override
-    Set<JavaClass> getClassesInPackageTree() {
-        return javaPackage.getClassesInPackageTree();
-    }
-
-    @Override
     Stream<Dependency> getOutgoingDependencies() {
         return javaPackage.getClassDependenciesFromThisPackage().stream();
     }
@@ -147,17 +142,17 @@ class ClassesNodeModel extends CodeNodeModel {
 
 
     @Override
-    Set<CodeNodeModel> findCyclicDependencies() {
-        GraphCycleFinder<ClassesNodeModel> cycleFinder = new GraphCycleFinder<ClassesNodeModel>();
+    Set<CodeNode> findCyclicDependencies() {
+        GraphCycleFinder<ClassesNode> cycleFinder = new GraphCycleFinder<ClassesNode>();
         cycleFinder.addNode(this);
         cycleFinder.stopSearchHere();
         cycleFinder.exploreGraph(Collections.singleton(this),
                 this::connectedTargetNodesInTheSameScope,
                 this::connectedOriginNodesInTheSameScope);
-        List<List<ClassesNodeModel>> cycles = cycleFinder.findSimpleCycles();
+        List<List<ClassesNode>> cycles = cycleFinder.findSimpleCycles();
         Map<JavaPackage, Set<JavaPackage>> origins = new HashMap<>();
         Map<JavaPackage, Set<JavaPackage>> targets = new HashMap<>();
-        for(List<ClassesNodeModel> cycle : cycles) {
+        for(List<ClassesNode> cycle : cycles) {
             for(int n = 0; n < cycle.size(); n++) {
                 JavaPackage origin = cycle.get(n).javaPackage;
                 JavaPackage target = cycle.get((n+1) % cycle.size()).javaPackage;
@@ -177,32 +172,32 @@ class ClassesNodeModel extends CodeNodeModel {
                             .filter(originClass -> origins.get(packageNode.javaPackage).contains(originClass.getPackage()))
                             )
                 )
-                .map(CodeNodeModel::findEnclosingNamedClass)
+                .map(CodeNode::findEnclosingNamedClass)
                 .map(JavaClass::getName)
                 .map(getMap()::getNodeForID)
-                .map(ClassNodeModel.class::cast)
+                .map(ClassNode.class::cast)
                 .collect(Collectors.toSet());
     }
 
 
-    private Stream<ClassesNodeModel> connectedOriginNodesInTheSameScope(CodeNodeModel node) {
+    private Stream<ClassesNode> connectedOriginNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
         .map(Dependency::getOriginClass);
         return nodesContainedInScope(originClasses);
     }
 
-    private Stream<ClassesNodeModel> connectedTargetNodesInTheSameScope(CodeNodeModel node) {
+    private Stream<ClassesNode> connectedTargetNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
         return nodesContainedInScope(targetClasses);
     }
-    private Stream<ClassesNodeModel> nodesContainedInScope(Stream<JavaClass> originClasses) {
-        Stream<ClassesNodeModel> packageNodes = originClasses
+    private Stream<ClassesNode> nodesContainedInScope(Stream<JavaClass> originClasses) {
+        Stream<ClassesNode> packageNodes = originClasses
         .map(JavaClass::getPackage)
         .map(JavaPackage::getName)
         .map(id -> id + ".package")
         .map(getMap()::getNodeForID)
-        .map(ClassesNodeModel.class::cast);
+        .map(ClassesNode.class::cast);
         return packageNodes;
     }
 }

@@ -50,11 +50,11 @@ public class CodeMapController extends MapController implements CodeExplorer{
 
 	@Override
     public MapModel newMap() {
-	    final CodeMapModel codeMapModel = new CodeMapModel(getModeController().getMapController().duplicator());
-	    fireMapCreated(codeMapModel);
+	    final CodeMap codeMap = new CodeMap(getModeController().getMapController().duplicator());
+	    fireMapCreated(codeMap);
 	    Color background = UIManager.getColor("Panel.background");
 	    Color foreground = UIManager.getColor("Panel.foreground");
-	    MapStyleModel mapStyleModel = MapStyleModel.getExtension(codeMapModel);
+	    MapStyleModel mapStyleModel = MapStyleModel.getExtension(codeMap);
 	    NodeModel defaultStyleNode = mapStyleModel.getDefaultStyleNode();
 	    NodeStyleModel nodeStyle = NodeStyleModel.createNodeStyleModel(defaultStyleNode);
 	    nodeStyle.setFontSize(10);
@@ -67,8 +67,8 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	        nodeStyle.setColor(Color.BLACK);
 	    }
 	    NodeSizeModel.createNodeSizeModel(defaultStyleNode).setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
-	    createMapView(codeMapModel);
-	    return codeMapModel;
+	    createMapView(codeMap);
+	    return codeMap;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            .map(NodeView::getNode)
 	            .map(NodeModel::getID)
 	            .collect(Collectors.toList());
-        CodeMapModel map = (CodeMapModel) selection.getMap();
+        CodeMap map = (CodeMap) selection.getMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
 	    map.setRoot(emptyRoot);
 	    setJudge(codeExplorerConfiguration.getDependencyJudge());
@@ -97,13 +97,13 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	        NodeModel newRoot;
 	        if(codeExplorerConfiguration != null) {
 	            JavaPackage rootPackage = codeExplorerConfiguration.importPackages();
-	            newRoot = new PackageNodeModel(rootPackage, map, codeExplorerConfiguration.getProjectName(), 0);
+	            newRoot = new PackageNode(rootPackage, map, codeExplorerConfiguration.getProjectName(), 0);
 	        }
 	        else {
 	            ClassFileImporter classFileImporter = new ClassFileImporter();
 	            JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
 	            JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
-	            newRoot = new PackageNodeModel(rootPackage, map, "demo", 0);
+	            newRoot = new PackageNode(rootPackage, map, "demo", 0);
 	        }
 
 	        EventQueue.invokeLater(() -> {
@@ -130,10 +130,10 @@ public class CodeMapController extends MapController implements CodeExplorer{
 
 	}
 
-    private CodeNodeModel getExistingAncestorOrSelfNode(MapModel map, String id) {
+    private CodeNode getExistingAncestorOrSelfNode(MapModel map, String id) {
         NodeModel node = map.getNodeForID(id);
         if(node != null)
-            return (CodeNodeModel) node;
+            return (CodeNode) node;
         int lastDelimiterPosition = id.lastIndexOf('.');
         if(lastDelimiterPosition > 0)
             return getExistingAncestorOrSelfNode(map, id.substring(0, lastDelimiterPosition));
@@ -144,7 +144,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
     public void setJudge(DependencyJudge judge) {
         Controller currentController = Controller.getCurrentController();
         IMapSelection selection = currentController.getSelection();
-        CodeMapModel map = (CodeMapModel) selection.getMap();
+        CodeMap map = (CodeMap) selection.getMap();
         map.setJudge(judge);
         IMapViewManager mapViewManager = currentController.getMapViewManager();
         MapView mapView = (MapView) mapViewManager.getMapViewComponent();
