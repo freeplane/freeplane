@@ -144,7 +144,10 @@ public abstract class CodeNode extends NodeModel {
     abstract protected boolean initializeChildNodes();
 
     void loadSubtree() {
-        if(initializeChildNodes())
-            getChildrenInternal().forEach(node -> ((CodeNode)node).loadSubtree());
+        if(initializeChildNodes()) {
+            List<NodeModel> children = getChildrenInternal();
+            Stream<NodeModel> stream = children.size() > 40 ?  children.parallelStream() : children.stream();
+            stream.forEach(node -> ((CodeNode)node).loadSubtree());
+        }
     }
 }

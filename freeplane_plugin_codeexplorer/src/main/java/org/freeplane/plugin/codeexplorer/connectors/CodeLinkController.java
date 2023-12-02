@@ -227,11 +227,11 @@ public class CodeLinkController extends LinkController {
         }
 
         Stream<CodeDependency> incoming() {
-            return Stream.of(incoming);
+            return Stream.of(incoming).parallel();
         }
 
         Stream<CodeDependency> outgoing() {
-            return Stream.of(outgoing);
+            return Stream.of(outgoing).parallel();
         }
     }
 
@@ -248,7 +248,7 @@ public class CodeLinkController extends LinkController {
     }
     private Stream<CodeDependency> collectIncomingDependenciesWithKnownOrigins(NodeModel node,
             DependencySelection dependencySelection) {
-        return ((CodeNode)node).getIncomingDependenciesWithKnownOrigins().map(dependencySelection::toCodeDependency);
+        return ((CodeNode)node).getIncomingDependenciesWithKnownOrigins().parallel().map(dependencySelection::toCodeDependency);
     }
 
     @Override
@@ -286,7 +286,7 @@ public class CodeLinkController extends LinkController {
 
     private Stream<CodeDependency> collectOutgoingDependenciesWithKnownTargets(NodeModel node,
             DependencySelection dependencySelection) {
-        return ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().map(dependencySelection::toCodeDependency);
+        return ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().parallel().map(dependencySelection::toCodeDependency);
     }
 
     private Map<DependencyVerdict, Map<String, Long>> countCodeDependencies(NodeModel node,
