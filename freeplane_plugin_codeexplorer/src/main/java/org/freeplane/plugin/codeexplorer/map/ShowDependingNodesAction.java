@@ -20,6 +20,7 @@
 package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -101,28 +102,54 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	        return;
 	    MapModel map = selection.getMap();
 	    ((CodeNode)map.getRootNode()).loadSubtree();
-	    DependencySelection dependencySelection = new DependencySelection(selection);
-	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get(), dependencySelection);
+	    Set<String> dependentNodeIDs;
+        if (dependencyDirection == DependencyDirection.INCOMING_AND_OUTGOING) {
+            Set<String> incomingDependencies = recursiveDependencies(selection, currentCondition, map, DependencyDirection.INCOMING);
+            Set<String> outgoingDependencies = recursiveDependencies(selection, currentCondition, map, DependencyDirection.OUTGOING);
+            if(incomingDependencies.isEmpty()) {
+                dependentNodeIDs = outgoingDependencies;
+            } else {
+                dependentNodeIDs = incomingDependencies;
+                dependentNodeIDs.addAll(outgoingDependencies);
+            }
+        } else
+            dependentNodeIDs = recursiveDependencies(selection, currentCondition, map, dependencyDirection);
+        if(! dependentNodeIDs.isEmpty()) {
+            FilterController filterController = FilterController.getCurrentFilterController();
+            ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
+                    currentCondition);
+            Filter filter = new Filter(condition, false, true, false, false, null);
+            filterController.applyFilter(map, false, filter);
+        }
+	}
+
+
+    private Set<String> recursiveDependencies(IMapSelection selection, ICondition currentCondition,
+            MapModel map, DependencyDirection dependencyDirection) {
+        DependencySelection dependencySelection = new DependencySelection(selection);
+	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get(), dependencySelection, dependencyDirection);
 	    for(int recursionCounter = allNodesSatisfyFilter(selection, dependentNodeIDs) ? 0 : 1;
 	        recursionCounter < maximumRecursionDepth;
 	        recursionCounter++) {
 	        Set<String> next = dependencies(dependentNodeIDs.stream()
 	                .map(map::getNodeForID)
-	                .map(CodeNode.class::cast), dependencySelection);
+	                .map(CodeNode.class::cast), dependencySelection, dependencyDirection);
 	        next.removeAll(dependentNodeIDs);
-	        if(next.isEmpty())
-	            break;
+	        if(next.isEmpty()) {
+	            if(recursionCounter == 0)
+	                return Collections.emptySet();
+	            else
+	                break;
+            }
 	        dependentNodeIDs.addAll(next);
 	        if(allNodesSatisfyFilter(selection, next))
 	            recursionCounter--;
+	        else
+	            continue;
 	    }
 	    dependentNodeIDs.removeIf(id -> currentCondition.checkNode(map.getNodeForID(id)));
-        FilterController filterController = FilterController.getCurrentFilterController();
-        ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
-                currentCondition);
-	    Filter filter = new Filter(condition, false, true, false, false, null);
-        filterController.applyFilter(map, false, filter);
-	}
+        return dependentNodeIDs;
+    }
 
 
     private boolean allNodesSatisfyFilter(IMapSelection selection, Set<String> dependentNodeIDs) {
@@ -131,7 +158,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     }
 
 
-    private HashSet<String> dependencies(Stream<CodeNode> startingNodes, DependencySelection dependencySelection) {
+    private static HashSet<String> dependencies(Stream<CodeNode> startingNodes, DependencySelection dependencySelection, DependencyDirection dependencyDirection) {
         return startingNodes
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)
