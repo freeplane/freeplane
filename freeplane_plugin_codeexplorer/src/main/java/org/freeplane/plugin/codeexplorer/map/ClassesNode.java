@@ -172,7 +172,7 @@ class ClassesNode extends CodeNode {
                             packageNode.getOutgoingDependenciesWithKnownTargets()
                             .map(Dependency::getTargetClass)
                             .filter(targetClass -> targets.get(packageNode.javaPackage).contains(targetClass.getPackage())),
-                            packageNode.getIncomingDependenciesWithKnownTargets()
+                            packageNode.getIncomingDependenciesWithKnownOrigins()
                             .map(Dependency::getOriginClass)
                             .filter(originClass -> origins.get(packageNode.javaPackage).contains(originClass.getPackage()))
                             )
@@ -187,7 +187,7 @@ class ClassesNode extends CodeNode {
 
 
     private Stream<ClassesNode> connectedOriginNodesInTheSameScope(CodeNode node) {
-        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
+        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
         return nodesContainedInScope(originClasses);
     }

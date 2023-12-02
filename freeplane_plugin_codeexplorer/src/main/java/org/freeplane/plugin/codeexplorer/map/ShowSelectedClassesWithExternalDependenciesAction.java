@@ -30,8 +30,6 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
-import com.tngtech.archunit.core.domain.JavaClass;
-
 @SuppressWarnings("serial")
 class ShowSelectedClassesWithExternalDependenciesAction extends AFreeplaneAction {
 
@@ -45,7 +43,7 @@ class ShowSelectedClassesWithExternalDependenciesAction extends AFreeplaneAction
         DependencySelection dependencySelection = new DependencySelection(selection, false);
         Set<String> dependentNodeIDs = dependencySelection.getSelectedClasses()
                 .stream()
-                .map(JavaClass::getName)
+                .map(dependencySelection::getClassNodeId)
                 .collect(Collectors.toSet());
         ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs);
         Filter filter = new Filter(condition, false, true, false, false, null);

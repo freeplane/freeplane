@@ -134,7 +134,7 @@ public class ClassNode extends CodeNode {
     }
 
     private Stream<CodeNode> connectedOriginNodesInTheSameScope(CodeNode node) {
-        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownTargets()
+        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
         return nodesContainedInScope(originClasses);
     }

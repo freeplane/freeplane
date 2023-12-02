@@ -17,7 +17,6 @@ import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.Source;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 public abstract class CodeNode extends NodeModel {
@@ -52,6 +51,10 @@ public abstract class CodeNode extends NodeModel {
 
     private static boolean isTargetSourceKnown(Dependency dep) {
         return isClassSourceKnown(dep.getTargetClass());
+    }
+
+    private static boolean isOriginSourceKnown(Dependency dep) {
+        return isClassSourceKnown(dep.getOriginClass());
     }
 
     static boolean isClassSourceKnown(JavaClass javaClass) {
@@ -125,11 +128,11 @@ public abstract class CodeNode extends NodeModel {
     public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(){
         return getOutgoingDependencies().filter(CodeNode::isTargetSourceKnown);
     }
-    public Stream<Dependency> getIncomingDependenciesWithKnownTargets(){
-        return getIncomingDependencies().filter(CodeNode::isTargetSourceKnown);
+    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(){
+        return getIncomingDependencies().filter(CodeNode::isOriginSourceKnown);
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
-        return Stream.concat(getIncomingDependenciesWithKnownTargets(), getOutgoingDependenciesWithKnownTargets());
+        return Stream.concat(getIncomingDependenciesWithKnownOrigins(), getOutgoingDependenciesWithKnownTargets());
     }
 
     @Override

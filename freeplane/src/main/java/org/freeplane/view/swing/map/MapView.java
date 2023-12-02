@@ -150,6 +150,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         }
     }
 
+    private enum PaintingPurpose {PAINTING, PRINTING, OVERVIEW}
+
     private static final int ROOT_NODE_COMPONENT_INDEX = 0;
 	private static final String UNFOLD_ON_NAVIGATION = "unfold_on_navigation";
 	private final MapScroller mapScroller;
@@ -675,7 +677,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Rectangle boundingRectangle = null;
 	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
-	private boolean isPrinting = false;
+	private PaintingPurpose paintingPurpose = PaintingPurpose.PAINTING;
 	private final ModeController modeController;
 	final private MapModel viewedMap;
 
@@ -1023,7 +1025,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void endPrinting() {
 		if (!isPreparedForPrinting)
 			return;
-		isPrinting = false;
+		paintingPurpose = PaintingPurpose.PAINTING;
 		updatePrintedNodes();
 		isPreparedForPrinting = false;
 		if (MapView.printOnWhiteBackground) {
@@ -1342,11 +1344,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public boolean isPrinting() {
-		return isPrinting;
+		return paintingPurpose != PaintingPurpose.PAINTING;
 	}
 
 	public boolean isSelected(final NodeView n) {
-		if(isPrinting || (! selectedsValid &&
+		if(isPrinting() || (! selectedsValid &&
 				(selection.selectedNode == null || ! SwingUtilities.isDescendingFrom(selection.selectedNode, this)  || ! selection.selectedNode.getContent().isVisible())))
 			return false;
 		return selection.contains(n);
@@ -1881,7 +1883,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	public void paint(final Graphics g) {
-		if (!isPrinting && isPreparedForPrinting){
+		if (!isPrinting() && isPreparedForPrinting){
 			isPreparedForPrinting = false;
 			EventQueue.invokeLater(new Runnable() {
 				@Override
@@ -1896,7 +1898,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Graphics2D g2 = (Graphics2D) g.create();
 		try {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-			if(! isPrinting && g2.getRenderingHint(GraphicsHints.CACHE_ICONS) == null) {
+			if(! isPrinting() && g2.getRenderingHint(GraphicsHints.CACHE_ICONS) == null) {
 				g2.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE);
 			}
 			Controller.getCurrentController().getMapViewManager().setTextRenderingHint(g2);
@@ -1921,11 +1923,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void paintOverview(Graphics2D g) {
 		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.FALSE);
-		isPrinting = true;
+		paintingPurpose = PaintingPurpose.OVERVIEW;
 		isPreparedForPrinting = true;
 		updatePrintedSelectedNodes();
 		super.print(g);
-		isPrinting = false;
+		paintingPurpose = PaintingPurpose.PAINTING;
 		updatePrintedSelectedNodes();
 		isPreparedForPrinting = false;
 	}
@@ -2000,7 +2002,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	this.paintingMode = paintingMode;
 			switch(paintingMode){
 	    		case LINKS:
-	    			if(HIDE_CONNECTORS != showConnectors)
+	    			if(HIDE_CONNECTORS != showConnectors && paintingPurpose != PaintingPurpose.OVERVIEW)
 	    				paintConnectors(g2);
 	    			break;
 				default:
@@ -2095,7 +2097,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private boolean isConnectorVisibleOnView(NodeView sourceView, NodeView targetView) {
-	    if(isPrinting)
+	    if(paintingPurpose == PaintingPurpose.PRINTING)
 	        return true;
 
         Rectangle sourceRectangle = sourceView != null && sourceView.isContentVisible()
@@ -2145,7 +2147,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final NodeView child = (NodeView) component;
 			if(!child.isSubtreeVisible())
 			    continue;
-			if (!isPrinting && ! child.isSelected()) {
+			if (paintingPurpose == PaintingPurpose.PAINTING && ! child.isSelected()) {
 				final Rectangle bounds = SwingUtilities.convertRectangle(source, child.getBounds(), this);
 				final JViewport vp = (JViewport) getParent();
 				final Rectangle viewRect = vp.getViewRect();
@@ -2244,7 +2246,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * to minimize calculation efforts
 	 */
 	public void preparePrinting() {
-		isPrinting = true;
+		paintingPurpose = PaintingPurpose.PRINTING;
 		if (!isPreparedForPrinting) {
 			isPreparedForPrinting = true;
 			updatePrintedNodes();
@@ -2294,7 +2296,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			super.print(g);
 		}
 		finally {
-			isPrinting = false;
+			paintingPurpose = PaintingPurpose.PAINTING;
 		}
 	}
 

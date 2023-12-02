@@ -64,7 +64,7 @@ public class DependencySelection {
                 .flatMap(node ->
                 Stream.concat(
                         ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().map(Dependency::getOriginClass),
-                        ((CodeNode)node).getIncomingDependenciesWithKnownTargets().map(Dependency::getTargetClass)))
+                        ((CodeNode)node).getIncomingDependenciesWithKnownOrigins().map(Dependency::getTargetClass)))
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allClasses;
@@ -78,24 +78,35 @@ public class DependencySelection {
         return getExistingNodeId(javaClass, false);
     }
 
-    private String getExistingNodeId(JavaClass javaClass, boolean visibleOnly) {
+
+    public String getClassNodeId(JavaClass javaClass) {
+        int subprojectIndex = getMap().subprojectIndexOf(javaClass);
+        return getClassNodeId(javaClass, subprojectIndex);
+    }
+
+    private String getClassNodeId(JavaClass javaClass, int subprojectIndex) {
         JavaClass nodeClass = CodeNode.findEnclosingNamedClass(javaClass);
         String nodeClassName = nodeClass.getName();
-        int subprojectIndex = getMap().subprojectIndexOf(nodeClass);
-        String nodeClassId = CodeNode.idWithSubprojectIndex(nodeClassName, subprojectIndex);
-        if(! visibleOnly && getNode(nodeClassId) != null)
-            return nodeClassId;
+        String classNodeId = CodeNode.idWithSubprojectIndex(nodeClassName, subprojectIndex);
+        return classNodeId;
+    }
+
+    private String getExistingNodeId(JavaClass javaClass, boolean visibleOnly) {
+        int subprojectIndex = getMap().subprojectIndexOf(javaClass);
+        String classNodeId = getClassNodeId(javaClass, subprojectIndex);
+        if(! visibleOnly && getNode(classNodeId) != null)
+            return classNodeId;
         if(visibleOnly) {
-            switch(visibility(nodeClassId)) {
+            switch(visibility(classNodeId)) {
             case VISIBLE:
-                return nodeClassId;
+                return classNodeId;
             case HIDDEN_BY_FILTER:
                 return null;
             default:
                 break;
             }
         }
-        JavaPackage targetPackage = nodeClass.getPackage();
+        JavaPackage targetPackage = javaClass.getPackage();
         String targetPackageClassesId = CodeNode.idWithSubprojectIndex(targetPackage.getName() + ".package", subprojectIndex);
         if(! visibleOnly && getNode(targetPackageClassesId) != null)
             return targetPackageClassesId;
@@ -118,13 +129,13 @@ public class DependencySelection {
          return dependenciesBetweenDifferentElements(dependencies);
      }
      private Set<Dependency> getIncomingDependencies(CodeNode node) {
-         Stream<Dependency> dependencies = node.getIncomingDependenciesWithKnownTargets();
+         Stream<Dependency> dependencies = node.getIncomingDependenciesWithKnownOrigins();
          return dependenciesBetweenDifferentElements(dependencies);
      }
 
      private Set<Dependency> dependenciesBetweenDifferentElements(Stream<Dependency> dependencies) {
          Set<Dependency> filteredDependencies = dependencies
-                 .filter(dependency -> connectsDifferentElements(dependency))
+                 .filter(dependency -> connectsDifferentVisibleNodes(dependency))
                  .collect(Collectors.toSet());
          return filteredDependencies;
      }
@@ -188,7 +199,7 @@ public class DependencySelection {
         return Visibility.HIDDEN_BY_FOLDING;
     }
 
-    private boolean connectsDifferentElements(Dependency dependency) {
+    private boolean connectsDifferentVisibleNodes(Dependency dependency) {
         String visibleOriginId = getVisibleNodeId(dependency.getOriginClass());
          String visibleTargetId = getVisibleNodeId(dependency.getTargetClass());
          if (visibleOriginId == null  || visibleTargetId == null || visibleOriginId.equals(visibleTargetId))
@@ -232,5 +243,4 @@ public class DependencySelection {
          boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
          return new CodeDependency(dependency, goesUp, getMap().judge(dependency, goesUp));
      }
-
  }

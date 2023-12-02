@@ -87,7 +87,7 @@ class PackageNode extends CodeNode {
 	    boolean hasClasses = getClasses().anyMatch(x -> true);
 	    if(hasClasses)
 	        packages.add(javaPackage);
-	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<JavaPackage>();
+	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<>();
 	    for (JavaPackage childPackage : packages) {
 	        childNodes.addNode(childPackage);
 	        DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
@@ -201,12 +201,29 @@ class PackageNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return getClassDependenciesFromPackageTree(javaPackage);
+        return javaPackage.getParent().isPresent() ? getClassDependenciesFromPackageTree(javaPackage) : getSubprojectDependenciesFromPackageTree();
+    }
+
+    private Stream<Dependency> getSubprojectDependenciesFromPackageTree() {
+        return subprojectClasses()
+                .flatMap(javaClass -> javaClass.getDirectDependenciesFromSelf().stream())
+                .filter(dep -> ! belongsToSameSubproject(dep.getTargetClass()));
+    }
+
+    private Stream<JavaClass> subprojectClasses() {
+        return ((ProjectRootNode)getMap().getRootNode()).allClasses()
+                .filter(this::belongsToSameSubproject);
     }
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return getClassDependenciesToPackageTree(javaPackage);
+        return javaPackage.getParent().isPresent() ? getClassDependenciesToPackageTree(javaPackage) : getSubprojectDependenciesToPackageTree();
+    }
+
+    private Stream<Dependency> getSubprojectDependenciesToPackageTree() {
+        return subprojectClasses()
+                .flatMap(javaClass -> javaClass.getDirectDependenciesToSelf().stream())
+                .filter(dep -> ! belongsToSameSubproject(dep.getOriginClass()));
     }
 
     @Override

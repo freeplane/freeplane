@@ -48,7 +48,6 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
     Depth(int depth) {
         this.depth = depth;
-        // TODO Auto-generated constructor stub
     }}
     MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 
@@ -58,7 +57,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     private final int maximumRecursionDepth;
 
     enum DependencyDirection {
-        INCOMING(CodeNode::getIncomingDependenciesWithKnownTargets),
+        INCOMING(CodeNode::getIncomingDependenciesWithKnownOrigins),
         OUTGOING(CodeNode::getOutgoingDependenciesWithKnownTargets),
         INCOMING_AND_OUTGOING(CodeNode::getIncomingAndOutgoingDependenciesWithKnownTargets);
 
@@ -102,11 +101,14 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	        return;
 	    MapModel map = selection.getMap();
 	    ((CodeNode)map.getRootNode()).loadSubtree();
-	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get());
+	    DependencySelection dependencySelection = new DependencySelection(selection);
+	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get(), dependencySelection);
 	    for(int recursionCounter = allNodesSatisfyFilter(selection, dependentNodeIDs) ? 0 : 1;
 	        recursionCounter < maximumRecursionDepth;
 	        recursionCounter++) {
-	        Set<String> next = dependencies(dependentNodeIDs.stream().map(map::getNodeForID).map(CodeNode.class::cast));
+	        Set<String> next = dependencies(dependentNodeIDs.stream()
+	                .map(map::getNodeForID)
+	                .map(CodeNode.class::cast), dependencySelection);
 	        next.removeAll(dependentNodeIDs);
 	        if(next.isEmpty())
 	            break;
@@ -124,16 +126,16 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
 
     private boolean allNodesSatisfyFilter(IMapSelection selection, Set<String> dependentNodeIDs) {
-        return dependentNodeIDs.stream().allMatch(id -> selection.getMap().getNodeForID(id).isVisible(selection.getFilter()));
+        return dependentNodeIDs.stream()
+                .allMatch(id -> selection.getMap().getNodeForID(id).isVisible(selection.getFilter()));
     }
 
 
-    private HashSet<String> dependencies(Stream<CodeNode> startingNodes) {
+    private HashSet<String> dependencies(Stream<CodeNode> startingNodes, DependencySelection dependencySelection) {
         return startingNodes
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)
-	            .map(JavaClass::getName)
+	            .map(dependencySelection::getClassNodeId)
 	            .collect(Collectors.toCollection(HashSet::new));
     }
-
 }

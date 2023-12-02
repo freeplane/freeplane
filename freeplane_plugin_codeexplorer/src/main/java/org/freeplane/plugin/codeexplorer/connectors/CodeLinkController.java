@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.extension.Configurable;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.link.ConnectorArrows;
@@ -201,9 +202,8 @@ public class CodeLinkController extends LinkController {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
-            Stream<Dependency> dependencies = ((CodeNode)node).getIncomingDependenciesWithKnownTargets()
-                    .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getTargetClass()));
-            Map<DependencyVerdict, Map<String, Long>> countedDependencies = countDependencies(node, dependencySelection, dependencies, CodeDependency::getOriginClass);
+            Stream<CodeDependency> codeDependencies = incomingDependenciesWithKnownOrigins(node, dependencySelection);
+            Map<DependencyVerdict, Map<String, Long>> countedDependencies = countCodeDependencies(node, dependencySelection, codeDependencies, CodeDependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .flatMap(targetsByVerdict ->
                 targetsByVerdict.getValue().entrySet().stream()
@@ -216,15 +216,49 @@ public class CodeLinkController extends LinkController {
             return Collections.emptyList();
     }
 
+    private class MemoizedCodeDependencies implements IExtension{
+        final CodeDependency[] incoming;
+        final CodeDependency[] outgoing;
+        MemoizedCodeDependencies(NodeModel node,
+                DependencySelection dependencySelection) {
+            incoming = collectIncomingDependenciesWithKnownOrigins(node, dependencySelection).toArray(CodeDependency[]::new);
+            outgoing = collectOutgoingDependenciesWithKnownTargets(node, dependencySelection).toArray(CodeDependency[]::new);
+
+        }
+
+        Stream<CodeDependency> incoming() {
+            return Stream.of(incoming);
+        }
+
+        Stream<CodeDependency> outgoing() {
+            return Stream.of(outgoing);
+        }
+    }
+
+    private Stream<CodeDependency> incomingDependenciesWithKnownOrigins(NodeModel node,
+            DependencySelection dependencySelection) {
+        MemoizedCodeDependencies extension = node.getExtension(MemoizedCodeDependencies.class);
+        if(extension != null)
+            return extension.incoming();
+        if(node.getParentNode() == null || node.getParentNode().getChildCount() <= 40)
+            return collectIncomingDependenciesWithKnownOrigins(node, dependencySelection);
+        extension = new MemoizedCodeDependencies(node, dependencySelection);
+        node.addExtension(extension);
+        return extension.incoming();
+    }
+    private Stream<CodeDependency> collectIncomingDependenciesWithKnownOrigins(NodeModel node,
+            DependencySelection dependencySelection) {
+        return ((CodeNode)node).getIncomingDependenciesWithKnownOrigins().map(dependencySelection::toCodeDependency);
+    }
+
     @Override
     public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node,
             Configurable component) {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
-            Stream<Dependency> dependencies = ((CodeNode)node).getOutgoingDependenciesWithKnownTargets()
-                    .filter(dep -> null != dependencySelection.getVisibleNodeId(dep.getOriginClass()));
-            Map<DependencyVerdict, Map<String, Long>> countedDependencies = countDependencies(node, dependencySelection, dependencies, CodeDependency::getTargetClass);
+            Stream<CodeDependency> codeDependencies = outgoingDependenciesWithKnownTargets(node, dependencySelection);
+            Map<DependencyVerdict, Map<String, Long>> countedDependencies = countCodeDependencies(node, dependencySelection, codeDependencies, CodeDependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .flatMap(targetsByVerdict ->
                 targetsByVerdict.getValue().entrySet().stream()
@@ -238,10 +272,27 @@ public class CodeLinkController extends LinkController {
             return Collections.emptyList();
     }
 
-    private Map<DependencyVerdict, Map<String, Long>> countDependencies(NodeModel node, DependencySelection dependencySelection,
-            Stream<Dependency> dependencies, Function<CodeDependency, JavaClass> dependencyToJavaClass) {
-        Map<DependencyVerdict, Map<String, Long>> countedDependencies = dependencies
-                .map(dependencySelection::toCodeDependency)
+    private Stream<CodeDependency> outgoingDependenciesWithKnownTargets(NodeModel node,
+            DependencySelection dependencySelection) {
+        MemoizedCodeDependencies extension = node.getExtension(MemoizedCodeDependencies.class);
+        if(extension != null)
+            return extension.outgoing();
+        if(node.getParentNode() == null || node.getParentNode().getChildCount() <= 40)
+            return collectOutgoingDependenciesWithKnownTargets(node, dependencySelection);
+        extension = new MemoizedCodeDependencies(node, dependencySelection);
+        node.addExtension(extension);
+        return extension.outgoing();
+    }
+
+    private Stream<CodeDependency> collectOutgoingDependenciesWithKnownTargets(NodeModel node,
+            DependencySelection dependencySelection) {
+        return ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().map(dependencySelection::toCodeDependency);
+    }
+
+    private Map<DependencyVerdict, Map<String, Long>> countCodeDependencies(NodeModel node,
+            DependencySelection dependencySelection, Stream<CodeDependency> codeDependencies,
+            Function<CodeDependency, JavaClass> dependencyToJavaClass) {
+        Map<DependencyVerdict, Map<String, Long>> countedDependencies = codeDependencies
                 .map(dep -> new AbstractMap.SimpleEntry<>(dep.dependencyVerdict(),
                         dependencySelection.getVisibleNodeId(dependencyToJavaClass.apply(dep))))
                 .filter(e -> e.getValue() != null && ! e.getValue().equals(node.getID()))

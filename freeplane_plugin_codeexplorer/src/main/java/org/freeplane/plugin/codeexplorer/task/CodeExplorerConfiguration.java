@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
@@ -75,18 +76,17 @@ public class CodeExplorerConfiguration {
         return judge;
     }
 
-    public JavaPackage importPackages() {
+    public JavaClasses importClasses() {
         Collection<Location> locations = getLocations().stream()
                 .map(this::findClasses)
                 .map(File::toURI)
                 .map(Location::of)
                 .collect(Collectors.toList());
         ClassFileImporter classFileImporter = new ClassFileImporter();
+        LogUtils.info("Starting import from " + locations.size() + " locations");
         JavaClasses  importedClasses = classFileImporter.importLocations(locations);
-        JavaPackage rootPackage = importedClasses.getDefaultPackage();
-        while(rootPackage.getClasses().isEmpty() && rootPackage.getSubpackages().size() == 1)
-            rootPackage = rootPackage.getSubpackages().iterator().next();
-        return rootPackage;
+        LogUtils.info("Import done");
+        return importedClasses;
     }
 
     private File findClasses(File file) {

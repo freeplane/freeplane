@@ -10,6 +10,8 @@ import javax.swing.UIManager;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
@@ -29,7 +31,6 @@ import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class CodeMapController extends MapController implements CodeExplorer{
@@ -88,28 +89,35 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            .map(NodeModel::getID)
 	            .collect(Collectors.toList());
         CodeMap map = (CodeMap) selection.getMap();
-	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading...");
+        NodeModel oldRoot = map.getRootNode();
+	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading"
+	            + " " + codeExplorerConfiguration.getLocations().size()
+	            + " locations ...");
 	    map.setRoot(emptyRoot);
 	    setJudge(codeExplorerConfiguration.getDependencyJudge());
 	    mapView.mapRootNodeChanged();
 	    mapViewManager.updateMapViewName();
 	    new Thread(() -> {
 
-	        NodeModel newRoot;
-	        if(codeExplorerConfiguration != null) {
-	            JavaPackage rootPackage = codeExplorerConfiguration.importPackages();
-	            newRoot = new ProjectRootNode(map, rootPackage, codeExplorerConfiguration);
-	        }
-	        else {
-	            ClassFileImporter classFileImporter = new ClassFileImporter();
-	            JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-	            JavaPackage rootPackage = importedClasses.getPackage("org.freeplane");
-	            newRoot = new ProjectRootNode(map, rootPackage, new CodeExplorerConfiguration("demo", new ArrayList<>(), ""));
-	        }
-
+	        NodeModel newRoot = oldRoot;
+	        try {
+                if(codeExplorerConfiguration != null) {
+                    JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
+                    newRoot = new ProjectRootNode(map, importedClasses, codeExplorerConfiguration);
+                }
+                else {
+                    ClassFileImporter classFileImporter = new ClassFileImporter();
+                    JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
+                    newRoot = new ProjectRootNode(map, importedClasses, new CodeExplorerConfiguration("demo", new ArrayList<>(), ""));
+                }
+            } catch (Exception e) {
+                LogUtils.warn(e);
+                UITools.errorMessage(e.getMessage());
+            }
+	        NodeModel lambdaRoot = newRoot;
 	        EventQueue.invokeLater(() -> {
-	            newRoot.setFolded(false);
-	            map.setRoot(newRoot);
+	            lambdaRoot.setFolded(false);
+	            map.setRoot(lambdaRoot);
 	            mapView.mapRootNodeChanged();
 	            mapViewManager.updateMapViewName();
 	            FilterController.getCurrentFilterController().mapRootNodeChanged(map);

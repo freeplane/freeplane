@@ -11,7 +11,7 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-class CodeMap extends MapModel {
+public class CodeMap extends MapModel {
 
     private DependencyJudge judge = DependencyJudge.of("");
 

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.cycle.CycleDetector;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
 import org.jgrapht.graph.AsSubgraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -63,6 +64,8 @@ public class GraphNodeSort<V> {
     }
 
 
+
+
     public List<List<V>> sortNodes() {
 
         // Compute Connected Components
@@ -79,27 +82,30 @@ public class GraphNodeSort<V> {
             // Create a subgraph for the connected set
             Graph<V, DefaultWeightedEdge> connectedSubgraph = new AsSubgraph<>(graph, connectedSet);
 
-            // Find and break cycles within the SCG
-            JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
-            List<List<V>> cycles = cycleFinder.findSimpleCycles();
+            CycleDetector<V, DefaultWeightedEdge> cycleDetector = new CycleDetector<>(connectedSubgraph);
+            if (cycleDetector.detectCycles()) {
+                // Find and break cycles within the SCG
+                JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
+                List<List<V>> cycles = cycleFinder.findSimpleCycles();
 
-            while (!cycles.isEmpty()) {
-                List<V> firstCycle = cycles.get(0);
-                DefaultWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
-                if (minWeightEdge != null) {
-                    V source = connectedSubgraph.getEdgeSource(minWeightEdge);
-                    V target = connectedSubgraph.getEdgeTarget(minWeightEdge);
-                    connectedSubgraph.removeEdge(minWeightEdge);
+                while (!cycles.isEmpty()) {
+                    List<V> firstCycle = cycles.get(0);
+                    DefaultWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
+                    if (minWeightEdge != null) {
+                        V source = connectedSubgraph.getEdgeSource(minWeightEdge);
+                        V target = connectedSubgraph.getEdgeTarget(minWeightEdge);
+                        connectedSubgraph.removeEdge(minWeightEdge);
 
-                    // Remove the first cycle from the list, since the edge removal will break it
-                    cycles.remove(0);
+                        // Remove the first cycle from the list, since the edge removal will break it
+                        cycles.remove(0);
 
-                    // Remove all cycles containing the removed edge
-                    cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
+                        // Remove all cycles containing the removed edge
+                        cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
 
-                } else {
-                    // If no edge is found, it should break and avoid an infinite loop
-                    break;
+                    } else {
+                        // If no edge is found, it should break and avoid an infinite loop
+                        break;
+                    }
                 }
             }
 
