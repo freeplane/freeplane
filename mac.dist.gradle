@@ -63,12 +63,14 @@ def defineMacBuildTasks =  { architecture ->
    }
 
    def jpackage_macosxapp = tasks.create ("jpackage_macosxapp_${architecture}", Exec) {
+    def maxHeapOption = project.hasProperty('Xmx') ? project.property('Xmx') : '512m'
+
    	commandLine jpackage,
         	 '--name' , 'Freeplane',
    	 '--type', 'app-image',
      '--icon', 'freeplane_framework/mac-appbundler/freeplane.icns',
      '--app-version', majorVersion,
-     '--java-options', '-Xmx512m',
+     '--java-options', "-Xmx${maxHeapOption}",
      '--java-options', '-Djava.security.manager=allow',
      '--java-options', '-Dapple.laf.useScreenMenuBar=false',
      '--java-options', '-Xdock:name=Freeplane',
