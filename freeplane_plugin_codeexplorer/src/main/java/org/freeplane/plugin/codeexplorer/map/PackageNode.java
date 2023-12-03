@@ -25,6 +25,7 @@ class PackageNode extends CodeNode {
     }
     private final JavaPackage javaPackage;
     private final long classCount;
+    private final int childCount;
 
     public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex) {
         super(map, subprojectIndex);
@@ -32,6 +33,9 @@ class PackageNode extends CodeNode {
         this.classCount = getClassesInTree()
                 .filter(CodeNode::isNamed)
                 .count();
+        this.childCount = (int) (javaPackage.getSubpackages().stream()
+                .filter(this::containsAnalyzedClassesInPackageTree).count()
+                + (getClasses().anyMatch(x -> true) ? 1 : 0));
         setIdWithIndex(javaPackage.getName());
         setText(text + formatClassCount(classCount));
         setFolded(classCount > 0);
@@ -171,13 +175,7 @@ class PackageNode extends CodeNode {
 
 	@Override
 	public int getChildCount(){
-	    if(classCount == 0)
-	        return 0;
-	    int knownCount = super.getChildrenInternal().size();
-	    if(knownCount > 0)
-	        return knownCount;
-	    else
-	        return javaPackage.getSubpackages().size() + (javaPackage.getClasses().isEmpty() ? 0 : 1);
+	    return childCount;
 	}
 
 
