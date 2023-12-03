@@ -1,6 +1,7 @@
 package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,6 +66,10 @@ class PackageNode extends CodeNode {
         return getClassesInTree(somePackage).anyMatch(x -> true);
     }
 
+    long getClassCount() {
+        return classCount;
+    }
+
     @Override
     HasName getCodeElement() {
         return javaPackage;
@@ -97,7 +102,13 @@ class PackageNode extends CodeNode {
 	        .forEach(e -> childNodes.addEdge(childPackage, e.getKey(), e.getValue()));
 	    }
 
-	    List<List<JavaPackage>> orderedPackages = childNodes.sortNodes();
+	    Comparator<Set<JavaPackage>> comparingByReversedClassCount = Comparator.comparing(
+            childPackages -> -childPackages.stream()
+            .mapToLong(x -> (x == javaPackage ? getClasses() : getClassesInTree(x))
+                    .count()).sum()
+        );
+        List<List<JavaPackage>> orderedPackages = childNodes.sortNodes(comparingByReversedClassCount
+	            .thenComparing(SubgroupComparator.comparingByName(JavaPackage::getName)));
 	    for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
 	        for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {
 	            final CodeNode node = createChildPackageNode(childPackage, "");
@@ -179,7 +190,7 @@ class PackageNode extends CodeNode {
     }
 
     private Stream<JavaClass> subprojectClasses() {
-        return ((CodeMap)getMap()).allClasses()
+        return getMap().allClasses()
                 .filter(this::belongsToSameSubproject);
     }
 

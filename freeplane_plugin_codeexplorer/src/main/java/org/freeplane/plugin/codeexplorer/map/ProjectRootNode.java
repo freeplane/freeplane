@@ -10,6 +10,7 @@ import static java.util.Arrays.asList;
 import java.io.File;
 import java.net.URI;
 import java.util.AbstractMap;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -104,7 +105,14 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
             referencedSubprojects.entrySet()
             .forEach(e -> childNodes.addEdge(node.subprojectIndex, e.getKey(), e.getValue()));
         });
-        List<List<Integer>> orderedPackages = childNodes.sortNodes();
+        Comparator<Set<Integer>> comparingByReversedClassCount = Comparator.comparing(
+                indices -> -indices.stream()
+                    .map(nodes::get)
+                    .mapToLong(PackageNode::getClassCount)
+                    .sum()
+                );
+        List<List<Integer>> orderedPackages = childNodes.sortNodes(comparingByReversedClassCount
+                .thenComparing(SubgroupComparator.comparingByName(i -> nodes.get(i).getText())));
         for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
             for (Integer subprojectIndex : orderedPackages.get(subgroupIndex)) {
                 final CodeNode node = nodes.get(subprojectIndex);

@@ -7,6 +7,7 @@ package org.freeplane.plugin.codeexplorer.graph;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -66,14 +67,15 @@ public class GraphNodeSort<V> {
 
 
 
-    public List<List<V>> sortNodes() {
+    public List<List<V>> sortNodes(Comparator<Set<V>> secondComparator) {
 
         // Compute Connected Components
         ConnectivityInspector<V, DefaultWeightedEdge> connectivityInspector = new ConnectivityInspector<>(graph);
         List<Set<V>> connectedSets = connectivityInspector.connectedSets();
 
         // Sort the connected components in descending order by size
-        connectedSets.sort((set1, set2) -> Integer.compare(set2.size(), set1.size()));
+        Comparator<Set<V>> comparator = (set1, set2) -> Integer.compare(set2.size(), set1.size());
+        connectedSets.sort(comparator.thenComparing(secondComparator));
 
         List<List<V>> finalOrdering = new ArrayList<>();
 
@@ -148,15 +150,5 @@ public class GraphNodeSort<V> {
             }
         }
         return minWeightEdge;
-    }
-
-
-    public static void main(String[] args) {
-        GraphNodeSort<String> nodeSort = new GraphNodeSort<String>();
-        nodeSort.addEdge("a", "b", 30);
-        nodeSort.addEdge("b", "c", 20);
-        nodeSort.addEdge("c", "a", 10);
-        List<List<String>> ordering = nodeSort.sortNodes();
-        System.out.println(ordering);
     }
 }
