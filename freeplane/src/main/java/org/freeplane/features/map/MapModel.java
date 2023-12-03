@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -59,7 +60,7 @@ public class MapModel {
         extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
-		nodes = new HashMap<String, NodeModel>();
+		nodes = new ConcurrentHashMap<String, NodeModel>();
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
@@ -246,10 +247,6 @@ public class MapModel {
 	}
 
 	public void setRoot(final NodeModel root) {
-	    nodes.clear();
-	    if(this.root != null) {
-	        this.root.setParent(null);
-	    }
 		this.root = root;
 		root.attach();
 		root.setMap(this);

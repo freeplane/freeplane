@@ -66,12 +66,6 @@ public class ClassNode extends CodeNode {
     	return Collections.emptyList();
 	}
 
-	@Override
-	public boolean hasChildren() {
-    	return false;
-	}
-
-
     @Override
 	public String toString() {
 		return getText();
@@ -157,10 +151,5 @@ public class ClassNode extends CodeNode {
     private boolean isContainedInScope(JavaClass dependencyClass) {
         return  dependencyClass.getPackage().equals(javaClass.getPackage())
                 && belongsToSameSubproject(dependencyClass);
-    }
-
-    @Override
-    protected boolean initializeChildNodes() {
-        return false;
     }
 }

@@ -51,7 +51,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
     }
 
 	@Override
-    public MapModel newMap() {
+    public CodeMap newMap() {
 	    final CodeMap codeMap = new CodeMap(getModeController().getMapController().duplicator());
 	    fireMapCreated(codeMap);
 	    Color background = UIManager.getColor("Panel.background");
@@ -69,7 +69,6 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	        nodeStyle.setColor(Color.BLACK);
 	    }
 	    NodeSizeModel.createNodeSizeModel(defaultStyleNode).setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
-	    createMapView(codeMap);
 	    return codeMap;
 	}
 
@@ -88,52 +87,53 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            .map(NodeView::getNode)
 	            .map(NodeModel::getID)
 	            .collect(Collectors.toList());
-        CodeMap map = (CodeMap) selection.getMap();
-        NodeModel oldRoot = map.getRootNode();
-	    EmptyNodeModel emptyRoot = new EmptyNodeModel(map, "Loading"
+        CodeMap oldMap = (CodeMap) selection.getMap();
+        CodeMap loadingHintMap = newMap();
+	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Loading"
 	            + " " + codeExplorerConfiguration.getLocations().size()
 	            + " locations ...");
-	    map.setRoot(emptyRoot);
-	    setJudge(codeExplorerConfiguration.getDependencyJudge());
-	    mapView.mapRootNodeChanged();
-	    mapViewManager.updateMapViewName();
+	    loadingHintMap.setRoot(emptyRoot);
+	    mapView.setMap(loadingHintMap);
 	    new Thread(() -> {
 
-	        NodeModel newRoot = oldRoot;
-	        try {
+	        CodeMap nextMap = oldMap;
+	        CodeMap projectMap = newMap();
+	        ProjectRootNode projectRoot;
+            try {
                 if(codeExplorerConfiguration != null) {
                     JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
-                    newRoot = new ProjectRootNode(map, importedClasses, codeExplorerConfiguration);
+                    projectRoot = ProjectRootNode.asMapRoot(projectMap, importedClasses, codeExplorerConfiguration);
                 }
                 else {
                     ClassFileImporter classFileImporter = new ClassFileImporter();
                     JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-                    newRoot = new ProjectRootNode(map, importedClasses, new CodeExplorerConfiguration("demo", new ArrayList<>(), ""));
+                    projectRoot = ProjectRootNode.asMapRoot(projectMap, importedClasses, new CodeExplorerConfiguration("demo", new ArrayList<>(), ""));
                 }
+                projectRoot.setFolded(false);
+                projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
+                nextMap = projectMap;
             } catch (Exception e) {
                 LogUtils.warn(e);
                 UITools.errorMessage(e.getMessage());
             }
-	        NodeModel lambdaRoot = newRoot;
+            CodeMap viewedMap = nextMap;
 	        EventQueue.invokeLater(() -> {
-	            lambdaRoot.setFolded(false);
-	            map.setRoot(lambdaRoot);
-	            mapView.mapRootNodeChanged();
-	            mapViewManager.updateMapViewName();
-	            FilterController.getCurrentFilterController().mapRootNodeChanged(map);
-
+	            mapView.setMap(viewedMap);
 	            unfoldedNodeIDs.stream()
-                .map(id -> getExistingAncestorOrSelfNode(map, id))
+                .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                 .filter(x -> x != null)
                 .forEach(node -> node.setFolded(false));
 
 	            NodeModel[] newSelection = orderedSelectionIds.stream()
-	                    .map(id -> getExistingAncestorOrSelfNode(map, id))
+	                    .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
 	                    .filter(x -> x != null)
 	                    .distinct()
 	                    .toArray(NodeModel[]::new);
 	            if(newSelection.length > 0)
 	                selection.replaceSelection(newSelection);
+	            else
+	                selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
+                FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
 	        });
 	    }, "Load explored packages").start();
 

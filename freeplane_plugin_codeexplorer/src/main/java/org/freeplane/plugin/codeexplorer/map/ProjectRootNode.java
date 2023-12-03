@@ -32,7 +32,7 @@ import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.Source;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
-class ProjectRootNode extends CodeNode{
+class ProjectRootNode extends CodeNode implements SubprojectFinder{
     static final String UI_ICON_NAME = "code_project";
     private static final Set<String> ignoredNames = new HashSet<>(asList("classes","target", "bin", "main"));
     private static final Entry<Integer, String> UNKNOWN = new AbstractMap.SimpleEntry<>(-1, ":unknown:");
@@ -40,7 +40,13 @@ class ProjectRootNode extends CodeNode{
     private final Map<String, Map.Entry<Integer, String>> subprojectsByLocation;
     private final Set<String> badLocations;
     private JavaClasses classes;
-    ProjectRootNode(CodeMap map, JavaClasses classes, CodeExplorerConfiguration configuration) {
+    static ProjectRootNode asMapRoot(CodeMap map, JavaClasses classes, CodeExplorerConfiguration configuration) {
+        ProjectRootNode projectRootNode = new ProjectRootNode(map, classes, configuration);
+        map.setRoot(projectRootNode);
+        return projectRootNode;
+    }
+
+    private ProjectRootNode(CodeMap map, JavaClasses classes, CodeExplorerConfiguration configuration) {
         super(map, 0);
         this.classes = classes;
         this.rootPackage = classes.getDefaultPackage();
@@ -52,6 +58,8 @@ class ProjectRootNode extends CodeNode{
                 .forEach(file -> subprojectsByLocation.put(toSourceLocationPath(file),
                         new AbstractMap.SimpleEntry<>(subprojectsByLocation.size(), toSubprojectName(file))));
         badLocations = new HashSet<>();
+        map.setSubprojectFinder(this);
+        initializeChildNodes();
     }
 
     private static String toSubprojectName(File file) {
@@ -75,40 +83,32 @@ class ProjectRootNode extends CodeNode{
             return "file:" + path + "!/";
     }
 
-    @Override
-    public List<NodeModel> getChildren() {
-        initializeChildNodes();
-        return super.getChildren();
-    }
-
-    @Override
-    protected boolean initializeChildNodes() {
+    private void initializeChildNodes() {
         List<NodeModel> children = super.getChildrenInternal();
-        if (children.isEmpty()) {
-            List<PackageNode> nodes = subprojectsByLocation.values().stream().map(e ->
-                new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue()))
-                    .collect(Collectors.toList());
-            GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
-            nodes.forEach(node -> {
-                childNodes.addNode(node.subprojectIndex);
-                DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
-                Map<Integer, Long> referencedSubprojects = node.getOutgoingDependenciesWithKnownTargets()
-                .map(filter::knownDependency)
-                .map(Dependency::getTargetClass)
-                .collect(Collectors.groupingBy(this::subprojectIndexOf, Collectors.counting()));
-                referencedSubprojects.entrySet()
-                .forEach(e -> childNodes.addEdge(node.subprojectIndex, e.getKey(), e.getValue()));
-            });
-            List<List<Integer>> orderedPackages = childNodes.sortNodes();
-            for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
-                for (Integer subprojectIndex : orderedPackages.get(subgroupIndex)) {
-                    final CodeNode node = nodes.get(subprojectIndex);
-                    children.add(node);
-                    node.setParent(this);
-                }
+        List<PackageNode> nodes = subprojectsByLocation.values().stream()
+                .parallel()
+                .map(e ->
+        new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue()))
+                .collect(Collectors.toList());
+        GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
+        nodes.forEach(node -> {
+            childNodes.addNode(node.subprojectIndex);
+            DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
+            Map<Integer, Long> referencedSubprojects = node.getOutgoingDependenciesWithKnownTargets()
+                    .map(filter::knownDependency)
+                    .map(Dependency::getTargetClass)
+                    .collect(Collectors.groupingBy(this::subprojectIndexOf, Collectors.counting()));
+            referencedSubprojects.entrySet()
+            .forEach(e -> childNodes.addEdge(node.subprojectIndex, e.getKey(), e.getValue()));
+        });
+        List<List<Integer>> orderedPackages = childNodes.sortNodes();
+        for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
+            for (Integer subprojectIndex : orderedPackages.get(subgroupIndex)) {
+                final CodeNode node = nodes.get(subprojectIndex);
+                children.add(node);
+                node.setParent(this);
             }
         }
-        return false;
     }
 
     @Override
@@ -150,7 +150,8 @@ class ProjectRootNode extends CodeNode{
         return subprojectEntry.getKey().intValue();
     }
 
-    Stream<JavaClass> allClasses() {
+    @Override
+    public Stream<JavaClass> allClasses() {
         return classes.stream();
     }
 

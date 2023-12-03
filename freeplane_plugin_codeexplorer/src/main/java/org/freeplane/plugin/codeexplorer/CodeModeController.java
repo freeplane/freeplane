@@ -22,6 +22,7 @@ package org.freeplane.plugin.codeexplorer;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
+import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 
@@ -43,7 +44,10 @@ public class CodeModeController extends ModeController {
 		final Controller controller = getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
-			((CodeMapController) getMapController()).newMap();
+			CodeMapController mapController = (CodeMapController) getMapController();
+            CodeMap map = mapController.newMap();
+            mapController.createMapView(map);
+
 		}
 		super.startup();
 		getExtension(CodeProjectController.class).startupController();

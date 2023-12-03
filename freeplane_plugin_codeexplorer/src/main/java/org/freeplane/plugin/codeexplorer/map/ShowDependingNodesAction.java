@@ -101,7 +101,6 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	    if(currentCondition == null)
 	        return;
 	    MapModel map = selection.getMap();
-	    ((CodeNode)map.getRootNode()).loadSubtree();
 	    Set<String> dependentNodeIDs;
         if (dependencyDirection == DependencyDirection.INCOMING_AND_OUTGOING) {
             Set<String> incomingDependencies = recursiveDependencies(selection, currentCondition, map, DependencyDirection.INCOMING);

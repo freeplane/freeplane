@@ -679,7 +679,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private boolean isPreparedForPrinting = false;
 	private PaintingPurpose paintingPurpose = PaintingPurpose.PAINTING;
 	private final ModeController modeController;
-	final private MapModel viewedMap;
+	private MapModel viewedMap;
 
 	private NodeView currentRootView = null;
 	private NodeView currentRootParentView = null;
@@ -745,49 +745,34 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super();
 		this.viewedMap = viewedMap;
 		this.modeController = modeController;
+        setLayout(new MindMapLayout());
 		rootsHistory = new ArrayList<>();
 		mapScroller = new MapScroller(this);
-		filter = Filter.createTransparentFilter();
-		final String name = viewedMap.getTitle();
-		setName(name);
 		setAutoscrolls(true);
-		setLayout(new MindMapLayout());
-		final NoteController noteController = NoteController.getController(getModeController());
-		showNotes= noteController != null && noteController.showNotesInMap(getMap());
-        updateContentStyle();
-        initRoot();
-		setBackground(requiredBackground());
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(viewedMap);
-		zoom = mapStyleModel.getZoom();
-		layoutType = mapStyleModel.getMapViewLayout();
-		final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
-		addMouseListener(userInputListenerFactory.getMapMouseListener());
-		addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
-		addMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener());
-		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
-		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
-		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
-		viewportSizeChangeListener = new ComponentAdapter() {
-		    boolean firstRun = true;
-			@Override
-			public void componentResized(final ComponentEvent e) {
-			    if(firstRun) {
-			        loadBackgroundImage();
-			        firstRun = false;
-			    }
-				if (fitToViewport) {
-					adjustBackgroundComponentScale();
-				}
-				if(usesLayoutSpecificMaxNodeWidth()) {
-					currentRootView.updateAll();
-					repaint();
-				}
-			}
-		};
-		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
-		final String fitToViewportAsString = mapStyle.getPropertySetDefault(viewedMap, MapStyle.FIT_TO_VIEWPORT);
-		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
-		allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
+        final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
+        addMouseListener(userInputListenerFactory.getMapMouseListener());
+        addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
+        addMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener());
+        setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
+        setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
+        setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
+        viewportSizeChangeListener = new ComponentAdapter() {
+            boolean firstRun = true;
+            @Override
+            public void componentResized(final ComponentEvent e) {
+                if(firstRun) {
+                    loadBackgroundImage();
+                    firstRun = false;
+                }
+                if (fitToViewport) {
+                    adjustBackgroundComponentScale();
+                }
+                if(usesLayoutSpecificMaxNodeWidth()) {
+                    currentRootView.updateAll();
+                    repaint();
+                }
+            }
+        };
 		connectorChangeListener = new INodeChangeListener() {
 			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
@@ -799,7 +784,40 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 		if(ResourceController.getResourceController().getBooleanProperty("activateSpotlightByDefault"))
 		    putClientProperty(SPOTLIGHT_ENABLED, Boolean.TRUE);
+		setMap(viewedMap);
+        mapScroller.setAnchorView(currentRootView);
 	}
+
+    public void setMap(final MapModel viewedMap) {
+        Point rootLocationOnScreen = isShowing() ? getRoot().getMainView().getLocationOnScreen() : null;
+        this.viewedMap = viewedMap;
+        setName(viewedMap.getTitle());
+        final NoteController noteController = NoteController.getController(getModeController());
+        showNotes= noteController != null && noteController.showNotesInMap(getMap());
+        updateContentStyle();
+        initRoot();
+        setBackground(requiredBackground());
+        final MapStyleModel mapStyleModel = MapStyleModel.getExtension(viewedMap);
+        zoom = mapStyleModel.getZoom();
+        layoutType = mapStyleModel.getMapViewLayout();
+        final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+        final String fitToViewportAsString = mapStyle.getPropertySetDefault(viewedMap, MapStyle.FIT_TO_VIEWPORT);
+        fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
+        allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
+        rootsHistory.clear();
+        filter = Filter.createTransparentFilter();
+        if(rootLocationOnScreen != null) {
+            revalidate();
+            repaint();
+            SwingUtilities.invokeLater(() -> {
+                Point newRootLocationOnScreen = getRoot().getMainView().getLocationOnScreen();
+                Rectangle visibleRect = getVisibleRect();
+                visibleRect.translate(newRootLocationOnScreen.x - rootLocationOnScreen.x, newRootLocationOnScreen.y - rootLocationOnScreen.y);
+                scrollRectToVisible(visibleRect);
+                preserveRootNodeLocationOnScreen();
+            });
+        }
+    }
 
     public void replaceSelection(final NodeView[] views) {
         selection.replace(views);
@@ -1339,8 +1357,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
 	private void initRoot() {
+	    if(currentRootView != null)
+	        remove(currentRootView);
+	    currentRootParentView = null;
 		mapRootView = currentRootView = NodeViewFactory.getInstance().newNodeView(getMap().getRootNode(), this, this, ROOT_NODE_COMPONENT_INDEX);
-		mapScroller.setAnchorView(currentRootView);
+		selection.clear();
 	}
 
 	public boolean isPrinting() {
@@ -2819,19 +2840,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	boolean isRoot(NodeView nodeView) {
 	    return nodeView == currentRootView;
-	}
-
-	public void mapRootNodeChanged() {
-	    Point rootLocationOnScreen = isShowing() ? getRoot().getMainView().getLocationOnScreen() : null;
-	    setRootNode(getMap().getRootNode());
-	    filter = Filter.createTransparentFilter();
-	    if(rootLocationOnScreen != null) {
-	        Point newRootLocationOnScreen = getRoot().getMainView().getLocationOnScreen();
-	        Rectangle visibleRect = getVisibleRect();
-	        visibleRect.translate(newRootLocationOnScreen.x - rootLocationOnScreen.x, newRootLocationOnScreen.y - rootLocationOnScreen.y);
-	        scrollRectToVisible(visibleRect);
-	        preserveRootNodeLocationOnScreen();
-	    }
 	}
 
 	void setRootNode(NodeModel node) {

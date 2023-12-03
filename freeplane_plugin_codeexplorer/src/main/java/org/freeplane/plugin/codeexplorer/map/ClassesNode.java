@@ -39,6 +39,7 @@ class ClassesNode extends CodeNode {
                 .filter(jc -> isNamed(jc))
                 .count();
         setText(name + formatClassCount(classCount));
+        initializeChildNodes();
 	}
 
     private Stream<JavaClass> getClasses() {
@@ -46,75 +47,53 @@ class ClassesNode extends CodeNode {
                 .filter(this::belongsToSameSubproject);
     }
 
-	@Override
-	public List<NodeModel> getChildren() {
-		initializeChildNodes();
-		return super.getChildren();
-	}
-
     @Override
     HasName getCodeElement() {
         return javaPackage;
     }
 
-	@Override
-    protected boolean initializeChildNodes() {
-	    List<NodeModel> children = super.getChildrenInternal();
-	    if (children.isEmpty()) {
-	        final List<JavaClass> classes = getClasses()
-	                .collect(Collectors.toList());
-	        if(! classes.isEmpty()) {
-	            GraphNodeSort<JavaClass> nodeSort = new GraphNodeSort<JavaClass>();
-                for (JavaClass javaClass : classes) {
-                    JavaClass edgeStart = findEnclosingNamedClass(javaClass);
-                    nodeSort.addNode(edgeStart);
-                    DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
-                    Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
-                            .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
-                            .map(filter::knownDependency)
-                            .filter(CodeNode::classesBelongToTheSamePackage)
-                            .filter(dep -> belongsToSameSubproject(dep.getTargetClass()))
-                            .collect(Collectors.groupingBy(CodeNode::getTargetNodeClass, Collectors.counting()));
-                    dependencies.entrySet().stream()
-                    .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
-                }
-	            Map<JavaClass, ClassNode> nodes = new HashMap<>();
-                List<List<JavaClass>> orderedClasses = nodeSort.sortNodes();
-                for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
-                    for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
-                        final ClassNode node = new ClassNode(childClass, getMap(), subprojectIndex);
-                        nodes.put(childClass, node);
-                        children.add(node);
-                        node.setParent(this);
-                    }
-                }
-	            for (JavaClass javaClass : classes) {
-	                JavaClass enclosingClass = findEnclosingNamedClass(javaClass);
-	                ClassNode node = nodes.get(enclosingClass);
-	                node.registerInnerClass(javaClass);
-	            }
-
+    private void initializeChildNodes() {
+        List<NodeModel> children = super.getChildrenInternal();
+        final List<JavaClass> classes = getClasses()
+                .collect(Collectors.toList());
+        if(! classes.isEmpty()) {
+            GraphNodeSort<JavaClass> nodeSort = new GraphNodeSort<JavaClass>();
+            for (JavaClass javaClass : classes) {
+                JavaClass edgeStart = findEnclosingNamedClass(javaClass);
+                nodeSort.addNode(edgeStart);
+                DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
+                Map<JavaClass, Long> dependencies = javaClass.getDirectDependenciesFromSelf().stream()
+                        .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
+                        .map(filter::knownDependency)
+                        .filter(CodeNode::classesBelongToTheSamePackage)
+                        .filter(dep -> belongsToSameSubproject(dep.getTargetClass()))
+                        .collect(Collectors.groupingBy(CodeNode::getTargetNodeClass, Collectors.counting()));
+                dependencies.entrySet().stream()
+                .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
             }
-	    }
-	    return false;
-	}
+            Map<JavaClass, ClassNode> nodes = new HashMap<>();
+            List<List<JavaClass>> orderedClasses = nodeSort.sortNodes();
+            for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
+                for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
+                    final ClassNode node = new ClassNode(childClass, getMap(), subprojectIndex);
+                    nodes.put(childClass, node);
+                    children.add(node);
+                    node.setParent(this);
+                }
+            }
+            for (JavaClass javaClass : classes) {
+                JavaClass enclosingClass = findEnclosingNamedClass(javaClass);
+                ClassNode node = nodes.get(enclosingClass);
+                node.registerInnerClass(javaClass);
+            }
+
+        }
+    }
 
     private boolean goesOutsideEnclosingOriginClass(JavaClass edgeStart, Dependency dependency) {
         JavaClass jc = getTargetNodeClass(dependency);
         return ! jc.equals(edgeStart);
     }
-
-    @Override
-	protected List<NodeModel> getChildrenInternal() {
-    	initializeChildNodes();
-    	return super.getChildrenInternal();
-	}
-
-	@Override
-	public boolean hasChildren() {
-    	return ! javaPackage.getClasses().isEmpty();
-	}
-
 
     @Override
 	public String toString() {

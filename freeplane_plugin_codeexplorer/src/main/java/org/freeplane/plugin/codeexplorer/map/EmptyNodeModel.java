@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -32,12 +31,6 @@ class EmptyNodeModel extends CodeNode {
     	return Collections.emptyList();
 	}
 
-	@Override
-	public boolean hasChildren() {
-    	return false;
-	}
-
-
     @Override
 	public String toString() {
 		return getText();
@@ -57,10 +50,7 @@ class EmptyNodeModel extends CodeNode {
     String getUIIconName() {
         return UI_ICON_NAME;
     }
-    @Override
-    protected boolean initializeChildNodes() {
-        return false;
-    }
+
     @Override
     HasName getCodeElement() {
         return () -> "";

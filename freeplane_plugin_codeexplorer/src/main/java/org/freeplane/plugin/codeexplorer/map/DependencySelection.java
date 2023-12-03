@@ -22,7 +22,6 @@ import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
-import com.tngtech.archunit.core.domain.properties.HasName;
 
 public class DependencySelection {
     private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING, UNKNOWN}

@@ -25,7 +25,6 @@ class PackageNode extends CodeNode {
     }
     private final JavaPackage javaPackage;
     private final long classCount;
-    private final int childCount;
 
     public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex) {
         super(map, subprojectIndex);
@@ -33,12 +32,10 @@ class PackageNode extends CodeNode {
         this.classCount = getClassesInTree()
                 .filter(CodeNode::isNamed)
                 .count();
-        this.childCount = (int) (javaPackage.getSubpackages().stream()
-                .filter(this::containsAnalyzedClassesInPackageTree).count()
-                + (getClasses().anyMatch(x -> true) ? 1 : 0));
         setIdWithIndex(javaPackage.getName());
         setText(text + formatClassCount(classCount));
         setFolded(classCount > 0);
+        initializeChildNodes();
     }
 
     private Stream<JavaClass> getClassesInTree() {
@@ -69,25 +66,18 @@ class PackageNode extends CodeNode {
     }
 
     @Override
-    public List<NodeModel> getChildren() {
-        initializeChildNodes();
-        return super.getChildren();
-    }
-
-    @Override
     HasName getCodeElement() {
         return javaPackage;
     }
 
-	@Override
-    protected boolean initializeChildNodes() {
+	private void initializeChildNodes() {
 	    List<NodeModel> children = super.getChildrenInternal();
-	    if (!children.isEmpty()|| classCount == 0)
-	        return false;
+	    if (classCount == 0)
+	        return;
 	    final List<JavaPackage> packages = relevantSubpackages(javaPackage);
 	    boolean hasSubpackages = ! packages.isEmpty();
 	    if(! hasSubpackages)
-	        return false;
+	        return ;
 	    boolean hasClasses = getClasses().anyMatch(x -> true);
 	    if(hasClasses)
 	        packages.add(javaPackage);
@@ -115,7 +105,6 @@ class PackageNode extends CodeNode {
 	            node.setParent(this);
 	        }
 	    }
-	    return true;
 	}
 
     private Stream<Dependency> getClassDependenciesFromPackage(JavaPackage somePackage) {
@@ -173,25 +162,6 @@ class PackageNode extends CodeNode {
 
     }
 
-	@Override
-	public int getChildCount(){
-	    return childCount;
-	}
-
-
-
-    @Override
-	protected List<NodeModel> getChildrenInternal() {
-    	initializeChildNodes();
-    	return super.getChildrenInternal();
-	}
-
-	@Override
-	public boolean hasChildren() {
-    	return classCount > 0;
-	}
-
-
     @Override
 	public String toString() {
 		return getText();
@@ -209,7 +179,7 @@ class PackageNode extends CodeNode {
     }
 
     private Stream<JavaClass> subprojectClasses() {
-        return ((ProjectRootNode)getMap().getRootNode()).allClasses()
+        return ((CodeMap)getMap()).allClasses()
                 .filter(this::belongsToSameSubproject);
     }
 

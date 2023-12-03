@@ -140,14 +140,4 @@ public abstract class CodeNode extends NodeModel {
         UIIcon uiIcon = IconStoreFactory.ICON_STORE.getUIIcon(getUIIconName());
         return Collections.singletonList(uiIcon);
     }
-
-    abstract protected boolean initializeChildNodes();
-
-    void loadSubtree() {
-        if(initializeChildNodes()) {
-            List<NodeModel> children = getChildrenInternal();
-            Stream<NodeModel> stream = children.size() > 40 ?  children.parallelStream() : children.stream();
-            stream.forEach(node -> ((CodeNode)node).loadSubtree());
-        }
-    }
 }
