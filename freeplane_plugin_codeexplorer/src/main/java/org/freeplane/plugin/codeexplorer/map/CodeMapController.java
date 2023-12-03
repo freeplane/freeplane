@@ -111,6 +111,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 }
                 projectRoot.setFolded(false);
                 projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
+                LogUtils.info("Code map prepared");
                 nextMap = projectMap;
             } catch (Exception e) {
                 LogUtils.warn(e);

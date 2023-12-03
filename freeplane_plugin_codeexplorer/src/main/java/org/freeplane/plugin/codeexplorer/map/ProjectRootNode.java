@@ -43,6 +43,9 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     static ProjectRootNode asMapRoot(CodeMap map, JavaClasses classes, CodeExplorerConfiguration configuration) {
         ProjectRootNode projectRootNode = new ProjectRootNode(map, classes, configuration);
         map.setRoot(projectRootNode);
+        if(projectRootNode.getChildCount() > 20)
+            projectRootNode.getChildren()
+                .forEach(node -> ((CodeNode)node).memoizeCodeDependencies());
         return projectRootNode;
     }
 

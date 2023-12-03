@@ -201,8 +201,9 @@ public class CodeLinkController extends LinkController {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
-            Stream<CodeDependency> codeDependencies = incomingDependenciesWithKnownOrigins((CodeNode) node);
-            Map<DependencyVerdict, Map<CodeNode, Long>> countedDependencies = countCodeDependencies((CodeNode) node, dependencySelection, codeDependencies, CodeDependency::getOriginClass);
+            CodeNode codeNode = (CodeNode) node;
+            Stream<CodeDependency> codeDependencies = codeNode.incomingCodeDependenciesWithKnownOrigins();
+            Map<DependencyVerdict, Map<CodeNode, Long>> countedDependencies = countCodeDependencies(codeNode, dependencySelection, codeDependencies, CodeDependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .flatMap(targetsByVerdict ->
                 targetsByVerdict.getValue().entrySet().stream()
@@ -215,37 +216,6 @@ public class CodeLinkController extends LinkController {
             return Collections.emptyList();
     }
 
-    private class MemoizedCodeDependencies implements IExtension{
-        final CodeDependency[] incoming;
-        final CodeDependency[] outgoing;
-        MemoizedCodeDependencies(CodeNode node) {
-            incoming = collectIncomingDependenciesWithKnownOrigins(node).toArray(CodeDependency[]::new);
-            outgoing = collectOutgoingDependenciesWithKnownTargets(node).toArray(CodeDependency[]::new);
-
-        }
-
-        Stream<CodeDependency> incoming() {
-            return Stream.of(incoming).parallel();
-        }
-
-        Stream<CodeDependency> outgoing() {
-            return Stream.of(outgoing).parallel();
-        }
-    }
-
-    private Stream<CodeDependency> incomingDependenciesWithKnownOrigins(CodeNode node) {
-        MemoizedCodeDependencies extension = node.getExtension(MemoizedCodeDependencies.class);
-        if(extension != null)
-            return extension.incoming();
-        if(node.getParentNode() == null || node.getParentNode().getChildCount() <= 40)
-            return collectIncomingDependenciesWithKnownOrigins(node);
-        extension = new MemoizedCodeDependencies(node);
-        node.addExtension(extension);
-        return extension.incoming();
-    }
-    private Stream<CodeDependency> collectIncomingDependenciesWithKnownOrigins(CodeNode node) {
-        return node.getIncomingDependenciesWithKnownOrigins().parallel().map(node.getMap()::toCodeDependency);
-    }
 
     @Override
     public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node,
@@ -253,8 +223,9 @@ public class CodeLinkController extends LinkController {
         IMapSelection selection = ((MapView)component).getMapSelection();
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
-            Stream<CodeDependency> codeDependencies = outgoingDependenciesWithKnownTargets((CodeNode) node);
-            Map<DependencyVerdict, Map<CodeNode, Long>> countedDependencies = countCodeDependencies((CodeNode) node, dependencySelection, codeDependencies, CodeDependency::getTargetClass);
+            CodeNode codeNode = (CodeNode) node;
+            Stream<CodeDependency> codeDependencies = codeNode.outgoingCodeDependenciesWithKnownTargets();
+            Map<DependencyVerdict, Map<CodeNode, Long>> countedDependencies = countCodeDependencies(codeNode, dependencySelection, codeDependencies, CodeDependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .flatMap(targetsByVerdict ->
                 targetsByVerdict.getValue().entrySet().stream()
@@ -266,21 +237,6 @@ public class CodeLinkController extends LinkController {
         }
         else
             return Collections.emptyList();
-    }
-
-    private Stream<CodeDependency> outgoingDependenciesWithKnownTargets(CodeNode node) {
-        MemoizedCodeDependencies extension = node.getExtension(MemoizedCodeDependencies.class);
-        if(extension != null)
-            return extension.outgoing();
-        if(node.getParentNode() == null || node.getParentNode().getChildCount() <= 40)
-            return collectOutgoingDependenciesWithKnownTargets(node);
-        extension = new MemoizedCodeDependencies(node);
-        node.addExtension(extension);
-        return extension.outgoing();
-    }
-
-    private Stream<CodeDependency> collectOutgoingDependenciesWithKnownTargets(CodeNode node) {
-        return node.getOutgoingDependenciesWithKnownTargets().parallel().map(node.getMap()::toCodeDependency);
     }
 
     private Map<DependencyVerdict, Map<CodeNode, Long>> countCodeDependencies(CodeNode node,

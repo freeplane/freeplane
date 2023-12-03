@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -140,4 +142,55 @@ public abstract class CodeNode extends NodeModel {
         UIIcon uiIcon = IconStoreFactory.ICON_STORE.getUIIcon(getUIIconName());
         return Collections.singletonList(uiIcon);
     }
+
+    public Stream<CodeDependency> outgoingCodeDependenciesWithKnownTargets() {
+        MemoizedCodeDependencies extension = getExtension(MemoizedCodeDependencies.class);
+        if(extension != null)
+            return extension.outgoing();
+        if(getParentNode() == null || getParentNode().getChildCount() <= 40)
+            return collectOutgoingCodeDependenciesWithKnownTargets();
+        return memoizeCodeDependencies().outgoing();
+    }
+
+    private Stream<CodeDependency> collectOutgoingCodeDependenciesWithKnownTargets() {
+        return getOutgoingDependenciesWithKnownTargets().parallel().map(getMap()::toCodeDependency);
+    }
+
+    public Stream<CodeDependency> incomingCodeDependenciesWithKnownOrigins() {
+        MemoizedCodeDependencies extension = getExtension(MemoizedCodeDependencies.class);
+        if(extension != null)
+            return extension.incoming();
+        if(getParentNode() == null || getParentNode().getChildCount() <= 40)
+            return collectIncomingCodeDependenciesWithKnownOrigins();
+        return memoizeCodeDependencies().incoming();
+    }
+
+    MemoizedCodeDependencies memoizeCodeDependencies() {
+        MemoizedCodeDependencies extension;
+        extension = new MemoizedCodeDependencies();
+        addExtension(extension);
+        return extension;
+    }
+    private Stream<CodeDependency> collectIncomingCodeDependenciesWithKnownOrigins() {
+        return getIncomingDependenciesWithKnownOrigins().parallel().map(getMap()::toCodeDependency);
+    }
+
+    private class MemoizedCodeDependencies implements IExtension{
+        final CodeDependency[] incoming;
+        final CodeDependency[] outgoing;
+        MemoizedCodeDependencies() {
+            incoming = collectIncomingCodeDependenciesWithKnownOrigins().toArray(CodeDependency[]::new);
+            outgoing = collectOutgoingCodeDependenciesWithKnownTargets().toArray(CodeDependency[]::new);
+
+        }
+
+        Stream<CodeDependency> incoming() {
+            return Stream.of(incoming).parallel();
+        }
+
+        Stream<CodeDependency> outgoing() {
+            return Stream.of(outgoing).parallel();
+        }
+    }
+
 }
