@@ -126,13 +126,13 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     private Set<String> recursiveDependencies(IMapSelection selection, ICondition currentCondition,
             MapModel map, DependencyDirection dependencyDirection) {
         DependencySelection dependencySelection = new DependencySelection(selection);
-	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get(), dependencySelection, dependencyDirection);
+	    Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get(), dependencySelection.getMap(), dependencyDirection);
 	    for(int recursionCounter = allNodesSatisfyFilter(selection, dependentNodeIDs) ? 0 : 1;
 	        recursionCounter < maximumRecursionDepth;
 	        recursionCounter++) {
 	        Set<String> next = dependencies(dependentNodeIDs.stream()
 	                .map(map::getNodeForID)
-	                .map(CodeNode.class::cast), dependencySelection, dependencyDirection);
+	                .map(CodeNode.class::cast), dependencySelection.getMap(), dependencyDirection);
 	        next.removeAll(dependentNodeIDs);
 	        if(next.isEmpty()) {
 	            if(recursionCounter == 0)
@@ -157,11 +157,11 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     }
 
 
-    private static HashSet<String> dependencies(Stream<CodeNode> startingNodes, DependencySelection dependencySelection, DependencyDirection dependencyDirection) {
+    private static HashSet<String> dependencies(Stream<CodeNode> startingNodes, CodeMap map, DependencyDirection dependencyDirection) {
         return startingNodes
 	            .flatMap(dependencyDirection.nodeDependencies)
 	            .flatMap(ShowDependingNodesAction::dependentClasses)
-	            .map(dependencySelection::getClassNodeId)
+	            .map(map::getClassNodeId)
 	            .collect(Collectors.toCollection(HashSet::new));
     }
 }

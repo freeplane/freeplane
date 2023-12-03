@@ -7,7 +7,6 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,12 +15,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.AncestorRemover;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeRelativePath;
-import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaPackage;
 
 public class DependencySelection {
     private enum Visibility {VISIBLE, HIDDEN_BY_FILTER, HIDDEN_BY_FOLDING, UNKNOWN}
@@ -51,11 +47,6 @@ public class DependencySelection {
         return allDependencies;
     }
 
-    public CodeNode getExistingNode(JavaClass javaClass) {
-        String existingNodeId = getExistingNodeId(javaClass);
-        return existingNodeId == null ? null : (CodeNode) getMap().getNodeForID(existingNodeId);
-    }
-
     List<JavaClass> getSelectedClasses() {
         List<JavaClass> allClasses;
         Set<NodeModel> nodes = AncestorRemover.removeAncestors(getSelectedNodeSet());
@@ -69,61 +60,24 @@ public class DependencySelection {
         return allClasses;
     }
 
-    public String getVisibleNodeId(JavaClass javaClass) {
-        return getExistingNodeId(javaClass, true);
-    }
-
-    String getExistingNodeId(JavaClass javaClass) {
-        return getExistingNodeId(javaClass, false);
-    }
-
-
-    public String getClassNodeId(JavaClass javaClass) {
-        int subprojectIndex = getMap().subprojectIndexOf(javaClass);
-        return getClassNodeId(javaClass, subprojectIndex);
-    }
-
-    private String getClassNodeId(JavaClass javaClass, int subprojectIndex) {
-        JavaClass nodeClass = CodeNode.findEnclosingNamedClass(javaClass);
-        String nodeClassName = nodeClass.getName();
-        String classNodeId = CodeNode.idWithSubprojectIndex(nodeClassName, subprojectIndex);
-        return classNodeId;
-    }
-
-    private String getExistingNodeId(JavaClass javaClass, boolean visibleOnly) {
-        int subprojectIndex = getMap().subprojectIndexOf(javaClass);
-        String classNodeId = getClassNodeId(javaClass, subprojectIndex);
-        if(! visibleOnly && getNode(classNodeId) != null)
-            return classNodeId;
-        if(visibleOnly) {
-            switch(visibility(classNodeId)) {
+    public CodeNode getVisibleNode(JavaClass javaClass) {
+        CodeMap map = getMap();
+        for (CodeNode node = map.getNodeByClass(javaClass);
+                node != null;
+                node = node.getParentNode()) {
+            switch(visibility(node)) {
             case VISIBLE:
-                return classNodeId;
+                return node;
             case HIDDEN_BY_FILTER:
                 return null;
             default:
                 break;
             }
         }
-        JavaPackage targetPackage = javaClass.getPackage();
-        String targetPackageClassesId = CodeNode.idWithSubprojectIndex(targetPackage.getName() + ".package", subprojectIndex);
-        if(! visibleOnly && getNode(targetPackageClassesId) != null)
-            return targetPackageClassesId;
-        if(visibleOnly) {
-            switch(visibility(targetPackageClassesId)) {
-            case VISIBLE:
-                return targetPackageClassesId;
-            case HIDDEN_BY_FILTER:
-                return null;
-            default:
-                break;
-            }
-        }
-        String packageNodeId = getContainingPackageNodeId(targetPackage, visibleOnly, subprojectIndex);
-        return packageNodeId;
+        return null;
     }
 
-     private Set<Dependency> getOutgoingDependencies(CodeNode node) {
+    private Set<Dependency> getOutgoingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getOutgoingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
@@ -138,78 +92,55 @@ public class DependencySelection {
                  .collect(Collectors.toSet());
          return filteredDependencies;
      }
-     private NodeModel getNode(String id) {
-         return getMap().getNodeForID(id);
-    }
 
-    private NodeModel findSelectedAncestorOrSelf(NodeModel node) {
-        while(node != null && ! selectionContains(node))
+     private NodeModel findSelectedAncestorOrSelf(NodeModel node) {
+         while(node != null && ! selectionContains(node))
              node = node.getParentNode();
          return node;
-    }
+     }
 
-    NodeModel findVisibleAncestorOrSelf(NodeModel node) {
-        while(node != null && ! selection.isVisible(node))
+     NodeModel findVisibleAncestorOrSelf(NodeModel node) {
+         while(node != null && ! selection.isVisible(node))
              node = node.getParentNode();
          return node;
-    }
+     }
 
-    private boolean selectionContains(NodeModel node) {
-        return getSelectedNodeSet().contains(node);
-    }
+     private boolean selectionContains(NodeModel node) {
+         return getSelectedNodeSet().contains(node);
+     }
 
-    private Set<NodeModel> getSelectedNodeSet() {
-        if(selectedNodeSet == null)
-            selectedNodeSet = selection.getSelection();
+     private Set<NodeModel> getSelectedNodeSet() {
+         if(selectedNodeSet == null)
+             selectedNodeSet = selection.getSelection();
         return selectedNodeSet;
     }
 
-    CodeMap getMap() {
+    public CodeMap getMap() {
         if(map == null)
             map = (CodeMap) selection.getMap();
         return map;
     }
 
-    private String getContainingPackageNodeId(JavaPackage targetPackage, boolean visibleOnly, int subprojectIndex) {
-         for(;;) {
-             String targetPackageId = CodeNode.idWithSubprojectIndex(targetPackage.getName(), subprojectIndex);
-             NodeModel targetNode = getNode(targetPackageId);
-             if(targetNode != null) {
-                 if(! visibleOnly || selection.isVisible(targetNode))
-                     return targetPackageId;
-                 if(! targetNode.isVisible(selection.getFilter()))
-                     return null;
-             }
-             Optional<JavaPackage> parent = targetPackage.getParent();
-             if(! parent.isPresent())
-                 return null;
-             targetPackage = parent.get();
-         }
-     }
-
-    private Visibility visibility(String targetNodeId) {
-        NodeModel targetNode = getNode(targetNodeId);
-        if(targetNode == null)
+    private Visibility visibility(NodeModel node) {
+        if(node == null)
             return Visibility.UNKNOWN;
-        if(selection.isVisible(targetNode))
+        if(selection.isVisible(node))
             return Visibility.VISIBLE;
-        if(! targetNode.isVisible(selection.getFilter()))
+        if(! node.isVisible(selection.getFilter()))
             return Visibility.HIDDEN_BY_FILTER;
         return Visibility.HIDDEN_BY_FOLDING;
     }
 
     private boolean connectsDifferentVisibleNodes(Dependency dependency) {
-        String visibleOriginId = getVisibleNodeId(dependency.getOriginClass());
-         String visibleTargetId = getVisibleNodeId(dependency.getTargetClass());
-         if (visibleOriginId == null  || visibleTargetId == null || visibleOriginId.equals(visibleTargetId))
+        CodeNode visibleOrigin = getVisibleNode(dependency.getOriginClass());
+        CodeNode visibleTarget = getVisibleNode(dependency.getTargetClass());
+         if (visibleOrigin == null  || visibleTarget == null || visibleOrigin.equals(visibleTarget))
              return false;
          if (getSelectedNodeSet().size() == 1 || this.showsOutsideDependencies)
              return true;
-         NodeModel visibleOrigin = getNode(visibleOriginId);
          NodeModel selectedVisibleOrigin = findSelectedAncestorOrSelf(visibleOrigin);
          if(selectedVisibleOrigin ==  null)
              return false;
-         NodeModel visibleTarget = getNode(visibleTargetId);
          NodeModel selectedVisibleTarget = findSelectedAncestorOrSelf(visibleTarget);
          return selectedVisibleTarget != null && selectedVisibleTarget != selectedVisibleOrigin
                  && (! visibleTarget.isDescendantOf(selectedVisibleOrigin) || ! visibleOrigin.isDescendantOf(selectedVisibleTarget));
@@ -233,13 +164,5 @@ public class DependencySelection {
              return selectedSourceAncestorOrSource != selectedTargetAncestorOrTarget;
          else
              return false;
-     }
-
-     public CodeDependency toCodeDependency(Dependency dependency) {
-         NodeModel originNode = getExistingNode(dependency.getOriginClass());
-         NodeModel targetNode = getExistingNode(dependency.getTargetClass());
-         NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
-         boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
-         return new CodeDependency(dependency, goesUp, getMap().judge(dependency, goesUp));
      }
  }

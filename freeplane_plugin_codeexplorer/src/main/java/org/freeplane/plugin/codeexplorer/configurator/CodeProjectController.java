@@ -126,7 +126,7 @@ public class CodeProjectController implements IExtension {
         DependencySelection dependencySelection = new DependencySelection(selection);
         JavaClass[] dependencyClasses =  { selectedDependency.getOriginClass(), selectedDependency.getTargetClass()};
         return Stream.of(dependencyClasses)
-                .anyMatch(javaClass -> node.getID().equals(dependencySelection.getVisibleNodeId(javaClass)));
+                .anyMatch(javaClass -> node.equals(dependencySelection.getVisibleNode(javaClass)));
     }
 
     private void updateSelectedDependency(CodeDependency selectedDependency) {

@@ -631,7 +631,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         private void fireSelectionChanged() {
             if(selectionChanged) {
                 selectionChanged = false;
-                modeController.getMapController().onSelectionChange(getMapSelection());
+                if(selection.selectedNode != null)
+                    modeController.getMapController().onSelectionChange(getMapSelection());
             }
         }
 

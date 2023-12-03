@@ -6,7 +6,9 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 
@@ -60,4 +62,36 @@ public class CodeMap extends MapModel {
     public Stream<JavaClass> allClasses() {
         return subprojectFinder.allClasses();
     }
+
+
+    public String getClassNodeId(JavaClass javaClass) {
+        int subprojectIndex = subprojectIndexOf(javaClass);
+        return getClassNodeId(javaClass, subprojectIndex);
+    }
+
+    private String getClassNodeId(JavaClass javaClass, int subprojectIndex) {
+        JavaClass nodeClass = CodeNode.findEnclosingNamedClass(javaClass);
+        String nodeClassName = nodeClass.getName();
+        String classNodeId = CodeNode.idWithSubprojectIndex(nodeClassName, subprojectIndex);
+        return classNodeId;
+    }
+
+   public CodeNode getNodeByClass(JavaClass javaClass) {
+        String existingNodeId = getExistingNodeId(javaClass);
+        return existingNodeId == null ? null : (CodeNode) getNodeForID(existingNodeId);
+    }
+
+    String getExistingNodeId(JavaClass javaClass) {
+        int subprojectIndex = subprojectIndexOf(javaClass);
+        return getClassNodeId(javaClass, subprojectIndex);
+    }
+
+    public CodeDependency toCodeDependency(Dependency dependency) {
+        NodeModel originNode = getNodeByClass(dependency.getOriginClass());
+        NodeModel targetNode = getNodeByClass(dependency.getTargetClass());
+        NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
+        boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
+        return new CodeDependency(dependency, goesUp, judge(dependency, goesUp));
+    }
+
 }

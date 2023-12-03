@@ -203,7 +203,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     }
 
     private List<CodeDependency> selectedDependencies(DependencySelection dependencySelection) {
-        return dependencySelection.getSelectedDependencies().map(dependencySelection::toCodeDependency)
+        return dependencySelection.getSelectedDependencies().map(dependencySelection.getMap()::toCodeDependency)
         .collect(Collectors.toCollection(ArrayList::new));
     }
 
