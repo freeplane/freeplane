@@ -243,6 +243,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				LinkController.install();
 				IconController.installConditionControllers();
 				HelpController.install();
+                controller.addAction(new NextNodeAction(Direction.FORWARD_VISIBLE));
+                controller.addAction(new NextNodeAction(Direction.BACK_VISIBLE));
 				controller.addAction(new NextNodeAction(Direction.FORWARD));
 				controller.addAction(new NextNodeAction(Direction.BACK));
 				controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));

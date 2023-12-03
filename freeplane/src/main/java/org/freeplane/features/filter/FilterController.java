@@ -311,8 +311,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		controller.addAction(quickFilterAction);
 		controller.addAction(new QuickAndFilterAction(this, quickEditor));
 		controller.addAction(new QuickOrFilterAction(this, quickEditor));
-		controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
-		controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK_VISIBLE));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD_VISIBLE));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
 		controller.addAction(new QuickFindAllAction(this, quickEditor));
 		controller.addAction(new QuickHighlightAction(this, quickEditor));
 
@@ -540,8 +542,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final AbstractButton selectFilteredNodesBtn = FreeplaneToolBar.createButton(controller.getAction("SelectFilteredNodesAction"));
 		final AbstractButton filterSelectedBtn = FreeplaneToolBar.createButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final AbstractButton noFilteringBtn = FreeplaneToolBar.createButton(controller.getAction("ApplyNoFilteringAction"));
-		final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK"));
-		final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD"));
+        final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK"));
+        final AbstractButton applyFindPreviousVisibleBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK_VISIBLE"));
+        final AbstractButton applyFindNextVisibleBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD_VISIBLE"));
+        final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD"));
 		final AbstractButton applyQuickFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFilterAction"));
         final AbstractButton applyAndFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickAndFilterAction"));
         final AbstractButton applyOrFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickOrFilterAction"));
@@ -561,16 +565,18 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		searchOptionPanel.add(applyQuickHighlightBtn, constraints);
 		searchOptionPanel.add(applyQuickSelectBtn, constraints);
 		searchOptionPanel.add(applyQuickFilterBtn, constraints);
+		searchOptionPanel.add(applyAndFilterBtn, constraints);
+		searchOptionPanel.add(applyOrFilterBtn, constraints);
 
 		JComponent searchPanel = new FreeplaneToolBar("searchPanel", JToolBar.HORIZONTAL);
 
 		constraints.gridwidth = 1;
 		constraints.gridy = 0;
+		searchPanel.add(applyFindPreviousVisibleBtn, constraints);
+		searchPanel.add(applyFindNextVisibleBtn, constraints);
+		constraints.gridy = 1;
 		searchPanel.add(applyFindPreviousBtn, constraints);
 		searchPanel.add(applyFindNextBtn, constraints);
-		constraints.gridy = 1;
-		searchPanel.add(applyAndFilterBtn, constraints);
-		searchPanel.add(applyOrFilterBtn, constraints);
 
 		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
 
@@ -885,19 +891,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	                   final ICondition condition, Filter filter) {
 		NodeModel next = from;
 		for (;;) {
-			do {
-				switch (direction) {
-					case FORWARD:
-					case FORWARD_N_FOLD:
-						next = MapNavigationUtils.findNext(direction, next, end);
-						break;
-					case BACK:
-					case BACK_N_FOLD:
-						next = MapNavigationUtils.findPrevious(direction, next, end);
-						break;
-				}
-				if (next == null) {
-					return null;
+		    do {
+		        if (direction.isForward())
+		            next = MapNavigationUtils.findNext(direction, next, end);
+		        else
+		            next = MapNavigationUtils.findPrevious(direction, next, end);
+		        if (next == null) {
+		            return null;
 				}
 			} while (!next.hasVisibleContent(filter));
 			if (next == from) {

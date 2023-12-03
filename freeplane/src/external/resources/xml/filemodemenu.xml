@@ -103,6 +103,8 @@
 			<Entry builder="separator" />
 			<Entry name="QuickHighlightAction" />
 			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.BACK_VISIBLE" />
+			<Entry name="QuickFindAction.FORWARD_VISIBLE" />
 			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
 		<Entry name="mindmaps">
