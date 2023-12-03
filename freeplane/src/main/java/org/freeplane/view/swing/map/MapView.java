@@ -790,6 +790,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
     public void setMap(final MapModel viewedMap) {
+        if(this.viewedMap != null)
+            this.viewedMap.removeMapChangeListener(this);
         Point rootLocationOnScreen = isShowing() ? getRoot().getMainView().getLocationOnScreen() : null;
         this.viewedMap = viewedMap;
         setName(viewedMap.getTitle());
@@ -807,6 +809,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
         rootsHistory.clear();
         filter = Filter.createTransparentFilter();
+        viewedMap.addMapChangeListener(this);
+
         if(rootLocationOnScreen != null) {
             revalidate();
             repaint();

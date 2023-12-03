@@ -643,7 +643,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public void newMapView(final MapModel map, final ModeController modeController) {
 		final MapView mapView = new MapView(map, modeController);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
-		map.addMapChangeListener(mapView);
 		ResourceController.getResourceController().addPropertyChangeListener(mapView);
 		mapViewChangeListeners.mapViewCreated(selectedMapView, mapView);
 		changeToMapView(mapView);
