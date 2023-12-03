@@ -149,7 +149,7 @@ class PackageNode extends CodeNode {
             String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
             return new ClassesNode(childPackage, getMap(), childName, samePackage, subprojectIndex);
         }
-        else if(subpackages.size() == 1 && childPackage.getClasses().isEmpty())
+        else if(subpackages.size() == 1 && !getClasses(childPackage).anyMatch(x -> true))
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
             return new PackageNode(childPackage, getMap(), parentName + childPackageName, subprojectIndex);
