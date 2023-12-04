@@ -119,8 +119,8 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 LogUtils.info("Code map prepared");
                 nextMap = projectMap;
             } catch (Exception e) {
-                LogUtils.warn(e);
-                UITools.errorMessage(e.getMessage());
+                LogUtils.warn("Loading classes failed", e);
+                UITools.errorMessage("Loading classes failed, " + e.getMessage());
             }
             CodeMap viewedMap = nextMap;
 	        EventQueue.invokeLater(() -> {
