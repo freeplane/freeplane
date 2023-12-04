@@ -125,6 +125,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
             CodeMap viewedMap = nextMap;
 	        EventQueue.invokeLater(() -> {
 	            mapView.setMap(viewedMap);
+	            selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
 	            unfoldedNodeIDs.stream()
                 .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                 .filter(x -> x != null)
@@ -137,8 +138,6 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	                    .toArray(NodeModel[]::new);
 	            if(newSelection.length > 0)
 	                selection.replaceSelection(newSelection);
-	            else
-	                selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
                 Controller.getCurrentController().getViewController().setWaitingCursor(false);
