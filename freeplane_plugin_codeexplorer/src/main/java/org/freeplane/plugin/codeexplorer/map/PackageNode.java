@@ -22,13 +22,16 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 class PackageNode extends CodeNode {
     static final String UI_ROOT_PACKAGE_ICON_NAME = "code_root_package";
-    static final String UI_SUBPACKAGE_ICON_NAME = "code_subpackage";
+    static final String UI_SUBPACKAGE_WITHOUT_CLASSES_ICON_NAME = "code_subpackage_without_classes";
+    static final String UI_SUBPACKAGE_WITH_CLASSES_ICON_NAME = "code_subpackage_with_classes";
     static {
         IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_ROOT_PACKAGE_ICON_NAME, "code/moduleGroup.svg");
-        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_SUBPACKAGE_ICON_NAME, "code/module.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_SUBPACKAGE_WITHOUT_CLASSES_ICON_NAME, "code/module.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_SUBPACKAGE_WITH_CLASSES_ICON_NAME, "code/sourceRoot.svg");
     }
     private final JavaPackage javaPackage;
     private final long classCount;
+    private final boolean hasOwnClasses;
 
     public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex) {
         super(map, subprojectIndex);
@@ -39,6 +42,7 @@ class PackageNode extends CodeNode {
         setIdWithIndex(javaPackage.getName());
         setText(text + formatClassCount(classCount));
         setFolded(classCount > 0);
+        hasOwnClasses = getClasses().anyMatch(x -> true);
         initializeChildNodes();
     }
 
@@ -86,8 +90,7 @@ class PackageNode extends CodeNode {
 	    boolean hasSubpackages = ! packages.isEmpty();
 	    if(! hasSubpackages)
 	        return ;
-	    boolean hasClasses = getClasses().anyMatch(x -> true);
-	    if(hasClasses)
+	    if(hasOwnClasses)
 	        packages.add(javaPackage);
 	    GraphNodeSort<JavaPackage> childNodes = new GraphNodeSort<>();
 	    for (JavaPackage childPackage : packages) {
@@ -210,7 +213,9 @@ class PackageNode extends CodeNode {
 
     @Override
     String getUIIconName() {
-        return javaPackage.getParent().isPresent() ? UI_SUBPACKAGE_ICON_NAME : UI_ROOT_PACKAGE_ICON_NAME;
+        return hasOwnClasses ? UI_SUBPACKAGE_WITH_CLASSES_ICON_NAME :
+                javaPackage.getParent().isPresent() ? UI_SUBPACKAGE_WITHOUT_CLASSES_ICON_NAME
+                        : UI_ROOT_PACKAGE_ICON_NAME;
     }
 
     @Override
