@@ -65,9 +65,9 @@ public class CodeLinkController extends LinkController {
     private static final EnumMap<DependencyVerdict, Point> upwardsConnectorEndInclinations;
     static {
         backwardsConnectorStartInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
-        backwardsConnectorStartInclinations.put(DependencyVerdict.ALLOWED, new Point(150, 15));
-        backwardsConnectorStartInclinations.put(DependencyVerdict.FORBIDDEN, new Point(200, 15));
-        backwardsConnectorStartInclinations.put(DependencyVerdict.IGNORED, new Point(250, 15));
+        backwardsConnectorStartInclinations.put(DependencyVerdict.ALLOWED, new Point(150, 5));
+        backwardsConnectorStartInclinations.put(DependencyVerdict.FORBIDDEN, new Point(200, 5));
+        backwardsConnectorStartInclinations.put(DependencyVerdict.IGNORED, new Point(250, 5));
         upwardsConnectorStartInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
         backwardsConnectorEndInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
         upwardsConnectorEndInclinations = new EnumMap<DependencyVerdict, Point>(DependencyVerdict.class);
