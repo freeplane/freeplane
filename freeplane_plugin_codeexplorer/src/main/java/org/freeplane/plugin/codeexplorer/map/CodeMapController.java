@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.UIManager;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.components.UITools;
@@ -60,6 +61,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    NodeModel defaultStyleNode = mapStyleModel.getDefaultStyleNode();
 	    NodeStyleModel nodeStyle = NodeStyleModel.createNodeStyleModel(defaultStyleNode);
 	    nodeStyle.setFontSize(10);
+	    nodeStyle.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
         if(background != null && foreground != null) {
 	        mapStyleModel.setBackgroundColor(background.darker());
 	        nodeStyle.setColor(foreground);
@@ -68,7 +70,9 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	        mapStyleModel.setBackgroundColor(Color.WHITE);
 	        nodeStyle.setColor(Color.BLACK);
 	    }
-	    NodeSizeModel.createNodeSizeModel(defaultStyleNode).setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
+	    NodeSizeModel nodeSizeModel = NodeSizeModel.createNodeSizeModel(defaultStyleNode);
+        nodeSizeModel.setMinNodeWidth(Quantity.fromString("6", LengthUnit.cm));
+        nodeSizeModel.setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
 	    return codeMap;
 	}
 
