@@ -6,6 +6,7 @@ import java.util.Collections;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -33,6 +34,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
@@ -45,6 +47,7 @@ public class CodeModeControllerFactory {
 	static private CodeModeController modeController;
 
 	static public CodeModeController createModeController() {
+	    ((ApplicationResourceController)ResourceController.getResourceController()).registerResourceLoader(CodeModeController.class.getClassLoader());
 	    ArchConfiguration.get().setResolveMissingDependenciesFromClassPath(false);
 		final Controller controller = Controller.getCurrentController();
 		modeController = new CodeModeController(controller);
