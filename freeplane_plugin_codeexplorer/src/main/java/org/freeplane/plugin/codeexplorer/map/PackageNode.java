@@ -20,9 +20,11 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class PackageNode extends CodeNode {
-    static final String UI_ICON_NAME = "code_package";
+    static final String UI_ROOT_PACKAGE_ICON_NAME = "code_root_package";
+    static final String UI_SUBPACKAGE_ICON_NAME = "code_subpackage";
     static {
-        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_ICON_NAME, "code/folder.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_ROOT_PACKAGE_ICON_NAME, "code/moduleGroup.svg");
+        IconStoreFactory.INSTANCE.createStateIcon(PackageNode.UI_SUBPACKAGE_ICON_NAME, "code/module.svg");
     }
     private final JavaPackage javaPackage;
     private final long classCount;
@@ -207,7 +209,7 @@ class PackageNode extends CodeNode {
 
     @Override
     String getUIIconName() {
-        return UI_ICON_NAME;
+        return javaPackage.getParent().isPresent() ? UI_SUBPACKAGE_ICON_NAME : UI_ROOT_PACKAGE_ICON_NAME;
     }
 
     @Override

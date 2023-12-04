@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
@@ -35,6 +36,9 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 class ProjectRootNode extends CodeNode implements SubprojectFinder{
     static final String UI_ICON_NAME = "code_project";
+    static {
+        IconStoreFactory.INSTANCE.createStateIcon(ProjectRootNode.UI_ICON_NAME, "code/homeFolder.svg");
+    }
     private static final Set<String> ignoredNames = new HashSet<>(asList("classes","target", "bin", "main"));
     private static final Entry<Integer, String> UNKNOWN = new AbstractMap.SimpleEntry<>(-1, ":unknown:");
     private final JavaPackage rootPackage;
