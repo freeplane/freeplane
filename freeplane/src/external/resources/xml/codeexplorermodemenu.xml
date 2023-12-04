@@ -77,7 +77,6 @@
 				<Entry accelerator="control G" name="FindAction" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
 				<Entry name="FindPreviousAction" />
-				<Entry name="OpenPathAction" />
 			</Entry>
 		</Entry>
 		<Entry name="view">
@@ -138,10 +137,6 @@
 				<Entry name="FoldOneLevelAction" accelerator="alt PAGE_UP" />
 				<Entry name="UnfoldAllAction" accelerator="alt END" />
 				<Entry name="FoldAllAction" accelerator="alt HOME" />
-				<Entry builder="separator" />
-				<Entry name="SetAlwaysUnfoldedNodeFlagsAction" />
-				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
-				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
