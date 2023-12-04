@@ -98,6 +98,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapView.setMap(loadingHintMap);
+	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
 	    new Thread(() -> {
 
 	        CodeMap nextMap = oldMap;
@@ -139,6 +140,8 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            else
 	                selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
+                EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
+                Controller.getCurrentController().getViewController().setWaitingCursor(false);
 	        });
 	    }, "Load explored packages").start();
 
