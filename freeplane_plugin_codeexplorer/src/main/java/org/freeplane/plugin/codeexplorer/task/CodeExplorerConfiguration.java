@@ -15,7 +15,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.Location;
 
@@ -63,6 +62,10 @@ public class CodeExplorerConfiguration {
         this.locations = locations;
     }
 
+    public void removeAllLocations() {
+        this.locations.clear();
+    }
+
     public String getDependencyJudgeRules() {
         return dependencyJudgeRules;
     }
@@ -98,5 +101,9 @@ public class CodeExplorerConfiguration {
 
     public void addLocation(File file) {
         locations.add(new File(file.getAbsolutePath()));
+    }
+
+    public void addLocation(String path) {
+       addLocation(new File(path));
     }
 }

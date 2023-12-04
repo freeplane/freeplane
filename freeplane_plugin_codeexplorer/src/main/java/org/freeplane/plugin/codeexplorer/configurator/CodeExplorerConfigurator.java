@@ -8,7 +8,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -23,7 +25,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
@@ -193,7 +194,7 @@ class CodeExplorerConfigurator extends JPanel {
         locationsTableModel = new DefaultTableModel(new Object[]{""}, 0);
         locationsTable = new AutoResizedTable(locationsTableModel);
         locationsTable.getTableHeader().setVisible(false);
-        locationsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
         locationsTable.getColumnModel().getColumn(0).setCellRenderer(rightAlignRenderer);
         JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
@@ -220,20 +221,125 @@ class CodeExplorerConfigurator extends JPanel {
         JPanel locationsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
         addJarsButton.addActionListener(e -> addJarsAndFolders());
+        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
+        btnMoveToTheTop.addActionListener(e -> moveSelectedLocationsToTheTop());
+        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up");
+        btnMoveUp.addActionListener(e -> moveSelectedLocationsUp());
+        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down");
+        btnMoveDown.addActionListener(e -> moveSelectedLocationsDown());
+        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
+        btnMoveToTheBottom.addActionListener(e -> moveSelectedLocationsToTheBottom());
         JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
-        removeLocationsButton.addActionListener(e -> deleteSelectedLocation());
-        locationsButtonsPanel.add(addJarsButton);
-        locationsButtonsPanel.add(removeLocationsButton);
-        addJarsButton.setEnabled(false);
-        removeLocationsButton.setEnabled(false);
+        removeLocationsButton.addActionListener(e -> removeSelectedLocations());
+
+        JButton buttons[] = {addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton};
+
+        Stream.of(buttons).forEach(button -> {
+            locationsButtonsPanel.add(button);
+            button.setEnabled(false);
+        });
 
         configTable.getSelectionModel().addListSelectionListener(l -> {
             boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
-            addJarsButton.setEnabled(isSelectionValid);
-            removeLocationsButton.setEnabled(isSelectionValid);
+            Stream.of(buttons).forEach(button -> button.setEnabled(isSelectionValid));
         });
         return locationsButtonsPanel;
     }
+
+    private void moveSelectedLocationsToTheTop() {
+        int[] selectedRows = locationsTable.getSelectedRows();
+        Arrays.sort(selectedRows);
+        for (int i = 0; i < selectedRows.length; i++) {
+            locationsTableModel.moveRow(selectedRows[i], selectedRows[i], i);
+        }
+        locationsTable.getSelectionModel().setValueIsAdjusting(true);
+        locationsTable.clearSelection();
+        for (int i = 0; i < selectedRows.length; i++) {
+            locationsTable.addRowSelectionInterval(i, i);
+        }
+        locationsTable.getSelectionModel().setValueIsAdjusting(false);
+        updateSelectedConfigurationLocations();
+    }
+
+    private void moveSelectedLocationsUp() {
+        int[] selectedRows = locationsTable.getSelectedRows();
+        if (selectedRows.length > 0 && selectedRows[0] > 0) {
+            for (int i = 0; i < selectedRows.length; i++) {
+                int selectedIndex = selectedRows[i];
+                locationsTableModel.moveRow(selectedIndex, selectedIndex, selectedIndex - 1);
+            }
+            locationsTable.getSelectionModel().setValueIsAdjusting(true);
+            locationsTable.clearSelection();
+            for (int selectedIndex : selectedRows) {
+                locationsTable.addRowSelectionInterval(selectedIndex - 1, selectedIndex - 1);
+            }
+            locationsTable.getSelectionModel().setValueIsAdjusting(false);
+            updateSelectedConfigurationLocations();
+        }
+    }
+
+    private void moveSelectedLocationsDown() {
+        int[] selectedRows = locationsTable.getSelectedRows();
+        if (selectedRows.length > 0 && selectedRows[selectedRows.length - 1] < locationsTableModel.getRowCount() - 1) {
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                int selectedIndex = selectedRows[i];
+                locationsTableModel.moveRow(selectedIndex, selectedIndex, selectedIndex + 1);
+            }
+            locationsTable.getSelectionModel().setValueIsAdjusting(true);
+            locationsTable.clearSelection();
+            for (int selectedIndex : selectedRows) {
+                locationsTable.addRowSelectionInterval(selectedIndex + 1, selectedIndex + 1);
+            }
+            locationsTable.getSelectionModel().setValueIsAdjusting(false);
+            updateSelectedConfigurationLocations();
+        }
+    }
+
+    private void moveSelectedLocationsToTheBottom() {
+        int[] selectedRows = locationsTable.getSelectedRows();
+        Arrays.sort(selectedRows);
+        int rowCount = locationsTableModel.getRowCount();
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            int selectedIndex = selectedRows[i];
+            locationsTableModel.moveRow(selectedIndex, selectedIndex, rowCount - 1 - (selectedRows.length - 1 - i));
+        }
+        locationsTable.getSelectionModel().setValueIsAdjusting(true);
+        locationsTable.clearSelection();
+        for (int i = 0; i < selectedRows.length; i++) {
+            int newRow = rowCount - selectedRows.length + i;
+            locationsTable.addRowSelectionInterval(newRow, newRow);
+        }
+        locationsTable.getSelectionModel().setValueIsAdjusting(false);
+        updateSelectedConfigurationLocations();
+    }
+
+
+    private void updateSelectedConfigurationLocations() {
+        int selectedConfigRow = getSelectedConfigurationIndex();
+        if (selectedConfigRow >= 0) {
+            CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
+            config.removeAllLocations();
+            for(int row = 0; row < locationsTableModel.getRowCount(); row++)
+                config.addLocation((String)locationsTableModel.getValueAt(row, 0));
+        }
+    }
+
+
+    private void removeSelectedLocations() {
+        int[] selectedRows = locationsTable.getSelectedRows();
+        Arrays.sort(selectedRows);
+        int removedRowCount = 0;
+        for (int selectedIndex : selectedRows) {
+            locationsTableModel.removeRow(selectedIndex - removedRowCount);
+            int selectedConfigRow = getSelectedConfigurationIndex();
+            if (selectedConfigRow >= 0) {
+                CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
+                config.getLocations().remove(selectedIndex - removedRowCount);
+            }
+            removedRowCount++;
+        }
+    }
+
 
     private void addJarsAndFolders() {
         if(configTable.getRowCount() == 0)
@@ -257,17 +363,6 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
 
-    private void deleteSelectedLocation() {
-        int selectedIndex = locationsTable.getSelectedRow();
-        if (selectedIndex != -1) {
-            locationsTableModel.removeRow(selectedIndex);
-            int selectedConfigRow = getSelectedConfigurationIndex();
-            if (selectedConfigRow >= 0) {
-                CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
-                config.getLocations().remove(selectedIndex);
-            }
-        }
-    }
 
     private JPanel createRulesPanel() {
         JPanel rulesPanel = new JPanel(new GridBagLayout());

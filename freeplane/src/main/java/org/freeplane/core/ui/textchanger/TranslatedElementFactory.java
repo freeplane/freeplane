@@ -61,7 +61,7 @@ public class TranslatedElementFactory {
         });
         return component;
 	}
-	
+
 	public static void createTitledBorder(JComponent component, String labelKey) {
 		final String text = TextUtils.getText(labelKey);
 		component.setBorder(BorderFactory.createTitledBorder(text));
@@ -101,6 +101,10 @@ public class TranslatedElementFactory {
 	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey) {
 		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
+
+    public static JButton createButtonWithIcon(String tooltipKey) {
+        return createButtonWithIcon(tooltipKey + ".icon", tooltipKey);
+     }
 
 	public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
 		JToggleButton button = createToggleButton(labelKey);
