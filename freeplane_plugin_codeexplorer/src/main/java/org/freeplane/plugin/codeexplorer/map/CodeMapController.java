@@ -93,7 +93,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            .collect(Collectors.toList());
         CodeMap oldMap = (CodeMap) selection.getMap();
         CodeMap loadingHintMap = newMap();
-	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Loading"
+	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Analyzing"
 	            + " " + codeExplorerConfiguration.getLocations().size()
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
