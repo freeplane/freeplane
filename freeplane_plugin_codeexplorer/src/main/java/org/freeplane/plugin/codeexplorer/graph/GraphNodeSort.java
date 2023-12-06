@@ -65,7 +65,10 @@ public class GraphNodeSort<V> {
     }
 
 
-
+    static private class CycleSearchStopException extends RuntimeException{
+        private static final long serialVersionUID = 1L;
+        static final CycleSearchStopException INSTANCE = new CycleSearchStopException();
+    }
 
     public List<List<V>> sortNodes(Comparator<Set<V>> secondComparator) {
 
@@ -86,29 +89,41 @@ public class GraphNodeSort<V> {
 
             CycleDetector<V, DefaultWeightedEdge> cycleDetector = new CycleDetector<>(connectedSubgraph);
             if (cycleDetector.detectCycles()) {
-                // Find and break cycles within the SCG
-                JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
-                List<List<V>> cycles = cycleFinder.findSimpleCycles();
-
-                while (!cycles.isEmpty()) {
-                    List<V> firstCycle = cycles.get(0);
-                    DefaultWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
-                    if (minWeightEdge != null) {
-                        V source = connectedSubgraph.getEdgeSource(minWeightEdge);
-                        V target = connectedSubgraph.getEdgeTarget(minWeightEdge);
-                        connectedSubgraph.removeEdge(minWeightEdge);
-
-                        // Remove the first cycle from the list, since the edge removal will break it
-                        cycles.remove(0);
-
-                        // Remove all cycles containing the removed edge
-                        cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
-
-                    } else {
-                        // If no edge is found, it should break and avoid an infinite loop
-                        break;
+                boolean cyclesLeft = true;
+                do{
+                    // Find and break cycles within the SCG
+                    JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
+                    List<List<V>> cycles = new ArrayList<>();
+                    try {
+                        cycleFinder.findSimpleCycles(c -> {
+                            cycles.add(c);
+                            if(cycles.size() >= 100)
+                                throw CycleSearchStopException.INSTANCE;
+                        });
+                        cyclesLeft = false;
+                    } catch (CycleSearchStopException e) {
                     }
-                }
+
+                    while (!cycles.isEmpty()) {
+                        List<V> firstCycle = cycles.get(0);
+                        DefaultWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
+                        if (minWeightEdge != null) {
+                            V source = connectedSubgraph.getEdgeSource(minWeightEdge);
+                            V target = connectedSubgraph.getEdgeTarget(minWeightEdge);
+                            connectedSubgraph.removeEdge(minWeightEdge);
+
+                            // Remove the first cycle from the list, since the edge removal will break it
+                            cycles.remove(0);
+
+                            // Remove all cycles containing the removed edge
+                            cycles.removeIf(cycle -> cycleContainsEdge(source, target, cycle));
+
+                        } else {
+                            // If no edge is found, it should break and avoid an infinite loop
+                            break;
+                        }
+                    }
+                } while(cyclesLeft);
             }
 
             // Perform topological sort
