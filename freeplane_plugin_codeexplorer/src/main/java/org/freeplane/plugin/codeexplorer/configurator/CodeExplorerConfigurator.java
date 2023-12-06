@@ -40,6 +40,8 @@ class CodeExplorerConfigurator extends JPanel {
     private JTable locationsTable;
     private final CodeProjectController codeProjectController;
     private JTextArea rules;
+    private JFileChooser fileChooser;
+
 
     CodeExplorerConfigurator(CodeProjectController codeProjectController) {
         this.codeProjectController = codeProjectController;
@@ -60,6 +62,16 @@ class CodeExplorerConfigurator extends JPanel {
         createConfigurationsPanel();
         createLocationsPanel();
         layoutPanels();
+        createFileChooser();
+    }
+
+
+    private void createFileChooser() {
+        fileChooser = UITools.newFileChooser(null);
+        fileChooser.setMultiSelectionEnabled(true);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("jar", "jar");
+        fileChooser.setFileFilter(filter);
     }
 
     private JPanel createConfigurationsPanel() {
@@ -344,21 +356,23 @@ class CodeExplorerConfigurator extends JPanel {
     private void addJarsAndFolders() {
         if(configTable.getRowCount() == 0)
             addNewConfiguration();
-        JFileChooser fileChooser = UITools.newFileChooser(null);
-        fileChooser.setMultiSelectionEnabled(true);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("jar", "jar");
-        fileChooser.setFileFilter(filter);
+        int selectedConfigRow = getSelectedConfigurationIndex();
+        CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
+        int selectedRow = locationsTable.getSelectedRow();
+        if(selectedRow >= 0) {
+            File selectedFile = selectedConfig.getLocations().get(selectedRow);
+            if(selectedFile != null) {
+                File selectedDirectory = selectedFile.getParentFile();
+                if(selectedDirectory != null)
+                    fileChooser.setCurrentDirectory(selectedDirectory);
+            }
+        }
         int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File[] files = fileChooser.getSelectedFiles();
-            int selectedConfigRow = getSelectedConfigurationIndex();
-            if (selectedConfigRow >= 0) {
-                CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
-                for (File file : files) {
-                    locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
-                    selectedConfig.addLocation(file);
-                }
+            for (File file : files) {
+                locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
+                selectedConfig.addLocation(file);
             }
         }
     }
