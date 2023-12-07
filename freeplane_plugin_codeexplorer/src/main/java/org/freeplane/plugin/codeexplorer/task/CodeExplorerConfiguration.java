@@ -16,6 +16,7 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.core.importer.Location;
 
 public class CodeExplorerConfiguration {
@@ -81,22 +82,15 @@ public class CodeExplorerConfiguration {
 
     public JavaClasses importClasses() {
         Collection<Location> locations = getLocations().stream()
-                .map(this::findClasses)
                 .map(File::toURI)
                 .map(Location::of)
                 .collect(Collectors.toList());
-        ClassFileImporter classFileImporter = new ClassFileImporter();
+        ClassFileImporter classFileImporter = new ClassFileImporter()
+                .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS);
         LogUtils.info("Starting import from " + locations.size() + " locations");
         JavaClasses  importedClasses = classFileImporter.importLocations(locations);
         LogUtils.info("Import done");
         return importedClasses;
-    }
-
-    private File findClasses(File file) {
-        if(!file.isDirectory())
-            return file;
-        File mavenTargetClasses = new File(file, "target/classes");
-        return mavenTargetClasses.isDirectory() ? mavenTargetClasses : file;
     }
 
     public void addLocation(File file) {
