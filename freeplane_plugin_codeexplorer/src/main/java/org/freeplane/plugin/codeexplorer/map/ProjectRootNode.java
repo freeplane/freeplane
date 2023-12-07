@@ -5,8 +5,6 @@
  */
 package org.freeplane.plugin.codeexplorer.map;
 
-import static java.util.Arrays.asList;
-
 import java.net.URI;
 import java.util.AbstractMap;
 import java.util.Comparator;
@@ -38,7 +36,6 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     static {
         IconStoreFactory.INSTANCE.createStateIcon(ProjectRootNode.UI_ICON_NAME, "code/homeFolder.svg");
     }
-    private static final Set<String> ignoredNames = new HashSet<>(asList("classes","target", "bin", "main"));
     private static final Entry<Integer, String> UNKNOWN = new AbstractMap.SimpleEntry<>(-1, ":unknown:");
     private final JavaPackage rootPackage;
     private final Map<String, Map.Entry<Integer, String>> subprojectsByLocation;
