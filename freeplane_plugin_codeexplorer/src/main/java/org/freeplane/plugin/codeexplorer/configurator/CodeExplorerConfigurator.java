@@ -363,8 +363,10 @@ class CodeExplorerConfigurator extends JPanel {
             File selectedFile = selectedConfig.getLocations().get(selectedRow);
             if(selectedFile != null) {
                 File selectedDirectory = selectedFile.getParentFile();
-                if(selectedDirectory != null)
+                if(selectedDirectory != null) {
+                    fileChooser.setSelectedFile(null);
                     fileChooser.setCurrentDirectory(selectedDirectory);
+                }
             }
         }
         int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
