@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
@@ -94,8 +99,19 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
         List<PackageNode> nodes = subprojectsByLocation.values().stream()
                 .parallel()
                 .map(e ->
-        new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue()))
+                    new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue()))
                 .collect(Collectors.toList());
+        AttributeRegistry registry = AttributeRegistry.getRegistry(getMap());
+        registry.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
+        nodes.forEach(node -> node.addExtension(new NodeAttributeTableModel(1)));
+        subprojectsByLocation.entrySet().stream()
+        .forEach(e -> {
+            String location = e.getKey();
+            int index = e.getValue().getKey().intValue();
+            PackageNode packageNode = nodes.get(index);
+            NodeAttributeTableModel attributes = packageNode.getExtension(NodeAttributeTableModel.class);
+            attributes.addRowNoUndo(packageNode, new Attribute("location", location));
+        });
         GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
         nodes.forEach(node -> {
             childNodes.addNode(node.subprojectIndex);
