@@ -113,7 +113,9 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
             int index = e.getValue().getKey().intValue();
             PackageNode packageNode = nodes.get(index);
             NodeAttributeTableModel attributes = packageNode.getExtension(NodeAttributeTableModel.class);
-            attributes.addRowNoUndo(packageNode, new Attribute("location", location));
+            attributes.addRowNoUndo(packageNode, new Attribute("Class count", packageNode.getClassCount()));
+            directoryMatcher.getFoundLocations(location).forEach( x ->
+                attributes.addRowNoUndo(packageNode, new Attribute("Classpath", x)));
         });
         GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
         nodes.forEach(node -> {
