@@ -18,10 +18,10 @@ import java.util.function.BiConsumer;
 public class DirectoryMatcher {
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
     private final Map<String, String> coreLocationsByPaths;
-    private final List<File> locations;
-    private final List<String> subpaths;
+    private final Collection<File> locations;
+    private final Collection<String> subpaths;
 
-    public DirectoryMatcher(List<File> locations, List<String> subpaths) {
+    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths) {
         this.locations = locations;
         this.subpaths = subpaths;
         coreLocationsByPaths = new HashMap<>(subpaths.isEmpty() ?  locations.size() : locations.size() * subpaths.size());

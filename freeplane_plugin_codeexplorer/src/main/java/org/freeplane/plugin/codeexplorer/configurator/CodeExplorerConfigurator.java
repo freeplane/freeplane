@@ -343,12 +343,13 @@ class CodeExplorerConfigurator extends JPanel {
         Arrays.sort(selectedRows);
         int removedRowCount = 0;
         for (int selectedIndex : selectedRows) {
-            locationsTableModel.removeRow(selectedIndex - removedRowCount);
+            int row = selectedIndex - removedRowCount;
             int selectedConfigRow = getSelectedConfigurationIndex();
             if (selectedConfigRow >= 0) {
                 CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
-                config.getLocations().remove(selectedIndex - removedRowCount);
+                config.removeLocation(locationsTableModel.getValueAt(row, 0).toString());
             }
+            locationsTableModel.removeRow(row);
             removedRowCount++;
         }
     }
@@ -361,21 +362,22 @@ class CodeExplorerConfigurator extends JPanel {
         CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
         int selectedRow = locationsTable.getSelectedRow();
         if(selectedRow >= 0) {
-            File selectedFile = selectedConfig.getLocations().get(selectedRow);
-            if(selectedFile != null) {
-                File selectedDirectory = selectedFile.getParentFile();
-                if(selectedDirectory != null) {
-                    fileChooser.setSelectedFile(null);
-                    fileChooser.setCurrentDirectory(selectedDirectory);
-                }
+            File selectedFile = new File(locationsTable.getValueAt(selectedRow, 0).toString());
+            File selectedDirectory = selectedFile.getParentFile();
+            if(selectedDirectory != null) {
+                fileChooser.setSelectedFile(null);
+                fileChooser.setCurrentDirectory(selectedDirectory);
             }
         }
         int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File[] files = fileChooser.getSelectedFiles();
             for (File file : files) {
-                locationsTableModel.addRow(new Object[]{file.getAbsolutePath()});
-                selectedConfig.addLocation(file);
+                String path = file.getAbsolutePath();
+                if(! selectedConfig.containsLocation(path)) {
+                    locationsTableModel.addRow(new Object[]{path});
+                    selectedConfig.addLocation(file);
+                }
             }
         }
     }

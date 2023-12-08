@@ -95,7 +95,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         CodeMap oldMap = (CodeMap) selection.getMap();
         CodeMap loadingHintMap = newMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Analyzing"
-	            + (codeExplorerConfiguration!= null ? " " + codeExplorerConfiguration.getLocations().size():"")
+	            + (codeExplorerConfiguration!= null ? " " + codeExplorerConfiguration.countLocations():"")
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapView.setMap(loadingHintMap);

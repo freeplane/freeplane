@@ -8,7 +8,9 @@ package org.freeplane.plugin.codeexplorer.task;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.util.LogUtils;
@@ -25,7 +27,7 @@ public class CodeExplorerConfiguration {
     private String projectName;
 
     @SerializedName("locations")
-    private List<File> projectLocations;
+    private Set<File> projectLocations;
 
     @SerializedName(value="configurationRules", alternate={"dependencyJudgeRules"})
     private String configurationRules;
@@ -42,7 +44,7 @@ public class CodeExplorerConfiguration {
         this.projectLocations = locations.stream()
                 .map(File::getAbsolutePath)
                 .map(File::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
         setConfigurationRules("");
         if(! dependencyJudgeRules.isEmpty()) {
             try {
@@ -59,14 +61,6 @@ public class CodeExplorerConfiguration {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public List<File> getLocations() {
-        return projectLocations;
-    }
-
-    public void setLocations(List<File> locations) {
-        this.projectLocations = locations;
     }
 
     public void removeAllLocations() {
@@ -111,5 +105,21 @@ public class CodeExplorerConfiguration {
 
     public void addLocation(String path) {
        addLocation(new File(path));
+    }
+
+    public int countLocations() {
+        return projectLocations.size();
+    }
+
+    public boolean containsLocation(String path) {
+        return projectLocations.contains(new File(path).getAbsoluteFile());
+    }
+
+    public boolean removeLocation(String path) {
+        return projectLocations.remove(new File(path).getAbsoluteFile());
+    }
+
+    public Collection<File> getLocations() {
+        return projectLocations;
     }
 }

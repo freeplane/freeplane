@@ -7,6 +7,7 @@ package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,7 +88,7 @@ public class ParsedConfiguration {
         return new DependencyJudge(rules);
     }
 
-    public DirectoryMatcher directoryMatcher(List<File> locations) {
+    public DirectoryMatcher directoryMatcher(Collection<File> locations) {
         return new DirectoryMatcher(locations, subpaths);
     }
 
