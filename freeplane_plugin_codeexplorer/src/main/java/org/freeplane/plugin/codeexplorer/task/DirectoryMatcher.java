@@ -12,19 +12,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
 public class DirectoryMatcher {
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
-    private final Map<String, String> coreLocationsByPaths;
+    private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
 
     public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths) {
         this.locations = locations;
         this.subpaths = subpaths;
-        coreLocationsByPaths = new HashMap<>(subpaths.isEmpty() ?  locations.size() : locations.size() * subpaths.size());
+        coreLocationsByPaths = new TreeMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
 
@@ -32,7 +35,7 @@ public class DirectoryMatcher {
         for(File location : locations) {
             if(location.isDirectory()) {
                 for (String subPath : subpaths.isEmpty() ? defaultSubpaths(location) : subpaths) {
-                    File directory = new File(location, subPath);
+                    File directory = subPath.equals(".") ? location : new File(location, subPath);
                     if(directory.isDirectory())
                         consumer.accept(directory, location);
                 }
@@ -64,6 +67,17 @@ public class DirectoryMatcher {
         List<File> importedLocations = new ArrayList<>();
         findDirectories((importedLocation, location) -> importedLocations.add(importedLocation));
         return importedLocations;
+    }
+
+    public List<String> getFoundLocations(String location) {
+        List<String> foundLocations = new ArrayList<>();
+        for(Entry<String, String> entry : coreLocationsByPaths.tailMap(location).entrySet()) {
+            if(entry.getValue().equals(location))
+                foundLocations.add(entry.getKey());
+            else
+                break;
+        }
+        return foundLocations;
     }
 
 }
