@@ -28,6 +28,7 @@ import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
+import org.freeplane.plugin.codeexplorer.task.DirectoryMatcher;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -45,15 +46,15 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     private final Map<String, Map.Entry<Integer, String>> subprojectsByLocation;
     private final Set<String> badLocations;
     private JavaClasses classes;
-    static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes) {
-        ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes);
+    private DirectoryMatcher directoryMatcher;
+    static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, DirectoryMatcher directoryMatcher) {
+        ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, directoryMatcher);
         map.setRoot(projectRootNode);
         if(projectRootNode.getChildCount() > 20)
             projectRootNode.getChildren()
                 .forEach(node -> ((CodeNode)node).memoizeCodeDependencies());
         return projectRootNode;
     }
-
     private static Optional<String> classSourceLocationOf(JavaClass javaClass) {
         return javaClass.getSource()
                 .map(s -> {
@@ -64,9 +65,11 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
                     return classSourceLocation;
                 });
     }
-    private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes) {
+
+    private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes, DirectoryMatcher directoryMatcher) {
         super(map, 0);
         this.classes = classes;
+        this.directoryMatcher = directoryMatcher;
         this.rootPackage = classes.getDefaultPackage();
         setID("projectRoot");
         setText(projectName);
@@ -74,6 +77,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
         subprojectsByLocation = new LinkedHashMap<>();
         classes.stream()
         .map(ProjectRootNode::classSourceLocationOf)
+        .map(directoryMatcher::coreLocationPath)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .forEach(location -> subprojectsByLocation.computeIfAbsent(location,
@@ -162,7 +166,8 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
     @Override
     public int subprojectIndexOf(JavaClass javaClass) {
-        Optional<String> classSourceLocation = classSourceLocationOf(javaClass);
+        Optional<String> classSourceLocation = classSourceLocationOf(javaClass)
+                .map(directoryMatcher::coreLocationPath);
         Optional <Entry<Integer, String>> subprojectEntry = classSourceLocation
                 .map( s -> subprojectsByLocation.getOrDefault(s, UNKNOWN));
 

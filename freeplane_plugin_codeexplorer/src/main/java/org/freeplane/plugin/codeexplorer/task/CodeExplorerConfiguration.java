@@ -12,21 +12,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 
+import com.google.gson.annotations.SerializedName;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.core.importer.Location;
 import com.tngtech.archunit.thirdparty.com.google.common.annotations.VisibleForTesting;
 
 public class CodeExplorerConfiguration {
 
+    @SerializedName("projectName")
     private String projectName;
-    private List<File> projectLocations;
-    private String dependencyJudgeRules;
 
-    transient private DependencyJudge judge;
+    @SerializedName("locations")
+    private List<File> projectLocations;
+
+    @SerializedName(value="configurationRules", alternate={"dependencyJudgeRules"})
+    private String configurationRules;
+
+    transient private ParsedConfiguration parsedConfiguration;
 
     public CodeExplorerConfiguration() {
         this("", new ArrayList<>(), "");
@@ -39,10 +43,10 @@ public class CodeExplorerConfiguration {
                 .map(File::getAbsolutePath)
                 .map(File::new)
                 .collect(Collectors.toList());
-        setDependencyJudgeRules("");
+        setConfigurationRules("");
         if(! dependencyJudgeRules.isEmpty()) {
             try {
-                setDependencyJudgeRules(dependencyJudgeRules);
+                setConfigurationRules(dependencyJudgeRules);
             } catch (IllegalArgumentException e) {
                 // silently ignore bad rules
             }
@@ -69,30 +73,36 @@ public class CodeExplorerConfiguration {
         this.projectLocations.clear();
     }
 
-    public String getDependencyJudgeRules() {
-        return dependencyJudgeRules;
+    public String getConfigurationRules() {
+        return configurationRules;
     }
 
-    public void setDependencyJudgeRules(String dependencyJudgeRules) {
-        this.judge = DependencyJudge.of(dependencyJudgeRules);
-        this.dependencyJudgeRules = dependencyJudgeRules;
+    public void setConfigurationRules(String configurationRules) {
+        this.parsedConfiguration = new ParsedConfiguration(configurationRules);
+        this.configurationRules = configurationRules;
     }
 
     public DependencyJudge getDependencyJudge() {
-        return judge;
+        return parsedConfiguration.judge();
     }
 
     public JavaClasses importClasses() {
-        Collection<Location> locations = getLocations().stream()
+        DirectoryMatcher directoryMatcher = createDirectoryMatcher();
+        Collection<Location> locations =
+                directoryMatcher.getImportedLocations().stream()
                 .map(File::toURI)
                 .map(Location::of)
                 .collect(Collectors.toList());
         ClassFileImporter classFileImporter = new ClassFileImporter()
-                .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS);
+                .withImportOption(parsedConfiguration.importOption());
         LogUtils.info("Starting import from " + locations.size() + " locations");
         JavaClasses  importedClasses = classFileImporter.importLocations(locations);
         LogUtils.info("Import done");
         return importedClasses;
+    }
+
+    public DirectoryMatcher createDirectoryMatcher() {
+        return parsedConfiguration.directoryMatcher(projectLocations);
     }
 
     public void addLocation(File file) {

@@ -13,7 +13,7 @@ import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.PackageMatcher;
 
-class DependencyRule {
+public class DependencyRule {
     private final DependencyVerdict verdict;
     private final PackageMatcher originMatcher;
     private final PackageMatcher targetMatcher;
@@ -21,7 +21,7 @@ class DependencyRule {
     private final String targetPattern;
     private final String originPattern;
 
-    DependencyRule(DependencyVerdict type, String originPattern, String targetPattern, DependencyDirection dependencyDirection) {
+    public DependencyRule(DependencyVerdict type, String originPattern, String targetPattern, DependencyDirection dependencyDirection) {
         this.verdict = type;
         this.originPattern = originPattern;
         this.targetPattern = targetPattern;
@@ -30,7 +30,7 @@ class DependencyRule {
         this.dependencyDirection = dependencyDirection;
     }
 
-    Optional<DependencyVerdict> match(Dependency dependency, boolean goesUp) {
+    public Optional<DependencyVerdict> match(Dependency dependency, boolean goesUp) {
         return this.originMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getOriginClass()).getName()) &&
                this.targetMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getTargetClass()).getName()) &&
                this.dependencyDirection.matches(goesUp) ? Optional.of(verdict): Optional.empty();

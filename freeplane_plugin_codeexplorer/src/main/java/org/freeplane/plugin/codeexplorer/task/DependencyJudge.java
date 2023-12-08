@@ -3,13 +3,16 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.dependencies;
+package org.freeplane.plugin.codeexplorer.task;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JTextArea;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyRule;
+import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 
 import com.tngtech.archunit.core.domain.Dependency;
 
@@ -33,20 +36,14 @@ import com.tngtech.archunit.core.domain.Dependency;
  */
 public class DependencyJudge {
 
-    /**
-     * Creates an instance of DependencyMatcher based on the provided DSL string.
-     *
-     * @param dependencyDSL the DSL string defining the rules
-     * @return DependencyMatcher instance
-     */
-    public static DependencyJudge of(String dependencyDSL) {
-        return new DependencyJudge(new CodeExplorerConfigurationParser(dependencyDSL).getRules());
-    }
-
     private List<DependencyRule> rules;
 
-    private DependencyJudge(List<DependencyRule> rules) {
+    public DependencyJudge(List<DependencyRule> rules) {
         this.rules = rules;
+    }
+
+    public DependencyJudge() {
+        this(Collections.emptyList());
     }
 
     /**

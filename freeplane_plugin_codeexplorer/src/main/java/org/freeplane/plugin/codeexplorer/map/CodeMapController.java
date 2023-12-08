@@ -2,6 +2,7 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,11 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
+import org.freeplane.plugin.codeexplorer.task.DirectoryMatcher;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -93,7 +95,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         CodeMap oldMap = (CodeMap) selection.getMap();
         CodeMap loadingHintMap = newMap();
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Analyzing"
-	            + " " + codeExplorerConfiguration.getLocations().size()
+	            + (codeExplorerConfiguration!= null ? " " + codeExplorerConfiguration.getLocations().size():"")
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapView.setMap(loadingHintMap);
@@ -106,15 +108,15 @@ public class CodeMapController extends MapController implements CodeExplorer{
             try {
                 if(codeExplorerConfiguration != null) {
                     JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
-                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(), projectMap, importedClasses);
+                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(), projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
+                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                 }
                 else {
                     ClassFileImporter classFileImporter = new ClassFileImporter();
                     JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-                    projectRoot = ProjectRootNode.asMapRoot("demo", projectMap, importedClasses);
+                    projectRoot = ProjectRootNode.asMapRoot("demo", projectMap, importedClasses, DirectoryMatcher.ALLOW_ALL);
                 }
                 projectRoot.setFolded(false);
-                projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                 LogUtils.info("Code map prepared");
                 nextMap = projectMap;
             } catch (Exception e) {

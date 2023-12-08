@@ -28,9 +28,9 @@ import javax.swing.table.DefaultTableModel;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
-import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
+import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 class CodeExplorerConfigurator extends JPanel {
 
@@ -129,7 +129,7 @@ class CodeExplorerConfigurator extends JPanel {
             for (File location : config.getLocations()) {
                 locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
-            rules.setText(config.getDependencyJudgeRules());
+            rules.setText(config.getConfigurationRules());
         }
         else
             rules.setText("");
@@ -150,7 +150,7 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void exploreSelectedConfiguration() {
-        setDependencyJudgeRules();
+        setConfigurationRules();
         codeProjectController.exploreConfiguration(getSelectedConfiguration());
     }
 
@@ -403,11 +403,11 @@ class CodeExplorerConfigurator extends JPanel {
         JPanel rulesButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(e ->
-            setDependencyJudgeRules()
+            setConfigurationRules()
         );
         JButton revertButton = new JButton("Revert");
         revertButton.addActionListener(e ->
-            rules.setText(getSelectedConfiguration().getDependencyJudgeRules())
+            rules.setText(getSelectedConfiguration().getConfigurationRules())
         );
         JButton helpButton = new JButton("Help");
         helpButton.addActionListener(e ->
@@ -428,17 +428,19 @@ class CodeExplorerConfigurator extends JPanel {
         return rulesButtonsPanel;
     }
 
-    private void setDependencyJudgeRules() {
+    private void setConfigurationRules() {
         CodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
-        String ruleSpecification = rules.getText();
-        if(! selectedConfiguration.getDependencyJudgeRules().equals(ruleSpecification)) {
-            try {
-                selectedConfiguration.setDependencyJudgeRules(ruleSpecification);
-                codeProjectController.setJudge(selectedConfiguration.getDependencyJudge());
+        if(selectedConfiguration != null) {
+            String ruleSpecification = rules.getText();
+            if(! selectedConfiguration.getConfigurationRules().equals(ruleSpecification)) {
+                try {
+                    selectedConfiguration.setConfigurationRules(ruleSpecification);
+                    codeProjectController.setJudge(selectedConfiguration.getDependencyJudge());
 
-            } catch (IllegalArgumentException e) {
-                String text = e.getMessage();
-                DependencyJudge.showHelp(text);
+                } catch (IllegalArgumentException e) {
+                    String text = e.getMessage();
+                    DependencyJudge.showHelp(text);
+                }
             }
         }
     }
