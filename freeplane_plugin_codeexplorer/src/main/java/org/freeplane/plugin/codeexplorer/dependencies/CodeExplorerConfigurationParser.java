@@ -28,9 +28,13 @@ public class CodeExplorerConfigurationParser {
             + "\\s*("+ CLASS_PATTERN + ")\\s*$");
 
     private final List<DependencyRule> rules;
+    private final List<ClassMatcher> ignoredClasses;
+    private final List<String> subpaths;
 
     CodeExplorerConfigurationParser(String dsl) {
         List<DependencyRule> rules = new ArrayList<>();
+        List<ClassMatcher> ignoredClasses = new ArrayList<>();
+        List<String> subpaths = new ArrayList<>();
         String[] dslRules = dsl.split("\\n\\s*");
 
         for (String dslRuleLine : dslRules) {
@@ -54,6 +58,8 @@ public class CodeExplorerConfigurationParser {
 
         }
         this.rules = rules;
+        this.ignoredClasses = ignoredClasses;
+        this.subpaths = subpaths;
     }
 
     public List<DependencyRule> getRules() {

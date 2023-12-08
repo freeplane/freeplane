@@ -30,6 +30,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 
 class CodeExplorerConfigurator extends JPanel {
 
@@ -171,7 +172,7 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void addNewConfiguration() {
-        CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration("", new ArrayList<>(), "");
+        CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration();
         explorerConfigurations().getConfigurations().add(newConfig);
         configTableModel.addRow(new Object[]{newConfig.getProjectName()});
         int newRow = configTable.getRowCount() - 1;

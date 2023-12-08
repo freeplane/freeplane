@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.Attribute;
-import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.NodeAttributeTableModel;

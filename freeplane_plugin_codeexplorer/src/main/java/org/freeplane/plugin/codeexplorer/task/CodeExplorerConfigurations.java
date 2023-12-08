@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,7 +48,7 @@ public class CodeExplorerConfigurations {
         this.configurations = configurations;
     }
 
-    void saveConfiguration() {
+    public void saveConfiguration() {
         saveConfiguration(DEFAULT_CONFIGURATION_FILE);
     }
 
@@ -61,7 +60,7 @@ public class CodeExplorerConfigurations {
         }
     }
 
-    static CodeExplorerConfigurations loadConfigurations() {
+    public static CodeExplorerConfigurations loadConfigurations() {
         File configurationFile = DEFAULT_CONFIGURATION_FILE;
         return loadConfigurations(configurationFile);
     }

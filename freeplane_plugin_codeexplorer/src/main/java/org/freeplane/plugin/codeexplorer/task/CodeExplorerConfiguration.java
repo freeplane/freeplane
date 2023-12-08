@@ -18,11 +18,12 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.core.importer.Location;
+import com.tngtech.archunit.thirdparty.com.google.common.annotations.VisibleForTesting;
 
 public class CodeExplorerConfiguration {
 
     private String projectName;
-    private List<File> locations;
+    private List<File> projectLocations;
     private String dependencyJudgeRules;
 
     transient private DependencyJudge judge;
@@ -31,9 +32,10 @@ public class CodeExplorerConfiguration {
         this("", new ArrayList<>(), "");
     }
 
-    public CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
+    @VisibleForTesting
+    CodeExplorerConfiguration(String projectName, List<File> locations, String dependencyJudgeRules) {
         this.projectName = projectName;
-        this.locations = locations.stream()
+        this.projectLocations = locations.stream()
                 .map(File::getAbsolutePath)
                 .map(File::new)
                 .collect(Collectors.toList());
@@ -56,15 +58,15 @@ public class CodeExplorerConfiguration {
     }
 
     public List<File> getLocations() {
-        return locations;
+        return projectLocations;
     }
 
     public void setLocations(List<File> locations) {
-        this.locations = locations;
+        this.projectLocations = locations;
     }
 
     public void removeAllLocations() {
-        this.locations.clear();
+        this.projectLocations.clear();
     }
 
     public String getDependencyJudgeRules() {
@@ -94,7 +96,7 @@ public class CodeExplorerConfiguration {
     }
 
     public void addLocation(File file) {
-        locations.add(new File(file.getAbsolutePath()));
+        projectLocations.add(new File(file.getAbsolutePath()));
     }
 
     public void addLocation(String path) {

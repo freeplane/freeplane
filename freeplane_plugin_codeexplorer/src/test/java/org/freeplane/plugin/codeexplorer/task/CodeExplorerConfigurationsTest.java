@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.assertj.core.api.Assertions;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.junit.After;
 import org.junit.Test;
 
