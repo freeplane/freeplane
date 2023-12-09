@@ -1,6 +1,8 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,12 +15,14 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
@@ -45,6 +49,7 @@ class CodeExplorerConfigurator extends JPanel {
     private JTextArea rules;
     private JFileChooser fileChooser;
     private ConfigurationChange configurationChange;
+    private JToggleButton helpToggleButton;
 
 
     CodeExplorerConfigurator(CodeProjectController codeProjectController) {
@@ -111,8 +116,8 @@ class CodeExplorerConfigurator extends JPanel {
         JPanel locationsPanel = new JPanel();
         locationsPanel.setLayout(new BorderLayout());
 
-        JLabel locationsLabel = new JLabel("Locations", SwingConstants.CENTER);
-        locationsPanel.add(locationsLabel, BorderLayout.NORTH);
+        JLabel header = new JLabel("Locations", SwingConstants.CENTER);
+        locationsPanel.add(header, BorderLayout.NORTH);
 
         locationsTableModel = new DefaultTableModel(new Object[]{""}, 0) {
             @Override
@@ -136,7 +141,33 @@ class CodeExplorerConfigurator extends JPanel {
             }
 
         });
-        locationsPanel.add(locationsTableScrollPane, BorderLayout.CENTER);
+
+        // Use CardLayout to switch views
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
+
+        // Add the table scroll pane to the card panel
+        cardPanel.add(locationsTableScrollPane, "Locations");
+
+        // Create a help text component and add it to the card panel
+        JTextArea helpText = new JTextArea(ParsedConfiguration.HELP);
+        helpText.setEditable(false); // make it read-only if it's a text area
+        cardPanel.add(new JScrollPane(helpText), "Help");
+
+        helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
+        helpToggleButton.addActionListener(e -> {
+            if(! header.isMinimumSizeSet())
+                header.setMinimumSize(header.getPreferredSize());
+            if (helpToggleButton.isSelected()) {
+                header.setText("Rules Help");
+                cardLayout.show(cardPanel, "Help");
+            } else {
+                header.setText("Locations");
+                cardLayout.show(cardPanel, "Locations");
+            }
+        });
+
+        locationsPanel.add(cardPanel, BorderLayout.CENTER);
 
         return locationsPanel;
     }
@@ -416,9 +447,7 @@ class CodeExplorerConfigurator extends JPanel {
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 2; // Span across all columns
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridwidth = 2;
         add(unifiedButtonsPanel, gbc);
 
         gbc.gridx = 0;
@@ -465,8 +494,11 @@ class CodeExplorerConfigurator extends JPanel {
             rules.setText(getSelectedConfiguration().getConfigurationRules())
         );
 
-        JButton addJarsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
-        addJarsButton.addActionListener(e1 -> addJarsAndFolders());
+        JButton addLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
+        addLocationsButton.addActionListener(e1 -> addJarsAndFolders());
+
+        JButton removeLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.remove_location");
+        removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
 
         JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
         btnMoveToTheTop.addActionListener(e4 -> moveSelectedLocationsToTheTop());
@@ -480,29 +512,26 @@ class CodeExplorerConfigurator extends JPanel {
         JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
         btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
 
-        JButton removeLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.remove_location");
-        removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
-
-        JButton helpButton = TranslatedElementFactory.createButtonWithIcon("code.help");
-        helpButton.addActionListener(e ->
-            ParsedConfiguration.showHelp("")
-        );
-
-        JButton panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};
+        JComponent panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, helpToggleButton};
         Stream.of(panelButtons).forEach(button -> {
             unifiedButtonsPanel.add(button);
         });
 
-        JButton enablingButtons[] = {addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, applyButton, revertButton};
+        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, applyButton, revertButton};
 
         Stream.of(enablingButtons).forEach(button -> {
             button.setEnabled(false);
         });
 
-        configTable.getSelectionModel().addListSelectionListener(l1 -> {
-            boolean isSelectionValid1 = ((ListSelectionModel)l1.getSource()).getMinSelectionIndex() >= 0;
-            Stream.of(enablingButtons).forEach(button -> button.setEnabled(isSelectionValid1));
-        });
+        Runnable enableButtons = () -> {
+            boolean enable = configTable.getSelectionModel().getMinSelectionIndex() >= 0
+                    && ! helpToggleButton.isSelected();
+            Stream.of(enablingButtons).forEach(button -> button.setEnabled(enable));
+        };
+
+        configTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
+        helpToggleButton.addActionListener(l -> enableButtons.run());
+
         return unifiedButtonsPanel;
     }
 
