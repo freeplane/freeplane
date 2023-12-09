@@ -24,7 +24,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 
 public class CodeModeController extends ModeController {
 	static public final String MODENAME = "CodeExplorer";

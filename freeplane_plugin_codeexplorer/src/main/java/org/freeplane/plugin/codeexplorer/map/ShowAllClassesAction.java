@@ -31,7 +31,8 @@ class ShowAllClassesAction extends AFreeplaneAction {
 		super("code.ShowAllClassesAction");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	@Override
+    public void actionPerformed(final ActionEvent e) {
 		FilterController.getCurrentFilterController().applyNoFiltering(Controller.getCurrentController().getMap());
 	}
 }

@@ -45,8 +45,6 @@ import com.tngtech.archunit.core.domain.JavaClass;
  * @author Dimitry Polivaev
  */
 public class CodeProjectController implements IExtension {
-    private static final String CODE_EXPLORER_CONFIGURATION_PROPERTY = "code_explorer_configuration";
-
     private CodeDependenciesPanel codeDependenciesPanel;
     private ModeController modeController;
     private JTabbedPane informationPanel;

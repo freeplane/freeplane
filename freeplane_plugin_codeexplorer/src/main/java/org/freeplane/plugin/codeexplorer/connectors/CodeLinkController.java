@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.extension.Configurable;
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.features.link.ConnectorArrows;

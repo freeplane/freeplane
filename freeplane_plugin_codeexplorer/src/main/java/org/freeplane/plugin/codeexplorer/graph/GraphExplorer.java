@@ -43,6 +43,7 @@ public class GraphExplorer {
             Function<V, Stream<V>> outgoingEdgesProvider,
             Function<V, Stream<V>> incomingEdgesProvider) {
         Class<?> vertexClass = startVertices.iterator().next().getClass();
+        @SuppressWarnings("unchecked")
         DepthFirstIterator<Object, E> iterator = new BothDirectionsIterator<>(graph, (Iterable<Object>)startVertices);
         while (iterator.hasNext()) {
             Object currentElement = iterator.next();

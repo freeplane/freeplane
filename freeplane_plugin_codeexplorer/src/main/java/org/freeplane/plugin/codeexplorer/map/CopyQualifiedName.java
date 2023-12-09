@@ -33,7 +33,8 @@ class CopyQualifiedName extends AFreeplaneAction {
 		super("code.CopyQualifiedName");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	@Override
+    public void actionPerformed(final ActionEvent e) {
 		final CodeNode node = (CodeNode) Controller.getCurrentModeController().getMapController().getSelectedNode();
 		copyCodeElementName(node);
 	}

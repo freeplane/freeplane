@@ -101,8 +101,7 @@ public class GraphNodeSort<V> {
                                 throw CycleSearchStopException.INSTANCE;
                         });
                         cyclesLeft = false;
-                    } catch (CycleSearchStopException e) {
-                    }
+                    } catch (CycleSearchStopException e) {/* stopped iterations using exception */}
 
                     while (!cycles.isEmpty()) {
                         List<V> firstCycle = cycles.get(0);
