@@ -71,6 +71,14 @@ public class CodeExplorerConfiguration {
         return configurationRules;
     }
 
+
+    void applyConfigurationRules() {
+        try {
+            applyConfigurationRules(configurationRules);
+        } catch (Exception e) {
+            configurationRules = "";
+        }
+    }
     public ConfigurationChange applyConfigurationRules(String configurationRules) {
         ParsedConfiguration newConfiguration = new ParsedConfiguration(configurationRules);
         ConfigurationChange status = newConfiguration.configurationChange(parsedConfiguration);

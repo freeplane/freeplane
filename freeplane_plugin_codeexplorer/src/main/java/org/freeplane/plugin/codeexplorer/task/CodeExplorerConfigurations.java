@@ -75,7 +75,9 @@ public class CodeExplorerConfigurations {
 
     private static List<CodeExplorerConfiguration> fromJsonFile(File configurationFile){
         try (FileReader reader = new FileReader(configurationFile)) {
-            return OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
+            List<CodeExplorerConfiguration> configurations = OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
+            configurations.forEach(CodeExplorerConfiguration::applyConfigurationRules);
+            return configurations;
         } catch (IOException|JsonParseException e) {
             LogUtils.severe(e);
             return Collections.emptyList();
