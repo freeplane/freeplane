@@ -95,4 +95,14 @@ public class ParsedConfiguration {
     public ImportOption importOption() {
         return ignoredClasses;
     }
+
+    public ConfigurationChange configurationChange(ParsedConfiguration previousConfiguration) {
+        if(previousConfiguration == null
+                || ! subpaths.equals(previousConfiguration.subpaths)
+                || ! ignoredClasses.equals(previousConfiguration.ignoredClasses))
+            return ConfigurationChange.CODE_BASE;
+        if(! rules.equals(previousConfiguration.rules))
+                return ConfigurationChange.JUDGE;
+        return ConfigurationChange.SAME;
+    }
 }

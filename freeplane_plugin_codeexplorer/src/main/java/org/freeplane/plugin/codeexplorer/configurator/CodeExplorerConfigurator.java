@@ -1,6 +1,6 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,11 +25,13 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
+import org.freeplane.plugin.codeexplorer.task.ConfigurationChange;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 class CodeExplorerConfigurator extends JPanel {
@@ -42,10 +44,12 @@ class CodeExplorerConfigurator extends JPanel {
     private final CodeProjectController codeProjectController;
     private JTextArea rules;
     private JFileChooser fileChooser;
+    private ConfigurationChange configurationChange;
 
 
     CodeExplorerConfigurator(CodeProjectController codeProjectController) {
         this.codeProjectController = codeProjectController;
+        configurationChange = ConfigurationChange.CODE_BASE;
         initializeComponents();
         updateConfigurationsTable(explorerConfigurations());
     }
@@ -60,9 +64,7 @@ class CodeExplorerConfigurator extends JPanel {
 
 
     private void initializeComponents() {
-        createConfigurationsPanel();
-        createLocationsPanel();
-        layoutPanels();
+        createPanels();
         createFileChooser();
     }
 
@@ -76,19 +78,18 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private JPanel createConfigurationsPanel() {
+        JPanel configPanel = new JPanel();
+        configPanel.setLayout(new BorderLayout());
 
-        JPanel configPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createGridBagConstraints();
-
-        JLabel locationsLabel = new JLabel("Configurations");
-        locationsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        addComponentToPanel(locationsLabel, configPanel, gbc, 0, 0, 1, 0);
+        JLabel configurationsLabel = new JLabel("Configurations", SwingConstants.CENTER);
+        configurationsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        configPanel.add(configurationsLabel, BorderLayout.NORTH);
 
         configTableModel = new DefaultTableModel(new Object[]{""}, 0);
         configTable = new JTable(configTableModel);
         configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
-        addComponentToPanel(configTableScrollPane, configPanel, gbc, 0, 1, 1, 1);
+        configPanel.add(configTableScrollPane, BorderLayout.CENTER);
 
         configTable.getSelectionModel().addListSelectionListener(e -> updateConfiguration());
 
@@ -102,10 +103,57 @@ class CodeExplorerConfigurator extends JPanel {
                 }
             }
         });
-
-        JPanel configButtonsPanel = createConfigButtonsPanel();
-        addComponentToPanel(configButtonsPanel, configPanel, gbc, 0, 2, 1, 0);
         return configPanel;
+    }
+
+    @SuppressWarnings("serial")
+    private JPanel createLocationsPanel() {
+        JPanel locationsPanel = new JPanel();
+        locationsPanel.setLayout(new BorderLayout());
+
+        JLabel locationsLabel = new JLabel("Locations", SwingConstants.CENTER);
+        locationsPanel.add(locationsLabel, BorderLayout.NORTH);
+
+        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               return false;
+            }
+        };
+        locationsTable = new AutoResizedTable(locationsTableModel);
+        locationsTable.getTableHeader().setVisible(false);
+        locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
+        TableColumn locationsColumn = locationsTable.getColumnModel().getColumn(0);
+        locationsColumn.setCellRenderer(rightAlignRenderer);
+        JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
+        locationsTableScrollPane.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                locationsTable.revalidate();
+                locationsTable.repaint();
+            }
+
+        });
+        locationsPanel.add(locationsTableScrollPane, BorderLayout.CENTER);
+
+        return locationsPanel;
+    }
+
+    private JPanel createRulesPanel() {
+        JPanel rulesPanel = new JPanel();
+        rulesPanel.setLayout(new BorderLayout());
+
+        JLabel rulesLabel = new JLabel("Rules", SwingConstants.CENTER);
+        rulesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        rulesPanel.add(rulesLabel, BorderLayout.NORTH);
+
+        rules = new JTextArea();
+        JScrollPane rulesScrollPane = new JScrollPane(rules);
+        rulesPanel.add(rulesScrollPane, BorderLayout.CENTER);
+
+        return rulesPanel;
     }
 
 
@@ -133,25 +181,13 @@ class CodeExplorerConfigurator extends JPanel {
         }
         else
             rules.setText("");
-    }
-
-    private JPanel createConfigButtonsPanel() {
-        JPanel configButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addConfigurationButton = TranslatedElementFactory.createButton("code.add");
-        addConfigurationButton.addActionListener(e -> addNewConfiguration());
-        JButton deleteConfigurationButton = TranslatedElementFactory.createButton("code.delete");
-        deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
-        JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
-        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
-        configButtonsPanel.add(addConfigurationButton);
-        configButtonsPanel.add(deleteConfigurationButton);
-        configButtonsPanel.add(exploreConfigurationButton);
-        return configButtonsPanel;
+        configurationChange = ConfigurationChange.CODE_BASE;
     }
 
     private void exploreSelectedConfiguration() {
         setConfigurationRules();
         codeProjectController.exploreConfiguration(getSelectedConfiguration());
+        configurationChange = ConfigurationChange.SAME;
     }
 
     CodeExplorerConfiguration getSelectedConfiguration() {
@@ -195,69 +231,9 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
 
-    @SuppressWarnings("serial")
-    private JPanel createLocationsPanel() {
-        JPanel locationsPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createGridBagConstraints();
-
-        JLabel locationsLabel = new JLabel("Locations");
-        locationsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        addComponentToPanel(locationsLabel, locationsPanel, gbc, 0, 0, 1, 0);
-
-        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0);
-        locationsTable = new AutoResizedTable(locationsTableModel);
-        locationsTable.getTableHeader().setVisible(false);
-        locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
-        locationsTable.getColumnModel().getColumn(0).setCellRenderer(rightAlignRenderer);
-        JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
-        locationsTableScrollPane.addComponentListener(new ComponentAdapter() {
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                locationsTable.revalidate();
-                locationsTable.repaint();
-            }
-
-        });
-        addComponentToPanel(locationsTableScrollPane, locationsPanel, gbc, 0, 1, 1, 1);
-
-        JPanel locationsButtonsPanel = createLocationsButtonsPanel();
-        addComponentToPanel(locationsButtonsPanel, locationsPanel, gbc, 0, 2, 1, 0);
-        return locationsPanel;
-    }
 
 
 
-
-    private JPanel createLocationsButtonsPanel() {
-        JPanel locationsButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
-        addJarsButton.addActionListener(e -> addJarsAndFolders());
-        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
-        btnMoveToTheTop.addActionListener(e -> moveSelectedLocationsToTheTop());
-        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up");
-        btnMoveUp.addActionListener(e -> moveSelectedLocationsUp());
-        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down");
-        btnMoveDown.addActionListener(e -> moveSelectedLocationsDown());
-        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
-        btnMoveToTheBottom.addActionListener(e -> moveSelectedLocationsToTheBottom());
-        JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
-        removeLocationsButton.addActionListener(e -> removeSelectedLocations());
-
-        JButton buttons[] = {addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton};
-
-        Stream.of(buttons).forEach(button -> {
-            locationsButtonsPanel.add(button);
-            button.setEnabled(false);
-        });
-
-        configTable.getSelectionModel().addListSelectionListener(l -> {
-            boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
-            Stream.of(buttons).forEach(button -> button.setEnabled(isSelectionValid));
-        });
-        return locationsButtonsPanel;
-    }
 
     private void moveSelectedLocationsToTheTop() {
         int[] selectedRows = locationsTable.getSelectedRows();
@@ -352,6 +328,8 @@ class CodeExplorerConfigurator extends JPanel {
             locationsTableModel.removeRow(row);
             removedRowCount++;
         }
+        if(removedRowCount > 0)
+            configurationChange = ConfigurationChange.CODE_BASE;
     }
 
 
@@ -377,68 +355,90 @@ class CodeExplorerConfigurator extends JPanel {
                 if(! selectedConfig.containsLocation(path)) {
                     locationsTableModel.addRow(new Object[]{path});
                     selectedConfig.addLocation(file);
+                    configurationChange = ConfigurationChange.CODE_BASE;
                 }
             }
         }
     }
 
-
-    private JPanel createRulesPanel() {
-        JPanel rulesPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createGridBagConstraints();
-
-        JLabel rulesLabel = new JLabel("Rules");
-        rulesLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        addComponentToPanel(rulesLabel, rulesPanel, gbc, 0, 0, 1, 0);
-
-        rules = new JTextArea();
-        JScrollPane rulesTableScrollPane = new JScrollPane(rules);
-        addComponentToPanel(rulesTableScrollPane, rulesPanel, gbc, 0, 1, 1, 1);
-
-        JPanel rulesButtonsPanel = createRulesButtonsPanel();
-        addComponentToPanel(rulesButtonsPanel, rulesPanel, gbc, 0, 2, 1, 0);
-
-        return rulesPanel;
-    }
-
-    private JPanel createRulesButtonsPanel() {
-        JPanel rulesButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel createRulesButtons(JPanel rulesButtonsPanel) {
         JButton applyButton = new JButton("Apply");
         applyButton.addActionListener(e ->
-            setConfigurationRules()
+            applyConfigurationRules()
         );
+
+        JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
+        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+
         JButton revertButton = new JButton("Revert");
         revertButton.addActionListener(e ->
             rules.setText(getSelectedConfiguration().getConfigurationRules())
         );
+
+        JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
+        addJarsButton.addActionListener(e1 -> addJarsAndFolders());
+
+        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
+        btnMoveToTheTop.addActionListener(e4 -> moveSelectedLocationsToTheTop());
+
+        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up");
+        btnMoveUp.addActionListener(e3 -> moveSelectedLocationsUp());
+
+        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down");
+        btnMoveDown.addActionListener(e5 -> moveSelectedLocationsDown());
+
+        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
+        btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
+
+        JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
+        removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
+
         JButton helpButton = new JButton("Help");
         helpButton.addActionListener(e ->
             DependencyJudge.showHelp("")
         );
-        rulesButtonsPanel.add(applyButton);
-        rulesButtonsPanel.add(revertButton);
-        rulesButtonsPanel.add(helpButton);
 
-        applyButton.setEnabled(false);
-        revertButton.setEnabled(false);
-
-        configTable.getSelectionModel().addListSelectionListener(l -> {
-            boolean isSelectionValid = ((ListSelectionModel)l.getSource()).getMinSelectionIndex() >= 0;
-            applyButton.setEnabled(isSelectionValid);
-            revertButton.setEnabled(isSelectionValid);
+        JButton panelButtons[] = {exploreConfigurationButton, applyButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};
+        Stream.of(panelButtons).forEach(button -> {
+            rulesButtonsPanel.add(button);
         });
+
+        JButton enablingButtons[] = {addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, applyButton, revertButton};
+
+        Stream.of(enablingButtons).forEach(button -> {
+            button.setEnabled(false);
+        });
+
+        configTable.getSelectionModel().addListSelectionListener(l1 -> {
+            boolean isSelectionValid1 = ((ListSelectionModel)l1.getSource()).getMinSelectionIndex() >= 0;
+            Stream.of(enablingButtons).forEach(button -> button.setEnabled(isSelectionValid1));
+        });
+
         return rulesButtonsPanel;
     }
 
+    private void applyConfigurationRules() {
+        setConfigurationRules();
+        switch(configurationChange) {
+        case CODE_BASE:
+            exploreSelectedConfiguration();
+            break;
+        case JUDGE:
+            codeProjectController.updateJudge();
+            break;
+        case SAME:
+            break;
+        }
+        configurationChange = ConfigurationChange.SAME;
+    }
     private void setConfigurationRules() {
         CodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
         if(selectedConfiguration != null) {
             String ruleSpecification = rules.getText();
             if(! selectedConfiguration.getConfigurationRules().equals(ruleSpecification)) {
                 try {
-                    selectedConfiguration.setConfigurationRules(ruleSpecification);
-                    codeProjectController.setJudge(selectedConfiguration.getDependencyJudge());
-
+                    ConfigurationChange status = selectedConfiguration.applyConfigurationRules(ruleSpecification);
+                    configurationChange = ConfigurationChange.max(configurationChange, status);
                 } catch (IllegalArgumentException e) {
                     String text = e.getMessage();
                     DependencyJudge.showHelp(text);
@@ -447,39 +447,63 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
 
-    private void layoutPanels() {
+    private void createPanels() {
+        JPanel configurationsPanel = createConfigurationsPanel();
+        JPanel locationsPanel = createLocationsPanel();
+        JPanel rulesPanel = createRulesPanel();
+        JPanel configButtonsPanel = createConfigButtons();
+
+        JPanel unifiedButtonsPanel = createUnifiedButtonsPanel();
+
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 1; // Span across all columns
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        add(configButtonsPanel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2; // Span across all columns
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        add(unifiedButtonsPanel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        add(createConfigurationsPanel(), gbc);
+        gbc.gridwidth = 1;
+        add(configurationsPanel, gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 2;
-        add(createLocationsPanel(), gbc);
+        add(locationsPanel, gbc);
 
         gbc.gridx = 2;
         gbc.weightx = 1;
-        add(createRulesPanel(), gbc);
+        add(rulesPanel, gbc);
     }
 
-    private GridBagConstraints createGridBagConstraints() {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        return gbc;
+    private JPanel createConfigButtons() {
+        JPanel configButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton addConfigurationButton = TranslatedElementFactory.createButton("code.add");
+        addConfigurationButton.addActionListener(e -> addNewConfiguration());
+        JButton deleteConfigurationButton = TranslatedElementFactory.createButton("code.delete");
+        deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
+        configButtonsPanel.add(addConfigurationButton);
+        configButtonsPanel.add(deleteConfigurationButton);
+        return configButtonsPanel;
     }
 
-    private void addComponentToPanel(Component component, JPanel panel, GridBagConstraints gbc,
-                                     int gridx, int gridy, double weightx, double weighty) {
-        gbc.gridx = gridx;
-        gbc.gridy = gridy;
-        gbc.weightx = weightx;
-        gbc.weighty = weighty;
-        panel.add(component, gbc);
+    private JPanel createUnifiedButtonsPanel() {
+        JPanel unifiedButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        createRulesButtons(unifiedButtonsPanel);
+        return unifiedButtonsPanel;
     }
 
     public List<File> getSelectedLocations() {

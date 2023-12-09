@@ -45,10 +45,10 @@ public class CodeExplorerConfiguration {
                 .map(File::getAbsolutePath)
                 .map(File::new)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
-        setConfigurationRules("");
+        applyConfigurationRules("");
         if(! dependencyJudgeRules.isEmpty()) {
             try {
-                setConfigurationRules(dependencyJudgeRules);
+                applyConfigurationRules(dependencyJudgeRules);
             } catch (IllegalArgumentException e) {
                 // silently ignore bad rules
             }
@@ -71,9 +71,12 @@ public class CodeExplorerConfiguration {
         return configurationRules;
     }
 
-    public void setConfigurationRules(String configurationRules) {
-        this.parsedConfiguration = new ParsedConfiguration(configurationRules);
+    public ConfigurationChange applyConfigurationRules(String configurationRules) {
+        ParsedConfiguration newConfiguration = new ParsedConfiguration(configurationRules);
+        ConfigurationChange status = newConfiguration.configurationChange(parsedConfiguration);
         this.configurationRules = configurationRules;
+        parsedConfiguration = newConfiguration;
+        return status;
     }
 
     public DependencyJudge getDependencyJudge() {

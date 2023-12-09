@@ -101,18 +101,17 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapView.setMap(loadingHintMap);
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
+        CodeMap projectMap = newMap();
+        projectMap.getExtension(AttributeRegistry.class).setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
 	    new Thread(() -> {
 
 	        CodeMap nextMap = oldMap;
-	        CodeMap projectMap = newMap();
 	        ProjectRootNode projectRoot;
             try {
                 if(codeExplorerConfiguration != null) {
                     JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
                     projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
                             projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
-                    AttributeRegistry registry = AttributeRegistry.getRegistry(projectMap);
-                    registry.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
 
                     projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                 }
