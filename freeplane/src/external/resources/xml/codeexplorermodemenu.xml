@@ -19,19 +19,13 @@
 			<Entry name="FoldAllAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
+		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" builder = "bigIcon"/>
+		<Entry builder="separator" />
 		<Entry row="1">
-			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
+			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		</Entry>
 		<Entry row="2">
 			<Entry name="code.ShowAllClassesAction" />
-		</Entry>
-		<Entry builder="separator" />
-		<Entry row="1">
-			<Entry name="code.FilterCyclesAction" />
-		</Entry>
-		<Entry row="2">
-			<Entry name="code.SelectCyclesAction" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
@@ -58,6 +52,13 @@
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
+		</Entry>
+		<Entry builder="separator" />
+		<Entry row="1">
+			<Entry name="code.FilterCyclesAction" />
+		</Entry>
+		<Entry row="2">
+			<Entry name="code.SelectCyclesAction" />
 		</Entry>
 		</Entry>
 		<Entry name="main_menu" builder="main_menu">
@@ -167,9 +168,8 @@
 			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
 			<Entry builder="separator" />
 			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
+			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 			<Entry name="code.ShowAllClassesAction" />
-			<Entry name="code.FilterCyclesAction" />
-			<Entry name="code.SelectCyclesAction" />
 			<Entry builder="separator" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
@@ -188,6 +188,9 @@
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry builder="separator" />
+			<Entry name="code.FilterCyclesAction" />
+			<Entry name="code.SelectCyclesAction" />
 		</Entry>
 		<Entry name="filter">
 			<Entry name="UndoFilterAction" />
@@ -211,6 +214,23 @@
 			<Entry name="QuickFindAction.BACK_VISIBLE" />
 			<Entry name="QuickFindAction.FORWARD_VISIBLE" />
 			<Entry name="QuickFindAction.FORWARD" />
+		</Entry>
+		<Entry name="extras">
+			<Entry name="SetAcceleratorOnNextClickAction" />
+			<Entry name="acceleratorPresets">
+				<Entry name="load_accelerator_presets" >
+					<Entry builder="acceleratorPresets" />
+					<Entry builder="noActions" />
+				</Entry>
+				<Entry name="SaveAcceleratorPresetsAction" />
+			</Entry>
+			<Entry builder="separator" />
+			<Entry name="OpenUserDirAction" />
+			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
+			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
+				actionKey="TextChangeHotKeyAction"
+				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction"
+				accelerator="control shift F10" />
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
@@ -252,9 +272,8 @@
 		<Entry name="code.CopyQualifiedName" accelerator="control C"/>
 		<Entry builder="separator" />
 		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
-		<Entry name="code.FilterCyclesAction" />
+		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		<Entry name="code.ShowAllClassesAction" />
-		<Entry name="code.SelectCyclesAction" />
 		<Entry builder="separator" />
 		<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 		<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
@@ -273,6 +292,9 @@
 		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 		<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
+		<Entry builder="separator" />
+		<Entry name="code.FilterCyclesAction" />
+		<Entry name="code.SelectCyclesAction" />
 		<Entry builder="separator" />
 		<Entry name="goto" processOnPopup="true">
 			<Entry builder="link_actions" />
