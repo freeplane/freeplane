@@ -3,6 +3,7 @@ package org.freeplane.plugin.codeexplorer.map;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.swing.UIManager;
@@ -37,8 +38,11 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class CodeMapController extends MapController implements CodeExplorer{
+    private final AtomicReference<CodeMap> createdMap;
+
     public CodeMapController(ModeController modeController) {
         super(modeController);
+        createdMap = new AtomicReference<>();
         modeController.addAction(new ShowSelectedClassesWithExternalDependenciesAction());
         for(CodeNodeSelection selection: CodeNodeSelection.values()) {
             for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
@@ -100,53 +104,61 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapView.setMap(loadingHintMap);
+	    selection.selectAsTheOnlyOneSelected(emptyRoot);
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
         CodeMap projectMap = newMap();
+        this.createdMap.set(projectMap);
         projectMap.getExtension(AttributeRegistry.class).setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
 	    new Thread(() -> {
 
 	        CodeMap nextMap = oldMap;
-	        ProjectRootNode projectRoot;
-            try {
-                if(codeExplorerConfiguration != null) {
-                    JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
-                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
-                            projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
+	        ProjectRootNode projectRoot = null;
+	        try {
+	            if(codeExplorerConfiguration != null) {
+	                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
+	                if(projectMap.equals(createdMap.get())) {
+	                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
+	                            projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
 
-                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
-                }
-                else {
-                    ClassFileImporter classFileImporter = new ClassFileImporter();
+	                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
+	                }
+	            }
+	            else {
+	                ClassFileImporter classFileImporter = new ClassFileImporter();
                     JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-                    projectRoot = ProjectRootNode.asMapRoot("demo", projectMap, importedClasses, DirectoryMatcher.ALLOW_ALL);
+                    if(projectMap.equals(createdMap.get())) {
+                        projectRoot = ProjectRootNode.asMapRoot("demo", projectMap, importedClasses, DirectoryMatcher.ALLOW_ALL);
+                    }
                 }
-                projectRoot.setFolded(false);
                 LogUtils.info("Code map prepared");
-                nextMap = projectMap;
+                if(projectRoot != null && projectMap.equals(createdMap.get())) {
+                    projectRoot.setFolded(false);
+                    nextMap = projectMap;
+                }
             } catch (Exception e) {
                 LogUtils.warn("Loading classes failed", e);
                 UITools.errorMessage("Loading classes failed, " + e.getMessage());
             }
             CodeMap viewedMap = nextMap;
-	        EventQueue.invokeLater(() -> {
-	            mapView.setMap(viewedMap);
-	            selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
-	            unfoldedNodeIDs.stream()
+            EventQueue.invokeLater(() -> {
+                createdMap.compareAndSet(projectMap, null);
+                mapView.setMap(viewedMap);
+                selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
+                unfoldedNodeIDs.stream()
                 .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                 .filter(x -> x != null)
                 .forEach(node -> node.setFolded(false));
 
-	            NodeModel[] newSelection = orderedSelectionIds.stream()
-	                    .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
-	                    .filter(x -> x != null)
-	                    .distinct()
-	                    .toArray(NodeModel[]::new);
-	            if(newSelection.length > 0)
-	                selection.replaceSelection(newSelection);
+                NodeModel[] newSelection = orderedSelectionIds.stream()
+                        .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
+                        .filter(x -> x != null)
+                        .distinct()
+                        .toArray(NodeModel[]::new);
+                if(newSelection.length > 0)
+                    selection.replaceSelection(newSelection);
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
-                Controller.getCurrentController().getViewController().setWaitingCursor(false);
-	        });
+            });
 	    }, "Load explored packages").start();
 
 	}
@@ -173,4 +185,8 @@ public class CodeMapController extends MapController implements CodeExplorer{
 
     }
 
+    @Override
+    public void cancelAnalysis() {
+        createdMap.set(null);
+    }
 }

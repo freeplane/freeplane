@@ -8,4 +8,5 @@ package org.freeplane.plugin.codeexplorer.task;
 public interface CodeExplorer {
     void explore(CodeExplorerConfiguration configuration);
     void setJudge(DependencyJudge judge);
+    void cancelAnalysis();
 }

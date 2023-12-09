@@ -363,12 +363,13 @@ class CodeExplorerConfigurator extends JPanel {
 
     private JPanel createRulesButtons(JPanel rulesButtonsPanel) {
         JButton applyButton = new JButton("Apply");
-        applyButton.addActionListener(e ->
-            applyConfigurationRules()
-        );
+        applyButton.addActionListener(e ->applyConfigurationRules());
 
         JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
         exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+
+        JButton cancelButton = TranslatedElementFactory.createButton("code.cancel");
+        cancelButton.addActionListener(e -> cancelAnalysis());
 
         JButton revertButton = new JButton("Revert");
         revertButton.addActionListener(e ->
@@ -398,7 +399,7 @@ class CodeExplorerConfigurator extends JPanel {
             DependencyJudge.showHelp("")
         );
 
-        JButton panelButtons[] = {exploreConfigurationButton, applyButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};
+        JButton panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};
         Stream.of(panelButtons).forEach(button -> {
             rulesButtonsPanel.add(button);
         });
@@ -415,6 +416,10 @@ class CodeExplorerConfigurator extends JPanel {
         });
 
         return rulesButtonsPanel;
+    }
+
+    private void cancelAnalysis() {
+        codeProjectController.cancelAnalysis();
     }
 
     private void applyConfigurationRules() {

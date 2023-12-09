@@ -38,7 +38,6 @@ import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
-import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
@@ -161,5 +160,10 @@ public class CodeProjectController implements IExtension {
             CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
             codeExplorer.setJudge(selectedConfiguration.getDependencyJudge());
         }
+    }
+
+    public void cancelAnalysis() {
+        CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
+        codeExplorer.cancelAnalysis();
     }
 }
