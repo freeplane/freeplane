@@ -361,63 +361,6 @@ class CodeExplorerConfigurator extends JPanel {
         }
     }
 
-    private JPanel createRulesButtons(JPanel rulesButtonsPanel) {
-        JButton applyButton = new JButton("Apply");
-        applyButton.addActionListener(e ->applyConfigurationRules());
-
-        JButton exploreConfigurationButton = TranslatedElementFactory.createButton("code.explore");
-        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
-
-        JButton cancelButton = TranslatedElementFactory.createButton("code.cancel");
-        cancelButton.addActionListener(e -> cancelAnalysis());
-
-        JButton revertButton = new JButton("Revert");
-        revertButton.addActionListener(e ->
-            rules.setText(getSelectedConfiguration().getConfigurationRules())
-        );
-
-        JButton addJarsButton = TranslatedElementFactory.createButton("code.add_location");
-        addJarsButton.addActionListener(e1 -> addJarsAndFolders());
-
-        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
-        btnMoveToTheTop.addActionListener(e4 -> moveSelectedLocationsToTheTop());
-
-        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up");
-        btnMoveUp.addActionListener(e3 -> moveSelectedLocationsUp());
-
-        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down");
-        btnMoveDown.addActionListener(e5 -> moveSelectedLocationsDown());
-
-        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
-        btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
-
-        JButton removeLocationsButton = TranslatedElementFactory.createButton("code.remove_location");
-        removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
-
-        JButton helpButton = new JButton("Help");
-        helpButton.addActionListener(e ->
-            DependencyJudge.showHelp("")
-        );
-
-        JButton panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};
-        Stream.of(panelButtons).forEach(button -> {
-            rulesButtonsPanel.add(button);
-        });
-
-        JButton enablingButtons[] = {addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, applyButton, revertButton};
-
-        Stream.of(enablingButtons).forEach(button -> {
-            button.setEnabled(false);
-        });
-
-        configTable.getSelectionModel().addListSelectionListener(l1 -> {
-            boolean isSelectionValid1 = ((ListSelectionModel)l1.getSource()).getMinSelectionIndex() >= 0;
-            Stream.of(enablingButtons).forEach(button -> button.setEnabled(isSelectionValid1));
-        });
-
-        return rulesButtonsPanel;
-    }
-
     private void cancelAnalysis() {
         codeProjectController.cancelAnalysis();
     }
@@ -468,6 +411,7 @@ class CodeExplorerConfigurator extends JPanel {
         gbc.gridwidth = 1; // Span across all columns
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor=GridBagConstraints.LINE_START;
         add(configButtonsPanel, gbc);
 
         gbc.gridx = 1;
@@ -496,9 +440,9 @@ class CodeExplorerConfigurator extends JPanel {
 
     private JPanel createConfigButtons() {
         JPanel configButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addConfigurationButton = TranslatedElementFactory.createButton("code.add");
+        JButton addConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.add");
         addConfigurationButton.addActionListener(e -> addNewConfiguration());
-        JButton deleteConfigurationButton = TranslatedElementFactory.createButton("code.delete");
+        JButton deleteConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
         deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
         configButtonsPanel.add(addConfigurationButton);
         configButtonsPanel.add(deleteConfigurationButton);
@@ -507,7 +451,58 @@ class CodeExplorerConfigurator extends JPanel {
 
     private JPanel createUnifiedButtonsPanel() {
         JPanel unifiedButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        createRulesButtons(unifiedButtonsPanel);
+        JButton applyButton = TranslatedElementFactory.createButtonWithIcon("code.apply");
+        applyButton.addActionListener(e ->applyConfigurationRules());
+
+        JButton exploreConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
+        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+
+        JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
+        cancelButton.addActionListener(e -> cancelAnalysis());
+
+        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
+        revertButton.addActionListener(e ->
+            rules.setText(getSelectedConfiguration().getConfigurationRules())
+        );
+
+        JButton addJarsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
+        addJarsButton.addActionListener(e1 -> addJarsAndFolders());
+
+        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
+        btnMoveToTheTop.addActionListener(e4 -> moveSelectedLocationsToTheTop());
+
+        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up");
+        btnMoveUp.addActionListener(e3 -> moveSelectedLocationsUp());
+
+        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down");
+        btnMoveDown.addActionListener(e5 -> moveSelectedLocationsDown());
+
+        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
+        btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
+
+        JButton removeLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.remove_location");
+        removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
+
+        JButton helpButton = TranslatedElementFactory.createButtonWithIcon("code.help");
+        helpButton.addActionListener(e ->
+            DependencyJudge.showHelp("")
+        );
+
+        JButton panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};
+        Stream.of(panelButtons).forEach(button -> {
+            unifiedButtonsPanel.add(button);
+        });
+
+        JButton enablingButtons[] = {addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, applyButton, revertButton};
+
+        Stream.of(enablingButtons).forEach(button -> {
+            button.setEnabled(false);
+        });
+
+        configTable.getSelectionModel().addListSelectionListener(l1 -> {
+            boolean isSelectionValid1 = ((ListSelectionModel)l1.getSource()).getMinSelectionIndex() >= 0;
+            Stream.of(enablingButtons).forEach(button -> button.setEnabled(isSelectionValid1));
+        });
         return unifiedButtonsPanel;
     }
 
