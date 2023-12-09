@@ -5,8 +5,10 @@
  */
 package org.freeplane.plugin.codeexplorer.map;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -173,6 +175,17 @@ public abstract class CodeNode extends NodeModel {
     }
     private Stream<CodeDependency> collectIncomingCodeDependenciesWithKnownOrigins() {
         return getIncomingDependenciesWithKnownOrigins().parallel().map(getMap()::toCodeDependency);
+    }
+
+    static Optional<String> classSourceLocationOf(JavaClass javaClass) {
+        return javaClass.getSource()
+                .map(s -> {
+                    URI uri = s.getUri();
+                    String path = uri.getRawPath();
+                    String classLocation = path != null ?  path : uri.getSchemeSpecificPart();
+                    String classSourceLocation = classLocation.substring(0, classLocation.length() - javaClass.getName().length() - ".class".length());
+                    return classSourceLocation;
+                });
     }
 
     private class MemoizedCodeDependencies implements IExtension{

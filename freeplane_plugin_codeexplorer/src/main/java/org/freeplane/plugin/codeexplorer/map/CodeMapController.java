@@ -2,7 +2,6 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +12,8 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
@@ -108,7 +109,11 @@ public class CodeMapController extends MapController implements CodeExplorer{
             try {
                 if(codeExplorerConfiguration != null) {
                     JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
-                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(), projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
+                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
+                            projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
+                    AttributeRegistry registry = AttributeRegistry.getRegistry(projectMap);
+                    registry.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
+
                     projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                 }
                 else {

@@ -5,7 +5,6 @@
  */
 package org.freeplane.plugin.codeexplorer.map;
 
-import java.net.URI;
 import java.util.AbstractMap;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -21,10 +20,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.attribute.Attribute;
-import org.freeplane.features.attribute.AttributeRegistry;
-import org.freeplane.features.attribute.AttributeTableLayoutModel;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
@@ -55,17 +50,6 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
                 .forEach(node -> ((CodeNode)node).memoizeCodeDependencies());
         return projectRootNode;
     }
-    private static Optional<String> classSourceLocationOf(JavaClass javaClass) {
-        return javaClass.getSource()
-                .map(s -> {
-                    URI uri = s.getUri();
-                    String path = uri.getRawPath();
-                    String classLocation = path != null ?  path : uri.getSchemeSpecificPart();
-                    String classSourceLocation = classLocation.substring(0, classLocation.length() - javaClass.getName().length() - ".class".length());
-                    return classSourceLocation;
-                });
-    }
-
     private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes, DirectoryMatcher directoryMatcher) {
         super(map, 0);
         this.classes = classes;
@@ -76,7 +60,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
         subprojectsByLocation = new LinkedHashMap<>();
         classes.stream()
-        .map(ProjectRootNode::classSourceLocationOf)
+        .map(CodeNode::classSourceLocationOf)
         .map(directoryMatcher::coreLocationPath)
         .filter(Optional::isPresent)
         .map(Optional::get)
@@ -102,21 +86,8 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
         List<PackageNode> nodes = subprojectsByLocation.values().stream()
                 .parallel()
                 .map(e ->
-                    new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue()))
+                    new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue(), true))
                 .collect(Collectors.toList());
-        AttributeRegistry registry = AttributeRegistry.getRegistry(getMap());
-        registry.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
-        nodes.forEach(node -> node.addExtension(new NodeAttributeTableModel(1)));
-        subprojectsByLocation.entrySet().stream()
-        .forEach(e -> {
-            String location = e.getKey();
-            int index = e.getValue().getKey().intValue();
-            PackageNode packageNode = nodes.get(index);
-            NodeAttributeTableModel attributes = packageNode.getExtension(NodeAttributeTableModel.class);
-            attributes.addRowNoUndo(packageNode, new Attribute("Class count", packageNode.getClassCount()));
-            directoryMatcher.getFoundLocations(location).forEach( x ->
-                attributes.addRowNoUndo(packageNode, new Attribute("Classpath", x)));
-        });
         GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
         nodes.forEach(node -> {
             childNodes.addNode(node.subprojectIndex);
@@ -168,7 +139,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
     @Override
     public int subprojectIndexOf(JavaClass javaClass) {
-        Optional<String> classSourceLocation = classSourceLocationOf(javaClass)
+        Optional<String> classSourceLocation = CodeNode.classSourceLocationOf(javaClass)
                 .map(directoryMatcher::coreLocationPath);
         Optional <Entry<Integer, String>> subprojectEntry = classSourceLocation
                 .map( s -> subprojectsByLocation.getOrDefault(s, UNKNOWN));

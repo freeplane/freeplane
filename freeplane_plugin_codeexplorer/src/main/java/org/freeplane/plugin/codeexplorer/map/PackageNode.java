@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
@@ -33,16 +37,23 @@ class PackageNode extends CodeNode {
     private final long classCount;
     private final boolean hasOwnClasses;
 
-    public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex) {
+    public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex, boolean createAttributes) {
         super(map, subprojectIndex);
         this.javaPackage = javaPackage;
-        this.classCount = getClassesInTree()
-                .filter(CodeNode::isNamed)
-                .count();
         setIdWithIndex(javaPackage.getName());
+        this.classCount = getClassesInTree().filter(CodeNode::isNamed).count();
         setText(text + formatClassCount(classCount));
         setFolded(classCount > 0);
         hasOwnClasses = getClasses().anyMatch(x -> true);
+        if(createAttributes) {
+            SortedSet<String> classpath = new TreeSet<>();
+            getClassesInTree()
+                .forEach(jc -> classSourceLocationOf(jc).ifPresent(classpath::add));
+            NodeAttributeTableModel attributes = new NodeAttributeTableModel(1 + classpath.size());
+            classpath.forEach(path -> attributes.addRowNoUndo(this, new Attribute("Classpath", path)));
+            attributes.addRowNoUndo(this, new Attribute("Class count", classCount));
+            addExtension(attributes);
+        }
         initializeChildNodes();
     }
 
@@ -158,7 +169,7 @@ class PackageNode extends CodeNode {
         else if(subpackages.size() == 1 && !getClasses(childPackage).anyMatch(x -> true))
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
-            return new PackageNode(childPackage, getMap(), parentName + childPackageName, subprojectIndex);
+            return new PackageNode(childPackage, getMap(), parentName + childPackageName, subprojectIndex, false);
     }
 
     private JavaPackage getTargetChildNodePackage(Dependency dep) {
