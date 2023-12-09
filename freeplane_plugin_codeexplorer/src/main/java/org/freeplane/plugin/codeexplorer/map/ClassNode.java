@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -123,7 +124,9 @@ public class ClassNode extends CodeNode {
         cycleFinder.exploreGraph(Collections.singleton(this),
                 this::connectedTargetNodesInTheSameScope,
                 this::connectedOriginNodesInTheSameScope);
-        LinkedHashSet<CodeNode> cycles = cycleFinder.findSimpleCycles().stream().flatMap(List::stream).collect(Collectors.toCollection(LinkedHashSet::new));
+        LinkedHashSet<CodeNode> cycles = cycleFinder.findSimpleCycles().stream()
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
         return cycles;
     }
 

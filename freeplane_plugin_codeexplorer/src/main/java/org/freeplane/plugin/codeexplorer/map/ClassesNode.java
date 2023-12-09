@@ -1,11 +1,11 @@
 package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -134,19 +134,17 @@ class ClassesNode extends CodeNode {
         cycleFinder.exploreGraph(Collections.singleton(this),
                 this::connectedTargetNodesInTheSameScope,
                 this::connectedOriginNodesInTheSameScope);
-        List<List<ClassesNode>> cycles = cycleFinder.findSimpleCycles();
+        Set<Entry<ClassesNode, ClassesNode>> cycles = cycleFinder.findSimpleCycles();
         Map<JavaPackage, Set<JavaPackage>> origins = new HashMap<>();
         Map<JavaPackage, Set<JavaPackage>> targets = new HashMap<>();
-        for(List<ClassesNode> cycle : cycles) {
-            for(int n = 0; n < cycle.size(); n++) {
-                JavaPackage origin = cycle.get(n).javaPackage;
-                JavaPackage target = cycle.get((n+1) % cycle.size()).javaPackage;
+        for(Entry<ClassesNode, ClassesNode>edge : cycles) {
+                JavaPackage origin = edge.getKey().javaPackage;
+                JavaPackage target = edge.getValue().javaPackage;
                 origins.computeIfAbsent(target, x -> new HashSet<>()).add(origin);
                 targets.computeIfAbsent(origin, x -> new HashSet<>()).add(target);
-            }
         }
-        return cycles.stream().flatMap(List::stream)
-                .distinct()
+        return cycles.stream()
+                .map(Map.Entry::getKey)
                 .flatMap(packageNode ->
                     Stream.concat(
                             packageNode.getOutgoingDependenciesWithKnownTargets()

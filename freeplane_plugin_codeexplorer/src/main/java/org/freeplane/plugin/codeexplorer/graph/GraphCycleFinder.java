@@ -5,8 +5,11 @@
  */
 package org.freeplane.plugin.codeexplorer.graph;
 
-import java.util.ArrayList;
+import java.util.AbstractMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -57,9 +60,9 @@ public class GraphCycleFinder<V>{
         GraphExplorer.exploreGraph(graph, startVertices, outgoingEdgesProvider, incomingEdgesProvider);
     }
 
-    public List<List<V>> findSimpleCycles()
+    public Set<Map.Entry<V, V>> findSimpleCycles()
     {
-        List<List<V>> result = new ArrayList<>();
+        Set<Map.Entry<V, V>> result = new LinkedHashSet<>();
         JohnsonSimpleCycles<Object, DefaultEdge> cycleFinder = new JohnsonSimpleCycles<>(graph);
         try {
             cycleFinder.findSimpleCycles(cycle -> {
@@ -68,7 +71,11 @@ public class GraphCycleFinder<V>{
                 else {
                     @SuppressWarnings("unchecked")
                     List<V> typedCycle = (List<V>) cycle;
-                    result.add(typedCycle);
+                    for(int n = 0; n < typedCycle.size(); n++) {
+                        V origin = typedCycle.get(n);
+                        V target = typedCycle.get((n+1) % cycle.size());
+                        result.add(new AbstractMap.SimpleEntry<>(origin, target));
+                    }
                 }
             });
         } catch (CycleSearchStopException e) {/**/}
