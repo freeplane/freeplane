@@ -22,23 +22,50 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import com.tngtech.archunit.core.importer.ImportOption;
 
 public class ParsedConfiguration {
+    public static final String HELP = "Rule Format:\n"
+            + "-> Rules are defined one per line in the following formats:\n"
+            + "\n"
+            + "  [command] [originPattern] [direction] [targetPattern]\n"
+            + "  classpath [path]\n"
+            + "  ignore class [classPattern]\n"
+            + "\n"
+            + "-> Commands (Related to Dependency Rules): allow, forbid, ignore\n"
+            + "   - 'allow', 'forbid', 'ignore' commands are used to define rules for managing dependencies between different parts of the code.\n"
+            + "-> Direction: ->, ->v, ->^ (representing bidirectional, downward, upward respectively)\n"
+            + "   - Specifies the direction of dependency between the origin and target patterns.\n"
+            + "-> Patterns: follow AspectJ-like syntax for matching package names\n"
+            + "-> Path: additional path segment to be appended to each root directory defined in the 'locations' table.\n"
+            + "-> ClassPattern: same syntax as originPattern for matching class names\n"
+            + "   - Note: For 'ignore class', '..' is implicitly added at the start of the pattern if not already present, ensuring a broader match.\n"
+            + "\n"
+            + "Locations Table:\n"
+            + "-> The 'locations' table defines the root directories for the project.\n"
+            + "-> The 'classpath' lines specify additional path segments to be appended to these root directories, resulting in paths like '/root/target/classes'.\n"
+            + "\n"
+            + "Default Classpath Behavior:\n"
+            + "-> If no 'classpath' elements are given:\n"
+            + "   - If the location directory contains 'pom.xml', defaults to appending 'target/classes'.\n"
+            + "   - If the location directory contains 'build.gradle', defaults to appending 'build/classes'.\n"
+            + "   - Otherwise, defaults to appending the current directory ('.').\n"
+            + "\n"
+            + "Comments:\n"
+            + "-> Lines starting with '#' or '//' are considered comments and ignored.\n"
+            + "\n"
+            + "Examples:\n"
+            + "\n"
+            + "  allow *.service.* -> *.repository.*\n"
+            + "  forbid *.*.controller*.. ->^ ..model..\n"
+            + "  ignore ..util.. ->v ..*Helper..\n"
+            + "  classpath /target/classes\n"
+            + "  ignore class com.example..*ServiceImpl..\n"
+            + "\n"
+            + "Note:\n"
+            + "-> 'classpath' lines augment the root directories defined in the 'locations' table.\n"
+            + "-> The 'ignore class' command is designed to include a broader range of classes by implicitly adding '..' at the start of the pattern.\n"
+            + "-> The commands 'allow', 'forbid', and 'ignore' specifically dictate how different code segments (e.g., packages, classes) can depend on each other.\n";
 
     public static void showHelp(String text) {
-        JTextArea helpText = new JTextArea((text.trim().isEmpty() ? "" : text + "\n\n")
-                 +"Rule Format:\n"
-                 + "-> Rules are defined one per line in the format:\n"
-                 + " [command] [originPattern] [direction] [targetPattern]\n\n"
-                 + "-> Commands: allow, forbid, ignore\n"
-                 + "-> Direction: ->, ->v, ->^ (representing bidirectional, downward, upward respectively)\n"
-                 + "-> Patterns: follow AspectJ->like syntax for matching package names\n\n"
-                 + "# comment line\n"
-                 + "// another comment line\n\n"
-                 + "Examples:\n"
-                 + "\n"
-                 + "  allow *.service.* -> *.repository.*\n"
-                 + "  forbid *.*.controller*.. ->^ ..model..\n"
-                 + "  ignore ..util.. ->v ..*Helper..\n"
-                 + "");
+        JTextArea helpText = new JTextArea((text.trim().isEmpty() ? "" : text + "\n\n") + HELP);
         helpText.setEditable(false);
         UITools.informationMessage(helpText);
     }
@@ -57,7 +84,7 @@ public class ParsedConfiguration {
             + "\\s*("+ CLASS_PATTERN + ")\\s*$");
 
     private static final Pattern CLASSPATH_PATTERN = Pattern.compile(
-            "^\\s*classpath\\s+" + "(.*\\S)\\s*$");
+            "^\\s*classpath\\s+/*(.*\\S)\\s*$");
 
     private static final Pattern IGNORED_CLASS_PATTERN = Pattern.compile(
             "^\\s*ignore\\s+class\\s+(" + CLASS_PATTERN + ")\\s*$");
