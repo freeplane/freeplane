@@ -32,7 +32,7 @@ import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 import org.freeplane.plugin.codeexplorer.task.ConfigurationChange;
-import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
+import org.freeplane.plugin.codeexplorer.task.ParsedConfiguration;
 
 class CodeExplorerConfigurator extends JPanel {
 
@@ -389,7 +389,7 @@ class CodeExplorerConfigurator extends JPanel {
                     configurationChange = ConfigurationChange.max(configurationChange, status);
                 } catch (IllegalArgumentException e) {
                     String text = e.getMessage();
-                    DependencyJudge.showHelp(text);
+                    ParsedConfiguration.showHelp(text);
                 }
             }
         }
@@ -485,7 +485,7 @@ class CodeExplorerConfigurator extends JPanel {
 
         JButton helpButton = TranslatedElementFactory.createButtonWithIcon("code.help");
         helpButton.addActionListener(e ->
-            DependencyJudge.showHelp("")
+            ParsedConfiguration.showHelp("")
         );
 
         JButton panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addJarsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, removeLocationsButton, helpButton};

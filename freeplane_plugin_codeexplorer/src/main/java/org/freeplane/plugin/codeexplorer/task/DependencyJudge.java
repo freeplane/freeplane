@@ -8,9 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.JTextArea;
-
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyRule;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 
@@ -62,25 +59,5 @@ public class DependencyJudge {
             }
         }
         return goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED;
-    }
-
-    public static void showHelp(String text) {
-        JTextArea helpText = new JTextArea((text.trim().isEmpty() ? "" : text + "\n\n")
-                 +"Rule Format:\n"
-                 + "-> Rules are defined one per line in the format:\n"
-                 + " [command] [originPattern] [direction] [targetPattern]\n\n"
-                 + "-> Commands: allow, forbid, ignore\n"
-                 + "-> Direction: ->^v, ->v, ->^ (representing bidirectional, downward, upward respectively)\n"
-                 + "-> Patterns: follow AspectJ->like syntax for matching package names\n\n"
-                 + "# comment line\n"
-                 + "// another comment line\n\n"
-                 + "Examples:\n"
-                 + "\n"
-                 + "  allow *.service.* ->^v *.repository.*\n"
-                 + "  forbid *.*.controller*.. ->^ ..model..\n"
-                 + "  ignore ..util.. ->v ..*Helper..\n"
-                 + "");
-        helpText.setEditable(false);
-        UITools.informationMessage(helpText);
     }
 }

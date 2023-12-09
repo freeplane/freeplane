@@ -9,7 +9,7 @@ package org.freeplane.plugin.codeexplorer.dependencies;
  * Enums for specifying the direction of a dependency.
  */
 public enum DependencyDirection {
-    UP("->^"), DOWN("->v"), ANY("->^v");
+    UP("->^"), DOWN("->v"), ANY("->");
 
     public static DependencyDirection parseDirection(String notation) {
         for(DependencyDirection direction : DependencyDirection.values())
