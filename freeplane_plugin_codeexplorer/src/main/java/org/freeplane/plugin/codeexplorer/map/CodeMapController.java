@@ -105,6 +105,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    loadingHintMap.setRoot(emptyRoot);
 	    mapView.setMap(loadingHintMap);
 	    selection.selectAsTheOnlyOneSelected(emptyRoot);
+	    Controller.getCurrentController().getMapViewManager().setMapTitles();
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
         CodeMap projectMap = newMap();
         this.createdMap.set(projectMap);
@@ -157,6 +158,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 if(newSelection.length > 0)
                     selection.replaceSelection(newSelection);
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
+                Controller.getCurrentController().getMapViewManager().setMapTitles();
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
             });
 	    }, "Load explored packages").start();
