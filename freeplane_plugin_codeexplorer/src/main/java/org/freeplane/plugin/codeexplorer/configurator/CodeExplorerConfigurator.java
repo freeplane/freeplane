@@ -35,6 +35,7 @@ import javax.swing.table.TableColumn;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 import org.freeplane.plugin.codeexplorer.task.ConfigurationChange;
@@ -143,20 +144,19 @@ class CodeExplorerConfigurator extends JPanel {
         helpText.setEditable(false); // make it read-only if it's a text area
         cardPanel.add(new JScrollPane(helpText), "Help");
 
-        String rulesHelpHeaderText = "Rules Help";
-        String locationsHeaderText = "Locations";
+        String rulesHelpHeaderText = TextUtils.getText("code.helplabel");
+        String locationsHeaderText = TextUtils.getText("code.locations");
+        paneLabel.setText(locationsHeaderText);
         paneLabel.addHierarchyListener(new HierarchyListener() {
 
             @Override
             public void hierarchyChanged(HierarchyEvent e) {
                 Component component = e.getComponent();
                 if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) && component.isShowing()) {
-                    String text = paneLabel.getText();
-                    paneLabel.setText(locationsHeaderText);
-                    Dimension locationPreferredSize = paneLabel.getPreferredSize();
                     paneLabel.setText(rulesHelpHeaderText);
                     Dimension rulesPreferredSize = paneLabel.getPreferredSize();
-                    paneLabel.setText(text);
+                    paneLabel.setText(locationsHeaderText);
+                    Dimension locationPreferredSize = paneLabel.getPreferredSize();
                     paneLabel.setMinimumSize(new Dimension(Math.max(locationPreferredSize.width, rulesPreferredSize.width), Math.max(locationPreferredSize.height, rulesPreferredSize.height)));
                     paneLabel.removeHierarchyListener(this);
                 }
@@ -425,14 +425,14 @@ class CodeExplorerConfigurator extends JPanel {
         setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        JLabel configurationsLabel = new JLabel("Configurations", SwingConstants.CENTER);
+        JLabel configurationsLabel = new JLabel(TextUtils.getText("code.configurations"));
         JComponent configurationTableToolbar = createConfigurationTableToolbar();
         JComponent configurationsPanel = createConfigurationsPanel();
-        JLabel locationsLabel = new JLabel("Locations", SwingConstants.CENTER);
+        JLabel locationsLabel = new JLabel();
         helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
         JComponent locationsToolbar = createLocationButtons(helpToggleButton);
         JComponent locationsPane = createLocationsPane(locationsLabel, helpToggleButton);
-        JLabel rulesLabel = new JLabel("Rules", SwingConstants.CENTER);
+        JLabel rulesLabel = new JLabel(TextUtils.getText("code.rules"));
         JComponent rulesPane = createRulesPane();
 
 
