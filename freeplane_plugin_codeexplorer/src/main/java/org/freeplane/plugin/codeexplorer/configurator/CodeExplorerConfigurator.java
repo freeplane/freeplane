@@ -2,7 +2,6 @@ package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -419,8 +418,10 @@ class CodeExplorerConfigurator extends JPanel {
                     ConfigurationChange status = selectedConfiguration.applyConfigurationRules(ruleSpecification);
                     configurationChange = ConfigurationChange.max(configurationChange, status);
                 } catch (IllegalArgumentException e) {
+                    if(! helpToggleButton.isSelected())
+                        helpToggleButton.doClick();
                     String text = e.getMessage();
-                    ParsedConfiguration.showHelp(text);
+                    UITools.informationMessage(text);
                 }
             }
         }

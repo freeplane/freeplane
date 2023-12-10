@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JTextArea;
-
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyRule;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
@@ -64,12 +61,7 @@ public class ParsedConfiguration {
             + "-> The 'ignore class' command is designed to include a broader range of classes by implicitly adding '..' at the start of the pattern.\n"
             + "-> The commands 'allow', 'forbid', and 'ignore' specifically dictate how different code segments (e.g., packages, classes) can depend on each other.\n";
 
-    public static void showHelp(String text) {
-        JTextArea helpText = new JTextArea((text.trim().isEmpty() ? "" : text + "\n\n") + HELP);
-        helpText.setEditable(false);
-        UITools.informationMessage(helpText);
-    }
-    private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
+     private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
 
     private static final String DIRECTION_PATTERN = Pattern.quote(DependencyDirection.UP.notation)
             + "|" + Pattern.quote(DependencyDirection.DOWN.notation)
