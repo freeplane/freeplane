@@ -167,23 +167,23 @@ class ClassesNode extends CodeNode {
     private Stream<ClassesNode> connectedOriginNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInScope(originClasses);
+        return nodesContainedInSubproject(originClasses);
     }
 
     private Stream<ClassesNode> connectedTargetNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInScope(targetClasses);
+        return nodesContainedInSubproject(targetClasses);
     }
-    private Stream<ClassesNode> nodesContainedInScope(Stream<JavaClass> originClasses) {
-        Stream<ClassesNode> packageNodes = originClasses
-        .map(JavaClass::getPackage)
-        .map(JavaPackage::getName)
-        .map(id -> id + ".package")
+    private Stream<ClassesNode> nodesContainedInSubproject(Stream<JavaClass> classes) {
+        return classes
+        .filter(this::belongsToSameSubproject)
+        .map(CodeNode::findEnclosingNamedClass)
+        .map(JavaClass::getName)
         .map(this::idWithSubprojectIndex)
         .map(getMap()::getNodeForID)
-        .filter(node -> node != null)
+        .map(NodeModel::getParentNode)
         .map(ClassesNode.class::cast);
-        return packageNodes;
+
     }
 }

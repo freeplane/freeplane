@@ -122,37 +122,32 @@ public class ClassNode extends CodeNode {
         cycleFinder.addNode(this);
         cycleFinder.stopSearchHere();
         cycleFinder.exploreGraph(Collections.singleton(this),
-                this::connectedTargetNodesInTheSameScope,
-                this::connectedOriginNodesInTheSameScope);
+                this::connectedTargetNodesInSubproject,
+                this::connectedOriginNodesInSubproject);
         LinkedHashSet<CodeNode> cycles = cycleFinder.findSimpleCycles().stream()
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
         return cycles;
     }
 
-    private Stream<CodeNode> connectedOriginNodesInTheSameScope(CodeNode node) {
+    private Stream<CodeNode> connectedOriginNodesInSubproject(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInScope(originClasses);
+        return nodesContainedInSubproject(originClasses);
     }
 
-    private Stream<CodeNode> connectedTargetNodesInTheSameScope(CodeNode node) {
+    private Stream<CodeNode> connectedTargetNodesInSubproject(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInScope(targetClasses);
+        return nodesContainedInSubproject(targetClasses);
     }
-    private Stream<CodeNode> nodesContainedInScope(Stream<JavaClass> originClasses) {
-        return originClasses
-        .filter(this::isContainedInScope)
+    private Stream<CodeNode> nodesContainedInSubproject(Stream<JavaClass> classes) {
+        return classes
+        .filter(this::belongsToSameSubproject)
         .map(CodeNode::findEnclosingNamedClass)
         .map(JavaClass::getName)
         .map(this::idWithSubprojectIndex)
         .map(getMap()::getNodeForID)
         .map(CodeNode.class::cast);
-    }
-
-    private boolean isContainedInScope(JavaClass dependencyClass) {
-        return  dependencyClass.getPackage().equals(javaClass.getPackage())
-                && belongsToSameSubproject(dependencyClass);
     }
 }
