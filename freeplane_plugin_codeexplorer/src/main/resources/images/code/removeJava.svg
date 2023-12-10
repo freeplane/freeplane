@@ -3,6 +3,6 @@
 <svg fill="none" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
  <path d="m1.0395 4.0647c0-0.43468 0.34626-0.78706 0.77339-0.78706h8.5073c0.42707 0 0.77339 0.35238 0.77339 0.78706v3.5418c0 2.8254-2.2507 5.1159-5.027 5.1159-2.7764 0-5.027-2.2905-5.027-5.1159z" fill="#e7effd" stroke="#333333"/>
  <path d="m11.094 3.2776h1.5468c1.2814 0 2.3202 1.0572 2.3202 2.3612s-1.0388 2.3612-2.3202 2.3612h-1.5468z" stroke="#333333"/>
- <path d="m3.9661 6.0952c3.8354 3.8354 3.9226 3.7483 3.9226 3.7483" fill="#0071bc" stroke="#0071bc" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
- <path d="m7.8362 5.9745c-3.9032 3.9032-3.8176 3.9888-3.8176 3.9888" fill="#0071bc" stroke="#0071bc" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+ <path d="m3.9661 6.0952c3.8354 3.8354 3.9226 3.7483 3.9226 3.7483" fill="#bc0009" stroke="#bc0009" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+ <path d="m7.8362 5.9745c-3.9032 3.9032-3.8176 3.9888-3.8176 3.9888" fill="#bc0009" stroke="#bc0009" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
 </svg>
