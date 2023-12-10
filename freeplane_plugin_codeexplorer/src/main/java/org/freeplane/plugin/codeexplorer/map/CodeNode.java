@@ -18,6 +18,7 @@ import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -189,19 +190,29 @@ public abstract class CodeNode extends NodeModel {
     }
 
     private class MemoizedCodeDependencies implements IExtension{
-        final CodeDependency[] incoming;
-        final CodeDependency[] outgoing;
+        DependencyJudge judge;
+        CodeDependency[] incoming;
+        CodeDependency[] outgoing;
         MemoizedCodeDependencies() {
-            incoming = collectIncomingCodeDependenciesWithKnownOrigins().toArray(CodeDependency[]::new);
-            outgoing = collectOutgoingCodeDependenciesWithKnownTargets().toArray(CodeDependency[]::new);
+            update();
+        }
 
+        private void update() {
+            DependencyJudge currentJudge = getMap().getJudge();
+            if (judge != currentJudge) {
+                judge = currentJudge;
+                incoming = collectIncomingCodeDependenciesWithKnownOrigins().toArray(CodeDependency[]::new);
+                outgoing = collectOutgoingCodeDependenciesWithKnownTargets().toArray(CodeDependency[]::new);
+            }
         }
 
         Stream<CodeDependency> incoming() {
+            update();
             return Stream.of(incoming).parallel();
         }
 
         Stream<CodeDependency> outgoing() {
+            update();
             return Stream.of(outgoing).parallel();
         }
     }

@@ -21,6 +21,7 @@ class CodeConnectorModel extends ConnectorModel {
         this.weight = weight;
         this.goesUp = goesUp;
         this.dependencyVerdict = dependencyVerdict;
+        int i = 0;
     }
 
     int weight() {

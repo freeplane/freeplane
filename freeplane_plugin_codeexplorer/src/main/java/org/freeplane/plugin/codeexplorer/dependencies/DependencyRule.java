@@ -31,8 +31,8 @@ public class DependencyRule {
     }
 
     public Optional<DependencyVerdict> match(Dependency dependency, boolean goesUp) {
-        return this.originMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getOriginClass()).getName()) &&
-               this.targetMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getTargetClass()).getName()) &&
+        return this.originMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getOriginClass()).getName().replace('$', '.')) &&
+               this.targetMatcher.matches(CodeNode.findEnclosingNamedClass(dependency.getTargetClass()).getName().replace('$', '.')) &&
                this.dependencyDirection.matches(goesUp) ? Optional.of(verdict): Optional.empty();
     }
 

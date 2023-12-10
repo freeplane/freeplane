@@ -56,6 +56,10 @@ public class CodeMap extends MapModel {
         this.judge = judge;
     }
 
+    public DependencyJudge getJudge() {
+        return judge;
+    }
+
     @Override
     public void setRoot(NodeModel newRoot) {
         NodeModel oldRoot = getRootNode();
