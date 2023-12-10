@@ -1,12 +1,14 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
@@ -81,19 +84,11 @@ class CodeExplorerConfigurator extends JPanel {
         fileChooser.setFileFilter(filter);
     }
 
-    private JPanel createConfigurationsPanel() {
-        JPanel configPanel = new JPanel();
-        configPanel.setLayout(new BorderLayout());
-
-        JLabel configurationsLabel = new JLabel("Configurations", SwingConstants.CENTER);
-        configurationsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        configPanel.add(configurationsLabel, BorderLayout.NORTH);
-
+    private JComponent createConfigurationsPanel() {
         configTableModel = new DefaultTableModel(new Object[]{""}, 0);
         configTable = new JTable(configTableModel);
         configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
-        configPanel.add(configTableScrollPane, BorderLayout.CENTER);
 
         configTable.getSelectionModel().addListSelectionListener(e -> updateConfiguration());
 
@@ -107,16 +102,11 @@ class CodeExplorerConfigurator extends JPanel {
                 }
             }
         });
-        return configPanel;
-    }
+        return configTableScrollPane;
+     }
 
     @SuppressWarnings("serial")
-    private JPanel createLocationsPanel() {
-        JPanel locationsPanel = new JPanel();
-        locationsPanel.setLayout(new BorderLayout());
-
-        JLabel header = new JLabel("Locations", SwingConstants.CENTER);
-        locationsPanel.add(header, BorderLayout.NORTH);
+    private JComponent createLocationsPane(JLabel paneLabel, JToggleButton helpToggleButton) {
 
         locationsTableModel = new DefaultTableModel(new Object[]{""}, 0) {
             @Override
@@ -153,37 +143,41 @@ class CodeExplorerConfigurator extends JPanel {
         helpText.setEditable(false); // make it read-only if it's a text area
         cardPanel.add(new JScrollPane(helpText), "Help");
 
-        helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
+        String rulesHelpHeaderText = "Rules Help";
+        String locationsHeaderText = "Locations";
+        paneLabel.addHierarchyListener(new HierarchyListener() {
+
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+                Component component = e.getComponent();
+                if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) && component.isShowing()) {
+                    String text = paneLabel.getText();
+                    paneLabel.setText(locationsHeaderText);
+                    Dimension locationPreferredSize = paneLabel.getPreferredSize();
+                    paneLabel.setText(rulesHelpHeaderText);
+                    Dimension rulesPreferredSize = paneLabel.getPreferredSize();
+                    paneLabel.setText(text);
+                    paneLabel.setMinimumSize(new Dimension(Math.max(locationPreferredSize.width, rulesPreferredSize.width), Math.max(locationPreferredSize.height, rulesPreferredSize.height)));
+                    paneLabel.removeHierarchyListener(this);
+                }
+            }
+        });
         helpToggleButton.addActionListener(e -> {
-            if(! header.isMinimumSizeSet())
-                header.setMinimumSize(header.getPreferredSize());
             if (helpToggleButton.isSelected()) {
-                header.setText("Rules Help");
+                paneLabel.setText(rulesHelpHeaderText);
                 cardLayout.show(cardPanel, "Help");
             } else {
-                header.setText("Locations");
+                paneLabel.setText(locationsHeaderText);
                 cardLayout.show(cardPanel, "Locations");
             }
         });
-
-        locationsPanel.add(cardPanel, BorderLayout.CENTER);
-
-        return locationsPanel;
+        return cardPanel;
     }
 
-    private JPanel createRulesPanel() {
-        JPanel rulesPanel = new JPanel();
-        rulesPanel.setLayout(new BorderLayout());
-
-        JLabel rulesLabel = new JLabel("Rules", SwingConstants.CENTER);
-        rulesLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        rulesPanel.add(rulesLabel, BorderLayout.NORTH);
-
+    private JComponent createRulesPane() {
         rules = new JTextArea();
         JScrollPane rulesScrollPane = new JScrollPane(rules);
-        rulesPanel.add(rulesScrollPane, BorderLayout.CENTER);
-
-        return rulesPanel;
+        return rulesScrollPane;
     }
 
 
@@ -428,31 +422,49 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void createPanels() {
-        JPanel configurationsPanel = createConfigurationsPanel();
-        JPanel locationsPanel = createLocationsPanel();
-        JPanel rulesPanel = createRulesPanel();
-        JPanel configButtonsPanel = createConfigButtons();
-
-        JPanel unifiedButtonsPanel = createUnifiedButtonsPanel();
-
         setLayout(new GridBagLayout());
+
         GridBagConstraints gbc = new GridBagConstraints();
+        JLabel configurationsLabel = new JLabel("Configurations", SwingConstants.CENTER);
+        JComponent configurationTableToolbar = createConfigurationTableToolbar();
+        JComponent configurationsPanel = createConfigurationsPanel();
+        JLabel locationsLabel = new JLabel("Locations", SwingConstants.CENTER);
+        helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
+        JComponent locationsToolbar = createLocationButtons(helpToggleButton);
+        JComponent locationsPane = createLocationsPane(locationsLabel, helpToggleButton);
+        JLabel rulesLabel = new JLabel("Rules", SwingConstants.CENTER);
+        JComponent rulesPane = createRulesPane();
+
+
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridwidth = 1; // Span across all columns
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 1; // Span across all columns
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor=GridBagConstraints.CENTER;
+        add(configurationsLabel, gbc);
+
+        gbc.gridy = 1;
         gbc.anchor=GridBagConstraints.LINE_START;
-        add(configButtonsPanel, gbc);
+        add(configurationTableToolbar, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.anchor=GridBagConstraints.CENTER;
+        add(locationsLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         gbc.gridwidth = 2;
-        add(unifiedButtonsPanel, gbc);
+        gbc.anchor=GridBagConstraints.LINE_START;
+        add(locationsToolbar, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.anchor=GridBagConstraints.CENTER;
+        add(rulesLabel, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
@@ -461,26 +473,26 @@ class CodeExplorerConfigurator extends JPanel {
 
         gbc.gridx = 1;
         gbc.weightx = 2;
-        add(locationsPanel, gbc);
+        add(locationsPane, gbc);
 
         gbc.gridx = 2;
         gbc.weightx = 1;
-        add(rulesPanel, gbc);
+        add(rulesPane, gbc);
     }
 
-    private JPanel createConfigButtons() {
-        JPanel configButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JComponent createConfigurationTableToolbar() {
+        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
         JButton addConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.add");
         addConfigurationButton.addActionListener(e -> addNewConfiguration());
         JButton deleteConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
         deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
-        configButtonsPanel.add(addConfigurationButton);
-        configButtonsPanel.add(deleteConfigurationButton);
-        return configButtonsPanel;
+        toolbar.add(addConfigurationButton);
+        toolbar.add(deleteConfigurationButton);
+        return toolbar;
     }
 
-    private JPanel createUnifiedButtonsPanel() {
-        JPanel unifiedButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JComponent createLocationButtons(JToggleButton helpToggleButton) {
+        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
         JButton applyButton = TranslatedElementFactory.createButtonWithIcon("code.apply");
         applyButton.addActionListener(e ->applyConfigurationRules());
 
@@ -515,7 +527,7 @@ class CodeExplorerConfigurator extends JPanel {
 
         JComponent panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, helpToggleButton};
         Stream.of(panelButtons).forEach(button -> {
-            unifiedButtonsPanel.add(button);
+            toolbar.add(button);
         });
 
         JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, applyButton, revertButton};
@@ -532,8 +544,8 @@ class CodeExplorerConfigurator extends JPanel {
 
         configTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
         helpToggleButton.addActionListener(l -> enableButtons.run());
+        return toolbar;
 
-        return unifiedButtonsPanel;
     }
 
     public List<File> getSelectedLocations() {
