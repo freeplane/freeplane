@@ -1,5 +1,7 @@
 package org.freeplane.plugin.codeexplorer.map;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 import org.freeplane.features.attribute.AttributeRegistry;
@@ -27,6 +29,24 @@ public class CodeMap extends MapModel {
         setRoot(new EmptyNodeModel(this, "No locations selected"));
         getRootNode().setFolded(false);
     }
+
+    @SuppressWarnings("serial")
+    @Override
+    protected Map<String, NodeModel> createNodeByIdMap() {
+        return new ConcurrentHashMap<String, NodeModel>() {
+
+            @Override
+            public NodeModel put(String key, NodeModel value) {
+                if(value == null)
+                    return remove(key);
+                else
+                    return super.put(key, value);
+            }
+
+        };
+    }
+
+
     @Override
     public String getTitle() {
         return "Code: " + getRootNode().toString();

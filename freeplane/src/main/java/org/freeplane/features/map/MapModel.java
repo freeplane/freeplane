@@ -60,10 +60,14 @@ public class MapModel {
         extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
-		nodes = new ConcurrentHashMap<String, NodeModel>();
+		nodes = createNodeByIdMap();
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
+
+    protected Map<String, NodeModel> createNodeByIdMap() {
+        return new HashMap<String, NodeModel>();
+    }
 
 	public MapModel(INodeDuplicator nodeDuplicator) {
 		this(nodeDuplicator, null, null);
