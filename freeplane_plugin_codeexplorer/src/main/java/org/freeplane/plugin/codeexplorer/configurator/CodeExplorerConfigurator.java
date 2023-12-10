@@ -376,7 +376,11 @@ class CodeExplorerConfigurator extends JPanel {
             File[] files = fileChooser.getSelectedFiles();
             for (File file : files) {
                 String path = file.getAbsolutePath();
-                if(! selectedConfig.containsLocation(path)) {
+                if(! file.exists()) {
+                    path = path.trim();
+                    file = new File(path);
+                }
+                if (! selectedConfig.containsLocation(path) && file.exists()) {
                     locationsTableModel.addRow(new Object[]{path});
                     selectedConfig.addLocation(file);
                     configurationChange = ConfigurationChange.CODE_BASE;
