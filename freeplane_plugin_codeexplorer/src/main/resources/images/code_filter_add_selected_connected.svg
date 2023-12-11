@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
  <defs>
-  <marker id="Triangle_reversed" overflow="visible" markerHeight="0.5" markerWidth="0.5" orient="auto" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
-   <g transform="rotate(180)">
-    <path transform="scale(.5)" d="m5.77 0-8.65 5v-10z" fill="#333333" fill-rule="evenodd" stroke="#333333" stroke-width="1pt"/>
-   </g>
-  </marker>
-  <marker id="Triangle_Fnone_S-333333" overflow="visible" markerHeight="0.5" markerWidth="0.5" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
-   <path transform="scale(.5)" d="m5.77 0-8.65 5v-10z" fill="#333333" fill-rule="evenodd" stroke="#333333" stroke-width="1pt"/>
-  </marker>
-  <marker id="Triangle_Fnone_S-333333-8" overflow="visible" markerHeight="0.5" markerWidth="0.5" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
-   <path transform="scale(.5)" d="m5.77 0-8.65 5v-10z" fill="#333333" fill-rule="evenodd" stroke="#333333" stroke-width="1pt"/>
+  <marker id="RoundedArrow_F-333333_S-333333" overflow="visible" markerHeight="0.40000001" markerWidth="0.40000001" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-0.21115-4.1056 6.4223 3.2111a1 1 90 0 1 0 1.7889l-6.4223 3.2111a1.2361 1.2361 31.717 0 1-1.7889-1.1056v-6a1.2361 1.2361 148.28 0 1 1.7889-1.1056z" fill="#333333" fill-rule="evenodd"/>
   </marker>
  </defs>
  <g transform="matrix(.49824 0 0 .49563 .79313 8.3131)" fill="#0071bc" stroke="#0071bc" stroke-width="2.0123" data-name="Layer 2">
@@ -21,7 +13,7 @@
   <path d="m18.487 7.7401v6.9606" style="paint-order:fill markers stroke"/>
   <path d="m21.968 11.22h-6.9606" style="paint-order:fill markers stroke"/>
  </g>
- <path d="m13.043 7.3519s10.238 1.2759 10.17 2.831c-0.06009 1.3721-9.1842 2.4834-9.1842 2.4834" fill="none" marker-end="url(#Triangle_Fnone_S-333333)" stroke="#333333" stroke-linecap="square" stroke-miterlimit="0" style="paint-order:fill markers stroke"/>
- <path d="m16.571 18.769s-7.2448-2.0763-7.1965-4.7557c0.04276-2.3641 7.2529-4.2788 7.2529-4.2788" fill="none" marker-end="url(#Triangle_Fnone_S-333333)" marker-start="url(#Triangle_reversed)" stroke="#333333" stroke-linecap="square" stroke-miterlimit="0" style="paint-order:fill markers stroke"/>
- <path d="m13.043 15.927s10.238 1.2759 10.17 2.831c-0.06009 1.3721-9.1842 2.4834-9.1842 2.4834" fill="none" marker-end="url(#Triangle_Fnone_S-333333-8)" stroke="#333333" stroke-linecap="square" stroke-miterlimit="0" style="paint-order:fill markers stroke"/>
+ <path d="m22.064 16.215h-7.4801" fill="#333333" marker-end="url(#RoundedArrow_F-333333_S-333333)" stroke="#333333" stroke-miterlimit="0" stroke-width="2" style="paint-order:fill markers stroke"/>
+ <path d="m10.796 12.222h7.4801" fill="#333333" marker-end="url(#RoundedArrow_F-333333_S-333333)" stroke="#333333" stroke-miterlimit="0" stroke-width="2" style="paint-order:fill markers stroke"/>
+ <path d="m10.796 20.208h7.4801" fill="#333333" marker-end="url(#RoundedArrow_F-333333_S-333333)" stroke="#333333" stroke-miterlimit="0" stroke-width="2" style="paint-order:fill markers stroke"/>
 </svg>
