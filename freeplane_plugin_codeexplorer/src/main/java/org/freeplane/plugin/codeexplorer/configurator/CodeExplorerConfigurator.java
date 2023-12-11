@@ -118,9 +118,9 @@ class CodeExplorerConfigurator extends JPanel {
         locationsTable = new AutoResizedTable(locationsTableModel);
         locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        CellRendererWithTooltip rightAlignRenderer = new CellRendererWithTooltip();
+        CellRendererWithTooltip cellRenderer = new CellRendererWithTooltip();
         TableColumn locationsColumn = locationsTable.getColumnModel().getColumn(0);
-        locationsColumn.setCellRenderer(rightAlignRenderer);
+        locationsColumn.setCellRenderer(cellRenderer);
         JScrollPane locationsTableScrollPane = new JScrollPane(locationsTable);
         locationsTableScrollPane.addComponentListener(new ComponentAdapter() {
 
