@@ -22,6 +22,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
@@ -102,11 +103,13 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         allDependencies = Collections.emptyList();
         DependenciesWrapper dataModel = new DependenciesWrapper();
         dependencyViewer.setModel(dataModel);
+        CellRendererWithTooltip cellRenderer = new CellRendererWithTooltip();
+
         TableColumnModel columnModel = dependencyViewer.getColumnModel();
-        updateColumn(columnModel, 0, 200);
-        updateColumn(columnModel, 1, 400);
-        updateColumn(columnModel, 2, 400);
-        updateColumn(columnModel, 3, 1000);
+        updateColumn(columnModel, 0, 200, cellRenderer);
+        updateColumn(columnModel, 1, 400, cellRenderer);
+        updateColumn(columnModel, 2, 400, cellRenderer);
+        updateColumn(columnModel, 3, 1000, cellRenderer);
         dependencyViewer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dependencyViewer.setCellSelectionEnabled(true);
 
@@ -132,7 +135,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     }
 
     private void updateDependencyFilter() {
-        String[] filteredWords = filterField.getText().trim().split("\\W+");
+        String[] filteredWords = filterField.getText().trim().split("[^\\w:.$]+");
         @SuppressWarnings("unchecked")
         TableRowSorter<DependenciesWrapper> rowSorter = (TableRowSorter<DependenciesWrapper>)dependencyViewer.getRowSorter();
         if(filteredWords.length == 1 && filteredWords[0].isEmpty())
@@ -147,7 +150,17 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
                 private boolean containsAny(CodeDependency dependency, String[] filteredWords) {
                     return Stream.of(filteredWords).allMatch(w ->
-                    dependency.descriptionContains(w));
+                    extracted(dependency, w));
+                }
+
+                private boolean extracted(CodeDependency dependency, String searchedString) {
+                    if(searchedString.startsWith("origin:"))
+                        return dependency.getOriginClass().getName().contains(searchedString.substring("origin:".length()));
+                    if(searchedString.startsWith("target:"))
+                        return dependency.getTargetClass().getName().contains(searchedString.substring("target:".length()));
+                    if(searchedString.startsWith("verdict:"))
+                        return dependency.describeVerdict().contains(searchedString.substring("verdict:".length()));
+                    return dependency.descriptionContains(searchedString);
                 }
             };
 
@@ -157,11 +170,12 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         countLabel.setText("( " + rowSorter.getViewRowCount() + " / " + rowSorter.getModelRowCount() + " )");
     }
 
-    private void updateColumn(TableColumnModel columns, int index, int columnWidth) {
+    private void updateColumn(TableColumnModel columns, int index, int columnWidth, TableCellRenderer cellRenderer) {
         int scaledWidth = (int) (columnWidth*UITools.FONT_SCALE_FACTOR);
         TableColumn columnModel = columns.getColumn(index);
         columnModel.setWidth(scaledWidth);
         columnModel.setPreferredWidth(scaledWidth);
+        columnModel.setCellRenderer(cellRenderer);
     }
 
     @Override
