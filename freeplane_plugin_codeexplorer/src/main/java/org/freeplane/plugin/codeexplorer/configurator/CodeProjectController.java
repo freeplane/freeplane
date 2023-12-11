@@ -157,6 +157,7 @@ public class CodeProjectController implements IExtension {
             CodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
             CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
             codeExplorer.setJudge(selectedConfiguration.getDependencyJudge());
+            codeDependenciesPanel.update();
         }
     }
 
