@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -134,6 +135,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         add(scrollPane, BorderLayout.CENTER);
     }
 
+
     private void updateDependencyFilter() {
         String[] filteredWords = filterField.getText().trim().split("[^\\w:.$]+");
         @SuppressWarnings("unchecked")
@@ -142,25 +144,31 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             rowSorter.setRowFilter(null);
         else {
             RowFilter<DependenciesWrapper, Integer> dependencyFilter = new RowFilter<DependenciesWrapper, Integer>() {
+                Predicate<CodeDependency> combinedFilter = Stream.of(filteredWords)
+                        .map(this::createPredicateFromString)
+                        .reduce(x -> true, Predicate::and);
+                private Predicate<CodeDependency> createPredicateFromString(String searchedString) {
+                    if (searchedString.startsWith("origin:")) {
+                        String value = searchedString.substring("origin:".length());
+                        return dependency -> dependency.getOriginClass().getName().contains(value);
+                    } else if (searchedString.startsWith("target:")) {
+                        String value = searchedString.substring("target:".length());
+                        return dependency -> dependency.getTargetClass().getName().contains(value);
+                    } else if (searchedString.startsWith("verdict:")) {
+                        String value = searchedString.substring("verdict:".length());
+                        return dependency -> dependency.describeVerdict().contains(value);
+                    } else if (searchedString.startsWith("description:")) {
+                        String value = searchedString.substring("description:".length());
+                        return dependency -> dependency.getDescription().contains(value);
+                    } else {
+                        return dependency -> dependency.descriptionContains(searchedString);
+                    }
+                }
+
                 @Override
                 public boolean include(RowFilter.Entry<? extends DependenciesWrapper, ? extends Integer> entry) {
                     CodeDependency row = allDependencies.get(entry.getIdentifier());
-                    return containsAny(row, filteredWords);
-                }
-
-                private boolean containsAny(CodeDependency dependency, String[] filteredWords) {
-                    return Stream.of(filteredWords).allMatch(w ->
-                    extracted(dependency, w));
-                }
-
-                private boolean extracted(CodeDependency dependency, String searchedString) {
-                    if(searchedString.startsWith("origin:"))
-                        return dependency.getOriginClass().getName().contains(searchedString.substring("origin:".length()));
-                    if(searchedString.startsWith("target:"))
-                        return dependency.getTargetClass().getName().contains(searchedString.substring("target:".length()));
-                    if(searchedString.startsWith("verdict:"))
-                        return dependency.describeVerdict().contains(searchedString.substring("verdict:".length()));
-                    return dependency.descriptionContains(searchedString);
+                    return combinedFilter.test(row);
                 }
             };
 
@@ -169,7 +177,6 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         scrollSelectedToVisible();
         countLabel.setText("( " + rowSorter.getViewRowCount() + " / " + rowSorter.getModelRowCount() + " )");
     }
-
     private void updateColumn(TableColumnModel columns, int index, int columnWidth, TableCellRenderer cellRenderer) {
         int scaledWidth = (int) (columnWidth*UITools.FONT_SCALE_FACTOR);
         TableColumn columnModel = columns.getColumn(index);
