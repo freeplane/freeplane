@@ -157,8 +157,8 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
                     } else if (searchedString.startsWith("verdict:")) {
                         String value = searchedString.substring("verdict:".length());
                         return dependency -> dependency.describeVerdict().contains(value);
-                    } else if (searchedString.startsWith("description:")) {
-                        String value = searchedString.substring("description:".length());
+                    } else if (searchedString.startsWith("dependency:")) {
+                        String value = searchedString.substring("dependency:".length());
                         return dependency -> dependency.getDescription().toLowerCase().contains(value);
                     } else {
                         return dependency -> dependency.getDependency().getDescription().toLowerCase().contains(searchedString) || dependency.describeVerdict().contains(searchedString);
