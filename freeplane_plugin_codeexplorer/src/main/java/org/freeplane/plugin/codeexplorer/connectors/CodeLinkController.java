@@ -40,6 +40,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.plugin.codeexplorer.CodeModeController;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
@@ -131,7 +132,12 @@ public class CodeLinkController extends LinkController {
     }
 
     private boolean areConnectorNodesSelected(ConnectorModel connector) {
-        IMapSelection selection = Controller.getCurrentController().getSelection();
+        Controller controller = Controller.getCurrentController();
+        if (controller.getModeController().getModeName() != CodeModeController.MODENAME)
+            return false;
+        IMapSelection selection = controller.getSelection();
+        if(selection == null)
+            return false;
         return areConnectorNodesSelected((CodeConnectorModel)connector, selection);
     }
 
