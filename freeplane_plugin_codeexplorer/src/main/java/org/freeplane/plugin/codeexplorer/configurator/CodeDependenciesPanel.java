@@ -137,7 +137,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
 
     private void updateDependencyFilter() {
-        String[] filteredWords = filterField.getText().trim().split("[^\\w:.$]+");
+        String[] filteredWords = filterField.getText().toLowerCase().trim().split("[^\\w:.$]+");
         @SuppressWarnings("unchecked")
         TableRowSorter<DependenciesWrapper> rowSorter = (TableRowSorter<DependenciesWrapper>)dependencyViewer.getRowSorter();
         if(filteredWords.length == 1 && filteredWords[0].isEmpty())
@@ -150,18 +150,18 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
                 private Predicate<CodeDependency> createPredicateFromString(String searchedString) {
                     if (searchedString.startsWith("origin:")) {
                         String value = searchedString.substring("origin:".length());
-                        return dependency -> dependency.getOriginClass().getName().contains(value);
+                        return dependency -> dependency.getOriginClass().getName().toLowerCase().contains(value);
                     } else if (searchedString.startsWith("target:")) {
                         String value = searchedString.substring("target:".length());
-                        return dependency -> dependency.getTargetClass().getName().contains(value);
+                        return dependency -> dependency.getTargetClass().getName().toLowerCase().contains(value);
                     } else if (searchedString.startsWith("verdict:")) {
                         String value = searchedString.substring("verdict:".length());
                         return dependency -> dependency.describeVerdict().contains(value);
                     } else if (searchedString.startsWith("description:")) {
                         String value = searchedString.substring("description:".length());
-                        return dependency -> dependency.getDescription().contains(value);
+                        return dependency -> dependency.getDescription().toLowerCase().contains(value);
                     } else {
-                        return dependency -> dependency.descriptionContains(searchedString);
+                        return dependency -> dependency.getDependency().getDescription().toLowerCase().contains(searchedString) || dependency.describeVerdict().contains(searchedString);
                     }
                 }
 

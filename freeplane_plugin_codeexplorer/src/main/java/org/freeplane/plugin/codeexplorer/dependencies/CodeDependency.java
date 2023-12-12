@@ -68,10 +68,6 @@ public class CodeDependency {
         return description;
     }
 
-    public boolean descriptionContains(String string) {
-        return dependency.getDescription().contains(string) || describeVerdict().contains(string);
-    }
-
     public String describeVerdict() {
         return dependencyVerdict.name().toLowerCase() + " (goes " +  (goesUp ? "up" : "down") + ")";
     }
