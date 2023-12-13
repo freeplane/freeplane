@@ -211,7 +211,7 @@ if [ -d "/usr/share/java" ] ; then
 fi
 
 _debug "Calling: "\
-"${JAVACMD}" -Xmx512m\
+"${JAVACMD}" -Xmx1g\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
@@ -223,7 +223,7 @@ _debug "Calling: "\
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
 
 # now actually launch Freeplane
-"${JAVACMD}" -Xmx512m\
+"${JAVACMD}" -Xmx1g\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\

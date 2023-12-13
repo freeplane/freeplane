@@ -63,7 +63,7 @@ def defineMacBuildTasks =  { architecture ->
    }
 
    def jpackage_macosxapp = tasks.create ("jpackage_macosxapp_${architecture}", Exec) {
-    def maxHeapOption = project.hasProperty('Xmx') ? project.property('Xmx') : '512m'
+    def maxHeapOption = project.hasProperty('Xmx') ? project.property('Xmx') : '1g'
 
    	commandLine jpackage,
         	 '--name' , 'Freeplane',
