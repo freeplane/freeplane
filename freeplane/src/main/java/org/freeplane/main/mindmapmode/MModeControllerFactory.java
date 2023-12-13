@@ -38,8 +38,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.ui.commandtonode.NewNodeLinkedToMenuItemOnNextClickAction;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
+import org.freeplane.core.ui.commandtonode.NewNodeLinkedToMenuItemOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
@@ -95,6 +95,7 @@ import org.freeplane.features.map.mindmapmode.SummaryNodeMapUpdater;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.SaveAcceleratorPresetsAction;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -120,6 +121,7 @@ import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.OpenUserDirAction;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.features.BlinkingNodeHook;
@@ -293,8 +295,11 @@ public class MModeControllerFactory {
 			}
 		});
 		controller.addAction(new ToggleToolbarAction("ToggleFBarAction", "/fbuttons"));
+		controller.addAction(new SaveAcceleratorPresetsAction());
+		controller.addAction(new OpenUserDirAction());
+
 		SModeControllerFactory.install();
-		modeController.addAction(new SetAcceleratorOnNextClickAction());
+		controller.addAction(new SetAcceleratorOnNextClickAction());
 		modeController.addAction(new NewNodeLinkedToMenuItemOnNextClickAction());
 		modeController.addAction(new ShowNotesInMapAction());
 		//userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);

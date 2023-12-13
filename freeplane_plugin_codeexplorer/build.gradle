@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':freeplane')
+    lib 'com.tngtech.archunit:archunit:1.2.1'
+    lib 'org.jgrapht:jgrapht-core:1.5.2'
+    lib 'com.google.code.gson:gson:2.10.1'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+}

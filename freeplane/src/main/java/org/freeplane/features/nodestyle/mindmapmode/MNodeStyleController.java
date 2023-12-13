@@ -617,7 +617,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void act() {
 				NodeStyleModel.setNodeNumbering(node, enableNodeNumbering);
 				final MapController mapController = modeController.getMapController();
-				mapController.setSaved(node.getMap(), false);
+				mapController.mapSaved(node.getMap(), false);
 				mapController.delayedNodeRefresh(node, NodeStyleController.NODE_NUMBERING, oldValue, enableNodeNumbering);
 			}
 
@@ -630,7 +630,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				NodeStyleModel.setNodeNumbering(node, oldValue);
 				final MapController mapController = modeController.getMapController();
-				mapController.setSaved(node.getMap(), false);
+				mapController.mapSaved(node.getMap(), false);
 				modeController.getMapController().delayedNodeRefresh(node, NodeStyleController.NODE_NUMBERING, enableNodeNumbering, oldValue);
 			}
 		};

@@ -118,6 +118,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
 	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	private static final String LAST_LOCATIONS = "lastLocations";
+    private static final String LAST_MODE = "lastMode";
 	private static boolean PORTABLE_APP = System.getProperty("portableapp", "false").equals("true");
 	private static String USER_DRIVE = System.getProperty("user.home", "").substring(0, 2);
 
@@ -327,6 +328,9 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		if (mapSelectedOnStart != null) {
 			safeOpen(mapSelectedOnStart);
 		}
+		String lastMode = ResourceController.getResourceController().getProperty(LAST_MODE);
+		if(lastMode != null && ! lastMode.equals( Controller.getCurrentModeController().getModeName()))
+		    Controller.getCurrentController().selectMode(lastMode);
 	}
 
 	private void restore() {
@@ -363,8 +367,8 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 			messageArea.setColumns(Math.min(80, message.length() + 5));
 			messageArea.setEditable(false);
 			messageArea.setSize(messageArea.getPreferredSize());
-			final int remove = JOptionPane.showConfirmDialog(frame, 
-					messageArea, 
+			final int remove = JOptionPane.showConfirmDialog(frame,
+					messageArea,
 					"Freeplane", JOptionPane.YES_NO_OPTION);
 			if (remove == JOptionPane.YES_OPTION) {
 				lastOpenedList.remove(recentFile);
@@ -379,6 +383,8 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		    ConfigurationUtils.encodeListValue(getRestoreables(), true));
 	    ResourceController.getResourceController().setProperty(LAST_LOCATIONS,
 	        ConfigurationUtils.encodeListValue(getLastVisitedNodeIds(), true));
+	    ResourceController.getResourceController().setProperty(LAST_MODE,
+	            Controller.getCurrentController().getModeController().getModeName());
 	}
 
 	private void updateLastVisitedNodeIds() {

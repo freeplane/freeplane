@@ -46,7 +46,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 		}
 		
 		final MapModel map = Controller.getCurrentModeController().getController().getMap();
-		Controller.getCurrentModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 	}
 	
 
@@ -146,7 +146,7 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 				final MapModel map = Controller.getCurrentModeController()
 						.getController().getMap();
 				Controller.getCurrentModeController().getMapController()
-						.setSaved(map, false);
+						.mapSaved(map, false);
 			}
 
 			public String getDescription() {

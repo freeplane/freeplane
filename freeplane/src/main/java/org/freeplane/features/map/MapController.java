@@ -81,7 +81,15 @@ import org.freeplane.view.swing.map.NodeView;
 public class MapController extends SelectionController
 implements IExtension, NodeChangeAnnouncer{
 	public enum Direction {
-		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
+		BACK, BACK_N_FOLD, BACK_VISIBLE, FORWARD, FORWARD_N_FOLD, FORWARD_VISIBLE;
+
+	    public boolean isForward() {
+            return ordinal() >= FORWARD.ordinal();
+        }
+
+        public boolean canUnfold() {
+            return this != BACK_VISIBLE && this != Direction.FORWARD_VISIBLE;
+        }
 	}
 
 	private static boolean hasValidSelection() {
@@ -503,14 +511,14 @@ implements IExtension, NodeChangeAnnouncer{
 				null, false, false));
     }
 
-	private void fireFoldingChanged(final NodeModel node) {
+	protected void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
 	    	final MapModel map = node.getMap();
-	    	setSaved(map, false);
+	    	mapSaved(map, false);
 	    }
     }
 
-	private boolean isFoldingPersistentAlways() {
+	protected boolean isFoldingPersistentAlways() {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 		return resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
 	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING);
@@ -638,7 +646,7 @@ implements IExtension, NodeChangeAnnouncer{
 	public void fireMapChanged(final MapChangeEvent event) {
 		final MapModel map = event.getMap();
 		if (map != null && event.setsDirtyFlag()) {
-			setSaved(map, false);
+			mapSaved(map, false);
 		}
 		sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
@@ -922,7 +930,7 @@ implements IExtension, NodeChangeAnnouncer{
 		final NodeModel node = nodeChangeEvent.getNode();
 		final MapModel map = node.getMap();
 		if(nodeChangeEvent.setsDirtyFlag())
-			setSaved(map, false);
+			mapSaved(map, false);
 		if (nodeChangeEvent.updatesModificationTime() && !map.isUndoActionRunning()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
@@ -1183,9 +1191,7 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
-	public void setSaved(final MapModel mapModel, final boolean saved) {
-		mapModel.setSaved(saved);
-	}
+	public void mapSaved(@SuppressWarnings("unused") final MapModel mapModel, @SuppressWarnings("unused") final boolean saved) {/**/}
 
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {

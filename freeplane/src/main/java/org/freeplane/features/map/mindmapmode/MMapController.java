@@ -60,7 +60,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
-import org.freeplane.features.commandsearch.CommandSearchAction;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
@@ -392,7 +391,6 @@ public class MMapController extends MapController {
         modeController.addAction(new NodeUpAction());
         modeController.addAction(new NodeDownAction());
         modeController.addAction(new ConvertCloneToIndependentNodeAction());
-        modeController.addAction(new CommandSearchAction());
     }
 
     public void deleteNode(NodeModel node) {
@@ -499,7 +497,7 @@ public class MMapController extends MapController {
         final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(parent, child, index);
         firePreNodeDelete(nodeDeletionEvent);
         final MapModel map = parent.getMap();
-        setSaved(map, false);
+        mapSaved(map, false);
         parent.remove(index);
         fireNodeDeleted(nodeDeletionEvent);
         deleteSingleSummaryNode(nodeDeletionEvent.parent);
@@ -535,7 +533,7 @@ public class MMapController extends MapController {
 
     @Override
     public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-        setSaved(parent.getMap(), false);
+        mapSaved(parent.getMap(), false);
         super.insertNodeIntoWithoutUndo(newNode, parent, index);
     }
 
@@ -832,7 +830,7 @@ public class MMapController extends MapController {
         fireNodeMoved(nodeMoveEvent);
         if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
             deleteSingleSummaryNode(nodeMoveEvent.oldParent);
-       setSaved(newParent.getMap(), false);
+       mapSaved(newParent.getMap(), false);
         return newIndex;
     }
 
@@ -942,7 +940,7 @@ public class MMapController extends MapController {
 
 
     @Override
-    public void setSaved(final MapModel mapModel, final boolean saved) {
+    public void mapSaved(final MapModel mapModel, final boolean saved) {
         final boolean setTitle = saved != mapModel.isSaved() || mapModel.isReadOnly();
         mapModel.setSaved(saved);
         if (setTitle) {

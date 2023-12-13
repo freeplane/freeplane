@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2000-2023 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license. -->
+<svg version="1.1" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+ <circle cx="5.5" cy="5.5" r="4.95" fill="#bc0009" stroke="#bc0009" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+ <path d="m7 7.5022c0-1.1777 1.2951-1.8961 2.2942-1.2725l4.002 2.4978c0.941 0.58735 0.941 1.9576 0 2.545l-4.002 2.4978c-0.9991 0.6236-2.2942-0.0947-2.2942-1.2725v-4.9956zm1.7647-0.42416c-0.33303-0.20786-0.76474 0.03158-0.76474 0.42416v4.9956c0 0.3926 0.43171 0.632 0.76474 0.4242l4.002-2.4979c0.3137-0.1957 0.3137-0.65249 0-0.84828l-4.002-2.4978z" clip-rule="evenodd" fill="#333333" fill-rule="evenodd"/>
+ <path d="m3.2984 3.2984c4.4032 4.4032 4.4032 4.4032 4.4032 4.4032" fill="#bc0009" stroke="#ffffff" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+ <path d="m7.7016 3.2984c-4.4032 4.4032-4.4032 4.4032-4.4032 4.4032" fill="#bc0009" stroke="#ffffff" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+</svg>

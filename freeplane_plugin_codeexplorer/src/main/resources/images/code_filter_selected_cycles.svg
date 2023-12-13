@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <marker id="Triangle_Fnone_S-333333" overflow="visible" markerHeight="0.5" markerWidth="0.5" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.5)" d="m5.77 0-8.65 5v-10z" fill="#333333" fill-rule="evenodd" stroke="#333333" stroke-width="1pt"/>
+  </marker>
+ </defs>
+ <g transform="matrix(.49824 0 0 .49563 6.0211 4.3595)" fill="#0071bc" stroke="#0071bc" stroke-width="2.0123" data-name="Layer 2">
+  <polygon points="2 2 12 12.62 22 2"/>
+  <polygon points="14 19 10 22 10 10 14 10"/>
+ </g>
+ <path transform="scale(-1)" d="m-15.568-9.906a4.3434 4.3434 0 0 1-4.7137-1.2328 4.3434 4.3434 0 0 1-0.60302-4.8348 4.3434 4.3434 0 0 1 4.2665-2.3529" fill="none" marker-end="url(#Triangle_Fnone_S-333333)" stroke="#333333" stroke-linecap="square" stroke-miterlimit="0" stroke-width="1.4" style="paint-order:fill markers stroke"/>
+ <path d="m8.4318 19.186a4.3434 4.3434 0 0 1-4.7137-1.2328 4.3434 4.3434 0 0 1-0.60302-4.8348 4.3434 4.3434 0 0 1 4.2665-2.3529" fill="none" marker-end="url(#Triangle_Fnone_S-333333)" stroke="#333333" stroke-linecap="square" stroke-miterlimit="0" stroke-width="1.4" style="paint-order:fill markers stroke"/>
+</svg>

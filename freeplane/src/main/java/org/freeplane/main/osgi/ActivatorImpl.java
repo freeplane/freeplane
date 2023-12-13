@@ -37,6 +37,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.application.CommandLineParser;
@@ -52,6 +54,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.launch.Framework;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
 
@@ -89,6 +92,7 @@ class ActivatorImpl implements BundleActivator {
 			if(userDirectory != null)
 				System.setProperty("user.dir", userDirectory);
 			startFramework(context);
+	        addShutdownHook(context);
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
@@ -99,6 +103,27 @@ class ActivatorImpl implements BundleActivator {
 			throw e;
 		}
 	}
+
+    private void addShutdownHook(final BundleContext context) {
+        Thread hook = new Thread() {
+            @Override
+            public void run() {
+                System.out.println("Shutdown hook invoked, stopping OSGi Framework.");
+                try {
+                    Framework systemBundle = context.getBundle(0).adapt(Framework.class);
+                    systemBundle.stop();
+                    systemBundle.waitForStop(20000);
+                    System.out.println("Done");
+
+                } catch (Exception e) {
+                    System.err.println("Failed to cleanly shutdown OSGi Framework: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        };
+        System.out.println("Installing shutdown hook.");
+        Runtime.getRuntime().addShutdownHook(hook);
+    }
 
 	private void loadPlugins(final BundleContext context) {
 		final String installationBaseDir = ApplicationResourceController.INSTALLATION_BASE_DIRECTORY;
@@ -193,6 +218,7 @@ class ActivatorImpl implements BundleActivator {
 			@Override
 			public void run() {
 				starter.createModeControllers(controller);
+		        LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 				installControllerExtensions(context, controller, options);
 				if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 					controller.fireStartupFinished();
@@ -208,6 +234,7 @@ class ActivatorImpl implements BundleActivator {
 				}
 				FilterController.getController(controller).loadDefaultConditions();
 				starter.buildMenus(controller, plugins);
+                ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
 				starter.createFrame();
 			}
 		});
@@ -224,7 +251,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 
 		@Override
-		public void installExtensions(Controller controller) {
+		public void installExtensions(Controller controller, Context extensionsContext) {
 			try {
 				final ServiceReference[] controllerProviders = context.getServiceReferences(
 				    IControllerExtensionProvider.class.getName(), null);
@@ -233,7 +260,7 @@ class ActivatorImpl implements BundleActivator {
 						final ServiceReference controllerProvider = controllerProviders[i];
 						final IControllerExtensionProvider service = (IControllerExtensionProvider) context
 						    .getService(controllerProvider);
-						service.installExtension(controller, options);
+						service.installExtension(controller, options, extensionsContext);
 						context.ungetService(controllerProvider);
 					}
 				}
@@ -269,7 +296,7 @@ class ActivatorImpl implements BundleActivator {
 	private void installControllerExtensions(final BundleContext context, final Controller controller, CommandLineOptions options) {
 		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context, options);
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
-		osgiExtentionInstaller.installExtensions(controller);
+		osgiExtentionInstaller.installExtensions(controller, ExtensionInstaller.Context.MAIN);
 	}
 
 
@@ -289,18 +316,6 @@ class ActivatorImpl implements BundleActivator {
 
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		starter.stop();
-		final Bundle[] bundles = context.getBundles();
-		for (int i = 0; i < bundles.length; i++) {
-			final Bundle bundle = bundles[i];
-			if (bundle.getState() >= Bundle.ACTIVE && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
-				try {
-					bundle.stop();
-				}
-				catch (final Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        starter.stop();
 	}
 }

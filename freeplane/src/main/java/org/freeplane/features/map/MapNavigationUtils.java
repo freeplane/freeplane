@@ -6,7 +6,7 @@ import org.freeplane.features.mode.Controller;
 public class MapNavigationUtils {
 
     public static NodeModel findNext(final Direction direction, NodeModel current, final NodeModel end) {
-    	if (current.getChildCount() != 0) {
+    	if (hasChildren(current, direction)) {
     		final NodeModel next = current.getChildAt(0);
     		if (atEnd(next, end)) {
     			return null;
@@ -69,7 +69,7 @@ public class MapNavigationUtils {
     		break;
     	}
     	for (;;) {
-    		if (current.getChildCount() == 0) {
+    		if (! hasChildren(current, direction)) {
     			if (atEnd(current, end)) {
     				return null;
     			}
@@ -77,5 +77,17 @@ public class MapNavigationUtils {
     		}
     		current = current.getChildAt(current.getChildCount() - 1);
     	}
+    }
+
+    private static boolean hasChildren(NodeModel node, Direction direction) {
+        if (node.getChildCount() == 0)
+            return false;
+        if(direction.canUnfold())
+            return true;
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection == null)
+            return ! node.isFolded();
+        else
+            return ! selection.isFolded(node);
     }
 }

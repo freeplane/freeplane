@@ -186,7 +186,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	// Map: R/W
 	@Override
 	public void setSaved(final boolean isSaved) {
-		Controller.getCurrentModeController().getMapController().setSaved(getDelegate(), isSaved);
+		Controller.getCurrentModeController().getMapController().mapSaved(getDelegate(), isSaved);
 	}
 
     // Map: R/W

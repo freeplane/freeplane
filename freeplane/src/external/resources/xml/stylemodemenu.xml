@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
-	<Entry builder="main_menu">
+	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="styledialog.ok" accelerator="control ENTER" />
 			<Entry name="styledialog.cancel" accelerator="ESCAPE" />

@@ -150,7 +150,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 			public void act() {
 				model.setEquation(newEquation);
 				final MapModel map = Controller.getCurrentModeController().getController().getMap();
-				Controller.getCurrentModeController().getMapController().setSaved(map, false);
+				Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 			}
 
 			public String getDescription() {

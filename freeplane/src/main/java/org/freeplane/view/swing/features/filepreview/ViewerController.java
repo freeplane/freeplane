@@ -492,7 +492,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			@Override
 			public void act() {
 				model.setZoom(size);
-				modeController.getMapController().setSaved(map, false);
+				modeController.getMapController().mapSaved(map, false);
 			}
 
 			@Override
@@ -503,7 +503,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			@Override
 			public void undo() {
 				model.setZoom(oldSize);
-				modeController.getMapController().setSaved(map, false);
+				modeController.getMapController().mapSaved(map, false);
 			}
 		};
 		modeController.execute(actor, map);
