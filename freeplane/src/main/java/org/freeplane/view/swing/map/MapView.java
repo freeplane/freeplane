@@ -2130,7 +2130,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 ? SwingUtilities.convertRectangle(sourceView, sourceView.getMainView().getBounds(), this)
                         : null;
 
-        Rectangle targetRectangle = sourceView != null && sourceView.isContentVisible()
+        Rectangle targetRectangle = targetView != null && targetView.isContentVisible()
                 ? SwingUtilities.convertRectangle(targetView, targetView.getMainView().getBounds(), this)
                         : null;
 
