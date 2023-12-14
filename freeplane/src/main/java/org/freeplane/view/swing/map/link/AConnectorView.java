@@ -74,6 +74,7 @@ abstract class AConnectorView  implements ILinkView {
     	if(isArrowsPoint) {
     		p.addPoint((to.x), (to.y));
     		p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
+    		p.addPoint((int) (to.x + dxn * 0.8d), (int) (to.y + dyn * 0.8d));
     		p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
     		p.addPoint((to.x), (to.y));
     	} else {
