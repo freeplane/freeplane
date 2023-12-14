@@ -20,14 +20,17 @@
 package org.freeplane.features.icon;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
@@ -72,9 +75,9 @@ public class IconController implements IExtension {
 
 // 	final private ModeController modeController;
 	final private Collection<IStateIconProvider> stateIconProviders;
-	
+
 	final private List<IconMouseListener> iconMouseListeners;
-	
+
 	public void addIconMouseListener(final IconMouseListener iconMouseListener) {
 		iconMouseListeners.add(iconMouseListener);
 	}
@@ -131,7 +134,7 @@ public class IconController implements IExtension {
 		final Collection<NamedIcon> icons = iconHandlers.getProperty(node, option, new LinkedList<NamedIcon>());
 		return icons;
 	}
-	
+
 	public final Collection<UIIcon> getStateIcons(final NodeModel node){
 		final LinkedList<UIIcon> icons = new LinkedList<UIIcon>();
 		for(IStateIconProvider provider : stateIconProviders){
@@ -184,4 +187,7 @@ public class IconController implements IExtension {
 		return size;
 	}
 
+    public Map<String, AFreeplaneAction> getAllIconActions() {
+        return Collections.emptyMap();
+    }
 }

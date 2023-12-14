@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 24 24"
+   id="svg3"
+   sodipodi:docname="code_select_visible_cycles.svg"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="17.958333"
+     inkscape:cx="11.944316"
+     inkscape:cy="8.6310906"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3" />
+  <defs
+     id="defs1">
+    <marker
+       id="Triangle_Fnone_S-333333"
+       overflow="visible"
+       markerHeight="0.5"
+       markerWidth="0.5"
+       orient="auto-start-reverse"
+       preserveAspectRatio="xMidYMid"
+       viewBox="0 0 1 1">
+      <path
+         transform="scale(.5)"
+         d="m5.77 0-8.65 5v-10z"
+         fill="#333333"
+         fill-rule="evenodd"
+         stroke="#333333"
+         stroke-width="1pt"
+         id="path1" />
+    </marker>
+  </defs>
+  <path
+     d="m 16.291998,9.906 a 4.3434,4.3434 0 0 1 4.7137,1.2328 4.3434,4.3434 0 0 1 0.60302,4.8348 4.3434,4.3434 0 0 1 -4.2665,2.3529"
+     fill="none"
+     marker-end="url(#Triangle_Fnone_S-333333)"
+     stroke="#333333"
+     stroke-linecap="square"
+     stroke-miterlimit="0"
+     stroke-width="1.4"
+     style="paint-order:fill markers stroke"
+     id="path2" />
+  <path
+     d="m 7.708002,19.186 a 4.3434,4.3434 0 0 1 -4.7137,-1.2328 4.3434,4.3434 0 0 1 -0.60302,-4.8348 4.3434,4.3434 0 0 1 4.2665,-2.3529"
+     fill="none"
+     marker-end="url(#Triangle_Fnone_S-333333)"
+     stroke="#333333"
+     stroke-linecap="square"
+     stroke-miterlimit="0"
+     stroke-width="1.4"
+     style="paint-order:fill markers stroke"
+     id="path3" />
+  <rect
+     x="9.0002899"
+     y="-15.002915"
+     width="5.9994001"
+     height="3.3329999"
+     rx="1.093224"
+     style="fill:#333333;stroke-width:0.6666;fill-opacity:1"
+     id="rect191-3-5"
+     transform="scale(1,-1)"
+     ry="1.093224" />
+  <rect
+     x="9.0002899"
+     y="-9.8937244"
+     width="5.9994001"
+     height="3.3329999"
+     rx="1.093224"
+     style="fill:#333333;stroke-width:0.6666;fill-opacity:1"
+     id="rect3"
+     transform="scale(1,-1)"
+     ry="1.093224" />
+  <rect
+     x="9.0002899"
+     y="-20.112129"
+     width="5.9994001"
+     height="3.3329999"
+     rx="1.093224"
+     style="fill:#333333;stroke-width:0.6666;fill-opacity:1"
+     id="rect4"
+     transform="scale(1,-1)"
+     ry="1.093224" />
+</svg>

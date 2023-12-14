@@ -4,22 +4,22 @@
   <defs id="defs10431">
     <marker style="overflow:visible" id="marker3095" refX="0.0" refY="0.0" orient="auto">
       <g transform="scale(-1.2)" id="g3093">
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,-3.9585227 L 0.54352094,0" id="path3081"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,-3.9585227 L 3.0617053,0" id="path3083"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,-3.9585227 L 5.6537466,0" id="path3085"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,4.1775838 L 0.54352094,0.21974226" id="path3087"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,4.1775838 L 3.0617053,0.21974226" id="path3089"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,4.1775838 L 5.6537466,0.21974226" id="path3091"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,-3.9585227 L 0.54352094,0" id="path3081"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,-3.9585227 L 3.0617053,0" id="path3083"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,-3.9585227 L 5.6537466,0" id="path3085"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,4.1775838 L 0.54352094,0.21974226" id="path3087"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,4.1775838 L 3.0617053,0.21974226" id="path3089"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,4.1775838 L 5.6537466,0.21974226" id="path3091"/>
       </g>
     </marker>
     <marker style="overflow:visible" id="Tail" refX="0.0" refY="0.0" orient="auto">
       <g transform="scale(-1.2)" id="g2677">
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,-3.9585227 L 0.54352094,0" id="path2665"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,-3.9585227 L 3.0617053,0" id="path2667"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,-3.9585227 L 5.6537466,0" id="path2669"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,4.1775838 L 0.54352094,0.21974226" id="path2671"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,4.1775838 L 3.0617053,0.21974226" id="path2673"/>
-        <path style="fill:none;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,4.1775838 L 5.6537466,0.21974226" id="path2675"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,-3.9585227 L 0.54352094,0" id="path2665"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,-3.9585227 L 3.0617053,0" id="path2667"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,-3.9585227 L 5.6537466,0" id="path2669"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -3.8048674,4.1775838 L 0.54352094,0.21974226" id="path2671"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M -1.2866832,4.1775838 L 3.0617053,0.21974226" id="path2673"/>
+        <path style="fill:none;fill-rule:evenodd;stroke:#333333;stroke-width:0.8;stroke-linecap:round" d="M 1.3053582,4.1775838 L 5.6537466,0.21974226" id="path2675"/>
       </g>
     </marker>
   </defs>

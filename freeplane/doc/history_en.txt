@@ -1,6 +1,8 @@
 ==============================
 1.11.9
 ==============================
+Implement JVM code explorer mode based on ArchUnit for visualization of code dependencies and structure
+
 Allow all launchers to use Java up to version 21
 Update scripting api generator
 Introduce new action to easily add new nodes linked to menu commands

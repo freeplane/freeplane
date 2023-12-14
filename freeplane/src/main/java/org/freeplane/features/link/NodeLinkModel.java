@@ -75,4 +75,11 @@ public abstract class NodeLinkModel{
 
     public abstract  NodeLinkModel cloneForSource(NodeModel sourceClone);
 	public abstract NodeLinkModel cloneForSource(NodeModel sourceClone, String targetId);
+
+    @Override
+    public String toString() {
+        return "NodeLinkModel [source=" + source + ", target=" + getTarget() + "]";
+    }
+
+
 }

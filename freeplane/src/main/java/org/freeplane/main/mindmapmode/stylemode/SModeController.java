@@ -25,6 +25,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
@@ -78,9 +79,9 @@ public class SModeController extends MModeController {
 	public int getStatus() {
 		return status;
 	}
-	
+
 	static public final String MODENAME = "StyleMap";
-	
+
 	@Override
 	public String getModeName() {
 		return SModeController.MODENAME;
@@ -95,15 +96,15 @@ public class SModeController extends MModeController {
 	public void setStatus(int status) {
 	   this.status = status;
     }
-	
-	void tryToCloseDialog() {
+
+	boolean tryToCloseDialog() {
 	    final IMapViewManager mapViewManager = getController().getMapViewManager();
 	    final MapModel map = mapViewManager.getMap();
 	    final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 	    final Window dialog = ((DialogController) getController().getViewController()).getDialog();
 	    if (! undoHandler.canUndo()){
 	    	dialog.setVisible(false);
-	    	return;
+	    	return true;
 	    }
 	    final String text = TextUtils.getText("save_unsaved_styles");
 	    final String title = TextUtils.getText("SaveAction.text");
@@ -111,10 +112,11 @@ public class SModeController extends MModeController {
 	    	dialog, text, title,
 	    	JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 	    if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
-	    	return;
+	    	return false;
 	    }
 	    setStatus(returnVal == JOptionPane.YES_OPTION ? JOptionPane.OK_OPTION : JOptionPane.CANCEL_OPTION);
 	    dialog.setVisible(false);
+	    return true;
     }
 
 	@Override
@@ -128,4 +130,5 @@ public class SModeController extends MModeController {
 	public boolean shouldCenterCompactMaps() {
 		return true;
 	}
+
 }

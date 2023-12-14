@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
-	<Entry builder="main_menu">
+	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
@@ -103,6 +103,8 @@
 			<Entry builder="separator" />
 			<Entry name="QuickHighlightAction" />
 			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.BACK_VISIBLE" />
+			<Entry name="QuickFindAction.FORWARD_VISIBLE" />
 			<Entry name="QuickFindAction.FORWARD" />
 		</Entry>
 		<Entry name="mindmaps">

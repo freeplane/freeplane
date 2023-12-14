@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <marker id="Triangle_Fnone_S-333333" overflow="visible" markerHeight="0.5" markerWidth="0.5" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.5)" d="m5.77 0-8.65 5v-10z" fill="#333333" fill-rule="evenodd" stroke="#333333" stroke-width="1pt"/>
+  </marker>
+ </defs>
+ <g transform="matrix(.49824 0 0 .49563 1.7612 8.3131)" fill="#0071bc" stroke="#0071bc" stroke-width="2.0123" data-name="Layer 2">
+  <polygon points="22 2 2 2 12 12.62"/>
+  <polygon points="10 22 10 10 14 10 14 19"/>
+ </g>
+ <path d="m11.914 11.422s10.238 1.2759 10.17 2.831c-0.06009 1.3721-9.1842 2.4834-9.1842 2.4834" fill="none" marker-end="url(#Triangle_Fnone_S-333333)" stroke="#333333" stroke-linecap="square" stroke-miterlimit="0" style="paint-order:fill markers stroke"/>
+</svg>

@@ -29,7 +29,6 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.icon.mindmapmode.MIconController;
 
 public class IconIndexer {
     private List<IconItem> iconItems;
@@ -47,8 +46,10 @@ public class IconIndexer {
 
     private void load()
     {
-        MIconController iconController = (MIconController) IconController.getController();
+        IconController iconController = IconController.getController();
         Map<String, AFreeplaneAction> iconActions = iconController.getAllIconActions();
+        if(iconActions.isEmpty())
+            return;
         for (final IconGroup iconGroup : IconStoreFactory.ICON_STORE.getGroups()) {
             addIconGroup("", iconGroup, iconActions);
         }

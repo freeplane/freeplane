@@ -30,7 +30,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
 
-class OpenUserDirAction extends AFreeplaneAction {
+public class OpenUserDirAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public OpenUserDirAction() {
