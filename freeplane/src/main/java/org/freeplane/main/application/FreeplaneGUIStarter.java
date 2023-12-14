@@ -243,12 +243,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				LinkController.install();
 				IconController.installConditionControllers();
 				HelpController.install();
-                controller.addAction(new NextNodeAction(Direction.FORWARD_VISIBLE));
-                controller.addAction(new NextNodeAction(Direction.BACK_VISIBLE));
-				controller.addAction(new NextNodeAction(Direction.FORWARD));
-				controller.addAction(new NextNodeAction(Direction.BACK));
-				controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
-				controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+				Stream.of(Direction.values())
+				    .filter(direction -> ! direction.removesFilter())
+				    .forEach(direction ->controller.addAction(new NextNodeAction(direction)));
 				Arrays.stream(FreeSelectNodeAction.Direction.values())
 						 .forEach(d -> controller.addAction(new FreeSelectNodeAction(d)));
 				controller.addAction(NextPresentationItemAction.createFoldingAction());

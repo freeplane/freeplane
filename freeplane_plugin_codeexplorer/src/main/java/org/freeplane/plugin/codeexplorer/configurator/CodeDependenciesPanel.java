@@ -35,9 +35,11 @@ import javax.swing.table.TableRowSorter;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
@@ -45,9 +47,10 @@ import org.freeplane.plugin.codeexplorer.map.ClassNode;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
+import com.kitfox.svg.Filter;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
+class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener, IMapChangeListener{
 
     private static final String[] COLUMN_NAMES = new String[]{"Verdict", "Origin", "Target","Dependency"};
 
@@ -225,6 +228,12 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     @Override
     public void onSelectionSetChange(IMapSelection selection) {
         update(selection);
+    }
+
+    @Override
+    public void mapChanged(MapChangeEvent event) {
+        if(event.getProperty().equals(Filter.class))
+            update();
     }
 
 

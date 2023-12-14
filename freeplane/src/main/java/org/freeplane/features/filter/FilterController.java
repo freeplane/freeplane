@@ -40,6 +40,7 @@ import java.io.Writer;
 import java.security.AccessControlException;
 import java.util.Collection;
 import java.util.Vector;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -312,9 +313,11 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		controller.addAction(new QuickAndFilterAction(this, quickEditor));
 		controller.addAction(new QuickOrFilterAction(this, quickEditor));
         controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK_VISIBLE));
-        controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD_VISIBLE));
         controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK_REMOVE_FILTER));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD_VISIBLE));
         controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
+        controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD_REMOVE_FILTER));
 		controller.addAction(new QuickFindAllAction(this, quickEditor));
 		controller.addAction(new QuickHighlightAction(this, quickEditor));
 
@@ -542,10 +545,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final AbstractButton selectFilteredNodesBtn = FreeplaneToolBar.createButton(controller.getAction("SelectFilteredNodesAction"));
 		final AbstractButton filterSelectedBtn = FreeplaneToolBar.createButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final AbstractButton noFilteringBtn = FreeplaneToolBar.createButton(controller.getAction("ApplyNoFilteringAction"));
+		final AbstractButton applyFindPreviousVisibleBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK_VISIBLE"));
         final AbstractButton applyFindPreviousBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK"));
-        final AbstractButton applyFindPreviousVisibleBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK_VISIBLE"));
+        final AbstractButton applyFindPreviousRemovindFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.BACK_REMOVE_FILTER"));
         final AbstractButton applyFindNextVisibleBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD_VISIBLE"));
         final AbstractButton applyFindNextBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD"));
+        final AbstractButton applyFindNextRemovindFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFindAction.FORWARD_REMOVE_FILTER"));
 		final AbstractButton applyQuickFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickFilterAction"));
         final AbstractButton applyAndFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickAndFilterAction"));
         final AbstractButton applyOrFilterBtn = FreeplaneToolBar.createButton(controller.getAction("QuickOrFilterAction"));
@@ -572,11 +577,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 		constraints.gridwidth = 1;
 		constraints.gridy = 0;
-		searchPanel.add(applyFindPreviousVisibleBtn, constraints);
 		searchPanel.add(applyFindNextVisibleBtn, constraints);
+        searchPanel.add(applyFindNextBtn, constraints);
+        searchPanel.add(applyFindNextRemovindFilterBtn, constraints);
 		constraints.gridy = 1;
-		searchPanel.add(applyFindPreviousBtn, constraints);
-		searchPanel.add(applyFindNextBtn, constraints);
+		searchPanel.add(applyFindPreviousVisibleBtn, constraints);
+        searchPanel.add(applyFindPreviousBtn, constraints);
+        searchPanel.add(applyFindPreviousRemovindFilterBtn, constraints);
 
 		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
 
@@ -899,7 +906,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		        if (next == null) {
 		            return null;
 				}
-			} while (!next.hasVisibleContent(filter));
+			} while (! direction.removesFilter() && !next.hasVisibleContent(filter));
 			if (next == from) {
 				break;
 			}

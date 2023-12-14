@@ -30,6 +30,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -98,14 +99,18 @@ public class CodeProjectController implements IExtension {
 
     public void startupController() {
         showControlPanel();
-        modeController.getMapController().addNodeSelectionListener(codeDependenciesPanel);
+        MapController mapController = modeController.getMapController();
+        mapController.addNodeSelectionListener(codeDependenciesPanel);
+        mapController.addMapChangeListener(codeDependenciesPanel);
         Controller.getCurrentController().getMapViewManager().addMapSelectionListener(codeDependenciesPanel);
         ResourceController.getResourceController().addPropertyChangeListener(codeDependenciesPanel);
         codeDependenciesPanel.update();
     }
 
 	public void shutdownController() {
-	    modeController.getMapController().removeNodeSelectionListener(codeDependenciesPanel);
+	    MapController mapController = modeController.getMapController();
+        mapController.removeNodeSelectionListener(codeDependenciesPanel);
+        mapController.removeMapChangeListener(codeDependenciesPanel);
 	    Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(codeDependenciesPanel);
 	    ResourceController.getResourceController().removePropertyChangeListener(codeDependenciesPanel);
 	    hideControlPanel();

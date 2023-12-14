@@ -81,7 +81,8 @@ import org.freeplane.view.swing.map.NodeView;
 public class MapController extends SelectionController
 implements IExtension, NodeChangeAnnouncer{
 	public enum Direction {
-		BACK, BACK_N_FOLD, BACK_VISIBLE, FORWARD, FORWARD_N_FOLD, FORWARD_VISIBLE;
+		BACK, BACK_N_FOLD, BACK_VISIBLE, BACK_REMOVE_FILTER,
+		FORWARD, FORWARD_N_FOLD, FORWARD_VISIBLE, FORWARD_REMOVE_FILTER;
 
 	    public boolean isForward() {
             return ordinal() >= FORWARD.ordinal();
@@ -89,6 +90,10 @@ implements IExtension, NodeChangeAnnouncer{
 
         public boolean canUnfold() {
             return this != BACK_VISIBLE && this != Direction.FORWARD_VISIBLE;
+        }
+
+        public boolean removesFilter() {
+            return this == BACK_REMOVE_FILTER || this == Direction.FORWARD_REMOVE_FILTER;
         }
 	}
 
