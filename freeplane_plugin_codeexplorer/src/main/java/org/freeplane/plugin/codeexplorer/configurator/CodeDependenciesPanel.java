@@ -1,6 +1,7 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,6 +29,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -37,7 +41,11 @@ import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.map.ClassNode;
+import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
+
+import com.tngtech.archunit.core.domain.JavaClass;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener{
 
@@ -68,8 +76,8 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             CodeDependency row = allDependencies.get(rowIndex);
             switch (columnIndex) {
                 case 0: return row.describeVerdict();
-                case 1: return row.getOriginClass().getName();
-                case 2: return row.getTargetClass().getName();
+                case 1: return ClassNode.nodeText(row.getOriginClass());
+                case 2: return ClassNode.nodeText(row.getTargetClass());
                 case 3: return row.getDescription();
                 default: return null;
             }
@@ -100,7 +108,23 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         filterField.addActionListener(e -> updateDependencyFilter());
         topPanel.add(filterField);
 
-        dependencyViewer = new JTable();
+        dependencyViewer = new JTable() {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                JComponent component = (JComponent) super.prepareRenderer(renderer, row, column);
+                int modelColumn = convertColumnIndexToModel(column);
+                if(modelColumn == 1 || modelColumn == 2) {
+                    CodeDependency codeDependency = allDependencies.get(convertRowIndexToModel(row));
+                    JavaClass javaClass = modelColumn == 1 ? codeDependency.getOriginClass() : codeDependency.getTargetClass();
+                    component.setToolTipText(toDisplayedFullName(javaClass));
+                }
+                return component;
+            }
+
+        };
         allDependencies = Collections.emptyList();
         DependenciesWrapper dataModel = new DependenciesWrapper();
         dependencyViewer.setModel(dataModel);
@@ -108,9 +132,9 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
         TableColumnModel columnModel = dependencyViewer.getColumnModel();
         updateColumn(columnModel, 0, 200, cellRenderer);
-        updateColumn(columnModel, 1, 400, cellRenderer);
-        updateColumn(columnModel, 2, 400, cellRenderer);
-        updateColumn(columnModel, 3, 1000, cellRenderer);
+        updateColumn(columnModel, 1, 200, cellRenderer);
+        updateColumn(columnModel, 2, 200, cellRenderer);
+        updateColumn(columnModel, 3, 1200, cellRenderer);
         dependencyViewer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dependencyViewer.setCellSelectionEnabled(true);
 
@@ -137,37 +161,40 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
 
     private void updateDependencyFilter() {
-        String[] filteredWords = filterField.getText().toLowerCase().trim().split("[^\\w:.$]+");
+        String[] filteredWords = filterField.getText().trim().split("[^\\w:.$]+");
         @SuppressWarnings("unchecked")
         TableRowSorter<DependenciesWrapper> rowSorter = (TableRowSorter<DependenciesWrapper>)dependencyViewer.getRowSorter();
         if(filteredWords.length == 1 && filteredWords[0].isEmpty())
             rowSorter.setRowFilter(null);
         else {
             RowFilter<DependenciesWrapper, Integer> dependencyFilter = new RowFilter<DependenciesWrapper, Integer>() {
-                Predicate<CodeDependency> combinedFilter = Stream.of(filteredWords)
+                Predicate<String[]> combinedFilter = Stream.of(filteredWords)
                         .map(this::createPredicateFromString)
                         .reduce(x -> true, Predicate::and);
-                private Predicate<CodeDependency> createPredicateFromString(String searchedString) {
+                private Predicate<String[]> createPredicateFromString(String searchedString) {
                     if (searchedString.startsWith("origin:")) {
                         String value = searchedString.substring("origin:".length());
-                        return dependency -> dependency.getOriginClass().getName().toLowerCase().contains(value);
+                        return row -> row[1].contains(value);
                     } else if (searchedString.startsWith("target:")) {
                         String value = searchedString.substring("target:".length());
-                        return dependency -> dependency.getTargetClass().getName().toLowerCase().contains(value);
+                        return row -> row[2].contains(value);
                     } else if (searchedString.startsWith("verdict:")) {
                         String value = searchedString.substring("verdict:".length());
-                        return dependency -> dependency.describeVerdict().contains(value);
+                        return row -> row[0].contains(value);
                     } else if (searchedString.startsWith("dependency:")) {
                         String value = searchedString.substring("dependency:".length());
-                        return dependency -> dependency.getDescription().toLowerCase().contains(value);
+                        return row -> row[3].contains(value);
                     } else {
-                        return dependency -> dependency.getDependency().getDescription().toLowerCase().contains(searchedString) || dependency.describeVerdict().contains(searchedString);
+                        return row -> Stream.of(row).anyMatch(s-> s.contains(searchedString));
                     }
                 }
 
                 @Override
                 public boolean include(RowFilter.Entry<? extends DependenciesWrapper, ? extends Integer> entry) {
-                    CodeDependency row = allDependencies.get(entry.getIdentifier());
+                    TableModel tableData = dependencyViewer.getModel();
+                    String[] row = IntStream.range(0, 4)
+                            .mapToObj(column -> tableData.getValueAt(entry.getIdentifier(), column).toString())
+                            .toArray(String[]::new);
                     return combinedFilter.test(row);
                 }
             };
@@ -262,5 +289,10 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
                     if(!e.getValueIsAdjusting())
                         listener.accept(getSelectedDependency());
                 });
+    }
+
+
+    private String toDisplayedFullName(JavaClass originClass) {
+        return CodeNode.findEnclosingNamedClass(originClass).getName().replace('$', '.');
     }
 }
