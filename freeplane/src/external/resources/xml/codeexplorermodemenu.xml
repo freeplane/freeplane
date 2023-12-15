@@ -164,7 +164,7 @@
 				<Entry builder="menu_goto_links" />
 			</Entry>
 		</Entry>
-		<Entry name="code.explore">
+		<Entry name="code.exploremenu">
 			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
 			<Entry builder="separator" />
 			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
