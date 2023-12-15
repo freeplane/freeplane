@@ -35,6 +35,7 @@ import javax.swing.table.TableRowSorter;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -47,7 +48,6 @@ import org.freeplane.plugin.codeexplorer.map.ClassNode;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
-import com.kitfox.svg.Filter;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener, IMapChangeListener{
