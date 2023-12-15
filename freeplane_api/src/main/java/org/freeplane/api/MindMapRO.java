@@ -22,7 +22,7 @@ public interface MindMapRO {
 	/** returns the filenname of the map as a java.io.File object if available or null otherwise. */
 	File getFile();
 
-	/** returns the title of the MapView.
+	/** returns the title of the Map.
 	 * @since 1.2 */
 	String getName();
 
