@@ -35,6 +35,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 
@@ -114,6 +115,10 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             }
         } else
             dependentNodeIDs = recursiveDependencies(selection, currentCondition, map, dependencyDirection);
+        codeNodeSelection.get()
+            .filter(node -> ! currentCondition.checkNode(node))
+            .map(NodeModel::getID)
+            .forEach(dependentNodeIDs::add);
         if(! dependentNodeIDs.isEmpty()) {
             FilterController filterController = FilterController.getCurrentFilterController();
             ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
