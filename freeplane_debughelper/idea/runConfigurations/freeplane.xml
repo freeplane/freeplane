@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="freeplane" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="org.freeplane.launcher.Launcher" />
+    <option name="MAIN_CLASS_NAME" value="org.freeplane.launcher.JavaLauncher" />
     <module name="freeplane_root.freeplane_debughelper.main" />
     <option name="VM_PARAMETERS" value="-Xmx1g &quot;-Dorg.freeplane.basedirectory=$PROJECT_DIR$/BIN&quot; &quot;-Dorg.freeplane.globalresourcedir=$PROJECT_DIR$/freeplane/src/external/resources&quot; &quot;-Djava.security.policy=$PROJECT_DIR$/freeplane_debughelper/security/freeplane.policy&quot; -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.main.application.FreeplaneStarter.headless=false -Dorg.osgi.framework.bundle.parent=app -Dorg.freeplane.nosplash=false &quot;-Dorg.freeplane.builtin.scripts.dir=$PROJECT_DIR$/freeplane_plugin_script/scripts&quot;" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BIN" />
