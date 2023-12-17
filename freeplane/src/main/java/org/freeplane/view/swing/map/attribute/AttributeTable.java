@@ -1018,7 +1018,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				TableCellEditor editor = getCellEditor();
 				if (editor != null) {
 					final Object value = editor.getCellEditorValue();
-					if (value != null && ! value.equals(getValueForEdit(editingRow, editingColumn))) {
+					if (value != null && ! value.equals(getValueForEdit(editingRow, editingColumn))
+					        && ! Controller.getCurrentModeController().isEditingLocked()) {
 						final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
 				        final MTextController textController = (MTextController) TextController.getController();
 				        final Object object = textController.guessObject(value, pattern);

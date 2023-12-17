@@ -110,7 +110,8 @@ public class AttributePanelManager{
                 newAttributeButton.addActionListener(new ActionListener() {
                     @Override
 					public void actionPerformed(final ActionEvent arg0) {
-                        attributeView.addRow();
+                        if(! modeController.isEditingLocked())
+                            attributeView.addRow();
                     }
                 });
                 increaseSize(btnSize, newAttributeButton);
@@ -121,7 +122,8 @@ public class AttributePanelManager{
                 optimalWidthButton.addActionListener(new ActionListener() {
                     @Override
 					public void actionPerformed(final ActionEvent arg0) {
-                        attributeView.setOptimalColumnWidths();
+                        if(! modeController.isEditingLocked())
+                            attributeView.setOptimalColumnWidths();
                     }
                 });
                 increaseSize(btnSize, optimalWidthButton);
