@@ -66,6 +66,7 @@
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
 			</Entry>
+			<Entry name="ExportAction" />
 			<Entry name="PageAction" />
 			<Entry name="PrintPreviewAction" />
 			<Entry accelerator="control P" name="PrintAction" />

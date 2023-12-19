@@ -17,6 +17,7 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.link.LinkController;
@@ -70,6 +71,7 @@ public class CodeModeControllerFactory {
 		LocationController.install(new LocationController());
 		LayoutController.install(new CodeLayoutController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
+		ExportController.install(new ExportController("/xml/ExportWithXSLT.xml"));
 		MapStyle.install(true);
 		NodeStyleController.getController().shapeHandlers.addGetter(new Integer(0), new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 		    @Override
