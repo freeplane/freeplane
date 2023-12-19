@@ -673,7 +673,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static private Color selectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
-	private Color background = null;
 	private JComponent backgroundComponent;
 	private Rectangle boundingRectangle = null;
 	private FitMap fitMap = FitMap.USER_DEFINED;
@@ -1051,9 +1050,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		paintingPurpose = PaintingPurpose.PAINTING;
 		updatePrintedNodes();
 		isPreparedForPrinting = false;
-		if (MapView.printOnWhiteBackground) {
-			setBackground(background);
-		}
 	}
 
 	/*
@@ -1369,7 +1365,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		selection.clear();
 	}
 
-	public boolean isPrinting() {
+
+
+	@Override
+    public Color getBackground() {
+	    return super.getBackground();
+    }
+
+    public boolean isPrinting() {
 		return paintingPurpose != PaintingPurpose.PAINTING;
 	}
 
@@ -1960,7 +1963,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		super.paintComponent(g);
+	    if(paintingPurpose != PaintingPurpose.PRINTING || ! printOnWhiteBackground)
+	        super.paintComponent(g);
 		if (backgroundComponent != null && ! fitToViewport) {
 			paintBackgroundComponent(g);
 		}
@@ -2276,10 +2280,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (!isPreparedForPrinting) {
 			isPreparedForPrinting = true;
 			updatePrintedNodes();
-			if (MapView.printOnWhiteBackground) {
-				background = getBackground();
-				setBackground(Color.WHITE);
-			}
 			fitMap = FitMap.valueOf();
 			if (backgroundComponent != null && fitMap == FitMap.BACKGROUND) {
 				boundingRectangle = getBackgroundImageInnerBounds();
