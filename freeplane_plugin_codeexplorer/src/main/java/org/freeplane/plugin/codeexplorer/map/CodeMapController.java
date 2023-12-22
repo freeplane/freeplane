@@ -55,6 +55,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         modeController.addAction(new ShowAllClassesAction());
         modeController.addAction(new SelectCyclesAction());
         modeController.addAction(new FilterCyclesAction());
+        modeController.addAction(new NewCodeMapAction());
     }
 
 	@Override

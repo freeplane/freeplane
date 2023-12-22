@@ -61,6 +61,8 @@
 		</Entry>
 		<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
+			<Entry name="code.NewCodeMapAction" accelerator="control N"/>
+			<Entry name="CloseAction" accelerator="control W"/>
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
 			</Entry>
