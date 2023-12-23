@@ -6,16 +6,23 @@
 package org.freeplane.view.swing.map;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.Stream;
 
+import javax.swing.SwingUtilities;
+
 class NodeViewFolder {
-    private final Set<NodeView> unfoldedNodeViews = new HashSet<NodeView>();
+    private final Map<NodeView, Void> unfoldedNodeViews = new WeakHashMap<>();
 
     void adjustFolding(Set<NodeView> selectedNodeViews) {
         Set<NodeView> selectedNodeViewsWithAncestors = withAncestors(selectedNodeViews);
-        NodeView[] toFold = unfoldedNodeViews.stream()
-                .filter(nodeView -> ! selectedNodeViewsWithAncestors.contains(nodeView) && nodeView.getNode().isFoldable())
+        NodeView[] toFold = unfoldedNodeViews.keySet().stream()
+                .filter(nodeView ->
+                    ! selectedNodeViewsWithAncestors.contains(nodeView)
+                    && nodeView.getNode().isFoldable()
+                    && SwingUtilities.isDescendingFrom(nodeView, nodeView.getMap()))
                 .toArray(NodeView[]::new);
         Stream.of(toFold).forEach(nodeView -> {
             nodeView.setFolded(true);
@@ -28,7 +35,7 @@ class NodeViewFolder {
         .filter(nodeView -> nodeView.isFolded())
         .forEach(nodeView -> {
             nodeView.setFolded(false);
-            unfoldedNodeViews.add(nodeView);
+            unfoldedNodeViews.put(nodeView, null);
         });
     }
     private HashSet<NodeView> withAncestors(Set<NodeView> nodeViews) {
