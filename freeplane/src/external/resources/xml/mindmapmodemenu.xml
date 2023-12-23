@@ -495,6 +495,7 @@
 				<Entry name="SetAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
+				<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			</Entry>
 			<Entry name="presentation" >
 				<Entry name="StartPresentationOrShowNextSlideAction" accelerator="F5"/>

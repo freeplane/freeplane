@@ -470,8 +470,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
         private boolean addToSelectedSet(final NodeView node) {
             boolean hasChanged = selectedSet.add(node);
-            if(hasChanged)
+            if(hasChanged) {
                 fireSelectionChangedLater();
+            }
             return hasChanged;
         }
 
@@ -540,8 +541,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
         private boolean removeFromSelectedSet(final NodeView node) {
             boolean hasChanged = selectedSet.remove(node);
-            if(hasChanged)
+            if(hasChanged) {
                 fireSelectionChangedLater();
+            }
             return hasChanged;
         }
 
@@ -633,6 +635,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 selectionChanged = false;
                 if(selection.selectedNode != null)
                     modeController.getMapController().onSelectionChange(getMapSelection());
+                if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION))
+                    nodeViewFolder.adjustFolding(selectedSet);
+
             }
         }
 
@@ -659,6 +664,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String DRAGGING_AREA_WIDTH_PROPERTY = "dragging_area_width";
 	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
+    public static final String FOLDING_FOLLOWS_SELECTION = "folding_follows_selection";
 
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
@@ -719,6 +725,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private boolean repaintsViewOnSelectionChange;
 
     public static final int SCROLL_VELOCITY_PX = (int) (UITools.FONT_SCALE_FACTOR  * 10);
+    private final NodeViewFolder nodeViewFolder;
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -784,6 +791,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 		if(ResourceController.getResourceController().getBooleanProperty("activateSpotlightByDefault"))
 		    putClientProperty(SPOTLIGHT_ENABLED, Boolean.TRUE);
+		nodeViewFolder = new NodeViewFolder();
 		setMap(viewedMap);
         mapScroller.setAnchorView(currentRootView);
 	}
@@ -2024,8 +2032,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean isSpotlightEnabled() {
-		return Boolean.TRUE == getClientProperty(MapView.SPOTLIGHT_ENABLED);
+		return isClientPropertyTrue(MapView.SPOTLIGHT_ENABLED);
 	}
+
+    private boolean isClientPropertyTrue(String name) {
+        return Boolean.TRUE == getClientProperty(name);
+    }
 
 	private void paintChildren(final Graphics2D g2, final PaintingMode[] paintModes) {
 	    for(final PaintingMode paintingMode : paintModes){
@@ -2240,7 +2252,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelectionRectangle(final Graphics2D g, final NodeView selected) {
-		if (Boolean.TRUE.equals(selected.getMainView().getClientProperty("inline_editor_active"))) {
+		if (Boolean.TRUE.equals(selected.getMainView().getClientProperty(INLINE_EDITOR_ACTIVE))) {
 			return;
 		}
 		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 4, 15);
