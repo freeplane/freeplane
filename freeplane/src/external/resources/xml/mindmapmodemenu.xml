@@ -482,7 +482,9 @@
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
 				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
@@ -495,7 +497,6 @@
 				<Entry name="SetAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
-				<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			</Entry>
 			<Entry name="presentation" >
 				<Entry name="StartPresentationOrShowNextSlideAction" accelerator="F5"/>

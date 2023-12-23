@@ -132,7 +132,9 @@
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
 				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
