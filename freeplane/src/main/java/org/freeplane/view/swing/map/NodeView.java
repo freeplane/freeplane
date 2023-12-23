@@ -1687,13 +1687,17 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-		for (NodeView child : getChildrenViews()) {
-			child.remove();
-		}
-		map.updateSelectedNode();
-		addChildViews();
-		map.revalidateSelecteds();
-		revalidate();
+	    if(isFolded()) {
+	        for (NodeView child : getChildrenViews()) {
+	            child.remove();
+	        }
+	        map.updateSelectedNode();
+	        map.revalidateSelecteds();
+	    }
+	    else if(getComponentCount() == 1) {
+	        addChildViews();
+	    }
+	    revalidate();
 	}
 
 	public void update() {
