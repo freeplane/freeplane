@@ -461,6 +461,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else{
 				if(addToSelectedSet(node)){
 					selectedList.add(node);
+					selectionEnd = node;
 					repaintAfterSelectionChange(node);
 					return true;
 				}
@@ -635,8 +636,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 selectionChanged = false;
                 if(selection.selectedNode != null)
                     modeController.getMapController().onSelectionChange(getMapSelection());
-                if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION))
+                if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION)) {
                     nodeViewFolder.adjustFolding(selectedSet);
+                    scrollNodeToVisible(selectedNode);
+                }
 
             }
         }
@@ -2605,17 +2608,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		final NodeModel selectedNode = selectedView.getNode();
-		final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(getSelection().size());
+		Collection<NodeView> lastSelectedNodes = selection.getSelection();
+        final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(lastSelectedNodes.size());
 		for (final NodeView nodeView : getSelection()) {
-			if (nodeView != null) {
+			if (nodeView != null && nodeView.isContentVisible()) {
 				selectedNodes.add(nodeView);
 			}
 		}
-		selection.clear();
+		if(lastSelectedNodes.size() == selectedNodes.size() && selectedNodes.size() > 0)
+		    return;
+		lastSelectedNodes.clear();
 		for (final NodeView nodeView : selectedNodes) {
-			if (nodeView.isContentVisible()) {
-				selection.add(nodeView);
-			}
+				lastSelectedNodes.add(nodeView);
 		}
 		if (getSelected() != null) {
 			return;
