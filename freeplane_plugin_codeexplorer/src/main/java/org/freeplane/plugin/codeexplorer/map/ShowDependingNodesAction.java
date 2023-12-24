@@ -99,7 +99,8 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	@Override
     public void actionPerformed(ActionEvent e) {
 	    IMapSelection selection = Controller.getCurrentController().getSelection();
-	    ICondition currentCondition = selection.getFilter().getCondition();
+	    Filter lastFilter = selection.getFilter();
+        ICondition currentCondition = lastFilter.getCondition();
 	    if(currentCondition == null)
 	        return;
 	    MapModel map = selection.getMap();
@@ -123,8 +124,11 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             FilterController filterController = FilterController.getCurrentFilterController();
             ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
                     currentCondition);
-            Filter filter = new Filter(condition, false, true, false, false, null);
+            Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, null);
             filterController.applyFilter(map, false, filter);
+            if(! lastFilter.areAncestorsShown()) {
+                AncestorsHider.hideAncestors();
+            }
         }
 	}
 

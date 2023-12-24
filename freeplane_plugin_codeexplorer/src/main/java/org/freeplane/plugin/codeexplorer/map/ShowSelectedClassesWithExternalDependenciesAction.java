@@ -46,8 +46,13 @@ class ShowSelectedClassesWithExternalDependenciesAction extends AFreeplaneAction
                 .map(dependencySelection.getMap()::getClassNodeId)
                 .collect(Collectors.toSet());
         ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs);
-        Filter filter = new Filter(condition, false, true, false, false, null);
+        Filter lastFilter = selection.getFilter();
+        Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, null);
         FilterController filterController = FilterController.getCurrentFilterController();
         filterController.applyFilter(selection.getMap(), false, filter);
+        if(! lastFilter.areAncestorsShown()) {
+            AncestorsHider.hideAncestors();
+        }
+
 	}
 }
