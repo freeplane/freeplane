@@ -115,11 +115,11 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             }
         } else
             dependentNodeIDs = recursiveDependencies(selection, currentCondition, map, dependencyDirection);
-        codeNodeSelection.get()
+        if(! dependentNodeIDs.isEmpty()) {
+            codeNodeSelection.get()
             .filter(node -> ! currentCondition.checkNode(node))
             .map(NodeModel::getID)
             .forEach(dependentNodeIDs::add);
-        if(! dependentNodeIDs.isEmpty()) {
             FilterController filterController = FilterController.getCurrentFilterController();
             ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
                     currentCondition);
