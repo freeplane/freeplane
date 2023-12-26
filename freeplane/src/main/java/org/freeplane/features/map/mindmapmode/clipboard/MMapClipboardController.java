@@ -721,7 +721,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
 			try {
 				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
-				handlerList.add(new FileListFlavorHandler(fileList));
+				if(fileList != null)
+				    handlerList.add(new FileListFlavorHandler(fileList));
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
