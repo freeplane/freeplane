@@ -98,6 +98,7 @@ def srcpureAdditionalExcludeSpec() {
 }
 
 task srcpureTarGz(type: Tar) {
+    dependsOn 'binZip'
     destinationDirectory = new File(globalDist)
     archiveFileName = 'freeplane_srcpure-' + distVersion + '.tar.gz'
     compression = 'GZIP'
