@@ -18,8 +18,6 @@
     <path>runtime;%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
     <minVersion>11</minVersion>
     <maxVersion>21.999</maxVersion>
-    <requiresJdk>false</requiresJdk>
-    <requires64Bit>true</requires64Bit>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
     <opt>-Djava.security.manager=allow</opt>
     <opt>--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED</opt>
