@@ -660,8 +660,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String SOME_CONNECTORS_PROPERTY = "connector_";
 
 	private static final String HIDE_CONNECTORS = "never".intern();
-	private static final String SHOW_CONNECTORS_FOR_SELECTION = "for_selection".intern();
-	private static final String SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS = "for_selection_and_arrows".intern();
+	private static final String SHOW_CONNECTORS_FOR_SELECTION_ONLY = "for_selection".intern();
+	private static final String SHOW_ARROWS_FOR_SELECTION_ONLY = "for_selection_and_arrows".intern();
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
 	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
 	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
@@ -1020,7 +1020,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(! node.isShowing())
 			return;
 		node.update();
-		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors || SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS == showConnectors || repaintsViewOnSelectionChange)
+		if(SHOW_CONNECTORS_FOR_SELECTION_ONLY == showConnectors || SHOW_ARROWS_FOR_SELECTION_ONLY == showConnectors || repaintsViewOnSelectionChange)
 			repaint(getVisibleRect());
 		else
 			node.repaintSelected();
@@ -2116,12 +2116,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final ILinkView arrowLink;
 					final boolean areBothNodesVisible = sourceView != null && targetView != null
 							&& sourceView.isContentVisible() && targetView.isContentVisible();
-					final boolean showConnector = SHOW_CONNECTOR_LINES == showConnectors
-							|| HIDE_CONNECTOR_LINES == showConnectors
-							|| SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS == showConnectors
-							|| (SHOW_CONNECTORS_FOR_SELECTION == showConnectors )
-									&& (sourceView != null && sourceView.isSelected() || targetView != null && targetView.isSelected()) ;
-					if(showConnector) {
+					boolean b = sourceView != null && sourceView.isSelected() || targetView != null && targetView.isSelected();
+                    final boolean showsConnectorLinesOrArrows = showsConnectorLinesOrArrows(b);
+					if(showsConnectorLinesOrArrows) {
 						LinkController linkController = LinkController.getController(getModeController());
                         if (areBothNodesVisible
                                 && (
@@ -2792,17 +2789,26 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		final NodeModel parentNode = node.getParentNode();
 		if(parentNode == null)
-			return;
+		    return;
 		display(parentNode);
 		final NodeView parentView = getNodeView(parentNode);
 		if(parentView == null)
-			return;
+		    return;
 		parentView.setFolded(false);
 	}
 
-	public boolean showsConnectorLines(boolean isSelected) {
-		return (HIDE_CONNECTOR_LINES != showConnectors && SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS != showConnectors)
-				|| (isSelected && SHOW_CONNECTORS_FOR_SELECTION_AND_ARROWS == showConnectors);
+
+    private boolean showsConnectorLinesOrArrows(boolean isSelected) {
+        final boolean showsConnectorLinesOrArrows = SHOW_CONNECTOR_LINES == showConnectors
+                || HIDE_CONNECTOR_LINES == showConnectors
+                || isSelected
+                    && (SHOW_ARROWS_FOR_SELECTION_ONLY == showConnectors || SHOW_CONNECTORS_FOR_SELECTION_ONLY == showConnectors) ;
+        return showsConnectorLinesOrArrows;
+    }
+
+    public boolean showsConnectorLines(boolean isSelected) {
+	    return showConnectors == SHOW_CONNECTOR_LINES ||
+	            isSelected && showConnectors == SHOW_CONNECTORS_FOR_SELECTION_ONLY;
 	}
 
 	public boolean showsIcons() {
