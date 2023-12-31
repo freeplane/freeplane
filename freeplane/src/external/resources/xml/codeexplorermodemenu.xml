@@ -5,8 +5,6 @@
 		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
 		<Entry name="PrintAction" row="2"/>
 		<Entry name="CloseAction" row="2"/>
-		<Entry name="code.CopyQualifiedName" row="1"/>
-		<Entry name="code.RunAnalysisAction" row="2"/>
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="JumpInAction"/>
@@ -63,9 +61,12 @@
 		</Entry>
 		<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
+			<Entry name="code.NewCodeMapAction" accelerator="control N"/>
+			<Entry name="CloseAction" accelerator="control W"/>
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
 			</Entry>
+			<Entry name="ExportAction" />
 			<Entry name="PageAction" />
 			<Entry name="PrintPreviewAction" />
 			<Entry accelerator="control P" name="PrintAction" />
@@ -73,7 +74,9 @@
 			<Entry accelerator="control Q" name="QuitAction" builder="MB_QuitAction" />
 		</Entry>
 		<Entry name="edit">
-			<Entry name="code.CopyQualifiedName" accelerator="control C"/>
+			<Entry name="CopyAction" accelerator="control C"/>
+			<Entry name="CopySingleAction"  accelerator="control shift C"/>
+			<Entry name="code.CopyQualifiedName"/>
 			<Entry name="find">
 				<Entry accelerator="control G" name="FindAction" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
@@ -129,7 +132,9 @@
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
 				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
@@ -164,7 +169,7 @@
 				<Entry builder="menu_goto_links" />
 			</Entry>
 		</Entry>
-		<Entry name="code.explore">
+		<Entry name="code.exploremenu">
 			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
 			<Entry builder="separator" />
 			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
@@ -269,7 +274,9 @@
 	<Entry name="node_popup" builder="node_popup">
 		<Entry name="JumpInAction"/>
 		<Entry name="JumpOutAction" />
-		<Entry name="code.CopyQualifiedName" accelerator="control C"/>
+		<Entry name="CopyAction" accelerator="control C"/>
+		<Entry name="CopySingleAction"  accelerator="control shift C"/>
+		<Entry name="code.CopyQualifiedName"/>
 		<Entry builder="separator" />
 		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />

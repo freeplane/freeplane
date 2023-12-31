@@ -207,7 +207,8 @@ public class CodeLinkController extends LinkController {
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
             CodeNode codeNode = (CodeNode) node;
-            Stream<CodeDependency> codeDependencies = codeNode.incomingCodeDependenciesWithKnownOrigins();
+            Stream<CodeDependency> codeDependencies = codeNode.incomingCodeDependenciesWithKnownOrigins()
+                    .filter(dep -> dependencySelection.getVisibleNode(dep.getTargetClass()) != null);
             Map<DependencyVerdict, Map<CodeNode, Long>> countedDependencies = countCodeDependencies(codeNode, dependencySelection, codeDependencies, CodeDependency::getOriginClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .flatMap(targetsByVerdict ->
@@ -229,7 +230,8 @@ public class CodeLinkController extends LinkController {
         if (node.isLeaf() || selection.isFolded(node)) {
             DependencySelection dependencySelection = new DependencySelection(selection);
             CodeNode codeNode = (CodeNode) node;
-            Stream<CodeDependency> codeDependencies = codeNode.outgoingCodeDependenciesWithKnownTargets();
+            Stream<CodeDependency> codeDependencies = codeNode.outgoingCodeDependenciesWithKnownTargets()
+                    .filter(dep -> dependencySelection.getVisibleNode(dep.getOriginClass()) != null);
             Map<DependencyVerdict, Map<CodeNode, Long>> countedDependencies = countCodeDependencies(codeNode, dependencySelection, codeDependencies, CodeDependency::getTargetClass);
             List<CodeConnectorModel> connectors = countedDependencies.entrySet().stream()
             .flatMap(targetsByVerdict ->

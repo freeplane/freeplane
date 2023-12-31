@@ -324,12 +324,12 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		}
         model.getSourceLabel().ifPresent( sourceLabel ->
 		    arrowLink.setAttribute("SOURCE_LABEL", sourceLabel));
-        
+
         model.getTargetLabel().ifPresent( targetLabel ->
 		    arrowLink.setAttribute("TARGET_LABEL", targetLabel));
         model.getMiddleLabel().ifPresent( middleLabel ->
 		    arrowLink.setAttribute("MIDDLE_LABEL", middleLabel));
-        
+
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
 		    arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.pointToXml(startInclination));
@@ -338,7 +338,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		if (endInclination != null) {
 			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.pointToXml(endInclination));
 		}
-        model.getArrows().ifPresent( arrows -> 
+        model.getArrows().ifPresent( arrows ->
         {
 			arrowLink.setAttribute("STARTARROW", arrows.start.name());
 			arrowLink.setAttribute("ENDARROW", arrows.end.name());
@@ -373,7 +373,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			throws IOException {
 		final NodeLinks links = node.getExtension(NodeLinks.class);
 		if(links != null) {
-			final Iterator<NodeLinkModel> iterator = links.getLinks().iterator();
+			final Iterator<? extends NodeLinkModel> iterator = links.getLinks().iterator();
 			while (iterator.hasNext()) {
 				final NodeLinkModel linkModel = iterator.next();
 				if (linkModel instanceof ConnectorModel) {

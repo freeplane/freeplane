@@ -461,6 +461,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else{
 				if(addToSelectedSet(node)){
 					selectedList.add(node);
+					selectionEnd = node;
 					repaintAfterSelectionChange(node);
 					return true;
 				}
@@ -470,8 +471,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
         private boolean addToSelectedSet(final NodeView node) {
             boolean hasChanged = selectedSet.add(node);
-            if(hasChanged)
+            if(hasChanged) {
                 fireSelectionChangedLater();
+            }
             return hasChanged;
         }
 
@@ -540,8 +542,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
         private boolean removeFromSelectedSet(final NodeView node) {
             boolean hasChanged = selectedSet.remove(node);
-            if(hasChanged)
+            if(hasChanged) {
                 fireSelectionChangedLater();
+            }
             return hasChanged;
         }
 
@@ -633,6 +636,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 selectionChanged = false;
                 if(selection.selectedNode != null)
                     modeController.getMapController().onSelectionChange(getMapSelection());
+                if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION)) {
+                    nodeViewFolder.adjustFolding(selectedSet);
+                    scrollNodeToVisible(selectedNode);
+                }
+
             }
         }
 
@@ -660,6 +668,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String DRAGGING_AREA_WIDTH_PROPERTY = "dragging_area_width";
 	private static final String INLINE_EDITOR_ACTIVE = "inline_editor_active";
     public static final String SPOTLIGHT_ENABLED = "spotlight";
+    public static final String FOLDING_FOLLOWS_SELECTION = "folding_follows_selection";
 
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
@@ -674,7 +683,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static private Color selectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
-	private Color background = null;
 	private JComponent backgroundComponent;
 	private Rectangle boundingRectangle = null;
 	private FitMap fitMap = FitMap.USER_DEFINED;
@@ -721,6 +729,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private boolean repaintsViewOnSelectionChange;
 
     public static final int SCROLL_VELOCITY_PX = (int) (UITools.FONT_SCALE_FACTOR  * 10);
+    private final NodeViewFolder nodeViewFolder;
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -786,6 +795,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 		if(ResourceController.getResourceController().getBooleanProperty("activateSpotlightByDefault"))
 		    putClientProperty(SPOTLIGHT_ENABLED, Boolean.TRUE);
+		nodeViewFolder = new NodeViewFolder();
 		setMap(viewedMap);
         mapScroller.setAnchorView(currentRootView);
 	}
@@ -1052,9 +1062,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		paintingPurpose = PaintingPurpose.PAINTING;
 		updatePrintedNodes();
 		isPreparedForPrinting = false;
-		if (MapView.printOnWhiteBackground) {
-			setBackground(background);
-		}
 	}
 
 	/*
@@ -1370,7 +1377,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		selection.clear();
 	}
 
-	public boolean isPrinting() {
+
+
+	@Override
+    public Color getBackground() {
+	    return super.getBackground();
+    }
+
+    public boolean isPrinting() {
 		return paintingPurpose != PaintingPurpose.PAINTING;
 	}
 
@@ -1961,7 +1975,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		super.paintComponent(g);
+	    if(paintingPurpose != PaintingPurpose.PRINTING || ! printOnWhiteBackground)
+	        super.paintComponent(g);
 		if (backgroundComponent != null && ! fitToViewport) {
 			paintBackgroundComponent(g);
 		}
@@ -2021,8 +2036,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     }
 
 	public boolean isSpotlightEnabled() {
-		return Boolean.TRUE == getClientProperty(MapView.SPOTLIGHT_ENABLED);
+		return isClientPropertyTrue(MapView.SPOTLIGHT_ENABLED);
 	}
+
+    private boolean isClientPropertyTrue(String name) {
+        return Boolean.TRUE == getClientProperty(name);
+    }
 
 	private void paintChildren(final Graphics2D g2, final PaintingMode[] paintModes) {
 	    for(final PaintingMode paintingMode : paintModes){
@@ -2238,7 +2257,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelectionRectangle(final Graphics2D g, final NodeView selected) {
-		if (Boolean.TRUE.equals(selected.getMainView().getClientProperty("inline_editor_active"))) {
+		if (Boolean.TRUE.equals(selected.getMainView().getClientProperty(INLINE_EDITOR_ACTIVE))) {
 			return;
 		}
 		final RoundRectangle2D.Float roundRectClip = getRoundRectangleAround(selected, 4, 15);
@@ -2278,10 +2297,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (!isPreparedForPrinting) {
 			isPreparedForPrinting = true;
 			updatePrintedNodes();
-			if (MapView.printOnWhiteBackground) {
-				background = getBackground();
-				setBackground(Color.WHITE);
-			}
 			fitMap = FitMap.valueOf();
 			if (backgroundComponent != null && fitMap == FitMap.BACKGROUND) {
 				boundingRectangle = getBackgroundImageInnerBounds();
@@ -2595,17 +2610,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		final NodeModel selectedNode = selectedView.getNode();
-		final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(getSelection().size());
+		Collection<NodeView> lastSelectedNodes = selection.getSelection();
+        final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(lastSelectedNodes.size());
 		for (final NodeView nodeView : getSelection()) {
-			if (nodeView != null) {
+			if (nodeView != null && nodeView.isContentVisible()) {
 				selectedNodes.add(nodeView);
 			}
 		}
-		selection.clear();
+		if(lastSelectedNodes.size() == selectedNodes.size() && selectedNodes.size() > 0)
+		    return;
+		lastSelectedNodes.clear();
 		for (final NodeView nodeView : selectedNodes) {
-			if (nodeView.isContentVisible()) {
-				selection.add(nodeView);
-			}
+				lastSelectedNodes.add(nodeView);
 		}
 		if (getSelected() != null) {
 			return;

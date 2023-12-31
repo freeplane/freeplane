@@ -27,25 +27,31 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
 @SuppressWarnings("serial")
 class FilterCyclesAction extends AFreeplaneAction {
 
     public FilterCyclesAction() {
-	    super("code.FilterCyclesAction");
+        super("code.FilterCyclesAction");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        CodeNode node = (CodeNode) Controller.getCurrentController().getSelection().getSelected();
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        CodeNode node = (CodeNode) selection.getSelected();
 
         Set<CodeNode> cycleNodes = node.findCyclicDependencies();
         if(! cycleNodes.isEmpty()) {
             ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
-            Filter filter = new Filter(condition, false, true, false, false, null);
+            Filter lastFilter = selection.getFilter();
+            Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, null);
             FilterController filterController = FilterController.getCurrentFilterController();
             filterController.applyFilter(node.getMap(), false, filter);
+            if(! lastFilter.areAncestorsShown()) {
+                AncestorsHider.hideAncestors();
+            }
         }
     }
 }

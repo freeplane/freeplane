@@ -82,7 +82,7 @@ public class NodeLinks implements IExtension {
 	public static Collection<NodeLinkModel> getLinks(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
 		if (links != null) {
-	        final Collection<NodeLinkModel> sharedLinks = links.getLinks();
+	        final Collection<? extends NodeLinkModel> sharedLinks = links.getLinks();
 	        final ArrayList<NodeLinkModel> clones = new ArrayList<NodeLinkModel>(sharedLinks.size());
 	        for(NodeLinkModel sharedLink : sharedLinks){
 				final NodeLinkModel cloneForSource = sharedLink.cloneForSource(node);
@@ -97,15 +97,19 @@ public class NodeLinks implements IExtension {
 
 	private Hyperlink nonLocalHyperlink;
 	private Boolean formatNodeAsHyperlink;
-	final private LinkedList<NodeLinkModel> links;
+	final private List<NodeLinkModel> links;
 	//DOCEAR - fixed: new property type for node link changes
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
 	public NodeLinks() {
-		links = new LinkedList<NodeLinkModel>();
+		this(new LinkedList<NodeLinkModel>());
 	}
 
-	public void addArrowlink(final NodeLinkModel newLink) {
+	protected NodeLinks(List<NodeLinkModel> links) {
+        this.links = links;
+    }
+
+    public void addArrowlink(final NodeLinkModel newLink) {
 		links.add(newLink);
 		final MapModel map = newLink.getSource().getMap();
 		addLinkToMap(map, newLink);
@@ -141,10 +145,10 @@ public class NodeLinks implements IExtension {
 		return null;
 	}
 
-	public List<NodeLinkModel> getLinks() {
+	public Collection<? extends NodeLinkModel> getLinks() {
 		return Collections.unmodifiableList(links);
 	}
-	
+
 	public static Optional<ConnectorModel> getSelfConnector(NodeModel node) {
 	    return NodeLinks.getLinks(node).stream()
         .filter(ConnectorModel.class::isInstance)

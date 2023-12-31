@@ -60,7 +60,7 @@ public class NodeModel{
 		DEFAULT, TOP_OR_LEFT, BOTTOM_OR_RIGHT, AS_SIBLING
 	}
 
-	public enum NodeProperty{UNKNOWN_PROPERTY};
+	public enum NodeProperty{UNKNOWN_PROPERTY}
 
 	public enum CloneType{TREE, CONTENT}
 	final static int TREE_CLONE_INDEX = CloneType.TREE.ordinal();
@@ -807,5 +807,9 @@ public class NodeModel{
 	public Side getSide() {
 		return side;
 	}
+
+    public boolean isFoldable() {
+        return ! isLeaf() && ! isRoot() && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this);
+    }
 
 }
