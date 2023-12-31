@@ -248,4 +248,16 @@ public class ButtonSelectorPanel{
         });
         dialog.setVisible(true);
     }
+
+    public Dimension getMaximumIconSize() {
+        Dimension dimension = new Dimension();
+        for(JToggleButton button : buttons) {
+            Icon icon = button.getIcon();
+            if(icon != null) {
+                dimension.width = Math.max(dimension.width, icon.getIconWidth());
+                dimension.height = Math.max(dimension.height, icon.getIconHeight());
+            }
+        }
+        return dimension;
+    }
 }

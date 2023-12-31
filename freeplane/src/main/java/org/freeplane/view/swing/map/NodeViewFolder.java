@@ -19,14 +19,12 @@ class NodeViewFolder {
     void adjustFolding(Set<NodeView> selectedNodeViews) {
         Set<NodeView> selectedNodeViewsWithAncestors = withAncestors(selectedNodeViews);
         NodeView[] toFold = unfoldedNodeViews.keySet().stream()
-                .filter(nodeView ->
-                    ! selectedNodeViewsWithAncestors.contains(nodeView)
-                    && nodeView.getNode().isFoldable()
-                    && SwingUtilities.isDescendingFrom(nodeView, nodeView.getMap()))
+                .filter(nodeView -> ! selectedNodeViewsWithAncestors.contains(nodeView)
+                && SwingUtilities.isDescendingFrom(nodeView, nodeView.getMap()))
                 .toArray(NodeView[]::new);
-        Stream.of(toFold).forEach(nodeView -> {
-            nodeView.setFolded(true);
-        });
+        Stream.of(toFold)
+        .filter(nodeView -> nodeView.getNode().isFoldable())
+        .forEach(nodeView -> nodeView.setFolded(true));
         if(toFold.length == unfoldedNodeViews.size())
             unfoldedNodeViews.clear();
         else
