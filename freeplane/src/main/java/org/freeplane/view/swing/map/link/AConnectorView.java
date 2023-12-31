@@ -52,7 +52,7 @@ abstract class AConnectorView  implements ILinkView {
      *            is the another point indicating the direction of the arrow.
 	 * @param to
      *            is the start point
-	 * @param d 
+	 * @param d
      */
     protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size) {
 		paintArrow(from, to, g, size, true);
@@ -69,23 +69,22 @@ abstract class AConnectorView  implements ILinkView {
 		final double length = Math.sqrt(r2);
     	dxn = size * dx / length;
     	dyn = size * dy / length;
-    	final double arrowWidth = .5d;
+
     	final Polygon p = new Polygon();
     	if(isArrowsPoint) {
+    	    final double arrowWidth = .5d;
     		p.addPoint((to.x), (to.y));
     		p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
     		p.addPoint((int) (to.x + dxn * 0.8d), (int) (to.y + dyn * 0.8d));
     		p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
     		p.addPoint((to.x), (to.y));
     	} else {
-			double factorLength = 1.4d;
-			double factorWidth = 0.3d;
-			double factorDiamondCenter = 0.5d * factorLength;
-			p.addPoint((int) (to.x), (int) (to.y));
-    		p.addPoint((int) (to.x + dxn * factorDiamondCenter + factorWidth * arrowWidth * dyn), (int) (to.y + dyn * factorDiamondCenter - factorWidth * arrowWidth * dxn));
-			p.addPoint((int) (to.x + dxn * factorLength), (int) (to.y + dyn * factorLength));
-    		p.addPoint((int) (to.x + dxn * factorDiamondCenter - factorWidth * arrowWidth * dyn), (int) (to.y + dyn * factorDiamondCenter + factorWidth * arrowWidth * dxn));
-			p.addPoint((int) (to.x), (int) (to.y));
+    	    final double arrowWidth = .33d;
+    		p.addPoint((int) (to.x + dxn), (int) (to.y + dyn));
+    		p.addPoint((int) (to.x + arrowWidth * dyn), (int) (to.y - arrowWidth * dxn));
+    		p.addPoint((int) (to.x + dxn*0.7), (int) (to.y + dyn*0.7));
+    		p.addPoint((int) (to.x - arrowWidth * dyn), (int) (to.y + arrowWidth * dxn));
+    		p.addPoint((int) (to.x + dxn), (int) (to.y + dyn));
     	}
     	g.fillPolygon(p);
     	g.drawPolygon(p);
