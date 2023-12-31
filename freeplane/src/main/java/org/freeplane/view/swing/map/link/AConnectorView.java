@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map.link;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.geom.Point2D;
 
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.view.swing.map.MapView;
@@ -32,6 +33,7 @@ import org.freeplane.view.swing.map.NodeView;
  * Apr 29, 2010
  */
 abstract class AConnectorView  implements ILinkView {
+    enum ArrowDirection {INCOMING, OUTGOING}
 	protected final ConnectorModel viewedConnector;
 	protected final NodeView source;
 	protected final NodeView target;
@@ -47,47 +49,58 @@ abstract class AConnectorView  implements ILinkView {
 		return (source == null) ? target.getMap() : source.getMap();
 	}
 
-	/**
-     * @param from
-     *            is the another point indicating the direction of the arrow.
-	 * @param to
-     *            is the start point
-	 * @param d
-     */
-    protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size) {
-		paintArrow(from, to, g, size, true);
+	protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size, ArrowDirection direction) {
+	    final Polygon p = createArrowShape(from, to, size, direction);
+	    g.fillPolygon(p);
+	    g.drawPolygon(p);
 	}
 
-	protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size, final boolean isArrowsPoint) {
-    	int dx, dy;
+    private Polygon createArrowShape(final Point from, final Point to, final double size, ArrowDirection direction) {
+        Point2D directionPoint = createArrowDirection(from, to, size);
+        return direction == ArrowDirection.INCOMING ? incomingArrowShape(to, directionPoint) : outgoingArrowShape(to, directionPoint);
+    }
+
+    private Point2D createArrowDirection(final Point from, final Point to, final double size) {
+        int dx, dy;
     	double dxn, dyn;
     	dx = from.x - to.x;
     	dy = from.y - to.y;
     	final int r2 = dx * dx + dy * dy;
     	if(r2 == 0)
-    		return;
+    		return null;
 		final double length = Math.sqrt(r2);
     	dxn = size * dx / length;
     	dyn = size * dy / length;
+    	Point2D direction = new Point2D.Double(dxn, dyn);
+        return direction;
+    }
 
-    	final Polygon p = new Polygon();
-    	if(isArrowsPoint) {
-    	    final double arrowWidth = .5d;
-    		p.addPoint((to.x), (to.y));
-    		p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
-    		p.addPoint((int) (to.x + dxn * 0.8d), (int) (to.y + dyn * 0.8d));
-    		p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
-    		p.addPoint((to.x), (to.y));
-    	} else {
-    	    final double arrowWidth = .33d;
-    		p.addPoint((int) (to.x + dxn), (int) (to.y + dyn));
-    		p.addPoint((int) (to.x + arrowWidth * dyn), (int) (to.y - arrowWidth * dxn));
-    		p.addPoint((int) (to.x + dxn*0.7), (int) (to.y + dyn*0.7));
-    		p.addPoint((int) (to.x - arrowWidth * dyn), (int) (to.y + arrowWidth * dxn));
-    		p.addPoint((int) (to.x + dxn), (int) (to.y + dyn));
-    	}
-    	g.fillPolygon(p);
-    	g.drawPolygon(p);
+    private Polygon outgoingArrowShape(final Point from, Point2D direction ) {
+        final Polygon p;
+        final double arrowWidth = .33d;
+        double dxn = direction.getX();
+        double dyn = direction.getY();
+        p = new Polygon();
+        p.addPoint((int) (from.x + dxn), (int) (from.y + dyn));
+        p.addPoint((int) (from.x + arrowWidth * dyn), (int) (from.y - arrowWidth * dxn));
+        p.addPoint((int) (from.x + dxn*0.7), (int) (from.y + dyn*0.7));
+        p.addPoint((int) (from.x - arrowWidth * dyn), (int) (from.y + arrowWidth * dxn));
+        p.addPoint((int) (from.x + dxn), (int) (from.y + dyn));
+        return p;
+    }
+
+    private Polygon incomingArrowShape(final Point to, Point2D direction ) {
+        final Polygon p;
+        final double arrowWidth = .5d;
+        double dxn = direction.getX();
+        double dyn = direction.getY();
+        p = new Polygon();
+        p.addPoint((to.x), (to.y));
+        p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
+        p.addPoint((int) (to.x + dxn * 0.8d), (int) (to.y + dyn * 0.8d));
+        p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
+        p.addPoint((to.x), (to.y));
+        return p;
     }
 
 	NodeView getSource() {

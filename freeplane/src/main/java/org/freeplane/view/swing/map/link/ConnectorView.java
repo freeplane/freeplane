@@ -328,7 +328,7 @@ public class ConnectorView extends AConnectorView{
 				.getZoomed(endInclination.y));
 		}
 		final boolean showsConnectors = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected()));
-		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint, showsConnectors);
+		paintConnector(g, startPoint, startPoint2, endPoint2, endPoint, showsConnectors);
 		if(showsConnectors) {
 			drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
 		}
@@ -354,11 +354,12 @@ public class ConnectorView extends AConnectorView{
 		return generalPath;
     }
 
-	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean showsConnectors) {
+	private void paintConnector(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean paintsCurves) {
 		final boolean selfLink = getSource() == getTarget();
-		final boolean isLine = ConnectorShape.LINE.equals(linkController.getShape(viewedConnector));
+		ConnectorShape shape = linkController.getShape(viewedConnector);
+        final boolean isLine = ConnectorShape.LINE.equals(shape);
 		arrowLinkCurve = null;
-		if (showsConnectors) {
+		if (paintsCurves) {
 		    if (startPoint != null && endPoint != null) {
 		        if(isLine) {
 		            if (selfLink) {
@@ -378,24 +379,24 @@ public class ConnectorView extends AConnectorView{
 		    }
 		}
 		boolean isStartArrowTypeNone = linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE);
-		if (isSourceVisible() && !(showsConnectors && isStartArrowTypeNone)) {
+		if (isSourceVisible() && !(paintsCurves && isStartArrowTypeNone)) {
 			if(!selfLink && isLine && endPoint != null)
-				paintArrow(g, endPoint, startPoint, !isStartArrowTypeNone);
+				paintArrow(g, endPoint2, endPoint, ArrowDirection.INCOMING);
 			else
-				paintArrow(g, startPoint2, startPoint, !isStartArrowTypeNone);
+			    paintArrow(g, startPoint2, startPoint, paintsCurves ? ArrowDirection.INCOMING : ArrowDirection.OUTGOING);
 		}
 		boolean isEndArrowTypeNone = linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE);
-		if (isTargetVisible() && !(showsConnectors && isEndArrowTypeNone)) {
+		if (isTargetVisible() && !(paintsCurves && isEndArrowTypeNone)) {
 			if(isLine && startPoint != null) {
 				if (selfLink)
-					paintArrow(g, startPoint, startPoint2, !isEndArrowTypeNone);
+				    paintArrow(g, startPoint, startPoint2, paintsCurves ? ArrowDirection.INCOMING : ArrowDirection.OUTGOING);
 				else
-					paintArrow(g, startPoint, endPoint, !isEndArrowTypeNone);
+				    paintArrow(g, startPoint, endPoint, ArrowDirection.INCOMING);
 			}
 			else
-				paintArrow(g, endPoint2, endPoint, !isEndArrowTypeNone);
+			    paintArrow(g, endPoint2, endPoint, ArrowDirection.INCOMING);
 		}
-		if(showsConnectors) {
+		if(paintsCurves) {
 			boolean showsControlPoints = showsControlPoints();
             if (showsControlPoints) {
 				g.setColor(connectorColor);
@@ -443,13 +444,9 @@ public class ConnectorView extends AConnectorView{
 	    g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
-	private void paintArrow(final Graphics2D g, Point from, Point to) {
-		paintArrow( g, from, to, true);
-	}
-
-	private void paintArrow(final Graphics2D g, Point from, Point to, boolean isArrowPoint) {
-		paintArrow(from, to, g, getZoom() * 10, isArrowPoint);
-	}
+    private void paintArrow(final Graphics2D g, Point from, Point to, ArrowDirection direction) {
+        paintArrow(from, to, g, getZoom() * 10, direction);
+    }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final String sourceLabel = linkController.getSourceLabel(viewedConnector);
