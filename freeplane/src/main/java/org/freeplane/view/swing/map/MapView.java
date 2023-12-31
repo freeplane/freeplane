@@ -661,7 +661,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private static final String HIDE_CONNECTORS = "never".intern();
 	private static final String SHOW_CONNECTORS_FOR_SELECTION_ONLY = "for_selection".intern();
-	private static final String SHOW_ARROWS_FOR_SELECTION_ONLY = "for_selection_and_arrows".intern();
+	private static final String SHOW_ARROWS_FOR_SELECTION_ONLY = "only_arrows_for_selection".intern();
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
 	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
 	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
