@@ -379,22 +379,24 @@ public class ConnectorView extends AConnectorView{
 		    }
 		}
 		boolean isStartArrowTypeNone = linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE);
-		if (isSourceVisible() && !(paintsCurves && isStartArrowTypeNone)) {
+		ArrowDirection startArrowDirection = isStartArrowTypeNone ? ArrowDirection.OUTGOING : ArrowDirection.INCOMING;
+        if (isSourceVisible() && !(paintsCurves && isStartArrowTypeNone)) {
 			if(!selfLink && isLine && endPoint != null)
-				paintArrow(g, endPoint2, endPoint, ArrowDirection.INCOMING);
+				paintArrow(g, endPoint2, endPoint, startArrowDirection);
 			else
-			    paintArrow(g, startPoint2, startPoint, paintsCurves ? ArrowDirection.INCOMING : ArrowDirection.OUTGOING);
+			    paintArrow(g, startPoint2, startPoint, startArrowDirection);
 		}
 		boolean isEndArrowTypeNone = linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE);
+        ArrowDirection endArrowDirection = isEndArrowTypeNone ? ArrowDirection.OUTGOING : ArrowDirection.INCOMING;
 		if (isTargetVisible() && !(paintsCurves && isEndArrowTypeNone)) {
 			if(isLine && startPoint != null) {
 				if (selfLink)
-				    paintArrow(g, startPoint, startPoint2, paintsCurves ? ArrowDirection.INCOMING : ArrowDirection.OUTGOING);
+				    paintArrow(g, startPoint, startPoint2, endArrowDirection);
 				else
-				    paintArrow(g, startPoint, endPoint, ArrowDirection.INCOMING);
+				    paintArrow(g, startPoint, endPoint, endArrowDirection);
 			}
 			else
-			    paintArrow(g, endPoint2, endPoint, ArrowDirection.INCOMING);
+			    paintArrow(g, endPoint2, endPoint, endArrowDirection);
 		}
 		if(paintsCurves) {
 			boolean showsControlPoints = showsControlPoints();
