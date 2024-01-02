@@ -39,18 +39,14 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.encrypt.Base64Coding;
-import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.encrypt.PasswordStrategy;
-import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.explorer.AccessedNodes;
 import org.freeplane.features.explorer.MapExplorer;
-import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.explorer.NodeNotFoundException;
 import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.layout.mindmapmode.MLayoutController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
@@ -62,18 +58,14 @@ import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.map.clipboard.MindMapPlainTextWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.DetailModel;
@@ -103,10 +95,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public Proxy.Connector addConnectorTo(final String targetNodeID) {
-		final MLinkController linkController = (MLinkController) LinkController.getController();
+		final MLinkController linkController = (MLinkController) getLinkController();
 		final ConnectorModel connectorModel = linkController.addConnector(getDelegate(), targetNodeID);
 		return new ConnectorProxy(connectorModel, getScriptContext());
 	}
+
+    private LinkController getLinkController() {
+        return LinkController.getController(getModeController());
+    }
 
 	// Node: R/W
 	@Override
@@ -155,7 +151,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	private Node appendBranchImpl(final NodeRO node, final boolean withChildren) {
-	    final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController.getController();
+	    final MMapClipboardController clipboardController = (MMapClipboardController) getClipboardController();
 		NodeModel source = ((NodeProxy) node).getDelegate();
 		NodeModel target = getDelegate();
         final NodeModel newNodeModel = clipboardController.duplicate(source, target.getMap(), withChildren);
@@ -219,7 +215,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
     @Override
 	public void setDetailsText(final String text) {
-        final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
+        final MTextController textController = (MTextController) getTextController();
 		NodeModel delegate = getDelegate();
         if (text == null || text.isEmpty()) {
 			textController.setDetailsHidden(delegate, false);
@@ -236,7 +232,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setHideDetails(final boolean hide) {
-		final MTextController controller = (MTextController) TextController.getController(MModeController.getMModeController());
+		final MTextController controller = (MTextController) getTextController();
 		controller.setDetailsHidden(getDelegate(), hide);
     }
 
@@ -287,13 +283,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
     public String getDetailsContentType() {
 		final NodeModel nodeModel = getDelegate();
-		final String contentType = TextController.getController(MModeController.getMModeController()).getDetailsContentType(nodeModel);
+		final String contentType = getTextController().getDetailsContentType(nodeModel);
 		return contentType;
 	}
 
 	@Override
     public void setDetailsContentType(String contentType) {
-		MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
+		MTextController textController = (MTextController) getTextController();
 		if(contentType != null
 				&& ! Stream.of(textController.getDetailContentTypes()).anyMatch(contentType::equals)) {
 			throw new IllegalArgumentException("Unknown content type " + contentType);
@@ -375,13 +371,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
     public String getNoteContentType() {
 		final NodeModel nodeModel = getDelegate();
-		final String contentType = NoteController.getController().getNoteContentType(nodeModel);
+		final String contentType = getNoteController().getNoteContentType(nodeModel);
 		return contentType;
 	}
 
 	@Override
     public void setNoteContentType(String contentType) {
-		MNoteController noteController = MNoteController.getController();
+		MNoteController noteController = (MNoteController) getNoteController();
 		if(contentType != null
 				&& ! Stream.of(noteController.getNoteContentTypes()).anyMatch(contentType::equals)) {
 			throw new IllegalArgumentException("Unknown content type " + contentType);
@@ -486,14 +482,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public String getTransformedText() {
-		final TextController textController = TextController.getController(MModeController.getMModeController());
+		final TextController textController = getTextController();
 		return textController.getTransformedTextNoThrow(getDelegateForValueAccess());
 	}
 
 	// NodeRO: R
 	@Override
 	public String getShortText() {
-		final TextController textController = TextController.getController(MModeController.getMModeController());
+		final TextController textController = getTextController();
 		return textController.getShortPlainText(getDelegateForValueAccess());
 	}
 
@@ -509,7 +505,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public boolean isMinimized(){
-		final TextController textController = TextController.getController(MModeController.getMModeController());
+		final TextController textController = getTextController();
 		return textController.isMinimized(getDelegate());
 	}
 
@@ -534,7 +530,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public String getFormat() {
 		final NodeModel nodeModel = getDelegate();
-		final String format = TextController.getController(MModeController.getMModeController()).getNodeFormat(nodeModel);
+		final String format = getTextController().getNodeFormat(nodeModel);
 		if (format == null && nodeModel.getUserObject() instanceof IFormattedObject)
 			return ((IFormattedObject) nodeModel.getUserObject()).getPattern();
 		return format;
@@ -577,7 +573,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     // NodeRO: R
     @Override
 	public boolean isFree() {
-        final FreeNode freeNode = Controller.getCurrentModeController().getExtension(FreeNode.class);
+        final FreeNode freeNode = getFreeNodeHook();
         return freeNode.isActive(getDelegate());
     }
 
@@ -645,7 +641,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public void moveTo(final Node parentNodeProxy, final int position) {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
-		Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(movedNode);
+		getFreeNodeHook().undoableDeactivateHook(movedNode);
 		getMapController().moveNodes(Arrays.asList(movedNode), parentNode, position);
 	}
 
@@ -654,7 +650,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public void removeConnector(final Connector connectorToBeRemoved) {
 		final ConnectorProxy connectorProxy = (ConnectorProxy) connectorToBeRemoved;
 		final ConnectorModel link = connectorProxy.getConnector();
-		final MLinkController linkController = (MLinkController) LinkController.getController();
+		final MLinkController linkController = (MLinkController) getLinkController();
 		linkController.removeArrowLink(link);
 	}
 
@@ -668,7 +664,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     // Node: R/W
     @Override
 	public void setFree(final boolean free) {
-        final FreeNode freeNode = Controller.getCurrentModeController().getExtension(FreeNode.class);
+        final FreeNode freeNode = getFreeNodeHook();
         if (free != freeNode.isActive(getDelegate()))
             freeNode.undoableToggleHook(getDelegate());
     }
@@ -676,7 +672,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setMinimized(final boolean shortened) {
-		final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
+		final MTextController textController = (MTextController) getTextController();
 		textController.setIsMinimized(getDelegate(), shortened);
 	}
 
@@ -690,7 +686,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public void setNoteText(final String text) {
 	    NodeModel delegate = getDelegate();
-		final MNoteController noteController = (MNoteController) NoteController.getController();
+		final MNoteController noteController = (MNoteController) getNoteController();
 		String noteContentType = noteController.getNoteContentType(delegate);
         noteController.setNoteText(delegate,
                 ! HtmlUtils.isHtml(text) && TextController.isHtmlContentType(noteContentType)
@@ -701,7 +697,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public void setText(final Object value) {
 		if (value instanceof String) {
-			final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
+			final MTextController textController = (MTextController) getTextController();
 			textController.setNodeText(getDelegate(), (String) value);
 		}
 		else {
@@ -712,14 +708,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setObject(final Object object) {
-		final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
+		final MTextController textController = (MTextController) getTextController();
 		textController.setNodeObject(getDelegate(), ProxyUtils.transformObject(object, null));
 	}
 
 	// Node: R/W
 	@Override
 	public void setDateTime(final Date date) {
-		final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
+		final MTextController textController = (MTextController) getTextController();
 		textController.setNodeObject(getDelegate(), ProxyUtils.createDefaultFormattedDateTime(date));
 	}
 
@@ -731,10 +727,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void setFormat(final String format) {
-		final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
-		    .getExtension(NodeStyleController.class);
+		final MNodeStyleController styleController = (MNodeStyleController) getStyleController();
 		styleController.setNodeFormat(getDelegate(), format);
 	}
+
+    private NodeStyleController getStyleController() {
+        return getModeController().getExtension(NodeStyleController.class);
+    }
 
 	@Deprecated
     @Override
@@ -983,6 +982,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
         return encryptionModel != null && !encryptionModel.isAccessible();
     }
 
+    private EncryptionModel getEncryptionModel() {
+        return EncryptionModel.getModel(getDelegate());
+    }
+
     @Override
 	public void encrypt(final String password) {
         if (!isEncrypted())
@@ -1030,65 +1033,56 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
         viewController.out(text);
     }
 
-    private MEncryptionController getEncryptionController() {
-        return (MEncryptionController) Controller.getCurrentModeController().getExtension(EncryptionController.class);
-    }
-
-    private EncryptionModel getEncryptionModel() {
-        return EncryptionModel.getModel(getDelegate());
-    }
-
-
 	@Override
 	public Quantity<LengthUnit> getHorizontalShiftAsLength(){
-		return LocationController.getController().getHorizontalShift(getDelegate());
+		return getLocationController().getHorizontalShift(getDelegate());
 	}
 
 	@Override
 	public Quantity<LengthUnit> getVerticalShiftAsLength(){
-		return LocationController.getController().getVerticalShift(getDelegate());
+		return getLocationController().getVerticalShift(getDelegate());
 	}
 
 	@Override
 	public void setHorizontalShift(final int horizontalShift){
 		final Quantity<LengthUnit> horizontalShiftQuantity = new Quantity<LengthUnit>(horizontalShift, LengthUnit.px);
-		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(),horizontalShiftQuantity);
+		((MLocationController) getLocationController()).setHorizontalShift(getDelegate(),horizontalShiftQuantity);
 	}
 
 	@Override
 	public void setHorizontalShift(final Quantity<LengthUnit> verticalShift) {
-		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), verticalShift);
+		((MLocationController) getLocationController()).setHorizontalShift(getDelegate(), verticalShift);
 	}
 
 	@Override
 	public void setHorizontalShift(final String verticalShift) {
-		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
+		((MLocationController) getLocationController()).setHorizontalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
 	}
 
 	@Override
 	public void setVerticalShift(final int verticalShift){
 		final Quantity<LengthUnit> verticalShiftQuantity = new Quantity<LengthUnit>(verticalShift, LengthUnit.px);
-		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShiftQuantity);
+		((MLocationController) getLocationController()).setVerticalShift(getDelegate(), verticalShiftQuantity);
 	}
 
 	@Override
 	public void setVerticalShift(final Quantity<LengthUnit> verticalShift) {
-		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShift);
+		((MLocationController) getLocationController()).setVerticalShift(getDelegate(), verticalShift);
 	}
 
 	@Override
 	public void setVerticalShift(final String verticalShift) {
-		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
+		((MLocationController) getLocationController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
 	}
 
     @Override
     public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
-        return LocationController.getController().getCommonVGapBetweenChildren(getDelegate());
+        return getLocationController().getCommonVGapBetweenChildren(getDelegate());
     }
 
     @Override
     public Quantity<LengthUnit> getBaseDistanceToChildrenAsLength(){
-        return LocationController.getController().getBaseHGapToChildren(getDelegate());
+        return getLocationController().getBaseHGapToChildren(getDelegate());
     }
 
 
@@ -1096,49 +1090,48 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
 		final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(minimalDistanceBetweenChildren, LengthUnit.px);
-		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+		((MLocationController) getLocationController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
 	}
 
     @Override
     public void setBaseDistanceToChildren(final int baseDistanceToChildren){
         final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(baseDistanceToChildren, LengthUnit.px);
-        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
+        ((MLocationController) getLocationController()).setBaseHGapToChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
     }
 
     @Override
     public void setChildNodesLayout(final ChildNodesLayout sides){
-        ((MLayoutController) LayoutController.getController()).setChildNodesLayout(getDelegate(), sides);
+        ((MLayoutController) getLayoutController()).setChildNodesLayout(getDelegate(), sides);
     }
-
     @Override
     public ChildNodesLayout getChildNodesLayout() {
-        return LayoutController.getController().getChildNodesLayout(getDelegate());
+        return getLayoutController().getChildNodesLayout(getDelegate());
     }
 
     @Override
     public LayoutOrientation getLayoutOrientation() {
-        return LayoutController.getController().getLayoutOrientation(getDelegate());
+        return getLayoutController().getLayoutOrientation(getDelegate());
     }
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnit> minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
+		((MLocationController) getLocationController()).setCommonVGapBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
 	}
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final String minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setCommonVGapBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
+		((MLocationController) getLocationController()).setCommonVGapBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
 	}
 
     @Override
     public void setBaseDistanceToChildren(final Quantity<LengthUnit> baseDistance){
-        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), baseDistance);
+        ((MLocationController) getLocationController()).setBaseHGapToChildren(getDelegate(), baseDistance);
     }
 
     @Override
     public void setBaseDistanceToChildren(final String baseDistance){
         final Quantity<LengthUnit> baseDistancerenQuantity = Quantity.fromString(baseDistance, LengthUnit.px);
-        ((MLocationController) LocationController.getController()).setBaseHGapToChildren(getDelegate(), baseDistancerenQuantity);
+        ((MLocationController) getLocationController()).setBaseHGapToChildren(getDelegate(), baseDistancerenQuantity);
     }
 
 	@Override
@@ -1168,10 +1161,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		final NodeModel node = getDelegate();
 		final ArrayList<NodeModel> children = new ArrayList<NodeModel>(node.getChildren());
 		Collections.sort(children, comparator);
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		int i = 0;
 		for (final NodeModel child : children) {
-			Controller.getCurrentModeController().getExtension(FreeNode.class)
+			getFreeNodeHook()
 			    .undoableDeactivateHook(child);
 			mapController.moveNode(child, i++);
 		}
@@ -1231,7 +1224,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	private Node appendAsCloneImpl(final NodeModel toBeCloned, final boolean withSubtree) {
 		final NodeModel target = getDelegate();
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		if (toBeCloned.getParentNode() == null || toBeCloned.isRoot())
 			throw new IllegalArgumentException("can't clone root node or node without parent");
 		if (!toBeCloned.getMap().equals(getDelegate().getMap()))
@@ -1245,8 +1238,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void pasteAsClone() {
-		final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController
-			    .getController();
+		final MMapClipboardController clipboardController = (MMapClipboardController) getClipboardController();
 		clipboardController.addClone(clipboardController.getClipboardContents(), getDelegate());
 	}
 
@@ -1262,10 +1254,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		catch (NodeNotFoundException e) {
 			throw new org.freeplane.api.NodeNotFoundException(e);
 		}
-	}
-
-	private MMapExplorerController getExplorer() {
-		return (MMapExplorerController) Controller.getCurrentModeController().getExtension(MapExplorerController.class);
 	}
 
 	private AccessedNodes accessedNodes() {
@@ -1327,6 +1315,6 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
     @Override
     public void appendTextOutlineAsBranch(String outline) {
-        ((MMapClipboardController) MapClipboardController.getController()).paste(new StringSelection(outline), getDelegate());
+        ((MMapClipboardController) getClipboardController()).paste(new StringSelection(outline), getDelegate());
     }
 }
