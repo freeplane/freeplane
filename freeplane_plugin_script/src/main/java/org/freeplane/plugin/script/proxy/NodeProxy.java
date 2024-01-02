@@ -68,6 +68,7 @@ import org.freeplane.features.map.clipboard.MindMapPlainTextWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -218,7 +219,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
     @Override
 	public void setDetailsText(final String text) {
-        final MTextController textController = (MTextController) TextController.getController();
+        final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
 		NodeModel delegate = getDelegate();
         if (text == null || text.isEmpty()) {
 			textController.setDetailsHidden(delegate, false);
@@ -235,7 +236,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setHideDetails(final boolean hide) {
-		final MTextController controller = MTextController.getController();
+		final MTextController controller = (MTextController) TextController.getController(MModeController.getMModeController());
 		controller.setDetailsHidden(getDelegate(), hide);
     }
 
@@ -286,13 +287,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
     public String getDetailsContentType() {
 		final NodeModel nodeModel = getDelegate();
-		final String contentType = TextController.getController().getDetailsContentType(nodeModel);
+		final String contentType = TextController.getController(MModeController.getMModeController()).getDetailsContentType(nodeModel);
 		return contentType;
 	}
 
 	@Override
     public void setDetailsContentType(String contentType) {
-		MTextController textController = MTextController.getController();
+		MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
 		if(contentType != null
 				&& ! Stream.of(textController.getDetailContentTypes()).anyMatch(contentType::equals)) {
 			throw new IllegalArgumentException("Unknown content type " + contentType);
@@ -485,14 +486,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public String getTransformedText() {
-		final TextController textController = TextController.getController();
+		final TextController textController = TextController.getController(MModeController.getMModeController());
 		return textController.getTransformedTextNoThrow(getDelegateForValueAccess());
 	}
 
 	// NodeRO: R
 	@Override
 	public String getShortText() {
-		final TextController textController = TextController.getController();
+		final TextController textController = TextController.getController(MModeController.getMModeController());
 		return textController.getShortPlainText(getDelegateForValueAccess());
 	}
 
@@ -508,7 +509,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public boolean isMinimized(){
-		final TextController textController = TextController.getController();
+		final TextController textController = TextController.getController(MModeController.getMModeController());
 		return textController.isMinimized(getDelegate());
 	}
 
@@ -533,7 +534,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public String getFormat() {
 		final NodeModel nodeModel = getDelegate();
-		final String format = TextController.getController().getNodeFormat(nodeModel);
+		final String format = TextController.getController(MModeController.getMModeController()).getNodeFormat(nodeModel);
 		if (format == null && nodeModel.getUserObject() instanceof IFormattedObject)
 			return ((IFormattedObject) nodeModel.getUserObject()).getPattern();
 		return format;
@@ -675,7 +676,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setMinimized(final boolean shortened) {
-		final MTextController textController = (MTextController) TextController.getController();
+		final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
 		textController.setIsMinimized(getDelegate(), shortened);
 	}
 
@@ -700,7 +701,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public void setText(final Object value) {
 		if (value instanceof String) {
-			final MTextController textController = (MTextController) TextController.getController();
+			final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
 			textController.setNodeText(getDelegate(), (String) value);
 		}
 		else {
@@ -711,14 +712,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setObject(final Object object) {
-		final MTextController textController = (MTextController) TextController.getController();
+		final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
 		textController.setNodeObject(getDelegate(), ProxyUtils.transformObject(object, null));
 	}
 
 	// Node: R/W
 	@Override
 	public void setDateTime(final Date date) {
-		final MTextController textController = (MTextController) TextController.getController();
+		final MTextController textController = (MTextController) TextController.getController(MModeController.getMModeController());
 		textController.setNodeObject(getDelegate(), ProxyUtils.createDefaultFormattedDateTime(date));
 	}
 

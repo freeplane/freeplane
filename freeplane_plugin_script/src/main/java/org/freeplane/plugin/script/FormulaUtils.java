@@ -15,6 +15,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.script.dependencies.RelatedElements;
 
 import groovy.lang.GString;
@@ -86,7 +87,7 @@ public class FormulaUtils {
 	    final NodeScript nodeScript = new NodeScript(nodeModel, script);
 	    final ScriptContext scriptContext = new ScriptContext(nodeScript);
 	    final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
-	    
+
 	    return FormulaCache.getOrThrowCachedResult(scriptContext, () -> {
 	            Object result = evaluateLoggingExceptions(scriptContext, restrictedPermissions);
 	            return result;
@@ -141,7 +142,8 @@ public class FormulaUtils {
 			return;
 		final List<NodeScript> cycle = FormulaThreadLocalStacks.INSTANCE.findCycle(nodeScript);
 		final Configurable configurable = controller.getMapViewManager().getMapViewConfiguration();
-		final DependencyHighlighter dependencyHighlighter = new DependencyHighlighter(LinkController.getController(),
+		final DependencyHighlighter dependencyHighlighter = new DependencyHighlighter(
+		        LinkController.getController(MModeController.getMModeController()),
 			configurable);
 		if (! cycle.isEmpty())
 			dependencyHighlighter.showCyclicDependency(nodeScript);
