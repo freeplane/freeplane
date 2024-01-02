@@ -91,7 +91,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		if (column == 1 && value != null) {
 			try {
 				// evaluate values only
-				final TextController textController = TextController.getController();
+				final TextController textController = TextController.getController(attributeTable.getModeController());
 				Object transformedObject = textController.getTransformedObject(attributeTableModel.getNode(), attributeTableModel.getNodeAttributeModel(), value);
 				text = transformedObject.toString();
 				if (color == null && transformedObject instanceof HighlightedTransformedObject && TextController.isMarkTransformedTextSet()) {
