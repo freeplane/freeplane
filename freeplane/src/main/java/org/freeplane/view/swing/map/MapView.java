@@ -430,8 +430,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final private Set<NodeView> selectedSet = new LinkedHashSet<NodeView>();
 		final private List<NodeView> selectedList = new ArrayList<NodeView>();
 		private NodeView selectedNode = null;
-		private NodeView selectionStart = null;
-		private NodeView selectionEnd = null;
 		private boolean selectionChanged = false;
 
 		public Selection() {
@@ -443,7 +441,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			addToSelectedSet(node);
 			selectedList.add(node);
 			selectedNode = node;
-			selectionEnd = selectionStart = node;
 			addSelectionForHooks(node);
 			repaintAfterSelectionChange(node);
 			for (final NodeView oldSelected : oldSelecteds) {
@@ -461,7 +458,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else{
 				if(addToSelectedSet(node)){
 					selectedList.add(node);
-					selectionEnd = node;
 					repaintAfterSelectionChange(node);
 					return true;
 				}
@@ -498,7 +494,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				selectedNode = null;
 				clearSelectedSet();
 				selectedList.clear();
-				selectionEnd = selectionStart = null;
 			}
 		}
 
@@ -520,10 +515,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private boolean deselect(final NodeView node) {
-			if(selectionStart == node)
-				selectionEnd = selectionStart = null;
-			else if (selectionEnd  == node)
-				selectionEnd = selectionStart;
 			final boolean selectedChanged = selectedNode != null && selectedNode.equals(node);
 			if (selectedChanged) {
 				removeSelectionForHooks(node);
@@ -589,10 +580,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             for(final NodeView view : newSelection)
                 if (addToSelectedSet(view))
                 	selectedList.add(view);
-			if(!selectedSet.contains(selectionStart))
-				selectionEnd = selectionStart = selectedNode;
-			else if (!selectedSet.contains(selectionEnd))
-				selectionEnd = selectionStart;
 
             for(final NodeView view : nodesAddedToSelection)
                 repaintAfterSelectionChange(view);
@@ -617,18 +604,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         }
 
 		public NodeView getSelectionStart() {
-			return selectionStart;
+			return selectedList.size() > 0 ? selectedList.get(0) : null;
 		}
 
-		public void setSelectionStart(final NodeView node) {
-			selectionEnd = selectionStart = node;
-		}
 		public NodeView getSelectionEnd() {
-			return selectionEnd;
-		}
-
-		public void setSelectionEnd(final NodeView selectionEnd) {
-			this.selectionEnd = selectionEnd;
+			int selectedNodeCount = selectedList.size();
+            return selectedNodeCount > 0 ? selectedList.get(selectedNodeCount - 1) : null;
 		}
 
         private void fireSelectionChanged() {
@@ -1575,13 +1556,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             if(newSelected.isSelected()) {
                 if(selection.getSelectionEnd() != newSelected) {
                     deselect(selection.getSelectionEnd());
-                    selection.setSelectionEnd(newSelected);
                     mapScroller.scrollNodeToVisible(newSelected);
                 }
             }
             else {
                 addSelected(newSelected, true);
-                selection.setSelectionEnd(newSelected);
                 mapScroller.scrollNodeToVisible(newSelected);
             }
         } else
@@ -1890,7 +1869,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 node = nextVisibleSibling;
                 addSelected(node, false);
             }while(node != nextSelected);
-            selection.setSelectionEnd(nextSelected);
             mapScroller.scrollNodeToVisible(nextSelected);
         }
         else
@@ -2485,7 +2463,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				|| selectionStart == null || selectionEnd == null
 				|| parentView != selectionStart.getParentView() || parentView != selectionEnd.getParentView()
 				|| left != selectionStart.isTopOrLeft() || newSelected.isTopOrLeft() != selectionEnd.isTopOrLeft()){
-			selection.setSelectionStart(newSelected);
 			if(!newSelected.isSelected())
 				selection.add(newSelected);
 			mapScroller.scrollNodeToVisible(newSelected);
@@ -2517,7 +2494,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					selectionRequired = false;
 			}
 		}
-		selection.setSelectionEnd(newSelected);
 		mapScroller.scrollNodeToVisible(newSelected);
 
 	}
@@ -2588,7 +2564,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             }
 		}
 		else {
-			selection.setSelectionStart(nodeView);
 			selection.add(nodeView);
 			mapScroller.scrollNodeToVisible(nodeView);
 		}

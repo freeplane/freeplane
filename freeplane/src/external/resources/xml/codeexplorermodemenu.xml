@@ -67,9 +67,14 @@
 				<Entry builder="lastOpenedMaps" />
 			</Entry>
 			<Entry name="ExportAction" />
-			<Entry name="PageAction" />
-			<Entry name="PrintPreviewAction" />
-			<Entry accelerator="control P" name="PrintAction" />
+            <Entry name="print">
+    			<Entry name="PageAction" />
+    			<Entry name="PrintPreviewAction" />
+    			<Entry name="PrintAction" accelerator="control P" />
+            </Entry>
+			<Entry builder="separator" />
+			<Entry name="FilePropertiesAction" />
+			<Entry builder="separator" />
 			<Entry accelerator="control W" name="CloseAction" />
 			<Entry accelerator="control Q" name="QuitAction" builder="MB_QuitAction" />
 		</Entry>
