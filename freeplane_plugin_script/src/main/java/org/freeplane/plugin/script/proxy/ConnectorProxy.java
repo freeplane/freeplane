@@ -16,6 +16,8 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -107,7 +109,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     private MLinkController getLinkController() {
-		return (MLinkController) LinkController.getController();
+		return (MLinkController) LinkController.getController(MModeController.getMModeController());
 	}
 
 	public String getMiddleLabel() {

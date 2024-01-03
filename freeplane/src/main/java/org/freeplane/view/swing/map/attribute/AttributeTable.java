@@ -344,12 +344,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
 				if(x < xmax){
+				    ModeController modeController = getModeController();
 				    if(me.isShiftDown())
-				        Controller.getCurrentModeController().getMapController().forceViewChange(() ->
-				        LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link)
+				        modeController.getMapController().forceViewChange(() ->
+				        LinkController.getController(modeController).loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link)
 				                );
 				    else
-				        LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
+				        LinkController.getController(modeController).loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
 				    return false;
 				}
              }
@@ -379,8 +380,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Hyperlink toHyperlink(final Object value) {
 		NodeModel node = attributeView.getNode();
-		return TextController.getController().toLink(value, node, NodeAttributeTableModel.getModel(node));
+		return getModeController().getExtension(TextController.class)
+		        .toLink(value, node, NodeAttributeTableModel.getModel(node));
 	}
+
+    ModeController getModeController() {
+        return attributeView.getMapView().getModeController();
+    }
 
 	private void startEditing(EventObject e, final JComboBox comboBox) {
 		final ComboBoxEditor editor = comboBox.getEditor();
@@ -409,7 +415,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Icon getLinkIcon(final Hyperlink link) {
 		NodeModel nodeModel = ((AttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon =  LinkController.getController().getLinkIcon(link, nodeModel);
+	    final Icon linkIcon =  getAttributeView().getMapView().getModeController().getExtension(LinkController.class)
+	            .getLinkIcon(link, nodeModel);
 	    return linkIcon;
     }
 
@@ -498,7 +505,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final String valueForEdit = getValueForEdit(row, col);
 		if(col == 1){
-			final MTextController textController = (MTextController) TextController.getController();
+			final MTextController textController = (MTextController) TextController.getController(getModeController());
 			textController.getEventQueue().setFirstEvent((e instanceof KeyEvent) ? ((KeyEvent) e) : null);
 			final AttributeTableModel model = (AttributeTableModel) getModel();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
@@ -1021,7 +1028,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					if (value != null && ! value.equals(getValueForEdit(editingRow, editingColumn))
 					        && ! Controller.getCurrentModeController().isEditingLocked()) {
 						final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
-				        final MTextController textController = (MTextController) TextController.getController();
+				        final MTextController textController = (MTextController) TextController.getController(getModeController());
 				        final Object object = textController.guessObject(value, pattern);
 						final Object newValue = enforceFormattedObjectForIdentityPattern(object, pattern);
 						setValueAt(newValue, editingRow, editingColumn);
