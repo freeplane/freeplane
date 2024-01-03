@@ -233,7 +233,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     @Override
     public void mapChanged(MapChangeEvent event) {
         if(event.getProperty().equals(Filter.class))
-            update();
+            SwingUtilities.invokeLater(this::update);
     }
 
 
