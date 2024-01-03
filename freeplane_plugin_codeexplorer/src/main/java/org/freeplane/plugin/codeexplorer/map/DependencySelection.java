@@ -134,10 +134,14 @@ public class DependencySelection {
     private boolean connectsDifferentVisibleNodes(Dependency dependency) {
         CodeNode visibleOrigin = getVisibleNode(dependency.getOriginClass());
         CodeNode visibleTarget = getVisibleNode(dependency.getTargetClass());
-        if (visibleOrigin == null  || visibleTarget == null || visibleOrigin.equals(visibleTarget))
+        if (visibleOrigin == null  || visibleTarget == null
+                || visibleOrigin ==visibleTarget )
+            return false;
+        NodeModel selectionRoot = selection.getSelectionRoot();
+        if (visibleOrigin == selectionRoot || visibleTarget == selectionRoot)
             return false;
         return isConnectorSelected(visibleOrigin, visibleTarget);
-     }
+    }
 
     public boolean isConnectorSelected(CodeNode origin, CodeNode target) {
         Set<NodeModel> selectedNodes = getSelectedNodeSet();
