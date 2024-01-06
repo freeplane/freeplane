@@ -72,7 +72,7 @@
 <node TEXT="Version 1.11.9" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_289590210">
 <node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1031432368">
 <node TEXT="Navigate-&gt;Auto-expand selected nodes" ID="ID_1906031168"/>
-<node TEXT="JVM Code Explorer mode (based on ArchUnit)" ID="ID_604199270"/>
+<node TEXT="JVM Code Explorer mode (based on ArchUnit)" ID="ID_604199270" LINK="https://www.freeplane.org/codeexplorer-video" FORMAT_AS_HYPERLINK="true"/>
 </node>
 </node>
 <node TEXT="Version 1.11.8" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_428268446">

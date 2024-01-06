@@ -259,6 +259,7 @@
 				<Entry name="RequestFeatureAction" />
 			</Entry>
 			<Entry name="AboutAction" />
+			<Entry name="code.introductionVideo" />
 			<Entry accelerator="F1" name="DocumentationAction" />
             <Entry name="FreeplaneHandbook" />
             <Entry name="HotKeyInfoAction" />
