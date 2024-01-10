@@ -103,6 +103,7 @@ subprojects {
       options.encoding = "UTF-8"
       options.docEncoding = "UTF-8"
       options.charSet = "UTF-8"
+      options.locale="en_US"
       enabled = false
       failOnError = false
     }
