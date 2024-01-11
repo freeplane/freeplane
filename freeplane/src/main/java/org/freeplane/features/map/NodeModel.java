@@ -413,7 +413,7 @@ public class NodeModel{
 		child.setParent(this);
 	}
 
-	private boolean isAccessible() {
+	public boolean isAccessible() {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		return encryptionModel == null || encryptionModel.isAccessible();
 	}
