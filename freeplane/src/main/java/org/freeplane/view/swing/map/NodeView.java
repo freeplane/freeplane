@@ -1143,6 +1143,9 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	private void setFolded(boolean fold, boolean force) {
+	    if(fold && map.getRoot().getNode().isDescendantOf(viewedNode)) {
+	        return;
+        }
 		boolean wasFolded = isFolded;
 		this.isFolded = fold;
 		if(wasFolded != fold || force) {
