@@ -550,8 +550,7 @@ public class NodeModel{
 			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
 		}
 		boolean isFoldedNow = isFolded();
-        if(wasFolded != isFoldedNow)
-		    fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(isFoldedNow), false, false));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(isFoldedNow), false, false));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
