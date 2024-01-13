@@ -435,7 +435,7 @@ public class NodeModel{
 	}
 
 	public boolean isFolded() {
-		return sharedData.isFolded() && isAccessible();
+		return sharedData.isFolded() || !isAccessible();
 	}
 
 	/*
@@ -544,11 +544,14 @@ public class NodeModel{
 	}
 
 	public void setFolded(boolean folded) {
+		boolean wasFoldingFlagSet = sharedData.isFolded();
 		boolean wasFolded = isFolded();
-		if (wasFolded != folded && isAccessible()) {
+		if (wasFoldingFlagSet != folded && isAccessible()) {
 			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
 		}
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
+		boolean isFoldedNow = isFolded();
+        if(wasFolded != isFoldedNow)
+		    fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(isFoldedNow), false, false));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
