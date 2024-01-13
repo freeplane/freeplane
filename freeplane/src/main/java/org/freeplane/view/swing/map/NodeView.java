@@ -600,7 +600,12 @@ public class NodeView extends JComponent implements INodeView {
         NodeModel parentNode = viewedNode.getParentNode();
         if(parentNode == null)
             return null;
-        return getMap().getNodeView(parentNode);
+        NodeView parentNodeView = getMap().getNodeView(parentNode);
+        if (parentNodeView != null)
+            return parentNodeView;
+        NodeView newParentNodeView = new NodeView(parentNode, map);
+        newParentNodeView.update();
+        return newParentNodeView;
     }
 
     enum PreferredChild {
