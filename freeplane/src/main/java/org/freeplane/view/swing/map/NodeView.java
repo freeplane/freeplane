@@ -1690,7 +1690,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-	    if(isFolded() || ! viewedNode.isAccessible()) {
+	    if(isFolded()) {
 	        for (NodeView child : getChildrenViews()) {
 	            child.remove();
 	        }
