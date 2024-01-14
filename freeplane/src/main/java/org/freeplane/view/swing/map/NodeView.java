@@ -998,7 +998,8 @@ public class NodeView extends JComponent implements INodeView {
 				return;
 			if(getComponentCount() <= index
 					|| ! (getComponent(index) instanceof NodeView))
-				addChildView(child, index++);
+				addChildView(child, index);
+			index++;
 		}
 	}
 
@@ -1699,7 +1700,7 @@ public class NodeView extends JComponent implements INodeView {
 	        map.updateSelectedNode();
 	        map.revalidateSelecteds();
 	    }
-	    else if(getComponentCount() == 1) {
+	    else {
 	        addChildViews();
 	    }
 	    revalidate();
