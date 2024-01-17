@@ -22,7 +22,7 @@ task freeplanelauncherJar(type: Jar) {
 
      manifest {
           attributes("Manifest-Version": "1.0",
-                     "Main-Class": "org.freeplane.launcher.JavaLauncher",
+                     "Main-Class": "org.freeplane.launcher.Launcher",
                      "Class-Path": "framework.jar")
      }
 	 
@@ -94,6 +94,12 @@ task copyLauncherStuff(type: Copy) {
      }
      into(globalBin)
      dependsOn jar
+}
+
+eclipse {
+    jdt {
+        javaRuntimeName = 'Java SE 15'
+    }
 }
 
 eclipseJdt {

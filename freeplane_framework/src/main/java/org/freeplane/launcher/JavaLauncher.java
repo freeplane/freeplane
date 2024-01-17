@@ -19,16 +19,27 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class JavaLauncher {
-    private static Desktop fmMacApplication;
-
+    private static int getMajorJavaVersion() {
+        String versionString = System.getProperty("java.version");
+        int start = 0;
+        int end = versionString.indexOf('.');
+        if(versionString.startsWith("1.")) {
+        	start = end + 1;
+			end = versionString.indexOf('.', start);
+		}
+        return Integer.parseInt(versionString.substring(start, end));
+    }
     public static void main(String[] args) {
-        System.setProperty("apple.awt.UIElement", "true");
+    	String os = System.getProperty("os.name");
+        if(os.startsWith("Mac OS")) {
+        	System.setProperty("apple.awt.UIElement", "true");
+        }
         RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
 
         List<String> jvmArguments = runtimeMxBean.getInputArguments();
         String classpath = System.getProperty("java.class.path");
         String javaBin = System.getProperty("java.home") + "/bin/java";
-        String os = System.getProperty("os.name");
+        
 
         // Construct command to execute the other Java program
         List<String> command = new ArrayList<>();
@@ -36,13 +47,16 @@ public class JavaLauncher {
         command.add("-cp");
         command.add(classpath);
         jvmArguments.stream()
-        .filter(arg -> ! arg.startsWith(" -Xmx"))
         .forEach(command::add);
-
-        command.add("-Xmx3g");
-
+        final int javaVersion = getMajorJavaVersion();
+        if(javaVersion > 8) {
+            command.add("--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED");
+            command.add("--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED");
+        }
+        if(javaVersion > 17) {
+        	command.add("-Djava.security.manager=allow");
+        }
         try {
-
             if(os.startsWith("Mac OS")) {
                 String path = new File(Launcher.getFreeplaneInstallationDirectory(), "../Resources/Freeplane.icns").getAbsolutePath();
                 command.add("-Xdock:icon=" + path);
@@ -55,29 +69,39 @@ public class JavaLauncher {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.inheritIO();
             Process process = processBuilder.start();
-            if(fmMacApplication == null) {
-                fmMacApplication = Desktop.getDesktop();
-                fmMacApplication.setOpenFileHandler(new OpenFilesHandler() {
-
-                    @Override
-                    public void openFiles(OpenFilesEvent e) {
-                        String[] files = e.getFiles().stream().map(File::getAbsolutePath).toArray(String[]::new);
-                        main(files);
-                    }
-                });
-                fmMacApplication.setOpenURIHandler(new  OpenURIHandler() {
-
-                    @Override
-                    public void openURI(OpenURIEvent e) {
-                        String uri = e.getURI().toString();
-                        main(new String[] {uri});
-                    }
-                });
+            if(os.startsWith("Mac OS")) {
+            	MacAppConfigurer.configureMacApp();
+            	process.waitFor();
             }
-            process.waitFor();
 
         } catch (IOException  | InterruptedException e) {
             e.printStackTrace();
         }
     }
+}
+
+class MacAppConfigurer {
+    private static Desktop fmMacApplication;
+	static void configureMacApp() {
+		if(fmMacApplication == null) {
+			fmMacApplication = Desktop.getDesktop();
+			fmMacApplication.setOpenFileHandler(new OpenFilesHandler() {
+
+				@Override
+				public void openFiles(OpenFilesEvent e) {
+					String[] files = e.getFiles().stream().map(File::getAbsolutePath).toArray(String[]::new);
+					JavaLauncher.main(files);
+				}
+			});
+			fmMacApplication.setOpenURIHandler(new  OpenURIHandler() {
+
+				@Override
+				public void openURI(OpenURIEvent e) {
+					String uri = e.getURI().toString();
+					JavaLauncher.main(new String[] {uri});
+				}
+			});
+		}
+	}
+
 }
