@@ -34,9 +34,7 @@ public class JavaLauncher {
         if(os.startsWith("Mac OS")) {
         	System.setProperty("apple.awt.UIElement", "true");
         }
-        RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
-
-        List<String> jvmArguments = runtimeMxBean.getInputArguments();
+        List<String> jvmArguments = getAppArguments();
         String classpath = System.getProperty("java.class.path");
         String javaBin = System.getProperty("java.home") + "/bin/java";
         
@@ -47,6 +45,7 @@ public class JavaLauncher {
         command.add("-cp");
         command.add(classpath);
         jvmArguments.stream()
+        .filter(arg -> ! arg.startsWith("-Xms"))
         .forEach(command::add);
         final int javaVersion = getMajorJavaVersion();
         if(javaVersion > 8) {
@@ -78,6 +77,12 @@ public class JavaLauncher {
             e.printStackTrace();
         }
     }
+	private static List<String> getAppArguments() {
+		RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+
+        List<String> jvmArguments = runtimeMxBean.getInputArguments();
+		return jvmArguments;
+	}
 }
 
 class MacAppConfigurer {
