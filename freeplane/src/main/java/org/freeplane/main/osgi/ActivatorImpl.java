@@ -52,6 +52,7 @@ import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
@@ -136,6 +137,13 @@ class ActivatorImpl implements BundleActivator {
 			try{
 				plugin.start();
 				System.out.println("Started: " + plugin.getLocation() + " (id#" + plugin.getBundleId() + ")");
+			}
+			catch(BundleException e) {
+				if(e.getType() == BundleException.RESOLVE_ERROR) {
+					System.err.println("Failed to start " + plugin.getLocation());
+					System.err.println(e.getMessage());
+				} else
+					e.printStackTrace();
 			}
 			catch(Exception e){
 				e.printStackTrace();

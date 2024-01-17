@@ -18,7 +18,7 @@
 -Dorg.knopflerfish.verbosity=0
 # Various debug flags
 -Dorg.knopflerfish.framework.debug.packages=false
--Dorg.knopflerfish.framework.debug.errors=true
+-Dorg.knopflerfish.framework.debug.errors=false
 -Dorg.knopflerfish.framework.debug.classloader=false
 -Dorg.knopflerfish.framework.debug.startlevel=false
 -Dorg.knopflerfish.framework.debug.ldap=false
