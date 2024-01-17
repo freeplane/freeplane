@@ -71,8 +71,8 @@ public class JavaLauncher {
             Process process = processBuilder.start();
             if(os.startsWith("Mac OS")) {
             	MacAppConfigurer.configureMacApp();
-            	process.waitFor();
             }
+            process.waitFor();
 
         } catch (IOException  | InterruptedException e) {
             e.printStackTrace();
