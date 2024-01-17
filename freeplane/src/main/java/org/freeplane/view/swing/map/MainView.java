@@ -573,7 +573,8 @@ public class MainView extends ZoomableLabel {
 
 	private String convertTextToHtmlLink(String text, NodeModel node) {
 		Hyperlink link = NodeLinks.getLink(node);
-		if(link == null || "menuitem".equals(link.getScheme()) || ! LinkController.getController().formatNodeAsHyperlink(node))
+		if(link == null || "menuitem".equals(link.getScheme())
+		        || ! getMap().getModeController().getExtension(LinkController.class).formatNodeAsHyperlink(node))
 			return text;
 		if (HtmlUtils.isHtml(text))
 			text = HtmlUtils.htmlToPlain(text);

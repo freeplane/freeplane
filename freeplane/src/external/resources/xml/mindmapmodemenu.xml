@@ -15,11 +15,11 @@
 		<Entry name="FindAction" row="2" weight = "1"/>
 		<Entry name="NodeListAction" row="2" weight = "1"/>
 		<Entry usedBy="EDITOR" >
-			<Entry name="CutAction" row = "1" />
+			<Entry name="CutAction" row = "1" weight = "1"/>
 		</Entry>
-		<Entry name="CopyAction" row = "1" />
+		<Entry name="CopyAction" row = "1" weight = "1"/>
 		<Entry usedBy="EDITOR" >
-			<Entry name="PasteAction" row = "1" />
+			<Entry name="PasteAction" row = "1" weight = "1"/>
 			<Entry builder="dropdownMenu" text = "edit.tooltip" width = "3" row="2">
 				<Entry name="CopySingleAction" />
 				<Entry name="CopyIDAction" />
@@ -335,6 +335,7 @@
 					<Entry name="SetStringPropertyAction.show_connectors.true" />
 					<Entry name="SetStringPropertyAction.show_connectors.false" />
 					<Entry name="SetStringPropertyAction.show_connectors.for_selection" />
+					<Entry name="SetStringPropertyAction.show_connectors.only_arrows_for_selection" />
 					<Entry name="SetStringPropertyAction.show_connectors.never" />
 				</Entry>
 				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
@@ -482,7 +483,9 @@
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
 				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />

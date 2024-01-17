@@ -261,12 +261,16 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
     }
 
     private void propertyChanged(String propertyName, String newValue, @SuppressWarnings("unused") String oldValue) {
-        if(NOTE_FOLLOWS_SELECTION_PROPERTY.equals(propertyName))
-            noteFollowsSelection = Boolean.parseBoolean(newValue);
+        if(! NOTE_FOLLOWS_SELECTION_PROPERTY.equals(propertyName))
+            return;
+        noteFollowsSelection = Boolean.parseBoolean(newValue);
         if(noteFollowsSelection) {
             IMapSelection selection = Controller.getCurrentController().getSelection();
-            node = selection != null ? selection.getSelected() : null;
-            updateEditor();
+            NodeModel selectedNode = selection != null ? selection.getSelected() : null;
+            if(node != selectedNode) {
+                node = selectedNode;
+                updateEditor();
+            }
         }
     }
 

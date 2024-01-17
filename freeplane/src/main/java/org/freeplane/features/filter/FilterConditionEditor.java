@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
@@ -30,6 +31,7 @@ import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -40,7 +42,9 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
+import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
@@ -169,6 +173,7 @@ public class FilterConditionEditor {
 	final private JToggleButton btnDeny;
 	private final JComponent panel;
 	private final JComponent optionPanel;
+    private Timer borderRestore;
 	public FilterConditionEditor(final FilterController filterController, final Variant variant) {
 		this(filterController, 5, variant);
 	}
@@ -250,7 +255,7 @@ public class FilterConditionEditor {
 
         btnDeny = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_DENY + ".icon", PROPERTY_FILTER_DENY+ ".tooltip");
         optionPanel.add(btnDeny, gridBagConstraints);
-        
+
         if(variant != Variant.FILTER_TOOLBAR) {
         	gridBagConstraints.weightx = 1;
         	optionPanel.add(new JUnitPanel(), gridBagConstraints);
@@ -395,6 +400,27 @@ public class FilterConditionEditor {
 	    	if (c instanceof JComboBox)
 	    		((JComboBox)c).getEditor().getEditorComponent().setEnabled(enabled);
 	    }
+    }
+
+    public void showNodeNotFound() {
+        blink(Color.RED);
+    }
+
+    public void showNodeFound() {
+        blink(Color.GRAY);
+    }
+
+    private void blink(Color color) {
+        if(borderRestore == null) {
+            Border border = values.getBorder();
+            borderRestore = new Timer(500, e -> values.setBorder(border));
+            borderRestore.setRepeats(false);
+        }
+        else
+            borderRestore.stop();
+        MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, color);
+        values.setBorder(matteBorder);
+        borderRestore.start();
     }
 
 }

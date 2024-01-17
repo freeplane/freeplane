@@ -19,6 +19,8 @@
  */
 package org.freeplane.plugin.codeexplorer;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.help.OpenURLAction;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
@@ -31,6 +33,9 @@ public class CodeModeController extends ModeController {
 	CodeModeController(final Controller controller) {
 		super(controller);
 		addExtension(CodeProjectController.class, new CodeProjectController(this));
+		addAction(new OpenURLAction("code.introductionVideo",
+		        ResourceController.getResourceController().getProperty("code.introductionVideoUrl")));
+
 	}
 
 	@Override

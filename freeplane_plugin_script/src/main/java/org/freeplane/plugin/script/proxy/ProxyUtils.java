@@ -25,6 +25,7 @@ import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeStream;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
@@ -75,7 +76,7 @@ public class ProxyUtils {
 	}
 
 	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
-	    final ICondition condition = closure == null ? null : 
+	    final ICondition condition = closure == null ? null :
 	        new DelegateCondition(node -> checkNode(closure, scriptContext, node), "Closure");
 	    return condition;
     }
@@ -95,7 +96,7 @@ public class ProxyUtils {
                     + " instead of boolean/Boolean");
         }
     }
-    
+
 	static List<? extends Node> find(final NodeCondition condition, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.find(createCondition(condition, scriptContext), node, scriptContext);
 	}
@@ -105,8 +106,8 @@ public class ProxyUtils {
 	}
 
 	static ICondition createCondition(final NodeCondition condition, final ScriptContext scriptContext) {
-		final ICondition filterCondition = condition == null ? null : 
-		    new DelegateCondition(node -> condition.check(new NodeProxy(node, scriptContext)), "Code"); 
+		final ICondition filterCondition = condition == null ? null :
+		    new DelegateCondition(node -> condition.check(new NodeProxy(node, scriptContext)), "Code");
 		return filterCondition;
     }
 	/** finds from any node downwards.
@@ -245,7 +246,7 @@ public class ProxyUtils {
         if (object instanceof String) {
 			final Object object1 = object;
 			final String oldFormat = pattern;
-			object = ((MTextController) TextController.getController()).guessObject(object1, oldFormat);
+			object = ((MTextController) TextController.getController(MModeController.getMModeController())).guessObject(object1, oldFormat);
 		}
 		else if (pattern != null)
             object = FormatController.format(object, pattern);

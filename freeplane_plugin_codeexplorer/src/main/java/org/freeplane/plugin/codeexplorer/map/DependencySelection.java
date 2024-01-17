@@ -134,35 +134,31 @@ public class DependencySelection {
     private boolean connectsDifferentVisibleNodes(Dependency dependency) {
         CodeNode visibleOrigin = getVisibleNode(dependency.getOriginClass());
         CodeNode visibleTarget = getVisibleNode(dependency.getTargetClass());
-         if (visibleOrigin == null  || visibleTarget == null || visibleOrigin.equals(visibleTarget))
-             return false;
-         if (getSelectedNodeSet().size() == 1 || this.showsOutsideDependencies)
-             return true;
-         NodeModel selectedVisibleOrigin = findSelectedAncestorOrSelf(visibleOrigin);
-         if(selectedVisibleOrigin ==  null)
-             return false;
-         NodeModel selectedVisibleTarget = findSelectedAncestorOrSelf(visibleTarget);
-         return selectedVisibleTarget != null && selectedVisibleTarget != selectedVisibleOrigin
-                 && (! visibleTarget.isDescendantOf(selectedVisibleOrigin) || ! visibleOrigin.isDescendantOf(selectedVisibleTarget));
-     }
+        return visibleOrigin != null && visibleTarget != null && visibleOrigin != visibleTarget
+                && isConnectorSelected(visibleOrigin, visibleTarget);
+    }
 
-     public boolean isConnectorSelected(CodeNode source, CodeNode target) {
-         Set<NodeModel> selectedNodes = getSelectedNodeSet();
-         boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
-         if(isOnlyOneNodeSelected && selection.getSelected().isRoot())
-             return false;
-         NodeModel selectedSourceAncestorOrSource = findSelectedAncestorOrSelf(source);
-         boolean isSourceSelected = selectedSourceAncestorOrSource != null;
-         boolean showsOutsideDependencies = isOnlyOneNodeSelected || this.showsOutsideDependencies;
-         if (showsOutsideDependencies && isSourceSelected)
-             return ! target.isDescendantOf(selectedSourceAncestorOrSource);
-         NodeModel selectedTargetAncestorOrTarget = findSelectedAncestorOrSelf(target);
-         boolean isTargetSelected = selectedTargetAncestorOrTarget != null;
-         if (showsOutsideDependencies)
-             return isTargetSelected && ! source.isDescendantOf(selectedTargetAncestorOrTarget);
-         else if (isSourceSelected && isTargetSelected)
-             return selectedSourceAncestorOrSource != selectedTargetAncestorOrTarget;
-         else
-             return false;
-     }
- }
+    public boolean isConnectorSelected(CodeNode origin, CodeNode target) {
+        Set<NodeModel> selectedNodes = getSelectedNodeSet();
+        boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
+        NodeModel selectionRoot = selection.getSelectionRoot();
+        if (origin == selectionRoot || target == selectionRoot)
+            return false;
+        if(isOnlyOneNodeSelected && selection.getSelected() == selectionRoot)
+            return false;
+        NodeModel selectedOriginAncestorOrOrigin = findSelectedAncestorOrSelf(origin);
+        boolean isOriginSelected = selectedOriginAncestorOrOrigin != null;
+        NodeModel selectedTargetAncestorOrTarget = findSelectedAncestorOrSelf(target);
+        boolean isTargetSelected = selectedTargetAncestorOrTarget != null;
+        if(! isOriginSelected && ! isTargetSelected)
+            return false;
+        if (isOnlyOneNodeSelected)
+            return true;
+        boolean areOriginAndTargetSelected = isOriginSelected && isTargetSelected;
+        if (showsOutsideDependencies)
+            return ! areOriginAndTargetSelected;
+        else if (areOriginAndTargetSelected)
+            return selectedOriginAncestorOrOrigin != selectedTargetAncestorOrTarget;
+        else return false;
+    }
+}

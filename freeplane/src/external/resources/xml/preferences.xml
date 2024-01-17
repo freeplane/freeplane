@@ -175,6 +175,7 @@
 					<choice value="true" text="OptionPanel.show_connectors.true" />
 					<choice value="false" text="OptionPanel.show_connectors.false" />
 					<choice value="for_selection" text="OptionPanel.show_connectors.for_selection" />
+					<choice value="only_arrows_for_selection" text="OptionPanel.show_connectors.only_arrows_for_selection" />
 					<choice value="never" text="OptionPanel.show_connectors.never" />
 				</combo>
 				<boolean name="paint_connectors_behind" />

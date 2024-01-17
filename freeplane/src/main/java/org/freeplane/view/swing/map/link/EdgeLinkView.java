@@ -90,7 +90,7 @@ public class EdgeLinkView extends AConnectorView {
 	}
 
 	public void increaseBounds(final Rectangle innerBounds) {
-		//edge link does not increase inner bounds 
+		//edge link does not increase inner bounds
 	}
 
 	public void paint(final Graphics graphics) {
@@ -110,10 +110,10 @@ public class EdgeLinkView extends AConnectorView {
 			p2.translate(5, 0);
 			paintArrow(graphics, p2, p1);
 		}
-		
+
 	}
 
 	private void paintArrow(final Graphics graphics, Point from, Point to) {
-	    paintArrow(from, to, (Graphics2D)graphics, getZoom() * 10);
+	    paintArrow(from, to, (Graphics2D)graphics, getZoom() * 10, ArrowDirection.INCOMING);
     }
 }

@@ -5,11 +5,13 @@
  */
 package org.freeplane.features.layout.mindmapmode;
 
+import javax.swing.Icon;
 import javax.swing.JToggleButton;
 
 import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.core.resources.components.ButtonPanelProperty;
 import org.freeplane.core.ui.components.MultipleImageIcon;
+import org.freeplane.core.ui.svgicons.FixSizeIconWrapper;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.NodeModel;
@@ -21,6 +23,11 @@ public class ChildNodesLayoutButtonPanelProperty extends ButtonPanelProperty {
     static final String CHILD_NODES_LAYOUTS = "children_nodes_layouts";
     public ChildNodesLayoutButtonPanelProperty() {
         super(CHILD_NODES_LAYOUTS,  LayoutSelectorPanelFactory.createLayoutSelectorPanel());
+        Icon icon = startButton.getIcon();
+        int iconWidth = icon.getIconWidth() * 2 + LayoutSelectorPanelFactory.RIGHT_ARROW_ICON.getIconWidth();
+        int iconHeight = icon.getIconHeight();
+        startButton.setIcon(new FixSizeIconWrapper(iconWidth, iconHeight));
+
     }
 
     public void setValue(ChildNodesLayout value, ChildNodesLayout viewValue) {

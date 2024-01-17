@@ -5,6 +5,7 @@ import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -33,18 +34,22 @@ class FoundNodes implements IExtension {
 		final MapModel map = node.getMap();
 		final LinkedList<String> nodesUnfoldedByDisplay = new LinkedList<String>();
 		NodeModel nodeOnPath = null;
-		for (nodeOnPath = node; nodeOnPath != null && !this.nodesUnfoldedByDisplay.contains(nodeOnPath.createID()); nodeOnPath = nodeOnPath
-		    .getParentNode()) {
+		for (nodeOnPath = node;
+		        nodeOnPath != null && !this.nodesUnfoldedByDisplay.contains(nodeOnPath.createID());
+		        nodeOnPath = nodeOnPath.getParentNode()) {
 			if (Controller.getCurrentModeController().getMapController().isFolded(nodeOnPath)) {
 				nodesUnfoldedByDisplay.add(nodeOnPath.createID());
 			}
 		}
 		final ListIterator<String> oldPathIterator = this.nodesUnfoldedByDisplay
 		    .listIterator(this.nodesUnfoldedByDisplay.size());
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+        NodeModel selectionRoot = selection.getSelectionRoot();
 		while (oldPathIterator.hasPrevious()) {
 			final String oldPathNodeID = oldPathIterator.previous();
 			final NodeModel oldPathNode = map.getNodeForID(oldPathNodeID);
-			if (oldPathNode != null && oldPathNode.equals(nodeOnPath)) {
+			if (oldPathNode != null && (oldPathNode.equals(nodeOnPath)
+			        || ! (selectionRoot.isRoot() || oldPathNode.isDescendantOf(selectionRoot)))) {
 				break;
 			}
 			oldPathIterator.remove();

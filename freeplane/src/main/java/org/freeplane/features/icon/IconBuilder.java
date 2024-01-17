@@ -100,22 +100,24 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		final Collection<NamedIcon> icons = forceFormatting ? iconController.getIcons(node, StyleOption.FOR_UNSELECTED_NODE)
 		        : node.getIcons();
 		for (NamedIcon icon : icons) {
-			final XMLElement iconElement = new XMLElement();
-			iconElement.setName("icon");
-			iconElement.setAttribute("BUILTIN", icon.getName());
-			if (forceFormatting) {
-			    MindIcon mindIcon = (MindIcon) icon;
-			    String iconFile;
-                try {
-                    iconFile = new URI(null, mindIcon.getFile(), null).toString();
-                    iconElement.setAttribute("src", iconFile);
-                    iconElement.setAttribute("height",
-                            Integer.toString(iconController.getIconSize(node, StyleOption.FOR_UNSELECTED_NODE).toBaseUnitsRounded()));
-                } catch (Exception e) {
-                    LogUtils.severe(e);
-                }
-			}
-			writer.addElement(node, iconElement);
+		    if(icon instanceof MindIcon) {
+		        final XMLElement iconElement = new XMLElement();
+		        iconElement.setName("icon");
+		        iconElement.setAttribute("BUILTIN", icon.getName());
+		        if (forceFormatting) {
+		            MindIcon mindIcon = (MindIcon) icon;
+		            String iconFile;
+		            try {
+		                iconFile = new URI(null, mindIcon.getFile(), null).toString();
+		                iconElement.setAttribute("src", iconFile);
+		                iconElement.setAttribute("height",
+		                        Integer.toString(iconController.getIconSize(node, StyleOption.FOR_UNSELECTED_NODE).toBaseUnitsRounded()));
+		            } catch (Exception e) {
+		                LogUtils.severe(e);
+		            }
+		        }
+		        writer.addElement(node, iconElement);
+		    }
 		}
 	}
 }

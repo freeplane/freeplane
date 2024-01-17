@@ -67,14 +67,15 @@
 			</Entry>
 		</Entry>
 		<Entry name="navigate">
-			<Entry name="navigate">
-				<Entry name="NavigationPreviousMapAction" />
-				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
-				<Entry name="fold">
-					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
-					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
-					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
-				</Entry>
+			<Entry name="NavigationPreviousMapAction" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
+			<Entry name="fold">
+				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry accelerator="control SPACE"
+					name="ToggleChildrenFoldedAction" />
 			</Entry>
 			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 			<Entry name="FreeSelectNodeAction.LEFT" />

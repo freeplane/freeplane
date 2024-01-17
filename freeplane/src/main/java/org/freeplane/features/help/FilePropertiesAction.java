@@ -66,33 +66,9 @@ class FilePropertiesAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		//variables for information to be displayed
-		final String fileNamePath, fileSavedDateTime, fileSize;
-		final int fileChangesSinceSave;
 		//get information
 		//if file has been saved once
 		final MapModel map = Controller.getCurrentController().getMap();
-        if (map.getFile() != null) {
-			//fileNamePath
-			fileNamePath = map.getFile().toString();
-			//fleSavedDateTime as formatted string
-			final Calendar c = Calendar.getInstance();
-			c.setTimeInMillis(map.getFile().lastModified());
-			final DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-			fileSavedDateTime = df.format(c.getTime());
-			//fileSize as formatted string
-			final DecimalFormat def = new DecimalFormat();
-			def.setGroupingUsed(true);
-			fileSize = def.format(map.getFile().length()) + " "
-			        + TextUtils.getText("FileRevisionsDialog.file_size");
-			//fileChangesSinceSave
-			fileChangesSinceSave = map.getNumberOfChangesSinceLastSave();
-		}
-		else {
-			fileNamePath = TextUtils.getText("FileProperties_NeverSaved");
-			fileSavedDateTime = TextUtils.getText("FileProperties_NeverSaved");
-			fileSize = TextUtils.getText("FileProperties_NeverSaved");
-			fileChangesSinceSave = 0;
-		}
 		//node statistics
 		final NodeModel rootNode = map.getRootNode();
         final int nodeMainBranches = rootNode.getChildCount();
@@ -143,66 +119,80 @@ class FilePropertiesAction extends AFreeplaneAction {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		c.ipady = 5;
 		c.ipadx = 0;
+		c.ipady = 5;
 		c.insets = new Insets(0, 10, 0, 10);
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		//fileNamePath
-		final URL imageURL = ResourceController.getResourceController().getResource("/images/filenew.svg");
-		final JLabel fileIcon = new JLabel(IconFactory.getInstance().getIcon(imageURL));
-		gridbag.setConstraints(fileIcon, c);
-		panel.add(fileIcon);
-		c.gridx = 1;
-		final JLabel fileNamePathText = new JLabel(TextUtils.getText("FileProperties_FileName"));
-		gridbag.setConstraints(fileNamePathText, c);
-		panel.add(fileNamePathText);
-		c.gridx = 2;
-		final JLabel fileNamePathLabel = new JLabel(fileNamePath);
-		gridbag.setConstraints(fileNamePathLabel, c);
-		panel.add(fileNamePathLabel);
-		//fileSize
-		c.gridy++;
-		c.gridx = 1;
-		final JLabel fileSizeText = new JLabel(TextUtils.getText("FileProperties_FileSize"));
-		gridbag.setConstraints(fileSizeText, c);
-		panel.add(fileSizeText);
-		c.gridx = 2;
-		final JLabel fileSizeLabel = new JLabel(fileSize);
-		gridbag.setConstraints(fileSizeLabel, c);
-		panel.add(fileSizeLabel);
-		//fileSavedDateTime
-		c.gridy++;
-		c.gridx = 1;
-		final JLabel fileSavedDateTimeText = new JLabel(TextUtils.getText("FileProperties_FileSaved"));
-		gridbag.setConstraints(fileSavedDateTimeText, c);
-		panel.add(fileSavedDateTimeText);
-		c.gridx = 2;
-		final JLabel fileSavedDateTimeLabel = new JLabel(fileSavedDateTime);
-		gridbag.setConstraints(fileSavedDateTimeLabel, c);
-		panel.add(fileSavedDateTimeLabel);
-		//fileChangesSinceSave
-		c.gridy++;
-		c.gridx = 1;
-		final JLabel fileChangesSinceSaveText = new JLabel(TextUtils.getText("FileProperties_ChangesSinceLastSave"));
-		gridbag.setConstraints(fileChangesSinceSaveText, c);
-		panel.add(fileChangesSinceSaveText);
-		c.gridx = 2;
-		final JLabel fileChangesSinceSaveLabel = new JLabel(String.valueOf(fileChangesSinceSave));
-		gridbag.setConstraints(fileChangesSinceSaveLabel, c);
-		panel.add(fileChangesSinceSaveLabel);
-		//Separator
-		c.gridy++;
-		c.gridx = 0;
-		c.insets = new Insets(5, 10, 5, 10);
-		c.ipady = 2;
-		c.gridwidth = 3;
-		final JSeparator js = new JSeparator(SwingConstants.HORIZONTAL);
-		js.setLayout(gridbag);
-		js.setBorder(BorderFactory.createEtchedBorder());
-		js.setPreferredSize(new Dimension(0, 0));
-		c.fill = GridBagConstraints.HORIZONTAL;
-		gridbag.setConstraints(js, c);
-		panel.add(js);
+        if (map.getFile() != null) {
+            //fileNamePath
+            final URL imageURL = ResourceController.getResourceController().getResource("/images/filenew.svg");
+            final JLabel fileIcon = new JLabel(IconFactory.getInstance().getIcon(imageURL));
+            gridbag.setConstraints(fileIcon, c);
+            panel.add(fileIcon);
+            c.gridx = 1;
+            final JLabel fileNamePathText = new JLabel(TextUtils.getText("FileProperties_FileName"));
+            gridbag.setConstraints(fileNamePathText, c);
+            panel.add(fileNamePathText);
+            c.gridx = 2;
+            final String fileNamePath = map.getFile().toString();
+            //fileSize as formatted string
+            final DecimalFormat def = new DecimalFormat();
+            def.setGroupingUsed(true);
+            final JLabel fileNamePathLabel = new JLabel(fileNamePath);
+            gridbag.setConstraints(fileNamePathLabel, c);
+            panel.add(fileNamePathLabel);
+            //fileSize
+            c.gridy++;
+            c.gridx = 1;
+            final JLabel fileSizeText = new JLabel(TextUtils.getText("FileProperties_FileSize"));
+            gridbag.setConstraints(fileSizeText, c);
+            panel.add(fileSizeText);
+            c.gridx = 2;
+            final String fileSize = def.format(map.getFile().length()) + " "
+                    + TextUtils.getText("FileRevisionsDialog.file_size");
+            final JLabel fileSizeLabel = new JLabel(fileSize);
+            gridbag.setConstraints(fileSizeLabel, c);
+            panel.add(fileSizeLabel);
+            //fileSavedDateTime
+            c.gridy++;
+            c.gridx = 1;
+            final JLabel fileSavedDateTimeText = new JLabel(TextUtils.getText("FileProperties_FileSaved"));
+            gridbag.setConstraints(fileSavedDateTimeText, c);
+            panel.add(fileSavedDateTimeText);
+            c.gridx = 2;
+            //fleSavedDateTime as formatted string
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(map.getFile().lastModified());
+            final DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+            final String fileSavedDateTime = df.format(calendar.getTime());
+            final JLabel fileSavedDateTimeLabel = new JLabel(fileSavedDateTime);
+            gridbag.setConstraints(fileSavedDateTimeLabel, c);
+            panel.add(fileSavedDateTimeLabel);
+            //fileChangesSinceSave
+            c.gridy++;
+            c.gridx = 1;
+            final JLabel fileChangesSinceSaveText = new JLabel(TextUtils.getText("FileProperties_ChangesSinceLastSave"));
+            gridbag.setConstraints(fileChangesSinceSaveText, c);
+            panel.add(fileChangesSinceSaveText);
+            c.gridx = 2;
+            final int fileChangesSinceSave = map.getNumberOfChangesSinceLastSave();
+            final JLabel fileChangesSinceSaveLabel = new JLabel(String.valueOf(fileChangesSinceSave));
+            gridbag.setConstraints(fileChangesSinceSaveLabel, c);
+            panel.add(fileChangesSinceSaveLabel);
+            //Separator
+            c.gridy++;
+            c.gridx = 0;
+            c.insets = new Insets(5, 10, 5, 10);
+            c.ipady = 2;
+            c.gridwidth = 3;
+            final JSeparator js = new JSeparator(SwingConstants.HORIZONTAL);
+            js.setLayout(gridbag);
+            js.setBorder(BorderFactory.createEtchedBorder());
+            js.setPreferredSize(new Dimension(0, 0));
+            c.fill = GridBagConstraints.HORIZONTAL;
+            gridbag.setConstraints(js, c);
+            panel.add(js);
+        }
 		//nodeTotalNodeCount
 		c.gridy++;
 		c.insets = new Insets(0, 10, 0, 10);

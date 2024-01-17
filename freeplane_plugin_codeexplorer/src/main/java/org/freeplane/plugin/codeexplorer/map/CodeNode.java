@@ -12,11 +12,19 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.plugin.codeexplorer.CodeModeController;
+import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
@@ -216,5 +224,21 @@ public abstract class CodeNode extends NodeModel {
             return Stream.of(outgoing).parallel();
         }
     }
+
+    @Override
+    public <T extends IExtension> T getExtension(Class<T> clazz) {
+        if (NodeLinks.class.equals(clazz)) {
+            ModeController controller = Controller.getCurrentModeController();
+            if(! controller.getModeName().equals(CodeModeController.MODENAME))
+                return null;
+            Configurable mapViewComponent = controller.getController().getMapViewManager().getMapViewConfiguration();
+            if(mapViewComponent != null) {
+                return (T) new CodeNodeLinks((CodeLinkController) controller.getExtension(LinkController.class), mapViewComponent, this);
+            }
+        }
+       return super.getExtension(clazz);
+    }
+
+
 
 }

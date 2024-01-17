@@ -600,7 +600,12 @@ public class NodeView extends JComponent implements INodeView {
         NodeModel parentNode = viewedNode.getParentNode();
         if(parentNode == null)
             return null;
-        return getMap().getNodeView(parentNode);
+        NodeView parentNodeView = getMap().getNodeView(parentNode);
+        if (parentNodeView != null)
+            return parentNodeView;
+        NodeView newParentNodeView = new NodeView(parentNode, map);
+        newParentNodeView.update();
+        return newParentNodeView;
     }
 
     enum PreferredChild {
@@ -993,7 +998,8 @@ public class NodeView extends JComponent implements INodeView {
 				return;
 			if(getComponentCount() <= index
 					|| ! (getComponent(index) instanceof NodeView))
-				addChildView(child, index++);
+				addChildView(child, index);
+			index++;
 		}
 	}
 
@@ -1687,13 +1693,17 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-		for (NodeView child : getChildrenViews()) {
-			child.remove();
-		}
-		map.updateSelectedNode();
-		addChildViews();
-		map.revalidateSelecteds();
-		revalidate();
+	    if(isFolded()) {
+	        for (NodeView child : getChildrenViews()) {
+	            child.remove();
+	        }
+	        map.updateSelectedNode();
+	        map.revalidateSelecteds();
+	    }
+	    else {
+	        addChildViews();
+	    }
+	    revalidate();
 	}
 
 	public void update() {

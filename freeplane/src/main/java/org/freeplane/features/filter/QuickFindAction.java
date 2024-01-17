@@ -34,11 +34,11 @@ import org.freeplane.features.mode.Controller;
  */
 final class QuickFindAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * 
+	 *
 	 */
 	private final FilterConditionEditor filterEditor;
 	private final FilterController filterController;
@@ -47,7 +47,7 @@ final class QuickFindAction extends AFreeplaneAction {
 
 	/**
 	 * @param filterController
-	 * @param quickEditor 
+	 * @param quickEditor
 	 */
 	QuickFindAction(final FilterController filterController, FilterConditionEditor quickEditor, final Direction direction) {
 		super("QuickFindAction." + direction);
@@ -79,15 +79,18 @@ final class QuickFindAction extends AFreeplaneAction {
 
 		if(next != null){
 			FoundNodes.get(next.getMap()).displayFoundNode(next);
-			
-			if (reFocusSearchInputField) 
+
+			if (reFocusSearchInputField)
 			{
 				// this is called by Enter key listener in FilterConditionEditor
 				// => we want to re-focus the search term input field so that one can hit enter
 				// again to find the next search result!
 				filterEditor.focusInputField(false);
 			}
+			filterEditor.showNodeFound();
 		}
+		else
+		    filterEditor.showNodeNotFound();
 	}
 
 	public void actionPerformed(final ActionEvent e) {

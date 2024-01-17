@@ -42,15 +42,14 @@
 			</Entry>
 		</Entry>
 		<Entry name="navigate">
-			<Entry name="navigate">
-				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
-				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
-				<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
-				<Entry accelerator="alt PAGE_DOWN" name="UnfoldOneLevelAction" />
-				<Entry accelerator="alt PAGE_UP" name="FoldOneLevelAction" />
-				<Entry accelerator="alt END" name="UnfoldAllAction" />
-				<Entry accelerator="alt HOME" name="FoldAllAction" />
-			</Entry>
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
+			<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+			<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+			<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
+			<Entry accelerator="alt PAGE_DOWN" name="UnfoldOneLevelAction" />
+			<Entry accelerator="alt PAGE_UP" name="FoldOneLevelAction" />
+			<Entry accelerator="alt END" name="UnfoldAllAction" />
+			<Entry accelerator="alt HOME" name="FoldAllAction" />
 			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 			<Entry name="GotoNodeAction" />
 			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
