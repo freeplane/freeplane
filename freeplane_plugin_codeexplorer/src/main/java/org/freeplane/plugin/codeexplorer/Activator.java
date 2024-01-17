@@ -2,6 +2,7 @@ package org.freeplane.plugin.codeexplorer;
 
 import java.util.Hashtable;
 
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
@@ -20,7 +21,10 @@ public class Activator implements BundleActivator {
 	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
-		registerMindMapModeExtension(context);
+		if (Compat.isJavaVersionLessThan("11."))
+			System.out.println("Java 11 is required for code explorer mode. Disabled.");
+		else
+			registerMindMapModeExtension(context);
 	}
 
 	private void registerMindMapModeExtension(final BundleContext context) {
