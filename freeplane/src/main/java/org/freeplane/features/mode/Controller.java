@@ -42,6 +42,7 @@ import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.main.application.ApplicationLifecycleListener;
@@ -189,10 +190,11 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	}
 
 	public boolean shutdown() {
-		getViewController().saveProperties();
-		if (!getViewController().quit()) {
+		viewController.saveProperties();
+		if (!viewController.quit()) {
 			return false;
 		}
+		mapViewManager.getMaps().values().forEach(map -> map.releaseResources());
 		try {
             ResourceController.getResourceController().saveProperties();
             extensionContainer.getExtensions().clear();
