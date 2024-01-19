@@ -20,7 +20,7 @@
   <icon></icon>
   <jre>
     <path>runtime;%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
-    <minVersion>8</minVersion>
+    <minVersion>1.8.0</minVersion>
     <maxVersion>21.999</maxVersion>
     <opt>-Xms20m</opt>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
