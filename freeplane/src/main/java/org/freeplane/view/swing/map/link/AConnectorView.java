@@ -50,11 +50,13 @@ abstract class AConnectorView  implements ILinkView {
 	}
 
 	protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size, ArrowDirection direction) {
+	    if(from.equals(to))
+	        return;
 	    final Polygon p = createArrowShape(from, to, size, direction);
-	    if(p != null) {
-	        g.fillPolygon(p);
-	        g.drawPolygon(p);
-	    }
+        if(p == null)
+            return;
+	    g.fillPolygon(p);
+	    g.drawPolygon(p);
 	}
 
     private Polygon createArrowShape(final Point from, final Point to, final double size, ArrowDirection direction) {
