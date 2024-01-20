@@ -10,6 +10,7 @@ Adds actions "Find next/previous visible" and "Find next/previous removing filte
 Updates scripting api generator
 Introduces new action to easily add new nodes linked to menu commands
 Introduces new API method to copy user styles from another map
+Improved Windows Launcher supports Java versions from 8 to 21
 
 ==============================
 1.11.8
