@@ -18,13 +18,7 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" builder = "bigIcon"/>
-		<Entry builder="separator" />
-		<Entry row="1">
-			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
-		</Entry>
-		<Entry row="2">
-			<Entry name="code.ShowAllClassesAction" />
-		</Entry>
+		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies"  builder = "bigIcon"/>
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
@@ -33,23 +27,10 @@
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
 		</Entry>
 		<Entry row="2">
-			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
-		</Entry>
-		<Entry builder="separator" />
-		<Entry row="1">
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.MAXIMUM_RECURSION" />
-		</Entry>
-		<Entry row="2">
-			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
@@ -58,6 +39,7 @@
 		<Entry row="2">
 			<Entry name="code.SelectCyclesAction" />
 		</Entry>
+		<Entry name="code.ShowAllClassesAction" builder = "bigIcon"/>
 		</Entry>
 		<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
