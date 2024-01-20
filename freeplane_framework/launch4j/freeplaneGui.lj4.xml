@@ -2,11 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <classPath>
-    <mainClass>org.freeplane.launcher.JavaLauncher</mainClass>
-    <cp>freeplanelauncher.jar</cp>
-    <cp>framework.jar</cp>
-   </classPath>
+  <jar>freeplanelauncher.jar</jar>
   <outfile>freeplane.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
@@ -22,7 +18,9 @@
     <path>runtime;%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
     <minVersion>1.8.0</minVersion>
     <maxVersion>21.999</maxVersion>
-    <opt>-Xms20m</opt>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
+    <opt>-Djava.security.manager=allow</opt>
+    <opt>--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED</opt>
+    <opt>--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED</opt>
   </jre>
 </launch4jConfig>
