@@ -51,12 +51,16 @@ abstract class AConnectorView  implements ILinkView {
 
 	protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size, ArrowDirection direction) {
 	    final Polygon p = createArrowShape(from, to, size, direction);
-	    g.fillPolygon(p);
-	    g.drawPolygon(p);
+	    if(p != null) {
+	        g.fillPolygon(p);
+	        g.drawPolygon(p);
+	    }
 	}
 
     private Polygon createArrowShape(final Point from, final Point to, final double size, ArrowDirection direction) {
         Point2D directionPoint = createArrowDirection(from, to, size);
+        if(directionPoint == null)
+            return null;
         return direction == ArrowDirection.INCOMING ? incomingArrowShape(to, directionPoint) : outgoingArrowShape(to, directionPoint);
     }
 
@@ -76,11 +80,10 @@ abstract class AConnectorView  implements ILinkView {
     }
 
     private Polygon outgoingArrowShape(final Point from, Point2D direction ) {
-        final Polygon p;
         final double arrowWidth = .33d;
         double dxn = direction.getX();
         double dyn = direction.getY();
-        p = new Polygon();
+        final Polygon p = new Polygon();
         p.addPoint((int) (from.x + dxn), (int) (from.y + dyn));
         p.addPoint((int) (from.x + arrowWidth * dyn), (int) (from.y - arrowWidth * dxn));
         p.addPoint((int) (from.x + dxn*0.7), (int) (from.y + dyn*0.7));
@@ -90,11 +93,11 @@ abstract class AConnectorView  implements ILinkView {
     }
 
     private Polygon incomingArrowShape(final Point to, Point2D direction ) {
-        final Polygon p;
         final double arrowWidth = .5d;
         double dxn = direction.getX();
         double dyn = direction.getY();
-        p = new Polygon();
+
+        final Polygon p = new Polygon();
         p.addPoint((to.x), (to.y));
         p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
         p.addPoint((int) (to.x + dxn * 0.8d), (int) (to.y + dyn * 0.8d));
