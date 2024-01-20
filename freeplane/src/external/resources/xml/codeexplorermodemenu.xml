@@ -120,7 +120,6 @@
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.show_icons" />
 				<Entry name="SetBooleanPropertyAction.show_connectors" />
-				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
 				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="map_overview" >
