@@ -17,8 +17,9 @@
 			<Entry name="FoldAllAction" />
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" builder = "bigIcon"/>
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies"  builder = "bigIcon"/>
+		<Entry builder="separator" />
+		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" builder = "bigIcon"/>
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
@@ -39,9 +40,10 @@
 		<Entry row="2">
 			<Entry name="code.SelectCyclesAction" />
 		</Entry>
+		<Entry builder="separator" />
 		<Entry name="code.ShowAllClassesAction" builder = "bigIcon"/>
-		</Entry>
-		<Entry name="main_menu" builder="main_menu">
+	</Entry>
+	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="code.NewCodeMapAction" accelerator="control N"/>
 			<Entry name="CloseAction" accelerator="control W"/>
@@ -158,9 +160,9 @@
 		<Entry name="code.exploremenu">
 			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
 			<Entry builder="separator" />
-			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
-			<Entry name="code.ShowAllClassesAction" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
 			<Entry builder="separator" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
@@ -182,6 +184,8 @@
 			<Entry builder="separator" />
 			<Entry name="code.FilterCyclesAction" />
 			<Entry name="code.SelectCyclesAction" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowAllClassesAction" />
 		</Entry>
 		<Entry name="filter">
 			<Entry name="UndoFilterAction" />
