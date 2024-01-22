@@ -1,4 +1,9 @@
 ==============================
+1.11.10
+==============================
+Fix launcher configuration
+
+==============================
 1.11.9
 ==============================
 Implements JVM code explorer mode based on ArchUnit for visualization of code dependencies and structure
