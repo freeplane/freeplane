@@ -84,7 +84,7 @@ def defineMacBuildTasks =  { architecture ->
      '--java-options', '--add-opens', 
      '--java-options', 'java.desktop/javax.swing.text.html=ALL-UNNAMED',
    	 '--input', 'build/macosapp/input',
-     '--main-class', 'org.freeplane.launcher.JavaLauncher',
+     '--main-class', 'org.freeplane.launcher.Launcher',
   	 '--main-jar', 'freeplanelauncher.jar',
      '--runtime-image', macAppProperties["macapp.${architecture}.jdk.runtime.image"],
      '--copyright', "Freeplane ${distVersion}",
