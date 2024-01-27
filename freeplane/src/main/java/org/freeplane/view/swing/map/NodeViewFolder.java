@@ -6,6 +6,7 @@
 package org.freeplane.view.swing.map;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -30,10 +31,22 @@ class NodeViewFolder {
         else
             Stream.of(toFold).forEach(unfoldedNodeViews::remove);
         selectedNodeViews.stream()
-        .filter(nodeView -> nodeView.isFolded())
         .forEach(nodeView -> {
-            nodeView.setFolded(false);
-            unfoldedNodeViews.put(nodeView, null);
+            if (nodeView.isFolded()) {
+                nodeView.setFolded(false);
+                unfoldedNodeViews.put(nodeView, null);
+            }
+
+            for( NodeView descendant = nodeView;;) {
+                LinkedList<NodeView> childrenViews = descendant.getChildrenViews();
+                if (childrenViews.size() != 1)
+                    break;
+                descendant = childrenViews.get(0);
+                if(descendant.isFolded()) {
+                    descendant.setFolded(false);
+                    unfoldedNodeViews.put(descendant, null);
+                }
+            }
         });
     }
     private HashSet<NodeView> withAncestors(Set<NodeView> nodeViews) {
