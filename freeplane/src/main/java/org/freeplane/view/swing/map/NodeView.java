@@ -1155,6 +1155,7 @@ public class NodeView extends JComponent implements INodeView {
 	        map.preserveRootNodeLocationOnScreen();
 			fireFoldingChanged();
 		}
+		map.foldingWasSet(this);
 		if(lastSelectedChild != null && isFolded())
 			lastSelectedChild = null;
 	}

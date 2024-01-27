@@ -17,6 +17,12 @@ import javax.swing.SwingUtilities;
 class NodeViewFolder {
     private final Map<NodeView, Void> unfoldedNodeViews = new WeakHashMap<>();
 
+    void foldingWasSet(NodeView view) {
+        if(unfoldedNodeViews.containsKey(view))
+            unfoldedNodeViews.remove(view);
+    }
+
+
     void adjustFolding(Set<NodeView> selectedNodeViews) {
         Set<NodeView> selectedNodeViewsWithAncestors = withAncestors(selectedNodeViews);
         NodeView[] toFold = unfoldedNodeViews.keySet().stream()
@@ -26,15 +32,14 @@ class NodeViewFolder {
         Stream.of(toFold)
         .filter(nodeView -> nodeView.getNode().isFoldable())
         .forEach(nodeView -> nodeView.setFolded(true));
-        if(toFold.length == unfoldedNodeViews.size())
-            unfoldedNodeViews.clear();
-        else
-            Stream.of(toFold).forEach(unfoldedNodeViews::remove);
+
         selectedNodeViews.stream()
         .forEach(nodeView -> {
+            boolean hasUnfoldView = false;
             if (nodeView.isFolded()) {
                 nodeView.setFolded(false);
                 unfoldedNodeViews.put(nodeView, null);
+                hasUnfoldView = true;
             }
 
             for( NodeView descendant = nodeView;;) {
@@ -44,7 +49,10 @@ class NodeViewFolder {
                 descendant = childrenViews.get(0);
                 if(descendant.isFolded()) {
                     descendant.setFolded(false);
-                    unfoldedNodeViews.put(descendant, null);
+                    if(! hasUnfoldView) {
+                        unfoldedNodeViews.put(descendant, null);
+                        hasUnfoldView = true;
+                    }
                 }
             }
         });

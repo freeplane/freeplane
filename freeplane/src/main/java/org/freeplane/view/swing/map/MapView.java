@@ -612,6 +612,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             return selectedNodeCount > 0 ? selectedList.get(selectedNodeCount - 1) : null;
 		}
 
+	    void foldingWasSet(NodeView view) {
+	        if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION)) {
+	            nodeViewFolder.foldingWasSet(view);
+	        }
+	    }
+
+
         private void fireSelectionChanged() {
             if(selectionChanged) {
                 selectionChanged = false;
@@ -3011,5 +3018,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public void setRepaintsViewOnSelectionChange(boolean repaintsViewOnSelectionChange) {
         this.repaintsViewOnSelectionChange = repaintsViewOnSelectionChange;
+    }
+
+    void foldingWasSet(NodeView nodeView) {
+        selection.foldingWasSet(nodeView);
     }
 }
