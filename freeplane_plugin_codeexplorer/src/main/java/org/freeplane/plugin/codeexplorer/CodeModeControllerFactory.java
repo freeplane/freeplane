@@ -2,6 +2,7 @@ package org.freeplane.plugin.codeexplorer;
 
 import java.awt.Component;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
 
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
@@ -48,7 +49,7 @@ import com.tngtech.archunit.ArchConfiguration;
 public class CodeModeControllerFactory {
 	static private CodeModeController modeController;
 
-	static public CodeModeController createModeController() {
+	static public CodeModeController createModeController(ExecutorService classImportService) {
 	    ((ApplicationResourceController)ResourceController.getResourceController()).registerResourceLoader(CodeModeController.class.getClassLoader());
 	    ArchConfiguration.get().setResolveMissingDependenciesFromClassPath(false);
 		final Controller controller = Controller.getCurrentController();
@@ -58,7 +59,7 @@ public class CodeModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new ClipboardControllers());
-		new CodeMapController(modeController);
+		new CodeMapController(modeController, classImportService);
 		UrlManager.install(new UrlManager());
 		MapIO.install(modeController);
 		new CodeIconController(modeController).install(modeController);

@@ -1,6 +1,8 @@
 package org.freeplane.plugin.codeexplorer;
 
 import java.util.Hashtable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
@@ -14,6 +16,7 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
     private CodeModeController modeController;
+    private ExecutorService classImportService;
 
 	/*
 	 * (non-Javadoc)
@@ -35,9 +38,17 @@ public class Activator implements BundleActivator {
                 @Override
 				public void installExtension(Controller controller, CommandLineOptions options, ExtensionInstaller.Context context) {
 			        if(context == Context.MAIN && modeController == null) {
-                        modeController = CodeModeControllerFactory.createModeController();
+			            classImportService = Executors.newSingleThreadExecutor(this::newThread);
+                        modeController = CodeModeControllerFactory.createModeController(classImportService);
                     }
 			    }
+
+                private Thread newThread(Runnable r) {
+                    Thread thread = new Thread(r, "Load explored packages");
+                    thread.setDaemon(true);
+                    thread.setPriority(Math.min(Thread.MAX_PRIORITY, Thread.currentThread().getPriority() + 1));
+                    return thread;
+                }
 
 		    }, props);
 	}
@@ -50,6 +61,7 @@ public class Activator implements BundleActivator {
 	public void stop(final BundleContext context) throws Exception {
 	    if(modeController != null) {
 	        modeController.getExtension(CodeProjectController.class).saveConfiguration();
+	        classImportService.shutdownNow();
 	    }
 	}
 }
