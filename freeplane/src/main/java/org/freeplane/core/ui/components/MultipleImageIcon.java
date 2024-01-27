@@ -38,8 +38,10 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class MultipleImageIcon implements Icon {
+    final private int TAG_GAP = new Quantity(2, LengthUnit.pt).toBaseUnitsRounded();
 	final private List<Icon> mIcons = new ArrayList<>();
 	final private List<NamedIcon> mUIIcons = new ArrayList<>();
+	final private List<Icon> mTags = new ArrayList<>();
 
 	public MultipleImageIcon() {
 	}
@@ -73,9 +75,21 @@ public class MultipleImageIcon implements Icon {
         mUIIcons.add(null);
     }
 
+    public void addTag(TagIcon tag) {
+        Objects.requireNonNull(tag);
+        mTags.add(tag);
+    }
+
 	@Override
     public int getIconHeight() {
-		int myY = 0;
+		int height = getGraphicalIconHeight();
+		for(Icon tag : mTags)
+		    height += TAG_GAP + tag.getIconHeight();
+        return height;
+	}
+
+    private int getGraphicalIconHeight() {
+        int myY = 0;
 		for (final Icon icon : mIcons) {
 			final int otherHeight = icon.getIconHeight();
 			if (otherHeight > myY) {
@@ -83,16 +97,23 @@ public class MultipleImageIcon implements Icon {
 			}
 		}
 		return myY;
-	};
+    }
 
 	@Override
     public int getIconWidth() {
-		int myX = 0;
+		int width = getGraphicalIconWidth();
+        for(Icon tag : mTags)
+            width = Math.max(width, tag.getIconWidth());
+        return width;
+	}
+
+    private int getGraphicalIconWidth() {
+        int myX = 0;
 		for (final Icon icon : mIcons) {
 			myX += icon.getIconWidth();
 		}
 		return myX;
-	}
+    }
 
 	public int getImageCount() {
 		return mIcons.size();
@@ -105,6 +126,12 @@ public class MultipleImageIcon implements Icon {
 			icon.paintIcon(c, g, myX, y);
 			myX += icon.getIconWidth();
 		}
+		int graphicalIconHeight = getGraphicalIconHeight();
+        int myY = graphicalIconHeight == 0 ? y : y + TAG_GAP + graphicalIconHeight;
+        for (final Icon icon : mTags) {
+            icon.paintIcon(c, g, x, myY);
+            myY += TAG_GAP + icon.getIconHeight();
+        }
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
