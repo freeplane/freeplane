@@ -52,7 +52,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			}
 		}
 		if ((e.getModifiers() & DefaultMouseWheelListener.ZOOM_MASK) != 0) {
-			float newZoomFactor = 1f + Math.abs((float) e.getUnitsToScroll()) / 10f;
+			float newZoomFactor = 1.1f;
 			if (e.getUnitsToScroll() < 0) {
 				newZoomFactor = 1 / newZoomFactor;
 			}
