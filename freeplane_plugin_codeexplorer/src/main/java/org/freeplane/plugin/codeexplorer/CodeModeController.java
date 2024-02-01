@@ -22,12 +22,12 @@ package org.freeplane.plugin.codeexplorer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.help.OpenURLAction;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
 
-public class CodeModeController extends ModeController {
+public class CodeModeController extends MModeController {
 	static public final String MODENAME = "CodeExplorer";
 
 	CodeModeController(final Controller controller) {

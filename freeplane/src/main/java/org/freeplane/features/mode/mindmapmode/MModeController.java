@@ -70,7 +70,6 @@ public class MModeController extends ModeController {
 	public MModeController(final Controller controller) {
 		super(controller);
 		createActions();
-		createOptionPanelControls();
 	}
 
 	private void addUndoableActor(final IActor actor, final MapModel map) {
@@ -114,7 +113,7 @@ public class MModeController extends ModeController {
 		addAction(redo);
 	}
 
-	private void createOptionPanelControls() {
+	public void createOptionPanelControls() {
 		optionPanelBuilder = new OptionPanelBuilder();
 		final ResourceController resourceController = ResourceController.getResourceController();
 		URL preferences = resourceController.getResource("/xml/preferences.xml");

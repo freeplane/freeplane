@@ -1217,5 +1217,19 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
             invalidateAll(c2.getComponent(i));
     }
 
+    @Override
+    public void setMap(Component view, MapModel newMap) {
+       if(! (view instanceof MapView))
+           return;
+       MapView mapView = (MapView) view;
+       MapModel oldMap = mapView.getMap();
+       if(newMap == oldMap)
+           return;
+       mapViewChangeListeners.beforeMapChange(oldMap, newMap);
+       mapView.setMap(newMap);
+       mapView.selectAsTheOnlyOneSelected(mapView.getRoot());
+       mapViewChangeListeners.afterMapChange(oldMap, newMap);
+    }
+
 
 }

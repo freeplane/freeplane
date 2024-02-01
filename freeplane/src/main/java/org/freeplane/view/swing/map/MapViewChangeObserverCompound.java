@@ -48,15 +48,19 @@ class MapViewChangeObserverCompound {
 	void afterMapViewChange(final MapView oldMap, final MapView newMap) {
 		final MapModel oldModel = getMap(oldMap);
 		final MapModel newModel = getMap(newMap);
+        afterMapChange(oldModel, newModel);
+		for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
+			observer.afterViewChange(oldMap, newMap);
+		}
+	}
+
+    void afterMapChange(final MapModel oldModel, final MapModel newModel) {
         if (oldModel != newModel || newModel == null) {
             for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
                 observer.afterMapChange(oldModel, newModel);
             }
         }
-		for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
-			observer.afterViewChange(oldMap, newMap);
-		}
-	}
+    }
 
 	void afterMapViewClose(final MapView pOldMap) {
         for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
@@ -67,15 +71,19 @@ class MapViewChangeObserverCompound {
 	void beforeMapViewChange(final MapView oldMap, final MapView newMap) {
 		final MapModel oldModel = getMap(oldMap);
 		final MapModel newModel = getMap(newMap);
-		if (oldModel != newModel) {
-			for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
-				observer.beforeMapChange(getMap(oldMap), getMap(newMap));
-			}
-		}
+		beforeMapChange(oldModel, newModel);
 	    for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
 	        observer.beforeViewChange(oldMap, newMap);
 	    }
 	}
+
+    void beforeMapChange(final MapModel oldModel, final MapModel newModel) {
+        if (oldModel != newModel) {
+			for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
+				observer.beforeMapChange(oldModel, newModel);
+			}
+		}
+    }
 
 	private MapModel getMap(final MapView view) {
 		return view == null ? null : view.getMap();

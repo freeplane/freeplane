@@ -13,6 +13,8 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
@@ -116,8 +118,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            + (codeExplorerConfiguration!= null ? " " + codeExplorerConfiguration.countLocations():"")
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
-	    mapView.setMap(loadingHintMap);
-	    selection.selectAsTheOnlyOneSelected(emptyRoot);
+	    mapViewManager.setMap(mapView, loadingHintMap);
 	    Controller.getCurrentController().getMapViewManager().setMapTitles();
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
         CodeMap projectMap = newMap();
@@ -156,13 +157,13 @@ public class CodeMapController extends MapController implements CodeExplorer{
             CodeMap viewedMap = nextMap;
             EventQueue.invokeLater(() -> {
                 loadingHintMap.removeExtension(LoadedMap.class);
-                mapView.setMap(viewedMap);
-                selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
+                if(! viewedMap.containsExtension(IUndoHandler.class))
+                    viewedMap.addExtension(IUndoHandler.class, new UndoHandler(viewedMap));
+                mapViewManager.setMap(mapView, viewedMap);
                 unfoldedNodeIDs.stream()
                 .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                 .filter(x -> x != null)
                 .forEach(node -> node.setFolded(false));
-
                 NodeModel[] newSelection = orderedSelectionIds.stream()
                         .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                         .filter(x -> x != null)

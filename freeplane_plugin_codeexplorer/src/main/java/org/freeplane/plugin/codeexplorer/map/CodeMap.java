@@ -6,9 +6,9 @@ import java.util.stream.Stream;
 
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.INodeDuplicator;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
@@ -17,7 +17,7 @@ import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public class CodeMap extends MapModel {
+public class CodeMap extends MMapModel {
 
     private DependencyJudge judge = new DependencyJudge();
     private SubprojectFinder subprojectFinder = SubprojectFinder.EMPTY;

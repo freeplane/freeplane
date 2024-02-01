@@ -889,7 +889,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void createMapView(final MapModel mapModel) {
 		mapModel.beforeViewCreated();
-		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
+		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, modeController);
 	}
 
 	public MapModel newMap() {

@@ -86,7 +86,7 @@ public class MMapModel extends MapModel {
     @Override
 	public void beforeViewCreated() {
 		if(! containsExtension(IUndoHandler.class))
-			addExtension(IUndoHandler.class, new UndoHandler(MMapModel.this));
+			addExtension(IUndoHandler.class, new UndoHandler(this));
 	}
 
 	public void enableAutosave() {

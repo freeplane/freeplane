@@ -46,7 +46,8 @@ import com.inet.jortho.SpellCheckerOptions;
  * Feb 8, 2009
  */
 public class SpellCheckerController implements IExtension {
-	private static final String SPELLING_LANGUAGE = "spelling_language";
+	private static final SpellCheckerController INSTANCE = new SpellCheckerController();
+    private static final String SPELLING_LANGUAGE = "spelling_language";
 
 	public static SpellCheckerController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -54,7 +55,7 @@ public class SpellCheckerController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController) {
-		modeController.addExtension(SpellCheckerController.class, new SpellCheckerController());
+		modeController.addExtension(SpellCheckerController.class, INSTANCE);
 	}
 
 	private boolean spellCheckerEnabled = false;

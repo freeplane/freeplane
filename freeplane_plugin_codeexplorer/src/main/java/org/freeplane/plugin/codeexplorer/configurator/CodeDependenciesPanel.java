@@ -45,6 +45,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.ClassNode;
+import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
@@ -240,7 +241,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     private void update(IMapSelection selection) {
         CodeDependency selectedValue = getSelectedDependency();
         int selectedColumn = dependencyViewer.getSelectedColumn();
-        this.allDependencies = selection == null
+        this.allDependencies = selection == null || ! (selection.getMap() instanceof CodeMap)
                 ? Collections.emptyList() :
                     selectedDependencies(new DependencySelection(selection));
         ((DependenciesWrapper)dependencyViewer.getModel()).fireTableDataChanged();
