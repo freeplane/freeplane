@@ -261,10 +261,6 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		//ignore documentation maps loaded using documentation actions
 		if(map.containsExtension(DocuMapAttribute.class))
 			return null;
-		final ModeController modeController = Controller.getCurrentModeController();
-		if (modeController == null || !modeController.getModeName().equals(MModeController.MODENAME)) {
-			return null;
-		}
 		final File file = map.getFile();
 		return getRestorable(file);
 	}
@@ -395,10 +391,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		}
 	}
 
-	private void updateLastVisitedNodeId(final Component mapView) {
-		if (!(mapView instanceof MapView))
+	private void updateLastVisitedNodeId(final Component mapViewComponent) {
+		if (!(mapViewComponent instanceof MapView))
 			return;
-		final NodeView selected = ((MapView) mapView).getSelected();
+		MapView mapView = (MapView) mapViewComponent;
+        if (!mapView.getModeController().getModeName().equals(MModeController.MODENAME))
+		    return;
+		final NodeView selected = mapView.getSelected();
 		final RecentFile recentFile = findRecentFileByMapModel(getMapModel(mapView));
 		if (selected != null && recentFile != null) {
 			NodeModel selectedNode = selected.getNode();
