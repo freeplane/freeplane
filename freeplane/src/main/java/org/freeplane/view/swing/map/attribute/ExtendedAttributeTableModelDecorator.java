@@ -92,7 +92,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModel {
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
 		if (row != newRow) {
-			return getAttributeController().canEdit();
+			return getAttributeController().canEdit() && ! getAttribute(row).isManaged();
 		}
 		return col == 0;
 	}
@@ -158,7 +158,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModel {
 		return getNodeAttributeModel().getAttribute(row);
 
 	}
-	
+
 
 	@Override
 	public int targetRow(int row) {

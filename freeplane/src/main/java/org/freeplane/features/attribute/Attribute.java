@@ -65,6 +65,11 @@ public class Attribute {
 		this.value = value;
 	}
 
+    public boolean isManaged() {
+        return false;
+    }
+
+
 	@Override
 	public String toString() {
 		return "[" + name + ", " + value + "]";

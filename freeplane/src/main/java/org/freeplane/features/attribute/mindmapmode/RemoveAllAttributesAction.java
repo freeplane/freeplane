@@ -47,9 +47,10 @@ public class RemoveAllAttributesAction extends AMultipleNodeAction {
 		final AttributeUtilities atrUtil = new AttributeUtilities();
 		if (atrUtil.hasAttributes(node)) {
 			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(node);
-			final int j = natm.getRowCount();
-			for (int i = 0; i < j; i++) {
-				AttributeController.getController().performRemoveRow(node, natm, 0);
+			final int attributeCount = natm.getRowCount();
+			for (int i = 0; i < attributeCount; i++) {
+			    if(! natm.getAttribute(attributeCount).isManaged())
+			        AttributeController.getController().performRemoveRow(node, natm, 0);
 			}
 		}
 	}

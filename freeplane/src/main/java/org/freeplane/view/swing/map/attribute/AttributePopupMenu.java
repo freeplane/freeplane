@@ -116,7 +116,8 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			delete.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent e) {
-					table.removeRow(row);
+				    if(! table.getAttributeTableModel().getAttribute(row).isManaged())
+				        table.removeRow(row);
 				}
 			});
 		}

@@ -101,7 +101,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModel {
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
 		if (getAttributeController() instanceof MAttributeController) {
-			return col == 1;
+			return col == 1 && ! getAttribute(row).isManaged();
 		}
 		return false;
 	}
