@@ -531,4 +531,8 @@ public class UrlManager implements IExtension {
 	public File defaultTemplateFile() {
 		return null;
 	}
+
+    public boolean save(MapModel map) {
+         return false;
+    }
 }

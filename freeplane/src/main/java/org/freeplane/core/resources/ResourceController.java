@@ -21,6 +21,7 @@ package org.freeplane.core.resources;
 
 import java.awt.Color;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -47,6 +48,7 @@ import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
@@ -223,6 +225,14 @@ public abstract class ResourceController {
 		String string = getProperty(name);
 		return ColorUtils.stringToColor(string);
 	}
+
+    public File getFile(String key) {
+        String value = getProperty(key);
+        String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+        value = TextUtils.replaceAtBegin(value, "{freeplaneuserdir}", freeplaneUserDirectory);
+        File file = new File(value);
+        return file;
+    }
 
 	abstract public Properties getProperties();
 

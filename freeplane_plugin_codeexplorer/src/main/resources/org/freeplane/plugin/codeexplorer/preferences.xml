@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences_structure xmlns="http://freeplane.sf.net/ui/preferences/1.0">
+<tabbed_pane>
+<tab name="plugins">
+    <separator name="code.explorer">
+        <path name="code.explorer_configuration_file"/>
+    </separator>
+</tab>
+</tabbed_pane>
+</preferences_structure>

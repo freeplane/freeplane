@@ -11,10 +11,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import org.freeplane.core.util.Compat;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import com.google.gson.Gson;
@@ -24,13 +26,14 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 public class CodeExplorerConfigurations {
+    private static final String CODE_EXPLORER_CONFIGURATION_FILE_PROPERTY = "code.explorer_configuration_file";
 
-
-    private static final String CODE_EXPLORER_JSON_FILE = "codeExplorer.json";
-    private static final File DEFAULT_CONFIGURATION_FILE = new File(Compat.getApplicationUserDirectory(), CODE_EXPLORER_JSON_FILE);
     private List<CodeExplorerConfiguration> configurations;
     private final static Gson OBJECT_MAPPER = new GsonBuilder()
             .registerTypeAdapter(File.class, new FileTypeAdapter())
+            .registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY)
+            .registerTypeHierarchyAdapter(Collection.class, new CollectionAdapter())
+            .registerTypeHierarchyAdapter(Map.class, new MapAdapter())
             .setPrettyPrinting()
             .create();
     private final static Type CONFIGURATIONS_TYPE = new TypeToken<List<CodeExplorerConfiguration>>() {/**/}.getType();
@@ -49,7 +52,11 @@ public class CodeExplorerConfigurations {
     }
 
     public void saveConfiguration() {
-        saveConfiguration(DEFAULT_CONFIGURATION_FILE);
+        saveConfiguration(getConfigurationFile());
+    }
+
+    private static File getConfigurationFile() {
+        return ResourceController.getResourceController().getFile(CODE_EXPLORER_CONFIGURATION_FILE_PROPERTY);
     }
 
     void saveConfiguration(File file) {
@@ -61,8 +68,7 @@ public class CodeExplorerConfigurations {
     }
 
     public static CodeExplorerConfigurations loadConfigurations() {
-        File configurationFile = DEFAULT_CONFIGURATION_FILE;
-        return loadConfigurations(configurationFile);
+        return loadConfigurations(getConfigurationFile());
     }
 
     static CodeExplorerConfigurations loadConfigurations(File configurationFile) {
@@ -76,11 +82,13 @@ public class CodeExplorerConfigurations {
     private static List<CodeExplorerConfiguration> fromJsonFile(File configurationFile){
         try (FileReader reader = new FileReader(configurationFile)) {
             List<CodeExplorerConfiguration> configurations = OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
-            configurations.forEach(CodeExplorerConfiguration::applyConfigurationRules);
-            return configurations;
+            if(configurations != null) {
+                configurations.forEach(CodeExplorerConfiguration::initialize);
+                return configurations;
+            }
         } catch (IOException|JsonParseException e) {
             LogUtils.severe(e);
-            return Collections.emptyList();
         }
+        return Collections.emptyList();
     }
 }

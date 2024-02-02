@@ -276,10 +276,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		createActions();
 		createPreferences();
 		if (ResourceController.getResourceController().getBooleanProperty("single_backup_directory")) {
-			String value = ResourceController.getResourceController().getProperty("single_backup_directory_path");
-			String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
-			value = TextUtils.replaceAtBegin(value, "{freeplaneuserdir}", freeplaneUserDirectory);
-			singleBackupDirectory = new File(value);
+			singleBackupDirectory = ResourceController.getResourceController().getFile("single_backup_directory_path");
 		}
 	}
 

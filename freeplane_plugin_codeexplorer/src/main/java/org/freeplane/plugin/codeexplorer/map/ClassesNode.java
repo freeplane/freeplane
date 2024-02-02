@@ -22,6 +22,7 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNode extends CodeNode {
+    static final String NODE_ID_SUFFIX = ".package";
     static {
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
@@ -35,7 +36,7 @@ class ClassesNode extends CodeNode {
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
 		setFolded(! javaPackage.getClasses().isEmpty());
-		setIdWithIndex(javaPackage.getName() + ".package");
+		setIdWithIndex(javaPackage.getName() + NODE_ID_SUFFIX);
         long classCount = getClasses()
                 .filter(jc -> isNamed(jc))
                 .count();

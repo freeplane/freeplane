@@ -1,11 +1,13 @@
 package org.freeplane.plugin.codeexplorer;
 
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
@@ -17,6 +19,7 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
     private CodeModeController modeController;
     private ExecutorService classImportService;
+    private static final String PREFERENCES_RESOURCE = "preferences.xml";
 
 	/*
 	 * (non-Javadoc)
@@ -40,6 +43,7 @@ public class Activator implements BundleActivator {
 			        if(context == Context.MAIN && modeController == null) {
 			            classImportService = Executors.newSingleThreadExecutor(this::newThread);
                         modeController = CodeModeControllerFactory.createModeController(classImportService);
+                        addPreferencesToOptionPanel();
                     }
 			    }
 
@@ -50,6 +54,13 @@ public class Activator implements BundleActivator {
                     return thread;
                 }
 
+                private void addPreferencesToOptionPanel() {
+                    final URL preferences = this.getClass().getResource(PREFERENCES_RESOURCE);
+                    if (preferences == null)
+                        throw new RuntimeException("cannot open preferences");
+                    MModeController modeController = MModeController.getMModeController();
+                    modeController.getOptionPanelBuilder().load(preferences);
+                }
 		    }, props);
 	}
 

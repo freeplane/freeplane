@@ -21,7 +21,20 @@ interface SubprojectFinder {
         public Stream<JavaClass> allClasses() {
             return Stream.empty();
         }
+
+        @Override
+        public String locationByIndex(int index) {
+           throw new IllegalArgumentException("No locations");
+        }
+
+        @Override
+        public int subprojectIndexOf(String location) {
+            return -1;
+        }
     };
+
     int subprojectIndexOf(JavaClass javaClass);
+    int subprojectIndexOf(String location);
+    String locationByIndex(int index);
     Stream<JavaClass> allClasses();
 }

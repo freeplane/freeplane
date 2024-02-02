@@ -12,6 +12,7 @@ import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -21,6 +22,7 @@ public class CodeMap extends MMapModel {
 
     private DependencyJudge judge = new DependencyJudge();
     private SubprojectFinder subprojectFinder = SubprojectFinder.EMPTY;
+    private CodeExplorerConfiguration codeExplorerConfiguration;
 
     public CodeMap(INodeDuplicator nodeDuplicator) {
         super(nodeDuplicator);
@@ -83,6 +85,13 @@ public class CodeMap extends MMapModel {
     public int subprojectIndexOf(JavaClass javaClass) {
         return subprojectFinder.subprojectIndexOf(javaClass);
     }
+
+    public int subprojectIndexOf(String location) {
+        return subprojectFinder.subprojectIndexOf(location);
+    }
+
+
+
     public Stream<JavaClass> allClasses() {
         return subprojectFinder.allClasses();
     }
@@ -119,6 +128,23 @@ public class CodeMap extends MMapModel {
         NodeRelativePath nodeRelativePath = new NodeRelativePath(originNode, targetNode);
         boolean goesUp = nodeRelativePath.compareNodePositions() > 0;
         return new CodeDependency(dependency, goesUp, judge(dependency, goesUp));
+    }
+
+    @Override
+    public void releaseResources() {
+         super.releaseResources();
+    }
+
+    public void setConfiguration(CodeExplorerConfiguration codeExplorerConfiguration) {
+        this.codeExplorerConfiguration = codeExplorerConfiguration;
+    }
+
+    public CodeExplorerConfiguration getConfiguration() {
+        return codeExplorerConfiguration;
+    }
+
+    public String locationByIndex(int index) {
+        return subprojectFinder.locationByIndex(index);
     }
 
 }

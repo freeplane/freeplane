@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.ManagedAttribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
@@ -50,8 +50,8 @@ class PackageNode extends CodeNode {
             getClassesInTree()
                 .forEach(jc -> classSourceLocationOf(jc).ifPresent(classpath::add));
             NodeAttributeTableModel attributes = new NodeAttributeTableModel(1 + classpath.size());
-            classpath.forEach(path -> attributes.addRowNoUndo(this, new Attribute("Classpath", path)));
-            attributes.addRowNoUndo(this, new Attribute("Class count", classCount));
+            classpath.forEach(path -> attributes.addRowNoUndo(this, new ManagedAttribute("Classpath", path)));
+            attributes.addRowNoUndo(this, new ManagedAttribute("Class count", classCount));
             addExtension(attributes);
         }
         initializeChildNodes();

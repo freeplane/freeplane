@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry name="SaveAction"/>
 		<Entry builder="separator" />
 		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "4"/>
 		<Entry name="PrintAction" row="2"/>
@@ -9,6 +10,7 @@
 			<Entry name="UndoAction" />
 			<Entry name="RedoAction" />
 		</Entry>
+		<Entry name="code.PurgeAction" />
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="JumpInAction"/>
@@ -50,6 +52,7 @@
 	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="code.NewCodeMapAction" accelerator="control N"/>
+			<Entry name="SaveAction" accelerator="control S" usedBy = "EDITOR" />
 			<Entry name="CloseAction" accelerator="control W"/>
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
@@ -73,6 +76,7 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry usedBy = "EDITOR" >
+				<Entry name="code.PurgeAction" accelerator="DELETE"/>
                 <Entry name="UndoAction" accelerator="control Z" />
                 <Entry name="RedoAction" accelerator="control Y" />
             </Entry>

@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.util.LogUtils;
@@ -22,12 +26,14 @@ import com.tngtech.archunit.core.importer.Location;
 import com.tngtech.archunit.thirdparty.com.google.common.annotations.VisibleForTesting;
 
 public class CodeExplorerConfiguration {
-
     @SerializedName("projectName")
     private String projectName;
 
     @SerializedName("locations")
     private Set<File> projectLocations;
+
+    @SerializedName("userContent")
+    private final Map<String, SortedSet<CodeNodeUserContent>> userContent;
 
     @SerializedName(value="configurationRules", alternate={"dependencyJudgeRules"})
     private String configurationRules;
@@ -53,6 +59,7 @@ public class CodeExplorerConfiguration {
                 // silently ignore bad rules
             }
         }
+        userContent = new TreeMap<>();
     }
 
     public String getProjectName() {
@@ -72,8 +79,9 @@ public class CodeExplorerConfiguration {
     }
 
 
-    void applyConfigurationRules() {
+    void initialize() {
         try {
+            userContent.values().stream().flatMap(Set::stream).forEach(CodeNodeUserContent::initialize);
             applyConfigurationRules(configurationRules);
         } catch (Exception e) {
             configurationRules = "";
@@ -132,5 +140,17 @@ public class CodeExplorerConfiguration {
 
     public Collection<File> getLocations() {
         return projectLocations;
+    }
+
+    public void removeUserContent() {
+        this.userContent.clear();
+    }
+
+    public void addUserContent(String location, CodeNodeUserContent content) {
+        userContent.computeIfAbsent(location, x -> new TreeSet<>()).add(content);
+    }
+
+    public Map<String, SortedSet<CodeNodeUserContent>> getUserContent() {
+        return userContent;
     }
 }

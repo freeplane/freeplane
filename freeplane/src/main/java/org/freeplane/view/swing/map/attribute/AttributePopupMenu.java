@@ -133,7 +133,11 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			down.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent e) {
-					table.moveRowDown(row);
+				    AttributeTableModel attributeTableModel = table.getAttributeTableModel();
+                    if(row < table.getRowCount() - 1
+                            && ! attributeTableModel.getAttribute(row).isManaged()
+                            && ! attributeTableModel.getAttribute(row + 1).isManaged())
+				        table.moveRowDown(row);
 				}
 			});
 		}
@@ -299,10 +303,14 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (up == null) {
 			up = new JMenuItem(TextUtils.getText("attributes_popup_up"));
 			up.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e) {
-					table.moveRowUp(row);
-				}
+			    @Override
+			    public void actionPerformed(final ActionEvent e) {
+			        AttributeTableModel attributeTableModel = table.getAttributeTableModel();
+			        if(row >= 1
+			                && ! attributeTableModel.getAttribute(row).isManaged()
+			                && ! attributeTableModel.getAttribute(row - 1).isManaged())
+			            table.moveRowUp(row);
+			    }
 			});
 		}
 		return up;

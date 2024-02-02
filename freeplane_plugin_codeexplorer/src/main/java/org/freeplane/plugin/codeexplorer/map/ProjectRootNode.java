@@ -39,6 +39,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     private static final Entry<Integer, String> UNKNOWN = new AbstractMap.SimpleEntry<>(-1, ":unknown:");
     private final JavaPackage rootPackage;
     private final Map<String, Map.Entry<Integer, String>> subprojectsByLocation;
+    private final String[] locationsBySubrojectIndex;
     private final Set<String> badLocations;
     private JavaClasses classes;
     private DirectoryMatcher directoryMatcher;
@@ -64,12 +65,25 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
         .map(directoryMatcher::coreLocationPath)
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .forEach(location -> subprojectsByLocation.computeIfAbsent(location,
-                key -> new AbstractMap.SimpleEntry<>(subprojectsByLocation.size(), toSubprojectName(location))));
-
+        .forEach(this::addLocation);
         badLocations = new HashSet<>();
         map.setSubprojectFinder(this);
         initializeChildNodes();
+        map.getConfiguration().getUserContent().keySet()
+        .forEach(this::addDeletedLocation);
+        locationsBySubrojectIndex = new String[subprojectsByLocation.size()];
+        subprojectsByLocation.entrySet().forEach(e -> locationsBySubrojectIndex[e.getValue().getKey()] = e.getKey());
+    }
+    private void addDeletedLocation(String location) {
+        final Entry<Integer, String> locationEntry = addLocation(location);
+        final int childIndex = locationEntry.getKey();
+        if(childIndex == getChildCount())
+            insert(new DeletedContentNode(getMap(), "", childIndex, locationEntry.getValue()));
+    }
+
+    private Entry<Integer, String> addLocation(String location) {
+        return subprojectsByLocation.computeIfAbsent(location,
+                key -> new AbstractMap.SimpleEntry<>(subprojectsByLocation.size(), toSubprojectName(location)));
     }
 
     private static String toSubprojectName(String location) {
@@ -151,9 +165,20 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     }
 
     @Override
+    public int subprojectIndexOf(String location) {
+        return subprojectsByLocation.getOrDefault(location, UNKNOWN).getKey().intValue();
+    }
+
+    @Override
     public Stream<JavaClass> allClasses() {
         return classes.stream();
     }
 
-
+    @Override
+    public String locationByIndex(int index) {
+        if(index >= 0 && index < locationsBySubrojectIndex.length)
+            return locationsBySubrojectIndex[index];
+        else
+            throw new IllegalArgumentException("Bad index " + index);
+    }
 }

@@ -48,6 +48,7 @@ import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.LastOpenedList;
 import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
+import org.freeplane.plugin.codeexplorer.map.CodeMapPersistenceManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
@@ -69,7 +70,7 @@ public class CodeModeControllerFactory {
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
 		new CodeMapController(modeController, classImportService);
-		UrlManager.install(new UrlManager());
+		UrlManager.install(new CodeMapPersistenceManager());
 		MapIO.install(modeController);
 		new CodeIconController(modeController).install(modeController);
 		AttributeController.install(new MAttributeController(modeController));
