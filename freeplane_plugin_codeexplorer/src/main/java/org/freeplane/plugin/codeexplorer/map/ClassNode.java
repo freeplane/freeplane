@@ -74,12 +74,14 @@ public class ClassNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return getDependencies(JavaClass::getDirectDependenciesFromSelf);
+        return getDependencies(JavaClass::getDirectDependenciesFromSelf)
+                .filter(dep -> hasValidTopLevelClass(dep.getTargetClass()));
     }
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return getDependencies(JavaClass::getDirectDependenciesToSelf);
+        return getDependencies(JavaClass::getDirectDependenciesToSelf)
+                .filter(dep -> hasValidTopLevelClass(dep.getOriginClass()));
     }
 
     private Stream<Dependency> getDependencies(Function<? super JavaClass, ? extends Set<Dependency>> mapper) {

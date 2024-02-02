@@ -50,6 +50,24 @@ public abstract class CodeNode extends NodeModel {
                 return javaClass;
     }
 
+    public static boolean hasValidTopLevelClass(JavaClass javaClass) {
+        if(javaClass.isArray())
+            return hasValidTopLevelClass(javaClass.getBaseComponentType());
+        if(javaClass.isTopLevelClass())
+            return true;
+        for(JavaClass enclosingClass = javaClass.getEnclosingClass().get();;
+                enclosingClass = javaClass.getEnclosingClass().get()) {
+            if(! enclosingClass.getSource().equals(javaClass.getSource()))
+                return false;
+            if(enclosingClass.isTopLevelClass())
+                return true;
+        }
+    }
+
+    public static boolean hasValidTopLevelClasses(Dependency dependency) {
+        return hasValidTopLevelClass(dependency.getOriginClass()) && hasValidTopLevelClass(dependency.getTargetClass());
+    }
+
     static String idWithSubprojectIndex(String idWithoutIndex, int subprojectIndex) {
         return idWithoutIndex + "[" + subprojectIndex + "]";
     }
@@ -114,6 +132,10 @@ public abstract class CodeNode extends NodeModel {
     }
 
     boolean belongsToSameSubproject(JavaClass javaClass) {
+        return hasValidTopLevelClass(javaClass) && validClassBelongsToSameSubproject(javaClass);
+    }
+
+    private boolean validClassBelongsToSameSubproject(JavaClass javaClass) {
         int anotherSubprojectIndex = subprojectIndexOf(javaClass);
         return anotherSubprojectIndex == subprojectIndex;
     }
@@ -123,7 +145,7 @@ public abstract class CodeNode extends NodeModel {
     }
 
     boolean belongsToOtherSubproject(JavaClass javaClass) {
-        return ! belongsToSameSubproject(javaClass);
+        return hasValidTopLevelClass(javaClass) && ! validClassBelongsToSameSubproject(javaClass);
     }
 
     abstract HasName getCodeElement();

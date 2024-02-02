@@ -63,6 +63,7 @@ class PackageNode extends CodeNode {
 
     private Stream<JavaClass> getClassesInTree(JavaPackage somePackage) {
         return somePackage.getClassesInPackageTree().stream()
+                .filter(CodeNode::hasValidTopLevelClass)
                 .filter(this::belongsToSameSubproject);
     }
     private Stream<JavaClass> getClasses() {
@@ -197,13 +198,16 @@ class PackageNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return javaPackage.getParent().isPresent() ? getClassDependenciesFromPackageTree(javaPackage) : getSubprojectDependenciesFromPackageTree();
+        return javaPackage.getParent().isPresent()
+                ? getClassDependenciesFromPackageTree(javaPackage)
+                        .filter(dep -> CodeNode.hasValidTopLevelClass(dep.getTargetClass()))
+                : getSubprojectDependenciesFromPackageTree();
     }
 
     private Stream<Dependency> getSubprojectDependenciesFromPackageTree() {
         return subprojectClasses()
                 .flatMap(javaClass -> javaClass.getDirectDependenciesFromSelf().stream())
-                .filter(dep -> ! belongsToSameSubproject(dep.getTargetClass()));
+                .filter(dep -> belongsToOtherSubproject(dep.getTargetClass()));
     }
 
     private Stream<JavaClass> subprojectClasses() {
@@ -213,13 +217,16 @@ class PackageNode extends CodeNode {
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return javaPackage.getParent().isPresent() ? getClassDependenciesToPackageTree(javaPackage) : getSubprojectDependenciesToPackageTree();
+        return javaPackage.getParent().isPresent()
+                ? getClassDependenciesToPackageTree(javaPackage)
+                        .filter(dep -> CodeNode.hasValidTopLevelClass(dep.getOriginClass()))
+                : getSubprojectDependenciesToPackageTree();
     }
 
     private Stream<Dependency> getSubprojectDependenciesToPackageTree() {
         return subprojectClasses()
                 .flatMap(javaClass -> javaClass.getDirectDependenciesToSelf().stream())
-                .filter(dep -> ! belongsToSameSubproject(dep.getOriginClass()));
+                .filter(dep -> belongsToOtherSubproject(dep.getOriginClass()));
     }
 
     @Override

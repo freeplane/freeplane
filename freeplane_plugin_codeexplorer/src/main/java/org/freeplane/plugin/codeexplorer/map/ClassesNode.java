@@ -92,8 +92,8 @@ class ClassesNode extends CodeNode {
     }
 
     private boolean goesOutsideEnclosingOriginClass(JavaClass edgeStart, Dependency dependency) {
-        JavaClass jc = getTargetNodeClass(dependency);
-        return ! jc.equals(edgeStart);
+        return hasValidTopLevelClasses(dependency)
+                && ! getTargetNodeClass(dependency).equals(edgeStart);
     }
 
     @Override
@@ -105,6 +105,7 @@ class ClassesNode extends CodeNode {
     Stream<Dependency> getOutgoingDependencies() {
         return getClasses()
                 .flatMap(c -> c.getDirectDependenciesFromSelf().stream())
+                .filter(CodeNode::hasValidTopLevelClasses)
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
                         || subprojectIndexOf(dep.getTargetClass()) != subprojectIndex);
     }
@@ -113,6 +114,7 @@ class ClassesNode extends CodeNode {
     Stream<Dependency> getIncomingDependencies() {
         return getClasses()
                 .flatMap(c -> c.getDirectDependenciesToSelf().stream())
+                .filter(CodeNode::hasValidTopLevelClasses)
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
                         || subprojectIndexOf(dep.getOriginClass()) != subprojectIndex);
     }
