@@ -1,4 +1,10 @@
 ==============================
+1.11.11
+==============================
+Save user defined attributes and details on code explorer nodes
+Bug fixes
+
+==============================
 1.11.10
 ==============================
 Fix launcher configuration
