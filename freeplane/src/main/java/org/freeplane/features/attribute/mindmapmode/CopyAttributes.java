@@ -40,19 +40,22 @@ class CopyAttributes extends AFreeplaneAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+    private PasteAttributes pasteAttributes;
 
 	public static Object[] getAttributes() {
 		return attributes;
 	}
 
-	public CopyAttributes() {
+	public CopyAttributes(PasteAttributes pasteAttributes) {
 		super("CopyAttributes");
+        this.pasteAttributes = pasteAttributes;
 	}
 
 	@Override
     public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		copyAttributes(node);
+		pasteAttributes.setEnabled();
 	}
 
 	/**
@@ -85,7 +88,7 @@ class CopyAttributes extends AFreeplaneAction {
     }
 }
 
-@EnabledAction(checkOnNodeChange = true)
+@EnabledAction()
 class PasteAttributes extends AMultipleNodeAction {
 	/**
 	 *
