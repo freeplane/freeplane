@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
-		<Entry name="SaveAction"/>
+		<Entry usedBy="EDITOR">
+			<Entry name="SaveAction" row="1"/>
+			<Entry name="code.PurgeAction" row="2"/>
+		</Entry>
 		<Entry builder="separator" />
 		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "4"/>
 		<Entry name="PrintAction" row="2"/>
@@ -10,7 +13,6 @@
 			<Entry name="UndoAction" />
 			<Entry name="RedoAction" />
 		</Entry>
-		<Entry name="code.PurgeAction" />
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="JumpInAction"/>
