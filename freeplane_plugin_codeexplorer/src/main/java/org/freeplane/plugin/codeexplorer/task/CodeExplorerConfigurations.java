@@ -86,7 +86,7 @@ public class CodeExplorerConfigurations {
                 configurations.forEach(CodeExplorerConfiguration::initialize);
                 return configurations;
             }
-        } catch (IOException|JsonParseException e) {
+        } catch (Exception e) {
             LogUtils.severe(e);
         }
         return Collections.emptyList();
