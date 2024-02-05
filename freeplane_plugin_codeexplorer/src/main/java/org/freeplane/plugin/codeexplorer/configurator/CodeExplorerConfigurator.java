@@ -473,14 +473,17 @@ class CodeExplorerConfigurator extends JPanel {
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridwidth = 1;
+        configurationsPanel.setPreferredSize(new Dimension(1, 1));
         add(configurationsPanel, gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 2;
+        locationsPane.setPreferredSize(new Dimension(1, 1));
         add(locationsPane, gbc);
 
         gbc.gridx = 2;
         gbc.weightx = 1;
+        rulesPane.setPreferredSize(new Dimension(1, 1));
         add(rulesPane, gbc);
     }
 
