@@ -114,6 +114,7 @@ public class HeadlessMModeControllerFactory {
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
+		modeController.createOptionPanelControls();
 		modeController.setUserInputListenerFactory(new UserInputListenerFactory(modeController));
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);

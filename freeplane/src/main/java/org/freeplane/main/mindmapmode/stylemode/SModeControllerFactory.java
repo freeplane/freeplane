@@ -144,6 +144,7 @@ public class SModeControllerFactory {
 		controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
 		controller.addAction(new ShowSelectionAsRectangleAction());
 		modeController = new SModeController(controller);
+		modeController.createOptionPanelControls();
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
         modeController.addAction(new NewUserStyleAction(false));
