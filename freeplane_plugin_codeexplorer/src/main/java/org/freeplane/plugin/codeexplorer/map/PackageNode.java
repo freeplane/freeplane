@@ -50,8 +50,8 @@ class PackageNode extends CodeNode {
             getClassesInTree()
                 .forEach(jc -> classSourceLocationOf(jc).ifPresent(classpath::add));
             NodeAttributeTableModel attributes = new NodeAttributeTableModel(1 + classpath.size());
-            classpath.forEach(path -> attributes.addRowNoUndo(this, new ManagedAttribute("Classpath", path)));
-            attributes.addRowNoUndo(this, new ManagedAttribute("Class count", classCount));
+            classpath.forEach(path -> attributes.silentlyAddRowNoUndo(this, new ManagedAttribute("Classpath", path)));
+            attributes.silentlyAddRowNoUndo(this, new ManagedAttribute("Class count", classCount));
             addExtension(attributes);
         }
         initializeChildNodes();

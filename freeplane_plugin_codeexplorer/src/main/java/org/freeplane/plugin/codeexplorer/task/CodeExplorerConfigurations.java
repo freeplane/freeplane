@@ -22,7 +22,6 @@ import org.freeplane.core.util.LogUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
-import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 public class CodeExplorerConfigurations {
@@ -61,7 +60,8 @@ public class CodeExplorerConfigurations {
 
     void saveConfiguration(File file) {
         try (FileWriter writer = new FileWriter(file)){
-            OBJECT_MAPPER.toJson(configurations, writer);
+            if(! configurations.isEmpty())
+                OBJECT_MAPPER.toJson(configurations, writer);
         } catch (IOException|JsonIOException e) {
             LogUtils.severe(e);
         }

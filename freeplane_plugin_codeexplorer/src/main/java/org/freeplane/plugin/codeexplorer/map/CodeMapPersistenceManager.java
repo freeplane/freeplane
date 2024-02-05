@@ -102,7 +102,7 @@ public class CodeMapPersistenceManager extends UrlManager {
                 attributeModel = new NodeAttributeTableModel();
                 node.addExtension(attributeModel);
             }
-            attributeModel.addRowNoUndo(node, attribute);
+            attributeModel.silentlyAddRowNoUndo(node, attribute);
         });
     }
 }
