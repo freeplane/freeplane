@@ -40,6 +40,9 @@ public class CodeExplorerConfiguration {
 
     transient private ParsedConfiguration parsedConfiguration;
 
+    @SerializedName("attributeConfiguration")
+    private CodeAttributeConfiguration attributeConfiguration;
+
     public CodeExplorerConfiguration() {
         this("", new ArrayList<>(), "");
     }
@@ -83,6 +86,9 @@ public class CodeExplorerConfiguration {
         try {
             userContent.values().stream().flatMap(Set::stream).forEach(CodeNodeUserContent::initialize);
             applyConfigurationRules(configurationRules);
+            if(attributeConfiguration == null)
+                attributeConfiguration = new CodeAttributeConfiguration();
+            attributeConfiguration.initialize();
         } catch (Exception e) {
             configurationRules = "";
         }
@@ -156,5 +162,9 @@ public class CodeExplorerConfiguration {
 
     public Map<String, SortedSet<CodeNodeUserContent>> getUserContent() {
         return userContent;
+    }
+
+    public CodeAttributeConfiguration getAttributeConfiguration() {
+        return attributeConfiguration;
     }
 }

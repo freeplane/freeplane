@@ -7,6 +7,7 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collection;
 
+import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -39,14 +40,20 @@ public class CodeMapPersistenceManager extends UrlManager {
         .map(CodeNode.class::cast)
         .filter(CodeNodeUserContent.Factory.INSTANCE::hasCustomContent)
         .forEach(node -> configuration.addUserContent(codemap.locationByIndex(node.subprojectIndex), CodeNodeUserContent.Factory.INSTANCE.contentOf(node)));
+        configuration.getAttributeConfiguration()
+            .setAttributeViewType(map.getExtension(AttributeRegistry.class).getAttributeViewType());
         return true;
     }
 
     public void restoreUserContent(CodeMap map) {
-        map.getConfiguration()
+        CodeExplorerConfiguration configuration = map.getConfiguration();
+        configuration
         .getUserContent()
         .entrySet().stream()
         .forEach(content -> addToMap(map, content.getKey(), content.getValue()));
+        map.getExtension(AttributeRegistry.class).setAttributeViewType(
+                configuration.getAttributeConfiguration().getAttributeViewType());
+
         map.setSaved(true);
     }
 
