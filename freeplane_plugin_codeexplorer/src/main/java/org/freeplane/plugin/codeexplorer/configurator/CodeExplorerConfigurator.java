@@ -399,8 +399,8 @@ class CodeExplorerConfigurator extends JPanel {
         case CODE_BASE:
             exploreSelectedConfiguration();
             break;
-        case JUDGE:
-            codeProjectController.updateJudge();
+        case CONFIGURATION:
+            codeProjectController.updateProjectConfiguration();
             break;
         case SAME:
             break;

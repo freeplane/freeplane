@@ -16,6 +16,7 @@ import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
@@ -43,6 +44,11 @@ class ClassesNode extends CodeNode {
         setText(name + formatClassCount(classCount));
         initializeChildNodes();
 	}
+
+    @Override
+    Set<? extends JavaAnnotation<? extends HasName>> getAnnotations() {
+        return javaPackage.getAnnotations();
+    }
 
     private Stream<JavaClass> getClasses() {
         return javaPackage.getClasses().stream()

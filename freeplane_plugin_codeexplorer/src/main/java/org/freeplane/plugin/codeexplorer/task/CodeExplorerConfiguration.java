@@ -99,6 +99,10 @@ public class CodeExplorerConfiguration {
         return parsedConfiguration.judge();
     }
 
+    public AnnotationMatcher getAnnotationMatcher() {
+        return parsedConfiguration.annotationMatcher();
+    }
+
     public JavaClasses importClasses() {
         DirectoryMatcher directoryMatcher = createDirectoryMatcher();
         Collection<Location> locations =

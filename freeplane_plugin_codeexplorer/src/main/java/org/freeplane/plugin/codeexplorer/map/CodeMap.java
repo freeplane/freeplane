@@ -12,10 +12,12 @@ import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
+import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 public class CodeMap extends MMapModel {
@@ -58,8 +60,23 @@ public class CodeMap extends MMapModel {
         this.judge = judge;
     }
 
+
+    public void updateAnnotations(AnnotationMatcher annotationMatcher) {
+        boolean saved = isSaved();
+        getRootNode().updateAnnotations(annotationMatcher);
+        if(saved)
+            setSaved(true);
+    }
+
     public DependencyJudge getJudge() {
         return judge;
+    }
+
+
+
+    @Override
+    public CodeNode getRootNode() {
+         return (CodeNode) super.getRootNode();
     }
 
     @Override

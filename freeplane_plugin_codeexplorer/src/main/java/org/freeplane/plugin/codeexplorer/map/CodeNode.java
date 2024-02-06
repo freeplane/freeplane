@@ -8,12 +8,14 @@ package org.freeplane.plugin.codeexplorer.map;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
@@ -25,9 +27,11 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.CodeModeController;
 import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
@@ -105,6 +109,38 @@ public abstract class CodeNode extends NodeModel {
         this.subprojectIndex = subprojectIndex;
     }
 
+    void updateAnnotations(AnnotationMatcher annotationMatcher) {
+        NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(this);
+        for(int row = attributes.getRowCount() - 1; row >= 0; row--) {
+            if(attributes.getAttribute(row) instanceof AnnotationAttribute) {
+                attributes.getAttributes().remove(row);
+                attributes.fireTableRowsDeleted(this, row, row);
+            }
+        }
+
+        if(! annotationMatcher.isEmpty()) {
+            getAnnotations().forEach(annotation -> {
+                String annotationName = ClassNode.nodeText(annotation.getRawType());
+                annotation.getProperties().entrySet().stream()
+                .filter(attributeEntry -> annotationMatcher.matches(annotation, attributeEntry.getKey()))
+                .forEach(attributeEntry -> addAnnotationAttributes(attributes, annotationName, attributeEntry.getKey(), attributeEntry.getValue()));
+            });
+        }
+
+        getChildren().forEach(child -> ((CodeNode)child).updateAnnotations(annotationMatcher));
+
+    }
+
+    private void addAnnotationAttributes(NodeAttributeTableModel attributes, String annotationName,
+            String key, Object values) {
+        Stream<?> valueStream =  values.getClass().isArray() ? Stream.of((Object[])values) : Stream.of(values);
+        valueStream.forEach(value ->
+            attributes.addRowNoUndo(this, new AnnotationAttribute(key.equals("value") ? annotationName : annotationName + "." + key, value)));
+    }
+
+    Set<? extends JavaAnnotation<? extends HasName>> getAnnotations(){
+        return Collections.emptySet();
+    }
 
 
     @Override

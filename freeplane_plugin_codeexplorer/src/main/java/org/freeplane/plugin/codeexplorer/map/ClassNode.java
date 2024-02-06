@@ -15,6 +15,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.core.domain.properties.HasName;
@@ -44,6 +45,12 @@ public class ClassNode extends CodeNode {
 		String nodeText = nodeText(javaClass);
         setText(nodeText);
 	}
+
+
+    @Override
+    Set<? extends JavaAnnotation<? extends HasName>> getAnnotations() {
+        return javaClass.getAnnotations();
+    }
 
     public static String nodeText(final JavaClass javaClass) {
         String simpleName = javaClass.getSimpleName();

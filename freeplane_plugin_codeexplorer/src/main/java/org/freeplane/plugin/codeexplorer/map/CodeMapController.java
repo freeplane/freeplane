@@ -33,6 +33,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
+import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
@@ -180,6 +181,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
                         .toArray(NodeModel[]::new);
                 if(newSelection.length > 0)
                     selection.replaceSelection(newSelection);
+                projectMap.updateAnnotations(codeExplorerConfiguration.getAnnotationMatcher());
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
                 Controller.getCurrentController().getMapViewManager().setMapTitles();
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
@@ -199,11 +201,12 @@ public class CodeMapController extends MapController implements CodeExplorer{
     }
 
     @Override
-    public void setJudge(DependencyJudge judge) {
+    public void setProjectConfiguration(DependencyJudge judge, AnnotationMatcher annotationMatcher) {
         Controller currentController = Controller.getCurrentController();
         IMapSelection selection = currentController.getSelection();
         CodeMap map = (CodeMap) selection.getMap();
         map.setJudge(judge);
+        map.updateAnnotations(annotationMatcher);
         IMapViewManager mapViewManager = currentController.getMapViewManager();
         MapView mapView = (MapView) mapViewManager.getMapViewComponent();
         mapView.repaint();
