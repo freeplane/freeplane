@@ -22,13 +22,16 @@ import org.freeplane.view.swing.features.filepreview.ViewerController;
 public class FreeplaneTooltip extends JToolTip {
 	public static final String TEXT_HTML = "text/html";
 
-	private GraphicsConfiguration graphicsConfiguration;
-	private String contentType;
+	private final GraphicsConfiguration graphicsConfiguration;
+	private final String contentType;
 	private URL baseUrl;
 
-	public FreeplaneTooltip(GraphicsConfiguration graphicsConfiguration, String contentType){
+    private final boolean honorDisplayProperties;
+
+	public FreeplaneTooltip(GraphicsConfiguration graphicsConfiguration, String contentType, boolean honorDisplayProperties){
 		this.graphicsConfiguration = graphicsConfiguration;
 		this.contentType = contentType;
+        this.honorDisplayProperties = honorDisplayProperties;
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class FreeplaneTooltip extends JToolTip {
 		catch (URISyntaxException e) {
 			// fall through
 		}
-		final TextualTooltipRendererFactory tooltipScrollPaneFactory = new TextualTooltipRendererFactory(graphicsConfiguration, contentType, baseUrl, tipText, getComponent(), tooltipSize);
+		final TextualTooltipRendererFactory tooltipScrollPaneFactory = new TextualTooltipRendererFactory(graphicsConfiguration, contentType, baseUrl, tipText, getComponent(), tooltipSize, honorDisplayProperties);
 		add(tooltipScrollPaneFactory.getTooltipRenderer());
 	}
 

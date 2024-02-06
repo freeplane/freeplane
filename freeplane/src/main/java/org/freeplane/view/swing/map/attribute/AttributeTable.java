@@ -755,7 +755,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public JToolTip createToolTip() {
-		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), "text/html");
+		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), "text/html", true);
 
 		final URL url = attributeView.getNode().getMap().getURL();
 		if (url != null) {
