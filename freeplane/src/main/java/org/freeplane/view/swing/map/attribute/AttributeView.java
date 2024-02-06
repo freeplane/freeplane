@@ -118,7 +118,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	 */
 	public boolean areAttributesVisible() {
 		final String viewType = getViewType();
-		return viewType != AttributeTableLayoutModel.HIDE_ALL
+		return ! viewType.equals(AttributeTableLayoutModel.HIDE_ALL)
 		        && (currentAttributeTableModel.areAttributesVisible() || viewType != getAttributeRegistry()
 		            .getAttributeViewType());
 	}
@@ -223,7 +223,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	private void setViewType(final String viewType) {
 		JTableHeader currentColumnHeaderView = null;
-		if (viewType == AttributeTableLayoutModel.SHOW_ALL || ! isReduced()) {
+		if (AttributeTableLayoutModel.SHOW_ALL.equals(viewType) || ! isReduced()) {
 			currentAttributeTableModel = getExtendedAttributeTableModel();
 			currentColumnHeaderView = tableHeader;
 		}
