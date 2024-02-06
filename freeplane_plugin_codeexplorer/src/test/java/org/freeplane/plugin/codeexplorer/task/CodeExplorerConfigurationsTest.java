@@ -24,6 +24,7 @@ public class CodeExplorerConfigurationsTest {
     }
 
     private static void serialize(CodeExplorerConfiguration singleConfiguration) {
+        singleConfiguration.initialize();
         new CodeExplorerConfigurations(Collections.singletonList(singleConfiguration)).saveConfiguration(CONFIGURATION_FILE);
     }
 
