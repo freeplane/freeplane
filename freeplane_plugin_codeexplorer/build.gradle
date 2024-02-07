@@ -4,5 +4,6 @@ dependencies {
     lib 'org.jgrapht:jgrapht-core:1.5.2'
     lib 'com.google.code.gson:gson:2.10.1'
     lib 'org.slf4j:slf4j-nop:2.0.9'
+    lib 'org.freeplane.archunit:freeplane-archunit-extension:0.0.1'
     testImplementation 'org.assertj:assertj-core:3.11.1'
 }

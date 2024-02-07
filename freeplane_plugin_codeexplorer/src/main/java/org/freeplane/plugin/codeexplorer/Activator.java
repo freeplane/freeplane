@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -12,6 +13,7 @@ import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
+import org.freeplane.plugin.codeexplorer.archunit.ArchUnitExtensionServer;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -44,6 +46,7 @@ public class Activator implements BundleActivator {
 			            classImportService = Executors.newSingleThreadExecutor(this::newThread);
                         modeController = CodeModeControllerFactory.createModeController(classImportService);
                         addPreferencesToOptionPanel();
+                        new ArchUnitExtensionServer().start(ResourceController.getResourceController().getIntProperty("archunit_port", 6297));
                     }
 			    }
 
