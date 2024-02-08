@@ -27,7 +27,7 @@ import com.google.gson.reflect.TypeToken;
 public class CodeExplorerConfigurations {
     private static final String CODE_EXPLORER_CONFIGURATION_FILE_PROPERTY = "code.explorer_configuration_file";
 
-    private List<CodeExplorerConfiguration> configurations;
+    private List<UserDefinedCodeExplorerConfiguration> configurations;
     private final static Gson OBJECT_MAPPER = new GsonBuilder()
             .registerTypeAdapter(File.class, new FileTypeAdapter())
             .registerTypeAdapterFactory(OptionalTypeAdapter.FACTORY)
@@ -35,18 +35,18 @@ public class CodeExplorerConfigurations {
             .registerTypeHierarchyAdapter(Map.class, new MapAdapter())
             .setPrettyPrinting()
             .create();
-    private final static Type CONFIGURATIONS_TYPE = new TypeToken<List<CodeExplorerConfiguration>>() {/**/}.getType();
+    private final static Type CONFIGURATIONS_TYPE = new TypeToken<List<UserDefinedCodeExplorerConfiguration>>() {/**/}.getType();
 
 
-    public CodeExplorerConfigurations(List<CodeExplorerConfiguration> configurations) {
+    public CodeExplorerConfigurations(List<UserDefinedCodeExplorerConfiguration> configurations) {
         this.configurations = configurations;
     }
 
-    public List<CodeExplorerConfiguration> getConfigurations() {
+    public List<UserDefinedCodeExplorerConfiguration> getConfigurations() {
         return configurations;
     }
 
-    public void setConfigurations(List<CodeExplorerConfiguration> configurations) {
+    public void setConfigurations(List<UserDefinedCodeExplorerConfiguration> configurations) {
         this.configurations = configurations;
     }
 
@@ -72,18 +72,18 @@ public class CodeExplorerConfigurations {
     }
 
     static CodeExplorerConfigurations loadConfigurations(File configurationFile) {
-        List<CodeExplorerConfiguration> configurations;
+        List<UserDefinedCodeExplorerConfiguration> configurations;
         configurations = !configurationFile.exists()
                 ? new ArrayList<>()
                         : fromJsonFile(configurationFile);
         return new CodeExplorerConfigurations(configurations);
     }
 
-    private static List<CodeExplorerConfiguration> fromJsonFile(File configurationFile){
+    private static List<UserDefinedCodeExplorerConfiguration> fromJsonFile(File configurationFile){
         try (FileReader reader = new FileReader(configurationFile)) {
-            List<CodeExplorerConfiguration> configurations = OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
+            List<UserDefinedCodeExplorerConfiguration> configurations = OBJECT_MAPPER.fromJson(reader, CONFIGURATIONS_TYPE);
             if(configurations != null) {
-                configurations.forEach(CodeExplorerConfiguration::initialize);
+                configurations.forEach(UserDefinedCodeExplorerConfiguration::initialize);
                 return configurations;
             }
         } catch (Exception e) {

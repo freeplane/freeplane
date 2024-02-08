@@ -11,12 +11,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
-public class DirectoryMatcher {
+public class DirectoryMatcher implements LocationMatcher{
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
@@ -53,12 +52,9 @@ public class DirectoryMatcher {
 
     }
 
-    public String coreLocationPath(String path ) {
+    @Override
+    public String coreLocationPath(String path) {
         return coreLocationsByPaths.getOrDefault(path, path);
-    }
-
-    public Optional<String> coreLocationPath(Optional<String> path ) {
-        return path.map(this::coreLocationPath);
     }
 
     public Collection<File> getImportedLocations() {

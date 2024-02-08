@@ -15,8 +15,9 @@ import org.freeplane.features.map.NodeStream;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeNodeUserContent;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 public class CodeMapPersistenceManager extends UrlManager {
     public static CodeMapPersistenceManager getCodeMapPersistenceManager(ModeController modeController) {
@@ -34,19 +35,25 @@ public class CodeMapPersistenceManager extends UrlManager {
             return false;
         map.setSaved(true);
         CodeMap codemap = (CodeMap)map;
-        CodeExplorerConfiguration configuration = codemap.getConfiguration();
-        configuration.removeUserContent();
+        CodeExplorerConfiguration codeExplorerConfiguration = codemap.getConfiguration();
+        if(! (codeExplorerConfiguration instanceof UserDefinedCodeExplorerConfiguration) )
+            return true;
+        final UserDefinedCodeExplorerConfiguration userDefinedCodeExplorerConfiguration = (UserDefinedCodeExplorerConfiguration) codeExplorerConfiguration;
+        userDefinedCodeExplorerConfiguration.removeUserContent();
         NodeStream.of(map.getRootNode())
         .map(CodeNode.class::cast)
         .filter(CodeNodeUserContent.Factory.INSTANCE::hasCustomContent)
-        .forEach(node -> configuration.addUserContent(codemap.locationByIndex(node.subprojectIndex), CodeNodeUserContent.Factory.INSTANCE.contentOf(node)));
-        configuration.getAttributeConfiguration()
+        .forEach(node -> userDefinedCodeExplorerConfiguration.addUserContent(codemap.locationByIndex(node.subprojectIndex), CodeNodeUserContent.Factory.INSTANCE.contentOf(node)));
+        userDefinedCodeExplorerConfiguration.getAttributeConfiguration()
             .setAttributeViewType(map.getExtension(AttributeRegistry.class).getAttributeViewType());
         return true;
     }
 
     public void restoreUserContent(CodeMap map) {
-        CodeExplorerConfiguration configuration = map.getConfiguration();
+        CodeExplorerConfiguration codeExplorerConfiguration = map.getConfiguration();
+        if(! (codeExplorerConfiguration instanceof UserDefinedCodeExplorerConfiguration) )
+            return;
+        final UserDefinedCodeExplorerConfiguration configuration = (UserDefinedCodeExplorerConfiguration) codeExplorerConfiguration;
         configuration
         .getUserContent()
         .entrySet().stream()

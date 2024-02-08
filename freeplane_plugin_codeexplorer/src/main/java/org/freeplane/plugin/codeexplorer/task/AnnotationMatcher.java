@@ -5,6 +5,7 @@
  */
 package org.freeplane.plugin.codeexplorer.task;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -14,6 +15,8 @@ import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.PackageMatcher;
 
 public class AnnotationMatcher {
+    public static final AnnotationMatcher IGNORING_ALL = new AnnotationMatcher(Collections.emptyList());
+
     private final List<PackageMatcher> matchers;
     private final List<String> patterns;
 

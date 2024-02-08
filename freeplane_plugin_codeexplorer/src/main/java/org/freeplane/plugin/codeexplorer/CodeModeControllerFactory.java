@@ -46,6 +46,7 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.LastOpenedList;
+import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
 import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
 import org.freeplane.plugin.codeexplorer.map.CodeMapPersistenceManager;
@@ -59,11 +60,11 @@ import com.tngtech.archunit.ArchConfiguration;
 public class CodeModeControllerFactory {
 	static private CodeModeController modeController;
 
-	static public CodeModeController createModeController(ExecutorService classImportService) {
+	static public CodeModeController createModeController(ExecutorService classImportService, ArchUnitServer archUnitServer) {
 	    ((ApplicationResourceController)ResourceController.getResourceController()).registerResourceLoader(CodeModeController.class.getClassLoader());
 	    ArchConfiguration.get().setResolveMissingDependenciesFromClassPath(false);
 		final Controller controller = Controller.getCurrentController();
-		modeController = new CodeModeController(controller);
+		modeController = new CodeModeController(controller, archUnitServer);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);

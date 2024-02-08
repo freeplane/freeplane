@@ -143,8 +143,8 @@ public class ParsedConfiguration {
         this.subpaths = subpaths;
     }
 
-    public DependencyJudge judge() {
-        return new DependencyJudge(rules);
+    public DependencyRuleJudge judge() {
+        return new DependencyRuleJudge(rules);
     }
 
     public AnnotationMatcher annotationMatcher() {

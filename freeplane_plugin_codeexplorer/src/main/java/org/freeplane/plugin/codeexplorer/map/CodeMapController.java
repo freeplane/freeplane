@@ -34,9 +34,10 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 import org.freeplane.plugin.codeexplorer.task.DirectoryMatcher;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -139,7 +140,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
                     if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
 	                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
-	                            projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
+	                            projectMap, importedClasses, codeExplorerConfiguration.createLocationMatcher());
 
 	                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
 	                    CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);

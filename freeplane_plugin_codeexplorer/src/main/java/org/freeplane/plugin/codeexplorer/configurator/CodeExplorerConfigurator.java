@@ -36,7 +36,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 import org.freeplane.plugin.codeexplorer.task.ConfigurationChange;
 import org.freeplane.plugin.codeexplorer.task.ParsedConfiguration;
@@ -65,7 +65,7 @@ class CodeExplorerConfigurator extends JPanel {
 
     private void updateConfigurationsTable(CodeExplorerConfigurations explorerConfigurations) {
         configTableModel.setRowCount(0); // Clear existing data
-        for (CodeExplorerConfiguration config : explorerConfigurations.getConfigurations()) {
+        for (UserDefinedCodeExplorerConfiguration config : explorerConfigurations.getConfigurations()) {
             configTableModel.addRow(new Object[]{config.getProjectName()});
         }
     }
@@ -189,7 +189,7 @@ class CodeExplorerConfigurator extends JPanel {
 
     private void updateConfigurationName(int row) {
         String projectName = ((String) configTableModel.getValueAt(row, 0)).trim();
-        CodeExplorerConfiguration config = getConfiguration(row);
+        UserDefinedCodeExplorerConfiguration config = getConfiguration(row);
         config.setProjectName(projectName);
     }
 
@@ -197,7 +197,7 @@ class CodeExplorerConfigurator extends JPanel {
         locationsTableModel.setRowCount(0); // Clear existing data
         int selectedRow = getSelectedConfigurationIndex();
         if (selectedRow >= 0) {
-            CodeExplorerConfiguration config = getConfiguration(selectedRow);
+            UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedRow);
             for (File location : config.getLocations()) {
                 locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
@@ -214,13 +214,13 @@ class CodeExplorerConfigurator extends JPanel {
         configurationChange = ConfigurationChange.SAME;
     }
 
-    CodeExplorerConfiguration getSelectedConfiguration() {
+    UserDefinedCodeExplorerConfiguration getSelectedConfiguration() {
         int selectedConfigurationIndex = getSelectedConfigurationIndex();
-        CodeExplorerConfiguration selectedConfiguration = getConfiguration(selectedConfigurationIndex);
+        UserDefinedCodeExplorerConfiguration selectedConfiguration = getConfiguration(selectedConfigurationIndex);
         return selectedConfiguration;
     }
 
-    private CodeExplorerConfiguration getConfiguration(int selectedConfigurationIndex) {
+    private UserDefinedCodeExplorerConfiguration getConfiguration(int selectedConfigurationIndex) {
         if(selectedConfigurationIndex >= 0)
             return explorerConfigurations().getConfigurations().get(selectedConfigurationIndex);
         else
@@ -232,7 +232,7 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void addNewConfiguration() {
-        CodeExplorerConfiguration newConfig = new CodeExplorerConfiguration();
+        UserDefinedCodeExplorerConfiguration newConfig = new UserDefinedCodeExplorerConfiguration();
         explorerConfigurations().getConfigurations().add(newConfig);
         configTableModel.addRow(new Object[]{newConfig.getProjectName()});
         int newRow = configTable.getRowCount() - 1;
@@ -330,7 +330,7 @@ class CodeExplorerConfigurator extends JPanel {
     private void updateSelectedConfigurationLocations() {
         int selectedConfigRow = getSelectedConfigurationIndex();
         if (selectedConfigRow >= 0) {
-            CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
+            UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
             config.removeAllLocations();
             for(int row = 0; row < locationsTableModel.getRowCount(); row++)
                 config.addLocation((String)locationsTableModel.getValueAt(row, 0));
@@ -346,7 +346,7 @@ class CodeExplorerConfigurator extends JPanel {
             int row = selectedIndex - removedRowCount;
             int selectedConfigRow = getSelectedConfigurationIndex();
             if (selectedConfigRow >= 0) {
-                CodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
+                UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
                 config.removeLocation(locationsTableModel.getValueAt(row, 0).toString());
             }
             locationsTableModel.removeRow(row);
@@ -361,7 +361,7 @@ class CodeExplorerConfigurator extends JPanel {
         if(configTable.getRowCount() == 0)
             addNewConfiguration();
         int selectedConfigRow = getSelectedConfigurationIndex();
-        CodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
+        UserDefinedCodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
         int selectedRow = locationsTable.getSelectedRow();
         if(selectedRow >= 0) {
             File selectedFile = new File(locationsTable.getValueAt(selectedRow, 0).toString());
@@ -408,7 +408,7 @@ class CodeExplorerConfigurator extends JPanel {
         configurationChange = ConfigurationChange.SAME;
     }
     private void setConfigurationRules() {
-        CodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
+        UserDefinedCodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
         if(selectedConfiguration != null) {
             String ruleSpecification = rules.getText();
             if(! selectedConfiguration.getConfigurationRules().equals(ruleSpecification)) {

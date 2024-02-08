@@ -13,16 +13,16 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
+import org.freeplane.plugin.codeexplorer.task.DependencyRuleJudge;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 
 import com.tngtech.archunit.core.domain.Dependency;
-import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 public class CodeMap extends MMapModel {
 
-    private DependencyJudge judge = new DependencyJudge();
+    private DependencyJudge judge = new DependencyRuleJudge();
     private SubprojectFinder subprojectFinder = SubprojectFinder.EMPTY;
     private CodeExplorerConfiguration codeExplorerConfiguration;
 

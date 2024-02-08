@@ -1,5 +1,6 @@
 package org.freeplane.plugin.codeexplorer.archunit;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,23 +8,26 @@ import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import com.google.gson.Gson;
-import com.tngtech.archunit.freeplane.extension.EvaluatedRuleDto;
+import com.tngtech.archunit.freeplane.extension.ArchTestResult;
 
-public class ArchUnitExtensionServer {
+public class ArchUnitServer {
     private volatile ServerSocket serverSocket;
-    private final ConcurrentLinkedQueue<EvaluatedRuleDto> submittedConfigurations;
+    private final LinkedList<ArchTestResult> submittedConfigurations;
     private final ExecutorService clientExecutor;
     private final AtomicBoolean running = new AtomicBoolean(false);
+    private Consumer<ArchTestResult> callback = result -> {/**/};
 
-    public ArchUnitExtensionServer() {
-        this.submittedConfigurations = new ConcurrentLinkedQueue<>();
+    public ArchUnitServer() {
+        this.submittedConfigurations = new LinkedList<>();
         this.clientExecutor = Executors.newCachedThreadPool();
 
         // Shutdown hook for cleaning up resources on application termination
@@ -98,8 +102,8 @@ public class ArchUnitExtensionServer {
         public void run() {
             try (InputStream in = clientSocket.getInputStream();
                  Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
-                EvaluatedRuleDto dto = new Gson().fromJson(reader, EvaluatedRuleDto.class);
-                submittedConfigurations.add(dto);
+                ArchTestResult dto = new Gson().fromJson(reader, ArchTestResult.class);
+                EventQueue.invokeLater(() -> addTestResult(dto));
             } catch (IOException e) {
                 System.out.println("Client handler exception: " + e.getMessage());
             } finally {
@@ -110,5 +114,22 @@ public class ArchUnitExtensionServer {
                 }
             }
         }
+
+        private void addTestResult(ArchTestResult dto) {
+            submittedConfigurations.add(dto);
+            callback.accept(dto);
+        }
+    }
+
+    public List<ArchTestResult> getSubmittedConfigurations() {
+        return submittedConfigurations;
+    }
+
+    public Consumer<ArchTestResult> getCallback() {
+        return callback;
+    }
+
+    public void setCallback(Consumer<ArchTestResult> callback) {
+        this.callback = callback;
     }
 }

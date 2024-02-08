@@ -13,7 +13,7 @@ import org.freeplane.main.application.CommandLineOptions;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
-import org.freeplane.plugin.codeexplorer.archunit.ArchUnitExtensionServer;
+import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -44,9 +44,10 @@ public class Activator implements BundleActivator {
 				public void installExtension(Controller controller, CommandLineOptions options, ExtensionInstaller.Context context) {
 			        if(context == Context.MAIN && modeController == null) {
 			            classImportService = Executors.newSingleThreadExecutor(this::newThread);
-                        modeController = CodeModeControllerFactory.createModeController(classImportService);
+			            final ArchUnitServer archUnitServer = new ArchUnitServer();
+                        archUnitServer.start(ResourceController.getResourceController().getIntProperty("archunit_port", 6297));
+                        modeController = CodeModeControllerFactory.createModeController(classImportService, archUnitServer);
                         addPreferencesToOptionPanel();
-                        new ArchUnitExtensionServer().start(ResourceController.getResourceController().getIntProperty("archunit_port", 6297));
                     }
 			    }
 
