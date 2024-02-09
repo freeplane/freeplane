@@ -92,4 +92,9 @@ public class TestResultConfiguration implements CodeExplorerConfiguration {
     public AnnotationMatcher getAnnotationMatcher() {
         return AnnotationMatcher.IGNORING_ALL;
     }
+
+    @Override
+    public boolean canBeSaved() {
+        return false;
+    }
 }

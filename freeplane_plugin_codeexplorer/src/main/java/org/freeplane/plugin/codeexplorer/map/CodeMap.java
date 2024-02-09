@@ -25,6 +25,7 @@ public class CodeMap extends MMapModel {
     private DependencyJudge judge = new DependencyRuleJudge();
     private SubprojectFinder subprojectFinder = SubprojectFinder.EMPTY;
     private CodeExplorerConfiguration codeExplorerConfiguration;
+    private boolean canBeSaved = false;
 
     public CodeMap(INodeDuplicator nodeDuplicator) {
         super(nodeDuplicator);
@@ -50,6 +51,13 @@ public class CodeMap extends MMapModel {
         };
     }
 
+
+
+
+    @Override
+    public boolean isSaved() {
+         return ! canBeSaved || super.isSaved();
+    }
 
     @Override
     public String getTitle() {
@@ -162,6 +170,10 @@ public class CodeMap extends MMapModel {
 
     public String locationByIndex(int index) {
         return subprojectFinder.locationByIndex(index);
+    }
+
+    public void setCanBeSaved(boolean canBeSaved) {
+       this.canBeSaved = canBeSaved;
     }
 
 }

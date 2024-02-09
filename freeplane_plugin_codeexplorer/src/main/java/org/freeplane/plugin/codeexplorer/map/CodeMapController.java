@@ -18,7 +18,6 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
@@ -34,15 +33,12 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
-import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
-import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
-import org.freeplane.plugin.codeexplorer.task.DirectoryMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class CodeMapController extends MapController implements CodeExplorer{
     private final ExecutorService classImportService;
@@ -77,9 +73,9 @@ public class CodeMapController extends MapController implements CodeExplorer{
         modeController.addAction(new PurgeAction());
     }
 
-	@Override
-    public CodeMap newMap() {
+    public CodeMap newCodeMap(boolean canBeSaved) {
 	    final CodeMap codeMap = new CodeMap(getModeController().getMapController().duplicator());
+	    codeMap.setCanBeSaved(canBeSaved);
 	    fireMapCreated(codeMap);
 	    Color background = UIManager.getColor("Panel.background");
 	    Color foreground = UIManager.getColor("Panel.foreground");
@@ -120,7 +116,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            .map(NodeView::getNode)
 	            .map(NodeModel::getID)
 	            .collect(Collectors.toList());
-        CodeMap loadingHintMap = newMap();
+        CodeMap loadingHintMap = newCodeMap(false);
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Analyzing"
 	            + (codeExplorerConfiguration!= null ? " " + codeExplorerConfiguration.countLocations():"")
 	            + " locations ...");
@@ -128,7 +124,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    mapViewManager.setMap(mapView, loadingHintMap);
 	    Controller.getCurrentController().getMapViewManager().setMapTitles();
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        CodeMap projectMap = newMap();
+        CodeMap projectMap = newCodeMap(codeExplorerConfiguration.canBeSaved());
         projectMap.setConfiguration(codeExplorerConfiguration);
         loadingHintMap.addExtension(new LoadedMap(projectMap));
         classImportService.execute(() -> {

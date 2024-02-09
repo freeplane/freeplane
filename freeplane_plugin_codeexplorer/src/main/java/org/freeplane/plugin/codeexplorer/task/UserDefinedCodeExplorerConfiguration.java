@@ -173,4 +173,9 @@ public class UserDefinedCodeExplorerConfiguration implements CodeExplorerConfigu
     public CodeAttributeConfiguration getAttributeConfiguration() {
         return attributeConfiguration;
     }
+
+    @Override
+    public boolean canBeSaved() {
+        return true;
+    }
 }

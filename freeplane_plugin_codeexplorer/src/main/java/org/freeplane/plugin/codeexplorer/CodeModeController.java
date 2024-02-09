@@ -50,7 +50,7 @@ public class CodeModeController extends MModeController {
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
 			CodeMapController mapController = (CodeMapController) getMapController();
-            CodeMap map = mapController.newMap();
+            CodeMap map = mapController.newCodeMap(false);
             mapController.createMapView(map);
 
 		}

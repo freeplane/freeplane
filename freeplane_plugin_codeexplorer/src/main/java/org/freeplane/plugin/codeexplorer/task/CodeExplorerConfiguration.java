@@ -21,4 +21,6 @@ public interface CodeExplorerConfiguration {
 
     AnnotationMatcher getAnnotationMatcher();
 
+    boolean canBeSaved();
+
 }
