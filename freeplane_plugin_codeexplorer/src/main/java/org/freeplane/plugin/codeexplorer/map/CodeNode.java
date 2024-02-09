@@ -243,7 +243,7 @@ public abstract class CodeNode extends NodeModel {
         return getIncomingDependenciesWithKnownOrigins().parallel().map(getMap()::toCodeDependency);
     }
 
-    static Optional<String> classSourceLocationOf(JavaClass javaClass) {
+    public static Optional<String> classSourceLocationOf(JavaClass javaClass) {
         return javaClass.getSource()
                 .map(s -> {
                     URI uri = s.getUri();

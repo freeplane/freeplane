@@ -7,10 +7,8 @@ package org.freeplane.plugin.codeexplorer.task;
 
 import java.util.Optional;
 
-public interface LocationMatcher {
-    String coreLocationPath(String path);
+import com.tngtech.archunit.core.domain.JavaClass;
 
-    default Optional<String> coreLocationPath(Optional<String> path ) {
-        return path.map(this::coreLocationPath);
-    }
+public interface LocationMatcher {
+    Optional<String> coreLocationPath(JavaClass javaClass);
 }

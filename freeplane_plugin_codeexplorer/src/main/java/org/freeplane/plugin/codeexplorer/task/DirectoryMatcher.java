@@ -11,9 +11,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
+
+import org.freeplane.plugin.codeexplorer.map.CodeNode;
+
+import com.tngtech.archunit.core.domain.JavaClass;
 
 public class DirectoryMatcher implements LocationMatcher{
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
@@ -53,8 +58,9 @@ public class DirectoryMatcher implements LocationMatcher{
     }
 
     @Override
-    public String coreLocationPath(String path) {
-        return coreLocationsByPaths.getOrDefault(path, path);
+    public Optional<String> coreLocationPath(JavaClass javaClass) {
+        Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
+        return optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
     }
 
     public Collection<File> getImportedLocations() {

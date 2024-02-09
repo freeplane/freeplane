@@ -63,7 +63,6 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
         subprojectsByLocation = new LinkedHashMap<>();
         classes.stream()
-        .map(CodeNode::classSourceLocationOf)
         .map(locationMatcher::coreLocationPath)
         .filter(Optional::isPresent)
         .map(Optional::get)
@@ -158,8 +157,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
     @Override
     public int subprojectIndexOf(JavaClass javaClass) {
-        Optional<String> classSourceLocation = CodeNode.classSourceLocationOf(javaClass)
-                .map(locationMatcher::coreLocationPath);
+        Optional<String> classSourceLocation = locationMatcher.coreLocationPath(javaClass);
         Optional <Entry<Integer, String>> subprojectEntry = classSourceLocation
                 .map( s -> subprojectsByLocation.getOrDefault(s, UNKNOWN));
 

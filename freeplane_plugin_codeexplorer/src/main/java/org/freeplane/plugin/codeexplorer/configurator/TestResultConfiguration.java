@@ -8,10 +8,12 @@ package org.freeplane.plugin.codeexplorer.configurator;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
+import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
@@ -61,7 +63,7 @@ public class TestResultConfiguration implements CodeExplorerConfiguration {
 
     @Override
     public LocationMatcher createLocationMatcher() {
-        return path -> path;
+        return x -> CodeNode.classSourceLocationOf(x).map(path -> "Test result");
     }
 
     @Override
