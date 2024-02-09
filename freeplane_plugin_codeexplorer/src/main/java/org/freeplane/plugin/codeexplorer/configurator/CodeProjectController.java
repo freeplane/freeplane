@@ -150,7 +150,8 @@ public class CodeProjectController implements IExtension {
     void exploreSelectedConfiguration() {
         if(configurator != null) {
             UserDefinedCodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
-            exploreConfiguration(selectedConfiguration);
+            if(selectedConfiguration != null)
+                exploreConfiguration(selectedConfiguration);
         }
     }
 

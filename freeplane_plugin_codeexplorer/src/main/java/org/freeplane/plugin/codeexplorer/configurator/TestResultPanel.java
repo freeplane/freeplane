@@ -49,16 +49,15 @@ class TestResultPanel extends JPanel {
     }
 
     private void testResultAdded(ArchTestResult result) {
-        addNewConfiguration(result.violatedRuleDescription);
+        addNewTestResult(result.violatedRuleDescription);
     }
 
 
     private void updateRuleTable() {
         ruleTableModel.setRowCount(0); // Clear existing data
-        for (ArchTestResult rule : submittedConfigurations()) {
+        for (ArchTestResult rule : submittedTestResults()) {
             ruleTableModel.addRow(new Object[]{rule.violatedRuleDescription});
         }
-        WrappingTableCellRenderer.adjustRowHeights(ruleTable);
     }
 
 
@@ -72,7 +71,7 @@ class TestResultPanel extends JPanel {
         ruleTable = new JTable(ruleTableModel);
         final WrappingTableCellRenderer renderer = new WrappingTableCellRenderer();
         ruleTable.setDefaultRenderer(Object.class, renderer);
-        ruleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ruleTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane ruleTableScrollPane = new JScrollPane(ruleTable);
 
         ruleTable.getSelectionModel().addListSelectionListener(e -> updateViolations());
@@ -81,7 +80,7 @@ class TestResultPanel extends JPanel {
      }
 
     @SuppressWarnings("serial")
-    private JComponent createViolationsPane(JLabel paneLabel) {
+    private JComponent createViolationsPane() {
 
         violationTableModel = createEmptyTableModel();
         violationTable = new AutoResizedTable(violationTableModel);
@@ -100,22 +99,7 @@ class TestResultPanel extends JPanel {
             }
 
         });
-
-        // Use CardLayout to switch views
-        CardLayout cardLayout = new CardLayout();
-        JPanel cardPanel = new JPanel(cardLayout);
-
-        // Add the table scroll pane to the card panel
-        cardPanel.add(violationsTableScrollPane, "Violations");
-
-        // Create a help text component and add it to the card panel
-        JTextArea helpText = new JTextArea(ParsedConfiguration.HELP);
-        helpText.setEditable(false); // make it read-only if it's a text area
-        cardPanel.add(new JScrollPane(helpText), "Help");
-
-        String violationsHeaderText = TextUtils.getText("code.violations");
-        paneLabel.setText(violationsHeaderText);
-        return cardPanel;
+        return violationsTableScrollPane;
     }
 
     @SuppressWarnings("serial")
@@ -129,62 +113,64 @@ class TestResultPanel extends JPanel {
     }
     private void updateViolations() {
         violationTableModel.setRowCount(0); // Clear existing data
-        ArchTestResult rule = getSelectedConfiguration();
+        ArchTestResult rule = getSelectedTestResult();
         if (rule !=  null) {
             for (String description : rule.violationDescriptions) {
                 violationTableModel.addRow(new Object[]{description});
             }
         }
-        WrappingTableCellRenderer.adjustRowHeights(violationTable);
     }
 
-    private void exploreSelectedConfiguration() {
-        codeProjectController.exploreConfiguration(getSelectedConfiguration());
+    private void exploreSelectedTestResult() {
+        final ArchTestResult selectedTestResult = getSelectedTestResult();
+        codeProjectController.exploreConfiguration(selectedTestResult);
     }
 
-    ArchTestResult getSelectedConfiguration() {
-        int selectedConfigurationIndex = getSelectedConfigurationIndex();
-        ArchTestResult selectedConfiguration = getConfiguration(selectedConfigurationIndex);
-        return selectedConfiguration;
+    ArchTestResult getSelectedTestResult() {
+        if(ruleTable.getSelectedRowCount() != 1)
+            return null;
+
+        int selectedTestResultIndex = ruleTable.getSelectedRow();
+        ArchTestResult selectedTestResult = getTestResult(selectedTestResultIndex);
+        return selectedTestResult;
     }
 
-    private ArchTestResult getConfiguration(int selectedConfigurationIndex) {
-        final List<ArchTestResult> submittedConfigurations = submittedConfigurations();
-        if(selectedConfigurationIndex >= 0 && selectedConfigurationIndex < submittedConfigurations.size()) {
-            return submittedConfigurations.get(selectedConfigurationIndex);
+    private ArchTestResult getTestResult(int selectedTestResultIndex) {
+        final List<ArchTestResult> submittedTestResults = submittedTestResults();
+        if(selectedTestResultIndex >= 0 && selectedTestResultIndex < submittedTestResults.size()) {
+            return submittedTestResults.get(selectedTestResultIndex);
         } else
             return null;
     }
 
 
-    private List<ArchTestResult> submittedConfigurations() {
-        return archUnitServer.getSubmittedConfigurations();
+    private List<ArchTestResult> submittedTestResults() {
+        return archUnitServer.getSubmittedTestResults();
     }
 
-    private int getSelectedConfigurationIndex() {
-        return ruleTable.getSelectedRow();
-    }
-
-    private void addNewConfiguration(String violatedRuleDescription) {
+    private void addNewTestResult(String violatedRuleDescription) {
         ruleTableModel.addRow(new Object[]{violatedRuleDescription});
         final int row = ruleTable.getRowCount() - 1;
-        WrappingTableCellRenderer.adjustRowHeight(ruleTable, row);
         if(row == 0)
             ruleTable.addRowSelectionInterval(row, row);
     }
 
-    private void deleteSelectedConfiguration() {
-        int selectedRow = getSelectedConfigurationIndex();
-        if (selectedRow >= 0) {
-            ruleTableModel.removeRow(selectedRow);
-            submittedConfigurations().remove(selectedRow);
-            int rowCount = ruleTableModel.getRowCount();
-            if(selectedRow < rowCount)
-                ruleTable.setRowSelectionInterval(selectedRow, selectedRow);
-            else if (rowCount > 0)
-                ruleTable.setRowSelectionInterval(rowCount-1, rowCount-1);
-            updateViolations();
+    private void deleteSelectedTestResults() {
+        final ListSelectionModel selectionModel = ruleTable.getSelectionModel();
+        int minSelectionIndex = selectionModel.getMinSelectionIndex();
+        if(minSelectionIndex == -1)
+            return;
+        int maxSelectionIndex = selectionModel.getMaxSelectionIndex();
+        for(int row = maxSelectionIndex; row >= minSelectionIndex; row--) {
+            ruleTableModel.removeRow(row);
+            submittedTestResults().remove(row);
         }
+        int rowCount = ruleTableModel.getRowCount();
+        if(minSelectionIndex < rowCount)
+            ruleTable.setRowSelectionInterval(minSelectionIndex, minSelectionIndex);
+        else if (rowCount > 0)
+            ruleTable.setRowSelectionInterval(rowCount-1, rowCount-1);
+        updateViolations();
     }
 
     private void cancelAnalysis() {
@@ -196,11 +182,10 @@ class TestResultPanel extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
         JLabel rulesLabel = new JLabel(TextUtils.getText("code.rules"));
-        JComponent ruleurationTableToolbar = createRuleTableToolbar();
         JComponent rulesPanel = createRulePanel();
-        JLabel violationsLabel = new JLabel();
-        JComponent violationsToolbar = createViolationsButtons();
-        JComponent violationsPane = createViolationsPane(violationsLabel);
+        JComponent ruleTableToolbar = createRuleTableToolbar();
+        JLabel violationsLabel = new JLabel(TextUtils.getText("code.violations"));
+        JComponent violationsPane = createViolationsPane();
 
 
         gbc.weighty = 0;
@@ -214,17 +199,12 @@ class TestResultPanel extends JPanel {
 
         gbc.gridy = 1;
         gbc.anchor=GridBagConstraints.LINE_START;
-        add(ruleurationTableToolbar, gbc);
+        add(ruleTableToolbar, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor=GridBagConstraints.CENTER;
         add(violationsLabel, gbc);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.anchor=GridBagConstraints.LINE_START;
-        add(violationsToolbar, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -243,46 +223,36 @@ class TestResultPanel extends JPanel {
 
     private JComponent createRuleTableToolbar() {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton deleteConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
-        deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
-        JButton clearConfigurationsButton = TranslatedElementFactory.createButtonWithIcon("code.clear");
-        clearConfigurationsButton.addActionListener(e -> clear());
-        toolbar.add(deleteConfigurationButton);
-        toolbar.add(clearConfigurationsButton);
-        return toolbar;
-    }
-
-    private void clear() {
-        violationTableModel.setRowCount(0);
-        ruleTableModel.setRowCount(0);
-    }
-
-    private JComponent createViolationsButtons() {
-        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton exploreConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
-        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+        JButton deleteTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
+        deleteTestResultButton.addActionListener(e -> deleteSelectedTestResults());
+        toolbar.add(deleteTestResultButton);
+        JButton exploreTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
+        exploreTestResultButton.addActionListener(e -> exploreSelectedTestResult());
 
         JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
 
-        JComponent panelButtons[] = {exploreConfigurationButton, cancelButton};
+        JComponent panelButtons[] = {exploreTestResultButton, cancelButton};
         Stream.of(panelButtons).forEach(button -> {
             toolbar.add(button);
         });
 
-        JButton enablingButtons[] = {};
+        JButton enablingButtons[] = {exploreTestResultButton};
 
         Stream.of(enablingButtons).forEach(button -> {
             button.setEnabled(false);
         });
 
         Runnable enableButtons = () -> {
-            boolean enable = ruleTable.getSelectionModel().getMinSelectionIndex() >= 0;
+            final int selectedRowCount = ruleTable.getSelectedRowCount();
+            deleteTestResultButton.setEnabled(selectedRowCount >= 1);
+            boolean enable = selectedRowCount == 1;
             Stream.of(enablingButtons).forEach(button -> button.setEnabled(enable));
         };
 
         ruleTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
-        return toolbar;
 
+        return toolbar;
     }
+
 }

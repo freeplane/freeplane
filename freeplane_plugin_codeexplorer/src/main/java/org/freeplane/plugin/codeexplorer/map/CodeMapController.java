@@ -133,26 +133,16 @@ public class CodeMapController extends MapController implements CodeExplorer{
         loadingHintMap.addExtension(new LoadedMap(projectMap));
         classImportService.execute(() -> {
 
-	        CodeMap nextMap = oldMap;
-	        ProjectRootNode projectRoot = null;
-	        try {
-	            if(codeExplorerConfiguration != null) {
-	                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
-                    if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
-	                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
-	                            projectMap, importedClasses, codeExplorerConfiguration.createLocationMatcher());
+            CodeMap nextMap = oldMap;
+            ProjectRootNode projectRoot = null;
+            try {
+                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
+                if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
+                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
+                            projectMap, importedClasses, codeExplorerConfiguration.createLocationMatcher());
 
-	                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
-	                    CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);
-	                }
-	            }
-	            else {
-	                ClassFileImporter classFileImporter = new ClassFileImporter();
-                    JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-                    if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
-                        projectRoot = ProjectRootNode.asMapRoot("demo", projectMap, importedClasses, DirectoryMatcher.ALLOW_ALL);
-                        CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);
-                    }
+                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
+                    CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);
                 }
                 LogUtils.info("Code map prepared");
                 if(projectRoot != null && LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
@@ -180,7 +170,8 @@ public class CodeMapController extends MapController implements CodeExplorer{
                         .toArray(NodeModel[]::new);
                 if(newSelection.length > 0)
                     selection.replaceSelection(newSelection);
-                projectMap.updateAnnotations(codeExplorerConfiguration.getAnnotationMatcher());
+                if(codeExplorerConfiguration != null)
+                    projectMap.updateAnnotations(codeExplorerConfiguration.getAnnotationMatcher());
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
                 Controller.getCurrentController().getMapViewManager().setMapTitles();
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));

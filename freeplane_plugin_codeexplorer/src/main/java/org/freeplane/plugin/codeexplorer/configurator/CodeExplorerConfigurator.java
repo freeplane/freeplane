@@ -88,7 +88,7 @@ class CodeExplorerConfigurator extends JPanel {
     private JComponent createConfigurationsPanel() {
         configTableModel = new DefaultTableModel(new Object[]{""}, 0);
         configTable = new JTable(configTableModel);
-        configTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        configTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
 
         configTable.getSelectionModel().addListSelectionListener(e -> updateConfiguration());
@@ -209,9 +209,12 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private void exploreSelectedConfiguration() {
-        setConfigurationRules();
-        codeProjectController.exploreConfiguration(getSelectedConfiguration());
-        configurationChange = ConfigurationChange.SAME;
+        final UserDefinedCodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
+        if(selectedConfiguration != null) {
+            setConfigurationRules();
+            codeProjectController.exploreConfiguration(selectedConfiguration);
+            configurationChange = ConfigurationChange.SAME;
+        }
     }
 
     UserDefinedCodeExplorerConfiguration getSelectedConfiguration() {
@@ -228,7 +231,10 @@ class CodeExplorerConfigurator extends JPanel {
     }
 
     private int getSelectedConfigurationIndex() {
-        return configTable.getSelectedRow();
+        if(configTable.getSelectedRowCount() != 1)
+            return -1;
+        else
+            return configTable.getSelectedRow();
     }
 
     private void addNewConfiguration() {
@@ -241,23 +247,23 @@ class CodeExplorerConfigurator extends JPanel {
         configTable.getEditorComponent().requestFocusInWindow();
     }
 
-    private void deleteSelectedConfiguration() {
-        int selectedRow = getSelectedConfigurationIndex();
-        if (selectedRow >= 0) {
-            configTableModel.removeRow(selectedRow);
-            explorerConfigurations().getConfigurations().remove(selectedRow);
-            int rowCount = configTableModel.getRowCount();
-            if(selectedRow < rowCount)
-                configTable.setRowSelectionInterval(selectedRow, selectedRow);
-            else if (rowCount > 0)
-                configTable.setRowSelectionInterval(rowCount-1, rowCount-1);
-            updateConfiguration();
+    private void deleteSelectedConfigurations() {
+        final ListSelectionModel selectionModel = configTable.getSelectionModel();
+        int minSelectionIndex = selectionModel.getMinSelectionIndex();
+        if(minSelectionIndex == -1)
+            return;
+        int maxSelectionIndex = selectionModel.getMaxSelectionIndex();
+        for(int row = maxSelectionIndex; row >= minSelectionIndex; row--) {
+            configTableModel.removeRow(row);
+            explorerConfigurations().getConfigurations().remove(row);
         }
+        int rowCount = configTableModel.getRowCount();
+        if(minSelectionIndex < rowCount)
+            configTable.setRowSelectionInterval(minSelectionIndex, minSelectionIndex);
+        else if (rowCount > 0)
+            configTable.setRowSelectionInterval(rowCount-1, rowCount-1);
+        updateConfiguration();
     }
-
-
-
-
 
     private void moveSelectedLocationsToTheTop() {
         int[] selectedRows = locationsTable.getSelectedRows();
@@ -430,8 +436,8 @@ class CodeExplorerConfigurator extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
         JLabel configurationsLabel = new JLabel(TextUtils.getText("code.configurations"));
-        JComponent configurationTableToolbar = createConfigurationTableToolbar();
         JComponent configurationsPanel = createConfigurationsPanel();
+        JComponent configurationTableToolbar = createConfigurationTableToolbar();
         JLabel locationsLabel = new JLabel();
         helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
         JComponent locationsToolbar = createLocationButtons(helpToggleButton);
@@ -492,14 +498,7 @@ class CodeExplorerConfigurator extends JPanel {
         JButton addConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.add");
         addConfigurationButton.addActionListener(e -> addNewConfiguration());
         JButton deleteConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
-        deleteConfigurationButton.addActionListener(e -> deleteSelectedConfiguration());
-        toolbar.add(addConfigurationButton);
-        toolbar.add(deleteConfigurationButton);
-        return toolbar;
-    }
-
-    private JComponent createLocationButtons(JToggleButton helpToggleButton) {
-        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
+        deleteConfigurationButton.addActionListener(e -> deleteSelectedConfigurations());
         JButton applyButton = TranslatedElementFactory.createButtonWithIcon("code.apply");
         applyButton.addActionListener(e ->applyConfigurationRules());
 
@@ -509,6 +508,29 @@ class CodeExplorerConfigurator extends JPanel {
         JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
 
+        JComponent panelButtons[] = {addConfigurationButton, deleteConfigurationButton, exploreConfigurationButton, applyButton, cancelButton};
+        Stream.of(panelButtons).forEach(button -> {
+            toolbar.add(button);
+        });
+
+        JButton enablingButtons[] = {exploreConfigurationButton, applyButton};
+
+        Stream.of(enablingButtons).forEach(button -> {
+            button.setEnabled(false);
+        });
+
+        Runnable enableButtons = () -> {
+            boolean enable = configTable.getSelectedRowCount() == 1;
+            Stream.of(enablingButtons).forEach(button -> button.setEnabled(enable));
+        };
+
+        configTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
+
+        return toolbar;
+    }
+
+    private JComponent createLocationButtons(JToggleButton helpToggleButton) {
+        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
         JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
         revertButton.addActionListener(e ->
             rules.setText(getSelectedConfiguration().getConfigurationRules())
@@ -532,12 +554,12 @@ class CodeExplorerConfigurator extends JPanel {
         JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
         btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
 
-        JComponent panelButtons[] = {exploreConfigurationButton, applyButton, cancelButton, revertButton, addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, helpToggleButton};
+        JComponent panelButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, revertButton, helpToggleButton};
         Stream.of(panelButtons).forEach(button -> {
             toolbar.add(button);
         });
 
-        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, applyButton, revertButton};
+        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, revertButton};
 
         Stream.of(enablingButtons).forEach(button -> {
             button.setEnabled(false);

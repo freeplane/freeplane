@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -21,13 +22,13 @@ import com.tngtech.archunit.freeplane.extension.ArchTestResult;
 
 public class ArchUnitServer {
     private volatile ServerSocket serverSocket;
-    private final LinkedList<ArchTestResult> submittedConfigurations;
+    private final LinkedList<ArchTestResult> submittedTestResults;
     private final ExecutorService clientExecutor;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Consumer<ArchTestResult> callback = result -> {/**/};
 
     public ArchUnitServer() {
-        this.submittedConfigurations = new LinkedList<>();
+        this.submittedTestResults = new LinkedList<>();
         this.clientExecutor = Executors.newCachedThreadPool();
 
         // Shutdown hook for cleaning up resources on application termination
@@ -54,6 +55,8 @@ public class ArchUnitServer {
                         }
                     }
                 }).start();
+            } catch (BindException e) {
+                running.set(false);
             } catch (IOException e) {
                 e.printStackTrace();
                 running.set(false);
@@ -116,13 +119,13 @@ public class ArchUnitServer {
         }
 
         private void addTestResult(ArchTestResult dto) {
-            submittedConfigurations.add(dto);
+            submittedTestResults.add(dto);
             callback.accept(dto);
         }
     }
 
-    public List<ArchTestResult> getSubmittedConfigurations() {
-        return submittedConfigurations;
+    public List<ArchTestResult> getSubmittedTestResults() {
+        return submittedTestResults;
     }
 
     public Consumer<ArchTestResult> getCallback() {
