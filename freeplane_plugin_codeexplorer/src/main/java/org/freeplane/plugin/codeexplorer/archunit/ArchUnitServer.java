@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.zip.GZIPInputStream;
 
 import com.google.gson.Gson;
 import com.tngtech.archunit.freeplane.extension.ArchTestResult;
@@ -103,8 +104,9 @@ public class ArchUnitServer {
 
         @Override
         public void run() {
-            try (InputStream in = clientSocket.getInputStream();
-                 Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+            try (InputStream inputStream = clientSocket.getInputStream();
+                 GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
+                 Reader reader = new InputStreamReader(gzipInputStream, StandardCharsets.UTF_8)) {
                 ArchTestResult dto = new Gson().fromJson(reader, ArchTestResult.class);
                 EventQueue.invokeLater(() -> addTestResult(dto));
             } catch (IOException e) {
