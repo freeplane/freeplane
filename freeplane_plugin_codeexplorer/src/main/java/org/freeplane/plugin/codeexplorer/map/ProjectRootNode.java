@@ -44,7 +44,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     private final String[] locationsBySubrojectIndex;
     private final Set<String> badLocations;
     private JavaClasses classes;
-    private LocationMatcher locationMatcher;
+    private final LocationMatcher locationMatcher;
     static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, LocationMatcher locationMatcher) {
         ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, locationMatcher);
         map.setRoot(projectRootNode);
