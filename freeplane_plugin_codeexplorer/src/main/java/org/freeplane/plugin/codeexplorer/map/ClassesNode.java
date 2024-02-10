@@ -36,13 +36,13 @@ class ClassesNode extends CodeNode {
 		super(map, subprojectIndex);
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
-		setFolded(! javaPackage.getClasses().isEmpty());
 		setIdWithIndex(javaPackage.getName() + NODE_ID_SUFFIX);
         long classCount = getClasses()
                 .filter(jc -> isNamed(jc))
                 .count();
         setText(name + formatClassCount(classCount));
         initializeChildNodes();
+        setFolded(getChildCount() >= 2);
 	}
 
     @Override

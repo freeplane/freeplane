@@ -43,7 +43,6 @@ class PackageNode extends CodeNode {
         setIdWithIndex(javaPackage.getName());
         this.classCount = getClassesInTree().filter(CodeNode::isNamed).count();
         setText(text + formatClassCount(classCount));
-        setFolded(classCount > 0);
         hasOwnClasses = getClasses().anyMatch(x -> true);
         if(createAttributes) {
             SortedSet<String> classpath = new TreeSet<>();
@@ -55,6 +54,7 @@ class PackageNode extends CodeNode {
             addExtension(attributes);
         }
         initializeChildNodes();
+        setFolded(getChildCount() >= 2);
     }
 
     private Stream<JavaClass> getClassesInTree() {
