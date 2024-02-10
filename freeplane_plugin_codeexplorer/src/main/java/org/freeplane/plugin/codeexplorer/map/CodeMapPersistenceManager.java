@@ -8,6 +8,7 @@ package org.freeplane.plugin.codeexplorer.map;
 import java.util.Collection;
 
 import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -51,16 +52,18 @@ public class CodeMapPersistenceManager extends UrlManager {
 
     public void restoreUserContent(CodeMap map) {
         CodeExplorerConfiguration codeExplorerConfiguration = map.getConfiguration();
-        if(! (codeExplorerConfiguration instanceof UserDefinedCodeExplorerConfiguration) )
-            return;
-        final UserDefinedCodeExplorerConfiguration configuration = (UserDefinedCodeExplorerConfiguration) codeExplorerConfiguration;
-        configuration
-        .getUserContent()
-        .entrySet().stream()
-        .forEach(content -> addToMap(map, content.getKey(), content.getValue()));
-        map.getExtension(AttributeRegistry.class).setAttributeViewType(
-                configuration.getAttributeConfiguration().getAttributeViewType());
+        if(codeExplorerConfiguration instanceof UserDefinedCodeExplorerConfiguration ) {
+            final UserDefinedCodeExplorerConfiguration configuration = (UserDefinedCodeExplorerConfiguration) codeExplorerConfiguration;
+            configuration
+            .getUserContent()
+            .entrySet().stream()
+            .forEach(content -> addToMap(map, content.getKey(), content.getValue()));
+            map.getExtension(AttributeRegistry.class).setAttributeViewType(
+                    configuration.getAttributeConfiguration().getAttributeViewType());
 
+        } else {
+            map.getExtension(AttributeRegistry.class).setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
+        }
         map.setSaved(true);
     }
 
