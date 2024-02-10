@@ -26,6 +26,8 @@ import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.SetBooleanPropertyAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
@@ -82,6 +84,7 @@ public class CodeProjectController implements IExtension {
             }
         });
         modeController.addAction(new RunAnalysisAction(this));
+        modeController.addAction(new SetBooleanPropertyAction(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
 
 	}
 
@@ -92,7 +95,8 @@ public class CodeProjectController implements IExtension {
         configurator = new CodeExplorerConfigurator(this);
         informationPanel.addTab("Configurations", configurator);
 
-        testResultPanel = new TestResultPanel (this, archUnitServer);
+        final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
+        testResultPanel = new TestResultPanel (this, archUnitServer, enableServerAction);
         informationPanel.addTab("Test results", testResultPanel);
 
 	    codeDependenciesPanel = new CodeDependenciesPanel();

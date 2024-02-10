@@ -18,10 +18,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.zip.GZIPInputStream;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
+
 import com.google.gson.Gson;
 import com.tngtech.archunit.freeplane.extension.ArchTestResult;
-
-public class ArchUnitServer {
+public class ArchUnitServer implements IFreeplanePropertyListener {
+    public static final String ARCHUNIT_SERVER_ENABLED_PROPERTY = "code.archunit.server.enabled";
+    public static final String ARCHUNIT_SERVER_PORT_PROPERTY = "code.archunit.server.port";
     private volatile ServerSocket serverSocket;
     private final LinkedList<ArchTestResult> submittedTestResults;
     private final ExecutorService clientExecutor;
@@ -31,16 +36,19 @@ public class ArchUnitServer {
     public ArchUnitServer() {
         this.submittedTestResults = new LinkedList<>();
         this.clientExecutor = Executors.newCachedThreadPool();
-
-        // Shutdown hook for cleaning up resources on application termination
         Runtime.getRuntime().addShutdownHook(new Thread(this::cleanup));
     }
 
-    public void start(int port) {
+    private void start() {
+        final int port = ResourceController.getResourceController().getIntProperty(ARCHUNIT_SERVER_PORT_PROPERTY, 6297);
+        start(port);
+    }
+
+    private void start(int port) {
         if (running.compareAndSet(false, true)) {
             try {
                 serverSocket = new ServerSocket(port);
-                System.out.println("Server started on port: " + port);
+                LogUtils.info("ArchUnit Server started on port " + port);
 
                 new Thread(() -> {
                     while (running.get()) {
@@ -48,9 +56,7 @@ public class ArchUnitServer {
                             Socket clientSocket = serverSocket.accept();
                             clientExecutor.submit(new ClientHandler(clientSocket));
                         } catch (IOException e) {
-                            if (!running.get()) {
-                                System.out.println("Server is stopping...");
-                            } else {
+                            if (running.get()) {
                                 e.printStackTrace();
                             }
                         }
@@ -62,8 +68,6 @@ public class ArchUnitServer {
                 e.printStackTrace();
                 running.set(false);
             }
-        } else {
-            System.out.println("Server is already running.");
         }
     }
 
@@ -73,12 +77,10 @@ public class ArchUnitServer {
                 if (serverSocket != null && !serverSocket.isClosed()) {
                     serverSocket.close();
                 }
-                System.out.println("Server stopped.");
+                LogUtils.info("ArchUnit Server stopped.");
             } catch (IOException e) {
-                System.out.println("Error closing the server: " + e.getMessage());
+                LogUtils.severe("Error closing the ArchUnit server: " + e.getMessage());
             }
-        } else {
-            System.out.println("Server is not running.");
         }
     }
 
@@ -110,12 +112,12 @@ public class ArchUnitServer {
                 ArchTestResult dto = new Gson().fromJson(reader, ArchTestResult.class);
                 EventQueue.invokeLater(() -> addTestResult(dto));
             } catch (IOException e) {
-                System.out.println("Client handler exception: " + e.getMessage());
+                LogUtils.severe("ArchUnit Client handler exception: " + e.getMessage());
             } finally {
                 try {
                     clientSocket.close();
                 } catch (IOException e) {
-                    System.out.println("Error closing client socket: " + e.getMessage());
+                    LogUtils.severe("Error closing ArchUnit client socket: " + e.getMessage());
                 }
             }
         }
@@ -136,5 +138,15 @@ public class ArchUnitServer {
 
     public void setCallback(Consumer<ArchTestResult> callback) {
         this.callback = callback;
+    }
+
+    @Override
+    public void propertyChanged(String propertyName, String newValue, String oldValue) {
+        if(propertyName.equals(ARCHUNIT_SERVER_ENABLED_PROPERTY)) {
+            if(Boolean.parseBoolean(newValue))
+                start();
+            else
+                stop();
+        }
     }
 }

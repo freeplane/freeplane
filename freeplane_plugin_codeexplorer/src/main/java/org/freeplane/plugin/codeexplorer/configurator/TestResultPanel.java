@@ -1,6 +1,5 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,23 +8,23 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 import java.util.stream.Stream;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
-import org.freeplane.plugin.codeexplorer.task.ParsedConfiguration;
 
 import com.tngtech.archunit.freeplane.extension.ArchTestResult;
 
@@ -40,11 +39,11 @@ class TestResultPanel extends JPanel {
     private final ArchUnitServer archUnitServer;
 
 
-    TestResultPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer) {
+    TestResultPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer, AFreeplaneAction enableServerAction) {
         this.codeProjectController = codeProjectController;
         this.archUnitServer = archUnitServer;
         archUnitServer.setCallback(this::testResultAdded);
-        initializeComponents();
+        createPanels(enableServerAction);
         updateRuleTable();
     }
 
@@ -58,11 +57,6 @@ class TestResultPanel extends JPanel {
         for (ArchTestResult rule : submittedTestResults()) {
             ruleTableModel.addRow(new Object[]{rule.violatedRuleDescription});
         }
-    }
-
-
-    private void initializeComponents() {
-        createPanels();
     }
 
 
@@ -177,13 +171,13 @@ class TestResultPanel extends JPanel {
         codeProjectController.cancelAnalysis();
     }
 
-    private void createPanels() {
+    private void createPanels(AFreeplaneAction enableServerAction) {
         setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         JLabel rulesLabel = new JLabel(TextUtils.getText("code.rules"));
         JComponent rulesPanel = createRulePanel();
-        JComponent ruleTableToolbar = createRuleTableToolbar();
+        JComponent ruleTableToolbar = createRuleTableToolbar(enableServerAction);
         JLabel violationsLabel = new JLabel(TextUtils.getText("code.violations"));
         JComponent violationsPane = createViolationsPane();
 
@@ -221,18 +215,18 @@ class TestResultPanel extends JPanel {
         add(violationsPane, gbc);
     }
 
-    private JComponent createRuleTableToolbar() {
+    private JComponent createRuleTableToolbar(AFreeplaneAction enableServerAction) {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
+        AbstractButton enableServerButton = FreeplaneToolBar.createButton(enableServerAction);
         JButton deleteTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
         deleteTestResultButton.addActionListener(e -> deleteSelectedTestResults());
-        toolbar.add(deleteTestResultButton);
         JButton exploreTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
         exploreTestResultButton.addActionListener(e -> exploreSelectedTestResult());
 
         JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
 
-        JComponent panelButtons[] = {exploreTestResultButton, cancelButton};
+        JComponent panelButtons[] = {enableServerButton, deleteTestResultButton, exploreTestResultButton, cancelButton};
         Stream.of(panelButtons).forEach(button -> {
             toolbar.add(button);
         });

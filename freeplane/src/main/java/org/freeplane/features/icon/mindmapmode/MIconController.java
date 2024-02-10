@@ -88,8 +88,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.ACTION_KEY_PREFIX
-			+ IconAction.ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY;
+	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.actionKey(IconAction.ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY);
 	public static final String REMOVE_FIRST_ICON_ACTION = "RemoveIcon_0_Action";
 	public static final String REMOVE_LAST_ICON_ACTION = "RemoveIconAction";
 	public static final String REMOVE_ALL_ICONS_ACTION = "RemoveAllIconsAction";

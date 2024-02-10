@@ -45,7 +45,7 @@ public class Activator implements BundleActivator {
 			        if(context == Context.MAIN && modeController == null) {
 			            classImportService = Executors.newSingleThreadExecutor(this::newThread);
 			            final ArchUnitServer archUnitServer = new ArchUnitServer();
-                        archUnitServer.start(ResourceController.getResourceController().getIntProperty("archunit_port", 6297));
+			            ResourceController.getResourceController().addPropertyChangeListenerAndPropagate(archUnitServer);
                         modeController = CodeModeControllerFactory.createModeController(classImportService, archUnitServer);
                         addPreferencesToOptionPanel();
                     }
