@@ -296,6 +296,8 @@ public abstract class CodeNode extends NodeModel {
        return super.getExtension(clazz);
     }
 
-
-
+    void setInitialFoldingState() {
+        if(getParentNode().getChildCount() > 1 && getChildCount() > 0)
+            setFolded(true);
+    }
 }

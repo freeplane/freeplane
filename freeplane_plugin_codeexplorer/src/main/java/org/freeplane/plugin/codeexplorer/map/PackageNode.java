@@ -54,7 +54,6 @@ class PackageNode extends CodeNode {
             addExtension(attributes);
         }
         initializeChildNodes();
-        setFolded(getChildCount() >= 2);
     }
 
     private Stream<JavaClass> getClassesInTree() {
@@ -134,6 +133,8 @@ class PackageNode extends CodeNode {
 	            node.setParent(this);
 	        }
 	    }
+	    for(NodeModel child: children)
+	        ((CodeNode) child).setInitialFoldingState();
 	}
 
     private Stream<Dependency> getClassDependenciesFromPackage(JavaPackage somePackage) {

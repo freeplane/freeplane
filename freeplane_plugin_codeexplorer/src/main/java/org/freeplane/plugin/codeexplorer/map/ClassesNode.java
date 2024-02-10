@@ -42,7 +42,6 @@ class ClassesNode extends CodeNode {
                 .count();
         setText(name + formatClassCount(classCount));
         initializeChildNodes();
-        setFolded(getChildCount() >= 2);
 	}
 
     @Override
@@ -193,6 +192,5 @@ class ClassesNode extends CodeNode {
         .map(getMap()::getNodeForID)
         .map(NodeModel::getParentNode)
         .map(ClassesNode.class::cast);
-
     }
 }

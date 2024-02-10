@@ -132,6 +132,9 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
                 node.setParent(this);
             }
         }
+        for(NodeModel child: children)
+            ((CodeNode) child).setInitialFoldingState();
+
     }
 
     @Override
