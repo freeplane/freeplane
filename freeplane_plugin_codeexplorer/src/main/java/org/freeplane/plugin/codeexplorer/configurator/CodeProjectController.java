@@ -35,6 +35,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
+import org.freeplane.plugin.codeexplorer.archunit.TestResultConfiguration;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;

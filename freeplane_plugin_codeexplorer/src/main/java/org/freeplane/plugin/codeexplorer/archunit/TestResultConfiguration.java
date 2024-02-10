@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.plugin.codeexplorer.archunit;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -84,8 +84,11 @@ public class TestResultConfiguration implements CodeExplorerConfiguration {
 
     @Override
     public DependencyJudge getDependencyJudge() {
-        return (dependency, goesUp) -> testResult.violationDependencyDescriptions.contains(dependency.getDescription())
-                ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED;
+        return (dependency, goesUp) ->
+        testResult.violationDependencyDescriptions.isEmpty()
+        ? (goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED)
+        :(testResult.violationDependencyDescriptions.contains(dependency.getDescription())
+                ? DependencyVerdict.FORBIDDEN : DependencyVerdict.IGNORED);
     }
 
     @Override
