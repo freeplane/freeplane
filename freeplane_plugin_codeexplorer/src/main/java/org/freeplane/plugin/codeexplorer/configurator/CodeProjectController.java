@@ -28,6 +28,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.SetBooleanPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
@@ -93,15 +94,15 @@ public class CodeProjectController implements IExtension {
 	    informationPanel = new JTabbedPane();
 
         configurator = new CodeExplorerConfigurator(this);
-        informationPanel.addTab("Configurations", configurator);
+        informationPanel.addTab(TextUtils.getText("code.configurations"), configurator);
 
         final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
         testResultPanel = new TestResultPanel (this, archUnitServer, enableServerAction);
-        informationPanel.addTab("Test results", testResultPanel);
+        informationPanel.addTab(TextUtils.getText("code.testResults"), testResultPanel);
 
 	    codeDependenciesPanel = new CodeDependenciesPanel();
 	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
-        informationPanel.addTab("Dependencies", codeDependenciesPanel);
+        informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
 
 	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
 	    informationPanel.setVisible(true);
