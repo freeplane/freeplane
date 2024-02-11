@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -12,6 +14,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -222,6 +225,15 @@ class TestResultPanel extends JPanel {
         deleteTestResultButton.addActionListener(e -> deleteSelectedTestResults());
         JButton exploreTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
         exploreTestResultButton.addActionListener(e -> exploreSelectedTestResult());
+
+        ruleTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    exploreSelectedTestResult();
+                }
+            }
+        });
 
         JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
