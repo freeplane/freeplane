@@ -86,9 +86,16 @@ public class TestResultConfiguration implements CodeExplorerConfiguration {
     public DependencyJudge getDependencyJudge() {
         return (dependency, goesUp) ->
         testResult.violationDependencyDescriptions.isEmpty()
-        ? (goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED)
+        ? ( location(dependency.getOriginClass()).equals(dependency.getTargetClass())
+                ? DependencyVerdict.IGNORED
+                : (goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED)
+          )
         :(testResult.violationDependencyDescriptions.contains(dependency.getDescription())
-                ? DependencyVerdict.FORBIDDEN : DependencyVerdict.IGNORED);
+                ? DependencyVerdict.FORBIDDEN
+                : (testResult.violatingClassLocations.size() > 1 && location(dependency.getOriginClass()).equals(dependency.getTargetClass()))
+                    ? DependencyVerdict.IGNORED
+                    : DependencyVerdict.ALLOWED);
+
     }
 
     @Override
