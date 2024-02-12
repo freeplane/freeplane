@@ -51,9 +51,6 @@ public class CodeMap extends MMapModel {
         };
     }
 
-
-
-
     @Override
     public boolean isSaved() {
          return ! canBeSaved || super.isSaved();
@@ -67,6 +64,9 @@ public class CodeMap extends MMapModel {
     public void setJudge(DependencyJudge judge) {
         this.judge = judge;
     }
+
+    @Override
+    public void enableAutosave() {/**/}
 
 
     public void updateAnnotations(AnnotationMatcher annotationMatcher) {
