@@ -8,7 +8,6 @@ package org.freeplane.plugin.codeexplorer.map;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -16,6 +15,7 @@ import java.util.stream.Stream;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
@@ -203,6 +203,20 @@ public abstract class CodeNode extends NodeModel {
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
         return Stream.concat(getIncomingDependenciesWithKnownOrigins(), getOutgoingDependenciesWithKnownTargets());
+    }
+
+    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(Filter  filter){
+        return getOutgoingDependenciesWithKnownTargets()
+                .filter(dep -> getMap().getNodeByClass(dep.getOriginClass()).isVisible(filter));
+    }
+
+    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter  filter){
+        return getIncomingDependenciesWithKnownOrigins()
+                .filter(dep -> getMap().getNodeByClass(dep.getTargetClass()).isVisible(filter));
+    }
+
+    Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(Filter  filter){
+        return Stream.concat(getIncomingDependenciesWithKnownOrigins(filter), getOutgoingDependenciesWithKnownTargets(filter));
     }
 
     @Override
