@@ -29,8 +29,6 @@ public class CodeMap extends MMapModel {
 
     public CodeMap(INodeDuplicator nodeDuplicator) {
         super(nodeDuplicator);
-        AttributeRegistry.getRegistry(this);
-
         setRoot(new EmptyNodeModel(this, "No locations selected"));
         getRootNode().setFolded(false);
     }

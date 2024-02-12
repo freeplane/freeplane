@@ -92,8 +92,10 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
     public int silentlyAddRowNoUndo(NodeModel node, final Attribute newAttribute) {
         allocateAttributes(NodeAttributeTableModel.CAPACITY_INCREMENT);
 		final int index = getRowCount();
-		final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
-		registry.registry(newAttribute);
+		AttributeRegistry registry = node.getMap().getExtension(AttributeRegistry.class);
+        if (registry != null) {
+            registry.registry(newAttribute);
+        }
 		attributes.add(newAttribute);
         return index;
     }

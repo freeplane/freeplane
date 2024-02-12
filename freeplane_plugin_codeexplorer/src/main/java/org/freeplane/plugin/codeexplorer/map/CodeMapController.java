@@ -19,6 +19,7 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
@@ -141,6 +142,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 
                     projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                     CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);
+                    AttributeRegistry.getRegistry(projectMap);
                 }
                 LogUtils.info("Code map prepared");
                 if(projectRoot != null && LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
