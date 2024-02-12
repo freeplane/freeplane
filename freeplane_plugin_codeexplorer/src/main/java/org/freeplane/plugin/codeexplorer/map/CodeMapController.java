@@ -18,6 +18,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
@@ -95,6 +96,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    NodeSizeModel nodeSizeModel = NodeSizeModel.createNodeSizeModel(defaultStyleNode);
         nodeSizeModel.setMinNodeWidth(Quantity.fromString("6", LengthUnit.cm));
         nodeSizeModel.setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
+        MapStyleModel.getExtension(codeMap).setProperty(AttributeController.ATTRIBUTE_TABLE_WIDTH_FITS_CONTENT_PROPERTY, "true");
 	    return codeMap;
 	}
 
