@@ -279,7 +279,28 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     public void addNotify() {
 	    updateComponentFontAndColors(this);
 	    super.addNotify();
+	    adjustColumnWidthsIfItTableFitsContent();
+
 	}
+
+    private void adjustColumnWidthsIfItTableFitsContent() {
+        final NodeView nodeView = getNodeViewAncestor();
+	    if(nodeView == null)
+	        return;
+	    final MapView mapView = nodeView.getMap();
+	    final boolean attributeTableWidthFitsContent = attributeViewFitsContent(mapView);
+	    if(! attributeTableWidthFitsContent)
+	        return;
+	    adjustColumnWidths();
+    }
+
+    void adjustColumnWidths() {
+        setOptimalColumnWidths(false);
+    }
+
+    private boolean attributeViewFitsContent(final MapView mapView) {
+        return MapStyleModel.getExtension(mapView.getMap()).getBooleanProperty(AttributeController.ATTRIBUTE_TABLE_WIDTH_FITS_CONTENT_PROPERTY);
+    }
 
     @Override
 	protected JTableHeader createDefaultTableHeader() {
@@ -853,7 +874,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	 *
 	 */
 	public void setOptimalColumnWidths() {
-		Component comp = null;
+	    setOptimalColumnWidths(true);
+	}
+
+    private void setOptimalColumnWidths(boolean updateModel) {
+        Component comp = null;
 		int minimumCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
 		int rowCount = getRowCount();
 		if(rowCount > 0) {
@@ -866,10 +891,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH + 1;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
-				getAttributeTableModel().setColumnWidth(col, LengthUnit.pixelsInPt(maxCellWidth));
+				if(updateModel)
+				    getAttributeTableModel().setColumnWidth(col, LengthUnit.pixelsInPt(maxCellWidth));
+				else
+				    getColumnModel().getColumn(col).setPreferredWidth(maxCellWidth);
 			}
 		}
-	}
+    }
 
 	@Override
 	public void tableChanged(final TableModelEvent e) {
@@ -909,6 +937,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 						changeSelection(getRowCount() - 1 , getSelectedColumn(), false, false);
 					}
 			}
+		adjustColumnWidthsIfItTableFitsContent();
 		getParent().getParent().invalidate();
 	}
 
@@ -916,7 +945,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		updateComponentFontAndColors(this);
 		updateGridColor();
 		updateRowHeights();
-		updateColumnWidths();
+		if(! attributeViewFitsContent(attributeView.getMapView()))
+		    updateColumnWidths();
 	}
 
 	private void updateGridColor() {
@@ -957,7 +987,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateColumnWidths() {
+	void updateColumnWidths() {
 		final float zoom = getZoom();
 		for (int i = 0; i < 2; i++) {
 			final int width = (int) (getAttributeTableModel().getColumnWidth(i).toBaseUnitsRounded() * zoom);

@@ -372,6 +372,7 @@
 				</Entry>
 				<Entry builder="separator" />
 				<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+				<Entry name="SetBooleanMapPropertyAction.attribute_table_width_fits_content" />
 			</Entry>
 			<Entry name="menu_noteView">
 				<Entry name="ShowHideNoteAction" accelerator="control GREATER" />

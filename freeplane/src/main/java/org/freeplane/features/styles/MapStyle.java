@@ -383,10 +383,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT);
 	}
 
-	private boolean getBooleanProperty(MapModel map, String name) {
-		MapStyleModel styleModel = MapStyleModel.getExtension(map);
-	    String allowsCompactLayout = styleModel.getProperty(name);
-	    return Boolean.parseBoolean(allowsCompactLayout);
+	public boolean getBooleanProperty(MapModel map, String name) {
+		return MapStyleModel.getExtension(map).getBooleanProperty(name);
 	}
 
 	@Override

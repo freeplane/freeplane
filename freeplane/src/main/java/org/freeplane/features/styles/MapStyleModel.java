@@ -471,6 +471,11 @@ public class MapStyleModel implements IExtension {
 		return properties.get(key);
 	}
 
+    public boolean getBooleanProperty(String name) {
+        String propertyValue = getProperty(name);
+        return Boolean.parseBoolean(propertyValue);
+    }
+
 	public NodeModel getStyleNodeGroup(NodeModel styleNode) {
 		final int depth = styleNode.depth();
 		if (depth < 1)

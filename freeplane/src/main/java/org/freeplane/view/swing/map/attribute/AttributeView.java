@@ -39,10 +39,14 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -50,7 +54,7 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a single Node of a MindMap (in analogy to
  * TreeCellRenderer).
  */
-public class AttributeView implements ChangeListener, TableModelListener {
+public class AttributeView implements ChangeListener, TableModelListener, IMapChangeListener {
 	private static final Color HEADER_BACKGROUND = UIManager.getColor("TableHeader.background");
 	static private AttributePopupMenu tablePopupMenu;
 	private AttributeTable attributeTable;
@@ -195,6 +199,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			attributeTableContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
 			if(isReduced()){
 				getNodeView().addContent(attributeTableContainer, VIEWER_POSITION);
+				getMapView().getModeController().getMapController().addMapChangeListener(this);
 			}
 			setViewType(getAttributeRegistry().getAttributeViewType());
 		}
@@ -215,6 +220,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 			attributeTable.removeMouseListener(AttributeView.tablePopupMenu);
 			tableHeader.removeMouseListener(AttributeView.tablePopupMenu);
 			AttributeView.tablePopupMenu = null;
+			getMapView().getModeController().getMapController().removeMapChangeListener(this);
 		}
 		else {
 			getAttributes().removeTableModelListener(this);
@@ -353,5 +359,16 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	public void addTableSelectionListener(ListSelectionListener listSelectionListener) {
 		// we have to cache the listener to enable lazy construction of the AttributeTable
 		tableSelectionListener = listSelectionListener;
+    }
+
+    @Override
+    public void mapChanged(MapChangeEvent event) {
+        if(event.getSource().getClass().equals(MapStyle.class)
+            && event.getProperty().equals(AttributeController.ATTRIBUTE_TABLE_WIDTH_FITS_CONTENT_PROPERTY)) {
+            if(Boolean.parseBoolean((String)event.getNewValue()))
+                attributeTable.adjustColumnWidths();
+            else
+                attributeTable.updateColumnWidths();
+        }
     }
 }

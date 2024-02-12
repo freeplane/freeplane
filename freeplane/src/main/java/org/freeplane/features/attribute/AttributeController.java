@@ -84,6 +84,7 @@ public class AttributeController implements IExtension {
 	}
 
  	final private ModeController modeController;
+    public static final String ATTRIBUTE_TABLE_WIDTH_FITS_CONTENT_PROPERTY = "attribute_table_width_fits_content";
 
 	public AttributeController(final ModeController modeController) {
 		this.modeController = modeController;
