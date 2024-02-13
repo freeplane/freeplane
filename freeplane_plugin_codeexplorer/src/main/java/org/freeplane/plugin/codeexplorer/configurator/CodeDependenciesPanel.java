@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -178,34 +178,35 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             rowSorter.setRowFilter(null);
         else {
             RowFilter<DependenciesWrapper, Integer> dependencyFilter = new RowFilter<DependenciesWrapper, Integer>() {
-                Predicate<String[]> combinedFilter = Stream.of(filteredWords)
+                BiPredicate<CodeDependency, String[]> combinedFilter = Stream.of(filteredWords)
                         .map(this::createPredicateFromString)
-                        .reduce(x -> true, Predicate::and);
-                private Predicate<String[]> createPredicateFromString(String searchedString) {
+                        .reduce((x,y) -> true, BiPredicate::and);
+                private BiPredicate<CodeDependency, String[]> createPredicateFromString(String searchedString) {
                     if (searchedString.startsWith("origin:")) {
                         String value = searchedString.substring("origin:".length());
-                        return row -> row[1].contains(value);
+                        return (dependency, row) -> dependency.getOriginClass().getName().contains(value);
                     } else if (searchedString.startsWith("target:")) {
                         String value = searchedString.substring("target:".length());
-                        return row -> row[2].contains(value);
+                        return (dependency, row) -> dependency.getTargetClass().getName().contains(value);
                     } else if (searchedString.startsWith("verdict:")) {
                         String value = searchedString.substring("verdict:".length());
-                        return row -> row[0].contains(value);
+                        return (dependency, row) -> row[0].contains(value);
                     } else if (searchedString.startsWith("dependency:")) {
                         String value = searchedString.substring("dependency:".length());
-                        return row -> row[3].contains(value);
+                        return (dependency, row) -> row[3].contains(value);
                     } else {
-                        return row -> Stream.of(row).anyMatch(s-> s.contains(searchedString));
+                        return (dependency, row) -> Stream.of(row).anyMatch(s-> s.contains(searchedString));
                     }
                 }
 
                 @Override
                 public boolean include(RowFilter.Entry<? extends DependenciesWrapper, ? extends Integer> entry) {
                     TableModel tableData = dependencyViewer.getModel();
+                    final int rowIndex = entry.getIdentifier().intValue();
                     String[] row = IntStream.range(0, 4)
-                            .mapToObj(column -> tableData.getValueAt(entry.getIdentifier(), column).toString())
+                            .mapToObj(column -> tableData.getValueAt(rowIndex, column).toString())
                             .toArray(String[]::new);
-                    return combinedFilter.test(row);
+                    return combinedFilter.test(allDependencies.get(rowIndex), row);
                 }
             };
 
