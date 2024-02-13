@@ -18,6 +18,7 @@ import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
+import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
@@ -50,6 +51,12 @@ public class ClassNode extends CodeNode {
     @Override
     Set<? extends JavaAnnotation<? extends HasName>> getAnnotations() {
         return javaClass.getAnnotations();
+    }
+
+
+    @Override
+    Set<JavaType> getInterfaces(){
+        return javaClass.getInterfaces();
     }
 
     public static String nodeText(final JavaClass javaClass) {

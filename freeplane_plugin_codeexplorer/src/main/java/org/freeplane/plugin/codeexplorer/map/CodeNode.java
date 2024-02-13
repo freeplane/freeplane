@@ -33,6 +33,8 @@ import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClassDescriptor;
+import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 public abstract class CodeNode extends NodeModel {
@@ -123,9 +125,18 @@ public abstract class CodeNode extends NodeModel {
                 String annotationName = ClassNode.nodeText(annotation.getRawType());
                 annotation.getProperties().entrySet().stream()
                 .filter(attributeEntry -> annotationMatcher.matches(annotation, attributeEntry.getKey()))
-                .forEach(attributeEntry -> addAnnotationAttributes(attributes, annotationName, attributeEntry.getKey(), attributeEntry.getValue()));
+                .forEach(attributeEntry -> addAnnotationAttributes(attributes, "@" +annotationName, attributeEntry.getKey(), attributeEntry.getValue()));
+                if(annotation.getProperties().isEmpty()
+                        && annotationMatcher.matches(annotation.getRawType()))
+                    addAnnotationAttributes(attributes, "@" + annotationName, "value", "");
             });
-        }
+            getInterfaces().forEach(javaInterface -> {
+                final JavaClass javaClass = javaInterface.toErasure();
+                String interfaceName = ClassNode.nodeText(javaClass);
+                 if(annotationMatcher.matches(javaClass))
+                    addAnnotationAttributes(attributes, "interface", "value", interfaceName);
+            });
+         }
 
         getChildren().forEach(child -> ((CodeNode)child).updateAnnotations(annotationMatcher));
 
@@ -142,6 +153,10 @@ public abstract class CodeNode extends NodeModel {
         return Collections.emptySet();
     }
 
+
+    Set<JavaType> getInterfaces(){
+        return Collections.emptySet();
+    }
 
     @Override
     public CodeMap getMap() {

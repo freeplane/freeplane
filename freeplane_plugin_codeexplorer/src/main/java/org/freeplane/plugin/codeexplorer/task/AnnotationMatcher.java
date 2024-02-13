@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 
 import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.PackageMatcher;
+import com.tngtech.archunit.core.domain.properties.HasName;
 
 public class AnnotationMatcher {
     public static final AnnotationMatcher IGNORING_ALL = new AnnotationMatcher(Collections.emptyList());
@@ -37,6 +38,14 @@ public class AnnotationMatcher {
         return IntStream.range(0, patterns.size())
                 .anyMatch(i -> matchers.get(i).matches(
                         patterns.get(i).endsWith("()") ? annotationNameWithMethod : annotationName));
+    }
+
+    public boolean matches(HasName type) {
+        if(isEmpty())
+            return false;
+        String annotationName = type.getName().replace('$', '.');
+        return IntStream.range(0, patterns.size())
+                .anyMatch(i -> !patterns.get(i).endsWith("()") && matchers.get(i).matches(annotationName));
     }
 
     public boolean isEmpty() {

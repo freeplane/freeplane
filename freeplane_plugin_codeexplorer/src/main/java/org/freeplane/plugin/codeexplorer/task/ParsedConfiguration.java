@@ -25,6 +25,7 @@ public class ParsedConfiguration {
             + "  [command] [originPattern] [direction] [targetPattern]\n"
             + "  classpath [path]\n"
             + "  ignore class [classPattern]\n"
+            + "  import interface [classPattern]\n"
             + "  import annotation [classPattern]\n"
             + "  import annotation [classPattern].[methodName]()\n"
             + "\n"
@@ -57,6 +58,9 @@ public class ParsedConfiguration {
             + "  ignore ..util.. ->v ..*Helper..\n"
             + "  classpath /target/classes\n"
             + "  ignore class com.example..*ServiceImpl..\n"
+            + "  import interface java.io.Serializable\n"
+            + "  import interface java.util.List\n"
+            + "  import annotation com.example..*Annotation\n"
             + "  import annotation com.example..*Annotation.*.value()\n"
             + "\n"
             + "Note:\n"
@@ -86,7 +90,7 @@ public class ParsedConfiguration {
             "^\\s*ignore\\s+class\\s+(" + CLASS_PATTERN + ")\\s*$");
 
     private static final Pattern IMPORTED_ANNOTATION_PATTERN = Pattern.compile(
-            "^\\s*import\\s+annotation\\s+(" + CLASS_PATTERN + ")\\s*$");
+            "^\\s*import\\s+(annotation|interface)\\s+(" + CLASS_PATTERN + ")\\s*$");
 
     private final List<DependencyRule> rules;
     private final ClassMatcher ignoredClasses;
@@ -128,7 +132,10 @@ public class ParsedConfiguration {
                     } else {
                         Matcher importedAnnotationMatcher = IMPORTED_ANNOTATION_PATTERN.matcher(dslRule);
                         if(importedAnnotationMatcher.find()) {
-                            importedAnnotations.add(importedAnnotationMatcher.group(1));
+                            final String annotationPattern = importedAnnotationMatcher.group(2);
+                            if(annotationPattern.endsWith("()") && importedAnnotationMatcher.group(1).equals("interface"))
+                                throw new IllegalArgumentException("Invalid rule " + dslRule);
+                            importedAnnotations.add(annotationPattern);
                         }
                         else
                             throw new IllegalArgumentException("Invalid rule " + dslRule);
