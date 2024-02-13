@@ -62,7 +62,7 @@ public class CodeMapPersistenceManager extends UrlManager {
                     configuration.getAttributeConfiguration().getAttributeViewType());
 
         } else {
-            map.getExtension(AttributeRegistry.class).setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
+            AttributeRegistry.getRegistry(map).setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
         }
         map.setSaved(true);
     }
