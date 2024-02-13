@@ -5,16 +5,22 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,7 +34,9 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
+import org.freeplane.plugin.codeexplorer.archunit.TestResultConfiguration;
 
+import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.freeplane.extension.ArchTestResult;
 
 class TestResultPanel extends JPanel {
@@ -40,11 +48,13 @@ class TestResultPanel extends JPanel {
     private JTable violationTable;
     private final CodeProjectController codeProjectController;
     private final ArchUnitServer archUnitServer;
+    private Map<String, Dependency> violations;
 
 
     TestResultPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer, AFreeplaneAction enableServerAction) {
         this.codeProjectController = codeProjectController;
         this.archUnitServer = archUnitServer;
+        this.violations = Collections.emptyMap();
         archUnitServer.setCallback(this::testResultAdded);
         createPanels(enableServerAction);
         updateRuleTable();
@@ -82,7 +92,8 @@ class TestResultPanel extends JPanel {
         violationTableModel = createEmptyTableModel();
         violationTable = new AutoResizedTable(violationTableModel);
         violationTable.getTableHeader().setVisible(false);
-        violationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        violationTable.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        violationTable.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         final WrappingTableCellRenderer renderer = new WrappingTableCellRenderer();
         TableColumn violationsColumn = violationTable.getColumnModel().getColumn(0);
         violationsColumn.setCellRenderer(renderer);
@@ -120,7 +131,9 @@ class TestResultPanel extends JPanel {
 
     private void exploreSelectedTestResult() {
         final ArchTestResult selectedTestResult = getSelectedTestResult();
-        codeProjectController.exploreConfiguration(selectedTestResult);
+        final TestResultConfiguration configuration = new TestResultConfiguration(selectedTestResult);
+        violations = configuration.violations();
+        codeProjectController.exploreConfiguration(configuration);
     }
 
     ArchTestResult getSelectedTestResult() {
@@ -259,6 +272,36 @@ class TestResultPanel extends JPanel {
         ruleTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
 
         return toolbar;
+    }
+
+    void addDependencySelectionCallback(Consumer<List<Dependency> > listener) {
+        violationTable.getSelectionModel().addListSelectionListener(
+                e -> {
+                    if(!e.getValueIsAdjusting()) {
+                        listener.accept(getSelectedDependencyList());
+                    }
+                });
+        violationTable.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(! e.isTemporary())
+                    listener.accept(getSelectedDependencyList());
+            }
+
+        });
+    }
+
+    private List<Dependency> getSelectedDependencyList() {
+        final List<Dependency> selectedDependencies =
+                violations.isEmpty()
+                ? Collections.emptyList()
+                : IntStream.of(violationTable.getSelectedRows())
+        .mapToObj(row -> violationTable.getValueAt(row, 0))
+        .map(violations::get)
+        .filter(x -> x != null)
+        .collect(Collectors.toList());
+        return selectedDependencies;
     }
 
 }

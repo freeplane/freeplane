@@ -20,6 +20,9 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.Graphics2D;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.swing.JTabbedPane;
@@ -42,12 +45,11 @@ import org.freeplane.plugin.codeexplorer.archunit.TestResultConfiguration;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
-import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
+import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.freeplane.extension.ArchTestResult;
 
 /**
  * @author Dimitry Polivaev
@@ -56,7 +58,7 @@ public class CodeProjectController implements IExtension {
     private CodeDependenciesPanel codeDependenciesPanel;
     private ModeController modeController;
     private JTabbedPane informationPanel;
-    private CodeDependency selectedDependency;
+    private List<Dependency> selectedDependencies;
     private CodeExplorerConfigurator configurator;
     private CodeExplorerConfigurations explorerConfigurations;
     private final ArchUnitServer archUnitServer;
@@ -98,6 +100,7 @@ public class CodeProjectController implements IExtension {
 
         final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
         testResultPanel = new TestResultPanel (this, archUnitServer, enableServerAction);
+        testResultPanel.addDependencySelectionCallback(this::updateSelectedDependency);
         informationPanel.addTab(TextUtils.getText("code.testResults"), testResultPanel);
 
 	    codeDependenciesPanel = new CodeDependenciesPanel();
@@ -114,7 +117,7 @@ public class CodeProjectController implements IExtension {
         informationPanel = null;
         configurator = null;
         codeDependenciesPanel = null;
-        selectedDependency = null;
+        selectedDependencies = null;
     }
 
     public void startupController() {
@@ -137,19 +140,18 @@ public class CodeProjectController implements IExtension {
 	}
 
     private boolean isDependencySelectedForNode(NodeModel node) {
-        if(selectedDependency == null)
+        if(selectedDependencies == null)
             return false;
         IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection == null || node.getMap() != selection.getMap())
             return false;
         DependencySelection dependencySelection = new DependencySelection(selection);
-        JavaClass[] dependencyClasses =  { selectedDependency.getOriginClass(), selectedDependency.getTargetClass()};
-        return Stream.of(dependencyClasses)
+        return selectedDependencies.stream().flatMap(dependency -> Stream.of(dependency.getOriginClass(), dependency.getTargetClass()))
                 .anyMatch(javaClass -> node.equals(dependencySelection.getVisibleNode(javaClass)));
     }
 
-    private void updateSelectedDependency(CodeDependency selectedDependency) {
-        this.selectedDependency = selectedDependency;
+    public void updateSelectedDependency(final List<Dependency> selectedDependencies) {
+        this.selectedDependencies = selectedDependencies;
         modeController.getController().getMapViewManager().getMapViewComponent().repaint();
     }
 
@@ -161,16 +163,10 @@ public class CodeProjectController implements IExtension {
         }
     }
 
-
-    public void exploreConfiguration(ArchTestResult testResult) {
+    public void exploreConfiguration(final TestResultConfiguration configuration) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-        codeExplorer.explore(configuration(testResult));
+        codeExplorer.explore(configuration);
     }
-
-    private CodeExplorerConfiguration configuration(ArchTestResult testResult) {
-        return new TestResultConfiguration(testResult);
-    }
-
 
     void exploreConfiguration(UserDefinedCodeExplorerConfiguration selectedConfiguration) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
