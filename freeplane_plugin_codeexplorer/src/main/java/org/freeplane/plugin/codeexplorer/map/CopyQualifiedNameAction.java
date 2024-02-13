@@ -18,30 +18,30 @@
 package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.event.ActionEvent;
+import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.mode.Controller;
 
-class CopyQualifiedName extends AFreeplaneAction {
+class CopyQualifiedNameAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CopyQualifiedName() {
+	public CopyQualifiedNameAction() {
 		super("code.CopyQualifiedName");
 	}
 
 	@Override
     public void actionPerformed(final ActionEvent e) {
-		final CodeNode node = (CodeNode) Controller.getCurrentModeController().getMapController().getSelectedNode();
-		copyCodeElementName(node);
-	}
-
-	/**
-	 */
-	private void copyCodeElementName(final CodeNode node) {
-	    ClipboardAccessor.getInstance().setClipboardContents(node.getCodeElementName());
+		 String names = Controller.getCurrentController().getSelection()
+		 .getOrderedSelection()
+		 .stream()
+		 .map(CodeNode.class::cast)
+		 .map(CodeNode::getCodeElementName)
+		 .collect(Collectors.joining(", "));
+		 ClipboardAccessor.getInstance().setClipboardContents(names);
 	}
 }
