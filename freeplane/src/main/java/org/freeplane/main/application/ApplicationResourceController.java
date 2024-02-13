@@ -130,7 +130,8 @@ public class ApplicationResourceController extends ResourceController {
 			}
 		}
 		resourceLoaders = new LinkedHashSet<>();
-		setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE));
+		String country = (String) System.getProperties().get("user.country");
+		setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE) + "_" + country);
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override
