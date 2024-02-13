@@ -56,7 +56,9 @@ public class CodeMap extends MMapModel {
 
     @Override
     public String getTitle() {
-        return "Code: " + getRootNode().toString();
+        final String longTitle = "Code: " + getRootNode().toString();
+        final int maximumTitleLEngth = 30;
+        return longTitle.length() <= maximumTitleLEngth ? longTitle : longTitle.substring(0, maximumTitleLEngth - 3 ) + "...";
     }
 
     public void setJudge(DependencyJudge judge) {
