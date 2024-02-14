@@ -34,12 +34,12 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
-import org.freeplane.plugin.codeexplorer.archunit.TestResultConfiguration;
+import org.freeplane.plugin.codeexplorer.archunit.ArchitectureViolationsConfiguration;
 
 import com.tngtech.archunit.core.domain.Dependency;
-import com.tngtech.archunit.freeplane.extension.ArchTestResult;
+import com.tngtech.archunit.freeplane.extension.ArchitectureViolations;
 
-class TestResultPanel extends JPanel {
+class ArchitectureViolationsPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private DefaultTableModel ruleTableModel;
@@ -51,7 +51,7 @@ class TestResultPanel extends JPanel {
     private Map<String, Dependency> violations;
 
 
-    TestResultPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer, AFreeplaneAction enableServerAction) {
+    ArchitectureViolationsPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer, AFreeplaneAction enableServerAction) {
         this.codeProjectController = codeProjectController;
         this.archUnitServer = archUnitServer;
         this.violations = Collections.emptyMap();
@@ -60,14 +60,14 @@ class TestResultPanel extends JPanel {
         updateRuleTable();
     }
 
-    private void testResultAdded(ArchTestResult result) {
+    private void testResultAdded(ArchitectureViolations result) {
         addNewTestResult(result.violatedRuleDescription);
     }
 
 
     private void updateRuleTable() {
         ruleTableModel.setRowCount(0); // Clear existing data
-        for (ArchTestResult rule : submittedTestResults()) {
+        for (ArchitectureViolations rule : submittedTestResults()) {
             ruleTableModel.addRow(new Object[]{rule.violatedRuleDescription});
         }
     }
@@ -121,7 +121,7 @@ class TestResultPanel extends JPanel {
     }
     private void updateViolations() {
         violationTableModel.setRowCount(0); // Clear existing data
-        ArchTestResult rule = getSelectedTestResult();
+        ArchitectureViolations rule = getSelectedTestResult();
         if (rule !=  null) {
             for (String description : rule.violationDescriptions) {
                 violationTableModel.addRow(new Object[]{description});
@@ -130,23 +130,23 @@ class TestResultPanel extends JPanel {
     }
 
     private void exploreSelectedTestResult() {
-        final ArchTestResult selectedTestResult = getSelectedTestResult();
-        final TestResultConfiguration configuration = new TestResultConfiguration(selectedTestResult);
+        final ArchitectureViolations selectedTestResult = getSelectedTestResult();
+        final ArchitectureViolationsConfiguration configuration = new ArchitectureViolationsConfiguration(selectedTestResult);
         violations = configuration.violations();
         codeProjectController.exploreConfiguration(configuration);
     }
 
-    ArchTestResult getSelectedTestResult() {
+    ArchitectureViolations getSelectedTestResult() {
         if(ruleTable.getSelectedRowCount() != 1)
             return null;
 
         int selectedTestResultIndex = ruleTable.getSelectedRow();
-        ArchTestResult selectedTestResult = getTestResult(selectedTestResultIndex);
+        ArchitectureViolations selectedTestResult = getTestResult(selectedTestResultIndex);
         return selectedTestResult;
     }
 
-    private ArchTestResult getTestResult(int selectedTestResultIndex) {
-        final List<ArchTestResult> submittedTestResults = submittedTestResults();
+    private ArchitectureViolations getTestResult(int selectedTestResultIndex) {
+        final List<ArchitectureViolations> submittedTestResults = submittedTestResults();
         if(selectedTestResultIndex >= 0 && selectedTestResultIndex < submittedTestResults.size()) {
             return submittedTestResults.get(selectedTestResultIndex);
         } else
@@ -154,7 +154,7 @@ class TestResultPanel extends JPanel {
     }
 
 
-    private List<ArchTestResult> submittedTestResults() {
+    private List<ArchitectureViolations> submittedTestResults() {
         return archUnitServer.getSubmittedTestResults();
     }
 

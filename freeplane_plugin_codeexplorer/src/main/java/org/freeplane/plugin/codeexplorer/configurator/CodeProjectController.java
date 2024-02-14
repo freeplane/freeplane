@@ -41,7 +41,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
-import org.freeplane.plugin.codeexplorer.archunit.TestResultConfiguration;
+import org.freeplane.plugin.codeexplorer.archunit.ArchitectureViolationsConfiguration;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
@@ -62,7 +62,7 @@ public class CodeProjectController implements IExtension {
     private CodeExplorerConfigurator configurator;
     private CodeExplorerConfigurations explorerConfigurations;
     private final ArchUnitServer archUnitServer;
-    private TestResultPanel testResultPanel;
+    private ArchitectureViolationsPanel architectureViolationsPanel;
     /**
 	 * @param modeController
 	 */
@@ -99,9 +99,9 @@ public class CodeProjectController implements IExtension {
         informationPanel.addTab(TextUtils.getText("code.configurations"), configurator);
 
         final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
-        testResultPanel = new TestResultPanel (this, archUnitServer, enableServerAction);
-        testResultPanel.addDependencySelectionCallback(this::updateSelectedDependency);
-        informationPanel.addTab(TextUtils.getText("code.testResults"), testResultPanel);
+        architectureViolationsPanel = new ArchitectureViolationsPanel (this, archUnitServer, enableServerAction);
+        architectureViolationsPanel.addDependencySelectionCallback(this::updateSelectedDependency);
+        informationPanel.addTab(TextUtils.getText("code.architectureViolations"), architectureViolationsPanel);
 
 	    codeDependenciesPanel = new CodeDependenciesPanel();
 	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
@@ -163,7 +163,7 @@ public class CodeProjectController implements IExtension {
         }
     }
 
-    public void exploreConfiguration(final TestResultConfiguration configuration) {
+    public void exploreConfiguration(final ArchitectureViolationsConfiguration configuration) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
         codeExplorer.explore(configuration);
     }

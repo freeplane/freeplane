@@ -23,15 +23,15 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import com.google.gson.Gson;
-import com.tngtech.archunit.freeplane.extension.ArchTestResult;
+import com.tngtech.archunit.freeplane.extension.ArchitectureViolations;
 public class ArchUnitServer implements IFreeplanePropertyListener {
     public static final String ARCHUNIT_SERVER_ENABLED_PROPERTY = "code.archunit.server.enabled";
     public static final String ARCHUNIT_SERVER_PORT_PROPERTY = "code.archunit.server.port";
     private volatile ServerSocket serverSocket;
-    private final LinkedList<ArchTestResult> submittedTestResults;
+    private final LinkedList<ArchitectureViolations> submittedTestResults;
     private final ExecutorService clientExecutor;
     private final AtomicBoolean running = new AtomicBoolean(false);
-    private Consumer<ArchTestResult> callback = result -> {/**/};
+    private Consumer<ArchitectureViolations> callback = result -> {/**/};
 
     public ArchUnitServer() {
         this.submittedTestResults = new LinkedList<>();
@@ -109,7 +109,7 @@ public class ArchUnitServer implements IFreeplanePropertyListener {
             try (InputStream inputStream = clientSocket.getInputStream();
                  GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
                  Reader reader = new InputStreamReader(gzipInputStream, StandardCharsets.UTF_8)) {
-                ArchTestResult dto = new Gson().fromJson(reader, ArchTestResult.class);
+                ArchitectureViolations dto = new Gson().fromJson(reader, ArchitectureViolations.class);
                 EventQueue.invokeLater(() -> addTestResult(dto));
             } catch (IOException e) {
                 LogUtils.severe("ArchUnit Client handler exception: " + e.getMessage());
@@ -122,21 +122,21 @@ public class ArchUnitServer implements IFreeplanePropertyListener {
             }
         }
 
-        private void addTestResult(ArchTestResult dto) {
+        private void addTestResult(ArchitectureViolations dto) {
             submittedTestResults.add(dto);
             callback.accept(dto);
         }
     }
 
-    public List<ArchTestResult> getSubmittedTestResults() {
+    public List<ArchitectureViolations> getSubmittedTestResults() {
         return submittedTestResults;
     }
 
-    public Consumer<ArchTestResult> getCallback() {
+    public Consumer<ArchitectureViolations> getCallback() {
         return callback;
     }
 
-    public void setCallback(Consumer<ArchTestResult> callback) {
+    public void setCallback(Consumer<ArchitectureViolations> callback) {
         this.callback = callback;
     }
 
