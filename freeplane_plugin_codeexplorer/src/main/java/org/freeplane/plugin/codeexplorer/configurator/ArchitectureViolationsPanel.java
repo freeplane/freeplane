@@ -293,11 +293,15 @@ class ArchitectureViolationsPanel extends JPanel {
     }
 
     private List<Dependency> getSelectedDependencyList() {
+        String ignoredPrefix = "Dependency not contained in any module: ";
         final List<Dependency> selectedDependencies =
                 violations.isEmpty()
                 ? Collections.emptyList()
                 : IntStream.of(violationTable.getSelectedRows())
         .mapToObj(row -> violationTable.getValueAt(row, 0))
+        .map(Object::toString)
+        .map(s -> s.startsWith(ignoredPrefix) ? s.substring(ignoredPrefix.length()) : s)
+        .flatMap(s -> Stream.of(s.split(System.lineSeparator())))
         .map(violations::get)
         .filter(x -> x != null)
         .collect(Collectors.toList());
