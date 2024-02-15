@@ -38,6 +38,7 @@ import org.freeplane.plugin.codeexplorer.archunit.ArchitectureViolationsConfigur
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.freeplane.extension.ArchitectureViolations;
+import com.tngtech.archunit.freeplane.extension.ViolationDescription;
 
 class ArchitectureViolationsPanel extends JPanel {
 
@@ -48,13 +49,14 @@ class ArchitectureViolationsPanel extends JPanel {
     private JTable violationTable;
     private final CodeProjectController codeProjectController;
     private final ArchUnitServer archUnitServer;
-    private Map<String, Dependency> violations;
+    private Map<String, Dependency> violationsByRule;
+    private ArchitectureViolations selectedViolations;
 
 
     ArchitectureViolationsPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer, AFreeplaneAction enableServerAction) {
         this.codeProjectController = codeProjectController;
         this.archUnitServer = archUnitServer;
-        this.violations = Collections.emptyMap();
+        this.violationsByRule = Collections.emptyMap();
         archUnitServer.setCallback(this::testResultAdded);
         createPanels(enableServerAction);
         updateRuleTable();
@@ -121,22 +123,22 @@ class ArchitectureViolationsPanel extends JPanel {
     }
     private void updateViolations() {
         violationTableModel.setRowCount(0); // Clear existing data
-        ArchitectureViolations rule = getSelectedTestResult();
-        if (rule !=  null) {
-            for (String description : rule.violationDescriptions) {
-                violationTableModel.addRow(new Object[]{description});
+        selectedViolations = getSelectedViolations();
+        if (selectedViolations !=  null) {
+            for (ViolationDescription description : selectedViolations.violationDescriptions) {
+                violationTableModel.addRow(new Object[]{description.fullDescription});
             }
         }
     }
 
     private void exploreSelectedTestResult() {
-        final ArchitectureViolations selectedTestResult = getSelectedTestResult();
+        final ArchitectureViolations selectedTestResult = getSelectedViolations();
         final ArchitectureViolationsConfiguration configuration = new ArchitectureViolationsConfiguration(selectedTestResult);
-        violations = configuration.violations();
+        violationsByRule = configuration.violationsByRule();
         codeProjectController.exploreConfiguration(configuration);
     }
 
-    ArchitectureViolations getSelectedTestResult() {
+    ArchitectureViolations getSelectedViolations() {
         if(ruleTable.getSelectedRowCount() != 1)
             return null;
 
@@ -293,16 +295,14 @@ class ArchitectureViolationsPanel extends JPanel {
     }
 
     private List<Dependency> getSelectedDependencyList() {
-        String ignoredPrefix = "Dependency not contained in any module: ";
         final List<Dependency> selectedDependencies =
-                violations.isEmpty()
+                violationsByRule.isEmpty()
                 ? Collections.emptyList()
                 : IntStream.of(violationTable.getSelectedRows())
-        .mapToObj(row -> violationTable.getValueAt(row, 0))
-        .map(Object::toString)
-        .map(s -> s.startsWith(ignoredPrefix) ? s.substring(ignoredPrefix.length()) : s)
-        .flatMap(s -> Stream.of(s.split(System.lineSeparator())))
-        .map(violations::get)
+                .map(violationTable::convertRowIndexToModel)
+        .mapToObj(row -> selectedViolations.violationDescriptions.get(row))
+        .flatMap(x -> x.violationDependencyDescriptions.stream())
+        .map(violationsByRule::get)
         .filter(x -> x != null)
         .collect(Collectors.toList());
         return selectedDependencies;

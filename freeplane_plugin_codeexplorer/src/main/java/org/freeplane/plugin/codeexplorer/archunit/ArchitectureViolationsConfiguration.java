@@ -35,11 +35,15 @@ import com.tngtech.archunit.freeplane.extension.ArchitectureViolations;
 public class ArchitectureViolationsConfiguration implements CodeExplorerConfiguration {
 
     private final ArchitectureViolations architectureViolations;
+    private final Set<String> violationDependencyDescriptions;
     private JavaClasses importedClasses;
     private Map<String, Dependency> violations;
 
     public ArchitectureViolationsConfiguration(ArchitectureViolations architectureViolations) {
         this.architectureViolations = architectureViolations;
+        this.violationDependencyDescriptions = architectureViolations.violationDescriptions.stream()
+                .flatMap(x-> x.violationDependencyDescriptions.stream())
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -68,14 +72,14 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
         return importedClasses;
     }
 
-    public Map<String, Dependency> violations(){
+    public Map<String, Dependency> violationsByRule(){
         if (violations == null) {
             importClasses();
             violations = importedClasses.stream()
             .flatMap(javaClass -> Stream.concat(javaClass.getDirectDependenciesFromSelf().stream(),
                     javaClass.getDirectDependenciesToSelf().stream()))
             .parallel()
-            .filter(dependency-> architectureViolations.violationDependencyDescriptions.contains(dependency.getDescription()))
+            .filter(dependency-> violationDependencyDescriptions.contains(dependency.getDescription()))
             .collect(Collectors.toMap(Dependency::getDescription, x -> x, this::throwExceptionOnDifferentValues, HashMap::new));
 
         }
@@ -114,7 +118,7 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
     @Override
     public DependencyJudge getDependencyJudge() {
         return (dependency, goesUp) ->
-        architectureViolations.violationDependencyDescriptions.contains(dependency.getDescription())
+        violationDependencyDescriptions.contains(dependency.getDescription())
         ? DependencyVerdict.FORBIDDEN
         : ( architectureViolations.isNoCyclesConditionChecked
              ? ( location(dependency.getOriginClass()).equals(location(dependency.getTargetClass()))
