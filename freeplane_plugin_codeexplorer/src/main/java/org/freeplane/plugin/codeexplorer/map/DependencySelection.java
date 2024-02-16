@@ -152,7 +152,7 @@ public class DependencySelection {
         boolean isTargetSelected = selectedTargetAncestorOrTarget != null;
         if(! isOriginSelected && ! isTargetSelected)
             return false;
-        if (isOnlyOneNodeSelected)
+        if (isOnlyOneNodeSelected && (origin == selectedOriginAncestorOrOrigin || target == selectedTargetAncestorOrTarget))
             return true;
         boolean areOriginAndTargetSelected = isOriginSelected && isTargetSelected;
         if (showsOutsideDependencies)
