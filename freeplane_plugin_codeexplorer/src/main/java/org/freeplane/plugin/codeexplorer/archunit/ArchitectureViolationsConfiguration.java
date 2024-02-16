@@ -31,30 +31,36 @@ import com.tngtech.archunit.core.domain.Source;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.Location;
 import com.tngtech.archunit.freeplane.extension.ArchitectureViolations;
+import com.tngtech.archunit.freeplane.extension.ViolationDescription;
 
 public class ArchitectureViolationsConfiguration implements CodeExplorerConfiguration {
 
     private final ArchitectureViolations architectureViolations;
     private final Set<String> violationDependencyDescriptions;
+    private final Set<String> cyclicDependencyDescriptions;
     private JavaClasses importedClasses;
     private Map<String, Dependency> violations;
 
     public ArchitectureViolationsConfiguration(ArchitectureViolations architectureViolations) {
         this.architectureViolations = architectureViolations;
-        this.violationDependencyDescriptions = architectureViolations.violationDescriptions.stream()
-                .flatMap(x-> x.violationDependencyDescriptions.stream())
+        final List<ViolationDescription> violationDescriptions = architectureViolations.getViolationDescriptions();
+        this.violationDependencyDescriptions = violationDescriptions.stream()
+                .flatMap(x-> x.getViolationDependencyDescriptions().stream())
+                .collect(Collectors.toSet());
+        this.cyclicDependencyDescriptions = violationDescriptions.stream()
+                .flatMap(x-> x.getCyclicDependencyDescriptions().stream())
                 .collect(Collectors.toSet());
     }
 
     @Override
     public int countLocations() {
-        return architectureViolations.violatingClassLocations.size();
+        return architectureViolations.getViolatingClassLocations().size();
     }
 
     @Override
     public JavaClasses importClasses() {
         if(importedClasses == null) {
-            final List<Location> classLocations = architectureViolations.violatingClassLocations.values().stream()
+            final List<Location> classLocations = architectureViolations.getViolatingClassLocations().values().stream()
                     .flatMap(Set::stream)
                     .map(x -> {
                         try {
@@ -79,7 +85,8 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
             .flatMap(javaClass -> Stream.concat(javaClass.getDirectDependenciesFromSelf().stream(),
                     javaClass.getDirectDependenciesToSelf().stream()))
             .parallel()
-            .filter(dependency-> violationDependencyDescriptions.contains(dependency.getDescription()))
+            .filter(dependency-> violationDependencyDescriptions.contains(dependency.getDescription())
+                    || cyclicDependencyDescriptions.contains(dependency.getDescription()))
             .collect(Collectors.toMap(Dependency::getDescription, x -> x, this::throwExceptionOnDifferentValues, HashMap::new));
 
         }
@@ -95,7 +102,7 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
 
     @Override
     public String getProjectName() {
-        return architectureViolations.violatedRuleDescription;
+        return architectureViolations.getViolatedRuleDescription();
 
     }
 
@@ -108,7 +115,7 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
         return javaClass.getSource()
         .map(Source::getUri)
         .map(URI::toString)
-        .flatMap(uri -> architectureViolations.violatingClassLocations.entrySet().stream()
+        .flatMap(uri -> architectureViolations.getViolatingClassLocations().entrySet().stream()
                 .filter(e -> e.getValue().contains(uri))
                 .findAny())
         .map(Entry::getKey)
@@ -120,11 +127,8 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
         return (dependency, goesUp) ->
         violationDependencyDescriptions.contains(dependency.getDescription())
         ? DependencyVerdict.FORBIDDEN
-        : ( architectureViolations.isNoCyclesConditionChecked
-             ? ( location(dependency.getOriginClass()).equals(location(dependency.getTargetClass()))
-                        ? DependencyVerdict.IGNORED
-                        : (goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED)
-                  )
+        : ( cyclicDependencyDescriptions.contains(dependency.getDescription())
+             ? (goesUp ? DependencyVerdict.FORBIDDEN : DependencyVerdict.ALLOWED)
              : DependencyVerdict.IGNORED);
 
     }

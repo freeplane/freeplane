@@ -63,14 +63,14 @@ class ArchitectureViolationsPanel extends JPanel {
     }
 
     private void testResultAdded(ArchitectureViolations result) {
-        addNewTestResult(result.violatedRuleDescription);
+        addNewTestResult(result.getViolatedRuleDescription());
     }
 
 
     private void updateRuleTable() {
         ruleTableModel.setRowCount(0); // Clear existing data
         for (ArchitectureViolations rule : submittedTestResults()) {
-            ruleTableModel.addRow(new Object[]{rule.violatedRuleDescription});
+            ruleTableModel.addRow(new Object[]{rule.getViolatedRuleDescription()});
         }
     }
 
@@ -125,8 +125,8 @@ class ArchitectureViolationsPanel extends JPanel {
         violationTableModel.setRowCount(0); // Clear existing data
         selectedViolations = getSelectedViolations();
         if (selectedViolations !=  null) {
-            for (ViolationDescription description : selectedViolations.violationDescriptions) {
-                violationTableModel.addRow(new Object[]{description.fullDescription});
+            for (ViolationDescription description : selectedViolations.getViolationDescriptions()) {
+                violationTableModel.addRow(new Object[]{description.getFullDescription()});
             }
         }
     }
@@ -300,8 +300,8 @@ class ArchitectureViolationsPanel extends JPanel {
                 ? Collections.emptyList()
                 : IntStream.of(violationTable.getSelectedRows())
                 .map(violationTable::convertRowIndexToModel)
-        .mapToObj(row -> selectedViolations.violationDescriptions.get(row))
-        .flatMap(x -> x.violationDependencyDescriptions.stream())
+        .mapToObj(row -> selectedViolations.getViolationDescriptions().get(row))
+        .flatMap(x -> Stream.concat(x.getViolationDependencyDescriptions().stream(), x.getCyclicDependencyDescriptions().stream()))
         .map(violationsByRule::get)
         .filter(x -> x != null)
         .collect(Collectors.toList());
