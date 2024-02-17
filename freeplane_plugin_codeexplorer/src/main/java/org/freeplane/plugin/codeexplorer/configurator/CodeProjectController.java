@@ -20,7 +20,6 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.Graphics2D;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -42,7 +41,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
 import org.freeplane.plugin.codeexplorer.archunit.ArchitectureViolationsConfiguration;
-import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
@@ -58,7 +56,7 @@ public class CodeProjectController implements IExtension {
     private CodeDependenciesPanel codeDependenciesPanel;
     private ModeController modeController;
     private JTabbedPane informationPanel;
-    private List<Dependency> selectedDependencies;
+    private Set<JavaClass> selectedClasses;
     private CodeExplorerConfigurator configurator;
     private CodeExplorerConfigurations explorerConfigurations;
     private final ArchUnitServer archUnitServer;
@@ -117,7 +115,7 @@ public class CodeProjectController implements IExtension {
         informationPanel = null;
         configurator = null;
         codeDependenciesPanel = null;
-        selectedDependencies = null;
+        selectedClasses = null;
     }
 
     public void startupController() {
@@ -140,18 +138,18 @@ public class CodeProjectController implements IExtension {
 	}
 
     private boolean isDependencySelectedForNode(NodeModel node) {
-        if(selectedDependencies == null)
+        if(selectedClasses == null)
             return false;
         IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection == null || node.getMap() != selection.getMap())
             return false;
         DependencySelection dependencySelection = new DependencySelection(selection);
-        return selectedDependencies.stream().flatMap(dependency -> Stream.of(dependency.getOriginClass(), dependency.getTargetClass()))
+        return selectedClasses.stream()
                 .anyMatch(javaClass -> node.equals(dependencySelection.getVisibleNode(javaClass)));
     }
 
-    public void updateSelectedDependency(final List<Dependency> selectedDependencies) {
-        this.selectedDependencies = selectedDependencies;
+    public void updateSelectedDependency(final Set<JavaClass> selectedClasses) {
+        this.selectedClasses = selectedClasses;
         modeController.getController().getMapViewManager().getMapViewComponent().repaint();
     }
 

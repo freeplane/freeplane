@@ -78,7 +78,7 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
         return importedClasses;
     }
 
-    public Map<String, Dependency> violationsByRule(){
+    public Map<String, Dependency> violationsByDescription(){
         if (violations == null) {
             importClasses();
             violations = importedClasses.stream()

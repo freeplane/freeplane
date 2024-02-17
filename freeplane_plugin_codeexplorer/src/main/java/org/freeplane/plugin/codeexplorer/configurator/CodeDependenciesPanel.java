@@ -52,7 +52,6 @@ import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
-import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IMapSelectionListener, IFreeplanePropertyListener, IMapChangeListener{
@@ -297,26 +296,28 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         }
     }
 
-    void addDependencySelectionCallback(Consumer<List<Dependency> > listener) {
+    void addDependencySelectionCallback(Consumer<Set<JavaClass> > listener) {
         dependencyViewer.getSelectionModel().addListSelectionListener(
                 e -> {
                     if(!e.getValueIsAdjusting())
-                        listener.accept(getSelectedDependencyList());
+                        listener.accept(getSelectedClasses());
                 });
         dependencyViewer.addFocusListener(new FocusAdapter() {
 
             @Override
             public void focusGained(FocusEvent e) {
                 if(! e.isTemporary())
-                    listener.accept(getSelectedDependencyList());
+                    listener.accept(getSelectedClasses());
             }
 
         });
     }
 
 
-    public List<Dependency> getSelectedDependencyList() {
-        return getSelectedDependencies().map(CodeDependency::getDependency).collect(Collectors.toList());
+    private Set<JavaClass> getSelectedClasses() {
+        return getSelectedDependencies().map(CodeDependency::getDependency)
+                .flatMap(d -> Stream.of(d.getOriginClass(), d.getTargetClass()))
+                .collect(Collectors.toSet());
     }
 
 

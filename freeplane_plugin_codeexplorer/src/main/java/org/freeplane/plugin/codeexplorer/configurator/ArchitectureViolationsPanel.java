@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -37,6 +38,8 @@ import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
 import org.freeplane.plugin.codeexplorer.archunit.ArchitectureViolationsConfiguration;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.freeplane.extension.ArchitectureViolations;
 import com.tngtech.archunit.freeplane.extension.ViolationDescription;
 
@@ -49,14 +52,18 @@ class ArchitectureViolationsPanel extends JPanel {
     private JTable violationTable;
     private final CodeProjectController codeProjectController;
     private final ArchUnitServer archUnitServer;
-    private Map<String, Dependency> violationsByRule;
+    private Map<String, Dependency> violatingDependencies;
     private ArchitectureViolations selectedViolations;
+    private JavaClasses classes;
+    private int selectedTestResultIndex;
+    private int exploredTestResultIndex;
 
 
     ArchitectureViolationsPanel(CodeProjectController codeProjectController, ArchUnitServer archUnitServer, AFreeplaneAction enableServerAction) {
         this.codeProjectController = codeProjectController;
         this.archUnitServer = archUnitServer;
-        this.violationsByRule = Collections.emptyMap();
+        this.violatingDependencies = Collections.emptyMap();
+        this.selectedTestResultIndex = this.exploredTestResultIndex = -1;
         archUnitServer.setCallback(this::testResultAdded);
         createPanels(enableServerAction);
         updateRuleTable();
@@ -123,8 +130,12 @@ class ArchitectureViolationsPanel extends JPanel {
     }
     private void updateViolations() {
         violationTableModel.setRowCount(0); // Clear existing data
-        selectedViolations = getSelectedViolations();
-        if (selectedViolations !=  null) {
+        if(ruleTable.getSelectedRowCount() != 1) {
+            selectedTestResultIndex = -1;
+        }
+        else {
+            selectedTestResultIndex = ruleTable.getSelectedRow();
+            selectedViolations = getSelectedViolations();
             for (ViolationDescription description : selectedViolations.getViolationDescriptions()) {
                 violationTableModel.addRow(new Object[]{description.getFullDescription()});
             }
@@ -132,19 +143,18 @@ class ArchitectureViolationsPanel extends JPanel {
     }
 
     private void exploreSelectedTestResult() {
+        if(selectedTestResultIndex == -1)
+            return;
+        exploredTestResultIndex = selectedTestResultIndex;
         final ArchitectureViolations selectedTestResult = getSelectedViolations();
         final ArchitectureViolationsConfiguration configuration = new ArchitectureViolationsConfiguration(selectedTestResult);
-        violationsByRule = configuration.violationsByRule();
+        violatingDependencies = configuration.violationsByDescription();
+        classes = configuration.importClasses();
         codeProjectController.exploreConfiguration(configuration);
     }
 
     ArchitectureViolations getSelectedViolations() {
-        if(ruleTable.getSelectedRowCount() != 1)
-            return null;
-
-        int selectedTestResultIndex = ruleTable.getSelectedRow();
-        ArchitectureViolations selectedTestResult = getTestResult(selectedTestResultIndex);
-        return selectedTestResult;
+        return selectedTestResultIndex == -1 ? null : getTestResult(selectedTestResultIndex);
     }
 
     private ArchitectureViolations getTestResult(int selectedTestResultIndex) {
@@ -276,11 +286,11 @@ class ArchitectureViolationsPanel extends JPanel {
         return toolbar;
     }
 
-    void addDependencySelectionCallback(Consumer<List<Dependency> > listener) {
+    void addDependencySelectionCallback(Consumer<Set<JavaClass> > listener) {
         violationTable.getSelectionModel().addListSelectionListener(
                 e -> {
                     if(!e.getValueIsAdjusting()) {
-                        listener.accept(getSelectedDependencyList());
+                        listener.accept(getSelectedClasses());
                     }
                 });
         violationTable.addFocusListener(new FocusAdapter() {
@@ -288,24 +298,34 @@ class ArchitectureViolationsPanel extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 if(! e.isTemporary())
-                    listener.accept(getSelectedDependencyList());
+                    listener.accept(getSelectedClasses());
             }
 
         });
     }
 
-    private List<Dependency> getSelectedDependencyList() {
-        final List<Dependency> selectedDependencies =
-                violationsByRule.isEmpty()
-                ? Collections.emptyList()
+    private Set<JavaClass> getSelectedClasses() {
+        if(exploredTestResultIndex == -1 || exploredTestResultIndex != selectedTestResultIndex)
+            return Collections.emptySet();
+
+        final Stream<JavaClass> selectedDependencies =
+                violatingDependencies.isEmpty()
+                ? Stream.empty()
                 : IntStream.of(violationTable.getSelectedRows())
                 .map(violationTable::convertRowIndexToModel)
         .mapToObj(row -> selectedViolations.getViolationDescriptions().get(row))
         .flatMap(x -> Stream.concat(x.getViolationDependencyDescriptions().stream(), x.getCyclicDependencyDescriptions().stream()))
-        .map(violationsByRule::get)
+        .map(violatingDependencies::get)
         .filter(x -> x != null)
-        .collect(Collectors.toList());
-        return selectedDependencies;
+        .flatMap(d -> Stream.of(d.getOriginClass(), d.getTargetClass()));
+        final Stream<JavaClass> selectedClasses = IntStream.of(violationTable.getSelectedRows())
+                .map(violationTable::convertRowIndexToModel)
+        .mapToObj(row -> selectedViolations.getViolationDescriptions().get(row).getViolatingClasses())
+        .flatMap(Set::stream)
+        .filter(classes::contain)
+        .map(classes::get);
+
+        return Stream.concat(selectedDependencies, selectedClasses).collect(Collectors.toSet());
     }
 
 }
