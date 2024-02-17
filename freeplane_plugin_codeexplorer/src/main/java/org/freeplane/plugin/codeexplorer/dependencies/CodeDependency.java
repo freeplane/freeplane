@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.plugin.codeexplorer.map.ClassNode;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.Dependency;

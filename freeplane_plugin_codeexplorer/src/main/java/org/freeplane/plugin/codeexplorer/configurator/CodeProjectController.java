@@ -20,10 +20,7 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.Graphics2D;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
-
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
@@ -46,7 +43,6 @@ import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
-import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**

@@ -1,6 +1,5 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
