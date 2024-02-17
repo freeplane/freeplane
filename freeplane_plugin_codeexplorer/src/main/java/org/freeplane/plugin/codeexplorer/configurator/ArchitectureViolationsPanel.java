@@ -1,5 +1,6 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,6 +20,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -30,6 +32,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
@@ -82,10 +85,25 @@ class ArchitectureViolationsPanel extends JPanel {
     }
 
 
+    private static final Icon EXPLORE_ICON = ResourceController.getResourceController().getImageIcon("code.explore.icon");
     private JComponent createRulePanel() {
         ruleTableModel = createEmptyTableModel();
         ruleTable = new JTable(ruleTableModel);
-        final WrappingTableCellRenderer renderer = new WrappingTableCellRenderer();
+        @SuppressWarnings("serial")
+        final WrappingTableCellRenderer renderer = new WrappingTableCellRenderer() {
+
+            @Override
+            public WrappingTableCellRenderer getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                final WrappingTableCellRenderer component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if(row == exploredTestResultIndex)
+                    component.setIcon(EXPLORE_ICON);
+                else
+                    component.setIcon(null);
+                return component;
+            }
+
+        };
         ruleTable.setDefaultRenderer(Object.class, renderer);
         ruleTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane ruleTableScrollPane = new JScrollPane(ruleTable);

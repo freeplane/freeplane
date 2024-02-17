@@ -5,7 +5,6 @@
  */
 package org.freeplane.plugin.codeexplorer.configurator;
 
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 
@@ -19,7 +18,7 @@ import org.freeplane.core.util.HtmlUtils;
 @SuppressWarnings("serial")
 class WrappingTableCellRenderer extends DefaultTableCellRenderer{
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public WrappingTableCellRenderer getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         final String html = HtmlUtils.plainToHTML(String.valueOf(value));
         super.getTableCellRendererComponent(table, html, isSelected, hasFocus, row, column);
         View view = (View) getClientProperty(BasicHTML.propertyKey);
