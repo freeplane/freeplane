@@ -21,6 +21,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
@@ -29,6 +30,8 @@ import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import java.awt.*;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -105,7 +108,43 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 		return new MapConditionalStylesProxy(getDelegate(), getScriptContext());
 	}
 
-    // MapRO: R
+	@Override
+	public URI getFollowedMap() {
+		return getTemplate(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
+	}
+
+	@Override
+	public URI getAssociatedTemplate() {
+		return getTemplate(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
+	}
+
+	private URI getTemplate(String locationProperty) {
+		final String templateLocation = MapStyle.getController().getProperty(getDelegate(), locationProperty);
+		if (templateLocation == null)
+			return null;
+		try {
+			return new URI(templateLocation);
+		} catch (URISyntaxException e) {
+			try {
+				return new URI(null, templateLocation, null);
+			} catch (URISyntaxException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+	}
+
+	@Override
+	public File getFollowedMapFile() {
+		URI uri = getFollowedMap();
+		return uri == null ? null : new File(TemplateManager.INSTANCE.expandTemplateLocation(uri).getPath());
+	}
+
+	@Override
+	public File getAssociatedTemplateFile() {
+		URI uri = getAssociatedTemplate();
+		return uri == null ? null : new File(TemplateManager.INSTANCE.expandTemplateLocation(uri).getPath());
+	}
+
 	@Override
 	public List<String> getUserDefinedStylesNames() {
 		final MapStyleModel styleModel = MapStyleModel.getExtension(getDelegate());
@@ -406,4 +445,47 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
         return copyUserStylesFrom( source, includeConditionalRules, ".*");
     }
 
+
+	@Override
+	public void setFollowedMap(URI uri) {
+		setTemplate(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, uri);
+	}
+
+	@Override
+	public void setAssociatedTemplate(URI uri) {
+		setTemplate(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, uri);
+	}
+
+	private void setTemplate(String locationProperty, URI uri) {
+		final boolean isFollowed = MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY.equals(locationProperty);
+		final MapStyle mapStyleController = MapStyle.getController();
+		final MapModel mapModel = getDelegate();
+		String templateNormalizedLocation;
+		if (uri == null) {
+			templateNormalizedLocation = null;
+			if (isFollowed) {
+				mapStyleController.setProperty(mapModel, MapStyleModel.FOLLOWED_MAP_LAST_TIME, null);
+			}
+		} else {
+			List<String> exceptionReasons = new ArrayList<>(2);
+			if (!uri.isAbsolute()) {
+				exceptionReasons.add("Uri is missing scheme: " + uri);
+			}
+			File file = new File(TemplateManager.INSTANCE.expandTemplateLocation(uri).getPath());
+			if (!file.isAbsolute()) {
+				exceptionReasons.add("Uri location isn't absolute: " + uri);
+			}
+			if (!exceptionReasons.isEmpty()) {
+				throw new RuntimeException(exceptionReasons.toString());
+			}
+			templateNormalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString();
+			if (isFollowed) {
+				final String previousFollowedMap = mapStyleController.getProperty(mapModel, locationProperty);
+				if (!templateNormalizedLocation.equals(previousFollowedMap)) {
+					mapStyleController.setProperty(mapModel, MapStyleModel.FOLLOWED_MAP_LAST_TIME, "0");
+				}
+			}
+		}
+		mapStyleController.setProperty(mapModel, locationProperty, templateNormalizedLocation);
+	}
 }
