@@ -2,6 +2,7 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -130,10 +131,12 @@ public class CodeMapController extends MapController implements CodeExplorer{
         CodeMap projectMap = newCodeMap(codeExplorerConfiguration.canBeSaved());
         projectMap.setConfiguration(codeExplorerConfiguration);
         loadingHintMap.addExtension(new LoadedMap(projectMap));
+        WeakReference<CodeMap> oldMapReference = new WeakReference<CodeMap>(oldMap);
+        oldMap = null;
         classImportService.execute(() -> {
 
-            CodeMap nextMap = oldMap;
             ProjectRootNode projectRoot = null;
+            CodeMap nextMap = null;
             try {
                 JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
                 if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
@@ -153,6 +156,11 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 LogUtils.warn("Loading classes failed", e);
                 UITools.errorMessage("Loading classes failed, " + e.getMessage());
             }
+
+            if(nextMap ==  null)
+                nextMap = oldMapReference.get();
+            if(nextMap ==  null)
+                nextMap = newCodeMap(false);
             CodeMap viewedMap = nextMap;
             EventQueue.invokeLater(() -> {
                 loadingHintMap.removeExtension(LoadedMap.class);
