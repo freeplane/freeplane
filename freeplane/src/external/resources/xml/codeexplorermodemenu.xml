@@ -157,6 +157,7 @@
 			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 			<Entry name="menu_displayAttributes">
 				<Entry builder="radio_button_group">
+					<Entry name="ShowSelectedAttributesAction" />
 					<Entry name="ShowAllAttributesAction" />
 					<Entry name="HideAllAttributesAction" />
 				</Entry>
