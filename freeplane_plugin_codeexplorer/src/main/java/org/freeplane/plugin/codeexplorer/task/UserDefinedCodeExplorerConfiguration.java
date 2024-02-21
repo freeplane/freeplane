@@ -63,6 +63,7 @@ public class UserDefinedCodeExplorerConfiguration implements CodeExplorerConfigu
             }
         }
         userContent = new TreeMap<>();
+        attributeConfiguration = new CodeAttributeConfiguration();
     }
 
     @Override
