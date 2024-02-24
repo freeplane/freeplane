@@ -276,12 +276,19 @@ public class ReportGenerator extends StreamHandler {
     	if(thrown == null)
     		return false;
     	StackTraceElement[] stackTrace = thrown.getStackTrace();
-    	if(stackTrace == null || stackTrace.length == 0)
+    	if(stackTrace == null)
     		return false;
-    	StackTraceElement stackTraceElement = stackTrace[0];
-    	String className = stackTraceElement.getClassName();
-		return className.startsWith("org.codehaus.groovy.runtime");
+        return classNameStartsWith(stackTrace, 0, "org.codehaus.groovy.runtime")
+                || classNameStartsWith(stackTrace, 2, "net.infonode.tabbedpanel.theme.internal.laftheme.PaneUI");
 	}
+
+    private boolean classNameStartsWith(StackTraceElement[] stackTrace, int position, String classNameStart) {
+        if (stackTrace.length <= position)
+            return false;
+    	StackTraceElement stackTraceElement = stackTrace[position];
+    	String className = stackTraceElement.getClassName();
+		return className.startsWith(classNameStart);
+    }
 
 	private void runSubmit() {
 		try {
