@@ -22,17 +22,18 @@ package org.freeplane.plugin.codeexplorer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.help.OpenURLAction;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
 import org.freeplane.plugin.codeexplorer.configurator.CodeProjectController;
 import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeMapController;
 
-public class CodeModeController extends ModeController {
+public class CodeModeController extends MModeController {
 	static public final String MODENAME = "CodeExplorer";
 
-	CodeModeController(final Controller controller) {
+	CodeModeController(final Controller controller, ArchUnitServer archUnitServer) {
 		super(controller);
-		addExtension(CodeProjectController.class, new CodeProjectController(this));
+		addExtension(CodeProjectController.class, new CodeProjectController(this, archUnitServer));
 		addAction(new OpenURLAction("code.introductionVideo",
 		        ResourceController.getResourceController().getProperty("code.introductionVideoUrl")));
 
@@ -49,7 +50,7 @@ public class CodeModeController extends ModeController {
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
 			CodeMapController mapController = (CodeMapController) getMapController();
-            CodeMap map = mapController.newMap();
+            CodeMap map = mapController.newCodeMap(false);
             mapController.createMapView(map);
 
 		}

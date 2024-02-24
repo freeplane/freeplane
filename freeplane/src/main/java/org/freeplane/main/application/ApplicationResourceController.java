@@ -52,6 +52,8 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class ApplicationResourceController extends ResourceController {
+    private static final String USE_SYSTEM_LOCALE_PROPERTY = "useSystemLocale";
+
     public static File getUserPreferencesFile() {
         final String freeplaneDirectory = Compat.getApplicationUserDirectory();
         final File userPropertiesFolder = new File(freeplaneDirectory);
@@ -130,7 +132,8 @@ public class ApplicationResourceController extends ResourceController {
 			}
 		}
 		resourceLoaders = new LinkedHashSet<>();
-		setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE));
+		if(! getBooleanProperty(USE_SYSTEM_LOCALE_PROPERTY))
+		    setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override

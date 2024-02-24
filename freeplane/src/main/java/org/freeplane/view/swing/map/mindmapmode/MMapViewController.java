@@ -217,8 +217,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
             if (returnVal == JOptionPane.YES_OPTION) {
                 final UrlManager fileManager = mapView.getModeController()
                         .getExtension(UrlManager.class);
-                final boolean savingNotCancelled = (fileManager instanceof MFileManager)
-                        && ((MFileManager) fileManager).save(map);
+                final boolean savingNotCancelled = fileManager.save(map);
                 if (!savingNotCancelled) {
                     return false;
                 }

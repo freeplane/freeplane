@@ -486,7 +486,7 @@ public class MMapController extends MapController {
 
             @Override
             public void undo() {
-                (Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+                insertNodeIntoWithoutUndo(node, parentNode, index);
             }
         };
         Controller.getCurrentModeController().execute(actor, parentNode.getMap());

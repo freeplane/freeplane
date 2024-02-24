@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.ManagedAttribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
@@ -43,15 +43,14 @@ class PackageNode extends CodeNode {
         setIdWithIndex(javaPackage.getName());
         this.classCount = getClassesInTree().filter(CodeNode::isNamed).count();
         setText(text + formatClassCount(classCount));
-        setFolded(classCount > 0);
         hasOwnClasses = getClasses().anyMatch(x -> true);
         if(createAttributes) {
             SortedSet<String> classpath = new TreeSet<>();
             getClassesInTree()
                 .forEach(jc -> classSourceLocationOf(jc).ifPresent(classpath::add));
             NodeAttributeTableModel attributes = new NodeAttributeTableModel(1 + classpath.size());
-            classpath.forEach(path -> attributes.addRowNoUndo(this, new Attribute("Classpath", path)));
-            attributes.addRowNoUndo(this, new Attribute("Class count", classCount));
+            classpath.forEach(path -> attributes.silentlyAddRowNoUndo(this, new ManagedAttribute("Classpath", path)));
+            attributes.silentlyAddRowNoUndo(this, new ManagedAttribute("Class count", classCount));
             addExtension(attributes);
         }
         initializeChildNodes();
@@ -63,6 +62,7 @@ class PackageNode extends CodeNode {
 
     private Stream<JavaClass> getClassesInTree(JavaPackage somePackage) {
         return somePackage.getClassesInPackageTree().stream()
+                .filter(CodeNode::hasValidTopLevelClass)
                 .filter(this::belongsToSameSubproject);
     }
     private Stream<JavaClass> getClasses() {
@@ -133,6 +133,8 @@ class PackageNode extends CodeNode {
 	            node.setParent(this);
 	        }
 	    }
+	    for(NodeModel child: children)
+	        ((CodeNode) child).setInitialFoldingState();
 	}
 
     private Stream<Dependency> getClassDependenciesFromPackage(JavaPackage somePackage) {
@@ -197,13 +199,16 @@ class PackageNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return javaPackage.getParent().isPresent() ? getClassDependenciesFromPackageTree(javaPackage) : getSubprojectDependenciesFromPackageTree();
+        return javaPackage.getParent().isPresent()
+                ? getClassDependenciesFromPackageTree(javaPackage)
+                        .filter(dep -> CodeNode.hasValidTopLevelClass(dep.getTargetClass()))
+                : getSubprojectDependenciesFromPackageTree();
     }
 
     private Stream<Dependency> getSubprojectDependenciesFromPackageTree() {
         return subprojectClasses()
                 .flatMap(javaClass -> javaClass.getDirectDependenciesFromSelf().stream())
-                .filter(dep -> ! belongsToSameSubproject(dep.getTargetClass()));
+                .filter(dep -> belongsToOtherSubproject(dep.getTargetClass()));
     }
 
     private Stream<JavaClass> subprojectClasses() {
@@ -213,13 +218,16 @@ class PackageNode extends CodeNode {
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return javaPackage.getParent().isPresent() ? getClassDependenciesToPackageTree(javaPackage) : getSubprojectDependenciesToPackageTree();
+        return javaPackage.getParent().isPresent()
+                ? getClassDependenciesToPackageTree(javaPackage)
+                        .filter(dep -> CodeNode.hasValidTopLevelClass(dep.getOriginClass()))
+                : getSubprojectDependenciesToPackageTree();
     }
 
     private Stream<Dependency> getSubprojectDependenciesToPackageTree() {
         return subprojectClasses()
                 .flatMap(javaClass -> javaClass.getDirectDependenciesToSelf().stream())
-                .filter(dep -> ! belongsToSameSubproject(dep.getOriginClass()));
+                .filter(dep -> belongsToOtherSubproject(dep.getOriginClass()));
     }
 
     @Override

@@ -600,8 +600,9 @@ public class MAttributeController extends AttributeController {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new AssignAttributesAction());
 		modeController.addAction(new ShowAttributeDialogAction());
-		modeController.addAction(new CopyAttributes());
-		modeController.addAction(new PasteAttributes());
+		final PasteAttributes pasteAttributes = new PasteAttributes();
+        modeController.addAction(pasteAttributes);
+		modeController.addAction(new CopyAttributes(pasteAttributes));
 		modeController.addAction(new AddStyleAttributes());
 	}
 

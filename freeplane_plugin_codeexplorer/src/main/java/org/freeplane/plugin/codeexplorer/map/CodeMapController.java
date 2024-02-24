@@ -2,6 +2,8 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
@@ -13,13 +15,17 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
-import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -28,15 +34,14 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.plugin.codeexplorer.map.ShowDependingNodesAction.DependencyDirection;
+import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
-import org.freeplane.plugin.codeexplorer.task.DirectoryMatcher;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class CodeMapController extends MapController implements CodeExplorer{
     private final ExecutorService classImportService;
@@ -63,16 +68,17 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 }
             }
         }
-        modeController.addAction(new CopyQualifiedName());
+        modeController.addAction(new CopyQualifiedNameAction());
         modeController.addAction(new ShowAllClassesAction());
         modeController.addAction(new SelectCyclesAction());
         modeController.addAction(new FilterCyclesAction());
         modeController.addAction(new NewCodeMapAction());
+        modeController.addAction(new PurgeAction());
     }
 
-	@Override
-    public CodeMap newMap() {
+    public CodeMap newCodeMap(boolean canBeSaved) {
 	    final CodeMap codeMap = new CodeMap(getModeController().getMapController().duplicator());
+	    codeMap.setCanBeSaved(canBeSaved);
 	    fireMapCreated(codeMap);
 	    Color background = UIManager.getColor("Panel.background");
 	    Color foreground = UIManager.getColor("Panel.foreground");
@@ -92,6 +98,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	    NodeSizeModel nodeSizeModel = NodeSizeModel.createNodeSizeModel(defaultStyleNode);
         nodeSizeModel.setMinNodeWidth(Quantity.fromString("6", LengthUnit.cm));
         nodeSizeModel.setMaxNodeWidth(Quantity.fromString("30", LengthUnit.cm));
+        MapStyleModel.getExtension(codeMap).setProperty(AttributeController.ATTRIBUTE_TABLE_WIDTH_FITS_CONTENT_PROPERTY, "true");
 	    return codeMap;
 	}
 
@@ -101,7 +108,10 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	@Override
     public void explore(CodeExplorerConfiguration codeExplorerConfiguration) {
 	    Controller currentController = Controller.getCurrentController();
-        IMapSelection selection = currentController.getSelection();
+	    IMapSelection selection = currentController.getSelection();
+        CodeMap oldMap = (CodeMap) selection.getMap();
+        if (!currentController.getMapViewManager().saveModifiedIfNotCancelled(oldMap))
+            return;
 	    List<String> orderedSelectionIds = selection.getOrderedSelectionIds();
 	    IMapViewManager mapViewManager = currentController.getMapViewManager();
 	    MapView mapView = (MapView) mapViewManager.getMapViewComponent();
@@ -110,39 +120,32 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	            .map(NodeView::getNode)
 	            .map(NodeModel::getID)
 	            .collect(Collectors.toList());
-        CodeMap oldMap = (CodeMap) selection.getMap();
-        CodeMap loadingHintMap = newMap();
+        CodeMap loadingHintMap = newCodeMap(false);
 	    EmptyNodeModel emptyRoot = new EmptyNodeModel(loadingHintMap, "Analyzing"
 	            + (codeExplorerConfiguration!= null ? " " + codeExplorerConfiguration.countLocations():"")
 	            + " locations ...");
 	    loadingHintMap.setRoot(emptyRoot);
-	    mapView.setMap(loadingHintMap);
-	    selection.selectAsTheOnlyOneSelected(emptyRoot);
+	    mapViewManager.setMap(mapView, loadingHintMap);
 	    Controller.getCurrentController().getMapViewManager().setMapTitles();
 	    Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        CodeMap projectMap = newMap();
+        CodeMap projectMap = newCodeMap(codeExplorerConfiguration.canBeSaved());
+        projectMap.setConfiguration(codeExplorerConfiguration);
         loadingHintMap.addExtension(new LoadedMap(projectMap));
-        projectMap.getExtension(AttributeRegistry.class).setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
+        WeakReference<CodeMap> oldMapReference = new WeakReference<CodeMap>(oldMap);
+        oldMap = null;
         classImportService.execute(() -> {
 
-	        CodeMap nextMap = oldMap;
-	        ProjectRootNode projectRoot = null;
-	        try {
-	            if(codeExplorerConfiguration != null) {
-	                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
-                    if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
-	                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
-	                            projectMap, importedClasses, codeExplorerConfiguration.createDirectoryMatcher());
+            ProjectRootNode projectRoot = null;
+            CodeMap nextMap = null;
+            try {
+                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
+                if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
+                    projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
+                            projectMap, importedClasses, codeExplorerConfiguration.createLocationMatcher());
 
-	                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
-	                }
-	            }
-	            else {
-	                ClassFileImporter classFileImporter = new ClassFileImporter();
-                    JavaClasses importedClasses  = classFileImporter.importPackages("org.freeplane");
-                    if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
-                        projectRoot = ProjectRootNode.asMapRoot("demo", projectMap, importedClasses, DirectoryMatcher.ALLOW_ALL);
-                    }
+                    projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
+                    CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);
+                    AttributeRegistry.getRegistry(projectMap);
                 }
                 LogUtils.info("Code map prepared");
                 if(projectRoot != null && LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
@@ -153,16 +156,21 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 LogUtils.warn("Loading classes failed", e);
                 UITools.errorMessage("Loading classes failed, " + e.getMessage());
             }
+
+            if(nextMap ==  null)
+                nextMap = oldMapReference.get();
+            if(nextMap ==  null)
+                nextMap = newCodeMap(false);
             CodeMap viewedMap = nextMap;
             EventQueue.invokeLater(() -> {
                 loadingHintMap.removeExtension(LoadedMap.class);
-                mapView.setMap(viewedMap);
-                selection.selectAsTheOnlyOneSelected(viewedMap.getRootNode());
+                if(! viewedMap.containsExtension(IUndoHandler.class))
+                    viewedMap.addExtension(IUndoHandler.class, new UndoHandler(viewedMap));
+                mapViewManager.setMap(mapView, viewedMap);
                 unfoldedNodeIDs.stream()
                 .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                 .filter(x -> x != null)
                 .forEach(node -> node.setFolded(false));
-
                 NodeModel[] newSelection = orderedSelectionIds.stream()
                         .map(id -> getExistingAncestorOrSelfNode(viewedMap, id))
                         .filter(x -> x != null)
@@ -170,6 +178,8 @@ public class CodeMapController extends MapController implements CodeExplorer{
                         .toArray(NodeModel[]::new);
                 if(newSelection.length > 0)
                     selection.replaceSelection(newSelection);
+                if(codeExplorerConfiguration != null)
+                    projectMap.updateAnnotations(codeExplorerConfiguration.getAnnotationMatcher());
                 FilterController.getCurrentFilterController().mapRootNodeChanged(viewedMap);
                 Controller.getCurrentController().getMapViewManager().setMapTitles();
                 EventQueue.invokeLater(() -> Controller.getCurrentController().getViewController().setWaitingCursor(false));
@@ -189,11 +199,12 @@ public class CodeMapController extends MapController implements CodeExplorer{
     }
 
     @Override
-    public void setJudge(DependencyJudge judge) {
+    public void setProjectConfiguration(DependencyJudge judge, AnnotationMatcher annotationMatcher) {
         Controller currentController = Controller.getCurrentController();
         IMapSelection selection = currentController.getSelection();
         CodeMap map = (CodeMap) selection.getMap();
         map.setJudge(judge);
+        map.updateAnnotations(annotationMatcher);
         IMapViewManager mapViewManager = currentController.getMapViewManager();
         MapView mapView = (MapView) mapViewManager.getMapViewComponent();
         mapView.repaint();
@@ -204,4 +215,52 @@ public class CodeMapController extends MapController implements CodeExplorer{
     public void cancelAnalysis() {
         Controller.getCurrentController().getMap().removeExtension(LoadedMap.class);
     }
+
+    @Override
+    public void mapSaved(MapModel mapModel, boolean saved) {
+        mapModel.setSaved(saved);
+    }
+
+    void purge(final NodeModel node) {
+        if(node instanceof DeletedContentNode)
+            deleteNode(node);
+        else
+            new ArrayList<>(node.getChildren()).forEach(this::purge);
+    }
+
+    private void deleteNode(final NodeModel node) {
+        final NodeModel parentNode = node.getParentNode();
+        if(parentNode == null)
+            return;
+        final int index = parentNode.getIndex(node);
+        final IActor actor = new IActor() {
+            @Override
+            public void act() {
+                deleteWithoutUndo(parentNode, index);
+            }
+
+            @Override
+            public String getDescription() {
+                return "delete";
+            }
+
+            @Override
+            public void undo() {
+                insertNodeIntoWithoutUndo(node, parentNode, index);
+            }
+        };
+        Controller.getCurrentModeController().execute(actor, parentNode.getMap());
+    }
+
+    private void deleteWithoutUndo(final NodeModel parent, final int index) {
+        final NodeModel child = parent.getChildAt(index);
+        final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(parent, child, index);
+        firePreNodeDelete(nodeDeletionEvent);
+        final MapModel map = parent.getMap();
+        mapSaved(map, false);
+        parent.remove(index);
+        fireNodeDeleted(nodeDeletionEvent);
+    }
+
+
 }

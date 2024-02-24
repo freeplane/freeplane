@@ -33,10 +33,15 @@ import org.freeplane.core.util.TextUtils;
 @SelectableAction
 public class SetBooleanPropertyAction extends AFreeplaneAction{
 
-	public static final String ACTION_KEY_PREFIX = "SetBooleanPropertyAction.";
-	private String propertyName;
+	private static final String ACTION_KEY_PREFIX = "SetBooleanPropertyAction.";
+
+    public static String actionKey(String propertyName) {
+        return ACTION_KEY_PREFIX + propertyName;
+    }
+
+    private String propertyName;
 	public SetBooleanPropertyAction(String propertyName) {
-	    super(ACTION_KEY_PREFIX + propertyName, 
+	    super(actionKey(propertyName),
 	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;
@@ -52,21 +57,21 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 
 	public void actionPerformed(ActionEvent e) {
 		ResourceController.getResourceController().setProperty(propertyName, ! isPropertySet());
-	    
+
     }
-	
+
 	@Override
 	public String getTextKey() {
 		return "OptionPanel." + propertyName;
 	}
-	
+
 	@Override
 	public String getTooltipKey() {
 		return getTextKey() + ".tooltip";
 	}
-	
-	
-	
+
+
+
 	@Override
 	public void setSelected() {
 		setSelected(isPropertySet());

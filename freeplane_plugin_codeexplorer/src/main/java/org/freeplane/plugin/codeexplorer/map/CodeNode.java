@@ -14,22 +14,26 @@ import java.util.stream.Stream;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.codeexplorer.CodeModeController;
 import org.freeplane.plugin.codeexplorer.connectors.CodeLinkController;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 public abstract class CodeNode extends NodeModel {
@@ -48,6 +52,24 @@ public abstract class CodeNode extends NodeModel {
                 return javaClass.getBaseComponentType();
             else
                 return javaClass;
+    }
+
+    public static boolean hasValidTopLevelClass(JavaClass javaClass) {
+        if(javaClass.isArray())
+            return hasValidTopLevelClass(javaClass.getBaseComponentType());
+        if(javaClass.isTopLevelClass())
+            return true;
+        for(JavaClass enclosingClass = javaClass.getEnclosingClass().get();;
+                enclosingClass = javaClass.getEnclosingClass().get()) {
+            if(! enclosingClass.getSource().equals(javaClass.getSource()))
+                return false;
+            if(enclosingClass.isTopLevelClass())
+                return true;
+        }
+    }
+
+    public static boolean hasValidTopLevelClasses(Dependency dependency) {
+        return hasValidTopLevelClass(dependency.getOriginClass()) && hasValidTopLevelClass(dependency.getTargetClass());
     }
 
     static String idWithSubprojectIndex(String idWithoutIndex, int subprojectIndex) {
@@ -88,7 +110,52 @@ public abstract class CodeNode extends NodeModel {
         this.subprojectIndex = subprojectIndex;
     }
 
+    void updateAnnotations(AnnotationMatcher annotationMatcher) {
+        NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(this);
+        for(int row = attributes.getRowCount() - 1; row >= 0; row--) {
+            if(attributes.getAttribute(row) instanceof AnnotationAttribute) {
+                attributes.getAttributes().remove(row);
+                attributes.fireTableRowsDeleted(this, row, row);
+            }
+        }
 
+        if(! annotationMatcher.isEmpty()) {
+            getAnnotations().forEach(annotation -> {
+                String annotationName = ClassNode.nodeText(annotation.getRawType());
+                annotation.getProperties().entrySet().stream()
+                .filter(attributeEntry -> annotationMatcher.matches(annotation, attributeEntry.getKey()))
+                .forEach(attributeEntry -> addAnnotationAttributes(attributes, "@" +annotationName, attributeEntry.getKey(), attributeEntry.getValue()));
+                if(annotation.getProperties().isEmpty()
+                        && annotationMatcher.matches(annotation.getRawType()))
+                    addAnnotationAttributes(attributes, "@" + annotationName, "value", "");
+            });
+            getInterfaces().forEach(javaInterface -> {
+                final JavaClass javaClass = javaInterface.toErasure();
+                String interfaceName = ClassNode.nodeText(javaClass);
+                 if(annotationMatcher.matches(javaClass))
+                    addAnnotationAttributes(attributes, "interface", "value", interfaceName);
+            });
+         }
+
+        getChildren().forEach(child -> ((CodeNode)child).updateAnnotations(annotationMatcher));
+
+    }
+
+    private void addAnnotationAttributes(NodeAttributeTableModel attributes, String annotationName,
+            String key, Object values) {
+        Stream<?> valueStream =  values.getClass().isArray() ? Stream.of((Object[])values) : Stream.of(values);
+        valueStream.forEach(value ->
+            attributes.addRowNoUndo(this, new AnnotationAttribute(key.equals("value") ? annotationName : annotationName + "." + key, value)));
+    }
+
+    Set<? extends JavaAnnotation<? extends HasName>> getAnnotations(){
+        return Collections.emptySet();
+    }
+
+
+    Set<JavaType> getInterfaces(){
+        return Collections.emptySet();
+    }
 
     @Override
     public CodeMap getMap() {
@@ -114,6 +181,10 @@ public abstract class CodeNode extends NodeModel {
     }
 
     boolean belongsToSameSubproject(JavaClass javaClass) {
+        return hasValidTopLevelClass(javaClass) && validClassBelongsToSameSubproject(javaClass);
+    }
+
+    private boolean validClassBelongsToSameSubproject(JavaClass javaClass) {
         int anotherSubprojectIndex = subprojectIndexOf(javaClass);
         return anotherSubprojectIndex == subprojectIndex;
     }
@@ -123,7 +194,7 @@ public abstract class CodeNode extends NodeModel {
     }
 
     boolean belongsToOtherSubproject(JavaClass javaClass) {
-        return ! belongsToSameSubproject(javaClass);
+        return hasValidTopLevelClass(javaClass) && ! validClassBelongsToSameSubproject(javaClass);
     }
 
     abstract HasName getCodeElement();
@@ -146,6 +217,20 @@ public abstract class CodeNode extends NodeModel {
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
         return Stream.concat(getIncomingDependenciesWithKnownOrigins(), getOutgoingDependenciesWithKnownTargets());
+    }
+
+    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(Filter  filter){
+        return getOutgoingDependenciesWithKnownTargets()
+                .filter(dep -> getMap().getNodeByClass(dep.getOriginClass()).isVisible(filter));
+    }
+
+    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter  filter){
+        return getIncomingDependenciesWithKnownOrigins()
+                .filter(dep -> getMap().getNodeByClass(dep.getTargetClass()).isVisible(filter));
+    }
+
+    Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(Filter  filter){
+        return Stream.concat(getIncomingDependenciesWithKnownOrigins(filter), getOutgoingDependenciesWithKnownTargets(filter));
     }
 
     @Override
@@ -186,7 +271,7 @@ public abstract class CodeNode extends NodeModel {
         return getIncomingDependenciesWithKnownOrigins().parallel().map(getMap()::toCodeDependency);
     }
 
-    static Optional<String> classSourceLocationOf(JavaClass javaClass) {
+    public static Optional<String> classSourceLocationOf(JavaClass javaClass) {
         return javaClass.getSource()
                 .map(s -> {
                     URI uri = s.getUri();
@@ -239,6 +324,8 @@ public abstract class CodeNode extends NodeModel {
        return super.getExtension(clazz);
     }
 
-
-
+    void setInitialFoldingState() {
+        if(getParentNode().getChildCount() > 1 && getChildCount() > 0)
+            setFolded(true);
+    }
 }

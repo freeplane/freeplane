@@ -405,4 +405,9 @@ public class HeadlessMapViewController implements IMapViewManager {
     public void setLayout(Component map, MapViewLayout newLayoutType) {
         throw new RuntimeException("Method not implemented");
     }
+
+    @Override
+    public void setMap(Component view, MapModel map) {
+        /* ignore */
+    }
 }

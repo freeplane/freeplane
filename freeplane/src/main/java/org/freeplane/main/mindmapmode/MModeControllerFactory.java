@@ -225,6 +225,7 @@ public class MModeControllerFactory {
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
+		modeController.createOptionPanelControls();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 
         final IMouseListener nodeMouseMotionListener = new MNodeMotionListener();

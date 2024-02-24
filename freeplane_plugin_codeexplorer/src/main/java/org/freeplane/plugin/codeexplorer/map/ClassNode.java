@@ -15,8 +15,10 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
+import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
@@ -44,6 +46,18 @@ public class ClassNode extends CodeNode {
 		String nodeText = nodeText(javaClass);
         setText(nodeText);
 	}
+
+
+    @Override
+    Set<? extends JavaAnnotation<? extends HasName>> getAnnotations() {
+        return javaClass.getAnnotations();
+    }
+
+
+    @Override
+    Set<JavaType> getInterfaces(){
+        return javaClass.getInterfaces();
+    }
 
     public static String nodeText(final JavaClass javaClass) {
         String simpleName = javaClass.getSimpleName();
@@ -74,12 +88,14 @@ public class ClassNode extends CodeNode {
 
     @Override
     Stream<Dependency> getOutgoingDependencies() {
-        return getDependencies(JavaClass::getDirectDependenciesFromSelf);
+        return getDependencies(JavaClass::getDirectDependenciesFromSelf)
+                .filter(dep -> hasValidTopLevelClass(dep.getTargetClass()));
     }
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
-        return getDependencies(JavaClass::getDirectDependenciesToSelf);
+        return getDependencies(JavaClass::getDirectDependenciesToSelf)
+                .filter(dep -> hasValidTopLevelClass(dep.getOriginClass()));
     }
 
     private Stream<Dependency> getDependencies(Function<? super JavaClass, ? extends Set<Dependency>> mapper) {

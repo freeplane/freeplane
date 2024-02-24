@@ -25,7 +25,7 @@ task freeplanelauncherJar(type: Jar) {
                      "Main-Class": "org.freeplane.launcher.Launcher",
                      "Class-Path": "framework.jar")
      }
-	 
+
 	 configurations.mergedApiDependency.files.each {
     	from(zipTree(it.path)) {
     		exclude('META-INF/MANIFEST.MF')
@@ -43,7 +43,7 @@ task copyFreeplaneShellScript(type: Copy) {
      }
 	 into(globalBin)
 	 filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
-}	 
+}
 
 ext {launch4jDir = "$System.env.LAUNCH4J_DIR"}
 
@@ -98,7 +98,7 @@ task copyLauncherStuff(type: Copy) {
 
 eclipse {
     jdt {
-        javaRuntimeName = 'Java SE 15'
+        javaRuntimeName = 'JavaSE-15'
     }
 }
 

@@ -8,6 +8,7 @@
 			</separator>
 			<separator name="language">
 				<languages name="language" />
+				<boolean name="useSystemLocale" />
 			</separator>
 			<separator name="files">
 				<number name="last_opened_list_length" min="1" max="50" />

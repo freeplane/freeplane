@@ -25,7 +25,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class NewCodeMapAction extends AFreeplaneAction {
 	/**
@@ -45,7 +44,7 @@ class NewCodeMapAction extends AFreeplaneAction {
     public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentController().getModeController();
         CodeMapController mapController = (CodeMapController)modeController.getMapController();
-        CodeMap map = mapController.newMap();
+        CodeMap map = mapController.newCodeMap(false);
         mapController.createMapView(map);
 	}
 

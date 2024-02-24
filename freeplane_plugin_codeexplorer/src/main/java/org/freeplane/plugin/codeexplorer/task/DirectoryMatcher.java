@@ -16,7 +16,11 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
-public class DirectoryMatcher {
+import org.freeplane.plugin.codeexplorer.map.CodeNode;
+
+import com.tngtech.archunit.core.domain.JavaClass;
+
+public class DirectoryMatcher implements LocationMatcher{
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
@@ -53,12 +57,10 @@ public class DirectoryMatcher {
 
     }
 
-    public String coreLocationPath(String path ) {
-        return coreLocationsByPaths.getOrDefault(path, path);
-    }
-
-    public Optional<String> coreLocationPath(Optional<String> path ) {
-        return path.map(this::coreLocationPath);
+    @Override
+    public Optional<String> coreLocationPath(JavaClass javaClass) {
+        Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
+        return optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
     }
 
     public Collection<File> getImportedLocations() {

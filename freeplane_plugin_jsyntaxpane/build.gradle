@@ -12,6 +12,22 @@ dependencies {
     lib 'de.sciss:syntaxpane:1.3.0'
 }
 
+eclipse {
+    classpath {
+        file {
+            whenMerged { classpath ->
+                classpath.entries.each { entry ->
+                    if (entry.kind == 'src' && entry.path == 'build/generated-src/jflex') {
+                        if (!entry.entryAttributes.containsKey('ignore_optional_problems')) {
+                            entry.entryAttributes['ignore_optional_problems'] = 'true'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 ext.bundleExports = """\
                  de.sciss.syntaxpane,
                  de.sciss.syntaxpane.lexers,

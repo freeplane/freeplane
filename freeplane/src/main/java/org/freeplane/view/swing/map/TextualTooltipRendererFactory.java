@@ -76,13 +76,15 @@ class TextualTooltipRendererFactory {
 	private final JRestrictedSizeScrollPane scrollPane;
 	private JComponent component;
 	private URL baseUrl;
-	TextualTooltipRendererFactory(GraphicsConfiguration graphicsConfiguration, String contentType, URL baseUrl, String tipText, JComponent component, Dimension tooltipSize){
+	TextualTooltipRendererFactory(GraphicsConfiguration graphicsConfiguration,
+	        String contentType, URL baseUrl, String tipText, JComponent component,
+	        Dimension tooltipSize, boolean honorDisplayProperties){
 		this.contentType = contentType;
 		this.baseUrl = baseUrl;
 		this.component = component;
 		tip  = new JEditorPane();
 		tip.setContentType(contentType);
-		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, honorDisplayProperties);
 		if(contentType.equals(FreeplaneTooltip.TEXT_HTML)) {
 			final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
 			tip.setEditorKit(kit);

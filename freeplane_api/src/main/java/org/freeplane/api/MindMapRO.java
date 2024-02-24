@@ -2,6 +2,7 @@ package org.freeplane.api;
 
 import java.awt.Color;
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 /** The map a node belongs to: <code>node.map</code> - read-only. 
@@ -46,4 +47,21 @@ public interface MindMapRO {
 	 */
 	List<String> getUserDefinedStylesNames();
 
+	/** @return Followed-Map URI, as saved in .mm, or {@code null} if no mind map is followed
+	 * @since 1.11.11 */
+	URI getFollowedMap();
+
+	/** @return Associated-Template URI, as saved in .mm, or {@code null} if no template is associated with the mind map
+	 * @since 1.11.11 */
+	URI getAssociatedTemplate();
+
+	/** @return Followed-Map URI as File, with User- or Standard-Templates Directory resolved if necessary, or {@code null} if no mind map is followed
+	 * @see MindMap#setFollowedMap(URI)
+	 * @since 1.11.11 */
+	File getFollowedMapFile();
+
+	 /** @return Associated-Template URI as File, with User- or Standard-Templates Directory resolved if necessary, or {@code null} if no template is associated with the mind map
+	  * @see MindMap#setAssociatedTemplate(URI)
+	  * @since 1.11.11 */
+	File getAssociatedTemplateFile();
 }

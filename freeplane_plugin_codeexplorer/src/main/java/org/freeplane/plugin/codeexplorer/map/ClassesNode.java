@@ -16,12 +16,14 @@ import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaAnnotation;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNode extends CodeNode {
+    static final String NODE_ID_SUFFIX = ".package";
     static {
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
@@ -34,14 +36,18 @@ class ClassesNode extends CodeNode {
 		super(map, subprojectIndex);
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
-		setFolded(! javaPackage.getClasses().isEmpty());
-		setIdWithIndex(javaPackage.getName() + ".package");
+		setIdWithIndex(javaPackage.getName() + NODE_ID_SUFFIX);
         long classCount = getClasses()
                 .filter(jc -> isNamed(jc))
                 .count();
         setText(name + formatClassCount(classCount));
         initializeChildNodes();
 	}
+
+    @Override
+    Set<? extends JavaAnnotation<? extends HasName>> getAnnotations() {
+        return javaPackage.getAnnotations();
+    }
 
     private Stream<JavaClass> getClasses() {
         return javaPackage.getClasses().stream()
@@ -92,8 +98,8 @@ class ClassesNode extends CodeNode {
     }
 
     private boolean goesOutsideEnclosingOriginClass(JavaClass edgeStart, Dependency dependency) {
-        JavaClass jc = getTargetNodeClass(dependency);
-        return ! jc.equals(edgeStart);
+        return hasValidTopLevelClasses(dependency)
+                && ! getTargetNodeClass(dependency).equals(edgeStart);
     }
 
     @Override
@@ -105,6 +111,7 @@ class ClassesNode extends CodeNode {
     Stream<Dependency> getOutgoingDependencies() {
         return getClasses()
                 .flatMap(c -> c.getDirectDependenciesFromSelf().stream())
+                .filter(CodeNode::hasValidTopLevelClasses)
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
                         || subprojectIndexOf(dep.getTargetClass()) != subprojectIndex);
     }
@@ -113,6 +120,7 @@ class ClassesNode extends CodeNode {
     Stream<Dependency> getIncomingDependencies() {
         return getClasses()
                 .flatMap(c -> c.getDirectDependenciesToSelf().stream())
+                .filter(CodeNode::hasValidTopLevelClasses)
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
                         || subprojectIndexOf(dep.getOriginClass()) != subprojectIndex);
     }
@@ -184,6 +192,5 @@ class ClassesNode extends CodeNode {
         .map(getMap()::getNodeForID)
         .map(NodeModel::getParentNode)
         .map(ClassesNode.class::cast);
-
     }
 }

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry usedBy="EDITOR">
+			<Entry name="SaveAction" row="1"/>
+			<Entry name="code.PurgeAction" row="2"/>
+		</Entry>
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "2"/>
+		<Entry builder="main_toolbar_zoom" name="zoom" row="1" width = "4"/>
 		<Entry name="PrintAction" row="2"/>
 		<Entry name="CloseAction" row="2"/>
+		<Entry row="2" usedBy="EDITOR">
+			<Entry name="UndoAction" />
+			<Entry name="RedoAction" />
+		</Entry>
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="JumpInAction"/>
@@ -46,6 +54,7 @@
 	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="code.NewCodeMapAction" accelerator="control N"/>
+			<Entry name="SaveAction" accelerator="control S" usedBy = "EDITOR" />
 			<Entry name="CloseAction" accelerator="control W"/>
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
@@ -63,6 +72,16 @@
 			<Entry accelerator="control Q" name="QuitAction" builder="MB_QuitAction" />
 		</Entry>
 		<Entry name="edit">
+			<Entry builder="radio_button_group">
+				<Entry name="SetStringPropertyAction.view_mode.false" />
+				<Entry name="SetStringPropertyAction.view_mode.true" />
+			</Entry>
+			<Entry builder="separator" />
+			<Entry usedBy = "EDITOR" >
+				<Entry name="code.PurgeAction" accelerator="DELETE"/>
+                <Entry name="UndoAction" accelerator="control Z" />
+                <Entry name="RedoAction" accelerator="control Y" />
+            </Entry>
 			<Entry name="CopyAction" accelerator="control C"/>
 			<Entry name="CopySingleAction"  accelerator="control shift C"/>
 			<Entry name="code.CopyQualifiedName"/>
@@ -70,6 +89,25 @@
 				<Entry accelerator="control G" name="FindAction" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
 				<Entry name="FindPreviousAction" />
+			</Entry>
+			<Entry usedBy = "EDITOR" >
+				<Entry name="menu_extensions">
+					<Entry name="EditDetailsAction" accelerator="F3" />
+					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
+					<Entry name="DeleteDetailsAction" />
+					<Entry builder="separator" />
+					<Entry name="EditAttributesAction" accelerator="alt F9" />
+					<Entry name="attributes_AddAttributeAction" />
+					<Entry name="AssignAttributesAction" />
+					<Entry name="CopyAttributes" />
+					<Entry name="PasteAttributes" />
+					<Entry name="menu_removeAttribute">
+						<Entry name="attributes_RemoveFirstAttributeAction" />
+						<Entry name="attributes_RemoveLastAttributeAction" />
+						<Entry name="attributes_RemoveAllAttributesAction" />
+					</Entry>
+					<Entry name="ShowAttributeDialogAction" />
+				</Entry>
 			</Entry>
 		</Entry>
 		<Entry name="view">
@@ -117,6 +155,15 @@
 				</Entry>
 			</Entry>
 			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
+			<Entry name="menu_displayAttributes">
+				<Entry builder="radio_button_group">
+					<Entry name="ShowSelectedAttributesAction" />
+					<Entry name="ShowAllAttributesAction" />
+					<Entry name="HideAllAttributesAction" />
+				</Entry>
+				<Entry builder="separator" />
+				<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+			</Entry>
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
@@ -265,34 +312,55 @@
 	<Entry name="node_popup" builder="node_popup">
 		<Entry name="JumpInAction"/>
 		<Entry name="JumpOutAction" />
-		<Entry name="CopyAction" accelerator="control C"/>
-		<Entry name="CopySingleAction"  accelerator="control shift C"/>
-		<Entry name="code.CopyQualifiedName"/>
+		<Entry name="menu_copy">
+			<Entry name="CopyAction" accelerator="control C"/>
+			<Entry name="CopySingleAction"  accelerator="control shift C"/>
+			<Entry name="code.CopyQualifiedName"/>
+		</Entry>
 		<Entry builder="separator" />
 		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
-		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
-		<Entry name="code.ShowAllClassesAction" />
-		<Entry builder="separator" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.MAXIMUM_RECURSION" />
-		<Entry builder="separator" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-		<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
-		<Entry builder="separator" />
-		<Entry name="code.FilterCyclesAction" />
-		<Entry name="code.SelectCyclesAction" />
+		<Entry name="filter">
+			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
+			<Entry name="code.ShowAllClassesAction" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.MAXIMUM_RECURSION" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry builder="separator" />
+			<Entry name="code.FilterCyclesAction" />
+			<Entry name="code.SelectCyclesAction" />
+		</Entry>
+		<Entry usedBy = "EDITOR" >
+			<Entry name="edit">
+				<Entry name="EditDetailsAction" accelerator="F3" />
+				<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
+				<Entry name="DeleteDetailsAction" />
+				<Entry builder="separator" />
+				<Entry name="EditAttributesAction" accelerator="alt F9" />
+				<Entry name="attributes_AddAttributeAction" />
+				<Entry name="AssignAttributesAction" />
+				<Entry name="menu_removeAttribute">
+					<Entry name="attributes_RemoveFirstAttributeAction" />
+					<Entry name="attributes_RemoveLastAttributeAction" />
+					<Entry name="attributes_RemoveAllAttributesAction" />
+				</Entry>
+				<Entry name="ShowAttributeDialogAction" />
+			</Entry>
+		</Entry>
 		<Entry builder="separator" />
 		<Entry name="goto" processOnPopup="true">
 			<Entry builder="link_actions" />

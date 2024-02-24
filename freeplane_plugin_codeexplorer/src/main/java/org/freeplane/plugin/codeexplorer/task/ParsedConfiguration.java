@@ -25,6 +25,9 @@ public class ParsedConfiguration {
             + "  [command] [originPattern] [direction] [targetPattern]\n"
             + "  classpath [path]\n"
             + "  ignore class [classPattern]\n"
+            + "  import interface [classPattern]\n"
+            + "  import annotation [classPattern]\n"
+            + "  import annotation [classPattern].[methodName]()\n"
             + "\n"
             + "-> Commands (Related to Dependency Rules): allow, forbid, ignore\n"
             + "   - 'allow', 'forbid', 'ignore' commands are used to define rules for managing dependencies between different parts of the code.\n"
@@ -55,11 +58,16 @@ public class ParsedConfiguration {
             + "  ignore ..util.. ->v ..*Helper..\n"
             + "  classpath /target/classes\n"
             + "  ignore class com.example..*ServiceImpl..\n"
+            + "  import interface java.io.Serializable\n"
+            + "  import interface java.util.List\n"
+            + "  import annotation com.example..*Annotation\n"
+            + "  import annotation com.example..*Annotation.*.value()\n"
             + "\n"
             + "Note:\n"
             + "-> 'classpath' lines augment the root directories defined in the 'locations' table.\n"
             + "-> The 'ignore class' command is designed to include a broader range of classes by implicitly adding '..' at the start of the pattern.\n"
-            + "-> The commands 'allow', 'forbid', and 'ignore' specifically dictate how different code segments (e.g., packages, classes) can depend on each other.\n";
+            + "-> The commands 'allow', 'forbid', and 'ignore' specifically dictate how different code segments (e.g., packages, classes) can depend on each other.\n"
+            + "";
 
      private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
 
@@ -81,14 +89,20 @@ public class ParsedConfiguration {
     private static final Pattern IGNORED_CLASS_PATTERN = Pattern.compile(
             "^\\s*ignore\\s+class\\s+(" + CLASS_PATTERN + ")\\s*$");
 
+    private static final Pattern IMPORTED_ANNOTATION_PATTERN = Pattern.compile(
+            "^\\s*import\\s+(annotation|interface)\\s+(" + CLASS_PATTERN + ")\\s*$");
+
     private final List<DependencyRule> rules;
     private final ClassMatcher ignoredClasses;
+    private final AnnotationMatcher annotationMatcher;
     private final List<String> subpaths;
+
 
 
     public ParsedConfiguration(String dsl) {
         List<DependencyRule> dependencyRules = new ArrayList<>();
         List<String> ignoredClasses = new ArrayList<>();
+        List<String> importedAnnotations = new ArrayList<>();
         List<String> subpaths = new ArrayList<>();
         String[] dslRules = dsl.split("\\n\\s*");
 
@@ -115,19 +129,33 @@ public class ParsedConfiguration {
                     Matcher ignoredClassMatcher = IGNORED_CLASS_PATTERN.matcher(dslRule);
                     if (ignoredClassMatcher.find()) {
                         ignoredClasses.add(ignoredClassMatcher.group(1));
-                    } else
-                        throw new IllegalArgumentException("Invalid rule " + dslRule);
+                    } else {
+                        Matcher importedAnnotationMatcher = IMPORTED_ANNOTATION_PATTERN.matcher(dslRule);
+                        if(importedAnnotationMatcher.find()) {
+                            final String annotationPattern = importedAnnotationMatcher.group(2);
+                            if(annotationPattern.endsWith("()") && importedAnnotationMatcher.group(1).equals("interface"))
+                                throw new IllegalArgumentException("Invalid rule " + dslRule);
+                            importedAnnotations.add(annotationPattern);
+                        }
+                        else
+                            throw new IllegalArgumentException("Invalid rule " + dslRule);
+                    }
                 }
             }
 
         }
         this.rules = dependencyRules;
         this.ignoredClasses = new ClassMatcher(ignoredClasses);
+        this.annotationMatcher = new AnnotationMatcher(importedAnnotations);
         this.subpaths = subpaths;
     }
 
-    public DependencyJudge judge() {
-        return new DependencyJudge(rules);
+    public DependencyRuleJudge judge() {
+        return new DependencyRuleJudge(rules);
+    }
+
+    public AnnotationMatcher annotationMatcher() {
+        return annotationMatcher;
     }
 
     public DirectoryMatcher directoryMatcher(Collection<File> locations) {
@@ -143,8 +171,9 @@ public class ParsedConfiguration {
                 || ! subpaths.equals(previousConfiguration.subpaths)
                 || ! ignoredClasses.equals(previousConfiguration.ignoredClasses))
             return ConfigurationChange.CODE_BASE;
-        if(! rules.equals(previousConfiguration.rules))
-                return ConfigurationChange.JUDGE;
+        if(! rules.equals(previousConfiguration.rules)
+                || ! annotationMatcher.equals(previousConfiguration.annotationMatcher))
+                return ConfigurationChange.CONFIGURATION;
         return ConfigurationChange.SAME;
     }
 }

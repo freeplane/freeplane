@@ -20,12 +20,14 @@
 package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.Graphics2D;
-import java.util.stream.Stream;
-
+import java.util.Set;
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.SetBooleanPropertyAction;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
@@ -34,11 +36,12 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
+import org.freeplane.plugin.codeexplorer.archunit.ArchUnitServer;
+import org.freeplane.plugin.codeexplorer.archunit.ArchitectureViolationsConfiguration;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorer;
-import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
@@ -49,15 +52,18 @@ public class CodeProjectController implements IExtension {
     private CodeDependenciesPanel codeDependenciesPanel;
     private ModeController modeController;
     private JTabbedPane informationPanel;
-    private CodeDependency selectedDependency;
+    private Set<JavaClass> selectedClasses;
     private CodeExplorerConfigurator configurator;
     private CodeExplorerConfigurations explorerConfigurations;
+    private final ArchUnitServer archUnitServer;
+    private ArchitectureViolationsPanel architectureViolationsPanel;
     /**
 	 * @param modeController
 	 */
-	public CodeProjectController(ModeController modeController) {
+	public CodeProjectController(ModeController modeController, ArchUnitServer archUnitServer) {
 		super();
         this.modeController = modeController;
+        this.archUnitServer = archUnitServer;
         this.explorerConfigurations = CodeExplorerConfigurations.loadConfigurations();
 
         Controller controller = modeController.getController();
@@ -75,27 +81,38 @@ public class CodeProjectController implements IExtension {
             }
         });
         modeController.addAction(new RunAnalysisAction(this));
+        modeController.addAction(new SetBooleanPropertyAction(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
 
-	}
-
-	private void hideControlPanel() {
-		modeController.getController().getViewController().removeSplitPane();
 	}
 
 
 	private void showControlPanel() {
 	    informationPanel = new JTabbedPane();
-	    codeDependenciesPanel = new CodeDependenciesPanel();
-	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
 
         configurator = new CodeExplorerConfigurator(this);
-        informationPanel.addTab("Configurations", configurator);
-        informationPanel.addTab("Dependencies", codeDependenciesPanel);
+        informationPanel.addTab(TextUtils.getText("code.configurations"), configurator);
+
+        final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
+        architectureViolationsPanel = new ArchitectureViolationsPanel (this, archUnitServer, enableServerAction);
+        architectureViolationsPanel.addDependencySelectionCallback(this::updateSelectedDependency);
+        informationPanel.addTab(TextUtils.getText("code.architectureViolations"), architectureViolationsPanel);
+
+	    codeDependenciesPanel = new CodeDependenciesPanel();
+	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
+        informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
 
 	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
 	    informationPanel.setVisible(true);
 	    informationPanel.revalidate();
 	}
+
+    private void hideControlPanel() {
+        modeController.getController().getViewController().removeSplitPane();
+        informationPanel = null;
+        configurator = null;
+        codeDependenciesPanel = null;
+        selectedClasses = null;
+    }
 
     public void startupController() {
         showControlPanel();
@@ -114,37 +131,38 @@ public class CodeProjectController implements IExtension {
 	    Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(codeDependenciesPanel);
 	    ResourceController.getResourceController().removePropertyChangeListener(codeDependenciesPanel);
 	    hideControlPanel();
-	    informationPanel = null;
-	    configurator = null;
-	    codeDependenciesPanel = null;
-	    selectedDependency = null;
 	}
 
     private boolean isDependencySelectedForNode(NodeModel node) {
-        if(selectedDependency == null)
+        if(selectedClasses == null)
             return false;
         IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection == null || node.getMap() != selection.getMap())
             return false;
         DependencySelection dependencySelection = new DependencySelection(selection);
-        JavaClass[] dependencyClasses =  { selectedDependency.getOriginClass(), selectedDependency.getTargetClass()};
-        return Stream.of(dependencyClasses)
+        return selectedClasses.stream()
                 .anyMatch(javaClass -> node.equals(dependencySelection.getVisibleNode(javaClass)));
     }
 
-    private void updateSelectedDependency(CodeDependency selectedDependency) {
-        this.selectedDependency = selectedDependency;
+    public void updateSelectedDependency(final Set<JavaClass> selectedClasses) {
+        this.selectedClasses = selectedClasses;
         modeController.getController().getMapViewManager().getMapViewComponent().repaint();
     }
 
     void exploreSelectedConfiguration() {
         if(configurator != null) {
-            CodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
-            exploreConfiguration(selectedConfiguration);
+            UserDefinedCodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
+            if(selectedConfiguration != null)
+                exploreConfiguration(selectedConfiguration);
         }
     }
 
-    void exploreConfiguration(CodeExplorerConfiguration selectedConfiguration) {
+    public void exploreConfiguration(final ArchitectureViolationsConfiguration configuration) {
+        CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
+        codeExplorer.explore(configuration);
+    }
+
+    void exploreConfiguration(UserDefinedCodeExplorerConfiguration selectedConfiguration) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
         codeExplorer.explore(selectedConfiguration);
     }
@@ -157,11 +175,11 @@ public class CodeProjectController implements IExtension {
         return explorerConfigurations;
     }
 
-    public void updateJudge() {
+    public void updateProjectConfiguration() {
         if(configurator != null) {
-            CodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
+            UserDefinedCodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
             CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-            codeExplorer.setJudge(selectedConfiguration.getDependencyJudge());
+            codeExplorer.setProjectConfiguration(selectedConfiguration.getDependencyJudge(), selectedConfiguration.getAnnotationMatcher());
             codeDependenciesPanel.update();
         }
     }

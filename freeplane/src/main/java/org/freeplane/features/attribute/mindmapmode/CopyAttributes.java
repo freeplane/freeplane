@@ -37,21 +37,25 @@ import org.freeplane.features.styles.MapStyleModel;
 class CopyAttributes extends AFreeplaneAction {
 	private static Object[] attributes = null;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
+    private PasteAttributes pasteAttributes;
 
 	public static Object[] getAttributes() {
 		return attributes;
 	}
 
-	public CopyAttributes() {
+	public CopyAttributes(PasteAttributes pasteAttributes) {
 		super("CopyAttributes");
+        this.pasteAttributes = pasteAttributes;
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	@Override
+    public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		copyAttributes(node);
+		pasteAttributes.setEnabled();
 	}
 
 	/**
@@ -59,15 +63,17 @@ class CopyAttributes extends AFreeplaneAction {
 	private void copyAttributes(final NodeModel node) {
 		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
 		if(model == null){
-			attributes = null;
-			return;
+		    attributes = null;
+		    return;
 		}
 		final int attributeTableLength = model.getAttributeTableLength();
 		attributes = new Object[attributeTableLength * 2];
 		for(int i = 0; i < attributeTableLength; i++){
-			final Attribute attribute = model.getAttribute(i);
-			attributes[2 * i] = attribute.getName();
-			attributes[2 * i+1] = attribute.getValue();
+		    final Attribute attribute = model.getAttribute(i);
+		    if(! attribute.isManaged()) {
+		        attributes[2 * i] = attribute.getName();
+		        attributes[2 * i+1] = attribute.getValue();
+		    }
 		}
 	}
 	@Override
@@ -82,10 +88,10 @@ class CopyAttributes extends AFreeplaneAction {
     }
 }
 
-@EnabledAction(checkOnNodeChange = true)
+@EnabledAction()
 class PasteAttributes extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -109,9 +115,10 @@ class PasteAttributes extends AMultipleNodeAction {
 		}
 		final MAttributeController controller = MAttributeController.getController();
 		for(int i = 0; i < attributes.length;){
-			final String name = attributes[i++].toString();
+			final String name = (String) attributes[i++];
 			final Object value = attributes[i++];
-			controller.addAttribute(node, new Attribute(name, value));
+			if(name != null && value != null)
+			    controller.addAttribute(node, new Attribute(name, value));
 		}
 	}
 
@@ -124,7 +131,7 @@ class PasteAttributes extends AMultipleNodeAction {
 @EnabledAction(checkOnNodeChange = true)
 class AddStyleAttributes extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -154,7 +161,7 @@ class AddStyleAttributes extends AMultipleNodeAction {
 		final NodeModel styleNode = extension.getStyleNode(style);
 		return styleNode;
     }
-	
+
 	@Override
     public void setEnabled() {
 		for (final NodeModel selected : Controller.getCurrentModeController().getMapController().getSelectedNodes()) {

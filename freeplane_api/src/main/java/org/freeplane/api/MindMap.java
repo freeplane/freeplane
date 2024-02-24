@@ -2,6 +2,7 @@ package org.freeplane.api;
 
 import java.awt.Color;
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -237,4 +238,45 @@ public interface MindMap extends MindMapRO {
      * @since 1.11.9
      */
     List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules);
+
+	/** <p> Sets {@code uri} as Followed Map, template-normalizing it first
+	 * if the location is in User- or Standard-Templates Directory, e.g.
+	 * <br> from {@code file:/home/macmarrum/.config/freeplane/1.11.x/templates/the-file.mm}
+	 * <br> to &nbsp; &nbsp; &nbsp; {@code template:/the-file.mm}
+	 * </p>
+	 * <pre>
+	 *  // Unfollows a mind map
+	 *  node.mindMap.followedMap = null
+	 *
+	 *  // Follows a mind map, using an absolute path - a standard string is used, therefore backslashes (path separators) must be escaped
+	 *  node.mindMap.followedMap = new File('c:\\Users\\macmarrum\\Documents\\My top-level mind map.mm').toURI()
+	 *
+	 *  // Follows a template, using an absolute path - a slashy string is used, therefore backslashes (path separators) mustn't be escaped
+	 *  node.mindMap.followedMap = new File(/c:\Users\macmarrum\AppData\Roaming\Freeplane\1.11.x\templates\My template.mm/).toURI()
+	 *
+	 *  // Follows a template, using a {@code template:} URI
+	 *  node.mindMap.followedMap = new URI('template:/My%20template.mm')
+	 * </pre>
+	 * @param uri Followed-Map URI or {@code null} to unfollow
+	 * @since 1.11.11 */
+	void setFollowedMap(URI uri);
+
+	/** <p> Sets {@code uri} as Associated Template, template-normalizing it first
+	 * if the location is in User- or Standard-Templates Directory, i.e.
+	 * <br> from {@code file:/home/macmarrum/.config/freeplane/1.11.x/templates/the-file.mm}
+	 * <br> to &nbsp; &nbsp; &nbsp; {@code template:/the-file.mm}
+	 * </p>
+	 * <pre>
+	 *  // Clears the template association
+	 *  node.mindMap.associatedTemplate = null
+	 *
+	 *  // Associates a template with the mind map, using an absolute path - a slashy string is used, therefore backslashes (path separators) mustn't be escaped
+	 *  node.mindMap.associatedTemplate = new File(/c:\Users\macmarrum\AppData\Roaming\Freeplane\1.11.x\templates\My template.mm/).toURI()
+	 *
+	 *  // Associates a template with the mind map, using a {@code template:} URI
+	 *  node.mindMap.associatedTemplate = new URI('template:/My%20template.mm')
+	 * </pre>
+	 * @param uri Associated-Template URI or {@code null} to remove it
+	 * @since 1.11.11 */
+	void setAssociatedTemplate(URI uri);
 }

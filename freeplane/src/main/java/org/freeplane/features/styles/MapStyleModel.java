@@ -167,7 +167,7 @@ public class MapStyleModel implements IExtension {
 	void createStyleMap(final MapModel parentMap, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
         MapModel styleMap = new StyleMapModel(parentMap.getNodeDuplicator(), parentMap.getIconRegistry(),
-                AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
+                parentMap.getExtension(AttributeRegistry.class), modeController.getMapController());
 		styleMap.createNewRoot();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);
@@ -470,6 +470,11 @@ public class MapStyleModel implements IExtension {
 	public String getProperty(String key) {
 		return properties.get(key);
 	}
+
+    public boolean getBooleanProperty(String name) {
+        String propertyValue = getProperty(name);
+        return Boolean.parseBoolean(propertyValue);
+    }
 
 	public NodeModel getStyleNodeGroup(NodeModel styleNode) {
 		final int depth = styleNode.depth();

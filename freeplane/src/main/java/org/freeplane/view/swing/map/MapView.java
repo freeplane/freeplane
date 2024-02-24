@@ -2797,7 +2797,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return showIcons;
 	}
 
-	int getLayoutSpecificMaxNodeWidth() {
+	public int getLayoutSpecificMaxNodeWidth() {
 		return usesLayoutSpecificMaxNodeWidth() ? Math.max(0, getViewportSize().width - 10 * getZoomed(outlineHGap)) : 0;
 	}
 

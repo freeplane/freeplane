@@ -176,4 +176,6 @@ public interface IMapViewManager {
     default boolean saveAllModifiedMaps(){
         return true;
     }
+
+    public void setMap(Component view, MapModel map);
 }

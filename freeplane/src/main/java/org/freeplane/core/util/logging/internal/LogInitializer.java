@@ -24,9 +24,11 @@ public class LogInitializer {
 		replaceOutputStream();
 		replaceConsoleHandler();
 		addFileHandler();
+		Thread.setDefaultUncaughtExceptionHandler((t, e)
+		        -> LogUtils.severe("Exception in thread \"" + t.getName() + "\"", e));
 	}
 
-	private static void replaceOutputStream() {
+    private static void replaceOutputStream() {
 		LoggingOutputStream los;
 		los = new LoggingOutputStream(StdFormatter.STDOUT, System.out, MAX_LOG_SIZE);
 		System.setOut(new PrintStream(los, true));
@@ -79,7 +81,7 @@ public class LogInitializer {
                 {
                     setLevel(Level.ALL);
                 }
-                
+
                 @Override
                 public boolean isLoggable(LogRecord record) {
                     if (stdErrConsoleHandler.isLoggable(record)) {
@@ -87,7 +89,7 @@ public class LogInitializer {
                     }
                     return super.isLoggable(record);
                 }
-                
+
                 @Override
                 public void publish(LogRecord record) {
                     super.publish(record);

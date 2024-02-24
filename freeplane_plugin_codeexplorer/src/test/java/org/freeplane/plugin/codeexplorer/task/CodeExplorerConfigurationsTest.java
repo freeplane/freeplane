@@ -23,11 +23,12 @@ public class CodeExplorerConfigurationsTest {
         } catch (IOException e) {/**/}
     }
 
-    private static void serialize(CodeExplorerConfiguration singleConfiguration) {
+    private static void serialize(UserDefinedCodeExplorerConfiguration singleConfiguration) {
+        singleConfiguration.initialize();
         new CodeExplorerConfigurations(Collections.singletonList(singleConfiguration)).saveConfiguration(CONFIGURATION_FILE);
     }
 
-    private static CodeExplorerConfiguration deserialize() {
+    private static UserDefinedCodeExplorerConfiguration deserialize() {
         return CodeExplorerConfigurations.loadConfigurations(CONFIGURATION_FILE).getConfigurations().get(0);
     }
 
@@ -43,7 +44,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesEmptyConfigurations() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("", Collections.emptyList(), "");
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("", Collections.emptyList(), "");
         serialize(uut);
         Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
@@ -52,7 +53,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesConfigurationContainingProjectName() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("project name", Collections.emptyList(), "");
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("project name", Collections.emptyList(), "");
         serialize(uut);
         Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
@@ -61,7 +62,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesConfigurationContainingProjectNameWithTab() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("project\tname", Collections.emptyList(), "");
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("project\tname", Collections.emptyList(), "");
         serialize(uut);
         Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
@@ -70,7 +71,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesConfigurationContainingRules() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("", Collections.emptyList(), " a ->^ b\n b ->v c");
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("", Collections.emptyList(), " a ->^ b\n b ->v c");
         serialize(uut);
         Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
@@ -79,7 +80,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesConfigurationContainingProjectNameAndRules() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("project name", Collections.emptyList(), " a ->^ b\n b ->v c");
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("project name", Collections.emptyList(), " a ->^ b\n b ->v c");
         serialize(uut);
         Assertions.assertThat(deserialize())
         .usingRecursiveComparison()
@@ -88,7 +89,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesConfigurationContainingLocations() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("",
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("",
                 Arrays.asList(new File("a"), new File("b")), "");
         serialize(uut);
         Assertions.assertThat(deserialize())
@@ -98,7 +99,7 @@ public class CodeExplorerConfigurationsTest {
 
     @Test
     public void serializesAndDeserializesConfigurationContainingLocationsAndRules() throws Exception {
-        CodeExplorerConfiguration uut = new CodeExplorerConfiguration("",
+        UserDefinedCodeExplorerConfiguration uut = new UserDefinedCodeExplorerConfiguration("",
                 Arrays.asList(new File("a"), new File("b")), "");
         serialize(uut);
         Assertions.assertThat(deserialize())

@@ -7,8 +7,6 @@ package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;

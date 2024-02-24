@@ -4,11 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -45,6 +48,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.codeexplorer.dependencies.CodeDependency;
 import org.freeplane.plugin.codeexplorer.map.ClassNode;
+import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.map.DependencySelection;
 
@@ -138,7 +142,9 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         updateColumn(columnModel, 1, 200, cellRenderer);
         updateColumn(columnModel, 2, 200, cellRenderer);
         updateColumn(columnModel, 3, 1200, cellRenderer);
-        dependencyViewer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        dependencyViewer.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        dependencyViewer.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dependencyViewer.setCellSelectionEnabled(true);
 
         TableRowSorter<DependenciesWrapper> sorter = new TableRowSorter<>(dataModel);
@@ -171,34 +177,35 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             rowSorter.setRowFilter(null);
         else {
             RowFilter<DependenciesWrapper, Integer> dependencyFilter = new RowFilter<DependenciesWrapper, Integer>() {
-                Predicate<String[]> combinedFilter = Stream.of(filteredWords)
+                BiPredicate<CodeDependency, String[]> combinedFilter = Stream.of(filteredWords)
                         .map(this::createPredicateFromString)
-                        .reduce(x -> true, Predicate::and);
-                private Predicate<String[]> createPredicateFromString(String searchedString) {
+                        .reduce((x,y) -> true, BiPredicate::and);
+                private BiPredicate<CodeDependency, String[]> createPredicateFromString(String searchedString) {
                     if (searchedString.startsWith("origin:")) {
                         String value = searchedString.substring("origin:".length());
-                        return row -> row[1].contains(value);
+                        return (dependency, row) -> dependency.getOriginClass().getName().contains(value);
                     } else if (searchedString.startsWith("target:")) {
                         String value = searchedString.substring("target:".length());
-                        return row -> row[2].contains(value);
+                        return (dependency, row) -> dependency.getTargetClass().getName().contains(value);
                     } else if (searchedString.startsWith("verdict:")) {
                         String value = searchedString.substring("verdict:".length());
-                        return row -> row[0].contains(value);
+                        return (dependency, row) -> row[0].contains(value);
                     } else if (searchedString.startsWith("dependency:")) {
                         String value = searchedString.substring("dependency:".length());
-                        return row -> row[3].contains(value);
+                        return (dependency, row) -> row[3].contains(value);
                     } else {
-                        return row -> Stream.of(row).anyMatch(s-> s.contains(searchedString));
+                        return (dependency, row) -> Stream.of(row).anyMatch(s-> s.contains(searchedString));
                     }
                 }
 
                 @Override
                 public boolean include(RowFilter.Entry<? extends DependenciesWrapper, ? extends Integer> entry) {
                     TableModel tableData = dependencyViewer.getModel();
+                    final int rowIndex = entry.getIdentifier().intValue();
                     String[] row = IntStream.range(0, 4)
-                            .mapToObj(column -> tableData.getValueAt(entry.getIdentifier(), column).toString())
+                            .mapToObj(column -> tableData.getValueAt(rowIndex, column).toString())
                             .toArray(String[]::new);
-                    return combinedFilter.test(row);
+                    return combinedFilter.test(allDependencies.get(rowIndex), row);
                 }
             };
 
@@ -238,25 +245,23 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
 
 
     private void update(IMapSelection selection) {
-        CodeDependency selectedValue = getSelectedDependency();
+        Set<CodeDependency> selectedDependencies = getSelectedDependencies().collect(Collectors.toSet());
         int selectedColumn = dependencyViewer.getSelectedColumn();
-        this.allDependencies = selection == null
+        this.allDependencies = selection == null || ! (selection.getMap() instanceof CodeMap)
                 ? Collections.emptyList() :
                     selectedDependencies(new DependencySelection(selection));
         ((DependenciesWrapper)dependencyViewer.getModel()).fireTableDataChanged();
         updateRowCountLabel();
-        if(selectedValue != null) {
-            int newSelectedDataIndex = allDependencies.indexOf(selectedValue);
-            if(newSelectedDataIndex >= 0) {
-                int newSelectedRow = dependencyViewer.convertRowIndexToView(newSelectedDataIndex);
-                if(newSelectedRow != -1) {
-                    dependencyViewer.setRowSelectionInterval(newSelectedRow, newSelectedRow);
-                    dependencyViewer.setColumnSelectionInterval(selectedColumn, selectedColumn);
-                    SwingUtilities.invokeLater(this::scrollSelectedToVisible);
-                }
+        if(! selectedDependencies.isEmpty()) {
+            IntStream.range(0, allDependencies.size())
+            .filter(i -> selectedDependencies.contains(allDependencies.get(i)))
+            .map(dependencyViewer::convertRowIndexToView)
+            .forEach(row -> dependencyViewer.addRowSelectionInterval(row, row));
+            if(dependencyViewer.getSelectedRow() != -1) {
+                dependencyViewer.setColumnSelectionInterval(selectedColumn, selectedColumn);
+                SwingUtilities.invokeLater(this::scrollSelectedToVisible);
             }
         }
-
     }
 
     private List<CodeDependency> selectedDependencies(DependencySelection dependencySelection) {
@@ -264,11 +269,10 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private CodeDependency getSelectedDependency() {
-        int selectedRow = dependencyViewer.getSelectedRow();
-        int selectedDataIndex = selectedRow < 0 ? -1 : dependencyViewer.convertRowIndexToModel(selectedRow);
-        CodeDependency selectedValue = selectedDataIndex < 0 ? null : allDependencies.get(selectedDataIndex);
-        return selectedValue;
+    private Stream<CodeDependency> getSelectedDependencies() {
+        return IntStream.of(dependencyViewer.getSelectedRows())
+        .map(dependencyViewer::convertRowIndexToModel)
+        .mapToObj(allDependencies::get);
     }
 
     private void updateRowCountLabel() {
@@ -292,12 +296,28 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         }
     }
 
-    void addDependencySelectionCallback(Consumer<CodeDependency> listener) {
+    void addDependencySelectionCallback(Consumer<Set<JavaClass> > listener) {
         dependencyViewer.getSelectionModel().addListSelectionListener(
                 e -> {
                     if(!e.getValueIsAdjusting())
-                        listener.accept(getSelectedDependency());
+                        listener.accept(getSelectedClasses());
                 });
+        dependencyViewer.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(! e.isTemporary())
+                    listener.accept(getSelectedClasses());
+            }
+
+        });
+    }
+
+
+    private Set<JavaClass> getSelectedClasses() {
+        return getSelectedDependencies().map(CodeDependency::getDependency)
+                .flatMap(d -> Stream.of(d.getOriginClass(), d.getTargetClass()))
+                .collect(Collectors.toSet());
     }
 
 

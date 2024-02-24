@@ -47,7 +47,13 @@ public class RemoveLastAttributeAction extends AMultipleNodeAction {
 		final AttributeUtilities atrUtil = new AttributeUtilities();
 		if (atrUtil.hasAttributes(node)) {
 			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(node);
-			AttributeController.getController().performRemoveRow(node, natm, natm.getRowCount() - 1);
+            final int attributeCount = natm.getRowCount();
+            for (int i = attributeCount-1; i >= 0; i--) {
+                if(! natm.getAttribute(attributeCount).isManaged()) {
+                    AttributeController.getController().performRemoveRow(node, natm, i);
+                    return;
+                }
+            }
 		}
 	}
 

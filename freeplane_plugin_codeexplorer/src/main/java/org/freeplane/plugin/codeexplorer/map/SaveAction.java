@@ -2,6 +2,8 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -20,28 +22,32 @@ package org.freeplane.plugin.codeexplorer.map;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.clipboard.ClipboardAccessor;
+import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.url.UrlManager;
 
-class CopyQualifiedName extends AFreeplaneAction {
+@EnabledAction(checkOnNodeChange=true)
+class SaveAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CopyQualifiedName() {
-		super("code.CopyQualifiedName");
+	public SaveAction() {
+		super("SaveAction");
 	}
 
 	@Override
-    public void actionPerformed(final ActionEvent e) {
-		final CodeNode node = (CodeNode) Controller.getCurrentModeController().getMapController().getSelectedNode();
-		copyCodeElementName(node);
+	public void actionPerformed(final ActionEvent e) {
+		CodeMapPersistenceManager persistence = (CodeMapPersistenceManager) Controller.getCurrentModeController().getExtension(UrlManager.class);
+		persistence.save(Controller.getCurrentController().getMap());
 	}
 
-	/**
-	 */
-	private void copyCodeElementName(final CodeNode node) {
-	    ClipboardAccessor.getInstance().setClipboardContents(node.getCodeElementName());
+	@Override
+	public void setEnabled() {
+		final Controller controller = Controller.getCurrentController();
+		MapModel map = controller.getMap();
+		setEnabled(map != null && ! map.isSaved());
 	}
 }
