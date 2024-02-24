@@ -13,6 +13,11 @@ public class CodeAttributeConfiguration {
     @SerializedName("attributeViewType")
     private  String attributeViewType;
 
+    public CodeAttributeConfiguration() {
+        super();
+        this.attributeViewType = AttributeTableLayoutModel.HIDE_ALL;
+    }
+
     void initialize() {
         if(attributeViewType == null)
             attributeViewType = AttributeTableLayoutModel.HIDE_ALL;
