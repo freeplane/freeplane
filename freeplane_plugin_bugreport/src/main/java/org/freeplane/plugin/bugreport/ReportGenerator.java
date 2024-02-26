@@ -278,8 +278,7 @@ public class ReportGenerator extends StreamHandler {
     	StackTraceElement[] stackTrace = thrown.getStackTrace();
     	if(stackTrace == null)
     		return false;
-        return classNameStartsWith(stackTrace, 0, "org.codehaus.groovy.runtime")
-                || classNameStartsWith(stackTrace, 2, "net.infonode.tabbedpanel.theme.internal.laftheme.PaneUI");
+        return classNameStartsWith(stackTrace, 0, "org.codehaus.groovy.runtime");
 	}
 
     private boolean classNameStartsWith(StackTraceElement[] stackTrace, int position, String classNameStart) {
