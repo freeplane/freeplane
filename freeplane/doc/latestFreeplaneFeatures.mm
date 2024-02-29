@@ -9,7 +9,7 @@
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="bottom_or_right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="default" ID="ID_271890427" ICON_SIZE="12 pt" COLOR="#000000" STYLE="fork">
+<stylenode LOCALIZED_TEXT="default" ID="ID_271890427" ICON_SIZE="12 pt" FORMAT_AS_HYPERLINK="true" COLOR="#000000" STYLE="fork">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_271890427" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
 <richcontent TYPE="DETAILS" CONTENT-TYPE="plain/auto"/>
@@ -71,7 +71,7 @@
 </hook>
 <node TEXT="Version 1.11.11" POSITION="bottom_or_right" ID="ID_1996460640">
 <node TEXT="Editor festures" ID="ID_960043093">
-<node TEXT="Record and analyze violations found by ArchUnit tests" ID="ID_237251897"/>
+<node TEXT="Record and analyze violations found by ArchUnit tests" ID="ID_237251897" LINK="https://github.com/freeplane/freeplane-archunit-extension"/>
 <node TEXT="Save user defined attributes and details on code explorer nodes" ID="ID_472050454"/>
 <node TEXT="Use Operating System Regional Settings by default" ID="ID_109457892"/>
 <node TEXT="User option &quot;Use Operating System Regional Settings&quot; (Preferences…-&gt;Environment-&gt;Language)" ID="ID_1290735249"/>
@@ -80,7 +80,7 @@
 <node TEXT="Version 1.11.9" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_289590210">
 <node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1031432368">
 <node TEXT="Navigate-&gt;Auto-expand selected nodes" ID="ID_1906031168"/>
-<node TEXT="JVM Code Explorer mode (based on ArchUnit)" ID="ID_604199270" LINK="https://www.freeplane.org/codeexplorer-video" FORMAT_AS_HYPERLINK="true"/>
+<node TEXT="JVM Code Explorer mode (based on ArchUnit)" ID="ID_604199270" LINK="https://www.freeplane.org/codeexplorer-video"/>
 </node>
 </node>
 <node TEXT="Version 1.11.8" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_428268446">
