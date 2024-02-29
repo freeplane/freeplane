@@ -111,7 +111,7 @@ class ClassesNode extends CodeNode {
     Stream<Dependency> getOutgoingDependencies() {
         return getClasses()
                 .flatMap(c -> c.getDirectDependenciesFromSelf().stream())
-                .filter(CodeNode::hasValidTopLevelClasses)
+                .filter(dependency -> hasValidTopLevelClass(dependency.getTargetClass()))
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
                         || subprojectIndexOf(dep.getTargetClass()) != subprojectIndex);
     }
@@ -120,7 +120,7 @@ class ClassesNode extends CodeNode {
     Stream<Dependency> getIncomingDependencies() {
         return getClasses()
                 .flatMap(c -> c.getDirectDependenciesToSelf().stream())
-                .filter(CodeNode::hasValidTopLevelClasses)
+                .filter(dependency -> hasValidTopLevelClass(dependency.getOriginClass()))
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
                         || subprojectIndexOf(dep.getOriginClass()) != subprojectIndex);
     }
