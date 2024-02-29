@@ -69,6 +69,14 @@
 </stylenode>
 </map_styles>
 </hook>
+<node TEXT="Version 1.11.11" POSITION="bottom_or_right" ID="ID_1996460640">
+<node TEXT="Editor festures" ID="ID_960043093">
+<node TEXT="Record and analyze violations found by ArchUnit tests" ID="ID_237251897"/>
+<node TEXT="Save user defined attributes and details on code explorer nodes" ID="ID_472050454"/>
+<node TEXT="Use Operating System Regional Settings by default" ID="ID_109457892"/>
+<node TEXT="User option &quot;Use Operating System Regional Settings&quot; (Preferences…-&gt;Environment-&gt;Language)" ID="ID_1290735249"/>
+</node>
+</node>
 <node TEXT="Version 1.11.9" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_289590210">
 <node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1031432368">
 <node TEXT="Navigate-&gt;Auto-expand selected nodes" ID="ID_1906031168"/>
