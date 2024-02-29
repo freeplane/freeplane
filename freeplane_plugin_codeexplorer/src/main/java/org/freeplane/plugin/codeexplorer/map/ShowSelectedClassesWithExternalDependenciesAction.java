@@ -40,7 +40,7 @@ class ShowSelectedClassesWithExternalDependenciesAction extends AFreeplaneAction
 	@Override
     public void actionPerformed(ActionEvent e) {
         IMapSelection selection = Controller.getCurrentController().getSelection();
-        DependencySelection dependencySelection = new DependencySelection(selection, false);
+        DependencySelection dependencySelection = new DependencySelection(selection);
         Set<String> dependentNodeIDs = dependencySelection.getSelectedClasses()
                 .stream()
                 .map(dependencySelection.getMap()::getClassNodeId)

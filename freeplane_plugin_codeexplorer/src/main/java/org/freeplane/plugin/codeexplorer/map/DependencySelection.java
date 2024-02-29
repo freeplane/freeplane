@@ -53,11 +53,38 @@ public class DependencySelection {
         allClasses = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().map(Dependency::getOriginClass),
-                        ((CodeNode)node).getIncomingDependenciesWithKnownOrigins().map(Dependency::getTargetClass)))
+                        getOutgoingDependenciesWithValidTargets(((CodeNode)node)).map(Dependency::getOriginClass),
+                        getIncomingDependenciesWithValidOrigins(((CodeNode)node)).map(Dependency::getTargetClass)))
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allClasses;
+    }
+
+    private Stream<Dependency> getIncomingDependenciesWithValidOrigins(CodeNode node) {
+        final Stream<Dependency> incomingDependenciesWithKnownOrigins = node.getIncomingDependenciesWithKnownOrigins();
+        if(isOnlyOneNodeSelected())
+            return incomingDependenciesWithKnownOrigins;
+        return incomingDependenciesWithKnownOrigins
+                .filter(dependency -> showsOutsideDependencies != isClassOrContainingPackageTreeSelected(dependency.getOriginClass()));
+    }
+
+    private boolean isClassOrContainingPackageTreeSelected(JavaClass originClass) {
+        final CodeNode node = getVisibleNode(originClass);
+        return findSelectedAncestorOrSelf(node) != null;
+     }
+
+    private Stream<Dependency> getOutgoingDependenciesWithValidTargets(CodeNode node) {
+        final Stream<Dependency> outgoingDependenciesWithKnownTargets = node.getOutgoingDependenciesWithKnownTargets();
+        if(isOnlyOneNodeSelected())
+            return outgoingDependenciesWithKnownTargets;
+        return outgoingDependenciesWithKnownTargets
+                .filter(dependency -> showsOutsideDependencies != isClassOrContainingPackageTreeSelected(dependency.getTargetClass()));
+    }
+
+    private boolean isOnlyOneNodeSelected() {
+        Set<NodeModel> selectedNodes = getSelectedNodeSet();
+        boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
+        return isOnlyOneNodeSelected;
     }
 
     public CodeNode getVisibleNode(JavaClass javaClass) {
