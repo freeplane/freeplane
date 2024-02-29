@@ -41,8 +41,8 @@ public class DependencySelection {
         Stream<Dependency> allDependencies = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        getOutgoingDependencies((CodeNode)node).stream(),
-                        getIncomingDependencies((CodeNode)node).stream()))
+                        getOutgoingDependencies((CodeNode)node),
+                        getIncomingDependencies((CodeNode)node)))
                 .distinct();
         return allDependencies;
     }
@@ -53,38 +53,11 @@ public class DependencySelection {
         allClasses = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        getOutgoingDependenciesWithValidTargets(((CodeNode)node)).map(Dependency::getOriginClass),
-                        getIncomingDependenciesWithValidOrigins(((CodeNode)node)).map(Dependency::getTargetClass)))
+                        getOutgoingDependencies(((CodeNode)node)).map(Dependency::getOriginClass),
+                        getIncomingDependencies(((CodeNode)node)).map(Dependency::getTargetClass)))
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allClasses;
-    }
-
-    private Stream<Dependency> getIncomingDependenciesWithValidOrigins(CodeNode node) {
-        final Stream<Dependency> incomingDependenciesWithKnownOrigins = node.getIncomingDependenciesWithKnownOrigins();
-        if(isOnlyOneNodeSelected())
-            return incomingDependenciesWithKnownOrigins;
-        return incomingDependenciesWithKnownOrigins
-                .filter(dependency -> showsOutsideDependencies != isClassOrContainingPackageTreeSelected(dependency.getOriginClass()));
-    }
-
-    private boolean isClassOrContainingPackageTreeSelected(JavaClass originClass) {
-        final CodeNode node = getVisibleNode(originClass);
-        return findSelectedAncestorOrSelf(node) != null;
-     }
-
-    private Stream<Dependency> getOutgoingDependenciesWithValidTargets(CodeNode node) {
-        final Stream<Dependency> outgoingDependenciesWithKnownTargets = node.getOutgoingDependenciesWithKnownTargets();
-        if(isOnlyOneNodeSelected())
-            return outgoingDependenciesWithKnownTargets;
-        return outgoingDependenciesWithKnownTargets
-                .filter(dependency -> showsOutsideDependencies != isClassOrContainingPackageTreeSelected(dependency.getTargetClass()));
-    }
-
-    private boolean isOnlyOneNodeSelected() {
-        Set<NodeModel> selectedNodes = getSelectedNodeSet();
-        boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
-        return isOnlyOneNodeSelected;
     }
 
     public CodeNode getVisibleNode(JavaClass javaClass) {
@@ -104,19 +77,18 @@ public class DependencySelection {
         return null;
     }
 
-    private Set<Dependency> getOutgoingDependencies(CodeNode node) {
+    private Stream<Dependency> getOutgoingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getOutgoingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
-     private Set<Dependency> getIncomingDependencies(CodeNode node) {
+     private Stream<Dependency> getIncomingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getIncomingDependenciesWithKnownOrigins();
          return dependenciesBetweenDifferentElements(dependencies);
      }
 
-     private Set<Dependency> dependenciesBetweenDifferentElements(Stream<Dependency> dependencies) {
-         Set<Dependency> filteredDependencies = dependencies
-                 .filter(dependency -> connectsDifferentVisibleNodes(dependency))
-                 .collect(Collectors.toSet());
+     private Stream<Dependency> dependenciesBetweenDifferentElements(Stream<Dependency> dependencies) {
+         Stream<Dependency> filteredDependencies = dependencies
+                 .filter(dependency -> connectsDifferentVisibleNodes(dependency));
          return filteredDependencies;
      }
 
