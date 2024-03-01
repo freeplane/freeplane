@@ -107,15 +107,13 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
          JPanel topPanel = new JPanel(new BorderLayout());
 
          // Create a box to hold the components that should be aligned to the left
-         Box leftComponents = Box.createHorizontalBox();
          countLabel = new JLabel(filterIcon);
          final int countLabelMargin = (int) (UITools.FONT_SCALE_FACTOR * 10);
          countLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, countLabelMargin));
          countLabel.setIconTextGap(countLabelMargin / 2);
-         leftComponents.add(countLabel);
 
          // Add the box of left-aligned components to the top panel at the WEST
-         topPanel.add(leftComponents, BorderLayout.WEST);
+         topPanel.add(countLabel, BorderLayout.WEST);
 
          // Configure filterField to expand and fill the remaining space
          filterField = new JTextField();
