@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
@@ -36,12 +37,16 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
+import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.plugin.codeexplorer.map.CodeMap;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 import org.freeplane.plugin.codeexplorer.task.ConfigurationChange;
 import org.freeplane.plugin.codeexplorer.task.ParsedConfiguration;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
-class CodeExplorerConfigurator extends JPanel {
+class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private static final long serialVersionUID = 1L;
     private DefaultTableModel configTableModel;
@@ -202,6 +207,8 @@ class CodeExplorerConfigurator extends JPanel {
                 locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
             rules.setText(config.getConfigurationRules());
+            Rectangle rect = configTable.getCellRect(selectedRow, 0, true);
+            configTable.scrollRectToVisible(rect);
         }
         else
             rules.setText("");
@@ -589,4 +596,22 @@ class CodeExplorerConfigurator extends JPanel {
     private CodeExplorerConfigurations explorerConfigurations() {
         return codeProjectController.explorerConfigurations();
     }
+
+
+    @Override
+    public void afterMapChange(MapModel oldMap, MapModel newMap) {
+        if(! (newMap instanceof CodeMap))
+            return;
+        CodeExplorerConfiguration configuration = ((CodeMap)newMap).getConfiguration();
+        if(! (configuration instanceof UserDefinedCodeExplorerConfiguration)) {
+            return;
+        }
+        String projectName = ((UserDefinedCodeExplorerConfiguration)configuration).getProjectName();
+        for(int row = 0; row < configTable.getRowCount(); row++) {
+            if(projectName.equals(configTable.getValueAt(row, 0)))
+                configTable.getSelectionModel().setSelectionInterval(row, row);
+        }
+    }
+
+
 }

@@ -101,12 +101,17 @@ public class CodeProjectController implements IExtension {
 	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
         informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
 
-	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
+	    Controller controller = modeController.getController();
+        controller.getViewController().insertComponentIntoSplitPane(informationPanel);
 	    informationPanel.setVisible(true);
 	    informationPanel.revalidate();
+
+	    controller.getMapViewManager().addMapSelectionListener(configurator);
 	}
 
     private void hideControlPanel() {
+        Controller controller = modeController.getController();
+        controller.getMapViewManager().removeMapSelectionListener(configurator);
         modeController.getController().getViewController().removeSplitPane();
         informationPanel = null;
         configurator = null;
