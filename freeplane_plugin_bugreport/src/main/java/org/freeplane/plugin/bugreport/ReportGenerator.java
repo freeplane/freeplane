@@ -228,7 +228,7 @@ public class ReportGenerator extends StreamHandler {
 				}
 			});
 		}
-		if (!isLoggable(record)) {
+		if (! (isLoggable(record) && record.getLoggerName().equals("org.freeplane"))) {
 			return;
 		}
 
