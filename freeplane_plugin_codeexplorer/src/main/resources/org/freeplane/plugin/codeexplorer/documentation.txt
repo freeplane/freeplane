@@ -1,0 +1,48 @@
+Rule Format:
+
+Define rules one per line in the following formats:
+  [command] [originPattern] [direction] [targetPattern]
+  classpath [path]
+  ignore class [classPattern]
+  import interface [classPattern]
+  import annotation [classPattern]
+  import annotation [classPattern].[methodName]()
+  slice by [classPattern]
+
+Commands: allow, forbid, ignore, slice by
+   - The commands 'allow', 'forbid', and 'ignore' are for dependency management. The 'slice by' command partitions JavaClasses based on class patterns.
+Direction: ->, ->v, ->^
+   - Indicates dependency direction between origin and target patterns.
+Patterns: use AspectJ-like syntax for package and class matching.
+Path: defines additional segments for root directory paths in the 'locations' table.
+ClassPattern: used for matching class names, with broader matching for 'ignore class' commands.
+
+Locations Table:
+- Specifies project root directories. Classpath entries append paths to these roots.
+
+Default Classpath Behavior:
+- Defaults depend on the presence of 'pom.xml' or 'build.gradle', or default to the current directory.
+
+Comments:
+- Lines starting with '#' or '//' are ignored.
+
+Examples:
+  allow *.service.* -> *.repository.*
+  forbid *.*.controller*.. ->^ ..model..
+  ignore ..util.. ->v ..*Helper..
+  classpath /target/classes
+  ignore class com.example..*ServiceImpl..
+  import interface java.io.Serializable
+  import interface java.util.List
+  import annotation com.example..*Annotation
+  import annotation com.example..*Annotation.*.value()
+  slice by ..model..*(Repository|Service)
+
+Slice by [classPattern]:
+- Partitions JavaClasses into slices based on class patterns, with slices defined by capturing groups within the class pattern. If no capturing groups are defined, a single slice results.
+
+Important Note for 'Slice by':
+- When the 'slice by' command is used, classes that do not match the specified classPattern are ignored. This ensures that only relevant classes are included in the slices, allowing for focused and efficient analysis and management of dependencies and structure within the specified slices.
+
+Note:
+- 'Classpath' lines enhance root directory definitions. The 'ignore class' command broadens class inclusion, and the 'allow', 'forbid', and 'ignore' commands dictate dependency management. The 'slice by' command offers granular control over code structuring through class pattern-based partitioning.

@@ -53,6 +53,15 @@ public abstract class CodeNode extends NodeModel {
             else
                 return javaClass;
     }
+    public static JavaClass findEnclosingTopLevelClass(JavaClass javaClass) {
+        if (javaClass.isNestedClass())
+            return findEnclosingTopLevelClass(javaClass.getEnclosingClass().get());
+        else
+            if(javaClass.isArray())
+                return findEnclosingTopLevelClass(javaClass.getBaseComponentType());
+            else
+                return javaClass;
+    }
 
     public static boolean hasValidTopLevelClass(JavaClass javaClass) {
         if(javaClass.isArray())
@@ -120,7 +129,7 @@ public abstract class CodeNode extends NodeModel {
 
         if(! annotationMatcher.isEmpty()) {
             getAnnotations().forEach(annotation -> {
-                String annotationName = ClassNode.nodeText(annotation.getRawType());
+                String annotationName = ClassNode.classNameWithEnclosingClasses(annotation.getRawType());
                 annotation.getProperties().entrySet().stream()
                 .filter(attributeEntry -> annotationMatcher.matches(annotation, attributeEntry.getKey()))
                 .forEach(attributeEntry -> addAnnotationAttributes(attributes, "@" +annotationName, attributeEntry.getKey(), attributeEntry.getValue()));
@@ -130,7 +139,7 @@ public abstract class CodeNode extends NodeModel {
             });
             getInterfaces().forEach(javaInterface -> {
                 final JavaClass javaClass = javaInterface.toErasure();
-                String interfaceName = ClassNode.nodeText(javaClass);
+                String interfaceName = ClassNode.classNameWithEnclosingClasses(javaClass);
                  if(annotationMatcher.matches(javaClass))
                     addAnnotationAttributes(attributes, "interface", "value", interfaceName);
             });

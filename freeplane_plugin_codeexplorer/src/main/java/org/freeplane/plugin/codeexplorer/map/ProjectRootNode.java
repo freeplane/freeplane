@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.freeplane.core.util.LogUtils;
@@ -97,15 +98,19 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
                     new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue(), true))
                 .collect(Collectors.toList());
         GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
+        Integer[] subrojectIndices = IntStream.range(0, subprojectsById.size())
+                .mapToObj(Integer::valueOf)
+                .toArray(Integer[]::new);
+
         nodes.forEach(node -> {
-            childNodes.addNode(node.subprojectIndex);
+            childNodes.addNode(subrojectIndices[node.subprojectIndex]);
             DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
             Map<Integer, Long> referencedSubprojects = node.getOutgoingDependenciesWithKnownTargets()
                     .map(filter::knownDependency)
                     .map(Dependency::getTargetClass)
-                    .collect(Collectors.groupingBy(this::subprojectIndexOf, Collectors.counting()));
+                    .collect(Collectors.groupingBy(t -> subrojectIndices[subprojectIndexOf(t)], Collectors.counting()));
             referencedSubprojects.entrySet()
-            .forEach(e -> childNodes.addEdge(node.subprojectIndex, e.getKey(), e.getValue()));
+            .forEach(e -> childNodes.addEdge(subrojectIndices[node.subprojectIndex], e.getKey(), e.getValue()));
         });
         Comparator<Set<Integer>> comparingByReversedClassCount = Comparator.comparing(
                 indices -> -indices.stream()

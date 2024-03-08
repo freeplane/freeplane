@@ -84,8 +84,8 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             CodeDependency row = allDependencies.get(rowIndex);
             switch (columnIndex) {
                 case 0: return row.describeVerdict();
-                case 1: return ClassNode.nodeText(row.getOriginClass());
-                case 2: return ClassNode.nodeText(row.getTargetClass());
+                case 1: return ClassNode.classNameWithEnclosingClasses(row.getOriginClass());
+                case 2: return ClassNode.classNameWithEnclosingClasses(row.getTargetClass());
                 case 3: return row.getDescription();
                 default: return null;
             }

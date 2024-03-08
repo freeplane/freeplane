@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.Icon;
@@ -451,4 +452,14 @@ public abstract class ResourceController {
     abstract public Properties getSecuredProperties();
 
     abstract public void secureProperty(String key);
+
+    public String loadString(String path) {
+    	try(Scanner s = new Scanner(getResourceStream(path))){
+    		s.useDelimiter("\\A");
+    		return s.hasNext() ? s.next() : "";
+    	} catch (IOException e) {
+    		LogUtils.severe(e);
+    		return "";
+    	}
+    }
 }

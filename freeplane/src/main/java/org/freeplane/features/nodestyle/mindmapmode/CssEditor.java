@@ -2,8 +2,6 @@ package org.freeplane.features.nodestyle.mindmapmode;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.io.IOException;
-import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -24,7 +22,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.UndoEnabler;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.mindmapmode.styleeditorpanel.IconFont;
@@ -34,18 +31,7 @@ class CssEditor {
 	private static final Dimension PREFERRED_SCROLL_PANE_SIZE = new Dimension(2 * PREFERRED_SCROLL_PANE_HEIGHT,
 			PREFERRED_SCROLL_PANE_HEIGHT);
 	private String newCss;
-	private static final String previewHtml = loadPreview();
-	private static String loadPreview() {
-		try(Scanner s = new Scanner(ResourceController.getResourceController().getResourceStream("/preview/cssPreview.html"))){
-			s.useDelimiter("\\A");
-			return s.hasNext() ? s.next() : "";
-		} catch (IOException e) {
-			LogUtils.severe(e);
-			return "";
-		}
-	}
-
-
+	private static final String previewHtml = ResourceController.getResourceController().loadString("/preview/cssPreview.html");
 	private final JTextArea editor;
 	private final Box box;
 	private ScaledEditorKit kit;

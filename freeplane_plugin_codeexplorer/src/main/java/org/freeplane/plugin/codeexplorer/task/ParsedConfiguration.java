@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyRule;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
@@ -19,55 +20,7 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import com.tngtech.archunit.core.importer.ImportOption;
 
 public class ParsedConfiguration {
-    public static final String HELP = "Rule Format:\n"
-            + "-> Rules are defined one per line in the following formats:\n"
-            + "\n"
-            + "  [command] [originPattern] [direction] [targetPattern]\n"
-            + "  classpath [path]\n"
-            + "  ignore class [classPattern]\n"
-            + "  import interface [classPattern]\n"
-            + "  import annotation [classPattern]\n"
-            + "  import annotation [classPattern].[methodName]()\n"
-            + "\n"
-            + "-> Commands (Related to Dependency Rules): allow, forbid, ignore\n"
-            + "   - 'allow', 'forbid', 'ignore' commands are used to define rules for managing dependencies between different parts of the code.\n"
-            + "-> Direction: ->, ->v, ->^ (representing bidirectional, downward, upward respectively)\n"
-            + "   - Specifies the direction of dependency between the origin and target patterns.\n"
-            + "-> Patterns: follow AspectJ-like syntax for matching package names\n"
-            + "-> Path: additional path segment to be appended to each root directory defined in the 'locations' table.\n"
-            + "-> ClassPattern: same syntax as originPattern for matching class names\n"
-            + "   - Note: For 'ignore class', '..' is implicitly added at the start of the pattern if not already present, ensuring a broader match.\n"
-            + "\n"
-            + "Locations Table:\n"
-            + "-> The 'locations' table defines the root directories for the project.\n"
-            + "-> The 'classpath' lines specify additional path segments to be appended to these root directories, resulting in paths like '/root/target/classes'.\n"
-            + "\n"
-            + "Default Classpath Behavior:\n"
-            + "-> If no 'classpath' elements are given:\n"
-            + "   - If the location directory contains 'pom.xml', defaults to appending 'target/classes'.\n"
-            + "   - If the location directory contains 'build.gradle', defaults to appending 'build/classes'.\n"
-            + "   - Otherwise, defaults to appending the current directory ('.').\n"
-            + "\n"
-            + "Comments:\n"
-            + "-> Lines starting with '#' or '//' are considered comments and ignored.\n"
-            + "\n"
-            + "Examples:\n"
-            + "\n"
-            + "  allow *.service.* -> *.repository.*\n"
-            + "  forbid *.*.controller*.. ->^ ..model..\n"
-            + "  ignore ..util.. ->v ..*Helper..\n"
-            + "  classpath /target/classes\n"
-            + "  ignore class com.example..*ServiceImpl..\n"
-            + "  import interface java.io.Serializable\n"
-            + "  import interface java.util.List\n"
-            + "  import annotation com.example..*Annotation\n"
-            + "  import annotation com.example..*Annotation.*.value()\n"
-            + "\n"
-            + "Note:\n"
-            + "-> 'classpath' lines augment the root directories defined in the 'locations' table.\n"
-            + "-> The 'ignore class' command is designed to include a broader range of classes by implicitly adding '..' at the start of the pattern.\n"
-            + "-> The commands 'allow', 'forbid', and 'ignore' specifically dictate how different code segments (e.g., packages, classes) can depend on each other.\n"
-            + "";
+    public static final String HELP = ResourceController.getResourceController().loadString("/org/freeplane/plugin/codeexplorer/documentation.txt");
 
      private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
 
@@ -92,10 +45,14 @@ public class ParsedConfiguration {
     private static final Pattern IMPORTED_ANNOTATION_PATTERN = Pattern.compile(
             "^\\s*import\\s+(annotation|interface)\\s+(" + CLASS_PATTERN + ")\\s*$");
 
+    private static final Pattern SLICE_MATCHER_PATTERN = Pattern.compile(
+            "^\\s*slice\\s+by\\s+(" + CLASS_PATTERN + ")\\s*$");
+
     private final List<DependencyRule> rules;
     private final ClassMatcher ignoredClasses;
     private final AnnotationMatcher annotationMatcher;
     private final List<String> subpaths;
+    private final List<String> sliceMatchers;
 
 
 
@@ -104,6 +61,7 @@ public class ParsedConfiguration {
         List<String> ignoredClasses = new ArrayList<>();
         List<String> importedAnnotations = new ArrayList<>();
         List<String> subpaths = new ArrayList<>();
+        List<String> sliceMatchers = new ArrayList<>();
         String[] dslRules = dsl.split("\\n\\s*");
 
         for (String dslRuleLine : dslRules) {
@@ -130,15 +88,20 @@ public class ParsedConfiguration {
                     if (ignoredClassMatcher.find()) {
                         ignoredClasses.add(ignoredClassMatcher.group(1));
                     } else {
-                        Matcher importedAnnotationMatcher = IMPORTED_ANNOTATION_PATTERN.matcher(dslRule);
-                        if(importedAnnotationMatcher.find()) {
-                            final String annotationPattern = importedAnnotationMatcher.group(2);
-                            if(annotationPattern.endsWith("()") && importedAnnotationMatcher.group(1).equals("interface"))
+                        Matcher slicePatternMatcher = SLICE_MATCHER_PATTERN.matcher(dslRule);
+                        if (slicePatternMatcher.find()) {
+                            sliceMatchers.add(slicePatternMatcher.group(1));
+                        } else {
+                            Matcher importedAnnotationMatcher = IMPORTED_ANNOTATION_PATTERN.matcher(dslRule);
+                            if(importedAnnotationMatcher.find()) {
+                                final String annotationPattern = importedAnnotationMatcher.group(2);
+                                if(annotationPattern.endsWith("()") && importedAnnotationMatcher.group(1).equals("interface"))
                                 throw new IllegalArgumentException("Invalid rule " + dslRule);
                             importedAnnotations.add(annotationPattern);
                         }
                         else
                             throw new IllegalArgumentException("Invalid rule " + dslRule);
+                        }
                     }
                 }
             }
@@ -148,6 +111,7 @@ public class ParsedConfiguration {
         this.ignoredClasses = new ClassMatcher(ignoredClasses);
         this.annotationMatcher = new AnnotationMatcher(importedAnnotations);
         this.subpaths = subpaths;
+        this.sliceMatchers = sliceMatchers;
     }
 
     public DependencyRuleJudge judge() {
@@ -159,7 +123,7 @@ public class ParsedConfiguration {
     }
 
     public DirectoryMatcher directoryMatcher(Collection<File> locations) {
-        return new DirectoryMatcher(locations, subpaths);
+        return new DirectoryMatcher(locations, subpaths, sliceMatchers);
     }
 
     public ImportOption importOption() {

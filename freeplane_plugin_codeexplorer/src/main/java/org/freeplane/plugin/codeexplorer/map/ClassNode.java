@@ -43,7 +43,7 @@ public class ClassNode extends CodeNode {
         this.innerClasses = null;
 		setFolded(false);
 		setIdWithIndex(javaClass.getName());
-		String nodeText = nodeText(javaClass);
+		String nodeText = classNameWithEnclosingClasses(javaClass);
         setText(nodeText);
 	}
 
@@ -59,10 +59,10 @@ public class ClassNode extends CodeNode {
         return javaClass.getInterfaces();
     }
 
-    public static String nodeText(final JavaClass javaClass) {
+    public static String classNameWithEnclosingClasses(final JavaClass javaClass) {
         String simpleName = javaClass.getSimpleName();
         return javaClass.getEnclosingClass()
-                .map(ec -> nodeText(ec) + "." + simpleName)
+                .map(ec -> classNameWithEnclosingClasses(ec) + "." + simpleName)
                 .orElse(simpleName);
     }
 

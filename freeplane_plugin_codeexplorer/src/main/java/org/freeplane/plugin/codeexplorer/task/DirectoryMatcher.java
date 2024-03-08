@@ -5,6 +5,8 @@
  */
 package org.freeplane.plugin.codeexplorer.task;
 
+import static com.tngtech.archunit.core.domain.PackageMatcher.TO_GROUPS;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,20 +19,25 @@ import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.PackageMatcher;
 
 public class DirectoryMatcher implements SubprojectMatcher{
-    public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
+
+    public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
+    private final List<PackageMatcher> classMatchers;
 
-    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths) {
+    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<String> sliceClassIdentifiers) {
         this.locations = locations;
         this.subpaths = subpaths;
+        this.classMatchers = sliceClassIdentifiers.stream().map(PackageMatcher::of).collect(Collectors.toList());
         coreLocationsByPaths = new TreeMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
@@ -66,12 +73,32 @@ public class DirectoryMatcher implements SubprojectMatcher{
             return location;
     }
 
+    private Optional<String> identifierByClass(JavaClass javaClass) {
+        return classMatchers.stream().map(
+                packageMatcher ->  {
+                    final String qualifiedClassName =
+                            CodeNode.findEnclosingTopLevelClass(javaClass).getFullName();
+                    Optional<PackageMatcher.Result> result = packageMatcher.match(
+                            qualifiedClassName);
+                    return result.map(TO_GROUPS)
+                            .map(List::stream)
+                            .map(s -> s.collect(Collectors.joining(":")));})
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .findFirst();
+    }
+
 
     @Override
     public Optional<SubprojectIdentifier> subprojectIdentifier(JavaClass javaClass) {
         Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
         final Optional<String> optionalId = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
-        return optionalId.map(id -> new SubprojectIdentifier(id, toSubprojectName(id)));
+        if(! optionalId.isPresent())
+            return Optional.empty();
+        if(classMatchers.isEmpty())
+            return optionalId.map(id -> new SubprojectIdentifier(id, toSubprojectName(id)));
+        else
+            return identifierByClass(javaClass).map(id -> new SubprojectIdentifier(id, id));
     }
 
     public Collection<File> getImportedLocations() {
