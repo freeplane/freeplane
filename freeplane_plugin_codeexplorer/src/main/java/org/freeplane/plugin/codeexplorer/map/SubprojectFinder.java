@@ -31,8 +31,13 @@ interface SubprojectFinder {
         public int subprojectIndexOf(String subprojectId) {
             return -1;
         }
-    };
 
+        @Override
+        public boolean belongsToAnySubproject(JavaClass javaClass) {
+             return false;
+        }
+    };
+    boolean belongsToAnySubproject(JavaClass javaClass);
     int subprojectIndexOf(JavaClass javaClass);
     int subprojectIndexOf(String subprojectId);
     String getIdByIndex(int index);

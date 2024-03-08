@@ -149,6 +149,11 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     }
 
     @Override
+    public boolean belongsToAnySubproject(JavaClass javaClass) {
+        return subprojectMatcher.belongsToSubproject(javaClass);
+    }
+
+    @Override
     public int subprojectIndexOf(JavaClass javaClass) {
         Optional<String> classSourceLocation = subprojectMatcher.subprojectIdentifier(javaClass).map(SubprojectIdentifier::getId);
         Optional <Entry<Integer, String>> subprojectEntry = classSourceLocation

@@ -84,18 +84,17 @@ public abstract class CodeNode extends NodeModel {
         return ! jc.isAnonymousClass() && ! jc.isArray();
     }
 
-    private static boolean isTargetSourceKnown(Dependency dep) {
-        return isClassSourceKnown(dep.getTargetClass());
+    private boolean isTargetSourceKnown(Dependency dep) {
+        return belongsToAnySubproject(dep.getTargetClass());
     }
 
-    private static boolean isOriginSourceKnown(Dependency dep) {
-        return isClassSourceKnown(dep.getOriginClass());
+    private boolean isOriginSourceKnown(Dependency dep) {
+        return belongsToAnySubproject(dep.getOriginClass());
     }
 
-    static boolean isClassSourceKnown(JavaClass javaClass) {
-        return javaClass.getSource().isPresent();
+    public boolean belongsToAnySubproject(JavaClass javaClass) {
+        return getMap().belongsToSubproject(javaClass);
     }
-
 
     static boolean classesBelongToTheSamePackage(JavaClass first, JavaClass second) {
         return second.getPackage().equals(first.getPackage());
@@ -210,10 +209,10 @@ public abstract class CodeNode extends NodeModel {
     }
 
     public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(){
-        return getOutgoingDependencies().filter(CodeNode::isTargetSourceKnown);
+        return getOutgoingDependencies().filter(this::isTargetSourceKnown);
     }
     public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(){
-        return getIncomingDependencies().filter(CodeNode::isOriginSourceKnown);
+        return getIncomingDependencies().filter(this::isOriginSourceKnown);
     }
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(){
         return Stream.concat(getIncomingDependenciesWithKnownOrigins(), getOutgoingDependenciesWithKnownTargets());

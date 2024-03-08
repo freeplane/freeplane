@@ -11,4 +11,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 public interface SubprojectMatcher {
     Optional<SubprojectIdentifier> subprojectIdentifier(JavaClass javaClass);
+    default boolean belongsToSubproject(JavaClass javaClass) {
+        return subprojectIdentifier(javaClass).isPresent();
+    }
 }

@@ -116,6 +116,10 @@ public class CodeMap extends MMapModel {
 
 
 
+    public boolean belongsToSubproject(JavaClass javaClass) {
+        return subprojectFinder.belongsToAnySubproject(javaClass);
+    }
+
     public Stream<JavaClass> allClasses() {
         return subprojectFinder.allClasses();
     }
