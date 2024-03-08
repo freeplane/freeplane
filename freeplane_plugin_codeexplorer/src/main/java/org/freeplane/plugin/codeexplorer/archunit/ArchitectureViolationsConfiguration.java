@@ -22,7 +22,8 @@ import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import org.freeplane.plugin.codeexplorer.task.AnnotationMatcher;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.DependencyJudge;
-import org.freeplane.plugin.codeexplorer.task.LocationMatcher;
+import org.freeplane.plugin.codeexplorer.task.SubprojectIdentifier;
+import org.freeplane.plugin.codeexplorer.task.SubprojectMatcher;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -107,11 +108,11 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
     }
 
     @Override
-    public LocationMatcher createLocationMatcher() {
+    public SubprojectMatcher createSubprojectMatcher() {
         return this::location;
     }
 
-    private Optional<String> location(JavaClass javaClass) {
+    private Optional<SubprojectIdentifier> location(JavaClass javaClass) {
         return javaClass.getSource()
         .map(Source::getUri)
         .map(URI::toString)
@@ -119,7 +120,8 @@ public class ArchitectureViolationsConfiguration implements CodeExplorerConfigur
                 .filter(e -> e.getValue().contains(uri))
                 .findAny())
         .map(Entry::getKey)
-        .flatMap(s-> s.isEmpty() ? CodeNode.classSourceLocationOf(javaClass) : Optional.of(s));
+        .flatMap(s-> s.isEmpty() ? CodeNode.classSourceLocationOf(javaClass) : Optional.of(s))
+        .map(name -> new SubprojectIdentifier(name, name));
     }
 
     @Override

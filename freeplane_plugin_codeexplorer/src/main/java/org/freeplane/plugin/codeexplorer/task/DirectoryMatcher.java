@@ -15,12 +15,14 @@ import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public class DirectoryMatcher implements LocationMatcher{
+public class DirectoryMatcher implements SubprojectMatcher{
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
@@ -54,13 +56,22 @@ public class DirectoryMatcher implements LocationMatcher{
             return Collections.singletonList("build/classes");
         else
             return Collections.singletonList(".");
-
+    }
+    private static String toSubprojectName(String location) {
+        Pattern projectName = Pattern.compile("/([^/]+?)!?/(?:(?:bin|build|target)/.*)*$");
+        Matcher matcher = projectName.matcher(location);
+        if(matcher.find())
+            return matcher.group(1);
+        else
+            return location;
     }
 
+
     @Override
-    public Optional<String> coreLocationPath(JavaClass javaClass) {
+    public Optional<SubprojectIdentifier> subprojectIdentifier(JavaClass javaClass) {
         Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
-        return optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
+        final Optional<String> optionalId = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
+        return optionalId.map(id -> new SubprojectIdentifier(id, toSubprojectName(id)));
     }
 
     public Collection<File> getImportedLocations() {

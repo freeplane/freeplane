@@ -23,18 +23,18 @@ interface SubprojectFinder {
         }
 
         @Override
-        public String locationByIndex(int index) {
+        public String getIdByIndex(int index) {
            throw new IllegalArgumentException("No locations");
         }
 
         @Override
-        public int subprojectIndexOf(String location) {
+        public int subprojectIndexOf(String subprojectId) {
             return -1;
         }
     };
 
     int subprojectIndexOf(JavaClass javaClass);
-    int subprojectIndexOf(String location);
-    String locationByIndex(int index);
+    int subprojectIndexOf(String subprojectId);
+    String getIdByIndex(int index);
     Stream<JavaClass> allClasses();
 }

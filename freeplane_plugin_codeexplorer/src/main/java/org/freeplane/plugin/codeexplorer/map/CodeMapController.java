@@ -141,7 +141,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
                 JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
                 if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
                     projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
-                            projectMap, importedClasses, codeExplorerConfiguration.createLocationMatcher());
+                            projectMap, importedClasses, codeExplorerConfiguration.createSubprojectMatcher());
 
                     projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                     CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);

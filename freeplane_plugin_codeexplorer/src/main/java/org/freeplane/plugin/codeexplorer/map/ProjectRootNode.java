@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,7 +22,8 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
-import org.freeplane.plugin.codeexplorer.task.LocationMatcher;
+import org.freeplane.plugin.codeexplorer.task.SubprojectIdentifier;
+import org.freeplane.plugin.codeexplorer.task.SubprojectMatcher;
 import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -40,30 +39,30 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     }
     private static final Entry<Integer, String> UNKNOWN = new AbstractMap.SimpleEntry<>(-1, ":unknown:");
     private final JavaPackage rootPackage;
-    private final Map<String, Map.Entry<Integer, String>> subprojectsByLocation;
-    private final String[] locationsBySubrojectIndex;
+    private final Map<String, Map.Entry<Integer, String>> subprojectsById;
+    private final String[] idBySubrojectIndex;
     private final Set<String> badLocations;
     private JavaClasses classes;
-    private final LocationMatcher locationMatcher;
-    static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, LocationMatcher locationMatcher) {
-        ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, locationMatcher);
+    private final SubprojectMatcher subprojectMatcher;
+    static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, SubprojectMatcher subprojectMatcher) {
+        ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, subprojectMatcher);
         map.setRoot(projectRootNode);
         if(projectRootNode.getChildCount() > 20)
             projectRootNode.getChildren()
                 .forEach(node -> ((CodeNode)node).memoizeCodeDependencies());
         return projectRootNode;
     }
-    private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes, LocationMatcher locationMatcher) {
+    private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes, SubprojectMatcher subprojectMatcher) {
         super(map, 0);
         this.classes = classes;
-        this.locationMatcher = locationMatcher;
+        this.subprojectMatcher = subprojectMatcher;
         this.rootPackage = classes.getDefaultPackage();
         setID("projectRoot");
         setText(projectName);
 
-        subprojectsByLocation = new LinkedHashMap<>();
+        subprojectsById = new LinkedHashMap<>();
         classes.stream()
-        .map(locationMatcher::coreLocationPath)
+        .map(subprojectMatcher::subprojectIdentifier)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .forEach(this::addLocation);
@@ -75,33 +74,24 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
             ((UserDefinedCodeExplorerConfiguration)configuration).getUserContent().keySet()
             .forEach(this::addDeletedLocation);
         }
-        locationsBySubrojectIndex = new String[subprojectsByLocation.size()];
-        subprojectsByLocation.entrySet().forEach(e -> locationsBySubrojectIndex[e.getValue().getKey()] = e.getKey());
+        idBySubrojectIndex = new String[subprojectsById.size()];
+        subprojectsById.entrySet().forEach(e -> idBySubrojectIndex[e.getValue().getKey()] = e.getKey());
     }
     private void addDeletedLocation(String location) {
-        final Entry<Integer, String> locationEntry = addLocation(location);
+        final Entry<Integer, String> locationEntry = addLocation(new SubprojectIdentifier(location, location));
         final int childIndex = locationEntry.getKey();
         if(childIndex == getChildCount())
             insert(new DeletedContentNode(getMap(), "", childIndex, locationEntry.getValue()));
     }
 
-    private Entry<Integer, String> addLocation(String location) {
-        return subprojectsByLocation.computeIfAbsent(location,
-                key -> new AbstractMap.SimpleEntry<>(subprojectsByLocation.size(), toSubprojectName(location)));
-    }
-
-    private static String toSubprojectName(String location) {
-        Pattern projectName = Pattern.compile("/([^/]+?)!?/(?:(?:bin|build|target)/.*)*$");
-        Matcher matcher = projectName.matcher(location);
-        if(matcher.find())
-            return matcher.group(1);
-        else
-            return location;
+    private Entry<Integer, String> addLocation(SubprojectIdentifier identifier) {
+        return subprojectsById.computeIfAbsent(identifier.getId(),
+                key -> new AbstractMap.SimpleEntry<>(subprojectsById.size(), identifier.getName()));
     }
 
     private void initializeChildNodes() {
         List<NodeModel> children = super.getChildrenInternal();
-        List<PackageNode> nodes = subprojectsByLocation.values().stream()
+        List<PackageNode> nodes = subprojectsById.values().stream()
                 .parallel()
                 .map(e ->
                     new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue(), true))
@@ -160,9 +150,9 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
     @Override
     public int subprojectIndexOf(JavaClass javaClass) {
-        Optional<String> classSourceLocation = locationMatcher.coreLocationPath(javaClass);
+        Optional<String> classSourceLocation = subprojectMatcher.subprojectIdentifier(javaClass).map(SubprojectIdentifier::getId);
         Optional <Entry<Integer, String>> subprojectEntry = classSourceLocation
-                .map( s -> subprojectsByLocation.getOrDefault(s, UNKNOWN));
+                .map( s -> subprojectsById.getOrDefault(s, UNKNOWN));
 
         if(subprojectEntry.filter(UNKNOWN::equals).isPresent() && badLocations.add(classSourceLocation.get())) {
             LogUtils.info("Unknown class source location " + javaClass.getSource().get().getUri());
@@ -172,7 +162,7 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
 
     @Override
     public int subprojectIndexOf(String location) {
-        return subprojectsByLocation.getOrDefault(location, UNKNOWN).getKey().intValue();
+        return subprojectsById.getOrDefault(location, UNKNOWN).getKey().intValue();
     }
 
     @Override
@@ -181,9 +171,9 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     }
 
     @Override
-    public String locationByIndex(int index) {
-        if(index >= 0 && index < locationsBySubrojectIndex.length)
-            return locationsBySubrojectIndex[index];
+    public String getIdByIndex(int index) {
+        if(index >= 0 && index < idBySubrojectIndex.length)
+            return idBySubrojectIndex[index];
         else
             throw new IllegalArgumentException("Bad index " + index);
     }

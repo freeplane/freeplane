@@ -9,6 +9,6 @@ import java.util.Optional;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public interface LocationMatcher {
-    Optional<String> coreLocationPath(JavaClass javaClass);
+public interface SubprojectMatcher {
+    Optional<SubprojectIdentifier> subprojectIdentifier(JavaClass javaClass);
 }

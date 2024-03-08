@@ -110,8 +110,8 @@ public class CodeMap extends MMapModel {
         return subprojectFinder.subprojectIndexOf(javaClass);
     }
 
-    public int subprojectIndexOf(String location) {
-        return subprojectFinder.subprojectIndexOf(location);
+    public int subprojectIndexOf(String subprojectId) {
+        return subprojectFinder.subprojectIndexOf(subprojectId);
     }
 
 
@@ -167,8 +167,8 @@ public class CodeMap extends MMapModel {
         return codeExplorerConfiguration;
     }
 
-    public String locationByIndex(int index) {
-        return subprojectFinder.locationByIndex(index);
+    public String subprojectIdByIndex(int index) {
+        return subprojectFinder.getIdByIndex(index);
     }
 
     public void setCanBeSaved(boolean canBeSaved) {

@@ -44,7 +44,9 @@ public class CodeMapPersistenceManager extends UrlManager {
         NodeStream.of(map.getRootNode())
         .map(CodeNode.class::cast)
         .filter(CodeNodeUserContent.Factory.INSTANCE::hasCustomContent)
-        .forEach(node -> userDefinedCodeExplorerConfiguration.addUserContent(codemap.locationByIndex(node.subprojectIndex), CodeNodeUserContent.Factory.INSTANCE.contentOf(node)));
+        .forEach(node -> userDefinedCodeExplorerConfiguration.addUserContent(
+                codemap.subprojectIdByIndex(node.subprojectIndex),
+                CodeNodeUserContent.Factory.INSTANCE.contentOf(node)));
         userDefinedCodeExplorerConfiguration.getAttributeConfiguration()
             .setAttributeViewType(map.getExtension(AttributeRegistry.class).getAttributeViewType());
         return true;
@@ -67,8 +69,8 @@ public class CodeMapPersistenceManager extends UrlManager {
         map.setSaved(true);
     }
 
-    private void addToMap(CodeMap map, String location, Collection<CodeNodeUserContent> contentCollection) {
-        final int subprojectIndex = map.subprojectIndexOf(location);
+    private void addToMap(CodeMap map, String subprojectId, Collection<CodeNodeUserContent> contentCollection) {
+        final int subprojectIndex = map.subprojectIndexOf(subprojectId);
         contentCollection.forEach(content -> addToMap(map, subprojectIndex, content));
      }
 

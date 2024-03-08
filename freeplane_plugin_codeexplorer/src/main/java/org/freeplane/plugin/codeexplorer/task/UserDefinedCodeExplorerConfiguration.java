@@ -115,7 +115,7 @@ public class UserDefinedCodeExplorerConfiguration implements CodeExplorerConfigu
 
     @Override
     public JavaClasses importClasses() {
-        DirectoryMatcher directoryMatcher = createLocationMatcher();
+        DirectoryMatcher directoryMatcher = parsedConfiguration.directoryMatcher(projectLocations);
         Collection<Location> locations =
                 directoryMatcher.getImportedLocations().stream()
                 .map(File::toURI)
@@ -130,7 +130,7 @@ public class UserDefinedCodeExplorerConfiguration implements CodeExplorerConfigu
     }
 
     @Override
-    public DirectoryMatcher createLocationMatcher() {
+    public SubprojectMatcher createSubprojectMatcher() {
         return parsedConfiguration.directoryMatcher(projectLocations);
     }
 
