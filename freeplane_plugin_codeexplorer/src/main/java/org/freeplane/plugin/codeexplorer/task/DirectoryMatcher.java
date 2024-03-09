@@ -32,12 +32,12 @@ public class DirectoryMatcher implements SubprojectMatcher{
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
-    private final List<PackageMatcher> classMatchers;
+    private final List<PackageMatcher> groupMatchers;
 
-    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<String> sliceClassIdentifiers) {
+    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<String> groupIdentifiers) {
         this.locations = locations;
         this.subpaths = subpaths;
-        this.classMatchers = sliceClassIdentifiers.stream().map(PackageMatcher::of).collect(Collectors.toList());
+        this.groupMatchers = groupIdentifiers.stream().map(PackageMatcher::of).collect(Collectors.toList());
         coreLocationsByPaths = new TreeMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
@@ -74,7 +74,7 @@ public class DirectoryMatcher implements SubprojectMatcher{
     }
 
     private Optional<String> identifierByClass(JavaClass javaClass) {
-        return classMatchers.stream().map(
+        return groupMatchers.stream().map(
                 packageMatcher ->  {
                     final String qualifiedClassName =
                             CodeNode.findEnclosingTopLevelClass(javaClass).getFullName();
@@ -95,7 +95,7 @@ public class DirectoryMatcher implements SubprojectMatcher{
         final Optional<String> optionalId = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
         if(! optionalId.isPresent())
             return Optional.empty();
-        if(classMatchers.isEmpty())
+        if(groupMatchers.isEmpty())
             return optionalId.map(id -> new SubprojectIdentifier(id, toSubprojectName(id)));
         else
             return identifierByClass(javaClass).map(id -> new SubprojectIdentifier(id, id));
