@@ -15,13 +15,12 @@ import com.tngtech.archunit.core.domain.PackageMatcher;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.core.importer.Location;
 
-class ClassMatcher implements ImportOption{
-    private static final Pattern CLASS_LOCATION_PATTERN = Pattern.compile("/[\\w\\$/]+(?=\\.class$)");
-    private static final Pattern ANONYMOUS_CLASS_PATTERN = Pattern.compile("\\$\\d+$");
+class IgnoredClassMatcher implements ImportOption{
+    private static final Pattern CLASS_LOCATION_PATTERN = Pattern.compile("/[\\w/]+(?=\\$[\\w\\$/]+\\.class$)");
     private final List<PackageMatcher> matchers;
     private final List<String> patterns;
 
-    public ClassMatcher(List<String> patterns) {
+    public IgnoredClassMatcher(List<String> patterns) {
         super();
         this.patterns = patterns;
         this.matchers = patterns.stream()
@@ -36,13 +35,8 @@ class ClassMatcher implements ImportOption{
         Matcher matcher = CLASS_LOCATION_PATTERN.matcher(locationString);
         if (matcher.find()) {
             String fullClassName = matcher.group().replace('/', '.');
-            String namedClass;
-            Matcher classNameMatcher = ANONYMOUS_CLASS_PATTERN.matcher(fullClassName);
-            if(classNameMatcher.find()) {
-                namedClass = fullClassName.substring(1, classNameMatcher.start());
-            } else
-                namedClass =fullClassName.substring(1);
-            return anyMatch(namedClass.replace('$', '.'));
+            String namedClass = fullClassName.substring(1);
+            return anyMatch(namedClass);
         } else
             return false;
     }
@@ -64,7 +58,7 @@ class ClassMatcher implements ImportOption{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ClassMatcher other = (ClassMatcher) obj;
+        IgnoredClassMatcher other = (IgnoredClassMatcher) obj;
         return Objects.equals(patterns, other.patterns);
     }
 

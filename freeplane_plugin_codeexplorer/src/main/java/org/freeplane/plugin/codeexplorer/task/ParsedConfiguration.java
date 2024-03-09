@@ -50,7 +50,7 @@ public class ParsedConfiguration {
             "^\\s*(?:(ignore)\\s+)?group\\s+(" + CLASS_PATTERN + ")(?:\\s+as\\s+(.*?))?\\s*$");
 
     private final List<DependencyRule> rules;
-    private final ClassMatcher ignoredClasses;
+    private final IgnoredClassMatcher ignoredClasses;
     private final AnnotationMatcher annotationMatcher;
     private final List<String> subpaths;
     private final List<ClassNameMatcher> groupMatchers;
@@ -112,7 +112,7 @@ public class ParsedConfiguration {
 
         }
         this.rules = dependencyRules;
-        this.ignoredClasses = new ClassMatcher(ignoredClasses);
+        this.ignoredClasses = new IgnoredClassMatcher(ignoredClasses);
         this.annotationMatcher = new AnnotationMatcher(importedAnnotations);
         this.subpaths = subpaths;
         this.groupMatchers = groupMatchers;
