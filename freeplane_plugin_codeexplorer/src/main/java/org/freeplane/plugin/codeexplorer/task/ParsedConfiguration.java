@@ -27,7 +27,7 @@ public class ParsedConfiguration {
         HELP = currentController != null ? currentController.getResourceController().loadString("/org/freeplane/plugin/codeexplorer/documentation.txt") :  "";
     }
 
-     private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
+    private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
 
     private static final String DIRECTION_PATTERN = Pattern.quote(DependencyDirection.UP.notation)
             + "|" + Pattern.quote(DependencyDirection.DOWN.notation)
