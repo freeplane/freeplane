@@ -26,7 +26,7 @@ import org.freeplane.plugin.codeexplorer.map.CodeNode;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.PackageMatcher;
 
-public class DirectoryMatcher implements SubprojectMatcher{
+public class DirectoryMatcher implements GroupMatcher{
 
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
     private final SortedMap<String, String> coreLocationsByPaths;
@@ -64,7 +64,7 @@ public class DirectoryMatcher implements SubprojectMatcher{
         else
             return Collections.singletonList(".");
     }
-    private static String toSubprojectName(String location) {
+    private static String toGroupName(String location) {
         Pattern projectName = Pattern.compile("/([^/]+?)!?/(?:(?:bin|build|target)/.*)*$");
         Matcher matcher = projectName.matcher(location);
         if(matcher.find())
@@ -90,15 +90,17 @@ public class DirectoryMatcher implements SubprojectMatcher{
 
 
     @Override
-    public Optional<SubprojectIdentifier> subprojectIdentifier(JavaClass javaClass) {
+    public Optional<GroupIdentifier> groupIdentifier(JavaClass javaClass) {
         Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
         final Optional<String> optionalId = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
         if(! optionalId.isPresent())
             return Optional.empty();
         if(groupMatchers.isEmpty())
-            return optionalId.map(id -> new SubprojectIdentifier(id, toSubprojectName(id)));
+            return optionalId.map(id -> new GroupIdentifier(id, toGroupName(id)));
         else
-            return identifierByClass(javaClass).map(id -> new SubprojectIdentifier(id, id));
+            return identifierByClass(javaClass)
+                    .map(id -> id.isEmpty() ? "*" : id)
+                    .map(id -> new GroupIdentifier(id, id));
     }
 
     public Collection<File> getImportedLocations() {

@@ -130,7 +130,7 @@ public class UserDefinedCodeExplorerConfiguration implements CodeExplorerConfigu
     }
 
     @Override
-    public SubprojectMatcher createSubprojectMatcher() {
+    public GroupMatcher createGroupMatcher() {
         return parsedConfiguration.directoryMatcher(projectLocations);
     }
 

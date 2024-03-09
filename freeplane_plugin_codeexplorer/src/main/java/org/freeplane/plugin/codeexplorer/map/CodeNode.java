@@ -38,7 +38,7 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 public abstract class CodeNode extends NodeModel {
 
-    protected final int subprojectIndex;
+    protected final int groupIndex;
 
     static String formatClassCount(long classCount) {
         return " (" + classCount + (classCount == 1 ? " class)" : " classes)");
@@ -81,8 +81,8 @@ public abstract class CodeNode extends NodeModel {
         return hasValidTopLevelClass(dependency.getOriginClass()) && hasValidTopLevelClass(dependency.getTargetClass());
     }
 
-    static String idWithSubprojectIndex(String idWithoutIndex, int subprojectIndex) {
-        return idWithoutIndex + "[" + subprojectIndex + "]";
+    static String idWithGroupIndex(String idWithoutIndex, int groupIndex) {
+        return idWithoutIndex + "[" + groupIndex + "]";
     }
 
     static JavaClass getTargetNodeClass(Dependency dependency) {
@@ -94,15 +94,15 @@ public abstract class CodeNode extends NodeModel {
     }
 
     private boolean isTargetSourceKnown(Dependency dep) {
-        return belongsToAnySubproject(dep.getTargetClass());
+        return belongsToAnyGroup(dep.getTargetClass());
     }
 
     private boolean isOriginSourceKnown(Dependency dep) {
-        return belongsToAnySubproject(dep.getOriginClass());
+        return belongsToAnyGroup(dep.getOriginClass());
     }
 
-    public boolean belongsToAnySubproject(JavaClass javaClass) {
-        return getMap().belongsToSubproject(javaClass);
+    public boolean belongsToAnyGroup(JavaClass javaClass) {
+        return getMap().belongsToGroup(javaClass);
     }
 
     static boolean classesBelongToTheSamePackage(JavaClass first, JavaClass second) {
@@ -113,9 +113,9 @@ public abstract class CodeNode extends NodeModel {
         return classesBelongToTheSamePackage(dependency.getOriginClass(), dependency.getTargetClass());
     }
 
-    CodeNode(CodeMap map,  int subprojectIndex) {
+    CodeNode(CodeMap map,  int groupIndex) {
         super(map);
-        this.subprojectIndex = subprojectIndex;
+        this.groupIndex = groupIndex;
     }
 
     void updateAnnotations(AnnotationMatcher annotationMatcher) {
@@ -181,28 +181,28 @@ public abstract class CodeNode extends NodeModel {
     }
 
     void setIdWithIndex(String idWithoutIndex) {
-        setID(idWithSubprojectIndex(idWithoutIndex));
+        setID(idWithGroupIndex(idWithoutIndex));
     }
 
-    String idWithSubprojectIndex(String idWithoutIndex) {
-        return idWithSubprojectIndex(idWithoutIndex, subprojectIndex);
+    String idWithGroupIndex(String idWithoutIndex) {
+        return idWithGroupIndex(idWithoutIndex, groupIndex);
     }
 
-    boolean belongsToSameSubproject(JavaClass javaClass) {
-        return hasValidTopLevelClass(javaClass) && validClassBelongsToSameSubproject(javaClass);
+    boolean belongsToSameGroup(JavaClass javaClass) {
+        return hasValidTopLevelClass(javaClass) && validClassBelongsToSameGroup(javaClass);
     }
 
-    private boolean validClassBelongsToSameSubproject(JavaClass javaClass) {
-        int anotherSubprojectIndex = subprojectIndexOf(javaClass);
-        return anotherSubprojectIndex == subprojectIndex;
+    private boolean validClassBelongsToSameGroup(JavaClass javaClass) {
+        int anotherGroupIndex = groupIndexOf(javaClass);
+        return anotherGroupIndex == groupIndex;
     }
 
-    int subprojectIndexOf(JavaClass javaClass) {
-        return getMap().subprojectIndexOf(javaClass);
+    int groupIndexOf(JavaClass javaClass) {
+        return getMap().groupIndexOf(javaClass);
     }
 
-    boolean belongsToOtherSubproject(JavaClass javaClass) {
-        return hasValidTopLevelClass(javaClass) && ! validClassBelongsToSameSubproject(javaClass);
+    boolean belongsToOtherGroup(JavaClass javaClass) {
+        return hasValidTopLevelClass(javaClass) && ! validClassBelongsToSameGroup(javaClass);
     }
 
     abstract HasName getCodeElement();

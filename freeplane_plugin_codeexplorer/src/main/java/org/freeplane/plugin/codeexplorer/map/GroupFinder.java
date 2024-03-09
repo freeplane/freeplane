@@ -9,11 +9,11 @@ import java.util.stream.Stream;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-interface SubprojectFinder {
-    SubprojectFinder EMPTY = new SubprojectFinder() {
+interface GroupFinder {
+    GroupFinder EMPTY = new GroupFinder() {
 
         @Override
-        public int subprojectIndexOf(JavaClass javaClass) {
+        public int groupIndexOf(JavaClass javaClass) {
             return -1;
         }
 
@@ -28,18 +28,18 @@ interface SubprojectFinder {
         }
 
         @Override
-        public int subprojectIndexOf(String subprojectId) {
+        public int groupIndexOf(String groupId) {
             return -1;
         }
 
         @Override
-        public boolean belongsToAnySubproject(JavaClass javaClass) {
+        public boolean belongsToAnyGroup(JavaClass javaClass) {
              return false;
         }
     };
-    boolean belongsToAnySubproject(JavaClass javaClass);
-    int subprojectIndexOf(JavaClass javaClass);
-    int subprojectIndexOf(String subprojectId);
+    boolean belongsToAnyGroup(JavaClass javaClass);
+    int groupIndexOf(JavaClass javaClass);
+    int groupIndexOf(String groupId);
     String getIdByIndex(int index);
     Stream<JavaClass> allClasses();
 }

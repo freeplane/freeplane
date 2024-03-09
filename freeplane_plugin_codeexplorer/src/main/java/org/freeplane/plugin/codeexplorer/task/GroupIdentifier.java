@@ -5,10 +5,10 @@
  */
 package org.freeplane.plugin.codeexplorer.task;
 
-public class SubprojectIdentifier {
+public class GroupIdentifier {
     private final String id;
     private final String name;
-    public SubprojectIdentifier(String id, String name) {
+    public GroupIdentifier(String id, String name) {
         super();
         this.id = id;
         this.name = name;

@@ -23,8 +23,8 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
-import org.freeplane.plugin.codeexplorer.task.SubprojectIdentifier;
-import org.freeplane.plugin.codeexplorer.task.SubprojectMatcher;
+import org.freeplane.plugin.codeexplorer.task.GroupIdentifier;
+import org.freeplane.plugin.codeexplorer.task.GroupMatcher;
 import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -33,84 +33,84 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
-class ProjectRootNode extends CodeNode implements SubprojectFinder{
+class ProjectRootNode extends CodeNode implements GroupFinder{
     static final String UI_ICON_NAME = "code_project";
     static {
         IconStoreFactory.INSTANCE.createStateIcon(ProjectRootNode.UI_ICON_NAME, "code/homeFolder.svg");
     }
     private static final Entry<Integer, String> UNKNOWN = new AbstractMap.SimpleEntry<>(-1, ":unknown:");
     private final JavaPackage rootPackage;
-    private final Map<String, Map.Entry<Integer, String>> subprojectsById;
+    private final Map<String, Map.Entry<Integer, String>> groupsById;
     private final String[] idBySubrojectIndex;
     private final Set<String> badLocations;
     private JavaClasses classes;
-    private final SubprojectMatcher subprojectMatcher;
-    static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, SubprojectMatcher subprojectMatcher) {
-        ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, subprojectMatcher);
+    private final GroupMatcher groupMatcher;
+    static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, GroupMatcher groupMatcher) {
+        ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, groupMatcher);
         map.setRoot(projectRootNode);
         if(projectRootNode.getChildCount() > 20)
             projectRootNode.getChildren()
                 .forEach(node -> ((CodeNode)node).memoizeCodeDependencies());
         return projectRootNode;
     }
-    private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes, SubprojectMatcher subprojectMatcher) {
+    private ProjectRootNode(String projectName, CodeMap map, JavaClasses classes, GroupMatcher groupMatcher) {
         super(map, 0);
         this.classes = classes;
-        this.subprojectMatcher = subprojectMatcher;
+        this.groupMatcher = groupMatcher;
         this.rootPackage = classes.getDefaultPackage();
         setID("projectRoot");
         setText(projectName);
 
-        subprojectsById = new LinkedHashMap<>();
+        groupsById = new LinkedHashMap<>();
         classes.stream()
-        .map(subprojectMatcher::subprojectIdentifier)
+        .map(groupMatcher::groupIdentifier)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .forEach(this::addLocation);
         badLocations = new HashSet<>();
-        map.setSubprojectFinder(this);
+        map.setGroupFinder(this);
         initializeChildNodes();
         final CodeExplorerConfiguration configuration = map.getConfiguration();
         if(configuration instanceof UserDefinedCodeExplorerConfiguration) {
             ((UserDefinedCodeExplorerConfiguration)configuration).getUserContent().keySet()
             .forEach(this::addDeletedLocation);
         }
-        idBySubrojectIndex = new String[subprojectsById.size()];
-        subprojectsById.entrySet().forEach(e -> idBySubrojectIndex[e.getValue().getKey()] = e.getKey());
+        idBySubrojectIndex = new String[groupsById.size()];
+        groupsById.entrySet().forEach(e -> idBySubrojectIndex[e.getValue().getKey()] = e.getKey());
     }
     private void addDeletedLocation(String location) {
-        final Entry<Integer, String> locationEntry = addLocation(new SubprojectIdentifier(location, location));
+        final Entry<Integer, String> locationEntry = addLocation(new GroupIdentifier(location, location));
         final int childIndex = locationEntry.getKey();
         if(childIndex == getChildCount())
             insert(new DeletedContentNode(getMap(), "", childIndex, locationEntry.getValue()));
     }
 
-    private Entry<Integer, String> addLocation(SubprojectIdentifier identifier) {
-        return subprojectsById.computeIfAbsent(identifier.getId(),
-                key -> new AbstractMap.SimpleEntry<>(subprojectsById.size(), identifier.getName()));
+    private Entry<Integer, String> addLocation(GroupIdentifier identifier) {
+        return groupsById.computeIfAbsent(identifier.getId(),
+                key -> new AbstractMap.SimpleEntry<>(groupsById.size(), identifier.getName()));
     }
 
     private void initializeChildNodes() {
         List<NodeModel> children = super.getChildrenInternal();
-        List<PackageNode> nodes = subprojectsById.values().stream()
+        List<PackageNode> nodes = groupsById.values().stream()
                 .parallel()
                 .map(e ->
                     new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue(), true))
                 .collect(Collectors.toList());
         GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
-        Integer[] subrojectIndices = IntStream.range(0, subprojectsById.size())
+        Integer[] subrojectIndices = IntStream.range(0, groupsById.size())
                 .mapToObj(Integer::valueOf)
                 .toArray(Integer[]::new);
 
         nodes.forEach(node -> {
-            childNodes.addNode(subrojectIndices[node.subprojectIndex]);
+            childNodes.addNode(subrojectIndices[node.groupIndex]);
             DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
-            Map<Integer, Long> referencedSubprojects = node.getOutgoingDependenciesWithKnownTargets()
+            Map<Integer, Long> referencedGroups = node.getOutgoingDependenciesWithKnownTargets()
                     .map(filter::knownDependency)
                     .map(Dependency::getTargetClass)
-                    .collect(Collectors.groupingBy(t -> subrojectIndices[subprojectIndexOf(t)], Collectors.counting()));
-            referencedSubprojects.entrySet()
-            .forEach(e -> childNodes.addEdge(subrojectIndices[node.subprojectIndex], e.getKey(), e.getValue()));
+                    .collect(Collectors.groupingBy(t -> subrojectIndices[groupIndexOf(t)], Collectors.counting()));
+            referencedGroups.entrySet()
+            .forEach(e -> childNodes.addEdge(subrojectIndices[node.groupIndex], e.getKey(), e.getValue()));
         });
         Comparator<Set<Integer>> comparingByReversedClassCount = Comparator.comparing(
                 indices -> -indices.stream()
@@ -121,8 +121,8 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
         List<List<Integer>> orderedPackages = childNodes.sortNodes(comparingByReversedClassCount
                 .thenComparing(SubgroupComparator.comparingByName(i -> nodes.get(i).getText())));
         for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
-            for (Integer subprojectIndex : orderedPackages.get(subgroupIndex)) {
-                final CodeNode node = nodes.get(subprojectIndex);
+            for (Integer groupIndex : orderedPackages.get(subgroupIndex)) {
+                final CodeNode node = nodes.get(groupIndex);
                 children.add(node);
                 node.setParent(this);
             }
@@ -154,25 +154,25 @@ class ProjectRootNode extends CodeNode implements SubprojectFinder{
     }
 
     @Override
-    public boolean belongsToAnySubproject(JavaClass javaClass) {
-        return subprojectMatcher.belongsToSubproject(javaClass);
+    public boolean belongsToAnyGroup(JavaClass javaClass) {
+        return groupMatcher.belongsToGroup(javaClass);
     }
 
     @Override
-    public int subprojectIndexOf(JavaClass javaClass) {
-        Optional<String> classSourceLocation = subprojectMatcher.subprojectIdentifier(javaClass).map(SubprojectIdentifier::getId);
-        Optional <Entry<Integer, String>> subprojectEntry = classSourceLocation
-                .map( s -> subprojectsById.getOrDefault(s, UNKNOWN));
+    public int groupIndexOf(JavaClass javaClass) {
+        Optional<String> classSourceLocation = groupMatcher.groupIdentifier(javaClass).map(GroupIdentifier::getId);
+        Optional <Entry<Integer, String>> groupEntry = classSourceLocation
+                .map( s -> groupsById.getOrDefault(s, UNKNOWN));
 
-        if(subprojectEntry.filter(UNKNOWN::equals).isPresent() && badLocations.add(classSourceLocation.get())) {
+        if(groupEntry.filter(UNKNOWN::equals).isPresent() && badLocations.add(classSourceLocation.get())) {
             LogUtils.info("Unknown class source location " + javaClass.getSource().get().getUri());
          }
-        return subprojectEntry.orElse(UNKNOWN).getKey().intValue();
+        return groupEntry.orElse(UNKNOWN).getKey().intValue();
     }
 
     @Override
-    public int subprojectIndexOf(String location) {
-        return subprojectsById.getOrDefault(location, UNKNOWN).getKey().intValue();
+    public int groupIndexOf(String location) {
+        return groupsById.getOrDefault(location, UNKNOWN).getKey().intValue();
     }
 
     @Override

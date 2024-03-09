@@ -37,8 +37,8 @@ public class ClassNode extends CodeNode {
     static final String CLASS_ICON_NAME = "code_class";
     static final String ENUM_ICON_NAME = "code_enum";
 
-	ClassNode(final JavaClass javaClass, final CodeMap map, int subprojectIndex) {
-		super(map, subprojectIndex);
+	ClassNode(final JavaClass javaClass, final CodeMap map, int groupIndex) {
+		super(map, groupIndex);
         this.javaClass = javaClass;
         this.innerClasses = null;
 		setFolded(false);
@@ -138,31 +138,31 @@ public class ClassNode extends CodeNode {
         cycleFinder.addNode(this);
         cycleFinder.stopSearchHere();
         cycleFinder.exploreGraph(Collections.singleton(this),
-                this::connectedTargetNodesInSubproject,
-                this::connectedOriginNodesInSubproject);
+                this::connectedTargetNodesInGroup,
+                this::connectedOriginNodesInGroup);
         LinkedHashSet<CodeNode> cycles = cycleFinder.findSimpleCycles().stream()
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
         return cycles;
     }
 
-    private Stream<CodeNode> connectedOriginNodesInSubproject(CodeNode node) {
+    private Stream<CodeNode> connectedOriginNodesInGroup(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInSubproject(originClasses);
+        return nodesContainedInGroup(originClasses);
     }
 
-    private Stream<CodeNode> connectedTargetNodesInSubproject(CodeNode node) {
+    private Stream<CodeNode> connectedTargetNodesInGroup(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInSubproject(targetClasses);
+        return nodesContainedInGroup(targetClasses);
     }
-    private Stream<CodeNode> nodesContainedInSubproject(Stream<JavaClass> classes) {
+    private Stream<CodeNode> nodesContainedInGroup(Stream<JavaClass> classes) {
         return classes
-        .filter(this::belongsToSameSubproject)
+        .filter(this::belongsToSameGroup)
         .map(CodeNode::findEnclosingNamedClass)
         .map(JavaClass::getName)
-        .map(this::idWithSubprojectIndex)
+        .map(this::idWithGroupIndex)
         .map(getMap()::getNodeForID)
         .map(CodeNode.class::cast);
     }

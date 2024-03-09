@@ -32,8 +32,8 @@ class ClassesNode extends CodeNode {
     static final String UI_SAME_PACKAGE_ICON_NAME = "code_same_package_classes";
     private final boolean samePackage;
 
-	public ClassesNode(final JavaPackage javaPackage, final CodeMap map, String name, boolean samePackage, int subprojectIndex) {
-		super(map, subprojectIndex);
+	public ClassesNode(final JavaPackage javaPackage, final CodeMap map, String name, boolean samePackage, int groupIndex) {
+		super(map, groupIndex);
 		this.javaPackage = javaPackage;
         this.samePackage = samePackage;
 		setIdWithIndex(javaPackage.getName() + NODE_ID_SUFFIX);
@@ -51,7 +51,7 @@ class ClassesNode extends CodeNode {
 
     private Stream<JavaClass> getClasses() {
         return javaPackage.getClasses().stream()
-                .filter(this::belongsToSameSubproject);
+                .filter(this::belongsToSameGroup);
     }
 
     @Override
@@ -73,7 +73,7 @@ class ClassesNode extends CodeNode {
                         .filter(dep -> goesOutsideEnclosingOriginClass(edgeStart, dep))
                         .map(filter::knownDependency)
                         .filter(CodeNode::classesBelongToTheSamePackage)
-                        .filter(dep -> belongsToSameSubproject(dep.getTargetClass()))
+                        .filter(dep -> belongsToSameGroup(dep.getTargetClass()))
                         .collect(Collectors.groupingBy(CodeNode::getTargetNodeClass, Collectors.counting()));
                 dependencies.entrySet().stream()
                 .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
@@ -82,7 +82,7 @@ class ClassesNode extends CodeNode {
             List<List<JavaClass>> orderedClasses = nodeSort.sortNodes(SubgroupComparator.comparingByName(HasName::getName));
             for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
                 for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
-                    final ClassNode node = new ClassNode(childClass, getMap(), subprojectIndex);
+                    final ClassNode node = new ClassNode(childClass, getMap(), groupIndex);
                     nodes.put(childClass, node);
                     children.add(node);
                     node.setParent(this);
@@ -113,7 +113,7 @@ class ClassesNode extends CodeNode {
                 .flatMap(c -> c.getDirectDependenciesFromSelf().stream())
                 .filter(dependency -> hasValidTopLevelClass(dependency.getTargetClass()))
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
-                        || subprojectIndexOf(dep.getTargetClass()) != subprojectIndex);
+                        || groupIndexOf(dep.getTargetClass()) != groupIndex);
     }
 
     @Override
@@ -122,7 +122,7 @@ class ClassesNode extends CodeNode {
                 .flatMap(c -> c.getDirectDependenciesToSelf().stream())
                 .filter(dependency -> hasValidTopLevelClass(dependency.getOriginClass()))
                 .filter(dep -> ! dep.getTargetClass().getPackage().equals(dep.getOriginClass().getPackage())
-                        || subprojectIndexOf(dep.getOriginClass()) != subprojectIndex);
+                        || groupIndexOf(dep.getOriginClass()) != groupIndex);
     }
 
 
@@ -165,7 +165,7 @@ class ClassesNode extends CodeNode {
                 )
                 .map(CodeNode::findEnclosingNamedClass)
                 .map(JavaClass::getName)
-                .map(this::idWithSubprojectIndex)
+                .map(this::idWithGroupIndex)
                 .map(getMap()::getNodeForID)
                 .map(ClassNode.class::cast)
                 .collect(Collectors.toSet());
@@ -175,20 +175,20 @@ class ClassesNode extends CodeNode {
     private Stream<ClassesNode> connectedOriginNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInSubproject(originClasses);
+        return nodesContainedInGroup(originClasses);
     }
 
     private Stream<ClassesNode> connectedTargetNodesInTheSameScope(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInSubproject(targetClasses);
+        return nodesContainedInGroup(targetClasses);
     }
-    private Stream<ClassesNode> nodesContainedInSubproject(Stream<JavaClass> classes) {
+    private Stream<ClassesNode> nodesContainedInGroup(Stream<JavaClass> classes) {
         return classes
-        .filter(this::belongsToSameSubproject)
+        .filter(this::belongsToSameGroup)
         .map(CodeNode::findEnclosingNamedClass)
         .map(JavaClass::getName)
-        .map(this::idWithSubprojectIndex)
+        .map(this::idWithGroupIndex)
         .map(getMap()::getNodeForID)
         .map(NodeModel::getParentNode)
         .map(ClassesNode.class::cast);

@@ -37,8 +37,8 @@ class PackageNode extends CodeNode {
     private final long classCount;
     private final boolean hasOwnClasses;
 
-    public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int subprojectIndex, boolean createAttributes) {
-        super(map, subprojectIndex);
+    public PackageNode(final JavaPackage javaPackage, final CodeMap map, String text, int groupIndex, boolean createAttributes) {
+        super(map, groupIndex);
         this.javaPackage = javaPackage;
         setIdWithIndex(javaPackage.getName());
         this.classCount = getClassesInTree().filter(CodeNode::isNamed).count();
@@ -63,7 +63,7 @@ class PackageNode extends CodeNode {
     private Stream<JavaClass> getClassesInTree(JavaPackage somePackage) {
         return somePackage.getClassesInPackageTree().stream()
                 .filter(CodeNode::hasValidTopLevelClass)
-                .filter(this::belongsToSameSubproject);
+                .filter(this::belongsToSameGroup);
     }
     private Stream<JavaClass> getClasses() {
         return getClasses(javaPackage);
@@ -71,7 +71,7 @@ class PackageNode extends CodeNode {
 
     private Stream<JavaClass> getClasses(JavaPackage somePackage) {
         return somePackage.getClasses().stream()
-                .filter(this::belongsToSameSubproject);
+                .filter(this::belongsToSameGroup);
     }
     private List<JavaPackage> relevantSubpackages(JavaPackage somePackage) {
         return somePackage.getSubpackages()
@@ -110,7 +110,7 @@ class PackageNode extends CodeNode {
 	        Stream<Dependency> packageDependencies = (childPackage != javaPackage
 	                ? getClassDependenciesFromPackageTree(childPackage)
 	                        : getClassDependenciesFromPackage(childPackage))
-	                .filter(dep -> belongsToSameSubproject(dep.getTargetClass()));
+	                .filter(dep -> belongsToSameGroup(dep.getTargetClass()));
             Map<JavaPackage, Long> dependencies = packageDependencies
 	                .map(filter::knownDependency)
 	                .collect(Collectors.groupingBy(this::getTargetChildNodePackage, Collectors.counting()));
@@ -166,12 +166,12 @@ class PackageNode extends CodeNode {
         boolean samePackage = childPackage == javaPackage;
         if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
             String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
-            return new ClassesNode(childPackage, getMap(), childName, samePackage, subprojectIndex);
+            return new ClassesNode(childPackage, getMap(), childName, samePackage, groupIndex);
         }
         else if(subpackages.size() == 1 && !getClasses(childPackage).anyMatch(x -> true))
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
-            return new PackageNode(childPackage, getMap(), parentName + childPackageName, subprojectIndex, false);
+            return new PackageNode(childPackage, getMap(), parentName + childPackageName, groupIndex, false);
     }
 
     private JavaPackage getTargetChildNodePackage(Dependency dep) {
@@ -202,18 +202,18 @@ class PackageNode extends CodeNode {
         return javaPackage.getParent().isPresent()
                 ? getClassDependenciesFromPackageTree(javaPackage)
                         .filter(dep -> CodeNode.hasValidTopLevelClass(dep.getTargetClass()))
-                : getSubprojectDependenciesFromPackageTree();
+                : getGroupDependenciesFromPackageTree();
     }
 
-    private Stream<Dependency> getSubprojectDependenciesFromPackageTree() {
-        return subprojectClasses()
+    private Stream<Dependency> getGroupDependenciesFromPackageTree() {
+        return groupClasses()
                 .flatMap(javaClass -> javaClass.getDirectDependenciesFromSelf().stream())
-                .filter(dep -> belongsToOtherSubproject(dep.getTargetClass()));
+                .filter(dep -> belongsToOtherGroup(dep.getTargetClass()));
     }
 
-    private Stream<JavaClass> subprojectClasses() {
+    private Stream<JavaClass> groupClasses() {
         return getMap().allClasses()
-                .filter(this::belongsToSameSubproject);
+                .filter(this::belongsToSameGroup);
     }
 
     @Override
@@ -221,13 +221,13 @@ class PackageNode extends CodeNode {
         return javaPackage.getParent().isPresent()
                 ? getClassDependenciesToPackageTree(javaPackage)
                         .filter(dep -> CodeNode.hasValidTopLevelClass(dep.getOriginClass()))
-                : getSubprojectDependenciesToPackageTree();
+                : getGroupDependenciesToPackageTree();
     }
 
-    private Stream<Dependency> getSubprojectDependenciesToPackageTree() {
-        return subprojectClasses()
+    private Stream<Dependency> getGroupDependenciesToPackageTree() {
+        return groupClasses()
                 .flatMap(javaClass -> javaClass.getDirectDependenciesToSelf().stream())
-                .filter(dep -> belongsToOtherSubproject(dep.getOriginClass()));
+                .filter(dep -> belongsToOtherGroup(dep.getOriginClass()));
     }
 
     @Override
@@ -239,7 +239,7 @@ class PackageNode extends CodeNode {
 
     @Override
     Set<CodeNode> findCyclicDependencies() {
-        String id = idWithSubprojectIndex(javaPackage.getName() + ".package");
+        String id = idWithGroupIndex(javaPackage.getName() + ".package");
         CodeNode classes = (CodeNode) getMap().getNodeForID(id);
         if(classes != null)
             return classes.findCyclicDependencies();

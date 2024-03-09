@@ -24,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
 
-    private static final Comparator<CodeNodeUserContent> COMPARING_USER_CONTENT_BY_ID = Comparator.comparing(CodeNodeUserContent::getNodeIdWithoutProjectIndex);
+    private static final Comparator<CodeNodeUserContent> COMPARING_USER_CONTENT_BY_ID = Comparator.comparing(CodeNodeUserContent::getNodeIdWithoutGroupIndex);
 
     public static class Factory {
         public static final Factory INSTANCE = new Factory();
@@ -37,8 +37,8 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
                     .filter(attribute -> ! attribute.isManaged())
                     .map(this::toCodeNodeAttribute)
                     .collect(Collectors.toList());
-            String idWithoutProjectIndex = node.isRoot() ? id : id.substring(0, id.lastIndexOf('['));
-            return new CodeNodeUserContent(idWithoutProjectIndex, details, attributes);
+            String idWithoutGroupIndex = node.isRoot() ? id : id.substring(0, id.lastIndexOf('['));
+            return new CodeNodeUserContent(idWithoutGroupIndex, details, attributes);
         }
 
         private CodeNodeDetails toCodeNodeDetails(DetailModel details) {
@@ -93,7 +93,7 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
      }
 
     @SerializedName("nodeId")
-    private String nodeIdWithoutProjectIndex;
+    private String nodeIdWithoutGroupIndex;
 
     @SerializedName("details")
     private Optional<CodeNodeDetails> details;
@@ -101,10 +101,10 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
     @SerializedName("attributes")
     private List<CodeNodeAttribute> attributes;
 
-    public CodeNodeUserContent(String nodeIdWithoutProjectIndex, Optional<CodeNodeDetails> details,
+    public CodeNodeUserContent(String nodeIdWithoutGroupIndex, Optional<CodeNodeDetails> details,
             List<CodeNodeAttribute> attributes) {
         super();
-        this.nodeIdWithoutProjectIndex = nodeIdWithoutProjectIndex;
+        this.nodeIdWithoutGroupIndex = nodeIdWithoutGroupIndex;
         this.details = details;
         this.attributes = attributes;
     }
@@ -117,8 +117,8 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
             attributes = Collections.emptyList();
     }
 
-    public String getNodeIdWithoutProjectIndex() {
-        return nodeIdWithoutProjectIndex;
+    public String getNodeIdWithoutGroupIndex() {
+        return nodeIdWithoutGroupIndex;
     }
 
     public Optional<CodeNodeDetails> getDetails() {
@@ -131,7 +131,7 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
 
     @Override
     public String toString() {
-        return "CodeNodeUserContent [nodeId=" + nodeIdWithoutProjectIndex + ", details=" + details + ", attributes="
+        return "CodeNodeUserContent [nodeId=" + nodeIdWithoutGroupIndex + ", details=" + details + ", attributes="
                 + attributes + "]";
     }
 
@@ -143,7 +143,7 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(nodeIdWithoutProjectIndex);
+        return Objects.hash(nodeIdWithoutGroupIndex);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class CodeNodeUserContent implements Comparable<CodeNodeUserContent> {
         if (getClass() != obj.getClass())
             return false;
         CodeNodeUserContent other = (CodeNodeUserContent) obj;
-        return Objects.equals(nodeIdWithoutProjectIndex, other.nodeIdWithoutProjectIndex);
+        return Objects.equals(nodeIdWithoutGroupIndex, other.nodeIdWithoutGroupIndex);
     }
 
 
