@@ -220,11 +220,11 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         configurationChange = ConfigurationChange.CODE_BASE;
     }
 
-    private void exploreSelectedConfiguration() {
+    private void exploreSelectedConfiguration(boolean reloadCodebase) {
         final UserDefinedCodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
         if(selectedConfiguration != null) {
             setConfigurationRules();
-            codeProjectController.exploreConfiguration(selectedConfiguration);
+            codeProjectController.exploreConfiguration(selectedConfiguration, reloadCodebase);
             configurationChange = ConfigurationChange.SAME;
         }
     }
@@ -415,7 +415,10 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         setConfigurationRules();
         switch(configurationChange) {
         case CODE_BASE:
-            exploreSelectedConfiguration();
+            exploreSelectedConfiguration(true);
+            break;
+        case GROUPS:
+            exploreSelectedConfiguration(false);
             break;
         case CONFIGURATION:
             codeProjectController.updateProjectConfiguration();
@@ -515,7 +518,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         applyButton.addActionListener(e ->applyConfigurationRules());
 
         JButton exploreConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
-        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration(true));
 
         JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());

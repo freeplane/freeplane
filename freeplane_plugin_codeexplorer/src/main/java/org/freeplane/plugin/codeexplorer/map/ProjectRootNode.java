@@ -43,7 +43,7 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
     private final Map<String, Map.Entry<Integer, String>> groupsById;
     private final String[] idBySubrojectIndex;
     private final Set<String> badLocations;
-    private JavaClasses classes;
+    private final JavaClasses classes;
     private final GroupMatcher groupMatcher;
     static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, GroupMatcher groupMatcher) {
         ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, groupMatcher);
@@ -178,6 +178,10 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
     @Override
     public Stream<JavaClass> allClasses() {
         return classes.stream();
+    }
+
+    JavaClasses getImportedClasses() {
+        return classes;
     }
 
     @Override

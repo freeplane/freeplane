@@ -158,18 +158,18 @@ public class CodeProjectController implements IExtension {
         if(configurator != null) {
             UserDefinedCodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
             if(selectedConfiguration != null)
-                exploreConfiguration(selectedConfiguration);
+                exploreConfiguration(selectedConfiguration, true);
         }
     }
 
     public void exploreConfiguration(final ArchitectureViolationsConfiguration configuration) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-        codeExplorer.explore(configuration);
+        codeExplorer.explore(configuration, true);
     }
 
-    void exploreConfiguration(UserDefinedCodeExplorerConfiguration selectedConfiguration) {
+    void exploreConfiguration(UserDefinedCodeExplorerConfiguration selectedConfiguration, boolean reloadCodebase) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-        codeExplorer.explore(selectedConfiguration);
+        codeExplorer.explore(selectedConfiguration, reloadCodebase);
     }
 
     public void saveConfiguration() {

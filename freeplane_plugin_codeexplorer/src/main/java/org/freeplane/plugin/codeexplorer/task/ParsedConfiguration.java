@@ -142,6 +142,8 @@ public class ParsedConfiguration {
         if(! rules.equals(previousConfiguration.rules)
                 || ! annotationMatcher.equals(previousConfiguration.annotationMatcher))
                 return ConfigurationChange.CONFIGURATION;
+        if(! groupMatchers.equals(previousConfiguration.groupMatchers))
+                return ConfigurationChange.GROUPS;
         return ConfigurationChange.SAME;
     }
 }
