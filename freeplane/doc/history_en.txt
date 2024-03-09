@@ -1,4 +1,11 @@
 ==============================
+1.11.12
+==============================
+Add PDF export to code explorer maps
+Group classes in code explorer using AspectJ like expressions
+Bug fixes
+
+==============================
 1.11.11
 ==============================
 Save user defined attributes and details on code explorer nodes
