@@ -5,8 +5,6 @@
  */
 package org.freeplane.plugin.codeexplorer.task;
 
-import static com.tngtech.archunit.core.domain.PackageMatcher.TO_GROUPS;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,12 +17,10 @@ import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.PackageMatcher;
 
 public class DirectoryMatcher implements GroupMatcher{
 
@@ -32,12 +28,12 @@ public class DirectoryMatcher implements GroupMatcher{
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
-    private final List<PackageMatcher> groupMatchers;
+    private final Collection<ClassNameMatcher> groupMatchers;
 
-    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<String> groupIdentifiers) {
+    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<ClassNameMatcher> groupMatchers) {
         this.locations = locations;
         this.subpaths = subpaths;
-        this.groupMatchers = groupIdentifiers.stream().map(PackageMatcher::of).collect(Collectors.toList());
+        this.groupMatchers = groupMatchers;
         coreLocationsByPaths = new TreeMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
@@ -74,18 +70,16 @@ public class DirectoryMatcher implements GroupMatcher{
     }
 
     private Optional<String> identifierByClass(JavaClass javaClass) {
-        return groupMatchers.stream().map(
-                packageMatcher ->  {
-                    final String qualifiedClassName =
-                            CodeNode.findEnclosingTopLevelClass(javaClass).getFullName();
-                    Optional<PackageMatcher.Result> result = packageMatcher.match(
-                            qualifiedClassName);
-                    return result.map(TO_GROUPS)
-                            .map(List::stream)
-                            .map(s -> s.collect(Collectors.joining(":")));})
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .findFirst();
+        for (ClassNameMatcher groupMatcher : groupMatchers) {
+            final String qualifiedClassName = CodeNode.findEnclosingTopLevelClass(javaClass).getFullName();
+            if(groupMatcher.isIgnored(qualifiedClassName))
+                return Optional.empty();
+            Optional<String> groupResult = groupMatcher.toGroup(qualifiedClassName);
+            if (groupResult.isPresent()) {
+                return groupResult;
+            }
+        }
+        return Optional.of("");
     }
 
 

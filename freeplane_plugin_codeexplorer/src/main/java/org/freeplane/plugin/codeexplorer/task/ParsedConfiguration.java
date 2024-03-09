@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,13 +47,13 @@ public class ParsedConfiguration {
             "^\\s*import\\s+(annotation|interface)\\s+(" + CLASS_PATTERN + ")\\s*$");
 
     private static final Pattern GROUP_PATTERN = Pattern.compile(
-            "^\\s*group\\s+by\\s+(" + CLASS_PATTERN + ")\\s*$");
+            "^\\s*(?:(ignore)\\s+)?group\\s+(" + CLASS_PATTERN + ")(?:\\s+as\\s+(.*?))?\\s*$");
 
     private final List<DependencyRule> rules;
     private final ClassMatcher ignoredClasses;
     private final AnnotationMatcher annotationMatcher;
     private final List<String> subpaths;
-    private final List<String> sliceMatchers;
+    private final List<ClassNameMatcher> groupMatchers;
 
 
 
@@ -61,7 +62,7 @@ public class ParsedConfiguration {
         List<String> ignoredClasses = new ArrayList<>();
         List<String> importedAnnotations = new ArrayList<>();
         List<String> subpaths = new ArrayList<>();
-        List<String> sliceMatchers = new ArrayList<>();
+        List<ClassNameMatcher> groupMatchers = new ArrayList<>();
         String[] dslRules = dsl.split("\\n\\s*");
 
         for (String dslRuleLine : dslRules) {
@@ -88,9 +89,12 @@ public class ParsedConfiguration {
                     if (ignoredClassMatcher.find()) {
                         ignoredClasses.add(ignoredClassMatcher.group(1));
                     } else {
-                        Matcher slicePatternMatcher = GROUP_PATTERN.matcher(dslRule);
-                        if (slicePatternMatcher.find()) {
-                            sliceMatchers.add(slicePatternMatcher.group(1));
+                        Matcher groupPatternMatcher = GROUP_PATTERN.matcher(dslRule);
+                        if (groupPatternMatcher.find()) {
+                            final boolean ignores = groupPatternMatcher.group(1) != null;
+                            final String pattern = groupPatternMatcher.group(2);
+                            final Optional<String> name = Optional.ofNullable(groupPatternMatcher.group(3));
+                            groupMatchers.add(new ClassNameMatcher(pattern, ignores, name));
                         } else {
                             Matcher importedAnnotationMatcher = IMPORTED_ANNOTATION_PATTERN.matcher(dslRule);
                             if(importedAnnotationMatcher.find()) {
@@ -111,7 +115,7 @@ public class ParsedConfiguration {
         this.ignoredClasses = new ClassMatcher(ignoredClasses);
         this.annotationMatcher = new AnnotationMatcher(importedAnnotations);
         this.subpaths = subpaths;
-        this.sliceMatchers = sliceMatchers;
+        this.groupMatchers = groupMatchers;
     }
 
     public DependencyRuleJudge judge() {
@@ -123,7 +127,7 @@ public class ParsedConfiguration {
     }
 
     public DirectoryMatcher directoryMatcher(Collection<File> locations) {
-        return new DirectoryMatcher(locations, subpaths, sliceMatchers);
+        return new DirectoryMatcher(locations, subpaths, groupMatchers);
     }
 
     public ImportOption importOption() {

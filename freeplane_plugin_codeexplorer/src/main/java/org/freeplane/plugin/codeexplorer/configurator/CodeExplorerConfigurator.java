@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -146,8 +147,12 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
         // Create a help text component and add it to the card panel
         JTextArea helpText = new JTextArea(ParsedConfiguration.HELP);
+        helpText.setLineWrap(true);
+        helpText.setWrapStyleWord(true);
         helpText.setEditable(false); // make it read-only if it's a text area
-        cardPanel.add(new JScrollPane(helpText), "Help");
+        cardPanel.add(new JScrollPane(helpText,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER), "Help");
 
         String rulesHelpHeaderText = TextUtils.getText("code.helplabel");
         String locationsHeaderText = TextUtils.getText("code.locations");
