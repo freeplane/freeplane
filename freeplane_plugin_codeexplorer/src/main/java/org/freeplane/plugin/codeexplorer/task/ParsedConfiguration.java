@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyDirection;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyRule;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
@@ -21,7 +21,11 @@ import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
 import com.tngtech.archunit.core.importer.ImportOption;
 
 public class ParsedConfiguration {
-    public static final String HELP = ResourceController.getResourceController().loadString("/org/freeplane/plugin/codeexplorer/documentation.txt");
+    public static final String HELP;
+    static {
+        final Controller currentController = Controller.getCurrentController();
+        HELP = currentController != null ? currentController.getResourceController().loadString("/org/freeplane/plugin/codeexplorer/documentation.txt") :  "";
+    }
 
      private static final String CLASS_PATTERN = "[\\w\\.\\|\\(\\)\\*\\[\\]]+";
 
