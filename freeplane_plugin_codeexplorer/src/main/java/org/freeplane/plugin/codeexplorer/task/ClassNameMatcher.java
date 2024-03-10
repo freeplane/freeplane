@@ -32,12 +32,12 @@ class ClassNameMatcher {
     }
 
     Optional<String> toGroup(String qualifiedClassName) {
-        if(name.isPresent())
-            return packageMatcher.matches(qualifiedClassName) ? name : Optional.empty();
-        else
-            return packageMatcher.match(qualifiedClassName).map(TO_GROUPS)
+        final Optional<String> joinedNameParts = packageMatcher.match(qualifiedClassName).map(TO_GROUPS)
                 .map(List::stream)
                 .map(s -> s.collect(Collectors.joining(":")));
+        return joinedNameParts
+                .map(parts -> name.map(s -> s + " " + parts)
+                .orElse(parts));
     }
 
     @Override
