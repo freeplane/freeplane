@@ -93,6 +93,6 @@ public class CodeExplorerConfigurations {
         } catch (Exception e) {
             LogUtils.severe(e);
         }
-        return Collections.emptyList();
+        return new ArrayList<>();
     }
 }
