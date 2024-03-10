@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class CodeExplorerConfigurations {
     private static final String CODE_EXPLORER_CONFIGURATION_FILE_PROPERTY = "code.explorer_configuration_file";
+    private final static File configurationFile = getConfigurationFile();
 
     private List<UserDefinedCodeExplorerConfiguration> configurations;
     private final static Gson OBJECT_MAPPER = new GsonBuilder()
@@ -51,7 +52,7 @@ public class CodeExplorerConfigurations {
     }
 
     public void saveConfiguration() {
-        saveConfiguration(getConfigurationFile());
+        saveConfiguration(configurationFile);
     }
 
     private static File getConfigurationFile() {
@@ -68,7 +69,7 @@ public class CodeExplorerConfigurations {
     }
 
     public static CodeExplorerConfigurations loadConfigurations() {
-        return loadConfigurations(getConfigurationFile());
+        return loadConfigurations(configurationFile);
     }
 
     static CodeExplorerConfigurations loadConfigurations(File configurationFile) {
