@@ -67,7 +67,7 @@ public abstract class CodeNode extends NodeModel {
         if(javaClass.isArray())
             return hasValidTopLevelClass(javaClass.getBaseComponentType());
         if(javaClass.isTopLevelClass())
-            return true;
+            return -1 == javaClass.getSimpleName().indexOf('-');
         for(JavaClass enclosingClass = javaClass.getEnclosingClass().get();;
                 enclosingClass = javaClass.getEnclosingClass().get()) {
             if(! enclosingClass.getSource().equals(javaClass.getSource()))
