@@ -455,9 +455,10 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         JComponent configurationTableToolbar = createConfigurationTableToolbar();
         JLabel locationsLabel = new JLabel();
         helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
-        JComponent locationsToolbar = createLocationButtons(helpToggleButton);
+        JComponent locationsToolbar = createLocationButtons();
         JComponent locationsPane = createLocationsPane(locationsLabel, helpToggleButton);
         JLabel rulesLabel = new JLabel(TextUtils.getText("code.rules"));
+        JComponent rulesToolbar = createRulesButtons(helpToggleButton);
         JComponent rulesPane = createRulesPane();
 
 
@@ -480,9 +481,12 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         add(locationsLabel, gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.gridwidth = 2;
         gbc.anchor=GridBagConstraints.LINE_START;
         add(locationsToolbar, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor=GridBagConstraints.LINE_START;
+        add(rulesToolbar, gbc);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.anchor=GridBagConstraints.CENTER;
@@ -544,13 +548,8 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         return toolbar;
     }
 
-    private JComponent createLocationButtons(JToggleButton helpToggleButton) {
+    private JComponent createLocationButtons() {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
-        revertButton.addActionListener(e ->
-            rules.setText(getSelectedConfiguration().getConfigurationRules())
-        );
-
         JButton addLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
         addLocationsButton.addActionListener(e1 -> addJarsAndFolders());
 
@@ -569,12 +568,41 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
         btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
 
-        JComponent panelButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, revertButton, helpToggleButton};
+        JComponent panelButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
         Stream.of(panelButtons).forEach(button -> {
             toolbar.add(button);
         });
 
-        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, revertButton};
+        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
+
+        Stream.of(enablingButtons).forEach(button -> {
+            button.setEnabled(false);
+        });
+
+        Runnable enableButtons = () -> {
+            boolean enable = configTable.getSelectionModel().getMinSelectionIndex() >= 0
+                    && ! helpToggleButton.isSelected();
+            Stream.of(enablingButtons).forEach(button -> button.setEnabled(enable));
+        };
+
+        configTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
+        return toolbar;
+
+    }
+
+    private JComponent createRulesButtons(JToggleButton helpToggleButton) {
+        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
+        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
+        revertButton.addActionListener(e ->
+            rules.setText(getSelectedConfiguration().getConfigurationRules())
+        );
+
+        JComponent panelButtons[] = {revertButton, helpToggleButton};
+        Stream.of(panelButtons).forEach(button -> {
+            toolbar.add(button);
+        });
+
+        JButton enablingButtons[] = {revertButton};
 
         Stream.of(enablingButtons).forEach(button -> {
             button.setEnabled(false);
