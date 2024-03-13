@@ -4829,7 +4829,7 @@
 
     </p>
     <p>
-      Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="https://www.freeplane.org/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
+      Read more in the Freeplane documentation,&#160;&#160;visit the wiki on add-ons and the <a href="https://www.freeplane.org/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
     </p>
   </body>
 </html>
