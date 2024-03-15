@@ -534,8 +534,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final String errorMessage = "Error while parsing file:" + file;
 			LogUtils.warn(errorMessage, ex);
 			final NodeModel result = new NodeModel(map);
-			map.setRoot(result);
 			result.setText(errorMessage);
+			if(map.getRootNode() == null)
+			    map.setRoot(result);
 			return result;
 		}
 	}
