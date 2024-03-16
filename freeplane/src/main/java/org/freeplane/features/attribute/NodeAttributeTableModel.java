@@ -53,15 +53,10 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
         }
 
         @Override
-        public void addTableModelListener(TableModelListener listener) {
-            throw new RuntimeException("Method not implemented");
-
-        }
+        public void addTableModelListener(TableModelListener listener) {/* ignore */}
 
         @Override
-        public void removeTableModelListener(TableModelListener listener) {
-            throw new RuntimeException("Method not implemented");
-        }
+        public void removeTableModelListener(TableModelListener listener) {/* ignore */}
 
 	};
 
