@@ -28,6 +28,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -240,6 +241,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					    this.selection = new ArrayList<>(selectedNodes);
 					    this.parentSelection = new ArrayList<>(parentSelection);
 					}
+					else
+					    this.parentSelection = Collections.singletonList(node.getParentNode());
 				}
 			}
 		}
@@ -329,13 +332,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                     }
                 }
                 final MapController mapController = modeController.getMapController();
-                if(movesMultipleNodes()) {
-                    parentSelection.forEach(mapController::nodeRefresh);
-
-                }
-                else
-                    mapController.nodeRefresh(node.getParentNode());
-
+                parentSelection.forEach(mapController::nodeRefresh);
 			}
 			EventQueue.invokeLater(new Runnable() {
 				@Override
@@ -367,7 +364,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
             parentSelection.forEach(n ->
                 LocationModel.createLocationModel(n).setVGap(newVGap));
         } else {
-            LocationModel.createLocationModel(getNode().getParentNode()).setVGap(newVGap);
+            LocationModel.createLocationModel(parentSelection.get(0)).setVGap(newVGap);
         }
     }
 
@@ -376,7 +373,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
             parentSelection.forEach(n ->
                 LocationModel.createLocationModel(n).setBaseHGap(newHGap));
         } else {
-            LocationModel.createLocationModel(getNode().getParentNode()).setBaseHGap(newHGap);
+            LocationModel.createLocationModel(parentSelection.get(0)).setBaseHGap(newHGap);
         }
     }
 
@@ -552,27 +549,25 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
     }
 
     private void resetBaseHGaps() {
-        NodeModel node = getNode();
         if (movesMultipleNodes()) {
             for(int i = 0; i < parentSelection.size(); i++) {
                 LocationModel locationModel = LocationModel.getModel(parentSelection.get(i));
                 locationModel.setBaseHGap(originalAssignedBaseHGaps.get(i));
             }
         } else {
-            final LocationModel locationModel = LocationModel.getModel(node.getParentNode());
+            final LocationModel locationModel = LocationModel.getModel(parentSelection.get(0));
             locationModel.setBaseHGap(originalAssignedBaseHGap);
         }
     }
 
     private void resetVGaps() {
-        NodeModel node = getNode();
         if (movesMultipleNodes()) {
             for(int i = 0; i < parentSelection.size(); i++) {
                 LocationModel locationModel = LocationModel.getModel(parentSelection.get(i));
                 locationModel.setVGap(originalAssignedVGaps.get(i));
             }
         } else {
-            final LocationModel locationModel = LocationModel.getModel(node.getParentNode());
+            final LocationModel locationModel = LocationModel.getModel(parentSelection.get(0));
             locationModel.setVGap(originalAssignedParentVGap);
         }
     }
