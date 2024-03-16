@@ -124,7 +124,7 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when test="@STARTARROW = 'Default'">2</xsl:when>
-							<xsl:otherwise></xsl:otherwise>
+							<xsl:otherwise>0</xsl:otherwise>
 						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
