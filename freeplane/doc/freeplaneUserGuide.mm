@@ -5687,7 +5687,7 @@ node alias can not be a number</pre>
   </head>
   <body>
     <p>
-      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Tool panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the the mind map of this tutorial.
+      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Tool panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the mind map of this tutorial.
     </p>
   </body>
 </html>
@@ -7703,7 +7703,7 @@ node alias can not be a number</pre>
 </hook>
 <node TEXT="Freeplane has a very powerful scripting possibility based on Groovy. In this way you can provide for specialised functions.&#xa;&#xa;There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts." ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1541851796447"/>
 <node TEXT="More information about using scripts is available in Freeplane Wiki" ID="ID_164241738" CREATED="1541851477527" MODIFIED="1541851543212" LINK="https://www.freeplane.org/wiki/index.php/Scripting"/>
-<node TEXT="Scripts and required resources like icons or libraries can be packaged and distributed as freeplane add-ons. Read more in the Freeplane documentation,  visit the the wiki on add-ons and the wiki add-on scrips ." ID="ID_903826867" CREATED="1541851668271" MODIFIED="1541851717678"/>
+<node TEXT="Scripts and required resources like icons or libraries can be packaged and distributed as freeplane add-ons. Read more in the Freeplane documentation,  visit the wiki on add-ons and the wiki add-on scrips ." ID="ID_903826867" CREATED="1541851668271" MODIFIED="1541851717678"/>
 </node>
 </node>
 <node TEXT="Date &amp; time actions" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1541847561399" NUMBERED="true">
