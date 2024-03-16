@@ -50,6 +50,7 @@ import java.net.URI;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -563,13 +564,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		private void replace(final NodeView[] newSelection) {
-            if(newSelection.length == 0)
+		    replace(Arrays.asList(newSelection));
+		}
+
+        private void replace(final List<NodeView> newSelection) {
+            if(newSelection.size() == 0)
                 return;
-            final boolean selectedChanges = ! newSelection[0].equals(selectedNode);
+            final NodeView firstSelectedNode = newSelection.get(0);
+            final boolean selectedChanges = ! firstSelectedNode.equals(selectedNode);
             if (selectedChanges) {
             	if(selectedNode != null)
             		removeSelectionForHooks(selectedNode);
-            	selectedNode = newSelection[0];
+            	selectedNode = firstSelectedNode;
             }
             NodeView[] nodesAddedToSelection = Stream.of(newSelection)
                 .filter(view -> ! selectedSet.contains(view))
@@ -2589,7 +2595,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
 		final NodeModel selectedNode = selectedView.getNode();
-		Collection<NodeView> lastSelectedNodes = selection.getSelection();
+		Collection<NodeView> lastSelectedNodes = selection.getSelectedList();
         final ArrayList<NodeView> selectedNodes = new ArrayList<NodeView>(lastSelectedNodes.size());
 		for (final NodeView nodeView : getSelection()) {
 			if (nodeView != null && nodeView.isContentVisible()) {
@@ -2598,10 +2604,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		if(lastSelectedNodes.size() == selectedNodes.size() && selectedNodes.size() > 0)
 		    return;
-		lastSelectedNodes.clear();
-		for (final NodeView nodeView : selectedNodes) {
-				lastSelectedNodes.add(nodeView);
-		}
+		selection.replace(selectedNodes);
 		if (getSelected() != null) {
 			return;
         }
