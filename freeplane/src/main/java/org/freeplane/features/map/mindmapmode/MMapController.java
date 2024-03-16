@@ -606,6 +606,10 @@ public class MMapController extends MapController {
             return;
         }
         final NodeModel oldParent = child.getParentNode();
+        if(oldParent == null){
+            UITools.errorMessage("not allowed");
+            return;
+        }
         if(newParent != oldParent && newParent.subtreeClones().contains(oldParent)) {
             moveNodeAndItsClones(child, oldParent, newIndex);
             return;
