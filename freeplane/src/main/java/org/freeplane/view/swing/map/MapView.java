@@ -577,7 +577,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             		removeSelectionForHooks(selectedNode);
             	selectedNode = firstSelectedNode;
             }
-            NodeView[] nodesAddedToSelection = Stream.of(newSelection)
+            NodeView[] nodesAddedToSelection = newSelection.stream()
                 .filter(view -> ! selectedSet.contains(view))
                 .toArray(NodeView[]::new);
             final NodeView[] oldSelection = selectedSet.toArray(new NodeView[selectedSet.size()]);
