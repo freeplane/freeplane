@@ -291,8 +291,9 @@
 				<Entry name="RequestFeatureAction" />
 			</Entry>
 			<Entry name="AboutAction" />
+			<Entry accelerator="F1" name="code.explorerDocumentation" />
 			<Entry name="code.introductionVideo" />
-			<Entry accelerator="F1" name="DocumentationAction" />
+			<Entry name="DocumentationAction" />
             <Entry name="FreeplaneHandbook" />
             <Entry name="HotKeyInfoAction" />
 		</Entry>
