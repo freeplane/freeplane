@@ -96,14 +96,16 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
                 .parallel()
                 .map(e ->
                     new PackageNode(rootPackage, getMap(), e.getValue(), e.getKey().intValue(), true))
-                .filter(node ->node.getClassCount() > 0)
                 .collect(Collectors.toList());
         GraphNodeSort<Integer> childNodes = new GraphNodeSort<>();
         Integer[] subrojectIndices = IntStream.range(0, groupsById.size())
                 .mapToObj(Integer::valueOf)
                 .toArray(Integer[]::new);
 
-        nodes.forEach(node -> {
+        nodes
+        .stream()
+        .filter(node ->node.getClassCount() > 0)
+        .forEach(node -> {
             childNodes.addNode(subrojectIndices[node.groupIndex]);
             DistinctTargetDependencyFilter filter = new DistinctTargetDependencyFilter();
             Map<Integer, Long> referencedGroups = node.getOutgoingDependenciesWithKnownTargets()
