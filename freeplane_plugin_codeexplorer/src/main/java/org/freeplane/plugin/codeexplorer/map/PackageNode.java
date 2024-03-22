@@ -239,7 +239,7 @@ class PackageNode extends CodeNode {
 
     @Override
     Set<CodeNode> findCyclicDependencies() {
-        String id = idWithGroupIndex(javaPackage.getName() + ".package");
+        String id = idWithGroupIndex(javaPackage.getName() + ClassesNode.NODE_ID_SUFFIX);
         CodeNode classes = (CodeNode) getMap().getNodeForID(id);
         if(classes != null)
             return classes.findCyclicDependencies();

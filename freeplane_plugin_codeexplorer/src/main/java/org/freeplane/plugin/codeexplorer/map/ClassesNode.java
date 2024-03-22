@@ -23,7 +23,7 @@ import com.tngtech.archunit.core.domain.properties.HasName;
 
 
 class ClassesNode extends CodeNode {
-    static final String NODE_ID_SUFFIX = ".package";
+    static final String NODE_ID_SUFFIX = ".[package]";
     static {
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_CHILD_PACKAGE_ICON_NAME, "code/childPackage.svg");
         IconStoreFactory.INSTANCE.createStateIcon(ClassesNode.UI_SAME_PACKAGE_ICON_NAME, "code/samePackage.svg");
