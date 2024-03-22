@@ -383,11 +383,15 @@ public class ConnectorView extends AConnectorView{
 		}
 		boolean isStartArrowTypeNone = linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE);
 		ArrowDirection startArrowDirection = isStartArrowTypeNone ? ArrowDirection.OUTGOING : ArrowDirection.INCOMING;
-        if (isSourceVisible() && !(paintsConnectorLine && isStartArrowTypeNone)) {
-			if(!selfLink && isLine && endPoint != null)
-				paintArrow(g, endPoint2, endPoint, startArrowDirection);
-			else
-			    paintArrow(g, startPoint2, startPoint, startArrowDirection);
+		if (isSourceVisible() && !(paintsConnectorLine && isStartArrowTypeNone)) {
+		    if(isLine && endPoint != null) {
+		        if (selfLink)
+		            paintArrow(g, startPoint2, startPoint, startArrowDirection);
+		        else
+		            paintArrow(g, endPoint, startPoint, startArrowDirection);
+		    }
+		    else
+		        paintArrow(g, startPoint2, startPoint, startArrowDirection);
 		}
 		boolean isEndArrowTypeNone = linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE);
         ArrowDirection endArrowDirection = isEndArrowTypeNone ? ArrowDirection.OUTGOING : ArrowDirection.INCOMING;
