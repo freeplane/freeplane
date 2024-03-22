@@ -1,6 +1,7 @@
 package org.freeplane.plugin.codeexplorer.map;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -79,7 +80,9 @@ class ClassesNode extends CodeNode {
                 .forEach(e -> nodeSort.addEdge(edgeStart, e.getKey(), e.getValue()));
             }
             Map<JavaClass, ClassNode> nodes = new HashMap<>();
-            List<List<JavaClass>> orderedClasses = nodeSort.sortNodes(SubgroupComparator.comparingByName(HasName::getName));
+            List<List<JavaClass>> orderedClasses = nodeSort.sortNodes(
+                    Comparator.comparing(HasName::getName),
+                    SubgroupComparator.comparingByName(HasName::getName));
             for(int subgroupIndex = 0; subgroupIndex < orderedClasses.size(); subgroupIndex++) {
                 for (JavaClass childClass : orderedClasses.get(subgroupIndex)) {
                     final ClassNode node = new ClassNode(childClass, getMap(), groupIndex);

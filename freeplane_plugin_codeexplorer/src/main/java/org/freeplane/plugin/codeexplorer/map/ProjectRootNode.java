@@ -121,7 +121,9 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
                     .mapToLong(PackageNode::getClassCount)
                     .sum()
                 );
-        List<List<Integer>> orderedPackages = childNodes.sortNodes(comparingByReversedClassCount
+        List<List<Integer>> orderedPackages = childNodes.sortNodes(
+                Comparator.comparing(i -> nodes.get(i).getText()),
+                comparingByReversedClassCount
                 .thenComparing(SubgroupComparator.comparingByName(i -> nodes.get(i).getText())));
         for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
             for (Integer groupIndex : orderedPackages.get(subgroupIndex)) {

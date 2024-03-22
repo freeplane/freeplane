@@ -124,7 +124,9 @@ class PackageNode extends CodeNode {
             .mapToLong(x -> (x == javaPackage ? getClasses() : getClassesInTree(x))
                     .count()).sum()
         );
-        List<List<JavaPackage>> orderedPackages = childNodes.sortNodes(comparingByReversedClassCount
+        List<List<JavaPackage>> orderedPackages = childNodes.sortNodes(
+                Comparator.comparing(JavaPackage::getName),
+                comparingByReversedClassCount
 	            .thenComparing(SubgroupComparator.comparingByName(JavaPackage::getName)));
 	    for(int subgroupIndex = 0; subgroupIndex < orderedPackages.size(); subgroupIndex++) {
 	        for (JavaPackage childPackage : orderedPackages.get(subgroupIndex)) {

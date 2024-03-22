@@ -16,22 +16,21 @@ import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.cycle.CycleDetector;
 import org.jgrapht.alg.cycle.JohnsonSimpleCycles;
 import org.jgrapht.graph.AsSubgraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 
 public class GraphNodeSort<V> {
 
 
-    private final Graph<V, DefaultWeightedEdge> graph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    private final Graph<V, CoupledWeightedEdge> graph = new SimpleDirectedWeightedGraph<>(CoupledWeightedEdge.class);
 
     public void addEdge(V source, V target, double weight) {
         // Ensure vertices are in the graph
         graph.addVertex(source);
         graph.addVertex(target);
 
-        DefaultWeightedEdge forwardEdge = graph.getEdge(source, target);
-        DefaultWeightedEdge reverseEdge = graph.getEdge(target, source);
+        CoupledWeightedEdge forwardEdge = graph.getEdge(source, target);
+        CoupledWeightedEdge reverseEdge = graph.getEdge(target, source);
 
         // Check if the reverse edge already exists
         if (reverseEdge != null) {
@@ -40,23 +39,24 @@ public class GraphNodeSort<V> {
                 // If the new edge has greater weight, remove the reverse edge
                 // and add the new edge with the weight difference
                 graph.removeEdge(reverseEdge);
-                DefaultWeightedEdge newEdge = graph.addEdge(source, target);
+                CoupledWeightedEdge newEdge = graph.addEdge(source, target);
+                newEdge.addCoupling(weight + reverseWeight);
                 graph.setEdgeWeight(newEdge, weight - reverseWeight);
-            } else if (weight < reverseWeight) {
+            } else {
                 // If the reverse edge has a greater weight, update its weight
                 graph.setEdgeWeight(reverseEdge, reverseWeight - weight);
-            } else {
-                // If both weights are equal, remove both edges
-                graph.removeEdge(reverseEdge);
+                reverseEdge.addCoupling(weight);
             }
         } else if (forwardEdge != null) {
             // If the forward edge exists, update its weight
             double currentWeight = graph.getEdgeWeight(forwardEdge);
             graph.setEdgeWeight(forwardEdge, currentWeight + weight);
+            forwardEdge.addCoupling(weight);
         } else {
             // If neither edge exists, add the new edge
-            DefaultWeightedEdge newEdge = graph.addEdge(source, target);
+            CoupledWeightedEdge newEdge = graph.addEdge(source, target);
             graph.setEdgeWeight(newEdge, weight);
+            newEdge.addCoupling(weight);
         }
     }
 
@@ -70,10 +70,10 @@ public class GraphNodeSort<V> {
         static final CycleSearchStopException INSTANCE = new CycleSearchStopException();
     }
 
-    public List<List<V>> sortNodes(Comparator<Set<V>> secondComparator) {
+    public List<List<V>> sortNodes(Comparator<V> nodeComparator, Comparator<Set<V>> secondComparator) {
 
         // Compute Connected Components
-        ConnectivityInspector<V, DefaultWeightedEdge> connectivityInspector = new ConnectivityInspector<>(graph);
+        ConnectivityInspector<V, CoupledWeightedEdge> connectivityInspector = new ConnectivityInspector<>(graph);
         List<Set<V>> connectedSets = connectivityInspector.connectedSets();
 
         // Sort the connected components in descending order by size
@@ -85,14 +85,14 @@ public class GraphNodeSort<V> {
         // Process each connected set
         for (Set<V> connectedSet : connectedSets) {
             // Create a subgraph for the connected set
-            Graph<V, DefaultWeightedEdge> connectedSubgraph = new AsSubgraph<>(graph, connectedSet);
+            Graph<V, CoupledWeightedEdge> connectedSubgraph = new AsSubgraph<>(graph, connectedSet);
 
-            CycleDetector<V, DefaultWeightedEdge> cycleDetector = new CycleDetector<>(connectedSubgraph);
+            CycleDetector<V, CoupledWeightedEdge> cycleDetector = new CycleDetector<>(connectedSubgraph);
             if (cycleDetector.detectCycles()) {
                 boolean cyclesLeft = true;
                 do{
                     // Find and break cycles within the SCG
-                    JohnsonSimpleCycles<V, DefaultWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
+                    JohnsonSimpleCycles<V, CoupledWeightedEdge> cycleFinder = new JohnsonSimpleCycles<>(connectedSubgraph);
                     List<List<V>> cycles = new ArrayList<>();
                     try {
                         cycleFinder.findSimpleCycles(c -> {
@@ -105,7 +105,7 @@ public class GraphNodeSort<V> {
 
                     while (!cycles.isEmpty()) {
                         List<V> firstCycle = cycles.get(0);
-                        DefaultWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
+                        CoupledWeightedEdge minWeightEdge = findMinWeightEdge(connectedSubgraph, firstCycle);
                         if (minWeightEdge != null) {
                             V source = connectedSubgraph.getEdgeSource(minWeightEdge);
                             V target = connectedSubgraph.getEdgeTarget(minWeightEdge);
@@ -126,8 +126,14 @@ public class GraphNodeSort<V> {
             }
 
             // Perform topological sort
-            TopologicalOrderIterator<V, DefaultWeightedEdge> topologicalOrderIterator =
-                    new TopologicalOrderIterator<>(connectedSubgraph);
+            TopologicalOrderIterator<V, CoupledWeightedEdge> topologicalOrderIterator =
+                    new TopologicalOrderIterator<>(connectedSubgraph,
+                            Comparator.<V>comparingDouble(
+                                    v -> calculateConnectionStrength(connectedSubgraph.incomingEdgesOf(v)))
+                            .reversed()
+                            .thenComparing(Comparator.<V>comparingDouble(
+                                    v -> calculateConnectionStrength(connectedSubgraph.outgoingEdgesOf(v))))
+                            .thenComparing(nodeComparator));
             List<V> subgroupOrdering = new ArrayList<>();
             finalOrdering.add(subgroupOrdering);
             // Add the sorted vertices to the final ordering
@@ -138,6 +144,13 @@ public class GraphNodeSort<V> {
         }
 
         return finalOrdering;
+    }
+
+    double calculateConnectionStrength(final Set<CoupledWeightedEdge> edges) {
+        final double strength = edges
+        .stream()
+        .mapToDouble(CoupledWeightedEdge::getCoupling).sum();
+        return strength;
     }
     private boolean cycleContainsEdge(V source, V target, List<V> cycle) {
         // Check if the cycle contains the source
@@ -151,13 +164,13 @@ public class GraphNodeSort<V> {
         return target.equals(cycle.get(targetIndex));
     }
 
-    private DefaultWeightedEdge findMinWeightEdge(Graph<V, DefaultWeightedEdge> graph, List<V> cycle) {
+    private CoupledWeightedEdge findMinWeightEdge(Graph<V, CoupledWeightedEdge> graph, List<V> cycle) {
         double minWeight = Double.MAX_VALUE;
-        DefaultWeightedEdge minWeightEdge = null;
+        CoupledWeightedEdge minWeightEdge = null;
         for (int i = 0; i < cycle.size(); i++) {
             V source = cycle.get(i);
             V target = cycle.get((i + 1) % cycle.size());
-            DefaultWeightedEdge edge = graph.getEdge(source, target);
+            CoupledWeightedEdge edge = graph.getEdge(source, target);
             if (edge != null && graph.getEdgeWeight(edge) < minWeight) {
                 minWeight = graph.getEdgeWeight(edge);
                 minWeightEdge = edge;
