@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.plugin.codeexplorer.map.ClassNode;
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -52,8 +53,8 @@ public class CodeDependency {
         JavaClass namedOrigin = CodeNode.findEnclosingNamedClass(originClass);
         JavaClass namedTarget = CodeNode.findEnclosingNamedClass(targetClass);
         String description = dependency.getDescription()
-                .replace(namedOrigin.getName(), namedOrigin.getSimpleName())
-                .replace(namedTarget.getName(), namedTarget.getSimpleName());
+                .replace(namedOrigin.getName(), ClassNode.getSimpleName(namedOrigin))
+                .replace(namedTarget.getName(), ClassNode.getSimpleName(namedTarget));
         Matcher packagesMatcher = PACKAGES.matcher(description);
         description = packagesMatcher.replaceAll("");
 

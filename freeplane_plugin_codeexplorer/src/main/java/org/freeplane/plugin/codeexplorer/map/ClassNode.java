@@ -20,6 +20,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.properties.HasName;
+import com.tngtech.archunit.core.domain.Formatters;
 
 
 public class ClassNode extends CodeNode {
@@ -60,10 +61,23 @@ public class ClassNode extends CodeNode {
     }
 
     public static String classNameWithEnclosingClasses(final JavaClass javaClass) {
-        String simpleName = javaClass.getSimpleName();
+        String simpleName = getSimpleName(javaClass);
         return javaClass.getEnclosingClass()
                 .map(ec -> classNameWithEnclosingClasses(ec) + "." + simpleName)
                 .orElse(simpleName);
+    }
+
+    public static String getSimpleName(final JavaClass javaClass) {
+        String simpleName = javaClass.getSimpleName();
+        if(simpleName.isEmpty()) {
+            final String fullName = javaClass.getName();
+            int lastIndexOfNon$ = fullName.length() - 1;
+            while (lastIndexOfNon$ >= 0 && fullName.charAt(lastIndexOfNon$) == '$')
+                lastIndexOfNon$--;
+            return Formatters.ensureSimpleName(fullName.substring(0, lastIndexOfNon$+1))
+                    + fullName.substring(lastIndexOfNon$+1);
+        }
+        return simpleName;
     }
 
     @Override
