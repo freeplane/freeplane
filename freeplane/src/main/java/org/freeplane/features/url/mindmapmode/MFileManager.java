@@ -621,7 +621,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				break;
 			}
 		}
-		Controller.getCurrentController().getMapViewManager().setMapTitles();
 	}
 
 	public MapModel newMapFromDefaultTemplate() {

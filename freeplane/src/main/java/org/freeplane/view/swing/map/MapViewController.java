@@ -836,13 +836,19 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		setMapTitles();
 		controller.getViewController().viewNumberChanged(getViewNumber());
-		newModeController.getUserInputListenerFactory().updateMapList();
 		if (pNewMap != null) {
 			newModeController.setVisible(true);
 		}
 	}
 
+
+
 	@Override
+    public void afterViewCreated(Component oldView, Component newView) {
+	    updateMapList();
+    }
+
+    @Override
 	public void afterViewClose(final Component oldView) {
 		ModeController newModeController = getModeController(oldView);
 		newModeController.getUserInputListenerFactory().updateMapList();
@@ -1039,11 +1045,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public void setMapTitles() {
 		setFrameTitle();
-		ModeController modeController = Controller.getCurrentModeController();
+		updateMapList();
+	}
+
+    private void updateMapList() {
+        ModeController modeController = Controller.getCurrentModeController();
 		if (modeController != null) {
 			modeController.getUserInputListenerFactory().updateMapList();
 		}
-	}
+    }
 
 	private void setFrameTitle() {
 		ModeController modeController = Controller.getCurrentModeController();
