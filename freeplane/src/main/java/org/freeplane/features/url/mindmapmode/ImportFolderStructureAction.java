@@ -41,7 +41,7 @@ import org.freeplane.features.ui.ViewController;
 
 class ImportFolderStructureAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -77,7 +77,8 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 		final NodeModel node = ((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(target, target
 		    .getChildCount(), side);
 		((MTextController) TextController.getController()).setNodeText(node, nodeContent);
-		((MLinkController) LinkController.getController()).setLink(node, link, LinkController.LINK_ABSOLUTE);
+		final MLinkController linkController = (MLinkController) LinkController.getController();
+        linkController.setLink(node, link, linkController.linkType());
 		return node;
 	}
 
