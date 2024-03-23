@@ -135,14 +135,14 @@ public class ClassNode extends CodeNode {
 
     @Override
     String getUIIconName() {
+        if(javaClass.isAnnotation())
+            return ANNOTATION_ICON_NAME;
         if(javaClass.isInterface())
             return INTERFACE_ICON_NAME;
         if(javaClass.isEnum())
             return ENUM_ICON_NAME;
         if(javaClass.getModifiers().contains(JavaModifier.ABSTRACT))
             return ABSTRACT_CLASS_ICON_NAME;
-        if(javaClass.isAnnotation())
-            return ANNOTATION_ICON_NAME;
         return CLASS_ICON_NAME;
     }
 
