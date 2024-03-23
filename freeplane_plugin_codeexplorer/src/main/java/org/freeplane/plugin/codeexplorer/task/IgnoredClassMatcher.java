@@ -16,7 +16,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.core.importer.Location;
 
 class IgnoredClassMatcher implements ImportOption{
-    private static final Pattern CLASS_LOCATION_PATTERN = Pattern.compile("(?<=/)[\\w/]+(?=(?:\\$[\\w\\$/]+)?\\.class$)");
+    private static final Pattern CLASS_LOCATION_PATTERN = Pattern.compile("(?<=/)[\\w/]+(?=(?:\\$[\\w\\$/]*)?\\.class$)");
     private final List<PackageMatcher> matchers;
     private final List<String> patterns;
 
