@@ -790,6 +790,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController()
 			    .getMapViewManager().getMapViewComponent(), TextUtils.getText("map_already_exists"), "Freeplane",
 			    JOptionPane.YES_NO_OPTION);
+			UITools.resetMenuBarOnMac();
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}
