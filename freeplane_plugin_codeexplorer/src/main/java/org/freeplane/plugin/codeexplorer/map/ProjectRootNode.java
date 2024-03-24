@@ -44,6 +44,7 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
     private final String[] idBySubrojectIndex;
     private final Set<String> badLocations;
     private final JavaClasses classes;
+    private final long classCount;
     private final GroupMatcher groupMatcher;
     static ProjectRootNode asMapRoot(String projectName, CodeMap map, JavaClasses classes, GroupMatcher groupMatcher) {
         ProjectRootNode projectRootNode = new ProjectRootNode(projectName, map, classes, groupMatcher);
@@ -59,7 +60,6 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
         this.groupMatcher = groupMatcher;
         this.rootPackage = classes.getDefaultPackage();
         setID("projectRoot");
-        setText(projectName);
 
         groupsById = new LinkedHashMap<>();
         classes.stream()
@@ -70,6 +70,11 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
         badLocations = new HashSet<>();
         map.setGroupFinder(this);
         initializeChildNodes();
+        classCount = super.getChildrenInternal().stream()
+                .map(PackageNode.class::cast)
+                .mapToLong(PackageNode::getClassCount)
+                .sum();
+        setText(projectName + formatClassCount(classCount));
         final CodeExplorerConfiguration configuration = map.getConfiguration();
         if(configuration instanceof UserDefinedCodeExplorerConfiguration) {
             ((UserDefinedCodeExplorerConfiguration)configuration).getUserContent().keySet()
