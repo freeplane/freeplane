@@ -17,18 +17,18 @@ import com.tngtech.archunit.core.domain.PackageMatcher;
 class ClassNameMatcher {
     private final PackageMatcher packageMatcher;
     private final Optional<String> name;
-    private final boolean ignores;
+    private final boolean ignoresClasses;
     private final String pattern;
     ClassNameMatcher(String pattern, boolean ignores, Optional<String> name) {
         super();
         this.pattern = pattern;
         this.packageMatcher = PackageMatcher.of(pattern);
         this.name = name;
-        this.ignores = ignores;
+        this.ignoresClasses = ignores;
     }
 
     boolean isIgnored(String qualifiedClassName) {
-        return ignores && packageMatcher.matches(qualifiedClassName);
+        return ignoresClasses && packageMatcher.matches(qualifiedClassName);
     }
 
     Optional<String> toGroup(String qualifiedClassName) {
@@ -40,9 +40,15 @@ class ClassNameMatcher {
                 .orElse(parts));
     }
 
+
+
+    public boolean ignoresClasses() {
+        return ignoresClasses;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(ignores, name, pattern);
+        return Objects.hash(ignoresClasses, name, pattern);
     }
 
     @Override
@@ -54,7 +60,7 @@ class ClassNameMatcher {
         if (getClass() != obj.getClass())
             return false;
         ClassNameMatcher other = (ClassNameMatcher) obj;
-        return ignores == other.ignores && Objects.equals(name, other.name) && Objects.equals(
+        return ignoresClasses == other.ignoresClasses && Objects.equals(name, other.name) && Objects.equals(
                 pattern, other.pattern);
     }
 

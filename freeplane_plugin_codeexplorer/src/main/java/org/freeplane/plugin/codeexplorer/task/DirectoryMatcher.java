@@ -29,11 +29,13 @@ public class DirectoryMatcher implements GroupMatcher{
     private final Collection<File> locations;
     private final Collection<String> subpaths;
     private final Collection<ClassNameMatcher> groupMatchers;
+    private final boolean groupsClassesByName;
 
     public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<ClassNameMatcher> groupMatchers) {
         this.locations = locations;
         this.subpaths = subpaths;
         this.groupMatchers = groupMatchers;
+        groupsClassesByName = ! groupMatchers.stream().allMatch(ClassNameMatcher::ignoresClasses);
         coreLocationsByPaths = new TreeMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
@@ -95,15 +97,18 @@ public class DirectoryMatcher implements GroupMatcher{
     @Override
     public Optional<GroupIdentifier> groupIdentifier(JavaClass javaClass) {
         Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
-        final Optional<String> optionalId = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
-        if(! optionalId.isPresent())
+        final Optional<String> optionalCoreLocation = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
+        if(! optionalCoreLocation.isPresent())
             return Optional.empty();
-        if(groupMatchers.isEmpty())
-            return optionalId.map(id -> new GroupIdentifier(id, toGroupName(id)));
-        else
+        final String coreLocation = optionalCoreLocation.get();
+        if(groupMatchers.isEmpty() || ! groupsClassesByName && identifierByClass(javaClass).isPresent())
+            return Optional.of(new GroupIdentifier(coreLocation, toGroupName(coreLocation)));
+        else if (groupsClassesByName)
             return identifierByClass(javaClass)
                     .map(id -> id.isEmpty() ? "*" : id)
                     .map(id -> new GroupIdentifier(id, id));
+        else
+            return Optional.empty();
     }
 
     public Collection<File> getImportedLocations() {
