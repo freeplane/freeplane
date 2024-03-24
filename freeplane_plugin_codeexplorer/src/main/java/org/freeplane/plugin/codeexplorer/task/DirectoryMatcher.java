@@ -71,7 +71,7 @@ public class DirectoryMatcher implements GroupMatcher{
 
     private Optional<String> identifierByClass(JavaClass javaClass) {
         for (ClassNameMatcher groupMatcher : groupMatchers) {
-            final String qualifiedClassName = CodeNode.findEnclosingTopLevelClass(javaClass).getFullName();
+            final String qualifiedClassName = qualifiedClassName(javaClass);
             if(groupMatcher.isIgnored(qualifiedClassName))
                 return Optional.empty();
             Optional<String> groupResult = groupMatcher.toGroup(qualifiedClassName);
@@ -80,6 +80,15 @@ public class DirectoryMatcher implements GroupMatcher{
             }
         }
         return Optional.of("");
+    }
+
+    private String qualifiedClassName(JavaClass javaClass) {
+        final String fullName = CodeNode.findEnclosingTopLevelClass(javaClass).getName();
+        int lastIndexOfNon$ = fullName.length() - 1;
+        while (lastIndexOfNon$ > 0 && fullName.charAt(lastIndexOfNon$) == '$')
+            lastIndexOfNon$--;
+
+        return fullName.substring(0, lastIndexOfNon$ + 1);
     }
 
 
