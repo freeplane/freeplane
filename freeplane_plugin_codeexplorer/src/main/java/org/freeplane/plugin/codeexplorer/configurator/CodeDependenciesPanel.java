@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -150,7 +149,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         updateColumn(columnModel, 3, 1200, cellRenderer);
 
         dependencyViewer.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        dependencyViewer.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        dependencyViewer.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         dependencyViewer.setCellSelectionEnabled(true);
 
         TableRowSorter<DependenciesWrapper> sorter = new TableRowSorter<>(dataModel);
