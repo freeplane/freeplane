@@ -25,6 +25,20 @@ import com.tngtech.archunit.core.domain.JavaClass;
 public class DirectoryMatcher implements GroupMatcher{
 
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+    private static final Pattern GROUP_NAME_PATTERN = Pattern.compile("/((?:[^/]+?)(?:\\.jar!|/(?:target|build|bin|out)/.+?)?)/$");
+    private static String toGroupName(String location) {
+        Pattern projectName = GROUP_NAME_PATTERN;
+        Matcher matcher = projectName.matcher(location);
+        if(matcher.find()) {
+            final String groupName = matcher.group(1);
+            if(location.endsWith(".jar!/"))
+                return groupName.substring(0, groupName.length() - 1);
+            else
+                return groupName;
+        } else
+            return location;
+    }
+
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
@@ -62,15 +76,6 @@ public class DirectoryMatcher implements GroupMatcher{
         else
             return Collections.singletonList(".");
     }
-    private static String toGroupName(String location) {
-        Pattern projectName = Pattern.compile("/([^/]+?)!?/(?:(?:bin|build|target)/.*)*$");
-        Matcher matcher = projectName.matcher(location);
-        if(matcher.find())
-            return matcher.group(1);
-        else
-            return location;
-    }
-
     private Optional<String> identifierByClass(JavaClass javaClass) {
         for (ClassNameMatcher groupMatcher : groupMatchers) {
             final String qualifiedClassName = qualifiedClassName(javaClass);
