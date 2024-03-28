@@ -61,7 +61,7 @@ import com.thebuzzmedia.imgscalr.Scalr;
  * 22.08.2009
  */
 public class BitmapViewerComponent extends JComponent implements ScalableComponent {
-	
+
 	private static class AsyncScalrService extends AsyncScalr{
 		public static ExecutorService getService(){
 			if(service == null) {
@@ -153,7 +153,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	@Override
-	protected void paintComponent(final Graphics g) {
+	public void paintComponent(final Graphics g) {
 	    AccessController.doPrivileged(//
 	            (PrivilegedAction<Void>)() -> paintComponentPrivileged(g));
 	}
@@ -174,7 +174,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		int requiredImageWidth = (int) (targetWidth * scaleX);
 		int requiredImageHeight = (int) (getHeight() * scaleY);
 		BufferedImage cachedImage = loadImageFromCacheFile();
-		
+
 		if (!isCachedImageValid(requiredImageWidth, requiredImageHeight)) {
 			if(this.targetWidth.getAndSet(targetWidth) != targetWidth)
 				AsyncScalrService.getService().submit(() -> {
@@ -239,7 +239,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			final int scaledImageWidth = requiredImageHeight * imageWidth / imageHeight;
 			imageCoordinates.width = scaledImageWidth;
 			imageCoordinates.x = (requiredImageWidth - scaledImageWidth) / 2;
-			
+
 		}
 		else if(k < 0){
 			final int scaledImageHeight = requiredImageWidth * imageHeight / imageWidth;
@@ -381,7 +381,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
                         cacheFile = null;
                     }
                 }
-                return null;                
+                return null;
             }
         });
 	}
@@ -457,6 +457,6 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	public void setRendererListener(Runnable callback) {
 		this.rendererListener  = callback;
-		
+
 	}
 }
