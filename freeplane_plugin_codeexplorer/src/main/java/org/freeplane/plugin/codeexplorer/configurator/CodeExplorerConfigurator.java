@@ -115,12 +115,16 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     @SuppressWarnings("serial")
     private JComponent createLocationsPane(JLabel paneLabel, JToggleButton helpToggleButton) {
 
-        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0) {
+        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0);
+        locationsTableModel.addTableModelListener(new TableModelListener() {
             @Override
-            public boolean isCellEditable(int row, int column) {
-               return false;
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE && e.getFirstRow() >= 0 && e.getColumn() >= 0) {
+                    updateSelectedConfigurationLocations();
+                }
             }
-        };
+        });
+
         locationsTable = new AutoResizedTable(locationsTableModel);
         locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
