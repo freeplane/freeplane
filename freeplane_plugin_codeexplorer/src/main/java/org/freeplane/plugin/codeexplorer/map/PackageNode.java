@@ -167,7 +167,8 @@ class PackageNode extends CodeNode {
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
         boolean samePackage = childPackage == javaPackage;
         if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
+            String childName = samePackage ? (childPackageName.isEmpty() ? "default" : childPackageName) + " - package"
+                    : parentName + childPackageName;
             return new ClassesNode(childPackage, getMap(), childName, samePackage, groupIndex);
         }
         else if(subpackages.size() == 1 && !getClasses(childPackage).anyMatch(x -> true))
