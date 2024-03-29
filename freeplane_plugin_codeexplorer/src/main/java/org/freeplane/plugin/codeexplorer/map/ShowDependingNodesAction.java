@@ -144,7 +144,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	        recursionCounter++) {
 	        Set<String> next = dependencies(dependentNodeIDs.stream()
 	                .map(map::getNodeForID)
-	                .map(CodeNode.class::cast), dependencySelection.getMap(), filter, dependencyDirection);
+	                .map(CodeNode.class::cast), dependencySelection.getMap(), null, dependencyDirection);
 	        next.removeAll(dependentNodeIDs);
 	        if(next.isEmpty()) {
 	            if(recursionCounter == 0)

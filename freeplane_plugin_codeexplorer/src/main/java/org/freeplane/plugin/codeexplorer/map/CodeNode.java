@@ -227,13 +227,17 @@ public abstract class CodeNode extends NodeModel {
         return Stream.concat(getIncomingDependenciesWithKnownOrigins(), getOutgoingDependenciesWithKnownTargets());
     }
 
-    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(Filter  filter){
-        return getOutgoingDependenciesWithKnownTargets()
+    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(Filter filter){
+        final Stream<Dependency> outgoingDependenciesWithKnownTargets = getOutgoingDependenciesWithKnownTargets();
+        return filter == null ? outgoingDependenciesWithKnownTargets
+                : outgoingDependenciesWithKnownTargets
                 .filter(dep -> getMap().getNodeByClass(dep.getOriginClass()).isVisible(filter));
     }
 
-    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter  filter){
-        return getIncomingDependenciesWithKnownOrigins()
+    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter filter){
+        final Stream<Dependency> incomingDependenciesWithKnownOrigins = getIncomingDependenciesWithKnownOrigins();
+        return filter == null ? incomingDependenciesWithKnownOrigins
+                : incomingDependenciesWithKnownOrigins
                 .filter(dep -> getMap().getNodeByClass(dep.getTargetClass()).isVisible(filter));
     }
 
