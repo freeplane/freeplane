@@ -163,19 +163,16 @@ public class ClassNode extends CodeNode {
     private Stream<CodeNode> connectedOriginNodesInGroup(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInGroup(originClasses);
+        return nodes(originClasses);
     }
 
     private Stream<CodeNode> connectedTargetNodesInGroup(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInGroup(targetClasses);
+        return nodes(targetClasses);
     }
-    private Stream<CodeNode> nodesContainedInGroup(Stream<JavaClass> classes) {
+    private Stream<CodeNode> nodes(Stream<JavaClass> classes) {
         return classes
-        .filter(this::belongsToSameGroup)
-        .map(CodeNode::findEnclosingNamedClass)
-        .map(JavaClass::getName)
         .map(this::idWithGroupIndex)
         .map(getMap()::getNodeForID)
         .map(CodeNode.class::cast);

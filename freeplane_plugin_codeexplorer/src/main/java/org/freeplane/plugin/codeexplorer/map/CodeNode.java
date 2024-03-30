@@ -181,11 +181,16 @@ public abstract class CodeNode extends NodeModel {
     }
 
     void setIdWithIndex(String idWithoutIndex) {
-        setID(idWithGroupIndex(idWithoutIndex));
+        setID(idWithOwnGroupIndex(idWithoutIndex));
     }
 
-    String idWithGroupIndex(String idWithoutIndex) {
+    String idWithOwnGroupIndex(String idWithoutIndex) {
         return idWithGroupIndex(idWithoutIndex, groupIndex);
+    }
+
+    String idWithGroupIndex(JavaClass javaClass) {
+        final JavaClass enclosingNamedClass = findEnclosingNamedClass(javaClass);
+        return idWithGroupIndex(enclosingNamedClass.getName(), getMap().groupIndexOf(enclosingNamedClass));
     }
 
     boolean belongsToSameGroup(JavaClass javaClass) {

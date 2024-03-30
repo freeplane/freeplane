@@ -139,61 +139,52 @@ class ClassesNode extends CodeNode {
 
     @Override
     Set<CodeNode> findCyclicDependencies() {
-        GraphCycleFinder<ClassesNode> cycleFinder = new GraphCycleFinder<ClassesNode>();
+        GraphCycleFinder<CodeNode> cycleFinder = new GraphCycleFinder<CodeNode>();
         cycleFinder.addNode(this);
         cycleFinder.stopSearchHere();
         cycleFinder.exploreGraph(Collections.singleton(this),
-                this::connectedTargetNodesInTheSameScope,
-                this::connectedOriginNodesInTheSameScope);
-        Set<Entry<ClassesNode, ClassesNode>> cycles = cycleFinder.findSimpleCycles();
-        Map<JavaPackage, Set<JavaPackage>> origins = new HashMap<>();
-        Map<JavaPackage, Set<JavaPackage>> targets = new HashMap<>();
-        for(Entry<ClassesNode, ClassesNode>edge : cycles) {
-                JavaPackage origin = edge.getKey().javaPackage;
-                JavaPackage target = edge.getValue().javaPackage;
-                origins.computeIfAbsent(target, x -> new HashSet<>()).add(origin);
-                targets.computeIfAbsent(origin, x -> new HashSet<>()).add(target);
-        }
+                this::connectedTargetNodes,
+                this::connectedOriginNodes);
+        Set<Entry<CodeNode, CodeNode>> cycles = cycleFinder.findSimpleCycles();
+
         return cycles.stream()
-                .map(Map.Entry::getKey)
-                .flatMap(packageNode ->
+                .flatMap(edge ->
                     Stream.concat(
-                            packageNode.getOutgoingDependenciesWithKnownTargets()
+                            edge.getKey().getOutgoingDependenciesWithKnownTargets()
                             .map(Dependency::getTargetClass)
-                            .filter(targetClass -> targets.get(packageNode.javaPackage).contains(targetClass.getPackage())),
-                            packageNode.getIncomingDependenciesWithKnownOrigins()
+                            .map(this::idWithGroupIndex)
+                            .map(getMap()::getNodeForID)
+                            .map(ClassNode.class::cast)
+                            .filter(node -> node.isDescendantOf(edge.getValue())),
+                            edge.getValue().getIncomingDependenciesWithKnownOrigins()
                             .map(Dependency::getOriginClass)
-                            .filter(originClass -> origins.get(packageNode.javaPackage).contains(originClass.getPackage()))
+                            .map(this::idWithGroupIndex)
+                            .map(getMap()::getNodeForID)
+                            .map(ClassNode.class::cast)
+                            .filter(node -> node.isDescendantOf(edge.getKey()))
                             )
                 )
-                .map(CodeNode::findEnclosingNamedClass)
-                .map(JavaClass::getName)
-                .map(this::idWithGroupIndex)
-                .map(getMap()::getNodeForID)
-                .map(ClassNode.class::cast)
                 .collect(Collectors.toSet());
     }
 
 
-    private Stream<ClassesNode> connectedOriginNodesInTheSameScope(CodeNode node) {
+    private Stream<CodeNode> connectedOriginNodes(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInGroup(originClasses);
+        return nodes(originClasses);
     }
 
-    private Stream<ClassesNode> connectedTargetNodesInTheSameScope(CodeNode node) {
+    private Stream<CodeNode> connectedTargetNodes(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInGroup(targetClasses);
+        return nodes(targetClasses);
     }
-    private Stream<ClassesNode> nodesContainedInGroup(Stream<JavaClass> classes) {
+
+    private Stream<CodeNode> nodes(Stream<JavaClass> classes) {
         return classes
-        .filter(this::belongsToSameGroup)
-        .map(CodeNode::findEnclosingNamedClass)
-        .map(JavaClass::getName)
         .map(this::idWithGroupIndex)
         .map(getMap()::getNodeForID)
         .map(NodeModel::getParentNode)
-        .map(ClassesNode.class::cast);
+        .map(CodeNode.class::cast);
     }
 }
