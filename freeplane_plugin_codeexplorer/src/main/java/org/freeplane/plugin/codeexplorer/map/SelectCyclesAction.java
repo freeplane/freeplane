@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.Set;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
@@ -46,5 +48,7 @@ class SelectCyclesAction extends AFreeplaneAction {
 	            .toArray(CodeNode[]::new);
 	            selection.replaceSelection(newSelection);
 	        }
+	        else
+	            UITools.informationMessage(TextUtils.getRawText("code.no_cycles_found"));
  	}
 }

@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.Set;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -53,5 +55,7 @@ class FilterCyclesAction extends AFreeplaneAction {
                 AncestorsHider.hideAncestors();
             }
         }
+        else
+            UITools.informationMessage(TextUtils.getRawText("code.no_cycles_found"));
     }
 }

@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -99,11 +100,15 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
 	@Override
     public void actionPerformed(ActionEvent e) {
-	    IMapSelection selection = Controller.getCurrentController().getSelection();
+	    final Controller controller = Controller.getCurrentController();
+        IMapSelection selection = controller.getSelection();
 	    Filter lastFilter = selection.getFilter();
         ICondition currentCondition = lastFilter.getCondition();
-	    if(currentCondition == null)
-	        return;
+	    if(currentCondition == null) {
+	        controller.getViewController().out(TextUtils.format("code.n_hidden_dependencies_revealed", 0));
+	        UITools.informationMessage(TextUtils.getRawText("code.no_hidden_dependencies_found"));
+            return;
+        }
 	    MapModel map = selection.getMap();
 	    Set<String> dependentNodeIDs;
         if (dependencyDirection == DependencyDirection.INCOMING_AND_OUTGOING) {
@@ -130,6 +135,10 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             if(! lastFilter.areAncestorsShown()) {
                 AncestorsHider.hideAncestors();
             }
+            controller.getViewController().out(TextUtils.format("code.n_hidden_dependencies_revealed", dependentNodeIDs.size()));
+        } else {
+            controller.getViewController().out(TextUtils.format("code.n_hidden_dependencies_revealed", 0));
+            UITools.informationMessage(TextUtils.getRawText("code.no_hidden_dependencies_found"));
         }
 	}
 
