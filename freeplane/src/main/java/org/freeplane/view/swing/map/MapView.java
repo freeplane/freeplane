@@ -677,7 +677,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static private Color selectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
-	private JComponent backgroundComponent;
+	private ScalableComponent backgroundComponent;
 	private Rectangle boundingRectangle = null;
 	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
@@ -1477,12 +1477,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if (fitToViewport) {
 			    final JViewport vp = (JViewport) getParent();
 			    final Dimension viewPortSize = vp.getVisibleRect().getSize();
-			    JComponent viewer = (JComponent) factory.createViewer(uri, viewPortSize, () -> getParent().repaint());
+			    ScalableComponent viewer = factory.createViewer(uri, viewPortSize, () -> getParent().repaint());
 			    setBackgroundComponent(viewer);
 
 			}
             else {
-                JComponent viewer = (JComponent) factory.createViewer(uri, zoom, () -> getParent().repaint());
+                ScalableComponent viewer = factory.createViewer(uri, zoom, () -> getParent().repaint());
                 setBackgroundComponent(viewer);
             }
 			if(backgroundComponent == null) {
@@ -1498,7 +1498,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-    private void setBackgroundComponent(JComponent viewer) {
+    private void setBackgroundComponent(ScalableComponent viewer) {
         this.backgroundComponent = viewer;
         updateBackground();
     }
@@ -1976,24 +1976,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void paintBackgroundComponent(final Graphics g) {
 	    final Graphics backgroundGraphics = g.create();
 	    try {
-	    	setBackgroundComponentLocation(backgroundGraphics);
-	    	backgroundComponent.paint(backgroundGraphics);
+	    	final Point centerPoint = getRootCenterPoint();
+            final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
+            backgroundGraphics.translate(backgroundImageTopLeft.x, backgroundImageTopLeft.y);
+	    	backgroundComponent.paintComponent(backgroundGraphics);
 	    }
 	    finally {
 	    	backgroundGraphics.dispose();
 	    }
-    }
-
-	private void setBackgroundComponentLocation(final Graphics g) {
-		if (! fitToViewport) {
-			final Point centerPoint = getRootCenterPoint();
-			final Point backgroundImageTopLeft = getBackgroundImageTopLeft(centerPoint);
-			g.translate(backgroundImageTopLeft.x, backgroundImageTopLeft.y);
-		}
 	}
 
 	private Point getRootCenterPoint() {
-		final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2,
+	    final Point centerPoint = new Point(getRoot().getMainView().getWidth() / 2,
 		    getRoot().getMainView().getHeight() / 2);
 		UITools.convertPointToAncestor(getRoot().getMainView(), centerPoint, this);
 		return centerPoint;
@@ -2173,7 +2167,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		paintConnectors(outLinks, graphics, alreadyPaintedConnectors);
 		final Collection<? extends NodeLinkModel> inLinks = getLinksTo(node);
 		paintConnectors(inLinks, graphics, alreadyPaintedConnectors);
-		final int nodeViewCount = source.getComponentCount();
+		paintDescendantConnectors(source, graphics, alreadyPaintedConnectors);
+	}
+
+    private void paintDescendantConnectors(final NodeView source, final Graphics2D graphics,
+            final HashSet<ConnectorModel> alreadyPaintedConnectors) {
+        final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {
 			final Component component = source.getComponent(i);
 			if (!(component instanceof NodeView)) {
@@ -2191,12 +2190,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				viewRect.width *= 3;
 				viewRect.height *= 3;
 				if (!viewRect.intersects(bounds)) {
+				    paintDescendantConnectors(child, graphics, alreadyPaintedConnectors);
 					continue;
 				}
 			}
 			paintConnectors(child, graphics, alreadyPaintedConnectors);
 		}
-	}
+    }
 
 	private boolean hasNodeLinks() {
 		return LinkController.getController(getModeController()).hasNodeLinks(getMap(), this);

@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,6 +17,7 @@ import org.freeplane.features.attribute.ManagedAttribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.codeexplorer.graph.GraphCycleFinder;
 import org.freeplane.plugin.codeexplorer.graph.GraphNodeSort;
 
 import com.tngtech.archunit.core.domain.Dependency;
@@ -167,7 +169,8 @@ class PackageNode extends CodeNode {
         List<JavaPackage> subpackages = relevantSubpackages(childPackage);
         boolean samePackage = childPackage == javaPackage;
         if(samePackage || subpackages.isEmpty() && ! childPackage.getClasses().isEmpty()) {
-            String childName = samePackage ? childPackageName + " - package" : parentName + childPackageName;
+            String childName = samePackage ? (childPackageName.isEmpty() ? "default" : childPackageName) + " - package"
+                    : parentName + childPackageName;
             return new ClassesNode(childPackage, getMap(), childName, samePackage, groupIndex);
         }
         else if(subpackages.size() == 1 && !getClasses(childPackage).anyMatch(x -> true))
@@ -239,13 +242,55 @@ class PackageNode extends CodeNode {
                         : UI_ROOT_PACKAGE_ICON_NAME;
     }
 
+
+
     @Override
     Set<CodeNode> findCyclicDependencies() {
-        String id = idWithGroupIndex(javaPackage.getName() + ClassesNode.NODE_ID_SUFFIX);
-        CodeNode classes = (CodeNode) getMap().getNodeForID(id);
-        if(classes != null)
-            return classes.findCyclicDependencies();
+        GraphCycleFinder<CodeNode> cycleFinder = new GraphCycleFinder<CodeNode>();
+        cycleFinder.addNode(this);
+        cycleFinder.stopSearchHere();
+        cycleFinder.exploreGraph(Collections.singleton(this),
+                this::connectedTargetNodes,
+                this::connectedOriginNodes);
+        Set<Entry<CodeNode, CodeNode>> cycles = cycleFinder.findSimpleCycles();
+
+        return cycles.stream().flatMap(edge ->
+        edge.getKey().getOutgoingDependenciesWithKnownTargets().flatMap(dep ->
+        classNodes(edge, dep.getOriginClass(), dep.getTargetClass())))
+        .collect(Collectors.toSet());
+    }
+
+    private Stream<? extends CodeNode> classNodes(Entry<CodeNode, CodeNode> edge,
+            final JavaClass originClass, final JavaClass targetClass) {
+        final String targetId = idWithGroupIndex(targetClass);
+        final CodeNode targetNode = (CodeNode) getMap().getNodeForID(targetId);
+        if(targetNode.isDescendantOf(edge.getValue())) {
+            final String originId = idWithGroupIndex(originClass);
+            final CodeNode originNode = (CodeNode) getMap().getNodeForID(originId);
+            return Stream.of(originNode, targetNode);
+        }
         else
-            return Collections.emptySet();
+            return Stream.empty();
+    }
+
+
+    private Stream<CodeNode> connectedOriginNodes(CodeNode node) {
+        Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
+        .map(Dependency::getOriginClass);
+        return nodes(originClasses);
+    }
+
+    private Stream<CodeNode> connectedTargetNodes(CodeNode node) {
+        Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
+        .map(Dependency::getTargetClass);
+        return nodes(targetClasses);
+    }
+
+    private Stream<CodeNode> nodes(Stream<JavaClass> classes) {
+        return classes
+        .map(this::idWithGroupIndex)
+        .map(getMap()::getNodeForID)
+        .map(node -> node.isDescendantOf(this) ? this : node.getParentNode())
+        .map(CodeNode.class::cast);
     }
 }

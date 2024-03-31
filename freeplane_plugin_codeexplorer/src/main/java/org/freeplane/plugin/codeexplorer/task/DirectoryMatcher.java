@@ -9,14 +9,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
@@ -25,24 +25,32 @@ import com.tngtech.archunit.core.domain.JavaClass;
 public class DirectoryMatcher implements GroupMatcher{
 
     public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
-    private static final Pattern GROUP_NAME_PATTERN = Pattern.compile("/((?:[^/]+?)(?:\\.jar!|/(?:target|build|bin|out)/.+?)?)/$");
     private static String toGroupName(String location) {
-        Pattern projectName = GROUP_NAME_PATTERN;
-        Matcher matcher = projectName.matcher(location);
-        if(matcher.find()) {
-            final String groupName = matcher.group(1);
-            if(location.endsWith(".jar!/"))
-                return groupName.substring(0, groupName.length() - 1);
-            else
-                return groupName;
-        } else
-            return location;
+        if (location.endsWith(".jar!/")) {
+            int lastSlashIndex = location.lastIndexOf('/', location.length() - ".jar!/".length());
+            return location.substring(lastSlashIndex + 1, location.length() - 2);
+        }
+
+        int lastPossibleGroupNameIndex =  location.endsWith("/") ? location.length() - 1 :  location.length();
+
+        // Search for the segments and extract the group name
+        String[] segments = {"/target/", "/build/", "/bin/", "/out/"};
+        for (String segment : segments) {
+            int segmentIndex = location.lastIndexOf(segment);
+            if (segmentIndex > 0) {
+                int lastSlashIndex = location.lastIndexOf('/', segmentIndex - 1);
+                return location.substring(lastSlashIndex + 1, lastPossibleGroupNameIndex);
+            }
+        }
+        int lastSlashIndex = lastPossibleGroupNameIndex > 0 ? location.lastIndexOf('/', lastPossibleGroupNameIndex - 1) : -1;
+        return location.substring(lastSlashIndex + 1, lastPossibleGroupNameIndex);
     }
 
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
     private final Collection<ClassNameMatcher> groupMatchers;
+    private final Map<String, String> groupNamesByLocation;
     private final boolean groupsClassesByName;
 
     public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<ClassNameMatcher> groupMatchers) {
@@ -51,6 +59,7 @@ public class DirectoryMatcher implements GroupMatcher{
         this.groupMatchers = groupMatchers;
         groupsClassesByName = ! groupMatchers.stream().allMatch(ClassNameMatcher::ignoresClasses);
         coreLocationsByPaths = new TreeMap<>();
+        groupNamesByLocation = new HashMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
 
@@ -107,7 +116,7 @@ public class DirectoryMatcher implements GroupMatcher{
             return Optional.empty();
         final String coreLocation = optionalCoreLocation.get();
         if(groupMatchers.isEmpty() || ! groupsClassesByName && identifierByClass(javaClass).isPresent())
-            return Optional.of(new GroupIdentifier(coreLocation, toGroupName(coreLocation)));
+            return Optional.of(new GroupIdentifier(coreLocation, groupNamesByLocation.computeIfAbsent(coreLocation, DirectoryMatcher::toGroupName)));
         else if (groupsClassesByName)
             return identifierByClass(javaClass)
                     .map(id -> id.isEmpty() ? "*" : id)

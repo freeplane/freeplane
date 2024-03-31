@@ -13,6 +13,8 @@ import java.awt.event.HierarchyListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -50,6 +52,10 @@ import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfigurati
 class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private static final long serialVersionUID = 1L;
+    private static final FileNameExtensionFilter JAR_FILTER = new FileNameExtensionFilter("jar", "jar");
+    private static final Comparator<File> BY_NAME = Comparator.comparing(File::getName);
+
+
     private DefaultTableModel configTableModel;
     private DefaultTableModel locationsTableModel;
     private JTable configTable;
@@ -86,9 +92,6 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     private void createFileChooser() {
         fileChooser = UITools.newFileChooser(null);
         fileChooser.setMultiSelectionEnabled(true);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("jar", "jar");
-        fileChooser.setFileFilter(filter);
     }
 
     private JComponent createConfigurationsPanel() {
@@ -115,12 +118,16 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     @SuppressWarnings("serial")
     private JComponent createLocationsPane(JLabel paneLabel, JToggleButton helpToggleButton) {
 
-        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0) {
+        locationsTableModel = new DefaultTableModel(new Object[]{""}, 0);
+        locationsTableModel.addTableModelListener(new TableModelListener() {
             @Override
-            public boolean isCellEditable(int row, int column) {
-               return false;
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE && e.getFirstRow() >= 0 && e.getColumn() >= 0) {
+                    updateSelectedConfigurationLocations();
+                }
             }
-        };
+        });
+
         locationsTable = new AutoResizedTable(locationsTableModel);
         locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -376,6 +383,13 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
 
     private void addJarsAndFolders() {
+        addJarsAndFolders(false);
+    }
+    private void addFoldersRecursively() {
+        addJarsAndFolders(true);
+    }
+
+    private void addJarsAndFolders(boolean addsFoldersResursively) {
         if(configTable.getRowCount() == 0)
             addNewConfiguration();
         int selectedConfigRow = getSelectedConfigurationIndex();
@@ -389,22 +403,57 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
                 fileChooser.setCurrentDirectory(selectedDirectory);
             }
         }
+        if(addsFoldersResursively) {
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.setFileFilter(null);
+        } else {
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            fileChooser.setFileFilter(JAR_FILTER);
+        }
+
         int option = fileChooser.showOpenDialog(CodeExplorerConfigurator.this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File[] files = fileChooser.getSelectedFiles();
             for (File file : files) {
-                String path = file.getAbsolutePath();
-                if(! file.exists()) {
-                    path = path.trim();
-                    file = new File(path);
-                }
-                if (! selectedConfig.containsLocation(path) && file.exists()) {
-                    locationsTableModel.addRow(new Object[]{path});
-                    selectedConfig.addLocation(file);
-                    configurationChange = ConfigurationChange.CODE_BASE;
-                }
+                addLocation(selectedConfig, file, addsFoldersResursively);
             }
         }
+    }
+
+
+    private int addLocation(UserDefinedCodeExplorerConfiguration selectedConfig, File location, boolean addsProjectFoldersResursively) {
+        String path = location.getAbsolutePath();
+        if(! location.exists()) {
+            path = path.trim();
+            location = new File(path);
+        }
+        if (! selectedConfig.containsLocation(path) && location.exists()
+                && (! addsProjectFoldersResursively || containsProject(location))) {
+            if(addsProjectFoldersResursively) {
+                File[] subdirectories = location.listFiles(File::isDirectory);
+                if (subdirectories != null) {
+                    final ArrayList<File> subdirectoryList = new ArrayList<>(Arrays.asList(subdirectories));
+                    Collections.sort(subdirectoryList, BY_NAME);
+                    final int addedLocations = subdirectoryList.stream()
+                    .mapToInt(d -> addLocation(selectedConfig, d, addsProjectFoldersResursively))
+                    .sum();
+                    if(addedLocations > 0)
+                        return addedLocations;
+                }
+            }
+            locationsTableModel.addRow(new Object[]{path});
+            selectedConfig.addLocation(location);
+            configurationChange = ConfigurationChange.CODE_BASE;
+            return 1;
+        }
+        return 0;
+    }
+
+
+    private boolean containsProject(File location) {
+        return Stream.of("pom.xml", "build.gradle", "build.xml")
+                .anyMatch(projectFile ->
+                    new File(location, projectFile).canRead());
     }
 
     private void cancelAnalysis() {
@@ -553,6 +602,9 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         JButton addLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
         addLocationsButton.addActionListener(e1 -> addJarsAndFolders());
 
+        JButton addLocationsRecursivelyButton = TranslatedElementFactory.createButtonWithIcon("code.add_folders_recursively");
+        addLocationsRecursivelyButton.addActionListener(e1 -> addFoldersRecursively());
+
         JButton removeLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.remove_location");
         removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
 
@@ -568,12 +620,12 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
         btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
 
-        JComponent panelButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
+        JComponent panelButtons[] = {addLocationsButton, addLocationsRecursivelyButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
         Stream.of(panelButtons).forEach(button -> {
             toolbar.add(button);
         });
 
-        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
+        JButton enablingButtons[] = {addLocationsButton, addLocationsRecursivelyButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
 
         Stream.of(enablingButtons).forEach(button -> {
             button.setEnabled(false);

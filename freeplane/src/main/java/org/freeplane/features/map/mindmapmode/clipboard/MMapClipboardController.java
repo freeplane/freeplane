@@ -968,9 +968,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			int newNodePosition = mapController.findNewNodePosition(target);
 			for(NodeModel clonedNode:clonedNodes){
-				if(clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
+				if(! asSingleNodes && clonedNode.getParentNode() == null || ! clonedNode.getMap().equals(target.getMap()))
 					return;
-				if (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target)) {
+				if (asSingleNodes || (!clonedNode.isRoot() && ! clonedNode.subtreeContainsCloneOf(target))) {
 					switch(operation){
 					case CLONE:
 						try {

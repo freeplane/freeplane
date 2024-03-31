@@ -69,8 +69,8 @@ public abstract class CodeNode extends NodeModel {
         if(javaClass.isTopLevelClass())
             return -1 == javaClass.getSimpleName().indexOf('-');
         for(JavaClass enclosingClass = javaClass.getEnclosingClass().get();;
-                enclosingClass = javaClass.getEnclosingClass().get()) {
-            if(! enclosingClass.getSource().equals(javaClass.getSource()))
+                enclosingClass = enclosingClass.getEnclosingClass().get()) {
+            if(! classSourceLocationOf(enclosingClass).equals(classSourceLocationOf(javaClass)))
                 return false;
             if(enclosingClass.isTopLevelClass())
                 return true;
@@ -181,11 +181,16 @@ public abstract class CodeNode extends NodeModel {
     }
 
     void setIdWithIndex(String idWithoutIndex) {
-        setID(idWithGroupIndex(idWithoutIndex));
+        setID(idWithOwnGroupIndex(idWithoutIndex));
     }
 
-    String idWithGroupIndex(String idWithoutIndex) {
+    String idWithOwnGroupIndex(String idWithoutIndex) {
         return idWithGroupIndex(idWithoutIndex, groupIndex);
+    }
+
+    String idWithGroupIndex(JavaClass javaClass) {
+        final JavaClass enclosingNamedClass = findEnclosingNamedClass(javaClass);
+        return idWithGroupIndex(enclosingNamedClass.getName(), getMap().groupIndexOf(enclosingNamedClass));
     }
 
     boolean belongsToSameGroup(JavaClass javaClass) {
@@ -227,13 +232,17 @@ public abstract class CodeNode extends NodeModel {
         return Stream.concat(getIncomingDependenciesWithKnownOrigins(), getOutgoingDependenciesWithKnownTargets());
     }
 
-    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(Filter  filter){
-        return getOutgoingDependenciesWithKnownTargets()
+    public Stream<Dependency> getOutgoingDependenciesWithKnownTargets(Filter filter){
+        final Stream<Dependency> outgoingDependenciesWithKnownTargets = getOutgoingDependenciesWithKnownTargets();
+        return filter == null ? outgoingDependenciesWithKnownTargets
+                : outgoingDependenciesWithKnownTargets
                 .filter(dep -> getMap().getNodeByClass(dep.getOriginClass()).isVisible(filter));
     }
 
-    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter  filter){
-        return getIncomingDependenciesWithKnownOrigins()
+    public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter filter){
+        final Stream<Dependency> incomingDependenciesWithKnownOrigins = getIncomingDependenciesWithKnownOrigins();
+        return filter == null ? incomingDependenciesWithKnownOrigins
+                : incomingDependenciesWithKnownOrigins
                 .filter(dep -> getMap().getNodeByClass(dep.getTargetClass()).isVisible(filter));
     }
 
