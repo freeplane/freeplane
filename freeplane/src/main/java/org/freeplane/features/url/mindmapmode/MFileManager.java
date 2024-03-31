@@ -534,8 +534,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final String errorMessage = "Error while parsing file:" + file;
 			LogUtils.warn(errorMessage, ex);
 			final NodeModel result = new NodeModel(map);
-			map.setRoot(result);
 			result.setText(errorMessage);
+			if(map.getRootNode() == null)
+			    map.setRoot(result);
 			return result;
 		}
 	}
@@ -620,7 +621,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				break;
 			}
 		}
-		Controller.getCurrentController().getMapViewManager().setMapTitles();
 	}
 
 	public MapModel newMapFromDefaultTemplate() {
@@ -790,6 +790,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController()
 			    .getMapViewManager().getMapViewComponent(), TextUtils.getText("map_already_exists"), "Freeplane",
 			    JOptionPane.YES_NO_OPTION);
+			UITools.resetMenuBarOnMac();
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}

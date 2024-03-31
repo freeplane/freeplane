@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
@@ -228,7 +228,7 @@ public class ReportGenerator extends StreamHandler {
 				}
 			});
 		}
-		if (!isLoggable(record)) {
+		if (! (isLoggable(record) && record.getLoggerName().equals("org.freeplane"))) {
 			return;
 		}
 
@@ -278,8 +278,7 @@ public class ReportGenerator extends StreamHandler {
     	StackTraceElement[] stackTrace = thrown.getStackTrace();
     	if(stackTrace == null)
     		return false;
-        return classNameStartsWith(stackTrace, 0, "org.codehaus.groovy.runtime")
-                || classNameStartsWith(stackTrace, 2, "net.infonode.tabbedpanel.theme.internal.laftheme.PaneUI");
+        return classNameStartsWith(stackTrace, 0, "org.codehaus.groovy.runtime");
 	}
 
     private boolean classNameStartsWith(StackTraceElement[] stackTrace, int position, String classNameStart) {
@@ -416,7 +415,8 @@ public class ReportGenerator extends StreamHandler {
 			}
 			// Send data
 			final URL url = new URL(getBugTrackerUrl());
-			final URLConnection conn = url.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
 			final String report = data.toString();
 			try (final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8)) {

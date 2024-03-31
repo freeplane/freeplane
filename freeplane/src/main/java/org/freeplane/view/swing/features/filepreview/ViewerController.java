@@ -413,6 +413,10 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		private void setSize(final JComponent component, int newWidth, int newHeight) {
+		    setSize(component, newWidth, newHeight, false);
+		}
+
+		private void setSize(final JComponent component, int newWidth, int newHeight, boolean isCallRecursive) {
 			final int cursorType = component.getCursor().getType();
 			sizeChanged = true;
 			final Dimension size;
@@ -427,14 +431,14 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 					newWidth = (int) (baseWidth * scalingFactor);
 					newHeight = (int) (baseHeight * scalingFactor);
 					final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
-					if (scalingFactor < 1) {
+					if (! isCallRecursive && scalingFactor < 1) {
 						final int minimumWidth = mapView.getZoomed(minimumSize.width);
 						final int minimumHeight = mapView.getZoomed(minimumSize.height);
 						if (newWidth < minimumWidth || newHeight < minimumHeight) {
 							if(baseWidth <= minimumWidth || baseHeight <= minimumHeight)
 								size = baseSize;
 							else {
-								setSize(component, minimumWidth, minimumHeight);
+								setSize(component, minimumWidth, minimumHeight, true);
 								return;
 							}
 						} else {

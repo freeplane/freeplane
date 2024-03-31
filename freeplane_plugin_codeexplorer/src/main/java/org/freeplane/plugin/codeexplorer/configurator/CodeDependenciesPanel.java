@@ -2,7 +2,6 @@ package org.freeplane.plugin.codeexplorer.configurator;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -16,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -83,8 +83,8 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
             CodeDependency row = allDependencies.get(rowIndex);
             switch (columnIndex) {
                 case 0: return row.describeVerdict();
-                case 1: return ClassNode.nodeText(row.getOriginClass());
-                case 2: return ClassNode.nodeText(row.getTargetClass());
+                case 1: return ClassNode.classNameWithEnclosingClasses(row.getOriginClass());
+                case 2: return ClassNode.classNameWithEnclosingClasses(row.getTargetClass());
                 case 3: return row.getDescription();
                 default: return null;
             }
@@ -102,20 +102,25 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
     }
 
     CodeDependenciesPanel() {
-     // Create the top panel for sorting options
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+         // Create the top panel for sorting options
+         JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Add components to the top panel
+         // Create a box to hold the components that should be aligned to the left
+         countLabel = new JLabel(filterIcon);
+         final int countLabelMargin = (int) (UITools.FONT_SCALE_FACTOR * 10);
+         countLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, countLabelMargin));
+         countLabel.setIconTextGap(countLabelMargin / 2);
 
-        topPanel.add(new JLabel(filterIcon));
-        countLabel = new JLabel();
-        topPanel.add(countLabel);
-        filterField = new JTextField(100);
-        filterField.addActionListener(e -> updateDependencyFilter());
-        topPanel.add(filterField);
+         // Add the box of left-aligned components to the top panel at the WEST
+         topPanel.add(countLabel, BorderLayout.WEST);
 
-        dependencyViewer = new JTable() {
+         // Configure filterField to expand and fill the remaining space
+         filterField = new JTextField();
+         filterField.addActionListener(e -> updateDependencyFilter());
+         // Add the filterField to the CENTER to occupy the maximum available space
+         topPanel.add(filterField, BorderLayout.CENTER);
+
+         dependencyViewer = new JTable() {
 
             private static final long serialVersionUID = 1L;
 
@@ -144,7 +149,7 @@ class CodeDependenciesPanel extends JPanel implements INodeSelectionListener, IM
         updateColumn(columnModel, 3, 1200, cellRenderer);
 
         dependencyViewer.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        dependencyViewer.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        dependencyViewer.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         dependencyViewer.setCellSelectionEnabled(true);
 
         TableRowSorter<DependenciesWrapper> sorter = new TableRowSorter<>(dataModel);

@@ -34,6 +34,8 @@ public class CodeModeController extends MModeController {
 	CodeModeController(final Controller controller, ArchUnitServer archUnitServer) {
 		super(controller);
 		addExtension(CodeProjectController.class, new CodeProjectController(this, archUnitServer));
+        addAction(new OpenURLAction("code.explorerDocumentation",
+                ResourceController.getResourceController().getProperty("code.explorerDocumentationUrl")));
 		addAction(new OpenURLAction("code.introductionVideo",
 		        ResourceController.getResourceController().getProperty("code.introductionVideoUrl")));
 

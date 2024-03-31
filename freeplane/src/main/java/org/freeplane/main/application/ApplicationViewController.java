@@ -431,6 +431,6 @@ class ApplicationViewController extends FrameController {
 
 	@Override
 	public List<? extends Component> getMapViewVector() {
-		return mapViewWindows.getMapViewVector();
+		return mapViewWindows != null ? mapViewWindows.getMapViewVector() : null;
 	}
 }

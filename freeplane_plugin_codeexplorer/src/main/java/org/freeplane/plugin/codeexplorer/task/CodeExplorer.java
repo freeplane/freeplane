@@ -6,7 +6,7 @@
 package org.freeplane.plugin.codeexplorer.task;
 
 public interface CodeExplorer {
-    void explore(CodeExplorerConfiguration configuration);
+    void explore(CodeExplorerConfiguration configuration, boolean reloadCodebase);
     void setProjectConfiguration(DependencyJudge judge, AnnotationMatcher annotationMatcher);
     void cancelAnalysis();
 }

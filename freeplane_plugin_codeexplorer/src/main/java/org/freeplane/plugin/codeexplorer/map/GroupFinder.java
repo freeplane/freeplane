@@ -9,11 +9,11 @@ import java.util.stream.Stream;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-interface SubprojectFinder {
-    SubprojectFinder EMPTY = new SubprojectFinder() {
+interface GroupFinder {
+    GroupFinder EMPTY = new GroupFinder() {
 
         @Override
-        public int subprojectIndexOf(JavaClass javaClass) {
+        public int groupIndexOf(JavaClass javaClass) {
             return -1;
         }
 
@@ -23,18 +23,23 @@ interface SubprojectFinder {
         }
 
         @Override
-        public String locationByIndex(int index) {
+        public String getIdByIndex(int index) {
            throw new IllegalArgumentException("No locations");
         }
 
         @Override
-        public int subprojectIndexOf(String location) {
+        public int groupIndexOf(String groupId) {
             return -1;
         }
-    };
 
-    int subprojectIndexOf(JavaClass javaClass);
-    int subprojectIndexOf(String location);
-    String locationByIndex(int index);
+        @Override
+        public boolean belongsToAnyGroup(JavaClass javaClass) {
+             return false;
+        }
+    };
+    boolean belongsToAnyGroup(JavaClass javaClass);
+    int groupIndexOf(JavaClass javaClass);
+    int groupIndexOf(String groupId);
+    String getIdByIndex(int index);
     Stream<JavaClass> allClasses();
 }

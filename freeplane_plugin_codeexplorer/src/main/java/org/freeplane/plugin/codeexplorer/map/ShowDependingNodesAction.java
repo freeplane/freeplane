@@ -83,6 +83,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 	    super("code.ShowDependingNodesAction." + dependencyDirection + "." + codeNodeSelection + "." + recursionDepth,
 	            formatActionText(dependencyDirection, codeNodeSelection, recursionDepth),
 	            null);
+	    setIcon(getIconKey());
         this.dependencyDirection = dependencyDirection;
         this.codeNodeSelection = codeNodeSelection;
         this.maximumRecursionDepth = recursionDepth.depth;

@@ -15,7 +15,7 @@ public interface CodeExplorerConfiguration {
 
     String getProjectName();
 
-    LocationMatcher createLocationMatcher();
+    GroupMatcher createGroupMatcher();
 
     DependencyJudge getDependencyJudge();
 

@@ -20,6 +20,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.properties.HasName;
+import com.tngtech.archunit.core.domain.Formatters;
 
 
 public class ClassNode extends CodeNode {
@@ -37,13 +38,13 @@ public class ClassNode extends CodeNode {
     static final String CLASS_ICON_NAME = "code_class";
     static final String ENUM_ICON_NAME = "code_enum";
 
-	ClassNode(final JavaClass javaClass, final CodeMap map, int subprojectIndex) {
-		super(map, subprojectIndex);
+	ClassNode(final JavaClass javaClass, final CodeMap map, int groupIndex) {
+		super(map, groupIndex);
         this.javaClass = javaClass;
         this.innerClasses = null;
 		setFolded(false);
 		setIdWithIndex(javaClass.getName());
-		String nodeText = nodeText(javaClass);
+		String nodeText = classNameWithEnclosingClasses(javaClass);
         setText(nodeText);
 	}
 
@@ -59,11 +60,24 @@ public class ClassNode extends CodeNode {
         return javaClass.getInterfaces();
     }
 
-    public static String nodeText(final JavaClass javaClass) {
-        String simpleName = javaClass.getSimpleName();
+    public static String classNameWithEnclosingClasses(final JavaClass javaClass) {
+        String simpleName = getSimpleName(javaClass);
         return javaClass.getEnclosingClass()
-                .map(ec -> nodeText(ec) + "." + simpleName)
+                .map(ec -> classNameWithEnclosingClasses(ec) + "." + simpleName)
                 .orElse(simpleName);
+    }
+
+    public static String getSimpleName(final JavaClass javaClass) {
+        String simpleName = javaClass.getSimpleName();
+        if(simpleName.isEmpty()) {
+            final String fullName = javaClass.getName();
+            int lastIndexOfNon$ = fullName.length() - 1;
+            while (lastIndexOfNon$ >= 0 && fullName.charAt(lastIndexOfNon$) == '$')
+                lastIndexOfNon$--;
+            return Formatters.ensureSimpleName(fullName.substring(0, lastIndexOfNon$+1))
+                    + fullName.substring(lastIndexOfNon$+1);
+        }
+        return simpleName;
     }
 
     @Override
@@ -121,14 +135,14 @@ public class ClassNode extends CodeNode {
 
     @Override
     String getUIIconName() {
+        if(javaClass.isAnnotation())
+            return ANNOTATION_ICON_NAME;
         if(javaClass.isInterface())
             return INTERFACE_ICON_NAME;
         if(javaClass.isEnum())
             return ENUM_ICON_NAME;
         if(javaClass.getModifiers().contains(JavaModifier.ABSTRACT))
             return ABSTRACT_CLASS_ICON_NAME;
-        if(javaClass.isAnnotation())
-            return ANNOTATION_ICON_NAME;
         return CLASS_ICON_NAME;
     }
 
@@ -138,31 +152,31 @@ public class ClassNode extends CodeNode {
         cycleFinder.addNode(this);
         cycleFinder.stopSearchHere();
         cycleFinder.exploreGraph(Collections.singleton(this),
-                this::connectedTargetNodesInSubproject,
-                this::connectedOriginNodesInSubproject);
+                this::connectedTargetNodesInGroup,
+                this::connectedOriginNodesInGroup);
         LinkedHashSet<CodeNode> cycles = cycleFinder.findSimpleCycles().stream()
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
         return cycles;
     }
 
-    private Stream<CodeNode> connectedOriginNodesInSubproject(CodeNode node) {
+    private Stream<CodeNode> connectedOriginNodesInGroup(CodeNode node) {
         Stream<JavaClass> originClasses = node.getIncomingDependenciesWithKnownOrigins()
         .map(Dependency::getOriginClass);
-        return nodesContainedInSubproject(originClasses);
+        return nodesContainedInGroup(originClasses);
     }
 
-    private Stream<CodeNode> connectedTargetNodesInSubproject(CodeNode node) {
+    private Stream<CodeNode> connectedTargetNodesInGroup(CodeNode node) {
         Stream<JavaClass> targetClasses = node.getOutgoingDependenciesWithKnownTargets()
         .map(Dependency::getTargetClass);
-        return nodesContainedInSubproject(targetClasses);
+        return nodesContainedInGroup(targetClasses);
     }
-    private Stream<CodeNode> nodesContainedInSubproject(Stream<JavaClass> classes) {
+    private Stream<CodeNode> nodesContainedInGroup(Stream<JavaClass> classes) {
         return classes
-        .filter(this::belongsToSameSubproject)
+        .filter(this::belongsToSameGroup)
         .map(CodeNode::findEnclosingNamedClass)
         .map(JavaClass::getName)
-        .map(this::idWithSubprojectIndex)
+        .map(this::idWithGroupIndex)
         .map(getMap()::getNodeForID)
         .map(CodeNode.class::cast);
     }

@@ -38,11 +38,9 @@ class MapsMenuAction extends AFreeplaneAction {
 		super(MAPS_MENU_ACTION_DOT + command, title, null);
 	}
 
-	public void actionPerformed(final ActionEvent menuEvent) {
-		JAutoRadioButtonMenuItem menuItem = (JAutoRadioButtonMenuItem) menuEvent.getSource();
-		AccelerateableAction accelerateableAction = (AccelerateableAction) menuItem.getAction();
-		AFreeplaneAction action = accelerateableAction.getOriginalAction();
-		final String mapId = action.getKey().substring(MAPS_MENU_ACTION_DOT.length());
+	@Override
+    public void actionPerformed(final ActionEvent menuEvent) {
+		final String mapId = getKey().substring(MAPS_MENU_ACTION_DOT.length());
 		UITools.executeWhenNodeHasFocus(new Runnable() {
 			@Override
 			public void run() {

@@ -111,7 +111,7 @@
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry builder="separator" />
-			<Entry name="maps" processOnPopup="true">
+			<Entry name="maps" >
 				<Entry builder="navigate_maps,radio_button_group" />
 			</Entry>
 		</Entry>

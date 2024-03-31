@@ -101,12 +101,17 @@ public class CodeProjectController implements IExtension {
 	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
         informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
 
-	    modeController.getController().getViewController().insertComponentIntoSplitPane(informationPanel);
+	    Controller controller = modeController.getController();
+        controller.getViewController().insertComponentIntoSplitPane(informationPanel);
 	    informationPanel.setVisible(true);
 	    informationPanel.revalidate();
+
+	    controller.getMapViewManager().addMapSelectionListener(configurator);
 	}
 
     private void hideControlPanel() {
+        Controller controller = modeController.getController();
+        controller.getMapViewManager().removeMapSelectionListener(configurator);
         modeController.getController().getViewController().removeSplitPane();
         informationPanel = null;
         configurator = null;
@@ -153,18 +158,18 @@ public class CodeProjectController implements IExtension {
         if(configurator != null) {
             UserDefinedCodeExplorerConfiguration selectedConfiguration = configurator.getSelectedConfiguration();
             if(selectedConfiguration != null)
-                exploreConfiguration(selectedConfiguration);
+                exploreConfiguration(selectedConfiguration, true);
         }
     }
 
     public void exploreConfiguration(final ArchitectureViolationsConfiguration configuration) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-        codeExplorer.explore(configuration);
+        codeExplorer.explore(configuration, true);
     }
 
-    void exploreConfiguration(UserDefinedCodeExplorerConfiguration selectedConfiguration) {
+    void exploreConfiguration(UserDefinedCodeExplorerConfiguration selectedConfiguration, boolean reloadCodebase) {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
-        codeExplorer.explore(selectedConfiguration);
+        codeExplorer.explore(selectedConfiguration, reloadCodebase);
     }
 
     public void saveConfiguration() {

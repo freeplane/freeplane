@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
@@ -25,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -36,12 +38,16 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
+import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.plugin.codeexplorer.map.CodeMap;
+import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
 import org.freeplane.plugin.codeexplorer.task.ConfigurationChange;
 import org.freeplane.plugin.codeexplorer.task.ParsedConfiguration;
+import org.freeplane.plugin.codeexplorer.task.UserDefinedCodeExplorerConfiguration;
 
-class CodeExplorerConfigurator extends JPanel {
+class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private static final long serialVersionUID = 1L;
     private DefaultTableModel configTableModel;
@@ -141,8 +147,12 @@ class CodeExplorerConfigurator extends JPanel {
 
         // Create a help text component and add it to the card panel
         JTextArea helpText = new JTextArea(ParsedConfiguration.HELP);
+        helpText.setLineWrap(true);
+        helpText.setWrapStyleWord(true);
         helpText.setEditable(false); // make it read-only if it's a text area
-        cardPanel.add(new JScrollPane(helpText), "Help");
+        cardPanel.add(new JScrollPane(helpText,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER), "Help");
 
         String rulesHelpHeaderText = TextUtils.getText("code.helplabel");
         String locationsHeaderText = TextUtils.getText("code.locations");
@@ -202,17 +212,19 @@ class CodeExplorerConfigurator extends JPanel {
                 locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
             rules.setText(config.getConfigurationRules());
+            Rectangle rect = configTable.getCellRect(selectedRow, 0, true);
+            configTable.scrollRectToVisible(rect);
         }
         else
             rules.setText("");
         configurationChange = ConfigurationChange.CODE_BASE;
     }
 
-    private void exploreSelectedConfiguration() {
+    private void exploreSelectedConfiguration(boolean reloadCodebase) {
         final UserDefinedCodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
         if(selectedConfiguration != null) {
             setConfigurationRules();
-            codeProjectController.exploreConfiguration(selectedConfiguration);
+            codeProjectController.exploreConfiguration(selectedConfiguration, reloadCodebase);
             configurationChange = ConfigurationChange.SAME;
         }
     }
@@ -403,7 +415,10 @@ class CodeExplorerConfigurator extends JPanel {
         setConfigurationRules();
         switch(configurationChange) {
         case CODE_BASE:
-            exploreSelectedConfiguration();
+            exploreSelectedConfiguration(true);
+            break;
+        case GROUPS:
+            exploreSelectedConfiguration(false);
             break;
         case CONFIGURATION:
             codeProjectController.updateProjectConfiguration();
@@ -440,9 +455,10 @@ class CodeExplorerConfigurator extends JPanel {
         JComponent configurationTableToolbar = createConfigurationTableToolbar();
         JLabel locationsLabel = new JLabel();
         helpToggleButton = TranslatedElementFactory.createToggleButtonWithIcon("code.help.icon", "code.help");
-        JComponent locationsToolbar = createLocationButtons(helpToggleButton);
+        JComponent locationsToolbar = createLocationButtons();
         JComponent locationsPane = createLocationsPane(locationsLabel, helpToggleButton);
         JLabel rulesLabel = new JLabel(TextUtils.getText("code.rules"));
+        JComponent rulesToolbar = createRulesButtons(helpToggleButton);
         JComponent rulesPane = createRulesPane();
 
 
@@ -465,9 +481,12 @@ class CodeExplorerConfigurator extends JPanel {
         add(locationsLabel, gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.gridwidth = 2;
         gbc.anchor=GridBagConstraints.LINE_START;
         add(locationsToolbar, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.anchor=GridBagConstraints.LINE_START;
+        add(rulesToolbar, gbc);
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.anchor=GridBagConstraints.CENTER;
@@ -503,7 +522,7 @@ class CodeExplorerConfigurator extends JPanel {
         applyButton.addActionListener(e ->applyConfigurationRules());
 
         JButton exploreConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
-        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration());
+        exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration(true));
 
         JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
@@ -529,13 +548,8 @@ class CodeExplorerConfigurator extends JPanel {
         return toolbar;
     }
 
-    private JComponent createLocationButtons(JToggleButton helpToggleButton) {
+    private JComponent createLocationButtons() {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
-        revertButton.addActionListener(e ->
-            rules.setText(getSelectedConfiguration().getConfigurationRules())
-        );
-
         JButton addLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
         addLocationsButton.addActionListener(e1 -> addJarsAndFolders());
 
@@ -554,12 +568,41 @@ class CodeExplorerConfigurator extends JPanel {
         JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
         btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
 
-        JComponent panelButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, revertButton, helpToggleButton};
+        JComponent panelButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
         Stream.of(panelButtons).forEach(button -> {
             toolbar.add(button);
         });
 
-        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom, revertButton};
+        JButton enablingButtons[] = {addLocationsButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
+
+        Stream.of(enablingButtons).forEach(button -> {
+            button.setEnabled(false);
+        });
+
+        Runnable enableButtons = () -> {
+            boolean enable = configTable.getSelectionModel().getMinSelectionIndex() >= 0
+                    && ! helpToggleButton.isSelected();
+            Stream.of(enablingButtons).forEach(button -> button.setEnabled(enable));
+        };
+
+        configTable.getSelectionModel().addListSelectionListener(l -> enableButtons.run());
+        return toolbar;
+
+    }
+
+    private JComponent createRulesButtons(JToggleButton helpToggleButton) {
+        FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
+        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
+        revertButton.addActionListener(e ->
+            rules.setText(getSelectedConfiguration().getConfigurationRules())
+        );
+
+        JComponent panelButtons[] = {revertButton, helpToggleButton};
+        Stream.of(panelButtons).forEach(button -> {
+            toolbar.add(button);
+        });
+
+        JButton enablingButtons[] = {revertButton};
 
         Stream.of(enablingButtons).forEach(button -> {
             button.setEnabled(false);
@@ -589,4 +632,22 @@ class CodeExplorerConfigurator extends JPanel {
     private CodeExplorerConfigurations explorerConfigurations() {
         return codeProjectController.explorerConfigurations();
     }
+
+
+    @Override
+    public void afterMapChange(MapModel oldMap, MapModel newMap) {
+        if(! (newMap instanceof CodeMap))
+            return;
+        CodeExplorerConfiguration configuration = ((CodeMap)newMap).getConfiguration();
+        if(! (configuration instanceof UserDefinedCodeExplorerConfiguration)) {
+            return;
+        }
+        String projectName = ((UserDefinedCodeExplorerConfiguration)configuration).getProjectName();
+        for(int row = 0; row < configTable.getRowCount(); row++) {
+            if(projectName.equals(configTable.getValueAt(row, 0)))
+                configTable.getSelectionModel().setSelectionInterval(row, row);
+        }
+    }
+
+
 }

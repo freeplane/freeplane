@@ -22,7 +22,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 public class CodeMap extends MMapModel {
 
     private DependencyJudge judge = new DependencyRuleJudge();
-    private SubprojectFinder subprojectFinder = SubprojectFinder.EMPTY;
+    private GroupFinder groupFinder = GroupFinder.EMPTY;
     private CodeExplorerConfiguration codeExplorerConfiguration;
     private boolean canBeSaved = false;
 
@@ -98,38 +98,42 @@ public class CodeMap extends MMapModel {
     }
 
 
-    public void setSubprojectFinder(SubprojectFinder subprojectFinder) {
-        this.subprojectFinder = subprojectFinder;
+    public void setGroupFinder(GroupFinder groupFinder) {
+        this.groupFinder = groupFinder;
     }
 
     DependencyVerdict judge(Dependency dependency, boolean goesUp) {
         return judge.judge(dependency, goesUp);
     }
 
-    public int subprojectIndexOf(JavaClass javaClass) {
-        return subprojectFinder.subprojectIndexOf(javaClass);
+    public int groupIndexOf(JavaClass javaClass) {
+        return groupFinder.groupIndexOf(javaClass);
     }
 
-    public int subprojectIndexOf(String location) {
-        return subprojectFinder.subprojectIndexOf(location);
+    public int groupIndexOf(String groupId) {
+        return groupFinder.groupIndexOf(groupId);
     }
 
 
+
+    public boolean belongsToGroup(JavaClass javaClass) {
+        return groupFinder.belongsToAnyGroup(javaClass);
+    }
 
     public Stream<JavaClass> allClasses() {
-        return subprojectFinder.allClasses();
+        return groupFinder.allClasses();
     }
 
 
     public String getClassNodeId(JavaClass javaClass) {
-        int subprojectIndex = subprojectIndexOf(javaClass);
-        return getClassNodeId(javaClass, subprojectIndex);
+        int groupIndex = groupIndexOf(javaClass);
+        return getClassNodeId(javaClass, groupIndex);
     }
 
-    private String getClassNodeId(JavaClass javaClass, int subprojectIndex) {
+    private String getClassNodeId(JavaClass javaClass, int groupIndex) {
         JavaClass nodeClass = CodeNode.findEnclosingNamedClass(javaClass);
         String nodeClassName = nodeClass.getName();
-        String classNodeId = CodeNode.idWithSubprojectIndex(nodeClassName, subprojectIndex);
+        String classNodeId = CodeNode.idWithGroupIndex(nodeClassName, groupIndex);
         return classNodeId;
     }
 
@@ -139,8 +143,8 @@ public class CodeMap extends MMapModel {
     }
 
     String getExistingNodeId(JavaClass javaClass) {
-        int subprojectIndex = subprojectIndexOf(javaClass);
-        return getClassNodeId(javaClass, subprojectIndex);
+        int groupIndex = groupIndexOf(javaClass);
+        return getClassNodeId(javaClass, groupIndex);
     }
 
     public CodeDependency toCodeDependency(Dependency dependency) {
@@ -167,8 +171,8 @@ public class CodeMap extends MMapModel {
         return codeExplorerConfiguration;
     }
 
-    public String locationByIndex(int index) {
-        return subprojectFinder.locationByIndex(index);
+    public String groupIdByIndex(int index) {
+        return groupFinder.getIdByIndex(index);
     }
 
     public void setCanBeSaved(boolean canBeSaved) {

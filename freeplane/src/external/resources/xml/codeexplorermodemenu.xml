@@ -277,7 +277,7 @@
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry builder="separator" />
-			<Entry name="maps" processOnPopup="true">
+			<Entry name="maps">
 				<Entry builder="navigate_maps,radio_button_group" />
 			</Entry>
 		</Entry>
@@ -291,8 +291,9 @@
 				<Entry name="RequestFeatureAction" />
 			</Entry>
 			<Entry name="AboutAction" />
+			<Entry accelerator="F1" name="code.explorerDocumentation" />
 			<Entry name="code.introductionVideo" />
-			<Entry accelerator="F1" name="DocumentationAction" />
+			<Entry name="DocumentationAction" />
             <Entry name="FreeplaneHandbook" />
             <Entry name="HotKeyInfoAction" />
 		</Entry>

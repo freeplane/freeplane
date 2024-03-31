@@ -32,6 +32,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -849,5 +850,18 @@ public class UITools {
 	public static boolean isLightLookAndFeelInstalled() {
 		return isLight(UIManager.getColor("Panel.background"));
 	}
+
+    public static void resetMenuBarOnMac() {
+        if(Compat.isMacOsX()) {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            final Frame frame = getFrame();
+            if(frame != null) {
+                final MenuBar menuBar = frame.getMenuBar();
+                frame.setMenuBar(null);
+                frame.setMenuBar(menuBar);
+                System.setProperty("apple.laf.useScreenMenuBar", "false");
+            }
+        }
+    }
 
 }

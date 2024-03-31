@@ -100,6 +100,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 					JOptionPane.showMessageDialog(UITools.getMenuComponent(), TextUtils
 					    .getText("option_changes_may_require_restart"));
 					ResourceController.getResourceController().saveProperties();
+					UITools.resetMenuBarOnMac();
 				}
 			}
 		});

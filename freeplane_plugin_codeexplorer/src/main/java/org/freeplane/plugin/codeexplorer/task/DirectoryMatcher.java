@@ -15,20 +15,41 @@ import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.freeplane.plugin.codeexplorer.map.CodeNode;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public class DirectoryMatcher implements LocationMatcher{
-    public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList());
+public class DirectoryMatcher implements GroupMatcher{
+
+    public static final DirectoryMatcher ALLOW_ALL = new DirectoryMatcher(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+    private static final Pattern GROUP_NAME_PATTERN = Pattern.compile("/((?:[^/]+?)(?:\\.jar!|/(?:target|build|bin|out)/.+?)?)/$");
+    private static String toGroupName(String location) {
+        Pattern projectName = GROUP_NAME_PATTERN;
+        Matcher matcher = projectName.matcher(location);
+        if(matcher.find()) {
+            final String groupName = matcher.group(1);
+            if(location.endsWith(".jar!/"))
+                return groupName.substring(0, groupName.length() - 1);
+            else
+                return groupName;
+        } else
+            return location;
+    }
+
     private final SortedMap<String, String> coreLocationsByPaths;
     private final Collection<File> locations;
     private final Collection<String> subpaths;
+    private final Collection<ClassNameMatcher> groupMatchers;
+    private final boolean groupsClassesByName;
 
-    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths) {
+    public DirectoryMatcher(Collection<File> locations, Collection<String> subpaths, Collection<ClassNameMatcher> groupMatchers) {
         this.locations = locations;
         this.subpaths = subpaths;
+        this.groupMatchers = groupMatchers;
+        groupsClassesByName = ! groupMatchers.stream().allMatch(ClassNameMatcher::ignoresClasses);
         coreLocationsByPaths = new TreeMap<>();
         findDirectories((directory, location) -> coreLocationsByPaths.put(directory.toURI().getRawPath(), location.toURI().getRawPath()));
     }
@@ -54,13 +75,45 @@ public class DirectoryMatcher implements LocationMatcher{
             return Collections.singletonList("build/classes");
         else
             return Collections.singletonList(".");
-
+    }
+    private Optional<String> identifierByClass(JavaClass javaClass) {
+        for (ClassNameMatcher groupMatcher : groupMatchers) {
+            final String qualifiedClassName = qualifiedClassName(javaClass);
+            if(groupMatcher.isIgnored(qualifiedClassName))
+                return Optional.empty();
+            Optional<String> groupResult = groupMatcher.toGroup(qualifiedClassName);
+            if (groupResult.isPresent()) {
+                return groupResult;
+            }
+        }
+        return Optional.of("");
     }
 
+    private String qualifiedClassName(JavaClass javaClass) {
+        final String fullName = CodeNode.findEnclosingTopLevelClass(javaClass).getName();
+        int lastIndexOfNon$ = fullName.length() - 1;
+        while (lastIndexOfNon$ > 0 && fullName.charAt(lastIndexOfNon$) == '$')
+            lastIndexOfNon$--;
+
+        return fullName.substring(0, lastIndexOfNon$ + 1);
+    }
+
+
     @Override
-    public Optional<String> coreLocationPath(JavaClass javaClass) {
+    public Optional<GroupIdentifier> groupIdentifier(JavaClass javaClass) {
         Optional<String> optionalPath = CodeNode.classSourceLocationOf(javaClass);
-        return optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
+        final Optional<String> optionalCoreLocation = optionalPath.map(path -> coreLocationsByPaths.getOrDefault(path, path));
+        if(! optionalCoreLocation.isPresent())
+            return Optional.empty();
+        final String coreLocation = optionalCoreLocation.get();
+        if(groupMatchers.isEmpty() || ! groupsClassesByName && identifierByClass(javaClass).isPresent())
+            return Optional.of(new GroupIdentifier(coreLocation, toGroupName(coreLocation)));
+        else if (groupsClassesByName)
+            return identifierByClass(javaClass)
+                    .map(id -> id.isEmpty() ? "*" : id)
+                    .map(id -> new GroupIdentifier(id, id));
+        else
+            return Optional.empty();
     }
 
     public Collection<File> getImportedLocations() {

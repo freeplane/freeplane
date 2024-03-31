@@ -41,8 +41,8 @@ public class DependencySelection {
         Stream<Dependency> allDependencies = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        getOutgoingDependencies((CodeNode)node).stream(),
-                        getIncomingDependencies((CodeNode)node).stream()))
+                        getOutgoingDependencies((CodeNode)node),
+                        getIncomingDependencies((CodeNode)node)))
                 .distinct();
         return allDependencies;
     }
@@ -53,8 +53,8 @@ public class DependencySelection {
         allClasses = nodes.stream()
                 .flatMap(node ->
                 Stream.concat(
-                        ((CodeNode)node).getOutgoingDependenciesWithKnownTargets().map(Dependency::getOriginClass),
-                        ((CodeNode)node).getIncomingDependenciesWithKnownOrigins().map(Dependency::getTargetClass)))
+                        getOutgoingDependencies(((CodeNode)node)).map(Dependency::getOriginClass),
+                        getIncomingDependencies(((CodeNode)node)).map(Dependency::getTargetClass)))
                 .distinct()
                 .collect(Collectors.toCollection(ArrayList::new));
         return allClasses;
@@ -77,19 +77,18 @@ public class DependencySelection {
         return null;
     }
 
-    private Set<Dependency> getOutgoingDependencies(CodeNode node) {
+    private Stream<Dependency> getOutgoingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getOutgoingDependenciesWithKnownTargets();
          return dependenciesBetweenDifferentElements(dependencies);
      }
-     private Set<Dependency> getIncomingDependencies(CodeNode node) {
+     private Stream<Dependency> getIncomingDependencies(CodeNode node) {
          Stream<Dependency> dependencies = node.getIncomingDependenciesWithKnownOrigins();
          return dependenciesBetweenDifferentElements(dependencies);
      }
 
-     private Set<Dependency> dependenciesBetweenDifferentElements(Stream<Dependency> dependencies) {
-         Set<Dependency> filteredDependencies = dependencies
-                 .filter(dependency -> connectsDifferentVisibleNodes(dependency))
-                 .collect(Collectors.toSet());
+     private Stream<Dependency> dependenciesBetweenDifferentElements(Stream<Dependency> dependencies) {
+         Stream<Dependency> filteredDependencies = dependencies
+                 .filter(dependency -> connectsDifferentVisibleNodes(dependency));
          return filteredDependencies;
      }
 

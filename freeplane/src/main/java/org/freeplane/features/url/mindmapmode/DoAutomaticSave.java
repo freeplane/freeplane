@@ -72,6 +72,9 @@ public class DoAutomaticSave implements ActionListener {
             final ModeController currentModeController = Controller.getCurrentModeController();
             if(!(currentModeController instanceof MModeController))
                 return;
+            final UrlManager fileManager = UrlManager.getController();
+            if(!(fileManager instanceof MFileManager))
+                return;
             MModeController modeController = ((MModeController) currentModeController);
             final URL url = model.getURL();
             final File file = new File(url != null ? url.getFile() //
@@ -88,7 +91,7 @@ public class DoAutomaticSave implements ActionListener {
             }
             if(tempFile.isFile() && tempFile.canWrite()
                     || ! tempFile.exists() && tempFile.getParentFile().canWrite()) {
-                ((MFileManager) UrlManager.getController())
+                ((MFileManager) fileManager)
                 .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
                 modeController.getController().getViewController()
                 .out(TextUtils.format("automatically_save_message", tempFile));

@@ -106,7 +106,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
 	protected void fireFoldingChanged(final NodeModel node) {/**/}
 
 	@Override
-    public void explore(CodeExplorerConfiguration codeExplorerConfiguration) {
+    public void explore(CodeExplorerConfiguration codeExplorerConfiguration, boolean reloadCodebase) {
 	    Controller currentController = Controller.getCurrentController();
 	    IMapSelection selection = currentController.getSelection();
         CodeMap oldMap = (CodeMap) selection.getMap();
@@ -132,16 +132,22 @@ public class CodeMapController extends MapController implements CodeExplorer{
         projectMap.setConfiguration(codeExplorerConfiguration);
         loadingHintMap.addExtension(new LoadedMap(projectMap));
         WeakReference<CodeMap> oldMapReference = new WeakReference<CodeMap>(oldMap);
+        JavaClasses oldImportedClasses;
+        if(! reloadCodebase && (oldMap.getRootNode() instanceof ProjectRootNode)) {
+            oldImportedClasses = ((ProjectRootNode)oldMap.getRootNode()).getImportedClasses();
+        }
+        else
+            oldImportedClasses = null;
         oldMap = null;
         classImportService.execute(() -> {
 
             ProjectRootNode projectRoot = null;
             CodeMap nextMap = null;
             try {
-                JavaClasses importedClasses = codeExplorerConfiguration.importClasses();
+                JavaClasses importedClasses = oldImportedClasses != null ? oldImportedClasses :codeExplorerConfiguration.importClasses();
                 if(LoadedMap.containsProjectMap(loadingHintMap, projectMap)) {
                     projectRoot = ProjectRootNode.asMapRoot(codeExplorerConfiguration.getProjectName(),
-                            projectMap, importedClasses, codeExplorerConfiguration.createLocationMatcher());
+                            projectMap, importedClasses, codeExplorerConfiguration.createGroupMatcher());
 
                     projectMap.setJudge(codeExplorerConfiguration.getDependencyJudge());
                     CodeMapPersistenceManager.getCodeMapPersistenceManager(getModeController()).restoreUserContent(projectMap);

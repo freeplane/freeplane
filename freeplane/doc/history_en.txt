@@ -1,8 +1,15 @@
 ==============================
+1.11.12
+==============================
+Add PDF export to code explorer maps
+Group classes in code explorer using AspectJ like expressions
+Bug fixes
+
+==============================
 1.11.11
 ==============================
 Save user defined attributes and details on code explorer nodes
-Record and analyze violations found by ArchUnit tests
+Record and analyze violations found by ArchUnit tests (https://github.com/freeplane/freeplane-archunit-extension)
 Use Operating System Regional Settings by default
 User option "Use Operating System Regional Settings" (Preferences…->Environment->Language)
 Bug fixes

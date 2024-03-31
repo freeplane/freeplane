@@ -18,8 +18,8 @@ public class DeletedContentNode extends CodeNode{
         IconStoreFactory.INSTANCE.createStateIcon(DeletedContentNode.UI_DELETED_CONTENT_NODE_ICON_NAME, "code/delete.svg");
     }
 
-    public DeletedContentNode(CodeMap map, String idWithoutIndex, int subprojectIndex, String text) {
-        super(map, subprojectIndex);
+    public DeletedContentNode(CodeMap map, String idWithoutIndex, int groupIndex, String text) {
+        super(map, groupIndex);
         setIdWithIndex(idWithoutIndex);
         setText(text);
     }
