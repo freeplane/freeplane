@@ -2167,7 +2167,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		paintConnectors(outLinks, graphics, alreadyPaintedConnectors);
 		final Collection<? extends NodeLinkModel> inLinks = getLinksTo(node);
 		paintConnectors(inLinks, graphics, alreadyPaintedConnectors);
-		final int nodeViewCount = source.getComponentCount();
+		paintDescendantConnectors(source, graphics, alreadyPaintedConnectors);
+	}
+
+    private void paintDescendantConnectors(final NodeView source, final Graphics2D graphics,
+            final HashSet<ConnectorModel> alreadyPaintedConnectors) {
+        final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {
 			final Component component = source.getComponent(i);
 			if (!(component instanceof NodeView)) {
@@ -2185,12 +2190,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				viewRect.width *= 3;
 				viewRect.height *= 3;
 				if (!viewRect.intersects(bounds)) {
+				    paintDescendantConnectors(child, graphics, alreadyPaintedConnectors);
 					continue;
 				}
 			}
 			paintConnectors(child, graphics, alreadyPaintedConnectors);
 		}
-	}
+    }
 
 	private boolean hasNodeLinks() {
 		return LinkController.getController(getModeController()).hasNodeLinks(getMap(), this);
