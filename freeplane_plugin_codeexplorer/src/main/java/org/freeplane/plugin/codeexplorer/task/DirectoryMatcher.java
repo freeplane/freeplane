@@ -83,7 +83,8 @@ public class DirectoryMatcher implements GroupMatcher{
             return Collections.singletonList("target/classes");
         if (new File(location, "build.gradle").exists()
                 || new File(location, "build.gradle.kts").exists())
-            return Arrays.asList("build/classes",
+            return Arrays.asList("build/classes/java/main",
+                    "build/classes/kotlin/main",
                     "build/intermediates/javac/debug/classes",
                     "build/tmp/kotlin-classes/debug");
         else
