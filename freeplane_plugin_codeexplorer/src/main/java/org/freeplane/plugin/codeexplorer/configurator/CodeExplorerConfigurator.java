@@ -451,7 +451,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
 
     private boolean containsProject(File location) {
-        return Stream.of("pom.xml", "build.gradle", "build.xml")
+        return Stream.of("pom.xml", "build.gradle", "build.gradle.kts", "build.xml", "scala.sbt", "project.clj")
                 .anyMatch(projectFile ->
                     new File(location, projectFile).canRead());
     }

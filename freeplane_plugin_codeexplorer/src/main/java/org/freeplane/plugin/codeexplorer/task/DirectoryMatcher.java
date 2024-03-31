@@ -7,6 +7,7 @@ package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -80,8 +81,11 @@ public class DirectoryMatcher implements GroupMatcher{
     private List<String> defaultSubpaths(File location) {
         if (new File(location, "pom.xml").exists())
             return Collections.singletonList("target/classes");
-        if (new File(location, "build.gradle").exists())
-            return Collections.singletonList("build/classes");
+        if (new File(location, "build.gradle").exists()
+                || new File(location, "build.gradle.kts").exists())
+            return Arrays.asList("build/classes",
+                    "build/intermediates/javac/debug/classes",
+                    "build/tmp/kotlin-classes/debug");
         else
             return Collections.singletonList(".");
     }
