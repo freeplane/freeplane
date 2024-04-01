@@ -475,30 +475,24 @@ public class MainView extends ZoomableLabel {
 	void updateIcons(final NodeView node) {
 	    final MultipleImageIcon iconImages = new MultipleImageIcon();
 	    final NodeModel model = node.getNode();
+	    StyleOption styleOption = node.getStyleOption();
+	    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model, styleOption);
+	    if(node.isRoot() && ! model.isRoot()) {
+	        iconImages.addIcon(IconStoreFactory.ICON_STORE.getUIIcon("currentRoot.svg"), iconHeight);
+	    }
+	    final ModeController modeController = getNodeView().getMap().getModeController();
 		if(node.getMap().showsIcons()) {
-		    StyleOption styleOption = node.getStyleOption();
-            //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
-		    /* fc, 06.10.2003: images? */
-		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model, styleOption);
-		    if(node.isRoot() && ! model.isRoot()) {
-		        iconImages.addIcon(IconStoreFactory.ICON_STORE.getUIIcon("currentRoot.svg"), iconHeight);
-		    }
-		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
+		    IconController iconController = IconController.getController(modeController);
+            for (final UIIcon icon : iconController.getStateIcons(model)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }
-		    final ModeController modeController = getNodeView().getMap().getModeController();
-		    final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model, styleOption);
+		    final Collection<NamedIcon> icons = iconController.getIcons(model, styleOption);
 		    for (final NamedIcon myIcon : icons) {
 		        iconImages.addIcon(myIcon, iconHeight);
 		    }
 		}
-        addOwnIcons(iconImages, model, getNodeView().getStyleOption());
+		modeController.getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, getNodeView().getStyleOption());
         setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
-	}
-
-	private void addOwnIcons(final MultipleImageIcon iconImages, final NodeModel model, StyleOption option) {
-		getNodeView().getMap()
-		        .getModeController().getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, option);
 	}
 
 	void updateTextColor(final NodeView node) {
