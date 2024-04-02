@@ -19,9 +19,11 @@
  */
 package org.freeplane.core.util.collection;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -29,68 +31,40 @@ import javax.swing.ComboBoxModel;
 /**
  * @author Dimitry Polivaev
  */
-public class SortedComboBoxModel extends AbstractListModel implements ComboBoxModel, IListModel, Iterable<Object> {
-	static private class Comparator implements Comparable<Object>{
-		final private Object obj;
-		private Comparator(Object obj) {
-	        this.obj = obj;
-        }
-		public int compareTo(Object o) {
-			return compareTo((Comparator)o);
-		}
-        private int compareTo(Comparator o) {
-			final int stringCompare = obj.toString().compareTo(o.obj.toString());
-			if(stringCompare != 0)
-				return stringCompare;
-			final int typeCompare = obj.getClass().getName().compareTo(o.obj.getClass().getName());
-			return typeCompare;
-        }
-		@Override
-        public int hashCode() {
-	        return obj.hashCode();
-        }
-		
-		@Override
-        public boolean equals(Object o) {
-			return obj.getClass().equals(o.getClass()) && obj.equals(((Comparator)o).obj);
-        }
-		@Override
-        public String toString() {
-	        return obj.toString();
-        }
-		
-	}
+public class SortedComboBoxModel<T> extends AbstractListModel<T> implements ComboBoxModel<T>, IListModel<T>, Iterable<T> {
+
+    private static final Comparator<Object> COMPARATOR = Comparator.comparing(Object::toString).thenComparing(x -> x.getClass().getName());
+
 	private static final long serialVersionUID = 1L;
 	private Object selectedItem;
-	private final SortedMap<Comparator, Object> model;
+	private final List<T> model;
 
 	public SortedComboBoxModel() {
-		model = new TreeMap<Comparator, Object>();
+		model = new ArrayList<T>();
 	}
 
-	public void add(final Object element) {
+	@Override
+    public void add(final T element) {
 		if(addImpl(element))
 			fireContentsChanged(this, 0, getSize());
 	}
 
-	private boolean addImpl(final Object element) {
-	    final Comparator key = key(element);
-		if(model.containsKey(key))
+	private boolean addImpl(final T element) {
+	    int index = Collections.binarySearch(model, element, COMPARATOR);
+		if(index >= 0)
 			return false;
-		model.put(key, element);
+		model.add( - index - 1, element);
 		return true;
     }
 
-	private Comparator key(Object o){
-		return new Comparator(o);		
-	}
-	public void addAll(final Object elements[]) {
-		for(Object e : elements)
+	public void addAll(final T[] elements) {
+		for(T e : elements)
 			addImpl(e);
 		fireContentsChanged(this, 0, getSize());
 	}
 
-	public void clear() {
+	@Override
+    public void clear() {
 		final int oldSize = getSize();
 		if (oldSize > 0) {
 			model.clear();
@@ -98,41 +72,40 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 		}
 	}
 
-	public boolean contains(final Object element) {
-		return model.containsKey(key(element));
+	@Override
+    public boolean contains(final Object element) {
+		return Collections.binarySearch(model, element, COMPARATOR) >= 0;
 	}
 
-	public Object firstElement() {
-		return model.get(model.firstKey());
+	public T firstElement() {
+		return model.get(0);
 	}
 
-	public Object getElementAt(final int index) {
-		return model.values().toArray()[index];
+	@Override
+    public T getElementAt(final int index) {
+		return model.get(index);
 	}
 
 	/**
 	*/
-	public int getIndexOf(final Object o) {
-		int count = -1;
-		for (final Object element : this) {
-			count++;
-			if (element.equals(o)) {
-				return count;
-			}
-		}
-		return -1;
+	@Override
+    public int getIndexOf(final T o) {
+	    int index = Collections.binarySearch(model, o, COMPARATOR);
+	    return index < 0 ? -1 : index;
 	}
 
-	public int getSize() {
+	@Override
+    public int getSize() {
 		return model.size();
 	}
 
-	public Iterator<Object> iterator() {
-		return model.values().iterator();
+	@Override
+    public Iterator<T> iterator() {
+		return model.iterator();
 	}
 
 	public Object lastElement() {
-		return model.get(model.lastKey());
+		return model.get(model.size() - 1);
 	}
 
 	/*
@@ -140,9 +113,12 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 	 * @see
 	 * freeplane.controller.filter.util.SortedListModel#delete(java.lang.Object)
 	 */
-	public void remove(final Object element) {
-		if (null != model.remove(key(element))) {
-			fireContentsChanged(this, 0, getSize());
+	@Override
+    public void remove(final Object element) {
+	    int index = Collections.binarySearch(model, element, COMPARATOR);
+		if (index >= 0) {
+		    model.remove(index);
+			fireContentsChanged(this, index, index);
 		}
 	}
 
@@ -152,22 +128,21 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 	 * freeplane.controller.filter.util.SortedListModel#replace(java.lang.Object,
 	 * java.lang.Object)
 	 */
-	public void replace(final Object oldO, final Object newO) {
+	@Override
+    public void replace(final T oldO, final T newO) {
 		if (oldO.equals(newO)) {
 			return;
 		}
-		final boolean removed = null != model.remove(key(oldO));
-		final boolean added = addImpl(newO);
-		if (removed || added) {
-			fireContentsChanged(this, 0, getSize());
-		}
+		remove(oldO);
+		add(newO);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()
 	 */
-	public Object getSelectedItem() {
+	@Override
+    public Object getSelectedItem() {
 		return selectedItem;
 	}
 
@@ -175,7 +150,8 @@ public class SortedComboBoxModel extends AbstractListModel implements ComboBoxMo
 	 * (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
 	 */
-	public void setSelectedItem(final Object o) {
+	@Override
+    public void setSelectedItem(final Object o) {
 		selectedItem = o;
 		fireContentsChanged(this, -1, -1);
 	}
