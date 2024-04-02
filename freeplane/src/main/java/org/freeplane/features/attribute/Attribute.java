@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.attribute;
 
+import java.util.Objects;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -31,15 +33,13 @@ public class Attribute {
 	 *            deep copy.
 	 */
 	public Attribute(final Attribute pAttribute) {
-		name = pAttribute.name;
-		value = pAttribute.value;
+		this(pAttribute.name, pAttribute.value);
 	}
 
 	/**
 	 */
 	public Attribute(final String name) {
-		this.name = name;
-		value = "";
+		this(name, "");
 	}
 
 	public Attribute(final String name, final Object value) {
@@ -60,8 +60,7 @@ public class Attribute {
 	}
 
 	public void setValue(final Object value) {
-		if(value == null)
-			throw new NullPointerException();
+		Objects.requireNonNull(value);
 		this.value = value;
 	}
 
