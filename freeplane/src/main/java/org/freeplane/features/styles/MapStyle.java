@@ -174,7 +174,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					}
 					final MapModel map = node.getMap();
 					mapStyleModel.createStyleMap(map, content);
-					map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
+					map.getIconRegistry().registryMapContent(mapStyleModel.getStyleMap());
 				}
 				private boolean isContentEmpty(final String content) {
 					return content.indexOf('<') == -1;

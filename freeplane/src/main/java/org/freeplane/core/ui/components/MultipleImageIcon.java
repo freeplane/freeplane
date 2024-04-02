@@ -159,4 +159,8 @@ public class MultipleImageIcon implements Icon {
 		}
 		return null;
 	}
+
+    public boolean containsIcons() {
+        return ! (mIcons.isEmpty() && mTags.isEmpty());
+    }
 };

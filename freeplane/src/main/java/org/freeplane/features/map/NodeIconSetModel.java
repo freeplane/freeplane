@@ -32,8 +32,9 @@ import org.freeplane.features.icon.NamedIcon;
  */
 public class NodeIconSetModel {
 	/** stores the icons associated with this node. */
-	protected List<NamedIcon> icons;
-	protected Quantity<LengthUnit> iconSize = null;
+	private List<NamedIcon> icons;
+	private List<String> tags;
+	private Quantity<LengthUnit> iconSize = null;
 
 	public void setIconSize(final Quantity<LengthUnit> iconSize)
 	{
@@ -77,10 +78,10 @@ public class NodeIconSetModel {
 		return icons;
 	}
 
-	/** 
+	/**
 	 * removes the last icon
-	 * 
-	 * @return returns the number of remaining icons. 
+	 *
+	 * @return returns the number of remaining icons.
 	 */
 	int removeIcon() {
 		createIcons();
@@ -90,10 +91,10 @@ public class NodeIconSetModel {
 		return icons.size();
 	}
 
-	/** 
+	/**
 	 * @param position of icon to remove
-	 * 
-	 * @return returns the number of remaining icons. 
+	 *
+	 * @return returns the number of remaining icons.
 	 */
 	int removeIcon(int position) {
 		createIcons();

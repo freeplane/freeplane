@@ -46,7 +46,8 @@ public class TagIcon implements Icon {
     }
 
     @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
+    public void paintIcon(Component c, Graphics prototypeGraphics, int x, int y) {
+        Graphics g = prototypeGraphics.create();
         g.setColor(backgroundColor);
         int r = (int) (UITools.FONT_SCALE_FACTOR * 10);
         g.fillRoundRect(x, y, width, height, r, r);
@@ -55,6 +56,7 @@ public class TagIcon implements Icon {
         g.drawRoundRect(x, y, width, height, r, r);
         g.setFont(font);
         g.drawString(tag, x + height / 2, y + height * 4 / 5);
+        g.dispose();
 
     }
 

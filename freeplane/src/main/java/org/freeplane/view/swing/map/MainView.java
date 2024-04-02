@@ -59,6 +59,7 @@ import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImageIcon;
+import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Hyperlink;
@@ -218,7 +219,7 @@ public class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setVerticalTextPosition(SwingConstants.TOP);
+		setVerticalTextPosition(SwingConstants.CENTER);
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -481,8 +482,8 @@ public class MainView extends ZoomableLabel {
 	        iconImages.addIcon(IconStoreFactory.ICON_STORE.getUIIcon("currentRoot.svg"), iconHeight);
 	    }
 	    final ModeController modeController = getNodeView().getMap().getModeController();
+	    IconController iconController = IconController.getController(modeController);
 		if(node.getMap().showsIcons()) {
-		    IconController iconController = IconController.getController(modeController);
             for (final UIIcon icon : iconController.getStateIcons(model)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }
@@ -491,8 +492,12 @@ public class MainView extends ZoomableLabel {
 		        iconImages.addIcon(myIcon, iconHeight);
 		    }
 		}
+        for (final TagIcon icon : iconController.getTagIcons(model)) {
+            iconImages.addTag(icon);
+        }
+
 		modeController.getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, getNodeView().getStyleOption());
-        setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
+        setIcon((iconImages.containsIcons() ? iconImages : null));
 	}
 
 	void updateTextColor(final NodeView node) {

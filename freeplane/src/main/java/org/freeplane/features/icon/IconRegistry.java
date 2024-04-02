@@ -29,48 +29,62 @@ import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
- * 
+ *
  * maintains a set of icons which currently are or have been
  * used on the map during the last editing session. This information is
  * used in IconConditionController calling IconRegistry.getIcons() to
  * prepare values available in Filter Editor Dialog / find dialog when
  * filter on icons is selected
- * 
+ *
  * 03.01.2009
  */
 public class IconRegistry implements IExtension {
-	final private SortedComboBoxModel mapIcons;
+    final private SortedComboBoxModel<NamedIcon> mapIcons;
+    final private SortedComboBoxModel<Tag> mapTags;
 
 	public IconRegistry(final MapController mapController, final MapModel map) {
 		super();
-		mapIcons = new SortedComboBoxModel();
+		mapIcons = new SortedComboBoxModel<>();
+		mapTags = new SortedComboBoxModel<>();
 		final NodeModel rootNode = map.getRootNode();
 		if(rootNode != null)
-			registryNodeIcons(mapController, rootNode);
+			registryNodeContent(mapController, rootNode);
 	}
 
-	public void addIcon(final NamedIcon icon) {
-		if(icon != null)
-			mapIcons.add(icon);
-	}
+    public void addIcon(final NamedIcon icon) {
+        if(icon != null)
+            mapIcons.add(icon);
+    }
 
-	public ListModel getIconsAsListModel() {
-		return mapIcons;
-	}
+    public void addTag(final Tag tag) {
+        if(tag != null)
+            mapTags.add(tag);
+    }
 
-	private void registryNodeIcons(final MapController mapController, final NodeModel node) {
-		for (final NamedIcon icon : node.getIcons()) {
-			addIcon(icon);
-		}
+    public ListModel<NamedIcon> getIconsAsListModel() {
+        return mapIcons;
+    }
+
+    public ListModel<Tag> getTagsAsListModel() {
+        return mapTags;
+    }
+
+	private void registryNodeContent(final MapController mapController, final NodeModel node) {
+        for (final NamedIcon icon : node.getIcons()) {
+            addIcon(icon);
+        }
+        for (final Tag tag : Tags.getTags(node)) {
+            addTag(tag);
+        }
 		for (final NodeModel child : node.getChildren()) {
-			registryNodeIcons(mapController, child);
+			registryNodeContent(mapController, child);
 		}
 	}
 
-	public void addIcons(final MapModel map) {
+	public void registryMapContent(final MapModel map) {
 		final IconRegistry newRegistry = map.getIconRegistry();
-		final SortedComboBoxModel newMapIcons = newRegistry.mapIcons;
-		for (final Object uiIcon : newMapIcons) {
+		final SortedComboBoxModel<NamedIcon> newMapIcons = newRegistry.mapIcons;
+		for (final NamedIcon uiIcon : newMapIcons) {
 			mapIcons.add(uiIcon);
 		}
 	}

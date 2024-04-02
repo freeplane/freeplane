@@ -19,11 +19,15 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.stream.Collectors;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -31,6 +35,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.TagIcon;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
@@ -53,6 +59,8 @@ import org.freeplane.features.styles.StyleNode;
 public class IconController implements IExtension {
 
 	private static final Quantity<LengthUnit> DEFAULT_ICON_SIZE = new Quantity<LengthUnit>(12, LengthUnit.pt);
+
+    private static final Font TAG_FONT = new Font(Font.MONOSPACED, Font.PLAIN, (int)UITools.FONT_SCALE_FACTOR * 10);
 
 	final private CombinedPropertyChain<Collection<NamedIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
@@ -189,5 +197,12 @@ public class IconController implements IExtension {
 
     public Map<String, AFreeplaneAction> getAllIconActions() {
         return Collections.emptyMap();
+    }
+    public List<TagIcon> getTagIcons(NodeModel node) {
+        SortedSet<Tag> tags = Tags.getTags(node);
+        return tags.stream()
+                .map(Tag::getContent)
+                .map(tag -> new TagIcon(tag, TAG_FONT, new Color(tag.hashCode() & 0xffffff)))
+                .collect(Collectors.toList());
     }
 }
