@@ -81,8 +81,8 @@ class CloneConditionController implements IElementaryConditionController {
 	}
 
 	public Object[] getCloneConditionNames() {
-		return new TranslatedObject[] { 
-				TranslatedObject.literal(""), 
+		return new TranslatedObject[] {
+				TranslatedObject.literal(" "),
 		};
 	}
 
@@ -91,16 +91,14 @@ class CloneConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
-	    final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
 	    final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
-	    extendedComboBoxModel.setExtensionList(icons);
 	    return extendedComboBoxModel;
 	}
 
 	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
-	
+
 	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
