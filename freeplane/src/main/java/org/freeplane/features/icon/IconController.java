@@ -19,14 +19,12 @@
  */
 package org.freeplane.features.icon;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 import java.util.stream.Collectors;
 
 import org.freeplane.api.LengthUnit;
@@ -81,7 +79,6 @@ public class IconController implements IExtension {
 		modeController.addExtension(IconController.class, this);
 	}
 
-// 	final private ModeController modeController;
 	final private Collection<IStateIconProvider> stateIconProviders;
 
 	final private List<IconMouseListener> iconMouseListeners;
@@ -100,12 +97,14 @@ public class IconController implements IExtension {
 		super();
 		stateIconProviders = new LinkedList<IStateIconProvider>();
 		iconHandlers = new CombinedPropertyChain<Collection<NamedIcon>, NodeModel>(false);
-//		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.ICON_STORE);
 		textBuilder.registerBy(readManager, writeManager);
+		final TagBuilder tagBuilder = new TagBuilder();
+		tagBuilder.registerBy(readManager, writeManager);
+
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<NamedIcon>, NodeModel>() {
 			public Collection<NamedIcon> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Collection<NamedIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
@@ -199,10 +198,10 @@ public class IconController implements IExtension {
         return Collections.emptyMap();
     }
     public List<TagIcon> getTagIcons(NodeModel node) {
-        SortedSet<Tag> tags = Tags.getTags(node);
+        List<Tag> tags = Tags.getTags(node);
         return tags.stream()
                 .map(Tag::getContent)
-                .map(tag -> new TagIcon(tag, TAG_FONT, new Color(tag.hashCode() & 0xffffff)))
+                .map(tag -> new TagIcon(tag, TAG_FONT))
                 .collect(Collectors.toList());
     }
 }

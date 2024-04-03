@@ -46,4 +46,8 @@ public class Tag implements Comparable<Tag>{
         return content.compareTo(o.content);
     }
 
+    public boolean isEmpty() {
+       return content.isEmpty();
+    }
+
 }

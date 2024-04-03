@@ -5,28 +5,39 @@
  */
 package org.freeplane.features.icon;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
 public class Tags implements IExtension {
-    private final SortedSet<Tag> tags;
+    private List<Tag> tags;
 
-
-
-    public Tags() {
+    private Tags(List<Tag> tags) {
         super();
-        this.tags = new TreeSet<>();
+        this.tags = tags;
     }
 
-
-
-    public static SortedSet<Tag> getTags(NodeModel node){
+    public static List<Tag> getTags(NodeModel node){
         Tags tags = node.getExtension(Tags.class);
-        return (tags == null) ? new TreeSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag12345"))) : tags.tags;
+        return (tags == null) ? Collections.emptyList() : tags.tags;
+    }
+
+    public static void setTags(NodeModel node, List<Tag> newTags) {
+        Tags extension = node.getExtension(Tags.class);
+        if(extension == null) {
+            extension = new Tags(newTags);
+            node.addExtension(extension);
+        }
+        else
+            extension.tags = newTags;
+        IconRegistry iconRegistry = node.getMap().getIconRegistry();
+        if(iconRegistry != null)
+            newTags.forEach(iconRegistry::addTag);
+    }
+
+    public List<Tag> getTags(){
+        return Collections.unmodifiableList(tags);
     }
 }

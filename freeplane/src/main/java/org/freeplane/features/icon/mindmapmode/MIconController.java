@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,6 +44,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -72,17 +75,22 @@ import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.Tags;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
+import org.freeplane.features.icon.mindmapmode.TagEditor.TagEditorHolder;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.text.DetailModel;
 
 /**
  * @author Dimitry Polivaev
@@ -240,12 +248,14 @@ public class MIconController extends IconController {
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
 	private final FastAccessableIcons recentlyUsedIcons;
+    private final MModeController modeController;
 
 	/**
 	 * @param modeController
 	 */
-	public MIconController(final ModeController modeController) {
+	public MIconController(final MModeController modeController) {
 		super(modeController);
+        this.modeController = modeController;
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		iconToolBar = new FreeplaneToolBar("icon_toolbar", SwingConstants.VERTICAL);
 		JAutoScrollBarPane iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
@@ -255,6 +265,7 @@ public class MIconController extends IconController {
 		createIconActions(modeController);
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
+		modeController.addAction(new EditTagsAction(this));
 	}
 
 	@Override
@@ -589,4 +600,41 @@ public class MIconController extends IconController {
 				modeController.getAction(REMOVE_LAST_ICON_ACTION),
 				modeController.getAction(REMOVE_ALL_ICONS_ACTION));
 	}
+
+    public void setTags(NodeModel node, List<Tag> newTags) {
+        List<Tag> oldTags = Tags.getTags(node);
+        IActor actor = new IActor() {
+
+            @Override
+            public void undo() {
+                Tags.setTags(node, oldTags);
+                modeController.getMapController().nodeChanged(node, Tags.class, newTags, oldTags);
+
+            }
+
+            @Override
+            public String getDescription() {
+                return "setTags";
+
+            }
+
+            @Override
+            public void act() {
+                Tags.setTags(node, newTags);
+                modeController.getMapController().nodeChanged(node, Tags.class, oldTags, newTags);
+
+            }
+        };
+        modeController.execute(actor, node.getMap());
+    }
+
+    public void editTags(NodeModel node) {
+        TagEditorHolder extension = node.getExtension(TagEditorHolder.class);
+        if(extension != null)
+            extension.activate();
+        else {
+            final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
+            new TagEditor(this, frame, node).show();
+        }
+    }
 }

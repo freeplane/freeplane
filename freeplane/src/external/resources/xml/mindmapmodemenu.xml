@@ -145,6 +145,7 @@
 					<Entry builder="separator" />
 					<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />
 				</Entry>
+				<Entry name="EditTagsAction"/>
 				<Entry name="menu_extensions">
 					<Entry name="EditDetailsAction" accelerator="F3" />
 					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />

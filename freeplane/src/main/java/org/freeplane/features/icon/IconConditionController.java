@@ -41,7 +41,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class IconConditionController implements IElementaryConditionController {
-	static final String FILTER_ICON = "filter_icon";
+    static final String FILTER_ICON = "filter_icon";
+    static final String FILTER_TAG = "filter_tag";
 // // 	final private Controller controller;
 
 	public IconConditionController() {
@@ -58,7 +59,7 @@ class IconConditionController implements IElementaryConditionController {
 			return false;
 		}
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
-		return namedObject.objectEquals(IconConditionController.FILTER_ICON);
+		return namedObject.objectEquals(IconConditionController.FILTER_ICON) || namedObject.objectEquals(IconConditionController.FILTER_TAG);
 	}
 
 	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
@@ -68,45 +69,69 @@ class IconConditionController implements IElementaryConditionController {
     public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
                                                 final Object value, final boolean matchCase, final boolean approximateMatching,
                                                 final boolean ignoreDiacritics) {
-        if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
-            return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
-        if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
-            return new IconExistsCondition();
+        final TranslatedObject namedObject = (TranslatedObject) selectedItem;
+        if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
+                return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
+                return new IconExistsCondition();
+        }
+        if (namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
+                return value instanceof Tag ? new TagContainedCondition((Tag)value) : null;
+        }
         return null;
     }
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {
-		return new DefaultComboBoxModel(getIconConditionNames());
+	    final TranslatedObject namedObject = (TranslatedObject) property;
+        if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
+            return new DefaultComboBoxModel(getIconConditionNames());
+        }
+        return new DefaultComboBoxModel(getTagConditionNames());
 	}
 
 	public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
+        list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
+        list.addElement(TextUtils.createTranslatedString(FILTER_TAG));
 		return list;
 	}
 
-	public Object[] getIconConditionNames() {
-		return new TranslatedObject[] { 
-	            TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), 
-	            TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST), 
-		};
-	}
+    public Object[] getIconConditionNames() {
+        return new TranslatedObject[] {
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST),
+        };
+    }
+
+    public Object[] getTagConditionNames() {
+        return new TranslatedObject[] {
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+        };
+    }
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return null;
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
-	    final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
 	    final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
-	    extendedComboBoxModel.setExtensionList(icons);
+	    final TranslatedObject namedObject = (TranslatedObject) property;
+	    IconRegistry iconRegistry = Controller.getCurrentController().getMap().getIconRegistry();
+	    if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
+            extendedComboBoxModel.setExtensionList(iconRegistry.getIconsAsListModel());
+	    }
+	    else {
+	        extendedComboBoxModel.setExtensionList(iconRegistry.getTagsAsListModel());
+	    }
 	    return extendedComboBoxModel;
 	}
 
 	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
-	
+
 	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
@@ -115,15 +140,16 @@ class IconConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
 			return IconContainedCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(IconExistsCondition.NAME)) {
-			return IconExistsCondition.load(element);
-		}
+        if (element.getName().equalsIgnoreCase(IconExistsCondition.NAME)) {
+            return IconExistsCondition.load(element);
+        }
+        if (element.getName().equalsIgnoreCase(TagContainedCondition.NAME)) {
+            return TagContainedCondition.load(element);
+        }
 		return null;
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
-		// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
-		// (and that would put in a default string like "No Filtering (remove)"!)
 		return new DefaultConditionRenderer("", true);
     }
 }

@@ -57,15 +57,15 @@ public class IconRegistry implements IExtension {
     }
 
     public void addTag(final Tag tag) {
-        if(tag != null)
+        if(tag != null && ! tag.isEmpty())
             mapTags.add(tag);
     }
 
-    public ListModel<NamedIcon> getIconsAsListModel() {
+    public SortedComboBoxModel<NamedIcon> getIconsAsListModel() {
         return mapIcons;
     }
 
-    public ListModel<Tag> getTagsAsListModel() {
+    public SortedComboBoxModel<Tag> getTagsAsListModel() {
         return mapTags;
     }
 
