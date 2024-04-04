@@ -543,4 +543,7 @@ public interface NodeRO {
 
 	/**@since 1.11.3 */
 	String getBranchAsTextOutline();
+
+	/**@since 1.12.1 */
+	TagsRO getTags();
 }

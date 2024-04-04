@@ -34,6 +34,7 @@ import org.freeplane.api.NodeToComparableMapper;
 import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
 import org.freeplane.api.Side;
+import org.freeplane.api.Tags;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -1316,5 +1317,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     @Override
     public void appendTextOutlineAsBranch(String outline) {
         ((MMapClipboardController) getClipboardController()).paste(new StringSelection(outline), getDelegate());
+    }
+
+    @Override
+    public Tags getTags() {
+        return new TagsProxy(getDelegate(), getScriptContext());
     }
 }
