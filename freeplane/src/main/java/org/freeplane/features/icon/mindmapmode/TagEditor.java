@@ -80,12 +80,14 @@ class TagEditor {
         this.iconController = iconController;
         this.node = node;
         this.dialog = frame instanceof Frame ? new JDialog((Frame)frame, title, /*modal=*/true) : new JDialog((JDialog)frame, title, /*modal=*/true);
-                final JButton okButton = new JButton();
+        final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
+        final JButton sortButton = new JButton();
         final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
             .getBooleanProperty("el__enter_confirms_by_default"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
+        LabelAndMnemonicSetter.setLabelAndMnemonic(sortButton, TextUtils.getRawText("sort"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
         okButton.addActionListener(new ActionListener() {
             @Override
@@ -104,12 +106,15 @@ class TagEditor {
         buttonPane.add(enterConfirms);
         buttonPane.add(okButton);
         buttonPane.add(cancelButton);
+        buttonPane.add(sortButton);
         buttonPane.setMaximumSize(new Dimension(1000, 20));
         dialog.getContentPane().setLayout(new BorderLayout());
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
         textEditorPane = createTextEditorPane();
+        Action sortLinesAction = textEditorPane.getActionMap().get("sort-lines");
+        sortButton.addActionListener(sortLinesAction);
         editorScrollPane.setViewportView(textEditorPane);
         String tags = Tags.getTags(node).stream().map(Tag::getContent).collect(Collectors.joining("\n"));
         textEditorPane.setText(tags);
