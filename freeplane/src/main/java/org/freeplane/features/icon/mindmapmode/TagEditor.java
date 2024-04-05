@@ -190,6 +190,7 @@ class TagEditor {
 
             @Override
             public void componentHidden(final ComponentEvent e) {
+                node.removeExtension(TagEditorHolder.class);
                 dialog.dispose();
             }
         });
@@ -207,7 +208,6 @@ class TagEditor {
     protected void submit() {
         List<Tag> tags = Stream.of(textEditorPane.getText().split("\n"))
         .map(String::trim)
-        .filter(s -> ! s.isEmpty())
         .map(Tag::new)
         .collect(Collectors.toList());
         iconController.setTags(node, tags);
