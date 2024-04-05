@@ -145,8 +145,8 @@
 					<Entry builder="separator" />
 					<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />
 				</Entry>
-				<Entry name="EditTagsAction"/>
 				<Entry name="menu_extensions">
+					<Entry name="EditTagsAction" accelerator="alt F8"/>
 					<Entry name="EditDetailsAction" accelerator="F3" />
 					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 					<Entry name="CopyStyleExtensionsAction" />
@@ -581,9 +581,9 @@
 			<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script" />
 			<Entry name="ScriptEditor" />
             <Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
-            <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6" />
-            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F7" />
-            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F8" />
+            <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F5" />
+            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6" />
+            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F7" />
 			<Entry builder="separator" />
 			<Entry name="SetAcceleratorOnNextClickAction" />
 			<Entry name="acceleratorPresets">
@@ -680,6 +680,7 @@
             </Entry>
 			<Entry name="edit">
 	    		<Entry name="EditLongAction" accelerator="alt ENTER" />
+	    		<Entry name="EditTagsAction" accelerator="alt F8"/>
 	    		<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 	    		<Entry name="EditDetailsAction" accelerator="F3" />
 	            <Entry name="EditNoteInDialogAction" />
