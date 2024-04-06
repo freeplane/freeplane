@@ -1,4 +1,3 @@
-
 Rule Format:
 
 Define rules one per line in the following formats:
@@ -8,67 +7,74 @@ Define rules one per line in the following formats:
   import interface [classPattern]
   import annotation [classPattern]
   import annotation [classPattern].[methodName]()
-  group [classPattern]
-  group [classPattern] as [group name]
-  ignore group [classPattern]
+  group [packagePattern]
+  group [packagePattern] as [group name]
+  ignore group [packagePattern]
+  class group [classPattern]
+  class group [classPattern] as [group name]
+  ignore class group [classPattern]
 
 Commands:
-- 'allow', 'forbid', 'ignore', 'group' are used for dependency management.
-  - 'allow': permits dependencies from origin to target patterns.
-  - 'forbid': prevents dependencies from origin to target patterns.
-  - 'ignore': excludes certain dependencies from analysis.
-  - 'group': organizes JavaClasses into logical slices based on class patterns.
+- Commands such as 'allow', 'forbid', 'ignore', and 'group' are integral to dependency management.
+  - 'allow': Enables dependencies from origin to target patterns.
+  - 'forbid': Restricts dependencies from origin to target patterns.
+  - 'ignore': Omits specific dependencies from consideration.
+  - 'group': Gathers Java classes into logical groupings (slices) based on specified package patterns.
 
 Direction: ->, ->v, ->^
-- Indicates the dependency direction:
-  - '->' standard dependency,
-  - '->v' dependency going downwards in the package hierarchy,
-  - '->^' dependency going upwards in the package hierarchy.
+- Specifies the dependency flow:
+  - '->' indicates a standard dependency flow.
+  - '->v' denotes a dependency moving downwards in the package hierarchy.
+  - '->^' signifies a dependency ascending in the package hierarchy.
 
 Patterns:
-- Utilizes AspectJ-like syntax for matching packages and classes.
+- Employs AspectJ-like syntax for matching packages and classes.
 
 Path:
-- Adds specific directories to the root paths in the 'locations' table.
+- Identifies specific directories to augment the root paths within the 'locations' table.
 
 ClassPattern:
-- Matches class names, with broader patterns for 'ignore class' commands.
+- Designed to match class names, offering broader pattern matching for 'ignore class' and 'class group' commands, allowing for more granular control.
 
 Locations Table:
-- Defines the project root directories for analysis.
+- Outlines the root directories for project analysis, serving as a foundational element for configuration.
 
 Default Classpath Behavior:
-- Relies on 'pom.xml' or 'build.gradle', or defaults to the current directory if neither is found.
+- The classpath is determined by the presence of 'pom.xml' or 'build.gradle', defaulting to the current directory in their absence. This flexibility accommodates various Java project structures.
 
 Comments:
-- Lines beginning with '#' or '//' are ignored in the configuration.
+- Configuration lines starting with '#' or '//' are disregarded, allowing for comments and documentation within the configuration file.
 
 Examples:
 
-- 'allow *.service.* -> *.repository.*': Permits classes within the 'service' package to depend on those in the 'repository' package, fostering a clean architecture.
+- 'allow *.service.* -> *.repository.*': Facilitates a clean architecture by allowing dependencies from 'service' packages to those in 'repository' packages.
 
-- 'forbid *.*.controller*.. ->^ ..model..': Blocks upward dependencies from 'controller' packages to 'model' packages, ensuring separation of web layers from the data model.
+- 'forbid *.*.controller*.. ->^ ..model..': Preserves separation of concerns by blocking controller layers from directly depending on model layers.
 
-- 'ignore ..util.. ->v ..*Helper..': Ignores downward dependencies from 'util' to 'Helper' classes, accommodating common utility functions across layers.
+- 'ignore ..util.. ->v ..*Helper..': Simplifies analysis by excluding common utility functions from dependency considerations.
 
-- 'classpath /target/classes': Sets '/target/classes' as the root directory for class analysis, aligning with Java build conventions.
+- 'classpath /target/classes': Aligns analysis with Java build conventions by setting '/target/classes' as the analysis root directory.
 
-- 'ignore class com.example..*ServiceImpl..': Excludes specific service implementation classes from the analysis.
+- 'ignore class com.example..*ServiceImpl..': Excludes specific service implementation classes, refining the scope of analysis.
 
-- 'import interface java.io.Serializable', 'java.util.List': Recognizes essential Java interfaces, ensuring they're considered in dependency analysis.
+- 'import interface java.io.Serializable', 'java.util.List': Ensures essential Java interfaces are recognized, enhancing dependency analysis accuracy.
 
-- 'import annotation com.example..*Annotation', 'com.example..*Annotation.*.value()': Includes custom annotations in the analysis, useful for frameworks or configurations reliant on annotations.
+- 'import annotation com.example..*Annotation', 'com.example..*Annotation.*.value()': Incorporates custom annotations, accommodating configurations reliant on annotations.
 
-- 'group ..model.(*).*..': Organizes classes within 'model' packages into logical groups based on their package structure, enabling focused analysis on these segments.
+- 'group ..model.(*)..': Enhances focus on model segment analysis by organizing classes within 'model' packages into logical groups.
 
-- 'group com.[example1|example2].model..* as Model': Groups model classes from two potential packages under a single 'Model' group for cohesive analysis.
+- 'group com.[example1|example2].model.. as Model': Simplifies analysis by grouping model classes from two potential packages under a unified 'Model' group.
 
-- 'ignore group com.example.util..*': Excludes all classes within the 'com.example.util' package from dependency checks, optimizing analysis performance by avoiding unnecessary code base reloads.
+- 'ignore group com.example.util..': Optimizes analysis performance by excluding 'com.example.util' package classes from dependency checks.
+
+- 'class group ..(*).*Model': Offers a finer level of analysis control by organizing classes ending in 'Model' into logical groups.
+
+- 'class group com.[example1|example2]..*Model as Model': Streamlines analysis by grouping classes ending in 'Model' from two potential packages under a single 'Model' group.
+
+- 'ignore class group ..*Helper': Enhances performance by excluding classes ending in 'Helper' from dependency checks, avoiding unnecessary analysis reloads.
 
 Important Notes:
 
-- 'Ignore Group' vs. 'Ignore Class': 'Ignore group' commands provide a performance benefit by not requiring the code base to be reloaded for each ignored dependency, making them preferable for broad exclusions.
+- 'Ignore Group' vs. 'Ignore Class': Opting for 'Ignore group' commands can significantly boost performance by reducing the need for frequent code base reloads for each ignored dependency.
 
-- Grouping and Nested Classes: When grouping, all nested classes are treated as part of their top-level class, ensuring a unified approach to dependency management within class hierarchies.
-
-This refined documentation aims for enhanced clarity and structure, delineating commands, their usage, and examples with added context for each rule.
+- Grouping and Nested Classes: In grouping operations, all nested classes are considered part of their top-level class.
