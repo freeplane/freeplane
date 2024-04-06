@@ -602,7 +602,7 @@ public class MIconController extends IconController {
 	}
 
     public void setTags(NodeModel node, List<Tag> newTags) {
-        List<Tag> oldTags = Tags.getTags(node);
+        List<Tag> oldTags = getTags(node);
         IActor actor = new IActor() {
 
             @Override

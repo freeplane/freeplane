@@ -19,7 +19,7 @@ public class Tags implements IExtension {
         this.tags = tags;
     }
 
-    public static List<Tag> getTags(NodeModel node){
+    static List<Tag> getTags(NodeModel node){
         Tags tags = node.getExtension(Tags.class);
         return (tags == null) ? Collections.emptyList() : tags.tags;
     }

@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.icon;
 
-import java.awt.Color;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
@@ -49,7 +47,7 @@ public class TagContainedCondition extends ASelectableCondition {
 
 	@Override
     public boolean checkNode(final NodeModel node) {
-		return Tags.getTags(node).indexOf(tag) >= 0;
+		return IconController.getController().getTags(node).indexOf(tag) >= 0;
 	}
 
 	/*

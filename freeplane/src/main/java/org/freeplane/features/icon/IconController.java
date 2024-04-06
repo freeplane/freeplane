@@ -198,10 +198,13 @@ public class IconController implements IExtension {
         return Collections.emptyMap();
     }
     public List<TagIcon> getTagIcons(NodeModel node) {
-        List<Tag> tags = Tags.getTags(node);
+        List<Tag> tags = getTags(node);
         return tags.stream()
                 .map(Tag::getContent)
                 .map(tag -> new TagIcon(tag, TAG_FONT))
                 .collect(Collectors.toList());
+    }
+    public List<Tag> getTags(NodeModel node) {
+        return Tags.getTags(node);
     }
 }

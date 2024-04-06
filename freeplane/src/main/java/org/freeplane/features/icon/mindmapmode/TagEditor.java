@@ -116,7 +116,7 @@ class TagEditor {
         Action sortLinesAction = textEditorPane.getActionMap().get("sort-lines");
         sortButton.addActionListener(sortLinesAction);
         editorScrollPane.setViewportView(textEditorPane);
-        String tags = Tags.getTags(node).stream().map(Tag::getContent).collect(Collectors.joining("\n"));
+        String tags = iconController.getTags(node).stream().map(Tag::getContent).collect(Collectors.joining("\n"));
         textEditorPane.setText(tags);
         enterConfirms.addActionListener(new ActionListener() {
             @Override
