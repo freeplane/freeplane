@@ -65,11 +65,15 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     private JFileChooser fileChooser;
     private ConfigurationChange configurationChange;
     private JToggleButton helpToggleButton;
+    private int selectedConfigurationIndex;
+    private int exploredConfigurationIndex;
 
 
     CodeExplorerConfigurator(CodeProjectController codeProjectController) {
         this.codeProjectController = codeProjectController;
         configurationChange = ConfigurationChange.CODE_BASE;
+        selectedConfigurationIndex = -1;
+        exploredConfigurationIndex = -1;
         initializeComponents();
         updateConfigurationsTable(explorerConfigurations());
     }
@@ -211,25 +215,32 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     }
 
     private void updateConfiguration() {
+        if(selectedConfigurationIndex == configTable.getSelectedRow()
+                 || selectedConfigurationIndex != -1
+                    && ! setConfigurationRules()) {
+            return;
+        }
+
         locationsTableModel.setRowCount(0); // Clear existing data
-        int selectedRow = getSelectedConfigurationIndex();
-        if (selectedRow >= 0) {
-            UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedRow);
+
+        selectedConfigurationIndex = configTable.getSelectedRow();
+        if (configTable.getSelectedRowCount() == 1) {
+            UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedConfigurationIndex);
             for (File location : config.getLocations()) {
                 locationsTableModel.addRow(new Object[]{location.getAbsolutePath()});
             }
             rules.setText(config.getConfigurationRules());
-            Rectangle rect = configTable.getCellRect(selectedRow, 0, true);
+            Rectangle rect = configTable.getCellRect(selectedConfigurationIndex, 0, true);
             configTable.scrollRectToVisible(rect);
-        }
-        else
+        } else
             rules.setText("");
-        configurationChange = ConfigurationChange.CODE_BASE;
+        configurationChange = ConfigurationChange.SAME;
     }
 
     private void exploreSelectedConfiguration(boolean reloadCodebase) {
         final UserDefinedCodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
         if(selectedConfiguration != null) {
+            exploredConfigurationIndex = selectedConfigurationIndex;
             setConfigurationRules();
             codeProjectController.exploreConfiguration(selectedConfiguration, reloadCodebase);
             configurationChange = ConfigurationChange.SAME;
@@ -237,7 +248,6 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     }
 
     UserDefinedCodeExplorerConfiguration getSelectedConfiguration() {
-        int selectedConfigurationIndex = getSelectedConfigurationIndex();
         UserDefinedCodeExplorerConfiguration selectedConfiguration = getConfiguration(selectedConfigurationIndex);
         return selectedConfiguration;
     }
@@ -247,13 +257,6 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
             return explorerConfigurations().getConfigurations().get(selectedConfigurationIndex);
         else
             return null;
-    }
-
-    private int getSelectedConfigurationIndex() {
-        if(configTable.getSelectedRowCount() != 1)
-            return -1;
-        else
-            return configTable.getSelectedRow();
     }
 
     private void addNewConfiguration() {
@@ -281,6 +284,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
             configTable.setRowSelectionInterval(minSelectionIndex, minSelectionIndex);
         else if (rowCount > 0)
             configTable.setRowSelectionInterval(rowCount-1, rowCount-1);
+        selectedConfigurationIndex = -1;
         updateConfiguration();
     }
 
@@ -353,7 +357,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
 
     private void updateSelectedConfigurationLocations() {
-        int selectedConfigRow = getSelectedConfigurationIndex();
+        int selectedConfigRow = selectedConfigurationIndex;
         if (selectedConfigRow >= 0) {
             UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
             config.removeAllLocations();
@@ -369,7 +373,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         int removedRowCount = 0;
         for (int selectedIndex : selectedRows) {
             int row = selectedIndex - removedRowCount;
-            int selectedConfigRow = getSelectedConfigurationIndex();
+            int selectedConfigRow = selectedConfigurationIndex;
             if (selectedConfigRow >= 0) {
                 UserDefinedCodeExplorerConfiguration config = getConfiguration(selectedConfigRow);
                 config.removeLocation(locationsTableModel.getValueAt(row, 0).toString());
@@ -392,7 +396,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     private void addJarsAndFolders(boolean addsFoldersResursively) {
         if(configTable.getRowCount() == 0)
             addNewConfiguration();
-        int selectedConfigRow = getSelectedConfigurationIndex();
+        int selectedConfigRow = selectedConfigurationIndex;
         UserDefinedCodeExplorerConfiguration selectedConfig = getConfiguration(selectedConfigRow);
         int selectedRow = locationsTable.getSelectedRow();
         if(selectedRow >= 0) {
@@ -462,7 +466,10 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private void applyConfigurationRules() {
         setConfigurationRules();
-        switch(configurationChange) {
+        if(exploredConfigurationIndex != selectedConfigurationIndex) {
+            exploreSelectedConfiguration(true);
+        }
+        else switch(configurationChange) {
         case CODE_BASE:
             exploreSelectedConfiguration(true);
             break;
@@ -477,7 +484,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         }
         configurationChange = ConfigurationChange.SAME;
     }
-    private void setConfigurationRules() {
+    private boolean setConfigurationRules() {
         UserDefinedCodeExplorerConfiguration selectedConfiguration = getSelectedConfiguration();
         if(selectedConfiguration != null) {
             String ruleSpecification = rules.getText();
@@ -486,13 +493,17 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
                     ConfigurationChange status = selectedConfiguration.applyConfigurationRules(ruleSpecification);
                     configurationChange = ConfigurationChange.max(configurationChange, status);
                 } catch (IllegalArgumentException e) {
+                    configTable.getSelectionModel().setSelectionInterval(selectedConfigurationIndex, selectedConfigurationIndex);
                     if(! helpToggleButton.isSelected())
                         helpToggleButton.doClick();
+                    rules.requestFocusInWindow();
                     String text = e.getMessage();
                     UITools.informationMessage(text);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     private void createPanels() {
