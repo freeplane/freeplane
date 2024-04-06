@@ -27,7 +27,7 @@
 		<Entry builder="separator" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies"  builder = "bigIcon"/>
 		<Entry builder="separator" />
-		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" builder = "bigIcon"/>
+		<Entry name="code.FilterClassesByDependencies" builder = "bigIcon"/>
 		<Entry builder="separator" />
 		<Entry row="1">
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
@@ -209,7 +209,7 @@
 			<Entry builder="separator" />
 			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 			<Entry builder="separator" />
-			<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
+			<Entry name="code.FilterClassesByDependencies" />
 			<Entry builder="separator" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
@@ -319,7 +319,7 @@
 			<Entry name="code.CopyQualifiedName"/>
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="code.ShowSelectedClassesWithExternalDependenciesAction" />
+		<Entry name="code.FilterClassesByDependencies" />
 		<Entry name="filter">
 			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 			<Entry name="code.ShowAllClassesAction" />

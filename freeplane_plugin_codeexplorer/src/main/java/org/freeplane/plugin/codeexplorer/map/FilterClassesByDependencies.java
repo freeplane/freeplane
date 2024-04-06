@@ -24,6 +24,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -31,10 +33,10 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
 @SuppressWarnings("serial")
-class ShowSelectedClassesWithExternalDependenciesAction extends AFreeplaneAction {
+class FilterClassesByDependencies extends AFreeplaneAction {
 
-	public ShowSelectedClassesWithExternalDependenciesAction() {
-	    super("code.ShowSelectedClassesWithExternalDependenciesAction");
+	public FilterClassesByDependencies() {
+	    super("code.FilterClassesByDependencies");
     }
 
 	@Override
