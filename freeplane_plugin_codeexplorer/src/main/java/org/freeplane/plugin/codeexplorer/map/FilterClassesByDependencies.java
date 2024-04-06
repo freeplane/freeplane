@@ -47,8 +47,10 @@ class FilterClassesByDependencies extends AFreeplaneAction {
                 .stream()
                 .map(dependencySelection.getMap()::getClassNodeId)
                 .collect(Collectors.toSet());
-        if(dependentNodeIDs.isEmpty())
+        if(dependentNodeIDs.isEmpty()) {
+            UITools.informationMessage(TextUtils.getRawText("code.no_dependencies_found"));
             return;
+        }
         ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs);
         Filter lastFilter = selection.getFilter();
         Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, null);
