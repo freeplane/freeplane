@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.util.LineComparator;
+
 import de.sciss.syntaxpane.SyntaxDocument;
 import de.sciss.syntaxpane.actions.DefaultSyntaxAction;
 

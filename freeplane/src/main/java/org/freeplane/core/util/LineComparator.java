@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.jsyntaxpane;
+package org.freeplane.core.util;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
