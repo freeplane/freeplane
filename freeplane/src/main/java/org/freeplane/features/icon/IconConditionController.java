@@ -51,7 +51,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
-		return false;
+		return ((TranslatedObject)property).objectEquals(IconConditionController.FILTER_TAG);
 	}
 
 	public boolean canHandle(final Object selectedItem) {
@@ -66,19 +66,42 @@ class IconConditionController implements IElementaryConditionController {
 	    return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
     }
 
-    public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
-                                                final Object value, final boolean matchCase, final boolean approximateMatching,
+    public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCondition,
+                                                final Object value, final boolean matchCase, final boolean matchApproximately,
                                                 final boolean ignoreDiacritics) {
         final TranslatedObject namedObject = (TranslatedObject) selectedItem;
         if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
-            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS))
                 return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
-            if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST))
                 return new IconExistsCondition();
         }
-        if (namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
-            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
-                return value instanceof Tag ? new TagContainedCondition((Tag)value) : null;
+        if (namedObject.objectEquals(IconConditionController.FILTER_TAG) && value instanceof Tag) {
+            String comparedString= ((Tag)value).getContent();
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+                return new TagCompareCondition(comparedString, matchCase, 0, true, matchApproximately, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
+                return new TagCompareCondition(comparedString, matchCase, 0, false, matchApproximately, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
+                return new TagCompareCondition(comparedString, matchCase, 1, true, false, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
+                return new TagCompareCondition(comparedString, matchCase, -1, false, false, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
+                return new TagCompareCondition(comparedString, matchCase, -1, true, false, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
+                return new TagCompareCondition(comparedString, matchCase, 1, false, false, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
+                return new TagMatchesCondition(comparedString.toString(), matchCase);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, ignoreDiacritics);
+            }
         }
         return null;
     }
@@ -108,6 +131,11 @@ class IconConditionController implements IElementaryConditionController {
     public Object[] getTagConditionNames() {
         return new TranslatedObject[] {
                 TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+                TranslatedObject.literal(ConditionFactory.FILTER_GT), TranslatedObject.literal(ConditionFactory.FILTER_GE),
+                TranslatedObject.literal(ConditionFactory.FILTER_LE), TranslatedObject.literal(ConditionFactory.FILTER_LT)
         };
     }
 
@@ -143,8 +171,11 @@ class IconConditionController implements IElementaryConditionController {
         if (element.getName().equalsIgnoreCase(IconExistsCondition.NAME)) {
             return IconExistsCondition.load(element);
         }
-        if (element.getName().equalsIgnoreCase(TagContainedCondition.NAME)) {
-            return TagContainedCondition.load(element);
+        if (element.getName().equalsIgnoreCase(TagCompareCondition.NAME)) {
+            return TagCompareCondition.load(element);
+        }
+        if (element.getName().equalsIgnoreCase(TagMatchesCondition.NAME)) {
+            return TagMatchesCondition.load(element);
         }
 		return null;
 	}

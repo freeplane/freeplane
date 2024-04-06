@@ -175,7 +175,12 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	}
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
-		String simpleCondition;
+		String simpleCondition = createComparisonDescription(comparationResult, succeed);
+		return createDescription(attribute, simpleCondition, valueDescription());
+	}
+
+    public static String createComparisonDescription(final int comparationResult, final boolean succeed) {
+        String simpleCondition;
 		switch (comparationResult) {
 			case -1:
 				simpleCondition = succeed ? ConditionFactory.FILTER_LT : ConditionFactory.FILTER_GE;
@@ -190,8 +195,8 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return createDescription(attribute, simpleCondition, valueDescription());
-	}
+        return simpleCondition;
+    }
 
 	private String valueDescription() {
 		return conditionValue.toString();

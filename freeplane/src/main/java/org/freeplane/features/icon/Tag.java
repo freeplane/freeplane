@@ -10,6 +10,10 @@ import java.util.Objects;
 public class Tag implements Comparable<Tag>{
     private final String content;
 
+    public static Tag valueOf(String content) {
+        return new Tag(content);
+    }
+
     public Tag(String content) {
         super();
         this.content = content;
@@ -38,7 +42,7 @@ public class Tag implements Comparable<Tag>{
 
     @Override
     public String toString() {
-        return "Tag [content=" + content + "]";
+        return content;
     }
 
     @Override
