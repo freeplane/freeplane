@@ -45,6 +45,7 @@ import org.freeplane.features.mode.CombinedPropertyChain;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
@@ -57,8 +58,6 @@ import org.freeplane.features.styles.StyleNode;
 public class IconController implements IExtension {
 
 	private static final Quantity<LengthUnit> DEFAULT_ICON_SIZE = new Quantity<LengthUnit>(12, LengthUnit.pt);
-
-    private static final Font TAG_FONT = new Font(Font.MONOSPACED, Font.PLAIN, (int)UITools.FONT_SCALE_FACTOR * 10);
 
 	final private CombinedPropertyChain<Collection<NamedIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
@@ -83,6 +82,8 @@ public class IconController implements IExtension {
 
 	final private List<IconMouseListener> iconMouseListeners;
 
+    private final ModeController modeController;
+
 	public void addIconMouseListener(final IconMouseListener iconMouseListener) {
 		iconMouseListeners.add(iconMouseListener);
 	}
@@ -95,6 +96,7 @@ public class IconController implements IExtension {
     }
 	public IconController(final ModeController modeController) {
 		super();
+        this.modeController = modeController;
 		stateIconProviders = new LinkedList<IStateIconProvider>();
 		iconHandlers = new CombinedPropertyChain<Collection<NamedIcon>, NodeModel>(false);
 		final MapController mapController = modeController.getMapController();
@@ -198,11 +200,21 @@ public class IconController implements IExtension {
         return Collections.emptyMap();
     }
     public List<TagIcon> getTagIcons(NodeModel node) {
+        final Font font = getTagFont(node);
+
         List<Tag> tags = getTags(node);
         return tags.stream()
                 .map(Tag::getContent)
-                .map(tag -> new TagIcon(tag, TAG_FONT))
+                .map(tag -> new TagIcon(tag, font))
                 .collect(Collectors.toList());
+    }
+    public Font getTagFont(NodeModel node) {
+        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.TAG_STYLE);
+        final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
+        Font nodeFont = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        final Font font = nodeFont.deriveFont(UITools.FONT_SCALE_FACTOR * nodeFont.getSize2D());
+        return font;
     }
     public List<Tag> getTags(NodeModel node) {
         return Tags.getTags(node);

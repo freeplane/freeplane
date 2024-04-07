@@ -241,10 +241,7 @@ class TagEditor {
         }
 
         SourceTextEditorUIConfigurator.configureColors(textEditor);
-        final String fontName = ResourceController.getResourceController().getProperty("groovy_editor_font");
-        final int fontSize = ResourceController.getResourceController().getIntProperty("groovy_editor_font_size");
-        final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
-        textEditor.setFont(font);
+        textEditor.setFont(iconController.getTagFont(node));
         return textEditor;
     }
 

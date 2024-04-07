@@ -87,7 +87,8 @@ public class MapStyleModel implements IExtension {
     public static final IStyle NEW_STYLE = new StyleTranslatedObject("newStyle");
     public static final IStyle SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.selection");
 	public static final IStyle DETAILS_STYLE = new StyleTranslatedObject("defaultstyle.details");
-	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
+    public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
+    public static final IStyle TAG_STYLE = new StyleTranslatedObject("defaultstyle.tags");
 	public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
 	public static final IStyle FLOATING_STYLE = new StyleTranslatedObject("defaultstyle.floating");
 
@@ -222,11 +223,23 @@ public class MapStyleModel implements IExtension {
 				predefinedStyleParentNode.insert(newNode, 2);
 				addStyleNode(newNode);
 			}
-			FontSizeExtension fontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
-			if (fontSizeExtension != null) {
+			FontSizeExtension attributefontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+			if (attributefontSizeExtension != null) {
 				NodeStyleModel.createNodeStyleModel(styleNodes.get(ATTRIBUTE_STYLE))
-				    .setFontSize(fontSizeExtension.fontSize);
+				    .setFontSize(attributefontSizeExtension.fontSize);
 			}
+            if (styleNodes.get(TAG_STYLE) == null) {
+                final NodeModel newNode = new NodeModel(TAG_STYLE, styleMap);
+                final int defaultFontSize = 10;
+                NodeStyleModel.createNodeStyleModel(newNode).setFontSize(defaultFontSize);
+                predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
+            FontSizeExtension tagFontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+            if (tagFontSizeExtension != null) {
+                NodeStyleModel.createNodeStyleModel(styleNodes.get(TAG_STYLE))
+                    .setFontSize(tagFontSizeExtension.fontSize);
+            }
 			if (styleNodes.get(NOTE_STYLE) == null) {
 				final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
 				NodeStyleModel.createNodeStyleModel(newNode).setBackgroundColor(Color.WHITE);
