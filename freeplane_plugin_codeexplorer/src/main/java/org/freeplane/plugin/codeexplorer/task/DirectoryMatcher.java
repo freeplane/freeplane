@@ -7,6 +7,7 @@ package org.freeplane.plugin.codeexplorer.task;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -80,33 +81,26 @@ public class DirectoryMatcher implements GroupMatcher{
     private List<String> defaultSubpaths(File location) {
         if (new File(location, "pom.xml").exists())
             return Collections.singletonList("target/classes");
-        if (new File(location, "build.gradle").exists())
-            return Collections.singletonList("build/classes");
+        if (new File(location, "build.gradle").exists()
+                || new File(location, "build.gradle.kts").exists())
+            return Arrays.asList("build/classes/java/main",
+                    "build/classes/kotlin/main",
+                    "build/intermediates/javac/debug/classes",
+                    "build/tmp/kotlin-classes/debug");
         else
             return Collections.singletonList(".");
     }
     private Optional<String> identifierByClass(JavaClass javaClass) {
         for (ClassNameMatcher groupMatcher : groupMatchers) {
-            final String qualifiedClassName = qualifiedClassName(javaClass);
-            if(groupMatcher.isIgnored(qualifiedClassName))
+            if(groupMatcher.isIgnored(javaClass))
                 return Optional.empty();
-            Optional<String> groupResult = groupMatcher.toGroup(qualifiedClassName);
+            Optional<String> groupResult = groupMatcher.toGroup(javaClass);
             if (groupResult.isPresent()) {
                 return groupResult;
             }
         }
         return Optional.of("");
     }
-
-    private String qualifiedClassName(JavaClass javaClass) {
-        final String fullName = CodeNode.findEnclosingTopLevelClass(javaClass).getName();
-        int lastIndexOfNon$ = fullName.length() - 1;
-        while (lastIndexOfNon$ > 0 && fullName.charAt(lastIndexOfNon$) == '$')
-            lastIndexOfNon$--;
-
-        return fullName.substring(0, lastIndexOfNon$ + 1);
-    }
-
 
     @Override
     public Optional<GroupIdentifier> groupIdentifier(JavaClass javaClass) {

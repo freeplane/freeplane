@@ -51,7 +51,7 @@ public class ParsedConfiguration {
             "^\\s*import\\s+(annotation|interface)\\s+(" + CLASS_PATTERN + ")\\s*$");
 
     private static final Pattern GROUP_PATTERN = Pattern.compile(
-            "^\\s*(?:(ignore)\\s+)?group\\s+(" + CLASS_PATTERN + ")(?:\\s+as\\s+(.*?))?\\s*$");
+            "^\\s*(?:(ignore)\\s+)?(?:(class)\\s+)?group\\s+(" + CLASS_PATTERN + ")(?:\\s+as\\s+(.*?))?\\s*$");
 
     private final List<DependencyRule> rules;
     private final IgnoredClassMatcher ignoredClasses;
@@ -96,9 +96,10 @@ public class ParsedConfiguration {
                         Matcher groupPatternMatcher = GROUP_PATTERN.matcher(dslRule);
                         if (groupPatternMatcher.find()) {
                             final boolean ignores = groupPatternMatcher.group(1) != null;
-                            final String pattern = groupPatternMatcher.group(2);
-                            final Optional<String> name = Optional.ofNullable(groupPatternMatcher.group(3));
-                            groupMatchers.add(new ClassNameMatcher(pattern, ignores, name));
+                            final boolean matchesClasses = groupPatternMatcher.group(2) != null;
+                            final String pattern = groupPatternMatcher.group(3);
+                            final Optional<String> name = Optional.ofNullable(groupPatternMatcher.group(4));
+                            groupMatchers.add(new ClassNameMatcher(pattern, ignores, matchesClasses, name));
                         } else {
                             Matcher importedAnnotationMatcher = IMPORTED_ANNOTATION_PATTERN.matcher(dslRule);
                             if(importedAnnotationMatcher.find()) {

@@ -60,7 +60,7 @@ public class CodeMapController extends MapController implements CodeExplorer{
         super(modeController);
         this.classImportService = classImportService;
 
-        modeController.addAction(new ShowSelectedClassesWithExternalDependenciesAction());
+        modeController.addAction(new FilterClassesByDependencies());
         for(CodeNodeSelection selection: CodeNodeSelection.values()) {
             for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
                 for(ShowDependingNodesAction.Depth maximumDepth : ShowDependingNodesAction.Depth.values()) {
