@@ -114,6 +114,15 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
                     int lastRow = e.getLastRow();
                     updateConfigurationNames(firstRow, lastRow);
                 }
+                else if (e.getType() == TableModelEvent.DELETE) {
+                    if (selectedConfigurationIndex >= e.getFirstRow() && selectedConfigurationIndex <= e.getLastRow()) {
+                        selectedConfigurationIndex = -1;
+                    }
+                    if (exploredConfigurationIndex >= e.getFirstRow() && exploredConfigurationIndex <= e.getLastRow()) {
+                        exploredConfigurationIndex = -1;
+                    }
+                }
+
             }
         });
         return configTableScrollPane;
