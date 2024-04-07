@@ -101,6 +101,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     private JComponent createConfigurationsPanel() {
         configTableModel = new DefaultTableModel(new Object[]{""}, 0);
         configTable = new JTable(configTableModel);
+        configTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         configTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane configTableScrollPane = new JScrollPane(configTable);
 
@@ -144,6 +145,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         locationsTable = new AutoResizedTable(locationsTableModel);
         locationsTable.getTableHeader().setVisible(false);
         locationsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        locationsTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         CellRendererWithTooltip cellRenderer = new CellRendererWithTooltip();
         TableColumn locationsColumn = locationsTable.getColumnModel().getColumn(0);
         locationsColumn.setCellRenderer(cellRenderer);
