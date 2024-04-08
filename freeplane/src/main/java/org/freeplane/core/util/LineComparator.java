@@ -50,6 +50,8 @@ public class LineComparator {
     }
 
     private static int compareSegments(String seg1, String seg2) {
+        if(seg1 == seg2)
+            return 0;
         if (Character.isDigit(seg1.charAt(0))&& Character.isDigit(seg2.charAt(0))) {
             try {
                 return Long.compare(Long.parseLong(seg1), Long.parseLong(seg2));
@@ -59,6 +61,10 @@ public class LineComparator {
                 return num1.compareTo(num2);
             }
         }
-        return seg1.compareTo(seg2);
+        int compareResult = seg1.compareTo(seg2);
+        if(compareResult == 0)
+            return 0;
+        int compareIgnoreCaseResult = seg1.compareToIgnoreCase(seg2);
+        return compareIgnoreCaseResult != 0 ? compareIgnoreCaseResult : compareResult;
     }
 }
