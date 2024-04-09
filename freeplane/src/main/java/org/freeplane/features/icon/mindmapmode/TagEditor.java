@@ -27,6 +27,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,6 +39,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 import javax.swing.WindowConstants;
@@ -75,6 +78,7 @@ class TagEditor {
     private MIconController iconController;
     private JEditorPane textEditorPane;
     private JDialog dialog;
+    private String originalTags;
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -116,8 +120,8 @@ class TagEditor {
         Action sortLinesAction = textEditorPane.getActionMap().get("sort-lines");
         sortButton.addActionListener(sortLinesAction);
         editorScrollPane.setViewportView(textEditorPane);
-        String tags = iconController.getTags(node).stream().map(Tag::getContent).collect(Collectors.joining("\n"));
-        textEditorPane.setText(tags);
+        originalTags = iconController.getTags(node).stream().map(Tag::getContent).collect(Collectors.joining("\n"));
+        textEditorPane.setText(originalTags);
         enterConfirms.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -199,6 +203,15 @@ class TagEditor {
                 dialog.dispose();
             }
         });
+
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(final WindowEvent e) {
+                if (dialog.isVisible()) {
+                    confirmedSubmit();
+                }
+            }
+        });
     }
     void show() {
         Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
@@ -262,5 +275,24 @@ class TagEditor {
         preferredSize.height = Math.max(preferredSize.height, resourceController.getIntProperty(HEIGHT_PROPERTY, 0));
         dialog.setPreferredSize(preferredSize);
     }
+
+    private void confirmedSubmit() {
+        if (dialog.isVisible()) {
+            if (!originalTags.equals(textEditorPane.getText())) {
+                final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+
+                if (action == JOptionPane.YES_OPTION) {
+                    submit();
+                }
+                else if (action == JOptionPane.CANCEL_OPTION) {
+                    return;
+                }
+            }
+            dialog.setVisible(false);
+        }
+    }
+
+
 
 }
