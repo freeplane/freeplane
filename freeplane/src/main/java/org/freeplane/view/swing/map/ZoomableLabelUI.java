@@ -470,14 +470,16 @@ public class ZoomableLabelUI extends BasicLabelUI {
 			textR.x = textR.y = textR.width = textR.height = 0;
 			layoutCL(label, label.getFontMetrics(), text, icon, viewR, iconR,textR);
 			final float zoom = label.getZoom();
-			iconR.x = (int)(iconR.x * zoom);
-			iconR.y = (int)(iconR.y * zoom);
-			iconR.width = (int)(iconR.width * zoom);
-			iconR.height = (int)(iconR.height * zoom);
-			textR.x = (int)(textR.x * zoom);
-			textR.y = (int)(textR.y * zoom);
-			textR.width = (int)(textR.width * zoom);
-			textR.height = (int)(textR.height * zoom);
+			if(zoom != 1f) {
+			    iconR.x = (int)(iconR.x * zoom);
+			    iconR.y = (int)(iconR.y * zoom);
+			    iconR.width = (int)(iconR.width * zoom);
+			    iconR.height = (int)(iconR.height * zoom);
+			    textR.x = (int)(textR.x * zoom);
+			    textR.y = (int)(textR.y * zoom);
+			    textR.width = (int)(textR.width * zoom);
+			    textR.height = (int)(textR.height * zoom);
+			}
 		}
 		finally{
 			isPainting = wasPainting;

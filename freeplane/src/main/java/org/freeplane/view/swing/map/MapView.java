@@ -443,10 +443,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectedList.add(node);
 			selectedNode = node;
 			addSelectionForHooks(node);
-			repaintAfterSelectionChange(node);
+			repaintAfterSelectionChange(node, true);
 			for (final NodeView oldSelected : oldSelecteds) {
 				if (oldSelected != null && oldSelected != node) {
-					repaintAfterSelectionChange(oldSelected);
+					repaintAfterSelectionChange(oldSelected, true);
 				}
 			}
 		}
@@ -459,7 +459,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else{
 				if(addToSelectedSet(node)){
 					selectedList.add(node);
-					repaintAfterSelectionChange(node);
+					repaintAfterSelectionChange(node, true);
 					return true;
 				}
 				return false;
@@ -526,7 +526,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					selectedList.remove(last);
 				else
 					selectedList.remove(node);
-				repaintAfterSelectionChange(node);
+				repaintAfterSelectionChange(node, true);
 				return true;
 			}
 			return false;
@@ -588,13 +588,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 	selectedList.add(view);
 
             for(final NodeView view : nodesAddedToSelection)
-                repaintAfterSelectionChange(view);
+                repaintAfterSelectionChange(view, true);
             if (selectedChanges) {
                 addSelectionForHooks(selectedNode);
             }
             for(final NodeView view : oldSelection)
                 if (!selectedSet.contains(view))
-                	repaintAfterSelectionChange(view);
+                	repaintAfterSelectionChange(view, true);
         }
 
 		public NodeView[] toArray() {
@@ -933,16 +933,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 				final MapView mapView = (MapView) c;
 				if (propertyName.equals(RESOURCES_SELECTED_NODE_COLOR)) {
-					mapView.repaintSelecteds();
+					mapView.repaintSelecteds(true);
 					return;
 				}
 				if (propertyName.equals(RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
-					mapView.repaintSelecteds();
+					mapView.repaintSelecteds(true);
 					return;
 				}
 				if (propertyName.equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.drawsRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
-					mapView.repaintSelecteds();
+					mapView.repaintSelecteds(true);
 					return;
 				}
 				if (propertyName.equals("printonwhitebackground")) {
@@ -1002,7 +1002,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void deselect(final NodeView newSelected) {
 		if (selection.contains(newSelected) && selection.deselect(newSelected) && newSelected.getParent() != null) {
-			repaintAfterSelectionChange(newSelected);
+			repaintAfterSelectionChange(newSelected, true);
 		}
 	}
 
@@ -1010,10 +1010,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    selection.updateSelectedNode();
 	}
 
-	private void repaintAfterSelectionChange(final NodeView node) {
+	private void repaintAfterSelectionChange(final NodeView node, boolean update) {
 		if(! node.isShowing())
 			return;
-		node.update();
+		if(update)
+		    node.update();
 		if(SHOW_CONNECTORS_FOR_SELECTION_ONLY == showConnectors || SHOW_ARROWS_FOR_SELECTION_ONLY == showConnectors || repaintsViewOnSelectionChange)
 			repaint(getVisibleRect());
 		else
@@ -2409,10 +2410,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return Printable.PAGE_EXISTS;
 	}
 
-	private void repaintSelecteds() {
+	private void repaintSelecteds(boolean update) {
 	    updateSelectionColors();
 		for (final NodeView selected : getSelection()) {
-			repaintAfterSelectionChange(selected);
+			repaintAfterSelectionChange(selected, update);
 		}
 	}
 
@@ -2828,7 +2829,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     	if(label instanceof MainView) {
     		label.putClientProperty(MapView.INLINE_EDITOR_ACTIVE, Boolean.TRUE);
 			if (MapView.drawsRectangleForSelection) {
-				repaintSelecteds();
+				repaintSelecteds(false);
 			}
 		}
     }
@@ -2837,7 +2838,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     	if(label instanceof MainView) {
     		label.putClientProperty(MapView.INLINE_EDITOR_ACTIVE, null);
 			if (MapView.drawsRectangleForSelection) {
-				repaintSelecteds();
+				repaintSelecteds(false);
 			}
 		}
 	}

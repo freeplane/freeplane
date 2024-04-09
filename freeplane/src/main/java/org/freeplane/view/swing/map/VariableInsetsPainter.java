@@ -80,25 +80,35 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		int scaledMaximumWidth = maximumWidth != Integer.MAX_VALUE ? (int)(maximumWidth / getHorizontalMarginFactor()) : maximumWidth;
 		final double zoomedHorizontalInsetBackup = zoomedHorizontalInset;
 		final double zoomedVerticalInsetBackup = zoomedVerticalInset;
-		zoomedHorizontalInset  = getMinimumHorizontalInset();
-		zoomedVerticalInset =  getMinimumVerticalInset();
-		final int oldMinimumWidth = mainView.getMinimumWidth();
-		final int oldMaximumWidth = mainView.getMaximumWidth();
-		final Dimension prefSize;
-		try{
-			mainView.setMinimumWidth(0);
-			mainView.setMaximumWidth(scaledMaximumWidth);
-			prefSize = super.getPreferredSize();
-			prefSize.width -= zoomedHorizontalInset;
-			prefSize.height -= zoomedVerticalInset;
+		double minimumHorizontalInset = getMinimumHorizontalInset();
+		double minimumVerticalInset = getMinimumVerticalInset();
+		if(mainView.isPreferredSizeSet()) {
+		    final Dimension prefSize = mainView.getPreferredSize();
+            prefSize.width -= 2 * (zoomedHorizontalInset - minimumHorizontalInset);
+            prefSize.height -= 2 * (zoomedVerticalInset - minimumVerticalInset);
+		    return prefSize;
 		}
-		finally {
-			zoomedHorizontalInset = zoomedHorizontalInsetBackup;
-			zoomedVerticalInset = zoomedVerticalInsetBackup;
-			mainView.setMaximumWidth(oldMaximumWidth);
-			mainView.setMinimumWidth(oldMinimumWidth);
+		else {
+		    zoomedHorizontalInset = minimumHorizontalInset;
+		    zoomedVerticalInset =  minimumVerticalInset;
+		    final int oldMinimumWidth = mainView.getMinimumWidth();
+		    final int oldMaximumWidth = mainView.getMaximumWidth();
+		    final Dimension prefSize;
+		    try{
+		        mainView.setMinimumWidth(0);
+		        mainView.setMaximumWidth(scaledMaximumWidth);
+		        prefSize = super.getPreferredSize();
+		        prefSize.width -= 2 * zoomedHorizontalInset;
+		        prefSize.height -= 2 * zoomedVerticalInset;
+		    }
+		    finally {
+		        zoomedHorizontalInset = zoomedHorizontalInsetBackup;
+		        zoomedVerticalInset = zoomedVerticalInsetBackup;
+		        mainView.setMaximumWidth(oldMaximumWidth);
+		        mainView.setMinimumWidth(oldMinimumWidth);
+		    }
+		    return prefSize;
 		}
-		return prefSize;
 	}
 
 	@Override
