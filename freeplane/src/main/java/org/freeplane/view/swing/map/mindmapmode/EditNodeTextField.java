@@ -821,8 +821,10 @@ public class EditNodeTextField extends EditNodeBase {
 		textFieldMinimumSize.width = 1 + textFieldMinimumSize.width * 21 / 20;
         if(textFieldMinimumSize.width < extraWidth)
             textFieldMinimumSize.width = extraWidth;
-        if(textFieldMinimumSize.width < 10)
-            textFieldMinimumSize.width = 10;
+        int minWidth = mapView.getZoomed(10);
+        maxWidth = Math.max(maxWidth, minWidth);
+        if(textFieldMinimumSize.width < minWidth)
+            textFieldMinimumSize.width = minWidth;
 		if (textFieldMinimumSize.width > maxWidth) {
 			textFieldMinimumSize.width = maxWidth;
 			setLineWrap();
