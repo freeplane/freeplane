@@ -51,12 +51,12 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         List<Tag> tagList = freeplaneTags(tags);
         MIconController iconController = iconController();
         iconController.setTags(getDelegate(),
-                tagList);
+                tagList, false);
     }
 
     private List<Tag> freeplaneTags(Collection<String> tags) {
         return tags.stream()
-        .map(Tag::new)
+        .map(this::createTag)
         .collect(Collectors.toList());
     }
 
@@ -64,16 +64,20 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     public void addTag(String tag) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        tagList.add(new Tag(tag));
-        iconController.setTags(getDelegate(), tagList);
+        tagList.add(createTag(tag));
+        iconController.setTags(getDelegate(), tagList, false);
+    }
+
+    private Tag createTag(String tag) {
+        return getDelegate().getMap().getIconRegistry().createTag(tag);
     }
 
     @Override
     public void addTag(int index, String tag) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        tagList.add(index, new Tag(tag));
-        iconController.setTags(getDelegate(), tagList);
+        tagList.add(index, createTag(tag));
+        iconController.setTags(getDelegate(), tagList, false);
     }
 
     @Override
@@ -81,15 +85,15 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
         tagList.addAll(freeplaneTags(tags));
-        iconController.setTags(getDelegate(), tagList);
+        iconController.setTags(getDelegate(), tagList, false);
     }
 
     @Override
     public boolean removeTag(String tag) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        boolean result = tagList.remove(new Tag(tag));
-        iconController.setTags(getDelegate(), tagList);
+        boolean result = tagList.remove(createTag(tag));
+        iconController.setTags(getDelegate(), tagList, false);
         return result;
     }
 
@@ -98,7 +102,7 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
         Tag result = tagList.remove(index);
-        iconController.setTags(getDelegate(), tagList);
+        iconController.setTags(getDelegate(), tagList, false);
         return result == null ? null : result.getContent();
     }
 
@@ -107,7 +111,7 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
         boolean result = tagList.removeAll(freeplaneTags(tags));
-        iconController.setTags(getDelegate(), tagList);
+        iconController.setTags(getDelegate(), tagList, false);
         return result;
     }
 

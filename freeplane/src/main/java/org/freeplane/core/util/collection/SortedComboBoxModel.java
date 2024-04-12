@@ -45,16 +45,23 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
 
 	@Override
     public void add(final T element) {
-		if(addImpl(element))
-			fireContentsChanged(this, 0, getSize());
+		addIfNotExists(element);
 	}
 
-	private boolean addImpl(final T element) {
+	public T addIfNotExists(final T element) {
+        T addedElement = addImpl(element);
+        if(addedElement == element) {
+            fireContentsChanged(this, 0, getSize());
+        }
+        return addedElement;
+    }
+
+	private T addImpl(final T element) {
 	    int index = binarySearch(element);
 		if(index >= 0)
-			return false;
+			return model.get(index);
 		model.add( - index - 1, element);
-		return true;
+		return element;
     }
 
     private int binarySearch(final T element) {
@@ -63,10 +70,13 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
         return Collections.binarySearch(model, element, COMPARATOR);
     }
 
-	public void addAll(final T[] elements) {
+	public boolean addAll(final T[] elements) {
+	    boolean contentsChanged = false;
 		for(T e : elements)
-			addImpl(e);
-		fireContentsChanged(this, 0, getSize());
+		    contentsChanged = addImpl(e) == e || contentsChanged;
+		if(contentsChanged)
+		    fireContentsChanged(this, 0, getSize());
+		return contentsChanged;
 	}
 
 	@Override

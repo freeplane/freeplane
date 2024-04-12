@@ -204,7 +204,6 @@ public class IconController implements IExtension {
 
         List<Tag> tags = getTags(node);
         return tags.stream()
-                .map(Tag::getContent)
                 .map(tag -> new TagIcon(tag, font))
                 .collect(Collectors.toList());
     }

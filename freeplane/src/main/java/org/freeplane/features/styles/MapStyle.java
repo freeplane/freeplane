@@ -58,6 +58,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -83,7 +84,7 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
  */
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
-	public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
+    public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
@@ -223,8 +224,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return null;
 	}
 
+	private static final String TAG_COLOR_ATTRIBUTE_PREFIX = "_tag_color_";
+	private static final String TAG_COLOR_START = "#";
 	protected class MyXmlReader extends XmlReader{
-		@Override
+
+        @Override
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (null == super.createElement(parent, tag, attributes)){
 				return null;
@@ -243,10 +247,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			NodeModel node = (NodeModel) userObject;
 			MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 			Objects.requireNonNull(mapStyleModel);
-			loadMapStyleProperties(mapStyleModel, xml);
+			loadMapStyleProperties(mapStyleModel, xml, node.getMap().getIconRegistry());
        }
 
-		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
+		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml, IconRegistry iconRegistry) {
 			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
 			if(propertyXml != null && propertyXml.size() >= 1){
 				final Map<String, String> properties = model.getProperties();
@@ -256,7 +260,18 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					// fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
 					if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
 						continue;
-					properties.put(key, attribute.getValue().toString());
+					String valueAsString = attribute.getValue().toString();
+					if(key.startsWith(TAG_COLOR_ATTRIBUTE_PREFIX)){
+					    int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
+					    if(separatorIndex > 0) {
+                            String name = valueAsString.substring(0, separatorIndex);
+                            String color = valueAsString.substring(separatorIndex);
+                            properties.put(IconRegistry.TAG_COLOR_PROPERTY_PREFIX + name, color);
+                            iconRegistry.setTagColorByProperty(name, color);
+                        }
+					} else {
+                        properties.put(key, valueAsString);
+                    }
 				}
 			}
         }
@@ -752,8 +767,14 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 	    final XMLElement xmlElement = new XMLElement("properties");
+	    int tagColorCounter = 0;
 	    for (Entry<String, String>  entry: properties.entrySet()){
-	    	xmlElement.setAttribute(entry.getKey(), entry.getValue());
+	    	String key = entry.getKey();
+	    	if(key.startsWith(IconRegistry.TAG_COLOR_PROPERTY_PREFIX))
+	    	    xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter,
+	    	            key.substring(IconRegistry.TAG_COLOR_PROPERTY_PREFIX.length()) + entry.getValue());
+	    	else
+	    	    xmlElement.setAttribute(key, entry.getValue());
 	    }
 	    element.addChild(xmlElement);
     }

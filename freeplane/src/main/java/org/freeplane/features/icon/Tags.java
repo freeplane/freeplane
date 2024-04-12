@@ -32,9 +32,6 @@ public class Tags implements IExtension {
         }
         else
             extension.tags = newTags;
-        IconRegistry iconRegistry = node.getMap().getIconRegistry();
-        if(iconRegistry != null)
-            newTags.forEach(iconRegistry::addTag);
     }
 
     public List<Tag> getTags(){

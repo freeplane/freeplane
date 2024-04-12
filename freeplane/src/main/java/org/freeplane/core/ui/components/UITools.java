@@ -533,9 +533,13 @@ public class UITools {
 		});
 	}
 
-	public static Color getTextColorForBackground(final Color color) {
-		return isLight(color) ? Color.BLACK : Color.WHITE;
-	}
+    public static Color getTextColorForBackground(final Color color) {
+        return isLight(color) ? Color.BLACK : Color.WHITE;
+    }
+
+    public static Color getDisabledTextColorForBackground(final Color color) {
+        return isLight(color) ? Color.DARK_GRAY : Color.LIGHT_GRAY;
+    }
 
 	public static boolean isLight(final Color color) {
 		return isLighter(color, 160);

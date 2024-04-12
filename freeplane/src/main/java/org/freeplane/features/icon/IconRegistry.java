@@ -19,13 +19,16 @@
  */
 package org.freeplane.features.icon;
 
-import javax.swing.ListModel;
+import java.util.Map;
+import java.util.Optional;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
-import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.MapStyle;
 
 /**
  * @author Dimitry Polivaev
@@ -38,17 +41,15 @@ import org.freeplane.features.map.NodeModel;
  *
  * 03.01.2009
  */
-public class IconRegistry implements IExtension {
+public class IconRegistry implements IExtension, IMapChangeListener{
     final private SortedComboBoxModel<NamedIcon> mapIcons;
     final private SortedComboBoxModel<Tag> mapTags;
+    public static final String TAG_COLOR_PROPERTY_PREFIX = "tag.color.";
 
-	public IconRegistry(final MapController mapController, final MapModel map) {
+	public IconRegistry() {
 		super();
 		mapIcons = new SortedComboBoxModel<>();
 		mapTags = new SortedComboBoxModel<>();
-		final NodeModel rootNode = map.getRootNode();
-		if(rootNode != null)
-			registryNodeContent(mapController, rootNode);
 	}
 
     public void addIcon(final NamedIcon icon) {
@@ -56,7 +57,18 @@ public class IconRegistry implements IExtension {
             mapIcons.add(icon);
     }
 
-    public void addTag(final Tag tag) {
+
+    public Tag createTag(String string) {
+        Tag tag = new Tag(string);
+        return registryTag(tag);
+    }
+
+    public Tag registryTag(Tag tag) {
+        Tag registeredTag = mapTags.addIfNotExists(tag);
+        return registeredTag;
+    }
+
+    private void addTag(final Tag tag) {
         if(tag != null && ! tag.isEmpty())
             mapTags.add(tag);
     }
@@ -69,18 +81,6 @@ public class IconRegistry implements IExtension {
         return mapTags;
     }
 
-	private void registryNodeContent(final MapController mapController, final NodeModel node) {
-        for (final NamedIcon icon : node.getIcons()) {
-            addIcon(icon);
-        }
-        for (final Tag tag : Tags.getTags(node)) {
-            addTag(tag);
-        }
-		for (final NodeModel child : node.getChildren()) {
-			registryNodeContent(mapController, child);
-		}
-	}
-
 	public void registryMapContent(final MapModel map) {
 		final IconRegistry newRegistry = map.getIconRegistry();
 		final SortedComboBoxModel<NamedIcon> newMapIcons = newRegistry.mapIcons;
@@ -88,4 +88,22 @@ public class IconRegistry implements IExtension {
 			mapIcons.add(uiIcon);
 		}
 	}
+
+    @Override
+    public void mapChanged(MapChangeEvent event) {
+        String property = (String)event.getProperty();
+        if(event.getSource().getClass().equals(MapStyle.class)
+                && event.getProperty() instanceof String
+                && property.startsWith(TAG_COLOR_PROPERTY_PREFIX)) {
+            String tagContent = property.substring(TAG_COLOR_PROPERTY_PREFIX.length());
+            String value = (String)event.getNewValue();
+            setTagColorByProperty(tagContent, value);
+        }
+    }
+
+    public void setTagColorByProperty(String tagContent, String value) {
+        createTag(tagContent).setColor(Optional.ofNullable(value).map(ColorUtils::stringToColor));
+    }
+
+
 }

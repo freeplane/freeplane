@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.icon.mindmapmode;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -26,14 +27,17 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
@@ -66,12 +70,14 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconExistsCondition;
 import org.freeplane.features.icon.IconGroup;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
@@ -82,6 +88,7 @@ import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
 import org.freeplane.features.icon.mindmapmode.TagEditor.TagEditorHolder;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -90,6 +97,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.DetailModel;
 
 /**
@@ -262,7 +270,7 @@ public class MIconController extends IconController {
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
 		iconBox = new CollapseableBoxBuilder("leftToolbarVisible").createBox(iconToolBarScrollPane, Direction.LEFT);
-		createIconActions(modeController);
+		createIconActions();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
 		modeController.addAction(new EditTagsAction(this));
@@ -361,7 +369,7 @@ public class MIconController extends IconController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	private void createIconActions(final ModeController modeController) {
+	private void createIconActions() {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
@@ -593,7 +601,7 @@ public class MIconController extends IconController {
     }
 
 	public ActionPanel createActionPanelWithControlActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+
 		return recentlyUsedIcons.createActionPanel(
 				modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION),
 				modeController.getAction(REMOVE_FIRST_ICON_ACTION),
@@ -601,14 +609,17 @@ public class MIconController extends IconController {
 				modeController.getAction(REMOVE_ALL_ICONS_ACTION));
 	}
 
-    public void setTags(NodeModel node, List<Tag> newTags) {
+    public void setTags(NodeModel node, List<Tag> newTags, boolean overwriteColors) {
+        MapModel map = node.getMap();
+        IconRegistry iconRegistry = map.getIconRegistry();
+        List<Tag> registeredTags = newTags.stream().map(iconRegistry::registryTag).collect(Collectors.toList());
         List<Tag> oldTags = getTags(node);
         IActor actor = new IActor() {
 
             @Override
             public void undo() {
                 Tags.setTags(node, oldTags);
-                modeController.getMapController().nodeChanged(node, Tags.class, newTags, oldTags);
+                modeController.getMapController().nodeChanged(node, Tags.class, registeredTags, oldTags);
 
             }
 
@@ -620,12 +631,26 @@ public class MIconController extends IconController {
 
             @Override
             public void act() {
-                Tags.setTags(node, newTags);
-                modeController.getMapController().nodeChanged(node, Tags.class, oldTags, newTags);
-
+                Tags.setTags(node, registeredTags);
+                modeController.getMapController().nodeChanged(node, Tags.class, oldTags, registeredTags);
             }
         };
-        modeController.execute(actor, node.getMap());
+        modeController.execute(actor, map);
+        if(overwriteColors) {
+            IntStream.range(0, newTags.size())
+            .filter(tagIndex -> ! newTags.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
+            .forEach(tagIndex -> {
+                Tag newTag = newTags.get(tagIndex);
+                Optional<Color> newColor = newTag.getColor();
+                setTagColor(map, newTag, newColor);
+            });
+        }
+    }
+
+    private void setTagColor(MapModel map, Tag newTag, Optional<Color> newColor) {
+        MapStyle mapStyle = modeController.getExtension(MapStyle.class);
+        mapStyle.setProperty(map, IconRegistry.TAG_COLOR_PROPERTY_PREFIX + newTag.getContent(),
+                newTag.getColor().map(ColorUtils::colorToRGBAString).orElse(null));
     }
 
     public void editTags(NodeModel node) {

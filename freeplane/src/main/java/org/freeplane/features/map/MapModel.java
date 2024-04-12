@@ -58,7 +58,9 @@ public class MapModel {
 		this.nodeDuplicator = nodeDuplicator;
         extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
-		listeners = new LinkedList<IMapChangeListener>();
+		listeners = new LinkedList<>();
+		if(iconRegistry != null)
+		    addMapChangeListener(iconRegistry);
 		nodes = createNodeByIdMap();
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
@@ -72,7 +74,8 @@ public class MapModel {
 		this(nodeDuplicator, null, null);
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
-		iconRegistry = new IconRegistry(mapController, this);
+		iconRegistry = new IconRegistry();
+		addMapChangeListener(iconRegistry);
 		this.nodeChangeAnnouncer = mapController;
 	}
 

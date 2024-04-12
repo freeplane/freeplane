@@ -86,6 +86,7 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.Connectors;
@@ -1423,6 +1424,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			updateAllNodeViews();
 			return;
 		}
+        if(event.getSource().getClass().equals(MapStyle.class)
+                && event.getProperty() instanceof String
+                && ((String)property).startsWith(IconRegistry.TAG_COLOR_PROPERTY_PREFIX)) {
+            repaint();
+            return;
+        }
 		if(property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)
 				||property.equals(NoteController.SHOW_NOTE_ICONS))
 			updateIconsRecursively(getRoot());

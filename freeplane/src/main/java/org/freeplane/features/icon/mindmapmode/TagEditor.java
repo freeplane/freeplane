@@ -15,49 +15,60 @@
 package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EventObject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.stream.IntStream;
 
-import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.WindowConstants;
-import javax.swing.text.BadLocationException;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.JColorButton;
+import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.components.AutoResizedTable;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.icon.Tag;
-import org.freeplane.features.icon.Tags;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.mindmapmode.EditorHolder;
-import org.freeplane.features.text.mindmapmode.SourceTextEditorUIConfigurator;
 
 
 class TagEditor {
@@ -70,15 +81,85 @@ class TagEditor {
 
     }
 
-	private static final String WIDTH_PROPERTY = "tagDialog.width";
+    private static class TagsWrapper extends AbstractTableModel {
+        private static final long serialVersionUID = 1L;
+        private final ArrayList<Tag> tags;
+
+
+        public TagsWrapper(ArrayList<Tag> tags) {
+            super();
+            this.tags = tags;
+        }
+
+        public List<Tag> getTags() {
+            return new ArrayList<>(tags);
+        }
+
+        public void insertEmptyTags(int first, int last) {
+            for(int index = last; index >= first; index--)
+                tags.add(index, Tag.EMPTY_TAG);
+            fireTableRowsInserted(first, last);
+         }
+
+        public void deleteTags(int first, int last) {
+            for(int index = last; index >= first; index--)
+                tags.remove(index);
+            fireTableRowsDeleted(first, last);
+         }
+
+        @Override
+        public int getRowCount() {
+            return tags.size() + 1;
+        }
+
+        @Override
+        public int getColumnCount() {
+            return 1;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return rowIndex < tags.size() ? tags.get(rowIndex) : Tag.EMPTY_TAG;
+        }
+
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            if(rowIndex == 0) {
+                tags.set(rowIndex, (Tag)aValue);
+                fireTableCellUpdated(0, columnIndex);
+            }
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return "";
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return true;
+        }
+
+        public void sortTags(int first, int last) {
+            if(first == 0 && last + 1 == tags.size())
+                Collections.sort(tags);
+            else
+                Collections.sort(tags.subList(first, last + 1));
+            fireTableRowsUpdated(first, last);
+        }
+    }
+
+    private static final String WIDTH_PROPERTY = "tagDialog.width";
     private static final String HEIGHT_PROPERTY = "tagDialog.height";
 
     private final NodeModel node;
     private String title;
     private MIconController iconController;
-    private JEditorPane textEditorPane;
+    private JTable tagTable;
     private JDialog dialog;
-    private String originalTags;
+    private List<Tag> originalTags;
+    private JColorButton colorButton;
+    private boolean areColorsModified;
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -87,50 +168,55 @@ class TagEditor {
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
         final JButton sortButton = new JButton();
+        colorButton = new JColorButton();
+        colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
         final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
             .getBooleanProperty("el__enter_confirms_by_default"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(sortButton, TextUtils.getRawText("sort"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                dialog.setVisible(false);
-                submit();
-            }
+        colorButton.setEnabled(false);
+        okButton.addActionListener(e -> {
+            dialog.setVisible(false);
+            submit();
         });
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                dialog.setVisible(false);
-            }
-        });
+        cancelButton.addActionListener(e -> dialog.setVisible(false));
+        sortButton.addActionListener(e -> sortSelectedTags());
+
+        colorButton.addActionListener(e -> modifyTagColor());
         final JPanel buttonPane = new JPanel();
         buttonPane.add(enterConfirms);
         buttonPane.add(okButton);
         buttonPane.add(cancelButton);
+        buttonPane.add(colorButton);
         buttonPane.add(sortButton);
         buttonPane.setMaximumSize(new Dimension(1000, 20));
         dialog.getContentPane().setLayout(new BorderLayout());
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        textEditorPane = createTextEditorPane();
-        Action sortLinesAction = textEditorPane.getActionMap().get("sort-lines");
-        sortButton.addActionListener(sortLinesAction);
-        editorScrollPane.setViewportView(textEditorPane);
-        originalTags = iconController.getTags(node).stream().map(Tag::getContent).collect(Collectors.joining("\n"));
-        textEditorPane.setText(originalTags);
+        originalTags = iconController.getTags(node).stream().map(Tag::copy).collect(Collectors.toList());
+        tagTable = createTagTable(originalTags);
+        editorScrollPane.setViewportView(tagTable);
+        editorScrollPane.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentResized(ComponentEvent e) {
+                tagTable.revalidate();
+                tagTable.repaint();
+            }
+
+        });
         enterConfirms.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                textEditorPane.requestFocus();
+                tagTable.requestFocus();
                 ResourceController.getResourceController().setProperty("el__enter_confirms_by_default",
                     Boolean.toString(enterConfirms.isSelected()));
             }
         });
-        textEditorPane.addKeyListener(new KeyListener() {
+        tagTable.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(final KeyEvent e) {
                 switch (e.getKeyCode()) {
@@ -142,25 +228,33 @@ class TagEditor {
                         e.consume();
                         if ((e.getModifiers() & InputEvent.SHIFT_MASK) != 0
                                 || enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
-                            insertString("\n");
+                            insertTags();
                             break;
                         }
                         dialog.setVisible(false);
                         submit();
                         break;
-                    case KeyEvent.VK_TAB:
+                    case KeyEvent.VK_DELETE:
+                    case KeyEvent.VK_BACK_SPACE:
                         e.consume();
-                        insertString("    ");
+                        deleteTags();
                         break;
                 }
             }
 
-            public void insertString(final String text) {
-                try {
-                    textEditorPane.getDocument().insertString(textEditorPane.getCaretPosition(), text, null);
+            private void insertTags() {
+                ListSelectionModel selectionModel = tagTable.getSelectionModel();
+                int minSelectedRow = selectionModel.getMinSelectionIndex();
+                if(minSelectedRow >= 0) {
+                    getTableModel().insertEmptyTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
                 }
-                catch (BadLocationException e) {
-                    e.printStackTrace();
+            }
+
+            private void deleteTags() {
+                ListSelectionModel selectionModel = tagTable.getSelectionModel();
+                int minSelectedRow = selectionModel.getMinSelectionIndex();
+                if(minSelectedRow >= 0) {
+                    getTableModel().deleteTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
                 }
             }
 
@@ -172,6 +266,8 @@ class TagEditor {
             public void keyTyped(final KeyEvent e) {
             }
         });
+
+        tagTable.getSelectionModel().addListSelectionListener(this::updateColorButton);
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
@@ -213,6 +309,39 @@ class TagEditor {
             }
         });
     }
+    private void modifyTagColor() {
+        int selectedRow = tagTable.getSelectedRow();
+        if(selectedRow < 0)
+            return;
+        Tag tag = (Tag) tagTable.getValueAt(selectedRow, 0);
+        if(tag.isEmpty())
+            return;
+
+        Color defaultColor = new Color(tag.getDefaultColor().getRGB(), true);
+        Color initialColor = tag.getIconColor();
+        final Color result = ColorTracker.showCommonJColorChooserDialog(tagTable, tag.getContent(),
+                initialColor, defaultColor);
+        if(result != null && ! initialColor.equals(result) || result == defaultColor){
+            Optional<Color> newColor = result == defaultColor ? Optional.empty() : Optional.of(result);
+            tag.setColor(newColor);
+            TagsWrapper tableModel = getTableModel();
+            IntStream.of(0, tagTable.getRowCount() - 1)
+            .filter(i -> tagTable.getValueAt(i, 0) == tag)
+            .forEach(i -> tableModel.fireTableCellUpdated(i, 0));
+            updateColorButton();
+            areColorsModified = true;
+        }
+
+    }
+
+    protected void sortSelectedTags() {
+        ListSelectionModel selectionModel = tagTable.getSelectionModel();
+        if(selectionModel.getMinSelectionIndex() < selectionModel.getMaxSelectionIndex())
+            getTableModel().sortTags(selectionModel.getMinSelectionIndex(), selectionModel.getMaxSelectionIndex());
+        else
+            getTableModel().sortTags(0, tagTable.getRowCount() - 2);
+
+    }
     void show() {
         Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
         if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
@@ -224,12 +353,12 @@ class TagEditor {
         dialog.setVisible(true);
     }
     protected void submit() {
-        List<Tag> tags = Stream.of(textEditorPane.getText().split("\n"))
-        .map(String::trim)
-        .map(Tag::new)
-        .collect(Collectors.toList());
-        iconController.setTags(node, tags);
+        List<Tag> tags = getCurrentTags();
+        iconController.setTags(node, tags, true);
 
+    }
+    private List<Tag> getCurrentTags() {
+        return getTableModel().getTags();
     }
 
     private JRestrictedSizeScrollPane createScrollPane() {
@@ -238,24 +367,59 @@ class TagEditor {
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }
+    private Tag createTag(String string) {
+        return node.getMap().getIconRegistry().createTag(string);
+    }
 
-    private JEditorPane createTextEditorPane() {
-        JEditorPane textEditor = new JEditorPane();
-        textEditor.setContentType("text/tags");
+    private JTable createTagTable(List<Tag> tags) {
+        JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags)));
+        table.setFont(iconController.getTagFont(node));
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void setValue(Object value) {
+                if(value == null)
+                    setIcon(null);
+                else {
+                    Tag tag = value instanceof Tag ? (Tag)value : createTag(value.toString());
+                    setIcon(new TagIcon(tag, table.getFont()));
+                }
+            }
+
+        });
+
         SortedComboBoxModel<Tag> knownTags = node.getMap().getIconRegistry().getTagsAsListModel();
-        List<String> completions = StreamSupport.stream(knownTags.spliterator(), false)
-        .map(Tag::getContent)
-        .collect(Collectors.toList());
-        Action action = textEditor.getActionMap().get("combo-completion");
-        try {
-            action.getClass().getMethod("setItems", List.class).invoke(action, completions);
-        } catch (Exception e) {
-            LogUtils.severe(e);
-        }
+        JComboBox<Tag> cellEditorComponent = new JComboBox<>(knownTags);
+        cellEditorComponent.setEditable(true);
+        DefaultCellEditor cellEditor = new DefaultCellEditor(cellEditorComponent) {
+            private static final long serialVersionUID = 1L;
 
-        SourceTextEditorUIConfigurator.configureColors(textEditor);
-        textEditor.setFont(iconController.getTagFont(node));
-        return textEditor;
+            @Override
+            public Object getCellEditorValue() {
+                return super.getCellEditorValue();
+            }
+
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                    boolean isSelected, int row, int column) {
+                 return super.getTableCellEditorComponent(table, value, isSelected, row, column);
+            }
+
+            @Override
+            public boolean isCellEditable(EventObject anEvent) {
+               if(anEvent instanceof MouseEvent)
+                   return super.isCellEditable(anEvent);
+               else if(anEvent instanceof KeyEvent)
+                   return ((KeyEvent)anEvent).getKeyCode() == KeyEvent.VK_F2;
+               else
+                   return false;
+            }
+        };
+        cellEditor.setClickCountToStart(2);
+        table.getColumnModel().getColumn(0).setCellEditor(cellEditor);
+
+        return table;
     }
 
 	private void configureDialog(JDialog dialog) {
@@ -278,7 +442,7 @@ class TagEditor {
 
     private void confirmedSubmit() {
         if (dialog.isVisible()) {
-            if (!originalTags.equals(textEditorPane.getText())) {
+            if (!originalTags.equals(getCurrentTags())) {
                 final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
                     JOptionPane.YES_NO_CANCEL_OPTION);
 
@@ -292,7 +456,25 @@ class TagEditor {
             dialog.setVisible(false);
         }
     }
-
-
-
+    private TagsWrapper getTableModel() {
+        return (TagsWrapper)tagTable.getModel();
+    }
+    private void updateColorButton(ListSelectionEvent e) {
+        if(!e.getValueIsAdjusting())
+            updateColorButton();
+    }
+    private void updateColorButton() {
+        int firstIndex = tagTable.getSelectedRow();
+        if(firstIndex == -1) {
+            return;
+        }
+        Tag tag = (Tag) tagTable.getValueAt(firstIndex, 0);
+        if(tag.isEmpty()) {
+            colorButton.setEnabled(false);
+            colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
+            return;
+        }
+        colorButton.setEnabled(true);
+        colorButton.setColor(tag.getIconColor());
+    }
 }

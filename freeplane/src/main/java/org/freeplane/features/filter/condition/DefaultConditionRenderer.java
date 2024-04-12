@@ -89,7 +89,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
         else if (value instanceof Tag) {
             JLabel label = new JLabel();
             Tag tag = (Tag) value;
-            Icon icon = new TagIcon(tag.getContent(), UITools.getUIFont());
+            Icon icon = new TagIcon(tag, UITools.getUIFont());
             label.setIcon(icon);
             label.setHorizontalAlignment(SwingConstants.CENTER);
             label.setOpaque(false);
