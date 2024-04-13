@@ -1424,9 +1424,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			updateAllNodeViews();
 			return;
 		}
-        if(event.getSource().getClass().equals(MapStyle.class)
-                && event.getProperty() instanceof String
-                && ((String)property).startsWith(IconRegistry.TAG_COLOR_PROPERTY_PREFIX)) {
+        if(event.getSource() == viewedMap.getIconRegistry()) {
             repaint();
             return;
         }

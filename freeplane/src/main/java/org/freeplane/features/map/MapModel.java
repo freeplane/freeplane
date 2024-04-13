@@ -59,8 +59,6 @@ public class MapModel {
         extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<>();
-		if(iconRegistry != null)
-		    addMapChangeListener(iconRegistry);
 		nodes = createNodeByIdMap();
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
@@ -75,7 +73,6 @@ public class MapModel {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		iconRegistry = new IconRegistry();
-		addMapChangeListener(iconRegistry);
 		this.nodeChangeAnnouncer = mapController;
 	}
 
@@ -153,7 +150,12 @@ public class MapModel {
 		return iconRegistry;
 	}
 
-	/**
+
+	public void setIconRegistry(IconRegistry iconRegistry) {
+        this.iconRegistry = iconRegistry;
+    }
+
+    /**
 	 * @param nodeID
 	 * @return
 	 */

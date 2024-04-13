@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -102,6 +104,10 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
 		return model.get(index);
 	}
 
+    public Optional<T> getElement(final T comparedElement) {
+        int index = getIndexOf(comparedElement);
+        return index >= 0 ? Optional.of(model.get(index)) : Optional.empty();
+    }
 	/**
 	*/
 	@Override
@@ -171,4 +177,8 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
 		selectedItem = o;
 		fireContentsChanged(this, -1, -1);
 	}
+
+    public Stream<T> stream() {
+       return model.stream();
+    }
 }

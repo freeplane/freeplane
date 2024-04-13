@@ -19,16 +19,13 @@
  */
 package org.freeplane.features.icon;
 
-import java.util.Map;
+import java.awt.Color;
 import java.util.Optional;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
-import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.styles.MapStyle;
 
 /**
  * @author Dimitry Polivaev
@@ -41,10 +38,9 @@ import org.freeplane.features.styles.MapStyle;
  *
  * 03.01.2009
  */
-public class IconRegistry implements IExtension, IMapChangeListener{
+public class IconRegistry implements IExtension {
     final private SortedComboBoxModel<NamedIcon> mapIcons;
     final private SortedComboBoxModel<Tag> mapTags;
-    public static final String TAG_COLOR_PROPERTY_PREFIX = "tag.color.";
 
 	public IconRegistry() {
 		super();
@@ -89,21 +85,21 @@ public class IconRegistry implements IExtension, IMapChangeListener{
 		}
 	}
 
-    @Override
-    public void mapChanged(MapChangeEvent event) {
-        String property = (String)event.getProperty();
-        if(event.getSource().getClass().equals(MapStyle.class)
-                && event.getProperty() instanceof String
-                && property.startsWith(TAG_COLOR_PROPERTY_PREFIX)) {
-            String tagContent = property.substring(TAG_COLOR_PROPERTY_PREFIX.length());
-            String value = (String)event.getNewValue();
-            setTagColorByProperty(tagContent, value);
-        }
+    public void setTagColor(String tagContent, String value) {
+        setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor));
     }
 
-    public void setTagColorByProperty(String tagContent, String value) {
-        createTag(tagContent).setColor(Optional.ofNullable(value).map(ColorUtils::stringToColor));
+    public void setTagColor(String tagContent, Optional<Color> value) {
+        createTag(tagContent).setColor(value);
     }
 
+
+    public Optional<Tag>getTag(Tag required) {
+        return mapTags.getElement(required);
+    }
+
+    public Optional<Color>getTagColor(Tag required) {
+        return getTag(required).flatMap(Tag::getColor);
+    }
 
 }

@@ -27,14 +27,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -70,7 +67,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
@@ -88,6 +84,7 @@ import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
 import org.freeplane.features.icon.mindmapmode.TagEditor.TagEditorHolder;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
@@ -97,8 +94,6 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
-import org.freeplane.features.styles.MapStyle;
-import org.freeplane.features.text.DetailModel;
 
 /**
  * @author Dimitry Polivaev
@@ -647,10 +642,35 @@ public class MIconController extends IconController {
         }
     }
 
-    private void setTagColor(MapModel map, Tag newTag, Optional<Color> newColor) {
-        MapStyle mapStyle = modeController.getExtension(MapStyle.class);
-        mapStyle.setProperty(map, IconRegistry.TAG_COLOR_PROPERTY_PREFIX + newTag.getContent(),
-                newTag.getColor().map(ColorUtils::colorToRGBAString).orElse(null));
+    private void setTagColor(MapModel map, Tag tag, Optional<Color> newColor) {
+        IconRegistry iconRegistry = map.getIconRegistry();
+        Optional<Color> oldColor = iconRegistry.getTagColor(tag);
+        if(oldColor.equals(newColor)) {
+            return;
+        }
+        IActor actor = new  IActor() {
+            @Override
+            public void undo() {
+                setTagColorWithoutUndo(map, tag, newColor, oldColor);
+            }
+
+            @Override
+            public String getDescription() {
+                return "set tag color";
+            }
+
+            @Override
+            public void act() {
+                setTagColorWithoutUndo(map, tag, oldColor, newColor);
+            }
+
+            private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Optional<Color> oldColor, Optional<Color> newColor) {
+                iconRegistry.setTagColor(tag.getContent(), newColor);
+                Controller.getCurrentModeController().getMapController().fireMapChanged(
+                    new MapChangeEvent(iconRegistry, map, tag, oldColor, newColor));
+            }
+        };
+        Controller.getCurrentModeController().execute(actor, map);
     }
 
     public void editTags(NodeModel node) {

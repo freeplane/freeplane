@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -35,7 +36,9 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -52,6 +55,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -97,7 +101,7 @@ class TagEditor {
 
         public void insertEmptyTags(int first, int last) {
             for(int index = last; index >= first; index--)
-                tags.add(index, Tag.EMPTY_TAG);
+                tags.add(first, Tag.EMPTY_TAG);
             fireTableRowsInserted(first, last);
          }
 
@@ -124,9 +128,17 @@ class TagEditor {
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            if(rowIndex == 0) {
-                tags.set(rowIndex, (Tag)aValue);
-                fireTableCellUpdated(0, columnIndex);
+            if(columnIndex == 0) {
+                Tag tag = (Tag)aValue;
+                int tagCount = tags.size();
+                if(rowIndex < tagCount) {
+                    tags.set(rowIndex, tag);
+                    fireTableCellUpdated(0, columnIndex);
+                }
+                else {
+                    tags.add(tag);
+                    fireTableRowsInserted(tagCount, tagCount);
+                }
             }
         }
 
@@ -158,6 +170,7 @@ class TagEditor {
     private JTable tagTable;
     private JDialog dialog;
     private List<Tag> originalTags;
+    private final Map<String, Tag> newTags;
     private JColorButton colorButton;
     private boolean areColorsModified;
 
@@ -196,7 +209,10 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        originalTags = iconController.getTags(node).stream().map(Tag::copy).collect(Collectors.toList());
+        newTags = new HashMap<>();
+        originalTags = iconController.getTags(node).stream()
+                .map(tag -> newTags.computeIfAbsent(tag.getContent(), x -> tag.copy()))
+                .collect(Collectors.toList());
         tagTable = createTagTable(originalTags);
         editorScrollPane.setViewportView(tagTable);
         editorScrollPane.addComponentListener(new ComponentAdapter() {
@@ -268,6 +284,7 @@ class TagEditor {
         });
 
         tagTable.getSelectionModel().addListSelectionListener(this::updateColorButton);
+        tagTable.getModel().addTableModelListener(this::selectInsertedRows);
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
@@ -325,8 +342,8 @@ class TagEditor {
             Optional<Color> newColor = result == defaultColor ? Optional.empty() : Optional.of(result);
             tag.setColor(newColor);
             TagsWrapper tableModel = getTableModel();
-            IntStream.of(0, tagTable.getRowCount() - 1)
-            .filter(i -> tagTable.getValueAt(i, 0) == tag)
+            IntStream.range(0, tagTable.getRowCount() - 1)
+            .filter(i -> tagTable.getValueAt(i, 0) ==tag)
             .forEach(i -> tableModel.fireTableCellUpdated(i, 0));
             updateColorButton();
             areColorsModified = true;
@@ -397,7 +414,12 @@ class TagEditor {
 
             @Override
             public Object getCellEditorValue() {
-                return super.getCellEditorValue();
+                Object value = super.getCellEditorValue();
+                if(value instanceof Tag)
+                    return value;
+                else
+                    return newTags.computeIfAbsent(value.toString(),
+                            content -> node.getMap().getIconRegistry().createTag(content).copy());
             }
 
             @Override
@@ -456,13 +478,22 @@ class TagEditor {
             dialog.setVisible(false);
         }
     }
+
     private TagsWrapper getTableModel() {
         return (TagsWrapper)tagTable.getModel();
     }
+
     private void updateColorButton(ListSelectionEvent e) {
         if(!e.getValueIsAdjusting())
             updateColorButton();
     }
+
+    private void selectInsertedRows(TableModelEvent e) {
+        if(e.getType() == TableModelEvent.INSERT)
+            EventQueue.invokeLater(() ->
+                tagTable.getSelectionModel().setSelectionInterval(e.getFirstRow(), e.getLastRow()));
+    }
+
     private void updateColorButton() {
         int firstIndex = tagTable.getSelectedRow();
         if(firstIndex == -1) {
