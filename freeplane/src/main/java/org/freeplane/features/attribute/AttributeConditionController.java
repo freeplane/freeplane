@@ -135,19 +135,19 @@ static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new Translate
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
-	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+	    if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return new FixedBasicComboBoxEditor();
 	    return FrameController.getTextDateTimeEditor();
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
+	public ComboBoxModel<Object> getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		try {
             final AttributeRegistryElement element = registry.getElement(selectedItem.toString());
-            final SortedComboBoxModel list = element.getValues();
-            SortedComboBoxModel linkedList = new SortedComboBoxModel();
+            final SortedComboBoxModel<Object> list = element.getValues();
+            SortedComboBoxModel<Object> linkedList = new SortedComboBoxModel<>();
             for(int i = 0; i < list.getSize();i++){
             	final Object value = list.getElementAt(i);
             	final TextController textController = TextController.getController();
@@ -171,7 +171,7 @@ static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new Translate
 	public boolean isCaseDependent(final Object selectedItem, final TranslatedObject simpleCond) {
 		return true;
 	}
-	
+
 	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
@@ -196,7 +196,7 @@ static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new Translate
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
-        if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS) 
+        if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return null;
 	    return new TypedListCellRenderer();

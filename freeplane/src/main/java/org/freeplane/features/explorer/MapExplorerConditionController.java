@@ -129,16 +129,16 @@ public class MapExplorerConditionController implements IElementaryConditionContr
 	private SortedComboBoxModel aliases() {
 		final MapModel map = Controller.getCurrentController().getMap();
 		Collection<NodeAlias> aliases = NodeAliases.of(map).aliases();
-		SortedComboBoxModel box = new SortedComboBoxModel();
+		SortedComboBoxModel<String> box = new SortedComboBoxModel<>(String.class);
 		for(NodeAlias a : aliases)
 			box.add(a.value);
 		return box;
 	}
-	
+
 	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}
-	
+
 	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return true;
 	}

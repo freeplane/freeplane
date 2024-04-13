@@ -39,11 +39,21 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
 	private Object selectedItem;
 	private final List<T> model;
 
-	public SortedComboBoxModel() {
-		model = new ArrayList<T>();
+    private final boolean areElementsCompable;
+    public SortedComboBoxModel() {
+        this(false);
+    }
+
+    public SortedComboBoxModel(Class<T> objectClass) {
+		this(Comparable.class.isInstance(objectClass));
 	}
 
-	@Override
+	private SortedComboBoxModel(boolean areElementsCompable) {
+	    this.areElementsCompable = areElementsCompable;
+	    model = new ArrayList<T>();
+    }
+
+    @Override
     public void add(final T element) {
 		addIfNotExists(element);
 	}
@@ -65,7 +75,7 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
     }
 
     private int binarySearch(final T element) {
-        if (element instanceof Comparable)
+        if (areElementsCompable)
             return Collections.binarySearch((List)model, (Comparable)element);
         return Collections.binarySearch(model, element, COMPARATOR);
     }

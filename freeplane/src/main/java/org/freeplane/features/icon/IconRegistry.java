@@ -49,7 +49,7 @@ public class IconRegistry implements IExtension, IMapChangeListener{
 	public IconRegistry() {
 		super();
 		mapIcons = new SortedComboBoxModel<>();
-		mapTags = new SortedComboBoxModel<>();
+		mapTags = new SortedComboBoxModel<>(Tag.class);
 	}
 
     public void addIcon(final NamedIcon icon) {
