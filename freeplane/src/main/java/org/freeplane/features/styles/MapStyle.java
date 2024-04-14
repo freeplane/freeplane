@@ -224,8 +224,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return null;
 	}
 
-	private static final String TAG_COLOR_ATTRIBUTE_PREFIX = "_tag_color_";
 	private static final String TAG_COLOR_START = "#";
+    private static final String TAG_COLOR_ATTRIBUTE_PREFIX = "tagcolor";
 	protected class MyXmlReader extends XmlReader{
 
         @Override
@@ -247,35 +247,44 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			NodeModel node = (NodeModel) userObject;
 			MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 			Objects.requireNonNull(mapStyleModel);
-			loadMapStyleProperties(mapStyleModel, xml, node.getMap().getIconRegistry());
-       }
+            loadMapStyleProperties(mapStyleModel.getProperties(), xml);
+            loadTagProperties(node.getMap().getIconRegistry(), xml);
+		}
 
-		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml, IconRegistry iconRegistry) {
-			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
-			if(propertyXml != null && propertyXml.size() >= 1){
-				final Map<String, String> properties = model.getProperties();
-				final Properties attributes = propertyXml.get(0).getAttributes();
-				for(Entry<Object, Object> attribute:attributes.entrySet()){
-					final String key = attribute.getKey().toString();
-					// fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
-					if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
-						continue;
-					String valueAsString = attribute.getValue().toString();
-					if(key.startsWith(TAG_COLOR_ATTRIBUTE_PREFIX)){
-					    int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
-					    if(separatorIndex > 0) {
-                            String name = valueAsString.substring(0, separatorIndex);
-                            String color = valueAsString.substring(separatorIndex);
-                            properties.put(IconRegistry.TAG_COLOR_PROPERTY_PREFIX + name, color);
-                            iconRegistry.setTagColorByProperty(name, color);
-                        }
-					} else {
-                        properties.put(key, valueAsString);
-                    }
-				}
-			}
+		private void loadMapStyleProperties(Map<String, String> properties, XMLElement xml) {
+		    final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
+		    if(propertyXml != null && propertyXml.size() >= 1){
+		        final Properties attributes = propertyXml.get(0).getAttributes();
+		        for(Entry<Object, Object> attribute:attributes.entrySet()){
+		            final String key = attribute.getKey().toString();
+		            // fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
+		            if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
+		                continue;
+		            String valueAsString = attribute.getValue().toString();
+		            properties.put(key, valueAsString);
+		        }
+		    }
+		}
+
+		private void loadTagProperties(IconRegistry iconRegistry, XMLElement xml) {
+		    final Vector<XMLElement> propertyXml = xml.getChildrenNamed("tags");
+		    if(propertyXml != null && propertyXml.size() >= 1){
+		        final Properties attributes = propertyXml.get(0).getAttributes();
+		        for(Entry<Object, Object> attribute:attributes.entrySet()){
+		            final String key = attribute.getKey().toString();
+		            // fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
+		            if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
+		                continue;
+		            String valueAsString = attribute.getValue().toString();
+		            int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
+		            if(separatorIndex > 0) {
+		                String name = valueAsString.substring(0, separatorIndex);
+		                String color = valueAsString.substring(separatorIndex);
+		                iconRegistry.setTagColor(name, color);
+		            }
+		        }
+		    }
         }
-
 	}
 
 	@Override
@@ -760,6 +769,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element, true);
 		saveProperties(mapStyleModel.getProperties(), element);
+		saveTagProperties(mapStyleModel.getStyleMap().getIconRegistry(), element);
 	}
 
 	private void saveProperties(Map<String, String> properties, XMLElement element) {
@@ -767,16 +777,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 	    final XMLElement xmlElement = new XMLElement("properties");
-	    int tagColorCounter = 0;
 	    for (Entry<String, String>  entry: properties.entrySet()){
 	    	String key = entry.getKey();
-	    	if(key.startsWith(IconRegistry.TAG_COLOR_PROPERTY_PREFIX))
-	    	    xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter,
-	    	            key.substring(IconRegistry.TAG_COLOR_PROPERTY_PREFIX.length()) + entry.getValue());
-	    	else
-	    	    xmlElement.setAttribute(key, entry.getValue());
+	    	xmlElement.setAttribute(key, entry.getValue());
 	    }
 	    element.addChild(xmlElement);
+    }
+
+    private void saveTagProperties(IconRegistry iconRegistry, XMLElement element) {
+        final XMLElement xmlElement = new XMLElement("tags");
+        int[] tagColorCounter = {0};
+        iconRegistry.getTagsAsListModel().stream()
+        .filter(tag -> tag.getColor().isPresent())
+        .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],
+                tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor().get())));
+        if(tagColorCounter[0] > 0)
+            element.addChild(xmlElement);
     }
 
 	public void setZoom(final MapModel map, final float zoom) {
@@ -851,7 +867,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		IActor actor = new  IActor() {
 			@Override
 			public void undo() {
-				setPropertyWithoutUndo(model, key, oldValue);
+				setPropertyWithoutUndo(model, key, newValue, oldValue);
 			}
 
 			@Override
@@ -861,10 +877,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 			@Override
 			public void act() {
-				setPropertyWithoutUndo(model, key, newValue);
+				setPropertyWithoutUndo(model, key, oldValue, newValue);
 			}
 
-			private void setPropertyWithoutUndo(final MapModel model, final String key, final String newValue) {
+			private void setPropertyWithoutUndo(final MapModel model, final String key, final String oldValue, final String newValue) {
 				styleModel.setProperty(key, newValue);
 	    		Controller.getCurrentModeController().getMapController().fireMapChanged(
 	    		    new MapChangeEvent(MapStyle.this, model, key, oldValue, newValue));
