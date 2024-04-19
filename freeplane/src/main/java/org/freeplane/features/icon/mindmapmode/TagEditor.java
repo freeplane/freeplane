@@ -22,6 +22,9 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -45,9 +48,11 @@ import java.util.stream.IntStream;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -55,12 +60,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
+import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.JColorButton;
@@ -162,6 +169,89 @@ class TagEditor {
                 Collections.sort(tags.subList(first, last + 1));
             fireTableRowsUpdated(first, last);
         }
+
+        public void insertRow(int index, Tag tag) {
+            tags.add(index, tag);
+            fireTableRowsInserted(index, index);
+        }
+    }
+
+    @SuppressWarnings("serial")
+    class TableCellTransferHandler extends TransferHandler {
+        @Override
+        public int getSourceActions(JComponent c) {
+            return COPY_OR_MOVE;
+        }
+
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            JTable table = (JTable) c;
+            List<String> values = new ArrayList<>();
+            int[] rows = table.getSelectedRows();
+            int col = table.getSelectedColumn();
+
+            for (int row : rows) {
+                Object cellValue = table.getValueAt(row, col);
+                if (cellValue instanceof Tag) {
+                    values.add(((Tag) cellValue).getContent());
+                } else if (cellValue != null) {
+                    values.add(cellValue.toString());
+                } else {
+                    values.add("");
+                }
+            }
+            return new StringSelection(String.join("\n", values));
+        }
+
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport info) {
+            return info.isDataFlavorSupported(DataFlavor.stringFlavor);
+        }
+
+        @Override
+        public boolean importData(TransferHandler.TransferSupport info) {
+            if (!canImport(info)) {
+                return false;
+            }
+
+            String data;
+            try {
+                data = (String) info.getTransferable().getTransferData(DataFlavor.stringFlavor);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            JTable target = (JTable) info.getComponent();
+            if (info.isDrop()) {
+                JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
+                int index = dl.getRow();
+                insertData(target, data, index);
+            } else {
+                int index = target.getSelectedRow();
+                if (index >= 0) {
+                    insertData(target, data, index);
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void insertData(JTable target, String data, int index) {
+            TableModel model = target.getModel();
+            String[] rows = data.split("\n");
+            for (String row : rows)
+                ((TagsWrapper) model).insertRow(index++, createTag(row));
+        }
+
+        @Override
+        protected void exportDone(JComponent source, Transferable data, int action) {
+            super.exportDone(source, data, action);
+            if (action == MOVE) {
+                deleteTags();
+            }
+        }
     }
 
     private static final String WIDTH_PROPERTY = "tagDialog.width";
@@ -175,7 +265,6 @@ class TagEditor {
     private List<Tag> originalTags;
     private final Map<String, Tag> newTags;
     private JColorButton colorButton;
-    private boolean areColorsModified;
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -269,14 +358,6 @@ class TagEditor {
                 }
             }
 
-            private void deleteTags() {
-                ListSelectionModel selectionModel = tagTable.getSelectionModel();
-                int minSelectedRow = selectionModel.getMinSelectionIndex();
-                if(minSelectedRow >= 0) {
-                    getTableModel().deleteTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
-                }
-            }
-
             @Override
             public void keyReleased(final KeyEvent e) {
             }
@@ -349,7 +430,6 @@ class TagEditor {
             .filter(i -> tagTable.getValueAt(i, 0) ==tag)
             .forEach(i -> tableModel.fireTableCellUpdated(i, 0));
             updateColorButton();
-            areColorsModified = true;
         }
 
     }
@@ -424,6 +504,9 @@ class TagEditor {
 
 
         };
+        table.setTransferHandler(new TableCellTransferHandler());
+        table.setDragEnabled(true);
+        table.setDropMode(DropMode.ON);
         table.setFont(iconController.getTagFont(node));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
@@ -528,6 +611,14 @@ class TagEditor {
         if(e.getType() == TableModelEvent.INSERT)
             EventQueue.invokeLater(() ->
                 tagTable.getSelectionModel().setSelectionInterval(e.getFirstRow(), e.getLastRow()));
+    }
+
+    private void deleteTags() {
+        ListSelectionModel selectionModel = tagTable.getSelectionModel();
+        int minSelectedRow = selectionModel.getMinSelectionIndex();
+        if(minSelectedRow >= 0) {
+            getTableModel().deleteTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
+        }
     }
 
     private void updateColorButton() {
