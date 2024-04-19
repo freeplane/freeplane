@@ -43,6 +43,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -51,9 +52,11 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
@@ -389,7 +392,38 @@ class TagEditor {
     }
 
     private JTable createTagTable(List<Tag> tags) {
-        JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags)));
+        JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags))) {
+
+            @Override
+            public boolean editCellAt(int row, int column, EventObject e) {
+                if(super.editCellAt(row, column, e)){
+                    final Component editorComponent = getEditorComponent();
+                    if (editorComponent instanceof JComboBox) {
+                        final ComboBoxEditor editor = ((JComboBox)editorComponent).getEditor();
+                        Component textField = editor.getEditorComponent();
+                        if(textField instanceof JTextField)
+                            ((JTextField)textField).selectAll();
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void editingStopped(ChangeEvent e) {
+                 super.editingStopped(e);
+
+            }
+
+            @Override
+            public void editingCanceled(ChangeEvent e) {
+                 super.editingCanceled(e);
+
+            }
+
+
+
+        };
         table.setFont(iconController.getTagFont(node));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
@@ -432,9 +466,11 @@ class TagEditor {
             public boolean isCellEditable(EventObject anEvent) {
                if(anEvent instanceof MouseEvent)
                    return super.isCellEditable(anEvent);
-               else if(anEvent instanceof KeyEvent)
-                   return ((KeyEvent)anEvent).getKeyCode() == KeyEvent.VK_F2;
-               else
+               else if(anEvent instanceof KeyEvent) {
+                KeyEvent keyEvent = (KeyEvent)anEvent;
+                return ! keyEvent.isControlDown() && ! keyEvent.isMetaDown()
+                        && (keyEvent.getKeyChar() != KeyEvent.CHAR_UNDEFINED || keyEvent.getKeyCode() == KeyEvent.VK_F2);
+            } else
                    return false;
             }
         };
