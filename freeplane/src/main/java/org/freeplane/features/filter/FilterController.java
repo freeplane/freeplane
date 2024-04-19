@@ -532,11 +532,11 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		Controller controller = Controller.getCurrentController();
 		final AbstractButton undoBtn = FreeplaneToolBar.createButton(controller.getAction("UndoFilterAction"));
 		final AbstractButton redoBtn = FreeplaneToolBar.createButton(controller.getAction("RedoFilterAction"));
-        final AbstractButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"), hideMatchingNodes);
-        hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
         final AbstractButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"), showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
 		final AbstractButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"), showDescendants);
+        final AbstractButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"), hideMatchingNodes);
+        hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
 		final AbstractButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"), applyToVisibleNodeOnly);
 		final AbstractButton btnEdit = FreeplaneToolBar.createButton(controller.getAction("EditFilterAction"));
         getFilterConditions();
@@ -595,15 +595,15 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		constraints.gridy =1;
 		constraints.gridwidth =1;
 
-		filterOptionPanel.add(hideMatchingNodesBox, constraints);
 		filterOptionPanel.add(showAncestorsBox, constraints);
 		filterOptionPanel.add(showDescendantsBox, constraints);
-		filterOptionPanel.add(applyToVisibleBox, constraints);
+		filterOptionPanel.add(hideMatchingNodesBox, constraints);
 
 		constraints.weightx = 1;
 		filterOptionPanel.add(new JUnitPanel(), constraints);
 
 		constraints.weightx = 0;
+		filterOptionPanel.add(applyToVisibleBox, constraints);
 		filterOptionPanel.add(reapplyFilterBtn, constraints);
 		filterOptionPanel.add(selectFilteredNodesBtn, constraints);
 		filterOptionPanel.add(filterSelectedBtn, constraints);
