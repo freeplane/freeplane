@@ -74,20 +74,36 @@ public class Filter implements IExtension {
         this.appliesToVisibleNodesOnly = appliesToVisibleNodesOnly;
 		this.accessor = new FilterInfoAccessor();
 
-		int options = FilterInfo.FILTER_SHOW_AS_MATCHED;
-		if (areAncestorsShown) {
-			options += FilterInfo.FILTER_SHOW_AS_ANCESTOR;
+		int options;
+		if(hidesMatchingNodes) {
+            options = FilterInfo.SHOW_AS_HIDDEN;
+            if (areAncestorsShown) {
+                options += FilterInfo.SHOW_AS_HIDDEN_ANCESTOR;
+            }
+            if (areDescendantsShown) {
+                options += FilterInfo.SHOW_AS_HIDDEN_DESCENDANT;
+            }
 		}
-		if (areDescendantsShown) {
-			options += FilterInfo.FILTER_SHOW_AS_DESCENDANT;
+		else {
+		    options = FilterInfo.SHOW_AS_MATCHED;
+		    if (areAncestorsShown) {
+		        options += FilterInfo.SHOW_AS_MATCHED_ANCESTOR;
+		    }
+		    if (areDescendantsShown) {
+		        options += FilterInfo.SHOW_AS_MATCHED_DESCENDANT;
+		    }
 		}
 		this.options = options;
 		this.baseFilter = baseFilter;
 	}
 
-	void addFilterResult(final NodeModel node, final int flag) {
-		getFilterInfo(node).add(flag);
-	}
+    void addFilterResult(final NodeModel node, final int flags) {
+        getFilterInfo(node).add(flags);
+    }
+
+    void setFilterResult(final NodeModel node, final int flags) {
+        getFilterInfo(node).set(flags);
+    }
 
 	protected boolean appliesToVisibleNodesOnly() {
 		return appliesToVisibleNodesOnly;
@@ -111,21 +127,24 @@ public class Filter implements IExtension {
 	    this.accessor = new FilterInfoAccessor();
 		final NodeModel root = map.getRootNode();
 		resetFilter(root);
-		boolean rootSatisfiesFilter = checkNode(root);
-		if (filterChildren(root, rootSatisfiesFilter, false)) {
-			addFilterResult(root, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
-		}
+		int ownStateAsAncestor = checkNode(root) ? FilterInfo.HAS_MATCHED_ANCESTOR : FilterInfo.HAS_HIDDEN_ANCESTOR;
+        addFilterResult(root, filterChildrenGetDescendantState(root, ownStateAsAncestor));
 	}
 
-	public void calculateFilterResults(final NodeModel root) {
-	    this.accessor = new FilterInfoAccessor();
-	    if(applyFilter(root, false, false, false))
-	    	addFilterResult(root, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
-	}
+    public void calculateFilterResults(final NodeModel root) {
+        this.accessor = new FilterInfoAccessor();
+        applyFilterGetDescendantState(root, 0);
+    }
 
-	private boolean applyFilter(final NodeModel node,
-	                            final boolean hasMatchingAncestor, final boolean hasHiddenAncestor,
-	                            boolean hasMatchingDescendant) {
+    private int filterChildrenGetDescendantState(final NodeModel node, int state) {
+        int descendantState = 0;
+        for (final NodeModel child : children(node)) {
+            descendantState = applyFilterGetDescendantState(child, state) | descendantState;
+        }
+        return descendantState;
+    }
+
+	private int applyFilterGetDescendantState(final NodeModel node, int ancestorState) {
 		final boolean conditionSatisfied =  (condition == null || condition.checkNode(node));
 		final boolean matchesCombinedFilter;
 		if(appliesToVisibleNodesOnly()) {
@@ -134,25 +153,16 @@ public class Filter implements IExtension {
 		else {
 		    matchesCombinedFilter = conditionSatisfied;
 		}
-		resetFilter(node);
-		if (hasMatchingAncestor) {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_DESCENDANT);
-		}
-		if (matchesCombinedFilter) {
-			hasMatchingDescendant = true;
-			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_MATCHED);
-		}
-		else {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_HIDDEN);
-		}
-		boolean childrenHaveMatchingAncestor = hasMatchingAncestor || matchesCombinedFilter && ! node.isRoot();
-        if (filterChildren(node, childrenHaveMatchingAncestor,
-		        !matchesCombinedFilter
-		        || hasHiddenAncestor)) {
-		    addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
-			hasMatchingDescendant = true;
-		}
-		return hasMatchingDescendant;
+		int ownStateAsAncestor;
+		if(ancestorState != 0 || ! node.isRoot())
+		    ownStateAsAncestor = matchesCombinedFilter ?  FilterInfo.HAS_MATCHED_ANCESTOR : FilterInfo.HAS_HIDDEN_ANCESTOR;
+		else
+		    ownStateAsAncestor = 0;
+        int childrenAncestorState = ancestorState | ownStateAsAncestor;
+		int descendantState = filterChildrenGetDescendantState(node, childrenAncestorState);
+        setFilterResult(node, ancestorState | descendantState | (matchesCombinedFilter ? FilterInfo.MATCHES : FilterInfo.NO_MATCH));
+		int ownStateAsDescendant = matchesCombinedFilter ? FilterInfo.HAS_MATCHED_DESCENDANT : FilterInfo.HAS_HIDDEN_DESCENDANT;
+        return descendantState | ownStateAsDescendant;
 	}
 
 	/*
@@ -160,7 +170,7 @@ public class Filter implements IExtension {
 	 * @see freeplane.controller.filter.Filter#areAncestorsShown()
 	 */
 	public boolean areAncestorsShown() {
-		return 0 != (options & FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+		return 0 != (options & (FilterInfo.SHOW_AS_MATCHED_ANCESTOR|FilterInfo.SHOW_AS_HIDDEN_ANCESTOR));
 	}
 
 	boolean areMatchingNodesHidden() {
@@ -173,7 +183,7 @@ public class Filter implements IExtension {
 	 * @see freeplane.controller.filter.Filter#areDescendantsShown()
 	 */
 	public boolean areDescendantsShown() {
-		return 0 != (options & FilterInfo.FILTER_SHOW_AS_DESCENDANT);
+		return 0 != (options & (FilterInfo.SHOW_AS_MATCHED_DESCENDANT | FilterInfo.SHOW_AS_HIDDEN_DESCENDANT));
 	}
 
 	private boolean checkNode(final NodeModel node) {
@@ -182,16 +192,6 @@ public class Filter implements IExtension {
 
 	private boolean shouldRemainInvisible(final NodeModel node) {
 		return condition != null && appliesToVisibleNodesOnly() && !node.hasVisibleContent(baseFilter);
-	}
-
-	private boolean filterChildren(final NodeModel node,
-	                               final boolean hasMatchingAncestor, final boolean hasHiddenAncestor) {
-		boolean hasMatchingDescendant = false;
-		for (final NodeModel child : children(node)) {
-			hasMatchingDescendant = applyFilter(child, hasMatchingAncestor, hasHiddenAncestor,
-			    hasMatchingDescendant);
-		}
-		return hasMatchingDescendant;
 	}
 
     protected List<NodeModel> children(final NodeModel node) {
@@ -222,8 +222,9 @@ public class Filter implements IExtension {
 	}
 
     public boolean isFoldable(final NodeModel node) {
-        return  hidesMatchingNodes
-                || isVisible(node, options | FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+        return  hidesMatchingNodes ?
+                isVisible(node, options | FilterInfo.SHOW_AS_HIDDEN_ANCESTOR)
+                : isVisible(node, options | FilterInfo.SHOW_AS_MATCHED_ANCESTOR);
     }
 
     private boolean isVisible(final NodeModel node, int options) {
@@ -234,7 +235,7 @@ public class Filter implements IExtension {
 			return true;
 		}
 		FilterInfo filterInfo = getFilterInfo(node);
-        return filterInfo.isNotChecked() || filterInfo.matches(options) != hidesMatchingNodes;
+        return filterInfo.isNotChecked() || filterInfo.matches(options);
     }
 
 
@@ -248,11 +249,11 @@ public class Filter implements IExtension {
 
     public void showAsMatched(NodeModel node) {
         FilterInfo filterInfo = getFilterInfo(node);
-        if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_MATCHED)) {
-            filterInfo.add(FilterInfo.FILTER_SHOW_AS_MATCHED);
-            if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_ANCESTOR))
+        if(! filterInfo.matches(FilterInfo.SHOW_AS_MATCHED)) {
+            filterInfo.add(FilterInfo.SHOW_AS_MATCHED);
+            if(! filterInfo.matches(FilterInfo.SHOW_AS_MATCHED_ANCESTOR))
                 showAncestors(node);
-            if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_DESCENDANT))
+            if(! filterInfo.matches(FilterInfo.SHOW_AS_MATCHED_DESCENDANT))
                 showDescendants(node);
         }
     }
@@ -262,8 +263,8 @@ public class Filter implements IExtension {
         if(parent == null)
             return;
         FilterInfo filterInfo = getFilterInfo(parent);
-        if(! filterInfo.matches(FilterInfo.FILTER_SHOW_AS_ANCESTOR)) {
-            filterInfo.add(FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+        if(! filterInfo.matches(FilterInfo.SHOW_AS_MATCHED_ANCESTOR)) {
+            filterInfo.add(FilterInfo.SHOW_AS_MATCHED_ANCESTOR);
             showAncestors(parent);
         }
     }
@@ -271,7 +272,7 @@ public class Filter implements IExtension {
     private void showDescendants(NodeModel node) {
         for (NodeModel child : children(node)) {
             FilterInfo filterInfo = getFilterInfo(child);
-            filterInfo.add(FilterInfo.FILTER_SHOW_AS_DESCENDANT);
+            filterInfo.add(FilterInfo.SHOW_AS_MATCHED_DESCENDANT);
             showDescendants(child);
         }
     }
