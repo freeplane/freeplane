@@ -46,9 +46,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DropMode;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -60,6 +63,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
@@ -71,6 +75,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.JColorButton;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.AutoResizedTable;
@@ -116,9 +121,15 @@ class TagEditor {
          }
 
         public void deleteTags(int first, int last) {
-            for(int index = last; index >= first; index--)
+            int lastRemoved = last < tags.size() ? last : tags.size() - 1;
+            int firstRemoved;
+            if(last == tags.size() && first > 0 && getTag(first).isEmpty() && tags.get(first - 1).isEmpty())
+                firstRemoved = first - 1;
+            else
+                firstRemoved = first;
+            for(int index = lastRemoved; index >= firstRemoved; index--)
                 tags.remove(index);
-            fireTableRowsDeleted(first, last);
+            fireTableRowsDeleted(firstRemoved, last);
          }
 
         @Override
@@ -133,22 +144,30 @@ class TagEditor {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            return rowIndex < tags.size() ? tags.get(rowIndex) : Tag.EMPTY_TAG;
+            return getTag(rowIndex);
+        }
+
+        Tag getTag(int index) {
+            return index < tags.size() ? tags.get(index) : Tag.EMPTY_TAG;
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if(columnIndex == 0) {
                 Tag tag = (Tag)aValue;
-                int tagCount = tags.size();
-                if(rowIndex < tagCount) {
-                    tags.set(rowIndex, tag);
-                    fireTableCellUpdated(0, columnIndex);
-                }
-                else {
-                    tags.add(tag);
-                    fireTableRowsInserted(tagCount, tagCount);
-                }
+                setTag(rowIndex, tag);
+            }
+        }
+
+        void setTag(int index, Tag tag) {
+            int tagCount = tags.size();
+            if(index < tagCount) {
+                tags.set(index, tag);
+                fireTableCellUpdated(index, 0);
+            }
+            else {
+                tags.add(tag);
+                fireTableRowsInserted(tagCount, tagCount);
             }
         }
 
@@ -170,9 +189,30 @@ class TagEditor {
             fireTableRowsUpdated(first, last);
         }
 
-        public void insertRow(int index, Tag tag) {
+        public void insertTag(int index, Tag tag) {
             tags.add(index, tag);
             fireTableRowsInserted(index, index);
+        }
+
+        public void moveTag(int oldIndex, int newIndex) {
+            if(oldIndex != newIndex) {
+                if(newIndex >= tags.size())
+                    insertTag(tags.size(), Tag.EMPTY_TAG);
+                Tag tag;
+                if(oldIndex < tags.size())
+                    tag = removeTag(oldIndex);
+                else {
+                    tag = Tag.EMPTY_TAG;
+                }
+                if(newIndex <= tags.size())
+                    insertTag(newIndex, tag);
+            }
+        }
+
+        public Tag removeTag(int index) {
+            Tag tag = tags.remove(index);
+            fireTableRowsDeleted(index, index);
+            return tag;
         }
     }
 
@@ -242,7 +282,7 @@ class TagEditor {
             TableModel model = target.getModel();
             String[] rows = data.split("\n");
             for (String row : rows)
-                ((TagsWrapper) model).insertRow(index++, createTag(row));
+                ((TagsWrapper) model).insertTag(index++, createTag(row));
         }
 
         @Override
@@ -306,6 +346,7 @@ class TagEditor {
                 .map(tag -> newTags.computeIfAbsent(tag.getContent(), x -> tag.copy()))
                 .collect(Collectors.toList());
         tagTable = createTagTable(originalTags);
+        tagTable.setRowSelectionInterval(0, 0);
         editorScrollPane.setViewportView(tagTable);
         editorScrollPane.addComponentListener(new ComponentAdapter() {
 
@@ -368,7 +409,7 @@ class TagEditor {
         });
 
         tagTable.getSelectionModel().addListSelectionListener(this::updateColorButton);
-        tagTable.getModel().addTableModelListener(this::selectInsertedRows);
+        tagTable.getModel().addTableModelListener(this::selectRowsAfterUpdate);
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
@@ -560,6 +601,31 @@ class TagEditor {
         cellEditor.setClickCountToStart(2);
         table.getColumnModel().getColumn(0).setCellEditor(cellEditor);
 
+        @SuppressWarnings("serial")
+        Action moveSelectedLocationsUpAction = new AbstractAction("moveSelectedLocationsUp") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moveSelectedLocationsUp();
+            }
+        };
+
+        @SuppressWarnings("serial")
+        Action moveSelectedLocationsDownAction = new AbstractAction("moveSelectedLocationsDown") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moveSelectedLocationsDown();
+            }
+        };
+
+        table.getActionMap().put("moveSelectedLocationsUp", moveSelectedLocationsUpAction);
+        table.getActionMap().put("moveSelectedLocationsDown", moveSelectedLocationsDownAction);
+
+        // Register keyboard shortcuts
+        InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
+        inputMap.put(acceleratorManager.getAccelerator("NodeUpAction"), "moveSelectedLocationsUp");
+        inputMap.put(acceleratorManager.getAccelerator("NodeDownAction"), "moveSelectedLocationsDown");
+
         return table;
     }
 
@@ -607,10 +673,13 @@ class TagEditor {
             updateColorButton();
     }
 
-    private void selectInsertedRows(TableModelEvent e) {
+    private void selectRowsAfterUpdate(TableModelEvent e) {
         if(e.getType() == TableModelEvent.INSERT)
             EventQueue.invokeLater(() ->
                 tagTable.getSelectionModel().setSelectionInterval(e.getFirstRow(), e.getLastRow()));
+        else if(e.getType() == TableModelEvent.DELETE)
+            EventQueue.invokeLater(() ->
+            tagTable.getSelectionModel().setSelectionInterval(e.getFirstRow(), e.getFirstRow()));
     }
 
     private void deleteTags() {
@@ -635,4 +704,43 @@ class TagEditor {
         colorButton.setEnabled(true);
         colorButton.setColor(tag.getIconColor());
     }
+
+    private void moveSelectedLocationsUp() {
+        int[] selectedRows = tagTable.getSelectedRows();
+        TagsWrapper tagTableModel = (TagsWrapper) tagTable.getModel();
+        if (selectedRows.length > 0 && selectedRows[0] > 0) {
+            for (int i = 0; i < selectedRows.length; i++) {
+                int selectedIndex = selectedRows[i];
+                tagTableModel.moveTag(selectedIndex, selectedIndex - 1);
+            }
+            SwingUtilities.invokeLater(() -> {
+                tagTable.getSelectionModel().setValueIsAdjusting(true);
+                tagTable.clearSelection();
+                for (int selectedIndex : selectedRows) {
+                    tagTable.addRowSelectionInterval(selectedIndex - 1, selectedIndex - 1);
+                }
+                tagTable.getSelectionModel().setValueIsAdjusting(false);
+            });
+        }
+    }
+
+    private void moveSelectedLocationsDown() {
+        int[] selectedRows = tagTable.getSelectedRows();
+        TagsWrapper tagTableModel = (TagsWrapper) tagTable.getModel();
+        if (selectedRows.length > 0) {
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                int selectedIndex = selectedRows[i];
+                tagTableModel.moveTag(selectedIndex, selectedIndex + 1);
+            }
+            SwingUtilities.invokeLater(() -> {
+                tagTable.getSelectionModel().setValueIsAdjusting(true);
+                tagTable.clearSelection();
+                for (int selectedIndex : selectedRows) {
+                    tagTable.addRowSelectionInterval(selectedIndex + 1, selectedIndex + 1);
+                }
+                tagTable.getSelectionModel().setValueIsAdjusting(false);
+            });
+        }
+    }
+
 }
