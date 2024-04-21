@@ -602,6 +602,8 @@
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
+			<Entry name="EditTagCategoriesAction" />
+
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
 				actionKey="TextChangeHotKeyAction"
 				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction"

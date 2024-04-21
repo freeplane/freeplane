@@ -269,6 +269,7 @@ public class MIconController extends IconController {
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
 		modeController.addAction(new EditTagsAction(this));
+		modeController.addAction(new EditTagCategoriesAction());
 	}
 
 	@Override

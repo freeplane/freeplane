@@ -85,12 +85,14 @@ public class IconRegistry implements IExtension {
 		}
 	}
 
-    public void setTagColor(String tagContent, String value) {
-        setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor));
+    public Tag setTagColor(String tagContent, String value) {
+        return setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor));
     }
 
-    public void setTagColor(String tagContent, Optional<Color> value) {
-        createTag(tagContent).setColor(value);
+    public Tag setTagColor(String tagContent, Optional<Color> value) {
+        Tag tag = createTag(tagContent);
+        tag.setColor(value);
+        return tag;
     }
 
 

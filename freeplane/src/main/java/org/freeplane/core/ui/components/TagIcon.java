@@ -55,13 +55,13 @@ public class TagIcon implements Icon {
         Color textColor = UITools.getTextColorForBackground(backgroundColor);
          g.setColor(backgroundColor);
         int r = (int) (UITools.FONT_SCALE_FACTOR * 10);
-        IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-        mapViewManager.setEdgesRenderingHint(g);
+//        IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+//        mapViewManager.setEdgesRenderingHint(g);
         g.fillRoundRect(x, y, width, height, r, r);
         g.setColor(textColor);
         g.drawRoundRect(x, y, width, height, r, r);
         g.setFont(font);
-        mapViewManager.setTextRenderingHint(g);
+//        mapViewManager.setTextRenderingHint(g);
         g.drawString(tag.getContent(), x + height / 2, y + height * 4 / 5);
         g.dispose();
 
