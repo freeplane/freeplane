@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <marker id="RoundedArrow_F-333333_S-333333-2" overflow="visible" markerHeight="0.40000001" markerWidth="0.40000001" orient="auto-start-reverse" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+   <path transform="scale(.7)" d="m-0.21115-4.1056 6.4223 3.2111a1 1 90 0 1 0 1.7889l-6.4223 3.2111a1.2361 1.2361 31.717 0 1-1.7889-1.1056v-6a1.2361 1.2361 148.28 0 1 1.7889-1.1056z" fill="#333333" fill-rule="evenodd"/>
+  </marker>
+ </defs>
+ <g transform="matrix(.49824 0 0 .49563 1.7612 8.3131)" fill="#0071bc" stroke="#0071bc" stroke-width="2.0123" data-name="Layer 2">
+  <polygon points="22 2 2 2 12 12.62"/>
+  <polygon points="10 22 10 10 14 10 14 19"/>
+ </g>
+ <path d="m16.43 8.7954v7.4801" fill="#333333" marker-end="url(#RoundedArrow_F-333333_S-333333-2)" stroke="#333333" stroke-miterlimit="0" stroke-width="2" style="paint-order:fill markers stroke"/>
+ <g transform="matrix(.728 0 0 .728 6.6991 -4.2096)" fill="#333333" stroke="#0071bc" stroke-linecap="square" stroke-miterlimit="0" stroke-width="1.9231">
+  <path d="m18.487 7.7401v6.9606" style="paint-order:fill markers stroke"/>
+  <path d="m21.968 11.22h-6.9606" style="paint-order:fill markers stroke"/>
+ </g>
+ <g transform="matrix(.728 0 0 .728 -.27905 -4.2096)" fill="#333333" stroke="#0071bc" stroke-linecap="square" stroke-miterlimit="0" stroke-width="1.9231">
+  <path d="m18.487 7.7401v6.9606" style="paint-order:fill markers stroke"/>
+  <path d="m21.968 11.22h-6.9606" style="paint-order:fill markers stroke"/>
+ </g>
+</svg>

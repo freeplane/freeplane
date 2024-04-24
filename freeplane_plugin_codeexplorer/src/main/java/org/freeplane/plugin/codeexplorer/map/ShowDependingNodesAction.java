@@ -60,22 +60,28 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     private final int maximumRecursionDepth;
 
     enum DependencyDirection {
-        INCOMING(CodeNode::getIncomingDependenciesWithKnownOrigins),
-        OUTGOING(CodeNode::getOutgoingDependenciesWithKnownTargets),
-        INCOMING_AND_OUTGOING(CodeNode::getIncomingAndOutgoingDependenciesWithKnownTargets),
-        CONNECTED(CodeNode::getIncomingAndOutgoingDependenciesWithKnownTargets);
+        INHERITED(CodeNode::getInherited), INHERITING(CodeNode::getInheriting),
+        INCOMING(dependentClassesFunction(CodeNode::getIncomingDependenciesWithKnownOrigins)),
+        OUTGOING(dependentClassesFunction(CodeNode::getOutgoingDependenciesWithKnownTargets)),
+        INCOMING_AND_OUTGOING(dependentClassesFunction(CodeNode::getIncomingAndOutgoingDependenciesWithKnownTargets)),
+        CONNECTED(dependentClassesFunction(CodeNode::getIncomingAndOutgoingDependenciesWithKnownTargets));
 
-        final BiFunction<CodeNode, Filter, Stream<Dependency>> nodeDependencies;
-
-        private DependencyDirection(BiFunction<CodeNode, Filter, Stream<Dependency>> nodeDependencies) {
-            this.nodeDependencies = nodeDependencies;
+        private static Stream<JavaClass> dependentClasses(Dependency dependency) {
+            JavaClass origin = CodeNode.findEnclosingNamedClass(dependency.getOriginClass());
+            JavaClass target = CodeNode.findEnclosingNamedClass(dependency.getTargetClass());
+            return origin != target ? Stream.of(origin, target) : Stream.empty();
         }
-    }
 
-    private static Stream<JavaClass> dependentClasses(Dependency dependency) {
-        JavaClass origin = CodeNode.findEnclosingNamedClass(dependency.getOriginClass());
-        JavaClass target = CodeNode.findEnclosingNamedClass(dependency.getTargetClass());
-        return origin != target ? Stream.of(origin, target) : Stream.empty();
+        private static BiFunction<CodeNode, Filter, Stream<JavaClass>> dependentClassesFunction(BiFunction<CodeNode, Filter, Stream<Dependency>> nodeDependencies) {
+            return nodeDependencies.andThen(dependencies -> dependencies.flatMap(DependencyDirection::dependentClasses));
+        }
+
+        final BiFunction<CodeNode, Filter, Stream<JavaClass>> nodeDependencies;
+
+        private DependencyDirection(BiFunction<CodeNode, Filter, Stream<JavaClass>> relatedClasses) {
+            this.nodeDependencies = relatedClasses;
+        }
+
     }
 
 
@@ -93,7 +99,11 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
     private static String formatActionText(DependencyDirection dependencyDirection,
             CodeNodeSelection codeNodeSelection, Depth recursionDepth) {
-        return TextUtils.format("code.ShowDependingNodesAction." + recursionDepth + ".text",
+        if(dependencyDirection.ordinal() <= DependencyDirection.INHERITING.ordinal())
+            return TextUtils.format("code.ShowDependingNodesAction." + dependencyDirection + "." + recursionDepth + ".text",
+                    TextUtils.getRawText("code." + codeNodeSelection));
+        else
+            return TextUtils.format("code.ShowDependingNodesAction." + recursionDepth + ".text",
                 TextUtils.getRawText("code." + dependencyDirection),
                 TextUtils.getRawText("code." + codeNodeSelection));
     }
@@ -181,7 +191,6 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     private static HashSet<String> dependencies(Stream<CodeNode> startingNodes, CodeMap map, Filter filter, DependencyDirection dependencyDirection) {
         return startingNodes
 	            .flatMap(node -> dependencyDirection.nodeDependencies.apply(node, filter))
-	            .flatMap(ShowDependingNodesAction::dependentClasses)
 	            .map(map::getClassNodeId)
 	            .collect(Collectors.toCollection(HashSet::new));
     }

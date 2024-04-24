@@ -30,12 +30,16 @@
 		<Entry name="code.FilterClassesByDependencies" builder = "bigIcon"/>
 		<Entry builder="separator" />
 		<Entry row="1">
+			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
 		</Entry>
 		<Entry row="2">
+			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
@@ -211,19 +215,27 @@
 			<Entry builder="separator" />
 			<Entry name="code.FilterClassesByDependencies" />
 			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.MAXIMUM_RECURSION" />
 			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.VISIBLE.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />

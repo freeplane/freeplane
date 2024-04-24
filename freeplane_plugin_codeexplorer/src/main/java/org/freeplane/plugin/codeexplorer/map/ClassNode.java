@@ -60,6 +60,11 @@ public class ClassNode extends CodeNode {
         return javaClass.getInterfaces();
     }
 
+    @Override
+    protected Stream<JavaClass> getClasses() {
+        return Stream.of(javaClass);
+    }
+
     public static String classNameWithEnclosingClasses(final JavaClass javaClass) {
         String simpleName = getSimpleName(javaClass);
         return javaClass.getEnclosingClass()

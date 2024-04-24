@@ -94,15 +94,15 @@ public abstract class CodeNode extends NodeModel {
     }
 
     private boolean isTargetSourceKnown(Dependency dep) {
-        return belongsToAnyGroup(dep.getTargetClass());
+        return isKnown(dep.getTargetClass());
     }
 
     private boolean isOriginSourceKnown(Dependency dep) {
-        return belongsToAnyGroup(dep.getOriginClass());
+        return isKnown(dep.getOriginClass());
     }
 
-    public boolean belongsToAnyGroup(JavaClass javaClass) {
-        return getMap().belongsToGroup(javaClass);
+    public boolean isKnown(JavaClass javaClass) {
+        return getMap().isKnown(javaClass);
     }
 
     static boolean classesBelongToTheSamePackage(JavaClass first, JavaClass second) {
@@ -248,6 +248,24 @@ public abstract class CodeNode extends NodeModel {
 
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(Filter  filter){
         return Stream.concat(getIncomingDependenciesWithKnownOrigins(filter), getOutgoingDependenciesWithKnownTargets(filter));
+    }
+
+    protected abstract Stream<JavaClass> getClasses();
+    protected Stream<JavaClass> getClasses(Filter  filter){
+        return getClasses().filter(javaClass -> getMap().getNodeByClass(javaClass).isVisible(filter));
+    }
+
+    Stream<JavaClass> getInheriting(Filter  filter){
+        return getClasses(filter)
+                .flatMap(javaClass -> javaClass.getSubclasses().stream())
+                .filter(this::isKnown);
+    }
+    Stream<JavaClass> getInherited(Filter  filter){
+        return getClasses(filter)
+                .flatMap(javaClass -> Stream.concat(
+                        javaClass.getRawInterfaces().stream(),
+                        javaClass.getRawSuperclass().map(Stream::of).orElse(Stream.empty())))
+                .filter(this::isKnown);
     }
 
     @Override

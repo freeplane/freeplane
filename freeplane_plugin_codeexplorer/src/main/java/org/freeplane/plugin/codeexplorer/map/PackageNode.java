@@ -67,7 +67,8 @@ class PackageNode extends CodeNode {
                 .filter(CodeNode::hasValidTopLevelClass)
                 .filter(this::belongsToSameGroup);
     }
-    private Stream<JavaClass> getClasses() {
+    @Override
+    protected Stream<JavaClass> getClasses() {
         return getClasses(javaPackage);
     }
 
