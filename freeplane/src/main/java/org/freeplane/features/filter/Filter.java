@@ -240,7 +240,7 @@ public class Filter implements IExtension {
 	public boolean isVisible(final ConnectorModel connector) {
 	    return filteredElement != FilteredElement.CONNECTOR
 	            || accepts(connector.getSource())
-	            || accepts(connector.getTarget());
+	            && accepts(connector.getTarget());
 	}
 
     public boolean accepts(NodeModel source) {
