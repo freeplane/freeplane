@@ -48,7 +48,8 @@ class FilterCyclesAction extends AFreeplaneAction {
         if(! cycleNodes.isEmpty()) {
             ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
             Filter lastFilter = selection.getFilter();
-            Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, null);
+            Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false,
+                    lastFilter.getFilteredElement(), null);
             FilterController filterController = FilterController.getCurrentFilterController();
             filterController.applyFilter(node.getMap(), false, filter);
             if(! lastFilter.areAncestorsShown()) {

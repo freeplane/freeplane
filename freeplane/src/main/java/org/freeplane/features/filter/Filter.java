@@ -30,6 +30,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.hidden.NodeVisibility;
 import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -38,6 +39,8 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  */
 public class Filter implements IExtension {
+
+    public enum FilteredElement{NODE, CONNECTOR}
 
     public static Filter createTransparentFilter() {
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -54,28 +57,37 @@ public class Filter implements IExtension {
 	}
 
 	static public Filter createFilter(final ICondition condition, final boolean areAncestorsShown,
-            final boolean areDescendantsShown, final boolean appliesToVisibleNodesOnly, Filter baseFilter) {
-		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, appliesToVisibleNodesOnly, baseFilter);
+            final boolean areDescendantsShown, final boolean appliesToVisibleElementsOnly, Filter baseFilter) {
+		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, appliesToVisibleElementsOnly, baseFilter);
 	}
 
 	final private ICondition condition;
 	final int options;
 
 	private FilterInfoAccessor accessor;
-    private final boolean hidesMatchingNodes;
-    private final boolean appliesToVisibleNodesOnly;
-    private final Filter baseFilter;
+	private final boolean hidesMatchingElements;
+	private final boolean appliesToVisibleElementsOnly;
+	private final Filter baseFilter;
+    private final FilteredElement filteredElement;
 
-	public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
-	              final boolean areDescendantsShown, final boolean appliesToVisibleNodesOnly, Filter baseFilter) {
-		super();
-		this.condition = condition;
-        this.hidesMatchingNodes = hidesMatchingNodes;
-        this.appliesToVisibleNodesOnly = appliesToVisibleNodesOnly;
+	public Filter(final ICondition condition, final boolean hidesMatchingElements, final boolean areAncestorsShown,
+	        final boolean areDescendantsShown, final boolean appliesToVisibleElementsOnly, Filter baseFilter) {
+	    this(condition, hidesMatchingElements, areAncestorsShown, areDescendantsShown,
+	            appliesToVisibleElementsOnly, FilteredElement.NODE, baseFilter);
+	}
+
+	public Filter(final ICondition condition, final boolean hidesMatchingElements, final boolean areAncestorsShown,
+	        final boolean areDescendantsShown, final boolean appliesToVisibleElementsOnly, FilteredElement filteredElement,
+	        Filter baseFilter) {
+	    super();
+	    this.condition = condition;
+	    this.hidesMatchingElements = hidesMatchingElements;
+	    this.appliesToVisibleElementsOnly = appliesToVisibleElementsOnly;
+        this.filteredElement = filteredElement;
 		this.accessor = new FilterInfoAccessor();
 
 		int options;
-		if(hidesMatchingNodes) {
+		if(hidesMatchingElements) {
             options = FilterInfo.SHOW_AS_HIDDEN;
             if (areAncestorsShown) {
                 options += FilterInfo.SHOW_AS_HIDDEN_ANCESTOR;
@@ -105,8 +117,8 @@ public class Filter implements IExtension {
         getFilterInfo(node).set(flags);
     }
 
-	protected boolean appliesToVisibleNodesOnly() {
-		return appliesToVisibleNodesOnly;
+	protected boolean appliesToVisibleElementsOnly() {
+		return appliesToVisibleElementsOnly;
 	}
 
 	static private Icon filterIcon;
@@ -147,8 +159,8 @@ public class Filter implements IExtension {
 	private int applyFilterGetDescendantState(final NodeModel node, int ancestorState) {
 		final boolean conditionSatisfied =  (condition == null || condition.checkNode(node));
 		final boolean matchesCombinedFilter;
-		if(appliesToVisibleNodesOnly()) {
-		    matchesCombinedFilter = conditionSatisfied  && baseFilter.isVisible(node);
+		if(appliesToVisibleElementsOnly()) {
+		    matchesCombinedFilter = conditionSatisfied  && baseFilter.accepts(node);
 		}
 		else {
 		    matchesCombinedFilter = conditionSatisfied;
@@ -173,8 +185,8 @@ public class Filter implements IExtension {
 		return 0 != (options & (FilterInfo.SHOW_AS_MATCHED_ANCESTOR|FilterInfo.SHOW_AS_HIDDEN_ANCESTOR));
 	}
 
-	boolean areMatchingNodesHidden() {
-	    return hidesMatchingNodes;
+	boolean areMatchingElementsHidden() {
+	    return hidesMatchingElements;
 	}
 
 
@@ -186,12 +198,16 @@ public class Filter implements IExtension {
 		return 0 != (options & (FilterInfo.SHOW_AS_MATCHED_DESCENDANT | FilterInfo.SHOW_AS_HIDDEN_DESCENDANT));
 	}
 
-	private boolean checkNode(final NodeModel node) {
+	public FilteredElement getFilteredElement() {
+        return filteredElement;
+    }
+
+    private boolean checkNode(final NodeModel node) {
 		return condition == null || ! shouldRemainInvisible(node) && condition.checkNode(node);
 	}
 
 	private boolean shouldRemainInvisible(final NodeModel node) {
-		return condition != null && appliesToVisibleNodesOnly() && !node.hasVisibleContent(baseFilter);
+		return condition != null && appliesToVisibleElementsOnly() && (node.isHiddenSummary() || !baseFilter.accepts(node));
 	}
 
     protected List<NodeModel> children(final NodeModel node) {
@@ -203,7 +219,7 @@ public class Filter implements IExtension {
 	}
 
 	public boolean canUseFilterResultsFrom(final Filter oldFilter) {
-		return (! oldFilter.appliesToVisibleNodesOnly || appliesToVisibleNodesOnly)
+		return (! oldFilter.appliesToVisibleElementsOnly || appliesToVisibleElementsOnly)
 		        && Objects.equals(condition, oldFilter.getCondition());
 	}
 
@@ -218,16 +234,26 @@ public class Filter implements IExtension {
 	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
 	 */
 	public boolean isVisible(final NodeModel node) {
-		return isVisible(node, options);
+		return filteredElement != FilteredElement.NODE || accepts(node);
 	}
 
-    public boolean isFoldable(final NodeModel node) {
-        return  hidesMatchingNodes ?
-                isVisible(node, options | FilterInfo.SHOW_AS_HIDDEN_ANCESTOR)
-                : isVisible(node, options | FilterInfo.SHOW_AS_MATCHED_ANCESTOR);
+	public boolean isVisible(final ConnectorModel connector) {
+	    return filteredElement != FilteredElement.CONNECTOR
+	            || accepts(connector.getSource())
+	            || accepts(connector.getTarget());
+	}
+
+    public boolean accepts(NodeModel source) {
+        return accepts(source, options);
     }
 
-    private boolean isVisible(final NodeModel node, int options) {
+    public boolean isFoldable(final NodeModel node) {
+        return  filteredElement != FilteredElement.NODE || (hidesMatchingElements ?
+                accepts(node, options | FilterInfo.SHOW_AS_HIDDEN_ANCESTOR)
+                : accepts(node, options | FilterInfo.SHOW_AS_MATCHED_ANCESTOR));
+    }
+
+    private boolean accepts(final NodeModel node, int options) {
         if(node.getExtension(NodeVisibility.class) == NodeVisibility.HIDDEN
 				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES)
 			return false;

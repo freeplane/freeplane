@@ -32,8 +32,8 @@ import org.freeplane.core.ui.SelectableAction;
  * Mar 31, 2009
  */
 @SelectableAction
-class ApplyToVisibleAction extends AFreeplaneAction {
-	final static String NAME = "ApplyToVisibleAction";
+class ApplyToConnectorsAction extends AFreeplaneAction {
+	final static String NAME = "ApplyToConnectorsAction";
 	/**
 	 *
 	 */
@@ -43,10 +43,10 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	 */
 	private final FilterController filterController;
 
-	ApplyToVisibleAction(final FilterController filterController) {
+	ApplyToConnectorsAction(final FilterController filterController) {
 		super(NAME);
 		this.filterController = filterController;
-		filterController.getApplyToVisibleElementsOnly().addChangeListener(new ChangeListener() {
+		filterController.getApplyToConnectors().addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent e) {
 				setSelected(isModelSelected());
 			}
@@ -55,10 +55,10 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.getApplyToVisibleElementsOnly().setSelected(!isModelSelected());
+		filterController.getApplyToConnectors().setSelected(!isModelSelected());
 	}
 
 	private boolean isModelSelected() {
-		return filterController.getApplyToVisibleElementsOnly().isSelected();
+		return filterController.getApplyToConnectors().isSelected();
 	}
 }

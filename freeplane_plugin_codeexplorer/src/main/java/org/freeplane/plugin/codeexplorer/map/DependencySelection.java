@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.Filter.FilteredElement;
 import org.freeplane.features.map.AncestorRemover;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -140,6 +142,14 @@ public class DependencySelection {
     public boolean isConnectorSelected(CodeNode origin, CodeNode target) {
         Set<NodeModel> selectedNodes = getSelectedNodeSet();
         boolean isOnlyOneNodeSelected = selectedNodes.size() == 1;
+        Filter filter = selection.getFilter();
+        boolean filterAcceptsConnector = filter.getFilteredElement() != FilteredElement.CONNECTOR
+                || filter.accepts(origin) && filter.accepts(target);
+        if(filter.getFilteredElement() == FilteredElement.CONNECTOR && filter.getCondition() != null
+                && isOnlyOneNodeSelected || ! filterAcceptsConnector) {
+            return filterAcceptsConnector;
+        }
+
         NodeModel selectionRoot = selection.getSelectionRoot();
         if (origin == selectionRoot || target == selectionRoot)
             return false;

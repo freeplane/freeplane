@@ -27,6 +27,8 @@ import javax.swing.JLabel;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Hyperlink;
+import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.Filter.FilteredElement;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
@@ -89,7 +91,7 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public Color getColor(ConnectorModel connector) {
-        if (areConnectorNodesSelected(connector)) {
+        if (isConnectorSelected(connector)) {
             DependencyVerdict dependencyVerdict = ((CodeConnectorModel)connector).dependencyVerdict();
             Color color = connectorColors.get(dependencyVerdict);
             return UITools.isLightLookAndFeelInstalled() ?  color.darker() : color.brighter();
@@ -111,7 +113,7 @@ public class CodeLinkController extends LinkController {
     public int getWidth(ConnectorModel connector) {
         CodeConnectorModel codeConnector = (CodeConnectorModel)connector;
         return  codeConnector.dependencyVerdict() != DependencyVerdict.IGNORED
-                    && areConnectorNodesSelected(codeConnector) ?
+                    && isConnectorSelected(codeConnector) ?
                 1 + (int) (3 * Math.log10(codeConnector.weight()))
                 : 1;
 
@@ -121,27 +123,27 @@ public class CodeLinkController extends LinkController {
     public int getOpacity(ConnectorModel connector) {
         CodeConnectorModel codeConnector = (CodeConnectorModel)connector;
         return codeConnector.dependencyVerdict() != DependencyVerdict.IGNORED
-                && areConnectorNodesSelected(codeConnector) ? 128 : 30;
+                && isConnectorSelected(codeConnector) ? 128 : 30;
     }
 
     @Override
     public String getMiddleLabel(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ?
+        return isConnectorSelected(connector) ?
                 Integer.toString(((CodeConnectorModel)connector).weight()) :
                     "";
     }
 
-    private boolean areConnectorNodesSelected(ConnectorModel connector) {
+    private boolean isConnectorSelected(ConnectorModel connector) {
         Controller controller = Controller.getCurrentController();
         if (controller.getModeController().getModeName() != CodeModeController.MODENAME)
             return false;
         IMapSelection selection = controller.getSelection();
         if(selection == null)
             return false;
-        return areConnectorNodesSelected((CodeConnectorModel)connector, selection);
+        return isConnectorSelected((CodeConnectorModel)connector, selection);
     }
 
-    private boolean areConnectorNodesSelected(CodeConnectorModel connector, IMapSelection selection) {
+    private boolean isConnectorSelected(CodeConnectorModel connector, IMapSelection selection) {
         CodeNode source = (CodeNode) connector.getSource();
         CodeNode target = (CodeNode) connector.getTarget();
         boolean connectorSelected = new DependencySelection(selection).isConnectorSelected(source, target);
@@ -186,7 +188,7 @@ public class CodeLinkController extends LinkController {
 
     @Override
     public ConnectorArrows getArrows(ConnectorModel connector) {
-        return areConnectorNodesSelected(connector) ? ConnectorArrows.FORWARD : ConnectorArrows.NONE;
+        return isConnectorSelected(connector) ? ConnectorArrows.FORWARD : ConnectorArrows.NONE;
     }
 
     @Override

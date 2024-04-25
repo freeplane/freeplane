@@ -555,6 +555,7 @@
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
 			<Entry builder="separator" />
+			<Entry name="ApplyToConnectorsAction" />
 			<Entry name="ApplyToVisibleAction" />
 			<Entry name="HideMatchingNodesAction" />
             <Entry name="ShowAncestorsAction" />

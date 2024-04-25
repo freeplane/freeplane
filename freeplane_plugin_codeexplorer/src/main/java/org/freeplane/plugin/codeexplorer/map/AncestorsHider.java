@@ -19,18 +19,19 @@ class AncestorsHider {
         Filter filter = selection.getFilter();
         FilterController filterController = FilterController.getCurrentFilterController();
         NodeStream.of(selection.getSelectionRoot())
-        .filter(n -> n.isFolded() && n.isVisible(filter))
+        .filter(n -> n.isFolded() && filter.accepts(n))
         .forEach(n -> n.setFolded(false));
         boolean isAnyLeafDescendantSelected = NodeStream.of(node)
-        .filter(n -> n.isLeaf() && n.isVisible(filter) && selection.isSelected(n))
+        .filter(n -> n.isLeaf() && filter.accepts(n) && selection.isSelected(n))
         .findAny().isPresent();
         if (! isAnyLeafDescendantSelected) {
             NodeStream.of(node)
-            .filter(n -> n.isLeaf() && n.isVisible(filter))
+            .filter(n -> n.isLeaf() && filter.accepts(n))
             .findFirst()
             .ifPresent(n -> selection.toggleSelected(n));
         }
-        Filter leafFilter = new Filter(filter.getCondition(), false, false, filter.areDescendantsShown(), false, null);
+        Filter leafFilter = new Filter(filter.getCondition(), false, false, filter.areDescendantsShown(), false,
+                filter.getFilteredElement(), null);
         filterController.applyFilter(node.getMap(), false, leafFilter);
     }
 

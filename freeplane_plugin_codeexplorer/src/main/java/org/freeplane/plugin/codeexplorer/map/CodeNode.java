@@ -236,14 +236,14 @@ public abstract class CodeNode extends NodeModel {
         final Stream<Dependency> outgoingDependenciesWithKnownTargets = getOutgoingDependenciesWithKnownTargets();
         return filter == null ? outgoingDependenciesWithKnownTargets
                 : outgoingDependenciesWithKnownTargets
-                .filter(dep -> getMap().getNodeByClass(dep.getOriginClass()).isVisible(filter));
+                .filter(dep -> filter.accepts(getMap().getNodeByClass(dep.getOriginClass())));
     }
 
     public Stream<Dependency> getIncomingDependenciesWithKnownOrigins(Filter filter){
         final Stream<Dependency> incomingDependenciesWithKnownOrigins = getIncomingDependenciesWithKnownOrigins();
         return filter == null ? incomingDependenciesWithKnownOrigins
                 : incomingDependenciesWithKnownOrigins
-                .filter(dep -> getMap().getNodeByClass(dep.getTargetClass()).isVisible(filter));
+                .filter(dep -> filter.accepts(getMap().getNodeByClass(dep.getTargetClass())));
     }
 
     Stream<Dependency> getIncomingAndOutgoingDependenciesWithKnownTargets(Filter  filter){
@@ -252,7 +252,8 @@ public abstract class CodeNode extends NodeModel {
 
     protected abstract Stream<JavaClass> getClasses();
     protected Stream<JavaClass> getClasses(Filter  filter){
-        return getClasses().filter(javaClass -> getMap().getNodeByClass(javaClass).isVisible(filter));
+        Stream<JavaClass> classes = getClasses();
+        return filter != null ? classes.filter(javaClass -> filter.accepts(getMap().getNodeByClass(javaClass))) : classes;
     }
 
     Stream<JavaClass> getInheriting(Filter  filter){
