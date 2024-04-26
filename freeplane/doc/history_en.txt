@@ -2,6 +2,8 @@
 1.12.1
 ==============================
 Node tags
+Filter for connectors
+Improvements for the filter hiding matches nodes
 
 ==============================
 1.11.12
