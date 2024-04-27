@@ -133,11 +133,23 @@ class TagCategories {
         nodes.removeTreeModelListener(l);
     }
 
-    TreeNode[] addNode(MutableTreeNode parent) {
+    TreeNode[] addChildNode(MutableTreeNode parent) {
         if(parent == null)
             parent = getRootNode();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
         nodes.insertNodeInto(newNode, parent, parent.getChildCount());
+        return nodes.getPathToRoot(newNode);
+   }
+
+    TreeNode[] addSiblingNode(MutableTreeNode node) {
+        TreeNode[] nothing = {};
+        if(node == null)
+            return nothing;
+        MutableTreeNode parent = (MutableTreeNode) node.getParent();
+        if(parent == null)
+            return nothing;
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        nodes.insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
         return nodes.getPathToRoot(newNode);
    }
 

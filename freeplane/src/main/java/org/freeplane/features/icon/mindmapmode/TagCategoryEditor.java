@@ -38,7 +38,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.EventObject;
@@ -46,6 +45,7 @@ import java.util.Optional;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
+import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.DropMode;
 import javax.swing.InputMap;
@@ -295,7 +295,6 @@ class TagCategoryEditor {
                 Object userObject = ((DefaultMutableTreeNode) lastPathComponent).getUserObject();
                 return userObject instanceof Tag;
             }
-
         };
         tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -339,9 +338,9 @@ class TagCategoryEditor {
                     break;
                 case KeyEvent.VK_ENTER:
                     e.consume();
-                    if ((e.getModifiers() & InputEvent.SHIFT_MASK) != 0 || enterConfirms
-                            .isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
-                        addNode();
+                    if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0
+                            || enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_DOWN_MASK) != 0)) {
+                        addNode((e.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0);
                         break;
                     }
                     dialog.setVisible(false);
@@ -428,13 +427,7 @@ class TagCategoryEditor {
         InputMap im = tree.getInputMap(JComponent.WHEN_FOCUSED);
         ActionMap am = tree.getActionMap();
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "addNode");
-        am.put("addNode", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addNode();
-            }
-        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "startEditing");
 
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeNode");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeNode");
@@ -445,16 +438,21 @@ class TagCategoryEditor {
             }
         });
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK), "copyNode");
-        am.put("copyNode", new AbstractAction() {
+        am.put(TransferHandler.getCopyAction().getValue(Action.NAME), new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 copyNode();
             }
         });
+        am.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                copyNode();
+                removeNode();
+            }
+        });
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK), "pasteNode");
-        am.put("pasteNode", new AbstractAction() {
+        am.put(TransferHandler.getPasteAction().getValue(Action.NAME), new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pasteNode();
@@ -462,10 +460,12 @@ class TagCategoryEditor {
         });
     }
 
-    private void addNode() {
+    private void addNode(boolean asChild) {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                 .getLastSelectedPathComponent();
-        TreeNode[] nodes = tagCategories.addNode(selectedNode);
+        TreeNode[] nodes = (asChild || selectedNode == null || selectedNode.isRoot()) ? tagCategories.addChildNode(selectedNode) : tagCategories.addSiblingNode(selectedNode);
+        if(nodes.length == 0)
+            return;
         TreePath path = new TreePath(nodes);
         tree.scrollPathToVisible(path);
         tree.setSelectionPath(path);

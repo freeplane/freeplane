@@ -48,6 +48,7 @@ import java.util.stream.IntStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListCellRenderer;
@@ -649,8 +650,9 @@ class TagEditor {
             }
         };
 
-        table.getActionMap().put("moveSelectedLocationsUp", moveSelectedLocationsUpAction);
-        table.getActionMap().put("moveSelectedLocationsDown", moveSelectedLocationsDownAction);
+        ActionMap actionMap = table.getActionMap();
+        actionMap.put("moveSelectedLocationsUp", moveSelectedLocationsUpAction);
+        actionMap.put("moveSelectedLocationsDown", moveSelectedLocationsDownAction);
 
         // Register keyboard shortcuts
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
