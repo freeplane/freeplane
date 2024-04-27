@@ -39,16 +39,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.EventObject;
 import java.util.Optional;
-import java.util.Scanner;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
@@ -86,48 +80,46 @@ import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 
 class TagCategoryEditor {
 
+    static class TagCellRenderer extends DefaultTreeCellRenderer {
+        private Object rootNode; // Reference to the root node object
 
-static class TagCellRenderer extends DefaultTreeCellRenderer {
-    private Object rootNode; // Reference to the root node object
-
-    public TagCellRenderer(DefaultMutableTreeNode rootNode) {
-        this.rootNode = rootNode;
-        setHorizontalAlignment(CENTER);
-    }
-
-    @Override
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
-            boolean expanded, boolean leaf, int row, boolean hasFocus) {
-
-        super.getTreeCellRendererComponent(tree, null, sel, expanded, leaf, row, hasFocus);
-        if (value instanceof DefaultMutableTreeNode) {
-            Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-            if (userObject instanceof Tag) {
-                Tag tag = (Tag) userObject;
-
-                if (leaf && value != rootNode) {
-                    setText(null);
-                    setIcon(new TagIcon(tag, getFont())); // Example of setting
-                                                          // a custom icon
-                } else {
-                    setText(tag.getContent());
-                }
-            } else if (userObject != null) {
-                setText(userObject.toString());
-            }
+        public TagCellRenderer(DefaultMutableTreeNode rootNode) {
+            this.rootNode = rootNode;
+            setHorizontalAlignment(CENTER);
         }
 
-        return this;
+        @Override
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
+                boolean expanded, boolean leaf, int row, boolean hasFocus) {
+
+            super.getTreeCellRendererComponent(tree, null, sel, expanded, leaf, row, hasFocus);
+            if (value instanceof DefaultMutableTreeNode) {
+                Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
+                if (userObject instanceof Tag) {
+                    Tag tag = (Tag) userObject;
+
+                    if (leaf && value != rootNode) {
+                        setText(null);
+                        setIcon(new TagIcon(tag, getFont())); // Example of
+                                                              // setting
+                                                              // a custom icon
+                    } else {
+                        setText(tag.getContent());
+                    }
+                } else if (userObject != null) {
+                    setText(userObject.toString());
+                }
+            }
+
+            return this;
+        }
     }
-}
 
     static class TagCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
@@ -222,7 +214,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
             int childIndex = dl.getChildIndex();
             TreePath dest = dl.getPath();
             JTree tree = (JTree) support.getComponent();
-            DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+            DefaultTreeModel tagCategories = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dest.getLastPathComponent();
             JTree treeSource = (JTree) support.getComponent();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeSource.getSelectionPath()
@@ -232,7 +224,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
                 if (childIndex == -1) {
                     childIndex = parent.getChildCount();
                 }
-                model.insertNodeInto(newNode, parent, childIndex);
+                tagCategories.insertNodeInto(newNode, parent, childIndex);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -240,9 +232,6 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
             return false;
         }
     }
-
-
-
 
     private static final String WIDTH_PROPERTY = "tagDialog.width";
 
@@ -256,18 +245,13 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
 
     private final JTree tree;
 
-    private final DefaultTreeModel model;
-
-    private final IconRegistry registry = new IconRegistry();
-
-    private final  File tagCategoryFile;
+    private final TagCategories tagCategories;
 
     private boolean contentWasModified;
 
-    TagCategoryEditor(RootPaneContainer frame, File tagCategoryFile) {
+    TagCategoryEditor(RootPaneContainer frame, TagCategories tagCategories) {
         title = TextUtils.getText("edit_long_node");
         contentWasModified = false;
-        this.tagCategoryFile = tagCategoryFile;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, /*
                                                                                   * modal=
                                                                                   */true)
@@ -300,9 +284,8 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
 
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Tags");
-        model = new DefaultTreeModel(rootNode);
-        tree = new JTree(model) {
+        this.tagCategories = tagCategories;
+        tree = new JTree(tagCategories.nodes) {
 
             @Override
             public boolean isPathEditable(TreePath path) {
@@ -314,17 +297,14 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
             }
 
         };
-        try (Scanner scanner = new Scanner(tagCategoryFile)){
-            deserializeTreeNode(rootNode, true, scanner);
-        } catch (FileNotFoundException e1) {/**/}
         tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setInvokesStopCellEditing(true);
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON_OR_INSERT);
         tree.setTransferHandler(new TreeTransferHandler());
-        tree.setCellRenderer(new TagCellRenderer(rootNode));
-        tree.setCellEditor(new TagCellEditor(registry));
+        tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
+        tree.setCellEditor(new TagCellEditor(tagCategories.getRegistry()));
 
         JScrollPane scrollPane = new JScrollPane(tree);
         configureKeyBindings();
@@ -367,7 +347,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
                     dialog.setVisible(false);
                     submit();
                     break;
-                 }
+                }
             }
 
             @Override
@@ -380,7 +360,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
         });
 
         tree.getSelectionModel().addTreeSelectionListener(this::updateColorButton);
-        model.addTreeModelListener(new TreeModelListener() {
+        tagCategories.addTreeModelListener(new TreeModelListener() {
 
             @Override
             public void treeStructureChanged(TreeModelEvent e) {
@@ -485,12 +465,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
     private void addNode() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                 .getLastSelectedPathComponent();
-        if (selectedNode == null) {
-            selectedNode = (DefaultMutableTreeNode) model.getRoot();
-        }
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(registry.createTag("New Node"));
-        model.insertNodeInto(newNode, selectedNode, selectedNode.getChildCount());
-        TreeNode[] nodes = model.getPathToRoot(newNode);
+        TreeNode[] nodes = tagCategories.addNode(selectedNode);
         TreePath path = new TreePath(nodes);
         tree.scrollPathToVisible(path);
         tree.setSelectionPath(path);
@@ -501,7 +476,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                 .getLastSelectedPathComponent();
         if (selectedNode != null && selectedNode.getParent() != null) {
-            model.removeNodeFromParent(selectedNode);
+            tagCategories.removeNodeFromParent(selectedNode);
         }
     }
 
@@ -512,12 +487,13 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
                     .getLastPathComponent();
             try {
                 StringWriter writer = new StringWriter();
-                serializeTreeNode(node, "", true, writer);
+                TagCategories.writeTagCategories(node, "", true, writer);
                 String serializedData = writer.toString();
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 StringSelection stringSelection = new StringSelection(serializedData);
                 clipboard.setContents(stringSelection, null);
-            } catch (IOException e) {/**/}
+            } catch (IOException e) {
+                /**/}
         }
     }
 
@@ -529,90 +505,16 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
                 String data = (String) contents.getTransferData(DataFlavor.stringFlavor);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                         .getLastSelectedPathComponent();
-                if (selectedNode == null) {
-                    selectedNode = (DefaultMutableTreeNode) model.getRoot();
-                }
-                try(Scanner st = new Scanner(new StringReader(data))){
-                    deserializeTreeNode(selectedNode, true, st);
-                }
-                ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(selectedNode);
+                tagCategories.add(selectedNode, data);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void serializeTreeNode(DefaultMutableTreeNode node, String indent,
-            boolean withColor, Writer writer) throws IOException {
-        int childCount = node.getChildCount();
-        Object userObject = node.getUserObject();
-        if (node != model.getRoot()) {
-            Tag tag = (Tag) userObject;
-            writer.append(indent + tag.getContent());
-            if (withColor && childCount == 0)
-                writer.append(ColorUtils.colorToRGBAString(tag.getIconColor()));
-            writer.append("\n");
-            indent = indent + " ";
-        } else
-        for (int i = 0; i < childCount; i++) {
-            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
-            serializeTreeNode(childNode, indent, withColor, writer);
-        }
-    }
-
-    public void deserializeTreeNode(DefaultMutableTreeNode parentNode, boolean withColor, Scanner scanner) {
-        scanner.useDelimiter(System.lineSeparator());
-        DefaultMutableTreeNode lastNode = parentNode;
-        int lastLevel = -1;
-        int currentLevel = 0;
-        while (scanner.hasNext()) {
-            String line = scanner.next();
-            currentLevel = 0;
-            while (currentLevel < line.length() && line.charAt(currentLevel) == ' ') {
-                currentLevel++;
-            }
-            String nodeName = line.trim();
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(nodeName);
-            if (currentLevel > lastLevel) {
-                lastNode.add(newNode);
-            } else {
-                Object userObject = lastNode.getUserObject();
-                lastNode.setUserObject(deserializeTag((String) userObject, withColor));
-                for (int i = currentLevel; i <= lastLevel; i++) {
-                    lastNode = (DefaultMutableTreeNode) lastNode.getParent();
-                    Object parentObject = lastNode.getUserObject();
-                    if (parentObject instanceof String)
-                        lastNode.setUserObject(deserializeTag((String) parentObject, false));
-                }
-                lastNode.add(newNode);
-            }
-            lastNode = newNode;
-            lastLevel = currentLevel;
-        }
-        Object userObject = lastNode.getUserObject();
-        lastNode.setUserObject(deserializeTag((String) userObject, withColor));
-        for (int i = currentLevel; i <= lastLevel; i++) {
-            lastNode = (DefaultMutableTreeNode) lastNode.getParent();
-            Object parentObject = lastNode.getUserObject();
-            if (parentObject instanceof String)
-                lastNode.setUserObject(deserializeTag((String) parentObject, false));
-        }
-    }
-
-    private Tag deserializeTag(String spec, boolean withColor) {
-        if (withColor) {
-            int colorIndex = spec.lastIndexOf("#");
-            String content = spec.substring(0, colorIndex);
-            String colorSpec = spec.substring(colorIndex);
-            return registry.setTagColor(content, colorSpec);
-        } else
-            return registry.createTag(spec);
-    }
-
-
     private void modifyTagColor() {
         Tag tag = getSelectedTag();
-        if(tag != null && ! tag.isEmpty()) {
+        if (tag != null && !tag.isEmpty()) {
             Color defaultColor = new Color(tag.getDefaultColor().getRGB(), true);
             Color initialColor = tag.getIconColor();
             final Color result = ColorTracker.showCommonJColorChooserDialog(tree, tag.getContent(),
@@ -621,7 +523,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
                 Optional<Color> newColor = result == defaultColor ? Optional.empty()
                         : Optional.of(result);
                 tag.setColor(newColor);
-                updateTagColors((DefaultMutableTreeNode)model.getRoot(), tag);
+                tagCategories.tagChanged(tag);
                 updateColorButton();
             }
         }
@@ -630,26 +532,14 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
     private Tag getSelectedTag() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                 .getLastSelectedPathComponent();
-        if (selectedNode == null || ! selectedNode.isLeaf())
+        if (selectedNode == null || !selectedNode.isLeaf())
             return null;
 
         Object userObject = selectedNode.getUserObject();
-        if(! (userObject instanceof Tag))
+        if (!(userObject instanceof Tag))
             return null;
 
-        return (Tag)userObject;
-    }
-
-    private void updateTagColors(DefaultMutableTreeNode node, Tag updatedTag) {
-        int childCount = node.getChildCount();
-        Object userObject = node.getUserObject();
-        if (userObject == updatedTag) {
-            model.nodeChanged(node);
-        }
-        for (int i = 0; i < childCount; i++) {
-            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
-            updateTagColors(childNode, updatedTag);
-        }
+        return (Tag) userObject;
     }
 
     void show() {
@@ -658,11 +548,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
     }
 
     protected void submit() {
-        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(tagCategoryFile))){
-            serializeTreeNode((DefaultMutableTreeNode) model.getRoot(), "", true, writer);
-        } catch (IOException e) {
-            LogUtils.severe(e);
-        }
+        tagCategories.save();
     }
 
     private JRestrictedSizeScrollPane createScrollPane() {
@@ -709,7 +595,7 @@ static class TagCellRenderer extends DefaultTreeCellRenderer {
     }
 
     private void updateColorButton(TreeSelectionEvent e) {
-            updateColorButton();
+        updateColorButton();
     }
 
     private void updateColorButton() {

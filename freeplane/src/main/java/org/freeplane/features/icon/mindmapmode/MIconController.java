@@ -25,6 +25,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -50,6 +52,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicIconFactory;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -59,6 +63,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
@@ -66,6 +71,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.EmojiIcon;
@@ -251,6 +257,7 @@ public class MIconController extends IconController {
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
 	private final FastAccessableIcons recentlyUsedIcons;
+    private final TagCategories tagCategories;
     private final MModeController modeController;
 
 	/**
@@ -268,8 +275,11 @@ public class MIconController extends IconController {
 		createIconActions();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
+        final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+        tagCategories = new TagCategories(new File(freeplaneUserDirectory, "tagCategories.config"));
+
 		modeController.addAction(new EditTagsAction(this));
-		modeController.addAction(new EditTagCategoriesAction());
+		modeController.addAction(new EditTagCategoriesAction(tagCategories));
 	}
 
 	@Override
@@ -391,6 +401,10 @@ public class MIconController extends IconController {
         return Collections.unmodifiableMap(iconActions);
     }
 
+    public TagCategories getTagCategories() {
+        return tagCategories;
+    }
+
 	/**
 	 * @return
 	 */
@@ -399,21 +413,22 @@ public class MIconController extends IconController {
 	}
 
 	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
-	private JMenu getSubmenu( final IconGroup group) {
-		final JMenu menu = createToolbarSubmenu(group);
-		fillSubmenuOnSelect(menu, group);
+
+    private JMenu getIconSubmenu( final IconGroup group) {
+		final JMenu menu = createIconToolbarSubmenu(group);
+		fillIconSubmenuOnSelect(menu, group);
 		return menu;
 	}
 
-    private void fillSubmenuOnSelect(final JMenu menu, final IconGroup group) {
+    private void fillIconSubmenuOnSelect(final JMenu menu, final IconGroup group) {
     	menu.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
 				menu.removeMenuListener(this);
-		        fillSubmenu(menu, group);
+		        fillIconSubmenu(menu, group);
 			}
 
-			private void fillSubmenu(final JMenu menu, final IconGroup group) {
+			private void fillIconSubmenu(final JMenu menu, final IconGroup group) {
 				for (final IconGroup childGroup : group.getGroups()) {
 				    if(childGroup.isLeaf()) {
 				        MindIcon groupIcon = childGroup.getGroupIcon();
@@ -422,7 +437,7 @@ public class MIconController extends IconController {
 				    else {
 				        final JMenu submenu = new JMenu(childGroup.getDescription());
 				        submenu.setIcon(childGroup.getGroupIcon().getIcon());
-				        fillSubmenuOnSelect(submenu, childGroup);
+				        fillIconSubmenuOnSelect(submenu, childGroup);
 				        addGroupToIconSubmenu(menu, submenu);
 				    }
 				}
@@ -438,7 +453,7 @@ public class MIconController extends IconController {
 		});
     }
 
-    private JMenu createToolbarSubmenu(final IconGroup group) {
+    private JMenu createIconToolbarSubmenu(final IconGroup group) {
         final JMenu menu = new JMenu() {
 			private static final long serialVersionUID = 1L;
 
@@ -479,7 +494,7 @@ public class MIconController extends IconController {
 			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
 	}
 
-	private void insertToolbarSubmenus(final JToolBar iconToolBar, boolean isStructured) {
+	private void insertToolbarIconSubmenus(final JToolBar iconToolBar, boolean isStructured) {
 		final JMenuBar iconMenuBar = new JMenuBar() {
 			private static final long serialVersionUID = 1L;
 
@@ -494,7 +509,7 @@ public class MIconController extends IconController {
 		for (final IconGroup iconGroup : STORE.getGroups()) {
 		    if(isStructured && (! iconGroup.getName().equals(IconStore.EMOJI_GROUP) || areEmojisAvailbleOnIconToolbar())
 		            || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojisAvailbleOnIconToolbar())
-			iconMenuBar.add(getSubmenu(iconGroup));
+			iconMenuBar.add(getIconSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
 	}
@@ -579,7 +594,7 @@ public class MIconController extends IconController {
         boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
 		if (! isStructured && areEmojisAvailbleOnIconToolbar())
 		    iconToolBar.addSeparator();
-		insertToolbarSubmenus(iconToolBar, isStructured);
+		insertToolbarIconSubmenus(iconToolBar, isStructured);
 		if (! isStructured) {
 		    iconToolBar.addSeparator();
 		    for (final MindIcon mindIcon : STORE.getMindIcons()) {
@@ -683,4 +698,46 @@ public class MIconController extends IconController {
             new TagEditor(this, frame, node).show();
         }
     }
+
+    public JMenu createTagSubmenu(String name, Consumer<Tag> action) {
+        JMenu menu = TranslatedElementFactory.createMenu(name);
+        fillTagSubmenuOnSelect(menu, action, tagCategories.getRootNode());
+        return menu;
+    }
+
+    private void fillTagSubmenuOnSelect(final JMenu menu, Consumer<Tag> action, DefaultMutableTreeNode categoryNode) {
+        menu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                fillTagSubmenu(menu, categoryNode);
+            }
+
+            private void fillTagSubmenu(final JMenu menu, DefaultMutableTreeNode categoryNode) {
+                menu.removeAll();
+                for (int i = 0; i < categoryNode.getChildCount(); i++) {
+                    DefaultMutableTreeNode itemNode = (DefaultMutableTreeNode) categoryNode.getChildAt(i);
+                    Tag tag = (Tag) itemNode.getUserObject();
+                    if(itemNode.isLeaf()) {
+                        TagIcon icon = new TagIcon(tag, menu.getFont());
+                        JMenuItem actionItem = new JMenuItem(icon);
+                        actionItem.addActionListener(x -> action.accept(tag));
+                        menu.add(actionItem);
+
+                    }
+                    else {
+                        final JMenu submenu = new JMenu(tag.getContent());
+                        fillTagSubmenuOnSelect(submenu, action, itemNode);
+                        menu.add(submenu);
+                    }
+                }
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {
+            }
+            @Override
+            public void menuCanceled(MenuEvent e) {
+            }
+        });
+    }
+
 }

@@ -17,16 +17,17 @@ import org.freeplane.core.ui.components.UITools;
 public class EditTagCategoriesAction extends AFreeplaneAction {
 
     private static final long serialVersionUID = 1L;
+    private final TagCategories tagCategories;
 
-    public EditTagCategoriesAction() {
+    public EditTagCategoriesAction(TagCategories tagCategories) {
         super("EditTagCategoriesAction");
+        this.tagCategories = tagCategories;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-        final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
-        TagCategoryEditor tagCategoryEditor = new TagCategoryEditor(frame, new File(freeplaneUserDirectory, "tagCategories.config"));
+        TagCategoryEditor tagCategoryEditor = new TagCategoryEditor(frame, tagCategories);
         tagCategoryEditor.show();
     }
 

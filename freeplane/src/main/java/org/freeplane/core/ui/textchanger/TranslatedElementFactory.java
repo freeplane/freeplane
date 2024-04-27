@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
@@ -41,14 +42,23 @@ public class TranslatedElementFactory {
 		return component;
 	}
 
-	public static JCheckBox createCheckBox(String labelKey) {
-		final String text = TextUtils.getRawText(labelKey);
-		final JCheckBox component = new JCheckBox();
-		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
-		TranslatedElement.TEXT.setKey(component, labelKey);
-		createTooltip(component, labelKey + ".tooltip");
-		return component;
-	}
+    public static JCheckBox createCheckBox(String labelKey) {
+        final String text = TextUtils.getRawText(labelKey);
+        final JCheckBox component = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+        TranslatedElement.TEXT.setKey(component, labelKey);
+        createTooltip(component, labelKey + ".tooltip");
+        return component;
+    }
+
+    public static JMenu createMenu(String labelKey) {
+        final String text = TextUtils.getRawText(labelKey);
+        final JMenu component = new JMenu();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+        TranslatedElement.TEXT.setKey(component, labelKey);
+        createTooltip(component, labelKey + ".tooltip");
+        return component;
+    }
 
 	public static JCheckBox createPropertyCheckbox(String propertyName, String labelKey) {
 		JCheckBox component = createCheckBox(labelKey);

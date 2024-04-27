@@ -50,13 +50,18 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DropMode;
+import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -190,6 +195,8 @@ class TagEditor {
         }
 
         public void insertTag(int index, Tag tag) {
+            if(index < 0)
+                index = tags.size();
             tags.add(index, tag);
             fireTableRowsInserted(index, index);
         }
@@ -346,6 +353,14 @@ class TagEditor {
                 .map(tag -> newTags.computeIfAbsent(tag.getContent(), x -> tag.copy()))
                 .collect(Collectors.toList());
         tagTable = createTagTable(originalTags);
+        TagCategories tagCategories = iconController.getTagCategories();
+        if(! tagCategories.isEmpty()) {
+            JMenuBar menubar = new JMenuBar();
+            menubar.add(iconController.createTagSubmenu("insert",
+                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
+            dialog.setJMenuBar(menubar);
+        }
+
         tagTable.setRowSelectionInterval(0, 0);
         editorScrollPane.setViewportView(tagTable);
         editorScrollPane.addComponentListener(new ComponentAdapter() {
@@ -509,7 +524,10 @@ class TagEditor {
         return scrollPane;
     }
     private Tag createTag(String string) {
-        return node.getMap().getIconRegistry().createTag(string);
+        Tag tag = node.getMap().getIconRegistry().createTag(string);
+        if(! tag.getColor().isPresent())
+            tag.setColor(iconController.getTagCategories().getColor(tag));
+        return tag;
     }
 
     private JTable createTagTable(List<Tag> tags) {
@@ -566,6 +584,22 @@ class TagEditor {
 
         SortedComboBoxModel<Tag> knownTags = node.getMap().getIconRegistry().getTagsAsListModel();
         JComboBox<Tag> cellEditorComponent = new JComboBox<>(knownTags);
+        @SuppressWarnings("serial")
+        DefaultListCellRenderer cellRenderer = new DefaultListCellRenderer() {
+
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                Icon icon;
+                if(value == null)
+                    icon = null;
+                else {
+                    Tag tag = value instanceof Tag ? (Tag)value : createTag(value.toString());
+                    icon = new TagIcon(tag, table.getFont());
+                }
+                return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
+            }};
+        cellEditorComponent.setRenderer(cellRenderer);
         cellEditorComponent.setEditable(true);
         DefaultCellEditor cellEditor = new DefaultCellEditor(cellEditorComponent) {
             private static final long serialVersionUID = 1L;
