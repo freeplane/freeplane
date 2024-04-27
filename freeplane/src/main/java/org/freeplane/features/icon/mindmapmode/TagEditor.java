@@ -92,6 +92,7 @@ import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditorHolder;
 
 
@@ -102,7 +103,6 @@ class TagEditor {
         public TagEditorHolder(NodeModel node, Window window) {
             super(node, window);
         }
-
     }
 
     private static class TagsWrapper extends AbstractTableModel {
@@ -305,7 +305,6 @@ class TagEditor {
     private static final String HEIGHT_PROPERTY = "tagDialog.height";
 
     private final NodeModel node;
-    private String title;
     private MIconController iconController;
     private JTable tagTable;
     private JDialog dialog;
@@ -316,6 +315,8 @@ class TagEditor {
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
         this.node = node;
+        String title = TextUtils.getText("edit_tags") + " (" + TextController.getController().getShortPlainText(node) + ")";
+
         this.dialog = frame instanceof Frame ? new JDialog((Frame)frame, title, /*modal=*/true) : new JDialog((JDialog)frame, title, /*modal=*/true);
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
@@ -429,9 +430,6 @@ class TagEditor {
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
         contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
-        if (title == null) {
-            title = TextUtils.getText("edit_long_node");
-        }
         node.addExtension(new TagEditorHolder(node, dialog));
         configureDialog(dialog);
         restoreDialogSize(dialog);

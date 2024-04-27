@@ -24,6 +24,7 @@ import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 
@@ -34,7 +35,7 @@ class TagCategories {
 
     TagCategories(final File tagCategoryFile){
         this.tagCategoryFile = tagCategoryFile;
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Tags");
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(TextUtils.getRawText("tags"));
         nodes = new DefaultTreeModel(rootNode);
         load();
     }
