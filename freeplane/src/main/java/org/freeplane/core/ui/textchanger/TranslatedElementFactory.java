@@ -12,6 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
@@ -54,6 +55,15 @@ public class TranslatedElementFactory {
     public static JMenu createMenu(String labelKey) {
         final String text = TextUtils.getRawText(labelKey);
         final JMenu component = new JMenu();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+        TranslatedElement.TEXT.setKey(component, labelKey);
+        createTooltip(component, labelKey + ".tooltip");
+        return component;
+    }
+
+    public static JMenuItem createMenuItem(String labelKey) {
+        final String text = TextUtils.getRawText(labelKey);
+        final JMenuItem component = new JMenuItem();
         LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
         TranslatedElement.TEXT.setKey(component, labelKey);
         createTooltip(component, labelKey + ".tooltip");

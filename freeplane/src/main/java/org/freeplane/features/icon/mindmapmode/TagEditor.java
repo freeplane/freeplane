@@ -19,8 +19,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -63,10 +65,12 @@ import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
@@ -356,9 +360,36 @@ class TagEditor {
                 .map(tag -> newTags.computeIfAbsent(tag.getContent(), x -> tag.copy()))
                 .collect(Collectors.toList());
         tagTable = createTagTable(originalTags);
+        ActionMap am = tagTable.getActionMap();
         TagCategories tagCategories = iconController.getTagCategories();
         JMenuBar menubar = new JMenuBar();
-        menubar.add(TranslatedElementFactory.createMenu("edit"));
+        JMenu editMenu = TranslatedElementFactory.createMenu("edit");
+        JMenuItem addTagMenuItem = TranslatedElementFactory.createMenuItem("menu_addTag");
+        addTagMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Event.SHIFT_MASK));
+        addTagMenuItem.addActionListener(ev -> insertTags());
+        editMenu.add(addTagMenuItem);
+
+        JMenuItem removeMenuItem = TranslatedElementFactory.createMenuItem("menu_remove");
+        removeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        removeMenuItem.addActionListener(ev -> deleteTags());
+        editMenu.add(removeMenuItem);
+
+        JMenuItem copyMenuItem = TranslatedElementFactory.createMenuItem("menu_copy");
+        copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        copyMenuItem.addActionListener(am.get(TransferHandler.getCopyAction().getValue(Action.NAME)));
+        editMenu.add(copyMenuItem);
+
+        JMenuItem cutMenuItem = TranslatedElementFactory.createMenuItem("CutAction.text");
+        cutMenuItem.addActionListener(am.get(TransferHandler.getCutAction().getValue(Action.NAME)));
+        cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        editMenu.add(cutMenuItem);
+
+        JMenuItem pasteMenuItem = TranslatedElementFactory.createMenuItem("PasteAction.text");
+        pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        pasteMenuItem.addActionListener(am.get(TransferHandler.getPasteAction().getValue(Action.NAME)));
+        editMenu.add(pasteMenuItem);
+
+        menubar.add(editMenu);
         if(! tagCategories.isEmpty()) {
             menubar.add(iconController.createTagSubmenu("insert",
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
@@ -409,15 +440,6 @@ class TagEditor {
                         break;
                 }
             }
-
-            private void insertTags() {
-                ListSelectionModel selectionModel = tagTable.getSelectionModel();
-                int minSelectedRow = selectionModel.getMinSelectionIndex();
-                if(minSelectedRow >= 0) {
-                    getTableModel().insertEmptyTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
-                }
-            }
-
             @Override
             public void keyReleased(final KeyEvent e) {
             }
@@ -466,6 +488,13 @@ class TagEditor {
                 }
             }
         });
+    }
+    private void insertTags() {
+        ListSelectionModel selectionModel = tagTable.getSelectionModel();
+        int minSelectedRow = selectionModel.getMinSelectionIndex();
+        if(minSelectedRow >= 0) {
+            getTableModel().insertEmptyTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
+        }
     }
     private void modifyTagColor() {
         int selectedRow = tagTable.getSelectedRow();
@@ -560,9 +589,6 @@ class TagEditor {
                  super.editingCanceled(e);
 
             }
-
-
-
         };
         table.setTransferHandler(new TableCellTransferHandler());
         table.setDragEnabled(true);

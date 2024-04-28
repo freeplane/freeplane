@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -53,7 +54,9 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -392,9 +395,6 @@ class TagCategoryEditor {
         final boolean areButtonsAtTheTop = ResourceController.getResourceController()
                 .getBooleanProperty("el__buttons_above");
         contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
-        JMenuBar menubar = new JMenuBar();
-        menubar.add(TranslatedElementFactory.createMenu("edit"));
-        dialog.setJMenuBar(menubar);
         configureDialog(dialog);
         restoreDialogSize(dialog);
         dialog.pack();
@@ -433,36 +433,103 @@ class TagCategoryEditor {
         ActionMap am = tree.getActionMap();
 
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "startEditing");
+        Action editNodeAction = am.get("startEditing");
 
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeNode");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeNode");
-        am.put("removeNode", new AbstractAction() {
+
+        @SuppressWarnings("serial")
+        AbstractAction addChildNodeAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addNode(true);
+            }
+        };
+
+        @SuppressWarnings("serial")
+        AbstractAction addSiblingNodeAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addNode(false);
+            }
+        };
+
+        @SuppressWarnings("serial")
+        AbstractAction removeNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeNode();
             }
-        });
+        };
+        am.put("removeNode", removeNodeAction);
 
-        am.put(TransferHandler.getCopyAction().getValue(Action.NAME), new AbstractAction() {
+        @SuppressWarnings("serial")
+        AbstractAction copyNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 copyNode();
             }
-        });
-        am.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
+        };
+        am.put(TransferHandler.getCopyAction().getValue(Action.NAME), copyNodeAction);
+
+        @SuppressWarnings("serial")
+        AbstractAction cutNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 copyNode();
                 removeNode();
             }
-        });
+        };
+        am.put(TransferHandler.getCutAction().getValue(Action.NAME), cutNodeAction);
 
-        am.put(TransferHandler.getPasteAction().getValue(Action.NAME), new AbstractAction() {
+        @SuppressWarnings("serial")
+        AbstractAction pasteNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pasteNode();
             }
-        });
+        };
+        am.put(TransferHandler.getPasteAction().getValue(Action.NAME), pasteNodeAction);
+        JMenuBar menubar = new JMenuBar();
+        JMenu editMenu = TranslatedElementFactory.createMenu("edit");
+
+        JMenuItem addChildMenuItem = TranslatedElementFactory.createMenuItem("menu_addChild");
+        addChildMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Event.SHIFT_MASK | Event.ALT_MASK));
+        addChildMenuItem.addActionListener(addChildNodeAction);
+        editMenu.add(addChildMenuItem);
+
+        JMenuItem addSiblingMenuItem = TranslatedElementFactory.createMenuItem("menu_addSibling");
+        addSiblingMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, Event.SHIFT_MASK));
+        addSiblingMenuItem.addActionListener(addSiblingNodeAction);
+        editMenu.add(addSiblingMenuItem);
+
+        JMenuItem removeMenuItem = TranslatedElementFactory.createMenuItem("menu_remove");
+        removeMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        removeMenuItem.addActionListener(removeNodeAction);
+        editMenu.add(removeMenuItem);
+
+        JMenuItem editMenuItem = TranslatedElementFactory.createMenuItem("menu_edit");
+        editMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        editMenuItem.addActionListener(editNodeAction);
+        editMenu.add(editMenuItem);
+
+        JMenuItem copyMenuItem = TranslatedElementFactory.createMenuItem("menu_copy");
+        copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        copyMenuItem.addActionListener(copyNodeAction);
+        editMenu.add(copyMenuItem);
+
+        JMenuItem cutMenuItem = TranslatedElementFactory.createMenuItem("CutAction.text");
+        cutMenuItem.addActionListener(cutNodeAction);
+        cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        editMenu.add(cutMenuItem);
+
+        JMenuItem pasteMenuItem = TranslatedElementFactory.createMenuItem("PasteAction.text");
+        pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        pasteMenuItem.addActionListener(pasteNodeAction);
+        editMenu.add(pasteMenuItem);
+
+        menubar.add(editMenu);
+        dialog.setJMenuBar(menubar);
     }
 
     private void addNode(boolean asChild) {
