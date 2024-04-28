@@ -40,11 +40,12 @@ import org.freeplane.features.mode.Controller;
  */
 public class Filter implements IExtension {
 
-    public enum FilteredElement{NODE, CONNECTOR}
+    public enum FilteredElement{NODE, CONNECTOR, NODE_AND_CONNECTOR}
 
     public static Filter createTransparentFilter() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false, null);
+		FilteredElement filteredElement = resourceController.getEnumProperty("filter.filteredElement", FilteredElement.NODE);
+		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false, filteredElement, null);
 	}
 
 	static class FilterInfoAccessor {
@@ -234,11 +235,11 @@ public class Filter implements IExtension {
 	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
 	 */
 	public boolean isVisible(final NodeModel node) {
-		return filteredElement != FilteredElement.NODE || accepts(node);
+		return filteredElement == FilteredElement.CONNECTOR || accepts(node);
 	}
 
 	public boolean isVisible(final ConnectorModel connector) {
-	    return filteredElement != FilteredElement.CONNECTOR
+	    return filteredElement == FilteredElement.NODE
 	            || accepts(connector.getSource())
 	            && accepts(connector.getTarget());
 	}
@@ -248,7 +249,7 @@ public class Filter implements IExtension {
     }
 
     public boolean isFoldable(final NodeModel node) {
-        return  filteredElement != FilteredElement.NODE || (hidesMatchingElements ?
+        return  filteredElement == FilteredElement.CONNECTOR || (hidesMatchingElements ?
                 accepts(node, options | FilterInfo.SHOW_AS_HIDDEN_ANCESTOR)
                 : accepts(node, options | FilterInfo.SHOW_AS_MATCHED_ANCESTOR));
     }

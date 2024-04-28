@@ -21,32 +21,33 @@ package org.freeplane.features.filter;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.ButtonModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.filter.Filter.FilteredElement;
 
 /**
  * @author Dimitry Polivaev
  * Mar 31, 2009
  */
 @SelectableAction
-class ApplyToConnectorsAction extends AFreeplaneAction {
-	final static String NAME = "ApplyToConnectorsAction";
+class SelectFilteredElementAction extends AFreeplaneAction {
+	final static String NAME = "SelectFilteredElementAction";
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+    private final ButtonModel elementButtonModel;
 	/**
 	 *
 	 */
-	private final FilterController filterController;
-
-	ApplyToConnectorsAction(final FilterController filterController) {
-		super(NAME);
-		this.filterController = filterController;
-		filterController.getApplyToConnectors().addChangeListener(new ChangeListener() {
+	SelectFilteredElementAction(ButtonModel elementButtonModel, FilteredElement filteredElement) {
+		super(NAME + "." + filteredElement.name());
+        this.elementButtonModel = elementButtonModel;
+		elementButtonModel.addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent e) {
 				setSelected(isModelSelected());
 			}
@@ -55,10 +56,11 @@ class ApplyToConnectorsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.getApplyToConnectors().setSelected(!isModelSelected());
+	    if(!isModelSelected())
+	        elementButtonModel.setSelected(true);
 	}
 
 	private boolean isModelSelected() {
-		return filterController.getApplyToConnectors().isSelected();
+		return elementButtonModel.isSelected();
 	}
 }

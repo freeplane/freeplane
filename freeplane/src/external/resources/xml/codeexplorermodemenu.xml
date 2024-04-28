@@ -258,7 +258,10 @@
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
 			<Entry builder="separator" />
-			<Entry name="ApplyToConnectorsAction" />
+			<Entry name="SelectFilteredElementAction.NODE" />
+			<Entry name="SelectFilteredElementAction.NODE_AND_CONNECTOR" />
+			<Entry name="SelectFilteredElementAction.CONNECTOR" />
+			<Entry builder="separator" />
             <Entry name="HideMatchingNodesAction" />
 			<Entry name="ShowAncestorsAction" />
 			<Entry name="ShowDescendantsAction" />
