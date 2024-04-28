@@ -93,9 +93,11 @@ class TagCategories {
         }
         Object userObject = lastNode.getUserObject();
         lastNode.setUserObject(readTag((String) userObject, withColor));
-        for (int i = currentLevel; i <= lastLevel; i++) {
+        for (int i = 0; i <= lastLevel; i++) {
             lastNode = (DefaultMutableTreeNode) lastNode.getParent();
             Object parentObject = lastNode.getUserObject();
+            if (parentObject instanceof Tag)
+                break;
             if (parentObject instanceof String)
                 lastNode.setUserObject(readTag((String) parentObject, false));
         }

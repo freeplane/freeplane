@@ -53,6 +53,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -80,6 +81,7 @@ import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
@@ -250,7 +252,7 @@ class TagCategoryEditor {
     private boolean contentWasModified;
 
     TagCategoryEditor(RootPaneContainer frame, TagCategories tagCategories) {
-        title = TextUtils.getText("edit_long_node");
+        title = TextUtils.getText("edit_tag_categories");
         contentWasModified = false;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, /*
                                                                                   * modal=
@@ -390,6 +392,9 @@ class TagCategoryEditor {
         final boolean areButtonsAtTheTop = ResourceController.getResourceController()
                 .getBooleanProperty("el__buttons_above");
         contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
+        JMenuBar menubar = new JMenuBar();
+        menubar.add(TranslatedElementFactory.createMenu("edit"));
+        dialog.setJMenuBar(menubar);
         configureDialog(dialog);
         restoreDialogSize(dialog);
         dialog.pack();

@@ -88,6 +88,7 @@ import org.freeplane.core.ui.components.AutoResizedTable;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.icon.Tag;
@@ -356,12 +357,13 @@ class TagEditor {
                 .collect(Collectors.toList());
         tagTable = createTagTable(originalTags);
         TagCategories tagCategories = iconController.getTagCategories();
+        JMenuBar menubar = new JMenuBar();
+        menubar.add(TranslatedElementFactory.createMenu("edit"));
         if(! tagCategories.isEmpty()) {
-            JMenuBar menubar = new JMenuBar();
             menubar.add(iconController.createTagSubmenu("insert",
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
-            dialog.setJMenuBar(menubar);
         }
+        dialog.setJMenuBar(menubar);
 
         tagTable.setRowSelectionInterval(0, 0);
         editorScrollPane.setViewportView(tagTable);
