@@ -41,8 +41,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
@@ -86,6 +91,7 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 
@@ -309,7 +315,7 @@ class TagCategoryEditor {
             }
         };
         tree.setEditable(true);
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         tree.setInvokesStopCellEditing(true);
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON_OR_INSERT);
@@ -465,7 +471,7 @@ class TagCategoryEditor {
         AbstractAction removeNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeNode();
+                removeNodes();
             }
         };
         am.put("removeNode", removeNodeAction);
@@ -474,7 +480,7 @@ class TagCategoryEditor {
         AbstractAction copyNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                copyNode();
+                copyNodes();
             }
         };
         am.put(TransferHandler.getCopyAction().getValue(Action.NAME), copyNodeAction);
@@ -483,8 +489,8 @@ class TagCategoryEditor {
         AbstractAction cutNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                copyNode();
-                removeNode();
+                copyNodes();
+                removeNodes();
             }
         };
         am.put(TransferHandler.getCutAction().getValue(Action.NAME), cutNodeAction);
@@ -515,7 +521,7 @@ class TagCategoryEditor {
         removeMenuItem.addActionListener(removeNodeAction);
         editMenu.add(removeMenuItem);
 
-        JMenuItem editMenuItem = TranslatedElementFactory.createMenuItem("menu_edit");
+        JMenuItem editMenuItem = TranslatedElementFactory.createMenuItem("edit");
         editMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
         editMenuItem.addActionListener(editNodeAction);
         editMenu.add(editMenuItem);
@@ -541,7 +547,30 @@ class TagCategoryEditor {
         editMenu.add(colorMenuItem);
 
         menubar.add(editMenu);
+
+        JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
+        JMenuItem insertMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
+        insertMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        insertMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
+        insertMenu.add(insertMenuItem);
+
+        menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
+    }
+
+    private void insertSelectedTagsIntoSelectedNodes() {
+        final TreePath[] selectionPaths = tree.getSelectionPaths();
+        if(selectionPaths == null)
+            return;
+        final List<Tag> selectedTags = Stream.of(selectionPaths)
+                .map(TreePath::getLastPathComponent)
+                .map(DefaultMutableTreeNode.class::cast)
+                .filter(DefaultMutableTreeNode::isLeaf)
+                .map(DefaultMutableTreeNode::getUserObject)
+                .filter(Tag.class::isInstance)
+                .map(Tag.class::cast)
+                .collect(Collectors.toList());
+        ((MIconController)IconController.getController()).insertTagsIntoSelectedNodes(selectedTags);
     }
 
     private void addNode(boolean asChild) {
@@ -556,29 +585,63 @@ class TagCategoryEditor {
         tree.startEditingAtPath(path);
     }
 
-    private void removeNode() {
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
-                .getLastSelectedPathComponent();
-        if (selectedNode != null && selectedNode.getParent() != null) {
-            tagCategories.removeNodeFromParent(selectedNode);
-        }
+    private void removeNodes() {
+        final TreePath[] selectionPaths = tree.getSelectionPaths();
+        if(selectionPaths == null)
+            return;
+        Stream.of(selectionPaths)
+                .map(TreePath::getLastPathComponent)
+                .map(DefaultMutableTreeNode.class::cast)
+                .forEach(tagCategories::removeNodeFromParent);
     }
 
-    private void copyNode() {
-        TreePath currentPath = tree.getSelectionPath();
-        if (currentPath != null) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) currentPath
-                    .getLastPathComponent();
-            try {
-                StringWriter writer = new StringWriter();
-                TagCategories.writeTagCategories(node, "", true, writer);
-                String serializedData = writer.toString();
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection stringSelection = new StringSelection(serializedData);
-                clipboard.setContents(stringSelection, null);
-            } catch (IOException e) {
-                /**/}
+    public TreePath[] removeDescendantPaths(TreePath[] paths) {
+        if (paths == null || paths.length == 0) {
+            return null;
         }
+
+        List<TreePath> filteredPaths = new ArrayList<>();
+
+        // Add all paths initially
+        for (TreePath path : paths) {
+            filteredPaths.add(path);
+        }
+
+        // Remove descendants
+        for (int i = 0; i < filteredPaths.size(); i++) {
+            TreePath path = filteredPaths.get(i);
+            for (int j = 0; j < filteredPaths.size(); j++) {
+                if (i != j) {
+                    TreePath otherPath = filteredPaths.get(j);
+                    if (otherPath.isDescendant(path)) { // Check if path is a descendant of otherPath
+                        filteredPaths.remove(i);
+                        i--; // Adjust the index after removal
+                        break; // Break as no need to compare with other paths once removed
+                    }
+                }
+            }
+        }
+
+        return filteredPaths.toArray(new TreePath[0]);
+    }
+
+    private void copyNodes() {
+        final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
+        if(selectionPaths == null)
+            return;
+
+        try {
+            StringWriter writer = new StringWriter();
+            for(TreePath path: selectionPaths) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                TagCategories.writeTagCategories(node, "", true, writer);
+            }
+            String serializedData = writer.toString();
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            StringSelection stringSelection = new StringSelection(serializedData);
+            clipboard.setContents(stringSelection, null);
+        } catch (IOException e) {
+        /**/}
     }
 
     private void pasteNode() {

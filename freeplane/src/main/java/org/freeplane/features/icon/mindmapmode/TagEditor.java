@@ -403,10 +403,19 @@ class TagEditor {
         editMenu.add(colorMenuItem);
 
         menubar.add(editMenu);
+
+        JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
+        JMenuItem insertMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
+        insertMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        insertMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
+        editMenu.add(insertMenuItem);
+
         if(! tagCategories.isEmpty()) {
-            menubar.add(iconController.createTagSubmenu("insert",
+            insertMenu.addSeparator();
+            insertMenu.add(iconController.createTagSubmenu("menu_tag",
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
         }
+        menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
 
         tagTable.setRowSelectionInterval(0, 0);
@@ -501,6 +510,12 @@ class TagEditor {
                 }
             }
         });
+    }
+    private void insertSelectedTagsIntoSelectedNodes() {
+        final List<Tag> selectedTags = IntStream.of(tagTable.getSelectedRows())
+        .mapToObj(row -> (Tag)tagTable.getValueAt(row, 0))
+        .collect(Collectors.toList());
+        iconController.insertTagsIntoSelectedNodes(selectedTags);
     }
     private void insertTags() {
         ListSelectionModel selectionModel = tagTable.getSelectionModel();

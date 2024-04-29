@@ -26,13 +26,16 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -53,7 +56,6 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicIconFactory;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -738,6 +740,24 @@ public class MIconController extends IconController {
             public void menuCanceled(MenuEvent e) {
             }
         });
+    }
+
+    public void insertTagsIntoSelectedNodes(List<Tag> selectedTags) {
+        if(selectedTags.isEmpty())
+            return;
+        Controller.getCurrentController().getSelection().getSelection()
+        .forEach(node -> addTags(node, selectedTags));
+    }
+
+    public void addTags(NodeModel node, List<Tag> addedTags) {
+        final List<Tag> existingTags = getTags(node);
+        final Set<Tag> existingTagSet = new HashSet<Tag>(existingTags);
+        final List<Tag> newTags = new ArrayList<Tag>(existingTags.size() + addedTags.size());
+        newTags.addAll(existingTags);
+        addedTags.stream()
+        .filter(tag -> ! existingTagSet.contains(tag))
+        .forEach(newTags::add);
+        setTags(node, newTags, false);
     }
 
 }

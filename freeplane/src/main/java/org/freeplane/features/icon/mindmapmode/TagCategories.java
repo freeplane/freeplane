@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -42,20 +43,25 @@ class TagCategories {
 
     static void writeTagCategories(DefaultMutableTreeNode node, String indent,
             boolean withColor, Writer writer) throws IOException {
-        int childCount = node.getChildCount();
         Object userObject = node.getUserObject();
         if (userObject instanceof Tag) {
             Tag tag = (Tag) userObject;
-            writer.append(indent + tag.getContent());
-            if (withColor && childCount == 0)
-                writer.append(ColorUtils.colorToRGBAString(tag.getIconColor()));
-            writer.append("\n");
+            writeTag(tag, indent, withColor && node.isLeaf(), writer);
             indent = indent + " ";
         }
+        int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
             writeTagCategories(childNode, indent, withColor, writer);
         }
+    }
+
+    static void writeTag(Tag tag, String indent, boolean withColor, Writer writer)
+            throws IOException {
+        writer.append(indent + tag.getContent());
+        if (withColor)
+            writer.append(ColorUtils.colorToRGBAString(tag.getIconColor()));
+        writer.append("\n");
     }
 
     boolean isEmpty() {
@@ -80,12 +86,13 @@ class TagCategories {
             } else {
                 Object userObject = lastNode.getUserObject();
                 lastNode.setUserObject(readTag((String) userObject, withColor));
-                for (int i = currentLevel; i <= lastLevel; i++) {
+                for (int i = currentLevel; i < lastLevel; i++) {
                     lastNode = (DefaultMutableTreeNode) lastNode.getParent();
                     Object parentObject = lastNode.getUserObject();
                     if (parentObject instanceof String)
                         lastNode.setUserObject(readTag((String) parentObject, false));
                 }
+                lastNode = (DefaultMutableTreeNode) lastNode.getParent();
                 lastNode.add(newNode);
             }
             lastNode = newNode;
@@ -93,7 +100,7 @@ class TagCategories {
         }
         Object userObject = lastNode.getUserObject();
         lastNode.setUserObject(readTag((String) userObject, withColor));
-        for (int i = 0; i <= lastLevel; i++) {
+        for (int i = 0; i < lastLevel; i++) {
             lastNode = (DefaultMutableTreeNode) lastNode.getParent();
             Object parentObject = lastNode.getUserObject();
             if (parentObject instanceof Tag)
@@ -156,7 +163,8 @@ class TagCategories {
    }
 
     void removeNodeFromParent(MutableTreeNode node) {
-        nodes.removeNodeFromParent(node);
+        if(node.getParent() != null)
+            nodes.removeNodeFromParent(node);
     }
 
     void save() {
