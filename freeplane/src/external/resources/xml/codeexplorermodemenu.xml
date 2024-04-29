@@ -135,7 +135,7 @@
 				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
 			</Entry>
 			<Entry name="controls">
-				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
 				<Entry name="ToggleScrollbarsAction" />
@@ -319,7 +319,7 @@
 		<Entry builder="separator" />
 		<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
 		<Entry builder="separator" />
-		<Entry name="ToggleMenubarAction" />
+		<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />
