@@ -11,6 +11,7 @@ import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 
 import org.freeplane.core.ui.components.UITools;
@@ -36,7 +37,15 @@ public class JColorButton extends JButton {
 	private String text;
 	int textWidth;
 	int textHeight;
-	public JColorButton() {
+
+	public JColorButton(Action a) {
+        super(a);
+        setText(" ");
+        this.color = null;
+        this.text = " ";
+    }
+
+    public JColorButton() {
 		super(" ");
 		this.color = null;
 		this.text = " ";

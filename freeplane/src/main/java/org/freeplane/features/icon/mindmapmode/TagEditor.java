@@ -316,7 +316,8 @@ class TagEditor {
     private JDialog dialog;
     private List<Tag> originalTags;
     private final Map<String, Tag> newTags;
-    private JColorButton colorButton;
+    private final JColorButton colorButton;
+    private final Action modifyColorAction;
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -327,7 +328,14 @@ class TagEditor {
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
         final JButton sortButton = new JButton();
-        colorButton = new JColorButton();
+        modifyColorAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                modifyTagColor();
+            }
+        };
+        colorButton = new JColorButton(modifyColorAction);
         colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
         final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
             .getBooleanProperty("el__enter_confirms_by_default"));
@@ -335,7 +343,7 @@ class TagEditor {
         LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(sortButton, TextUtils.getRawText("sort"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
-        colorButton.setEnabled(false);
+        modifyColorAction.setEnabled(false);
         okButton.addActionListener(e -> {
             dialog.setVisible(false);
             submit();
@@ -388,6 +396,11 @@ class TagEditor {
         pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         pasteMenuItem.addActionListener(am.get(TransferHandler.getPasteAction().getValue(Action.NAME)));
         editMenu.add(pasteMenuItem);
+
+        JMenuItem colorMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_color");
+        colorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        colorMenuItem.addActionListener(modifyColorAction);
+        editMenu.add(colorMenuItem);
 
         menubar.add(editMenu);
         if(! tagCategories.isEmpty()) {
@@ -759,12 +772,14 @@ class TagEditor {
         }
         Tag tag = (Tag) tagTable.getValueAt(firstIndex, 0);
         if(tag.isEmpty()) {
-            colorButton.setEnabled(false);
+            modifyColorAction.setEnabled(false);
             colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
             return;
         }
-        colorButton.setEnabled(true);
-        colorButton.setColor(tag.getIconColor());
+        else {
+            modifyColorAction.setEnabled(true);
+            colorButton.setColor(tag.getIconColor());
+        }
     }
 
     private void moveSelectedLocationsUp() {

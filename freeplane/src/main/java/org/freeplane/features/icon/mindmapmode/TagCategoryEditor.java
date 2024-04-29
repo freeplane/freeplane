@@ -247,6 +247,7 @@ class TagCategoryEditor {
     private final JDialog dialog;
 
     private final JColorButton colorButton;
+    private final Action modifyColorAction;
 
     private final JTree tree;
 
@@ -263,7 +264,14 @@ class TagCategoryEditor {
                 : new JDialog((JDialog) frame, title, /* modal= */true);
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
-        colorButton = new JColorButton();
+        modifyColorAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                modifyTagColor();
+            }
+        };
+        colorButton = new JColorButton(modifyColorAction);
         colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
         final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
                 .getBooleanProperty("el__enter_confirms_by_default"));
@@ -271,14 +279,13 @@ class TagCategoryEditor {
         LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText(
                 "enter_confirms"));
-        colorButton.setEnabled(false);
+        modifyColorAction.setEnabled(false);
         okButton.addActionListener(e -> {
             dialog.setVisible(false);
             submit();
         });
         cancelButton.addActionListener(e -> dialog.setVisible(false));
 
-        colorButton.addActionListener(e -> modifyTagColor());
         final JPanel buttonPane = new JPanel();
         buttonPane.add(enterConfirms);
         buttonPane.add(okButton);
@@ -528,6 +535,11 @@ class TagCategoryEditor {
         pasteMenuItem.addActionListener(pasteNodeAction);
         editMenu.add(pasteMenuItem);
 
+        JMenuItem colorMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_color");
+        colorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        colorMenuItem.addActionListener(modifyColorAction);
+        editMenu.add(colorMenuItem);
+
         menubar.add(editMenu);
         dialog.setJMenuBar(menubar);
     }
@@ -673,11 +685,13 @@ class TagCategoryEditor {
     private void updateColorButton() {
         Tag tag = getSelectedTag();
         if (tag == null || tag.isEmpty()) {
-            colorButton.setEnabled(false);
+            modifyColorAction.setEnabled(false);
             colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
             return;
         }
-        colorButton.setEnabled(true);
-        colorButton.setColor(tag.getIconColor());
+        else {
+            modifyColorAction.setEnabled(true);
+            colorButton.setColor(tag.getIconColor());
+        }
     }
 }
