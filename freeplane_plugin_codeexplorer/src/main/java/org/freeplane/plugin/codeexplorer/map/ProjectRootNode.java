@@ -164,7 +164,7 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
     }
 
     @Override
-    public boolean belongsToAnyGroup(JavaClass javaClass) {
+    public boolean isKnown(JavaClass javaClass) {
         return groupMatcher.belongsToGroup(javaClass);
     }
 
@@ -188,6 +188,11 @@ class ProjectRootNode extends CodeNode implements GroupFinder{
     @Override
     public Stream<JavaClass> allClasses() {
         return classes.stream();
+    }
+
+    @Override
+    public Stream<JavaClass> getClasses() {
+        return allClasses();
     }
 
     JavaClasses getImportedClasses() {

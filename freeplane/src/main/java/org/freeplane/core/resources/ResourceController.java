@@ -141,7 +141,8 @@ public abstract class ResourceController {
 	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T> defaultValue) {
 		try {
 			final String propertyValue = getProperty(propertyName);
-			defaultValue = Enum.valueOf(defaultValue.getClass(), propertyValue.toUpperCase(Locale.ENGLISH));
+			if(propertyValue != null)
+			    defaultValue = Enum.valueOf(defaultValue.getClass(), propertyValue.toUpperCase(Locale.ENGLISH));
 		}
 		catch (Exception e) {
 			LogUtils.severe(e);

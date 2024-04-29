@@ -50,7 +50,8 @@ class ClassesNode extends CodeNode {
         return javaPackage.getAnnotations();
     }
 
-    private Stream<JavaClass> getClasses() {
+    @Override
+    protected Stream<JavaClass> getClasses() {
         return javaPackage.getClasses().stream()
                 .filter(this::belongsToSameGroup);
     }

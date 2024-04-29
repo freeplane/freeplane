@@ -75,6 +75,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.menu.JUnitPanel;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.Filter.FilteredElement;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -153,17 +154,47 @@ public class FilterController implements IExtension, IMapViewChangeListener {
     }
 
 	private class FilterChangeListener implements ChangeListener, ActionListener {
+	    private boolean changeInProgress = false;
 		/*
 		 * (non-Javadoc)
 		 * @see
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
-		public FilterChangeListener() {
-		}
+	    public FilterChangeListener() {
+	    }
 
-		@Override
-		public void stateChanged(final ChangeEvent e) {
+	    @Override
+	    public void stateChanged(final ChangeEvent e) {
+	        if(changeInProgress)
+	            return;
+	        try {
+	            changeInProgress = true;
+	            Object source = e.getSource();
+	            FilteredElement oldFilteredElement = filteredElement;
+	            if(source == applyToNodes) {
+	                applyToConnectors.setSelected(false);
+	                applyToNodesAndConnectors.setSelected(false);
+	                filteredElement = FilteredElement.NODE;
+	            }
+	            else if(source == applyToNodesAndConnectors) {
+	                changeInProgress = true;
+	                applyToNodes.setSelected(false);
+	                applyToConnectors.setSelected(false);
+	                filteredElement = FilteredElement.NODE_AND_CONNECTOR;
+	            }
+	            else if(source == applyToConnectors) {
+	                changeInProgress = true;
+	                applyToNodes.setSelected(false);
+	                applyToNodesAndConnectors.setSelected(false);
+	                filteredElement = FilteredElement.CONNECTOR;
+	            }
+	            if(oldFilteredElement != filteredElement)
+	                ResourceController.getResourceController().setProperty("filter.filteredElement", filteredElement.name());
+	        }
+		    finally {
+		        changeInProgress = false;
+            }
 			applyFilter(false);
 		}
 
@@ -223,7 +254,11 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 	}
 
-	private final ButtonModel applyToVisibleNodeOnly;
+    private final ButtonModel applyToVisibleElementsOnly;
+    private FilteredElement filteredElement;
+    private final ButtonModel applyToNodes;
+    private final ButtonModel applyToNodesAndConnectors;
+    private final ButtonModel applyToConnectors;
 	private ConditionFactory conditionFactory;
 	private DefaultConditionRenderer conditionRenderer = null;
 // // 	private final Controller controller;
@@ -260,7 +295,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		showAncestors = new JToggleButton.ToggleButtonModel();
 		final Filter transparentFilter = Filter.createTransparentFilter();
 		hideMatchingNodes = new JToggleButton.ToggleButtonModel();
-		hideMatchingNodes.setSelected(transparentFilter.areMatchingNodesHidden());
+		hideMatchingNodes.setSelected(transparentFilter.areMatchingElementsHidden());
 		hideMatchingNodes.addChangeListener(filterChangeListener);
 		showAncestors.setSelected(transparentFilter.areAncestorsShown());
 		showAncestors.addChangeListener(filterChangeListener);
@@ -271,8 +306,18 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		showDescendants.addChangeListener(new ButtonModelStateChangeListenerForProperty("filter.showDescendants"));
 		highlightNodes = new JToggleButton.ToggleButtonModel();
 		highlightNodes.setSelected(false);
-		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
-		applyToVisibleNodeOnly.setSelected(false);
+        applyToVisibleElementsOnly = new JToggleButton.ToggleButtonModel();
+        applyToVisibleElementsOnly.setSelected(false);
+        applyToNodes = new JToggleButton.ToggleButtonModel();
+        filteredElement = transparentFilter.getFilteredElement();
+        applyToNodes.setSelected(filteredElement == FilteredElement.NODE);
+        applyToNodesAndConnectors = new JToggleButton.ToggleButtonModel();
+        applyToNodesAndConnectors.setSelected(filteredElement == FilteredElement.NODE_AND_CONNECTOR);
+        applyToConnectors = new JToggleButton.ToggleButtonModel();
+        applyToConnectors.setSelected(filteredElement == FilteredElement.CONNECTOR);
+        applyToNodes.addChangeListener(filterChangeListener);
+        applyToNodesAndConnectors.addChangeListener(filterChangeListener);
+        applyToConnectors.addChangeListener(filterChangeListener);
         approximateMatchingButtonModel = new JToggleButton.ToggleButtonModel();
         approximateMatchingButtonModel.setSelected(false);
         ignoreDiacriticsButtonModel = new JToggleButton.ToggleButtonModel();
@@ -307,7 +352,10 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		controller.addAction(new HideMatchingNodesAction(this));
 		controller.addAction(new ShowAncestorsAction(this));
 		controller.addAction(new ShowDescendantsAction(this));
-		controller.addAction(new ApplyToVisibleAction(this));
+        controller.addAction(new ApplyToVisibleAction(this));
+        controller.addAction(new SelectFilteredElementAction(applyToNodes, FilteredElement.NODE));
+        controller.addAction(new SelectFilteredElementAction(applyToNodesAndConnectors, FilteredElement.NODE_AND_CONNECTOR));
+        controller.addAction(new SelectFilteredElementAction(applyToConnectors, FilteredElement.CONNECTOR));
 		quickFilterAction = new QuickFilterAction(this, quickEditor);
 		controller.addAction(quickFilterAction);
 		controller.addAction(new QuickAndFilterAction(this, quickEditor));
@@ -415,7 +463,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	    }
 	    else {
             final Filter filter = new Filter(NO_FILTERING, hideMatchingNodes.isSelected(), showAncestors.isSelected(),
-                    showDescendants.isSelected(), false, null);
+                    showDescendants.isSelected(), false,
+                    filteredElement,
+                    null);
             map.putExtension(Filter.class, filter);
             filter.calculateFilterResults(map);
 	    }
@@ -524,20 +574,28 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		IMapSelection selection = Controller.getCurrentController().getSelection();
         final Filter baseFilter = selection != null ? selection.getFilter() : null;
         final Filter filter = new Filter(filterCondition, hideMatchingNodes.isSelected(), showAncestors.isSelected(), showDescendants
-		    .isSelected(), applyToVisibleNodeOnly.isSelected(), baseFilter);
+		    .isSelected(), applyToVisibleElementsOnly.isSelected(),
+		    filteredElement, baseFilter);
 		return filter;
 	}
 
-	private JComponent createFilterToolbar() {
+
+    private JComponent createFilterToolbar() {
 		Controller controller = Controller.getCurrentController();
 		final AbstractButton undoBtn = FreeplaneToolBar.createButton(controller.getAction("UndoFilterAction"));
 		final AbstractButton redoBtn = FreeplaneToolBar.createButton(controller.getAction("RedoFilterAction"));
-        final AbstractButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"), hideMatchingNodes);
-        hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
         final AbstractButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"), showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
 		final AbstractButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"), showDescendants);
-		final AbstractButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"), applyToVisibleNodeOnly);
+        final AbstractButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"), hideMatchingNodes);
+        hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
+        final AbstractButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"), applyToVisibleElementsOnly);
+        final AbstractButton applyToNodesBox = new JAutoToggleButton(controller.getAction("SelectFilteredElementAction.NODE"), applyToNodes);
+        applyToNodesBox.setSelected(applyToNodes.isSelected());
+        final AbstractButton applyToNodesAndConnectorsBox = new JAutoToggleButton(controller.getAction("SelectFilteredElementAction.NODE_AND_CONNECTOR"), applyToNodesAndConnectors);
+        applyToNodesAndConnectorsBox.setSelected(applyToNodesAndConnectors.isSelected());
+        final AbstractButton applyToConnectorsBox = new JAutoToggleButton(controller.getAction("SelectFilteredElementAction.CONNECTOR"), applyToConnectors);
+        applyToConnectorsBox.setSelected(applyToConnectors.isSelected());
 		final AbstractButton btnEdit = FreeplaneToolBar.createButton(controller.getAction("EditFilterAction"));
         getFilterConditions();
 
@@ -588,22 +646,25 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
 
 		constraints.gridy = 0;
-		constraints.gridwidth = 8;
+		constraints.gridwidth = 11;
 		constraints.gridheight = 1;
 		filterOptionPanel.add(activeFilterConditionComboBox, constraints);
 
 		constraints.gridy =1;
 		constraints.gridwidth =1;
 
-		filterOptionPanel.add(hideMatchingNodesBox, constraints);
+        filterOptionPanel.add(applyToNodesBox, constraints);
+        filterOptionPanel.add(applyToNodesAndConnectorsBox, constraints);
+        filterOptionPanel.add(applyToConnectorsBox, constraints);
 		filterOptionPanel.add(showAncestorsBox, constraints);
 		filterOptionPanel.add(showDescendantsBox, constraints);
-		filterOptionPanel.add(applyToVisibleBox, constraints);
+		filterOptionPanel.add(hideMatchingNodesBox, constraints);
 
 		constraints.weightx = 1;
 		filterOptionPanel.add(new JUnitPanel(), constraints);
 
 		constraints.weightx = 0;
+        filterOptionPanel.add(applyToVisibleBox, constraints);
 		filterOptionPanel.add(reapplyFilterBtn, constraints);
 		filterOptionPanel.add(selectFilteredNodesBtn, constraints);
 		filterOptionPanel.add(filterSelectedBtn, constraints);
@@ -692,9 +753,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         return box;
     }
 
-	protected ButtonModel getApplyToVisibleNodeOnly() {
-		return applyToVisibleNodeOnly;
-	}
+    protected ButtonModel getApplyToVisibleElementsOnly() {
+        return applyToVisibleElementsOnly;
+    }
 
 	public ConditionFactory getConditionFactory() {
 		if (conditionFactory == null) {
@@ -856,10 +917,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	            filterConditions.setSelectedItem(condition);
 	        else
 	            filterConditions.setSelectedItem(NO_FILTERING);
-	        hideMatchingNodes.setSelected(filter.areMatchingNodesHidden());
+	        hideMatchingNodes.setSelected(filter.areMatchingElementsHidden());
 	        showAncestors.setSelected(filter.areAncestorsShown());
 	        showDescendants.setSelected(filter.areDescendantsShown());
-	        applyToVisibleNodeOnly.setSelected(filter.appliesToVisibleNodesOnly());
+	        applyToVisibleElementsOnly.setSelected(filter.appliesToVisibleElementsOnly());
+	        applyToNodes.setSelected(filter.getFilteredElement() == FilteredElement.NODE);
+            applyToNodesAndConnectors.setSelected(filter.getFilteredElement() == FilteredElement.NODE_AND_CONNECTOR);
+            applyToConnectors.setSelected(filter.getFilteredElement() == FilteredElement.CONNECTOR);
 	        quickFilterAction.setSelected(isFilterActive());
 	    }
 	    finally {

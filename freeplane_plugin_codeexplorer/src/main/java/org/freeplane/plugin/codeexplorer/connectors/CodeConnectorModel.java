@@ -7,6 +7,7 @@ package org.freeplane.plugin.codeexplorer.connectors;
 
 import java.util.Objects;
 
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.codeexplorer.dependencies.DependencyVerdict;
@@ -22,6 +23,13 @@ class CodeConnectorModel extends ConnectorModel {
         this.goesUp = goesUp;
         this.dependencyVerdict = dependencyVerdict;
         int i = 0;
+    }
+
+
+
+    @Override
+    public boolean isVisible(Filter filter) {
+        return true;
     }
 
     int weight() {

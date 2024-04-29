@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Optional;
 
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.styles.IStyle;
@@ -42,11 +43,14 @@ public class ConnectorModel extends NodeLinkModel {
 	}
 
 	private ConnectorModel(final NodeModel source, final String targetID, final ConnectorProperties connectorProperties) {
-		super(source, targetID);
-		assert source != null;
-		this.connectorProperties = connectorProperties;
+	    super(source, targetID);
+	    assert source != null;
+	    this.connectorProperties = connectorProperties;
 	}
 
+	public boolean isVisible(Filter filter) {
+	    return getTarget() != null && (filter == null || filter.isVisible(this));
+	}
 
     public Optional<ConnectorShape> getShape() {
 	    return connectorProperties.getShape();

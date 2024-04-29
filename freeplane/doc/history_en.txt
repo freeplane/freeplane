@@ -1,4 +1,10 @@
 ==============================
+1.11.13
+==============================
+Filter for connectors
+Improvements for the filter hiding matches nodes
+
+==============================
 1.11.12
 ==============================
 Add PDF export to code explorer maps

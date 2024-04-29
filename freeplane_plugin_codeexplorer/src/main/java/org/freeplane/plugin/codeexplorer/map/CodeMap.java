@@ -116,8 +116,8 @@ public class CodeMap extends MMapModel {
 
 
 
-    public boolean belongsToGroup(JavaClass javaClass) {
-        return groupFinder.belongsToAnyGroup(javaClass);
+    public boolean isKnown(JavaClass javaClass) {
+        return groupFinder.isKnown(javaClass);
     }
 
     public Stream<JavaClass> allClasses() {

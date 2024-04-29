@@ -33,11 +33,11 @@ interface GroupFinder {
         }
 
         @Override
-        public boolean belongsToAnyGroup(JavaClass javaClass) {
+        public boolean isKnown(JavaClass javaClass) {
              return false;
         }
     };
-    boolean belongsToAnyGroup(JavaClass javaClass);
+    boolean isKnown(JavaClass javaClass);
     int groupIndexOf(JavaClass javaClass);
     int groupIndexOf(String groupId);
     String getIdByIndex(int index);

@@ -2089,13 +2089,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 				final ConnectorModel ref = (ConnectorModel) next;
 				if (alreadyPaintedLinks.add(ref)) {
-					final NodeModel target = ref.getTarget();
-					if (target == null) {
-						continue;
-					}
+				    if(! ref.isVisible(getFilter()))
+				        return;
 					final NodeModel source = ref.getSource();
 					final NodeView sourceView = getDisplayedNodeView(source);
-					final NodeView targetView = getDisplayedNodeView(target);
+					NodeModel target = ref.getTarget();
+                    final NodeView targetView = getDisplayedNodeView(target);
 					if(! isConnectorVisibleOnView(sourceView, targetView))
 					    continue;
 					final ILinkView arrowLink;

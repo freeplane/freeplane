@@ -58,6 +58,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.text.TextController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
@@ -218,10 +219,6 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private int horizontalAlignment = HorizontalTextAlignment.DEFAULT.swingConstant;
 	private ComponentOrientation componentOrientation = TextWritingDirection.DEFAULT.componentOrientation;
 
-	public String getTitle() {
-    	return title;
-    }
-
 	public void setTitle(String purpose) {
     	this.title = purpose;
     }
@@ -268,7 +265,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
 			htmlEditorWindow.setBase(this);
 			final String titleText;
-			titleText = TextUtils.getText(title);
+			if(getEditControl().getEditType() == EditedComponent.TEXT)
+			    titleText = TextUtils.getText(title);
+			else
+			    titleText = TextUtils.getText(title) + " (" + TextController.getController().getShortPlainText(node, 30, " ...") + ")";
 			JDialog dialog = htmlEditorWindow.getDialog();
             dialog.setTitle(titleText);
             getEditControl().getEditType().installHolder(node, dialog);

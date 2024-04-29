@@ -93,7 +93,7 @@ public class FilterHistory {
 			return;
 		}
 		final Filter previous = filters.previous();
-		if (previous.appliesToVisibleNodesOnly()) {
+		if (previous.appliesToVisibleElementsOnly()) {
 			undoImpl(selection);
 		}
 		FilterController.getCurrentFilterController().applyFilter(true, previous);

@@ -8,6 +8,7 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 
@@ -43,6 +44,11 @@ class EmptyNodeModel extends CodeNode {
 
     @Override
     Stream<Dependency> getIncomingDependencies() {
+        return Stream.empty();
+    }
+
+    @Override
+    protected Stream<JavaClass> getClasses() {
         return Stream.empty();
     }
 

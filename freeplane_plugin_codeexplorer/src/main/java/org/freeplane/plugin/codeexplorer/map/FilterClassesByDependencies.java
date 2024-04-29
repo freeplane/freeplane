@@ -53,7 +53,8 @@ class FilterClassesByDependencies extends AFreeplaneAction {
         }
         ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs);
         Filter lastFilter = selection.getFilter();
-        Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, null);
+        Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, 
+                lastFilter.getFilteredElement(), null);
         FilterController filterController = FilterController.getCurrentFilterController();
         filterController.applyFilter(selection.getMap(), false, filter);
         if(! lastFilter.areAncestorsShown()) {

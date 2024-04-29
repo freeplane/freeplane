@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.plugin.codeexplorer.configurator;
+package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 
@@ -13,7 +13,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-@SuppressWarnings("serial") class AutoResizedTable extends JTable {
+@SuppressWarnings("serial")
+public class AutoResizedTable extends JTable {
     {
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }

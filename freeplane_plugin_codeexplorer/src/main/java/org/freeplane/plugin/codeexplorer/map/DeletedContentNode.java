@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 
 import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.properties.HasName;
 
 public class DeletedContentNode extends CodeNode{
@@ -43,8 +44,12 @@ public class DeletedContentNode extends CodeNode{
     }
 
     @Override
+    protected Stream<JavaClass> getClasses() {
+        return Stream.empty();
+    }
+
+    @Override
     String getUIIconName() {
         return UI_DELETED_CONTENT_NODE_ICON_NAME;
     }
-
 }
