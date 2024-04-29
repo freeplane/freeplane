@@ -54,7 +54,7 @@
 		</Entry>
 		<Entry name="view">
 			<Entry name="controls">
-				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleMenubarAction" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ToggleLeftToolbarAction" />
 			</Entry>
