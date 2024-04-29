@@ -646,7 +646,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		FreeplaneToolBar filterOptionPanel = new FreeplaneToolBar("filterOptionPanel", JToolBar.HORIZONTAL);
 
 		constraints.gridy = 0;
-		constraints.gridwidth = 8;
+		constraints.gridwidth = 11;
 		constraints.gridheight = 1;
 		filterOptionPanel.add(activeFilterConditionComboBox, constraints);
 

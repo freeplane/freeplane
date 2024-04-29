@@ -268,7 +268,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			if(getEditControl().getEditType() == EditedComponent.TEXT)
 			    titleText = TextUtils.getText(title);
 			else
-			    titleText = TextUtils.getText(title) + " (" + TextController.getController().getShortPlainText(node) + ")";
+			    titleText = TextUtils.getText(title) + " (" + TextController.getController().getShortPlainText(node, 30, " ...") + ")";
 			JDialog dialog = htmlEditorWindow.getDialog();
             dialog.setTitle(titleText);
             getEditControl().getEditType().installHolder(node, dialog);
