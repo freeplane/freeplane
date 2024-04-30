@@ -86,31 +86,34 @@
 			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
 		</Entry>
 		<Entry name="filter">
-			<Entry name="UndoFilterAction" />
-			<Entry name="RedoFilterAction" />
-			<Entry name="ReapplyFilterAction" />
-			<Entry name="QuickFilterAction" />
-            <Entry name="QuickAndFilterAction" />
-            <Entry name="QuickOrFilterAction" />
-			<Entry name="ApplySelectedViewConditionAction" />
-			<Entry name="QuickFindAllAction" />
-			<Entry name="ApplyNoFilteringAction" />
-			<Entry name="EditFilterAction" />
-			<Entry builder="separator" />
 			<Entry name="SelectFilteredElementAction.NODE" />
 			<Entry name="SelectFilteredElementAction.NODE_AND_CONNECTOR" />
 			<Entry name="SelectFilteredElementAction.CONNECTOR" />
-			<Entry builder="separator" />
-            <Entry name="HideMatchingNodesAction" />
-			<Entry name="ShowAncestorsAction" />
+            <Entry name="ShowAncestorsAction" />
 			<Entry name="ShowDescendantsAction" />
-			<Entry name="ApplyToVisibleAction" />
+			<Entry name="HideMatchingNodesAction" />
 			<Entry builder="separator" />
-			<Entry name="QuickHighlightAction" />
-			<Entry name="QuickFindAction.BACK" />
-			<Entry name="QuickFindAction.BACK_VISIBLE" />
+			<Entry name="UndoFilterAction" />
+			<Entry name="RedoFilterAction" />
+			<Entry name="ApplyToVisibleAction" />
+			<Entry name="ReapplyFilterAction" />
+			<Entry name="SelectFilteredNodesAction" />
+			<Entry name="ApplySelectedViewConditionAction" />
+			<Entry name="ApplyNoFilteringAction" />
+			<Entry name="EditFilterAction" />
+			<Entry builder="separator" />
 			<Entry name="QuickFindAction.FORWARD_VISIBLE" />
 			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAction.FORWARD_REMOVE_FILTER" />
+			<Entry name="QuickFindAction.BACK_VISIBLE" />
+			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.BACK_REMOVE_FILTER" />
+			<Entry builder="separator" />
+			<Entry name="QuickHighlightAction" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="QuickFilterAction" />
+            <Entry name="QuickAndFilterAction" />
+            <Entry name="QuickOrFilterAction" />
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
