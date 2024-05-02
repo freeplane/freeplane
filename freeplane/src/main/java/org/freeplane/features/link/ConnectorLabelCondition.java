@@ -39,8 +39,8 @@ public abstract class ConnectorLabelCondition extends StringConditionAdapter imp
 	}
 
 	public ConnectorLabelCondition(final String text, final boolean matchCase,
-			final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+			final boolean matchApproximately, final boolean matchWordwise, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
 		this.text = text;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
@@ -53,7 +53,7 @@ public abstract class ConnectorLabelCondition extends StringConditionAdapter imp
     public boolean checkNode(final NodeModel node) {
         return NodeConnectorChecker.checkNodeConnectors(node, this);
     }
-    
+
 	protected void fillXML(final XMLElement child) {
 	    super.fillXML(child);
 		child.setAttribute(TEXT, text);
@@ -63,6 +63,6 @@ public abstract class ConnectorLabelCondition extends StringConditionAdapter imp
     protected Object conditionValue() {
         return text;
     }
-	
-	
+
+
 }

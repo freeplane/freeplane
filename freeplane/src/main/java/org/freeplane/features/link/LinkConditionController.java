@@ -70,16 +70,19 @@ public class LinkConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately,
+                                                final boolean matchApproximately,
                                                 final boolean ignoreDiacritics) {
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_LINK)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 				return new HyperLinkEqualsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
-			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new HyperLinkContainsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
-			}
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+                return new HyperLinkContainsCondition((String) value, matchCase, matchApproximately, false, ignoreDiacritics);
+            }
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)) {
+                return new HyperLinkContainsCondition((String) value, matchCase, matchApproximately, true, ignoreDiacritics);
+            }
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)) {
 				return new HyperLinkExistsCondition();
 			}
@@ -89,9 +92,12 @@ public class LinkConditionController implements IElementaryConditionController {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 				return new ConnectorLabelEqualsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
-			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new ConnectorLabelContainsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
-			}
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+                return new ConnectorLabelContainsCondition((String) value, matchCase, matchApproximately, false, ignoreDiacritics);
+            }
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)) {
+                return new ConnectorLabelContainsCondition((String) value, matchCase, matchApproximately, true, ignoreDiacritics);
+            }
 			return null;
 		}
 		if (namedObject.objectEquals(CONNECTOR)) {
@@ -112,6 +118,7 @@ public class LinkConditionController implements IElementaryConditionController {
 			linkConditionNames = new TranslatedObject[] {
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+			        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS_WORDWISE),
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST) };
 		}
 		else if (no.getObject().equals(CONNECTOR_LABEL)) {
@@ -120,9 +127,9 @@ public class LinkConditionController implements IElementaryConditionController {
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
 		}
 		else {
-			linkConditionNames = new TranslatedObject[] { 
-                    TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST), 
-                    TextUtils.createTranslatedString(ConnectorStyleCondition.FILTER_STYLE) 
+			linkConditionNames = new TranslatedObject[] {
+                    TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST),
+                    TextUtils.createTranslatedString(ConnectorStyleCondition.FILTER_STYLE)
 			        };
 		}
 		return new DefaultComboBoxModel(linkConditionNames);
@@ -144,7 +151,7 @@ public class LinkConditionController implements IElementaryConditionController {
 	    if(simpleCond.objectEquals(ConnectorStyleCondition.FILTER_STYLE)) {
 	        final MapModel map = Controller.getCurrentController().getMap();
 	        MapStyleModel styleMap = MapStyleModel.getExtension(map);
-	        IStyle[] styles = styleMap.getStyles().stream().filter(key -> 
+	        IStyle[] styles = styleMap.getStyles().stream().filter(key ->
 	         NodeLinks.getSelfConnector(styleMap.getStyleNode(key)).isPresent())
 	        .toArray(IStyle[]::new);
 	        return new DefaultComboBoxModel<>(styles);
@@ -156,7 +163,7 @@ public class LinkConditionController implements IElementaryConditionController {
 		return ((TranslatedObject) property).objectEquals(CONNECTOR_LABEL) ||
 			   ((TranslatedObject) property).objectEquals(FILTER_LINK);
 	}
-	
+
 	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
 		return ((TranslatedObject) property).objectEquals(CONNECTOR_LABEL) ||
 			   ((TranslatedObject) property).objectEquals(FILTER_LINK);
@@ -176,9 +183,12 @@ public class LinkConditionController implements IElementaryConditionController {
 			final String target = element.getAttribute(HyperLinkContainsCondition.TEXT, null);
 			final boolean matchCase = Boolean.toString(true).equals(
 				    element.getAttribute(HyperLinkContainsCondition.MATCH_CASE, null));
-			final boolean matchApproximately = Boolean.toString(true).equals(
-					element.getAttribute(HyperLinkContainsCondition.MATCH_APPROXIMATELY, null));
+            final boolean matchApproximately = Boolean.toString(true).equals(
+                    element.getAttribute(HyperLinkContainsCondition.MATCH_APPROXIMATELY, null));
+            final boolean matchWordwise = Boolean.toString(true).equals(
+                    element.getAttribute(HyperLinkContainsCondition.MATCH_WORDWISE, null));
 			return new HyperLinkContainsCondition(target, matchCase, matchApproximately,
+			        matchWordwise,
 			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(HyperLinkExistsCondition.NAME)) {
@@ -197,9 +207,11 @@ public class LinkConditionController implements IElementaryConditionController {
 			final String text = element.getAttribute(ConnectorLabelContainsCondition.TEXT, null);
 			final boolean matchCase = Boolean.toString(true).equals(
 			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
-			final boolean matchApproximately = Boolean.toString(true).equals(
-				    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_APPROXIMATELY, null));
-			return new ConnectorLabelContainsCondition(text, matchCase, matchApproximately,
+            final boolean matchApproximately = Boolean.toString(true).equals(
+                    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_APPROXIMATELY, null));
+            final boolean matchWordwise = Boolean.toString(true).equals(
+                    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_WORDWISE, null));
+			return new ConnectorLabelContainsCondition(text, matchCase, matchApproximately, matchWordwise,
 			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
         if (element.getName().equalsIgnoreCase(ConnectorExistsCondition.NAME)) {
