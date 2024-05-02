@@ -21,6 +21,7 @@ package org.freeplane.features.explorer;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ConditionFactory;
 
 /**
@@ -41,7 +42,7 @@ class AliasEqualsCondition extends AliasCondition {
 
     @Override
 	protected boolean checkAlias(final String alias) {
-		return stringMatchingStrategy.matches(normalizedValue(), normalize(alias), false);
+		return stringMatchingStrategy.matches(normalizedValue(), normalize(alias), Type.ALL);
 	}
 
 

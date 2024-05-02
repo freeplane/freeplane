@@ -22,6 +22,7 @@ package org.freeplane.features.link;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -35,14 +36,14 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 	private final StringMatchingStrategy stringMatchingStrategy;
 
 	public HyperLinkEqualsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(hyperlink, matchCase, matchApproximately, ignoreDiacritics);
+		super(hyperlink, matchCase, matchApproximately, false, ignoreDiacritics);
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	@Override
 	protected boolean checkLink(final Hyperlink nodeLink) {
-		return stringMatchingStrategy.matches(normalizedValue(), normalize(nodeLink), false);
+		return stringMatchingStrategy.matches(normalizedValue(), normalize(nodeLink), Type.ALL);
 	}
 
 	@Override
@@ -56,10 +57,10 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 	protected String getName() {
 		return NAME;
 	}
-	
+
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 	}
-	
+
 }

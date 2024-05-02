@@ -46,6 +46,17 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 	private final int costTranspos = 1;
 	private Type type;
 
+    private boolean isWordBegin(int position) {
+        if (position == 0 || position == searchText.length()) return true; // Start or end of string
+        return Character.isLetterOrDigit(searchText.charAt(position)) &&
+               ! Character.isLetterOrDigit(searchText.charAt(position - 1));
+    }
+    private boolean isWordEnd(int position) {
+        if (position == 0 || position == searchText.length()) return true; // Start or end of string
+        return Character.isLetterOrDigit(searchText.charAt(position - 1)) &&
+               ! Character.isLetterOrDigit(searchText.charAt(position));
+    }
+
 	private boolean isMatch(int i, int j)
 	{
 		char col = searchTerm.charAt(i-1);
@@ -66,12 +77,20 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 			matrix[i][0] = i*costIndel;
 
 		// first row: start-gap penalties for searchText
-		if (type == Type.Global)
+		if (type == Type.ALL)
 		{
 			for (int j = 1; j <= searchText.length(); j++)
 				matrix[0][j] = j*costIndel;
 		}
-		else if (type == Type.SemiGlobal)
+		else if (type == Type.WORDWISE)
+        {
+            for (int j = 1, letterCounter = 1; j <= searchText.length(); j++, letterCounter++) {
+                if(isWordBegin(j))
+                    letterCounter = 0;
+                matrix[0][j] = letterCounter*costIndel;
+            }
+        }
+        else if (type == Type.SUBSTRING)
 		{
 			Arrays.fill(matrix[0], 0);
 		}
@@ -95,16 +114,27 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 		  	}
 		}
 		//writeMatrix(matrix);
-		if (type == Type.Global)
+		if (type == Type.ALL)
 		{
 			return matrix[searchTerm.length()][searchText.length()];
 		}
-		else
+		else if (type == Type.WORDWISE) {
+            int min = Integer.MAX_VALUE;
+            for (int j = searchText.length(), letterCounter = 0; j >= 0; j--, letterCounter++)
+            {
+                if(isWordEnd(j))
+                    letterCounter = 0;
+                min = Math.min(min, matrix[searchTerm.length()][j] + letterCounter * costIndel);
+            }
+            return min;
+
+		}
+		else // if (type == Type.SUBSTRING)
 		{
 			int min = Integer.MAX_VALUE;
-			for (int j = 1; j <= searchText.length()+1; j++)
+			for (int j = 0; j <= searchText.length(); j++)
 			{
-				min = Math.min(min, matrix[searchTerm.length()][j-1]);
+				min = Math.min(min, matrix[searchTerm.length()][j]);
 			}
 			return min;
 		}
@@ -112,13 +142,10 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 	}
 	private float getMatchProb(final int distance)
 	{
-		if (type == Type.SemiGlobal)
-		{
-			return 1.0F - ((float)distance / searchTerm.length());
-		}
-		else
-		{
+		if (type == Type.ALL) {
 			return 1.0F - ((float)distance / Math.min(searchTerm.length(), searchText.length()));
+		} else {
+			return 1.0F - ((float)distance / searchTerm.length());
 		}
 	}
 
@@ -138,7 +165,7 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 
 	@Override
     public void init(String searchTerm, String searchText,
-			boolean subStringMatch)
+			Type matchType)
 	{
 		if (searchTerm == null || searchText == null)
 		{
@@ -147,14 +174,14 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 
         this.searchTerm = searchTerm;
         this.searchText = searchText;
- 		this.type = subStringMatch ? Type.SemiGlobal : Type.Global;
+ 		this.type = matchType;
 	}
 
 	@Override
     public boolean matches(String searchTerm, String searchText,
-			boolean subStringMatch)
+            Type matchType)
 	{
-		init(searchTerm, searchText, subStringMatch);
+		init(searchTerm, searchText, matchType);
 
 		return matchProb() > StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB;
 	}
