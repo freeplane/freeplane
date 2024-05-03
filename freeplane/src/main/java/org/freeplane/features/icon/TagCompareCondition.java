@@ -62,7 +62,7 @@ public class TagCompareCondition extends StringConditionAdapter {
 	public TagCompareCondition(final String content, final boolean matchCase,
 	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics
 	                                 ) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+		super(matchCase, matchApproximately, false, ignoreDiacritics);
         this.conditionContent = content;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;

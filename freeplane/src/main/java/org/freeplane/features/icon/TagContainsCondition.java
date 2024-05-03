@@ -42,6 +42,7 @@ public class TagContainsCondition extends StringConditionAdapter {
             element.getAttribute(VALUE, null),
             Boolean.valueOf(element.getAttribute(MATCH_CASE, null)),
             Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
             Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null))
 		    );
 	}
@@ -53,8 +54,9 @@ public class TagContainsCondition extends StringConditionAdapter {
     /**
 	 */
 	public TagContainsCondition(final String value, final boolean matchCase,
-			final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+			final boolean matchApproximately,
+			final boolean matchWordwise, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
         this.value = value;
         this.comparedValue = value;
         this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
@@ -80,7 +82,7 @@ public class TagContainsCondition extends StringConditionAdapter {
 	}
 
 	private boolean checkText(String text) {
-	    return stringMatchingStrategy.matches(normalizedValue(), normalize(text), true);
+	    return stringMatchingStrategy.matches(normalizedValue(), normalize(text), substringMatchType());
     }
 
 	@Override

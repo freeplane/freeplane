@@ -100,7 +100,10 @@ class IconConditionController implements IElementaryConditionController {
                 return new TagMatchesCondition(comparedString.toString(), matchCase);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-                return new TagContainsCondition(comparedString, matchCase, matchApproximately, ignoreDiacritics);
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, false, ignoreDiacritics);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)) {
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, true, ignoreDiacritics);
             }
         }
         return null;
@@ -131,6 +134,7 @@ class IconConditionController implements IElementaryConditionController {
     public Object[] getTagConditionNames() {
         return new TranslatedObject[] {
                 TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS_WORDWISE),
                 TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP),
                 TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
                 TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
