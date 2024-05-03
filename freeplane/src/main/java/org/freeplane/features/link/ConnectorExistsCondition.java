@@ -31,7 +31,7 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_exists";
 
 	public ConnectorExistsCondition() {
-		super(null, false, false, false);
+		super(null, false, false, false, false);
 	}
 
 	@Override
@@ -53,5 +53,5 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	@Override
     protected void fillXML(XMLElement element) {
     }
-	
+
 }

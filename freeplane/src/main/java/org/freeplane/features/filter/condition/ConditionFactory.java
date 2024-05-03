@@ -40,13 +40,14 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  */
 public class ConditionFactory {
-	public static final String FILTER_CONTAINS = "filter_contains";
+    public static final String FILTER_CONTAINS = "filter_contains";
+    public static final String FILTER_CONTAINS_WORDWISE = "filter_contains_wordwise";
 	public static final String FILTER_DOES_NOT_EXIST = "filter_does_not_exist";
 	public static final String FILTER_EXIST = "filter_exist";
 	public static final String FILTER_GE = ">=";
 	public static final String FILTER_GT = ">";
 	public static final String FILTER_MATCH_CASE = "filter_match_case";
-	public static final String FILTER_MATCH_APPROX = "filter_match_approximately";
+    public static final String FILTER_MATCH_APPROX = "filter_match_approximately";
 	public static final String FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
 	public static final String FILTER_IS_EQUAL_TO = "filter_is_equal_to";
 	public static final String FILTER_STARTS_WITH = "filter_starts_with";
@@ -54,7 +55,7 @@ public class ConditionFactory {
 	public static final String FILTER_LE = "<=";
 	public static final String FILTER_LT = "<";
 	public static final String FILTER_REGEXP = "filter_regexp_matches";
-	
+
 	private static final DecoratedConditionFactory DECORATED_CONDITION_FACTORY = new DecoratedConditionFactory();
 
 	static public JComponent createCellRendererComponent(final String description) {

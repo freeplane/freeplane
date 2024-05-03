@@ -44,7 +44,7 @@ class PurgeAction extends AFreeplaneAction {
 	@Override
     public void actionPerformed(final ActionEvent e) {
 		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_node",
-		    MModeController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION,
+		    "code.really_remove_node",
 		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

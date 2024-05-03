@@ -25,6 +25,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
@@ -49,7 +50,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 
 	@SuppressWarnings("deprecation")
 	protected CompareConditionAdapter(final Object value, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+		super(matchCase, matchApproximately, false, ignoreDiacritics);
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -82,14 +83,14 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	}
 
 	protected CompareConditionAdapter(final Double value) {
-		super(false, false, false);
+		super(false, false, false, false);
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	protected CompareConditionAdapter(final Long value) {
-	    super(false, false, false);
+	    super(false, false, false, false);
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
@@ -142,7 +143,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 		final String text = normalize(transformedContent);
 		if (isEqualityCondition())
 		{
-			return stringMatchingStrategy.matches(normalizedValue, text, false) ? 0 : -1;
+			return stringMatchingStrategy.matches(normalizedValue, text, Type.ALL) ? 0 : -1;
 		}
 		else
 		{

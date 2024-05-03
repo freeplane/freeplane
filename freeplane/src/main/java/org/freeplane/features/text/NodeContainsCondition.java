@@ -21,8 +21,8 @@ package org.freeplane.features.text;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -37,6 +37,7 @@ public class NodeContainsCondition extends StringConditionAdapter implements Nod
 			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE),
 			element.getAttribute(NodeContainsCondition.VALUE, null),
 			false, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+			Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
 			Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
 	}
 
@@ -45,14 +46,20 @@ public class NodeContainsCondition extends StringConditionAdapter implements Nod
             element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE),
             element.getAttribute(NodeContainsCondition.VALUE, null),
             true, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
             Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
     }
 	final private String value;
 	final private String nodeItem;
 	final StringMatchingStrategy stringMatchingStrategy;
 
-	public NodeContainsCondition(String nodeItem, final String value, boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+	public NodeContainsCondition(String nodeItem,
+	        final String value,
+	        boolean matchCase,
+	        final boolean matchApproximately,
+	        final boolean matchWordwise,
+	        boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
 		this.value = value;
 		//this.valueLowerCase = value.toLowerCase();
 		this.nodeItem = nodeItem;
@@ -74,14 +81,13 @@ public class NodeContainsCondition extends StringConditionAdapter implements Nod
 	}
 
 	private boolean checkText(final Object o) {
-		return o != null && stringMatchingStrategy.matches(normalizedValue(), normalize(o), true);
+		return o != null && stringMatchingStrategy.matches(normalizedValue(), normalize(o), substringMatchType());
 	}
 
 	@Override
 	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(nodeItem);
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return createDescription(nodeCondition, simpleCondition, value);
+		return createDescription(nodeCondition, containsDescription(), value);
 	}
 
 	@Override

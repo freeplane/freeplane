@@ -43,7 +43,11 @@ public class MaybeBooleanProperty extends PropertyBean implements IPropertyContr
     /**
      */
     public MaybeBooleanProperty(final String name) {
-		super(name);
+        this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
+    }
+
+    public MaybeBooleanProperty(final String name, final String label, final String tooltip) {
+		super(name, label, tooltip);
 		mButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {

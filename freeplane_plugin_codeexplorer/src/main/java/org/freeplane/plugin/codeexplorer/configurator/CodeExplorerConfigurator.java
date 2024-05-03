@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,11 +39,14 @@ import javax.swing.table.TableColumn;
 
 import org.freeplane.core.ui.components.AutoResizedTable;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
@@ -286,6 +290,11 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         int minSelectionIndex = selectionModel.getMinSelectionIndex();
         if(minSelectionIndex == -1)
             return;
+        final int showResult = OptionalDontShowMeAgainDialog.show("code.really_remove_configurations",
+                MessageType.ONLY_OK_SELECTION_IS_STORED);
+        if (showResult != JOptionPane.OK_OPTION) {
+            return;
+        }
         int maxSelectionIndex = selectionModel.getMaxSelectionIndex();
         for(int row = maxSelectionIndex; row >= minSelectionIndex; row--) {
             configTableModel.removeRow(row);
@@ -381,6 +390,14 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private void removeSelectedLocations() {
         int[] selectedRows = locationsTable.getSelectedRows();
+        if(selectedRows.length == 0)
+            return;
+        final int showResult = OptionalDontShowMeAgainDialog.show("code.really_remove_locations",
+                MessageType.ONLY_OK_SELECTION_IS_STORED);
+        if (showResult != JOptionPane.OK_OPTION) {
+            return;
+        }
+
         Arrays.sort(selectedRows);
         int removedRowCount = 0;
         for (int selectedIndex : selectedRows) {
