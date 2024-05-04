@@ -39,20 +39,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EventObject;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DropMode;
 import javax.swing.Icon;
@@ -74,10 +78,15 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -94,7 +103,7 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.core.util.collection.SortedComboBoxModel;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -113,21 +122,21 @@ class TagEditor {
 
     private static class TagsWrapper extends AbstractTableModel {
         private static final long serialVersionUID = 1L;
-        private final ArrayList<Tag> tags;
+        private final ArrayList<CategorizedTag> tags;
 
 
-        public TagsWrapper(ArrayList<Tag> tags) {
+        public TagsWrapper(ArrayList<CategorizedTag> tags) {
             super();
             this.tags = tags;
         }
 
-        public List<Tag> getTags() {
+        public List<CategorizedTag> getTags() {
             return new ArrayList<>(tags);
         }
 
         public void insertEmptyTags(int first, int last) {
             for(int index = last; index >= first; index--)
-                tags.add(first, Tag.EMPTY_TAG);
+                tags.add(first, CategorizedTag.EMPTY_TAG);
             fireTableRowsInserted(first, last);
          }
 
@@ -158,19 +167,19 @@ class TagEditor {
             return getTag(rowIndex);
         }
 
-        Tag getTag(int index) {
-            return index < tags.size() ? tags.get(index) : Tag.EMPTY_TAG;
+        CategorizedTag getTag(int index) {
+            return index < tags.size() ? tags.get(index) : CategorizedTag.EMPTY_TAG;
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if(columnIndex == 0) {
-                Tag tag = (Tag)aValue;
+                CategorizedTag tag = (CategorizedTag)aValue;
                 setTag(rowIndex, tag);
             }
         }
 
-        void setTag(int index, Tag tag) {
+        void setTag(int index, CategorizedTag tag) {
             int tagCount = tags.size();
             if(index < tagCount) {
                 tags.set(index, tag);
@@ -200,7 +209,7 @@ class TagEditor {
             fireTableRowsUpdated(first, last);
         }
 
-        public void insertTag(int index, Tag tag) {
+        public void insertTag(int index, CategorizedTag tag) {
             if(index < 0)
                 index = tags.size();
             tags.add(index, tag);
@@ -210,20 +219,20 @@ class TagEditor {
         public void moveTag(int oldIndex, int newIndex) {
             if(oldIndex != newIndex) {
                 if(newIndex >= tags.size())
-                    insertTag(tags.size(), Tag.EMPTY_TAG);
-                Tag tag;
+                    insertTag(tags.size(), CategorizedTag.EMPTY_TAG);
+                CategorizedTag tag;
                 if(oldIndex < tags.size())
                     tag = removeTag(oldIndex);
                 else {
-                    tag = Tag.EMPTY_TAG;
+                    tag = CategorizedTag.EMPTY_TAG;
                 }
                 if(newIndex <= tags.size())
                     insertTag(newIndex, tag);
             }
         }
 
-        public Tag removeTag(int index) {
-            Tag tag = tags.remove(index);
+        public CategorizedTag removeTag(int index) {
+            CategorizedTag tag = tags.remove(index);
             fireTableRowsDeleted(index, index);
             return tag;
         }
@@ -245,8 +254,8 @@ class TagEditor {
 
             for (int row : rows) {
                 Object cellValue = table.getValueAt(row, col);
-                if (cellValue instanceof Tag) {
-                    values.add(((Tag) cellValue).getContent());
+                if (cellValue instanceof CategorizedTag) {
+                    values.add(((CategorizedTag) cellValue).getContent());
                 } else if (cellValue != null) {
                     values.add(cellValue.toString());
                 } else {
@@ -295,7 +304,7 @@ class TagEditor {
             TableModel model = target.getModel();
             String[] rows = data.split("\n");
             for (String row : rows)
-                ((TagsWrapper) model).insertTag(index++, createTag(row));
+                ((TagsWrapper) model).insertTag(index++, createTagIfAbsent(row));
         }
 
         @Override
@@ -314,10 +323,11 @@ class TagEditor {
     private MIconController iconController;
     private JTable tagTable;
     private JDialog dialog;
-    private List<Tag> originalTags;
-    private final Map<String, Tag> newTags;
+    private List<CategorizedTag> originalNodeTags;
+    private final Map<String, CategorizedTag> categorizedTags;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
+    private boolean filterIsRunning;
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -363,11 +373,20 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        newTags = new HashMap<>();
-        originalTags = iconController.getTags(node).stream()
-                .map(tag -> newTags.computeIfAbsent(tag.getContent(), x -> tag.copy()))
-                .collect(Collectors.toList());
-        tagTable = createTagTable(originalTags);
+        categorizedTags = new TreeMap<>();
+        categorizedTags.put("", CategorizedTag.EMPTY_TAG);
+        final List<CategorizedTag> userDefinedCategorizedTags = iconController.getTagCategories().categorizedTags(iconRegistry());
+        userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.tag().getContent(), x -> tag));
+        originalNodeTags = new ArrayList<>();
+        iconController.getTags(node).stream()
+                .map(tag -> {
+                    final UncategorizedTag uncategorizedTag = new UncategorizedTag(tag.copy());
+                    return categorizedTags.computeIfAbsent(
+                            uncategorizedTag.getContent(),
+                            x -> uncategorizedTag);
+                })
+                .forEach(originalNodeTags::add);
+        tagTable = createTagTable(originalNodeTags);
         ActionMap am = tagTable.getActionMap();
         TagCategories tagCategories = iconController.getTagCategories();
         JMenuBar menubar = new JMenuBar();
@@ -413,12 +432,13 @@ class TagEditor {
         if(! tagCategories.isEmpty()) {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
+                    iconRegistry(),
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
         }
         menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
 
-        tagTable.setRowSelectionInterval(0, 0);
+        tagTable.changeSelection(0, 0, true, false);
         editorScrollPane.setViewportView(tagTable);
         editorScrollPane.addComponentListener(new ComponentAdapter() {
 
@@ -513,10 +533,12 @@ class TagEditor {
     }
     private void insertSelectedTagsIntoSelectedNodes() {
         final List<Tag> selectedTags = IntStream.of(tagTable.getSelectedRows())
-        .mapToObj(row -> (Tag)tagTable.getValueAt(row, 0))
+        .mapToObj(row -> (CategorizedTag)tagTable.getValueAt(row, 0))
+        .map(CategorizedTag::tag)
         .collect(Collectors.toList());
         iconController.insertTagsIntoSelectedNodes(selectedTags);
     }
+
     private void insertTags() {
         ListSelectionModel selectionModel = tagTable.getSelectionModel();
         int minSelectedRow = selectionModel.getMinSelectionIndex();
@@ -528,7 +550,7 @@ class TagEditor {
         int selectedRow = tagTable.getSelectedRow();
         if(selectedRow < 0)
             return;
-        Tag tag = (Tag) tagTable.getValueAt(selectedRow, 0);
+        Tag tag = ((CategorizedTag) tagTable.getValueAt(selectedRow, 0)).tag();
         if(tag.isEmpty())
             return;
 
@@ -566,12 +588,17 @@ class TagEditor {
         }
         dialog.setVisible(true);
     }
-    protected void submit() {
-        List<Tag> tags = getCurrentTags();
-        iconController.setTags(node, tags, true);
 
+    protected void submit() {
+        List<CategorizedTag> tags = getCurrentTags();
+        iconController.setTags(node, tags.stream().map(CategorizedTag::tag).collect(Collectors.toList()), true);
+        final TagCategories tagCategories = iconController.getTagCategories();
+        tags.stream().filter(NewCategorizedTag.class::isInstance)
+        .forEach(tagCategories::register);
     }
-    private List<Tag> getCurrentTags() {
+
+
+    private List<CategorizedTag> getCurrentTags() {
         return getTableModel().getTags();
     }
 
@@ -581,14 +608,21 @@ class TagEditor {
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }
-    private Tag createTag(String string) {
-        Tag tag = node.getMap().getIconRegistry().createTag(string);
-        if(! tag.getColor().isPresent())
-            tag.setColor(iconController.getTagCategories().getColor(tag));
-        return tag;
+    private CategorizedTag createTagIfAbsent(String string) {
+        return categorizedTags.computeIfAbsent(string, this::createTag);
+    }
+    private CategorizedTag createTag(String string) {
+        final String[] categoriesAndTag = string.trim().split("::");
+        if(categoriesAndTag.length > 0) {
+            final List<Tag> tagList = Stream.of(categoriesAndTag)
+                    .map(iconRegistry()::createTag)
+                    .collect(Collectors.toList());
+            return new NewCategorizedTag(tagList);
+        } else
+            return new UncategorizedTag(iconRegistry().createTag(string));
     }
 
-    private JTable createTagTable(List<Tag> tags) {
+    private JTable createTagTable(List<CategorizedTag> tags) {
         JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags))) {
 
             @Override
@@ -630,15 +664,65 @@ class TagEditor {
                 if(value == null)
                     setIcon(null);
                 else {
-                    Tag tag = value instanceof Tag ? (Tag)value : createTag(value.toString());
-                    setIcon(new TagIcon(tag, table.getFont()));
+                    CategorizedTag tag = value instanceof CategorizedTag ? (CategorizedTag)value : createTagIfAbsent(value.toString());
+                    setIcon(new TagIcon(tag.categorizedTag(), table.getFont()));
                 }
             }
 
         });
 
-        SortedComboBoxModel<Tag> knownTags = node.getMap().getIconRegistry().getTagsAsListModel();
-        JComboBox<Tag> cellEditorComponent = new JComboBox<>(knownTags);
+        @SuppressWarnings("serial")
+        JComboBox<CategorizedTag> comboBox = new JComboBox<CategorizedTag>(){
+
+            @Override
+            public void configureEditor(ComboBoxEditor anEditor, Object anItem) {
+                if(! filterIsRunning)
+                    super.configureEditor(anEditor, anItem);
+            }
+
+        };
+        Timer timer = new Timer(200, x -> filterItems(comboBox, false));
+        timer.setRepeats(false);
+        DocumentListener documentListener = new DocumentListener() {
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(! filterIsRunning)
+                    timer.restart();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(! filterIsRunning)
+                    timer.restart();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(! filterIsRunning)
+                    timer.restart();
+            }
+        };
+        comboBox.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                filterItems(comboBox, false);
+                JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
+                textField.getDocument().addDocumentListener(documentListener);
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
+                textField.getDocument().removeDocumentListener(documentListener);
+
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+            }
+        });
+
         @SuppressWarnings("serial")
         DefaultListCellRenderer cellRenderer = new DefaultListCellRenderer() {
 
@@ -649,35 +733,37 @@ class TagEditor {
                 if(value == null)
                     icon = null;
                 else {
-                    Tag tag = value instanceof Tag ? (Tag)value : createTag(value.toString());
-                    icon = new TagIcon(tag, table.getFont());
+                    CategorizedTag tag = value instanceof CategorizedTag ? (CategorizedTag)value : createTagIfAbsent(value.toString());
+                    icon = new TagIcon(tag.categorizedTag(), table.getFont());
                 }
                 return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
             }};
-        cellEditorComponent.setRenderer(cellRenderer);
-        cellEditorComponent.setEditable(true);
-        DefaultCellEditor cellEditor = new DefaultCellEditor(cellEditorComponent) {
+        comboBox.setRenderer(cellRenderer);
+        filterItems(comboBox, true);
+        comboBox.setEditable(true);
+        DefaultCellEditor cellEditor = new DefaultCellEditor(comboBox) {
             private static final long serialVersionUID = 1L;
 
             @Override
             public Object getCellEditorValue() {
                 Object value = super.getCellEditorValue();
-                if(value instanceof Tag)
+                if(value instanceof CategorizedTag)
                     return value;
                 else
-                    return newTags.computeIfAbsent(value.toString(),
-                            content -> node.getMap().getIconRegistry().createTag(content).copy());
+                    return categorizedTags.computeIfAbsent(value.toString(),
+                            content -> createTag(content));
             }
 
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value,
                     boolean isSelected, int row, int column) {
-                 return super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                final String text = (value instanceof CategorizedTag) ? ((CategorizedTag)value).getContent() : value.toString();
+                return super.getTableCellEditorComponent(table, text, isSelected, row, column);
             }
 
             @Override
             public boolean isCellEditable(EventObject anEvent) {
-               if(anEvent instanceof MouseEvent)
+                if(anEvent instanceof MouseEvent)
                    return super.isCellEditable(anEvent);
                else if(anEvent instanceof KeyEvent) {
                 KeyEvent keyEvent = (KeyEvent)anEvent;
@@ -686,6 +772,13 @@ class TagEditor {
             } else
                    return false;
             }
+
+            @Override
+            public boolean stopCellEditing() {
+                 return ! filterIsRunning && super.stopCellEditing();
+            }
+
+
         };
         cellEditor.setClickCountToStart(2);
         table.getColumnModel().getColumn(0).setCellEditor(cellEditor);
@@ -715,9 +808,32 @@ class TagEditor {
         ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
         inputMap.put(acceleratorManager.getAccelerator("NodeUpAction"), "moveSelectedLocationsUp");
         inputMap.put(acceleratorManager.getAccelerator("NodeDownAction"), "moveSelectedLocationsDown");
-
         return table;
     }
+
+    private void filterItems(JComboBox<CategorizedTag> comboBox, boolean init) {
+        if(filterIsRunning)
+            return;
+        filterIsRunning = true;
+        try {
+            final DefaultComboBoxModel<CategorizedTag> model = (DefaultComboBoxModel<CategorizedTag>) comboBox.getModel();
+            model.removeAllElements();
+            JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
+            final String text = textField.getText();
+            Collection<CategorizedTag> items = categorizedTags.values();
+            final Stream<CategorizedTag> tagStream = items.stream();
+            if(init || text.isEmpty() || categorizedTags.keySet().stream().anyMatch(item -> item.equals(text))) {
+                tagStream
+                .forEach(model::addElement);
+            } else
+                tagStream
+                .filter(item -> item.getContent().toLowerCase().contains(text.toLowerCase()))
+                .forEach(model::addElement);
+        } finally {
+          filterIsRunning = false;
+        }
+    }
+
 
 	private void configureDialog(JDialog dialog) {
 		dialog.setModal(false);
@@ -739,7 +855,7 @@ class TagEditor {
 
     private void confirmedSubmit() {
         if (dialog.isVisible()) {
-            if (!originalTags.equals(getCurrentTags())) {
+            if (!originalNodeTags.equals(getCurrentTags())) {
                 final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
                     JOptionPane.YES_NO_CANCEL_OPTION);
 
@@ -785,7 +901,7 @@ class TagEditor {
         if(firstIndex == -1) {
             return;
         }
-        Tag tag = (Tag) tagTable.getValueAt(firstIndex, 0);
+        CategorizedTag tag = (CategorizedTag) tagTable.getValueAt(firstIndex, 0);
         if(tag.isEmpty()) {
             modifyColorAction.setEnabled(false);
             colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
@@ -793,7 +909,7 @@ class TagEditor {
         }
         else {
             modifyColorAction.setEnabled(true);
-            colorButton.setColor(tag.getIconColor());
+            colorButton.setColor(tag.tag().getIconColor());
         }
     }
 
@@ -833,6 +949,9 @@ class TagEditor {
                 tagTable.getSelectionModel().setValueIsAdjusting(false);
             });
         }
+    }
+    private IconRegistry iconRegistry() {
+        return node.getMap().getIconRegistry();
     }
 
 }

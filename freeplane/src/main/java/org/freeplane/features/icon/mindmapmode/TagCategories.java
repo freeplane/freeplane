@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -206,5 +209,22 @@ class TagCategories {
 
     Optional<Color> getColor(Tag tag) {
         return registry.getTagColor(tag);
+    }
+
+    List<CategorizedTag> categorizedTags(IconRegistry iconRegistry){
+        final DefaultMutableTreeNode rootNode = getRootNode();
+        final Enumeration<DefaultMutableTreeNode> breadthFirstEnumeration = rootNode.breadthFirstEnumeration();
+        breadthFirstEnumeration.nextElement();
+        final LinkedList<CategorizedTag> tags = new LinkedList<>();
+        while(breadthFirstEnumeration.hasMoreElements()) {
+            final DefaultMutableTreeNode node = breadthFirstEnumeration.nextElement();
+            final Tag tag = (Tag) node.getUserObject();
+            tags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
+        }
+        return tags;
+    }
+
+    void register(CategorizedTag tag) {
+
     }
 }

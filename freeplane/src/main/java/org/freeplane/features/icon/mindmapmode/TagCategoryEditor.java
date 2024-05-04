@@ -115,7 +115,7 @@ class TagCategoryEditor {
                 if (userObject instanceof Tag) {
                     Tag tag = (Tag) userObject;
 
-                    if (leaf && value != rootNode) {
+                    if (value != rootNode) {
                         setText(null);
                         setIcon(new TagIcon(tag, getFont())); // Example of
                                                               // setting
@@ -634,7 +634,7 @@ class TagCategoryEditor {
             StringWriter writer = new StringWriter();
             for(TreePath path: selectionPaths) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                TagCategories.writeTagCategories(node, "", true, writer);
+                TagCategories.writeTagCategories(node, "", writer);
             }
             String serializedData = writer.toString();
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

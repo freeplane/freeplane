@@ -701,13 +701,13 @@ public class MIconController extends IconController {
         }
     }
 
-    public JMenu createTagSubmenu(String name, Consumer<Tag> action) {
+    public JMenu createTagSubmenu(String name, IconRegistry iconRegistry, Consumer<CategorizedTag> action) {
         JMenu menu = TranslatedElementFactory.createMenu(name);
-        fillTagSubmenuOnSelect(menu, action, tagCategories.getRootNode());
+        fillTagSubmenuOnSelect(menu, iconRegistry, action, tagCategories.getRootNode());
         return menu;
     }
 
-    private void fillTagSubmenuOnSelect(final JMenu menu, Consumer<Tag> action, DefaultMutableTreeNode categoryNode) {
+    private void fillTagSubmenuOnSelect(final JMenu menu, IconRegistry iconRegistry, Consumer<CategorizedTag> action, DefaultMutableTreeNode categoryNode) {
         menu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -721,11 +721,13 @@ public class MIconController extends IconController {
                     Tag tag = (Tag) itemNode.getUserObject();
                     TagIcon icon = new TagIcon(tag, menu.getFont());
                     JMenuItem actionItem = new JMenuItem(icon);
-                    actionItem.addActionListener(x -> action.accept(tag));
+                    actionItem.addActionListener(x -> action.accept(
+                            new CategorizedTagForCategoryNode(categoryNode, iconRegistry.getTag(tag)
+                            )));
                     menu.add(actionItem);
                     if(!itemNode.isLeaf()) {
                         final JMenu submenu = new JMenu(tag.getContent());
-                        fillTagSubmenuOnSelect(submenu, action, itemNode);
+                        fillTagSubmenuOnSelect(submenu, iconRegistry, action, itemNode);
                         menu.add(submenu);
                     }
                 }

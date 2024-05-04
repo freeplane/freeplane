@@ -19,11 +19,11 @@ public class Tag implements Comparable<Tag>{
     private final String content;
     private Optional<Color> color;
 
-    Tag(String content) {
+    public Tag(String content) {
         this(content, Optional.empty());
     }
 
-    private Tag(String content, Optional<Color> color) {
+    public Tag(String content, Optional<Color> color) {
         this.content = content;
         this.color = color;
     }
