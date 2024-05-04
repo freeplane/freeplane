@@ -719,14 +719,11 @@ public class MIconController extends IconController {
                 for (int i = 0; i < categoryNode.getChildCount(); i++) {
                     DefaultMutableTreeNode itemNode = (DefaultMutableTreeNode) categoryNode.getChildAt(i);
                     Tag tag = (Tag) itemNode.getUserObject();
-                    if(itemNode.isLeaf()) {
-                        TagIcon icon = new TagIcon(tag, menu.getFont());
-                        JMenuItem actionItem = new JMenuItem(icon);
-                        actionItem.addActionListener(x -> action.accept(tag));
-                        menu.add(actionItem);
-
-                    }
-                    else {
+                    TagIcon icon = new TagIcon(tag, menu.getFont());
+                    JMenuItem actionItem = new JMenuItem(icon);
+                    actionItem.addActionListener(x -> action.accept(tag));
+                    menu.add(actionItem);
+                    if(!itemNode.isLeaf()) {
                         final JMenu submenu = new JMenu(tag.getContent());
                         fillTagSubmenuOnSelect(submenu, action, itemNode);
                         menu.add(submenu);
