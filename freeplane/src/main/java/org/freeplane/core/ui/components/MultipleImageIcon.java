@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -120,18 +121,24 @@ public class MultipleImageIcon implements Icon {
 	}
 
 	@Override
-    public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
-		int myX = x;
-		for (final Icon icon : mIcons) {
-			icon.paintIcon(c, g, myX, y);
-			myX += icon.getIconWidth();
-		}
-		int graphicalIconHeight = getGraphicalIconHeight();
-        int myY = graphicalIconHeight == 0 ? y : y + TAG_GAP + graphicalIconHeight;
-        for (final Icon icon : mTags) {
-            icon.paintIcon(c, g, x, myY);
-            myY += TAG_GAP + icon.getIconHeight();
-        }
+	public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
+	    boolean isLeftToRight = c.getComponentOrientation().isLeftToRight();
+	    final int graphicalIconWidth = isLeftToRight ? getGraphicalIconWidth() : 0;
+	    final int iconWidth = isLeftToRight ? getIconWidth() : 0;
+	    {
+	        int myX = isLeftToRight ? x + iconWidth - graphicalIconWidth : x;
+	        for (final Icon icon : mIcons) {
+	            icon.paintIcon(c, g, myX, y);
+	            myX += icon.getIconWidth();
+	        }
+	    }
+	    int graphicalIconHeight = getGraphicalIconHeight();
+	    int myY = graphicalIconHeight == 0 ? y : y + TAG_GAP + graphicalIconHeight;
+	    for (final Icon icon : mTags) {
+	        final int myX = isLeftToRight ? x + iconWidth - icon.getIconWidth() : x;
+	        icon.paintIcon(c, g, myX, myY);
+	        myY += TAG_GAP + icon.getIconHeight();
+	    }
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
