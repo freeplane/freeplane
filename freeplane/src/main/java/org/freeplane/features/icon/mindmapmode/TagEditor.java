@@ -43,10 +43,8 @@ import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -809,6 +807,8 @@ class TagEditor {
         else if(e.getType() == TableModelEvent.DELETE)
             EventQueue.invokeLater(() ->
             tagTable.getSelectionModel().setSelectionInterval(e.getFirstRow(), e.getFirstRow()));
+        else if(e.getType() == TableModelEvent.UPDATE && e.getFirstRow() == tagTable.getSelectedRow())
+            EventQueue.invokeLater(this::updateColorButton);
     }
 
     private void deleteTags() {
