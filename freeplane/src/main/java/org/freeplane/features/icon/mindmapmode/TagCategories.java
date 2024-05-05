@@ -225,6 +225,31 @@ class TagCategories {
     }
 
     void register(CategorizedTag tag) {
+        List<Tag> categoryTags = tag.categoryTags();
+        DefaultMutableTreeNode rootNode = getRootNode();
 
+        DefaultMutableTreeNode currentNode = rootNode;
+
+        for (Tag currentTag : categoryTags) {
+            boolean found = false;
+
+            for (@SuppressWarnings("unchecked")
+            Enumeration<DefaultMutableTreeNode> children = currentNode.children(); children.hasMoreElements();) {
+                DefaultMutableTreeNode childNode = children.nextElement();
+                Tag childTag = (Tag) childNode.getUserObject();
+
+                if (childTag.equals(currentTag)) {
+                    currentNode = childNode;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(currentTag.copy());
+                currentNode.add(newNode);
+                currentNode = newNode;
+            }
+        }
     }
 }
