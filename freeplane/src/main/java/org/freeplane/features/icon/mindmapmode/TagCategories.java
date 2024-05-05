@@ -24,28 +24,41 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 
 class TagCategories {
     private final IconRegistry registry = new IconRegistry();
     final DefaultTreeModel nodes;
+    private final TreeInverseMap<Tag> nodesByTags;
     private File tagCategoryFile;
 
     TagCategories(final File tagCategoryFile){
         this.tagCategoryFile = tagCategoryFile;
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(TextUtils.getRawText("tags"));
-        nodes = new DefaultTreeModel(rootNode);
+        nodes = new DefaultTreeModel(rootNode) {
+
+            @Override
+            public void valueForPathChanged(TreePath path, Object newValue) {
+                nodesByTags.valueForPathChanged(path, (Tag)newValue);
+                super.valueForPathChanged(path, newValue);
+            }
+
+        };
+        nodesByTags = new TreeInverseMap(nodes);
         load();
     }
 
     TagCategories(DefaultTreeModel nodes, File tagCategoryFile) {
         super();
         this.nodes = nodes;
+        nodesByTags = new TreeInverseMap(nodes);
         this.tagCategoryFile = tagCategoryFile;
     }
 
@@ -88,20 +101,26 @@ class TagCategories {
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(readTag(line.trim()));
 
             if (indentation == lastIndentation) {
-                ((DefaultMutableTreeNode) lastNode.getParent()).add(newNode);
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) lastNode.getParent();
+                addNode(parent, newNode);
             } else if (indentation > lastIndentation) {
-                lastNode.add(newNode);
+                addNode(lastNode, newNode);
             } else {
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) lastNode.getParent();
                 for (int i = 0; i < (lastIndentation - indentation); i++) {
                     parent = (DefaultMutableTreeNode) parent.getParent();
                 }
-                parent.add(newNode);
+                addNode(parent, newNode);
             }
 
             lastNode = newNode;
             lastIndentation = indentation;
         }
+    }
+
+    private void addNode(DefaultMutableTreeNode parent, DefaultMutableTreeNode newChild) {
+        parent.add(newChild);
+        nodes.nodesWereInserted(parent, new int[] {parent.getChildCount() - 1});
     }
 
     private int getIndentationLevel(String line) {
@@ -204,7 +223,6 @@ class TagCategories {
         try(Scanner st = new Scanner(new StringReader(data))){
             readTagCategories(parent, st);
         }
-        nodes.nodeStructureChanged(parent);
     }
 
     Optional<Color> getColor(Tag tag) {
@@ -222,6 +240,15 @@ class TagCategories {
             tags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
         }
         return tags;
+    }
+
+    List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
+        final LinkedList<CategorizedTag> categorizedTags = new LinkedList<>();
+        for(Tag tag : tags) {
+            for(DefaultMutableTreeNode node : nodesByTags.getNodes(tag))
+                categorizedTags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
+        }
+        return categorizedTags;
     }
 
     void register(CategorizedTag tag) {
@@ -247,7 +274,7 @@ class TagCategories {
 
             if (!found) {
                 DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(currentTag.copy());
-                currentNode.add(newNode);
+                addNode(currentNode, newNode);
                 currentNode = newNode;
             }
         }

@@ -96,6 +96,7 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.map.NodeModel;

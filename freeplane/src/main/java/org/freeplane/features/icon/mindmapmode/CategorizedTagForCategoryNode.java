@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.Tag;
 
 class CategorizedTagForCategoryNode implements CategorizedTag {

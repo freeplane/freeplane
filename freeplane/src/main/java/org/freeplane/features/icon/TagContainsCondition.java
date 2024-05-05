@@ -19,23 +19,23 @@
  */
 package org.freeplane.features.icon;
 
+import java.util.List;
+
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.attribute.IAttributeTableModel;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
 public class TagContainsCondition extends StringConditionAdapter {
-	static final String NAME = "tag_contains_condition";
+	private static final String NAME = "tag_contains_condition";
     static final String VALUE = "VALUE";
+    private static final String SEARCH_IN_CATEGORIES = "SEARCH_IN_CATEGORIES";
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new TagContainsCondition(
@@ -43,11 +43,13 @@ public class TagContainsCondition extends StringConditionAdapter {
             Boolean.valueOf(element.getAttribute(MATCH_CASE, null)),
             Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
             Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
-            Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null))
+            Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)),
+            Boolean.valueOf(element.getAttribute(SEARCH_IN_CATEGORIES, null))
 		    );
 	}
 
 	final private String value;
+	final private boolean searchesInCategories;
 	final private String comparedValue;
     final private StringMatchingStrategy stringMatchingStrategy;
 
@@ -55,12 +57,14 @@ public class TagContainsCondition extends StringConditionAdapter {
 	 */
 	public TagContainsCondition(final String value, final boolean matchCase,
 			final boolean matchApproximately,
-			final boolean matchWordwise, boolean ignoreDiacritics) {
+			final boolean matchWordwise, boolean ignoreDiacritics,
+			boolean searchesInCategories) {
 		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
         this.value = value;
         this.comparedValue = value;
+        this.searchesInCategories = searchesInCategories;
         this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
-        	StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
+            StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	/*
@@ -69,21 +73,28 @@ public class TagContainsCondition extends StringConditionAdapter {
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final NodeModel node) {
-		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
-		final TextController textController = TextController.getController();
-		 final IconController iconController = IconController.getController();
-		 for (Tag tag : iconController.getTags(node)) {
-			    if (checkText(tag.getContent()))
-					return true;
+	@Override
+    public boolean checkNode(final NodeModel node) {
+	    final IconController iconController = IconController.getController();
+	    final List<Tag> tags = iconController.getTags(node);
+	    if(searchesInCategories) {
+	        final List<CategorizedTag> categorizedTags = iconController.categorizedTags(tags, node.getMap().getIconRegistry());
+	        for (CategorizedTag tag : categorizedTags) {
+	            if (checkText(tag.getContent()))
+	                return true;
+	        }
+	    }
+	    for (Tag tag : tags) {
+	        if (checkText(tag.getContent()))
+	            return true;
 
-		}
-		return false;
+	    }
+	    return false;
 	}
 
 	private boolean checkText(String text) {
 	    return stringMatchingStrategy.matches(normalizedValue(), normalize(text), substringMatchType());
-    }
+	}
 
 	@Override
 	protected String createDescription() {
@@ -94,6 +105,8 @@ public class TagContainsCondition extends StringConditionAdapter {
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
+		if(searchesInCategories)
+		    child.setAttribute(SEARCH_IN_CATEGORIES, "true");
         child.setAttribute(VALUE, value);
 	}
 

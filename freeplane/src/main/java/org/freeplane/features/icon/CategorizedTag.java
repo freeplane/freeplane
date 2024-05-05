@@ -3,14 +3,14 @@
  *
  * author dimitry
  */
-package org.freeplane.features.icon.mindmapmode;
+package org.freeplane.features.icon;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.mindmapmode.UncategorizedTag;
 
 public interface CategorizedTag extends Comparable<CategorizedTag> {
     CategorizedTag EMPTY_TAG = new UncategorizedTag(Tag.EMPTY_TAG);

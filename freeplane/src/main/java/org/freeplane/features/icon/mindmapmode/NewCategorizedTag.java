@@ -7,6 +7,7 @@ package org.freeplane.features.icon.mindmapmode;
 
 import java.util.List;
 
+import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.Tag;
 
 public class NewCategorizedTag implements CategorizedTag {

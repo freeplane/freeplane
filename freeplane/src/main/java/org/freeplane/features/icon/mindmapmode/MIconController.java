@@ -77,6 +77,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
@@ -765,6 +766,10 @@ public class MIconController extends IconController {
         final List<CategorizedTag> userDefinedCategorizedTags = getTagCategories().categorizedTags(iconRegistry);
         userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.getContent(), x -> tag));
         return categorizedTags;
+    }
+
+    public List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
+        return getTagCategories().categorizedTags(tags, iconRegistry);
     }
 
 }

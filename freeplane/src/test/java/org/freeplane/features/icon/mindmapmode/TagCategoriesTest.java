@@ -14,6 +14,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.assertj.core.api.Assertions;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.mindmapmode.TagCategories;
 import org.junit.Test;
 
 public class TagCategoriesTest {
