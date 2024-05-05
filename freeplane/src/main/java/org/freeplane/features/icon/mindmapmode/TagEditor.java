@@ -39,7 +39,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
@@ -47,6 +46,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -56,7 +56,6 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DropMode;
 import javax.swing.Icon;
@@ -78,15 +77,10 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -98,6 +92,7 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.AutoResizedTable;
+import org.freeplane.core.ui.components.JFilterableComboBox;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
@@ -327,7 +322,6 @@ class TagEditor {
     private final Map<String, CategorizedTag> categorizedTags;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
-    private boolean filterIsRunning;
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -672,56 +666,9 @@ class TagEditor {
         });
 
         @SuppressWarnings("serial")
-        JComboBox<CategorizedTag> comboBox = new JComboBox<CategorizedTag>(){
-
-            @Override
-            public void configureEditor(ComboBoxEditor anEditor, Object anItem) {
-                if(! filterIsRunning)
-                    super.configureEditor(anEditor, anItem);
-            }
-
-        };
-        Timer timer = new Timer(200, x -> filterItems(comboBox, false));
-        timer.setRepeats(false);
-        DocumentListener documentListener = new DocumentListener() {
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if(! filterIsRunning)
-                    timer.restart();
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                if(! filterIsRunning)
-                    timer.restart();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                if(! filterIsRunning)
-                    timer.restart();
-            }
-        };
-        comboBox.addPopupMenuListener(new PopupMenuListener() {
-
-            @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                filterItems(comboBox, false);
-                JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
-                textField.getDocument().addDocumentListener(documentListener);
-            }
-
-            @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
-                textField.getDocument().removeDocumentListener(documentListener);
-
-            }
-
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-            }
-        });
+        JFilterableComboBox<CategorizedTag> comboBox = new JFilterableComboBox<>(() -> categorizedTags.values(),
+                (items, text) -> text.isEmpty() || categorizedTags.keySet().stream().anyMatch(item -> item.equals(text)),
+                (item, text) -> item.getContent().toLowerCase().contains(text.toLowerCase()));
 
         @SuppressWarnings("serial")
         DefaultListCellRenderer cellRenderer = new DefaultListCellRenderer() {
@@ -739,7 +686,6 @@ class TagEditor {
                 return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
             }};
         comboBox.setRenderer(cellRenderer);
-        filterItems(comboBox, true);
         comboBox.setEditable(true);
         DefaultCellEditor cellEditor = new DefaultCellEditor(comboBox) {
             private static final long serialVersionUID = 1L;
@@ -775,7 +721,7 @@ class TagEditor {
 
             @Override
             public boolean stopCellEditing() {
-                 return ! filterIsRunning && super.stopCellEditing();
+                 return ! comboBox.isFilterRunning() && super.stopCellEditing();
             }
 
 
@@ -811,31 +757,8 @@ class TagEditor {
         return table;
     }
 
-    private void filterItems(JComboBox<CategorizedTag> comboBox, boolean init) {
-        if(filterIsRunning)
-            return;
-        filterIsRunning = true;
-        try {
-            final DefaultComboBoxModel<CategorizedTag> model = (DefaultComboBoxModel<CategorizedTag>) comboBox.getModel();
-            model.removeAllElements();
-            JTextField textField = (JTextField) comboBox.getEditor().getEditorComponent();
-            final String text = textField.getText();
-            Collection<CategorizedTag> items = categorizedTags.values();
-            final Stream<CategorizedTag> tagStream = items.stream();
-            if(init || text.isEmpty() || categorizedTags.keySet().stream().anyMatch(item -> item.equals(text))) {
-                tagStream
-                .forEach(model::addElement);
-            } else
-                tagStream
-                .filter(item -> item.getContent().toLowerCase().contains(text.toLowerCase()))
-                .forEach(model::addElement);
-        } finally {
-          filterIsRunning = false;
-        }
-    }
 
-
-	private void configureDialog(JDialog dialog) {
+    private void configureDialog(JDialog dialog) {
 		dialog.setModal(false);
 	}
 
