@@ -213,11 +213,11 @@ class TagCategories {
 
     List<CategorizedTag> categorizedTags(IconRegistry iconRegistry){
         final DefaultMutableTreeNode rootNode = getRootNode();
-        final Enumeration<DefaultMutableTreeNode> breadthFirstEnumeration = rootNode.breadthFirstEnumeration();
+        final Enumeration<?> breadthFirstEnumeration = rootNode.breadthFirstEnumeration();
         breadthFirstEnumeration.nextElement();
         final LinkedList<CategorizedTag> tags = new LinkedList<>();
         while(breadthFirstEnumeration.hasMoreElements()) {
-            final DefaultMutableTreeNode node = breadthFirstEnumeration.nextElement();
+            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadthFirstEnumeration.nextElement();
             final Tag tag = (Tag) node.getUserObject();
             tags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
         }
