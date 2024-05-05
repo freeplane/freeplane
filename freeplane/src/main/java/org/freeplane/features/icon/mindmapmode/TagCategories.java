@@ -234,8 +234,8 @@ class TagCategories {
             boolean found = false;
 
             for (@SuppressWarnings("unchecked")
-            Enumeration<DefaultMutableTreeNode> children = currentNode.children(); children.hasMoreElements();) {
-                DefaultMutableTreeNode childNode = children.nextElement();
+            Enumeration<?> children = currentNode.children(); children.hasMoreElements();) {
+                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) children.nextElement();
                 Tag childTag = (Tag) childNode.getUserObject();
 
                 if (childTag.equals(currentTag)) {
