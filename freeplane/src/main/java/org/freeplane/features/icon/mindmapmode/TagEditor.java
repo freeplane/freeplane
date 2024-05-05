@@ -123,17 +123,17 @@ class TagEditor {
             this.tags = tags;
         }
 
-        public List<CategorizedTag> getTags() {
-            return new ArrayList<>(tags);
+        List<CategorizedTag> getCategorizedTags() {
+            return tags;
         }
 
-        public void insertEmptyTags(int first, int last) {
+        void insertEmptyTags(int first, int last) {
             for(int index = last; index >= first; index--)
                 tags.add(first, CategorizedTag.EMPTY_TAG);
             fireTableRowsInserted(first, last);
          }
 
-        public void deleteTags(int first, int last) {
+        void deleteTags(int first, int last) {
             int lastRemoved = last < tags.size() ? last : tags.size() - 1;
             int firstRemoved;
             if(last == tags.size() && first > 0 && getTag(first).isEmpty() && tags.get(first - 1).isEmpty())
@@ -316,8 +316,9 @@ class TagEditor {
     private MIconController iconController;
     private JTable tagTable;
     private JDialog dialog;
-    private List<CategorizedTag> originalNodeTags;
-    private final Map<String, CategorizedTag> categorizedTags;
+    private List<Tag> originalNodeTags;
+    private final Map<String, CategorizedTag> qualifiedCategorizedTags;
+    private final Map<String, CategorizedTag> unqualifiedCategorizedTags;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
 
@@ -365,20 +366,24 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        categorizedTags = new TreeMap<>();
-        categorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        final List<CategorizedTag> userDefinedCategorizedTags = iconController.getTagCategories().categorizedTags(iconRegistry());
-        userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.tag().getContent(), x -> tag));
-        originalNodeTags = new ArrayList<>();
-        iconController.getTags(node).stream()
+        qualifiedCategorizedTags = iconController.getCategorizedTagsByContent(iconRegistry());
+        originalNodeTags = iconController.getTags(node);
+
+        qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
+        List<CategorizedTag> originalNodeCategorizedTags = originalNodeTags.stream()
                 .map(tag -> {
                     final UncategorizedTag uncategorizedTag = new UncategorizedTag(tag.copy());
-                    return categorizedTags.computeIfAbsent(
+                    return qualifiedCategorizedTags.computeIfAbsent(
                             uncategorizedTag.getContent(),
                             x -> uncategorizedTag);
                 })
-                .forEach(originalNodeTags::add);
-        tagTable = createTagTable(originalNodeTags);
+                .collect(Collectors.toList());
+
+        unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
+                .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
+                .collect(Collectors.toMap(tag -> tag.tag().getContent(), tag -> tag, (x, y) -> y));
+
+        tagTable = createTagTable(originalNodeCategorizedTags);
         ActionMap am = tagTable.getActionMap();
         TagCategories tagCategories = iconController.getTagCategories();
         JMenuBar menubar = new JMenuBar();
@@ -430,7 +435,6 @@ class TagEditor {
         menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
 
-        tagTable.changeSelection(0, 0, true, false);
         editorScrollPane.setViewportView(tagTable);
         editorScrollPane.addComponentListener(new ComponentAdapter() {
 
@@ -485,6 +489,7 @@ class TagEditor {
 
         tagTable.getSelectionModel().addListSelectionListener(this::updateColorButton);
         tagTable.getModel().addTableModelListener(this::selectRowsAfterUpdate);
+        tagTable.changeSelection(0, 0, true, false);
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
@@ -591,7 +596,7 @@ class TagEditor {
 
 
     private List<CategorizedTag> getCurrentTags() {
-        return getTableModel().getTags();
+        return getTableModel().getCategorizedTags();
     }
 
     private JRestrictedSizeScrollPane createScrollPane() {
@@ -601,7 +606,8 @@ class TagEditor {
         return scrollPane;
     }
     private CategorizedTag createTagIfAbsent(String string) {
-        return categorizedTags.computeIfAbsent(string, this::createTag);
+        final CategorizedTag categorizedTag = unqualifiedCategorizedTags.get(string);
+        return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags.computeIfAbsent(string, this::createTag);
     }
     private CategorizedTag createTag(String string) {
         final String[] categoriesAndTag = string.trim().split("::");
@@ -664,8 +670,8 @@ class TagEditor {
         });
 
         @SuppressWarnings("serial")
-        JFilterableComboBox<CategorizedTag> comboBox = new JFilterableComboBox<>(() -> categorizedTags.values(),
-                (items, text) -> text.isEmpty() || categorizedTags.keySet().stream().anyMatch(item -> item.equals(text)),
+        JFilterableComboBox<CategorizedTag> comboBox = new JFilterableComboBox<>(() -> qualifiedCategorizedTags.values(),
+                (items, text) -> text.isEmpty() || qualifiedCategorizedTags.keySet().stream().anyMatch(item -> item.equals(text)),
                 (item, text) -> item.getContent().toLowerCase().contains(text.toLowerCase()));
 
         @SuppressWarnings("serial")
@@ -694,7 +700,7 @@ class TagEditor {
                 if(value instanceof CategorizedTag)
                     return value;
                 else
-                    return categorizedTags.computeIfAbsent(value.toString(),
+                    return qualifiedCategorizedTags.computeIfAbsent(value.toString(),
                             content -> createTag(content));
             }
 

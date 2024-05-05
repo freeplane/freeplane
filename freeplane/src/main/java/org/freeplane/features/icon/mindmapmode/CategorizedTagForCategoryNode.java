@@ -17,18 +17,18 @@ import org.freeplane.features.icon.Tag;
 
 class CategorizedTagForCategoryNode implements CategorizedTag {
     private final DefaultMutableTreeNode categoryNode;
-    private final Optional<Tag> registeredTag;
+    private final Tag registeredTag;
 
     CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode, Optional<Tag> registeredTag) {
         super();
         this.categoryNode = categoryNode;
-        this.registeredTag = registeredTag;
+        this.registeredTag = registeredTag.orElseGet(this::nodeTag).copy();
     }
 
 
     @Override
     public Tag tag() {
-        return registeredTag.orElseGet(this::nodeTag);
+        return registeredTag;
     }
 
     private Tag nodeTag() {

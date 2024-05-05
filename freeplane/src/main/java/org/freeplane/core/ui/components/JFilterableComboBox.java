@@ -5,6 +5,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.EventQueue;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Collection;
@@ -83,7 +84,7 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
             @Override
             public void focusGained(FocusEvent e) {
                 if(! isPopupVisible())
-                    showPopup();
+                    EventQueue.invokeLater(JFilterableComboBox.this::showPopup);
             }
 
         });

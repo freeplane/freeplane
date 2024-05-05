@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -757,6 +758,13 @@ public class MIconController extends IconController {
         .filter(tag -> ! existingTagSet.contains(tag))
         .forEach(newTags::add);
         setTags(node, newTags, false);
+    }
+
+    public Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry iconRegistry) {
+        TreeMap<String, CategorizedTag> categorizedTags = new TreeMap<>();
+        final List<CategorizedTag> userDefinedCategorizedTags = getTagCategories().categorizedTags(iconRegistry);
+        userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.getContent(), x -> tag));
+        return categorizedTags;
     }
 
 }
