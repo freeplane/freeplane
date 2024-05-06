@@ -40,10 +40,6 @@ class CategorizedTagForCategoryNode implements CategorizedTag {
             return Tag.EMPTY_TAG;
     }
 
-    String content() {
-        return tag().getContent();
-    }
-
    @Override
    public List<Tag> categoryTags() {
        if((DefaultMutableTreeNode) categoryNode.getParent() == null)
@@ -57,6 +53,6 @@ class CategorizedTagForCategoryNode implements CategorizedTag {
 
    @Override
    public String toString() {
-       return "CategorizedTagForCategoryNode [content()=" + content() + "]";
+       return "CategorizedTagForCategoryNode [getContent()=" + getContent() + "]";
    }
 }

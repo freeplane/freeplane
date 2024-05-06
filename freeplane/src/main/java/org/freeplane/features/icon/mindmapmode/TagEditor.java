@@ -371,14 +371,7 @@ class TagEditor {
         originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        List<CategorizedTag> originalNodeCategorizedTags = originalNodeTags.stream()
-                .map(tag -> {
-                    final UncategorizedTag uncategorizedTag = new UncategorizedTag(tag.copy());
-                    return qualifiedCategorizedTags.computeIfAbsent(
-                            uncategorizedTag.getContent(),
-                            x -> uncategorizedTag);
-                })
-                .collect(Collectors.toList());
+        List<CategorizedTag> originalNodeCategorizedTags = iconController.categorizedTags(originalNodeTags, iconRegistry());
 
         unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))

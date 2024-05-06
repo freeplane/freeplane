@@ -627,7 +627,12 @@ public class MIconController extends IconController {
     public void setTags(NodeModel node, List<Tag> newTags, boolean overwriteColors) {
         MapModel map = node.getMap();
         IconRegistry iconRegistry = map.getIconRegistry();
-        List<Tag> registeredTags = newTags.stream().map(iconRegistry::registryTag).collect(Collectors.toList());
+        Set<Tag> filteringSet = new HashSet<>();
+        List<Tag> newTagsWithoutDuplicates = newTags.stream()
+                .filter(tag -> tag.isEmpty() || filteringSet.add(tag))
+                .collect(Collectors.toList());
+        List<Tag> registeredTags = newTagsWithoutDuplicates.stream()
+                .map(iconRegistry::registryTag).collect(Collectors.toList());
         List<Tag> oldTags = getTags(node);
         IActor actor = new IActor() {
 
@@ -652,10 +657,10 @@ public class MIconController extends IconController {
         };
         modeController.execute(actor, map);
         if(overwriteColors) {
-            IntStream.range(0, newTags.size())
-            .filter(tagIndex -> ! newTags.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
+            IntStream.range(0, newTagsWithoutDuplicates.size())
+            .filter(tagIndex -> ! newTagsWithoutDuplicates.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
             .forEach(tagIndex -> {
-                Tag newTag = newTags.get(tagIndex);
+                Tag newTag = newTagsWithoutDuplicates.get(tagIndex);
                 Optional<Color> newColor = newTag.getColor();
                 setTagColor(map, newTag, newColor);
             });

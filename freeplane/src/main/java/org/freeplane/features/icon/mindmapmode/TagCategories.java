@@ -245,8 +245,12 @@ class TagCategories {
     List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
         final LinkedList<CategorizedTag> categorizedTags = new LinkedList<>();
         for(Tag tag : tags) {
-            for(DefaultMutableTreeNode node : nodesByTags.getNodes(tag))
-                categorizedTags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
+            if(tag.isEmpty())
+                categorizedTags.add(CategorizedTag.EMPTY_TAG);
+            else {
+                for(DefaultMutableTreeNode node : nodesByTags.getNodes(tag))
+                    categorizedTags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
+            }
         }
         return categorizedTags;
     }
@@ -278,5 +282,6 @@ class TagCategories {
                 currentNode = newNode;
             }
         }
+        save();
     }
 }
