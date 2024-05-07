@@ -375,7 +375,7 @@ class TagEditor {
 
         unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
-                .collect(Collectors.toMap(tag -> tag.tag().getContent(), tag -> tag, (x, y) -> y));
+                .collect(Collectors.toMap(tag -> tag.tag().getContent(), tag -> tag, (x, y) -> x));
 
         tagTable = createTagTable(originalNodeCategorizedTags);
         ActionMap am = tagTable.getActionMap();
@@ -656,7 +656,7 @@ class TagEditor {
                 if(value == null)
                     setIcon(null);
                 else {
-                    CategorizedTag tag = value instanceof CategorizedTag ? (CategorizedTag)value : createTagIfAbsent(value.toString());
+                    CategorizedTag tag =  (CategorizedTag)value;
                     setIcon(new TagIcon(tag.categorizedTag(), table.getFont()));
                 }
             }
@@ -678,7 +678,7 @@ class TagEditor {
                 if(value == null)
                     icon = null;
                 else {
-                    CategorizedTag tag = value instanceof CategorizedTag ? (CategorizedTag)value : createTagIfAbsent(value.toString());
+                    CategorizedTag tag = (CategorizedTag)value;
                     icon = new TagIcon(tag.categorizedTag(), table.getFont());
                 }
                 return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
@@ -694,8 +694,7 @@ class TagEditor {
                 if(value instanceof CategorizedTag)
                     return value;
                 else
-                    return qualifiedCategorizedTags.computeIfAbsent(value.toString(),
-                            content -> createTag(content));
+                    return createTagIfAbsent(value.toString());
             }
 
             @Override
