@@ -44,7 +44,6 @@ import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -130,7 +129,7 @@ class TagEditor {
 
         void insertEmptyTags(int first, int last) {
             for(int index = last; index >= first; index--)
-                tags.add(first, CategorizedTag.EMPTY_TAG);
+                tags.add(first <= tags.size() ? first : tags.size(), CategorizedTag.EMPTY_TAG);
             fireTableRowsInserted(first, last);
          }
 
@@ -534,7 +533,9 @@ class TagEditor {
         ListSelectionModel selectionModel = tagTable.getSelectionModel();
         int minSelectedRow = selectionModel.getMinSelectionIndex();
         if(minSelectedRow >= 0) {
-            getTableModel().insertEmptyTags(minSelectedRow, selectionModel.getMaxSelectionIndex());
+            final int maxSelectionRow = selectionModel.getMaxSelectionIndex();
+            final int count = maxSelectionRow - minSelectedRow + 1;
+            getTableModel().insertEmptyTags(minSelectedRow + count, maxSelectionRow + count);
         }
     }
     private void modifyTagColor() {
