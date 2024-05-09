@@ -1,22 +1,14 @@
-/*
- * Created on 4 Apr 2024
- *
- * author dimitry
- */
+// Copyright (C) 2024  Dimitry Polivaev, macmarrum (at) outlook (dot) ie
+// SPDX-License-Identifier: GPL-2.0-or-later
 package org.freeplane.plugin.script.proxy;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.Tag;
-import org.freeplane.features.icon.Tags;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
@@ -28,12 +20,11 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     @Override
-    public List<String> getStrings() {
+    public List<String> getKeywords() {
         MIconController iconController = iconController();
         return iconController.getTags(getDelegate()).stream()
                 .map(Tag::getContent)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -47,58 +38,58 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     @Override
-    public void setTags(Collection<String> tags) {
+    public void setKeywords(Collection<String> tags) {
         List<Tag> tagList = freeplaneTags(tags);
         MIconController iconController = iconController();
         iconController.setTags(getDelegate(),
                 tagList, false);
     }
 
-    private List<Tag> freeplaneTags(Collection<String> tags) {
-        return tags.stream()
+    private List<Tag> freeplaneTags(Collection<String> keywords) {
+        return keywords.stream()
         .map(this::createTag)
         .collect(Collectors.toList());
     }
 
     @Override
-    public void addTag(String tag) {
+    public void add(String keyword) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        tagList.add(createTag(tag));
+        tagList.add(createTag(keyword));
         iconController.setTags(getDelegate(), tagList, false);
     }
 
-    private Tag createTag(String tag) {
-        return getDelegate().getMap().getIconRegistry().createTag(tag);
+    private Tag createTag(String keyword) {
+        return getDelegate().getMap().getIconRegistry().createTag(keyword);
     }
 
     @Override
-    public void addTag(int index, String tag) {
+    public void add(int index, String keyword) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        tagList.add(index, createTag(tag));
-        iconController.setTags(getDelegate(), tagList, false);
-    }
-
-    @Override
-    public void addAllTags(Collection<String> tags) {
-        MIconController iconController = iconController();
-        ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        tagList.addAll(freeplaneTags(tags));
+        tagList.add(index, createTag(keyword));
         iconController.setTags(getDelegate(), tagList, false);
     }
 
     @Override
-    public boolean removeTag(String tag) {
+    public void add(Collection<String> keywords) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        boolean result = tagList.remove(createTag(tag));
+        tagList.addAll(freeplaneTags(keywords));
+        iconController.setTags(getDelegate(), tagList, false);
+    }
+
+    @Override
+    public boolean remove(String keyword) {
+        MIconController iconController = iconController();
+        ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
+        boolean result = tagList.remove(createTag(keyword));
         iconController.setTags(getDelegate(), tagList, false);
         return result;
     }
 
     @Override
-    public String removeTag(int index) {
+    public String remove(int index) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
         Tag result = tagList.remove(index);
@@ -107,29 +98,27 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     @Override
-    public boolean removeAllTags(Collection<String> tags) {
+    public boolean remove(Collection<String> keywords) {
         MIconController iconController = iconController();
         ArrayList<Tag> tagList = new ArrayList<>(iconController.getTags(getDelegate()));
-        boolean result = tagList.removeAll(freeplaneTags(tags));
+        boolean result = tagList.removeAll(freeplaneTags(keywords));
         iconController.setTags(getDelegate(), tagList, false);
         return result;
     }
 
     @Override
-    public boolean contains(String tag) {
-        return getStrings().contains(tag);
-
+    public boolean contains(String keyword) {
+        return getKeywords().contains(keyword);
     }
 
     @Override
-    public boolean containsAny(Collection<String> tags) {
-        Set<String> set = new HashSet<>(getStrings());
-        return tags.stream().anyMatch(set::contains);
-
+    public boolean containsAny(Collection<String> keywords) {
+        Set<String> set = new HashSet<>(getKeywords());
+        return keywords.stream().anyMatch(set::contains);
     }
 
     @Override
-    public boolean containsAll(Collection<String> tags) {
-        return getStrings().containsAll(tags);
+    public boolean containsAll(Collection<String> keywords) {
+        return new HashSet<>(getKeywords()).containsAll(keywords);
     }
 }
