@@ -59,6 +59,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -85,6 +86,9 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
     private static final String CATEGORIES_ATTRIBUTE = "categories";
+    private static final String EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "map_tag_category_separator";
+    private static final String INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "node_tag_category_separator";
+
     private static final String TAGS_ELEMENT = "tags";
     public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
@@ -230,6 +234,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     private static final String TAG_COLOR_ATTRIBUTE_PREFIX = "tagcolor";
 	protected class MyXmlReader extends XmlReader{
 
+
         @Override
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (null == super.createElement(parent, tag, attributes)){
@@ -277,7 +282,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		            String valueAsString = attribute.getValue().toString();
 		            if(CATEGORIES_ATTRIBUTE.equals(key)) {
 		                iconRegistry.getTagCategories().load(valueAsString);
-		            }
+		            } else if(EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
+                        iconRegistry.getTagCategories().setTagCategorySeparatorForMap(valueAsString);
+                    } else if(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
+                        iconRegistry.getTagCategories().setTagCategorySeparatorForNode(valueAsString);
+                    }
 		            else {
 		                int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
 		                if(separatorIndex > 0) {
@@ -791,9 +800,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     private void saveTagProperties(IconRegistry iconRegistry, XMLElement element) {
         final XMLElement xmlElement = new XMLElement(TAGS_ELEMENT);
         int[] tagColorCounter = {0};
-        final String tagCategories = iconRegistry.getTagCategories().serialize();
-        if(! tagCategories.isEmpty())
-            xmlElement.setAttribute(CATEGORIES_ATTRIBUTE, tagCategories);
+        final TagCategories tagCategories = iconRegistry.getTagCategories();
+        final String serializedTagCategories = tagCategories.serialize();
+        if(! serializedTagCategories.isEmpty())
+            xmlElement.setAttribute(CATEGORIES_ATTRIBUTE, serializedTagCategories);
+        xmlElement.setAttribute(EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForMap());
+        xmlElement.setAttribute(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForNode());
+
         iconRegistry.getTagsAsListModel().stream()
         .filter(tag -> tag.getColor().isPresent())
         .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],

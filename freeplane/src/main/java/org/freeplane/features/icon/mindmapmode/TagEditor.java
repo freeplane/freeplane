@@ -44,6 +44,7 @@ import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -51,6 +52,7 @@ import java.util.stream.Stream;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListCellRenderer;
@@ -74,9 +76,12 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
@@ -99,6 +104,7 @@ import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
@@ -249,7 +255,7 @@ class TagEditor {
             for (int row : rows) {
                 Object cellValue = table.getValueAt(row, col);
                 if (cellValue instanceof CategorizedTag) {
-                    values.add(((CategorizedTag) cellValue).getContent());
+                    values.add(((CategorizedTag) cellValue).getContent(getTagCategorySeparatorForMapField()));
                 } else if (cellValue != null) {
                     values.add(cellValue.toString());
                 } else {
@@ -322,6 +328,9 @@ class TagEditor {
     private final Map<String, CategorizedTag> unqualifiedCategorizedTags;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
+    private final JTextField tagCategorySeparatorForMapField;
+    private final JTextField tagCategorySeparatorForNodeField;
+
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -356,7 +365,12 @@ class TagEditor {
         sortButton.addActionListener(e -> sortSelectedTags());
 
         colorButton.addActionListener(e -> modifyTagColor());
+        final Box controlPane = Box.createVerticalBox();
+        final JPanel separatorPane = new JPanel();
         final JPanel buttonPane = new JPanel();
+        controlPane.add(separatorPane);
+        controlPane.add(buttonPane);
+
         buttonPane.add(enterConfirms);
         buttonPane.add(okButton);
         buttonPane.add(cancelButton);
@@ -378,9 +392,39 @@ class TagEditor {
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
                 .collect(Collectors.toMap(tag -> tag.tag().getContent(), tag -> tag, (x, y) -> x));
 
+        TagCategories tagCategories = iconRegistry.getTagCategories().copy(iconRegistry);
+        tagCategorySeparatorForMapField = new JTextField(10);
+        tagCategorySeparatorForMapField.setText(tagCategories.getTagCategorySeparatorForMap());
+        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.map_tag_category_separator"));
+        separatorPane.add(tagCategorySeparatorForMapField);
+        tagCategorySeparatorForNodeField = new JTextField(10);
+        tagCategorySeparatorForNodeField.setText(tagCategories.getTagCategorySeparatorForNode());
+        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.node_tag_category_separator"));
+        separatorPane.add(tagCategorySeparatorForNodeField);
+
         tagTable = createTagTable(originalNodeCategorizedTags);
+        tagCategorySeparatorForMapField.getDocument().addDocumentListener(new DocumentListener() {
+            Timer timer;
+            {
+                timer = new Timer(200, x -> tagTable.tableChanged(new TableModelEvent(getTableModel())));
+                timer.setRepeats(false);
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                timer.restart();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                timer.restart();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                timer.restart();
+            }
+        });
         ActionMap am = tagTable.getActionMap();
-        TagCategories tagCategories = iconRegistry.getTagCategories();
         JMenuBar menubar = new JMenuBar();
         JMenu editMenu = TranslatedElementFactory.createMenu("edit");
         JMenuItem addTagMenuItem = TranslatedElementFactory.createMenuItem("menu_addTag");
@@ -488,7 +532,7 @@ class TagEditor {
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
-        contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
+        contentPane.add(controlPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
         node.addExtension(new TagEditorHolder(node, dialog));
         configureDialog(dialog);
         restoreDialogSize(dialog);
@@ -584,11 +628,30 @@ class TagEditor {
     }
 
     protected void submit() {
+        final MapModel map = node.getMap();
+        final TagCategories tagCategories = getTagCategories().copy(map.getIconRegistry());
+        boolean categoriesChanged = false;
+        if(! tagCategorySeparatorForMapField.getText().equals(tagCategories.getTagCategorySeparatorForMap())) {
+            tagCategories.setTagCategorySeparatorForMap(tagCategorySeparatorForMapField.getText());
+            categoriesChanged = true;
+        }
+        if(! tagCategorySeparatorForNodeField.getText().equals(tagCategories.getTagCategorySeparatorForNode())) {
+            tagCategories.setTagCategorySeparatorForNode(tagCategorySeparatorForNodeField.getText());
+            categoriesChanged = true;
+        }
+
         List<CategorizedTag> tags = getCurrentTags();
+        categoriesChanged = tags.stream().filter(NewCategorizedTag.class::isInstance)
+        .filter(tagCategories::register)
+        .count() > 0 || categoriesChanged;
+
+        if(categoriesChanged)
+            iconController.setTagCategories(map, tagCategories);
+
         iconController.setTags(node, tags.stream().map(CategorizedTag::tag).collect(Collectors.toList()), true);
-        final TagCategories tagCategories = iconRegistry().getTagCategories();
-        tags.stream().filter(NewCategorizedTag.class::isInstance)
-        .forEach(tagCategories::register);
+    }
+    private TagCategories getTagCategories() {
+        return iconRegistry().getTagCategories();
     }
 
 
@@ -607,8 +670,12 @@ class TagEditor {
         return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags.computeIfAbsent(string, this::createTag);
     }
     private CategorizedTag createTag(String string) {
-        final String[] categoriesAndTag = string.trim().split(CategorizedTag.tagCategorySeparator());
-        if(categoriesAndTag.length > 0) {
+        final String tagCategorySeparatorForMap = getTagCategorySeparatorForMapField();
+        final String tagCategorySeparatorForNode = getTagCategorySeparatorForNodeField();
+        final String[] categoriesAndTag = ! tagCategorySeparatorForNode.contains(tagCategorySeparatorForMap)
+                ? string.trim().split(Pattern.quote(tagCategorySeparatorForMap))
+                : new String[] {string.trim()};
+        if(categoriesAndTag.length > 1) {
             final List<Tag> tagList = Stream.of(categoriesAndTag)
                     .map(iconRegistry()::createTag)
                     .collect(Collectors.toList());
@@ -660,7 +727,7 @@ class TagEditor {
                     setIcon(null);
                 else {
                     CategorizedTag tag =  (CategorizedTag)value;
-                    setIcon(new TagIcon(tag.categorizedTag(), table.getFont()));
+                    setIcon(new TagIcon(tag.categorizedTag(getTagCategorySeparatorForMapField()), table.getFont()));
                 }
             }
 
@@ -669,7 +736,7 @@ class TagEditor {
         @SuppressWarnings("serial")
         JFilterableComboBox<CategorizedTag> comboBox = new JFilterableComboBox<>(() -> qualifiedCategorizedTags.values(),
                 (items, text) -> text.isEmpty() || qualifiedCategorizedTags.keySet().stream().anyMatch(item -> item.equals(text)),
-                (item, text) -> item.getContent().toLowerCase().contains(text.toLowerCase()));
+                (item, text) -> item.getContent(getTagCategorySeparatorForMapField()).toLowerCase().contains(text.toLowerCase()));
 
         @SuppressWarnings("serial")
         DefaultListCellRenderer cellRenderer = new DefaultListCellRenderer() {
@@ -682,7 +749,7 @@ class TagEditor {
                     icon = null;
                 else {
                     CategorizedTag tag = (CategorizedTag)value;
-                    icon = new TagIcon(tag.categorizedTag(), table.getFont());
+                    icon = new TagIcon(tag.categorizedTag(getTagCategorySeparatorForMapField()), table.getFont());
                 }
                 return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
             }};
@@ -703,7 +770,7 @@ class TagEditor {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value,
                     boolean isSelected, int row, int column) {
-                final String text = (value instanceof CategorizedTag) ? ((CategorizedTag)value).getContent() : value.toString();
+                final String text = (value instanceof CategorizedTag) ? ((CategorizedTag)value).getContent(getTagCategorySeparatorForMapField()) : value.toString();
                 return super.getTableCellEditorComponent(table, text, isSelected, row, column);
             }
 
@@ -878,5 +945,11 @@ class TagEditor {
     private IconRegistry iconRegistry() {
         return node.getMap().getIconRegistry();
     }
+    private String getTagCategorySeparatorForMapField() {
+        return tagCategorySeparatorForMapField.getText();
+    }
 
+    private String getTagCategorySeparatorForNodeField() {
+        return tagCategorySeparatorForNodeField.getText();
+    }
 }

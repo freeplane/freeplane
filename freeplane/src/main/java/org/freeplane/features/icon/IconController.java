@@ -25,13 +25,16 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
@@ -200,13 +203,24 @@ public class IconController implements IExtension {
         return Collections.emptyMap();
     }
     public List<TagIcon> getTagIcons(NodeModel node) {
-        final Font font = getTagFont(node);
+        boolean showCategories = ResourceController.getResourceController().getBooleanProperty("showCategories");
+        return getTagIcons(node, showCategories);
 
-        List<Tag> tags = getTags(node);
-        return tags.stream()
+    }
+    public List<TagIcon> getTagIcons(NodeModel node, boolean showCategories) {
+        final Font font = getTagFont(node);
+        final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
+        final String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
+        final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+        Stream<Tag> tags = showCategories ? getCategorizedTags(node).stream()
+                .map(tag -> tag.categorizedTag(tagCategorySeparatorForMap))
+                : getTags(node).stream();
+        return tags
+                .map(tag -> showCategories ? tag : tag.removeInternalCategories(tagCategorySeparatorForNode))
                 .map(tag -> new TagIcon(tag, font))
                 .collect(Collectors.toList());
     }
+
     public Font getTagFont(NodeModel node) {
         final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.TAG_STYLE);

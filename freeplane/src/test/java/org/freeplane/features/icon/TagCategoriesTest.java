@@ -19,7 +19,7 @@ public class TagCategoriesTest {
     @Test
     public void testReadTagCategories() {
         TagCategories tagCategories = new TagCategories(
-                new DefaultMutableTreeNode("tags"));
+                new DefaultMutableTreeNode("tags"), "::", "--");
         DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode();
         String input = "tag1\n"
                 + " tag2\n"

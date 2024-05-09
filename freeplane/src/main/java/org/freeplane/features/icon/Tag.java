@@ -7,8 +7,13 @@ package org.freeplane.features.icon;
 
 import java.awt.Color;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 import org.freeplane.core.ui.components.HSLColorConverter;
@@ -63,6 +68,25 @@ public class Tag implements Comparable<Tag>{
     public Tag copy() {
         return new Tag(content, color);
     }
+
+    public Tag removeInternalCategories(String tagCategorySeparatorForNode) {
+        if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
+            return this;
+        final int tagIndex = getContent().lastIndexOf(tagCategorySeparatorForNode);
+        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparatorForNode.length()), Optional.of(getIconColor()));
+    }
+
+    public List<Tag> categoryTags(String tagCategorySeparatorForNode) {
+        if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
+            return Collections.singletonList(this);
+        final String[] categories = getContent().split(Pattern.quote(tagCategorySeparatorForNode));
+        if(categories == null || categories.length < 2)
+            return Collections.singletonList(this);
+        final Optional<Color> iconColor = Optional.of(getIconColor());
+        return Stream.of(categories).map(content -> new Tag(content, iconColor))
+                .collect(Collectors.toList());
+    }
+
 
     private static long computeCRC32(String input) {
         CRC32 crc = new CRC32();

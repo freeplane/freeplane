@@ -50,6 +50,6 @@ public class CategorizedTagForCategoryNode implements CategorizedTag {
 
    @Override
    public String toString() {
-       return "CategorizedTagForCategoryNode [getContent()=" + getContent() + "]";
+       return "CategorizedTagForCategoryNode [getContent()=" + getContent("::") + "]";
    }
 }

@@ -23,6 +23,7 @@ class TreeInverseMap<V> implements TreeModelListener {
     public TreeInverseMap(DefaultTreeModel treeModel) {
         this.treeModel = treeModel;
         this.treeModel.addTreeModelListener(this);
+        buildInverseMap();
     }
 
     private void buildInverseMap() {

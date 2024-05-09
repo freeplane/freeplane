@@ -333,7 +333,7 @@ class TagCategoryEditor {
     TagCategoryEditor(RootPaneContainer frame, MIconController iconController, MapModel map) {
         this.iconController = iconController;
         this.map = map;
-        title = TextUtils.getText("edit_tag_categories");
+        title = TextUtils.getText("manage_tag_categories");
         contentWasModified = false;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, /*
                                                                                   * modal=
@@ -368,7 +368,6 @@ class TagCategoryEditor {
         buttonPane.add(okButton);
         buttonPane.add(cancelButton);
         buttonPane.add(colorButton);
-        buttonPane.setMaximumSize(new Dimension(1000, 20));
         dialog.getContentPane().setLayout(new BorderLayout());
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();

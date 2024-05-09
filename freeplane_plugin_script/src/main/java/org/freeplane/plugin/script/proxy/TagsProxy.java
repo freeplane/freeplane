@@ -35,8 +35,9 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         final NodeModel node = getDelegate();
         final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+        final String tagCategorySeparatorForMap = iconRegistry.getTagCategories().getTagCategorySeparatorForMap();
         return iconController.getCategorizedTags(iconController.getTags(node), iconRegistry).stream()
-                .map(CategorizedTag::getContent)
+                .map(tag -> tag.getContent(tagCategorySeparatorForMap))
                 .collect(Collectors.toList());
     }
 
@@ -45,8 +46,11 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         final NodeModel node = getDelegate();
         final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+        String tagCategorySeparatorForNode = iconRegistry.getTagCategories().getTagCategorySeparatorForNode();
         return iconController.getCategorizedTags(iconController.getTags(node), iconRegistry).stream()
                 .map(CategorizedTag::categoryTags)
+                .flatMap(Collection::stream)
+                .map(tag -> tag.categoryTags(tagCategorySeparatorForNode))
                 .flatMap(Collection::stream)
                 .map(Tag::getContent)
                 .collect(Collectors.toCollection(TreeSet::new));

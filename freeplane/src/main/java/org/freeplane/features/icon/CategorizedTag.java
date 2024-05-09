@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.icon.mindmapmode.UncategorizedTag;
 
 public interface CategorizedTag extends Comparable<CategorizedTag> {
@@ -20,19 +19,15 @@ public interface CategorizedTag extends Comparable<CategorizedTag> {
     default boolean isEmpty() {
         return tag().isEmpty();
     }
-    default Tag categorizedTag() {
+    default Tag categorizedTag(String tagCategorySeparatorForMap) {
         final Tag tag = tag();
-        String content = getContent();
+        String content = getContent(tagCategorySeparatorForMap);
         return new Tag(content, Optional.of(tag.getIconColor()));
     }
-
-    default String getContent() {
+    default String getContent(String tagCategorySeparatorForMap) {
         return categoryTags().stream()
                 .map(Tag::getContent)
-                .collect(Collectors.joining(tagCategorySeparator()));
-    }
-    static String tagCategorySeparator() {
-        return ResourceController.getResourceController().getProperty("tag_category_separator");
+                .collect(Collectors.joining(tagCategorySeparatorForMap));
     }
 
     @Override

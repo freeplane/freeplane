@@ -68,12 +68,6 @@ public class TagCompareCondition extends TagCondition {
 		return comparationResult == 0;
 	}
 
-
-    @Override
-    protected boolean checkTag(CategorizedTag categorizedTag) {
-        return categorizedTag.categoryTags().stream().anyMatch(tag -> checkText(tag.getContent()));
-    }
-
     @Override
     protected boolean checkText(String comparedContent) {
 	    return succeed == (LineComparator.compareLinesParsingNumbers(comparedContent, conditionContent) == comparationResult);

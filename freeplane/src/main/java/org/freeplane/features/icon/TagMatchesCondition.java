@@ -59,11 +59,6 @@ public class TagMatchesCondition extends TagCondition {
         this.searchPattern = Pattern.compile(value, flags);
 	}
 
-    @Override
-    protected boolean checkTag(CategorizedTag categorizedTag) {
-        return categorizedTag.categoryTags().stream().anyMatch(tag -> checkText(tag.getContent()));
-    }
-
 	@Override
     protected boolean checkText(String text) {
 	    return searchPattern.matcher(text).find();

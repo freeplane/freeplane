@@ -164,6 +164,10 @@
 				<boolean name="showLinkSpecificIcons" />
 				<number name="fast_access_icon_number" min="0" max="100"/>
 			</separator>
+			<separator name="tags" text="tags">
+				<boolean name="show_categories" />
+			</separator>
+
 		</tab>
 		<tab name="Defaults">
 			<separator name="cloud">
@@ -182,7 +186,8 @@
 				<boolean name="paint_connectors_behind" />
 			</separator>
 			<separator name="tags" text="tags">
-				<string name="tag_category_separator" />
+				<string name="map_tag_category_separator" />
+				<string name="node_tag_category_separator" />
 			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />

@@ -764,10 +764,12 @@ public class MIconController extends IconController {
     public Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry iconRegistry) {
         TreeMap<String, CategorizedTag> categorizedTags = new TreeMap<>();
         final List<CategorizedTag> userDefinedCategorizedTags = iconRegistry.getTagCategories().categorizedTags(iconRegistry);
-        userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.getContent(), x -> tag));
+        final String tagCategorySeparatorForMap = iconRegistry.getTagCategories().getTagCategorySeparatorForMap();
+        userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
         return categorizedTags;
     }
 
+    @Override
     public List<CategorizedTag> getCategorizedTags(List<Tag> tags, IconRegistry iconRegistry){
         return iconRegistry.getTagCategories().categorizedTags(tags, iconRegistry);
     }

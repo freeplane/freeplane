@@ -58,30 +58,43 @@ abstract class TagCondition extends StringConditionAdapter {
      * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
      * .MindMapNode)
      */
-    @Override
-    public boolean checkNode(final NodeModel node) {
-        final IconController iconController = IconController.getController();
-        final List<Tag> tags = iconController.getTags(node);
-        if(searchesInCategories()) {
-            final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry());
-            for (CategorizedTag tag : categorizedTags) {
-                if (checkTag(tag))
-                    return true;
-            }
-        }
-        for (Tag tag : tags) {
-            if (checkTag(tag))
-                return true;
+	@Override
+	public boolean checkNode(final NodeModel node) {
+	    final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
+	    final String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
+	    final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+	    final IconController iconController = IconController.getController();
+	    final List<Tag> tags = iconController.getTags(node);
+	    if(searchesInCategories()) {
+	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry());
+	        for (CategorizedTag tag : categorizedTags) {
+	            if (checkTag(tag, tagCategorySeparatorForMap))
+	                return true;
+	        }
+	    }
+	    else {
+	        for (Tag tag : tags) {
+	            if (checkTag(tag, tagCategorySeparatorForNode))
+	                return true;
 
-        }
-        return false;
+	        }
+	    }
+	    return false;
+	}
+
+    protected boolean checkTag(Tag tag, String tagCategorySeparatorForNode) {
+        final String tagContent = tag.getContent();
+        return checkText(tagContent) || ! tagCategorySeparatorForNode.isEmpty()
+                && tagContent.contains(tagCategorySeparatorForNode)
+                && tag.categoryTags(tagCategorySeparatorForNode).stream()
+                .map(Tag::getContent)
+                .anyMatch(this::checkText);
     }
 
-    protected boolean checkTag(Tag tag) {
-        return checkText(tag.getContent());
+    @SuppressWarnings("unused")
+    protected boolean checkTag(CategorizedTag categorizedTag, String tagCategorySeparatorForMap) {
+        return categorizedTag.categoryTags().stream().anyMatch(tag -> checkText(tag.getContent()));
     }
-
-    abstract protected boolean checkTag(CategorizedTag tag);
 
     protected abstract boolean checkText(String content);
 

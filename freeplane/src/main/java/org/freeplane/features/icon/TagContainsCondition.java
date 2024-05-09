@@ -61,9 +61,14 @@ public class TagContainsCondition extends TagCondition {
 	}
 
 
+	@Override
+    protected boolean checkTag(Tag tag, String tagCategorySeparatorForNode) {
+        return checkText(tag.getContent());
+    }
+
     @Override
-    protected boolean checkTag(CategorizedTag categorizedTag) {
-        return checkText(categorizedTag.getContent());
+    protected boolean checkTag(CategorizedTag categorizedTag, String tagCategorySeparatorForMap) {
+        return checkText(categorizedTag.getContent(tagCategorySeparatorForMap));
     }
 
 	@Override
