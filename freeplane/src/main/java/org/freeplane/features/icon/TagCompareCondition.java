@@ -25,8 +25,6 @@ import org.freeplane.core.util.LineComparator;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
-import org.freeplane.features.filter.condition.StringConditionAdapter;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
