@@ -1,8 +1,5 @@
-/*
- * Created on 4 Apr 2024
- *
- * author dimitry
- */
+// Copyright (C) 2024  Dimitry Polivaev, macmarrum (at) outlook (dot) ie
+// SPDX-License-Identifier: GPL-2.0-or-later
 package org.freeplane.api;
 
 import java.util.Collection;
@@ -12,9 +9,9 @@ import javax.swing.Icon;
 
 /**@since 1.12.1 */
 public interface TagsRO {
-    List<String> getStrings();
+    List<String> getKeywords();
     List<? extends Icon> getIcons();
-    boolean contains(String tag);
-    boolean containsAny(Collection<String> tags);
-    boolean containsAll(Collection<String> tags);
+    boolean contains(String keyword);
+    boolean containsAny(Collection<String> keywords);
+    boolean containsAll(Collection<String> keywords);
 }
