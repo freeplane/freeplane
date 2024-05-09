@@ -266,7 +266,9 @@ private Timer timer;
 			}
 			else {
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(targetNode, selecteds)) {
+				if (DnDConstants.ACTION_MOVE == dropAction
+				        && t.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeObjectsFlavor)
+				        && isFromSameMap(targetNode, selecteds)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					moveNodes(mapController, targetNode, t, dropAsSibling, isTopOrLeft);
 

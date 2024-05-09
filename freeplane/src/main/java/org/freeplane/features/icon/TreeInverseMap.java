@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.features.icon.mindmapmode;
+package org.freeplane.features.icon;
 
 import java.util.Collections;
 import java.util.HashMap;

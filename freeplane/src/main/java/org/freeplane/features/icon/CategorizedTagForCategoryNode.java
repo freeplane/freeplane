@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.features.icon.mindmapmode;
+package org.freeplane.features.icon;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,14 +13,11 @@ import java.util.stream.Stream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.features.icon.CategorizedTag;
-import org.freeplane.features.icon.Tag;
-
-class CategorizedTagForCategoryNode implements CategorizedTag {
+public class CategorizedTagForCategoryNode implements CategorizedTag {
     private final DefaultMutableTreeNode categoryNode;
     private final Tag registeredTag;
 
-    CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode, Optional<Tag> registeredTag) {
+    public CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode, Optional<Tag> registeredTag) {
         super();
         this.categoryNode = categoryNode;
         this.registeredTag = registeredTag.orElseGet(this::nodeTag).copy();

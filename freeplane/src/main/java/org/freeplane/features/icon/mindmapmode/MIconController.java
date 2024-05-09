@@ -25,7 +25,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -78,6 +77,7 @@ import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.CategorizedTag;
+import org.freeplane.features.icon.CategorizedTagForCategoryNode;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
@@ -88,6 +88,7 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.icon.Tags;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
@@ -261,7 +262,6 @@ public class MIconController extends IconController {
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
 	private final FastAccessableIcons recentlyUsedIcons;
-    private final TagCategories tagCategories;
     private final MModeController modeController;
 
 	/**
@@ -280,10 +280,9 @@ public class MIconController extends IconController {
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
         final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
-        tagCategories = new TagCategories(new File(freeplaneUserDirectory, "tagCategories.config"));
 
 		modeController.addAction(new EditTagsAction(this));
-		modeController.addAction(new EditTagCategoriesAction(tagCategories));
+		modeController.addAction(new EditTagCategoriesAction());
 	}
 
 	@Override
@@ -403,10 +402,6 @@ public class MIconController extends IconController {
 
     public Map<String, AFreeplaneAction> getAllIconActions() {
         return Collections.unmodifiableMap(iconActions);
-    }
-
-    public TagCategories getTagCategories() {
-        return tagCategories;
     }
 
 	/**
@@ -710,7 +705,7 @@ public class MIconController extends IconController {
 
     public JMenu createTagSubmenu(String name, IconRegistry iconRegistry, Consumer<CategorizedTag> action) {
         JMenu menu = TranslatedElementFactory.createMenu(name);
-        fillTagSubmenuOnSelect(menu, iconRegistry, action, tagCategories.getRootNode());
+        fillTagSubmenuOnSelect(menu, iconRegistry, action, iconRegistry.getTagCategories().getRootNode());
         return menu;
     }
 
@@ -768,13 +763,41 @@ public class MIconController extends IconController {
 
     public Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry iconRegistry) {
         TreeMap<String, CategorizedTag> categorizedTags = new TreeMap<>();
-        final List<CategorizedTag> userDefinedCategorizedTags = getTagCategories().categorizedTags(iconRegistry);
+        final List<CategorizedTag> userDefinedCategorizedTags = iconRegistry.getTagCategories().categorizedTags(iconRegistry);
         userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.getContent(), x -> tag));
         return categorizedTags;
     }
 
     public List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
-        return getTagCategories().categorizedTags(tags, iconRegistry);
+        return iconRegistry.getTagCategories().categorizedTags(tags, iconRegistry);
+    }
+
+    public void setTagCategories(MapModel map, TagCategories newCategories) {
+        final IconRegistry iconRegistry = map.getIconRegistry();
+        final TagCategories oldCategories = iconRegistry.getTagCategories();
+        IActor actor = new IActor() {
+
+            @Override
+            public void undo() {
+                iconRegistry.setTagCategories(oldCategories);
+                map.setSaved(false);
+            }
+
+            @Override
+            public String getDescription() {
+                return "setTagCategories";
+            }
+
+            @Override
+            public void act() {
+                iconRegistry.setTagCategories(newCategories);
+                map.setSaved(false);
+            }
+        };
+        modeController.execute(actor, map);
+        newCategories.getRegistry().getTagsAsListModel().forEach(
+                tag -> map.getIconRegistry().getTag(tag).ifPresent(registeredTag
+                        -> setTagColor(map, registeredTag, tag.getColor())));
     }
 
 }

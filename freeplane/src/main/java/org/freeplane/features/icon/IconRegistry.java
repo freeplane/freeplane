@@ -41,9 +41,11 @@ import org.freeplane.features.map.MapModel;
 public class IconRegistry implements IExtension {
     final private SortedComboBoxModel<NamedIcon> mapIcons;
     final private SortedComboBoxModel<Tag> mapTags;
+    private TagCategories tagCategories;
 
-	public IconRegistry() {
+    public IconRegistry(TagCategories tagCategories) {
 		super();
+        this.tagCategories = tagCategories;
 		mapIcons = new SortedComboBoxModel<>();
 		mapTags = new SortedComboBoxModel<>(Tag.class);
 	}
@@ -99,4 +101,11 @@ public class IconRegistry implements IExtension {
         return getTag(required).flatMap(Tag::getColor);
     }
 
+    public TagCategories getTagCategories() {
+        return tagCategories;
+    }
+
+    public void setTagCategories(TagCategories tagCategories) {
+        this.tagCategories = tagCategories;
+    }
 }

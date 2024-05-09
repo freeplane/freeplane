@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.features.icon.mindmapmode;
+package org.freeplane.features.icon;
 
 import java.awt.Color;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -29,19 +30,19 @@ import javax.swing.tree.TreePath;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.CategorizedTag;
-import org.freeplane.features.icon.IconRegistry;
-import org.freeplane.features.icon.Tag;
 
-class TagCategories {
-    private final IconRegistry registry = new IconRegistry();
-    final DefaultTreeModel nodes;
+public class TagCategories {
+    private final IconRegistry registry = new IconRegistry(null);
+    private final DefaultTreeModel nodes;
     private final TreeInverseMap<Tag> nodesByTags;
-    private File tagCategoryFile;
 
-    TagCategories(final File tagCategoryFile){
-        this.tagCategoryFile = tagCategoryFile;
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(TextUtils.getRawText("tags"));
+    public TagCategories(){
+        this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")));
+    }
+
+    @SuppressWarnings("serial")
+    public TagCategories(DefaultMutableTreeNode rootNode) {
+        super();
         nodes = new DefaultTreeModel(rootNode) {
 
             @Override
@@ -51,20 +52,12 @@ class TagCategories {
             }
 
         };
-        nodesByTags = new TreeInverseMap(nodes);
-        load();
-    }
-
-    TagCategories(DefaultTreeModel nodes, File tagCategoryFile) {
-        super();
-        this.nodes = nodes;
-        nodesByTags = new TreeInverseMap(nodes);
-        this.tagCategoryFile = tagCategoryFile;
+        nodesByTags = new TreeInverseMap<Tag>(getNodes());
     }
 
 
 
-    static void writeTagCategories(DefaultMutableTreeNode node, String indent,
+    public static void writeTagCategories(DefaultMutableTreeNode node, String indent,
             Writer writer) throws IOException {
         Object userObject = node.getUserObject();
         if (userObject instanceof Tag) {
@@ -79,19 +72,19 @@ class TagCategories {
         }
     }
 
-    static void writeTag(Tag tag, String indent, Writer writer)
+    public static void writeTag(Tag tag, String indent, Writer writer)
             throws IOException {
         writer.append(indent + tag.getContent());
         writer.append(ColorUtils.colorToRGBAString(tag.getIconColor()));
         writer.append("\n");
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return getRootNode().isLeaf();
     }
 
-    void readTagCategories(DefaultMutableTreeNode parentNode, Scanner scanner) {
-        DefaultMutableTreeNode lastNode = parentNode;
+    public void readTagCategories(DefaultMutableTreeNode target, int index, Scanner scanner) {
+        DefaultMutableTreeNode lastNode = target;
         int lastIndentation = -1;
 
         while (scanner.hasNextLine()) {
@@ -99,28 +92,27 @@ class TagCategories {
             int indentation = getIndentationLevel(line);
 
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(readTag(line.trim()));
-
+            DefaultMutableTreeNode parent;
             if (indentation == lastIndentation) {
-                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) lastNode.getParent();
-                addNode(parent, newNode);
+                parent = (DefaultMutableTreeNode) lastNode.getParent();
             } else if (indentation > lastIndentation) {
-                addNode(lastNode, newNode);
+                parent = lastNode;
             } else {
-                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) lastNode.getParent();
+                parent = (DefaultMutableTreeNode) lastNode.getParent();
                 for (int i = 0; i < (lastIndentation - indentation); i++) {
                     parent = (DefaultMutableTreeNode) parent.getParent();
                 }
-                addNode(parent, newNode);
             }
+            insertNode(parent, target == parent ? index++ : parent.getChildCount(), newNode);
 
             lastNode = newNode;
             lastIndentation = indentation;
         }
     }
 
-    private void addNode(DefaultMutableTreeNode parent, DefaultMutableTreeNode newChild) {
-        parent.add(newChild);
-        nodes.nodesWereInserted(parent, new int[] {parent.getChildCount() - 1});
+    private void insertNode(DefaultMutableTreeNode parent, int index, DefaultMutableTreeNode newChild) {
+        parent.insert(newChild, index);
+        getNodes().nodesWereInserted(parent, new int[] {index});
     }
 
     private int getIndentationLevel(String line) {
@@ -145,37 +137,44 @@ class TagCategories {
         return registry.createTag(spec);
     }
 
-    private void load() {
+    public void load(File tagCategoryFile) {
         try (Scanner scanner = new Scanner(tagCategoryFile)){
-            readTagCategories(getRootNode(), scanner);
+            final DefaultMutableTreeNode rootNode = getRootNode();
+            readTagCategories(rootNode, rootNode.getChildCount(), scanner);
         } catch (FileNotFoundException e1) {/**/}
     }
 
-    DefaultMutableTreeNode getRootNode() {
-        return (DefaultMutableTreeNode) nodes.getRoot();
+    public void load(String data) {
+        try (Scanner scanner = new Scanner(data)){
+            final DefaultMutableTreeNode rootNode = getRootNode();
+            readTagCategories(rootNode, rootNode.getChildCount(), scanner);
+        }
+    }
+    public DefaultMutableTreeNode getRootNode() {
+        return (DefaultMutableTreeNode) getNodes().getRoot();
     }
 
-    IconRegistry getRegistry() {
+    public IconRegistry getRegistry() {
         return registry;
     }
 
-    void addTreeModelListener(TreeModelListener treeModelListener) {
-       nodes.addTreeModelListener(treeModelListener);
+    public void addTreeModelListener(TreeModelListener treeModelListener) {
+       getNodes().addTreeModelListener(treeModelListener);
     }
 
     void removeTreeModelListener(TreeModelListener l) {
-        nodes.removeTreeModelListener(l);
+        getNodes().removeTreeModelListener(l);
     }
 
-    TreeNode[] addChildNode(MutableTreeNode parent) {
+    public TreeNode[] addChildNode(MutableTreeNode parent) {
         if(parent == null)
             parent = getRootNode();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
-        nodes.insertNodeInto(newNode, parent, parent.getChildCount());
-        return nodes.getPathToRoot(newNode);
+        getNodes().insertNodeInto(newNode, parent, parent.getChildCount());
+        return getNodes().getPathToRoot(newNode);
    }
 
-    TreeNode[] addSiblingNode(MutableTreeNode node) {
+    public TreeNode[] addSiblingNode(MutableTreeNode node) {
         TreeNode[] nothing = {};
         if(node == null)
             return nothing;
@@ -183,16 +182,16 @@ class TagCategories {
         if(parent == null)
             return nothing;
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
-        nodes.insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
-        return nodes.getPathToRoot(newNode);
+        getNodes().insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
+        return getNodes().getPathToRoot(newNode);
    }
 
-    void removeNodeFromParent(MutableTreeNode node) {
+    public void removeNodeFromParent(MutableTreeNode node) {
         if(node.getParent() != null)
-            nodes.removeNodeFromParent(node);
+            getNodes().removeNodeFromParent(node);
     }
 
-    void save() {
+    void save(File tagCategoryFile) {
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(tagCategoryFile))){
             writeTagCategories(getRootNode(), "", writer);
         } catch (IOException e) {
@@ -200,7 +199,18 @@ class TagCategories {
         }
     }
 
-    void tagChanged(Tag tag) {
+    public String serialize() {
+        try {
+            StringWriter writer = new StringWriter();
+            TagCategories.writeTagCategories(getRootNode(), "", writer);
+            String serializedData = writer.toString();
+            return serializedData;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void tagChanged(Tag tag) {
         tagChanged(getRootNode(), tag);
     }
 
@@ -208,7 +218,7 @@ class TagCategories {
         int childCount = node.getChildCount();
         Object userObject = node.getUserObject();
         if (userObject == updatedTag) {
-            nodes.nodeChanged(node);
+            getNodes().nodeChanged(node);
         }
         for (int i = 0; i < childCount; i++) {
             DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
@@ -216,12 +226,12 @@ class TagCategories {
         }
     }
 
-    void add(DefaultMutableTreeNode parent, String data) {
+    public void insert(DefaultMutableTreeNode parent, int index, String data) {
         if (parent == null) {
             parent = getRootNode();
         }
         try(Scanner st = new Scanner(new StringReader(data))){
-            readTagCategories(parent, st);
+            readTagCategories(parent, index, st);
         }
     }
 
@@ -229,20 +239,11 @@ class TagCategories {
         return registry.getTagColor(tag);
     }
 
-    List<CategorizedTag> categorizedTags(IconRegistry iconRegistry){
-        final DefaultMutableTreeNode rootNode = getRootNode();
-        final Enumeration<?> breadthFirstEnumeration = rootNode.breadthFirstEnumeration();
-        breadthFirstEnumeration.nextElement();
-        final LinkedList<CategorizedTag> tags = new LinkedList<>();
-        while(breadthFirstEnumeration.hasMoreElements()) {
-            final DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadthFirstEnumeration.nextElement();
-            final Tag tag = (Tag) node.getUserObject();
-            tags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
-        }
-        return tags;
+    public List<CategorizedTag> categorizedTags(IconRegistry registry){
+        return categorizedTags(registry.getTagsAsListModel(), registry);
     }
 
-    List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
+    public List<CategorizedTag> categorizedTags(Iterable<Tag> tags, IconRegistry iconRegistry){
         final LinkedList<CategorizedTag> categorizedTags = new LinkedList<>();
         for(Tag tag : tags) {
             if(tag.isEmpty())
@@ -255,7 +256,7 @@ class TagCategories {
         return categorizedTags;
     }
 
-    void register(CategorizedTag tag) {
+    public void register(CategorizedTag tag) {
         List<Tag> categoryTags = tag.categoryTags();
         DefaultMutableTreeNode rootNode = getRootNode();
 
@@ -278,10 +279,38 @@ class TagCategories {
 
             if (!found) {
                 DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(currentTag.copy());
-                addNode(currentNode, newNode);
+                insertNode(currentNode, currentNode.getChildCount(), newNode);
                 currentNode = newNode;
             }
         }
-        save();
+    }
+
+    public DefaultTreeModel getNodes() {
+        return nodes;
+    }
+
+    public TagCategories copy(IconRegistry iconRegistry) {
+        final DefaultMutableTreeNode rootNode = getRootNode();
+        final DefaultMutableTreeNode rootCopy = copySubtree(iconRegistry, rootNode);
+        return new TagCategories(rootCopy);
+    }
+
+    private DefaultMutableTreeNode copySubtree(IconRegistry iconRegistry, DefaultMutableTreeNode node) {
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(copyTag(iconRegistry, node));
+        for (int i = 0; i < node.getChildCount(); i++) {
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+            newNode.add(copySubtree(iconRegistry, child));
+        }
+        return newNode;
+    }
+
+    private Object copyTag(IconRegistry iconRegistry, DefaultMutableTreeNode node) {
+        final Object userObject = node.getUserObject();
+        if(userObject instanceof Tag) {
+            final Tag tag = ((Tag)userObject).copy();
+            iconRegistry.getTag(tag).ifPresent(registeredTag -> tag.setColor(registeredTag.getColor()));
+            return tag;
+        }
+        return userObject;
     }
 }

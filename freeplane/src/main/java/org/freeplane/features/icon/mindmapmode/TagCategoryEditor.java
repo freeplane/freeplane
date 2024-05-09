@@ -26,6 +26,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -94,6 +95,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
+import org.freeplane.features.map.MapModel;
 
 class TagCategoryEditor {
 
@@ -192,6 +195,12 @@ class TagCategoryEditor {
 
     @SuppressWarnings("serial")
     static class TreeTransferHandler extends TransferHandler {
+        private final TagCategories tagCategories;
+
+        public TreeTransferHandler(TagCategories tagCategories) {
+            this.tagCategories = tagCategories;
+        }
+
         @Override
         public int getSourceActions(JComponent c) {
             return MOVE;
@@ -200,20 +209,83 @@ class TagCategoryEditor {
         @Override
         protected Transferable createTransferable(JComponent c) {
             JTree tree = (JTree) c;
-            TreePath path = tree.getSelectionPath();
-            if (path != null) {
-                return new StringSelection(path.toString());
-            }
-            return null;
+            return createTransferable(tree);
         }
+
+        StringSelection createTransferable(JTree tree) {
+            try {
+                final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
+                if(selectionPaths == null)
+                    return null;
+
+                StringWriter writer = new StringWriter();
+                for(TreePath path: selectionPaths) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    TagCategories.writeTagCategories(node, "", writer);
+                }
+                String serializedData = writer.toString();
+                StringSelection stringSelection = new StringSelection(serializedData);
+                return stringSelection;
+            } catch (IOException e) {
+                return null;
+            }
+        }
+
+        private TreePath[] removeDescendantPaths(TreePath[] paths) {
+            if (paths == null || paths.length == 0) {
+                return null;
+            }
+
+            List<TreePath> filteredPaths = new ArrayList<>();
+
+            // Add all paths initially
+            for (TreePath path : paths) {
+                filteredPaths.add(path);
+            }
+
+            // Remove descendants
+            for (int i = 0; i < filteredPaths.size(); i++) {
+                TreePath path = filteredPaths.get(i);
+                for (int j = 0; j < filteredPaths.size(); j++) {
+                    if (i != j) {
+                        TreePath otherPath = filteredPaths.get(j);
+                        if (otherPath.isDescendant(path)) { // Check if path is a descendant of otherPath
+                            filteredPaths.remove(i);
+                            i--; // Adjust the index after removal
+                            break; // Break as no need to compare with other paths once removed
+                        }
+                    }
+                }
+            }
+
+            return filteredPaths.toArray(new TreePath[0]);
+        }
+
+
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport support) {
             if (!support.isDrop()) {
                 return false;
             }
-            support.setShowDropLocation(true);
-            return support.isDataFlavorSupported(DataFlavor.stringFlavor);
+            if (! support.isDataFlavorSupported(DataFlavor.stringFlavor))
+                return false;
+
+            // Get the drop location and component.
+            JTree.DropLocation dropLocation = (JTree.DropLocation) support.getDropLocation();
+            JTree tree = (JTree) support.getComponent();
+            TreePath path = dropLocation.getPath();
+
+            // Get the node at the drop location.
+            if (path != null) {
+                DefaultMutableTreeNode dropNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
+                        .getLastSelectedPathComponent();
+                if (selectedNode ==dropNode) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
@@ -221,29 +293,25 @@ class TagCategoryEditor {
             if (!canImport(support)) {
                 return false;
             }
+            support.setShowDropLocation(true);
             JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
             int childIndex = dl.getChildIndex();
             TreePath dest = dl.getPath();
-            JTree tree = (JTree) support.getComponent();
-            DefaultTreeModel tagCategories = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dest.getLastPathComponent();
-            JTree treeSource = (JTree) support.getComponent();
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeSource.getSelectionPath()
-                    .getLastPathComponent();
             try {
-                DefaultMutableTreeNode newNode = (DefaultMutableTreeNode) node.clone();
                 if (childIndex == -1) {
                     childIndex = parent.getChildCount();
                 }
-                tagCategories.insertNodeInto(newNode, parent, childIndex);
+                Transferable t = support.getTransferable();
+                String data = (String) t.getTransferData(DataFlavor.stringFlavor);
+                tagCategories.insert(parent, childIndex, data);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return false;
         }
-    }
-
+     }
     private static final String WIDTH_PROPERTY = "tagDialog.width";
 
     private static final String HEIGHT_PROPERTY = "tagDialog.height";
@@ -261,7 +329,13 @@ class TagCategoryEditor {
 
     private boolean contentWasModified;
 
-    TagCategoryEditor(RootPaneContainer frame, TagCategories tagCategories) {
+    private final MIconController iconController;
+
+    private final MapModel map;
+
+    TagCategoryEditor(RootPaneContainer frame, MIconController iconController, MapModel map) {
+        this.iconController = iconController;
+        this.map = map;
         title = TextUtils.getText("edit_tag_categories");
         contentWasModified = false;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, /*
@@ -302,8 +376,9 @@ class TagCategoryEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
 
-        this.tagCategories = tagCategories;
-        tree = new JTree(tagCategories.nodes) {
+        final IconRegistry iconRegistry = map.getIconRegistry();
+        this.tagCategories = iconRegistry.getTagCategories().copy(iconRegistry);
+        tree = new JTree(tagCategories.getNodes()) {
 
             @Override
             public boolean isPathEditable(TreePath path) {
@@ -319,7 +394,7 @@ class TagCategoryEditor {
         tree.setInvokesStopCellEditing(true);
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON_OR_INSERT);
-        tree.setTransferHandler(new TreeTransferHandler());
+        tree.setTransferHandler(new TreeTransferHandler(tagCategories));
         tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
         tree.setCellEditor(new TagCellEditor(tagCategories.getRegistry()));
 
@@ -595,54 +670,12 @@ class TagCategoryEditor {
                 .forEach(tagCategories::removeNodeFromParent);
     }
 
-    public TreePath[] removeDescendantPaths(TreePath[] paths) {
-        if (paths == null || paths.length == 0) {
-            return null;
-        }
-
-        List<TreePath> filteredPaths = new ArrayList<>();
-
-        // Add all paths initially
-        for (TreePath path : paths) {
-            filteredPaths.add(path);
-        }
-
-        // Remove descendants
-        for (int i = 0; i < filteredPaths.size(); i++) {
-            TreePath path = filteredPaths.get(i);
-            for (int j = 0; j < filteredPaths.size(); j++) {
-                if (i != j) {
-                    TreePath otherPath = filteredPaths.get(j);
-                    if (otherPath.isDescendant(path)) { // Check if path is a descendant of otherPath
-                        filteredPaths.remove(i);
-                        i--; // Adjust the index after removal
-                        break; // Break as no need to compare with other paths once removed
-                    }
-                }
-            }
-        }
-
-        return filteredPaths.toArray(new TreePath[0]);
-    }
-
     private void copyNodes() {
-        final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
-        if(selectionPaths == null)
-            return;
-
-        try {
-            StringWriter writer = new StringWriter();
-            for(TreePath path: selectionPaths) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                TagCategories.writeTagCategories(node, "", writer);
-            }
-            String serializedData = writer.toString();
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection stringSelection = new StringSelection(serializedData);
-            clipboard.setContents(stringSelection, null);
-        } catch (IOException e) {
-        /**/}
+        StringSelection stringSelection = ((TreeTransferHandler)tree.getTransferHandler()).createTransferable(tree);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
     }
+
 
     private void pasteNode() {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -652,7 +685,7 @@ class TagCategoryEditor {
                 String data = (String) contents.getTransferData(DataFlavor.stringFlavor);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                         .getLastSelectedPathComponent();
-                tagCategories.add(selectedNode, data);
+                tagCategories.insert(selectedNode, selectedNode.getChildCount(), data);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -679,7 +712,7 @@ class TagCategoryEditor {
     private Tag getSelectedTag() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                 .getLastSelectedPathComponent();
-        if (selectedNode == null || !selectedNode.isLeaf())
+        if (selectedNode == null)
             return null;
 
         Object userObject = selectedNode.getUserObject();
@@ -695,7 +728,7 @@ class TagCategoryEditor {
     }
 
     protected void submit() {
-        tagCategories.save();
+        iconController.setTagCategories(map, tagCategories);
     }
 
     private JRestrictedSizeScrollPane createScrollPane() {

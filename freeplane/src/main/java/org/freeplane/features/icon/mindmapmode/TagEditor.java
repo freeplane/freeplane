@@ -98,6 +98,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.TextController;
@@ -366,11 +367,12 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        qualifiedCategorizedTags = iconController.getCategorizedTagsByContent(iconRegistry());
+        final IconRegistry iconRegistry = iconRegistry();
+        qualifiedCategorizedTags = iconController.getCategorizedTagsByContent(iconRegistry);
         originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        List<CategorizedTag> originalNodeCategorizedTags = iconController.categorizedTags(originalNodeTags, iconRegistry());
+        List<CategorizedTag> originalNodeCategorizedTags = iconController.categorizedTags(originalNodeTags, iconRegistry);
 
         unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
@@ -378,7 +380,7 @@ class TagEditor {
 
         tagTable = createTagTable(originalNodeCategorizedTags);
         ActionMap am = tagTable.getActionMap();
-        TagCategories tagCategories = iconController.getTagCategories();
+        TagCategories tagCategories = iconRegistry.getTagCategories();
         JMenuBar menubar = new JMenuBar();
         JMenu editMenu = TranslatedElementFactory.createMenu("edit");
         JMenuItem addTagMenuItem = TranslatedElementFactory.createMenuItem("menu_addTag");
@@ -422,7 +424,7 @@ class TagEditor {
         if(! tagCategories.isEmpty()) {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
-                    iconRegistry(),
+                    iconRegistry,
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
         }
         menubar.add(insertMenu);
@@ -584,7 +586,7 @@ class TagEditor {
     protected void submit() {
         List<CategorizedTag> tags = getCurrentTags();
         iconController.setTags(node, tags.stream().map(CategorizedTag::tag).collect(Collectors.toList()), true);
-        final TagCategories tagCategories = iconController.getTagCategories();
+        final TagCategories tagCategories = iconRegistry().getTagCategories();
         tags.stream().filter(NewCategorizedTag.class::isInstance)
         .forEach(tagCategories::register);
     }

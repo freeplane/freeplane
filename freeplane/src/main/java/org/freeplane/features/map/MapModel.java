@@ -33,6 +33,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -72,7 +73,7 @@ public class MapModel {
 		this(nodeDuplicator, null, null);
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
-		iconRegistry = new IconRegistry();
+		iconRegistry = new IconRegistry(new TagCategories());
 		this.nodeChangeAnnouncer = mapController;
 	}
 

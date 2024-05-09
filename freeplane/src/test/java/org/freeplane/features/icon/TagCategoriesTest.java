@@ -3,26 +3,23 @@
  *
  * author dimitry
  */
-package org.freeplane.features.icon.mindmapmode;
+package org.freeplane.features.icon;
 
-import java.io.File;
 import java.io.StringReader;
 import java.util.Scanner;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import org.assertj.core.api.Assertions;
 import org.freeplane.features.icon.Tag;
-import org.freeplane.features.icon.mindmapmode.TagCategories;
+import org.freeplane.features.icon.TagCategories;
 import org.junit.Test;
 
 public class TagCategoriesTest {
     @Test
     public void testReadTagCategories() {
         TagCategories tagCategories = new TagCategories(
-                new DefaultTreeModel(new DefaultMutableTreeNode("tags")),
-                new File("testFile"));
+                new DefaultMutableTreeNode("tags"));
         DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode();
         String input = "tag1\n"
                 + " tag2\n"
@@ -30,7 +27,7 @@ public class TagCategoriesTest {
                 + "tag4";
         Scanner scanner = new Scanner(new StringReader(input));
 
-        tagCategories.readTagCategories(parentNode, scanner);
+        tagCategories.readTagCategories(parentNode, parentNode.getChildCount(), scanner);
 
         Assertions.assertThat(parentNode.getChildCount()).isEqualTo(2);
 
