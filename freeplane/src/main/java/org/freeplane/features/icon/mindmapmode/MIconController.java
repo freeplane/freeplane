@@ -768,7 +768,7 @@ public class MIconController extends IconController {
         return categorizedTags;
     }
 
-    public List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
+    public List<CategorizedTag> getCategorizedTags(List<Tag> tags, IconRegistry iconRegistry){
         return iconRegistry.getTagCategories().categorizedTags(tags, iconRegistry);
     }
 

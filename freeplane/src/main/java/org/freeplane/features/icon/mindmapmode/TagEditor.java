@@ -372,7 +372,7 @@ class TagEditor {
         originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        List<CategorizedTag> originalNodeCategorizedTags = iconController.categorizedTags(originalNodeTags, iconRegistry);
+        List<CategorizedTag> originalNodeCategorizedTags = iconController.getCategorizedTags(originalNodeTags, iconRegistry);
 
         unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
@@ -607,7 +607,7 @@ class TagEditor {
         return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags.computeIfAbsent(string, this::createTag);
     }
     private CategorizedTag createTag(String string) {
-        final String[] categoriesAndTag = string.trim().split("::");
+        final String[] categoriesAndTag = string.trim().split(CategorizedTag.tagCategorySeparator());
         if(categoriesAndTag.length > 0) {
             final List<Tag> tagList = Stream.of(categoriesAndTag)
                     .map(iconRegistry()::createTag)

@@ -34,14 +34,15 @@ import org.freeplane.n3.nanoxml.XMLElement;
  *
  * @author Dimitry Polivaev
  */
-public class TagMatchesCondition extends ASelectableCondition {
+public class TagMatchesCondition extends TagCondition {
 	static final String NAME = "tag_matches_condition";
     static final String VALUE = "VALUE";
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new TagMatchesCondition(
             element.getAttribute(VALUE, null),
-            Boolean.valueOf(element.getAttribute(StringConditionAdapter.MATCH_CASE, null))
+            Boolean.valueOf(element.getAttribute(StringConditionAdapter.MATCH_CASE, null)),
+            Boolean.valueOf(element.getAttribute(SEARCH_IN_CATEGORIES, null))
 		    );
 	}
 
@@ -49,8 +50,8 @@ public class TagMatchesCondition extends ASelectableCondition {
 	final private Pattern searchPattern;
 	/**
 	 */
-	public TagMatchesCondition(final String value, final boolean matchCase) {
-		super();
+	public TagMatchesCondition(final String value, final boolean matchCase, boolean searchesInCategories) {
+		super(value, matchCase, false, false, false, searchesInCategories);
         this.value = value;
         int flags = Pattern.DOTALL;
         if (!matchCase) {
@@ -59,23 +60,13 @@ public class TagMatchesCondition extends ASelectableCondition {
         this.searchPattern = Pattern.compile(value, flags);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
-	 * .MindMapNode)
-	 */
-	public boolean checkNode(final NodeModel node) {
-	    final IconController iconController = IconController.getController();
-	    for (Tag tag : iconController.getTags(node)) {
-	        if (checkText(tag.getContent()))
-	            return true;
+    @Override
+    protected boolean checkTag(CategorizedTag categorizedTag) {
+        return categorizedTag.categoryTags().stream().anyMatch(tag -> checkText(tag.getContent()));
+    }
 
-	    }
-	    return false;
-	}
-
-	private boolean checkText(String text) {
+	@Override
+    protected boolean checkText(String text) {
 	    return searchPattern.matcher(text).find();
     }
 
@@ -86,10 +77,10 @@ public class TagMatchesCondition extends ASelectableCondition {
 		        simpleCondition, value, isMatchCase(), false, false);
 	}
 
-	public void fillXML(final XMLElement child) {
+	@Override
+    public void fillXML(final XMLElement child) {
 		super.fillXML(child);
         child.setAttribute(VALUE, value);
-        child.setAttribute(StringConditionAdapter.MATCH_CASE, Boolean.toString(isMatchCase()));
 	}
 
 	@Override

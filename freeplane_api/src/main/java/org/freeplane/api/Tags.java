@@ -6,7 +6,7 @@ import java.util.Collection;
 
 /**@since 1.12.1 */
 public interface Tags extends TagsRO{
-    void setKeywords(Collection<String> keywords);
+    void setTags(Collection<String> keywords);
     void add(String keyword);
     void add(int index, String keyword);
     void add(Collection<String> keywords);

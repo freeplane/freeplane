@@ -181,6 +181,9 @@
 				</combo>
 				<boolean name="paint_connectors_behind" />
 			</separator>
+			<separator name="tags" text="tags">
+				<string name="tag_category_separator" />
+			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />
 				<color name="standardselectednoderectanglecolor" supports_transparent_color="false"/>

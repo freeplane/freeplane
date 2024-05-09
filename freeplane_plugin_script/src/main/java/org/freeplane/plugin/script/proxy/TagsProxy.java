@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 
+import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
@@ -20,11 +22,34 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     @Override
-    public List<String> getKeywords() {
+    public List<String> getTags() {
         MIconController iconController = iconController();
         return iconController.getTags(getDelegate()).stream()
                 .map(Tag::getContent)
                 .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<String> getCategorizedTags() {
+        MIconController iconController = iconController();
+        final NodeModel node = getDelegate();
+        final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+        return iconController.getCategorizedTags(iconController.getTags(node), iconRegistry).stream()
+                .map(CategorizedTag::getContent)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public SortedSet<String> getCategories() {
+        MIconController iconController = iconController();
+        final NodeModel node = getDelegate();
+        final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+        return iconController.getCategorizedTags(iconController.getTags(node), iconRegistry).stream()
+                .map(CategorizedTag::categoryTags)
+                .flatMap(Collection::stream)
+                .map(Tag::getContent)
+                .collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
@@ -38,7 +63,7 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     @Override
-    public void setKeywords(Collection<String> tags) {
+    public void setTags(Collection<String> tags) {
         List<Tag> tagList = freeplaneTags(tags);
         MIconController iconController = iconController();
         iconController.setTags(getDelegate(),
@@ -107,18 +132,33 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     @Override
-    public boolean contains(String keyword) {
-        return getKeywords().contains(keyword);
+    public boolean contains(String searched) {
+        return getTags().contains(searched);
     }
 
     @Override
-    public boolean containsAny(Collection<String> keywords) {
-        Set<String> set = new HashSet<>(getKeywords());
-        return keywords.stream().anyMatch(set::contains);
+    public boolean containsAny(Collection<String> searched) {
+        Set<String> set = new HashSet<>(getTags());
+        return searched.stream().anyMatch(set::contains);
     }
 
     @Override
-    public boolean containsAll(Collection<String> keywords) {
-        return new HashSet<>(getKeywords()).containsAll(keywords);
+    public boolean containsAll(Collection<String> searched) {
+        return new HashSet<>(getTags()).containsAll(searched);
+    }
+    @Override
+    public boolean containsCategory(String searched) {
+        return getCategories().contains(searched);
+    }
+
+    @Override
+    public boolean containsAnyCategory(Collection<String> searched) {
+        final SortedSet<String> categories = getCategories();
+        return searched.stream().anyMatch(categories::contains);
+    }
+
+    @Override
+    public boolean containsAllCategories(Collection<String> searched) {
+        return getCategories().containsAll(searched);
     }
 }

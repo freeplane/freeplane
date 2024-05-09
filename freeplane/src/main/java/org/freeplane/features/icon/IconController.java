@@ -219,7 +219,11 @@ public class IconController implements IExtension {
         return Tags.getTags(node);
     }
 
-    public List<CategorizedTag> categorizedTags(List<Tag> tags, IconRegistry iconRegistry){
+    public List<CategorizedTag> getCategorizedTags(NodeModel node){
+        return getCategorizedTags(getTags(node), node.getMap().getIconRegistry());
+    }
+
+    public List<CategorizedTag> getCategorizedTags(List<Tag> tags, IconRegistry iconRegistry){
         return Collections.emptyList();
     }
 }

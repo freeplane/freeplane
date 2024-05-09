@@ -32,25 +32,21 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class TagCompareCondition extends StringConditionAdapter {
+public class TagCompareCondition extends TagCondition {
     static final String NAME = "tag_compare_condition";
     static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String SUCCEED = "SUCCEED";
 	static final String VALUE = "VALUE";
 
 	static ASelectableCondition load(final XMLElement element) {
-		String value = element.getAttribute(VALUE, null);
-
-		final boolean matchCase = TreeXmlReader.xmlToBoolean(element.getAttribute(
-		    CompareConditionAdapter.MATCH_CASE, null));
-		final int compResult = Integer.parseInt(element.getAttribute(
-		    COMPARATION_RESULT, null));
-		final boolean succeed = TreeXmlReader.xmlToBoolean(element.getAttribute(
-		    SUCCEED, null));
-		final boolean matchApproximately = TreeXmlReader.xmlToBoolean(element.getAttribute(
-			    MATCH_APPROXIMATELY, null));
-		return new TagCompareCondition(value, matchCase, compResult, succeed, matchApproximately,
-		        Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
+		return new TagCompareCondition(element.getAttribute(VALUE, null),
+		        TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.MATCH_CASE, null)),
+		        Integer.parseInt(element.getAttribute(COMPARATION_RESULT, null)),
+		        TreeXmlReader.xmlToBoolean(element.getAttribute( SUCCEED, null)),
+		        TreeXmlReader.xmlToBoolean(element.getAttribute(
+                	    MATCH_APPROXIMATELY, null)),
+		        Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)),
+		        Boolean.valueOf(element.getAttribute(SEARCH_IN_CATEGORIES, null)));
 	}
 
 	private final int comparationResult;
@@ -60,9 +56,9 @@ public class TagCompareCondition extends StringConditionAdapter {
 	/**
 	 */
 	public TagCompareCondition(final String content, final boolean matchCase,
-	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics
-	                                 ) {
-		super(matchCase, matchApproximately, false, ignoreDiacritics);
+	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics,
+	                                 boolean searchesInCategories) {
+		super(content, matchCase, matchApproximately, false, ignoreDiacritics, searchesInCategories);
         this.conditionContent = content;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
@@ -75,22 +71,13 @@ public class TagCompareCondition extends StringConditionAdapter {
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
-	 * .MindMapNode)
-	 */
-	public boolean checkNode(final NodeModel node) {
-	    final IconController iconController = IconController.getController();
-	    for (Tag tag : iconController.getTags(node)) {
-	        if (checkContent(tag.getContent()))
-	            return true;
-	    }
-	    return false;
-	}
+    @Override
+    protected boolean checkTag(CategorizedTag categorizedTag) {
+        return categorizedTag.categoryTags().stream().anyMatch(tag -> checkText(tag.getContent()));
+    }
 
-	private boolean checkContent(String comparedContent) {
+    @Override
+    protected boolean checkText(String comparedContent) {
 	    return succeed == (LineComparator.compareLinesParsingNumbers(comparedContent, conditionContent) == comparationResult);
     }
 
