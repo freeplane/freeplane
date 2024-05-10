@@ -240,4 +240,11 @@ public class IconController implements IExtension {
     public List<CategorizedTag> getCategorizedTags(List<Tag> tags, IconRegistry iconRegistry){
         return Collections.emptyList();
     }
+
+    public List<Tag> getTagsWithCategories(NodeModel node) {
+        return getCategorizedTags(node)
+        .stream()
+        .map(tag -> tag.categorizedTag(node.getMap().getIconRegistry().getTagCategories().getTagCategorySeparatorForMap()))
+        .collect(Collectors.toList());
+    }
 }

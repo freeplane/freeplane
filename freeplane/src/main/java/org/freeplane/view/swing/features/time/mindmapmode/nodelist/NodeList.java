@@ -232,13 +232,16 @@ class NodeList implements IExtension {
 			if (object instanceof Date) {
 				return dateRenderer;
 			}
+            if (object instanceof TagsHolder) {
+                return tagsRenderer;
+            }
 			if (object instanceof TextHolder) {
 				return textRenderer;
 			}
-			if (object instanceof IconsHolder) {
-				return iconsRenderer;
-			}
-			return super.getCellRenderer(row, column);
+            if (object instanceof IconsHolder) {
+                return iconsRenderer;
+            }
+ 			return super.getCellRenderer(row, column);
 		}
 
 		@Override
@@ -298,7 +301,9 @@ class NodeList implements IExtension {
 	}
 	private static final String REMINDER_TEXT_CREATED = "reminder.Created";
 	private static final String REMINDER_TEXT_REMINDER = "reminder.Reminder";
-	private static final String REMINDER_TEXT_ICONS = "reminder.Icons";
+    private static final String REMINDER_TEXT_ICONS = "reminder.Icons";
+    private static final String REMINDER_TEXT_TAGS = "tags";
+
 	private static final String REMINDER_TEXT_MODIFIED = "reminder.Modified";
 	private static final String REMINDER_TEXT_NOTES = "reminder.Notes";
 	private static final String REMINDER_TEXT_DETAILS = "reminder.Details";
@@ -311,7 +316,8 @@ class NodeList implements IExtension {
 
 	private static String COLUMN_MODIFIED = TextUtils.getText(REMINDER_TEXT_MODIFIED);
 	private static String COLUMN_CREATED = TextUtils.getText(REMINDER_TEXT_CREATED);
-	private static String COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
+    private static String COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
+    private static String COLUMN_TAGS = TextUtils.getText(REMINDER_TEXT_TAGS);
 	private static String COLUMN_TEXT = TextUtils.getText(REMINDER_TEXT_TEXT);
 	private static String COLUMN_MAP = TextUtils.getText(REMINDER_TEXT_MAP);
 	private static String COLUMN_DETAILS= TextUtils.getText(REMINDER_TEXT_DETAILS);
@@ -323,6 +329,7 @@ class NodeList implements IExtension {
 	private final DateRenderer dateRenderer;
 	private JDialog dialog;
 	private final IconsRenderer iconsRenderer;
+	private final TagsRenderer tagsRenderer;
 	protected final JComboBox<Object> mFilterTextSearchField;
 	private final JCheckBox closeAfterSelection;
 	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
@@ -349,7 +356,8 @@ class NodeList implements IExtension {
 	private boolean showsStyleIcons = false;
 	private int nodeMapColumn = -1;
 	int nodeTextColumn = -1;
-	private int nodeIconColumn = -1;
+    private int nodeIconColumn = -1;
+    private int nodeTagsColumn = -1;
 	int nodeDetailsColumn = -1;
 	int nodeNotesColumn = -1;
 	int nodeReminderColumn = -1;
@@ -380,6 +388,7 @@ class NodeList implements IExtension {
 		dateRenderer = new DateRenderer();
 		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
+		tagsRenderer = new TagsRenderer();
 		tableView = new FlatNodeTable();
 		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
@@ -535,7 +544,7 @@ class NodeList implements IExtension {
 	private void initializeUI(String mapTitle) {
 	    columnVisibilityChanger = new TableColumnVisibilityChanger(tableView.getColumnModel());
 		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
-			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}, columnVisibilityChanger
+			new int[]{nodeTagsColumn, nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}, columnVisibilityChanger
 		);
 
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
@@ -785,7 +794,8 @@ class NodeList implements IExtension {
 		nodeMapColumn = searchInAllMaps ? 0 : -1;
 		nodeTextColumn = nodeMapColumn + 1;
 		nodeIconColumn = nodeTextColumn + 1;
-		nodeDetailsColumn = nodeIconColumn + 1;
+		nodeTagsColumn = nodeIconColumn + 1;
+		nodeDetailsColumn = nodeTagsColumn + 1;
 		nodeNotesColumn = nodeDetailsColumn + 1;
 		nodeReminderColumn = nodeNotesColumn + 1;
 		nodeCreatedColumn = nodeReminderColumn + 1;
@@ -811,9 +821,12 @@ class NodeList implements IExtension {
 				else if (column == nodeMapColumn) {
 					return String.class;
 				}
-				else if (column == nodeIconColumn) {
-					return IconsHolder.class;
-				}
+                else if (column == nodeIconColumn) {
+                    return IconsHolder.class;
+                }
+                else if (column == nodeTagsColumn) {
+                    return TagsHolder.class;
+                }
 				else {
 					return Object.class;
 				}
@@ -823,6 +836,7 @@ class NodeList implements IExtension {
 			model.addColumn(COLUMN_MAP);
 		model.addColumn(COLUMN_TEXT);
 		model.addColumn(COLUMN_ICONS);
+		model.addColumn(COLUMN_TAGS);
 		model.addColumn(COLUMN_DETAILS);
 		model.addColumn(COLUMN_NOTES);
 		model.addColumn(COLUMN_REMINDER);
@@ -853,6 +867,7 @@ class NodeList implements IExtension {
 			row.add(node.getMap().getTitle());
 		row.add(new TextHolder(new CoreTextAccessor(node)));
 		row.add(new IconsHolder(node, showsStyleIcons));
+		row.add(new TagsHolder(node, false));
 		row.add(new TextHolder(new DetailTextAccessor(node)) );
 		row.add(new TextHolder(new NoteTextAccessor(node)));
 		row.add(date);
