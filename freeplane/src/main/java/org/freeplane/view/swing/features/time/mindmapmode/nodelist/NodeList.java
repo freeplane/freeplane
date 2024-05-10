@@ -51,6 +51,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -334,6 +336,7 @@ class NodeList implements IExtension {
 	TableSorter sorter;
 	final protected JTable tableView;
 	private DefaultTableModel tableModel;
+	protected TableColumnVisibilityChanger columnVisibilityChanger;
 	private final boolean searchInAllMaps;
 	protected final JCheckBox useRegexInFind;
 	protected final JCheckBox matchCase;
@@ -399,6 +402,9 @@ class NodeList implements IExtension {
 			storage.addTimeWindowColumnSetting(setting);
 		}
 		storage.storeDialogPositions(dialog, windowPreferenceStorageProperty);
+		final String columnsStateProperty = columnsStateProperty();
+        final String columnState = columnVisibilityChanger.getState();
+        ResourceController.getResourceController().setProperty(columnsStateProperty, columnState);
 		final boolean dialogWasFocused = dialog.isFocused();
 		dialog.setVisible(false);
 		dialog.dispose();
@@ -415,6 +421,10 @@ class NodeList implements IExtension {
 				selectedComponent.requestFocus();
 		}
 	}
+
+    private String columnsStateProperty() {
+        return windowPreferenceStorageProperty + ".columns";
+    }
 
 	private void exportSelectedRowsAndClose() {
 		final int[] selectedRows = tableView.getSelectedRows();
@@ -523,8 +533,9 @@ class NodeList implements IExtension {
 	}
 
 	private void initializeUI(String mapTitle) {
+	    columnVisibilityChanger = new TableColumnVisibilityChanger(tableView.getColumnModel());
 		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
-			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
+			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}, columnVisibilityChanger
 		);
 
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
@@ -609,6 +620,15 @@ class NodeList implements IExtension {
 		JScrollPane nodePathScrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		UITools.setScrollbarIncrement(nodePathScrollPane);
 		contentPane.add(nodePathScrollPane, treeConstraints);
+		final String columnsStateProperty = columnsStateProperty();
+		final String columnState = ResourceController.getResourceController().getProperty(columnsStateProperty, "");
+		columnVisibilityChanger.applyState(columnState);
+        final JMenuBar menubar = new JMenuBar();
+        final JMenu menu = TranslatedElementFactory.createMenu("view");
+        columnVisibilityChanger.addMenuItems(menu);
+        MnemonicSetter.INSTANCE.setComponentMnemonics(menubar);
+        dialog.setJMenuBar(menubar);
+        menubar.add(menu);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("reminder.Export")) {
 			/**
 			     *
