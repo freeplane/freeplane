@@ -147,7 +147,7 @@
 				</Entry>
 				<Entry name="menu_extensions">
 					<Entry name="EditTagsAction" accelerator="alt F8"/>
-					<Entry name="EditTagCategoriesAction" />
+					<Entry name="ManageTagCategoriesAction" />
 					<Entry name="EditDetailsAction" accelerator="F3" />
 					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 					<Entry name="CopyStyleExtensionsAction" />

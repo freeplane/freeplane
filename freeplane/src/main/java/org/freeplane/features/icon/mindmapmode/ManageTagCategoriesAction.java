@@ -15,12 +15,12 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
-public class EditTagCategoriesAction extends AFreeplaneAction {
+public class ManageTagCategoriesAction extends AFreeplaneAction {
 
     private static final long serialVersionUID = 1L;
 
-    public EditTagCategoriesAction() {
-        super("EditTagCategoriesAction");
+    public ManageTagCategoriesAction() {
+        super("ManageTagCategoriesAction");
     }
 
     @Override

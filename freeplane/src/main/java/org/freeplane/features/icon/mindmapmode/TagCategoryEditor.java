@@ -333,7 +333,7 @@ class TagCategoryEditor {
     TagCategoryEditor(RootPaneContainer frame, MIconController iconController, MapModel map) {
         this.iconController = iconController;
         this.map = map;
-        title = TextUtils.getText("manage_tag_categories");
+        title = TextUtils.getText("tag_category_manager");
         contentWasModified = false;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, /*
                                                                                   * modal=
