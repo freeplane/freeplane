@@ -27,7 +27,11 @@ public class ManageTagCategoriesAction extends AFreeplaneAction {
     public void actionPerformed(ActionEvent e) {
         final MapModel map = Controller.getCurrentController().getMap();
         final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-        TagCategoryEditor tagCategoryEditor = new TagCategoryEditor(frame, (MIconController) IconController.getController(), map);
+        TagCategoryEditor tagCategoryEditor = map.getExtension(TagCategoryEditor.class);
+        if(tagCategoryEditor == null) {
+            tagCategoryEditor = new TagCategoryEditor(frame, (MIconController) IconController.getController(), map);
+            map.addExtension(tagCategoryEditor);
+        }
         tagCategoryEditor.show();
     }
 

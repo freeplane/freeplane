@@ -80,6 +80,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.JColorButton;
 import org.freeplane.core.ui.ColorTracker;
@@ -95,7 +96,7 @@ import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.map.MapModel;
 
-class TagCategoryEditor {
+class TagCategoryEditor implements IExtension {
 
     static class TagCellRenderer extends DefaultTreeCellRenderer {
         private Object rootNode; // Reference to the root node object
@@ -358,10 +359,10 @@ class TagCategoryEditor {
                 "enter_confirms"));
         modifyColorAction.setEnabled(false);
         okButton.addActionListener(e -> {
-            dialog.setVisible(false);
+            close();
             submit();
         });
-        cancelButton.addActionListener(e -> dialog.setVisible(false));
+        cancelButton.addActionListener(e -> close());
 
         final JPanel buttonPane = new JPanel();
         buttonPane.add(enterConfirms);
@@ -423,7 +424,7 @@ class TagCategoryEditor {
                 switch (e.getKeyCode()) {
                 case KeyEvent.VK_ESCAPE:
                     e.consume();
-                    dialog.setVisible(false);
+                    close();
                     break;
                 case KeyEvent.VK_ENTER:
                     e.consume();
@@ -432,7 +433,7 @@ class TagCategoryEditor {
                         addNode((e.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0);
                         break;
                     }
-                    dialog.setVisible(false);
+                    close();
                     submit();
                     break;
                 }
@@ -510,6 +511,11 @@ class TagCategoryEditor {
                 }
             }
         });
+    }
+
+    private void close() {
+        dialog.setVisible(false);
+        map.removeExtension(this);
     }
 
     private void configureKeyBindings() {
@@ -719,8 +725,12 @@ class TagCategoryEditor {
     }
 
     void show() {
-        UITools.setDialogLocationRelativeTo(dialog, dialog.getParent());
-        dialog.setVisible(true);
+        if(! dialog.isVisible()) {
+            UITools.setDialogLocationRelativeTo(dialog, dialog.getParent());
+            dialog.setVisible(true);
+        }
+        else
+            dialog.toFront();
     }
 
     protected void submit() {
@@ -766,7 +776,7 @@ class TagCategoryEditor {
                     return;
                 }
             }
-            dialog.setVisible(false);
+            close();
         }
     }
 
