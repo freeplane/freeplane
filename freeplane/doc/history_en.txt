@@ -2,6 +2,7 @@
 1.12.1
 ==============================
 Node tags
+Configure columns in "Find and replace"...
 
 ==============================
 1.11.14
