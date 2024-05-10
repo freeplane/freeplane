@@ -633,7 +633,7 @@ class NodeList implements IExtension {
 		final String columnState = ResourceController.getResourceController().getProperty(columnsStateProperty, "");
 		columnVisibilityChanger.applyState(columnState);
         final JMenuBar menubar = new JMenuBar();
-        final JMenu menu = TranslatedElementFactory.createMenu("view");
+        final JMenu menu = TranslatedElementFactory.createMenu("visible_columns");
         columnVisibilityChanger.addMenuItems(menu);
         MnemonicSetter.INSTANCE.setComponentMnemonics(menubar);
         dialog.setJMenuBar(menubar);
