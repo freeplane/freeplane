@@ -21,6 +21,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -38,6 +39,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
@@ -84,6 +88,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.TableUI;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -686,8 +691,21 @@ class TagEditor {
 
     private JTable createTagTable(List<CategorizedTag> tags) {
         JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags))) {
+        	
+        	
 
             @Override
+			public void setUI(TableUI ui) {
+				super.setUI(ui);
+				Font tagFont = iconController.getTagFont(node);
+				setFont(tagFont);
+				Rectangle2D rect = tagFont.getStringBounds("*" , 0, 1,
+		        		new FontRenderContext(new AffineTransform(), true, true));
+		        double textHeight = rect.getHeight();
+				setRowHeight((int)  Math.ceil(textHeight * 1.4));
+			}
+
+			@Override
             public boolean editCellAt(int row, int column, EventObject e) {
                 if(super.editCellAt(row, column, e)){
                     final Component editorComponent = getEditorComponent();
@@ -719,7 +737,6 @@ class TagEditor {
         table.setTransferHandler(new TableCellTransferHandler());
         table.setDragEnabled(true);
         table.setDropMode(DropMode.ON);
-        table.setFont(iconController.getTagFont(node));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             private static final long serialVersionUID = 1L;
 

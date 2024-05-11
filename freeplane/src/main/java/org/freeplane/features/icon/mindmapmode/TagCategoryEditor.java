@@ -20,6 +20,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -39,6 +40,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -73,6 +77,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.plaf.TreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellEditor;
@@ -385,6 +390,19 @@ class TagCategoryEditor implements IExtension {
                 Object userObject = ((DefaultMutableTreeNode) lastPathComponent).getUserObject();
                 return userObject instanceof Tag;
             }
+
+			@Override
+			public void setUI(TreeUI ui) {
+				super.setUI(ui);
+				Font tagFont = iconController.getTagFont(map.getRootNode());
+				Rectangle2D rect = tagFont.getStringBounds("*" , 0, 1,
+		        		new FontRenderContext(new AffineTransform(), true, true));
+		        double textHeight = rect.getHeight();
+		        setFont(tagFont);
+				setRowHeight((int)  Math.ceil(textHeight * 1.4));
+			}
+            
+            
         };
         tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);

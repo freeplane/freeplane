@@ -29,21 +29,13 @@ public class TagIcon implements Icon {
         super();
         this.tag = tag;
         this.font = font;
-        if(tag.isEmpty()) {
-            width = 0;
-            height = (int) (UITools.FONT_SCALE_FACTOR * font.getSize());
-        }
-        else {
-            String content = tag.getContent();
-            Rectangle2D rect = font.getStringBounds(content , 0, content.length(),
-                    new FontRenderContext(new AffineTransform(),
-                            true, true));
-            double textWidth = rect.getWidth();
-            double textHeight = rect.getHeight();
-            width = (int) Math.ceil(textWidth + textHeight);
-            height = (int)  Math.ceil(textHeight * 1.2);
-        }
-
+        String content = tag.isEmpty() ? "*" : tag.getContent();
+        Rectangle2D rect = font.getStringBounds(content , 0, content.length(),
+        		new FontRenderContext(new AffineTransform(),
+        				true, true));
+        double textHeight = rect.getHeight();
+        width = tag.isEmpty() ? 0 : (int) Math.ceil(rect.getWidth() + textHeight);
+        height = (int)  Math.ceil(textHeight * 1.2);
     }
 
     @Override
