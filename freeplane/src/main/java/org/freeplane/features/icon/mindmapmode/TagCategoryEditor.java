@@ -167,7 +167,9 @@ class TagCategoryEditor implements IExtension {
                 boolean expanded, boolean leaf, int row) {
             currentNode = (DefaultMutableTreeNode) value;
             Tag tag = (Tag) currentNode.getUserObject();
-            textField.setText(tag.getContent());
+            String content = tag.getContent();
+			textField.setText(content);
+            textField.setColumns(Math.max(30, content.length()));
             return textField;
         }
 
