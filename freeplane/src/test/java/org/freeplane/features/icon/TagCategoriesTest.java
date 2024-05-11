@@ -11,8 +11,6 @@ import java.util.Scanner;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.assertj.core.api.Assertions;
-import org.freeplane.features.icon.Tag;
-import org.freeplane.features.icon.TagCategories;
 import org.junit.Test;
 
 public class TagCategoriesTest {
@@ -27,7 +25,7 @@ public class TagCategoriesTest {
                 + "tag4";
         Scanner scanner = new Scanner(new StringReader(input));
 
-        tagCategories.readTagCategories(parentNode, parentNode.getChildCount(), scanner);
+        tagCategories.readTagCategories(parentNode, parentNode.getChildCount(), scanner, true);
 
         Assertions.assertThat(parentNode.getChildCount()).isEqualTo(2);
 

@@ -217,19 +217,20 @@ class TagCategoryEditor implements IExtension {
             return createTransferable(tree);
         }
 
-        StringSelection createTransferable(JTree tree) {
+        TagCategorySelection createTransferable(JTree tree) {
             try {
                 final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
                 if(selectionPaths == null)
                     return null;
 
-                StringWriter writer = new StringWriter();
+                StringWriter tagCategoryWriter = new StringWriter();
+                StringWriter tagWriter = new StringWriter();
                 for(TreePath path: selectionPaths) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                    TagCategories.writeTagCategories(node, "", writer);
+                    TagCategories.writeTagCategories(node, "", tagCategoryWriter);
+                    TagCategories.writeTag(node, tagWriter);
                 }
-                String serializedData = writer.toString();
-                StringSelection stringSelection = new StringSelection(serializedData);
+                TagCategorySelection stringSelection = new TagCategorySelection(tagCategoryWriter.toString(), tagWriter.toString());
                 return stringSelection;
             } catch (IOException e) {
                 return null;
@@ -308,8 +309,9 @@ class TagCategoryEditor implements IExtension {
                     childIndex = parent.getChildCount();
                 }
                 Transferable t = support.getTransferable();
-                String data = (String) t.getTransferData(DataFlavor.stringFlavor);
-                tagCategories.insert(parent, childIndex, data);
+                final DataFlavor flavor = TagCategorySelection.flavor(t);
+                String data = (String) t.getTransferData(flavor);
+                tagCategories.insert(parent, childIndex, data, ! flavor.equals(TagCategorySelection.tagFlavorWithoutColor));
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -403,8 +405,8 @@ class TagCategoryEditor implements IExtension {
 		        setFont(tagFont);
 				setRowHeight((int)  Math.ceil(textHeight * 1.4));
 			}
-            
-            
+
+
         };
         tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
@@ -662,7 +664,6 @@ class TagCategoryEditor implements IExtension {
         final List<Tag> selectedTags = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .filter(DefaultMutableTreeNode::isLeaf)
                 .map(DefaultMutableTreeNode::getUserObject)
                 .filter(Tag.class::isInstance)
                 .map(Tag.class::cast)
@@ -693,7 +694,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void copyNodes() {
-        StringSelection stringSelection = ((TreeTransferHandler)tree.getTransferHandler()).createTransferable(tree);
+        TagCategorySelection stringSelection = ((TreeTransferHandler)tree.getTransferHandler()).createTransferable(tree);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
     }
@@ -702,12 +703,14 @@ class TagCategoryEditor implements IExtension {
     private void pasteNode() {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         try {
-            Transferable contents = clipboard.getContents(null);
-            if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                String data = (String) contents.getTransferData(DataFlavor.stringFlavor);
+            Transferable t = clipboard.getContents(null);
+            if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                final DataFlavor flavor = TagCategorySelection.flavor(t);
+                String data = (String) t.getTransferData(flavor);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                         .getLastSelectedPathComponent();
-                tagCategories.insert(selectedNode, selectedNode.getChildCount(), data);
+                tagCategories.insert(selectedNode, selectedNode.getChildCount(), data,
+                        !flavor.equals(TagCategorySelection.tagFlavorWithoutColor));
             }
         } catch (Exception e) {
             e.printStackTrace();

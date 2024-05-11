@@ -26,7 +26,6 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -267,7 +266,7 @@ class TagEditor {
                     values.add("");
                 }
             }
-            return new StringSelection(String.join("\n", values));
+            return new TagSelection(String.join("\n", values));
         }
 
         @Override
@@ -282,8 +281,12 @@ class TagEditor {
             }
 
             String data;
+            final Transferable transferable = info.getTransferable();
             try {
-                data = (String) info.getTransferable().getTransferData(DataFlavor.stringFlavor);
+                data = (String) transferable.getTransferData(
+                        transferable.isDataFlavorSupported(TagSelection.tagFlavorWithoutColor)
+                        ? TagSelection.tagFlavorWithoutColor
+                        : DataFlavor.stringFlavor);
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -691,8 +694,8 @@ class TagEditor {
 
     private JTable createTagTable(List<CategorizedTag> tags) {
         JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags))) {
-        	
-        	
+
+
 
             @Override
 			public void setUI(TableUI ui) {
@@ -710,7 +713,7 @@ class TagEditor {
                 if(super.editCellAt(row, column, e)){
                     final Component editorComponent = getEditorComponent();
                     if (editorComponent instanceof JComboBox) {
-                        final ComboBoxEditor editor = ((JComboBox)editorComponent).getEditor();
+                        final ComboBoxEditor editor = ((JComboBox<?>)editorComponent).getEditor();
                         Component textField = editor.getEditorComponent();
                         if(textField instanceof JTextField) {
 							((JTextField)textField).selectAll();
