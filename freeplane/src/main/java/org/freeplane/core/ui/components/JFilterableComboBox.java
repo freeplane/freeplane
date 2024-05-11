@@ -84,7 +84,12 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
             @Override
             public void focusGained(FocusEvent e) {
                 if(! isPopupVisible())
-                    EventQueue.invokeLater(JFilterableComboBox.this::showPopup);
+                    EventQueue.invokeLater(this::showPopup);
+            }
+
+            private void showPopup() {
+                if(isShowing())
+                    JFilterableComboBox.this.showPopup();
             }
 
         });
