@@ -762,11 +762,13 @@ public class MIconController extends IconController {
     }
 
     public Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry iconRegistry) {
-        TreeMap<String, CategorizedTag> categorizedTags = new TreeMap<>();
-        final List<CategorizedTag> userDefinedCategorizedTags = iconRegistry.getTagCategories().categorizedTags(iconRegistry);
+        TreeMap<String, CategorizedTag> categorizedTagsByContent = new TreeMap<>();
         final String tagCategorySeparatorForMap = iconRegistry.getTagCategories().getTagCategorySeparatorForMap();
-        userDefinedCategorizedTags.forEach(tag -> categorizedTags.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
-        return categorizedTags;
+        iconRegistry.getTagCategories().categorizedTags()
+            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
+        iconRegistry.getTagCategories().categorizedTags(iconRegistry)
+            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
+        return categorizedTagsByContent;
     }
 
     @Override
