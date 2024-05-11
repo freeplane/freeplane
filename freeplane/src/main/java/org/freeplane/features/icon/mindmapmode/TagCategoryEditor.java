@@ -599,7 +599,7 @@ class TagCategoryEditor implements IExtension {
         editMenu.add(removeMenuItem);
 
         JMenuItem editMenuItem = TranslatedElementFactory.createMenuItem("edit");
-        editMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0));
+        editMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
         editMenuItem.addActionListener(editNodeAction);
         editMenu.add(editMenuItem);
 
