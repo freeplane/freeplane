@@ -780,10 +780,12 @@ class TagEditor {
                     final Component editorComponent = getEditorComponent();
                     if (editorComponent instanceof JComboBox) {
                         final ComboBoxEditor editor = ((JComboBox<?>)editorComponent).getEditor();
-                        Component textField = editor.getEditorComponent();
-                        if(textField instanceof JTextField) {
-							((JTextField)textField).selectAll();
-							SwingUtilities.invokeLater(textField::requestFocusInWindow);
+                        Component textFieldComponent = editor.getEditorComponent();
+                        if(textFieldComponent instanceof JTextField) {
+							JTextField textField = (JTextField)textFieldComponent;
+							if(! textField.getText().isEmpty())
+									textField.selectAll();
+							SwingUtilities.invokeLater(textFieldComponent::requestFocusInWindow);
                         }
                     }
                     return true;
