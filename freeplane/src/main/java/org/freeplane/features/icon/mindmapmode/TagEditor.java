@@ -734,7 +734,7 @@ class TagEditor {
                         Component textField = editor.getEditorComponent();
                         if(textField instanceof JTextField) {
 							((JTextField)textField).selectAll();
-							textField.requestFocusInWindow();
+							SwingUtilities.invokeLater(textField::requestFocusInWindow);
                         }
                     }
                     return true;
