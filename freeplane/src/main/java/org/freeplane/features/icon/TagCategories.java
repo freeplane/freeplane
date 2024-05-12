@@ -262,10 +262,6 @@ public class TagCategories {
     }
 
 
-    public List<CategorizedTag> categorizedTags() {
-        return categorizedTags(registry);
-     }
-
     public List<CategorizedTag> categorizedTags(IconRegistry registry){
         return categorizedTags(registry.getTagsAsListModel(), registry);
     }
@@ -312,7 +308,7 @@ public class TagCategories {
             }
 
             if (!found) {
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(currentTag.copy());
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(registry.setTagColor(currentTag));
                 insertNode(currentNode, currentNode.getChildCount(), newNode);
                 currentNode = newNode;
                 registered = true;
@@ -344,9 +340,8 @@ public class TagCategories {
     private Object copyTag(IconRegistry iconRegistry, DefaultMutableTreeNode node) {
         final Object userObject = node.getUserObject();
         if(userObject instanceof Tag) {
-            final Tag tag = ((Tag)userObject).copy();
-            iconRegistry.getTag(tag).ifPresent(registeredTag -> tag.setColor(registeredTag.getColor()));
-            return tag;
+            final Tag tag = ((Tag)userObject);
+            return iconRegistry.setTagColor(tag);
         }
         return userObject;
     }

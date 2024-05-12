@@ -761,16 +761,6 @@ public class MIconController extends IconController {
         setTags(node, newTags, false);
     }
 
-    public Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry iconRegistry) {
-        TreeMap<String, CategorizedTag> categorizedTagsByContent = new TreeMap<>();
-        final String tagCategorySeparatorForMap = iconRegistry.getTagCategories().getTagCategorySeparatorForMap();
-        iconRegistry.getTagCategories().categorizedTags()
-            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
-        iconRegistry.getTagCategories().categorizedTags(iconRegistry)
-            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
-        return categorizedTagsByContent;
-    }
-
     @Override
     public List<CategorizedTag> getCategorizedTags(List<Tag> tags, IconRegistry iconRegistry){
         return iconRegistry.getTagCategories().categorizedTags(tags, iconRegistry);

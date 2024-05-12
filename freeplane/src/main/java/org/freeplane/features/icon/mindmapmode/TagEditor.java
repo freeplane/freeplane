@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -332,6 +333,19 @@ class TagEditor {
         }
     }
 
+    private static Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry source, IconRegistry helper) {
+        final TagCategories tagCategories = helper.getTagCategories();
+        TreeMap<String, CategorizedTag> categorizedTagsByContent = new TreeMap<>();
+        final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+        tagCategories.categorizedTags(helper)
+            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
+        tagCategories.categorizedTags(source)
+            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
+        return categorizedTagsByContent;
+    }
+
+
+
     private static final String WIDTH_PROPERTY = "tagDialog.width";
     private static final String HEIGHT_PROPERTY = "tagDialog.height";
 
@@ -339,7 +353,6 @@ class TagEditor {
     private MIconController iconController;
     private JTable tagTable;
     private JDialog dialog;
-    private List<Tag> originalNodeTags;
     private final Map<String, CategorizedTag> qualifiedCategorizedTags;
     private final Map<String, CategorizedTag> unqualifiedCategorizedTags;
     private final IconRegistry helper;
@@ -397,20 +410,22 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        final IconRegistry iconRegistry = iconRegistry();
-        this.helper = new IconRegistry(iconRegistry.getTagCategories());
+        final IconRegistry sourceRegistry = iconRegistry();
+        this.helper = new IconRegistry(null);
+        TagCategories tagCategories = sourceRegistry.getTagCategories().copy(helper);
+        helper.setTagCategories(tagCategories);
 
-        qualifiedCategorizedTags = iconController.getCategorizedTagsByContent(iconRegistry);
-        originalNodeTags = iconController.getTags(node);
+        qualifiedCategorizedTags = getCategorizedTagsByContent(sourceRegistry, helper);
+
+        List<Tag> originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        List<CategorizedTag> originalNodeCategorizedTags = iconController.getCategorizedTags(originalNodeTags, iconRegistry);
+        List<CategorizedTag> originalNodeCategorizedTags = iconController.getCategorizedTags(originalNodeTags, helper);
 
         unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
                 .collect(Collectors.toMap(tag -> tag.tag().getContent(), tag -> tag, (x, y) -> x));
 
-        TagCategories tagCategories = iconRegistry.getTagCategories().copy(iconRegistry);
         tagCategorySeparatorForMapField = new JTextField(10);
         tagCategorySeparatorForMapField.setText(tagCategories.getTagCategorySeparatorForMap());
         separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.map_tag_category_separator"));
@@ -486,7 +501,7 @@ class TagEditor {
         if(! tagCategories.isEmpty()) {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
-                    iconRegistry,
+                    sourceRegistry,
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
         }
         menubar.add(insertMenu);
@@ -651,6 +666,35 @@ class TagEditor {
         dialog.setVisible(true);
     }
 
+    private boolean anythingHasChanged() {
+        final TagCategories tagCategories = getTagCategories();
+        if(! tagCategorySeparatorForMapField.getText().equals(tagCategories.getTagCategorySeparatorForMap())) {
+            return true;
+        }
+        if(! tagCategorySeparatorForNodeField.getText().equals(tagCategories.getTagCategorySeparatorForNode())) {
+            return true;
+        }
+
+        List<CategorizedTag> tags = getCurrentTags();
+        if(tags.stream().filter(NewCategorizedTag.class::isInstance).findAny().isPresent())
+            return true;
+
+        List<Tag> originalNodeTags = iconController.getTags(node);
+        if(originalNodeTags.size() != tags.size())
+            return true;
+        final List<Tag> newNodeTags = tags.stream().map(CategorizedTag::tag).collect(Collectors.toList());
+        for(int i = 0; i < tags.size(); i++) {
+            final Tag originalTag = originalNodeTags.get(i);
+            final Tag newTag = newNodeTags.get(i);
+            if(! originalTag.getContent().equals(newTag.getContent()))
+                return true;
+            if(! originalTag.getColor().equals(newTag.getColor()))
+                return true;
+        }
+        return false;
+
+    }
+
     protected void submit() {
         final MapModel map = node.getMap();
         final TagCategories tagCategories = getTagCategories().copy(map.getIconRegistry());
@@ -799,11 +843,8 @@ class TagEditor {
 
             @Override
             public Object getCellEditorValue() {
-                Object value = super.getCellEditorValue();
-                if(value instanceof CategorizedTag)
-                    return value;
-                else
-                    return createTagIfAbsent(value.toString(), false);
+                String value = ((JTextField)comboBox.getEditor().getEditorComponent()).getText();
+                return createTagIfAbsent(value.toString(), false);
             }
 
             @Override
@@ -884,7 +925,7 @@ class TagEditor {
 
     private void confirmedSubmit() {
         if (dialog.isVisible()) {
-            if (!originalNodeTags.equals(getCurrentTags())) {
+            if (anythingHasChanged()) {
                 final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
                     JOptionPane.YES_NO_CANCEL_OPTION);
 

@@ -124,4 +124,8 @@ public class IconRegistry implements IExtension {
         }
         return createTag(spec);
     }
+
+    public Tag setTagColor(Tag prototype) {
+        return setTagColor(prototype.getContent(), prototype.getColor());
+    }
 }
