@@ -375,10 +375,10 @@ class TagEditor {
         LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
         modifyColorAction.setEnabled(false);
         okButton.addActionListener(e -> {
-            dialog.setVisible(false);
+            closeDialog();
             submit();
         });
-        cancelButton.addActionListener(e -> dialog.setVisible(false));
+        cancelButton.addActionListener(e -> closeDialog());
         sortButton.addActionListener(e -> sortSelectedTags());
 
         final Box controlPane = Box.createVerticalBox();
@@ -516,17 +516,19 @@ class TagEditor {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_ESCAPE:
                         e.consume();
-                        dialog.setVisible(false);
+                        closeDialog();
                         break;
                     case KeyEvent.VK_ENTER:
-                        e.consume();
-                        if ((e.getModifiers() & InputEvent.SHIFT_MASK) != 0
-                                || enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
-                            insertTags();
-                            break;
+                        if((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+
+                            e.consume();
+                            if (enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+                                insertTags();
+                                break;
+                            }
+                            closeDialog();
+                            submit();
                         }
-                        dialog.setVisible(false);
-                        submit();
                         break;
                     case KeyEvent.VK_DELETE:
                     case KeyEvent.VK_BACK_SPACE:
@@ -546,7 +548,7 @@ class TagEditor {
 
         tagTable.getSelectionModel().addListSelectionListener(this::updateColorButton);
         tagTable.getModel().addTableModelListener(this::selectRowsAfterUpdate);
-        tagTable.changeSelection(0, 0, true, false);
+        tagTable.changeSelection(tagTable.getRowCount() - 1, 0, true, false);
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
@@ -585,6 +587,10 @@ class TagEditor {
             }
         });
     }
+    private void closeDialog() {
+        dialog.setVisible(false);
+    }
+
     private void insertSelectedTagsIntoSelectedNodes() {
         final List<Tag> selectedTags = IntStream.of(tagTable.getSelectedRows())
         .mapToObj(row -> (CategorizedTag)tagTable.getValueAt(row, 0))
@@ -889,7 +895,7 @@ class TagEditor {
                     return;
                 }
             }
-            dialog.setVisible(false);
+            closeDialog();
         }
     }
 
