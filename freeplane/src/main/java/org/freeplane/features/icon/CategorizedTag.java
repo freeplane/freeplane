@@ -22,7 +22,7 @@ public interface CategorizedTag extends Comparable<CategorizedTag> {
     default Tag categorizedTag(String tagCategorySeparatorForMap) {
         final Tag tag = tag();
         String content = getContent(tagCategorySeparatorForMap);
-        return new Tag(content, Optional.of(tag.getIconColor()));
+        return new Tag(content, tag.getColor());
     }
     default String getContent(String tagCategorySeparatorForMap) {
         return categoryTags().stream()

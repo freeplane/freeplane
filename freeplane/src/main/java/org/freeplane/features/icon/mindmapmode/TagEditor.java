@@ -357,7 +357,7 @@ class TagEditor {
             }
         };
         colorButton = new JColorButton(modifyColorAction);
-        colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
+        colorButton.setColor(Tag.EMPTY_TAG.getColor());
         final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
             .getBooleanProperty("el__enter_confirms_by_default"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
@@ -601,12 +601,11 @@ class TagEditor {
             return;
 
         Color defaultColor = new Color(tag.getDefaultColor().getRGB(), true);
-        Color initialColor = tag.getIconColor();
+        Color initialColor = tag.getColor();
         final Color result = ColorTracker.showCommonJColorChooserDialog(tagTable, tag.getContent(),
                 initialColor, defaultColor);
         if(result != null && ! initialColor.equals(result) || result == defaultColor){
-            Optional<Color> newColor = result == defaultColor ? Optional.empty() : Optional.of(result);
-            tag.setColor(newColor);
+            tag.setColor(result);
             TagsWrapper tableModel = getTableModel();
             IntStream.range(0, tagTable.getRowCount() - 1)
             .filter(i -> tagTable.getValueAt(i, 0) ==tag)
@@ -918,12 +917,12 @@ class TagEditor {
         CategorizedTag tag = (CategorizedTag) tagTable.getValueAt(firstIndex, 0);
         if(tag.isEmpty()) {
             modifyColorAction.setEnabled(false);
-            colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
+            colorButton.setColor(Tag.EMPTY_TAG.getColor());
             return;
         }
         else {
             modifyColorAction.setEnabled(true);
-            colorButton.setColor(tag.tag().getIconColor());
+            colorButton.setColor(tag.tag().getColor());
         }
     }
 

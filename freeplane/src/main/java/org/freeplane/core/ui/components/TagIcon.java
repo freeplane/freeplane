@@ -43,7 +43,7 @@ public class TagIcon implements Icon {
         if(tag.isEmpty())
             return;
         Graphics2D g = (Graphics2D) prototypeGraphics.create();
-        Color backgroundColor = tag.getIconColor();
+        Color backgroundColor = tag.getColor();
         Color textColor = UITools.getTextColorForBackground(backgroundColor);
          g.setColor(backgroundColor);
         int r = (int) (UITools.FONT_SCALE_FACTOR * 10);

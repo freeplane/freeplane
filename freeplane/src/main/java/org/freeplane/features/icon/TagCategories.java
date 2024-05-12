@@ -17,7 +17,6 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -107,7 +106,7 @@ public class TagCategories {
     public static void writeTag(Tag tag, String indent, Writer writer)
             throws IOException {
         writer.append(indent + tag.getContent());
-        writer.append(ColorUtils.colorToRGBAString(tag.getIconColor()));
+        writer.append(ColorUtils.colorToRGBAString(tag.getColor()));
         writer.append(System.lineSeparator());
     }
 
@@ -269,7 +268,7 @@ public class TagCategories {
         }
     }
 
-    Optional<Color> getColor(Tag tag) {
+    Color getColor(Tag tag) {
         return registry.getTagColor(tag);
     }
 

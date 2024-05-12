@@ -83,10 +83,11 @@ public class IconRegistry implements IExtension {
 	}
 
     public Tag setTagColor(String tagContent, String value) {
-        return setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor));
+        return setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor)
+                .orElseGet(() -> Tag.getDefaultColor(tagContent)));
     }
 
-    public Tag setTagColor(String tagContent, Optional<Color> value) {
+    public Tag setTagColor(String tagContent, Color value) {
         Tag tag = createTag(tagContent);
         tag.setColor(value);
         return tag;
@@ -97,8 +98,8 @@ public class IconRegistry implements IExtension {
         return mapTags.getElement(required);
     }
 
-    public Optional<Color>getTagColor(Tag required) {
-        return getTag(required).flatMap(Tag::getColor);
+    public Color getTagColor(Tag required) {
+        return getTag(required).get().getColor();
     }
 
     public TagCategories getTagCategories() {

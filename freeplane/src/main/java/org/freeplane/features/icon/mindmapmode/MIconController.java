@@ -656,15 +656,15 @@ public class MIconController extends IconController {
             .filter(tagIndex -> ! newTagsWithoutDuplicates.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
             .forEach(tagIndex -> {
                 Tag newTag = newTagsWithoutDuplicates.get(tagIndex);
-                Optional<Color> newColor = newTag.getColor();
+                Color newColor = newTag.getColor();
                 setTagColor(map, newTag, newColor);
             });
         }
     }
 
-    private void setTagColor(MapModel map, Tag tag, Optional<Color> newColor) {
+    private void setTagColor(MapModel map, Tag tag, Color newColor) {
         IconRegistry iconRegistry = map.getIconRegistry();
-        Optional<Color> oldColor = iconRegistry.getTagColor(tag);
+        Color oldColor = iconRegistry.getTagColor(tag);
         if(oldColor.equals(newColor)) {
             return;
         }
@@ -684,7 +684,7 @@ public class MIconController extends IconController {
                 setTagColorWithoutUndo(map, tag, oldColor, newColor);
             }
 
-            private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Optional<Color> oldColor, Optional<Color> newColor) {
+            private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Color oldColor, Color newColor) {
                 iconRegistry.setTagColor(tag.getContent(), newColor);
                 Controller.getCurrentModeController().getMapController().fireMapChanged(
                     new MapChangeEvent(iconRegistry, map, tag, oldColor, newColor));

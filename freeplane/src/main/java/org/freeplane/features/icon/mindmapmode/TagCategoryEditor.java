@@ -359,7 +359,7 @@ class TagCategoryEditor implements IExtension {
             }
         };
         colorButton = new JColorButton(modifyColorAction);
-        colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
+        colorButton.setColor(Tag.EMPTY_TAG.getColor());
         final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController()
                 .getBooleanProperty("el__enter_confirms_by_default"));
         LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
@@ -721,13 +721,11 @@ class TagCategoryEditor implements IExtension {
         Tag tag = getSelectedTag();
         if (tag != null && !tag.isEmpty()) {
             Color defaultColor = new Color(tag.getDefaultColor().getRGB(), true);
-            Color initialColor = tag.getIconColor();
+            Color initialColor = tag.getColor();
             final Color result = ColorTracker.showCommonJColorChooserDialog(tree, tag.getContent(),
                     initialColor, defaultColor);
             if (result != null && !initialColor.equals(result) || result == defaultColor) {
-                Optional<Color> newColor = result == defaultColor ? Optional.empty()
-                        : Optional.of(result);
-                tag.setColor(newColor);
+                tag.setColor(result);
                 tagCategories.tagChanged(tag);
                 updateColorButton();
             }
@@ -811,12 +809,12 @@ class TagCategoryEditor implements IExtension {
         Tag tag = getSelectedTag();
         if (tag == null || tag.isEmpty()) {
             modifyColorAction.setEnabled(false);
-            colorButton.setColor(Tag.EMPTY_TAG.getIconColor());
+            colorButton.setColor(Tag.EMPTY_TAG.getColor());
             return;
         }
         else {
             modifyColorAction.setEnabled(true);
-            colorButton.setColor(tag.getIconColor());
+            colorButton.setColor(tag.getColor());
         }
     }
 }

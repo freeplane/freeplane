@@ -808,9 +808,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         xmlElement.setAttribute(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForNode());
 
         iconRegistry.getTagsAsListModel().stream()
-        .filter(tag -> tag.getColor().isPresent())
         .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],
-                tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor().get())));
+                tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor())));
         if(tagColorCounter[0] > 0)
             element.addChild(xmlElement);
     }

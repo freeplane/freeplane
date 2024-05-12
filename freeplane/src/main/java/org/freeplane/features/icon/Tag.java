@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,13 +21,20 @@ import org.freeplane.core.util.LineComparator;
 public class Tag implements Comparable<Tag>{
     public final static Tag EMPTY_TAG = new Tag("");
     private final String content;
-    private Optional<Color> color;
+    private Color color;
 
-    public Tag(String content) {
-        this(content, Optional.empty());
+    public static Color getDefaultColor(String content) {
+        if(content.isEmpty())
+           return Color.BLACK;
+       long crc = computeCRC32(content);
+       return HSLColorConverter.generateColorFromLong(crc);
     }
 
-    public Tag(String content, Optional<Color> color) {
+    public Tag(String content) {
+        this(content, getDefaultColor(content));
+    }
+
+    public Tag(String content, Color color) {
         this.content = content;
         this.color = color;
     }
@@ -46,23 +52,16 @@ public class Tag implements Comparable<Tag>{
        return content.isEmpty();
     }
 
-    public void setColor(Optional<Color> color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
-    public Optional<Color> getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public Color getIconColor() {
-        return color.orElseGet(this::getDefaultColor);
-    }
-
     public Color getDefaultColor() {
-         if(content.isEmpty())
-            return Color.BLACK;
-        long crc = computeCRC32(content);
-        return HSLColorConverter.generateColorFromLong(crc);
+        return getDefaultColor(content);
     }
 
     public Tag copy() {
@@ -73,7 +72,7 @@ public class Tag implements Comparable<Tag>{
         if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
             return this;
         final int tagIndex = getContent().lastIndexOf(tagCategorySeparatorForNode);
-        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparatorForNode.length()), Optional.of(getIconColor()));
+        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparatorForNode.length()), getColor());
     }
 
     public List<Tag> categoryTags(String tagCategorySeparatorForNode) {
@@ -82,8 +81,7 @@ public class Tag implements Comparable<Tag>{
         final String[] categories = getContent().split(Pattern.quote(tagCategorySeparatorForNode));
         if(categories == null || categories.length < 2)
             return Collections.singletonList(this);
-        final Optional<Color> iconColor = Optional.of(getIconColor());
-        return Stream.of(categories).map(content -> new Tag(content, iconColor))
+        return Stream.of(categories).map(content -> new Tag(content, color))
                 .collect(Collectors.toList());
     }
 
