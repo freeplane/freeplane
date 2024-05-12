@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.map.MapModel;
 
@@ -108,5 +109,19 @@ public class IconRegistry implements IExtension {
 
     public void setTagCategories(TagCategories tagCategories) {
         this.tagCategories = tagCategories;
+    }
+
+    public Tag readTag(String spec) {
+        int colorIndex = spec.length() - 9;
+        if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
+            String content = spec.substring(0, colorIndex);
+            String colorSpec = spec.substring(colorIndex);
+            try {
+                return setTagColor(content, colorSpec);
+            } catch (NumberFormatException e) {
+                LogUtils.severe(e);
+            }
+        }
+        return createTag(spec);
     }
 }

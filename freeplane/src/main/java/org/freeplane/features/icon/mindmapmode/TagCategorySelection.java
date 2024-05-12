@@ -19,20 +19,20 @@ public class TagCategorySelection implements Transferable, ClipboardOwner {
     public static DataFlavor flavor(Transferable t) {
         if(t.isDataFlavorSupported(tagCategoryFlavor))
             return tagCategoryFlavor;
-        if(t.isDataFlavorSupported(tagFlavorWithoutColor))
-            return tagFlavorWithoutColor;
+        if(t.isDataFlavorSupported(tagFlavor))
+            return tagFlavor;
         if(t.isDataFlavorSupported(stringFlavor))
             return stringFlavor;
         throw new IllegalArgumentException("No supported flavor found");
     }
 
     public static final DataFlavor tagCategoryFlavor = new DataFlavor("application/x-freeplane-tag-category; class=java.lang.String", "Freeplane Tag Categories");
-    public static final DataFlavor tagFlavorWithoutColor = TagSelection.tagFlavorWithoutColor;
+    public static final DataFlavor tagFlavor = TagSelection.tagFlavor;
     public static final DataFlavor stringFlavor = DataFlavor.stringFlavor;
 
     private static final DataFlavor[] flavors = {
             tagCategoryFlavor,
-            tagFlavorWithoutColor,
+            tagFlavor,
             stringFlavor
         };
     private final StringSelection tagCategorySelectionDelegate;
@@ -55,7 +55,7 @@ public class TagCategorySelection implements Transferable, ClipboardOwner {
     @Override
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException,
             IOException {
-        if(flavor.equals(tagFlavorWithoutColor))
+        if(flavor.equals(tagFlavor))
             return tagSelectionDelegate.getTransferData(stringFlavor);
         else
             return tagCategorySelectionDelegate.getTransferData(stringFlavor);

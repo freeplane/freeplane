@@ -25,7 +25,7 @@ public class TagCategoriesTest {
                 + "tag4";
         Scanner scanner = new Scanner(new StringReader(input));
 
-        tagCategories.readTagCategories(parentNode, parentNode.getChildCount(), scanner, true);
+        tagCategories.readTagCategories(parentNode, parentNode.getChildCount(), scanner);
 
         Assertions.assertThat(parentNode.getChildCount()).isEqualTo(2);
 

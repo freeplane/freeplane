@@ -25,7 +25,6 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,7 +47,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -311,7 +309,7 @@ class TagCategoryEditor implements IExtension {
                 Transferable t = support.getTransferable();
                 final DataFlavor flavor = TagCategorySelection.flavor(t);
                 String data = (String) t.getTransferData(flavor);
-                tagCategories.insert(parent, childIndex, data, ! flavor.equals(TagCategorySelection.tagFlavorWithoutColor));
+                tagCategories.insert(parent, childIndex, data);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -709,8 +707,7 @@ class TagCategoryEditor implements IExtension {
                 String data = (String) t.getTransferData(flavor);
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                         .getLastSelectedPathComponent();
-                tagCategories.insert(selectedNode, selectedNode.getChildCount(), data,
-                        !flavor.equals(TagCategorySelection.tagFlavorWithoutColor));
+                tagCategories.insert(selectedNode, selectedNode.getChildCount(), data);
             }
         } catch (Exception e) {
             e.printStackTrace();

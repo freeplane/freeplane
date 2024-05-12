@@ -41,12 +41,13 @@ import java.awt.event.WindowEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -252,21 +253,28 @@ class TagEditor {
         @Override
         protected Transferable createTransferable(JComponent c) {
             JTable table = (JTable) c;
-            List<String> values = new ArrayList<>();
             int[] rows = table.getSelectedRows();
             int col = table.getSelectedColumn();
+
+            StringWriter writer = new StringWriter();
 
             for (int row : rows) {
                 Object cellValue = table.getValueAt(row, col);
                 if (cellValue instanceof CategorizedTag) {
-                    values.add(((CategorizedTag) cellValue).getContent(getTagCategorySeparatorForMapField()));
-                } else if (cellValue != null) {
-                    values.add(cellValue.toString());
+                    final Tag categorizedTag = ((CategorizedTag) cellValue).categorizedTag(getTagCategorySeparatorForMapField());
+                    try {
+                        TagCategories.writeTag(categorizedTag, writer);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
-                    values.add("");
+                    if (cellValue != null) {
+                        writer.append(cellValue.toString());
+                    }
+                    writer.append(System.lineSeparator());
                 }
             }
-            return new TagSelection(String.join("\n", values));
+            return new TagSelection(writer.toString());
         }
 
         @Override
@@ -284,8 +292,8 @@ class TagEditor {
             final Transferable transferable = info.getTransferable();
             try {
                 data = (String) transferable.getTransferData(
-                        transferable.isDataFlavorSupported(TagSelection.tagFlavorWithoutColor)
-                        ? TagSelection.tagFlavorWithoutColor
+                        transferable.isDataFlavorSupported(TagSelection.tagFlavor)
+                        ? TagSelection.tagFlavor
                         : DataFlavor.stringFlavor);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -312,7 +320,7 @@ class TagEditor {
             TableModel model = target.getModel();
             String[] rows = data.split("\n");
             for (String row : rows)
-                ((TagsWrapper) model).insertTag(index++, createTagIfAbsent(row));
+                ((TagsWrapper) model).insertTag(index++, createTagIfAbsent(row, true));
         }
 
         @Override
@@ -334,6 +342,7 @@ class TagEditor {
     private List<Tag> originalNodeTags;
     private final Map<String, CategorizedTag> qualifiedCategorizedTags;
     private final Map<String, CategorizedTag> unqualifiedCategorizedTags;
+    private final IconRegistry helper;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
     private final JTextField tagCategorySeparatorForMapField;
@@ -372,7 +381,6 @@ class TagEditor {
         cancelButton.addActionListener(e -> dialog.setVisible(false));
         sortButton.addActionListener(e -> sortSelectedTags());
 
-        colorButton.addActionListener(e -> modifyTagColor());
         final Box controlPane = Box.createVerticalBox();
         final JPanel separatorPane = new JPanel();
         final JPanel buttonPane = new JPanel();
@@ -390,6 +398,8 @@ class TagEditor {
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
         final IconRegistry iconRegistry = iconRegistry();
+        this.helper = new IconRegistry(iconRegistry.getTagCategories());
+
         qualifiedCategorizedTags = iconController.getCategorizedTagsByContent(iconRegistry);
         originalNodeTags = iconController.getTags(node);
 
@@ -596,19 +606,20 @@ class TagEditor {
         int selectedRow = tagTable.getSelectedRow();
         if(selectedRow < 0)
             return;
-        Tag tag = ((CategorizedTag) tagTable.getValueAt(selectedRow, 0)).tag();
-        if(tag.isEmpty())
+        final CategorizedTag modifiedCategorizedTag = (CategorizedTag) tagTable.getValueAt(selectedRow, 0);
+        Tag modifiedTag = modifiedCategorizedTag.tag();
+        if(modifiedTag.isEmpty())
             return;
 
-        Color defaultColor = new Color(tag.getDefaultColor().getRGB(), true);
-        Color initialColor = tag.getColor();
-        final Color result = ColorTracker.showCommonJColorChooserDialog(tagTable, tag.getContent(),
+        Color defaultColor = new Color(modifiedTag.getDefaultColor().getRGB(), true);
+        Color initialColor = modifiedTag.getColor();
+        final Color result = ColorTracker.showCommonJColorChooserDialog(tagTable, modifiedTag.getContent(),
                 initialColor, defaultColor);
-        if(result != null && ! initialColor.equals(result) || result == defaultColor){
-            tag.setColor(result);
+        if(result != null && ! initialColor.equals(result)){
+            modifiedTag.setColor(result);
             TagsWrapper tableModel = getTableModel();
             IntStream.range(0, tagTable.getRowCount() - 1)
-            .filter(i -> tagTable.getValueAt(i, 0) ==tag)
+            .filter(i -> tagTable.getValueAt(i, 0) == modifiedCategorizedTag)
             .forEach(i -> tableModel.fireTableCellUpdated(i, 0));
             updateColorButton();
         }
@@ -672,23 +683,24 @@ class TagEditor {
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }
-    private CategorizedTag createTagIfAbsent(String string) {
-        final CategorizedTag categorizedTag = unqualifiedCategorizedTags.get(string);
-        return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags.computeIfAbsent(string, this::createTag);
+    private CategorizedTag createTagIfAbsent(String spec, boolean specContainsColor) {
+        final CategorizedTag categorizedTag = unqualifiedCategorizedTags.get(spec);
+        return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags
+                .computeIfAbsent(spec, x -> createTag(spec, specContainsColor));
     }
-    private CategorizedTag createTag(String string) {
+    private CategorizedTag createTag(String spec, boolean specContainsColor) {
         final String tagCategorySeparatorForMap = getTagCategorySeparatorForMapField();
         final String tagCategorySeparatorForNode = getTagCategorySeparatorForNodeField();
         final String[] categoriesAndTag = ! tagCategorySeparatorForNode.contains(tagCategorySeparatorForMap)
-                ? string.trim().split(Pattern.quote(tagCategorySeparatorForMap))
-                : new String[] {string.trim()};
+                ? spec.trim().split(Pattern.quote(tagCategorySeparatorForMap))
+                : new String[] {spec.trim()};
         if(categoriesAndTag.length > 1) {
             final List<Tag> tagList = Stream.of(categoriesAndTag)
-                    .map(iconRegistry()::createTag)
+                    .map(specContainsColor ? helper::readTag : helper::createTag)
                     .collect(Collectors.toList());
             return new NewCategorizedTag(tagList);
         } else
-            return new UncategorizedTag(iconRegistry().createTag(string));
+            return new UncategorizedTag(specContainsColor ? helper.readTag(spec) : helper.createTag(spec));
     }
 
     private JTable createTagTable(List<CategorizedTag> tags) {
@@ -785,7 +797,7 @@ class TagEditor {
                 if(value instanceof CategorizedTag)
                     return value;
                 else
-                    return createTagIfAbsent(value.toString());
+                    return createTagIfAbsent(value.toString(), false);
             }
 
             @Override

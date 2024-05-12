@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 public class TagSelection implements Transferable, ClipboardOwner {
-    public static final DataFlavor tagFlavorWithoutColor = new DataFlavor("application/x-freeplane-tag-without-color; class=java.lang.String", "Freeplane Tags without Color");
+    public static final DataFlavor tagFlavor = new DataFlavor("application/x-freeplane-tag; class=java.lang.String", "Freeplane Tags");
 
     private static final DataFlavor[] flavors = {
-            tagFlavorWithoutColor,
+            tagFlavor,
             DataFlavor.stringFlavor
         };
     private final StringSelection tagSelectionDelegate;

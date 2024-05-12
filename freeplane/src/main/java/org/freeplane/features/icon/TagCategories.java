@@ -83,8 +83,11 @@ public class TagCategories {
         Object userObject = node.getUserObject();
         if (userObject instanceof Tag) {
             Tag tag = (Tag) userObject;
-            writer.append(tag.getContent());
-            writer.append(System.lineSeparator());
+            try {
+                writeTag(tag, writer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -93,7 +96,8 @@ public class TagCategories {
         Object userObject = node.getUserObject();
         if (userObject instanceof Tag) {
             Tag tag = (Tag) userObject;
-            writeTag(tag, indent, writer);
+            writer.append(indent);
+            writeTag(tag, writer);
             indent = indent + " ";
         }
         int childCount = node.getChildCount();
@@ -103,10 +107,11 @@ public class TagCategories {
         }
     }
 
-    public static void writeTag(Tag tag, String indent, Writer writer)
-            throws IOException {
-        writer.append(indent + tag.getContent());
-        writer.append(ColorUtils.colorToRGBAString(tag.getColor()));
+    public static void writeTag(Tag tag, Writer writer) throws IOException {
+        if(! tag.isEmpty()) {
+            writer.append(tag.getContent());
+            writer.append(ColorUtils.colorToRGBAString(tag.getColor()));
+        }
         writer.append(System.lineSeparator());
     }
 
@@ -114,7 +119,7 @@ public class TagCategories {
         return getRootNode().isLeaf();
     }
 
-    public void readTagCategories(DefaultMutableTreeNode target, int index, Scanner scanner, boolean containsColor) {
+    public void readTagCategories(DefaultMutableTreeNode target, int index, Scanner scanner) {
         DefaultMutableTreeNode lastNode = target;
         int lastIndentation = -1;
 
@@ -122,7 +127,7 @@ public class TagCategories {
             String line = scanner.nextLine();
             int indentation = getIndentationLevel(line);
 
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(readTag(line.trim(), containsColor));
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(registry.readTag(line.trim()));
             DefaultMutableTreeNode parent;
             if (indentation == lastIndentation) {
                 parent = (DefaultMutableTreeNode) lastNode.getParent();
@@ -154,33 +159,17 @@ public class TagCategories {
         return indentation;
     }
 
-    private Tag readTag(String spec, boolean containsColor) {
-        if(containsColor) {
-            int colorIndex = spec.length() - 9;
-            if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
-                String content = spec.substring(0, colorIndex);
-                String colorSpec = spec.substring(colorIndex);
-                try {
-                    return registry.setTagColor(content, colorSpec);
-                } catch (NumberFormatException e) {
-                    LogUtils.severe(e);
-                }
-            }
-        }
-        return registry.createTag(spec);
-    }
-
     public void load(File tagCategoryFile) {
         try (Scanner scanner = new Scanner(tagCategoryFile)){
             final DefaultMutableTreeNode rootNode = getRootNode();
-            readTagCategories(rootNode, rootNode.getChildCount(), scanner, true);
+            readTagCategories(rootNode, rootNode.getChildCount(), scanner);
         } catch (FileNotFoundException e1) {/**/}
     }
 
     public void load(String data) {
         try (Scanner scanner = new Scanner(data)){
             final DefaultMutableTreeNode rootNode = getRootNode();
-            readTagCategories(rootNode, rootNode.getChildCount(), scanner, true);
+            readTagCategories(rootNode, rootNode.getChildCount(), scanner);
         }
     }
     public DefaultMutableTreeNode getRootNode() {
@@ -259,12 +248,12 @@ public class TagCategories {
         }
     }
 
-    public void insert(DefaultMutableTreeNode parent, int index, String data, boolean containsColor) {
+    public void insert(DefaultMutableTreeNode parent, int index, String data) {
         if (parent == null) {
             parent = getRootNode();
         }
         try(Scanner st = new Scanner(new StringReader(data))){
-            readTagCategories(parent, index, st, containsColor);
+            readTagCategories(parent, index, st);
         }
     }
 
