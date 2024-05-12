@@ -46,8 +46,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -666,7 +668,7 @@ class TagEditor {
         dialog.setVisible(true);
     }
 
-    private boolean anythingHasChanged() {
+    private boolean wasAnyValueModified() {
         final TagCategories tagCategories = getTagCategories();
         if(! tagCategorySeparatorForMapField.getText().equals(tagCategories.getTagCategorySeparatorForMap())) {
             return true;
@@ -680,10 +682,13 @@ class TagEditor {
             return true;
 
         List<Tag> originalNodeTags = iconController.getTags(node);
-        if(originalNodeTags.size() != tags.size())
+        Set<Tag> filteringSet = new HashSet<>();
+        final List<Tag> newNodeTags = tags.stream().map(CategorizedTag::tag)
+                .filter(tag -> tag.isEmpty() || filteringSet.add(tag))
+                .collect(Collectors.toList());
+        if(originalNodeTags.size() != newNodeTags.size())
             return true;
-        final List<Tag> newNodeTags = tags.stream().map(CategorizedTag::tag).collect(Collectors.toList());
-        for(int i = 0; i < tags.size(); i++) {
+        for(int i = 0; i < newNodeTags.size(); i++) {
             final Tag originalTag = originalNodeTags.get(i);
             final Tag newTag = newNodeTags.get(i);
             if(! originalTag.getContent().equals(newTag.getContent()))
@@ -928,7 +933,7 @@ class TagEditor {
 
     private void confirmedSubmit() {
         if (dialog.isVisible()) {
-            if (anythingHasChanged()) {
+            if (wasAnyValueModified()) {
                 final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
                     JOptionPane.YES_NO_CANCEL_OPTION);
 
