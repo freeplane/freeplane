@@ -191,12 +191,12 @@ class TagEditor {
             int tagCount = tags.size();
             if(index < tagCount) {
                 tags.set(index, tag);
-                fireTableCellUpdated(index, 0);
             }
             else {
                 tags.add(tag);
-                fireTableRowsInserted(tagCount, tagCount);
+                fireTableRowsInserted(tagCount + 1, tagCount + 1);
             }
+            fireTableCellUpdated(index, 0);
         }
 
         @Override
@@ -964,8 +964,13 @@ class TagEditor {
         else if(e.getType() == TableModelEvent.DELETE)
             EventQueue.invokeLater(() ->
             tagTable.getSelectionModel().setSelectionInterval(e.getFirstRow(), e.getFirstRow()));
-        else if(e.getType() == TableModelEvent.UPDATE && e.getFirstRow() == tagTable.getSelectedRow())
-            EventQueue.invokeLater(this::updateColorButton);
+        else if(e.getType() == TableModelEvent.UPDATE && e.getFirstRow() == tagTable.getSelectedRow()) {
+            if(tagTable.getSelectedRow() <= tagTable.getRowCount() - 2) {
+                tagTable.changeSelection(tagTable.getSelectedRow() + 1 , 0, false, false);
+            }
+            else
+                EventQueue.invokeLater(this::updateColorButton);
+        }
     }
 
     private void deleteTags() {
