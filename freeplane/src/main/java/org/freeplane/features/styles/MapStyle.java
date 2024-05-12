@@ -810,8 +810,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         iconRegistry.getTagsAsListModel().stream()
         .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],
                 tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor())));
-        if(tagColorCounter[0] > 0)
-            element.addChild(xmlElement);
+        element.addChild(xmlElement);
     }
 
 	public void setZoom(final MapModel map, final float zoom) {

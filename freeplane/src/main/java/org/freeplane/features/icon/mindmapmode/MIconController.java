@@ -687,7 +687,7 @@ public class MIconController extends IconController {
             private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Color oldColor, Color newColor) {
                 iconRegistry.setTagColor(tag.getContent(), newColor);
                 Controller.getCurrentModeController().getMapController().fireMapChanged(
-                    new MapChangeEvent(iconRegistry, map, tag, oldColor, newColor));
+                    new MapChangeEvent(MIconController.this, map, tag, oldColor, newColor));
             }
         };
         Controller.getCurrentModeController().execute(actor, map);
@@ -784,7 +784,9 @@ public class MIconController extends IconController {
             @Override
             public void undo() {
                 iconRegistry.setTagCategories(oldCategories);
-                map.setSaved(false);
+                Controller.getCurrentModeController().getMapController().fireMapChanged(
+                        new MapChangeEvent(MIconController.this, Controller.getCurrentController().getMap(), TagCategories.class,
+                                newCategories, oldCategories));
             }
 
             @Override
@@ -795,7 +797,9 @@ public class MIconController extends IconController {
             @Override
             public void act() {
                 iconRegistry.setTagCategories(newCategories);
-                map.setSaved(false);
+                Controller.getCurrentModeController().getMapController().fireMapChanged(
+                        new MapChangeEvent(MIconController.this, Controller.getCurrentController().getMap(), TagCategories.class,
+                                oldCategories, newCategories));
             }
         };
         modeController.execute(actor, map);

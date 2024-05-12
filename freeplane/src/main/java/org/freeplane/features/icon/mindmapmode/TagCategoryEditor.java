@@ -415,7 +415,6 @@ class TagCategoryEditor implements IExtension {
         tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
         tree.setCellEditor(new TagCellEditor(tagCategories.getRegistry()));
 
-        JScrollPane scrollPane = new JScrollPane(tree);
         configureKeyBindings();
 
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
@@ -447,14 +446,15 @@ class TagCategoryEditor implements IExtension {
                     close();
                     break;
                 case KeyEvent.VK_ENTER:
-                    e.consume();
-                    if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0
-                            || enterConfirms.isSelected() == ((e.getModifiers() & InputEvent.ALT_DOWN_MASK) != 0)) {
-                        addNode((e.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0);
-                        break;
+                    if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+                        e.consume();
+                        if (enterConfirms.isSelected() == ((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) != 0)) {
+                            addNode((e.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0);
+                            break;
+                        }
+                        close();
+                        submit();
                     }
-                    close();
-                    submit();
                     break;
                 }
             }
