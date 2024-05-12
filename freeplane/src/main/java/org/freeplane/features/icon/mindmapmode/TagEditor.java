@@ -843,8 +843,11 @@ class TagEditor {
 
             @Override
             public Object getCellEditorValue() {
-                String value = ((JTextField)comboBox.getEditor().getEditorComponent()).getText();
-                return createTagIfAbsent(value.toString(), false);
+                Object value = super.getCellEditorValue();
+                if(value instanceof CategorizedTag)
+                    return value;
+                else
+                    return createTagIfAbsent(value.toString(), false);
             }
 
             @Override
