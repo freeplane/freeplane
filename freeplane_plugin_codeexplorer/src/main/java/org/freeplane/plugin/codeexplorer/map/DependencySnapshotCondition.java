@@ -28,18 +28,19 @@ import org.freeplane.features.map.NodeModel;
 
 class DependencySnapshotCondition extends ASelectableCondition {
 	private static final String NAME = "dependencies_snapshot";
-	private static String description;
+	private final String description;
 
 	private final Set<String> dependentNodeIDs;
     private final ICondition baseCondition;
 
-    public DependencySnapshotCondition(Set<String> dependentNodeIDs) {
-        this(dependentNodeIDs, null);
+    public DependencySnapshotCondition(Set<String> dependentNodeIDs, String description) {
+        this(dependentNodeIDs, null, description);
     }
-	public DependencySnapshotCondition(Set<String> dependentNodeIDs, ICondition baseCondition) {
+	public DependencySnapshotCondition(Set<String> dependentNodeIDs, ICondition baseCondition, String description) {
 		super();
         this.baseCondition = baseCondition;
         this.dependentNodeIDs = dependentNodeIDs;
+        this.description = description;
 	}
 
 	@Override
@@ -49,10 +50,7 @@ class DependencySnapshotCondition extends ASelectableCondition {
 
 	@Override
     protected String createDescription() {
-		if (DependencySnapshotCondition.description == null) {
-			DependencySnapshotCondition.description = TextUtils.getText("code.filter_dependencies_snapshot");
-		}
-		return DependencySnapshotCondition.description;
+		return description;
     }
 
 	@Override

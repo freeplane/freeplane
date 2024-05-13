@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -46,7 +47,7 @@ class FilterCyclesAction extends AFreeplaneAction {
 
         Set<CodeNode> cycleNodes = node.findCyclicDependencies();
         if(! cycleNodes.isEmpty()) {
-            ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes);
+            ASelectableCondition condition = new SelectedViewSnapshotCondition(cycleNodes, ActionUtils.getActionTitle(this));
             Filter lastFilter = selection.getFilter();
             Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false,
                     lastFilter.getFilteredElement(), null);

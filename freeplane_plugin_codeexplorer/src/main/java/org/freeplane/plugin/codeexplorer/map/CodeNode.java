@@ -256,13 +256,13 @@ public abstract class CodeNode extends NodeModel {
         return filter != null ? classes.filter(javaClass -> filter.accepts(getMap().getNodeByClass(javaClass))) : classes;
     }
 
-    Stream<JavaClass> getInheriting(Filter  filter){
-        return getClasses(filter)
+    Stream<JavaClass> getInheriting(){
+        return getClasses()
                 .flatMap(javaClass -> javaClass.getSubclasses().stream())
                 .filter(this::isKnown);
     }
-    Stream<JavaClass> getInherited(Filter  filter){
-        return getClasses(filter)
+    Stream<JavaClass> getInherited(){
+        return getClasses()
                 .flatMap(javaClass -> Stream.concat(
                         javaClass.getRawInterfaces().stream(),
                         javaClass.getRawSuperclass().map(Stream::of).orElse(Stream.empty())))

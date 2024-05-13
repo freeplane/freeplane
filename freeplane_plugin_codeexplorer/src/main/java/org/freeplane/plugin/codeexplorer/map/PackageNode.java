@@ -45,7 +45,7 @@ class PackageNode extends CodeNode {
         setIdWithIndex(javaPackage.getName());
         this.classCount = getClassesInTree().filter(CodeNode::isNamed).count();
         setText(text + formatClassCount(classCount));
-        hasOwnClasses = getClasses().anyMatch(x -> true);
+        hasOwnClasses = getPackageClasses(javaPackage).anyMatch(x -> true);
         if(createAttributes) {
             SortedSet<String> classpath = new TreeSet<>();
             getClassesInTree()
@@ -69,10 +69,10 @@ class PackageNode extends CodeNode {
     }
     @Override
     protected Stream<JavaClass> getClasses() {
-        return getClasses(javaPackage);
+        return getClassesInTree(javaPackage);
     }
 
-    private Stream<JavaClass> getClasses(JavaPackage somePackage) {
+    private Stream<JavaClass> getPackageClasses(JavaPackage somePackage) {
         return somePackage.getClasses().stream()
                 .filter(this::belongsToSameGroup);
     }
@@ -124,7 +124,7 @@ class PackageNode extends CodeNode {
 
 	    Comparator<Set<JavaPackage>> comparingByReversedClassCount = Comparator.comparing(
             childPackages -> -childPackages.stream()
-            .mapToLong(x -> (x == javaPackage ? getClasses() : getClassesInTree(x))
+            .mapToLong(x -> (x == javaPackage ? getPackageClasses(x) : getClassesInTree(x))
                     .count()).sum()
         );
         List<List<JavaPackage>> orderedPackages = childNodes.sortNodes(
@@ -143,7 +143,7 @@ class PackageNode extends CodeNode {
 	}
 
     private Stream<Dependency> getClassDependenciesFromPackage(JavaPackage somePackage) {
-        Set<JavaClass> classesInTree = getClasses(somePackage).collect(Collectors.toSet());
+        Set<JavaClass> classesInTree = getPackageClasses(somePackage).collect(Collectors.toSet());
         return getClassDependenciesFrom(classesInTree);
     }
 
@@ -174,7 +174,7 @@ class PackageNode extends CodeNode {
                     : parentName + childPackageName;
             return new ClassesNode(childPackage, getMap(), childName, samePackage, groupIndex);
         }
-        else if(subpackages.size() == 1 && !getClasses(childPackage).anyMatch(x -> true))
+        else if(subpackages.size() == 1 && !getPackageClasses(childPackage).anyMatch(x -> true))
             return createChildPackageNode(subpackages.iterator().next(), parentName + childPackageName + ".");
         else
             return new PackageNode(childPackage, getMap(), parentName + childPackageName, groupIndex, false);
