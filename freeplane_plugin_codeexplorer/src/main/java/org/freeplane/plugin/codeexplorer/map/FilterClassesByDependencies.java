@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -51,9 +52,9 @@ class FilterClassesByDependencies extends AFreeplaneAction {
             UITools.informationMessage(TextUtils.getRawText("code.no_dependencies_found"));
             return;
         }
-        ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs);
+        ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs, ActionUtils.getActionTitle(this));
         Filter lastFilter = selection.getFilter();
-        Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false, 
+        Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false,
                 lastFilter.getFilteredElement(), null);
         FilterController filterController = FilterController.getCurrentFilterController();
         filterController.applyFilter(selection.getMap(), false, filter);

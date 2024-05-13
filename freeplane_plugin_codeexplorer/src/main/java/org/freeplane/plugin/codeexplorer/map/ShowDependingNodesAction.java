@@ -23,12 +23,13 @@ import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -37,6 +38,7 @@ import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeStream;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 
@@ -72,13 +74,13 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             return origin != target ? Stream.of(origin, target) : Stream.empty();
         }
 
-        private static BiFunction<CodeNode, Filter, Stream<JavaClass>> dependentClassesFunction(BiFunction<CodeNode, Filter, Stream<Dependency>> nodeDependencies) {
+        private static Function<CodeNode, Stream<JavaClass>> dependentClassesFunction(Function<CodeNode, Stream<Dependency>> nodeDependencies) {
             return nodeDependencies.andThen(dependencies -> dependencies.flatMap(DependencyDirection::dependentClasses));
         }
 
-        final BiFunction<CodeNode, Filter, Stream<JavaClass>> nodeDependencies;
+        final Function<CodeNode, Stream<JavaClass>> nodeDependencies;
 
-        private DependencyDirection(BiFunction<CodeNode, Filter, Stream<JavaClass>> relatedClasses) {
+        private DependencyDirection(Function<CodeNode, Stream<JavaClass>> relatedClasses) {
             this.nodeDependencies = relatedClasses;
         }
 
@@ -139,7 +141,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             .forEach(dependentNodeIDs::add);
             FilterController filterController = FilterController.getCurrentFilterController();
             ASelectableCondition condition = new DependencySnapshotCondition(dependentNodeIDs,
-                    currentCondition);
+                    currentCondition, ActionUtils.getActionTitle(this));
             Filter filter = new Filter(condition, false, true, lastFilter.areDescendantsShown(), false,
                     lastFilter.getFilteredElement(), null);
             filterController.applyFilter(map, false, filter);
@@ -191,8 +193,13 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
 
     private static HashSet<String> dependencies(Stream<CodeNode> startingNodes, CodeMap map, Filter filter, DependencyDirection dependencyDirection) {
-        return startingNodes
-	            .flatMap(node -> dependencyDirection.nodeDependencies.apply(node, filter))
+        Stream<CodeNode> startingClassNodes = startingNodes
+                .flatMap(NodeStream::of)
+                .filter(NodeModel::isLeaf)
+                .map(CodeNode.class::cast);
+        Stream<CodeNode> filteredStartingClassNodes = filter == null ? startingClassNodes : startingClassNodes.filter(filter::accepts);
+        return filteredStartingClassNodes
+	            .flatMap(node -> dependencyDirection.nodeDependencies.apply(node))
 	            .map(map::getClassNodeId)
 	            .collect(Collectors.toCollection(HashSet::new));
     }
