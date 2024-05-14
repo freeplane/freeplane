@@ -8,6 +8,7 @@ Configure columns in "Find and replace"...
 1.11.14
 ==============================
 Filter condition "contains as whole words"
+Code explorer improvements
 
 ==============================
 1.11.13
