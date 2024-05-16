@@ -92,14 +92,14 @@ public class CodeProjectController implements IExtension {
         configurator = new CodeExplorerConfigurator(this);
         informationPanel.addTab(TextUtils.getText("code.configurations"), configurator);
 
+        codeDependenciesPanel = new CodeDependenciesPanel();
+        codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
+        informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
+
         final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
         architectureViolationsPanel = new ArchitectureViolationsPanel (this, archUnitServer, enableServerAction);
         architectureViolationsPanel.addDependencySelectionCallback(this::updateSelectedDependency);
         informationPanel.addTab(TextUtils.getText("code.architectureViolations"), architectureViolationsPanel);
-
-	    codeDependenciesPanel = new CodeDependenciesPanel();
-	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
-        informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
 
 	    Controller controller = modeController.getController();
         controller.getViewController().insertComponentIntoSplitPane(informationPanel);
