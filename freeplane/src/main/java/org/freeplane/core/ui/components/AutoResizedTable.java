@@ -8,6 +8,7 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -15,17 +16,22 @@ import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")
 public class AutoResizedTable extends JTable {
+    private final Timer timer;
+
     {
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }
     public AutoResizedTable(TableModel dm) {
         super(dm);
+        timer = new Timer(200, x -> resizeAndRepaint());
+        timer.setRepeats(false);
     }
 
     @Override
     public void tableChanged(TableModelEvent e) {
         super.tableChanged(e);
-        resizeAndRepaint();
+        if(timer != null)
+            timer.restart();
     }
 
     @Override
