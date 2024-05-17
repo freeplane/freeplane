@@ -57,7 +57,6 @@ class ShowDependingNodesAction extends AFreeplaneAction {
     MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 
     private DependencyDirection dependencyDirection;
-    private CodeNodeSelection codeNodeSelection;
 
     private final int maximumRecursionDepth;
 
@@ -88,27 +87,31 @@ class ShowDependingNodesAction extends AFreeplaneAction {
 
 
     ShowDependingNodesAction(DependencyDirection dependencyDirection,
-            CodeNodeSelection codeNodeSelection, Depth recursionDepth) {
-	    super("code.ShowDependingNodesAction." + dependencyDirection + "." + codeNodeSelection + "." + recursionDepth,
-	            formatActionText(dependencyDirection, codeNodeSelection, recursionDepth),
+            Depth recursionDepth) {
+	    super("code.ShowDependingNodesAction." + dependencyDirection + "." +  recursionDepth,
+	            formatActionText(dependencyDirection, recursionDepth),
 	            null);
 	    setIcon(getIconKey());
         this.dependencyDirection = dependencyDirection;
-        this.codeNodeSelection = codeNodeSelection;
         this.maximumRecursionDepth = recursionDepth.depth;
     }
 
 
     private static String formatActionText(DependencyDirection dependencyDirection,
-            CodeNodeSelection codeNodeSelection, Depth recursionDepth) {
+            Depth recursionDepth) {
         if(dependencyDirection.ordinal() <= DependencyDirection.INHERITING.ordinal())
             return TextUtils.format("code.ShowDependingNodesAction." + dependencyDirection + "." + recursionDepth + ".text",
-                    TextUtils.getRawText("code." + codeNodeSelection));
+                    TextUtils.getRawText("code.SELECTED"));
         else
             return TextUtils.format("code.ShowDependingNodesAction." + recursionDepth + ".text",
                 TextUtils.getRawText("code." + dependencyDirection),
-                TextUtils.getRawText("code." + codeNodeSelection));
+                TextUtils.getRawText("code.SELECTED"));
     }
+
+    private static Stream<CodeNode> selectedNodes(){
+        return CodeNodeStream.selectedNodes(Controller.getCurrentController().getSelection());
+    }
+
 
 	@Override
     public void actionPerformed(ActionEvent e) {
@@ -135,7 +138,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
         } else
             dependentNodeIDs = recursiveDependencies(selection, currentCondition, map, dependencyDirection);
         if(! dependentNodeIDs.isEmpty()) {
-            codeNodeSelection.get()
+            selectedNodes()
             .filter(node -> ! currentCondition.checkNode(node))
             .map(NodeModel::getID)
             .forEach(dependentNodeIDs::add);
@@ -160,7 +163,7 @@ class ShowDependingNodesAction extends AFreeplaneAction {
             MapModel map, DependencyDirection dependencyDirection) {
         DependencySelection dependencySelection = new DependencySelection(selection);
 	    final Filter filter = selection.getFilter();
-        Set<String> dependentNodeIDs = dependencies(codeNodeSelection.get(), dependencySelection.getMap(), filter, dependencyDirection);
+        Set<String> dependentNodeIDs = dependencies(selectedNodes(), dependencySelection.getMap(), filter, dependencyDirection);
 	    for(int recursionCounter = allNodesSatisfyFilter(selection, dependentNodeIDs) ? 0 : 1;
 	        recursionCounter < maximumRecursionDepth;
 	        recursionCounter++) {
