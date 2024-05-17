@@ -192,7 +192,7 @@ class ArchitectureViolationsPanel extends JPanel {
         ruleTableModel.addRow(new Object[]{violatedRuleDescription});
         final int row = ruleTable.getRowCount() - 1;
         if(row == 0)
-            ruleTable.addRowSelectionInterval(row, row);
+            ruleTable.changeSelection(row, 0, false, false);
     }
 
     private void deleteSelectedTestResults() {
@@ -207,9 +207,9 @@ class ArchitectureViolationsPanel extends JPanel {
         }
         int rowCount = ruleTableModel.getRowCount();
         if(minSelectionIndex < rowCount)
-            ruleTable.setRowSelectionInterval(minSelectionIndex, minSelectionIndex);
+            ruleTable.changeSelection(minSelectionIndex, 0, false, false);
         else if (rowCount > 0)
-            ruleTable.setRowSelectionInterval(rowCount-1, rowCount-1);
+            ruleTable.changeSelection(rowCount - 1, 0, false, false);
         updateViolations();
     }
 
