@@ -826,10 +826,16 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
     private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
 
-	static public String findLink(final String text) {
+	static public String findLink(final String text, boolean isHtml) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
 		if (urlMatcher.find()) {
 			String link = urlMatcher.group();
+			int start = urlMatcher.start();
+			if(isHtml && start > 0) {
+			    char charBeforeLink = text.charAt(start - 1);
+			    if(charBeforeLink == '"' || charBeforeLink == '\'')
+			        link = HtmlUtils.toXMLUnescapedText(link);
+			}
 			try {
 				new URL(link).toURI();
 				return link;

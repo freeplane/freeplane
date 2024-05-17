@@ -283,7 +283,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 						++depth;
 					}
 					final String visibleText = text.trim();
-					final String link = LinkController.findLink(text);
+					final String link = LinkController.findLink(text, false);
 					if (!visibleText.equals("")) {
 						textFragments.add(new TextFragment(visibleText, link, depth));
 					}
@@ -309,7 +309,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
 				if (!string.equals("")) {
-					final String link = LinkController.findLink(string);
+					final String link = LinkController.findLink(string, true);
 					final TextFragment htmlFragment = new TextFragment(string, link, depth);
 					htmlFragments.add(htmlFragment);
 				}

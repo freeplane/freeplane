@@ -61,11 +61,9 @@ public class CodeMapController extends MapController implements CodeExplorer{
         this.classImportService = classImportService;
 
         modeController.addAction(new FilterClassesByDependencies());
-        for(CodeNodeSelection selection: CodeNodeSelection.values()) {
-            for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
-                for(ShowDependingNodesAction.Depth maximumDepth : ShowDependingNodesAction.Depth.values()) {
-                    modeController.addAction(new ShowDependingNodesAction(direction, selection, maximumDepth));
-                }
+        for(DependencyDirection direction: ShowDependingNodesAction.DependencyDirection.values()) {
+            for(ShowDependingNodesAction.Depth maximumDepth : ShowDependingNodesAction.Depth.values()) {
+                modeController.addAction(new ShowDependingNodesAction(direction, maximumDepth));
             }
         }
         modeController.addAction(new CopyQualifiedNameAction());

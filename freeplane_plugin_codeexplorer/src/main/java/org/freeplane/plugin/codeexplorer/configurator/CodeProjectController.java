@@ -80,6 +80,11 @@ public class CodeProjectController implements IExtension {
                 g.setColor(FilterController.HIGHLIGHT_COLOR);
             }
         });
+        modeController.addAction(new AddConfigurationAction(this));
+        modeController.addAction(new DeleteConfigurationsAction(this));
+        modeController.addAction(new AddLocationsAction(this));
+        modeController.addAction(new AddFoldersRecursivelyAction(this));
+        modeController.addAction(new DeleteLocationsAction(this));
         modeController.addAction(new RunAnalysisAction(this));
         modeController.addAction(new SetBooleanPropertyAction(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
 
@@ -92,14 +97,14 @@ public class CodeProjectController implements IExtension {
         configurator = new CodeExplorerConfigurator(this);
         informationPanel.addTab(TextUtils.getText("code.configurations"), configurator);
 
+        codeDependenciesPanel = new CodeDependenciesPanel();
+        codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
+        informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
+
         final AFreeplaneAction enableServerAction = modeController.getAction(SetBooleanPropertyAction.actionKey(ArchUnitServer.ARCHUNIT_SERVER_ENABLED_PROPERTY));
         architectureViolationsPanel = new ArchitectureViolationsPanel (this, archUnitServer, enableServerAction);
         architectureViolationsPanel.addDependencySelectionCallback(this::updateSelectedDependency);
         informationPanel.addTab(TextUtils.getText("code.architectureViolations"), architectureViolationsPanel);
-
-	    codeDependenciesPanel = new CodeDependenciesPanel();
-	    codeDependenciesPanel.addDependencySelectionCallback(this::updateSelectedDependency);
-        informationPanel.addTab(TextUtils.getText("code.dependencies"), codeDependenciesPanel);
 
 	    Controller controller = modeController.getController();
         controller.getViewController().insertComponentIntoSplitPane(informationPanel);
@@ -192,5 +197,34 @@ public class CodeProjectController implements IExtension {
     public void cancelAnalysis() {
         CodeExplorer codeExplorer = (CodeExplorer) Controller.getCurrentModeController().getMapController();
         codeExplorer.cancelAnalysis();
+    }
+
+
+    void addNewConfiguration() {
+        informationPanel.setSelectedComponent(configurator);
+        configurator.addNewConfiguration();
+    }
+
+
+    void deleteSelectedConfigurations() {
+        informationPanel.setSelectedComponent(configurator);
+        configurator.deleteSelectedConfigurations();
+    }
+
+
+    void addFoldersRecursivelyAction() {
+        informationPanel.setSelectedComponent(configurator);
+        configurator.addFoldersRecursively();
+    }
+
+    void addNewLocations() {
+        informationPanel.setSelectedComponent(configurator);
+        configurator.addJarsAndFolders();
+    }
+
+
+    void deleteSelectedLocations() {
+        informationPanel.setSelectedComponent(configurator);
+        configurator.removeSelectedLocations();
     }
 }
