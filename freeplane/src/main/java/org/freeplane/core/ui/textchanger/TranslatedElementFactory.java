@@ -102,11 +102,7 @@ public class TranslatedElementFactory {
 		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
 
-    public static JButton createButtonWithIcon(String tooltipKey) {
-        return createButtonWithIcon(tooltipKey + ".icon", tooltipKey);
-     }
-
-	public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
+    public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
 		JToggleButton button = createToggleButton(labelKey);
 		return addIcon(button, iconKey);
 	}

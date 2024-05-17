@@ -75,6 +75,52 @@
 			<Entry accelerator="control W" name="CloseAction" />
 			<Entry accelerator="control Q" name="QuitAction" builder="MB_QuitAction" />
 		</Entry>
+		<Entry name="code.projectmenu">
+			<Entry name="code.AddConfigurationAction" />
+			<Entry name="code.DeleteConfigurationsAction" />
+			<Entry builder="separator" />
+			<Entry name="code.AddLocationsAction" />
+			<Entry name="code.AddFoldersRecursivelyAction" />
+			<Entry name="code.DeleteLocationsAction" />
+		</Entry>
+		<Entry name="code.exploremenu">
+			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
+			<Entry builder="separator" />
+			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
+			<Entry builder="separator" />
+			<Entry name="code.FilterClassesByDependencies" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.MAXIMUM_RECURSION" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INHERITED.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
+			<Entry builder="separator" />
+			<Entry name="code.FilterCyclesAction" />
+			<Entry name="code.SelectCyclesAction" />
+			<Entry builder="separator" />
+			<Entry name="code.ShowAllClassesAction" />
+		</Entry>
 		<Entry name="edit">
 			<Entry builder="radio_button_group">
 				<Entry name="SetStringPropertyAction.view_mode.false" />
@@ -207,44 +253,6 @@
 				<Entry name="FollowLinkAction" accelerator="control ENTER" />
 				<Entry builder="menu_goto_links" />
 			</Entry>
-		</Entry>
-		<Entry name="code.exploremenu">
-			<Entry name="code.RunAnalysisAction" accelerator="control R"/>
-			<Entry builder="separator" />
-			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
-			<Entry builder="separator" />
-			<Entry name="code.FilterClassesByDependencies" />
-			<Entry builder="separator" />
-			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INHERITING.SELECTED.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INHERITED.SELECTED.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING.SELECTED.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.SELECTED.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.SELECTED.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.SELECTED.MAXIMUM_RECURSION" />
-			<Entry builder="separator" />
-			<Entry name="code.ShowDependingNodesAction.INHERITING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INHERITED.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INHERITING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INHERITED.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry builder="separator" />
-			<Entry name="code.FilterCyclesAction" />
-			<Entry name="code.SelectCyclesAction" />
-			<Entry builder="separator" />
-			<Entry name="code.ShowAllClassesAction" />
 		</Entry>
 		<Entry name="filter">
 			<Entry name="SelectFilteredElementAction.NODE" />

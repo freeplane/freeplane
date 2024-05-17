@@ -264,9 +264,9 @@ class ArchitectureViolationsPanel extends JPanel {
     private JComponent createRuleTableToolbar(AFreeplaneAction enableServerAction) {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
         AbstractButton enableServerButton = FreeplaneToolBar.createButton(enableServerAction);
-        JButton deleteTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
+        JButton deleteTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.DeleteConfigurationsAction.text" + ".icon", "code.DeleteConfigurationsAction.text");
         deleteTestResultButton.addActionListener(e -> deleteSelectedTestResults());
-        JButton exploreTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
+        JButton exploreTestResultButton = TranslatedElementFactory.createButtonWithIcon("code.explore.icon", "code.explore");
         exploreTestResultButton.addActionListener(e -> exploreSelectedTestResult());
 
         ruleTable.addMouseListener(new MouseAdapter() {
@@ -278,7 +278,7 @@ class ArchitectureViolationsPanel extends JPanel {
             }
         });
 
-        JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
+        JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel" + ".icon", "code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
 
         JComponent panelButtons[] = {enableServerButton, deleteTestResultButton, exploreTestResultButton, cancelButton};

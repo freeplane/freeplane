@@ -40,13 +40,12 @@ import javax.swing.table.TableColumn;
 import org.freeplane.core.ui.components.AutoResizedTable;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.codeexplorer.map.CodeMap;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfiguration;
 import org.freeplane.plugin.codeexplorer.task.CodeExplorerConfigurations;
@@ -275,7 +274,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
             return null;
     }
 
-    private void addNewConfiguration() {
+    void addNewConfiguration() {
         UserDefinedCodeExplorerConfiguration newConfig = new UserDefinedCodeExplorerConfiguration();
         explorerConfigurations().getConfigurations().add(newConfig);
         configTableModel.addRow(new Object[]{newConfig.getProjectName()});
@@ -285,7 +284,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
         configTable.getEditorComponent().requestFocusInWindow();
     }
 
-    private void deleteSelectedConfigurations() {
+    void deleteSelectedConfigurations() {
         final ListSelectionModel selectionModel = configTable.getSelectionModel();
         int minSelectionIndex = selectionModel.getMinSelectionIndex();
         if(minSelectionIndex == -1)
@@ -388,7 +387,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     }
 
 
-    private void removeSelectedLocations() {
+    void removeSelectedLocations() {
         int[] selectedRows = locationsTable.getSelectedRows();
         if(selectedRows.length == 0)
             return;
@@ -415,10 +414,10 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
     }
 
 
-    private void addJarsAndFolders() {
+    void addJarsAndFolders() {
         addJarsAndFolders(false);
     }
-    private void addFoldersRecursively() {
+    void addFoldersRecursively() {
         addJarsAndFolders(true);
     }
 
@@ -603,17 +602,17 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private JComponent createConfigurationTableToolbar() {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton addConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.add");
+        JButton addConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.AddConfigurationAction.icon", "code.AddConfigurationAction.text");
         addConfigurationButton.addActionListener(e -> addNewConfiguration());
-        JButton deleteConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.delete");
+        JButton deleteConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.DeleteConfigurationsAction.icon", "code.DeleteConfigurationsAction.text");
         deleteConfigurationButton.addActionListener(e -> deleteSelectedConfigurations());
-        JButton applyButton = TranslatedElementFactory.createButtonWithIcon("code.apply");
+        JButton applyButton = TranslatedElementFactory.createButtonWithIcon("code.apply" + ".icon", "code.apply");
         applyButton.addActionListener(e ->applyConfigurationRules());
 
-        JButton exploreConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.explore");
+        JButton exploreConfigurationButton = TranslatedElementFactory.createButtonWithIcon("code.explore" + ".icon", "code.explore");
         exploreConfigurationButton.addActionListener(e -> exploreSelectedConfiguration(true));
 
-        JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel");
+        JButton cancelButton = TranslatedElementFactory.createButtonWithIcon("code.cancel" + ".icon", "code.cancel");
         cancelButton.addActionListener(e -> cancelAnalysis());
 
         JComponent panelButtons[] = {addConfigurationButton, deleteConfigurationButton, exploreConfigurationButton, applyButton, cancelButton};
@@ -639,25 +638,25 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private JComponent createLocationButtons() {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton addLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.add_location");
+        JButton addLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.AddLocationsAction.icon", "code.AddLocationsAction.text");
         addLocationsButton.addActionListener(e1 -> addJarsAndFolders());
 
-        JButton addLocationsRecursivelyButton = TranslatedElementFactory.createButtonWithIcon("code.add_folders_recursively");
+        JButton addLocationsRecursivelyButton = TranslatedElementFactory.createButtonWithIcon("code.AddFoldersRecursivelyAction.icon", "code.AddFoldersRecursivelyAction.text");
         addLocationsRecursivelyButton.addActionListener(e1 -> addFoldersRecursively());
 
-        JButton removeLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.remove_location");
+        JButton removeLocationsButton = TranslatedElementFactory.createButtonWithIcon("code.DeleteLocationsAction.icon", "code.DeleteLocationsAction.text");
         removeLocationsButton.addActionListener(e6 -> removeSelectedLocations());
 
-        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top");
+        JButton btnMoveToTheTop = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_top" + ".icon", "code.move_to_the_top");
         btnMoveToTheTop.addActionListener(e4 -> moveSelectedLocationsToTheTop());
 
-        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up");
+        JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon("code.move_up" + ".icon", "code.move_up");
         btnMoveUp.addActionListener(e3 -> moveSelectedLocationsUp());
 
-        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down");
+        JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon("code.move_down" + ".icon", "code.move_down");
         btnMoveDown.addActionListener(e5 -> moveSelectedLocationsDown());
 
-        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom");
+        JButton btnMoveToTheBottom = TranslatedElementFactory.createButtonWithIcon("code.move_to_the_bottom" + ".icon", "code.move_to_the_bottom");
         btnMoveToTheBottom.addActionListener(e2 -> moveSelectedLocationsToTheBottom());
 
         JComponent panelButtons[] = {addLocationsButton, addLocationsRecursivelyButton, removeLocationsButton, btnMoveToTheTop, btnMoveUp, btnMoveDown, btnMoveToTheBottom};
@@ -684,7 +683,7 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
 
     private JComponent createRulesButtons(JToggleButton helpToggleButton) {
         FreeplaneToolBar toolbar = new FreeplaneToolBar(SwingConstants.HORIZONTAL);
-        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert");
+        JButton revertButton = TranslatedElementFactory.createButtonWithIcon("code.revert" + ".icon", "code.revert");
         revertButton.addActionListener(e ->
             rules.setText(getSelectedConfiguration().getConfigurationRules())
         );
@@ -740,6 +739,4 @@ class CodeExplorerConfigurator extends JPanel implements IMapSelectionListener {
                 configTable.getSelectionModel().setSelectionInterval(row, row);
         }
     }
-
-
 }
