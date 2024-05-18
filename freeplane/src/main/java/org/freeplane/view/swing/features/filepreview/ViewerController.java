@@ -466,7 +466,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	static private ExternalImagePopupMenu imagePopupMenu;
-	static final int VIEWER_POSITION = 5;
+	static final int VIEWER_POSITION = NodeView.DETAIL_VIEWER_POSITION + 3;
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
     private final CombiFactory combiFactory;

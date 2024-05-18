@@ -53,6 +53,7 @@ import org.freeplane.api.Dash;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.ObjectRule;
@@ -69,6 +70,7 @@ import org.freeplane.features.filter.hidden.NodeVisibility;
 import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.EncryptionModel;
@@ -111,11 +113,12 @@ public class NodeView extends JComponent implements INodeView {
 	protected final static Color dragColor = Color.lightGray;
 	private static final long serialVersionUID = 1L;
 	static final int SPACE_AROUND = 50;
-	public static final int MAIN_VIEWER_POSITION = 1;
-	public static final int NOTE_VIEWER_POSITION = 10;
+    public static final int MAIN_VIEWER_POSITION = 1;
+    public static final int TAG_VIEWER_POSITION = MAIN_VIEWER_POSITION + 2;
 	final static boolean PAINT_DEBUG_INFO;
     public static int ADDITIONAL_MOUSE_SENSITIVE_AREA = 50;
-    public static final int DETAIL_VIEWER_POSITION = 2;
+    public static final int DETAIL_VIEWER_POSITION = TAG_VIEWER_POSITION + 1;
+    public static final int NOTE_VIEWER_POSITION = DETAIL_VIEWER_POSITION + 8;
 
 	static {
 		boolean paintDebugInfo = false;
@@ -1765,7 +1768,33 @@ public class NodeView extends JComponent implements INodeView {
 
     void updateIcons() {
         mainView.updateIcons(this);
+        updateTagIcons();
     }
+
+    private void updateTagIcons() {
+        if(ResourceController.getResourceController().getEnumProperty("tag_location", TagLocation.ICONS) == TagLocation.BELOW_NODE) {
+            final ModeController modeController = getMap().getModeController();
+            IconController iconController = IconController.getController(modeController);
+            final List<TagIcon> tagIcons = iconController.getTagIcons(viewedNode);
+            IconListComponent component = (IconListComponent) getContent(NodeView.TAG_VIEWER_POSITION);
+            if(component == null && tagIcons.isEmpty())
+                return;
+            else if (component == null){
+                component = new IconListComponent(tagIcons);
+                addContent(component, TAG_VIEWER_POSITION);
+            }
+            else if (tagIcons.isEmpty()){
+                removeContent(NodeView.TAG_VIEWER_POSITION);
+            }
+            else
+                component.setIcons(tagIcons);
+            component.setMaximumWidth(mainView.getMaximumWidth());
+        }
+        else
+            removeContent(NodeView.TAG_VIEWER_POSITION);
+    }
+
+
 
     private ModeController getModeController() {
         return map.getModeController();

@@ -43,7 +43,7 @@ import org.freeplane.view.swing.map.NodeView;
 @NodeHookDescriptor(hookName = "plugins/latex/LatexNodeHook.properties", //
 onceForMap = false)
 class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
-	static final int VIEWER_POSITION = 4;
+	static final int VIEWER_POSITION = NodeView.DETAIL_VIEWER_POSITION + 2;
 
 	/**
 	 */

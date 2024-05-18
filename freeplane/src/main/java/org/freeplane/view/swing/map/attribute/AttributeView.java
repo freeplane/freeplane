@@ -177,7 +177,7 @@ public class AttributeView implements ChangeListener, TableModelListener, IMapCh
 		        && (AttributeView.tablePopupMenu.getTable() == attributeTable);
 	}
 
-	static private int VIEWER_POSITION = 3;
+	static public int VIEWER_POSITION = NodeView.DETAIL_VIEWER_POSITION + 1;
 
 	private void provideAttributeTable() {
 		if (attributeTable == null) {

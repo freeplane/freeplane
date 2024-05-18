@@ -492,9 +492,11 @@ public class MainView extends ZoomableLabel {
 		        iconImages.addIcon(myIcon, iconHeight);
 		    }
 		}
-        for (final TagIcon icon : iconController.getTagIcons(model)) {
-            iconImages.addTag(icon);
-        }
+		if(ResourceController.getResourceController().getEnumProperty("tag_location", TagLocation.ICONS) == TagLocation.ICONS) {
+		    for (final TagIcon icon : iconController.getTagIcons(model)) {
+		        iconImages.addTag(icon);
+		    }
+		}
 
 		modeController.getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, getNodeView().getStyleOption());
         setIcon((iconImages.containsIcons() ? iconImages : null));
