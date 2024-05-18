@@ -78,6 +78,7 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
+import org.freeplane.view.swing.map.TagLocation;
 
 /**
  * @author Dimitry Polivaev
@@ -91,6 +92,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
     private static final String TAGS_ELEMENT = "tags";
     public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
+    public static final String SHOW_TAGS_PROPERTY = "show_tags";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
@@ -420,6 +422,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public boolean allowsCompactLayout(MapModel map) {
 		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT);
 	}
+
+
+    public TagLocation tagLocation(MapModel map) {
+        return MapStyleModel.getExtension(map).getEnumProperty(SHOW_TAGS_PROPERTY, TagLocation.UNDER_NODES);
+    }
+
 
 	public boolean getBooleanProperty(MapModel map, String name) {
 		return MapStyleModel.getExtension(map).getBooleanProperty(name);

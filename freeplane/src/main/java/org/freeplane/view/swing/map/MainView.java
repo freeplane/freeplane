@@ -75,6 +75,7 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.mode.ModeController;
@@ -83,6 +84,7 @@ import org.freeplane.features.nodestyle.NodeCss;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -473,32 +475,32 @@ public class MainView extends ZoomableLabel {
         setFont(UITools.scale(font));
 	}
 
-	void updateIcons(final NodeView node) {
+	void updateIcons(final NodeView nodeView) {
 	    final MultipleImageIcon iconImages = new MultipleImageIcon();
-	    final NodeModel model = node.getNode();
-	    StyleOption styleOption = node.getStyleOption();
-	    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model, styleOption);
-	    if(node.isRoot() && ! model.isRoot()) {
+	    final NodeModel node = nodeView.getNode();
+	    StyleOption styleOption = nodeView.getStyleOption();
+	    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node, styleOption);
+	    if(nodeView.isRoot() && ! node.isRoot()) {
 	        iconImages.addIcon(IconStoreFactory.ICON_STORE.getUIIcon("currentRoot.svg"), iconHeight);
 	    }
 	    final ModeController modeController = getNodeView().getMap().getModeController();
 	    IconController iconController = IconController.getController(modeController);
-		if(node.getMap().showsIcons()) {
-            for (final UIIcon icon : iconController.getStateIcons(model)) {
+		if(nodeView.getMap().showsIcons()) {
+            for (final UIIcon icon : iconController.getStateIcons(node)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }
-		    final Collection<NamedIcon> icons = iconController.getIcons(model, styleOption);
+		    final Collection<NamedIcon> icons = iconController.getIcons(node, styleOption);
 		    for (final NamedIcon myIcon : icons) {
 		        iconImages.addIcon(myIcon, iconHeight);
 		    }
 		}
-		if(ResourceController.getResourceController().getEnumProperty("tag_location", TagLocation.ICONS) == TagLocation.ICONS) {
-		    for (final TagIcon icon : iconController.getTagIcons(model)) {
+		if(TagLocation.BESIDE_NODES == nodeView.getMap().getTagLocation()) {
+		    for (final TagIcon icon : iconController.getTagIcons(node)) {
 		        iconImages.addTag(icon);
 		    }
 		}
 
-		modeController.getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model, getNodeView().getStyleOption());
+		modeController.getExtension(LinkController.class).addLinkDecorationIcons(iconImages, node, getNodeView().getStyleOption());
         setIcon((iconImages.containsIcons() ? iconImages : null));
 	}
 

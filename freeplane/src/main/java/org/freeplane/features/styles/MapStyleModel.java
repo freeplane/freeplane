@@ -484,6 +484,11 @@ public class MapStyleModel implements IExtension {
 		return properties.get(key);
 	}
 
+    public <T extends Enum<T>> T getEnumProperty(String name, T defaultValue) {
+        String propertyValue = getProperty(name);
+        return propertyValue == null ? defaultValue : (T) Enum.valueOf(defaultValue.getClass(), propertyValue);
+    }
+
     public boolean getBooleanProperty(String name) {
         String propertyValue = getProperty(name);
         return Boolean.parseBoolean(propertyValue);

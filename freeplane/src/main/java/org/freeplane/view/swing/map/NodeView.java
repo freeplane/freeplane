@@ -91,6 +91,7 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -1772,8 +1773,8 @@ public class NodeView extends JComponent implements INodeView {
     }
 
     private void updateTagIcons() {
-        if(ResourceController.getResourceController().getEnumProperty("tag_location", TagLocation.ICONS) == TagLocation.BELOW_NODE) {
-            final ModeController modeController = getMap().getModeController();
+        final ModeController modeController = getMap().getModeController();
+        if(TagLocation.UNDER_NODES == getMap().getTagLocation()){
             IconController iconController = IconController.getController(modeController);
             final List<TagIcon> tagIcons = iconController.getTagIcons(viewedNode);
             IconListComponent component = (IconListComponent) getContent(NodeView.TAG_VIEWER_POSITION);

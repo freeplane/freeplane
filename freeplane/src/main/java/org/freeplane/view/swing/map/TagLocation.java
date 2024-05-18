@@ -6,5 +6,5 @@
 package org.freeplane.view.swing.map;
 
 public enum TagLocation {
-    ICONS, BELOW_NODE
+    BESIDE_NODES, UNDER_NODES, NEVER
 }

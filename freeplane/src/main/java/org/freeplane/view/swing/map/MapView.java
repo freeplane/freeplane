@@ -722,6 +722,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final INodeChangeListener connectorChangeListener;
 	private boolean scrollsViewAfterLayout = true;
 	private boolean allowsCompactLayout;
+	private TagLocation tagLocation;
     private boolean repaintsViewOnSelectionChange;
 
     public static final int SCROLL_VELOCITY_PX = (int) (UITools.FONT_SCALE_FACTOR  * 10);
@@ -814,6 +815,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         final String fitToViewportAsString = mapStyle.getPropertySetDefault(viewedMap, MapStyle.FIT_TO_VIEWPORT);
         fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
         allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
+        tagLocation = mapStyle.tagLocation(viewedMap);
         rootsHistory.clear();
         filter = Filter.createTransparentFilter();
         viewedMap.addMapChangeListener(this);
@@ -1440,13 +1442,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			setFitToViewport(Boolean.parseBoolean(fitToViewportAsString));
 			loadBackgroundImage();
 		}
-		if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT)) {
-			final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
-			allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
-			getRoot().resetLayoutPropertiesRecursively();
-			revalidate();
-			repaint();
-		}
+        if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT)) {
+            final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+            allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
+            getRoot().resetLayoutPropertiesRecursively();
+            revalidate();
+            repaint();
+        }
+        if (property.equals(MapStyle.SHOW_TAGS_PROPERTY)) {
+            final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
+            tagLocation = mapStyle.tagLocation(viewedMap);
+            updateAllNodeViews();
+            repaint();
+        }
 		if (property.equals(MapStyle.FIT_TO_VIEWPORT)) {
 			final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(viewedMap,
 			    MapStyle.FIT_TO_VIEWPORT);
@@ -3031,5 +3039,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     void foldingWasSet(NodeView nodeView) {
         selection.foldingWasSet(nodeView);
+    }
+
+    public TagLocation getTagLocation() {
+        return tagLocation;
     }
 }
