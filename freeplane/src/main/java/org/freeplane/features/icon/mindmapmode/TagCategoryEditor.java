@@ -69,11 +69,13 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.TreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -201,7 +203,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     @SuppressWarnings("serial")
-    static class TreeTransferHandler extends TransferHandler {
+    class TreeTransferHandler extends TransferHandler {
         private final TagCategories tagCategories;
 
         public TreeTransferHandler(TagCategories tagCategories) {
@@ -282,14 +284,14 @@ class TagCategoryEditor implements IExtension {
             // Get the drop location and component.
             JTree.DropLocation dropLocation = (JTree.DropLocation) support.getDropLocation();
             JTree tree = (JTree) support.getComponent();
-            TreePath path = dropLocation.getPath();
+            TreePath target = dropLocation.getPath();
 
             // Get the node at the drop location.
-            if (path != null) {
-                DefaultMutableTreeNode dropNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
+            if (target != null) {
+                DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) target.getLastPathComponent();
+                DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) tree
                         .getLastSelectedPathComponent();
-                if (selectedNode ==dropNode) {
+                if (sourceNode ==targetNode || targetNode.isNodeAncestor(sourceNode)) {
                     return false;
                 }
             }
@@ -320,6 +322,15 @@ class TagCategoryEditor implements IExtension {
             }
             return false;
         }
+
+        @Override
+        protected void exportDone(JComponent source, Transferable data, int action) {
+            super.exportDone(source, data, action);
+            if (action == MOVE) {
+                removeNodes();
+            }
+        }
+
      }
     private static final String WIDTH_PROPERTY = "tagDialog.width";
 
@@ -420,6 +431,13 @@ class TagCategoryEditor implements IExtension {
         tree.setTransferHandler(new TreeTransferHandler(tagCategories));
         tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
         tree.setCellEditor(new TagCellEditor(tagCategories));
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                int i = 0;
+             }
+        });
 
         configureKeyBindings();
 
@@ -492,7 +510,10 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void treeNodesInserted(TreeModelEvent e) {
                 contentWasModified = true;
-                tree.addSelectionPath(e.getTreePath());
+                SwingUtilities.invokeLater(() ->
+                    Stream.of(e.getChildren())
+                    .map(e.getTreePath()::pathByAddingChild)
+                    .forEach(tree::addSelectionPath));
             }
 
             @Override
