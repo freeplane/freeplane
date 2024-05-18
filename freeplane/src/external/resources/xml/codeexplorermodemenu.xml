@@ -333,9 +333,9 @@
 			<Entry name="code.CopyQualifiedName"/>
 		</Entry>
 		<Entry builder="separator" />
-		<Entry name="code.FilterClassesByDependencies" />
 		<Entry name="filter">
 			<Entry name="SetBooleanPropertyAction.code_showOutsideDependencies" />
+			<Entry name="code.FilterClassesByDependencies" />
 			<Entry name="code.ShowAllClassesAction" />
 			<Entry builder="separator" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING.NO_RECURSION" />
@@ -346,15 +346,6 @@
 			<Entry name="code.ShowDependingNodesAction.OUTGOING.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.MAXIMUM_RECURSION" />
 			<Entry name="code.ShowDependingNodesAction.CONNECTED.MAXIMUM_RECURSION" />
-			<Entry builder="separator" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.NO_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.INCOMING_AND_OUTGOING.VISIBLE.MAXIMUM_RECURSION" />
-			<Entry name="code.ShowDependingNodesAction.CONNECTED.VISIBLE.MAXIMUM_RECURSION" />
 			<Entry builder="separator" />
 			<Entry name="code.FilterCyclesAction" />
 			<Entry name="code.SelectCyclesAction" />
