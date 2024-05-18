@@ -69,5 +69,7 @@ public class TagIcon implements Icon {
         return height;
     }
 
-
+    public Tag getTag() {
+        return tag;
+    }
 }

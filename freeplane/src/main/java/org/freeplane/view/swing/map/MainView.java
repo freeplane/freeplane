@@ -70,6 +70,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
@@ -814,18 +815,41 @@ public class MainView extends ZoomableLabel {
 		return getNodeView().getMap().getDraggingAreaWidth() + THICK_STROKE_WIDTH;
 	}
 
-	public NamedIcon getUIIconAt(Point coordinate){
-		Icon icon = getIcon();
-		if(icon instanceof MultipleImageIcon){
-			Rectangle iconRectangle = getIconRectangle();
-			Point transformedToIconCoordinate = new Point(coordinate);
-			transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
-			return ((MultipleImageIcon)icon).getUIIconAt(transformedToIconCoordinate);
+    public NamedIcon getUIIconAt(Point coordinate){
+        Icon icon = getIcon();
+        if(icon instanceof MultipleImageIcon){
+            Rectangle iconRectangle = getIconRectangle();
+            Point transformedToIconCoordinate = new Point(coordinate);
+            transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
+            final float zoom = getNodeView().getMap().getZoom();
+            if(zoom != 1f) {
+                transformedToIconCoordinate.x *= zoom;
+                transformedToIconCoordinate.y *= zoom;
+            }
+            return ((MultipleImageIcon)icon).getUIIconAt(transformedToIconCoordinate);
 
-		}
-		else
-			return null;
-	}
+        }
+        else
+            return null;
+    }
+
+    public Tag getTagAt(Point coordinate){
+        Icon icon = getIcon();
+        if(icon instanceof MultipleImageIcon){
+            Rectangle iconRectangle = getIconRectangle();
+            Point transformedToIconCoordinate = new Point(coordinate);
+            transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
+            final float zoom = getNodeView().getMap().getZoom();
+            if(zoom != 1f) {
+                transformedToIconCoordinate.x *= zoom;
+                transformedToIconCoordinate.y *= zoom;
+            }
+            return ((MultipleImageIcon)icon).getTagAt(transformedToIconCoordinate);
+
+        }
+        else
+            return null;
+    }
 
 	public float getUnzoomedEdgeWidth() {
 		final NodeView nodeView = getNodeView();

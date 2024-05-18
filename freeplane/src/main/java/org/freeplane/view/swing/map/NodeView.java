@@ -34,6 +34,8 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.HashSet;
@@ -72,6 +74,7 @@ import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.layout.LayoutController;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
@@ -91,7 +94,6 @@ import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -1782,6 +1784,18 @@ public class NodeView extends JComponent implements INodeView {
                 return;
             else if (component == null){
                 component = new IconListComponent(tagIcons);
+                if(iconController instanceof MIconController) {
+                    component.addMouseListener(new MouseAdapter() {
+
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            if(e.getClickCount() == 2) {
+                                ((MIconController) iconController).editTags(viewedNode);
+                            }
+                        }
+
+                    });
+                }
                 addContent(component, TAG_VIEWER_POSITION);
             }
             else if (tagIcons.isEmpty()){

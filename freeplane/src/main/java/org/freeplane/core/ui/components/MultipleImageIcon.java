@@ -34,6 +34,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
@@ -42,7 +43,7 @@ public class MultipleImageIcon implements Icon {
     final private int TAG_GAP = new Quantity(2, LengthUnit.pt).toBaseUnitsRounded();
 	final private List<Icon> mIcons = new ArrayList<>();
 	final private List<NamedIcon> mUIIcons = new ArrayList<>();
-	final private List<Icon> mTags = new ArrayList<>();
+	final private List<TagIcon> mTags = new ArrayList<>();
 
 	public MultipleImageIcon() {
 	}
@@ -142,7 +143,7 @@ public class MultipleImageIcon implements Icon {
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
-		if(coordinate.x < 0 || coordinate.y < 0)
+		if(mIcons.isEmpty() || coordinate.x < 0 || coordinate.y < 0 || coordinate.y >= getGraphicalIconHeight())
 			return null;
 		int iconX = 0;
 		for (int iconIndex = 0; iconIndex < mIcons.size(); iconIndex++)
@@ -154,6 +155,19 @@ public class MultipleImageIcon implements Icon {
 		}
 		return null;
 	}
+    public Tag getTagAt(Point coordinate) {
+        if(mTags.isEmpty() || coordinate.x < 0 || coordinate.y <= getGraphicalIconHeight() || coordinate.x >= getIconWidth())
+            return null;
+        int graphicalIconHeight = getGraphicalIconHeight();
+        int myY = graphicalIconHeight == 0 ? 0 : TAG_GAP + graphicalIconHeight;
+        for (final TagIcon icon : mTags) {
+            final int iconHeight = icon.getIconHeight();
+            if(myY <= coordinate.y && coordinate.y < myY + iconHeight)
+                return icon.getTag();
+            myY += TAG_GAP + iconHeight;
+        }
+        return null;
+    }
 
 	//DOCEAR - get a rect relative to this image for a specific icon
 	public Rectangle getIconR(Icon icon) {
@@ -170,4 +184,5 @@ public class MultipleImageIcon implements Icon {
     public boolean containsIcons() {
         return ! (mIcons.isEmpty() && mTags.isEmpty());
     }
-};
+
+}

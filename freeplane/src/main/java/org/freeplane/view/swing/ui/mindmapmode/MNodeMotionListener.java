@@ -43,6 +43,8 @@ import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -155,10 +157,18 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				}
 			}
 			else {
-				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e) && ! mainView.isInDragRegion(e.getPoint())) {
-					final MTextController textController = MTextController.getController();
-					textController.getEventQueue().activate(e);
-					textController.edit(FirstAction.EDIT_CURRENT, false);
+			    if (Compat.isPlainEvent(e) && !isInFoldingRegion(e) && ! mainView.isInDragRegion(e.getPoint())) {
+			        if(mainView.getTagAt(e.getPoint()) != null) {
+			            IconController iconController = IconController.getController();
+			            if(iconController instanceof MIconController) {
+			                ((MIconController)iconController).editTags(mainView.getNodeView().getNode());
+			            }
+			        }
+			        else {
+			            final MTextController textController = MTextController.getController();
+			            textController.getEventQueue().activate(e);
+			            textController.edit(FirstAction.EDIT_CURRENT, false);
+			        }
 				}
 			}
 		}
