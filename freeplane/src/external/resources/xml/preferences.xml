@@ -186,8 +186,8 @@
 				<boolean name="paint_connectors_behind" />
 			</separator>
 			<separator name="tags" text="tags">
-				<string name="map_tag_category_separator" />
-				<string name="node_tag_category_separator" />
+				<string name="managed_category_separator" />
+				<string name="adhoc_category_separator" />
 			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />

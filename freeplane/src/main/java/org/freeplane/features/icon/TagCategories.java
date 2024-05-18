@@ -72,8 +72,8 @@ public class TagCategories {
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
-                ResourceController.getResourceController().getProperty("map_tag_category_separator"),
-                ResourceController.getResourceController().getProperty("node_tag_category_separator"));
+                ResourceController.getResourceController().getProperty("managed_category_separator"),
+                ResourceController.getResourceController().getProperty("adhoc_category_separator"));
     }
 
     @SuppressWarnings("serial")

@@ -86,8 +86,8 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
     private static final String CATEGORIES_ATTRIBUTE = "categories";
-    private static final String EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "map_tag_category_separator";
-    private static final String INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "node_tag_category_separator";
+    private static final String EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "managed_category_separator";
+    private static final String INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "adhoc_category_separator";
 
     private static final String TAGS_ELEMENT = "tags";
     public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";

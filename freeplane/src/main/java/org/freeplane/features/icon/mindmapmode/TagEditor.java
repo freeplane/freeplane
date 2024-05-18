@@ -425,11 +425,11 @@ class TagEditor {
 
         tagCategorySeparatorForMapField = new JTextField(10);
         tagCategorySeparatorForMapField.setText(tagCategories.getTagCategorySeparatorForMap());
-        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.map_tag_category_separator"));
+        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.managed_category_separator"));
         separatorPane.add(tagCategorySeparatorForMapField);
         tagCategorySeparatorForNodeField = new JTextField(10);
         tagCategorySeparatorForNodeField.setText(tagCategories.getTagCategorySeparatorForNode());
-        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.node_tag_category_separator"));
+        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.adhoc_category_separator"));
         separatorPane.add(tagCategorySeparatorForNodeField);
 
         tagTable = createTagTable(originalNodeCategorizedTags);
