@@ -264,9 +264,9 @@ class TagEditor {
             for (int row : rows) {
                 Object cellValue = table.getValueAt(row, col);
                 if (cellValue instanceof CategorizedTag) {
-                    final Tag categorizedTag = ((CategorizedTag) cellValue).categorizedTag(getTagCategorySeparatorForMapField());
+                    final Tag tag = ((CategorizedTag) cellValue).tag();
                     try {
-                        TagCategories.writeTag(categorizedTag, writer);
+                        TagCategories.writeTag(tag, writer);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -734,23 +734,27 @@ class TagEditor {
         return scrollPane;
     }
     private CategorizedTag createTagIfAbsent(String spec, boolean specContainsColor) {
-        final CategorizedTag categorizedTag = unqualifiedCategorizedTags.get(spec);
+        final Tag tag = specContainsColor ? TagCategories.readTag(spec.trim()) : new Tag(spec.trim());
+        final String content = tag.getContent();
+        final CategorizedTag categorizedTag = unqualifiedCategorizedTags.get(content);
         return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags
-                .computeIfAbsent(spec, x -> createTag(spec, specContainsColor));
+                .computeIfAbsent(spec, x -> registerTag(tag));
     }
-    private CategorizedTag createTag(String spec, boolean specContainsColor) {
+    private CategorizedTag registerTag(Tag prototype) {
         final String tagCategorySeparatorForMap = getTagCategorySeparatorForMapField();
         final String tagCategorySeparatorForNode = getTagCategorySeparatorForNodeField();
+        String spec = prototype.getContent();
         final String[] categoriesAndTag = ! tagCategorySeparatorForNode.contains(tagCategorySeparatorForMap)
-                ? spec.trim().split(Pattern.quote(tagCategorySeparatorForMap))
-                : new String[] {spec.trim()};
+                ? spec.split(Pattern.quote(tagCategorySeparatorForMap))
+                : new String[] {spec};
         if(categoriesAndTag.length > 1) {
             final List<Tag> tagList = Stream.of(categoriesAndTag)
-                    .map(specContainsColor ? tagCategories::readTag : tagCategories::createTag)
+                    .map(tagCategories::createTag)
                     .collect(Collectors.toList());
+            tagList.get(tagList.size() - 1).setColor(prototype.getColor());
             return new NewCategorizedTag(tagList);
         } else
-            return new UncategorizedTag(specContainsColor ? tagCategories.readTag(spec) : tagCategories.createTag(spec));
+            return new UncategorizedTag(prototype);
     }
 
     private JTable createTagTable(List<CategorizedTag> tags) {

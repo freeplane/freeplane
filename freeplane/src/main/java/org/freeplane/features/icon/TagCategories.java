@@ -36,6 +36,20 @@ import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.icon.mindmapmode.UncategorizedTag;
 
 public class TagCategories {
+    public static Tag readTag(String spec) {
+        int colorIndex = spec.length() - 9;
+        if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
+            String content = spec.substring(0, colorIndex);
+            String colorSpec = spec.substring(colorIndex);
+            try {
+                return new Tag(content, tagColor(content, colorSpec));
+            } catch (NumberFormatException e) {
+                LogUtils.severe(e);
+            }
+        }
+        return new Tag(spec);
+    }
+
     @SuppressWarnings("serial")
     private class TagCategoryTree extends DefaultTreeModel {
         private TagCategoryTree(TreeNode root) {
@@ -146,7 +160,7 @@ public class TagCategories {
             String line = scanner.nextLine();
             int indentation = getIndentationLevel(line);
 
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(readTag(line.trim()));
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(registerTag(line.trim()));
             DefaultMutableTreeNode parent;
             if (indentation == lastIndentation) {
                 parent = (DefaultMutableTreeNode) lastNode.getParent();
@@ -346,9 +360,13 @@ public class TagCategories {
         return registeredTag;
     }
 
-    public Tag setTagColor(String tagContent, String value) {
-        return setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor)
-                .orElseGet(() -> Tag.getDefaultColor(tagContent)));
+    public Tag setTagColor(String tagContent, String tagColor) {
+        return setTagColor(tagContent, tagColor(tagContent, tagColor));
+    }
+
+    public static Color tagColor(String tagContent, String tagColor) {
+        return Optional.ofNullable(tagColor).map(ColorUtils::stringToColor)
+                .orElseGet(() -> Tag.getDefaultColor(tagContent));
     }
 
     public Tag setTagColor(String tagContent, Color value) {
@@ -366,7 +384,7 @@ public class TagCategories {
         return getTag(required).get().getColor();
     }
 
-    public Tag readTag(String spec) {
+    public Tag registerTag(String spec) {
         int colorIndex = spec.length() - 9;
         if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
             String content = spec.substring(0, colorIndex);
