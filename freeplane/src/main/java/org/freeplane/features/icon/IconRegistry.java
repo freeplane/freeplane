@@ -19,12 +19,7 @@
  */
 package org.freeplane.features.icon;
 
-import java.awt.Color;
-import java.util.Optional;
-
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.map.MapModel;
 
@@ -41,14 +36,12 @@ import org.freeplane.features.map.MapModel;
  */
 public class IconRegistry implements IExtension {
     final private SortedComboBoxModel<NamedIcon> mapIcons;
-    final private SortedComboBoxModel<Tag> mapTags;
     private TagCategories tagCategories;
 
     public IconRegistry(TagCategories tagCategories) {
 		super();
         this.tagCategories = tagCategories;
 		mapIcons = new SortedComboBoxModel<>();
-		mapTags = new SortedComboBoxModel<>(Tag.class);
 	}
 
     public void addIcon(final NamedIcon icon) {
@@ -57,22 +50,8 @@ public class IconRegistry implements IExtension {
     }
 
 
-    public Tag createTag(String string) {
-        Tag tag = new Tag(string);
-        return registryTag(tag);
-    }
-
-    public Tag registryTag(Tag tag) {
-        Tag registeredTag = mapTags.addIfNotExists(tag);
-        return registeredTag;
-    }
-
     public SortedComboBoxModel<NamedIcon> getIconsAsListModel() {
         return mapIcons;
-    }
-
-    public SortedComboBoxModel<Tag> getTagsAsListModel() {
-        return mapTags;
     }
 
 	public void registryMapContent(final MapModel map) {
@@ -82,27 +61,6 @@ public class IconRegistry implements IExtension {
 			mapIcons.add(uiIcon);
 		}
 	}
-
-    public Tag setTagColor(String tagContent, String value) {
-        return setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor)
-                .orElseGet(() -> Tag.getDefaultColor(tagContent)));
-    }
-
-    public Tag setTagColor(String tagContent, Color value) {
-        Tag tag = createTag(tagContent);
-        tag.setColor(value);
-        return tag;
-    }
-
-
-    public Optional<Tag>getTag(Tag required) {
-        return mapTags.getElement(required);
-    }
-
-    public Color getTagColor(Tag required) {
-        return getTag(required).get().getColor();
-    }
-
     public TagCategories getTagCategories() {
         return tagCategories;
     }
@@ -111,21 +69,4 @@ public class IconRegistry implements IExtension {
         this.tagCategories = tagCategories;
     }
 
-    public Tag readTag(String spec) {
-        int colorIndex = spec.length() - 9;
-        if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
-            String content = spec.substring(0, colorIndex);
-            String colorSpec = spec.substring(colorIndex);
-            try {
-                return setTagColor(content, colorSpec);
-            } catch (NumberFormatException e) {
-                LogUtils.severe(e);
-            }
-        }
-        return createTag(spec);
-    }
-
-    public Tag setTagColor(Tag prototype) {
-        return setTagColor(prototype.getContent(), prototype.getColor());
-    }
 }

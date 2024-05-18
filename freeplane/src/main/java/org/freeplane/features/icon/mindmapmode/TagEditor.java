@@ -335,13 +335,10 @@ class TagEditor {
         }
     }
 
-    private static Map<String, CategorizedTag> getCategorizedTagsByContent(IconRegistry source, IconRegistry helper) {
-        final TagCategories tagCategories = helper.getTagCategories();
+    private static Map<String, CategorizedTag> getCategorizedTagsByContent(TagCategories source) {
         TreeMap<String, CategorizedTag> categorizedTagsByContent = new TreeMap<>();
-        final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
-        tagCategories.categorizedTags(helper)
-            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
-        tagCategories.categorizedTags(source)
+        final String tagCategorySeparatorForMap = source.getTagCategorySeparatorForMap();
+        source.categorizedTags()
             .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparatorForMap), x -> tag));
         return categorizedTagsByContent;
     }
@@ -357,11 +354,11 @@ class TagEditor {
     private JDialog dialog;
     private final Map<String, CategorizedTag> qualifiedCategorizedTags;
     private final Map<String, CategorizedTag> unqualifiedCategorizedTags;
-    private final IconRegistry helper;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
     private final JTextField tagCategorySeparatorForMapField;
     private final JTextField tagCategorySeparatorForNodeField;
+    private TagCategories tagCategories;
 
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
@@ -412,17 +409,15 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        final IconRegistry sourceRegistry = iconRegistry();
-        this.helper = new IconRegistry(null);
-        TagCategories tagCategories = sourceRegistry.getTagCategories().copy(helper);
-        helper.setTagCategories(tagCategories);
+        final TagCategories sourceCategories = getTagCategories();
+        tagCategories = sourceCategories.copy();
 
-        qualifiedCategorizedTags = getCategorizedTagsByContent(sourceRegistry, helper);
+        qualifiedCategorizedTags = getCategorizedTagsByContent(tagCategories);
 
         List<Tag> originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        List<CategorizedTag> originalNodeCategorizedTags = iconController.getCategorizedTags(originalNodeTags, helper);
+        List<CategorizedTag> originalNodeCategorizedTags = iconController.getCategorizedTags(originalNodeTags, tagCategories);
 
         unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
                 .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
@@ -503,7 +498,7 @@ class TagEditor {
         if(! tagCategories.isEmpty()) {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
-                    sourceRegistry,
+                    sourceCategories,
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
         }
         menubar.add(insertMenu);
@@ -702,7 +697,7 @@ class TagEditor {
 
     protected void submit() {
         final MapModel map = node.getMap();
-        final TagCategories tagCategories = getTagCategories().copy(map.getIconRegistry());
+        final TagCategories tagCategories = getTagCategories().copy();
         boolean categoriesChanged = false;
         if(! tagCategorySeparatorForMapField.getText().equals(tagCategories.getTagCategorySeparatorForMap())) {
             tagCategories.setTagCategorySeparatorForMap(tagCategorySeparatorForMapField.getText());
@@ -724,7 +719,7 @@ class TagEditor {
         iconController.setTags(node, tags.stream().map(CategorizedTag::tag).collect(Collectors.toList()), true);
     }
     private TagCategories getTagCategories() {
-        return iconRegistry().getTagCategories();
+        return node.getMap().getIconRegistry().getTagCategories();
     }
 
 
@@ -751,11 +746,11 @@ class TagEditor {
                 : new String[] {spec.trim()};
         if(categoriesAndTag.length > 1) {
             final List<Tag> tagList = Stream.of(categoriesAndTag)
-                    .map(specContainsColor ? helper::readTag : helper::createTag)
+                    .map(specContainsColor ? tagCategories::readTag : tagCategories::createTag)
                     .collect(Collectors.toList());
             return new NewCategorizedTag(tagList);
         } else
-            return new UncategorizedTag(specContainsColor ? helper.readTag(spec) : helper.createTag(spec));
+            return new UncategorizedTag(specContainsColor ? tagCategories.readTag(spec) : tagCategories.createTag(spec));
     }
 
     private JTable createTagTable(List<CategorizedTag> tags) {
@@ -1036,9 +1031,6 @@ class TagEditor {
                 tagTable.getSelectionModel().setValueIsAdjusting(false);
             });
         }
-    }
-    private IconRegistry iconRegistry() {
-        return node.getMap().getIconRegistry();
     }
     private String getTagCategorySeparatorForMapField() {
         return tagCategorySeparatorForMapField.getText();

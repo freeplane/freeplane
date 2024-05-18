@@ -621,13 +621,13 @@ public class MIconController extends IconController {
 
     public void setTags(NodeModel node, List<Tag> newTags, boolean overwriteColors) {
         MapModel map = node.getMap();
-        IconRegistry iconRegistry = map.getIconRegistry();
+        TagCategories tagCategories = map.getIconRegistry().getTagCategories();
         Set<Tag> filteringSet = new HashSet<>();
         List<Tag> newTagsWithoutDuplicates = newTags.stream()
                 .filter(tag -> tag.isEmpty() || filteringSet.add(tag))
                 .collect(Collectors.toList());
         List<Tag> registeredTags = newTagsWithoutDuplicates.stream()
-                .map(iconRegistry::registryTag).collect(Collectors.toList());
+                .map(tagCategories::registerTag).collect(Collectors.toList());
         List<Tag> oldTags = getTags(node);
         IActor actor = new IActor() {
 
@@ -663,8 +663,8 @@ public class MIconController extends IconController {
     }
 
     private void setTagColor(MapModel map, Tag tag, Color newColor) {
-        IconRegistry iconRegistry = map.getIconRegistry();
-        Color oldColor = iconRegistry.getTagColor(tag);
+        TagCategories tagCategories = map.getIconRegistry().getTagCategories();
+        Color oldColor = tagCategories.getTagColor(tag);
         if(oldColor.equals(newColor)) {
             return;
         }
@@ -685,7 +685,7 @@ public class MIconController extends IconController {
             }
 
             private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Color oldColor, Color newColor) {
-                iconRegistry.setTagColor(tag.getContent(), newColor);
+                tagCategories.setTagColor(tag.getContent(), newColor);
                 Controller.getCurrentModeController().getMapController().fireMapChanged(
                     new MapChangeEvent(MIconController.this, map, tag, oldColor, newColor));
             }
@@ -703,13 +703,13 @@ public class MIconController extends IconController {
         }
     }
 
-    public JMenu createTagSubmenu(String name, IconRegistry iconRegistry, Consumer<CategorizedTag> action) {
+    public JMenu createTagSubmenu(String name, TagCategories tagCategories, Consumer<CategorizedTag> action) {
         JMenu menu = TranslatedElementFactory.createMenu(name);
-        fillTagSubmenuOnSelect(menu, iconRegistry, action, iconRegistry.getTagCategories().getRootNode());
+        fillTagSubmenuOnSelect(menu, tagCategories, action, tagCategories.getRootNode());
         return menu;
     }
 
-    private void fillTagSubmenuOnSelect(final JMenu menu, IconRegistry iconRegistry, Consumer<CategorizedTag> action, DefaultMutableTreeNode categoryNode) {
+    private void fillTagSubmenuOnSelect(final JMenu menu, TagCategories tagCategories, Consumer<CategorizedTag> action, DefaultMutableTreeNode categoryNode) {
         menu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -724,12 +724,12 @@ public class MIconController extends IconController {
                     TagIcon icon = new TagIcon(tag, menu.getFont());
                     JMenuItem actionItem = new JMenuItem(icon);
                     actionItem.addActionListener(x -> action.accept(
-                            new CategorizedTagForCategoryNode(categoryNode, iconRegistry.getTag(tag)
+                            new CategorizedTagForCategoryNode(categoryNode, tagCategories.getTag(tag)
                             )));
                     menu.add(actionItem);
                     if(!itemNode.isLeaf()) {
                         final JMenu submenu = new JMenu(tag.getContent());
-                        fillTagSubmenuOnSelect(submenu, iconRegistry, action, itemNode);
+                        fillTagSubmenuOnSelect(submenu, tagCategories, action, itemNode);
                         menu.add(submenu);
                     }
                 }
@@ -762,8 +762,8 @@ public class MIconController extends IconController {
     }
 
     @Override
-    public List<CategorizedTag> getCategorizedTags(List<Tag> tags, IconRegistry iconRegistry){
-        return iconRegistry.getTagCategories().categorizedTags(tags, iconRegistry);
+    public List<CategorizedTag> getCategorizedTags(List<Tag> tags, TagCategories tagCategories){
+        return tagCategories.categorizedTags(tags);
     }
 
     public void setTagCategories(MapModel map, TagCategories newCategories) {
@@ -793,8 +793,9 @@ public class MIconController extends IconController {
             }
         };
         modeController.execute(actor, map);
-        newCategories.getRegistry().getTagsAsListModel().forEach(
-                tag -> map.getIconRegistry().getTag(tag).ifPresent(registeredTag
+        final TagCategories tagCategories = map.getIconRegistry().getTagCategories();
+        newCategories.getTagsAsListModel().forEach(
+                tag -> tagCategories.getTag(tag).ifPresent(registeredTag
                         -> setTagColor(map, registeredTag, tag.getColor())));
     }
 

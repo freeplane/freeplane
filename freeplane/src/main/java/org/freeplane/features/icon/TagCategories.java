@@ -17,6 +17,7 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -31,12 +32,27 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.icon.mindmapmode.UncategorizedTag;
 
 public class TagCategories {
-    private final IconRegistry registry = new IconRegistry(null);
+    @SuppressWarnings("serial")
+    private class TagCategoryTree extends DefaultTreeModel {
+        private TagCategoryTree(TreeNode root) {
+            super(root);
+        }
+
+        @Override
+        public void valueForPathChanged(TreePath path, Object newValue) {
+            nodesByTags.valueForPathChanged(path, (Tag)newValue);
+            super.valueForPathChanged(path, newValue);
+        }
+    }
+
     private final DefaultTreeModel nodes;
     private final TreeInverseMap<Tag> nodesByTags;
+    final private SortedComboBoxModel<Tag> mapTags;
+
     private String tagCategorySeparatorForMap;
     private String tagCategorySeparatorForNode;
 
@@ -48,19 +64,22 @@ public class TagCategories {
 
     @SuppressWarnings("serial")
     public TagCategories(DefaultMutableTreeNode rootNode, String tagCategorySeparatorForMap, String tagCategorySeparatorForNode) {
-        super();
         this.tagCategorySeparatorForMap = tagCategorySeparatorForMap;
         this.tagCategorySeparatorForNode = tagCategorySeparatorForNode;
-        nodes = new DefaultTreeModel(rootNode) {
-
-            @Override
-            public void valueForPathChanged(TreePath path, Object newValue) {
-                nodesByTags.valueForPathChanged(path, (Tag)newValue);
-                super.valueForPathChanged(path, newValue);
-            }
-
-        };
+        mapTags = new SortedComboBoxModel<>(Tag.class);
+        nodes = new TagCategoryTree(rootNode);
         nodesByTags = new TreeInverseMap<Tag>(nodes);
+    }
+
+    private TagCategories(TagCategories tagCategories) {
+        this.mapTags = new SortedComboBoxModel<>(Tag.class);
+        final DefaultMutableTreeNode rootNode = tagCategories.getRootNode();
+        final DefaultMutableTreeNode rootCopy = copySubtree(rootNode);
+        this.tagCategorySeparatorForMap = tagCategories.tagCategorySeparatorForMap;
+        this.tagCategorySeparatorForNode = tagCategories.tagCategorySeparatorForNode;
+        nodes = new TagCategoryTree(rootCopy);
+        nodesByTags = new TreeInverseMap<Tag>(nodes);
+        tagCategories.mapTags.forEach(this::registerTag);
     }
 
     public String getTagCategorySeparatorForMap() {
@@ -127,7 +146,7 @@ public class TagCategories {
             String line = scanner.nextLine();
             int indentation = getIndentationLevel(line);
 
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(registry.readTag(line.trim()));
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(readTag(line.trim()));
             DefaultMutableTreeNode parent;
             if (indentation == lastIndentation) {
                 parent = (DefaultMutableTreeNode) lastNode.getParent();
@@ -174,10 +193,6 @@ public class TagCategories {
     }
     public DefaultMutableTreeNode getRootNode() {
         return (DefaultMutableTreeNode) getNodes().getRoot();
-    }
-
-    public IconRegistry getRegistry() {
-        return registry;
     }
 
     public void addTreeModelListener(TreeModelListener treeModelListener) {
@@ -257,16 +272,11 @@ public class TagCategories {
         }
     }
 
-    Color getColor(Tag tag) {
-        return registry.getTagColor(tag);
+    public List<CategorizedTag> categorizedTags(){
+        return categorizedTags(getTagsAsListModel());
     }
 
-
-    public List<CategorizedTag> categorizedTags(IconRegistry registry){
-        return categorizedTags(registry.getTagsAsListModel(), registry);
-    }
-
-    public List<CategorizedTag> categorizedTags(Iterable<Tag> tags, IconRegistry iconRegistry){
+    public List<CategorizedTag> categorizedTags(Iterable<Tag> tags){
         final LinkedList<CategorizedTag> categorizedTags = new LinkedList<>();
         for(Tag tag : tags) {
             if(tag.isEmpty())
@@ -274,10 +284,10 @@ public class TagCategories {
             else {
                 final Set<DefaultMutableTreeNode> tagCategoryNodes = nodesByTags.getNodes(tag);
                 if(tagCategoryNodes.isEmpty())
-                    categorizedTags.add(new UncategorizedTag(iconRegistry.registryTag(tag)));
+                    categorizedTags.add(new UncategorizedTag(registerTag(tag)));
                 else {
                     for(DefaultMutableTreeNode node : tagCategoryNodes)
-                        categorizedTags.add(new CategorizedTagForCategoryNode(node, iconRegistry.getTag(tag)));
+                        categorizedTags.add(new CategorizedTagForCategoryNode(node, getTag(tag)));
                 }
             }
         }
@@ -308,7 +318,7 @@ public class TagCategories {
             }
 
             if (!found) {
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(registry.setTagColor(currentTag));
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(setTagColor(currentTag));
                 insertNode(currentNode, currentNode.getChildCount(), newNode);
                 currentNode = newNode;
                 registered = true;
@@ -321,27 +331,79 @@ public class TagCategories {
         return nodes;
     }
 
-    public TagCategories copy(IconRegistry iconRegistry) {
-        final DefaultMutableTreeNode rootNode = getRootNode();
-        final DefaultMutableTreeNode rootCopy = copySubtree(iconRegistry, rootNode);
-        final TagCategories tagCategories = new TagCategories(rootCopy, tagCategorySeparatorForMap, tagCategorySeparatorForNode);
+
+    public SortedComboBoxModel<Tag> getTagsAsListModel() {
+        return mapTags;
+    }
+
+    public Tag createTag(String string) {
+        Tag tag = new Tag(string);
+        return registerTag(tag);
+    }
+
+    public Tag registerTag(Tag tag) {
+        Tag registeredTag = mapTags.addIfNotExists(tag);
+        return registeredTag;
+    }
+
+    public Tag setTagColor(String tagContent, String value) {
+        return setTagColor(tagContent, Optional.ofNullable(value).map(ColorUtils::stringToColor)
+                .orElseGet(() -> Tag.getDefaultColor(tagContent)));
+    }
+
+    public Tag setTagColor(String tagContent, Color value) {
+        Tag tag = createTag(tagContent);
+        tag.setColor(value);
+        return tag;
+    }
+
+
+    public Optional<Tag>getTag(Tag required) {
+        return mapTags.getElement(required);
+    }
+
+    public Color getTagColor(Tag required) {
+        return getTag(required).get().getColor();
+    }
+
+    public Tag readTag(String spec) {
+        int colorIndex = spec.length() - 9;
+        if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
+            String content = spec.substring(0, colorIndex);
+            String colorSpec = spec.substring(colorIndex);
+            try {
+                return setTagColor(content, colorSpec);
+            } catch (NumberFormatException e) {
+                LogUtils.severe(e);
+            }
+        }
+        return createTag(spec);
+    }
+
+    public Tag setTagColor(Tag prototype) {
+        return setTagColor(prototype.getContent(), prototype.getColor());
+    }
+
+
+    public TagCategories copy() {
+        final TagCategories tagCategories = new TagCategories(this);
         return tagCategories;
     }
 
-    private DefaultMutableTreeNode copySubtree(IconRegistry iconRegistry, DefaultMutableTreeNode node) {
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(copyTag(iconRegistry, node));
+    private DefaultMutableTreeNode copySubtree( DefaultMutableTreeNode node) {
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(copyTag(node));
         for (int i = 0; i < node.getChildCount(); i++) {
             DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
-            newNode.add(copySubtree(iconRegistry, child));
+            newNode.add(copySubtree(child));
         }
         return newNode;
     }
 
-    private Object copyTag(IconRegistry iconRegistry, DefaultMutableTreeNode node) {
+    private Object copyTag(DefaultMutableTreeNode node) {
         final Object userObject = node.getUserObject();
         if(userObject instanceof Tag) {
             final Tag tag = ((Tag)userObject);
-            return iconRegistry.setTagColor(tag);
+            return setTagColor(tag);
         }
         return userObject;
     }

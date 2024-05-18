@@ -11,6 +11,7 @@ import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
@@ -35,8 +36,9 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         final NodeModel node = getDelegate();
         final IconRegistry iconRegistry = node.getMap().getIconRegistry();
-        final String tagCategorySeparatorForMap = iconRegistry.getTagCategories().getTagCategorySeparatorForMap();
-        return iconController.getCategorizedTags(iconController.getTags(node), iconRegistry).stream()
+        final TagCategories tagCategories = iconRegistry.getTagCategories();
+        final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+        return iconController.getCategorizedTags(iconController.getTags(node), tagCategories).stream()
                 .map(tag -> tag.getContent(tagCategorySeparatorForMap))
                 .collect(Collectors.toList());
     }
@@ -46,8 +48,9 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         MIconController iconController = iconController();
         final NodeModel node = getDelegate();
         final IconRegistry iconRegistry = node.getMap().getIconRegistry();
-        String tagCategorySeparatorForNode = iconRegistry.getTagCategories().getTagCategorySeparatorForNode();
-        return iconController.getCategorizedTags(iconController.getTags(node), iconRegistry).stream()
+        final TagCategories tagCategories = iconRegistry.getTagCategories();
+        String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
+        return iconController.getCategorizedTags(iconController.getTags(node), tagCategories).stream()
                 .map(CategorizedTag::categoryTags)
                 .flatMap(Collection::stream)
                 .map(tag -> tag.categoryTags(tagCategorySeparatorForNode))
@@ -89,7 +92,7 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     private Tag createTag(String keyword) {
-        return getDelegate().getMap().getIconRegistry().createTag(keyword);
+        return getDelegate().getMap().getIconRegistry().getTagCategories().createTag(keyword);
     }
 
     @Override

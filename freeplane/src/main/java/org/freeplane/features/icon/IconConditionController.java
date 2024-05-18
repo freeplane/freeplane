@@ -172,7 +172,7 @@ class IconConditionController implements IElementaryConditionController {
             extendedComboBoxModel.setExtensionList(iconRegistry.getIconsAsListModel());
 	    }
 	    else if (namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
-	        extendedComboBoxModel.setExtensionList(iconRegistry.getTagsAsListModel());
+	        extendedComboBoxModel.setExtensionList(iconRegistry.getTagCategories().getTagsAsListModel());
 	    }
 	    return extendedComboBoxModel;
 	}

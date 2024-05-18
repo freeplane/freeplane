@@ -280,19 +280,20 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		        for(Entry<Object, Object> attribute:attributes.entrySet()){
 		            final String key = attribute.getKey().toString();
 		            String valueAsString = attribute.getValue().toString();
-		            if(CATEGORIES_ATTRIBUTE.equals(key)) {
-		                iconRegistry.getTagCategories().load(valueAsString);
+		            final TagCategories tagCategories = iconRegistry.getTagCategories();
+                    if(CATEGORIES_ATTRIBUTE.equals(key)) {
+		                tagCategories.load(valueAsString);
 		            } else if(EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
-                        iconRegistry.getTagCategories().setTagCategorySeparatorForMap(valueAsString);
+                        tagCategories.setTagCategorySeparatorForMap(valueAsString);
                     } else if(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
-                        iconRegistry.getTagCategories().setTagCategorySeparatorForNode(valueAsString);
+                        tagCategories.setTagCategorySeparatorForNode(valueAsString);
                     }
 		            else {
 		                int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
 		                if(separatorIndex > 0) {
 		                    String name = valueAsString.substring(0, separatorIndex);
 		                    String color = valueAsString.substring(separatorIndex);
-		                    iconRegistry.setTagColor(name, color);
+		                    tagCategories.setTagColor(name, color);
 		                }
 		            }
 		        }
@@ -782,7 +783,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element, true);
 		saveProperties(mapStyleModel.getProperties(), element);
-		saveTagProperties(mapStyleModel.getStyleMap().getIconRegistry(), element);
+		saveTagProperties(mapStyleModel.getStyleMap().getIconRegistry().getTagCategories(), element);
 	}
 
 	private void saveProperties(Map<String, String> properties, XMLElement element) {
@@ -797,17 +798,16 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    element.addChild(xmlElement);
     }
 
-    private void saveTagProperties(IconRegistry iconRegistry, XMLElement element) {
+    private void saveTagProperties(TagCategories tagCategories, XMLElement element) {
         final XMLElement xmlElement = new XMLElement(TAGS_ELEMENT);
         int[] tagColorCounter = {0};
-        final TagCategories tagCategories = iconRegistry.getTagCategories();
         final String serializedTagCategories = tagCategories.serialize();
         if(! serializedTagCategories.isEmpty())
             xmlElement.setAttribute(CATEGORIES_ATTRIBUTE, serializedTagCategories);
         xmlElement.setAttribute(EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForMap());
         xmlElement.setAttribute(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForNode());
 
-        iconRegistry.getTagsAsListModel().stream()
+        tagCategories.getTagsAsListModel().stream()
         .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],
                 tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor())));
         element.addChild(xmlElement);

@@ -66,7 +66,7 @@ abstract class TagCondition extends StringConditionAdapter {
 	    final IconController iconController = IconController.getController();
 	    final List<Tag> tags = iconController.getTags(node);
 	    if(searchesInCategories()) {
-	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry());
+	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry().getTagCategories());
 	        for (CategorizedTag tag : categorizedTags) {
 	            if (checkTag(tag, tagCategorySeparatorForMap))
 	                return true;

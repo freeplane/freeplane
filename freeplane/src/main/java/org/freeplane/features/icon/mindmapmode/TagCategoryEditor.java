@@ -65,7 +65,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
@@ -101,6 +100,7 @@ import org.freeplane.features.map.MapModel;
 
 class TagCategoryEditor implements IExtension {
 
+    @SuppressWarnings("serial")
     static class TagCellRenderer extends DefaultTreeCellRenderer {
         private Object rootNode; // Reference to the root node object
 
@@ -138,22 +138,26 @@ class TagCategoryEditor implements IExtension {
 
     static class TagCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
+        private static final long serialVersionUID = 1L;
+
         private JTextField textField;
 
         private DefaultMutableTreeNode currentNode;
 
-        private IconRegistry registry;
+        private TagCategories registry;
 
-        public TagCellEditor(IconRegistry registry) {
+        public TagCellEditor(TagCategories registry) {
             this.registry = registry;
             textField = new JTextField();
             textField.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     stopCellEditing();
                 }
             });
 
             textField.addFocusListener(new FocusAdapter() {
+                @Override
                 public void focusLost(FocusEvent e) {
                     stopCellEditing();
                 }
@@ -350,6 +354,7 @@ class TagCategoryEditor implements IExtension {
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
         modifyColorAction = new AbstractAction() {
+            private static final long serialVersionUID = 1L;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -381,8 +386,9 @@ class TagCategoryEditor implements IExtension {
         final Container contentPane = dialog.getContentPane();
 
         final IconRegistry iconRegistry = map.getIconRegistry();
-        this.tagCategories = iconRegistry.getTagCategories().copy(iconRegistry);
+        this.tagCategories = iconRegistry.getTagCategories().copy();
         tree = new JTree(tagCategories.getNodes()) {
+            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isPathEditable(TreePath path) {
@@ -413,7 +419,7 @@ class TagCategoryEditor implements IExtension {
         tree.setDropMode(DropMode.ON_OR_INSERT);
         tree.setTransferHandler(new TreeTransferHandler(tagCategories));
         tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
-        tree.setCellEditor(new TagCellEditor(tagCategories.getRegistry()));
+        tree.setCellEditor(new TagCellEditor(tagCategories));
 
         configureKeyBindings();
 
@@ -798,7 +804,7 @@ class TagCategoryEditor implements IExtension {
         }
     }
 
-    private void updateColorButton(TreeSelectionEvent e) {
+    private void updateColorButton(@SuppressWarnings("unused") TreeSelectionEvent e) {
         updateColorButton();
     }
 
