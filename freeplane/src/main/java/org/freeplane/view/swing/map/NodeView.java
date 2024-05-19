@@ -1803,6 +1803,7 @@ public class NodeView extends JComponent implements INodeView {
             }
             else
                 component.setIcons(tagIcons);
+            component.setComponentOrientation(mainView.getComponentOrientation());
             component.setMaximumWidth(mainView.getMaximumWidth());
         }
         else

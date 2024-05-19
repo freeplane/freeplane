@@ -15,12 +15,14 @@ import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 public class IconListComponent extends JComponent {
     private static final long serialVersionUID = 1L;
     private List<? extends Icon> icons;
     private int maximumWidth;
+    private int horizontalAlignment;
 
     public IconListComponent() {
         this(Collections.emptyList());
@@ -30,6 +32,7 @@ public class IconListComponent extends JComponent {
         super();
         this.icons = icons;
         maximumWidth = Integer.MAX_VALUE;
+        horizontalAlignment = SwingConstants.LEFT;
     }
 
     public List<? extends Icon> getIcons() {
@@ -64,22 +67,35 @@ public class IconListComponent extends JComponent {
         }
     }
 
+    public void setHorizontalAlignment(int alignment) {
+        if (alignment == horizontalAlignment)
+            return;
+        int oldValue = horizontalAlignment;
+        horizontalAlignment = alignment;
+        firePropertyChange("horizontalAlignment",
+                           oldValue, horizontalAlignment);
+        repaint();
+    }
+
     private void paintIcons(Graphics g, float zoom) {
         super.paintComponent(g);
+        boolean isLeftToRight = getComponentOrientation().isLeftToRight();
+
         int x = 0;
         int y = 0;
         int rowHeight = 0;
 
-        final int width = (int) (getWidth() / zoom + 0.5f);
+        final int width = (int) (getWidth() / zoom);
         for (Icon icon : icons) {
-            if (x > 0 && x + icon.getIconWidth() > width) {
+            final int iconWidth = icon.getIconWidth();
+            if (x > 0 && x + iconWidth > width) {
                 x = 0;
                 y += rowHeight;
                 rowHeight = 0;
             }
 
-            icon.paintIcon(this, g, x, y);
-            x += icon.getIconWidth();
+            icon.paintIcon(this, g, isLeftToRight ? x : width - x  - iconWidth, y);
+            x += iconWidth;
             rowHeight = Math.max(rowHeight, icon.getIconHeight());
         }
     }
