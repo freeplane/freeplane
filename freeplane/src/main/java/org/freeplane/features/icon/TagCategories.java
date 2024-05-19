@@ -15,6 +15,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -67,8 +68,8 @@ public class TagCategories {
     private final TreeInverseMap<Tag> nodesByTags;
     final private SortedComboBoxModel<Tag> mapTags;
 
-    private String tagCategorySeparatorForMap;
-    private String tagCategorySeparatorForNode;
+    private String managedCategorySeparator;
+    private String adhocCategorySeparator;
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
@@ -77,9 +78,9 @@ public class TagCategories {
     }
 
     @SuppressWarnings("serial")
-    public TagCategories(DefaultMutableTreeNode rootNode, String tagCategorySeparatorForMap, String tagCategorySeparatorForNode) {
-        this.tagCategorySeparatorForMap = tagCategorySeparatorForMap;
-        this.tagCategorySeparatorForNode = tagCategorySeparatorForNode;
+    public TagCategories(DefaultMutableTreeNode rootNode, String managedCategorySeparator, String adhocCategorySeparator) {
+        this.managedCategorySeparator = managedCategorySeparator;
+        this.adhocCategorySeparator = adhocCategorySeparator;
         mapTags = new SortedComboBoxModel<>(Tag.class);
         nodes = new TagCategoryTree(rootNode);
         nodesByTags = new TreeInverseMap<Tag>(nodes);
@@ -89,27 +90,27 @@ public class TagCategories {
         this.mapTags = new SortedComboBoxModel<>(Tag.class);
         final DefaultMutableTreeNode rootNode = tagCategories.getRootNode();
         final DefaultMutableTreeNode rootCopy = copySubtree(rootNode);
-        this.tagCategorySeparatorForMap = tagCategories.tagCategorySeparatorForMap;
-        this.tagCategorySeparatorForNode = tagCategories.tagCategorySeparatorForNode;
+        this.managedCategorySeparator = tagCategories.managedCategorySeparator;
+        this.adhocCategorySeparator = tagCategories.adhocCategorySeparator;
         nodes = new TagCategoryTree(rootCopy);
         nodesByTags = new TreeInverseMap<Tag>(nodes);
         tagCategories.mapTags.forEach(this::registerTag);
     }
 
     public String getTagCategorySeparatorForMap() {
-        return tagCategorySeparatorForMap;
+        return managedCategorySeparator;
     }
 
-    public void setTagCategorySeparatorForMap(String tagCategorySeparatorForMap) {
-        this.tagCategorySeparatorForMap = tagCategorySeparatorForMap;
+    public void setTagCategorySeparatorForMap(String managedCategorySeparator) {
+        this.managedCategorySeparator = managedCategorySeparator;
     }
 
     public String getTagCategorySeparatorForNode() {
-        return tagCategorySeparatorForNode;
+        return adhocCategorySeparator;
     }
 
-    public void setTagCategorySeparatorForNode(String tagCategorySeparatorForNode) {
-        this.tagCategorySeparatorForNode = tagCategorySeparatorForNode;
+    public void setTagCategorySeparatorForNode(String adhocCategorySeparator) {
+        this.adhocCategorySeparator = adhocCategorySeparator;
     }
 
     public static void writeTag(DefaultMutableTreeNode node, StringWriter writer) {
@@ -287,18 +288,19 @@ public class TagCategories {
     }
 
     public List<CategorizedTag> categorizedTags(){
-        return categorizedTags(getTagsAsListModel());
+        return categorizedTags(mapTags);
     }
 
     public List<CategorizedTag> categorizedTags(Iterable<Tag> tags){
         final LinkedList<CategorizedTag> categorizedTags = new LinkedList<>();
+        Set<Tag> addedAdhocTags = new HashSet<Tag>();
         for(Tag tag : tags) {
             if(tag.isEmpty())
                 categorizedTags.add(CategorizedTag.EMPTY_TAG);
             else {
                 final Set<DefaultMutableTreeNode> tagCategoryNodes = nodesByTags.getNodes(tag);
                 if(tagCategoryNodes.isEmpty())
-                    categorizedTags.add(new UncategorizedTag(registerTag(tag)));
+                    addAdhocTags(categorizedTags, addedAdhocTags, tag);
                 else {
                     for(DefaultMutableTreeNode node : tagCategoryNodes)
                         categorizedTags.add(new CategorizedTagForCategoryNode(node, getTag(tag)));
@@ -306,6 +308,16 @@ public class TagCategories {
             }
         }
         return categorizedTags;
+    }
+
+    private void addAdhocTags(final LinkedList<CategorizedTag> categorizedTags, Set<Tag> addedAdhocTags, Tag tag) {
+        if(addedAdhocTags.add(tag)) {
+            final String tagContent = tag.getContent();
+            final int separatorIndex = tagContent.lastIndexOf(adhocCategorySeparator);
+            if(separatorIndex > 0)
+                addAdhocTags(categorizedTags, addedAdhocTags, new Tag(tagContent.substring(0, separatorIndex)));
+            categorizedTags.add(new UncategorizedTag(tag));
+        }
     }
 
     public boolean register(CategorizedTag tag) {
