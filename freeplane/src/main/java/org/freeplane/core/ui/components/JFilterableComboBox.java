@@ -80,6 +80,19 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
             public void popupMenuCanceled(PopupMenuEvent e) {
             }
         });
+        getEditor().getEditorComponent().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(! isPopupVisible())
+                    EventQueue.invokeLater(this::showPopup);
+            }
+
+            private void showPopup() {
+                if(isShowing())
+                    JFilterableComboBox.this.showPopup();
+            }
+
+        });
     }
 
     @Override
