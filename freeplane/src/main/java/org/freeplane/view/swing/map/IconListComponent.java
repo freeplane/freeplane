@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,24 +80,50 @@ public class IconListComponent extends JComponent {
 
     private void paintIcons(Graphics g, float zoom) {
         super.paintComponent(g);
-        boolean isLeftToRight = getComponentOrientation().isLeftToRight();
-
         int x = 0;
         int y = 0;
         int rowHeight = 0;
-
+        int totalRowWidth = 0;
+        List<Icon> rowIcons = new ArrayList<>(icons.size());
         final int width = (int) (getWidth() / zoom);
+
         for (Icon icon : icons) {
-            final int iconWidth = icon.getIconWidth();
+            int iconWidth = icon.getIconWidth();
             if (x > 0 && x + iconWidth > width) {
+                int dx = width - totalRowWidth;
+                drawIconsRow(g, rowIcons, dx, y, width);
                 x = 0;
                 y += rowHeight;
                 rowHeight = 0;
+                rowIcons.clear();
+                totalRowWidth = 0;
             }
-
-            icon.paintIcon(this, g, isLeftToRight ? x : width - x  - iconWidth, y);
+            rowIcons.add(icon);
             x += iconWidth;
+            totalRowWidth += iconWidth;
             rowHeight = Math.max(rowHeight, icon.getIconHeight());
+        }
+        if (!rowIcons.isEmpty()) {
+            int dx = width - totalRowWidth;
+            drawIconsRow(g, rowIcons, dx, y, width);
+        }
+    }
+
+    private void drawIconsRow(Graphics g, List<Icon> rowIcons, int dx, int y, int width) {
+        boolean isLeftToRight = getComponentOrientation().isLeftToRight();
+        int x;
+        if (horizontalAlignment == SwingConstants.CENTER) {
+            x = dx / 2;
+        } else if (horizontalAlignment == SwingConstants.RIGHT) {
+            x = isLeftToRight ? dx : 0;
+        } else {
+            x = isLeftToRight ? 0 : dx;
+        }
+        for (Icon icon : rowIcons) {
+            final int paintX = isLeftToRight ?  x  : width - x - icon.getIconWidth();
+            final int paintY = y ;
+            icon.paintIcon(this, g, paintX, paintY);
+            x += icon.getIconWidth();
         }
     }
 
@@ -106,7 +133,8 @@ public class IconListComponent extends JComponent {
             Dimension preferredSize = super.getPreferredSize();
             return preferredSize;
         }
-        int width = maximumWidth;
+        final float zoom = getZoom();
+        int width = (int) (maximumWidth / zoom + 0.5);
         int height = 0;
         int rowWidth = 0;
         int rowHeight = 0;
@@ -122,7 +150,6 @@ public class IconListComponent extends JComponent {
         }
 
         height += rowHeight;
-        final float zoom = getZoom();
         return new Dimension((int) (width * zoom + 0.5), (int)(height * zoom + 0.5));
     }
 
