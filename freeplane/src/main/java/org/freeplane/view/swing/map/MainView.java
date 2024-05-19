@@ -823,8 +823,8 @@ public class MainView extends ZoomableLabel {
             transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
             final float zoom = getNodeView().getMap().getZoom();
             if(zoom != 1f) {
-                transformedToIconCoordinate.x *= zoom;
-                transformedToIconCoordinate.y *= zoom;
+                transformedToIconCoordinate.x /= zoom;
+                transformedToIconCoordinate.y /= zoom;
             }
             return ((MultipleImageIcon)icon).getUIIconAt(transformedToIconCoordinate);
 
@@ -841,8 +841,8 @@ public class MainView extends ZoomableLabel {
             transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
             final float zoom = getNodeView().getMap().getZoom();
             if(zoom != 1f) {
-                transformedToIconCoordinate.x *= zoom;
-                transformedToIconCoordinate.y *= zoom;
+                transformedToIconCoordinate.x /= zoom;
+                transformedToIconCoordinate.y /= zoom;
             }
             return ((MultipleImageIcon)icon).getTagAt(transformedToIconCoordinate);
 
