@@ -414,10 +414,11 @@ class TagCategoryEditor implements IExtension {
 			public void setUI(TreeUI ui) {
 				super.setUI(ui);
 				Font tagFont = iconController.getTagFont(map.getRootNode());
-				Rectangle2D rect = tagFont.getStringBounds("*" , 0, 1,
+				final Font font = tagFont.deriveFont(getFont().getSize2D());
+                setFont(font);
+				Rectangle2D rect = font.getStringBounds("*" , 0, 1,
 		        		new FontRenderContext(new AffineTransform(), true, true));
 		        double textHeight = rect.getHeight();
-		        setFont(tagFont);
 				setRowHeight((int)  Math.ceil(textHeight * 1.4));
 			}
 
