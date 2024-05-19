@@ -136,12 +136,14 @@ public class IconListComponent extends JComponent {
         final float zoom = getZoom();
         int width = (int) (maximumWidth / zoom + 0.5);
         int height = 0;
+        int maximumRowWidth = 0;
         int rowWidth = 0;
         int rowHeight = 0;
 
         for (Icon icon : icons) {
             if (rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
                 height += rowHeight;
+                maximumRowWidth = Math.max(rowWidth, maximumRowWidth);
                 rowWidth = 0;
                 rowHeight = 0;
             }
@@ -150,7 +152,8 @@ public class IconListComponent extends JComponent {
         }
 
         height += rowHeight;
-        return new Dimension((int) (width * zoom + 0.5), (int)(height * zoom + 0.5));
+        maximumRowWidth = Math.max(rowWidth, maximumRowWidth);
+        return new Dimension((int) (maximumRowWidth * zoom + 0.5), (int)(height * zoom + 0.5));
     }
 
     protected float getZoom() {
