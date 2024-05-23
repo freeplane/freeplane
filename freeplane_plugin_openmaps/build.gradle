@@ -5,5 +5,5 @@ repositories {
 dependencies {
     implementation project(':freeplane')
 
-    lib 'org.openstreetmap.jmapviewer:jmapviewer:2.18'
+    lib 'org.openstreetmap.jmapviewer:jmapviewer:2.19'
 }
