@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -153,9 +154,10 @@ public class TagCategories {
         return getRootNode().isLeaf();
     }
 
-    public void readTagCategories(DefaultMutableTreeNode target, int index, Scanner scanner) {
+    public void readTagCategories(DefaultMutableTreeNode target, final int firstIndex, Scanner scanner) {
         DefaultMutableTreeNode lastNode = target;
         int lastIndentation = -1;
+        int index = firstIndex;
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
@@ -173,16 +175,16 @@ public class TagCategories {
                     parent = (DefaultMutableTreeNode) parent.getParent();
                 }
             }
-            insertNode(parent, target == parent ? index++ : parent.getChildCount(), newNode);
-
+            parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
             lastNode = newNode;
             lastIndentation = indentation;
         }
+        nodes.nodesWereInserted(target, IntStream.range(firstIndex, index).toArray());
     }
 
     private void insertNode(DefaultMutableTreeNode parent, int index, DefaultMutableTreeNode newChild) {
         parent.insert(newChild, index);
-        getNodes().nodesWereInserted(parent, new int[] {index});
+        nodes.nodesWereInserted(parent, new int[] {index});
     }
 
     private int getIndentationLevel(String line) {
@@ -207,23 +209,23 @@ public class TagCategories {
         }
     }
     public DefaultMutableTreeNode getRootNode() {
-        return (DefaultMutableTreeNode) getNodes().getRoot();
+        return (DefaultMutableTreeNode) nodes.getRoot();
     }
 
     public void addTreeModelListener(TreeModelListener treeModelListener) {
-       getNodes().addTreeModelListener(treeModelListener);
+       nodes.addTreeModelListener(treeModelListener);
     }
 
     void removeTreeModelListener(TreeModelListener l) {
-        getNodes().removeTreeModelListener(l);
+        nodes.removeTreeModelListener(l);
     }
 
     public TreeNode[] addChildNode(MutableTreeNode parent) {
         if(parent == null)
             parent = getRootNode();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
-        getNodes().insertNodeInto(newNode, parent, parent.getChildCount());
-        return getNodes().getPathToRoot(newNode);
+        nodes.insertNodeInto(newNode, parent, parent.getChildCount());
+        return nodes.getPathToRoot(newNode);
    }
 
     public TreeNode[] addSiblingNode(MutableTreeNode node) {
@@ -234,13 +236,13 @@ public class TagCategories {
         if(parent == null)
             return nothing;
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
-        getNodes().insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
-        return getNodes().getPathToRoot(newNode);
+        nodes.insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
+        return nodes.getPathToRoot(newNode);
    }
 
     public void removeNodeFromParent(MutableTreeNode node) {
         if(node.getParent() != null)
-            getNodes().removeNodeFromParent(node);
+            nodes.removeNodeFromParent(node);
     }
 
     void save(File tagCategoryFile) {
@@ -270,7 +272,7 @@ public class TagCategories {
         int childCount = node.getChildCount();
         Object userObject = node.getUserObject();
         if (userObject == updatedTag) {
-            getNodes().nodeChanged(node);
+            nodes.nodeChanged(node);
         }
         for (int i = 0; i < childCount; i++) {
             DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
