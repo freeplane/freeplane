@@ -87,8 +87,7 @@ import org.freeplane.view.swing.map.TagLocation;
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
     private static final String CATEGORIES_ATTRIBUTE = "categories";
-    private static final String EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "managed_category_separator";
-    private static final String INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "adhoc_category_separator";
+    private static final String TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "category_separator";
 
     private static final String TAGS_ELEMENT = "tags";
     public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
@@ -285,10 +284,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		            final TagCategories tagCategories = iconRegistry.getTagCategories();
                     if(CATEGORIES_ATTRIBUTE.equals(key)) {
 		                tagCategories.load(valueAsString);
-		            } else if(EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
-                        tagCategories.setTagCategorySeparatorForMap(valueAsString);
-                    } else if(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
-                        tagCategories.setTagCategorySeparatorForNode(valueAsString);
+                    } else if(TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
+                        tagCategories.setTagCategorySeparator(valueAsString);
                     }
 		            else {
 		                int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
@@ -812,8 +809,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         final String serializedTagCategories = tagCategories.serialize();
         if(! serializedTagCategories.isEmpty())
             xmlElement.setAttribute(CATEGORIES_ATTRIBUTE, serializedTagCategories);
-        xmlElement.setAttribute(EXTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForMap());
-        xmlElement.setAttribute(INTERNAL_TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparatorForNode());
+        xmlElement.setAttribute(TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparator());
 
         tagCategories.getTagsAsListModel().stream()
         .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],

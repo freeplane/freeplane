@@ -69,19 +69,16 @@ public class TagCategories {
     private final TreeInverseMap<Tag> nodesByTags;
     final private SortedComboBoxModel<Tag> mapTags;
 
-    private String managedCategorySeparator;
-    private String adhocCategorySeparator;
+    private String categorySeparator;
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
-                ResourceController.getResourceController().getProperty("managed_category_separator"),
-                ResourceController.getResourceController().getProperty("adhoc_category_separator"));
+                ResourceController.getResourceController().getProperty("category_separator"));
     }
 
     @SuppressWarnings("serial")
-    public TagCategories(DefaultMutableTreeNode rootNode, String managedCategorySeparator, String adhocCategorySeparator) {
-        this.managedCategorySeparator = managedCategorySeparator;
-        this.adhocCategorySeparator = adhocCategorySeparator;
+    public TagCategories(DefaultMutableTreeNode rootNode, String categorySeparator) {
+        this.categorySeparator = categorySeparator;
         mapTags = new SortedComboBoxModel<>(Tag.class);
         nodes = new TagCategoryTree(rootNode);
         nodesByTags = new TreeInverseMap<Tag>(nodes);
@@ -91,27 +88,18 @@ public class TagCategories {
         this.mapTags = new SortedComboBoxModel<>(Tag.class);
         final DefaultMutableTreeNode rootNode = tagCategories.getRootNode();
         final DefaultMutableTreeNode rootCopy = copySubtree(rootNode);
-        this.managedCategorySeparator = tagCategories.managedCategorySeparator;
-        this.adhocCategorySeparator = tagCategories.adhocCategorySeparator;
+        this.categorySeparator = tagCategories.categorySeparator;
         nodes = new TagCategoryTree(rootCopy);
         nodesByTags = new TreeInverseMap<Tag>(nodes);
         tagCategories.mapTags.forEach(this::registerTag);
     }
 
-    public String getTagCategorySeparatorForMap() {
-        return managedCategorySeparator;
+    public String getTagCategorySeparator() {
+        return categorySeparator;
     }
 
-    public void setTagCategorySeparatorForMap(String managedCategorySeparator) {
-        this.managedCategorySeparator = managedCategorySeparator;
-    }
-
-    public String getTagCategorySeparatorForNode() {
-        return adhocCategorySeparator;
-    }
-
-    public void setTagCategorySeparatorForNode(String adhocCategorySeparator) {
-        this.adhocCategorySeparator = adhocCategorySeparator;
+    public void setTagCategorySeparator(String categorySeparator) {
+        this.categorySeparator = categorySeparator;
     }
 
     public static void writeTag(DefaultMutableTreeNode node, StringWriter writer) {
@@ -315,7 +303,7 @@ public class TagCategories {
     private void addAdhocTags(final LinkedList<CategorizedTag> categorizedTags, Set<Tag> addedAdhocTags, Tag tag) {
         if(addedAdhocTags.add(tag)) {
             final String tagContent = tag.getContent();
-            final int separatorIndex = tagContent.lastIndexOf(adhocCategorySeparator);
+            final int separatorIndex = tagContent.lastIndexOf(categorySeparator);
             if(separatorIndex > 0)
                 addAdhocTags(categorizedTags, addedAdhocTags, new Tag(tagContent.substring(0, separatorIndex)));
             categorizedTags.add(new UncategorizedTag(tag));

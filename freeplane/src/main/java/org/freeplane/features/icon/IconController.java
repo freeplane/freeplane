@@ -210,13 +210,12 @@ public class IconController implements IExtension {
     public List<TagIcon> getTagIcons(NodeModel node, boolean showCategories) {
         final Font font = getTagFont(node);
         final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
-        final String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
-        final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+        final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
         Stream<Tag> tags = showCategories ? getCategorizedTags(node).stream()
-                .map(tag -> tag.categorizedTag(tagCategorySeparatorForMap))
+                .map(tag -> tag.categorizedTag(tagCategorySeparator))
                 : getTags(node).stream();
         return tags
-                .map(tag -> showCategories ? tag : tag.removeInternalCategories(tagCategorySeparatorForNode))
+                .map(tag -> showCategories ? tag : tag.removeInternalCategories(tagCategorySeparator))
                 .map(tag -> new TagIcon(tag, font))
                 .collect(Collectors.toList());
     }
@@ -245,7 +244,7 @@ public class IconController implements IExtension {
     public List<Tag> getTagsWithCategories(NodeModel node) {
         return getCategorizedTags(node)
         .stream()
-        .map(tag -> tag.categorizedTag(node.getMap().getIconRegistry().getTagCategories().getTagCategorySeparatorForMap()))
+        .map(tag -> tag.categorizedTag(node.getMap().getIconRegistry().getTagCategories().getTagCategorySeparator()))
         .collect(Collectors.toList());
     }
 }

@@ -68,17 +68,17 @@ public class Tag implements Comparable<Tag>{
         return new Tag(content, color);
     }
 
-    public Tag removeInternalCategories(String tagCategorySeparatorForNode) {
-        if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
+    public Tag removeInternalCategories(String tagCategorySeparator) {
+        if(tagCategorySeparator.isEmpty() || isEmpty())
             return this;
-        final int tagIndex = getContent().lastIndexOf(tagCategorySeparatorForNode);
-        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparatorForNode.length()), getColor());
+        final int tagIndex = getContent().lastIndexOf(tagCategorySeparator);
+        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparator.length()), getColor());
     }
 
-    public List<Tag> categoryTags(String tagCategorySeparatorForNode) {
-        if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
+    public List<Tag> categoryTags(String tagCategorySeparator) {
+        if(tagCategorySeparator.isEmpty() || isEmpty())
             return Collections.singletonList(this);
-        final String[] categories = getContent().split(Pattern.quote(tagCategorySeparatorForNode));
+        final String[] categories = getContent().split(Pattern.quote(tagCategorySeparator));
         if(categories == null || categories.length < 2)
             return Collections.singletonList(this);
         return Stream.of(categories).map(content -> new Tag(content, color))

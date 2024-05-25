@@ -61,20 +61,19 @@ abstract class TagCondition extends StringConditionAdapter {
 	@Override
 	public boolean checkNode(final NodeModel node) {
 	    final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
-	    final String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
-	    final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+	    final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
 	    final IconController iconController = IconController.getController();
 	    final List<Tag> tags = iconController.getTags(node);
 	    if(searchesInCategories()) {
 	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry().getTagCategories());
 	        for (CategorizedTag tag : categorizedTags) {
-	            if (checkTag(tag, tagCategorySeparatorForMap))
+	            if (checkTag(tag, tagCategorySeparator))
 	                return true;
 	        }
 	    }
 	    else {
 	        for (Tag tag : tags) {
-	            if (checkTag(tag, tagCategorySeparatorForNode))
+	            if (checkTag(tag, tagCategorySeparator))
 	                return true;
 
 	        }
@@ -82,11 +81,11 @@ abstract class TagCondition extends StringConditionAdapter {
 	    return false;
 	}
 
-    protected boolean checkTag(Tag tag, String tagCategorySeparatorForNode) {
+    protected boolean checkTag(Tag tag, String tagCategorySeparator) {
         final String tagContent = tag.getContent();
-        return checkText(tagContent) || ! tagCategorySeparatorForNode.isEmpty()
-                && tagContent.contains(tagCategorySeparatorForNode)
-                && tag.categoryTags(tagCategorySeparatorForNode).stream()
+        return checkText(tagContent) || ! tagCategorySeparator.isEmpty()
+                && tagContent.contains(tagCategorySeparator)
+                && tag.categoryTags(tagCategorySeparator).stream()
                 .map(Tag::getContent)
                 .anyMatch(this::checkText);
     }
