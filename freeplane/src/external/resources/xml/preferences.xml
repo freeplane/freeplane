@@ -233,6 +233,7 @@
 				<boolean name="pasteImagesFromFiles"/>
 				<boolean name="enforceModalEditorDialogs" />
 				<boolean name="mouseDrivenNodeShiftsAreDisabled"/>
+				<boolean name="automaticSideDistribution"/>
 			</separator>
 			<separator name="reminderOptions">
 				<maybe_boolean name="reminder.showPastRemindersOnStart" />
