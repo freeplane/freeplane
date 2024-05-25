@@ -3,6 +3,7 @@
 ==============================
 Node tags
 Configure columns in "Find and replace"...
+Distribution of new child nodes equally to both sides can be disabled
 
 ==============================
 1.11.14
