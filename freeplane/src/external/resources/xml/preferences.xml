@@ -141,6 +141,7 @@
 			<separator name="clones">
 				<boolean name="markClones"/>
 				<boolean name="markSelectedClones"/>
+				<boolean name="preferBorderColorForStateSymbolBackground"/>
 			</separator>
 			<separator name="edit_long_node_window">
 				<boolean name="el__buttons_above" />

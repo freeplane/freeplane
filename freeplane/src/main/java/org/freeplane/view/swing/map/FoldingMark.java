@@ -23,6 +23,7 @@ class DrawableNothing implements Drawable{
 }
 abstract class DrawableShape implements Drawable{
 	static final Color standardSelectedNodeColor = ResourceController.getResourceController().getColorProperty(RESOURCES_SELECTED_NODE_COLOR);
+	static final String PREFER_BORDER_COLOR_FOR_STATE_SYMBOL_BACKGROUND = "preferBorderColorForStateSymbolBackground";
 
 	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
 		final Color color = g.getColor();
@@ -54,10 +55,16 @@ abstract class DrawableShape implements Drawable{
 
 	protected Color getFillColor(NodeView nodeView) {
 		final Color mapBackground = nodeView.getMap().getBackground();
-		final Color nodeBackground = nodeView.getTextBackground();
-        if (isVisible(nodeBackground, mapBackground)
-				|| isVisible(nodeView.getMainView().getBorderColor(), mapBackground)
-				|| isVisible(nodeView.getEdgeColor(), mapBackground)) {
+		final Color border = nodeView.getMainView().getBorderColor();
+		final Color edge = nodeView.getEdgeColor();
+		if (ResourceController.getResourceController().getBooleanProperty(PREFER_BORDER_COLOR_FOR_STATE_SYMBOL_BACKGROUND)) {
+			if (isVisible(border, mapBackground))
+				return border;
+			else if (isVisible(edge, mapBackground))
+				return edge;
+		}
+        final Color nodeBackground = nodeView.getTextBackground();
+		if (isVisible(nodeBackground, mapBackground) || isVisible(border, mapBackground) || isVisible(edge, mapBackground)) {
 			return nodeBackground;
 		} else {
 			return standardSelectedNodeColor;
