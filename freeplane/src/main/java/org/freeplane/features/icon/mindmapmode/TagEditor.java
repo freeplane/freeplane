@@ -394,12 +394,14 @@ class TagEditor {
         });
         cancelButton.addActionListener(e -> closeDialog());
         sortButton.addActionListener(e -> sortSelectedTags());
+        final TagCategories sourceCategories = getTagCategories();
+        tagCategories = sourceCategories.copy();
 
-        final Box controlPane = Box.createVerticalBox();
-        final JPanel separatorPane = new JPanel();
         final JPanel buttonPane = new JPanel();
-        controlPane.add(separatorPane);
-        controlPane.add(buttonPane);
+        tagCategorySeparatorField = new JTextField(10);
+        tagCategorySeparatorField.setText(tagCategories.getTagCategorySeparator());
+        buttonPane.add(TranslatedElementFactory.createLabel("OptionPanel.category_separator"));
+        buttonPane.add(tagCategorySeparatorField);
 
         buttonPane.add(enterConfirms);
         buttonPane.add(okButton);
@@ -411,19 +413,12 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        final TagCategories sourceCategories = getTagCategories();
-        tagCategories = sourceCategories.copy();
 
         qualifiedCategorizedTags = getCategorizedTagsByContent(tagCategories);
 
         List<Tag> originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-
-        tagCategorySeparatorField = new JTextField(10);
-        tagCategorySeparatorField.setText(tagCategories.getTagCategorySeparator());
-        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.category_separator"));
-        separatorPane.add(tagCategorySeparatorField);
 
         tagTable = createTagTable(originalNodeTags);
         tagCategorySeparatorField.addFocusListener(new FocusAdapter() {
@@ -544,7 +539,7 @@ class TagEditor {
 
         contentPane.add(editorScrollPane, BorderLayout.CENTER);
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
-        contentPane.add(controlPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
+        contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
         node.addExtension(new TagEditorHolder(node, dialog));
         configureDialog(dialog);
         restoreDialogSize(dialog);
