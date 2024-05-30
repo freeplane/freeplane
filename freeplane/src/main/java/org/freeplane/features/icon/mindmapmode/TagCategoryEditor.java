@@ -217,13 +217,14 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         protected Transferable createTransferable(JComponent c) {
-            JTree tree = (JTree) c;
-            return createTransferable(tree);
+            if(c != tree)
+                throw new IllegalArgumentException("Unexpected argument " + c);
+            return createTransferable();
         }
 
-        TagCategorySelection createTransferable(JTree tree) {
+        TagCategorySelection createTransferable() {
             try {
-                final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
+                final TreePath[] selectionPaths = getSelectionPaths();
                 if(selectionPaths == null)
                     return null;
 
@@ -240,38 +241,6 @@ class TagCategoryEditor implements IExtension {
                 return null;
             }
         }
-
-        private TreePath[] removeDescendantPaths(TreePath[] paths) {
-            if (paths == null || paths.length == 0) {
-                return null;
-            }
-
-            List<TreePath> filteredPaths = new ArrayList<>();
-
-            // Add all paths initially
-            for (TreePath path : paths) {
-                filteredPaths.add(path);
-            }
-
-            // Remove descendants
-            for (int i = 0; i < filteredPaths.size(); i++) {
-                TreePath path = filteredPaths.get(i);
-                for (int j = 0; j < filteredPaths.size(); j++) {
-                    if (i != j) {
-                        TreePath otherPath = filteredPaths.get(j);
-                        if (otherPath.isDescendant(path)) { // Check if path is a descendant of otherPath
-                            filteredPaths.remove(i);
-                            i--; // Adjust the index after removal
-                            break; // Break as no need to compare with other paths once removed
-                        }
-                    }
-                }
-            }
-
-            return filteredPaths.toArray(new TreePath[0]);
-        }
-
-
 
         @Override
         public boolean canImport(TransferHandler.TransferSupport support) {
@@ -648,7 +617,8 @@ class TagCategoryEditor implements IExtension {
 
         JMenuItem editMenuItem = TranslatedElementFactory.createMenuItem("edit");
         editMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-        editMenuItem.addActionListener(editNodeAction);
+        editMenuItem.addActionListener(e -> editNodeAction.actionPerformed(
+                new ActionEvent(tree, e.getID(), e.getActionCommand())));
         editMenu.add(editMenuItem);
 
         JMenuItem copyMenuItem = TranslatedElementFactory.createMenuItem("menu_copy");
@@ -684,7 +654,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void insertSelectedTagsIntoSelectedNodes() {
-        final TreePath[] selectionPaths = tree.getSelectionPaths();
+        final TreePath[] selectionPaths = getSelectionPaths();
         if(selectionPaths == null)
             return;
         final List<Tag> selectedTags = Stream.of(selectionPaths)
@@ -710,7 +680,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void removeNodes() {
-        final TreePath[] selectionPaths = tree.getSelectionPaths();
+        final TreePath[] selectionPaths = getSelectionPaths();
         if(selectionPaths == null)
             return;
         Stream.of(selectionPaths)
@@ -720,7 +690,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void copyNodes() {
-        TagCategorySelection stringSelection = ((TreeTransferHandler)tree.getTransferHandler()).createTransferable(tree);
+        TagCategorySelection stringSelection = ((TreeTransferHandler)tree.getTransferHandler()).createTransferable();
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
     }
@@ -840,6 +810,45 @@ class TagCategoryEditor implements IExtension {
         else {
             modifyColorAction.setEnabled(true);
             colorButton.setColor(tag.getColor());
+        }
+    }
+
+    private TreePath[] getSelectionPaths() {
+        TreePath[] paths = tree.getSelectionPaths();
+        if (paths == null || paths.length == 0) {
+            return null;
+        }
+
+        List<TreePath> filteredPaths = new ArrayList<>();
+
+        for (TreePath path : paths) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            if(node.getUserObject() instanceof Tag)
+                filteredPaths.add(path);
+        }
+
+        if (paths.length == 0) {
+            return null;
+        }
+
+        removeDescendants(filteredPaths);
+
+        return filteredPaths.toArray(new TreePath[0]);
+    }
+
+    private void removeDescendants(List<TreePath> filteredPaths) {
+        for (int i = 0; i < filteredPaths.size(); i++) {
+            TreePath path = filteredPaths.get(i);
+            for (int j = 0; j < filteredPaths.size(); j++) {
+                if (i != j) {
+                    TreePath otherPath = filteredPaths.get(j);
+                    if (otherPath.isDescendant(path)) {
+                        filteredPaths.remove(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

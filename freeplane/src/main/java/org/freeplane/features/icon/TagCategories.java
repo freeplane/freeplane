@@ -73,13 +73,15 @@ public class TagCategories {
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
+                new DefaultMutableTreeNode(TextUtils.getRawText("uncategorized_tags")),
                 ResourceController.getResourceController().getProperty("category_separator"));
     }
 
     @SuppressWarnings("serial")
-    public TagCategories(DefaultMutableTreeNode rootNode, String categorySeparator) {
+    public TagCategories(DefaultMutableTreeNode rootNode, DefaultMutableTreeNode uncategorizedTagsNode, String categorySeparator) {
         this.categorySeparator = categorySeparator;
         mapTags = new SortedComboBoxModel<>(Tag.class);
+        rootNode.add(uncategorizedTagsNode);
         nodes = new TagCategoryTree(rootNode);
         nodesByTags = new TreeInverseMap<Tag>(nodes);
     }
@@ -123,6 +125,8 @@ public class TagCategories {
             writeTag(tag, writer);
             indent = indent + " ";
         }
+        else if(node.getParent() != null)
+            return;
         int childCount = node.getChildCount();
         for (int i = 0; i < childCount; i++) {
             DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
@@ -186,14 +190,14 @@ public class TagCategories {
     public void load(File tagCategoryFile) {
         try (Scanner scanner = new Scanner(tagCategoryFile)){
             final DefaultMutableTreeNode rootNode = getRootNode();
-            readTagCategories(rootNode, rootNode.getChildCount(), scanner);
+            readTagCategories(rootNode, rootNode.getChildCount() - 1, scanner);
         } catch (FileNotFoundException e1) {/**/}
     }
 
     public void load(String data) {
         try (Scanner scanner = new Scanner(data)){
             final DefaultMutableTreeNode rootNode = getRootNode();
-            readTagCategories(rootNode, rootNode.getChildCount(), scanner);
+            readTagCategories(rootNode, rootNode.getChildCount() - 1, scanner);
         }
     }
     public DefaultMutableTreeNode getRootNode() {
