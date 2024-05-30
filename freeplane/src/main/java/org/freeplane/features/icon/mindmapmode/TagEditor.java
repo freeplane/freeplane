@@ -422,7 +422,7 @@ class TagEditor {
 
         tagCategorySeparatorField = new JTextField(10);
         tagCategorySeparatorField.setText(tagCategories.getTagCategorySeparator());
-        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.adhoc_category_separator"));
+        separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.category_separator"));
         separatorPane.add(tagCategorySeparatorField);
 
         tagTable = createTagTable(originalNodeTags);
