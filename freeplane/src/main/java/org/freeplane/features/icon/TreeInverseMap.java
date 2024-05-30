@@ -42,7 +42,8 @@ class TreeInverseMap<V> implements TreeModelListener {
     }
 
     private void traverseAndMapChildren(DefaultMutableTreeNode node) {
-        for (int i = 0; i < node.getChildCount(); i++) {
+        final int addedNodeCount = node.getParent() == null ? node.getChildCount() - 1 : node.getChildCount();
+        for (int i = 0; i < addedNodeCount; i++) {
             traverseAndMap((DefaultMutableTreeNode) node.getChildAt(i));
         }
     }

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 import org.freeplane.core.ui.components.HSLColorConverter;
+import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.util.LineComparator;
 
 public class Tag implements Comparable<Tag>{
@@ -112,5 +113,14 @@ public class Tag implements Comparable<Tag>{
     @Override
     public String toString() {
         return content;
+    }
+
+    public Tag updateSeparator(String initialSeparator, String currentSeparator) {
+        if(initialSeparator.equals(currentSeparator) || ! getContent().contains(initialSeparator)) {
+            return this;
+        }
+        else {
+            return new Tag(content.replace(initialSeparator, currentSeparator), color);
+        }
     }
 }

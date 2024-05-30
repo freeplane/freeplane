@@ -32,6 +32,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -51,10 +53,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -95,6 +95,8 @@ import javax.swing.plaf.TableUI;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.JColorButton;
@@ -129,21 +131,25 @@ class TagEditor {
 
     private static class TagsWrapper extends AbstractTableModel {
         private static final long serialVersionUID = 1L;
-        private final ArrayList<CategorizedTag> tags;
+        private final ArrayList<Tag> tags;
 
 
-        public TagsWrapper(ArrayList<CategorizedTag> tags) {
+        public TagsWrapper(ArrayList<Tag> tags) {
             super();
             this.tags = tags;
         }
 
-        List<CategorizedTag> getCategorizedTags() {
-            return tags;
+        List<Tag> getCurrentTags(String initialSeparator, String newSeparator) {
+            if(initialSeparator.equals(newSeparator))
+                return tags;
+            return tags.stream()
+                    .map(tag -> tag.updateSeparator(initialSeparator, newSeparator))
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
 
         void insertEmptyTags(int first, int last) {
             for(int index = last; index >= first; index--)
-                tags.add(first <= tags.size() ? first : tags.size(), CategorizedTag.EMPTY_TAG);
+                tags.add(first <= tags.size() ? first : tags.size(), Tag.EMPTY_TAG);
             fireTableRowsInserted(first, last);
          }
 
@@ -174,19 +180,19 @@ class TagEditor {
             return getTag(rowIndex);
         }
 
-        CategorizedTag getTag(int index) {
-            return index < tags.size() ? tags.get(index) : CategorizedTag.EMPTY_TAG;
+        Tag getTag(int index) {
+            return index < tags.size() ? tags.get(index) : Tag.EMPTY_TAG;
         }
 
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if(columnIndex == 0) {
-                CategorizedTag tag = (CategorizedTag)aValue;
+                Tag tag = (Tag)aValue;
                 setTag(rowIndex, tag);
             }
         }
 
-        void setTag(int index, CategorizedTag tag) {
+        void setTag(int index, Tag tag) {
             int tagCount = tags.size();
             if(index < tagCount) {
                 tags.set(index, tag);
@@ -216,7 +222,7 @@ class TagEditor {
             fireTableRowsUpdated(first, last);
         }
 
-        public void insertTag(int index, CategorizedTag tag) {
+        public void insertTag(int index, Tag tag) {
             if(index < 0)
                 index = tags.size();
             tags.add(index, tag);
@@ -226,20 +232,20 @@ class TagEditor {
         public void moveTag(int oldIndex, int newIndex) {
             if(oldIndex != newIndex) {
                 if(newIndex >= tags.size())
-                    insertTag(tags.size(), CategorizedTag.EMPTY_TAG);
-                CategorizedTag tag;
+                    insertTag(tags.size(), Tag.EMPTY_TAG);
+                Tag tag;
                 if(oldIndex < tags.size())
                     tag = removeTag(oldIndex);
                 else {
-                    tag = CategorizedTag.EMPTY_TAG;
+                    tag = Tag.EMPTY_TAG;
                 }
                 if(newIndex <= tags.size())
                     insertTag(newIndex, tag);
             }
         }
 
-        public CategorizedTag removeTag(int index) {
-            CategorizedTag tag = tags.remove(index);
+        public Tag removeTag(int index) {
+            Tag tag = tags.remove(index);
             fireTableRowsDeleted(index, index);
             return tag;
         }
@@ -262,8 +268,8 @@ class TagEditor {
 
             for (int row : rows) {
                 Object cellValue = table.getValueAt(row, col);
-                if (cellValue instanceof CategorizedTag) {
-                    final Tag tag = ((CategorizedTag) cellValue).tag();
+                if (cellValue instanceof Tag) {
+                    final Tag tag = ((Tag) cellValue);
                     try {
                         TagCategories.writeTag(tag, writer);
                     } catch (IOException e) {
@@ -352,12 +358,10 @@ class TagEditor {
     private JTable tagTable;
     private JDialog dialog;
     private final Map<String, CategorizedTag> qualifiedCategorizedTags;
-    private final Map<String, CategorizedTag> unqualifiedCategorizedTags;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
     private final JTextField tagCategorySeparatorField;
     private TagCategories tagCategories;
-
 
 	TagEditor(MIconController iconController, RootPaneContainer frame, NodeModel node){
         this.iconController = iconController;
@@ -415,38 +419,20 @@ class TagEditor {
         List<Tag> originalNodeTags = iconController.getTags(node);
 
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-        List<CategorizedTag> originalNodeCategorizedTags = iconController.getCategorizedTags(originalNodeTags, tagCategories);
-
-        unqualifiedCategorizedTags = qualifiedCategorizedTags.values().stream()
-                .filter(tag -> ! qualifiedCategorizedTags.containsKey(tag.tag().getContent()))
-                .collect(Collectors.toMap(tag -> tag.tag().getContent(), tag -> tag, (x, y) -> x));
 
         tagCategorySeparatorField = new JTextField(10);
         tagCategorySeparatorField.setText(tagCategories.getTagCategorySeparator());
         separatorPane.add(TranslatedElementFactory.createLabel("OptionPanel.adhoc_category_separator"));
         separatorPane.add(tagCategorySeparatorField);
 
-        tagTable = createTagTable(originalNodeCategorizedTags);
-        tagCategorySeparatorField.getDocument().addDocumentListener(new DocumentListener() {
-            Timer timer;
-            {
-                timer = new Timer(200, x -> tagTable.tableChanged(new TableModelEvent(getTableModel())));
-                timer.setRepeats(false);
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                timer.restart();
-            }
+        tagTable = createTagTable(originalNodeTags);
+        tagCategorySeparatorField.addFocusListener(new FocusAdapter() {
 
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                timer.restart();
+            public void focusLost(FocusEvent e) {
+                updateTagCategorySeparator();
             }
 
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                timer.restart();
-            }
         });
         ActionMap am = tagTable.getActionMap();
         JMenuBar menubar = new JMenuBar();
@@ -493,7 +479,7 @@ class TagEditor {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
                     sourceCategories,
-                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
+                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag.categorizedTag(getTagCategorySeparator()))));
         }
         menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
@@ -599,8 +585,7 @@ class TagEditor {
 
     private void insertSelectedTagsIntoSelectedNodes() {
         final List<Tag> selectedTags = IntStream.of(tagTable.getSelectedRows())
-        .mapToObj(row -> (CategorizedTag)tagTable.getValueAt(row, 0))
-        .map(CategorizedTag::tag)
+        .mapToObj(row -> (Tag)tagTable.getValueAt(row, 0))
         .collect(Collectors.toList());
         iconController.insertTagsIntoSelectedNodes(selectedTags);
     }
@@ -618,8 +603,8 @@ class TagEditor {
         int selectedRow = tagTable.getSelectedRow();
         if(selectedRow < 0)
             return;
-        final CategorizedTag modifiedCategorizedTag = (CategorizedTag) tagTable.getValueAt(selectedRow, 0);
-        Tag modifiedTag = modifiedCategorizedTag.tag();
+        final Tag modifiedCategorizedTag = (Tag) tagTable.getValueAt(selectedRow, 0);
+        Tag modifiedTag = modifiedCategorizedTag;
         if(modifiedTag.isEmpty())
             return;
 
@@ -663,13 +648,11 @@ class TagEditor {
             return true;
         }
 
-        List<CategorizedTag> tags = getCurrentTags();
-        if(tags.stream().filter(NewCategorizedTag.class::isInstance).findAny().isPresent())
-            return true;
+        List<Tag> tags = getCurrentTags();
 
         List<Tag> originalNodeTags = iconController.getTags(node);
         Set<Tag> filteringSet = new HashSet<>();
-        final List<Tag> newNodeTags = tags.stream().map(CategorizedTag::tag)
+        final List<Tag> newNodeTags = tags.stream()
                 .filter(tag -> tag.isEmpty() || filteringSet.add(tag))
                 .collect(Collectors.toList());
         if(originalNodeTags.size() != newNodeTags.size())
@@ -689,29 +672,24 @@ class TagEditor {
     protected void submit() {
         final MapModel map = node.getMap();
         final TagCategories tagCategories = getTagCategories().copy();
-        boolean categoriesChanged = false;
-        if(! tagCategorySeparatorField.getText().equals(tagCategories.getTagCategorySeparator())) {
-            tagCategories.setTagCategorySeparator(tagCategorySeparatorField.getText());
-            categoriesChanged = true;
+        final boolean isSeparatorUpdated = ! tagCategorySeparatorField.getText().equals(tagCategories.getTagCategorySeparator());
+        if(isSeparatorUpdated) {
+            tagCategories.updateTagCategorySeparator(tagCategorySeparatorField.getText());
+            iconController.setTagCategories(map, tagCategories);
         }
-
-        List<CategorizedTag> tags = getCurrentTags();
-        categoriesChanged = tags.stream().filter(NewCategorizedTag.class::isInstance)
-        .filter(tagCategories::register)
-        .count() > 0 || categoriesChanged;
-
-        if(categoriesChanged)
+        else if(tagCategories.areCategoriesChanged())
             iconController.setTagCategories(map, tagCategories);
 
-        iconController.setTags(node, tags.stream().map(CategorizedTag::tag).collect(Collectors.toList()), true);
+        List<Tag> tags = getCurrentTags();
+        iconController.setTags(node, tags.stream().collect(Collectors.toList()), true);
     }
     private TagCategories getTagCategories() {
         return node.getMap().getIconRegistry().getTagCategories();
     }
 
 
-    private List<CategorizedTag> getCurrentTags() {
-        return getTableModel().getCategorizedTags();
+    private List<Tag> getCurrentTags() {
+        return getTableModel().getCurrentTags(tagCategories.getTagCategorySeparator(), getTagCategorySeparator());
     }
 
     private JRestrictedSizeScrollPane createScrollPane() {
@@ -720,28 +698,11 @@ class TagEditor {
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
     }
-    private CategorizedTag createTagIfAbsent(String spec, boolean specContainsColor) {
-        final Tag tag = specContainsColor ? TagCategories.readTag(spec.trim()) : new Tag(spec.trim());
-        final String content = tag.getContent();
-        final CategorizedTag categorizedTag = unqualifiedCategorizedTags.get(content);
-        return categorizedTag != null ? categorizedTag : qualifiedCategorizedTags
-                .computeIfAbsent(spec, x -> registerTag(tag));
-    }
-    private CategorizedTag registerTag(Tag prototype) {
-        final String tagCategorySeparator = getTagCategorySeparator();
-        String spec = prototype.getContent();
-        final String[] categoriesAndTag = spec.split(Pattern.quote(tagCategorySeparator));
-        if(categoriesAndTag.length > 1) {
-            final List<Tag> tagList = Stream.of(categoriesAndTag)
-                    .map(tagCategories::createTag)
-                    .collect(Collectors.toList());
-            tagList.get(tagList.size() - 1).setColor(prototype.getColor());
-            return new NewCategorizedTag(tagList);
-        } else
-            return new UncategorizedTag(prototype);
+    private Tag createTagIfAbsent(String spec, boolean specContainsColor) {
+        return specContainsColor ? tagCategories.registerTag(spec) : tagCategories.registerTag(new Tag(spec));
     }
 
-    private JTable createTagTable(List<CategorizedTag> tags) {
+    private JTable createTagTable(List<Tag> tags) {
         JTable table = new AutoResizedTable(new TagsWrapper(new ArrayList<>(tags))) {
 
 
@@ -800,8 +761,10 @@ class TagEditor {
                 if(value == null)
                     setIcon(null);
                 else {
-                    CategorizedTag tag =  (CategorizedTag)value;
-                    setIcon(new TagIcon(tag.categorizedTag(getTagCategorySeparator()), table.getFont()));
+                    Tag tag =  (Tag)value;
+                    final String initialSeparator = tagCategories.getTagCategorySeparator();
+                    final String currentSeparator = getTagCategorySeparator();
+                    setIcon(new TagIcon(tag.updateSeparator(initialSeparator, currentSeparator), table.getFont()));
                 }
             }
 
@@ -836,7 +799,7 @@ class TagEditor {
             public Object getCellEditorValue() {
                 Object value = super.getCellEditorValue();
                 if(value instanceof CategorizedTag)
-                    return value;
+                    return ((CategorizedTag)value).categorizedTag(getTagCategorySeparator());
                 else
                     return createTagIfAbsent(value.toString(), false);
             }
@@ -844,7 +807,7 @@ class TagEditor {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value,
                     boolean isSelected, int row, int column) {
-                final String text = (value instanceof CategorizedTag) ? ((CategorizedTag)value).getContent(getTagCategorySeparator()) : value.toString();
+                final String text = (value instanceof Tag) ? ((Tag)value).getContent() : value.toString();
                 return super.getTableCellEditorComponent(table, text, isSelected, row, column);
             }
 
@@ -972,7 +935,7 @@ class TagEditor {
         if(firstIndex == -1) {
             return;
         }
-        CategorizedTag tag = (CategorizedTag) tagTable.getValueAt(firstIndex, 0);
+        Tag tag = (Tag) tagTable.getValueAt(firstIndex, 0);
         if(tag.isEmpty()) {
             modifyColorAction.setEnabled(false);
             colorButton.setColor(Tag.EMPTY_TAG.getColor());
@@ -980,7 +943,7 @@ class TagEditor {
         }
         else {
             modifyColorAction.setEnabled(true);
-            colorButton.setColor(tag.tag().getColor());
+            colorButton.setColor(tag.getColor());
         }
     }
 
@@ -1024,5 +987,16 @@ class TagEditor {
 
     private String getTagCategorySeparator() {
         return tagCategorySeparatorField.getText();
+    }
+    private void updateTagCategorySeparator() {
+        final String newTagCategorySeparator = getTagCategorySeparator();
+        final String currentTagCategorySeparator = tagCategories.getTagCategorySeparator();
+        if(! currentTagCategorySeparator.equals(newTagCategorySeparator)) {
+            if (! newTagCategorySeparator.isEmpty()) {
+                tagTable.tableChanged(new TableModelEvent(getTableModel()));
+            }
+            else
+                tagCategorySeparatorField.setText(currentTagCategorySeparator);
+        }
     }
 }
