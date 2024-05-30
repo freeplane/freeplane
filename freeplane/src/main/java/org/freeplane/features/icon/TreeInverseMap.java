@@ -16,7 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-class TreeInverseMap<V> implements TreeModelListener {
+class TreeInverseMap<V> implements TreeModelListener, TreeTagChangeListener<V> {
     private HashMap<V, Set<DefaultMutableTreeNode>> userObjectToNodesMap = new HashMap<>();
     private DefaultTreeModel treeModel;
 
@@ -106,7 +106,8 @@ class TreeInverseMap<V> implements TreeModelListener {
         return userObjectToNodesMap.getOrDefault(userObject, Collections.emptySet());
     }
 
-    void valueForPathChanged(TreePath path, V newValue) {
+    @Override
+    public void valueForPathChanged(TreePath path, V newValue) {
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
         removeFromMap(node);
         addToMap(newValue, node);

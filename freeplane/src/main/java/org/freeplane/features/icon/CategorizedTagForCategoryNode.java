@@ -17,12 +17,14 @@ public class CategorizedTagForCategoryNode implements CategorizedTag {
     private final DefaultMutableTreeNode categoryNode;
     private final Tag registeredTag;
 
+    public CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode) {
+        this(categoryNode, Optional.empty());
+    }
+
     public CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode, Optional<Tag> registeredTag) {
-        super();
         this.categoryNode = categoryNode;
         this.registeredTag = registeredTag.orElseGet(this::nodeTag).copy();
     }
-
 
     @Override
     public Tag tag() {

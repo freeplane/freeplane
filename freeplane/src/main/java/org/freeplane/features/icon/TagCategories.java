@@ -60,7 +60,11 @@ public class TagCategories {
 
         @Override
         public void valueForPathChanged(TreePath path, Object newValue) {
-            nodesByTags.valueForPathChanged(path, (Tag)newValue);
+            for (TreeModelListener listener: getTreeModelListeners()) {
+                if(listener instanceof TreeTagChangeListener)
+                    ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)newValue);
+
+            }
             super.valueForPathChanged(path, newValue);
         }
     }
