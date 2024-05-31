@@ -228,6 +228,10 @@ public class TagCategories {
         return (DefaultMutableTreeNode) nodes.getRoot();
     }
 
+    public DefaultMutableTreeNode getUncategorizedTagsNode() {
+        return uncategorizedTagsNode;
+    }
+
     public void addTreeModelListener(TreeModelListener treeModelListener) {
        nodes.addTreeModelListener(treeModelListener);
     }
