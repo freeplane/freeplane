@@ -235,7 +235,6 @@ class TagCategoryEditor implements IExtension {
                     return null;
                 lastTransferableId = UUID.randomUUID().toString();
                 StringWriter tagCategoryWriter = new StringWriter();
-                tagCategoryWriter.append(lastTransferableId).append(System.lineSeparator());
                 StringWriter tagWriter = new StringWriter();
                 final DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
                 for(TreePath treePath: selectionPaths) {
@@ -246,7 +245,7 @@ class TagCategoryEditor implements IExtension {
                     TagCategories.writeTagCategories(node, "", tagCategoryWriter);
                     TagCategories.writeTag(node, tagWriter);
                 }
-                TagCategorySelection stringSelection = new TagCategorySelection(tagCategoryWriter.toString(), tagWriter.toString());
+                TagCategorySelection stringSelection = new TagCategorySelection(lastTransferableId, tagCategoryWriter.toString(), tagWriter.toString());
                 return stringSelection;
             } catch (IOException e) {
                 return null;
@@ -345,14 +344,18 @@ class TagCategoryEditor implements IExtension {
             final String newContent = newTag.getContent();
             if(! newContent.equals(oldContent)) {
                 if(commonPrefix.isEmpty()) {
-                    replacements.add(oldContent);
-                    replacements.add(newContent);
+                    addReplacement(oldContent, newContent);
                 }
                 else {
-                    replacements.add(commonPrefix + getTagCategorySeparator() +  oldContent);
-                    replacements.add(commonPrefix + getTagCategorySeparator() +  newContent);
+                    addReplacement(commonPrefix + getTagCategorySeparator() +  oldContent,
+                        commonPrefix + getTagCategorySeparator() +  newContent);
                 }
             }
+        }
+
+        private void addReplacement(final String oldContent, final String newContent) {
+            replacements.add(oldContent);
+            replacements.add(newContent);
         }
 
         @Override
@@ -372,8 +375,7 @@ class TagCategoryEditor implements IExtension {
                     final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
                     if(indexBefore < 0 || ! replacements.get(indexBefore).equals(replacedContent)) {
                         if(internalMoveIsRunning) {
-                            replacements.add(replacedContent);
-                            replacements.add(newContent);
+                            addReplacement(replacedContent, newContent);
                         }
                         else
                             break;
@@ -691,7 +693,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeNodes();
-                lastSelectionParentsNodes = Collections.emptyList();
+                extracted();
                 lastTransferableId = "";
             }
         };
@@ -702,7 +704,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (copyNodes()) {
-                    lastSelectionParentsNodes = Collections.emptyList();
+                    extracted();
                     lastTransferableId = "";
                 }
             }
@@ -813,16 +815,22 @@ class TagCategoryEditor implements IExtension {
 
     private void saveLastSelectionParentsNodes() {
         final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
-        if(selectionPaths == null)
-            lastSelectionParentsNodes = Collections.emptyList();
-        else
-            lastSelectionParentsNodes = Stream.of(selectionPaths)
+        if(selectionPaths == null || selectionPaths.length == 0) {
+            extracted();
+        } else {
+            final List<String> x = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
                 .map(DefaultMutableTreeNode::getParent)
                 .map(DefaultMutableTreeNode.class::cast)
                 .map(this::categorizedContent)
                 .collect(Collectors.toList());
+            lastSelectionParentsNodes = x;
+        }
+    }
+
+    private void extracted() {
+        lastSelectionParentsNodes = Collections.emptyList();
     }
     private TreePath[] removeDescendantPaths(TreePath[] paths) {
         if (paths == null || paths.length == 0) {
@@ -881,6 +889,9 @@ class TagCategoryEditor implements IExtension {
             if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
                         .getLastSelectedPathComponent();
+                final DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
+                if(selectedNode == uncategorizedTagsNode || selectedNode.isNodeAncestor(uncategorizedTagsNode))
+                    selectedNode = tagCategories.getRootNode();
                 insertTransferable(selectedNode, selectedNode.isRoot() ? selectedNode.getChildCount() - 1 : selectedNode.getChildCount(), t, TransferHandler.NONE);
             }
         } catch (Exception e) {
@@ -908,7 +919,7 @@ class TagCategoryEditor implements IExtension {
                     initialColor, defaultColor);
             if (result != null && !initialColor.equals(result) || result == defaultColor) {
                 tag.setColor(result);
-                tagCategories.tagChanged(tag);
+                tagCategories.fireNodeChanged((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
                 updateColorButton();
             }
         }

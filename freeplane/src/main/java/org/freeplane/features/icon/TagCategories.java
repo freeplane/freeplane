@@ -70,7 +70,7 @@ public class TagCategories {
     }
 
     private final DefaultTreeModel nodes;
-    private final TreeInverseMap<Tag> nodesByTags;
+    private TreeInverseMap<Tag> nodesByTags;
     final private SortedComboBoxModel<Tag> mapTags;
     private boolean categoriesChanged;
 
@@ -90,7 +90,7 @@ public class TagCategories {
         mapTags = new SortedComboBoxModel<>(Tag.class);
         rootNode.add(uncategorizedTagsNode);
         nodes = new TagCategoryTree(rootNode);
-        nodesByTags = new TreeInverseMap<Tag>(nodes);
+        nodesByTags = null;
         categoriesChanged = false;
     }
 
@@ -101,7 +101,7 @@ public class TagCategories {
         final DefaultMutableTreeNode rootCopy = copySubtree(rootNode);
         uncategorizedTagsNode = (DefaultMutableTreeNode) rootCopy.getLastChild();
         nodes = new TagCategoryTree(rootCopy);
-        nodesByTags = new TreeInverseMap<Tag>(nodes);
+        nodesByTags = null;
         tagCategories.mapTags.forEach(mapTags::addIfNotExists);
         categoriesChanged = false;
     }
@@ -284,22 +284,6 @@ public class TagCategories {
         }
     }
 
-    public void tagChanged(Tag tag) {
-        tagChanged(getRootNode(), tag);
-    }
-
-    private void tagChanged(DefaultMutableTreeNode node, Tag updatedTag) {
-        int childCount = node.getChildCount();
-        Object userObject = node.getUserObject();
-        if (userObject == updatedTag) {
-            nodes.nodeChanged(node);
-        }
-        for (int i = 0; i < childCount; i++) {
-            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
-            tagChanged(childNode, updatedTag);
-        }
-    }
-
     public void insert(DefaultMutableTreeNode parent, int index, String data) {
         if (parent == null) {
             parent = getRootNode();
@@ -320,7 +304,7 @@ public class TagCategories {
             if(tag.isEmpty())
                 categorizedTags.add(CategorizedTag.EMPTY_TAG);
             else {
-                final Set<DefaultMutableTreeNode> tagCategoryNodes = nodesByTags.getNodes(tag);
+                final Set<DefaultMutableTreeNode> tagCategoryNodes = getNodes(tag);
                 if(tagCategoryNodes.isEmpty())
                     addAdhocTags(categorizedTags, addedAdhocTags, tag);
                 else {
@@ -330,6 +314,14 @@ public class TagCategories {
             }
         }
         return categorizedTags;
+    }
+
+    private Set<DefaultMutableTreeNode> getNodes(Tag tag) {
+        if(nodesByTags == null) {
+            nodesByTags = new TreeInverseMap<Tag>(nodes);
+            nodes.addTreeModelListener(nodesByTags);
+        }
+        return nodesByTags.getNodes(tag);
     }
 
     private void addAdhocTags(final LinkedList<CategorizedTag> categorizedTags, Set<Tag> addedAdhocTags, Tag tag) {
@@ -466,5 +458,9 @@ public class TagCategories {
 
     public boolean areCategoriesChanged() {
         return categoriesChanged;
+    }
+
+    public void fireNodeChanged(DefaultMutableTreeNode node) {
+        nodes.nodeChanged(node);
     }
 }

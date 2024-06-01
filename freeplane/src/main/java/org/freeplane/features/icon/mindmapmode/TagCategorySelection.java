@@ -22,9 +22,11 @@ public class TagCategorySelection implements Transferable {
             tagFlavor,
             stringFlavor
         };
+    private final String id;
     private final String tagCategorySelection;
     private final String tagSelection;
-    public TagCategorySelection(String tagCategoryData, String tagData) {
+    public TagCategorySelection(String id, String tagCategoryData, String tagData) {
+        this.id = id;
         tagCategorySelection = tagCategoryData;
         tagSelection = tagData;
     }
@@ -44,6 +46,8 @@ public class TagCategorySelection implements Transferable {
             IOException {
         if(flavor.equals(tagFlavor))
             return tagSelection;
+        else if(flavor.equals(tagCategoryFlavor))
+            return id + System.lineSeparator() + tagCategorySelection;
         else
             return tagCategorySelection;
     }
