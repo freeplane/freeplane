@@ -349,16 +349,12 @@ public class TagCategories {
     }
 
     public Tag registerTag(Tag tag) {
-        Tag registeredTag = mapTags.addIfNotExists(tag);
-        if(registeredTag == tag) {
+        final int addedElementIndex = mapTags.addIfNotExists(tag);
+        if(addedElementIndex >= 0) {
             final String fullContent = tag.getContent();
+            DefaultMutableTreeNode rootNode = getRootNode();
             if (fullContent.contains(categorySeparator)) {
-
-                DefaultMutableTreeNode rootNode = getRootNode();
-
                 DefaultMutableTreeNode currentNode = rootNode;
-
-
                 for (int start = 0, end = fullContent.indexOf(categorySeparator);start >= 0; start = end, end = fullContent.indexOf(categorySeparator, end + categorySeparator.length())) {
                     boolean found = false;
                     String currentTag = end >= 0 ? fullContent.substring(start, end) : fullContent.substring(start);
@@ -388,11 +384,18 @@ public class TagCategories {
                     }
                 }
 
+            } else {
+                boolean tagFound = false;
+                for(int i = 0; ! tagFound && i < rootNode.getChildCount(); i++) {
+                    tagFound = ((DefaultMutableTreeNode)rootNode.getChildAt(i)).getUserObject().equals(tag);
+                }
+
+                if(! tagFound)
+                    uncategorizedTagsNode.add(new DefaultMutableTreeNode(tag));
             }
-            else
-                uncategorizedTagsNode.add(new DefaultMutableTreeNode(registeredTag));
+            return tag;
         }
-        return registeredTag;
+        return mapTags.getElementAt( - addedElementIndex - 1);
     }
 
     public Tag setTagColor(String tagContent, String tagColor) {

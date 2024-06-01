@@ -793,10 +793,6 @@ public class MIconController extends IconController {
             }
         };
         modeController.execute(actor, map);
-        final TagCategories tagCategories = map.getIconRegistry().getTagCategories();
-        newCategories.getTagsAsListModel().forEach(
-                tag -> tagCategories.getTag(tag).ifPresent(registeredTag
-                        -> setTagColor(map, registeredTag, tag.getColor())));
     }
 
 }
