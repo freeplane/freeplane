@@ -89,6 +89,7 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
+import org.freeplane.features.icon.TagReference;
 import org.freeplane.features.icon.Tags;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
@@ -620,20 +621,32 @@ public class MIconController extends IconController {
 	}
 
     public void setTags(NodeModel node, List<Tag> newTags, boolean overwriteColors) {
-        MapModel map = node.getMap();
-        TagCategories tagCategories = map.getIconRegistry().getTagCategories();
+        TagCategories tagCategories = getTagCategories(node);
         Set<Tag> filteringSet = new HashSet<>();
         List<Tag> newTagsWithoutDuplicates = newTags.stream()
                 .filter(tag -> tag.isEmpty() || filteringSet.add(tag))
                 .collect(Collectors.toList());
-        List<Tag> registeredTags = newTagsWithoutDuplicates.stream()
-                .map(tagCategories::registerTag).collect(Collectors.toList());
-        List<Tag> oldTags = getTags(node);
+        List<TagReference> registeredTags = newTagsWithoutDuplicates.stream()
+                .map(tagCategories::registerTagReference).collect(Collectors.toList());
+        setTagReferences(node, registeredTags);
+        if(overwriteColors) {
+            IntStream.range(0, newTagsWithoutDuplicates.size())
+            .filter(tagIndex -> ! newTagsWithoutDuplicates.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
+            .forEach(tagIndex -> {
+                Tag newTag = newTagsWithoutDuplicates.get(tagIndex);
+                Color newColor = newTag.getColor();
+                setTagColor(node.getMap(), newTag, newColor);
+            });
+        }
+    }
+
+    public void setTagReferences(NodeModel node, List<TagReference> registeredTags) {
+        List<TagReference> oldTags = getTagReferences(node);
         IActor actor = new IActor() {
 
             @Override
             public void undo() {
-                Tags.setTags(node, oldTags);
+                Tags.setTagReferences(node, oldTags);
                 modeController.getMapController().nodeChanged(node, Tags.class, registeredTags, oldTags);
 
             }
@@ -646,20 +659,15 @@ public class MIconController extends IconController {
 
             @Override
             public void act() {
-                Tags.setTags(node, registeredTags);
+                Tags.setTagReferences(node, registeredTags);
                 modeController.getMapController().nodeChanged(node, Tags.class, oldTags, registeredTags);
             }
         };
-        modeController.execute(actor, map);
-        if(overwriteColors) {
-            IntStream.range(0, newTagsWithoutDuplicates.size())
-            .filter(tagIndex -> ! newTagsWithoutDuplicates.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
-            .forEach(tagIndex -> {
-                Tag newTag = newTagsWithoutDuplicates.get(tagIndex);
-                Color newColor = newTag.getColor();
-                setTagColor(map, newTag, newColor);
-            });
-        }
+        modeController.execute(actor, node.getMap());
+    }
+
+    private TagCategories getTagCategories(NodeModel node) {
+        return node.getMap().getIconRegistry().getTagCategories();
     }
 
     private void setTagColor(MapModel map, Tag tag, Color newColor) {
@@ -753,12 +761,14 @@ public class MIconController extends IconController {
     public void addTags(NodeModel node, List<Tag> addedTags) {
         final List<Tag> existingTags = getTags(node);
         final Set<Tag> existingTagSet = new HashSet<Tag>(existingTags);
-        final List<Tag> newTags = new ArrayList<Tag>(existingTags.size() + addedTags.size());
-        newTags.addAll(existingTags);
+        final List<TagReference> newTags = new ArrayList<>(existingTags.size() + addedTags.size());
+        newTags.addAll(getTagReferences(node));
+        final TagCategories tagCategories = getTagCategories(node);
         addedTags.stream()
         .filter(tag -> ! existingTagSet.contains(tag))
+        .map(tagCategories::registerTagReference)
         .forEach(newTags::add);
-        setTags(node, newTags, false);
+        setTagReferences(node, newTags);
     }
 
     @Override
@@ -774,6 +784,7 @@ public class MIconController extends IconController {
             @Override
             public void undo() {
                 iconRegistry.setTagCategories(oldCategories);
+                oldCategories.updateTagReferences();
                 Controller.getCurrentModeController().getMapController().fireMapChanged(
                         new MapChangeEvent(MIconController.this, Controller.getCurrentController().getMap(), TagCategories.class,
                                 newCategories, oldCategories));
@@ -787,6 +798,7 @@ public class MIconController extends IconController {
             @Override
             public void act() {
                 iconRegistry.setTagCategories(newCategories);
+                newCategories.updateTagReferences();
                 Controller.getCurrentModeController().getMapController().fireMapChanged(
                         new MapChangeEvent(MIconController.this, Controller.getCurrentController().getMap(), TagCategories.class,
                                 oldCategories, newCategories));

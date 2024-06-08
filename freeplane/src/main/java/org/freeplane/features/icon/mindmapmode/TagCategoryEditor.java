@@ -195,7 +195,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public Object getCellEditorValue() {
-            return registry.createTag(textField.getText());
+            return registry.createTagReference(textField.getText());
         }
 
         @Override
@@ -349,7 +349,7 @@ class TagCategoryEditor implements IExtension {
             if(mergeIsRunning)
                 return;
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            String commonPrefix = categorizedContent((DefaultMutableTreeNode) node.getParent());
+            String commonPrefix = tagCategories.categorizedContent((DefaultMutableTreeNode) node.getParent());
             final Tag oldTag = (Tag) node.getUserObject();
             final String oldContent = oldTag.getContent();
             final String newContent = newTag.getContent();
@@ -384,7 +384,7 @@ class TagCategoryEditor implements IExtension {
                         replacedContent = newTag.getContent();
                     else
                         replacedContent = oldParent + getTagCategorySeparator() + newTag.getContent();
-                    final String newContent = categorizedContent(insertedNode);
+                    final String newContent = tagCategories.categorizedContent(insertedNode);
                     final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
                     if(indexBefore < 0 || ! replacements.get(indexBefore).equals(replacedContent)) {
                         if(internalMoveIsRunning) {
@@ -402,7 +402,7 @@ class TagCategoryEditor implements IExtension {
         }
 
         public void apply() {
-            debugPrint();
+            tagCategories.replaceReferencedTags(replacements);
         }
 
         private void debugPrint() {
@@ -413,7 +413,7 @@ class TagCategoryEditor implements IExtension {
         public void treeNodesRemoved(TreeModelEvent e) {
             if(mergeIsRunning)
                 return;
-            String parentQuallifiedTag = categorizedContent((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());
+            String parentQuallifiedTag = tagCategories.categorizedContent((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());
             Object[] removedNodes = e.getChildren();
             for(int i = 0; i < removedNodes.length; i++) {
 
@@ -880,7 +880,7 @@ class TagCategoryEditor implements IExtension {
                 .map(DefaultMutableTreeNode.class::cast)
                 .map(DefaultMutableTreeNode::getParent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .map(this::categorizedContent)
+                .map(tagCategories::categorizedContent)
                 .collect(Collectors.toList());
             lastSelectionParentsNodes = x;
         }
@@ -976,7 +976,6 @@ class TagCategoryEditor implements IExtension {
                     initialColor, defaultColor);
             if (result != null && !initialColor.equals(result) || result == defaultColor) {
                 tag.setColor(result);
-                tagCategories.setTagColor(tag.getContent(), result);
                 tagCategories.fireNodeChanged((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
                 updateColorButton();
             }
@@ -1006,8 +1005,8 @@ class TagCategoryEditor implements IExtension {
     }
 
     protected void submit() {
-        iconController.setTagCategories(map, tagCategories);
         tagRenamer.apply();
+        iconController.setTagCategories(map, tagCategories);
     }
 
     private JRestrictedSizeScrollPane createScrollPane() {
@@ -1127,10 +1126,6 @@ class TagCategoryEditor implements IExtension {
             tagCategories.insert(parent, childIndex, data);
     }
 
-    private String categorizedContent(DefaultMutableTreeNode node) {
-        final String tagCategorySeparator = getTagCategorySeparator();
-        return new CategorizedTagForCategoryNode(node).getContent(tagCategorySeparator);
-    }
 
     private String getTagCategorySeparator() {
         return tagCategories.getTagCategorySeparator();

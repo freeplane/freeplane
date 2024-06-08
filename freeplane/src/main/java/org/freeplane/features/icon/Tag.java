@@ -16,11 +16,11 @@ import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 import org.freeplane.core.ui.components.HSLColorConverter;
-import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.util.LineComparator;
 
 public class Tag implements Comparable<Tag>{
     public final static Tag EMPTY_TAG = new Tag("");
+    public final static Tag REMOVED_TAG = new Tag(" removed tag ", Color.BLACK);
     private final String content;
     private Color color;
 

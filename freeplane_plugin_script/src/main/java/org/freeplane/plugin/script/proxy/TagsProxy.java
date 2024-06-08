@@ -92,7 +92,7 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
     }
 
     private Tag createTag(String keyword) {
-        return getDelegate().getMap().getIconRegistry().getTagCategories().createTag(keyword);
+        return new Tag(keyword);
     }
 
     @Override

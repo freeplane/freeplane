@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -228,8 +227,13 @@ public class IconController implements IExtension {
         final Font font = nodeFont.deriveFont(UITools.FONT_SCALE_FACTOR * nodeFont.getSize2D());
         return font;
     }
+    public List<TagReference> getTagReferences(NodeModel node) {
+        return Tags.getTagReferences(node);
+    }
+
     public List<Tag> getTags(NodeModel node) {
-        return Tags.getTags(node);
+        final Tags tags = node.getExtension(Tags.class);
+        return tags == null ? Collections.emptyList() : tags.getTags();
     }
 
     public List<CategorizedTag> getCategorizedTags(NodeModel node){

@@ -282,12 +282,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		            final String key = attribute.getKey().toString();
 		            String valueAsString = attribute.getValue().toString();
 		            final TagCategories tagCategories = iconRegistry.getTagCategories();
+		            String tagCategorySeparator = attributes.getProperty(TAG_CATEGORY_SEPARATOR_ATTRIBUTE);
+		            tagCategories.setTagCategorySeparator(tagCategorySeparator);
                     if(CATEGORIES_ATTRIBUTE.equals(key)) {
 		                tagCategories.load(valueAsString);
-                    } else if(TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
-                        tagCategories.setTagCategorySeparator(valueAsString);
-                    }
-		            else {
+                    } else if(! TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
 		                int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
 		                if(separatorIndex > 0) {
 		                    String name = valueAsString.substring(0, separatorIndex);
