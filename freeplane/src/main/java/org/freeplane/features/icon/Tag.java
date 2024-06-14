@@ -86,6 +86,15 @@ public class Tag implements Comparable<Tag>{
                 .collect(Collectors.toList());
     }
 
+    public Tag shortTag(String tagCategorySeparator) {
+        if(tagCategorySeparator.isEmpty() || isEmpty())
+            return this;
+        int shortTagBegin = content.lastIndexOf(tagCategorySeparator);
+        if(shortTagBegin < 0)
+            return this;
+        return new Tag(content.substring(shortTagBegin + tagCategorySeparator.length()), color);
+    }
+
 
     private static long computeCRC32(String input) {
         CRC32 crc = new CRC32();
