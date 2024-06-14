@@ -810,7 +810,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
             xmlElement.setAttribute(CATEGORIES_ATTRIBUTE, serializedTagCategories);
         xmlElement.setAttribute(TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparator());
 
-        tagCategories.getTagsAsListModel().stream()
+        tagCategories.getUncategorizedTags().stream()
         .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],
                 tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor())));
         element.addChild(xmlElement);

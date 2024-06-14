@@ -547,4 +547,14 @@ public class TagCategories {
         return new CategorizedTagForCategoryNode(node).getContent(tagCategorySeparator);
     }
 
+    public List<Tag> getUncategorizedTags() {
+        int tagCount = uncategorizedTagsNode.getChildCount();
+        List<Tag> tags = new ArrayList<>(tagCount);
+        for(int i = 0; i < tagCount; i++) {
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) uncategorizedTagsNode.getChildAt(i);
+            tags.add((Tag) child.getUserObject());
+        }
+        return tags;
+    }
+
 }
