@@ -29,9 +29,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  */
 abstract class TagCondition extends StringConditionAdapter {
-    static final String SEARCH_IN_CATEGORIES = "SEARCH_IN_CATEGORIES";
+    static final String SEARCH_ACROSS_ALL_CATEGORIES = "SEARCH_ACROSS_ALL_CATEGORIES";
 
-	final private boolean searchesInCategories;
+	final private boolean searchesAcrossAllCategories;
 	final private String comparedValue;
 
     /**
@@ -39,17 +39,17 @@ abstract class TagCondition extends StringConditionAdapter {
     TagCondition(final String comparedValue, final boolean matchCase,
 			final boolean matchApproximately,
 			final boolean matchWordwise, boolean ignoreDiacritics,
-			boolean searchesInCategories) {
+			boolean searchesAcrossAllCategories) {
 		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
         this.comparedValue = comparedValue;
-        this.searchesInCategories = searchesInCategories;
+        this.searchesAcrossAllCategories = searchesAcrossAllCategories;
 	}
 
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		if(searchesInCategories())
-		    child.setAttribute(SEARCH_IN_CATEGORIES, "true");
+		if(searchesAcrossAllCategories())
+		    child.setAttribute(SEARCH_ACROSS_ALL_CATEGORIES, "true");
 	}
 
     /*
@@ -64,7 +64,7 @@ abstract class TagCondition extends StringConditionAdapter {
 	    final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
 	    final IconController iconController = IconController.getController();
 	    final List<Tag> tags = iconController.getTags(node);
-	    if(searchesInCategories()) {
+	    if(searchesAcrossAllCategories()) {
 	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry().getTagCategories());
 	        for (CategorizedTag tag : categorizedTags) {
 	            if (checkTag(tag, tagCategorySeparator))
@@ -102,7 +102,7 @@ abstract class TagCondition extends StringConditionAdapter {
         return comparedValue;
     }
 
-    public boolean searchesInCategories() {
-        return searchesInCategories;
+    public boolean searchesAcrossAllCategories() {
+        return searchesAcrossAllCategories;
     }
 }

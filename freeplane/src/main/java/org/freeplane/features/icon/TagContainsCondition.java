@@ -39,7 +39,7 @@ public class TagContainsCondition extends TagCondition {
             Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
             Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
             Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)),
-            Boolean.valueOf(element.getAttribute(SEARCH_IN_CATEGORIES, null))
+            Boolean.valueOf(element.getAttribute(SEARCH_ACROSS_ALL_CATEGORIES, null))
 		    );
 	}
 
@@ -52,8 +52,8 @@ public class TagContainsCondition extends TagCondition {
 	public TagContainsCondition(final String value, final boolean matchCase,
 			final boolean matchApproximately,
 			final boolean matchWordwise, boolean ignoreDiacritics,
-			boolean searchesInCategories) {
-		super(value, matchCase, matchApproximately, matchWordwise, ignoreDiacritics, searchesInCategories);
+			boolean searchesAcrossAllCategories) {
+		super(value, matchCase, matchApproximately, matchWordwise, ignoreDiacritics, searchesAcrossAllCategories);
         this.value = value;
         this.comparedValue = value;
         this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
