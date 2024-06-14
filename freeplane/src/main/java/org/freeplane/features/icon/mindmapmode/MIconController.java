@@ -622,18 +622,14 @@ public class MIconController extends IconController {
 
     public void setTags(NodeModel node, List<Tag> newTags, boolean overwriteColors) {
         TagCategories tagCategories = getTagCategories(node);
-        Set<Tag> filteringSet = new HashSet<>();
-        List<Tag> newTagsWithoutDuplicates = newTags.stream()
-                .filter(tag -> tag.isEmpty() || filteringSet.add(tag))
-                .collect(Collectors.toList());
-        List<TagReference> registeredTags = newTagsWithoutDuplicates.stream()
+        List<TagReference> registeredTags = newTags.stream()
                 .map(tagCategories::registerTagReference).collect(Collectors.toList());
         setTagReferences(node, registeredTags);
         if(overwriteColors) {
-            IntStream.range(0, newTagsWithoutDuplicates.size())
-            .filter(tagIndex -> ! newTagsWithoutDuplicates.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
+            IntStream.range(0, newTags.size())
+            .filter(tagIndex -> ! newTags.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
             .forEach(tagIndex -> {
-                Tag newTag = newTagsWithoutDuplicates.get(tagIndex);
+                Tag newTag = newTags.get(tagIndex);
                 Color newColor = newTag.getColor();
                 setTagColor(node.getMap(), newTag, newColor);
             });
