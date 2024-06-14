@@ -1429,7 +1429,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		}
         if(property instanceof Tag || property.equals(TagCategories.class)) {
-            repaint();
+            if(TagLocation.BESIDE_NODES == getTagLocation())
+                updateIconsRecursively(getRoot());
+            else
+                updateAllNodeViews();
             return;
         }
 		if(property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)
