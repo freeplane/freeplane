@@ -407,7 +407,7 @@ public class TagCategories {
 
                     if (!found) {
                         String qualifiedContent = end >= 0 ? fullContent.substring(0, end) : fullContent;
-                        Color color = (setColor ? tag : new Tag(qualifiedContent)).getColor();
+                        Color color = (setColor && qualifiedContent == fullContent ? tag : new Tag(qualifiedContent)).getColor();
                         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new Tag(currentTag, color));
                         insertNode(currentNode, currentNode.isRoot() ? currentNode.getChildCount() - 1 : currentNode.getChildCount(), newNode);
                         currentNode = newNode;
