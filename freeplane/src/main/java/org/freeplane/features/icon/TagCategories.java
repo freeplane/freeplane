@@ -370,11 +370,14 @@ public class TagCategories {
     }
 
     public TagReference createTagReference(String string) {
-        Tag tag = new Tag(string);
-        return registerTagReference(tag);
+        return registerTagReference(new Tag(string));
     }
 
     public TagReference registerTagReference(Tag tag) {
+        return registerTagReference(tag, false);
+    }
+
+    private TagReference registerTagReference(Tag tag,  boolean setColor) {
         final int addedElementIndex = mapTags.addIfNotExists(tag);
         if(addedElementIndex >= 0) {
             final String fullContent = tag.getContent();
@@ -404,8 +407,8 @@ public class TagCategories {
 
                     if (!found) {
                         String qualifiedContent = end >= 0 ? fullContent.substring(0, end) : fullContent;
-                        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new Tag(currentTag,
-                                new Tag(qualifiedContent).getColor()));
+                        Color color = (setColor ? tag : new Tag(qualifiedContent)).getColor();
+                        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new Tag(currentTag, color));
                         insertNode(currentNode, currentNode.isRoot() ? currentNode.getChildCount() - 1 : currentNode.getChildCount(), newNode);
                         currentNode = newNode;
                         categoriesChanged = true;
@@ -443,9 +446,8 @@ public class TagCategories {
                 .orElseGet(() -> Tag.getDefaultColor(tagContent));
     }
 
-    public Tag setTagColor(String tagContent, Color value) {
-        Tag tag = createTag(tagContent);
-        tag.setColor(value);
+    public Tag setTagColor(String tagContent, Color color) {
+        Tag tag = registerTagReference(new Tag(tagContent, color), true).getTag();
         return tag;
     }
 
