@@ -97,7 +97,6 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.CategorizedTagForCategoryNode;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
@@ -365,6 +364,7 @@ class TagCategoryEditor implements IExtension {
         }
 
         private void addReplacement(final String oldContent, final String newContent) {
+            tagCategories.removeTag(new Tag(oldContent, Color.BLACK));
             replacements.add(oldContent);
             replacements.add(newContent);
         }

@@ -560,4 +560,7 @@ public class TagCategories {
         return tags;
     }
 
+    public void removeTag(Tag tag) {
+        mapTags.remove(tag);
+    }
 }
