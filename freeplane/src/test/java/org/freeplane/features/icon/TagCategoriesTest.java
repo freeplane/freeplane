@@ -39,6 +39,9 @@ public class TagCategoriesTest {
             DefaultMutableTreeNode greatGrandChild = (DefaultMutableTreeNode) grandChild.getChildAt(0);
             assertThat(((Tag) greatGrandChild.getUserObject()).getContent()).isEqualTo("tag3");
     
-            assertThat(tagCategories.serialize().replaceAll("#.*", "")).isEqualTo(input);
+            assertThat(tagCategories.serialize()
+            		.replaceAll("#.*", "")
+            		.replace(System.lineSeparator(), "\n"))
+            .isEqualTo(input);
         }
 }
