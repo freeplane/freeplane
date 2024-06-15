@@ -33,23 +33,25 @@ import org.freeplane.features.mode.Controller;
 class ToggleChildrenFoldedAction extends AFreeplaneAction {
 	static final String NAME = "toggleChildrenFolded";
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public ToggleChildrenFoldedAction() {
 		super("ToggleChildrenFoldedAction");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	@Override
+    public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final IMapSelection mapSelection = controller.getSelection();
+		Filter filter = mapSelection.getFilter();
 		List<NodeModel> selectedNodes = mapSelection.getSortedSelection(true);
+		MapController mapController = Controller.getCurrentModeController().getMapController();
 		List<NodeModel> childNodes = selectedNodes.stream()
+		        .peek(node -> mapController.unfold(node, filter))
 		        .map(NodeModel::getChildren)
 		        .flatMap(List::stream)
 		        .collect(Collectors.toList());
-		MapController mapController = Controller.getCurrentModeController().getMapController();
-		Filter filter = mapSelection.getFilter();
         mapController.toggleFolded(filter, childNodes);
 	}
 }

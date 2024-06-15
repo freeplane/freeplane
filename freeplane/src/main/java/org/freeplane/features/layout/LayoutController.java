@@ -29,6 +29,7 @@ import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -47,6 +48,7 @@ import org.freeplane.features.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class LayoutController implements IExtension {
+    private static final String AUTOMATIC_SIDE_DISTRIBUTION_OPTION_NAME = "automaticSideDistribution";
     final private ExclusivePropertyChain<ChildNodesLayout, NodeModel> childrenLayoutHandlers;
 
     private final ModeController modeController;
@@ -196,7 +198,7 @@ public class LayoutController implements IExtension {
 	    }
 
 	    public Side suggestNewChildSide(NodeModel parent, NodeModel root) {
-	        if(parent != root)
+	        if(parent != root || !ResourceController.getResourceController().getBooleanProperty(AUTOMATIC_SIDE_DISTRIBUTION_OPTION_NAME))
 	            return Side.DEFAULT;
 	        int rightChildrenCount = 0;
 	        int childCount = parent.getChildCount();

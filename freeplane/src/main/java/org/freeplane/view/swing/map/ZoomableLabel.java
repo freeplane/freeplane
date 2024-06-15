@@ -62,13 +62,18 @@ public class ZoomableLabel extends JLabel {
 	}
 
 
-	public Dimension getPreferredSize() {
-		if (isPreferredSizeSet()) {
+	@Override
+    public Dimension getPreferredSize() {
+		return getZoomableLabelPreferredZize();
+	}
+
+    private Dimension getZoomableLabelPreferredZize() {
+        if (isPreferredSizeSet()) {
 			Dimension preferredSize = super.getPreferredSize();
 			return preferredSize;
 		}
 		return ((ZoomableLabelUI)getUI()).getPreferredSize(this);
-	}
+    }
 
 	protected float getZoom() {
 		final float zoom = getMap().getZoom();
@@ -131,7 +136,7 @@ public class ZoomableLabel extends JLabel {
 					final NodeStyleController nsc = NodeStyleController.getController(modeController);
 					final double maxNodeWidth = nsc.getMaxWidth(node.getNode(), node.getStyleOption()).toBaseUnits();
 					setMaximumWidth(Integer.MAX_VALUE);
-					widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
+					widthMustBeRestricted = getZoomableLabelPreferredZize().width > map.getZoomed(maxNodeWidth);
 				}
 				finally{
 					setMaximumWidth(oldMaximumWidth);

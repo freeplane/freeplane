@@ -8,7 +8,10 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+
+import static org.freeplane.view.swing.map.MapView.RESOURCES_SELECTED_NODE_COLOR;
 
 interface Drawable{
 	void draw(Graphics2D g, NodeView nodeView, Rectangle r);
@@ -19,10 +22,12 @@ class DrawableNothing implements Drawable{
 	}
 }
 abstract class DrawableShape implements Drawable{
+	static final Color standardSelectedNodeColor = ResourceController.getResourceController().getColorProperty(RESOURCES_SELECTED_NODE_COLOR);
+	static final String PREFER_BORDER_COLOR_FOR_STATE_SYMBOL_BACKGROUND = "preferBorderColorForStateSymbolBackground";
 
 	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
 		final Color color = g.getColor();
-		final Color edgeColor = nodeView.getMainView().getBorderColor();
+		final Color edgeColor = getEdgeColor(nodeView);
 		final Shape shape = getShape(r);
 		Color fillColor = getFillColor(nodeView);
 		if(fillColor != null) {
@@ -37,9 +42,34 @@ abstract class DrawableShape implements Drawable{
 		g.draw(shape);
 	}
 	abstract Shape getShape(Rectangle r);
-	protected Color getFillColor(NodeView nodeView) {
-		return nodeView.getTextBackground();
+
+	protected Color getEdgeColor(NodeView nodeView) {
+        final Color border = nodeView.getMainView().getBorderColor();
+		final Color mapBackground = nodeView.getMap().getBackground();
+		return isVisible(border, mapBackground) || isVisible(nodeView.getTextBackground(), mapBackground) ? border : nodeView.getEdgeColor();
 	}
+
+	private static boolean isVisible(Color color, Color backgroundColor) {
+		return color.getAlpha() != 0 && !color.equals(backgroundColor);
+	}
+
+	protected Color getFillColor(NodeView nodeView) {
+		final Color mapBackground = nodeView.getMap().getBackground();
+		final Color border = nodeView.getMainView().getBorderColor();
+		final Color edge = nodeView.getEdgeColor();
+		if (ResourceController.getResourceController().getBooleanProperty(PREFER_BORDER_COLOR_FOR_STATE_SYMBOL_BACKGROUND)) {
+			if (isVisible(border, mapBackground))
+				return border;
+			else if (isVisible(edge, mapBackground))
+				return edge;
+		}
+        final Color nodeBackground = nodeView.getTextBackground();
+		if (isVisible(nodeBackground, mapBackground) || isVisible(border, mapBackground) || isVisible(edge, mapBackground)) {
+			return nodeBackground;
+		} else {
+			return standardSelectedNodeColor;
+		}
+    }
 }
 
 class DrawableEllipse extends DrawableShape{
