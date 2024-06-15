@@ -3,6 +3,10 @@
 ==============================
 Node tags
 Configure columns in "Find and replace"...
+Distribution of new child nodes equally to both sides can be disabled
+Use a horizontal rectangle for single clones and a square for branch-clone roots
+Fix for state symbol to no longer be invisible when node border and background are invisible
+New option to prefer node-border color for state-symbol background to make state symbols prominent
 
 ==============================
 1.11.14

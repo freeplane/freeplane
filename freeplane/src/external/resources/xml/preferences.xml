@@ -141,6 +141,7 @@
 			<separator name="clones">
 				<boolean name="markClones"/>
 				<boolean name="markSelectedClones"/>
+				<boolean name="preferBorderColorForStateSymbolBackground"/>
 			</separator>
 			<separator name="edit_long_node_window">
 				<boolean name="el__buttons_above" />
@@ -233,6 +234,7 @@
 				<boolean name="pasteImagesFromFiles"/>
 				<boolean name="enforceModalEditorDialogs" />
 				<boolean name="mouseDrivenNodeShiftsAreDisabled"/>
+				<boolean name="automaticSideDistribution"/>
 			</separator>
 			<separator name="reminderOptions">
 				<maybe_boolean name="reminder.showPastRemindersOnStart" />
