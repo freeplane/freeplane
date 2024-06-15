@@ -397,16 +397,11 @@ class TagCategoryEditor implements IExtension {
                         replacements.set(indexBefore + 1, newContent);
                 }
             }
-            debugPrint();
             SwingUtilities.invokeLater(() -> merge(e));
         }
 
         public void apply() {
             tagCategories.replaceReferencedTags(replacements);
-        }
-
-        private void debugPrint() {
-            System.out.println("replacements: " +  replacements);
         }
 
         @Override
@@ -433,7 +428,6 @@ class TagCategoryEditor implements IExtension {
                 replacements.add("");
             }
 
-            debugPrint();
         }
 
         @Override
