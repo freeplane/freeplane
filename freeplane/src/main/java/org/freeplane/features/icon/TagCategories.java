@@ -322,10 +322,11 @@ public class TagCategories {
     public List<CategorizedTag> categorizedTags(Iterable<Tag> tags){
         final LinkedList<CategorizedTag> categorizedTags = new LinkedList<>();
         Set<Tag> addedAdhocTags = new HashSet<Tag>();
-        for(Tag tag : tags) {
-            if(tag.isEmpty())
+        for(Tag qualifiedTag : tags) {
+            if(qualifiedTag.isEmpty())
                 categorizedTags.add(CategorizedTag.EMPTY_TAG);
             else {
+                Tag tag = qualifiedTag.shortTag(getTagCategorySeparator());
                 final Set<DefaultMutableTreeNode> tagCategoryNodes = getNodes(tag);
                 if(tagCategoryNodes.isEmpty())
                     addAdhocTags(categorizedTags, addedAdhocTags, tag);
