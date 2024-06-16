@@ -474,7 +474,8 @@ class TagEditor {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
                     sourceCategories,
-                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag.categorizedTag(getTagCategorySeparator()))));
+                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(),
+                            tag.categorizedTag(getTagCategorySeparator()))));
         }
         menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);

@@ -724,15 +724,24 @@ public class MIconController extends IconController {
                 menu.removeAll();
                 for (int i = 0; i < categoryNode.getChildCount(); i++) {
                     DefaultMutableTreeNode itemNode = (DefaultMutableTreeNode) categoryNode.getChildAt(i);
-                    Tag tag = (Tag) itemNode.getUserObject();
-                    TagIcon icon = new TagIcon(tag, menu.getFont());
-                    JMenuItem actionItem = new JMenuItem(icon);
-                    actionItem.addActionListener(x -> action.accept(
-                            new CategorizedTagForCategoryNode(categoryNode, tagCategories.getTag(tag)
-                            )));
-                    menu.add(actionItem);
-                    if(!itemNode.isLeaf()) {
-                        final JMenu submenu = new JMenu(tag.getContent());
+                    Object userObject = itemNode.getUserObject();
+                    if(userObject instanceof Tag ) {
+                        Tag tag = (Tag) userObject;
+                        TagIcon icon = new TagIcon(tag, menu.getFont());
+                        JMenuItem actionItem = new JMenuItem(icon);
+                        actionItem.addActionListener(x -> action.accept(
+                                new CategorizedTagForCategoryNode(itemNode, tagCategories.getTag(tag)
+                                        )));
+                        menu.add(actionItem);
+                        if(!itemNode.isLeaf()) {
+                            final JMenu submenu = new JMenu();
+                            submenu.setIcon(icon);
+                            fillTagSubmenuOnSelect(submenu, tagCategories, action, itemNode);
+                            menu.add(submenu);
+                        }
+                    }
+                    else if(!itemNode.isLeaf()) {
+                        final JMenu submenu = new JMenu(userObject.toString());
                         fillTagSubmenuOnSelect(submenu, tagCategories, action, itemNode);
                         menu.add(submenu);
                     }
