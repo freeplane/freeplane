@@ -97,6 +97,7 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.CategorizedTagForCategoryNode;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
@@ -845,9 +846,7 @@ class TagCategoryEditor implements IExtension {
         final List<Tag> selectedTags = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .map(DefaultMutableTreeNode::getUserObject)
-                .filter(Tag.class::isInstance)
-                .map(Tag.class::cast)
+                .map(node -> new CategorizedTagForCategoryNode(node).categorizedTag(getTagCategorySeparator()))
                 .collect(Collectors.toList());
         ((MIconController)IconController.getController()).insertTagsIntoSelectedNodes(selectedTags);
     }
