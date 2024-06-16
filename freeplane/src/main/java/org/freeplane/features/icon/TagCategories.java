@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.stream.IntStream;
 
 import javax.swing.event.TreeModelListener;
@@ -75,7 +77,7 @@ public class TagCategories {
     private final DefaultTreeModel nodes;
     private TreeInverseMap<Tag> nodesByTags;
     final private SortedComboBoxModel<Tag> mapTags;
-    final private HashMap<String, List<TagReference>> tagReferences;
+    final private TreeMap<String, List<TagReference>> tagReferences;
     private boolean categoriesChanged;
 
     private String categorySeparator;
@@ -94,7 +96,7 @@ public class TagCategories {
         mapTags = new SortedComboBoxModel<>(Tag.class);
         rootNode.add(uncategorizedTagsNode);
         nodes = new TagCategoryTree(rootNode);
-        tagReferences = new HashMap<>();
+        tagReferences = new TreeMap<>();
         nodesByTags = null;
         categoriesChanged = false;
     }
@@ -103,7 +105,7 @@ public class TagCategories {
         this.mapTags = new SortedComboBoxModel<>(Tag.class);
         final DefaultMutableTreeNode rootNode = tagCategories.getRootNode();
         this.categorySeparator = tagCategories.categorySeparator;
-        tagReferences = new HashMap<>(tagCategories.tagReferences);
+        tagReferences = new TreeMap<>(tagCategories.tagReferences);
         final DefaultMutableTreeNode rootCopy = copySubtree(rootNode);
         uncategorizedTagsNode = (DefaultMutableTreeNode) rootCopy.getLastChild();
         nodes = new TagCategoryTree(rootCopy);
@@ -402,6 +404,8 @@ public class TagCategories {
                         if (childTag.getContent().equals(currentTag)) {
                             currentNode = childNode;
                             found = true;
+                            if(setColor)
+                                childTag.setColor(tag.getColor());
                             break;
                         }
                     }
@@ -433,9 +437,14 @@ public class TagCategories {
             tagReferences.put(tag.getContent(), list);
             return tagReference;
         }
-        String content = mapTags.getElementAt( - addedElementIndex - 1).getContent();
-        List<TagReference> references = tagReferences.get(content);
-        return references.get(0);
+        else {
+            Tag oldTag = mapTags.getElementAt( - addedElementIndex - 1);
+            if(setColor)
+                oldTag.setColor(tag.getColor());
+            String content = oldTag.getContent();
+            List<TagReference> references = tagReferences.get(content);
+            return references.get(0);
+        }
     }
 
     public Tag setTagColor(String tagContent, String tagColor) {
@@ -512,13 +521,27 @@ public class TagCategories {
 
     public void replaceReferencedTags(List<String> replacements) {
         for(int i = 0; i < replacements.size(); i += 2) {
-            String from = replacements.get(i);
-            String to = replacements.get(i + 1);
-            List<TagReference> replacedTagReferences = tagReferences.remove(from);
-            List<TagReference> list = tagReferences.computeIfAbsent(to, key -> new ArrayList<>());
-            if(replacedTagReferences != null || ! from.isEmpty())
-                list.addAll(replacedTagReferences);
+            String fromTag = replacements.get(i);
+            if(fromTag.isEmpty())
+                return;
+            String toTag = replacements.get(i + 1);
+            replaceReferencedTags(fromTag, toTag);
+            String fromCategory = fromTag + categorySeparator;
+            SortedMap<String, List<TagReference>> tailMap = tagReferences.tailMap(fromCategory);
+
+
+            for(String from = tailMap.firstKey(); from.startsWith(fromCategory); from = tailMap.firstKey()) {
+                String to = toTag + from.substring(fromTag.length());
+                replaceReferencedTags(from, to);
+            }
         }
+    }
+
+    private void replaceReferencedTags(String from, String to) {
+        List<TagReference> replacedTagReferences = tagReferences.remove(from);
+        List<TagReference> list = tagReferences.computeIfAbsent(to, key -> new ArrayList<>());
+        if(replacedTagReferences != null || ! from.isEmpty())
+            list.addAll(replacedTagReferences);
     }
 
     public void updateTagReferences() {
@@ -565,6 +588,8 @@ public class TagCategories {
     }
 
     public void removeTagsAndCategories(String removed) {
+        if(removed.isEmpty())
+            return;
         int index = mapTags.getIndexOf(new Tag(removed, Color.BLACK));
         if(index >= 0) {
             String removedCategory = removed + categorySeparator;

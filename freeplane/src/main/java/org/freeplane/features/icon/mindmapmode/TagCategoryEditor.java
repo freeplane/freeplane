@@ -852,8 +852,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void addNode(boolean asChild) {
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
-                .getLastSelectedPathComponent();
+        DefaultMutableTreeNode selectedNode = getSelectedNode();
         TreeNode[] nodes = (asChild || selectedNode == null || selectedNode.isRoot()) ? tagCategories.addChildNode(selectedNode) : tagCategories.addSiblingNode(selectedNode);
         if(nodes.length == 0)
             return;
@@ -937,8 +936,7 @@ class TagCategoryEditor implements IExtension {
         try {
             Transferable t = clipboard.getContents(null);
             if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
-                        .getLastSelectedPathComponent();
+                DefaultMutableTreeNode selectedNode = getSelectedNode();
                 final DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
                 if(selectedNode == uncategorizedTagsNode || selectedNode.isNodeAncestor(uncategorizedTagsNode))
                     selectedNode = tagCategories.getRootNode();
@@ -969,15 +967,15 @@ class TagCategoryEditor implements IExtension {
                     initialColor, defaultColor);
             if (result != null && !initialColor.equals(result) || result == defaultColor) {
                 tag.setColor(result);
-                tagCategories.fireNodeChanged((DefaultMutableTreeNode) tree.getLastSelectedPathComponent());
+                tagCategories.setTagColor(tagCategories.categorizedContent(getSelectedNode()), result);
+                tagCategories.fireNodeChanged(getSelectedNode());
                 updateColorButton();
             }
         }
     }
 
     private Tag getSelectedTag() {
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
-                .getLastSelectedPathComponent();
+        DefaultMutableTreeNode selectedNode = getSelectedNode();
         if (selectedNode == null)
             return null;
 
@@ -986,6 +984,11 @@ class TagCategoryEditor implements IExtension {
             return null;
 
         return (Tag) userObject;
+    }
+
+    private DefaultMutableTreeNode getSelectedNode() {
+        return (DefaultMutableTreeNode) tree
+                .getLastSelectedPathComponent();
     }
 
     void show() {
