@@ -734,12 +734,15 @@ public class NodeModel{
 	}
 
 	private boolean isSubtreeRoot() {
-		return parent == null || isCloneTreeRoot();
+		return parent == null || isCloneTreeRoot() || isCloneContentNodeOutsideCloneTree();
 	}
 
 	public boolean isCloneTreeRoot(){
-		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
-				|| clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
+		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size();
+	}
+
+	public boolean isCloneContentNodeOutsideCloneTree() {
+		return clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
 	}
 
 	public boolean isCloneTreeNode(){
