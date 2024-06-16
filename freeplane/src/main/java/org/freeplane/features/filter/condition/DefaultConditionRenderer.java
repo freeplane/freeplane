@@ -91,7 +91,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
             Tag tag = (Tag) value;
             Icon icon = new TagIcon(tag, UITools.getUIFont());
             label.setIcon(icon);
-            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setHorizontalAlignment(SwingConstants.LEADING);
             label.setOpaque(false);
             component = label;
         }
