@@ -563,4 +563,15 @@ public class TagCategories {
     public void removeTag(Tag tag) {
         mapTags.remove(tag);
     }
+
+    public void removeTagsAndCategories(String removed) {
+        int index = mapTags.getIndexOf(new Tag(removed, Color.BLACK));
+        if(index >= 0) {
+            String removedCategory = removed + categorySeparator;
+            do {
+                mapTags.remove(index);
+            } while(mapTags.getElementAt(index).getContent().startsWith(removedCategory));
+        }
+
+    }
 }

@@ -150,10 +150,14 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
     public void remove(final Object element) {
 	    int index = binarySearch((T)element);
 		if (index >= 0) {
-		    model.remove(index);
-			fireContentsChanged(this, index, index);
+		    remove(index);
 		}
 	}
+
+    public void remove(int index) {
+        model.remove(index);
+        fireContentsChanged(this, index, index);
+    }
 
 	/*
 	 * (non-Javadoc)
