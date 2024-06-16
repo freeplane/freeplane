@@ -28,7 +28,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 
@@ -100,13 +99,12 @@ abstract class MainViewPainter{
         	FoldingMark.SHORTENED.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, shouldPaintCloneMarker ? 0.6 : 0, 7./3, 5./3));
         }
 		if (shouldPaintCloneMarker){
-			if (nodeView.getNode().isCloneTreeRoot()) {
-				if (nodeView.getNode().getChildren().stream().anyMatch(NodeModel::isCloneTreeNode))
-					FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 2.4, 2.5));
-				else
-					FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 2.4, 1.8));
-            } else if (nodeView.getNode().isCloneTreeNode())
+			if (nodeView.getNode().isCloneTreeRoot())
+				FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 2.4, 2.5));
+            else if (nodeView.getNode().isCloneTreeNode())
 				FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 1.5, 2.5));
+			else if (nodeView.getNode().isCloneContentNodeOutsideCloneTree())
+				FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 2.4, 1.8));
 		}
 	}
 
