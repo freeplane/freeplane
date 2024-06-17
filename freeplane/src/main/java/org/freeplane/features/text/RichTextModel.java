@@ -54,7 +54,7 @@ public class RichTextModel {
             HtmlProcessor htmlProcessor = new HtmlProcessor(html);
             try {
                 if(htmlProcessor.isOk()) {
-                    String xhtml = htmlProcessor.cleanXhtml();
+                    String xhtml = htmlProcessor.cleanXhtml().trim();
                     validateXml(xhtml);
                     xml = xhtml;
                     text = htmlProcessor.cleanHtml();
