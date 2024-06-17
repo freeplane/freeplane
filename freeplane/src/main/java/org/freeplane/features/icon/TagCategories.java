@@ -529,10 +529,11 @@ public class TagCategories {
             String fromCategory = fromTag + categorySeparator;
             SortedMap<String, List<TagReference>> tailMap = tagReferences.tailMap(fromCategory);
 
-
-            for(String from = tailMap.firstKey(); from.startsWith(fromCategory); from = tailMap.firstKey()) {
-                String to = toTag + from.substring(fromTag.length());
-                replaceReferencedTags(from, to);
+            if(! tailMap.isEmpty()) {
+                for(String from = tailMap.firstKey(); from.startsWith(fromCategory); from = tailMap.firstKey()) {
+                    String to = toTag + from.substring(fromTag.length());
+                    replaceReferencedTags(from, to);
+                }
             }
         }
     }
