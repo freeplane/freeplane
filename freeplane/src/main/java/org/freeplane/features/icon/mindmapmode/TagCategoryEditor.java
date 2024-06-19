@@ -195,7 +195,8 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public Object getCellEditorValue() {
-            return registry.createTagReference(textField.getText()).getTag();
+            Tag tag = (Tag) currentNode.getUserObject();
+            return registry.setTagColor(textField.getText(), tag.getColor());
         }
 
         @Override
