@@ -596,7 +596,7 @@ public class TagCategories {
             String removedCategory = removed + categorySeparator;
             do {
                 mapTags.remove(index);
-            } while(mapTags.getElementAt(index).getContent().startsWith(removedCategory));
+            } while(mapTags.getSize() > index && mapTags.getElementAt(index).getContent().startsWith(removedCategory));
         }
 
     }
