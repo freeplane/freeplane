@@ -725,21 +725,21 @@ public class NodeModel{
 		return subtreeClones().contains(ancestorClone);
 	}
 
-	public NodeModel getSubtreeRoot() {
-		if(isSubtreeRoot())
+	public NodeModel getSubtreeRootOrContentClone() {
+		if(isSubtreeRootOrContentClone())
 			return this;
 		else
-			return getParentNode().getSubtreeRoot();
+			return getParentNode().getSubtreeRootOrContentClone();
 
 	}
 
-	private boolean isSubtreeRoot() {
-		return parent == null || isCloneTreeRoot();
+	private boolean isSubtreeRootOrContentClone() {
+		return parent == null || isCloneTreeRootOrContentClone();
 	}
 
-	public boolean isCloneTreeRoot(){
+	public boolean isCloneTreeRootOrContentClone(){
 		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
-				|| clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
+				||  clones[CONTENT_CLONE_INDEX].size() > clones[TREE_CLONE_INDEX].size();
 	}
 
 	public boolean isCloneTreeNode(){

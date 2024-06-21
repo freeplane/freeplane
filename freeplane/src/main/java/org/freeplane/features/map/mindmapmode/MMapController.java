@@ -406,7 +406,7 @@ public class MMapController extends MapController {
 
     public void convertClonesToIndependentNodes(final NodeModel node){
         final MLinkController linkController = (MLinkController) MLinkController.getController();
-        if(node.isCloneTreeRoot()){
+        if(node.isCloneTreeRootOrContentClone()){
             linkController.deleteMapLinksForClone(node);
             convertCloneToNode(node);
             linkController.insertMapLinksForClone(node);
