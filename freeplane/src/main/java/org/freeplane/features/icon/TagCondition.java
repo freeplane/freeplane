@@ -29,9 +29,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  */
 abstract class TagCondition extends StringConditionAdapter {
-    static final String SEARCH_IN_CATEGORIES = "SEARCH_IN_CATEGORIES";
+    static final String SEARCH_ACROSS_ALL_CATEGORIES = "SEARCH_ACROSS_ALL_CATEGORIES";
 
-	final private boolean searchesInCategories;
+	final private boolean searchesAcrossAllCategories;
 	final private String comparedValue;
 
     /**
@@ -39,17 +39,17 @@ abstract class TagCondition extends StringConditionAdapter {
     TagCondition(final String comparedValue, final boolean matchCase,
 			final boolean matchApproximately,
 			final boolean matchWordwise, boolean ignoreDiacritics,
-			boolean searchesInCategories) {
+			boolean searchesAcrossAllCategories) {
 		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
         this.comparedValue = comparedValue;
-        this.searchesInCategories = searchesInCategories;
+        this.searchesAcrossAllCategories = searchesAcrossAllCategories;
 	}
 
 	@Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
-		if(searchesInCategories())
-		    child.setAttribute(SEARCH_IN_CATEGORIES, "true");
+		if(searchesAcrossAllCategories())
+		    child.setAttribute(SEARCH_ACROSS_ALL_CATEGORIES, "true");
 	}
 
     /*
@@ -61,20 +61,19 @@ abstract class TagCondition extends StringConditionAdapter {
 	@Override
 	public boolean checkNode(final NodeModel node) {
 	    final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
-	    final String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
-	    final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+	    final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
 	    final IconController iconController = IconController.getController();
 	    final List<Tag> tags = iconController.getTags(node);
-	    if(searchesInCategories()) {
+	    if(searchesAcrossAllCategories()) {
 	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry().getTagCategories());
 	        for (CategorizedTag tag : categorizedTags) {
-	            if (checkTag(tag, tagCategorySeparatorForMap))
+	            if (checkTag(tag, tagCategorySeparator))
 	                return true;
 	        }
 	    }
 	    else {
 	        for (Tag tag : tags) {
-	            if (checkTag(tag, tagCategorySeparatorForNode))
+	            if (checkTag(tag, tagCategorySeparator))
 	                return true;
 
 	        }
@@ -82,11 +81,11 @@ abstract class TagCondition extends StringConditionAdapter {
 	    return false;
 	}
 
-    protected boolean checkTag(Tag tag, String tagCategorySeparatorForNode) {
+    protected boolean checkTag(Tag tag, String tagCategorySeparator) {
         final String tagContent = tag.getContent();
-        return checkText(tagContent) || ! tagCategorySeparatorForNode.isEmpty()
-                && tagContent.contains(tagCategorySeparatorForNode)
-                && tag.categoryTags(tagCategorySeparatorForNode).stream()
+        return checkText(tagContent) || ! tagCategorySeparator.isEmpty()
+                && tagContent.contains(tagCategorySeparator)
+                && tag.categoryTags(tagCategorySeparator).stream()
                 .map(Tag::getContent)
                 .anyMatch(this::checkText);
     }
@@ -103,7 +102,7 @@ abstract class TagCondition extends StringConditionAdapter {
         return comparedValue;
     }
 
-    public boolean searchesInCategories() {
-        return searchesInCategories;
+    public boolean searchesAcrossAllCategories() {
+        return searchesAcrossAllCategories;
     }
 }

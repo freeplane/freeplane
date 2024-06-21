@@ -88,6 +88,7 @@ import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.Connectors;
@@ -1427,8 +1428,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			updateAllNodeViews();
 			return;
 		}
-        if(event.getProperty() instanceof Tag) {
-            repaint();
+        if(property instanceof Tag || property.equals(TagCategories.class)) {
+            if(TagLocation.BESIDE_NODES == getTagLocation())
+                updateIconsRecursively(getRoot());
+            else
+                updateAllNodeViews();
             return;
         }
 		if(property.equals(AttributeController.SHOW_ICON_FOR_ATTRIBUTES)

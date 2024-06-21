@@ -43,7 +43,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class IconConditionController implements IElementaryConditionController {
     static final String FILTER_ICON = "filter_icon";
     static final String FILTER_TAG = "filter_tag";
-    static final String FILTER_TAG_CATEGORY = "filter_tag_category";
+    static final String FILTER_ANY_TAG_CATEGORY = "filter_tag_category";
 // // 	final private Controller controller;
 
 	public IconConditionController() {
@@ -54,7 +54,7 @@ class IconConditionController implements IElementaryConditionController {
 	@Override
     public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		final TranslatedObject o = (TranslatedObject)property;
-        return o.objectEquals(IconConditionController.FILTER_TAG) || o.objectEquals(FILTER_TAG_CATEGORY);
+        return o.objectEquals(IconConditionController.FILTER_TAG) || o.objectEquals(FILTER_ANY_TAG_CATEGORY);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ class IconConditionController implements IElementaryConditionController {
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(IconConditionController.FILTER_ICON)
 		        || namedObject.objectEquals(IconConditionController.FILTER_TAG)
-		        || namedObject.objectEquals(IconConditionController.FILTER_TAG_CATEGORY);
+		        || namedObject.objectEquals(IconConditionController.FILTER_ANY_TAG_CATEGORY);
 	}
 
 	@Override
@@ -84,35 +84,35 @@ class IconConditionController implements IElementaryConditionController {
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST))
                 return new IconExistsCondition();
         }
-        boolean searchesInCategories = namedObject.objectEquals(IconConditionController.FILTER_TAG_CATEGORY);
-        if (searchesInCategories || namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
+        boolean searchesAcrossAllCategories = namedObject.objectEquals(IconConditionController.FILTER_ANY_TAG_CATEGORY);
+        if (searchesAcrossAllCategories || namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
             String comparedString=  (value instanceof Tag) ? ((Tag)value).getContent() : value.toString();
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-                return new TagCompareCondition(comparedString, matchCase, 0, true, matchApproximately, ignoreDiacritics, searchesInCategories);
+                return new TagCompareCondition(comparedString, matchCase, 0, true, matchApproximately, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-                return new TagCompareCondition(comparedString, matchCase, 0, false, matchApproximately, ignoreDiacritics, searchesInCategories);
+                return new TagCompareCondition(comparedString, matchCase, 0, false, matchApproximately, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-                return new TagCompareCondition(comparedString, matchCase, 1, true, false, ignoreDiacritics, searchesInCategories);
+                return new TagCompareCondition(comparedString, matchCase, 1, true, false, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-                return new TagCompareCondition(comparedString, matchCase, -1, false, false, ignoreDiacritics, searchesInCategories);
+                return new TagCompareCondition(comparedString, matchCase, -1, false, false, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-                return new TagCompareCondition(comparedString, matchCase, -1, true, false, ignoreDiacritics, searchesInCategories);
+                return new TagCompareCondition(comparedString, matchCase, -1, true, false, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-                return new TagCompareCondition(comparedString, matchCase, 1, false, false, ignoreDiacritics, searchesInCategories);
+                return new TagCompareCondition(comparedString, matchCase, 1, false, false, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
-                return new TagMatchesCondition(comparedString.toString(), matchCase, searchesInCategories);
+                return new TagMatchesCondition(comparedString.toString(), matchCase, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-                return new TagContainsCondition(comparedString, matchCase, matchApproximately, false, ignoreDiacritics, searchesInCategories);
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, false, ignoreDiacritics, searchesAcrossAllCategories);
             }
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)) {
-                return new TagContainsCondition(comparedString, matchCase, matchApproximately, true, ignoreDiacritics, searchesInCategories);
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, true, ignoreDiacritics, searchesAcrossAllCategories);
             }
         }
         return null;
@@ -124,7 +124,7 @@ class IconConditionController implements IElementaryConditionController {
         if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
             return new DefaultComboBoxModel(getIconConditionNames());
         }
-        if (namedObject.objectEquals(IconConditionController.FILTER_TAG) || namedObject.objectEquals(IconConditionController.FILTER_TAG_CATEGORY)) {
+        if (namedObject.objectEquals(IconConditionController.FILTER_TAG) || namedObject.objectEquals(IconConditionController.FILTER_ANY_TAG_CATEGORY)) {
             return new DefaultComboBoxModel(getTagConditionNames());
         }
         throw new IllegalArgumentException(String.valueOf(property));
@@ -135,7 +135,7 @@ class IconConditionController implements IElementaryConditionController {
 		final DefaultListModel list = new DefaultListModel();
         list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
         list.addElement(TextUtils.createTranslatedString(FILTER_TAG));
-        list.addElement(TextUtils.createTranslatedString(FILTER_TAG_CATEGORY));
+        list.addElement(TextUtils.createTranslatedString(FILTER_ANY_TAG_CATEGORY));
 		return list;
 	}
 

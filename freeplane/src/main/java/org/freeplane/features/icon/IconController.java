@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -210,13 +209,12 @@ public class IconController implements IExtension {
     public List<TagIcon> getTagIcons(NodeModel node, boolean showCategories) {
         final Font font = getTagFont(node);
         final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
-        final String tagCategorySeparatorForNode = tagCategories.getTagCategorySeparatorForNode();
-        final String tagCategorySeparatorForMap = tagCategories.getTagCategorySeparatorForMap();
+        final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
         Stream<Tag> tags = showCategories ? getCategorizedTags(node).stream()
-                .map(tag -> tag.categorizedTag(tagCategorySeparatorForMap))
+                .map(tag -> tag.categorizedTag(tagCategorySeparator))
                 : getTags(node).stream();
         return tags
-                .map(tag -> showCategories ? tag : tag.removeInternalCategories(tagCategorySeparatorForNode))
+                .map(tag -> showCategories ? tag : tag.removeInternalCategories(tagCategorySeparator))
                 .map(tag -> new TagIcon(tag, font))
                 .collect(Collectors.toList());
     }
@@ -229,8 +227,13 @@ public class IconController implements IExtension {
         final Font font = nodeFont.deriveFont(UITools.FONT_SCALE_FACTOR * nodeFont.getSize2D());
         return font;
     }
+    public List<TagReference> getTagReferences(NodeModel node) {
+        return Tags.getTagReferences(node);
+    }
+
     public List<Tag> getTags(NodeModel node) {
-        return Tags.getTags(node);
+        final Tags tags = node.getExtension(Tags.class);
+        return tags == null ? Collections.emptyList() : tags.getTags();
     }
 
     public List<CategorizedTag> getCategorizedTags(NodeModel node){
@@ -245,7 +248,7 @@ public class IconController implements IExtension {
     public List<Tag> getTagsWithCategories(NodeModel node) {
         return getCategorizedTags(node)
         .stream()
-        .map(tag -> tag.categorizedTag(node.getMap().getIconRegistry().getTagCategories().getTagCategorySeparatorForMap()))
+        .map(tag -> tag.categorizedTag(node.getMap().getIconRegistry().getTagCategories().getTagCategorySeparator()))
         .collect(Collectors.toList());
     }
 }

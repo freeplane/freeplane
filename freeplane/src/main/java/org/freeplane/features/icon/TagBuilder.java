@@ -39,7 +39,8 @@ class TagBuilder implements IExtensionAttributeWriter {
             public void setAttribute(final Object userObject, final String value) {
                 final NodeModel node = (NodeModel) userObject;
                 TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
-                Tags.setTags(node, Stream.of(value.split("\n")).map(tagCategories::createTag).collect(Collectors.toList()));
+                Tags.setTagReferences(node, Stream.of(value.split("\n"))
+                        .map(tagCategories::createTagReference).collect(Collectors.toList()));
             }
         };
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TAGS", tagsHandler);

@@ -41,7 +41,7 @@ public class TagMatchesCondition extends TagCondition {
 		return new TagMatchesCondition(
             element.getAttribute(VALUE, null),
             Boolean.valueOf(element.getAttribute(StringConditionAdapter.MATCH_CASE, null)),
-            Boolean.valueOf(element.getAttribute(SEARCH_IN_CATEGORIES, null))
+            Boolean.valueOf(element.getAttribute(SEARCH_ACROSS_ALL_CATEGORIES, null))
 		    );
 	}
 
@@ -49,8 +49,8 @@ public class TagMatchesCondition extends TagCondition {
 	final private Pattern searchPattern;
 	/**
 	 */
-	public TagMatchesCondition(final String value, final boolean matchCase, boolean searchesInCategories) {
-		super(value, matchCase, false, false, false, searchesInCategories);
+	public TagMatchesCondition(final String value, final boolean matchCase, boolean searchesAcrossAllCategories) {
+		super(value, matchCase, false, false, false, searchesAcrossAllCategories);
         this.value = value;
         int flags = Pattern.DOTALL;
         if (!matchCase) {

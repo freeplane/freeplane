@@ -17,12 +17,14 @@ public class CategorizedTagForCategoryNode implements CategorizedTag {
     private final DefaultMutableTreeNode categoryNode;
     private final Tag registeredTag;
 
+    public CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode) {
+        this(categoryNode, Optional.empty());
+    }
+
     public CategorizedTagForCategoryNode(DefaultMutableTreeNode categoryNode, Optional<Tag> registeredTag) {
-        super();
         this.categoryNode = categoryNode;
         this.registeredTag = registeredTag.orElseGet(this::nodeTag).copy();
     }
-
 
     @Override
     public Tag tag() {
@@ -41,11 +43,16 @@ public class CategorizedTagForCategoryNode implements CategorizedTag {
    public List<Tag> categoryTags() {
        if((DefaultMutableTreeNode) categoryNode.getParent() == null)
            return Collections.emptyList();
-       else
-      return Stream.of(categoryNode.getUserObjectPath())
-               .skip(1)
-               .map(Tag.class::cast)
-               .collect(Collectors.toList());
+    else {
+        final Object[] userObjectPath = categoryNode.getUserObjectPath();
+        Stream<Object> nodes = Stream.of(userObjectPath)
+                   .skip(1);
+
+        if(userObjectPath.length > 1 && !(userObjectPath[1] instanceof Tag))
+            nodes = nodes.skip(1);
+        return nodes.map(Tag.class::cast)
+                   .collect(Collectors.toList());
+    }
    }
 
    @Override

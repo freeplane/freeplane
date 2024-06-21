@@ -20,6 +20,7 @@ import org.freeplane.core.util.LineComparator;
 
 public class Tag implements Comparable<Tag>{
     public final static Tag EMPTY_TAG = new Tag("");
+    public final static Tag REMOVED_TAG = new Tag(" removed tag ", Color.BLACK);
     private final String content;
     private Color color;
 
@@ -68,21 +69,30 @@ public class Tag implements Comparable<Tag>{
         return new Tag(content, color);
     }
 
-    public Tag removeInternalCategories(String tagCategorySeparatorForNode) {
-        if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
+    public Tag removeInternalCategories(String tagCategorySeparator) {
+        if(tagCategorySeparator.isEmpty() || isEmpty())
             return this;
-        final int tagIndex = getContent().lastIndexOf(tagCategorySeparatorForNode);
-        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparatorForNode.length()), getColor());
+        final int tagIndex = getContent().lastIndexOf(tagCategorySeparator);
+        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparator.length()), getColor());
     }
 
-    public List<Tag> categoryTags(String tagCategorySeparatorForNode) {
-        if(tagCategorySeparatorForNode.isEmpty() || isEmpty())
+    public List<Tag> categoryTags(String tagCategorySeparator) {
+        if(tagCategorySeparator.isEmpty() || isEmpty())
             return Collections.singletonList(this);
-        final String[] categories = getContent().split(Pattern.quote(tagCategorySeparatorForNode));
+        final String[] categories = getContent().split(Pattern.quote(tagCategorySeparator));
         if(categories == null || categories.length < 2)
             return Collections.singletonList(this);
         return Stream.of(categories).map(content -> new Tag(content, color))
                 .collect(Collectors.toList());
+    }
+
+    public Tag shortTag(String tagCategorySeparator) {
+        if(tagCategorySeparator.isEmpty() || isEmpty())
+            return this;
+        int shortTagBegin = content.lastIndexOf(tagCategorySeparator);
+        if(shortTagBegin < 0)
+            return this;
+        return new Tag(content.substring(shortTagBegin + tagCategorySeparator.length()), color);
     }
 
 
@@ -112,5 +122,14 @@ public class Tag implements Comparable<Tag>{
     @Override
     public String toString() {
         return content;
+    }
+
+    public Tag updateSeparator(String initialSeparator, String currentSeparator) {
+        if(initialSeparator.equals(currentSeparator) || ! getContent().contains(initialSeparator)) {
+            return this;
+        }
+        else {
+            return new Tag(content.replace(initialSeparator, currentSeparator), color);
+        }
     }
 }

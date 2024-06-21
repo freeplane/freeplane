@@ -44,7 +44,7 @@ public class TagCompareCondition extends TagCondition {
 		        TreeXmlReader.xmlToBoolean(element.getAttribute(
                 	    MATCH_APPROXIMATELY, null)),
 		        Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)),
-		        Boolean.valueOf(element.getAttribute(SEARCH_IN_CATEGORIES, null)));
+		        Boolean.valueOf(element.getAttribute(SEARCH_ACROSS_ALL_CATEGORIES, null)));
 	}
 
 	private final int comparationResult;
@@ -55,8 +55,8 @@ public class TagCompareCondition extends TagCondition {
 	 */
 	public TagCompareCondition(final String content, final boolean matchCase,
 	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics,
-	                                 boolean searchesInCategories) {
-		super(content, matchCase, matchApproximately, false, ignoreDiacritics, searchesInCategories);
+	                                 boolean searchesAcrossAllCategories) {
+		super(content, matchCase, matchApproximately, false, ignoreDiacritics, searchesAcrossAllCategories);
         this.conditionContent = content;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;

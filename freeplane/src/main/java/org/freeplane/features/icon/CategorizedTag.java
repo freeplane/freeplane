@@ -6,7 +6,6 @@
 package org.freeplane.features.icon;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,15 +18,15 @@ public interface CategorizedTag extends Comparable<CategorizedTag> {
     default boolean isEmpty() {
         return tag().isEmpty();
     }
-    default Tag categorizedTag(String tagCategorySeparatorForMap) {
+    default Tag categorizedTag(String tagCategorySeparator) {
         final Tag tag = tag();
-        String content = getContent(tagCategorySeparatorForMap);
+        String content = getContent(tagCategorySeparator);
         return new Tag(content, tag.getColor());
     }
-    default String getContent(String tagCategorySeparatorForMap) {
+    default String getContent(String tagCategorySeparator) {
         return categoryTags().stream()
                 .map(Tag::getContent)
-                .collect(Collectors.joining(tagCategorySeparatorForMap));
+                .collect(Collectors.joining(tagCategorySeparator));
     }
 
     @Override

@@ -5,41 +5,43 @@
  */
 package org.freeplane.features.icon;
 
-import java.io.StringReader;
-import java.util.Scanner;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class TagCategoriesTest {
     @Test
-        public void testRegisterTagCategories() {
+        public void testRegisterTagReferenceCategories() {
+            final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("tags");
             TagCategories tagCategories = new TagCategories(
-                    new DefaultMutableTreeNode("tags"), "::", "--");
-            DefaultMutableTreeNode parentNode = new DefaultMutableTreeNode();
+                    rootNode,
+                    new DefaultMutableTreeNode("uncategorized_tags"), "::");
             String input = "tag1\n"
                     + " tag2\n"
                     + "  tag3\n"
-                    + "tag4";
-            Scanner scanner = new Scanner(new StringReader(input));
+                    + "tag4\n";
     
-            tagCategories.readTagCategories(parentNode, parentNode.getChildCount(), scanner);
+            tagCategories.load(input);
     
-            Assertions.assertThat(parentNode.getChildCount()).isEqualTo(2);
+            assertThat(rootNode.getChildCount()).isEqualTo(3);
     
-            DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) parentNode.getChildAt(0);
-            Assertions.assertThat(((Tag) firstChild.getUserObject()).getContent()).isEqualTo("tag1");
+            DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) rootNode.getChildAt(0);
+            assertThat(((Tag) firstChild.getUserObject()).getContent()).isEqualTo("tag1");
     
-            DefaultMutableTreeNode secondChild = (DefaultMutableTreeNode) parentNode.getChildAt(1);
-            Assertions.assertThat(((Tag) secondChild.getUserObject()).getContent()).isEqualTo("tag4");
+            DefaultMutableTreeNode secondChild = (DefaultMutableTreeNode) rootNode.getChildAt(1);
+            assertThat(((Tag) secondChild.getUserObject()).getContent()).isEqualTo("tag4");
     
             DefaultMutableTreeNode grandChild = (DefaultMutableTreeNode) firstChild.getChildAt(0);
-            Assertions.assertThat(((Tag) grandChild.getUserObject()).getContent()).isEqualTo("tag2");
+            assertThat(((Tag) grandChild.getUserObject()).getContent()).isEqualTo("tag2");
     
             DefaultMutableTreeNode greatGrandChild = (DefaultMutableTreeNode) grandChild.getChildAt(0);
-            Assertions.assertThat(((Tag) greatGrandChild.getUserObject()).getContent()).isEqualTo(
-                    "tag3");
+            assertThat(((Tag) greatGrandChild.getUserObject()).getContent()).isEqualTo("tag3");
+    
+            assertThat(tagCategories.serialize()
+            		.replaceAll("#.*", "")
+            		.replace(System.lineSeparator(), "\n"))
+            .isEqualTo(input);
         }
 }
