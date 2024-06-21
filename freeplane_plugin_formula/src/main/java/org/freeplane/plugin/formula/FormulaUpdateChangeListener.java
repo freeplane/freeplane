@@ -1,5 +1,8 @@
 package org.freeplane.plugin.formula;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.features.explorer.MapExplorerController;
@@ -32,26 +35,43 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
     @Override
 	public void nodeChanged(NodeChangeEvent event) {
 		if (!FormulaCache.class.equals(event.getProperty())) {
-            nodeChangedImpl(false, event.getNode());
+            reevaluateNodeDependencies(false, event.getNode());
 		}
 	}
 
-	@Override
-	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		nodeChangedImpl(true, nodeDeletionEvent.parent);
-	}
+    @Override
+    public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+        NodeModel child = nodeDeletionEvent.node;
+        refreshChangedClones(child);
+    }
+
+    private void refreshChangedClones(NodeModel node) {
+        if(node.isCloneNode()) {
+            reevaluateNodeDependencies(true, node);
+        }
+    }
+
+    @Override
+    public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+        reevaluateNodeDependencies(true, nodeDeletionEvent.parent);
+    }
 
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 		// all formulas dependent on the child via getChildren() are also dependent on its parent
-		nodeChangedImpl(true, parent);
+		reevaluateNodeDependencies(true, parent);
+		refreshChangedClones(child);
 	}
 
-	@Override
+	private void reevaluateNodeDependencies(boolean includeChanged, NodeModel parent) {
+	    reevaluateNodeDependencies(includeChanged, Collections.singletonList(parent));
+    }
+
+    @Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		// - all formulas dependent on the child via getChildren() are also dependent on its parent
 		// FIXME: is child updated or do we have to force that here?
-		nodeChangedImpl(true, nodeMoveEvent.oldParent, nodeMoveEvent.newParent);
+		reevaluateNodeDependencies(true, Arrays.asList(nodeMoveEvent.oldParent, nodeMoveEvent.newParent));
 	}
 
 	@Override
@@ -78,7 +98,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	/** in case of insert we look for dependencies of the parent. But the parent is not actually changed in this case.
 	 * So there won't be any updates on the parent, even if it has formula that needs an update due to the
 	 * changed children count. */
-	private void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
+	private void reevaluateNodeDependencies(boolean includeChanged, Collection<NodeModel> nodes) {
 		final List<NodeModel> dependencies = FormulaDependencies.manageChangeAndReturnDependencies(includeChanged, nodes);
 		refresh(dependencies);
 	}

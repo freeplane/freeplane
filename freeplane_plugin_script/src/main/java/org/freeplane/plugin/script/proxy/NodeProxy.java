@@ -766,11 +766,17 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return ProxyUtils.find(condition, delegate, getScriptContext());
 	}
 
-	private void reportBranchAccess(final NodeModel delegate) {
-		ScriptContext scriptContext = getScriptContext();
-		if (scriptContext != null)
-			scriptContext.accessBranch(delegate);
-	}
+    private void reportBranchAccess(final NodeModel delegate) {
+        ScriptContext scriptContext = getScriptContext();
+        if (scriptContext != null)
+            scriptContext.accessBranch(delegate);
+    }
+
+    private void reportCloneAccess() {
+        ScriptContext scriptContext = getScriptContext();
+        if (scriptContext != null)
+            scriptContext.accessClones(getDelegate());
+    }
 
 	// NodeRO: R
 	@Override
@@ -1190,16 +1196,19 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public int getCountNodesSharingContent() {
+	    reportCloneAccess();
 		return getDelegate().allClones().size() - 1;
 	}
 
 	@Override
 	public int getCountNodesSharingContentAndSubtree() {
+	    reportCloneAccess();
 		return getDelegate().subtreeClones().size() - 1;
 	}
 
 	@Override
 	public List<? extends Node> getNodesSharingContent() {
+	    reportCloneAccess();
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().allClones().toCollection());
 		nodeModels.remove(getDelegate());
 		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
@@ -1207,6 +1216,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public List<? extends Node> getNodesSharingContentAndSubtree() {
+	    reportCloneAccess();
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().subtreeClones().toCollection());
 		nodeModels.remove(getDelegate());
 		return ProxyUtils.createNodeList(nodeModels, getScriptContext());

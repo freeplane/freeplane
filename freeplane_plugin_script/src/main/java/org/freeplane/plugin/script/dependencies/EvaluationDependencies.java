@@ -42,91 +42,84 @@ public class EvaluationDependencies implements IExtension{
 	private final WeakHashMap<MapModel, DependentNodeReferences> onMapDependencies = new WeakHashMap<>();
 
 	private final WeakHashMap<NodeModel, DependentNodeReferences> onNodeDependencies = new WeakHashMap<>();
-	// FIXME: organize node and branch dependencies in a tree?
-	private final WeakHashMap<NodeModel, DependentNodeReferences> onBranchDependencies = new WeakHashMap<>();
+    private final WeakHashMap<NodeModel, DependentNodeReferences> onBranchDependencies = new WeakHashMap<>();
+    private final WeakHashMap<NodeModel, DependentNodeReferences> onCloneDependencies = new WeakHashMap<>();
 	private final WeakHashMap<NodeModel, Void> onAnyNodeDependencies = new WeakHashMap<>();
 	private final WeakHashMap<NodeModel, Void> onGlobalNodeDependencies = new WeakHashMap<>();
 
-	public void getChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel accessedNode) {
+	public void collectChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel accessedNode) {
 		final Iterable<NodeModel> onNode = onNodeDependencies.get(accessedNode);
 		if (onNode != null)
-			getRecursively(accessingNodes, onNode);
-		ArrayList<Entry<NodeModel, DependentNodeReferences>> onBranchDependencyList = new ArrayList<>(onBranchDependencies.entrySet());
-		for (Entry<NodeModel, DependentNodeReferences> entry : onBranchDependencyList) {
-			final NodeModel branchNode = entry.getKey();
-			if (accessedNode.isDescendantOf(branchNode)) {
-				onBranchDependencies.get(branchNode);
-				getRecursively(accessingNodes, entry.getValue());
-			}
-		}
+			collectAccessingNodesRecursively(accessingNodes, onNode);
+        for (Entry<NodeModel, DependentNodeReferences> entry : onBranchDependencies.entrySet()) {
+            final NodeModel branchNode = entry.getKey();
+            if (accessedNode.isDescendantOf(branchNode)) {
+                collectAccessingNodesRecursively(accessingNodes, entry.getValue());
+            }
+        }
+        for (Entry<NodeModel, DependentNodeReferences> entry : onCloneDependencies.entrySet()) {
+            final NodeModel cloneNode = entry.getKey();
+            if (cloneNode.allClones().contains(accessedNode)
+                    || cloneNode.subtreeClones().toCollection().stream().anyMatch(t -> t.isDescendantOf(accessedNode))) {
+                collectAccessingNodesRecursively(accessingNodes, entry.getValue());
+            }
+        }
 		if(! onAnyNodeDependencies.isEmpty()) {
 		    ArrayList<NodeModel> onAnyNodeDependendingNodes = new ArrayList<>(onAnyNodeDependencies.keySet());
 		    onAnyNodeDependencies.clear();
-		    getRecursively(accessingNodes, onAnyNodeDependendingNodes);
+		    collectAccessingNodesRecursively(accessingNodes, onAnyNodeDependendingNodes);
 		}
-//		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	public void getGlobalDependencies(Set<NodeModel> accessingNodes) {
-		getRecursively(accessingNodes, onGlobalNodeDependencies.keySet());
-//		System.out.println("dependencies on(" + node + "): " + accessingNodes);
+	public void collectGlobalNodeDependencies(Set<NodeModel> accessingNodes) {
+		collectAccessingNodesRecursively(accessingNodes, onGlobalNodeDependencies.keySet());
 	}
 
 	public void removeAndReturnChangedDependencies(Set<NodeModel> accessingNodes, final MapModel accessedMap) {
 		final Iterable<NodeModel> onMap = onMapDependencies.remove(accessedMap);
 		if (onMap != null)
-			getRecursively(accessingNodes, onMap);
+			collectAccessingNodesRecursively(accessingNodes, onMap);
 	}
-	private void getRecursively(Set<NodeModel> accessingNodes, final Iterable<NodeModel> changedAccessedNodes) {
+	private void collectAccessingNodesRecursively(Set<NodeModel> accessingNodes, final Iterable<NodeModel> changedAccessedNodes) {
 		for (NodeModel node : changedAccessedNodes) {
 			// avoid loops
 			if (accessingNodes.add(node)) {
-				getChangedDependencies(accessingNodes, node);
+				collectChangedDependencies(accessingNodes, node);
 			}
 		}
 	}
 
 	/** accessedNode was accessed when accessingNode was evaluated. */
 	public void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
-		// FIXME: check if accessedNode is already covered by other accessModes
-		provideDependencySet(accessedNode, onNodeDependencies).add(accessingNode);
+        onNodeDependencies.computeIfAbsent(accessedNode, x -> new DependentNodeReferences()).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
-//		System.out.println(accessingNode + " accesses " + accessedNode + ". current dependencies:\n" + this);
 	}
 
-	/** accessedNode.children was accessed when accessingNode was evaluated. */
-	public void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
-		// FIXME: check if accessedNode is already covered by other accessModes
-		provideDependencySet(accessedNode, onBranchDependencies).add(accessingNode);
-		addAccessedMap(accessingNode, accessedNode);
-//		System.out.println(accessingNode + " accesses branch of " + accessedNode + ". current dependencies:\n" + this);
-	}
+    /** accessedNode.children was accessed when accessingNode was evaluated. */
+    public void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
+        onBranchDependencies.computeIfAbsent(accessedNode, x -> new DependentNodeReferences()).add(accessingNode);
+        addAccessedMap(accessingNode, accessedNode);
+    }
+
+    /** accessedNode.children was accessed when accessingNode was evaluated. */
+    public void accessClones(NodeModel accessingNode, NodeModel accessedNode) {
+        onCloneDependencies.computeIfAbsent(accessedNode, x -> new DependentNodeReferences()).add(accessingNode);
+        addAccessedMap(accessingNode, accessedNode);
+    }
 
 	private void addAccessedMap(NodeModel accessingNode, NodeModel accessedNode) {
 		final MapModel accessedMap = accessedNode.getMap();
 		if(accessedMap != accessingNode.getMap())
-			provideDependencySet(accessedMap, onMapDependencies).add(accessingNode);
+			onMapDependencies.computeIfAbsent(accessedMap, x -> new DependentNodeReferences()).add(accessingNode);
 	}
 
 	/** a method was used on the accessingNode that may use any node in the map. */
 	public void accessAll(NodeModel accessingNode) {
-		// FIXME: check if accessedNode is already covered by other accessModes
 		onAnyNodeDependencies.put(accessingNode, null);
-//		System.out.println(accessingNode + " accesses all nodes. current dependencies:\n" + this);
 	}
 
 	public void accessGlobalNode(NodeModel accessingNode) {
 		onGlobalNodeDependencies.put(accessingNode, null);
-	}
-
-	private <T>DependentNodeReferences provideDependencySet(final T accessed,
-														 final WeakHashMap<T, DependentNodeReferences> dependenciesMap) {
-		DependentNodeReferences set = dependenciesMap.get(accessed);
-		if (set == null) {
-			set = new DependentNodeReferences();
-			dependenciesMap.put(accessed, set);
-		}
-		return set;
 	}
 
 	public Iterable<NodeModel> getPossibleDependencies(NodeModel node) {
