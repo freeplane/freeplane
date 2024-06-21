@@ -285,7 +285,7 @@ public class LinkController extends SelectionController implements IExtension {
 				for (NodeModel clone : node.allClones()) {
 					if (!clone.equals(node)) {
 						final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
-						NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
+						NodeModel subtreeRootParentNode = clone.getSubtreeRootOrContentClone().getParentNode();
 						gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
 						if (firstAction) {
 							target.addChild(new Entry().setBuilders("separator"));

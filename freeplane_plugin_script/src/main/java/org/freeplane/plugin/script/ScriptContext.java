@@ -85,11 +85,17 @@ public class ScriptContext implements AccessedNodes{
 		}
 	}
 
-	@Override
-	public void accessBranch(final NodeModel accessedNode) {
-		if(nodeScript != null)
-			FormulaDependencies.accessBranch(nodeScript.node, accessedNode);
-	}
+    @Override
+    public void accessBranch(final NodeModel accessedNode) {
+        if(nodeScript != null)
+            FormulaDependencies.accessBranch(nodeScript.node, accessedNode);
+    }
+
+    @Override
+    public void accessClones(final NodeModel accessedNode) {
+        if(nodeScript != null)
+            FormulaDependencies.accessClones(nodeScript.node, accessedNode);
+    }
 
 	@Override
 	public void accessAll() {

@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +12,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.dependencies.EvaluationDependencies;
 
 public class FormulaDependencies{
-	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... changedNodes) {
+	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final Collection<NodeModel> changedNodes) {
 		final ArrayList<NodeModel> dependencies = getAllChangedDependencies(includeChanged, changedNodes);
 		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
@@ -23,16 +24,15 @@ public class FormulaDependencies{
 	}
 
 
-	private static ArrayList<NodeModel> getAllChangedDependencies(boolean includeChanged, final NodeModel... changedNodes) {
+	private static ArrayList<NodeModel> getAllChangedDependencies(boolean includeChanged, final Collection<NodeModel> changedNodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
-		for (int i = 0; i < changedNodes.length; i++) {
-			final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
-			EvaluationDependencies.of(changedNodes[i].getMap()).getChangedDependencies(accessingNodes, changedNodes[i]);
-			if (accessingNodes != null)
-				dependencies.addAll(accessingNodes);
-			if (includeChanged)
-				dependencies.add(changedNodes[i]);
+		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
+        for (NodeModel node:changedNodes) {
+			EvaluationDependencies.of(node.getMap()).collectChangedDependencies(accessingNodes, node);
 		}
+		dependencies.addAll(accessingNodes);
+		if (includeChanged)
+		    dependencies.addAll(changedNodes);
 		return dependencies;
 	}
 
@@ -41,9 +41,13 @@ public class FormulaDependencies{
 		EvaluationDependencies.of(accessedNode.getMap()).accessNode(accessingNode, accessedNode);
 	}
 
-	static void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
-		EvaluationDependencies.of(accessedNode.getMap()).accessBranch(accessingNode, accessedNode);
-	}
+    static void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
+        EvaluationDependencies.of(accessedNode.getMap()).accessBranch(accessingNode, accessedNode);
+    }
+
+    static void accessClones(NodeModel accessingNode, NodeModel accessedNode) {
+        EvaluationDependencies.of(accessedNode.getMap()).accessClones(accessingNode, accessedNode);
+    }
 
 	static void accessAll(NodeModel accessingNode) {
 		EvaluationDependencies.of(accessingNode.getMap()).accessAll(accessingNode);
@@ -59,7 +63,7 @@ public class FormulaDependencies{
 	}
 
 	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
-		return manageChangeAndReturnDependencies(EvaluationDependencies.of(map)::getGlobalDependencies);
+		return manageChangeAndReturnDependencies(EvaluationDependencies.of(map)::collectGlobalNodeDependencies);
 	}
 
 	public static List<NodeModel> removeAndReturnMapDependencies(MapModel map) {

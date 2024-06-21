@@ -166,12 +166,16 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private void writeReferenceNodeId(ITreeWriter writer, NodeModel node) {
-	    final NodeModel referenceNode = alreadyWrittenSharedContent.get(node.getSharedData());
+	    SharedNodeData sharedData = node.getSharedData();
+        final NodeModel referenceNode = alreadyWrittenSharedContent.get(sharedData);
 	    if(referenceNode != null){
 	    	if(referenceNode.isSubtreeCloneOf(node))
 	    		writer.addAttribute("TREE_ID", referenceNode.createID());
-	    	else
-	    		writer.addAttribute("CONTENT_ID", referenceNode.createID());
+            else {
+                writer.addAttribute("CONTENT_ID", referenceNode.createID());
+                if(referenceNode.subtreeClones().size() == 1 && node.subtreeClones().size() > 1)
+                    alreadyWrittenSharedContent.put(sharedData, node);
+            }
 	    }
 
     }

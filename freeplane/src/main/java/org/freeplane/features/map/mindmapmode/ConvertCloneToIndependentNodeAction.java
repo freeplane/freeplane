@@ -23,12 +23,12 @@ public class ConvertCloneToIndependentNodeAction extends AFreeplaneAction {
 		for(final NodeModel node :selectedNodes)
 			mapController.convertClonesToIndependentNodes(node);
 	}
-	
+
 	@Override
 	public void setEnabled() {
 		final Collection<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSelection();
 		for(NodeModel node :selectedNodes)
-			if(! (node.isCloneTreeRoot() || node.isCloneContentNodeOutsideCloneTree())){
+			if(! node.isCloneTreeRootOrContentClone()){
 				setEnabled(false);
 				return;
 			}
