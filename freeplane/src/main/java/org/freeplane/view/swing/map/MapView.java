@@ -369,7 +369,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		@Override
 		public int size() {
-			return getSelection().size();
+			return selection.size();
 		}
 
 		@Override
