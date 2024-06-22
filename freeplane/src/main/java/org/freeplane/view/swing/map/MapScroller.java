@@ -359,11 +359,9 @@ class MapScroller {
 				requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
 			}
 		}
-		if(! node.getVisibleRect().contains(requiredRectangle)){
-	        keepShowingSelectedAfterScroll();
-			node.scrollRectToVisible(requiredRectangle);
-			showSelectedAfterScroll();
-		}
+		keepShowingSelectedAfterScroll();
+		node.scrollRectToVisible(requiredRectangle);
+		showSelectedAfterScroll();
 	}
 
 	void anchorToRoot() {
