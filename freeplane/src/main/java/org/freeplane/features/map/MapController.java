@@ -388,16 +388,23 @@ implements IExtension, NodeChangeAnnouncer{
 	public void unfoldAndScroll(final NodeModel node, Filter filter) {
 		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node, filter);
 		unfold(node, filter);
-		if (wasFoldedOnCurrentView && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
-				}
-			});
-
-		}
+		if (wasFoldedOnCurrentView) {
+            scrollNodeTreeAfterUnfold(node);
+        }
 	}
+
+
+   void scrollNodeTreeAfterUnfold(final NodeModel node) {
+        if (ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
+        			Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
+        		}
+        	});
+
+        }
+    }
 
 	public void setFolded(final NodeModel node, final boolean fold, Filter filter) {
 		if(!fold || node.isRoot())
@@ -423,6 +430,16 @@ implements IExtension, NodeChangeAnnouncer{
     public void toggleFoldedAndScroll(final NodeModel node){
         Filter filter = Controller.getCurrentController().getSelection().getFilter();
         toggleFoldedAndScroll(node, filter);
+    }
+
+
+
+
+    public void toggleFoldedAndScroll(Filter filter, NodeModel selected,
+            List<NodeModel> childNodes) {
+        boolean unfolded = toggleFolded(filter, childNodes);
+        if(unfolded)
+            scrollNodeTreeAfterUnfold(selected);
     }
 
     public void toggleFoldedAndScroll(final NodeModel node, Filter filter){
@@ -1203,12 +1220,13 @@ implements IExtension, NodeChangeAnnouncer{
 		Collections.sort(collection, new NodesDepthComparator());
 	}
 
-	public void toggleFolded(Filter filter, final Collection<NodeModel> collection) {
-		Boolean shouldBeFolded = ! canBeUnfoldedOnCurrentView(filter, collection);
-		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
+	public boolean toggleFolded(Filter filter, final Collection<NodeModel> collection) {
+		boolean shouldBeUnfolded = canBeUnfoldedOnCurrentView(filter, collection);
+        final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 		for (final NodeModel node:nodes) {
-			setFolded(node, shouldBeFolded, filter);
+			setFolded(node, ! shouldBeUnfolded, filter);
 		}
+		return shouldBeUnfolded;
 	}
 
 	private boolean canBeUnfoldedOnCurrentView(Filter filter, Collection<NodeModel> collection) {
