@@ -2,6 +2,9 @@
 1.12.2
 ==============================
 Better support for qualified tags
+Unfold folded nodes when toggling children folding state
+Scroll unfolded node tree to visible after any unfold action
+Option to scroll unfolded node tree to visible after selecting a node
 
 ==============================
 1.12.1
