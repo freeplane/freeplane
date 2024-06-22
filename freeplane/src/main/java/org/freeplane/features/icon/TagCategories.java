@@ -530,9 +530,13 @@ public class TagCategories {
             SortedMap<String, List<TagReference>> tailMap = tagReferences.tailMap(fromCategory);
 
             if(! tailMap.isEmpty()) {
-                for(String from = tailMap.firstKey(); from.startsWith(fromCategory); from = tailMap.firstKey()) {
+                for(String from = tailMap.firstKey();
+                        from.startsWith(fromCategory);
+                        from = tailMap.firstKey()) {
                     String to = toTag + from.substring(fromTag.length());
                     replaceReferencedTags(from, to);
+                    if(tailMap.isEmpty())
+                        break;
                 }
             }
         }
