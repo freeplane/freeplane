@@ -386,25 +386,33 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void unfoldAndScroll(final NodeModel node, Filter filter) {
-		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node, filter);
-		unfold(node, filter);
-		if (wasFoldedOnCurrentView) {
-            scrollNodeTreeAfterUnfold(node);
-        }
+	    final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node, filter);
+	    unfold(node, filter);
+	    if (wasFoldedOnCurrentView) {
+	        scrollNodeTreeAfterUnfold(node);
+	    }
 	}
 
 
-   void scrollNodeTreeAfterUnfold(final NodeModel node) {
-        if (ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
-        	SwingUtilities.invokeLater(new Runnable() {
-        		@Override
-        		public void run() {
-        			Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
-        		}
-        	});
+	void scrollNodeTreeAfterUnfold(final NodeModel node) {
+	    scrollNodeTree(node, "scrollOnUnfold");
+	}
 
-        }
+	public void scrollNodeTreeAfterSelect(final NodeModel node) {
+	    scrollNodeTree(node, "scrollOnSelect");
+	}
+
+	private void scrollNodeTree(final NodeModel node, String propertyName) {
+    if (ResourceController.getResourceController().getBooleanProperty(propertyName)) {
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
+    		}
+    	});
+
     }
+}
 
 	public void setFolded(final NodeModel node, final boolean fold, Filter filter) {
 		if(!fold || node.isRoot())

@@ -142,7 +142,7 @@ public class NodeSelector {
 		return false;
 	}
 
-	public void extendSelection(final MouseEvent e) {
+	public void extendSelection(final MouseEvent e, boolean scrollNodeTree) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeView nodeView = getRelatedNodeView(e);
 		final NodeModel newlySelectedNode = nodeView.getNode();
@@ -156,13 +156,16 @@ public class NodeSelector {
 			selection.toggleSelected(newlySelectedNode);
 		}
 		if (extend == range) {
-			if (selection.isSelected(newlySelectedNode) && selection.size() == 1
-			        && FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)
-				return;
-			else {
+			if (!selection.isSelected(newlySelectedNode)
+			        || selection.size() != 1
+			        || !(FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)) {
 				selection.selectAsTheOnlyOneSelected(newlySelectedNode);
+				e.consume();
 			}
-			e.consume();
+			if(! extend && scrollNodeTree && ! newlySelectedNode.isFolded()) {
+                controller.getModeController().getMapController().scrollNodeTreeAfterSelect(newlySelectedNode);
+                e.consume();
+            }
 		}
 	}
 

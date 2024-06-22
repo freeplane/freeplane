@@ -1595,8 +1595,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 addSelected(newSelected, true);
                 mapScroller.scrollNodeToVisible(newSelected);
             }
-        } else
-	        selectAsTheOnlyOneSelected(newSelected);
+        } else {
+            selectAsTheOnlyOneSelected(newSelected);
+            modeController.getMapController().scrollNodeTreeAfterSelect(newSelected.getNode());
+        }
 	}
 
 	public boolean selectRight(final boolean continious) {

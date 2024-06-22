@@ -65,7 +65,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     		controller.setDetailsHidden(model, ! DetailModel.getDetail(model).isHidden());
 		}
 		else {
-			nodeSelector.extendSelection(e);
+			nodeSelector.extendSelection(e, false);
 			if (canEdit(controller) && isEditingStartEvent(e)) {
 				final boolean editLong = e.isAltDown();
 				if(! editLong)
