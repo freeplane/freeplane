@@ -47,11 +47,19 @@ class ToggleChildrenFoldedAction extends AFreeplaneAction {
 		Filter filter = mapSelection.getFilter();
 		List<NodeModel> selectedNodes = mapSelection.getSortedSelection(true);
 		MapController mapController = Controller.getCurrentModeController().getMapController();
-		List<NodeModel> childNodes = selectedNodes.stream()
+		long unfoldedNodeCount = selectedNodes.stream()
+		        .filter(node -> node.isFolded())
 		        .peek(node -> mapController.unfold(node, filter))
+		        .count();
+		List<NodeModel> childNodes = selectedNodes.stream()
 		        .map(NodeModel::getChildren)
 		        .flatMap(List::stream)
 		        .collect(Collectors.toList());
-        mapController.toggleFolded(filter, childNodes);
+		if(unfoldedNodeCount == 0) {
+		    mapController.toggleFolded(filter, childNodes);
+		}
+		else {
+		    childNodes.forEach(node -> mapController.setFolded(node, true, filter));
+		}
 	}
 }
