@@ -64,20 +64,23 @@ public class JColorButton extends JButton {
 		repaint();
 	}
 
+
+
 	@Override
-	public Dimension getPreferredSize() {
-	    Dimension preferredSize = super.getPreferredSize();
-		if(isPreferredSizeSet())
-            return preferredSize;
-		calculateTextSize();
-		Dimension newSize = new Dimension(preferredSize);
-		newSize.width  += COLOR_ICON_BORDER_SIZE * 2 + textWidth;
-		newSize.height += COLOR_ICON_BORDER_SIZE * 2 + textHeight;
-		return newSize;
-	}
-	@Override
+    public String getText() {
+	    return text;
+    }
+
+    @Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+        String textBackup = text;
+        try {
+            text = null;
+            super.paintComponent(g);
+        }
+        finally {
+            text = textBackup;
+        }
 		paintColor(g);
 	}
 	private void paintColor(Graphics g) {
