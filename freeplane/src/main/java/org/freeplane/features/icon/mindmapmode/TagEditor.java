@@ -100,6 +100,7 @@ import javax.swing.text.Document;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.JColorButton;
+import org.freeplane.core.resources.components.ResponsiveFlowLayout;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
@@ -368,7 +369,7 @@ class TagEditor {
         this.node = node;
         String title = TextUtils.getText("edit_tags") + " (" + TextController.getController().getShortPlainText(node) + ")";
 
-        this.dialog = frame instanceof Frame ? new JDialog((Frame)frame, title, /*modal=*/true) : new JDialog((JDialog)frame, title, /*modal=*/true);
+        this.dialog = frame instanceof Frame ? new JDialog((Frame)frame, title, /*modal=*/false) : new JDialog((JDialog)frame, title, /*modal=*/false);
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
         final JButton sortButton = new JButton();
@@ -397,7 +398,7 @@ class TagEditor {
         final TagCategories sourceCategories = getTagCategories();
         tagCategories = sourceCategories.copy();
 
-        final JPanel buttonPane = new JPanel();
+        final JPanel buttonPane = new JPanel(new ResponsiveFlowLayout());
         tagCategorySeparatorField = new JTextField(10);
         tagCategorySeparatorField.setText(tagCategories.getTagCategorySeparator());
         buttonPane.add(TranslatedElementFactory.createLabel("OptionPanel.category_separator"));
@@ -542,9 +543,8 @@ class TagEditor {
         final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
         contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
         node.addExtension(new TagEditorHolder(node, dialog));
-        configureDialog(dialog);
-        restoreDialogSize(dialog);
         dialog.pack();
+        restoreDialogSize(dialog);
         dialog.addComponentListener(new ComponentListener() {
             @Override
             public void componentShown(final ComponentEvent e) {
@@ -574,6 +574,13 @@ class TagEditor {
                 }
             }
         });
+    }
+    private void restoreDialogSize(final JDialog dialog) {
+        ResourceController resourceController = ResourceController.getResourceController();
+        int width = resourceController.getIntProperty(WIDTH_PROPERTY, 0);
+        int height = resourceController.getIntProperty(HEIGHT_PROPERTY, 0);
+        if(width > 0 && height > 0)
+            dialog.setSize(width, height);
     }
     private void closeDialog() {
         dialog.setVisible(false);
@@ -857,24 +864,12 @@ class TagEditor {
         return table;
     }
 
-
-    private void configureDialog(JDialog dialog) {
-		dialog.setModal(false);
-	}
-
 	private void saveDialogSize(final JDialog dialog) {
         ResourceController resourceController = ResourceController.getResourceController();
         resourceController.setProperty(WIDTH_PROPERTY, dialog.getWidth());
         resourceController.setProperty(HEIGHT_PROPERTY, dialog.getHeight());
     }
 
-	private void restoreDialogSize(final JDialog dialog) {
-        Dimension preferredSize = dialog.getPreferredSize();
-        ResourceController resourceController = ResourceController.getResourceController();
-        preferredSize.width = Math.max(preferredSize.width, resourceController.getIntProperty(WIDTH_PROPERTY, 0));
-        preferredSize.height = Math.max(preferredSize.height, resourceController.getIntProperty(HEIGHT_PROPERTY, 0));
-        dialog.setPreferredSize(preferredSize);
-    }
 
     private void confirmedSubmit() {
         if (dialog.isVisible()) {
