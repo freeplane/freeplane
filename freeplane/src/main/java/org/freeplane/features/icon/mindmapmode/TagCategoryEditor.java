@@ -31,7 +31,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
@@ -89,7 +88,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.resources.components.JColorButton;
+import org.freeplane.core.resources.components.ResponsiveFlowLayout;
 import org.freeplane.core.ui.ColorTracker;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
@@ -483,11 +484,7 @@ class TagCategoryEditor implements IExtension {
         }
 
     }
-
-
-    private static final String WIDTH_PROPERTY = "tagDialog.width";
-
-    private static final String HEIGHT_PROPERTY = "tagDialog.height";
+    private static final String WINDOW_CONFIG_PROPERTY = "tag_category_editor_window_configuration";
 
     private final String title;
 
@@ -522,6 +519,7 @@ class TagCategoryEditor implements IExtension {
         final boolean modal = true;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, modal)
                 : new JDialog((JDialog) frame, title, modal);
+
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
         modifyColorAction = new AbstractAction() {
@@ -547,7 +545,7 @@ class TagCategoryEditor implements IExtension {
         });
         cancelButton.addActionListener(e -> close());
 
-        final JPanel buttonPane = new JPanel();
+        final JPanel buttonPane = new JPanel(new ResponsiveFlowLayout());
         buttonPane.add(enterConfirms);
         buttonPane.add(okButton);
         buttonPane.add(cancelButton);
@@ -681,23 +679,9 @@ class TagCategoryEditor implements IExtension {
         final boolean areButtonsAtTheTop = ResourceController.getResourceController()
                 .getBooleanProperty("el__buttons_above");
         contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
-        configureDialog(dialog);
-        restoreDialogSize(dialog);
-        dialog.pack();
-        dialog.addComponentListener(new ComponentListener() {
-            @Override
-            public void componentShown(final ComponentEvent e) {
-            }
-
-            @Override
-            public void componentResized(final ComponentEvent e) {
-                saveDialogSize(dialog);
-            }
-
-            @Override
-            public void componentMoved(final ComponentEvent e) {
-            }
-
+        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        windowConfigurationStorage.setBounds(dialog);
+        dialog.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentHidden(final ComponentEvent e) {
                 dialog.dispose();
@@ -998,7 +982,6 @@ class TagCategoryEditor implements IExtension {
 
     void show() {
         if(! dialog.isVisible()) {
-            UITools.setDialogLocationRelativeTo(dialog, dialog.getParent());
             dialog.setVisible(true);
         }
         else
@@ -1015,26 +998,6 @@ class TagCategoryEditor implements IExtension {
         UITools.setScrollbarIncrement(scrollPane);
         scrollPane.setMinimumSize(new Dimension(0, 60));
         return scrollPane;
-    }
-
-    private void configureDialog(JDialog dialog) {
-        dialog.setModal(false);
-    }
-
-    private void saveDialogSize(final JDialog dialog) {
-        ResourceController resourceController = ResourceController.getResourceController();
-        resourceController.setProperty(WIDTH_PROPERTY, dialog.getWidth());
-        resourceController.setProperty(HEIGHT_PROPERTY, dialog.getHeight());
-    }
-
-    private void restoreDialogSize(final JDialog dialog) {
-        Dimension preferredSize = dialog.getPreferredSize();
-        ResourceController resourceController = ResourceController.getResourceController();
-        preferredSize.width = Math.max(preferredSize.width, resourceController.getIntProperty(
-                WIDTH_PROPERTY, 0));
-        preferredSize.height = Math.max(preferredSize.height, resourceController.getIntProperty(
-                HEIGHT_PROPERTY, 0));
-        dialog.setPreferredSize(preferredSize);
     }
 
     private void confirmedSubmit() {
