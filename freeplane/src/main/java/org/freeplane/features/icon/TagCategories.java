@@ -17,7 +17,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -425,6 +424,8 @@ public class TagCategories {
                         if(qualifiedContent == fullContent )
                             return tagReference;
                     }
+                    if(end < 0)
+                        break;
                 }
 
             } else {
