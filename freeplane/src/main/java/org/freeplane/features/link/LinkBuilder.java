@@ -22,11 +22,12 @@ package org.freeplane.features.link;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -51,12 +52,12 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 	private static final int FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS = 3;
 	private static final String FORMAT_AS_HYPERLINK = "FORMAT_AS_HYPERLINK";
 	private static final String LINK = "LINK";
-	final private HashSet<NodeLinkModel> processedLinks;
+	final private Set<NodeLinkModel> processedLinks;
 	private final LinkController linkController;
 
 	public LinkBuilder(final LinkController linkController) {
 		this.linkController = linkController;
-		processedLinks = new HashSet<NodeLinkModel>();
+		processedLinks = new LinkedHashSet<NodeLinkModel>();
 	}
 
 	private NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
