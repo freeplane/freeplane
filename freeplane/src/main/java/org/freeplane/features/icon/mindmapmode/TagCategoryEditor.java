@@ -198,10 +198,14 @@ class TagCategoryEditor implements IExtension {
         public Object getCellEditorValue() {
             Tag tag = (Tag) currentNode.getUserObject();
             String text = textField.getText();
+            if(text.isEmpty())
+                return tag;
+            Tag categorizedTag;
             if(tag.isEmpty())
-                return registry.createTag(text);
+                categorizedTag = registry.createTag(currentNode, text);
             else
-                return registry.setTagColor(text, tag.getColor());
+                categorizedTag = registry.createTag(currentNode, text, tag.getColor());
+            return new Tag(text, categorizedTag.getColor());
         }
 
         @Override

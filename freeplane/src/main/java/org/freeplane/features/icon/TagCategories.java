@@ -609,4 +609,22 @@ public class TagCategories {
         }
 
     }
+
+    public Tag createTag(DefaultMutableTreeNode currentNode, String text) {
+        Tag tag = createTag(currentNode, text, Color.BLACK);
+        tag.setColor(Tag.getDefaultColor(tag.getContent()));
+        return tag;
+    }
+
+    public Tag createTag(DefaultMutableTreeNode currentNode, String text, Color color) {
+        String categories = categorizedContent((DefaultMutableTreeNode) currentNode.getParent());
+        String categorizedContent = categories.isEmpty() ? text : categories + categorySeparator + text;
+        Tag tag = new Tag(categorizedContent, color);
+        Optional<Tag> knownTag = mapTags.getElement(tag);
+        if(knownTag.isPresent())
+            return knownTag.get();
+        mapTags.add(tag);
+        tagReferences.put(categorizedContent, new ArrayList<>());
+        return tag;
+    }
 }
