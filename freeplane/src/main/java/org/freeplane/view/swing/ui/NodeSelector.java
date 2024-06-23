@@ -38,6 +38,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -67,13 +68,16 @@ public class NodeSelector {
 		    }
 		    try {
 		        Controller controller = Controller.getCurrentController();
-		        if (!controller.getModeController().isBlocked() && controller.getSelection().size() <= 1) {
+		        ModeController modeController = controller.getModeController();
+                if (!modeController.isBlocked() && controller.getSelection().size() <= 1) {
 		            final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
 		                    mouseEvent.getComponent());
 		            MapView map = nodeV.getMap();
 		            if (nodeV.isDisplayable() && nodeV.getNode().hasVisibleContent(map.getFilter())) {
 		                map.select();
-		                controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getNode());
+		                NodeModel node = nodeV.getNode();
+                        controller.getSelection().selectAsTheOnlyOneSelected(node);
+		                modeController.getMapController().scrollNodeTreeAfterSelect(node);
 		            }
 		        }
 		    }
