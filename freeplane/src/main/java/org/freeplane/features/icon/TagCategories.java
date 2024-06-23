@@ -412,14 +412,19 @@ public class TagCategories {
 
                     if (!found) {
                         String qualifiedContent = end >= 0 ? fullContent.substring(0, end) : fullContent;
-                        Color color = (setColor && qualifiedContent == fullContent ? tag : new Tag(qualifiedContent)).getColor();
+                        Tag qualifiedTag = setColor && qualifiedContent == fullContent ? tag : new Tag(qualifiedContent);
+                        Color color = qualifiedTag.getColor();
                         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new Tag(currentTag, color));
                         insertNode(currentNode, currentNode.isRoot() ? currentNode.getChildCount() - 1 : currentNode.getChildCount(), newNode);
                         currentNode = newNode;
                         categoriesChanged = true;
+                        TagReference tagReference = new TagReference(qualifiedTag);
+                        ArrayList<TagReference> list = new ArrayList<>();
+                        list.add(tagReference);
+                        tagReferences.put(qualifiedContent, list);
+                        if(qualifiedContent == fullContent )
+                            return tagReference;
                     }
-                    if(end < 0)
-                        break;
                 }
 
             } else {
