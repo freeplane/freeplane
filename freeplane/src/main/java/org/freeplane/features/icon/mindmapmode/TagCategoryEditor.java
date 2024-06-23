@@ -594,6 +594,7 @@ class TagCategoryEditor implements IExtension {
         tree.setTransferHandler(new TreeTransferHandler());
         tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
         tree.setCellEditor(new TagCellEditor(tagCategories));
+        tree.setToggleClickCount(0);
 
         configureKeyBindings();
 
