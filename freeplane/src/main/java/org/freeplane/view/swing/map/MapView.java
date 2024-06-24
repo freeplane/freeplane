@@ -634,8 +634,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 if(selection.selectedNode != null)
                     modeController.getMapController().onSelectionChange(getMapSelection());
                 if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION)) {
+                    boolean wasFolded = selectedNode.isFolded();
                     nodeViewFolder.adjustFolding(selectedSet);
-                    scrollNodeToVisible(selectedNode);
+                    ResourceController resourceController = ResourceController.getResourceController();
+                    if(wasFolded && ! selectedNode.isFolded() &&
+                            (resourceController.getBooleanProperty("scrollOnUnfold") || resourceController.getBooleanProperty("scrollOnSelect")))
+                        mapScroller.scrollNodeTreeToVisible(selectedNode);
+                    else
+                        scrollNodeToVisible(selectedNode);
                 }
 
             }
