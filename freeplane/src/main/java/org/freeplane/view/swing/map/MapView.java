@@ -60,7 +60,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
-import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -86,7 +85,6 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
-import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.link.ConnectorModel;
@@ -637,9 +635,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                     boolean wasFolded = selectedNode.isFolded();
                     nodeViewFolder.adjustFolding(selectedSet);
                     ResourceController resourceController = ResourceController.getResourceController();
-                    if(wasFolded && ! selectedNode.isFolded() &&
-                            (resourceController.getBooleanProperty("scrollOnUnfold") || resourceController.getBooleanProperty("scrollOnSelect")))
-                        mapScroller.scrollNodeTreeToVisible(selectedNode);
+                    if(wasFolded && ! selectedNode.isFolded() && selection.size() == 1
+                            && (resourceController.getBooleanProperty("scrollOnUnfold") || resourceController.getBooleanProperty("scrollOnSelect")))
+                        SwingUtilities.invokeLater(() ->
+                            mapScroller.scrollNodeTreeToVisible(selectedNode));
                     else
                         scrollNodeToVisible(selectedNode);
                 }
