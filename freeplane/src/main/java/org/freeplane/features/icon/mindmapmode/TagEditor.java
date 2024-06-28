@@ -445,17 +445,17 @@ class TagEditor {
 
         JMenuItem copyMenuItem = TranslatedElementFactory.createMenuItem("menu_copy");
         copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        copyMenuItem.addActionListener(am.get(TransferHandler.getCopyAction().getValue(Action.NAME)));
+        copyMenuItem.addActionListener(ev -> TransferHandler.getCopyAction().actionPerformed(toTableEvent(ev)));
         editMenu.add(copyMenuItem);
 
         JMenuItem cutMenuItem = TranslatedElementFactory.createMenuItem("CutAction.text");
-        cutMenuItem.addActionListener(am.get(TransferHandler.getCutAction().getValue(Action.NAME)));
+        cutMenuItem.addActionListener(ev -> TransferHandler.getCutAction().actionPerformed(toTableEvent(ev)));
         cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         editMenu.add(cutMenuItem);
 
         JMenuItem pasteMenuItem = TranslatedElementFactory.createMenuItem("PasteAction.text");
         pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        pasteMenuItem.addActionListener(am.get(TransferHandler.getPasteAction().getValue(Action.NAME)));
+        pasteMenuItem.addActionListener(ev -> TransferHandler.getPasteAction().actionPerformed(toTableEvent(ev)));
         editMenu.add(pasteMenuItem);
 
         JMenuItem colorMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_color");
@@ -574,6 +574,9 @@ class TagEditor {
                 }
             }
         });
+    }
+    private ActionEvent toTableEvent(ActionEvent ev) {
+        return new ActionEvent(tagTable, ev.getID(), ev.getActionCommand(), ev.getWhen(), ev.getModifiers());
     }
     private void restoreDialogSize(final JDialog dialog) {
         ResourceController resourceController = ResourceController.getResourceController();
