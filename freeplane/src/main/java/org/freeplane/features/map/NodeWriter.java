@@ -21,7 +21,10 @@ package org.freeplane.features.map;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -58,13 +61,13 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		return Mode.EXPORT.equals(mode);
 	}
 
-	private final Map<SharedNodeData, NodeModel> alreadyWrittenSharedContent;
+	private final Map<SharedNodeData, List<NodeModel>> alreadyWrittenSharedContent;
 	private final LinkBuilder linkBuilder;
 
 	public NodeWriter(final MapController mapController, LinkBuilder linkBuilder, final String nodeTag, final boolean writeChildren,
 	                  final CopiedNodeSet copiedNodeSet) {
 		this.linkBuilder = linkBuilder;
-		alreadyWrittenSharedContent = new HashMap<SharedNodeData, NodeModel>();
+		alreadyWrittenSharedContent = new HashMap<>();
 		this.mapController = mapController;
 		this.shouldWriteChildren = writeChildren;
 		this.mayWriteChildren = true;
@@ -167,14 +170,13 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void writeReferenceNodeId(ITreeWriter writer, NodeModel node) {
 	    SharedNodeData sharedData = node.getSharedData();
-        final NodeModel referenceNode = alreadyWrittenSharedContent.get(sharedData);
-	    if(referenceNode != null){
-	    	if(referenceNode.isSubtreeCloneOf(node))
-	    		writer.addAttribute("TREE_ID", referenceNode.createID());
+        final List<NodeModel> referenceNodes = alreadyWrittenSharedContent.get(sharedData);
+	    if(referenceNodes != null){
+	        Optional<NodeModel> referenceTreeNode = referenceNodes.stream().filter(savedNode -> savedNode.isSubtreeCloneOf(node)).findAny();
+	        if(referenceTreeNode.isPresent())
+                writer.addAttribute("TREE_ID", referenceTreeNode.get().createID());
             else {
-                writer.addAttribute("CONTENT_ID", referenceNode.createID());
-                if(referenceNode.subtreeClones().size() == 1 && node.subtreeClones().size() > 1)
-                    alreadyWrittenSharedContent.put(sharedData, node);
+                writer.addAttribute("CONTENT_ID", referenceNodes.get(0).createID());
             }
 	    }
 
@@ -185,15 +187,14 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
     }
 
 	private void registerWrittenNode(final NodeModel node) {
-	    alreadyWrittenSharedContent.put(node.getSharedData(), node);
+	    alreadyWrittenSharedContent.computeIfAbsent(node.getSharedData(), x -> new LinkedList<>()).add(node);
     }
 
 	public void writeContent(final ITreeWriter writer, final Object content, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) content;
 		writer.addExtensionNodes(node, node.getIndividualExtensionValues());
 		final boolean isNodeContentWrittenFirstTime = ! isAlreadyWritten(node);
-		if(isNodeContentWrittenFirstTime)
-			registerWrittenNode(node);
+		registerWrittenNode(node);
 		linkBuilder.writeContent(writer, node);
 		if(isNodeContentWrittenFirstTime || Mode.EXPORT.equals(mode(writer))){
 			writer.addExtensionNodes(node, node.getSharedExtensions().values());
