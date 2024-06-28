@@ -165,10 +165,6 @@
 				<boolean name="showLinkSpecificIcons" />
 				<number name="fast_access_icon_number" min="0" max="100"/>
 			</separator>
-			<separator name="tags" text="tags">
-				<boolean name="show_categories" />
-			</separator>
-
 		</tab>
 		<tab name="Defaults">
 			<separator name="cloud">
