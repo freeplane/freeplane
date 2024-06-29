@@ -119,16 +119,18 @@ public class TagCategories {
 
     public void updateTagCategorySeparator(String newCategorySeparator) {
         String initialCategorySeparator = this.categorySeparator;
-        setTagCategorySeparator(newCategorySeparator);
-        final Tag[] initialTags = mapTags.stream()
-        .filter(tag -> tag.getContent().contains(initialCategorySeparator))
-        .toArray(Tag[]::new);
-        for(Tag tag: initialTags) {
-            final String updatedContent = tag.getContent().replace(initialCategorySeparator,  newCategorySeparator);
-            final Tag updatedTag = new Tag(updatedContent, tag.getColor());
-            mapTags.replace(tag, updatedTag);
+        if(! initialCategorySeparator.equals(newCategorySeparator)) {
+            setTagCategorySeparator(newCategorySeparator);
+            final Tag[] initialTags = mapTags.stream()
+                    .filter(tag -> tag.getContent().contains(initialCategorySeparator))
+                    .toArray(Tag[]::new);
+            for(Tag tag: initialTags) {
+                final String updatedContent = tag.getContent().replace(initialCategorySeparator,  newCategorySeparator);
+                final Tag updatedTag = new Tag(updatedContent, tag.getColor());
+                mapTags.replace(tag, updatedTag);
+            }
+            categoriesChanged = true;
         }
-        categoriesChanged = true;
     }
 
     public void setTagCategorySeparator(String newCategorySeparator) {
