@@ -553,7 +553,7 @@ public class TagCategories {
     private void replaceReferencedTags(String from, String to) {
         List<TagReference> replacedTagReferences = tagReferences.remove(from);
         List<TagReference> list = tagReferences.computeIfAbsent(to, key -> new ArrayList<>());
-        if(replacedTagReferences != null || ! from.isEmpty())
+        if(replacedTagReferences != null && ! from.isEmpty())
             list.addAll(replacedTagReferences);
     }
 
