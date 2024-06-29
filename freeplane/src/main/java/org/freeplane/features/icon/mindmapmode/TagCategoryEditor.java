@@ -105,6 +105,7 @@ import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.icon.TreeTagChangeListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
 
 class TagCategoryEditor implements IExtension {
     private static final int UUID_LENGTH = 36;
@@ -842,10 +843,14 @@ class TagCategoryEditor implements IExtension {
         final TreePath[] selectionPaths = getSelectionPaths();
         if(selectionPaths == null)
             return;
+        MapModel selectedMap = Controller.getCurrentController().getMap();
+        if(selectedMap == null)
+            return;
+        String mapSeparator = selectedMap.getIconRegistry().getTagCategories().getTagCategorySeparator();
         final List<Tag> selectedTags = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .map(node -> new CategorizedTagForCategoryNode(node).categorizedTag(getTagCategorySeparator()))
+                .map(node -> new CategorizedTagForCategoryNode(node).categorizedTag(mapSeparator))
                 .collect(Collectors.toList());
         ((MIconController)IconController.getController()).insertTagsIntoSelectedNodes(selectedTags);
     }
