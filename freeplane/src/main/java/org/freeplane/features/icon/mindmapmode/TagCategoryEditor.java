@@ -411,7 +411,12 @@ class TagCategoryEditor implements IExtension {
             SwingUtilities.invokeLater(() -> merge(e));
         }
 
-        public void apply() {
+        public void apply(String oldSeparator, String newSeparator) {
+            if(! oldSeparator.equals(newSeparator)) {
+                for(int i = 0; i < replacements.size(); i++) {
+                    replacements.set(i, replacements.get(i).replace(oldSeparator, newSeparator));
+                }
+            }
             tagCategories.replaceReferencedTags(replacements);
         }
 
@@ -520,7 +525,7 @@ class TagCategoryEditor implements IExtension {
         this.lastSelectionParentsNodes = Collections.emptyList();
         title = TextUtils.getText("tag_category_manager");
         contentWasModified = false;
-        final boolean modal = true;
+        final boolean modal = false;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, modal)
                 : new JDialog((JDialog) frame, title, modal);
 
@@ -994,7 +999,14 @@ class TagCategoryEditor implements IExtension {
     }
 
     protected void submit() {
-        tagRenamer.apply();
+        String oldSeparator = tagCategories.getTagCategorySeparator();
+        TagCategories lastStateCategories = map.getIconRegistry().getTagCategories();
+        String newSeparator = lastStateCategories.getTagCategorySeparator();
+        tagCategories.updateTagCategorySeparator(newSeparator);
+        lastStateCategories.getTagsAsListModel()
+            .forEach(tag -> tagCategories.registerTagReferenceIfUnknown(tag));
+        tagRenamer.apply(oldSeparator, newSeparator);
+
         iconController.setTagCategories(map, tagCategories);
     }
 

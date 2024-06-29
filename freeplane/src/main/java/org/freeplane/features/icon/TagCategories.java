@@ -128,6 +128,21 @@ public class TagCategories {
                 final String updatedContent = tag.getContent().replace(initialCategorySeparator,  newCategorySeparator);
                 final Tag updatedTag = new Tag(updatedContent, tag.getColor());
                 mapTags.replace(tag, updatedTag);
+                List<TagReference> replacedContentReferences = tagReferences.remove(tag.getContent());
+                if(replacedContentReferences != null) {
+                    tagReferences.computeIfAbsent(updatedContent, x -> new ArrayList<>()).addAll(replacedContentReferences);
+                }
+            }
+            for(int i = uncategorizedTagsNode.getChildCount() - 1; i >= 0; i--) {
+                DefaultMutableTreeNode uncategorizedTagNode = (DefaultMutableTreeNode) uncategorizedTagsNode.getChildAt(i);
+                Tag tag = (Tag) uncategorizedTagNode.getUserObject();
+                if(tag.getContent().contains(newCategorySeparator)) {
+                    uncategorizedTagsNode.remove(i);
+                    mapTags.remove(tag);
+                    registerTagReference(tag, true);
+                }
+
+
             }
             categoriesChanged = true;
         }
@@ -629,5 +644,10 @@ public class TagCategories {
         mapTags.add(tag);
         tagReferences.put(categorizedContent, new ArrayList<>());
         return tag;
+    }
+
+    public void registerTagReferenceIfUnknown(Tag tag) {
+        if(! tagReferences.containsKey(tag.getContent()))
+            registerTagReference(tag);
     }
 }
