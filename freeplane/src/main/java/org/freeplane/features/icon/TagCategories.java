@@ -152,12 +152,12 @@ public class TagCategories {
         this.categorySeparator = newCategorySeparator;
     }
 
-    public static void writeTag(DefaultMutableTreeNode node, StringWriter writer) {
+    public void writeCategorizedTag(DefaultMutableTreeNode node, StringWriter writer) {
         Object userObject = node.getUserObject();
         if (userObject instanceof Tag) {
-            Tag tag = (Tag) userObject;
             try {
-                writeTag(tag, writer);
+            	Tag categorizedTag = new CategorizedTagForCategoryNode(node).categorizedTag(categorySeparator);
+                writeTag(categorizedTag, writer);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

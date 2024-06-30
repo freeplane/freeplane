@@ -255,7 +255,7 @@ class TagCategoryEditor implements IExtension {
                         return null;
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
                     TagCategories.writeTagCategories(node, "", tagCategoryWriter);
-                    TagCategories.writeTag(node, tagWriter);
+                    tagCategories.writeCategorizedTag(node, tagWriter);
                 }
                 TagCategorySelection stringSelection = new TagCategorySelection(lastTransferableId, tagCategoryWriter.toString(), tagWriter.toString());
                 return stringSelection;
