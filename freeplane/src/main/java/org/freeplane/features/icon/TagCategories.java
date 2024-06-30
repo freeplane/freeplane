@@ -643,7 +643,10 @@ public class TagCategories {
         if(knownTag.isPresent())
             return knownTag.get();
         mapTags.add(tag);
-        tagReferences.put(categorizedContent, new ArrayList<>());
+        TagReference tagReference = new TagReference(tag);
+        ArrayList<TagReference> list = new ArrayList<>();
+        list.add(tagReference);
+        tagReferences.put(tag.getContent(), list);
         return tag;
     }
 
