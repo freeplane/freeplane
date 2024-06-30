@@ -27,7 +27,7 @@ java {
 task(run, dependsOn: 'classes', type: JavaExec) {
     mainClass ='org.freeplane.launcher.Launcher'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = ['-Xmx1g',
+    jvmArgs = ['-XX:MaxRAM=20g', '-XX:MaxRAMPercentage=15',
     "-Dorg.freeplane.basedirectory=$globalBin",
     "-Dorg.freeplane.globalresourcedir=${rootDir.path}/freeplane/src/external/resources",
 	"-Dorg.freeplane.builtin.scripts.dir=${rootDir.path}/freeplane_plugin_script/scripts",
@@ -48,7 +48,7 @@ task(debug, dependsOn: 'classes', type: JavaExec) {
 task(runDist, dependsOn: 'classes', type: JavaExec) {
 	mainClass ='org.freeplane.launcher.Launcher'
 	classpath = fileTree(dir: globalBin, include: '*.jar')
-	jvmArgs = ['-Xmx1g',
+	jvmArgs = ['-XX:MaxRAM=20g', '-XX:MaxRAMPercentage=15',
 			   "-Dorg.freeplane.basedirectory=$globalBin",
 			   "-Djava.security.policy=$projectDir/security/freeplane.policy",
 			   '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
