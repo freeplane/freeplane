@@ -156,10 +156,10 @@ class TagCategoryEditor implements IExtension {
 
         private DefaultMutableTreeNode currentNode;
 
-        private TagCategories registry;
+        private TagCategories tagCategories;
 
-        public TagCellEditor(TagCategories registry) {
-            this.registry = registry;
+        public TagCellEditor(TagCategories tagCategories) {
+            this.tagCategories = tagCategories;
             textField = new JTextField();
             textField.addActionListener(new ActionListener() {
                 @Override
@@ -203,9 +203,9 @@ class TagCategoryEditor implements IExtension {
                 return tag;
             Tag categorizedTag;
             if(tag.isEmpty())
-                categorizedTag = registry.createTag(currentNode, text);
+                categorizedTag = tagCategories.createTag(currentNode, text);
             else
-                categorizedTag = registry.createTag(currentNode, text, tag.getColor());
+                categorizedTag = tagCategories.createTag(currentNode, text, tag.getColor());
             return new Tag(text, categorizedTag.getColor());
         }
 
