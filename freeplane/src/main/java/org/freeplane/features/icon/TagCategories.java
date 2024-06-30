@@ -281,10 +281,11 @@ public class TagCategories {
     }
 
     public TreeNode[] addChildNode(MutableTreeNode parent) {
+    	DefaultMutableTreeNode rootNode = getRootNode();
         if(parent == null)
-            parent = getRootNode();
+			parent = rootNode;
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
-        nodes.insertNodeInto(newNode, parent, parent.getChildCount());
+        nodes.insertNodeInto(newNode, parent,  parent == rootNode ? parent.getChildCount() - 1 : parent.getChildCount());
         return nodes.getPathToRoot(newNode);
    }
 
