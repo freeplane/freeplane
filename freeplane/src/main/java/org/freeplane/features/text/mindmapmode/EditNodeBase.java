@@ -170,7 +170,7 @@ abstract public class EditNodeBase {
 			if (isChanged()) {
 				final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
 				    JOptionPane.YES_NO_CANCEL_OPTION);
-				if (action == JOptionPane.CANCEL_OPTION) {
+				if (action == JOptionPane.CANCEL_OPTION || action == JOptionPane.CLOSED_OPTION) {
 					return;
 				}
 				if (action == JOptionPane.YES_OPTION) {

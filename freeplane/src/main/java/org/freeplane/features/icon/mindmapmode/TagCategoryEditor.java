@@ -1030,7 +1030,7 @@ class TagCategoryEditor implements IExtension {
 
                 if (action == JOptionPane.YES_OPTION) {
                     submit();
-                } else if (action == JOptionPane.CANCEL_OPTION) {
+                } else if (action == JOptionPane.CANCEL_OPTION || action == JOptionPane.CLOSED_OPTION) {
                     return;
                 }
             }
