@@ -327,7 +327,7 @@ class TagEditor {
 
         private void insertData(JTable target, String data, int index) {
             TableModel model = target.getModel();
-            String[] rows = data.split("\n");
+            String[] rows = data.split(System.lineSeparator());
             for (String row : rows)
                 ((TagsWrapper) model).insertTag(index++, createTagIfAbsent(row, true));
         }
