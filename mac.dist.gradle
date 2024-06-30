@@ -70,7 +70,7 @@ def defineMacBuildTasks =  { architecture ->
      '--icon', 'freeplane_framework/mac-appbundler/freeplane.icns',
      '--app-version', majorVersion,
      '--java-options', "-XX:MaxRAM=20g",
-     '--java-options', "-XX:MaxRAMPercentage=15",
+     '--java-options', "-XX:MaxRAMPercentage=15.0",
      '--java-options', '-Djava.security.manager=allow',
      '--java-options', '-Dapple.laf.useScreenMenuBar=false',
      '--java-options', '-Xdock:name=Freeplane',
