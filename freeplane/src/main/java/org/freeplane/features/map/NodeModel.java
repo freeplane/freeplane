@@ -77,6 +77,8 @@ public class NodeModel{
 	private List<NodeModel> children;
 	private NodeModel parent;
 	private String id;
+	private boolean folded;
+
 	private MapModel map = null;
 	private Side side;
 	private Collection<INodeView> views = null;
@@ -105,6 +107,7 @@ public class NodeModel{
 		side = Side.DEFAULT;
 		init(userObject);
 		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
+		folded = false;
 	}
 
 	private NodeModel(NodeModel toBeCloned, CloneType cloneType){
@@ -113,6 +116,7 @@ public class NodeModel{
 		children = new ArrayList<NodeModel>();
 		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
 		side = Side.DEFAULT;
+		folded = toBeCloned.folded;
 	}
 
 	protected void init(final Object userObject) {
@@ -435,7 +439,7 @@ public class NodeModel{
 	}
 
 	public boolean isFolded() {
-		return sharedData.isFolded() || !isAccessible();
+		return folded || !isAccessible();
 	}
 
 	/*
@@ -544,10 +548,10 @@ public class NodeModel{
 	}
 
 	public void setFolded(boolean folded) {
-		boolean wasFoldingFlagSet = sharedData.isFolded();
+		boolean wasFoldingFlagSet = this.folded;
 		boolean wasFolded = isFolded();
 		if (wasFoldingFlagSet != folded && isAccessible()) {
-			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
+		    this.folded = (folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
 		}
 		boolean isFoldedNow = isFolded();
 		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(isFoldedNow), false, false));
