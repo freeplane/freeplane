@@ -8,7 +8,6 @@ package org.freeplane.features.icon.mindmapmode;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
@@ -21,9 +20,9 @@ public class TagSelection implements Transferable, ClipboardOwner {
             tagFlavor,
             DataFlavor.stringFlavor
         };
-    private final StringSelection tagSelectionDelegate;
+    private final String tagSelection;
     public TagSelection(String tagData) {
-        tagSelectionDelegate = new StringSelection(tagData);
+    	tagSelection = tagData;
     }
 
     @Override
@@ -39,12 +38,12 @@ public class TagSelection implements Transferable, ClipboardOwner {
     @Override
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException,
             IOException {
-            return tagSelectionDelegate.getTransferData(DataFlavor.stringFlavor);
+            return tagSelection;
     }
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
-        tagSelectionDelegate.lostOwnership(clipboard, contents);
+       
     }
 
 }
