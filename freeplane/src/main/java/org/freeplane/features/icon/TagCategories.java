@@ -453,7 +453,7 @@ public class TagCategories {
                 }
 
                 if(! tagFound)
-                    uncategorizedTagsNode.add(new DefaultMutableTreeNode(tag));
+                    insertNode(uncategorizedTagsNode, uncategorizedTagsNode.getChildCount(), new DefaultMutableTreeNode(tag));
             }
             TagReference tagReference = new TagReference(tag);
             ArrayList<TagReference> list = new ArrayList<>();
