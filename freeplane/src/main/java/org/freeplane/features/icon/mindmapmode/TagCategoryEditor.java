@@ -156,7 +156,7 @@ class TagCategoryEditor implements IExtension {
 
         private DefaultMutableTreeNode currentNode;
 
-        private TagCategories tagCategories;
+        private final TagCategories tagCategories;
 
         public TagCellEditor(TagCategories tagCategories) {
             this.tagCategories = tagCategories;
@@ -211,6 +211,9 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public boolean stopCellEditing() {
+            String text = textField.getText();
+            if(text.isEmpty())
+                return false;
             fireEditingStopped();
             return true;
         }
@@ -550,8 +553,8 @@ class TagCategoryEditor implements IExtension {
                 "enter_confirms"));
         modifyColorAction.setEnabled(false);
         okButton.addActionListener(e -> {
-            close();
-            submit();
+            if(close())
+                submit();
         });
         cancelButton.addActionListener(e -> close());
 
@@ -589,6 +592,16 @@ class TagCategoryEditor implements IExtension {
 		        double textHeight = rect.getHeight();
 				setRowHeight((int)  Math.ceil(textHeight * 1.4));
 			}
+
+            @Override
+            public void cancelEditing() {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) getEditingPath().getLastPathComponent();
+                Tag tag = (Tag) node.getUserObject();
+                super.cancelEditing();
+                if(tag.isEmpty() && node.isLeaf())
+                    tagCategories.removeNodeFromParent(node);
+            }
+
 
 
         };
@@ -639,8 +652,8 @@ class TagCategoryEditor implements IExtension {
                             addNode((e.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0);
                             break;
                         }
-                        close();
-                        submit();
+                        if (close())
+                            submit();
                     }
                     break;
                 }
@@ -709,9 +722,12 @@ class TagCategoryEditor implements IExtension {
         });
     }
 
-    private void close() {
+    private boolean close() {
+        if(tree.isEditing())
+            return false;
         dialog.setVisible(false);
         map.removeExtension(this);
+        return true;
     }
 
     private void configureKeyBindings() {
@@ -1023,7 +1039,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void confirmedSubmit() {
-        if (dialog.isVisible()) {
+        if (dialog.isVisible() && ! tree.isEditing()) {
             if (contentWasModified) {
                 final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText(
                         "long_node_changed_submit"), "", JOptionPane.YES_NO_CANCEL_OPTION);
