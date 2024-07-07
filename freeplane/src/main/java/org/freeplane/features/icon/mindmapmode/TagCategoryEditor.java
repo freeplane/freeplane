@@ -873,7 +873,10 @@ class TagCategoryEditor implements IExtension {
 
     private void addNode(boolean asChild) {
         DefaultMutableTreeNode selectedNode = getSelectedNode();
-        TreeNode[] nodes = (asChild || selectedNode == null || selectedNode.isRoot()) ? tagCategories.addChildNode(selectedNode) : tagCategories.addSiblingNode(selectedNode);
+        DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
+        if(selectedNode == null || selectedNode == uncategorizedTagsNode && asChild || selectedNode.getParent() == uncategorizedTagsNode)
+            selectedNode = tagCategories.getRootNode();
+        TreeNode[] nodes = (asChild || selectedNode.isRoot()) ? tagCategories.addChildNode(selectedNode) : tagCategories.addSiblingNode(selectedNode);
         if(nodes.length == 0)
             return;
         TreePath path = new TreePath(nodes);
