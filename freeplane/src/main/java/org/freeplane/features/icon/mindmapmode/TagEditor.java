@@ -798,6 +798,8 @@ class TagEditor {
             }};
         comboBox.setRenderer(cellRenderer);
         comboBox.setEditable(true);
+        JTextField editorComponent = (JTextField) comboBox.getEditor().getEditorComponent();
+        editorComponent.putClientProperty( "JTextField.selectAllOnFocusPolicy", "never");
         DefaultCellEditor cellEditor = new DefaultCellEditor(comboBox) {
             private static final long serialVersionUID = 1L;
 
