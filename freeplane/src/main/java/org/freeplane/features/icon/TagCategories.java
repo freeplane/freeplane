@@ -42,6 +42,8 @@ import org.freeplane.core.util.collection.SortedComboBoxModel;
 import org.freeplane.features.icon.mindmapmode.UncategorizedTag;
 
 public class TagCategories {
+
+
     public static Tag readTag(String spec) {
         int colorIndex = spec.length() - 9;
         if(colorIndex > 0 && spec.charAt(colorIndex) == '#') {
@@ -243,6 +245,46 @@ public class TagCategories {
         nodes.nodesWereInserted(parent, new int[] {index});
     }
 
+    private int findUncategorizedTagIndex(Tag tag) {
+        int low = 0;
+        int high = uncategorizedTagsNode.getChildCount() - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            DefaultMutableTreeNode midNode = (DefaultMutableTreeNode) uncategorizedTagsNode.getChildAt(mid);
+            Tag midUserObject = (Tag) midNode.getUserObject();
+
+            if (tag.compareTo(midUserObject) == 0) {
+                return mid;
+            } else if (tag.compareTo(midUserObject) < 0) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return -(low + 1);
+    }
+
+    private void insertUncategorizedTagNodeSorted(Tag tag) {
+        int index = findUncategorizedTagIndex(tag);
+
+        if (index < 0) {
+            int insertionPoint = -index - 1;
+            insertNode(uncategorizedTagsNode, insertionPoint, new DefaultMutableTreeNode(tag));
+        }
+    }
+
+    private DefaultMutableTreeNode removeUncategorizedTagNode(Tag tag) {
+        int index = findUncategorizedTagIndex(tag);
+
+        if (index < 0)
+            return null;
+        DefaultMutableTreeNode removedNode = (DefaultMutableTreeNode) uncategorizedTagsNode.getChildAt(index);
+        removeNodeFromParent(removedNode);
+        return removedNode;
+    }
+
     private int getIndentationLevel(String line) {
         int indentation = 0;
         while (line.charAt(indentation) == ' ') {
@@ -430,6 +472,14 @@ public class TagCategories {
                     if (!found) {
                         String qualifiedContent = end >= 0 ? fullContent.substring(0, end) : fullContent;
                         Tag qualifiedTag = setColor && qualifiedContent == fullContent ? tag : new Tag(qualifiedContent);
+                        if(currentNode.isRoot()) {
+                            DefaultMutableTreeNode uncategorizedTagNode = removeUncategorizedTagNode(qualifiedTag);
+                            if(uncategorizedTagNode != null) {
+                                insertNode(currentNode, currentNode.getChildCount() - 1, uncategorizedTagNode);
+                                currentNode = uncategorizedTagNode;
+                                continue;
+                            }
+                        }
                         Color color = qualifiedTag.getColor();
                         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new Tag(currentTag, color));
                         insertNode(currentNode, currentNode.isRoot() ? currentNode.getChildCount() - 1 : currentNode.getChildCount(), newNode);
@@ -453,7 +503,7 @@ public class TagCategories {
                 }
 
                 if(! tagFound)
-                    insertNode(uncategorizedTagsNode, uncategorizedTagsNode.getChildCount(), new DefaultMutableTreeNode(tag));
+                    insertUncategorizedTagNodeSorted(tag);
             }
             TagReference tagReference = new TagReference(tag);
             ArrayList<TagReference> list = new ArrayList<>();
@@ -630,8 +680,9 @@ public class TagCategories {
     }
 
     public Tag createTag(DefaultMutableTreeNode currentNode, String text) {
-        Tag tag = createTag(currentNode, text, Color.BLACK);
-        tag.setColor(Tag.getDefaultColor(tag.getContent()));
+        Tag tag = createTag(currentNode, text, null);
+        if(tag.getColor() == null)
+            tag.setColor(Tag.getDefaultColor(tag.getContent()));
         return tag;
     }
 
