@@ -735,6 +735,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		catch (final Exception e) {
+		    LogUtils.severe(e);
 			UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
 			    TextUtils.format("locking_failed_by_save_as", file.getName()));
 			return false;
