@@ -459,7 +459,6 @@ class TagEditor {
         editMenu.add(pasteMenuItem);
 
         JMenuItem colorMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_color");
-        colorMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         colorMenuItem.addActionListener(modifyColorAction);
         editMenu.add(colorMenuItem);
 
@@ -467,7 +466,6 @@ class TagEditor {
 
         JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
         JMenuItem insertMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
-        insertMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         insertMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
         editMenu.add(insertMenuItem);
 

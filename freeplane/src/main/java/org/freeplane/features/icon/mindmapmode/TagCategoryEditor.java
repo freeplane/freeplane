@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -853,32 +854,42 @@ class TagCategoryEditor implements IExtension {
         colorMenuItem.addActionListener(modifyColorAction);
         editMenu.add(colorMenuItem);
 
+        editMenu.addSeparator();
+
+        JMenuItem insertIntoNodesMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
+        insertIntoNodesMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
+        editMenu.add(insertIntoNodesMenuItem);
+        JMenuItem removeFromNodesMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_remove");
+        removeFromNodesMenuItem.addActionListener(e -> removeSelectedTagsFromSelectedNodes());
+        editMenu.add(removeFromNodesMenuItem);
+
         menubar.add(editMenu);
-
-        JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
-        JMenuItem insertMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
-        insertMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        insertMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
-        insertMenu.add(insertMenuItem);
-
-        menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
     }
 
+    private void removeSelectedTagsFromSelectedNodes() {
+        Set<Tag> selectedTags = collectSelectedTags().collect(Collectors.toSet());
+        ((MIconController)IconController.getController()).removeSelectedTagsFromSelectedNodes(selectedTags);
+    }
+
     private void insertSelectedTagsIntoSelectedNodes() {
+        List<Tag> selectedTags = collectSelectedTags().collect(Collectors.toList());
+        ((MIconController)IconController.getController()).insertTagsIntoSelectedNodes(selectedTags);
+    }
+
+    private Stream<Tag> collectSelectedTags() {
         final TreePath[] selectionPaths = getSelectionPaths();
         if(selectionPaths == null)
-            return;
+            return Stream.empty();
         MapModel selectedMap = Controller.getCurrentController().getMap();
         if(selectedMap == null)
-            return;
+            return Stream.empty();
         String mapSeparator = selectedMap.getIconRegistry().getTagCategories().getTagCategorySeparator();
-        final List<Tag> selectedTags = Stream.of(selectionPaths)
+        final Stream<Tag> selectedTags = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .map(node -> new CategorizedTagForCategoryNode(node).categorizedTag(mapSeparator))
-                .collect(Collectors.toList());
-        ((MIconController)IconController.getController()).insertTagsIntoSelectedNodes(selectedTags);
+                .map(node -> new CategorizedTagForCategoryNode(node).categorizedTag(mapSeparator));
+        return selectedTags;
     }
 
     private void addNode(boolean asChild) {

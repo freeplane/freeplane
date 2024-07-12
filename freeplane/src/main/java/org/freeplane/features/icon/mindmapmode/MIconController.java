@@ -756,11 +756,27 @@ public class MIconController extends IconController {
         });
     }
 
+
+    public void removeSelectedTagsFromSelectedNodes(Set<Tag> selectedTags) {
+        if(selectedTags.isEmpty())
+            return;
+        Controller.getCurrentController().getSelection().getSelection()
+        .forEach(node -> removeTags(node, selectedTags));
+    }
     public void insertTagsIntoSelectedNodes(List<Tag> selectedTags) {
         if(selectedTags.isEmpty())
             return;
         Controller.getCurrentController().getSelection().getSelection()
         .forEach(node -> addTags(node, selectedTags));
+    }
+
+    public void removeTags(NodeModel node, Set<Tag> removedTags) {
+        final List<Tag> existingTags = getTags(node);
+        final List<TagReference> newTags = new ArrayList<>(existingTags.size());
+        getTagReferences(node).stream()
+        .filter(ref -> ! removedTags.contains(ref.getTag()))
+        .forEach(newTags::add);
+        setTagReferences(node, newTags);
     }
 
     public void addTags(NodeModel node, List<Tag> addedTags) {
