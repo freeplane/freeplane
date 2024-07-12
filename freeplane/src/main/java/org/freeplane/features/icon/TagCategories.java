@@ -66,12 +66,21 @@ public class TagCategories {
 
         @Override
         public void valueForPathChanged(TreePath path, Object newValue) {
-            for (TreeModelListener listener: getTreeModelListeners()) {
-                if(listener instanceof TreeTagChangeListener)
-                    ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)newValue);
-
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+            Object oldValue = node.getUserObject();
+            if(node.getParent() == uncategorizedTagsNode) {
+                removeUncategorizedTagNode((Tag) oldValue);
+                node.setUserObject(newValue);
+                insertUncategorizedTagNodeSorted(node);
             }
-            super.valueForPathChanged(path, newValue);
+            else {
+                for (TreeModelListener listener: getTreeModelListeners()) {
+                    if(listener instanceof TreeTagChangeListener)
+                        ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)newValue);
+
+                }
+                super.valueForPathChanged(path, newValue);
+            }
         }
     }
 
@@ -106,7 +115,8 @@ public class TagCategories {
         this.mapTags = new SortedComboBoxModel<>(Tag.class);
         final DefaultMutableTreeNode rootNode = tagCategories.getRootNode();
         this.categorySeparator = tagCategories.categorySeparator;
-        tagReferences = new TreeMap<>(tagCategories.tagReferences);
+        tagReferences = new TreeMap<>();
+        tagCategories.tagReferences.entrySet().forEach(e -> tagReferences.put(e.getKey(), new ArrayList<>(e.getValue())));
         final DefaultMutableTreeNode rootCopy = copySubtree(rootNode);
         uncategorizedTagsNode = (DefaultMutableTreeNode) rootCopy.getLastChild();
         nodes = new TagCategoryTree(rootCopy);
@@ -268,11 +278,14 @@ public class TagCategories {
 
     private void insertUncategorizedTagNodeSorted(Tag tag) {
         int index = findUncategorizedTagIndex(tag);
+        int insertionPoint = index >= 0 ? index : -index - 1;
+        insertNode(uncategorizedTagsNode, insertionPoint, new DefaultMutableTreeNode(tag));
+    }
 
-        if (index < 0) {
-            int insertionPoint = -index - 1;
-            insertNode(uncategorizedTagsNode, insertionPoint, new DefaultMutableTreeNode(tag));
-        }
+    private void insertUncategorizedTagNodeSorted(DefaultMutableTreeNode node) {
+        int index = findUncategorizedTagIndex((Tag) node.getUserObject());
+        int insertionPoint = index >= 0 ? index : -index - 1;
+        insertNode(uncategorizedTagsNode, insertionPoint, node);
     }
 
     private DefaultMutableTreeNode removeUncategorizedTagNode(Tag tag) {

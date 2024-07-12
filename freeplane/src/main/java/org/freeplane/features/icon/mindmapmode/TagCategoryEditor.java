@@ -148,7 +148,7 @@ class TagCategoryEditor implements IExtension {
         }
     }
 
-    static class TagCellEditor extends AbstractCellEditor implements TreeCellEditor {
+    class TagCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
         private static final long serialVersionUID = 1L;
 
@@ -156,10 +156,7 @@ class TagCategoryEditor implements IExtension {
 
         private DefaultMutableTreeNode currentNode;
 
-        private final TagCategories tagCategories;
-
-        public TagCellEditor(TagCategories tagCategories) {
-            this.tagCategories = tagCategories;
+        public TagCellEditor() {
             textField = new JTextField();
             textField.addActionListener(new ActionListener() {
                 @Override
@@ -214,7 +211,18 @@ class TagCategoryEditor implements IExtension {
             String text = textField.getText();
             if(text.isEmpty())
                 return false;
+            TreePath editingPath = tree.getEditingPath();
+            if(editingPath == null)
+                return false;
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) editingPath.getParentPath().getLastPathComponent();
+            List<String> previousLastSelectionParentsNodes = lastSelectionParentsNodes;
+            if(parent == tagCategories.getUncategorizedTagsNode())
+                lastSelectionParentsNodes = Collections.singletonList("");
+            boolean pathSelected = tree.isPathSelected(editingPath);
             fireEditingStopped();
+            if(pathSelected && ! tree.isPathSelected(editingPath))
+                tree.addSelectionPath(editingPath);
+            lastSelectionParentsNodes = previousLastSelectionParentsNodes;
             return true;
         }
 
@@ -401,7 +409,9 @@ class TagCategoryEditor implements IExtension {
                         replacedContent = oldParent + getTagCategorySeparator() + newTag.getContent();
                     final String newContent = tagCategories.categorizedContent(insertedNode);
                     final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
-                    if(indexBefore < 0 || ! replacements.get(indexBefore).equals(replacedContent)) {
+                    if(indexBefore < 0
+                            || ! replacements.get(indexBefore).equals(replacedContent)
+                            && insertedNode.getParent() != tagCategories.getUncategorizedTagsNode()) {
                         if(internalMoveIsRunning) {
                             addReplacement(replacedContent, newContent);
                         }
@@ -464,7 +474,7 @@ class TagCategoryEditor implements IExtension {
                 final DefaultMutableTreeNode mergeParent = parent == tagCategories.getUncategorizedTagsNode()
                 ? tagCategories.getRootNode() : parent;
                 DefaultMutableTreeNode target = merge(node, null, mergeParent);
-                if(mergeParent.isRoot() && target != null)
+                if(mergeParent.isRoot())
                     merge(node, target, tagCategories.getUncategorizedTagsNode());
                 if(nodeWasSelected && node.getParent() == null)
                     tree.setSelectionPath(new TreePath(target));
@@ -612,7 +622,7 @@ class TagCategoryEditor implements IExtension {
         tree.setDropMode(DropMode.ON_OR_INSERT);
         tree.setTransferHandler(new TreeTransferHandler());
         tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
-        tree.setCellEditor(new TagCellEditor(tagCategories));
+        tree.setCellEditor(new TagCellEditor());
         tree.setToggleClickCount(0);
 
         configureKeyBindings();
@@ -761,7 +771,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeNodes();
-                extracted();
+                lastSelectionParentsNodes = Collections.emptyList();
                 lastTransferableId = "";
             }
         };
@@ -772,7 +782,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (copyNodes()) {
-                    extracted();
+                    lastSelectionParentsNodes = Collections.emptyList();
                     lastTransferableId = "";
                 }
             }
@@ -888,7 +898,7 @@ class TagCategoryEditor implements IExtension {
     private void saveLastSelectionParentsNodes() {
         final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
         if(selectionPaths == null || selectionPaths.length == 0) {
-            extracted();
+            lastSelectionParentsNodes = Collections.emptyList();
         } else {
             final List<String> x = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
@@ -901,9 +911,6 @@ class TagCategoryEditor implements IExtension {
         }
     }
 
-    private void extracted() {
-        lastSelectionParentsNodes = Collections.emptyList();
-    }
     private TreePath[] removeDescendantPaths(TreePath[] paths) {
         if (paths == null || paths.length == 0) {
             return null;
