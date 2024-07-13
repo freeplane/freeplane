@@ -39,6 +39,7 @@ import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
@@ -132,6 +133,8 @@ import org.freeplane.view.swing.map.link.ILinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener, Configurable {
+
+    private static final String MAP_VIEW_ZOOM_STEP_PROPERTY = "map_view_zoom_step";
 
     public enum SelectionDirection {RIGHT, LEFT, DOWN, UP;
 
@@ -3054,5 +3057,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public TagLocation getTagLocation() {
         return tagLocation;
+    }
+
+    public float calculateNewZoom(MouseWheelEvent e) {
+        float oldZoom = getZoom();
+        float zoomFactor = 1f + ResourceController.getResourceController().getIntProperty(MAP_VIEW_ZOOM_STEP_PROPERTY) / 100f;
+        float zoom = e.getWheelRotation() > 0 ? (oldZoom / zoomFactor) : (oldZoom * zoomFactor);
+        double x = Math.round(Math.log(zoom) / Math.log(zoomFactor));
+        zoom = (float) Math.pow(zoomFactor, x);
+        zoom = Math.max(Math.min(zoom, 32f), 0.03f);
+    	return zoom;
     }
 }

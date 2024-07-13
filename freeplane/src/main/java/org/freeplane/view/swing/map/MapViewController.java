@@ -902,7 +902,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	public String getItemForZoom(final float f) {
-		return (int) (f * 100F) + "%";
+		return Math.round(f * 100F) + "%";
 	}
 
 	private void setZoomComboBox(final float f) {

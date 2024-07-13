@@ -5,6 +5,7 @@ Better support for qualified tags
 Unfold folded nodes when toggling children folding state
 Scroll unfolded node tree to visible after any unfold action
 Option to scroll unfolded node tree to visible after selecting a node
+Option "Mouse wheel zoom (%)" setting percentage for zoom adjustments using the mouse wheel
 
 ==============================
 1.12.1
