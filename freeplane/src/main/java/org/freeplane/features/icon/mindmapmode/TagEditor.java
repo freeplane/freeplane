@@ -46,6 +46,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.HashSet;
@@ -88,6 +89,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.plaf.TableUI;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -417,6 +419,50 @@ class TagEditor {
         qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
 
         tagTable = createTagTable(originalNodeTags);
+        getTableModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if(e.getType() == TableModelEvent.INSERT || e.getType() == TableModelEvent.UPDATE) {
+                    SwingUtilities.invokeLater(() -> merge(e));
+                }
+            }
+
+            private void merge(TableModelEvent e) {
+                int firstRow = e.getFirstRow();
+                int lastRow = e.getLastRow();
+                TagsWrapper tags = getTableModel();
+                if(lastRow == TableModelEvent.HEADER_ROW)
+                    return;
+                if(firstRow == lastRow)
+                    merge(Collections.singleton(tags.getTag(firstRow)));
+                else {
+                    ArrayList<Tag> mergedTags = new ArrayList<>(lastRow - firstRow + 1);
+                    for(int i = firstRow; i <= lastRow; i++) {
+                        mergedTags.add(tags.getTag(i));
+                    }
+                }
+            }
+
+            private void merge(Collection<Tag> tags) {
+                tags.forEach(this::merge);
+            }
+
+            private void merge(Tag tag) {
+                if(tag.isEmpty())
+                    return;
+                TagsWrapper tags = getTableModel();
+                boolean found = false;
+                for(int i = 0; i < tags.getRowCount(); i++) {
+                    if(tags.getTag(i).equals(tag)) {
+                        if(found) {
+                            tags.removeTag(i--);
+                        }
+                        else
+                            found = true;
+                    }
+                }
+            }
+        });
         tagCategorySeparatorField.addFocusListener(new FocusAdapter() {
 
             @Override
@@ -425,7 +471,6 @@ class TagEditor {
             }
 
         });
-        ActionMap am = tagTable.getActionMap();
         JMenuBar menubar = new JMenuBar();
         JMenu editMenu = TranslatedElementFactory.createMenu("edit");
         JMenuItem addTagMenuItem = TranslatedElementFactory.createMenuItem("menu_addTag");
