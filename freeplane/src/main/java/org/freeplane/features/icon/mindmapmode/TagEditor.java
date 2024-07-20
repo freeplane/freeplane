@@ -55,11 +55,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListCellRenderer;
@@ -83,20 +83,15 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.plaf.TableUI;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.JColorButton;
@@ -462,21 +457,26 @@ class TagEditor {
         colorMenuItem.addActionListener(modifyColorAction);
         editMenu.add(colorMenuItem);
 
-        menubar.add(editMenu);
+        editMenu.addSeparator();
 
-        JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
         JMenuItem insertMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
         insertMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
         editMenu.add(insertMenuItem);
+        JMenuItem removeFromNodesMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_remove");
+        removeFromNodesMenuItem.addActionListener(e -> removeSelectedTagsFromSelectedNodes());
+        editMenu.add(removeFromNodesMenuItem);
+
+        menubar.add(editMenu);
 
         if(! tagCategories.isEmpty()) {
+            JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
                     sourceCategories,
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(),
                             tag.categorizedTag(getTagCategorySeparator()))));
+            menubar.add(insertMenu);
         }
-        menubar.add(insertMenu);
         dialog.setJMenuBar(menubar);
 
         editorScrollPane.setViewportView(tagTable);
@@ -588,11 +588,21 @@ class TagEditor {
     }
 
     private void insertSelectedTagsIntoSelectedNodes() {
-        final List<Tag> selectedTags = IntStream.of(tagTable.getSelectedRows())
-        .mapToObj(row -> (Tag)tagTable.getValueAt(row, 0))
-        .collect(Collectors.toList());
+        final List<Tag> selectedTags = collectSelectedTags()
+                .collect(Collectors.toList());
         iconController.insertTagsIntoSelectedNodes(selectedTags);
     }
+    private void removeSelectedTagsFromSelectedNodes() {
+        final Set<Tag> selectedTags = collectSelectedTags()
+        .collect(Collectors.toSet());
+        iconController.removeSelectedTagsFromSelectedNodes(selectedTags);
+    }
+    private Stream<Tag> collectSelectedTags() {
+        return IntStream.of(tagTable.getSelectedRows())
+        .mapToObj(row -> (Tag)tagTable.getValueAt(row, 0));
+    }
+
+
 
     private void insertTags() {
         ListSelectionModel selectionModel = tagTable.getSelectionModel();
