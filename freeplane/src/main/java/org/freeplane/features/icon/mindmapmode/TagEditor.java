@@ -459,10 +459,13 @@ class TagEditor {
 
         editMenu.addSeparator();
 
-        JMenuItem insertMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
-        insertMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
-        editMenu.add(insertMenuItem);
+        JMenuItem insertIntoNodesMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_insert");
+        insertIntoNodesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        insertIntoNodesMenuItem.addActionListener(e -> insertSelectedTagsIntoSelectedNodes());
+        editMenu.add(insertIntoNodesMenuItem);
+
         JMenuItem removeFromNodesMenuItem = TranslatedElementFactory.createMenuItem("choose_tag_remove");
+        removeFromNodesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         removeFromNodesMenuItem.addActionListener(e -> removeSelectedTagsFromSelectedNodes());
         editMenu.add(removeFromNodesMenuItem);
 
