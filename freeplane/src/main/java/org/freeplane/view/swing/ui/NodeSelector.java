@@ -70,8 +70,8 @@ public class NodeSelector {
 		        Controller controller = Controller.getCurrentController();
 		        ModeController modeController = controller.getModeController();
                 if (!modeController.isBlocked() && controller.getSelection().size() <= 1) {
-		            final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
-		                    mouseEvent.getComponent());
+		            NodeView nodeView = getNodeView();
+                    final NodeView nodeV = nodeView;
 		            MapView map = nodeV.getMap();
 		            if (nodeV.isDisplayable() && nodeV.getNode().hasVisibleContent(map.getFilter())) {
 		                map.select();
@@ -84,6 +84,11 @@ public class NodeSelector {
 		    catch (NullPointerException e) {
 		    }
 		}
+
+        private NodeView getNodeView() {
+            return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
+                    mouseEvent.getComponent());
+        }
 	}
 
 	private Rectangle controlRegionForDelayedSelection;
@@ -109,13 +114,20 @@ public class NodeSelector {
 		if (selectionMethod.equals(SELECTION_METHOD_BY_CLICK)) {
 			return;
 		}
-		if (selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
-			new TimeDelayedSelection(e).actionPerformed(new ActionEvent(this, 0, ""));
+		TimeDelayedSelection timeDelayedSelection = new TimeDelayedSelection(e);
+        MapView map = getRelatedNodeView(e).getMap();
+        long earliestSelectionTime = map.getLastScrollingTime() + 500;
+        long now = System.currentTimeMillis();
+        if(now < earliestSelectionTime)
+            map.setLastScrollingTime(now);
+        if (selectionMethod.equals(SELECTION_METHOD_DIRECT) && earliestSelectionTime <= now) {
+			timeDelayedSelection.actionPerformed(new ActionEvent(this, 0, ""));
 			return;
 		}
-		final int timeForDelayedSelection = ResourceController.getResourceController().getIntProperty(
-		    TIME_FOR_DELAYED_SELECTION, 0);
-		timerForDelayedSelection = new Timer(timeForDelayedSelection, new TimeDelayedSelection(e));
+		final int timeForDelayedSelection = Math.max(ResourceController.getResourceController().getIntProperty(
+		    TIME_FOR_DELAYED_SELECTION, 0),
+		        (int)(earliestSelectionTime - now)) ;
+		timerForDelayedSelection = new Timer(timeForDelayedSelection, timeDelayedSelection);
 		timerForDelayedSelection.setRepeats(false);
 		timerForDelayedSelection.start();
 	}
