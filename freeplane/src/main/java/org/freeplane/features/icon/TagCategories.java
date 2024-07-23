@@ -92,6 +92,7 @@ public class TagCategories {
 
     private String categorySeparator;
     private final DefaultMutableTreeNode uncategorizedTagsNode;
+    public static final String UNCATEGORIZED_NODE = " uncategorized node ";
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
@@ -219,35 +220,40 @@ public class TagCategories {
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            int indentation = getIndentationLevel(line);
 
             Tag tag = readTag(line.trim());
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
-            DefaultMutableTreeNode parent;
-            if (indentation == lastIndentation) {
-                parent = (DefaultMutableTreeNode) lastNode.getParent();
-            } else if (indentation > lastIndentation) {
-                parent = lastNode;
-                Object userObject = parent.getUserObject();
-                String categorizedParentContent =
-                        (categorizedContent.isEmpty() ? "" :  categorizedContent.getLast() )
-                        + ((userObject instanceof Tag)?(((Tag)userObject)).getContent() + getTagCategorySeparator() : "");
-                categorizedContent.add(categorizedParentContent);
+            if(target == uncategorizedTagsNode) {
+                insertUncategorizedTagNodeSorted(tag);
             } else {
-                parent = (DefaultMutableTreeNode) lastNode.getParent();
-                for (int i = 0; i < (lastIndentation - indentation); i++) {
-                    parent = (DefaultMutableTreeNode) parent.getParent();
-                    categorizedContent.removeLast();
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
+                DefaultMutableTreeNode parent;
+                int indentation = getIndentationLevel(line);
+                if (indentation == lastIndentation) {
+                    parent = (DefaultMutableTreeNode) lastNode.getParent();
+                } else if (indentation > lastIndentation) {
+                    parent = lastNode;
+                    Object userObject = parent.getUserObject();
+                    String categorizedParentContent =
+                            (categorizedContent.isEmpty() ? "" :  categorizedContent.getLast() )
+                            + ((userObject instanceof Tag)?(((Tag)userObject)).getContent() + getTagCategorySeparator() : "");
+                    categorizedContent.add(categorizedParentContent);
+                } else {
+                    parent = (DefaultMutableTreeNode) lastNode.getParent();
+                    for (int i = 0; i < (lastIndentation - indentation); i++) {
+                        parent = (DefaultMutableTreeNode) parent.getParent();
+                        categorizedContent.removeLast();
+                    }
                 }
+                parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
+                String categorizedTagContent = categorizedContent.getLast()
+                        + tag.getContent();
+                registerTagReference(new Tag(categorizedTagContent, tag.getColor()));
+                lastNode = newNode;
+                lastIndentation = indentation;
             }
-            parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
-            String categorizedTagContent = categorizedContent.getLast()
-                    + tag.getContent();
-            registerTagReference(new Tag(categorizedTagContent, tag.getColor()));
-            lastNode = newNode;
-            lastIndentation = indentation;
         }
-        nodes.nodesWereInserted(target, IntStream.range(firstIndex, index).toArray());
+        if(target != uncategorizedTagsNode)
+            nodes.nodesWereInserted(target, IntStream.range(firstIndex, index).toArray());
     }
 
     private void insertNode(DefaultMutableTreeNode parent, int index, DefaultMutableTreeNode newChild) {
@@ -620,7 +626,7 @@ public class TagCategories {
                 for(String from = tailMap.firstKey();
                         from.startsWith(fromCategory);
                         from = tailMap.firstKey()) {
-                    String to = toTag + from.substring(fromTag.length());
+                    String to = toTag.equals(UNCATEGORIZED_NODE) ? UNCATEGORIZED_NODE : toTag + from.substring(fromTag.length());
                     replaceReferencedTags(from, to);
                     if(tailMap.isEmpty())
                         break;
@@ -630,6 +636,14 @@ public class TagCategories {
     }
 
     private void replaceReferencedTags(String from, String to) {
+        if(to.equals(UNCATEGORIZED_NODE)) {
+            int lastSeparatorIndex = from.lastIndexOf(categorySeparator);
+            if(lastSeparatorIndex >= 0) {
+                to = from.substring(lastSeparatorIndex + categorySeparator.length());
+            }
+            else
+                return;
+        }
         List<TagReference> replacedTagReferences = tagReferences.remove(from);
         List<TagReference> list = tagReferences.computeIfAbsent(to, key -> new ArrayList<>());
         if(replacedTagReferences != null && ! from.isEmpty())
