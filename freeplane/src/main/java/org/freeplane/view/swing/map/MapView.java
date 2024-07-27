@@ -432,7 +432,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private class Selection {
-		final private Set<NodeView> selectedSet = new LinkedHashSet<NodeView>();
+		private static final String SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY = "synchronizeSelectionAcrossVisibleViews";
+        final private Set<NodeView> selectedSet = new LinkedHashSet<NodeView>();
 		final private List<NodeView> selectedList = new ArrayList<NodeView>();
 		private NodeView selectedNode = null;
 		private boolean selectionChanged = false;
@@ -446,7 +447,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			addToSelectedSet(node);
 			selectedList.add(node);
 			selectedNode = node;
-			addSelectionForHooks(node);
+			addSelectionForHooks();
 			repaintAfterSelectionChange(node, true);
 			for (final NodeView oldSelected : oldSelecteds) {
 				if (oldSelected != null && oldSelected != node) {
@@ -485,13 +486,44 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             }
         }
 
-		private void addSelectionForHooks(final NodeView node) {
+		private void addSelectionForHooks() {
 			if(! isSelected())
 				return;
 			final MapController mapController = modeController.getMapController();
-			final NodeModel model = node.getNode();
-			mapController.onSelect(model);
+			final NodeModel node = selectedNode.getNode();
+			mapController.onSelect(node);
+			synchronizeSelectionAcrossVisibleViews(node);
 		}
+
+        private void synchronizeSelectionAcrossVisibleViews(final NodeModel node) {
+            boolean synchronizesSelectionAcrossVisibleViews = ResourceController.getResourceController().getBooleanProperty(SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY);
+            if(synchronizesSelectionAcrossVisibleViews) {
+                List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(viewedMap);
+                for(Component view:views) {
+                    if(view == MapView.this || ! (view instanceof MapView) || ! view.isShowing())
+                        continue;
+                    MapView anotherMapView = (MapView) view;
+                    if (anotherMapView.getSelectedNodes().size() > 1)
+                        continue;
+                    NodeView anotherSelectedNodeView = anotherMapView.getSelected();
+                    NodeModel anotherSelectedNode = anotherSelectedNodeView.getNode();
+                    if(anotherSelectedNode.equals(node) || anotherSelectedNode.isDescendantOf(node))
+                        continue;
+                    NodeModel anotherMapViewRootNode = anotherMapView.getRoot().getNode();
+                    if(anotherMapViewRootNode != node && ! node.isDescendantOf(anotherMapViewRootNode))
+                        continue;
+                    for(NodeModel nodeOrAncestor = node; nodeOrAncestor != null; nodeOrAncestor = nodeOrAncestor.getParentNode()) {
+                        NodeView anotherNodeView = anotherMapView.getNodeView(nodeOrAncestor);
+                        if(anotherNodeView == null)
+                            continue;
+                        if(anotherNodeView.isContentVisible()) {
+                            anotherMapView.selectAsTheOnlyOneSelected(anotherNodeView);
+                            break;
+                        }
+                    }
+                }
+			}
+        }
 
 		private void clear() {
 			if (selectedNode != null) {
@@ -548,7 +580,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             if(selectedNode != null && ! selectedSet.contains(selectedNode)) {
                 if (size() > 0) {
                 	selectedNode = selectedSet.iterator().next();
-                	addSelectionForHooks(selectedNode);
+                	addSelectionForHooks();
                 }
                 else{
                 	selectedNode = null;
@@ -594,7 +626,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             for(final NodeView view : nodesAddedToSelection)
                 repaintAfterSelectionChange(view, true);
             if (selectedChanges) {
-                addSelectionForHooks(selectedNode);
+                addSelectionForHooks();
             }
             for(final NodeView view : oldSelection)
                 if (!selectedSet.contains(view))
