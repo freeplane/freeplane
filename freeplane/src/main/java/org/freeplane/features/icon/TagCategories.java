@@ -651,6 +651,11 @@ public class TagCategories {
     }
 
     public void updateTagReferences() {
+        tagReferences.values().stream()
+            .flatMap(List::stream)
+            .map(TagReference::getTag)
+            .filter(tag -> ! tagReferences.containsKey(tag.getContent()))
+            .forEach(mapTags::remove);
         tagReferences.getOrDefault("", Collections.emptyList())
             .forEach(tagReference -> tagReference.setTag(Tag.REMOVED_TAG));
         updateTagReferences("", getRootNode());
@@ -664,6 +669,7 @@ public class TagCategories {
             String content = tag.getContent();
             String categorizedContent = prefix + content;
             Tag categorizedTag = new Tag(categorizedContent, tag.getColor());
+            mapTags.addIfNotExists(categorizedTag);
             tagReferences.getOrDefault(categorizedContent, Collections.emptyList())
                 .forEach(tagReference -> tagReference.setTag(categorizedTag));
             nextLevelPrefix = categorizedContent + getTagCategorySeparator();

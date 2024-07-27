@@ -292,8 +292,10 @@ class TagCategoryEditor implements IExtension {
             // Get the node at the drop location.
             if (target != null) {
                 DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) target.getLastPathComponent();
+                final DefaultMutableTreeNode rootNode = tagCategories.getRootNode();
+                if(targetNode == rootNode && dropLocation.getChildIndex() == rootNode.getChildCount())
+                    return false;
                 final DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
-                Transferable t = support.getTransferable();
                 if(targetNode != uncategorizedTagsNode && targetNode.isNodeAncestor(uncategorizedTagsNode))
                     return false;
                 DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) tree
@@ -1123,6 +1125,7 @@ class TagCategoryEditor implements IExtension {
         if(flavor.equals(TagCategorySelection.tagCategoryFlavor)) {
             boolean isMoveInternal = data.startsWith(lastTransferableId);
             if(isMoveInternal) {
+                childIndex -= countSelectedChildrenAbove(parent, childIndex);
                 removeNodes();
             }
             tagCategories.insert(parent, childIndex, data.substring(TRANSFERABLE_ID_LENGTH));
@@ -1131,6 +1134,21 @@ class TagCategoryEditor implements IExtension {
         }
         else
             tagCategories.insert(parent, childIndex, data);
+    }
+
+    private int countSelectedChildrenAbove(DefaultMutableTreeNode parent, int childIndex) {
+        final TreePath[] selectionPaths = getSelectionPaths();
+        if(selectionPaths != null) {
+            int childIndexCopy = childIndex;
+            long removedUpperSiblings = Stream.of(selectionPaths)
+                    .map(TreePath::getLastPathComponent)
+                    .map(DefaultMutableTreeNode.class::cast)
+                    .mapToInt(node -> parent.getIndex(node))
+                    .filter(index -> index >= 0 && index < childIndexCopy)
+                    .count();
+            return (int) removedUpperSiblings;
+        }
+        return 0;
     }
 
 
