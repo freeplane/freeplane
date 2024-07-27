@@ -108,6 +108,8 @@ import org.freeplane.features.icon.TreeTagChangeListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
+import net.infonode.docking.internalutil.DropAction;
+
 class TagCategoryEditor implements IExtension {
     private static final int UUID_LENGTH = 36;
 
@@ -241,7 +243,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public int getSourceActions(JComponent c) {
-            return MOVE;
+            return COPY_OR_MOVE;
         }
 
         @Override
@@ -323,6 +325,8 @@ class TagCategoryEditor implements IExtension {
                 }
                 if(parent.isRoot() &&  childIndex == parent.getChildCount())
                     childIndex--;
+                if(support.getDropAction() != MOVE)
+                    lastTransferableId = "";
                 insertTransferable(parent, childIndex, support.getTransferable());
                 return true;
             } catch (Exception e) {
@@ -1123,7 +1127,7 @@ class TagCategoryEditor implements IExtension {
         final DataFlavor flavor = flavor(t);
         String data = (String) t.getTransferData(flavor);
         if(flavor.equals(TagCategorySelection.tagCategoryFlavor)) {
-            boolean isMoveInternal = data.startsWith(lastTransferableId);
+            boolean isMoveInternal = ! lastTransferableId.isEmpty() && data.startsWith(lastTransferableId);
             if(isMoveInternal) {
                 childIndex -= countSelectedChildrenAbove(parent, childIndex);
                 removeNodes();
