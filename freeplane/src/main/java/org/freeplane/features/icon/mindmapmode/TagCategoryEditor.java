@@ -184,6 +184,8 @@ class TagCategoryEditor implements IExtension {
             String content = tag.getContent();
 			textField.setText(content);
             textField.setColumns(Math.max(30, content.length()));
+            JComponent treeCellRendererComponent = (JComponent) tree.getCellRenderer().getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, true);
+            textField.setBorder(treeCellRendererComponent.getBorder());
             return textField;
         }
 
