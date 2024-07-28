@@ -351,7 +351,6 @@
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
-				<Entry name="SetBooleanPropertyAction.synchronizeSelectionAcrossVisibleViews" />
 				<Entry name="map_overview" >
 					<Entry name="SetStringPropertyAction.map_overview_bounds." />
 					<Entry builder="radio_button_group" name="map_overview_attach_point" textKey="map_overview_attach_point">
@@ -494,6 +493,7 @@
 			<Entry name="NavigationPreviousMapAction" />
 			<Entry name="NavigationNextMapAction" />
 			<Entry builder="separator" />
+			<Entry name="SetBooleanPropertyAction.synchronizeSelectionAcrossVisibleViews" />
 			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
