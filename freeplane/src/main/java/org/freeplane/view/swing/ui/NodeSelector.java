@@ -114,12 +114,18 @@ public class NodeSelector {
 		if (selectionMethod.equals(SELECTION_METHOD_BY_CLICK)) {
 			return;
 		}
-		TimeDelayedSelection timeDelayedSelection = new TimeDelayedSelection(e);
-        MapView map = getRelatedNodeView(e).getMap();
+        NodeView relatedNodeView = getRelatedNodeView(e);
+        if(relatedNodeView.isSelected())
+            return;
+        MapView map = relatedNodeView.getMap();
         long earliestSelectionTime = map.getLastScrollingTime() + 500;
         long now = System.currentTimeMillis();
-        if(now < earliestSelectionTime)
+        if(now < earliestSelectionTime) {
             map.setLastScrollingTime(now);
+            if(e.getID() != MouseEvent.MOUSE_MOVED)
+                return;
+        }
+        TimeDelayedSelection timeDelayedSelection = new TimeDelayedSelection(e);
         if (selectionMethod.equals(SELECTION_METHOD_DIRECT) && earliestSelectionTime <= now) {
 			timeDelayedSelection.actionPerformed(new ActionEvent(this, 0, ""));
 			return;
