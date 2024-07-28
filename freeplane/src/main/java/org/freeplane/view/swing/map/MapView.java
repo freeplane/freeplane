@@ -2510,7 +2510,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final NodeModel node = newSelected.getNode();
 		if(node.isHiddenSummary())
 			throw new AssertionError("select invisible node");
-		selectAsTheOnlyOneSelected(newSelected, true);
+		selectAsTheOnlyOneSelected(newSelected, isSelected());
 	}
 
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected, final boolean requestFocus) {
