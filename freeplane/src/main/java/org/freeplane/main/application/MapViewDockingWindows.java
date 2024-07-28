@@ -56,7 +56,6 @@ import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import net.infonode.docking.SplitWindow;
 import org.apache.commons.codec.binary.Base64;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FileOpener;
@@ -76,11 +75,16 @@ import net.infonode.docking.DockingWindowAdapter;
 import net.infonode.docking.FloatingWindow;
 import net.infonode.docking.OperationAbortedException;
 import net.infonode.docking.RootWindow;
+import net.infonode.docking.SplitWindow;
 import net.infonode.docking.TabWindow;
 import net.infonode.docking.View;
 import net.infonode.docking.WindowPopupMenuFactory;
+import net.infonode.docking.internalutil.InternalDockingUtil;
 import net.infonode.docking.properties.DockingWindowProperties;
 import net.infonode.docking.properties.RootWindowProperties;
+import net.infonode.docking.properties.TabWindowProperties;
+import net.infonode.docking.properties.WindowTabProperties;
+import net.infonode.docking.properties.WindowTabStateProperties;
 import net.infonode.docking.theme.ClassicDockingTheme;
 import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.LookAndFeelDockingTheme;
@@ -88,7 +92,13 @@ import net.infonode.docking.title.SimpleDockingWindowTitleProvider;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.gui.DynamicUIManager;
 import net.infonode.gui.DynamicUIManagerListener;
+import net.infonode.gui.icon.button.CloseIcon;
+import net.infonode.gui.icon.button.DockIcon;
 import net.infonode.gui.icon.button.DropDownIcon;
+import net.infonode.gui.icon.button.MaximizeIcon;
+import net.infonode.gui.icon.button.MinimizeIcon;
+import net.infonode.gui.icon.button.RestoreIcon;
+import net.infonode.gui.icon.button.UndockIcon;
 import net.infonode.properties.gui.util.ComponentProperties;
 import net.infonode.tabbedpanel.TabAreaComponentsProperties;
 import net.infonode.tabbedpanel.TabAreaProperties;
@@ -96,7 +106,6 @@ import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
 import net.infonode.tabbedpanel.TabLayoutPolicy;
 import net.infonode.tabbedpanel.TabbedPanelProperties;
-import net.infonode.tabbedpanel.TabbedUIDefaults;
 import net.infonode.tabbedpanel.titledtab.TitledTabProperties;
 import net.infonode.tabbedpanel.titledtab.TitledTabSizePolicy;
 import net.infonode.util.Direction;
@@ -299,24 +308,40 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
 
-		overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties().getContentPanelProperties()
+		TabWindowProperties tabWindowProperties = overwrittenProperties.getTabWindowProperties();
+		TabbedPanelProperties tabbedPanelProperties = tabWindowProperties.getTabbedPanelProperties();
+		tabbedPanelProperties.getContentPanelProperties()
 		    .getComponentProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(BorderFactory.createEmptyBorder());
 
-		TabbedPanelProperties tabbedPanelProperties = overwrittenProperties.getTabWindowProperties().getTabbedPanelProperties();
+		int buttonSize = Math.round(UITools.FONT_SCALE_FACTOR * InternalDockingUtil.DEFAULT_BUTTON_ICON_SIZE);
+		tabWindowProperties.getMaximizeButtonProperties().setIcon(new MaximizeIcon(buttonSize));
+		tabWindowProperties.getMinimizeButtonProperties().setIcon(new MinimizeIcon(buttonSize));
+		tabWindowProperties.getCloseButtonProperties().setIcon(new CloseIcon(buttonSize));
+		tabWindowProperties.getRestoreButtonProperties().setIcon(new RestoreIcon(buttonSize));
+        tabWindowProperties.getDockButtonProperties().setIcon(new DockIcon(buttonSize));
+        tabWindowProperties.getUndockButtonProperties().setIcon(new UndockIcon(buttonSize));
+
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
 		tabbedPanelProperties.setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
 		tabbedPanelProperties.setShadowEnabled(false);
-		tabbedPanelProperties.getButtonProperties().getTabDropDownListButtonProperties()
-			.setIcon(new DropDownIcon(TabbedUIDefaults.getButtonIconSize(), Direction.DOWN));
+        tabbedPanelProperties.getButtonProperties().getTabDropDownListButtonProperties().setIcon(new DropDownIcon(buttonSize, Direction.DOWN));
 
 		Font tabFont = UITools.getUIFont();
-		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
+		WindowTabProperties tabProperties = tabWindowProperties.getTabProperties();
+        TitledTabProperties titledTabProperties = tabProperties.getTitledTabProperties();
 		titledTabProperties.setSizePolicy(TitledTabSizePolicy.INDIVIDUAL_SIZE);
 		ComponentProperties highlightedProperties = titledTabProperties.getHighlightedProperties().getComponentProperties();
 		highlightedProperties.setFont(tabFont);
 		ComponentProperties normalProperties = titledTabProperties.getNormalProperties().getComponentProperties();
 		normalProperties.setFont(tabFont);
 		rootWindowProperties.addSuperObject(overwrittenProperties);
+
+        WindowTabStateProperties normalButtonProperties = tabProperties.getNormalButtonProperties();
+        normalButtonProperties.getDockButtonProperties().setIcon(new DockIcon(buttonSize));
+        normalButtonProperties.getUndockButtonProperties().setIcon(new UndockIcon(buttonSize));
+        normalButtonProperties.getCloseButtonProperties().setIcon(new CloseIcon(buttonSize));
+        normalButtonProperties.getMinimizeButtonProperties().setIcon(new MinimizeIcon(buttonSize));
+        normalButtonProperties.getRestoreButtonProperties().setIcon(new RestoreIcon(buttonSize));
 	}
 
 	private void removeDesktopPaneAccelerators() {
