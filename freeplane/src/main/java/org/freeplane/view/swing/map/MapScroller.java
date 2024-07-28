@@ -346,14 +346,16 @@ class MapScroller {
 		int lackingWidth = requiredRectangle.width - visibleRect.width;
 		if(lackingWidth > 0){
 			int leftGap = contentBounds.x - requiredRectangle.x - margin;
-			int rightGap = requiredRectangle.x + requiredRectangle. width  - contentBounds.x - contentBounds.width - margin;
-			requiredRectangle.width  = visibleRect.width;
-			requiredRectangle.x += lackingWidth * leftGap /  (leftGap + rightGap);
+			if(leftGap > 0) {
+			    int rightGap = requiredRectangle.x + requiredRectangle. width  - contentBounds.x - contentBounds.width - margin;
+			    requiredRectangle.width  = visibleRect.width;
+			    requiredRectangle.x += lackingWidth * leftGap /  (leftGap + rightGap);
+			}
 		}
 		int lackingHeight = requiredRectangle.height - visibleRect.height;
 		if(lackingHeight > 0){
 			int topGap = contentBounds.y - requiredRectangle.y - margin;
-			if(topGap != 0) {
+			if(topGap > 0) {
 				int bottomGap = requiredRectangle.y + requiredRectangle. height  - contentBounds.y - contentBounds.height - margin;
 				requiredRectangle.height  = visibleRect.height;
 				requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
