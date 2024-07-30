@@ -480,7 +480,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         }
 
         private void fireSelectionChangedLater() {
-            if(! selectionChanged) {
+            if(! selectionChanged && isSelected()) {
                 selectionChanged = true;
                 SwingUtilities.invokeLater(this::fireSelectionChanged);
             }
@@ -662,22 +662,24 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 
         private void fireSelectionChanged() {
-            if(selectionChanged && isSelected()) {
+            if(selectionChanged) {
                 selectionChanged = false;
-                if(selection.selectedNode != null)
-                    modeController.getMapController().onSelectionChange(getMapSelection());
-                if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION)) {
-                    boolean wasFolded = selectedNode.isFolded();
-                    nodeViewFolder.adjustFolding(selectedSet);
-                    ResourceController resourceController = ResourceController.getResourceController();
-                    if(wasFolded && ! selectedNode.isFolded() && selection.size() == 1
-                            && (resourceController.getBooleanProperty("scrollOnUnfold") || resourceController.getBooleanProperty("scrollOnSelect")))
-                        SwingUtilities.invokeLater(() ->
-                            mapScroller.scrollNodeTreeToVisible(selectedNode));
-                    else
-                        scrollNodeToVisible(selectedNode);
-                }
+                if (isSelected()) {
+                    if(selection.selectedNode != null)
+                        modeController.getMapController().onSelectionChange(getMapSelection());
+                    if(isClientPropertyTrue(FOLDING_FOLLOWS_SELECTION)) {
+                        boolean wasFolded = selectedNode.isFolded();
+                        nodeViewFolder.adjustFolding(selectedSet);
+                        ResourceController resourceController = ResourceController.getResourceController();
+                        if(wasFolded && ! selectedNode.isFolded() && selection.size() == 1
+                                && (resourceController.getBooleanProperty("scrollOnUnfold") || resourceController.getBooleanProperty("scrollOnSelect")))
+                            SwingUtilities.invokeLater(() ->
+                                mapScroller.scrollNodeTreeToVisible(selectedNode));
+                        else
+                            scrollNodeToVisible(selectedNode);
+                    }
 
+                }
             }
         }
 
