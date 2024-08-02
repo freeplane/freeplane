@@ -229,6 +229,7 @@
 				<boolean name="iconActionRemovesIconIfExists" />
 				<boolean name="shouldCenterSmallMaps"/>
 				<boolean name="pasteImagesFromFiles"/>
+				<boolean name="findEmailsInText"/>
 				<boolean name="enforceModalEditorDialogs" />
 				<boolean name="mouseDrivenNodeShiftsAreDisabled"/>
 				<boolean name="automaticSideDistribution"/>

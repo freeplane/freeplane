@@ -104,6 +104,7 @@ import com.lightdev.app.shtm.SHTMLWriter;
  */
 public class MMapClipboardController extends MapClipboardController implements MClipboardController{
 	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES = "remind_use_rich_text_in_new_nodes";
+	private static final String FIND_EMAILS_IN_TEXT_PROPERTY = "findEmailsInText";
 	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
 		private final String textFromClipboard;
 
@@ -283,7 +284,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 						++depth;
 					}
 					final String visibleText = text.trim();
-					final String link = LinkController.findLink(text, false);
+					final String link = findLink(text, false);
 					if (!visibleText.equals("")) {
 						textFragments.add(new TextFragment(visibleText, link, depth));
 					}
@@ -309,7 +310,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
 				if (!string.equals("")) {
-					final String link = LinkController.findLink(string, true);
+					final String link = findLink(string, true);
 					final TextFragment htmlFragment = new TextFragment(string, link, depth);
 					htmlFragments.add(htmlFragment);
 				}
@@ -1046,5 +1047,10 @@ public class MMapClipboardController extends MapClipboardController implements M
 
     public void paste(Transferable t, final NodeModel parent) {
         paste(t, parent, MapController.suggestNewChildSide(parent, Side.DEFAULT));
+    }
+
+    private String findLink(final String string, boolean isHtml) {
+        boolean findsEmailsInText = ResourceController.getResourceController().getBooleanProperty(FIND_EMAILS_IN_TEXT_PROPERTY);
+        return LinkController.findLink(string, isHtml, findsEmailsInText);
     }
 }

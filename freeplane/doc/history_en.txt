@@ -7,6 +7,7 @@ Scroll unfolded node tree to visible after any unfold action
 Option to scroll unfolded node tree to visible after selecting a node
 Option "Mouse wheel zoom (%)" setting percentage for zoom adjustments using the mouse wheel
 Option "Synchronize selection across all visible views" available in Navigate->Synchronize selection
+Option "Preferences…->Behaviour->Link to emails from text"
 
 ==============================
 1.12.1

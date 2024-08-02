@@ -822,12 +822,16 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
-	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
+	private static final Pattern FILE_URL_PATTERN = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
+	private static final Pattern EMAIL_PATTERN = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
     private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
 
-	static public String findLink(final String text, boolean isHtml) {
-		final Matcher urlMatcher = urlPattern.matcher(text);
+    static public String findLink(final String text, boolean isHtml) {
+        return findLink(text, isHtml, true);
+    }
+
+	static public String findLink(final String text, boolean isHtml, boolean includeEmails) {
+		final Matcher urlMatcher = FILE_URL_PATTERN.matcher(text);
 		if (urlMatcher.find()) {
 			String link = urlMatcher.group();
 			int start = urlMatcher.start();
@@ -847,7 +851,9 @@ public class LinkController extends SelectionController implements IExtension {
 				return null;
 			}
 		}
-		final Matcher mailMatcher = mailPattern.matcher(text);
+		if(! includeEmails)
+		    return null;
+		final Matcher mailMatcher = EMAIL_PATTERN.matcher(text);
 		if (mailMatcher.find()) {
 			final String link = "mailto:" + mailMatcher.group();
 			return link;
