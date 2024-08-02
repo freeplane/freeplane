@@ -794,6 +794,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public MapView(final MapModel viewedMap, final ModeController modeController) {
 		super();
+		setOpaque(false);
 		this.viewedMap = viewedMap;
 		this.modeController = modeController;
         setLayout(new MindMapLayout());
@@ -1566,19 +1567,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
    private void updateBackground() {
         MapViewPort viewport = (MapViewPort) getParent();
+        Color background = getBackground();
         if(viewport != null) {
             if(fitToViewport) {
-                viewport.setBackground(getBackground());
+                viewport.setBackground(background);
                 viewport.setBackgroundComponent(backgroundComponent);
-                setOpaque(backgroundComponent != null);
 
             } else {
                 viewport.setBackgroundComponent(null);
-                setOpaque(true);
             }
 
         }
-        setOpaque(! (fitToViewport && backgroundComponent != null));
+        setOpaque(! (fitToViewport && backgroundComponent != null) && background.getAlpha() == 255);
     }
 
 
@@ -2029,14 +2029,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-	    if(paintingPurpose != PaintingPurpose.PRINTING || ! printOnWhiteBackground)
-	        super.paintComponent(g);
-		if (backgroundComponent != null && ! fitToViewport) {
+	    boolean usesTransparentBackgroundForPrinting = paintingPurpose == PaintingPurpose.PRINTING && printOnWhiteBackground;
+	    boolean backgroundIsPaintedByViewport = paintingPurpose == PaintingPurpose.PAINTING && backgroundComponent != null && fitToViewport;
+        if(!usesTransparentBackgroundForPrinting && !backgroundIsPaintedByViewport) {
+	        g.setColor(getBackground() );
+	        g.fillRect(0, 0, getWidth(), getHeight() );
+	    }
+        if (backgroundComponent != null && paintingPurpose != PaintingPurpose.OVERVIEW && ! fitToViewport) {
 			paintBackgroundComponent(g);
 		}
 	}
 
-	private void paintBackgroundComponent(final Graphics g) {
+    private void paintBackgroundComponent(final Graphics g) {
 	    final Graphics backgroundGraphics = g.create();
 	    try {
 	    	final Point centerPoint = getRootCenterPoint();

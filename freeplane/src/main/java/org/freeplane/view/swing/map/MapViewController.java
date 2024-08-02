@@ -30,7 +30,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.SystemColor;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -88,7 +87,8 @@ import org.freeplane.features.ui.ViewController;
  */
 public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener, IMapLifeCycleListener {
 
-	private String lastModeName;
+	private static final Color TRANSPARENT = new Color(0, true);
+    private String lastModeName;
 	/** reference to the current mapmapView; null is allowed, too. */
 	private MapView selectedMapView;
 	MapViewChangeObserverCompound mapViewChangeListeners = new MapViewChangeObserverCompound();
@@ -442,15 +442,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		int imageWidth = (int) Math.ceil(scaledWidth);
         int imageHeight = (int) Math.ceil(scaledHeight);
 
-		final BufferedImage myImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+		final BufferedImage myImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g = (Graphics2D) myImage.getGraphics();
-		Color background = view.getBackground();
-        if(background == null) {
-            background = SystemColor.window;
-        }
-
-		g.setBackground(background);
-		g.clearRect(0, 0, imageWidth, imageHeight);
 		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);
 		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE);

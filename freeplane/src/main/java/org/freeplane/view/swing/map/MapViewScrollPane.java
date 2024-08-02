@@ -181,9 +181,16 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
         @Override
         public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if(backgroundComponent != null)
+            if(backgroundComponent != null) {
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
                 backgroundComponent.paintComponent(g);
+            }
+        }
+
+        @Override
+        public boolean isOpaque() {
+            return backgroundComponent != null && getBackground().getAlpha() == 255;
         }
 
         @Override

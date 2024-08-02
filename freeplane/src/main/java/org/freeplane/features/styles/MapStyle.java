@@ -775,7 +775,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		super.saveExtension(extension, element);
 		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
-			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
+			element.setAttribute("background", ColorUtils.colorToRGBAString(backgroundColor));
 		}
 		final float zoom = mapStyleModel.getZoom();
 		if (zoom != 1f) {
@@ -841,18 +841,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	public void setBackgroundColor(final MapStyleModel model, final Color color) {
-		final Color actionColor = ColorUtils.makeNonTransparent(color);
 		final Color oldColor = model.getBackgroundColor();
-		if (actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)) {
+		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
-				model.setBackgroundColor(actionColor);
+				model.setBackgroundColor(color);
 				Controller.getCurrentModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
-				        oldColor, actionColor));
+				        oldColor, color));
 			}
 
 			@Override
@@ -865,7 +864,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				model.setBackgroundColor(oldColor);
 				Controller.getCurrentModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
-				        actionColor, oldColor));
+				        color, oldColor));
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, Controller.getCurrentController().getMap());
