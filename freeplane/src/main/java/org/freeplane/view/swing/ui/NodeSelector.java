@@ -19,10 +19,13 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -48,10 +51,32 @@ import org.freeplane.view.swing.map.NodeView;
  * 19.06.2013
  */
 public class NodeSelector {
+
+    static {
+        Toolkit.getDefaultToolkit().addAWTEventListener(
+            new AWTEventListener() {
+                int lastX = -1;
+                int lastY = -1;
+                @Override
+                public void eventDispatched(AWTEvent event) {
+                    if (event instanceof MouseEvent) {
+                        MouseEvent mouseEvent = (MouseEvent) event;
+                        int x = mouseEvent.getXOnScreen();
+                        int y = mouseEvent.getYOnScreen();
+                        mouseWasMoved = lastX != x || lastY != y;
+                        lastX = x;
+                        lastY = y;
+                    }
+                }
+            }, AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK
+        );
+    }
+
 	private static final String SELECTION_METHOD_DIRECT = "selection_method_direct";
 	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
 	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";
 	private static final String SELECTION_METHOD = "selection_method";
+	private static boolean mouseWasMoved = false;
 	private final MovedMouseEventFilter windowMouseTracker = new MovedMouseEventFilter();
 
 	protected class TimeDelayedSelection implements ActionListener {
@@ -90,6 +115,8 @@ public class NodeSelector {
 	private Timer timerForDelayedSelection;
 
 	public void createTimer(final MouseEvent e) {
+	    if(! mouseWasMoved)
+	        return;
 		if (controlRegionForDelayedSelection != null && controlRegionForDelayedSelection.contains(e.getPoint())) {
 			return;
 		}
