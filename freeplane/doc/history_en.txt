@@ -8,6 +8,8 @@ Option to scroll unfolded node tree to visible after selecting a node
 Option "Mouse wheel zoom (%)" setting percentage for zoom adjustments using the mouse wheel
 Option "Synchronize selection across all visible views" available in Navigate->Synchronize selection
 Option "Preferences…->Behaviour->Link to emails from text"
+Support transparent backgrounds for printing and exports
+Support translucent backgrounds for mind maps
 
 ==============================
 1.12.1
