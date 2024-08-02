@@ -770,7 +770,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public static final int SCROLL_VELOCITY_PX = (int) (UITools.FONT_SCALE_FACTOR  * 10);
     private final NodeViewFolder nodeViewFolder;
-    private long lastScrollingTime;
 
 	static {
 	    final ResourceController resourceController = ResourceController.getResourceController();
@@ -1124,23 +1123,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		        + MapView.AUTOSCROLL_MARGIN);
 	}
 
-
-
-	@Override
-    public void setLocation(int x, int y) {
-	    super.setLocation(x, y);
-	    lastScrollingTime = System.currentTimeMillis();
-    }
-
-	public long getLastScrollingTime() {
-        return lastScrollingTime;
-    }
-
-    public void setLastScrollingTime(long lastScrollingTime) {
-        this.lastScrollingTime = lastScrollingTime;
-    }
-
-    public Rectangle getInnerBounds() {
+	public Rectangle getInnerBounds() {
 		final Rectangle innerBounds = currentRootView.getBounds();
 		final Rectangle maxBounds = new Rectangle(0, 0, getWidth(), getHeight());
 		if(arrowLinkViews != null)
