@@ -118,7 +118,7 @@ public class NodeSelector {
         if(relatedNodeView.isSelected())
             return;
         MapView map = relatedNodeView.getMap();
-        long earliestSelectionTime = map.getLastScrollingTime() + 250;
+        long earliestSelectionTime = map.getLastScrollingTime() + 500;
         long now = System.currentTimeMillis();
         if(now < earliestSelectionTime) {
             map.setLastScrollingTime(now);
@@ -126,12 +126,13 @@ public class NodeSelector {
                 return;
         }
         TimeDelayedSelection timeDelayedSelection = new TimeDelayedSelection(e);
-        if (selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
+        if (selectionMethod.equals(SELECTION_METHOD_DIRECT) && earliestSelectionTime <= now) {
 			timeDelayedSelection.actionPerformed(new ActionEvent(this, 0, ""));
 			return;
 		}
-		final int timeForDelayedSelection =ResourceController.getResourceController().getIntProperty(
-		    TIME_FOR_DELAYED_SELECTION, 0);
+		final int timeForDelayedSelection = Math.max(ResourceController.getResourceController().getIntProperty(
+		    TIME_FOR_DELAYED_SELECTION, 0),
+		        (int)(earliestSelectionTime - now)) ;
 		timerForDelayedSelection = new Timer(timeForDelayedSelection, timeDelayedSelection);
 		timerForDelayedSelection.setRepeats(false);
 		timerForDelayedSelection.start();
