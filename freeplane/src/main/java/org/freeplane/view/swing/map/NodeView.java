@@ -1281,6 +1281,11 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if(child == map.getRoot().getNode())
 		    return;
+		if(! getMap().isSelected() && parent.getChildCount() == 1) {
+            this.isFolded = true;
+            revalidate();
+            return;
+        }
 		NodeView newChild = addChildView(child, index);
 		if(map.getRoot().getNode().getParentNode() != parent)
 		    numberingChanged(index + 1);
