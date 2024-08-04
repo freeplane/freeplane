@@ -151,6 +151,7 @@ public class NodeView extends JComponent implements INodeView {
     private ChildNodesLayout childNodesLayout;
     private LayoutOrientation layoutOrientation;
     private ChildrenSides childrenSides;
+    private boolean isNodeNumberingEnabled;
 
 	protected NodeView(final NodeModel viewedNode, final MapView map) {
 		setFocusCycleRoot(true);
@@ -158,6 +159,8 @@ public class NodeView extends JComponent implements INodeView {
 		this.map = map;
 		this.isFolded = map.getModeController().getMapController().isFolded(viewedNode);
 		this.layoutHelper = new NodeViewLayoutHelper(this);
+		final TextController textController = TextController.getController(getModeController());
+		this.isNodeNumberingEnabled = textController.getNodeNumbering(viewedNode);
 	}
 
 
@@ -1138,11 +1141,21 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		update();
-		NodeView parentView = getParentView();
-		NodeModel parentNode = node.getParentNode();
-		if (parentNode != null && parentView != null) {
-			parentView.numberingChanged(parentNode.getIndex(node) + 1);
-		}
+		updateNumbering(node);
+	}
+
+	private void updateNumbering(final NodeModel node) {
+	    if (getParentView() == null)
+	        return;
+	    NodeModel parentNode = node.getParentNode();
+	    if (parentNode == null)
+	        return;
+	    final TextController textController = TextController.getController(getModeController());
+	    boolean isNodeNumberingEnabled = textController.getNodeNumbering(getNode());
+	    if(this.isNodeNumberingEnabled != isNodeNumberingEnabled) {
+	        this.isNodeNumberingEnabled = isNodeNumberingEnabled;
+	        getParentView().numberChanged(parentNode.getIndex(node) + 1);
+	    }
 	}
 
 	public void setFolded(boolean folded) {
@@ -1254,7 +1267,7 @@ public class NodeView extends JComponent implements INodeView {
         if(node.viewedNode != nodeDeletionEvent.node) {
             throw new IllegalStateException("Inconsistent child node view after deletion");
         }
-		numberingChanged(childNodeViewIndex+1);
+		numberChanged(childNodeViewIndex+1);
 		map.preserveRootNodeLocationOnScreen();
 		node.remove();
 		map.updateSelectedNode();
@@ -1288,14 +1301,14 @@ public class NodeView extends JComponent implements INodeView {
         }
 		NodeView newChild = addChildView(child, index);
 		if(map.getRoot().getNode().getParentNode() != parent)
-		    numberingChanged(index + 1);
+		    numberChanged(index + 1);
 		if(! SummaryNode.isSummaryNode(child))
 		    lastSelectedChild = newChild;
 		revalidate();
     }
 
 	// updates children, starting from firstChangedIndex, if necessary.
-	private void numberingChanged(int firstChangedIndex) {
+	private void numberChanged(int firstChangedIndex) {
 		final TextController textController = TextController.getController(getModeController());
 		if (firstChangedIndex > 0 || textController.getNodeNumbering(getNode())) {
 			final Component[] components = getComponents();
@@ -1305,7 +1318,7 @@ public class NodeView extends JComponent implements INodeView {
 					final MainView childMainView = view.getMainView();
 					if(childMainView != null){
 						childMainView.updateText(view.getNode());
-						view.numberingChanged(0);
+						view.numberChanged(0);
 					}
 				}
 			}
