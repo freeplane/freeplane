@@ -112,10 +112,6 @@ public class AttributeController implements IExtension {
 		}
 		attributeModel = new NodeAttributeTableModel();
 		node.addExtension(attributeModel);
-		if (node.areViewsEmpty()) {
-			return attributeModel;
-		}
-		modeController.getMapController().nodeRefresh(node);
 		return attributeModel;
 	}
 
