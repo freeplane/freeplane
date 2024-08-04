@@ -1013,7 +1013,22 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	NodeView addChildView(final NodeModel newNode, int index) {
-			return NodeViewFactory.getInstance().newNodeView(newNode, map, this, index);
+	    updateFilterResults(newNode);
+	    return NodeViewFactory.getInstance().newNodeView(newNode, map, this, index);
+	}
+
+	void onFilterResultUpdate(NodeModel node) {
+	    NodeView nodeView = map.getNodeView(node);
+	    if(nodeView != null) {
+            nodeView.revalidate();
+            nodeView.repaint();
+            if(nodeView.isSelected() && ! nodeView.isContentVisible()) {
+                map.deselect(nodeView);
+                NodeView ancestorWithVisibleContent = nodeView.getAncestorWithVisibleContent();
+                map.addSelected(ancestorWithVisibleContent, true);
+            }
+        }
+
 	}
 
 	/* fc, 25.1.2004: Refactoring necessary: should call the model. */
@@ -1071,13 +1086,31 @@ public class NodeView extends JComponent implements INodeView {
 		return getParentView() == myNodeView.getParentView();
 	}
 
-	@Override
-	public void nodeChanged(final NodeChangeEvent event) {
-		final NodeModel node = event.getNode();
-		// is node is deleted, skip the rest.
-		if (!node.isRoot() && node.getParentNode() == null) {
-			return;
-		}
+    @Override
+    public void nodeChanged(final NodeChangeEvent event) {
+        final NodeModel node = event.getNode();
+        // is node is deleted, skip the rest.
+        if (!node.isRoot() && node.getParentNode() == null) {
+            return;
+        }
+        updateChangedNode(event);
+        updateFilterResults(node);
+    }
+
+
+
+    void updateFilterResults(NodeModel node) {
+        if(! map.isSelected()) {
+            Filter filter = map.getFilter();
+            filter.updateFilterResults(node, this::onFilterResultUpdate);
+            if (map.synchronizesSelectionAcrossVisibleViews())
+                map.synchronizeSelection();
+        }
+    }
+
+    private void updateChangedNode(final NodeChangeEvent event) {
+
+
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING || property == Properties.HIDDEN_CHILDREN || property == EncryptionModel.class) {
 			if(map.isSelected() || property == EncryptionModel.class && ! isFolded()){
@@ -1104,7 +1137,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 
 		if(property == NodeVisibility.class
-				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES) {
+				&& map.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES) {
 		    if(! isRoot()) {
 		        final NodeView parentView = getParentView();
 		        parentView.setFolded(parentView.isFolded(), true);
@@ -1141,20 +1174,20 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		update();
-		updateNumbering(node);
+		updateNumbering();
 	}
 
-	private void updateNumbering(final NodeModel node) {
+	private void updateNumbering() {
 	    if (getParentView() == null)
 	        return;
-	    NodeModel parentNode = node.getParentNode();
+	    NodeModel parentNode = viewedNode.getParentNode();
 	    if (parentNode == null)
 	        return;
 	    final TextController textController = TextController.getController(getModeController());
 	    boolean isNodeNumberingEnabled = textController.getNodeNumbering(getNode());
 	    if(this.isNodeNumberingEnabled != isNodeNumberingEnabled) {
 	        this.isNodeNumberingEnabled = isNodeNumberingEnabled;
-	        getParentView().numberChanged(parentNode.getIndex(node) + 1);
+	        getParentView().numberChanged(parentNode.getIndex(viewedNode) + 1);
 	    }
 	}
 
@@ -1270,6 +1303,7 @@ public class NodeView extends JComponent implements INodeView {
 		numberChanged(childNodeViewIndex+1);
 		map.preserveRootNodeLocationOnScreen();
 		node.remove();
+		updateFilterResults(viewedNode);
 		map.updateSelectedNode();
 		NodeView preferred = getPreferredVisibleChild(PreferredChild.LAST_SELECTED, childrenSides());
 		if (preferred == null) {
@@ -1294,7 +1328,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if(child == map.getRoot().getNode())
 		    return;
-		if(! getMap().isSelected() && parent.getChildCount() == 1) {
+		if(! map.isSelected() && parent.getChildCount() == 1 && map.getFilter().getCondition() == null) {
             this.isFolded = true;
             revalidate();
             return;

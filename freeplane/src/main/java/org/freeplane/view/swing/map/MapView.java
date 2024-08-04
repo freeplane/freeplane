@@ -159,6 +159,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     private static final int ROOT_NODE_COMPONENT_INDEX = 0;
 	private static final String UNFOLD_ON_NAVIGATION = "unfold_on_navigation";
+	private static final String SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY = "synchronizeSelectionAcrossVisibleViews";
+
 	private final MapScroller mapScroller;
 	private MapViewLayout layoutType;
 	private boolean paintConnectorsBehind;
@@ -432,7 +434,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private class Selection {
-		private static final String SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY = "synchronizeSelectionAcrossVisibleViews";
         final private Set<NodeView> selectedSet = new LinkedHashSet<NodeView>();
 		final private List<NodeView> selectedList = new ArrayList<NodeView>();
 		private NodeView selectedNode = null;
@@ -492,35 +493,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final MapController mapController = modeController.getMapController();
 			final NodeModel node = selectedNode.getNode();
 			mapController.onSelect(node);
-			synchronizeSelectionAcrossVisibleViews(node);
+			synchronizeSelectionAcrossVisibleViews();
 		}
 
-        private void synchronizeSelectionAcrossVisibleViews(final NodeModel node) {
-            boolean synchronizesSelectionAcrossVisibleViews = ResourceController.getResourceController().getBooleanProperty(SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY);
+        private void synchronizeSelectionAcrossVisibleViews() {
+            boolean synchronizesSelectionAcrossVisibleViews = synchronizesSelectionAcrossVisibleViews();
             if(synchronizesSelectionAcrossVisibleViews) {
                 List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(viewedMap);
                 for(Component view:views) {
-                    if(view == MapView.this || ! (view instanceof MapView) || ! view.isShowing())
-                        continue;
-                    MapView anotherMapView = (MapView) view;
-                    if (anotherMapView.getSelectedNodes().size() > 1)
-                        continue;
-                    NodeView anotherSelectedNodeView = anotherMapView.getSelected();
-                    NodeModel anotherSelectedNode = anotherSelectedNodeView.getNode();
-                    if(anotherSelectedNode.equals(node) || anotherSelectedNode.isDescendantOf(node))
-                        continue;
-                    NodeModel anotherMapViewRootNode = anotherMapView.getRoot().getNode();
-                    if(anotherMapViewRootNode != node && ! node.isDescendantOf(anotherMapViewRootNode))
-                        continue;
-                    for(NodeModel nodeOrAncestor = node; nodeOrAncestor != null; nodeOrAncestor = nodeOrAncestor.getParentNode()) {
-                        NodeView anotherNodeView = anotherMapView.getNodeView(nodeOrAncestor);
-                        if(anotherNodeView == null)
-                            continue;
-                        if(anotherNodeView.isContentVisible()) {
-                            anotherMapView.selectAsTheOnlyOneSelected(anotherNodeView, false);
-                            break;
-                        }
-                    }
+                    if (view != MapView.this && view instanceof MapView && view.isShowing())
+                        ((MapView)view).synchronizeSelection();
                 }
 			}
         }
@@ -1370,6 +1352,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return selection.getSelection();
 	}
 
+    boolean synchronizesSelectionAcrossVisibleViews() {
+        return ResourceController.getResourceController().getBooleanProperty(SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY);
+    }
+
 	public int getSiblingMaxLevel() {
 		return siblingMaxLevel;
 	}
@@ -1601,6 +1587,34 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     	}
     }
 
+    void synchronizeSelection() {
+        if(isSelected())
+            return;
+        IMapSelection mainSelection = modeController.getController().getSelection();
+        if( mainSelection == null)
+            return;
+
+        if (getSelectedNodes().size() > 1)
+            return;
+        NodeModel node = mainSelection.getSelected();
+        NodeView selectedNodeView = getSelected();
+        NodeModel selectedNode = selectedNodeView.getNode();
+        if(selectedNode.equals(node) || selectedNode.isDescendantOf(node))
+            return;
+        NodeModel anotherMapViewRootNode = getRoot().getNode();
+        if(anotherMapViewRootNode != node && ! node.isDescendantOf(anotherMapViewRootNode))
+            return;
+        for(NodeModel nodeOrAncestor = node; nodeOrAncestor != null; nodeOrAncestor = nodeOrAncestor.getParentNode()) {
+            NodeView anotherNodeView = getNodeView(nodeOrAncestor);
+            if(anotherNodeView == null)
+                continue;
+            if(anotherNodeView.isContentVisible()) {
+                selectAsTheOnlyOneSelected(anotherNodeView, false);
+                break;
+            }
+        }
+
+    }
 	private void updateContentStyle() {
         final NodeStyleController style = Controller.getCurrentModeController().getExtension(NodeStyleController.class);
         final MapModel map = getMap();

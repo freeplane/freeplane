@@ -55,11 +55,13 @@ public class FilterInfo {
         info = newInfo;
     }
 
-    void add(final int flag) {
+    boolean add(final int flag) {
+        int oldInfo = info;
         if ((flag & (SHOW_AS_MATCHED | SHOW_AS_HIDDEN)) != 0) {
             info &= ~SHOW_AS_INITIAL_VALUE;
         }
         info |= flag;
+        return oldInfo != info;
     }
 
 	/**
@@ -79,8 +81,12 @@ public class FilterInfo {
 	}
 
 	boolean matches(final int filterOptions) {
-		return (filterOptions & info) != 0;
+		return get(filterOptions) != 0;
 	}
+
+    int get(final int filterOptions) {
+        return filterOptions & info;
+    }
 
     boolean isNotChecked() {
         return matches(SHOW_AS_INITIAL_VALUE);

@@ -22,6 +22,7 @@ package org.freeplane.features.filter;
 import java.util.List;
 import java.util.Objects;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
 
 import javax.swing.Icon;
 
@@ -158,14 +159,7 @@ public class Filter implements IExtension {
     }
 
 	private int applyFilterGetDescendantState(final NodeModel node, int ancestorState) {
-		final boolean conditionSatisfied =  (condition == null || condition.checkNode(node));
-		final boolean matchesCombinedFilter;
-		if(appliesToVisibleElementsOnly()) {
-		    matchesCombinedFilter = conditionSatisfied  && baseFilter.accepts(node);
-		}
-		else {
-		    matchesCombinedFilter = conditionSatisfied;
-		}
+		final boolean matchesCombinedFilter = checkNode(node);
 		int ownStateAsAncestor;
 		if(ancestorState != 0 || ! node.isRoot())
 		    ownStateAsAncestor = matchesCombinedFilter ?  FilterInfo.HAS_MATCHED_ANCESTOR : FilterInfo.HAS_HIDDEN_ANCESTOR;
@@ -271,7 +265,7 @@ public class Filter implements IExtension {
 	}
 
 	public FilterInfo getFilterInfo(final NodeModel node) {
-		return accessor.getFilterInfo(node);
+		return node !=  null ? accessor.getFilterInfo(node) : new FilterInfo();
 	}
 
     public void showAsMatched(NodeModel node) {
@@ -301,6 +295,62 @@ public class Filter implements IExtension {
             FilterInfo filterInfo = getFilterInfo(child);
             filterInfo.add(FilterInfo.SHOW_AS_MATCHED_DESCENDANT);
             showDescendants(child);
+        }
+    }
+
+    public void updateFilterResults(NodeModel node, Consumer<NodeModel> callbackOnUpdate) {
+        if(condition == null)
+            return;
+        FilterInfo filterInfo = getFilterInfo(node);
+        NodeModel parentNode = node.getParentNode();
+        FilterInfo parentFilterInfo = getFilterInfo(parentNode);
+        boolean isMatched = checkNode(node);
+        int ownState = isMatched ? FilterInfo.MATCHES : FilterInfo.NO_MATCH;
+        int ancestorState = parentFilterInfo.isMatched() ? FilterInfo.HAS_MATCHED_ANCESTOR
+                : parentFilterInfo.get(FilterInfo.HAS_MATCHED_ANCESTOR | FilterInfo.HAS_HIDDEN_ANCESTOR);
+        int descendantState = node.getChildren().stream()
+                .map(this::getFilterInfo)
+                .mapToInt(x -> x.get(FilterInfo.MATCHES | FilterInfo.NO_MATCH | FilterInfo.HAS_HIDDEN_DESCENDANT | FilterInfo.HAS_MATCHED_DESCENDANT))
+                .reduce(0, (m, n) -> m|n);
+        if((descendantState & FilterInfo.MATCHES) != 0) {
+            descendantState &= ~FilterInfo.MATCHES;
+            descendantState |= FilterInfo.HAS_MATCHED_DESCENDANT;
+        }
+        if((descendantState & FilterInfo.NO_MATCH) != 0) {
+            descendantState &= ~FilterInfo.NO_MATCH;
+            descendantState |= FilterInfo.HAS_HIDDEN_DESCENDANT;
+        }
+        filterInfo.set(ancestorState | ownState | descendantState);
+        if(parentNode != null)
+            updateAncestorResults(parentNode, parentFilterInfo, isMatched ? FilterInfo.HAS_MATCHED_DESCENDANT : FilterInfo.HAS_HIDDEN_DESCENDANT, callbackOnUpdate);
+        updateDescendantResults(node, isMatched ? FilterInfo.HAS_MATCHED_ANCESTOR : FilterInfo.HAS_HIDDEN_ANCESTOR, callbackOnUpdate);
+    }
+
+    private void updateDescendantResults(NodeModel node, int options, Consumer<NodeModel> callbackOnUpdate) {
+        for(NodeModel child : node.getChildren()) {
+            FilterInfo childInfo = getFilterInfo(child);
+            if(childInfo.isNotChecked())
+                return;
+            boolean wasVisible = isVisible(child);
+            if(childInfo.add(options))
+                if(wasVisible != isVisible(child))
+                    callbackOnUpdate.accept(child);
+                updateDescendantResults(child, options, callbackOnUpdate);
+        }
+    }
+
+    void updateAncestorResults(NodeModel node, FilterInfo info, int options, Consumer<NodeModel> callbackOnUpdate) {
+        boolean wasVisible = isVisible(node);
+        if (info.add(options)) {
+            if(wasVisible != isVisible(node))
+                callbackOnUpdate.accept(node);
+            NodeModel parent = node.getParentNode();
+            if (parent == null)
+                return;
+            FilterInfo parentInfo = getFilterInfo(parent);
+            if(parentInfo.isNotChecked())
+                return;
+            updateAncestorResults(parent, parentInfo, options, callbackOnUpdate);
         }
     }
 }
