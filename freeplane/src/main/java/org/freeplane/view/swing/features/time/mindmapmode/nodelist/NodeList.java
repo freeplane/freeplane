@@ -68,6 +68,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.JTextComponent;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -91,6 +92,8 @@ import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
@@ -702,12 +705,26 @@ class NodeList implements IExtension {
 			}
 		});
 		rowSM.addListSelectionListener(new ListSelectionListener() {
-			String getNodeTextWithAncestorNodes(final NodeModel node) {
+
+            private String getNodeTextWithAncestorNodes(final NodeModel mindMapNode) {
+                NodeModel rootNode = mindMapNode.getMap().getRootNode();
+                TextWritingDirection direction = NodeStyleController.getController()
+                        .getTextWritingDirection(rootNode, StyleOption.FOR_UNSELECTED_NODE);
+                String separator = TextWritingDirection.LEFT_TO_RIGHT.isolated(" " +
+                        (TextWritingDirection.LEFT_TO_RIGHT == direction ? "->" : "<-")
+                        + " ");
+                String nodeTextWithAncestorNodes = getNodeTextWithAncestorNodes(mindMapNode, direction, separator);
+                return nodeTextWithAncestorNodes;
+            }
+
+			private String getNodeTextWithAncestorNodes(final NodeModel node, TextWritingDirection direction, String separator) {
 				final String nodeText = TextController.getController().getShortPlainText(node);
 				if (node.isRoot())
 					return nodeText;
-				else
-					return getNodeTextWithAncestorNodes(node.getParentNode()) + " -> " + nodeText;
+                else {
+                    String ancestorText = getNodeTextWithAncestorNodes(node.getParentNode(), direction, separator);
+                    return direction == TextWritingDirection.LEFT_TO_RIGHT ?  ancestorText + separator + nodeText : nodeText + separator + ancestorText ;
+                }
 			}
 
 			@Override
