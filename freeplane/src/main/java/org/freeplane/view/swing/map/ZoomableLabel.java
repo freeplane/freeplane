@@ -21,6 +21,7 @@ import javax.swing.text.View;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -317,4 +318,25 @@ public class ZoomableLabel extends JLabel {
 	public void setTextRenderingIcon(Icon icon) {
 		putClientProperty(TEXT_RENDERING_ICON, icon);
 	}
+    @Override
+    public void setText(String text) {
+        if(text != null && ! text.isEmpty() && ! HtmlUtils.isHtml(text)) {
+            for(char c : text.toCharArray()) {
+                byte directionality = Character.getDirectionality(c);
+                if(directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT
+                        || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING
+                        || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE
+                        || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) {
+                    super.setText(TextWritingDirection.LEFT_TO_RIGHT.marked(text));
+                    return;
+                }
+                if(! Character.isWhitespace(c))
+                    break;
+            }
+
+        }
+        super.setText(text);
+    }
+
+
 }
