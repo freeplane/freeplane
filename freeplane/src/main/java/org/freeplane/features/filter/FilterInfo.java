@@ -51,8 +51,12 @@ public class FilterInfo {
         this.info = info;
     }
 
-    void set(final int newInfo) {
-        info = newInfo;
+    boolean set(final int newInfo) {
+        if(info != newInfo) {
+            info = newInfo;
+            return true;
+        }
+        return false;
     }
 
     boolean add(final int flag) {
@@ -80,9 +84,9 @@ public class FilterInfo {
 		info = SHOW_AS_INITIAL_VALUE;
 	}
 
-	boolean matches(final int filterOptions) {
-		return get(filterOptions) != 0;
-	}
+    boolean matches(final int filterOptions) {
+        return get(filterOptions) != 0;
+    }
 
     int get(final int filterOptions) {
         return filterOptions & info;

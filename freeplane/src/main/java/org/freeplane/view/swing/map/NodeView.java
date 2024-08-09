@@ -1772,11 +1772,6 @@ public class NodeView extends JComponent implements INodeView {
 		updateShape();
 		updateEdge();
 		updateCloud();
-		if (!isContentVisible()) {
-			mainView.setVisible(false);
-			return;
-		}
-		mainView.setVisible(true);
 		mainView.updateTextColor(this);
 		mainView.updateCss(this);
 		mainView.updateFont(this);
@@ -1815,8 +1810,10 @@ public class NodeView extends JComponent implements INodeView {
 		updateIcons();
 		mainView.updateText(getNode());
 		modelBackgroundColor = styleController().getBackgroundColor(viewedNode, getStyleOption());
-		revalidate();
-		repaint();
+		if (isContentVisible()) {
+		    revalidate();
+		    repaint();
+		}
 	}
 
 
