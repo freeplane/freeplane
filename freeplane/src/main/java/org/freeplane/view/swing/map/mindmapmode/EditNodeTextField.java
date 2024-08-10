@@ -717,6 +717,7 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		};
 		textfield.setEditorKit(kit);
+		textfield.setComponentOrientation(nodeView.getMainView().getComponentOrientation());
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
