@@ -84,8 +84,8 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		double minimumVerticalInset = getMinimumVerticalInset();
 		if(mainView.isPreferredSizeSet()) {
 		    final Dimension prefSize = mainView.getPreferredSize();
-            prefSize.width -= 2 * (zoomedHorizontalInset - minimumHorizontalInset);
-            prefSize.height -= 2 * (zoomedVerticalInset - minimumVerticalInset);
+            prefSize.width -= 2 * Math.floor(zoomedHorizontalInset - minimumHorizontalInset);
+            prefSize.height -= 2 * Math.floor(zoomedVerticalInset - minimumVerticalInset);
 		    return prefSize;
 		}
 		else {
@@ -98,8 +98,8 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		        mainView.setMinimumWidth(0);
 		        mainView.setMaximumWidth(scaledMaximumWidth);
 		        prefSize = super.getPreferredSize();
-		        prefSize.width -= 2 * zoomedHorizontalInset;
-		        prefSize.height -= 2 * zoomedVerticalInset;
+		        prefSize.width -= 2 * Math.floor(zoomedHorizontalInset);
+		        prefSize.height -= 2 * Math.floor(zoomedVerticalInset);
 		    }
 		    finally {
 		        zoomedHorizontalInset = zoomedHorizontalInsetBackup;
