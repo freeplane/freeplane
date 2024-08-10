@@ -11,23 +11,6 @@ public enum TextWritingDirection {
     LEFT_TO_RIGHT(ComponentOrientation.LEFT_TO_RIGHT, '\u202d', '\u202a', '\u2066', '\u200e' ),
     RIGHT_TO_LEFT(ComponentOrientation.RIGHT_TO_LEFT, '\u202e', '\u202b', '\u2067', '\u200f' );
 
-    public static boolean isRightToLeft(String text) {
-        for(char c : text.toCharArray()) {
-            byte directionality = Character.getDirectionality(c);
-            if(directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT
-                    || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING
-                    || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE
-                    || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) {
-                return true;
-            }
-            if(directionality == Character.DIRECTIONALITY_LEFT_TO_RIGHT
-                    || directionality == Character.DIRECTIONALITY_LEFT_TO_RIGHT_EMBEDDING
-                    || directionality == Character.DIRECTIONALITY_LEFT_TO_RIGHT_OVERRIDE)
-                return false;
-        }
-        return false;
-    }
-
     private final static char popDirection = '\u202c';
     private final static char popIsolation = '\u2069';
 
