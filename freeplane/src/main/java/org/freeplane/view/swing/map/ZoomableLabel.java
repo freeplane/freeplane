@@ -321,22 +321,11 @@ public class ZoomableLabel extends JLabel {
     @Override
     public void setText(String text) {
         if(text != null && ! text.isEmpty() && ! HtmlUtils.isHtml(text)) {
-            for(char c : text.toCharArray()) {
-                byte directionality = Character.getDirectionality(c);
-                if(directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT
-                        || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING
-                        || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE
-                        || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) {
+            if(TextWritingDirection.isRightToLeft(text)) {
                     super.setText(TextWritingDirection.LEFT_TO_RIGHT.marked(text));
                     return;
-                }
-                if(! Character.isWhitespace(c))
-                    break;
             }
-
         }
         super.setText(text);
     }
-
-
 }
