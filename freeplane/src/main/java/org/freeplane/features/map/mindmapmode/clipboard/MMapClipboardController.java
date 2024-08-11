@@ -789,19 +789,27 @@ public class MMapClipboardController extends MapClipboardController implements M
         try {
 			controller.getViewController().setWaitingCursor(true);
 			if (newNodes == null) {
-				newNodes = new LinkedList<NodeModel>();
+			    newNodes = new LinkedList<NodeModel>();
 			}
+			boolean hadChildren = target.hasChildren();
 			newNodes.clear();
 			handler.paste(t, target, side, dropAction);
-			final ModeController modeController = Controller.getCurrentModeController();
-			if ( side != Side.AS_SIBLING && modeController.getMapController().isFolded(target)
-			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-				modeController.getMapController().unfoldAndScroll(target, controller.getSelection().getFilter());
+			if ( side != Side.AS_SIBLING) {
+			    if (mapController.isFolded(target)) {
+                    if (ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
+                        mapController.unfoldAndScroll(target, controller.getSelection().getFilter());
+                    }
+                }
+			    else if(! hadChildren) {
+                    if (! ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
+                        mapController.fold(target);
+                    }
+			    }
 			}
 			for (final NodeModel child : newNodes) {
-				AttributeController.getController().performRegistrySubtreeAttributes(child);
+			    AttributeController.getController().performRegistrySubtreeAttributes(child);
 			}
-		}
+        }
 		finally {
 			controller.getViewController().setWaitingCursor(false);
 		}
