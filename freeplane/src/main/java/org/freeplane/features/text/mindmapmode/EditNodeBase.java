@@ -236,7 +236,7 @@ abstract public class EditNodeBase {
 		}
 		final ActionMap actionMap = ((JTextComponent)component).getActionMap();
 		final Action copyAction = actionMap.get(DefaultEditorKit.copyAction);
-		addAction(menu, copyAction, "CopyAction.text");
+		addAction(menu, copyAction, "menu_copy");
 		final Action cutAction = actionMap.get(DefaultEditorKit.cutAction);
 		addAction(menu, cutAction, "CutAction.text");
 		final Action pasteAction = actionMap.get(DefaultEditorKit.pasteAction);
