@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -642,10 +643,10 @@ public class MTextController extends TextController {
 		if (detail == null)
 		    detail = new DetailModel(false);
 		final EditNodeBase.IEditControl editControl = new NodeDetailsEditor(addsNewDetailsUsingInlineEditor, nodeModel);
-		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
+		final Window window = SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = createEditor(nodeModel, detail, detail.getTextOr(""), editControl, false, editInDialog, true);
-        editor.show(frame);
+        editor.show(window);
 	}
 
 
@@ -1109,9 +1110,10 @@ public class MTextController extends TextController {
 		};
 		final NodeTextEditor editControl = new NodeTextEditor(viewController, nodeModel,
                 isNewNode, prevSelectedModel, controller, parentFolded);
-		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
+        final Window window = SwingUtilities
+                .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = createEditor(nodeModel, nodeModel, nodeModel.getText(), editControl, isNewNode, editInDialog, true);
-		editor.show(frame);
+		editor.show(window);
 	}
 
 	public EditNodeBase createEditor(final NodeModel nodeModel, Object nodeProperty,

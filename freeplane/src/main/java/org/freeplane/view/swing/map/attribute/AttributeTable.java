@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
@@ -494,7 +495,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			if(editBase == null){
 				return;
 			}
-			final JFrame frame = (JFrame) JOptionPane.getFrameForComponent(AttributeTable.this);
+			final Frame frame = JOptionPane.getFrameForComponent(AttributeTable.this);
 			editBase.show(frame);
 		}
 

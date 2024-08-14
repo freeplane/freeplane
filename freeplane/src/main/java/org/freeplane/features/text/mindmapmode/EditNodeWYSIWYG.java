@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -72,8 +73,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		private JButton splitButton;
 		private StyleSheet ownStyleSheet = StyleSheetConfigurer.createDefaultStyleSheet();
 
-		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
-			super(base, title, frame);
+		HTMLDialog(final EditNodeBase base, final String title, String purpose, final Window window) throws Exception {
+			super(base, title, window);
 			JDialog dialog = getDialog();
             dialog.setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
 			createEditorPanel(purpose);
@@ -260,9 +261,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	}
 
 	@Override
-	public void show(final RootPaneContainer frame) {
+	public void show(final Window window) {
 		try {
-			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
+			HTMLDialog htmlEditorWindow = createHtmlEditor(window);
 			htmlEditorWindow.setBase(this);
 			final String titleText;
 			if(getEditControl().getEditType() == EditedComponent.TEXT)
@@ -343,8 +344,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		}
 	}
 
-	public HTMLDialog createHtmlEditor(final RootPaneContainer frame) throws Exception {
-			HTMLDialog htmlEditorWindow = new HTMLDialog(this, "", "", frame);
+	public HTMLDialog createHtmlEditor(final Window window) throws Exception {
+			HTMLDialog htmlEditorWindow = new HTMLDialog(this, "", "", window);
 		   	ResourceController.getResourceController().addPropertyChangeListener(
 	    			new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.window.", htmlEditorWindow.getHtmlEditorPanel()));
 		   	return htmlEditorWindow;

@@ -693,7 +693,7 @@ public class EditNodeTextField extends EditNodeBase {
 	 */
 	@SuppressWarnings("serial")
     @Override
-	public void show(final RootPaneContainer frame) {
+	public void show(final Window window) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final IMapViewManager viewController = modeController.getController().getMapViewManager();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
