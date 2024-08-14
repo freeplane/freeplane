@@ -59,11 +59,11 @@ findjava() {
 
 	JAVA_VERSION=$(${JAVACMD} -version |& grep -E "[[:alnum:]]+ version" | awk '{print $3}' | tr -d '"')
 	JAVA_MAJOR_VERSION=$(echo $JAVA_VERSION | sed -e 's/^1\.//' | awk -F. '{print $1}')
-	if [ $JAVA_MAJOR_VERSION -lt 8 ] || [ $JAVA_MAJOR_VERSION -gt 21 ] || [ $JAVA_MAJOR_VERSION -eq 10 ]; then
+	if [ $JAVA_MAJOR_VERSION -lt 8 ] || [ $JAVA_MAJOR_VERSION -gt 22 ] || [ $JAVA_MAJOR_VERSION -eq 10 ]; then
 		if [ -z "${FREEPLANE_USE_UNSUPPORTED_JAVA_VERSION}" ]; then
 			_error "Found $JAVACMD in $JAVA_SOURCE."
 			_error "It has version $JAVA_VERSION"
-			_error "Currently, freeplane requires java version 8 or from 11 to 21"
+			_error "Currently, freeplane requires java version 8 or from 11 to 22"
 			_error ""
 			_error "Select a supported java version"
 			_error "by setting FREEPLANE_JAVA_HOME to a valid java location"
