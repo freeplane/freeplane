@@ -11,6 +11,7 @@ Update filtered nodes on unselected views after each map modification
 Option "Preferences…->Behaviour->Link to emails from text"
 Support transparent backgrounds for printing and exports
 Support translucent backgrounds for mind maps
+Allow running under Java 22
 
 ==============================
 1.12.1
