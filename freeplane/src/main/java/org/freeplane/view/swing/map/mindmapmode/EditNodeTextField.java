@@ -595,7 +595,7 @@ public class EditNodeTextField extends EditNodeBase {
 		if (textfield == null) {
 			return;
 		}
-		ModeController modeController = Controller.getCurrentModeController();
+		ModeController modeController = nodeView.getMap().getModeController();
         modeController.setBlocked(false);
 		((MTextController)modeController.getExtension(TextController.class)).unsetCurrentBlockingEditor(EditNodeTextField.this);
 		final JEditorPane textfield = this.textfield;
