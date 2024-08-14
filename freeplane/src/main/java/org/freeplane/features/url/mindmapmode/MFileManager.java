@@ -616,7 +616,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		for (int i = 0; i < selectedFiles.length; i++) {
 			final File theFile = selectedFiles[i];
 			try {
-			    mapController.openMap(Compat.fileToUrl(theFile));
+			    if(theFile.exists())
+			        mapController.openMap(Compat.fileToUrl(theFile));
 			}
 			catch (final Exception ex) {
 				handleLoadingException(ex);
