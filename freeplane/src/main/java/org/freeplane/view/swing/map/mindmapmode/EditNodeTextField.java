@@ -906,7 +906,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final int caretPosition;
 			final int textLength = document.getLength();
 			if(mouseEventPoint != null)
-				caretPosition = Math.min(textLength, textfield.viewToModel(mouseEventPoint));
+				caretPosition = Math.max(0, Math.min(textLength, textfield.viewToModel(mouseEventPoint)));
 			else
 				caretPosition = textLength;
 			textfield.setCaretPosition(caretPosition);
