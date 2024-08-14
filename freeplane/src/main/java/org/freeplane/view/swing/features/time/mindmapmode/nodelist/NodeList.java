@@ -65,6 +65,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.text.JTextComponent;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
@@ -753,12 +754,16 @@ class NodeList implements IExtension {
 		if (storage != null) {
 			tableView.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
-			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage)
-			    .getListTimeWindowColumnSettingList()) {
-				tableView.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
-				sorter.setSortingStatus(column, setting.getColumnSorting());
-				column++;
-			}
+			List<TimeWindowColumnSetting> settings = ((TimeWindowConfigurationStorage) storage)
+			    .getListTimeWindowColumnSettingList();
+			TableColumnModel columnModel = tableView.getColumnModel();
+			if(columnModel.getColumnCount() == settings.size()) {
+                for (final TimeWindowColumnSetting setting : settings) {
+                    columnModel.getColumn(column).setPreferredWidth(setting.getColumnWidth());
+                	sorter.setSortingStatus(column, setting.getColumnSorting());
+                	column++;
+                }
+            }
 		}
 		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(),
 			matchCase.isSelected(), useRegexInFind.isSelected());
