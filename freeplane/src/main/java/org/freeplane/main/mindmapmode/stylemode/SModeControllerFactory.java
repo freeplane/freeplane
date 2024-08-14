@@ -159,7 +159,7 @@ public class SModeControllerFactory {
 		    new MNodeMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener()));
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
-		new MMapController(modeController);
+		MMapController mapController = new MMapController(modeController);
 		ModelessAttributeController.installConditions();
 		new MTextController(modeController).install(modeController);
 		SpellCheckerController.install(modeController);
@@ -171,7 +171,7 @@ public class SModeControllerFactory {
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new MLinkController(modeController));
-		MFileManager.install(new MFileManager());
+		MFileManager.install(new MFileManager(mapController));
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		logicalStyleController.initS();
 		LogicalStyleController.install(logicalStyleController);
@@ -210,7 +210,6 @@ public class SModeControllerFactory {
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		modeController.addAction(new ShowFormatPanelAction());
-		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			@Override
 			public void onSelect(final NodeModel node) {

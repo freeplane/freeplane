@@ -237,14 +237,13 @@ public class MModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
-		new MMapController(modeController);
-		final MFileManager fileManager = new MFileManager();
+		MMapController mapController = new MMapController(modeController);
+		final MFileManager fileManager = new MFileManager(mapController);
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		new MIconController(modeController).install(modeController);
 		new ProgressFactory().installActions(modeController);
-		final MapController mapController = modeController.getMapController();
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));

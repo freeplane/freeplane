@@ -155,6 +155,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
     private final static FileFilter MINDMAP_FILE_FILTER = new CaseSensitiveFileNameExtensionFilter("mm", TextUtils.getText("mindmaps_desc"));
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
 	private static File singleBackupDirectory;
+    private final MMapController mapController;
 	private File[] findFileRevisions(final File file, final File backupDir, final AlternativeFileMode mode) {
 		final String fileExtensionPattern;
 		if (mode == AlternativeFileMode.ALL)
@@ -261,8 +262,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return MFileManager.createBackupFile(backupDir, file, backupFileNumber, extension);
 	}
 
-	public MFileManager() {
+	public MFileManager(MMapController mapController) {
 		super(new File(getDefaultSaveDirFromPrefs()));
+        this.mapController = mapController;
 	}
 
 	private static String getDefaultSaveDirFromPrefs() {
@@ -281,7 +283,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
     private void createPreferences() {
-		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		final MModeController modeController = mapController.getMModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
 			@Override
@@ -325,7 +327,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	private void createActions() {
 		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController();
+		final ModeController modeController = mapController.getModeController();
 		controller.addAction(new OpenAction());
 		controller.addAction(new OpenURLMapAction());
 		controller.addAction(new NewMapAction());
@@ -423,7 +425,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final File file = map.getFile();
 		if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(
-			    Controller.getCurrentController().getViewController().getCurrentRootComponent(),
+			   mapController.getModeController().getController().getViewController().getCurrentRootComponent(),
 			    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -557,7 +559,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
             }
             try (final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
                     Reader reader = openInputStream(f, sequencedInput, versionInterpreter)) {
-                return Controller.getCurrentModeController().getMapController().getMapReader()
+                return mapController.getMapReader()
                     .createNodeTreeFromXml(map, reader, Mode.FILE);
             }
         }
@@ -614,7 +616,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		for (int i = 0; i < selectedFiles.length; i++) {
 			final File theFile = selectedFiles[i];
 			try {
-				Controller.getCurrentModeController().getMapController().openMap(Compat.fileToUrl(theFile));
+			    mapController.openMap(Compat.fileToUrl(theFile));
 			}
 			catch (final Exception ex) {
 				handleLoadingException(ex);
@@ -692,8 +694,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					follow = startFollow;
 				}
 				try {
-					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
-					    .getMapController();
 					final MapModel map = mapController.newMap(Compat.fileToUrl(file), follow);
 					return map;
 				}
@@ -757,7 +757,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		map.updateLastKnownFileModificationTime();
 		map.setReadOnly(false);
 		final URL urlAfter = map.getURL();
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		if(! urlAfter.equals(urlBefore))
 			mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter, false));
 		mapController.mapSaved(map, true);
@@ -865,7 +864,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out,//
 				StandardCharsets.UTF_8));
-			Controller.getCurrentModeController().getMapController().getMapWriter()
+			mapController.getMapWriter()
 			    .writeMapAsXml(map, fileout, Mode.FILE, CopiedNodeSet.ALL_NODES, false);
 		}
 		finally {

@@ -119,8 +119,8 @@ public class HeadlessMModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
-		new MMapController(modeController);
-		final MFileManager fileManager = new MFileManager();
+		MMapController mapController = new MMapController(modeController);
+		final MFileManager fileManager = new MFileManager(mapController);
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
