@@ -98,7 +98,7 @@ class VerticalNodeViewLayoutStrategy {
 		MapView map = view.getMap();
 		Filter filter = map.getFilter();
 		NodeModel selectionRoot = map.getRoot().getNode();
-		viewLevels = view.isFolded() ? SummaryLevels.ignoringChildNodes(selectionRoot, node, filter) : SummaryLevels.of(selectionRoot, node, filter);
+		viewLevels = childViewCount == 0 ? SummaryLevels.ignoringChildNodes(selectionRoot, node, filter) : SummaryLevels.of(selectionRoot, node, filter);
 		for(boolean isLeft : viewLevels.sides)
 			calculateLayoutData(isLeft);
 		applyLayoutToChildComponents();

@@ -108,11 +108,6 @@ class NodeViewLayoutHelper {
 
 	}
 
-	boolean isFolded() {
-		return view.isFolded();
-
-	}
-
 	boolean isSummary() {
 		return view.isSummary();
 	}
