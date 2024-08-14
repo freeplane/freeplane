@@ -130,10 +130,16 @@ private Timer timer;
 			timer = new Timer(UNFOLD_DELAY_MILLISECONDS, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(mainView.isDisplayable()){
-						NodeView nodeView = mainView.getNodeView();
-						final NodeModel node = nodeView.getNode();
-						Controller.getCurrentModeController().getMapController().unfold(node, nodeView.getMap().getFilter());
+				    if(mainView.isDisplayable()){
+				        NodeView nodeView = mainView.getNodeView();
+				        if(nodeView.isFolded()) {
+				            final NodeModel node = nodeView.getNode();
+				            MapView map = nodeView.getMap();
+				            if(map.isSelected())
+				                map.getModeController().getMapController().unfold(node, map.getFilter());
+				            else
+				                nodeView.setFolded(false);
+				        }
 					}
 				}
 			});
