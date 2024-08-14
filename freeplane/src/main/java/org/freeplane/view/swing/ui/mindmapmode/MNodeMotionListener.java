@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -238,7 +239,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					    originalAssignedVGaps = new ArrayList<>();
 					    originalHGaps = new ArrayList<>(selectedNodes.size());
 					    selectedNodes.forEach(n -> originalHGaps.add(LocationModel.getModel(n).getHGap()));
-					    Set<NodeModel> parentSelection = new HashSet<>();
+					    Set<NodeModel> parentSelection = new LinkedHashSet<>();
 					    selectedNodes.forEach(n -> {
                             NodeModel parentNode = n.getParentNode();
                             if (parentNode != null && parentSelection.add(parentNode)) {
