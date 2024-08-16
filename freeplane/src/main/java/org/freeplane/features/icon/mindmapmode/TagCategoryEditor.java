@@ -329,7 +329,7 @@ class TagCategoryEditor implements IExtension {
                     childIndex--;
                 if(support.getDropAction() != MOVE)
                     lastTransferableId = "";
-                insertTransferable(parent, childIndex, support.getTransferable());
+                insertTransferable(parent, childIndex, support.getTransferable(), true);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -972,7 +972,7 @@ class TagCategoryEditor implements IExtension {
                 final DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
                 if(selectedNode != uncategorizedTagsNode && selectedNode.isNodeAncestor(uncategorizedTagsNode))
                     selectedNode = uncategorizedTagsNode;
-                insertTransferable(selectedNode, selectedNode.isRoot() ? selectedNode.getChildCount() - 1 : selectedNode.getChildCount(), t);
+                insertTransferable(selectedNode, selectedNode.isRoot() ? selectedNode.getChildCount() - 1 : selectedNode.getChildCount(), t, false);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1124,13 +1124,13 @@ class TagCategoryEditor implements IExtension {
         }
     }
 
-    private void insertTransferable(DefaultMutableTreeNode parent, int childIndex, Transferable t)
+    private void insertTransferable(DefaultMutableTreeNode parent, int childIndex, Transferable t, boolean isDropped)
             throws UnsupportedFlavorException, IOException {
         final DataFlavor flavor = flavor(t);
         String data = (String) t.getTransferData(flavor);
         if(flavor.equals(TagCategorySelection.tagCategoryFlavor)) {
             boolean isMoveInternal = ! lastTransferableId.isEmpty() && data.startsWith(lastTransferableId);
-            if(isMoveInternal) {
+            if(isDropped && isMoveInternal) {
                 childIndex -= countSelectedChildrenAbove(parent, childIndex);
                 removeNodes();
             }
