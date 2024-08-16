@@ -380,7 +380,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public void treeNodesInserted(TreeModelEvent e) {
-            if(mergeIsRunning || e.getTreePath().getLastPathComponent() != tagCategories.getUncategorizedTagsNode())
+            if(mergeIsRunning)
                 return;
             Object[] insertedNodes = e.getChildren();
             if(lastSelectionParentsNodes.size() == insertedNodes.length) {
