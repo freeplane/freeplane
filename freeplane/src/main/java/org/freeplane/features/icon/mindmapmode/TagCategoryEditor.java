@@ -380,12 +380,11 @@ class TagCategoryEditor implements IExtension {
         public void treeNodesInserted(TreeModelEvent e) {
             if(mergeIsRunning)
                 return;
+            Object[] insertedNodes = e.getChildren();
             if (e.getTreePath().getLastPathComponent() == tagCategories.getUncategorizedTagsNode()) {
                 uncategorizedNodesMoved();
-                return;
             }
-            Object[] insertedNodes = e.getChildren();
-            if(lastSelectionParentsNodes.size() == insertedNodes.length) {
+            else if(lastSelectionParentsNodes.size() == insertedNodes.length) {
                 for(int i = 0; i < lastSelectionParentsNodes.size(); i++) {
                     final String oldParent = lastSelectionParentsNodes.get(i);
                     final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
@@ -414,7 +413,6 @@ class TagCategoryEditor implements IExtension {
                 replacements.set(indexBefore + i * 2 + 1, TagCategories.UNCATEGORIZED_NODE);
             }
             lastSelectionParentsNodes = Collections.emptyList();
-            SwingUtilities.invokeLater(() -> merge(tagCategories.getUncategorizedTagsNode()));
         }
 
         public void apply(String oldSeparator, String newSeparator) {
