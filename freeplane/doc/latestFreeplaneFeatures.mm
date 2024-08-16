@@ -1,9 +1,10 @@
-<map version="freeplane 1.11.5">
+<map version="freeplane 1.12.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="Latest Freeplane features" STYLE_REF="Introduction" FOLDED="false" ID="ID_1286342769" BACKGROUND_COLOR="#99ccff" MIN_WIDTH="0 cm" VGAP_QUANTITY="2 pt">
 <edge DASH="SOLID"/>
-<hook NAME="MapStyle" background="#ffcccc">
-    <properties show_icon_for_attributes="false" show_notes_in_map="false" show_note_icons="true" fit_to_viewport="false;"/>
+<hook NAME="MapStyle" background="#ffccccff">
+    <properties show_icon_for_attributes="false" show_notes_in_map="false" show_note_icons="true" fit_to_viewport="false;" show_tags="UNDER_NODES"/>
+    <tags category_separator="::"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
@@ -16,6 +17,9 @@
 <richcontent TYPE="NOTE" CONTENT-TYPE="plain/auto"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.tags">
+<font SIZE="10"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">
 <font SIZE="9"/>
 </stylenode>
@@ -69,22 +73,37 @@
 </stylenode>
 </map_styles>
 </hook>
-<node TEXT="Version 1.11.11" POSITION="bottom_or_right" ID="ID_1996460640">
-<node TEXT="Editor festures" ID="ID_960043093">
+<node TEXT="Version 1.12.x" POSITION="bottom_or_right" ID="ID_585965147">
+<node TEXT="Version 1.12.2" ID="ID_1654459656">
+<node TEXT="Editor features" ID="ID_159604560">
+<node TEXT="Node tags" ID="ID_886055435" LINK="freeplaneUserGuide.mm#ID_889515076"/>
+<node TEXT="Configure columns in &quot;Find and replace&quot;..." ID="ID_1771151367"/>
+<node TEXT="Distribution of new child nodes equally to both sides can be disabled" ID="ID_105131990"/>
+<node TEXT="Option &quot;Synchronize selection across all visible views&quot; available in Navigate-&gt;Synchronize selection" ID="ID_1624755121"/>
+<node TEXT="Update filtered nodes on unselected views after each map modification" ID="ID_735372156"/>
+<node TEXT="Support transparent backgrounds for printing and exports" ID="ID_1264552749"/>
+<node TEXT="Support translucent backgrounds for mind maps" ID="ID_628989967"/>
+<node TEXT="Allow running under Java 22" ID="ID_208295988"/>
+</node>
+</node>
+</node>
+<node TEXT="Version 1.11.x" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_414352132">
+<node TEXT="Version 1.11.11" FOLDED="true" ID="ID_1996460640">
+<node TEXT="Editor features" FOLDED="true" ID="ID_960043093">
 <node TEXT="Record and analyze violations found by ArchUnit tests" ID="ID_237251897" LINK="https://github.com/freeplane/freeplane-archunit-extension"/>
 <node TEXT="Save user defined attributes and details on code explorer nodes" ID="ID_472050454"/>
 <node TEXT="Use Operating System Regional Settings by default" ID="ID_109457892"/>
 <node TEXT="User option &quot;Use Operating System Regional Settings&quot; (Preferences…-&gt;Environment-&gt;Language)" ID="ID_1290735249"/>
 </node>
 </node>
-<node TEXT="Version 1.11.9" STYLE_REF="Actions" POSITION="bottom_or_right" ID="ID_289590210">
-<node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1031432368">
+<node TEXT="Version 1.11.9" STYLE_REF="Actions" FOLDED="true" ID="ID_289590210">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_1031432368">
 <node TEXT="Navigate-&gt;Auto-expand selected nodes" ID="ID_1906031168"/>
 <node TEXT="JVM Code Explorer mode (based on ArchUnit)" ID="ID_604199270" LINK="https://www.freeplane.org/codeexplorer-video"/>
 </node>
 </node>
-<node TEXT="Version 1.11.8" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_428268446">
-<node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_94012734">
+<node TEXT="Version 1.11.8" STYLE_REF="Actions" FOLDED="true" ID="ID_428268446">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_94012734">
 <node TEXT="Flower-like nodes (new node style &quot;Flower&quot; combines non-solid node borders with big border widths)" LOCALIZED_STYLE_REF="default" ID="ID_272657390">
 <cloud COLOR="#c6ffff" SHAPE="ROUND_RECT"/>
 <hook NAME="AlwaysUnfoldedNode"/>
@@ -181,8 +200,8 @@
 </node>
 </node>
 </node>
-<node TEXT="Version 1.11.5" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_1707937288">
-<node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1363201449">
+<node TEXT="Version 1.11.5" STYLE_REF="Actions" FOLDED="true" ID="ID_1707937288">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_1363201449">
 <node ID="ID_1198724288"><richcontent TYPE="NODE">
 
 <html>
@@ -202,8 +221,8 @@
 <node TEXT="New automatic &quot;stacked&quot; layouts (at the bottom of the layout selector)" ID="ID_23956346"/>
 </node>
 </node>
-<node TEXT="Version 1.11.x" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_414352132">
-<node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_1802701213">
+<node TEXT="Version 1.11.1" FOLDED="true" ID="ID_1881270520">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_1802701213">
 <node TEXT="Top-to-bottom, left-to-right and combined layouts" ID="ID_120328641">
 <hook URI="latestFreeplaneFeatures_files/layouts.png" SIZE="0.5" NAME="ExternalObject"/>
 </node>
@@ -216,8 +235,9 @@
 </node>
 <node TEXT="Updated software components" STYLE_REF="Purpose" ID="ID_127255283"/>
 </node>
+</node>
 <node TEXT="Version 1.10.5" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_1651354600">
-<node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_343021245">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_343021245">
 <node TEXT="New UI icons (created by Rexel and Predrag)" ID="ID_1135148263"/>
 <node TEXT="Command line option -R to run groovy scripts on start-up" ID="ID_1329668559"/>
 <node TEXT="Support command line options -R and -S in non interactive mode" ID="ID_1972168280"/>
@@ -263,7 +283,7 @@
 </node>
 </node>
 <node TEXT="Version 1.8.x" STYLE_REF="Actions" FOLDED="true" POSITION="bottom_or_right" ID="ID_25848260">
-<node TEXT="Editor features" STYLE_REF="Purpose" ID="ID_109116165">
+<node TEXT="Editor features" STYLE_REF="Purpose" FOLDED="true" ID="ID_109116165">
 <node TEXT="Use emoticons from https://twemoji.twitter.com/ as icons" ID="ID_391516983" LINK="https://twemoji.twitter.com/"/>
 <node TEXT="Optionally ignore accents and diacritics in filter conditions" ID="ID_684736245"/>
 <node TEXT="Usability improvements suggested by University of Oulu UX research group" ID="ID_1022343423"/>
