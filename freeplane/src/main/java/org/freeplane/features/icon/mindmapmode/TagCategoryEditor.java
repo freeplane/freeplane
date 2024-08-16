@@ -108,8 +108,6 @@ import org.freeplane.features.icon.TreeTagChangeListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
-import net.infonode.docking.internalutil.DropAction;
-
 class TagCategoryEditor implements IExtension {
     private static final int UUID_LENGTH = 36;
 
@@ -382,6 +380,10 @@ class TagCategoryEditor implements IExtension {
         public void treeNodesInserted(TreeModelEvent e) {
             if(mergeIsRunning)
                 return;
+            if (e.getTreePath().getLastPathComponent() == tagCategories.getUncategorizedTagsNode()) {
+                uncategorizedNodesMoved();
+                return;
+            }
             Object[] insertedNodes = e.getChildren();
             if(lastSelectionParentsNodes.size() == insertedNodes.length) {
                 for(int i = 0; i < lastSelectionParentsNodes.size(); i++) {
@@ -406,11 +408,12 @@ class TagCategoryEditor implements IExtension {
             SwingUtilities.invokeLater(() -> merge(e));
         }
 
-        public void uncategorizedNodesMoved() {
+        private void uncategorizedNodesMoved() {
+            final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
             for(int i = 0; i < lastSelectionParentsNodes.size(); i++) {
-                final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
-                replacements.set(indexBefore + 1, TagCategories.UNCATEGORIZED_NODE);
+                replacements.set(indexBefore + i * 2 + 1, TagCategories.UNCATEGORIZED_NODE);
             }
+            lastSelectionParentsNodes = Collections.emptyList();
             SwingUtilities.invokeLater(() -> merge(tagCategories.getUncategorizedTagsNode()));
         }
 
@@ -1134,12 +1137,13 @@ class TagCategoryEditor implements IExtension {
                 childIndex -= countSelectedChildrenAbove(parent, childIndex);
                 removeNodes();
             }
+            if(! isMoveInternal)
+                lastSelectionParentsNodes = Collections.emptyList();
             tagCategories.insert(parent, childIndex, data.substring(TRANSFERABLE_ID_LENGTH));
-            if(isMoveInternal && parent == tagCategories.getUncategorizedTagsNode())
-                tagRenamer.uncategorizedNodesMoved();
-        }
-        else
+        } else {
+            lastSelectionParentsNodes = Collections.emptyList();
             tagCategories.insert(parent, childIndex, data);
+        }
     }
 
     private int countSelectedChildrenAbove(DefaultMutableTreeNode parent, int childIndex) {
