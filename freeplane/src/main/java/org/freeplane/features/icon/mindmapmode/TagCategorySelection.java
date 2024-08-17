@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 public class TagCategorySelection implements Transferable {
 
     public static final DataFlavor tagCategoryFlavor = new DataFlavor("application/x-freeplane-tag-category; class=java.lang.String", "Freeplane Tag Categories");
-    public static final DataFlavor tagFlavor = TagSelection.tagFlavor;
     public static final DataFlavor stringFlavor = DataFlavor.stringFlavor;
+    private static final DataFlavor tagFlavor = TagSelection.tagFlavor;
 
     private static final DataFlavor[] flavors = {
             tagCategoryFlavor,
@@ -45,7 +45,7 @@ public class TagCategorySelection implements Transferable {
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException,
             IOException {
         if(flavor.equals(tagFlavor))
-            return tagSelection;
+            return id + System.lineSeparator() + tagSelection;
         else if(flavor.equals(tagCategoryFlavor))
             return id + System.lineSeparator() + tagCategorySelection;
         else

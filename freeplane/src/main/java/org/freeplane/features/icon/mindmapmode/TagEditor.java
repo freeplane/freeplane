@@ -27,6 +27,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -54,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -280,7 +282,7 @@ class TagEditor {
                     writer.append(System.lineSeparator());
                 }
             }
-            return new TagSelection(writer.toString());
+            return new TagSelection(UUID.randomUUID(), writer.toString());
         }
 
         @Override
@@ -297,10 +299,12 @@ class TagEditor {
             String data;
             final Transferable transferable = info.getTransferable();
             try {
-                data = (String) transferable.getTransferData(
-                        transferable.isDataFlavorSupported(TagSelection.tagFlavor)
-                        ? TagSelection.tagFlavor
-                        : DataFlavor.stringFlavor);
+                DataFlavor flavor = transferable.isDataFlavorSupported(TagSelection.tagFlavor)
+                ? TagSelection.tagFlavor
+                : DataFlavor.stringFlavor;
+                String transferData = (String) transferable.getTransferData(flavor);
+                importId = flavor == TagSelection.tagFlavor ? transferData.substring(0, TagSelection.TRANSFERABLE_ID_LENGTH) : "";
+                data = flavor == TagSelection.tagFlavor ? transferData.substring(TagSelection.TRANSFERABLE_ID_LENGTH) : transferData;
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -332,9 +336,12 @@ class TagEditor {
         @Override
         protected void exportDone(JComponent source, Transferable data, int action) {
             super.exportDone(source, data, action);
-            if (action == MOVE) {
-                deleteTags();
-            }
+            if (action != MOVE || ! data.isDataFlavorSupported(TagSelection.tagFlavor))
+                return;
+            try {
+                if (! importId.isEmpty() && ((String)data.getTransferData(TagSelection.tagFlavor)).startsWith(importId))
+                    deleteTags();
+            } catch (UnsupportedFlavorException | IOException e) {/**/}
         }
     }
 
@@ -350,6 +357,8 @@ class TagEditor {
 
     private static final String WIDTH_PROPERTY = "tagDialog.width";
     private static final String HEIGHT_PROPERTY = "tagDialog.height";
+
+    private static String importId = "";
 
     private final NodeModel node;
     private MIconController iconController;

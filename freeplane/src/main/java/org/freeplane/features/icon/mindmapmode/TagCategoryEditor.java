@@ -109,10 +109,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
 class TagCategoryEditor implements IExtension {
-    private static final int UUID_LENGTH = 36;
-
-    private static final int TRANSFERABLE_ID_LENGTH = UUID_LENGTH + System.lineSeparator().length();
-
     @SuppressWarnings("serial")
     static class TagCellRenderer extends DefaultTreeCellRenderer {
         private Object rootNode; // Reference to the root node object
@@ -986,8 +982,6 @@ class TagCategoryEditor implements IExtension {
     private DataFlavor flavor(Transferable t) {
             if(t.isDataFlavorSupported(TagCategorySelection.tagCategoryFlavor))
                 return TagCategorySelection.tagCategoryFlavor;
-            if(t.isDataFlavorSupported(TagCategorySelection.tagFlavor))
-                return TagCategorySelection.tagFlavor;
             if(t.isDataFlavorSupported(TagCategorySelection.stringFlavor))
                 return TagCategorySelection.stringFlavor;
             throw new IllegalArgumentException("No supported flavor found");
@@ -1140,7 +1134,7 @@ class TagCategoryEditor implements IExtension {
             }
             if(! isMoveInternal)
                 lastSelectionParentsNodes = Collections.emptyList();
-            tagCategories.insert(parent, childIndex, data.substring(TRANSFERABLE_ID_LENGTH));
+            tagCategories.insert(parent, childIndex, data.substring(TagSelection.TRANSFERABLE_ID_LENGTH));
         } else {
             lastSelectionParentsNodes = Collections.emptyList();
             tagCategories.insert(parent, childIndex, data);

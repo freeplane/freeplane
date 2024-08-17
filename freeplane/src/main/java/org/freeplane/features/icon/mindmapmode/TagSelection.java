@@ -11,6 +11,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class TagSelection implements Transferable, ClipboardOwner {
@@ -20,9 +21,16 @@ public class TagSelection implements Transferable, ClipboardOwner {
             tagFlavor,
             DataFlavor.stringFlavor
         };
+    private final String id;
     private final String tagSelection;
-    public TagSelection(String tagData) {
-    	tagSelection = tagData;
+
+    static final int UUID_LENGTH = 36;
+
+    static final int TRANSFERABLE_ID_LENGTH = TagSelection.UUID_LENGTH + System.lineSeparator().length();
+
+    public TagSelection(UUID uuid, String tagData) {
+        this.id = uuid.toString();
+        tagSelection = tagData;
     }
 
     @Override
@@ -38,12 +46,15 @@ public class TagSelection implements Transferable, ClipboardOwner {
     @Override
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException,
             IOException {
+        if(flavor.equals(tagFlavor))
+            return id + System.lineSeparator() + tagSelection;
+        else
             return tagSelection;
     }
 
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
-       
+
     }
 
 }
