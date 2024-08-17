@@ -212,44 +212,52 @@ public class TagCategories {
         int lastIndentation = -1;
         int index = firstIndex;
         LinkedList<String> categorizedContent = new LinkedList<>();
+        String tagCategorySeparator = getTagCategorySeparator();
         if(! target.isRoot()) {
             String prefix = categorizedContent((DefaultMutableTreeNode)lastNode.getParent());
             if(! prefix.isEmpty())
-            categorizedContent.add(prefix + getTagCategorySeparator());
+            categorizedContent.add(prefix + tagCategorySeparator);
         }
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
+            int indentation = getIndentationLevel(line);
 
-            Tag tag = readTag(line.trim());
-            if(target == uncategorizedTagsNode) {
-                insertUncategorizedTagNodeSorted(tag);
-            } else {
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
-                DefaultMutableTreeNode parent;
-                int indentation = getIndentationLevel(line);
-                if (indentation == lastIndentation) {
-                    parent = (DefaultMutableTreeNode) lastNode.getParent();
-                } else if (indentation > lastIndentation) {
-                    parent = lastNode;
-                    Object userObject = parent.getUserObject();
-                    String categorizedParentContent =
-                            (categorizedContent.isEmpty() ? "" :  categorizedContent.getLast() )
-                            + ((userObject instanceof Tag)?(((Tag)userObject)).getContent() + getTagCategorySeparator() : "");
-                    categorizedContent.add(categorizedParentContent);
+            String lineTags = line.trim();
+            for(int lineTagIndex = 0; lineTagIndex < lineTags.length();) {
+                int lineTagEnd = lineTags.indexOf(tagCategorySeparator, lineTagIndex);
+                String lineTag = lineTagEnd >= 0 ? lineTags.substring(lineTagIndex, lineTagEnd) : lineTags.substring(lineTagIndex);
+                lineTagIndex =  lineTagEnd >= 0 ? lineTagEnd + tagCategorySeparator.length() : lineTags.length();
+                Tag tag = readTag(lineTag);
+                if(target == uncategorizedTagsNode) {
+                    insertUncategorizedTagNodeSorted(tag);
                 } else {
-                    parent = (DefaultMutableTreeNode) lastNode.getParent();
-                    for (int i = 0; i < (lastIndentation - indentation); i++) {
-                        parent = (DefaultMutableTreeNode) parent.getParent();
-                        categorizedContent.removeLast();
+                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
+                    DefaultMutableTreeNode parent;
+                    if (indentation == lastIndentation) {
+                        parent = (DefaultMutableTreeNode) lastNode.getParent();
+                    } else if (indentation > lastIndentation) {
+                        parent = lastNode;
+                        Object userObject = parent.getUserObject();
+                        String categorizedParentContent =
+                                (categorizedContent.isEmpty() ? "" :  categorizedContent.getLast() )
+                                + ((userObject instanceof Tag)?(((Tag)userObject)).getContent() + tagCategorySeparator : "");
+                        categorizedContent.add(categorizedParentContent);
+                    } else {
+                        parent = (DefaultMutableTreeNode) lastNode.getParent();
+                        for (int i = 0; i < (lastIndentation - indentation); i++) {
+                            parent = (DefaultMutableTreeNode) parent.getParent();
+                            categorizedContent.removeLast();
+                        }
                     }
+                    parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
+                    String categorizedTagContent = categorizedContent.getLast()
+                            + tag.getContent();
+                    registerTagReference(new Tag(categorizedTagContent, tag.getColor()));
+                    lastNode = newNode;
+                    lastIndentation = indentation;
+                    indentation++;
                 }
-                parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
-                String categorizedTagContent = categorizedContent.getLast()
-                        + tag.getContent();
-                registerTagReference(new Tag(categorizedTagContent, tag.getColor()));
-                lastNode = newNode;
-                lastIndentation = indentation;
             }
         }
         if(target != uncategorizedTagsNode)
