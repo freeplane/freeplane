@@ -358,6 +358,8 @@ class TagCategoryEditor implements IExtension {
             String commonPrefix = tagCategories.categorizedContent((DefaultMutableTreeNode) node.getParent());
             final Tag oldTag = (Tag) node.getUserObject();
             final String oldContent = oldTag.getContent();
+            if(oldContent.isEmpty())
+                return;
             final String newContent = newTag.getContent();
             if(! newContent.equals(oldContent)) {
                 if(commonPrefix.isEmpty()) {
@@ -385,9 +387,10 @@ class TagCategoryEditor implements IExtension {
                 uncategorizedNodesMoved();
             }
             else if(lastSelectionParentsNodes.size() == insertedNodes.length) {
+                int replacementStartIndex = replacements.size() - lastSelectionParentsNodes.size() * 2;
                 for(int i = 0; i < lastSelectionParentsNodes.size(); i++) {
                     final String oldParent = lastSelectionParentsNodes.get(i);
-                    final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
+                    final int replacementIndex = replacementStartIndex + i * 2;
                     final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) insertedNodes[i];
                     final Tag newTag = (Tag) insertedNode.getUserObject();
                     String replacedContent;
@@ -396,12 +399,12 @@ class TagCategoryEditor implements IExtension {
                     else
                         replacedContent = oldParent + getTagCategorySeparator() + newTag.getContent();
                     final String newContent = tagCategories.categorizedContent(insertedNode);
-                    if(indexBefore < 0
-                            || ! replacements.get(indexBefore).equals(replacedContent)) {
+                    if(replacementIndex < 0
+                            || ! replacements.get(replacementIndex).equals(replacedContent)) {
                         break;
                     }
                     else
-                        replacements.set(indexBefore + 1, newContent);
+                        replacements.set(replacementIndex + 1, newContent);
                 }
             }
             SwingUtilities.invokeLater(() -> merge(e));
