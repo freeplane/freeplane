@@ -828,4 +828,12 @@ public class MIconController extends IconController {
         modeController.execute(actor, map);
     }
 
+    public void addTagsFromSpec(NodeModel target, String tagSpec) {
+        String[] tags = tagSpec.split(System.lineSeparator());
+        if(tags == null || tags.length == 0)
+            return;
+        List<Tag> addedTagList = Stream.of(tags).map(TagCategories::readTag).collect(Collectors.toList());
+        addTags(target, addedTagList);
+    }
+
 }

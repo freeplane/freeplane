@@ -1134,7 +1134,7 @@ class TagCategoryEditor implements IExtension {
             }
             if(! isMoveInternal)
                 lastSelectionParentsNodes = Collections.emptyList();
-            tagCategories.insert(parent, childIndex, data.substring(TagSelection.TRANSFERABLE_ID_LENGTH));
+            tagCategories.insert(parent, childIndex, TagSelection.getTransferContent(data));
         } else {
             lastSelectionParentsNodes = Collections.emptyList();
             tagCategories.insert(parent, childIndex, data);

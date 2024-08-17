@@ -5,8 +5,6 @@
  */
 package org.freeplane.features.icon.mindmapmode;
 
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -14,19 +12,28 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class TagSelection implements Transferable, ClipboardOwner {
+public class TagSelection implements Transferable {
     public static final DataFlavor tagFlavor = new DataFlavor("application/x-freeplane-tag; class=java.lang.String", "Freeplane Tags");
+
+    private static final int UUID_LENGTH = 36;
+
+    private static final int TRANSFERABLE_ID_LENGTH = TagSelection.UUID_LENGTH + System.lineSeparator().length();
+
+    public static String getTransferContent(String transferData) {
+        return transferData.substring(TRANSFERABLE_ID_LENGTH);
+    }
+
+    public static String getTransferId(String transferData) {
+        return transferData.substring(0, TagSelection.TRANSFERABLE_ID_LENGTH);
+    }
 
     private static final DataFlavor[] flavors = {
             tagFlavor,
             DataFlavor.stringFlavor
         };
+
     private final String id;
     private final String tagSelection;
-
-    static final int UUID_LENGTH = 36;
-
-    static final int TRANSFERABLE_ID_LENGTH = TagSelection.UUID_LENGTH + System.lineSeparator().length();
 
     public TagSelection(UUID uuid, String tagData) {
         this.id = uuid.toString();
@@ -51,10 +58,4 @@ public class TagSelection implements Transferable, ClipboardOwner {
         else
             return tagSelection;
     }
-
-    @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents) {
-
-    }
-
 }

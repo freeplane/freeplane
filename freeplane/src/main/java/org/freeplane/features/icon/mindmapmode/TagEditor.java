@@ -303,8 +303,8 @@ class TagEditor {
                 ? TagSelection.tagFlavor
                 : DataFlavor.stringFlavor;
                 String transferData = (String) transferable.getTransferData(flavor);
-                importId = flavor == TagSelection.tagFlavor ? transferData.substring(0, TagSelection.TRANSFERABLE_ID_LENGTH) : "";
-                data = flavor == TagSelection.tagFlavor ? transferData.substring(TagSelection.TRANSFERABLE_ID_LENGTH) : transferData;
+                importId = flavor == TagSelection.tagFlavor ? TagSelection.getTransferId(transferData) : "";
+                data = flavor == TagSelection.tagFlavor ? TagSelection.getTransferContent(transferData) : transferData;
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
