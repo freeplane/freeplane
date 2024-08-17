@@ -60,11 +60,11 @@ abstract class TagCondition extends StringConditionAdapter {
      */
 	@Override
 	public boolean checkNode(final NodeModel node) {
-	    final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
-	    final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
 	    final IconController iconController = IconController.getController();
 	    final List<Tag> tags = iconController.getTags(node);
 	    if(searchesAcrossAllCategories()) {
+	        final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
+	        final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
 	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry().getTagCategories());
 	        for (CategorizedTag tag : categorizedTags) {
 	            if (checkTag(tag, tagCategorySeparator))
@@ -73,7 +73,7 @@ abstract class TagCondition extends StringConditionAdapter {
 	    }
 	    else {
 	        for (Tag tag : tags) {
-	            if (checkTag(tag, tagCategorySeparator))
+	            if (checkTag(tag, ""))
 	                return true;
 
 	        }
