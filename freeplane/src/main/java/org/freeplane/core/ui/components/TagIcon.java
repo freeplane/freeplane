@@ -51,7 +51,7 @@ public class TagIcon implements Icon {
         mapViewManager.setEdgesRenderingHint(g);
         g.fillRoundRect(x, y, width, height, r, r);
         g.setColor(textColor);
-        g.drawRoundRect(x, y, width, height, r, r);
+        g.drawRoundRect(x, y, width - 1, height - 1, r, r);
         g.setFont(font);
         mapViewManager.setTextRenderingHint(g);
         g.drawString(tag.getContent(), x + height / 2, y + height * 4 / 5);
