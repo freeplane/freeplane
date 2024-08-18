@@ -518,9 +518,7 @@ public class TagCategories {
                         currentNode = newNode;
                         categoriesChanged = true;
                         TagReference tagReference = new TagReference(qualifiedTag);
-                        ArrayList<TagReference> list = new ArrayList<>();
-                        list.add(tagReference);
-                        tagReferences.put(qualifiedContent, list);
+                        tagReferences.computeIfAbsent(qualifiedContent, x -> new ArrayList<>()).add(tagReference);
                         if(qualifiedContent == fullContent )
                             return tagReference;
                     }
@@ -538,9 +536,7 @@ public class TagCategories {
                     insertUncategorizedTagNodeSorted(tag);
             }
             TagReference tagReference = new TagReference(tag);
-            ArrayList<TagReference> list = new ArrayList<>();
-            list.add(tagReference);
-            tagReferences.put(tag.getContent(), list);
+            tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(tagReference);
             return tagReference;
         }
         else {
@@ -741,9 +737,7 @@ public class TagCategories {
             return knownTag.get();
         mapTags.add(tag);
         TagReference tagReference = new TagReference(tag);
-        ArrayList<TagReference> list = new ArrayList<>();
-        list.add(tagReference);
-        tagReferences.put(tag.getContent(), list);
+        tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(tagReference);
         return tag;
     }
 
