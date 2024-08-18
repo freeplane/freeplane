@@ -253,7 +253,7 @@ public class TagCategories {
                     parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
                     String categorizedTagContent = categorizedContent.getLast()
                             + tag.getContent();
-                    registerTagReference(new Tag(categorizedTagContent, tag.getColor()));
+                    registerTagReference(new Tag(categorizedTagContent, tag.getColor()), ! lineTag.equals(tag.getContent()));
                     lastNode = newNode;
                     lastIndentation = indentation;
                     indentation++;
@@ -322,16 +322,21 @@ public class TagCategories {
 
     public void load(File tagCategoryFile) {
         try (Scanner scanner = new Scanner(tagCategoryFile)){
-            final DefaultMutableTreeNode rootNode = getRootNode();
-            readTagCategories(rootNode, rootNode.getChildCount() - 1, scanner);
+            load(scanner);
         } catch (FileNotFoundException e1) {/**/}
     }
 
     public void load(String data) {
         try (Scanner scanner = new Scanner(data)){
-            final DefaultMutableTreeNode rootNode = getRootNode();
-            readTagCategories(rootNode, rootNode.getChildCount() - 1, scanner);
+            load(scanner);
         }
+    }
+
+    private void load(Scanner scanner) {
+        final DefaultMutableTreeNode rootNode = getRootNode();
+        while(rootNode.getChildCount() > 1)
+            rootNode.remove(0);
+        readTagCategories(rootNode, 0, scanner);
     }
     public DefaultMutableTreeNode getRootNode() {
         return (DefaultMutableTreeNode) nodes.getRoot();
@@ -490,15 +495,15 @@ public class TagCategories {
                         if (childTag.getContent().equals(currentTag)) {
                             currentNode = childNode;
                             found = true;
-                            if(setColor)
-                                childTag.setColor(tag.getColor());
                             break;
                         }
                     }
 
                     if (!found) {
                         String qualifiedContent = end >= 0 ? fullContent.substring(0, end) : fullContent;
-                        Tag qualifiedTag = setColor && qualifiedContent == fullContent ? tag : new Tag(qualifiedContent);
+                        Tag prototype = new Tag(qualifiedContent);
+                        Tag qualifiedTag = setColor && qualifiedContent == fullContent ? tag :  mapTags.getElement(prototype).orElse(prototype);
+                        mapTags.addIfNotExists(qualifiedTag);
                         if(currentNode.isRoot()) {
                             DefaultMutableTreeNode uncategorizedTagNode = removeUncategorizedTagNode(qualifiedTag);
                             if(uncategorizedTagNode != null) {
