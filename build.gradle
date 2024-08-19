@@ -104,6 +104,7 @@ subprojects {
       options.docEncoding = "UTF-8"
       options.charSet = "UTF-8"
       options.locale="en_US"
+      options.jFlags('-Duser.language=en', '-Duser.country=US')
       enabled = false
       failOnError = false
     }
