@@ -625,8 +625,10 @@ public class TagCategories {
         for(int i = 0; i < replacements.size(); i += 2) {
             String fromTag = replacements.get(i);
             if(fromTag.isEmpty())
-                return;
+                continue;
             String toTag = replacements.get(i + 1);
+            if(fromTag.equals(toTag))
+                continue;
             replaceReferencedTags(fromTag, toTag);
             String fromCategory = fromTag + categorySeparator;
             SortedMap<String, List<TagReference>> tailMap = tagReferences.tailMap(fromCategory);
