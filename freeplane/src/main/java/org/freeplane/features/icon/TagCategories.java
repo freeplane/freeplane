@@ -233,8 +233,8 @@ public class TagCategories {
                 Tag tag = readTag(lineTag);
                 if(target == uncategorizedTagsNode) {
                     Tag savedTag = mapTags.addAndReturn(tag);
+                    insertUncategorizedTagNodeSorted(savedTag);
                     if(savedTag == tag) {
-                        insertUncategorizedTagNodeSorted(savedTag);
                         tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(new TagReference(tag));
                     }
                 } else {
