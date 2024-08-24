@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -229,7 +230,11 @@ public class MMapClipboardController extends MapClipboardController implements M
         @Override
         public void paste(Transferable t, final NodeModel target, final Side side, int dropAction) {
             if (textFromClipboard != null) {
-                paste(target);
+                Set<NodeModel> selection = Controller.getCurrentController().getSelection().getSelection();
+                if(selection.contains(target))
+                    selection.forEach(this::paste);
+                else
+                    paste(target);
             }
         }
 
