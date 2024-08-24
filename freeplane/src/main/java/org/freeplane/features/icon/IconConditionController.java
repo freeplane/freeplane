@@ -43,7 +43,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class IconConditionController implements IElementaryConditionController {
     static final String FILTER_ICON = "filter_icon";
     static final String FILTER_TAG = "filter_tag";
-    static final String FILTER_ANY_TAG_CATEGORY = "filter_tag_category";
+    static final String FILTER_EXTENDED_TAG_CATEGORY = "filter_tag_category";
 // // 	final private Controller controller;
 
 	public IconConditionController() {
@@ -54,7 +54,7 @@ class IconConditionController implements IElementaryConditionController {
 	@Override
     public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
 		final TranslatedObject o = (TranslatedObject)property;
-        return o.objectEquals(IconConditionController.FILTER_TAG) || o.objectEquals(FILTER_ANY_TAG_CATEGORY);
+        return o.objectEquals(IconConditionController.FILTER_TAG) || o.objectEquals(FILTER_EXTENDED_TAG_CATEGORY);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ class IconConditionController implements IElementaryConditionController {
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		return namedObject.objectEquals(IconConditionController.FILTER_ICON)
 		        || namedObject.objectEquals(IconConditionController.FILTER_TAG)
-		        || namedObject.objectEquals(IconConditionController.FILTER_ANY_TAG_CATEGORY);
+		        || namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ class IconConditionController implements IElementaryConditionController {
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST))
                 return new IconExistsCondition();
         }
-        boolean searchesAcrossAllCategories = namedObject.objectEquals(IconConditionController.FILTER_ANY_TAG_CATEGORY);
+        boolean searchesAcrossAllCategories = namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY);
         if (searchesAcrossAllCategories || namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
             String comparedString=  (value instanceof Tag) ? ((Tag)value).getContent() : value.toString();
             if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
@@ -124,7 +124,7 @@ class IconConditionController implements IElementaryConditionController {
         if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
             return new DefaultComboBoxModel(getIconConditionNames());
         }
-        if (namedObject.objectEquals(IconConditionController.FILTER_TAG) || namedObject.objectEquals(IconConditionController.FILTER_ANY_TAG_CATEGORY)) {
+        if (namedObject.objectEquals(IconConditionController.FILTER_TAG) || namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY)) {
             return new DefaultComboBoxModel(getTagConditionNames());
         }
         throw new IllegalArgumentException(String.valueOf(property));
@@ -135,7 +135,7 @@ class IconConditionController implements IElementaryConditionController {
 		final DefaultListModel list = new DefaultListModel();
         list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
         list.addElement(TextUtils.createTranslatedString(FILTER_TAG));
-        list.addElement(TextUtils.createTranslatedString(FILTER_ANY_TAG_CATEGORY));
+        list.addElement(TextUtils.createTranslatedString(FILTER_EXTENDED_TAG_CATEGORY));
 		return list;
 	}
 
@@ -171,7 +171,8 @@ class IconConditionController implements IElementaryConditionController {
 	    if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
             extendedComboBoxModel.setExtensionList(iconRegistry.getIconsAsListModel());
 	    }
-	    else if (namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
+	    else if (namedObject.objectEquals(IconConditionController.FILTER_TAG)
+	            || namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY)) {
 	        extendedComboBoxModel.setExtensionList(iconRegistry.getTagCategories().getTagsAsListModel());
 	    }
 	    return extendedComboBoxModel;
