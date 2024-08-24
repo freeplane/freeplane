@@ -90,7 +90,9 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     private static final String TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "category_separator";
 
     private static final String TAGS_ELEMENT = "tags";
-    public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
+    public static final String ALLOW_COMPACT_LAYOUT_PROPERTY = "allow_compact_layout";
+    public static final String SHOW_TAG_CATEGORIES_PROPERTY = "showTagCategories";
+
     public static final String SHOW_TAGS_PROPERTY = "show_tags";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
@@ -416,7 +418,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	public boolean allowsCompactLayout(MapModel map) {
-		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT);
+		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT_PROPERTY);
 	}
 
 
@@ -941,6 +943,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         LogicalStyleController.getController().refreshMapLaterUndoable(map);
         if(copyToExternalTemplate)
             undoableCopyStyleToAssociatedExternalTemplate(map, style);
+    }
+
+    public boolean showsTagCategories(MapModel map) {
+        return getBooleanProperty(map, SHOW_TAG_CATEGORIES_PROPERTY);
     }
 
 }

@@ -69,13 +69,6 @@ public class Tag implements Comparable<Tag>{
         return new Tag(content, color);
     }
 
-    public Tag removeInternalCategories(String tagCategorySeparator) {
-        if(tagCategorySeparator.isEmpty() || isEmpty())
-            return this;
-        final int tagIndex = getContent().lastIndexOf(tagCategorySeparator);
-        return tagIndex == -1 ? this : new Tag(getContent().substring(tagIndex + tagCategorySeparator.length()), getColor());
-    }
-
     public List<Tag> categoryTags(String tagCategorySeparator) {
         if(tagCategorySeparator.isEmpty() || isEmpty())
             return Collections.singletonList(this);
@@ -86,7 +79,7 @@ public class Tag implements Comparable<Tag>{
                 .collect(Collectors.toList());
     }
 
-    public Tag shortTag(String tagCategorySeparator) {
+    public Tag withoutCategories(String tagCategorySeparator) {
         if(tagCategorySeparator.isEmpty() || isEmpty())
             return this;
         int shortTagBegin = content.lastIndexOf(tagCategorySeparator);

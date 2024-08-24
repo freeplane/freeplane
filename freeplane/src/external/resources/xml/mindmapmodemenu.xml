@@ -333,10 +333,14 @@
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
 				<Entry name="SetBooleanPropertyAction.show_icons" />
-				<Entry builder="radio_button_group" name="show_tags" textKey="MapProperty.show_tags">
-					<Entry name="SetStringMapPropertyAction.show_tags.BESIDE_NODES" />
-					<Entry name="SetStringMapPropertyAction.show_tags.UNDER_NODES" />
-					<Entry name="SetStringMapPropertyAction.show_tags.NEVER" />
+				<Entry name="show_tags" textKey="MapProperty.show_tags">
+					<Entry builder="radio_button_group">
+						<Entry name="SetStringMapPropertyAction.show_tags.BESIDE_NODES" />
+						<Entry name="SetStringMapPropertyAction.show_tags.UNDER_NODES" />
+						<Entry name="SetStringMapPropertyAction.show_tags.NEVER" />
+					</Entry>
+					<Entry builder="separator" />
+					<Entry name="SetBooleanMapPropertyAction.showTagCategories" />
 				</Entry>
 				<Entry builder="radio_button_group" name="show_connectors" textKey="OptionPanel.show_connectors">
 					<Entry name="SetStringPropertyAction.show_connectors.true" />

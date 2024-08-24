@@ -99,7 +99,6 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.CategorizedTagForCategoryNode;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
@@ -110,11 +109,8 @@ import org.freeplane.features.mode.Controller;
 
 class TagCategoryEditor implements IExtension {
     @SuppressWarnings("serial")
-    static class TagCellRenderer extends DefaultTreeCellRenderer {
-        private Object rootNode; // Reference to the root node object
-
-        public TagCellRenderer(DefaultMutableTreeNode rootNode) {
-            this.rootNode = rootNode;
+    class TagCellRenderer extends DefaultTreeCellRenderer {
+        public TagCellRenderer() {
             setHorizontalAlignment(CENTER);
         }
 
@@ -128,14 +124,8 @@ class TagCategoryEditor implements IExtension {
                 if (userObject instanceof Tag) {
                     Tag tag = (Tag) userObject;
 
-                    if (value != rootNode) {
-                        setText(null);
-                        setIcon(new TagIcon(tag, getFont())); // Example of
-                                                              // setting
-                                                              // a custom icon
-                    } else {
-                        setText(tag.getContent());
-                    }
+                    setText(null);
+                    setIcon(new TagIcon(tagCategories.withoutCategories(tag), getFont()));
                 } else if (userObject != null) {
                     setText(userObject.toString());
                 }
@@ -175,7 +165,7 @@ class TagCategoryEditor implements IExtension {
                 boolean expanded, boolean leaf, int row) {
             currentNode = (DefaultMutableTreeNode) value;
             Tag tag = (Tag) currentNode.getUserObject();
-            String content = tag.getContent();
+            String content = tagCategories.withoutCategories(tag).getContent();
 			textField.setText(content);
             textField.setColumns(Math.max(30, content.length()));
             JComponent treeCellRendererComponent = (JComponent) tree.getCellRenderer().getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, true);
@@ -264,7 +254,7 @@ class TagCategoryEditor implements IExtension {
                     if(path.length == 1 && path[1] == uncategorizedTagsNode)
                         return null;
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-                    TagCategories.writeTagCategories(node, "", tagCategoryWriter);
+                    tagCategories.writeTagCategories(node, "", tagCategoryWriter);
                     tagCategories.writeCategorizedTag(node, tagWriter);
                 }
                 TagCategorySelection stringSelection = new TagCategorySelection(lastTransferableId, tagCategoryWriter.toString(), tagWriter.toString());
@@ -388,7 +378,7 @@ class TagCategoryEditor implements IExtension {
                     final String oldParent = lastSelectionParentsNodes.get(i);
                     final int replacementIndex = replacementStartIndex + i * 2;
                     final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) insertedNodes[i];
-                    final Tag newTag = (Tag) insertedNode.getUserObject();
+                    final Tag newTag = ((Tag) insertedNode.getUserObject()).withoutCategories(getTagCategorySeparator());
                     String replacedContent;
                     if(oldParent.isEmpty())
                         replacedContent = newTag.getContent();
@@ -610,7 +600,7 @@ class TagCategoryEditor implements IExtension {
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON_OR_INSERT);
         tree.setTransferHandler(new TreeTransferHandler());
-        tree.setCellRenderer(new TagCellRenderer(tagCategories.getRootNode()));
+        tree.setCellRenderer(new TagCellRenderer());
         tree.setCellEditor(new TagCellEditor());
         tree.setToggleClickCount(0);
 
@@ -875,11 +865,10 @@ class TagCategoryEditor implements IExtension {
         MapModel selectedMap = Controller.getCurrentController().getMap();
         if(selectedMap == null)
             return Stream.empty();
-        String mapSeparator = selectedMap.getIconRegistry().getTagCategories().getTagCategorySeparator();
         final Stream<Tag> selectedTags = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .map(node -> new CategorizedTagForCategoryNode(node).categorizedTag(mapSeparator));
+                .map(node -> tagCategories.tag(node));
         return selectedTags;
     }
 

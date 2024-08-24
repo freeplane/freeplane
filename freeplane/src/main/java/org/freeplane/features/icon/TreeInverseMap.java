@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -17,11 +18,13 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 class TreeInverseMap<V> implements TreeModelListener, TreeTagChangeListener<V> {
-    private HashMap<V, Set<DefaultMutableTreeNode>> userObjectToNodesMap = new HashMap<>();
+    private HashMap<V, Set<DefaultMutableTreeNode>> keysToNodesMap = new HashMap<>();
     private DefaultTreeModel treeModel;
+    private final Function<DefaultMutableTreeNode, V> keyFunction;
 
-    public TreeInverseMap(DefaultTreeModel treeModel) {
+    public TreeInverseMap(DefaultTreeModel treeModel, Function<DefaultMutableTreeNode, V> keyFunction) {
         this.treeModel = treeModel;
+        this.keyFunction = keyFunction;
         this.treeModel.addTreeModelListener(this);
         buildInverseMap();
     }
@@ -55,23 +58,22 @@ class TreeInverseMap<V> implements TreeModelListener, TreeTagChangeListener<V> {
     }
 
     private void addToMap(DefaultMutableTreeNode node) {
-        @SuppressWarnings("unchecked")
-        V userObject = (V) node.getUserObject();
-        addToMap(userObject, node);
+        V key = keyFunction.apply(node);
+        addToMap(key, node);
     }
 
     private boolean addToMap(V userObject, DefaultMutableTreeNode node) {
-        return userObjectToNodesMap.computeIfAbsent(userObject, k -> new HashSet<>()).add(node);
+        return keysToNodesMap.computeIfAbsent(userObject, k -> new HashSet<>()).add(node);
     }
 
     private void removeFromMap(DefaultMutableTreeNode node) {
         @SuppressWarnings("unchecked")
         V userObject = (V) node.getUserObject();
-        Set<DefaultMutableTreeNode> nodes = userObjectToNodesMap.get(userObject);
+        Set<DefaultMutableTreeNode> nodes = keysToNodesMap.get(userObject);
         if (nodes != null) {
             nodes.remove(node);
             if (nodes.isEmpty()) {
-                userObjectToNodesMap.remove(userObject);
+                keysToNodesMap.remove(userObject);
             }
         }
     }
@@ -98,12 +100,12 @@ class TreeInverseMap<V> implements TreeModelListener, TreeTagChangeListener<V> {
 
     @Override
     public void treeStructureChanged(TreeModelEvent e) {
-        userObjectToNodesMap.clear();
+        keysToNodesMap.clear();
         buildInverseMap();
     }
 
     public Set<DefaultMutableTreeNode> getNodes(V userObject) {
-        return userObjectToNodesMap.getOrDefault(userObject, Collections.emptySet());
+        return keysToNodesMap.getOrDefault(userObject, Collections.emptySet());
     }
 
     @Override

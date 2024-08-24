@@ -30,6 +30,8 @@ import java.util.stream.Stream;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
+import org.freeplane.features.icon.Tag;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -57,8 +59,13 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
 
     @Override
     public void add(final T element) {
-		addIfNotExists(element);
-	}
+        addIfNotExists(element);
+    }
+
+    public T addAndReturn(final T element) {
+        int index = addIfNotExists(element);
+        return getElementAt(index >= 0 ? index : - index - 1);
+    }
 
 	public int addIfNotExists(final T element) {
         final int addedElementIndex = addImpl(element);

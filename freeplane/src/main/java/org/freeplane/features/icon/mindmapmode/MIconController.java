@@ -33,9 +33,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -76,8 +74,6 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.icon.CategorizedTag;
-import org.freeplane.features.icon.CategorizedTagForCategoryNode;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
@@ -707,13 +703,13 @@ public class MIconController extends IconController {
         }
     }
 
-    public JMenu createTagSubmenu(String name, TagCategories tagCategories, Consumer<CategorizedTag> action) {
+    public JMenu createTagSubmenu(String name, TagCategories tagCategories, Consumer<Tag> action) {
         JMenu menu = TranslatedElementFactory.createMenu(name);
         fillTagSubmenuOnSelect(menu, tagCategories, action, tagCategories.getRootNode());
         return menu;
     }
 
-    private void fillTagSubmenuOnSelect(final JMenu menu, TagCategories tagCategories, Consumer<CategorizedTag> action, DefaultMutableTreeNode categoryNode) {
+    private void fillTagSubmenuOnSelect(final JMenu menu, TagCategories tagCategories, Consumer<Tag> action, DefaultMutableTreeNode categoryNode) {
         menu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -727,11 +723,9 @@ public class MIconController extends IconController {
                     Object userObject = itemNode.getUserObject();
                     if(userObject instanceof Tag ) {
                         Tag tag = (Tag) userObject;
-                        TagIcon icon = new TagIcon(tag, menu.getFont());
+                        TagIcon icon = new TagIcon(tagCategories.withoutCategories(tag), menu.getFont());
                         JMenuItem actionItem = new JMenuItem(icon);
-                        actionItem.addActionListener(x -> action.accept(
-                                new CategorizedTagForCategoryNode(itemNode, tagCategories.getTag(tag)
-                                        )));
+                        actionItem.addActionListener(x -> action.accept(tag));
                         menu.add(actionItem);
                         if(!itemNode.isLeaf()) {
                             final JMenu submenu = new JMenu();
@@ -793,8 +787,8 @@ public class MIconController extends IconController {
     }
 
     @Override
-    public List<CategorizedTag> getCategorizedTags(List<Tag> tags, TagCategories tagCategories){
-        return tagCategories.categorizedTags(tags);
+    public List<Tag> extendCategories(List<Tag> tags, TagCategories tagCategories){
+        return tagCategories.extendCategories(tags);
     }
 
     public void setTagCategories(MapModel map, TagCategories newCategories) {

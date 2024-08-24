@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 
-import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
@@ -37,9 +36,8 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         final NodeModel node = getDelegate();
         final IconRegistry iconRegistry = node.getMap().getIconRegistry();
         final TagCategories tagCategories = iconRegistry.getTagCategories();
-        final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
-        return iconController.getCategorizedTags(iconController.getTags(node), tagCategories).stream()
-                .map(tag -> tag.getContent(tagCategorySeparator))
+        return iconController.extendCategories(iconController.getTags(node), tagCategories).stream()
+                .map(tag -> tag.getContent())
                 .collect(Collectors.toList());
     }
 
@@ -50,9 +48,7 @@ public class TagsProxy  extends AbstractProxy<NodeModel> implements Proxy.Tags {
         final IconRegistry iconRegistry = node.getMap().getIconRegistry();
         final TagCategories tagCategories = iconRegistry.getTagCategories();
         String tagCategorySeparator = tagCategories.getTagCategorySeparator();
-        return iconController.getCategorizedTags(iconController.getTags(node), tagCategories).stream()
-                .map(CategorizedTag::categoryTags)
-                .flatMap(Collection::stream)
+        return iconController.extendCategories(iconController.getTags(node), tagCategories).stream()
                 .map(tag -> tag.categoryTags(tagCategorySeparator))
                 .flatMap(Collection::stream)
                 .map(Tag::getContent)

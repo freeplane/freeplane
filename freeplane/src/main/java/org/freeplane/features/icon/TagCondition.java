@@ -65,15 +65,15 @@ abstract class TagCondition extends StringConditionAdapter {
 	    if(searchesAcrossAllCategories()) {
 	        final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
 	        final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
-	        final List<CategorizedTag> categorizedTags = iconController.getCategorizedTags(tags, node.getMap().getIconRegistry().getTagCategories());
-	        for (CategorizedTag tag : categorizedTags) {
-	            if (checkTag(tag, tagCategorySeparator))
+	        final List<Tag> categorizedTags = iconController.extendCategories(tags, node.getMap().getIconRegistry().getTagCategories());
+	        for (Tag tag : categorizedTags) {
+	            if (checkShortTag(tag, tagCategorySeparator))
 	                return true;
 	        }
 	    }
 	    else {
 	        for (Tag tag : tags) {
-	            if (checkTag(tag, ""))
+	            if (checkShortTag(tag, ""))
 	                return true;
 
 	        }
@@ -81,7 +81,7 @@ abstract class TagCondition extends StringConditionAdapter {
 	    return false;
 	}
 
-    protected boolean checkTag(Tag tag, String tagCategorySeparator) {
+    protected boolean checkShortTag(Tag tag, String tagCategorySeparator) {
         final String tagContent = tag.getContent();
         return checkText(tagContent) || ! tagCategorySeparator.isEmpty()
                 && tagContent.contains(tagCategorySeparator)
@@ -90,9 +90,8 @@ abstract class TagCondition extends StringConditionAdapter {
                 .anyMatch(this::checkText);
     }
 
-    @SuppressWarnings("unused")
-    protected boolean checkTag(CategorizedTag categorizedTag, String tagCategorySeparatorForMap) {
-        return categorizedTag.categoryTags().stream().anyMatch(tag -> checkText(tag.getContent()));
+    protected boolean checkCategorizedTag(Tag categorizedTag, String tagCategorySeparatorForMap) {
+        return categorizedTag.categoryTags(tagCategorySeparatorForMap).stream().anyMatch(tag -> checkText(tag.getContent()));
     }
 
     protected abstract boolean checkText(String content);

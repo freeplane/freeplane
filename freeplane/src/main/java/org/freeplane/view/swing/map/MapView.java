@@ -1475,14 +1475,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			setFitToViewport(Boolean.parseBoolean(fitToViewportAsString));
 			loadBackgroundImage();
 		}
-        if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT)) {
+        if (property.equals(MapStyle.ALLOW_COMPACT_LAYOUT_PROPERTY)) {
             final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
             allowsCompactLayout = mapStyle.allowsCompactLayout(viewedMap);
             getRoot().resetLayoutPropertiesRecursively();
             revalidate();
             repaint();
         }
-        if (property.equals(MapStyle.SHOW_TAGS_PROPERTY)) {
+        if (property.equals(MapStyle.SHOW_TAGS_PROPERTY) || property.equals(MapStyle.SHOW_TAG_CATEGORIES_PROPERTY)) {
             final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
             tagLocation = mapStyle.tagLocation(viewedMap);
             updateAllNodeViews();

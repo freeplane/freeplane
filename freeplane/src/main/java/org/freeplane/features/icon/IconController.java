@@ -50,6 +50,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleNode;
@@ -58,8 +59,7 @@ import org.freeplane.features.styles.StyleNode;
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
-
-	private static final Quantity<LengthUnit> DEFAULT_ICON_SIZE = new Quantity<LengthUnit>(12, LengthUnit.pt);
+    private static final Quantity<LengthUnit> DEFAULT_ICON_SIZE = new Quantity<LengthUnit>(12, LengthUnit.pt);
 
 	final private CombinedPropertyChain<Collection<NamedIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
@@ -202,7 +202,8 @@ public class IconController implements IExtension {
         return Collections.emptyMap();
     }
     public List<TagIcon> getTagIcons(NodeModel node) {
-        boolean showCategories = ResourceController.getResourceController().getBooleanProperty("showCategories");
+        final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
+        boolean showCategories = mapStyle.showsTagCategories(node.getMap());
         return getTagIcons(node, showCategories);
 
     }
@@ -210,11 +211,8 @@ public class IconController implements IExtension {
         final Font font = getTagFont(node);
         final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
         final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
-        Stream<Tag> tags = showCategories ? getCategorizedTags(node).stream()
-                .map(tag -> tag.categorizedTag(tagCategorySeparator))
-                : getTags(node).stream();
-        return tags
-                .map(tag -> showCategories ? tag : tag.removeInternalCategories(tagCategorySeparator))
+        return getTags(node).stream()
+                .map(tag -> showCategories ? tag : tag.withoutCategories(tagCategorySeparator))
                 .map(tag -> new TagIcon(tag, font))
                 .collect(Collectors.toList());
     }
@@ -236,19 +234,12 @@ public class IconController implements IExtension {
         return tags == null ? Collections.emptyList() : tags.getTags();
     }
 
-    public List<CategorizedTag> getCategorizedTags(NodeModel node){
-        return getCategorizedTags(getTags(node), node.getMap().getIconRegistry().getTagCategories());
+    public List<Tag> getTagsWithExtendedCategories(NodeModel node){
+        return extendCategories(getTags(node), node.getMap().getIconRegistry().getTagCategories());
     }
 
     @SuppressWarnings("unused")
-    public List<CategorizedTag> getCategorizedTags(List<Tag> tags, TagCategories tagCategories){
+    public List<Tag> extendCategories(List<Tag> tags, TagCategories tagCategories){
         return Collections.emptyList();
-    }
-
-    public List<Tag> getTagsWithCategories(NodeModel node) {
-        return getCategorizedTags(node)
-        .stream()
-        .map(tag -> tag.categorizedTag(node.getMap().getIconRegistry().getTagCategories().getTagCategorySeparator()))
-        .collect(Collectors.toList());
     }
 }

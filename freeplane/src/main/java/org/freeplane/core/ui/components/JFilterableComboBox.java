@@ -8,8 +8,8 @@ package org.freeplane.core.ui.components;
 import java.awt.EventQueue;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.util.Collection;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -25,14 +25,14 @@ import javax.swing.event.PopupMenuListener;
 
 public class JFilterableComboBox<V> extends JComboBox<V> {
     private static final long serialVersionUID = 1L;
-    private final Supplier<Collection<V>> itemSupplier;
+    private final Supplier<Stream<V>> itemSupplier;
     private boolean filterIsRunning;
-    private BiPredicate<Collection<V>, String> acceptAll;
+    private Predicate<String> acceptAll;
     private BiPredicate<V, String> acceptItem;
 
 
-    public JFilterableComboBox(Supplier<Collection<V>> itemSupplier,
-            BiPredicate<Collection<V>, String> acceptAll,
+    public JFilterableComboBox(Supplier<Stream<V>> itemSupplier,
+            Predicate<String> acceptAll,
             BiPredicate<V, String> acceptItem) {
         super();
         this.itemSupplier = itemSupplier;
@@ -116,9 +116,8 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
             model.removeAllElements();
             JTextField textField = (JTextField) getEditor().getEditorComponent();
             final String text = textField.getText();
-            Collection<V> items = itemSupplier.get();
-            final Stream<V> tagStream = items.stream();
-            if(init || acceptAll.test(items, text)) {
+            final Stream<V> tagStream = itemSupplier.get();
+            if(init || acceptAll.test(text)) {
                 tagStream.forEach(model::addElement);
             } else
                 tagStream

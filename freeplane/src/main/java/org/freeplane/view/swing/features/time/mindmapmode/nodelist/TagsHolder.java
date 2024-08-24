@@ -61,7 +61,7 @@ class TagsHolder extends TextHolder {
 			return;
 		final IconController iconController = IconController.getController();
         tags = (showsTagCategories
-				? iconController.getTagsWithCategories(node)
+				? iconController.getTagsWithExtendedCategories(node)
 				: iconController.getTags(node))
                 .stream()
                 .filter(tag -> ! tag.isEmpty())

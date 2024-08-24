@@ -52,9 +52,7 @@ import java.util.Collections;
 import java.util.EventObject;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -110,7 +108,6 @@ import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.CategorizedTag;
 import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.map.MapModel;
@@ -345,16 +342,6 @@ class TagEditor {
         }
     }
 
-    private static Map<String, CategorizedTag> getCategorizedTagsByContent(TagCategories source) {
-        TreeMap<String, CategorizedTag> categorizedTagsByContent = new TreeMap<>();
-        final String tagCategorySeparator = source.getTagCategorySeparator();
-        source.categorizedTags()
-            .forEach(tag -> categorizedTagsByContent.computeIfAbsent(tag.getContent(tagCategorySeparator), x -> tag));
-        return categorizedTagsByContent;
-    }
-
-
-
     private static final String WIDTH_PROPERTY = "tagDialog.width";
     private static final String HEIGHT_PROPERTY = "tagDialog.height";
 
@@ -364,7 +351,6 @@ class TagEditor {
     private MIconController iconController;
     private JTable tagTable;
     private JDialog dialog;
-    private final Map<String, CategorizedTag> qualifiedCategorizedTags;
     private final JColorButton colorButton;
     private final Action modifyColorAction;
     private final JTextField tagCategorySeparatorField;
@@ -420,13 +406,7 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-
-        qualifiedCategorizedTags = getCategorizedTagsByContent(tagCategories);
-
         List<Tag> originalNodeTags = iconController.getTags(node);
-
-        qualifiedCategorizedTags.put("", CategorizedTag.EMPTY_TAG);
-
         tagTable = createTagTable(originalNodeTags);
         getTableModel().addTableModelListener(new TableModelListener() {
             @Override
@@ -530,8 +510,7 @@ class TagEditor {
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
                     sourceCategories,
-                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(),
-                            tag.categorizedTag(getTagCategorySeparator()))));
+                    tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
             menubar.add(insertMenu);
         }
         dialog.setJMenuBar(menubar);
@@ -842,9 +821,9 @@ class TagEditor {
         });
 
         @SuppressWarnings("serial")
-        JFilterableComboBox<CategorizedTag> comboBox = new JFilterableComboBox<>(() -> qualifiedCategorizedTags.values(),
-                (items, text) -> text.isEmpty() || qualifiedCategorizedTags.keySet().stream().anyMatch(item -> item.equals(text)),
-                (item, text) -> item.getContent(getTagCategorySeparator()).toLowerCase().contains(text.toLowerCase()));
+        JFilterableComboBox<Tag> comboBox = new JFilterableComboBox<>(() -> tagCategories.getTagsAsListModel().stream(),
+                (text) -> text.isEmpty() || tagCategories.contains(text),
+                (item, text) -> item.getContent().toLowerCase().contains(text.toLowerCase()));
 
         @SuppressWarnings("serial")
         DefaultListCellRenderer cellRenderer = new DefaultListCellRenderer() {
@@ -856,8 +835,8 @@ class TagEditor {
                 if(value == null)
                     icon = null;
                 else {
-                    CategorizedTag tag = (CategorizedTag)value;
-                    icon = new TagIcon(tag.categorizedTag(getTagCategorySeparator()), table.getFont());
+                    Tag tag = (Tag)value;
+                    icon = new TagIcon(tag, table.getFont());
                 }
                 return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
             }};
@@ -871,8 +850,8 @@ class TagEditor {
             @Override
             public Object getCellEditorValue() {
                 Object value = super.getCellEditorValue();
-                if(value instanceof CategorizedTag)
-                    return ((CategorizedTag)value).categorizedTag(getTagCategorySeparator());
+                if(value instanceof Tag)
+                    return value;
                 else
                     return createTagIfAbsent(value.toString(), false);
             }
