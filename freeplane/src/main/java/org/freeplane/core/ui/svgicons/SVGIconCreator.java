@@ -11,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,8 +32,14 @@ import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.app.beans.SVGIcon;
+import com.kitfox.svg.util.FontSystem;
 
 class SVGIconCreator {
+
+    private static final Logger svgFontSystemLogger = Logger.getLogger(FontSystem.class.getName());
+    static {
+        svgFontSystemLogger.setLevel(Level.SEVERE);
+    }
 
 	private static final Pattern PROPERTY_REFERENCE = Pattern.compile("\\$\\{[\\w.]+\\}");
 	private static final String UI_COLOR_REPLACEMENTS_PROPERTY_FOR = "uiColorReplacementsFor";
