@@ -19,7 +19,7 @@ sourceSets {
 
 dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
-	lib ':kitfox-svg-salamander-1.1.1-p1'
+	lib 'com.formdev:svgSalamander:1.1.4'
 	lib 'com.github.robtimus:data-url:2.0.1'
 	lib 'com.formdev:flatlaf:3.4.1'
 	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.10.1'
@@ -38,7 +38,6 @@ dependencies {
 		exclude module: 'mnemonicsetter'
 	}
 
-    lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
 
     maclib 'org.violetlib:vaqua:12'
