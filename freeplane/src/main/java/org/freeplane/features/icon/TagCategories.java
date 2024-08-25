@@ -638,7 +638,9 @@ public class TagCategories {
                 for(String from = tailMap.firstKey();
                         from.startsWith(fromCategory);
                         from = tailMap.firstKey()) {
-                    String to = toTag.equals(UNCATEGORIZED_NODE) ? UNCATEGORIZED_NODE : toTag + from.substring(fromTag.length());
+                    String to = toTag.equals(UNCATEGORIZED_NODE) ? UNCATEGORIZED_NODE :
+                        toTag.isEmpty() ? "" :
+                        toTag + from.substring(fromTag.length());
                     replaceReferencedTags(from, to);
                     if(tailMap.isEmpty())
                         break;

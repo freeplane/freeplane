@@ -410,17 +410,13 @@ class TagCategoryEditor implements IExtension {
         public void treeNodesRemoved(TreeModelEvent e) {
             if(mergeIsRunning)
                 return;
-            String parentQuallifiedTag = tagCategories.categorizedContent((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());
             Object[] removedNodes = e.getChildren();
             for(int i = 0; i < removedNodes.length; i++) {
 
                 final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) removedNodes[i];
                 final Tag removedTag = (Tag) insertedNode.getUserObject();
                 String removedQuallifiedTag;
-                if(parentQuallifiedTag.isEmpty())
                     removedQuallifiedTag = removedTag.getContent();
-                else
-                    removedQuallifiedTag = parentQuallifiedTag + getTagCategorySeparator() + removedTag.getContent();
                 final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
                 if(indexBefore < 0 || lastSelectionParentsNodes.isEmpty() || ! replacements.get(indexBefore).equals(removedQuallifiedTag)) {
                     replacements.add(removedQuallifiedTag);
