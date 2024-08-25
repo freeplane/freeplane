@@ -6,7 +6,9 @@
 package org.freeplane.features.icon;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.extension.IExtension;
@@ -40,10 +42,12 @@ public class Tags implements IExtension {
     }
 
     public List<Tag> getTags() {
+        Set<String>  duplicates = new HashSet<>();
         return tags
                 .stream()
                 .map(TagReference::getTag)
                 .filter(x -> x != Tag.REMOVED_TAG)
+                .filter(x -> x.isEmpty() || duplicates.add(x.getContent()))
                 .collect(Collectors.toList());
     }
 

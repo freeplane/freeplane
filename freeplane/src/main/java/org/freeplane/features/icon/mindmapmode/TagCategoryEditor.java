@@ -192,7 +192,7 @@ class TagCategoryEditor implements IExtension {
                 categorizedTag = tagCategories.createTag(currentNode, text);
             else
                 categorizedTag = tagCategories.createTag(currentNode, text, tag.getColor());
-            return new Tag(text, categorizedTag.getColor());
+            return categorizedTag;
         }
 
         @Override
@@ -341,20 +341,13 @@ class TagCategoryEditor implements IExtension {
             if(mergeIsRunning)
                 return;
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            String commonPrefix = tagCategories.categorizedContent((DefaultMutableTreeNode) node.getParent());
             final Tag oldTag = (Tag) node.getUserObject();
             final String oldContent = oldTag.getContent();
             if(oldContent.isEmpty())
                 return;
             final String newContent = newTag.getContent();
             if(! newContent.equals(oldContent)) {
-                if(commonPrefix.isEmpty()) {
-                    addReplacement(oldContent, newContent);
-                }
-                else {
-                    addReplacement(commonPrefix + getTagCategorySeparator() +  oldContent,
-                        commonPrefix + getTagCategorySeparator() +  newContent);
-                }
+                addReplacement(oldContent, newContent);
             }
         }
 
