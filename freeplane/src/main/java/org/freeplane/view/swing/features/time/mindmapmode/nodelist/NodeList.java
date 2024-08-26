@@ -396,6 +396,7 @@ class NodeList implements IExtension {
 		tableView = new FlatNodeTable();
 		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
+		mNodePath.getDocument().putProperty("i18n", Boolean.TRUE);
 		closeAfterSelection = TranslatedElementFactory.createPropertyCheckbox("nodelist_close_after_selection", "close_after_selection");
 	}
 
