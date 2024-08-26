@@ -171,9 +171,9 @@ public class MModeControllerFactory {
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
-		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/formatTab.svg"),
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/formatTab.svg?useAccentColor=true"),
 		        styleScrollPane, TextUtils.getText("format_panel"));
-		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/attributeTab.svg"),
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/attributeTab.svg?useAccentColor=true"),
 		        createAttributesPanel(), TextUtils.getText("attributes_attribute"));
         HierarchicalIcons.install(modeController);
 		new AutomaticLayoutController();

@@ -51,7 +51,7 @@ public class PresentationController implements IExtension{
 		final PresentationState presentationState = presentationController.presentationState;
 		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
 		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
-        tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/presentationTab.svg"),
+        tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/presentationTab.svg?useAccentColor=true"),
                 presentationController.createPanel(), TextUtils.getText("presentation_panel"));
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 
