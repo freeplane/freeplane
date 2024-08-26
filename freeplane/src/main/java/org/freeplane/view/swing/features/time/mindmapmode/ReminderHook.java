@@ -234,7 +234,9 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(timeScrollPane);
-		tabs.add(TextUtils.getText("calendar_panel"), timeScrollPane);
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/calendarTab.svg"),
+		        timeScrollPane, TextUtils.getText("calendar_panel"));
+
     }
 
 	@Override

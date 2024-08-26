@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -170,8 +171,10 @@ public class MModeControllerFactory {
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
-		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
-		tabs.add(TextUtils.getText("attributes_attribute"), createAttributesPanel());
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/formatTab.svg"),
+		        styleScrollPane, TextUtils.getText("format_panel"));
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/attributeTab.svg"),
+		        createAttributesPanel(), TextUtils.getText("attributes_attribute"));
         HierarchicalIcons.install(modeController);
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
