@@ -740,6 +740,7 @@ abstract public class FrameController implements ViewController {
         	UIManager.put("Table.showVerticalLines", true);
         	UIManager.put("ComboBox.minimumWidth", 2);
         	UIManager.put("TabbedPane.tabsOverlapBorder", false);
+        	UIManager.put("TabbedPane.rotateTabRuns", false);
         	UIManager.put("EditorPaneUI", NonSelectingFlatEditorPaneUI.class.getName());
          }
         else if(NonSelectingFlatEditorPaneUI.class.getName().equals(UIManager.get("EditorPaneUI"))){
