@@ -203,4 +203,11 @@ public class SortedComboBoxModel<T> extends AbstractListModel<T> implements Comb
     public Stream<T> stream() {
        return model.stream();
     }
+
+    @Override
+    public String toString() {
+        return "SortedComboBoxModel [" + model + "]";
+    }
+
+
 }

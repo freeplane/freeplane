@@ -352,7 +352,6 @@ class TagCategoryEditor implements IExtension {
         }
 
         private void addReplacement(final String oldContent, final String newContent) {
-            tagCategories.removeTagsAndCategories(oldContent);
             replacements.add(oldContent);
             replacements.add(newContent);
         }

@@ -623,6 +623,7 @@ public class TagCategories {
     }
 
     public void replaceReferencedTags(List<String> replacements) {
+        Set<String> keptTags = collectCategorizedTags();
         for(int i = 0; i < replacements.size(); i += 2) {
             String fromTag = replacements.get(i);
             if(fromTag.isEmpty())
@@ -630,26 +631,34 @@ public class TagCategories {
             String toTag = replacements.get(i + 1);
             if(fromTag.equals(toTag))
                 continue;
-            replaceReferencedTags(fromTag, toTag);
+            replaceReferencedTags(fromTag, toTag, keptTags);
             String fromCategory = fromTag + categorySeparator;
-            SortedMap<String, List<TagReference>> tailMap = tagReferences.tailMap(fromCategory);
+            String categoryKey = tagReferences.ceilingKey(fromCategory);
 
-            if(! tailMap.isEmpty()) {
-                for(String from = tailMap.firstKey();
-                        from.startsWith(fromCategory);
-                        from = tailMap.firstKey()) {
-                    String to = toTag.equals(UNCATEGORIZED_NODE) ? UNCATEGORIZED_NODE :
-                        toTag.isEmpty() ? "" :
-                        toTag + from.substring(fromTag.length());
-                    replaceReferencedTags(from, to);
-                    if(tailMap.isEmpty())
-                        break;
-                }
+            for(String from = categoryKey;
+                    from != null && from.startsWith(fromCategory);
+                    from = tagReferences.higherKey(categoryKey)) {
+                String to = toTag.equals(UNCATEGORIZED_NODE) || toTag.isEmpty() ? toTag :
+                    toTag + from.substring(fromTag.length());
+                replaceReferencedTags(from, to, keptTags);
             }
         }
     }
 
-    private void replaceReferencedTags(String from, String to) {
+    private Set<String> collectCategorizedTags() {
+        Set<String>  categorizedTags = new HashSet<>();
+        Enumeration<DefaultMutableTreeNode> preorderEnumeration = getRootNode().preorderEnumeration();
+        preorderEnumeration.nextElement();
+        for(DefaultMutableTreeNode node = preorderEnumeration.nextElement(); node != uncategorizedTagsNode; node = preorderEnumeration.nextElement()) {
+            categorizedTags.add(tag(node).getContent());
+        }
+        return categorizedTags;
+    }
+
+    private void replaceReferencedTags(String from, String to, Set<String> keptTags) {
+        if((to.equals(UNCATEGORIZED_NODE) || to.isEmpty()) && keptTags.contains(from)) {
+            return;
+        }
         if(to.equals(UNCATEGORIZED_NODE)) {
             int lastSeparatorIndex = from.lastIndexOf(categorySeparator);
             if(lastSeparatorIndex >= 0) {
@@ -658,10 +667,16 @@ public class TagCategories {
             else
                 return;
         }
-        List<TagReference> replacedTagReferences = tagReferences.remove(from);
+        boolean keepsTag = keptTags.contains(from);
+        List<TagReference> replacedTagReferences = keepsTag ? tagReferences.get(from) : tagReferences.remove(from);
+        if(keepsTag)
+            tagReferences.put(from, new ArrayList<>());
+        else
+            mapTags.remove(new Tag(from, Color.BLACK));
         List<TagReference> list = tagReferences.computeIfAbsent(to, key -> new ArrayList<>());
-        if(replacedTagReferences != null && ! from.isEmpty())
+        if(replacedTagReferences != null && ! from.isEmpty()) {
             list.addAll(replacedTagReferences);
+        }
     }
 
     public void updateTagReferences() {
@@ -706,23 +721,6 @@ public class TagCategories {
             tags.add((Tag) child.getUserObject());
         }
         return tags;
-    }
-
-    public void removeTag(Tag tag) {
-        mapTags.remove(tag);
-    }
-
-    public void removeTagsAndCategories(String removed) {
-        if(removed.isEmpty())
-            return;
-        int index = mapTags.getIndexOf(new Tag(removed, Color.BLACK));
-        if(index >= 0) {
-            String removedCategory = removed + categorySeparator;
-            do {
-                mapTags.remove(index);
-            } while(mapTags.getSize() > index && mapTags.getElementAt(index).getContent().startsWith(removedCategory));
-        }
-
     }
 
     public Tag createTag(DefaultMutableTreeNode currentNode, String text) {
