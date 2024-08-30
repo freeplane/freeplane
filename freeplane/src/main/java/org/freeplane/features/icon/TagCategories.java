@@ -647,10 +647,10 @@ public class TagCategories {
 
     private Set<String> collectCategorizedTags() {
         Set<String>  categorizedTags = new HashSet<>();
-        Enumeration<DefaultMutableTreeNode> preorderEnumeration = getRootNode().preorderEnumeration();
+        Enumeration<TreeNode> preorderEnumeration = getRootNode().preorderEnumeration();
         preorderEnumeration.nextElement();
-        for(DefaultMutableTreeNode node = preorderEnumeration.nextElement(); node != uncategorizedTagsNode; node = preorderEnumeration.nextElement()) {
-            categorizedTags.add(tag(node).getContent());
+        for(TreeNode node = preorderEnumeration.nextElement(); node != uncategorizedTagsNode; node = preorderEnumeration.nextElement()) {
+            categorizedTags.add(tag((DefaultMutableTreeNode) node).getContent());
         }
         return categorizedTags;
     }
