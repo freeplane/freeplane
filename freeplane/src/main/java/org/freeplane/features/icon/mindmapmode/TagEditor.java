@@ -831,14 +831,16 @@ class TagEditor {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                     boolean isSelected, boolean cellHasFocus) {
-                Icon icon;
-                if(value == null)
-                    icon = null;
-                else {
+                Object displayedValue;
+                if(index == -1)
+                    displayedValue = null;
+                else if (value instanceof Tag){
                     Tag tag = (Tag)value;
-                    icon = new TagIcon(tag, table.getFont());
+                    displayedValue = new TagIcon(tag, table.getFont());
                 }
-                return super.getListCellRendererComponent(list, icon, index, isSelected, cellHasFocus);
+                else
+                    displayedValue = value;
+                return super.getListCellRendererComponent(list, displayedValue, index, isSelected, cellHasFocus);
             }};
         comboBox.setRenderer(cellRenderer);
         comboBox.setEditable(true);
