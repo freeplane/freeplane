@@ -242,17 +242,13 @@ class TagCategoryEditor implements IExtension {
 
         TagCategorySelection createTransferable() {
             try {
-                final TreePath[] selectionPaths = getSelectionPaths();
+                final TreePath[] selectionPaths = getSelectedNodePaths();
                 if(selectionPaths == null)
                     return null;
                 lastTransferableId = UUID.randomUUID().toString();
                 StringWriter tagCategoryWriter = new StringWriter();
                 StringWriter tagWriter = new StringWriter();
-                final DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
                 for(TreePath treePath: selectionPaths) {
-                    final Object[] path = treePath.getPath();
-                    if(path.length == 1 && path[1] == uncategorizedTagsNode)
-                        return null;
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
                     tagCategories.writeTagCategories(node, "", tagCategoryWriter);
                     tagCategories.writeCategorizedTag(node, tagWriter);
@@ -761,7 +757,7 @@ class TagCategoryEditor implements IExtension {
         AbstractAction cutNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(copyNodes()) {
+                if(getSelectedTag() != null && copyNodes()) {
                     saveLastSelectionParentsNodes();
                     removeNodes();
                 }
@@ -848,7 +844,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private Stream<Tag> collectSelectedTags() {
-        final TreePath[] selectionPaths = getSelectionPaths();
+        final TreePath[] selectionPaths = getSelectedTagPaths();
         if(selectionPaths == null)
             return Stream.empty();
         MapModel selectedMap = Controller.getCurrentController().getMap();
@@ -877,7 +873,7 @@ class TagCategoryEditor implements IExtension {
 
     private void saveLastSelectionParentsNodes() {
         final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
-        if(selectionPaths == null || selectionPaths.length == 0) {
+        if(selectionPaths == null || selectionPaths.length == 0 || getSelectedTag() == null) {
             lastSelectionParentsNodes = Collections.emptyList();
         } else {
             final List<String> x = Stream.of(selectionPaths)
@@ -921,7 +917,7 @@ class TagCategoryEditor implements IExtension {
         return filteredPaths.toArray(new TreePath[0]);
     }
     private void removeNodes() {
-        final TreePath[] selectionPaths = getSelectionPaths();
+        final TreePath[] selectionPaths = getSelectedTagPaths();
         if(selectionPaths == null)
             return;
         Stream.of(selectionPaths)
@@ -1059,7 +1055,16 @@ class TagCategoryEditor implements IExtension {
         }
     }
 
-    private TreePath[] getSelectionPaths() {
+    private TreePath[] getSelectedTagPaths() {
+        return getSelectedPaths(false);
+    }
+
+
+    private TreePath[] getSelectedNodePaths() {
+        return getSelectedPaths(true);
+    }
+
+    private TreePath[] getSelectedPaths(boolean includeNonTags) {
         TreePath[] paths = tree.getSelectionPaths();
         if (paths == null || paths.length == 0) {
             return null;
@@ -1069,7 +1074,7 @@ class TagCategoryEditor implements IExtension {
 
         for (TreePath path : paths) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if(node.getUserObject() instanceof Tag)
+            if(includeNonTags || node.getUserObject() instanceof Tag)
                 filteredPaths.add(path);
             else
                 return null;
@@ -1120,7 +1125,7 @@ class TagCategoryEditor implements IExtension {
     }
 
     private int countSelectedChildrenAbove(DefaultMutableTreeNode parent, int childIndex) {
-        final TreePath[] selectionPaths = getSelectionPaths();
+        final TreePath[] selectionPaths = getSelectedTagPaths();
         if(selectionPaths != null) {
             int childIndexCopy = childIndex;
             long removedUpperSiblings = Stream.of(selectionPaths)
