@@ -637,7 +637,7 @@ public class TagCategories {
 
             for(String from = categoryKey;
                     from != null && from.startsWith(fromCategory);
-                    from = tagReferences.higherKey(categoryKey)) {
+                    from = tagReferences.higherKey(from)) {
                 String to = toTag.equals(UNCATEGORIZED_NODE) || toTag.isEmpty() ? toTag :
                     toTag + from.substring(fromTag.length());
                 replaceReferencedTags(from, to, keptTags);
