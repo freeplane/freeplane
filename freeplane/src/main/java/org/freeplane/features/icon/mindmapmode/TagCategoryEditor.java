@@ -757,7 +757,7 @@ class TagCategoryEditor implements IExtension {
         AbstractAction cutNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(getSelectedTag() != null && copyNodes()) {
+                if( canSelectionBeRemoved() && copyNodes()) {
                     saveLastSelectionParentsNodes();
                     removeNodes();
                 }
@@ -873,7 +873,7 @@ class TagCategoryEditor implements IExtension {
 
     private void saveLastSelectionParentsNodes() {
         final TreePath[] selectionPaths = removeDescendantPaths(tree.getSelectionPaths());
-        if(selectionPaths == null || selectionPaths.length == 0 || getSelectedTag() == null) {
+        if(selectionPaths == null || selectionPaths.length == 0 || ! canSelectionBeRemoved()) {
             lastSelectionParentsNodes = Collections.emptyList();
         } else {
             final List<String> x = Stream.of(selectionPaths)
@@ -885,6 +885,14 @@ class TagCategoryEditor implements IExtension {
                 .collect(Collectors.toList());
             lastSelectionParentsNodes = x;
         }
+    }
+
+    private boolean canSelectionBeRemoved() {
+        TreePath[] selectionPaths = tree.getSelectionPaths();
+        return selectionPaths != null
+                && Stream.of(selectionPaths)
+                .map(TreePath::getLastPathComponent)
+                .allMatch(o-> ((DefaultMutableTreeNode)o).getUserObject() instanceof Tag);
     }
 
     private TreePath[] removeDescendantPaths(TreePath[] paths) {
