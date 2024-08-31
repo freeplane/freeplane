@@ -506,6 +506,7 @@ class TagCategoryEditor implements IExtension {
         this.lastSelectionParentsNodes = Collections.emptyList();
         title = TextUtils.getText("tag_category_manager");
         contentWasModified = false;
+        lastTransferableId = "";
         final boolean modal = false;
         this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, modal)
                 : new JDialog((JDialog) frame, title, modal);
