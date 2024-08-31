@@ -65,7 +65,6 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DropMode;
-import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -118,6 +117,10 @@ import org.freeplane.features.text.mindmapmode.EditorHolder;
 
 
 class TagEditor {
+    private static final JPanel TRANSPARENT_RENDERER = new JPanel();
+    static {
+        TRANSPARENT_RENDERER.setOpaque(false);
+    }
 
     static class TagEditorHolder extends EditorHolder {
 
@@ -833,7 +836,7 @@ class TagEditor {
                     boolean isSelected, boolean cellHasFocus) {
                 Object displayedValue;
                 if(index == -1)
-                    displayedValue = null;
+                    return TRANSPARENT_RENDERER;
                 else if (value instanceof Tag){
                     Tag tag = (Tag)value;
                     displayedValue = new TagIcon(tag, table.getFont());

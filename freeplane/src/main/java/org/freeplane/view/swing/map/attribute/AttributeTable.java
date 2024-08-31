@@ -577,7 +577,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			    }
 
 			};
-			comboBox.setRenderer(new TypedListCellRenderer());
+			TypedListCellRenderer editorValueRenderer = new TypedListCellRenderer();
+			editorValueRenderer.setCanRenderHeader(false);
+            comboBox.setRenderer(editorValueRenderer);
 			Component editorComponent = comboBox.getEditor().getEditorComponent();
 			if(editorComponent instanceof JTextField) {
 			    TextUI textFieldUI = new BasicTextFieldUI();
