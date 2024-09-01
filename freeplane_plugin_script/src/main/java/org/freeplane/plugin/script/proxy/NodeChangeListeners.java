@@ -7,6 +7,7 @@ import org.freeplane.api.NodeChangeListener;
 import org.freeplane.api.NodeChanged.ChangedElement;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.icon.Tags;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
@@ -17,7 +18,7 @@ import org.freeplane.plugin.script.FormulaCache;
 import org.freeplane.plugin.script.ScriptContext;
 
 class NodeChangeListeners implements IExtension{
-	private static class NodeChangeListenersListener implements IExtension, INodeChangeListener { 
+	private static class NodeChangeListenersListener implements IExtension, INodeChangeListener {
 		static void installInto(ModeController controller) {
 			NodeChangeListenersListener listeners = controller.getExtension(NodeChangeListenersListener.class);
 			if(listeners == null) {
@@ -26,8 +27,8 @@ class NodeChangeListeners implements IExtension{
 				controller.getMapController().addNodeChangeListener(listeners);
 			}
 		}
-		
-		
+
+
 		@Override
 		public void nodeChanged(NodeChangeEvent event) {
 			NodeChangeListeners listeners = event.getNode().getMap().getExtension(NodeChangeListeners.class);
@@ -35,7 +36,7 @@ class NodeChangeListeners implements IExtension{
 				listeners.fire(event);
 		}
 	}
-	
+
 	private static Map<Object, ChangedElement> elements = new HashMap<Object, ChangedElement>(){
 		private static final long serialVersionUID = 1L;
 		{
@@ -44,19 +45,20 @@ class NodeChangeListeners implements IExtension{
 			put(NodeModel.NOTE_TEXT, ChangedElement.NOTE);
 			put(NodeAttributeTableModel.class, ChangedElement.ATTRIBUTE);
 			put(NodeModel.NODE_ICON, ChangedElement.ICON);
+			put(Tags.class, ChangedElement.TAGS);
 			put(FormulaCache.class, ChangedElement.FORMULA_RESULT);
 		}
 	};
-	
-	
+
+
 	static NodeChangeListeners of(ModeController controller, MapModel map) {
 		NodeChangeListenersListener.installInto(controller);
 		return NodeChangeListeners.of(map);
 	}
-	
+
 	private final ArrayList<NodeChangeListenerForScript> listeners = new ArrayList<>();
 	private final MapModel mindmap;
-	
+
 	NodeChangeListeners(MapModel mindmap) {
 		this.mindmap = mindmap;
 	}
@@ -80,7 +82,7 @@ class NodeChangeListeners implements IExtension{
 		if(listeners.isEmpty())
 			mindmap.removeExtension(this);
 	}
-	
+
 	void fire(NodeChangeEvent event) {
 		if (listeners.isEmpty())
 			return;
