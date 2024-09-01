@@ -102,7 +102,7 @@ public class NodeTooltipManager implements IExtension{
 			@Override
 			public void onSelect(NodeModel node) {
 				NodeView view = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, instance.insideComponent);
-				if(view != null && node.equals(view.getModel()))
+				if(view != null && node.equals(view.getNode()))
 					return;
 				instance.hideTipWindow();
 			}

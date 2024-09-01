@@ -1,61 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 16 24"
-   version="1.1"
-   id="svg5"
-   sodipodi:docname="small_arrow_down.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   width="16"
-   height="24">
-  <metadata
-     id="metadata11">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 16 24" version="1.1" id="svg5" sodipodi:docname="small_arrow_down.svg" inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata id="metadata11">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <defs
-     id="defs9" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="2290"
-     inkscape:window-height="1158"
-     id="namedview7"
-     showgrid="false"
-     inkscape:zoom="9.8333333"
-     inkscape:cx="12.20339"
-     inkscape:cy="12"
-     inkscape:window-x="0"
-     inkscape:window-y="40"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg5" />
-  <g
-     id="Layer_2"
-     data-name="Layer 2"
-     transform="matrix(0.65284235,0,0,0.65284235,0.1658918,4.5119923)">
-    <path
-       d="m 12,4 h 6.29 a 2.12,2.12 0 0 1 1.83,3.2 L 17,12.5 13.83,17.89 a 2.12,2.12 0 0 1 -3.66,0 L 7,12.5 3.88,7.2 A 2.12,2.12 0 0 1 5.71,4 Z"
-       style="fill:#333333"
-       id="path2"
-       inkscape:connector-curvature="0" />
+  <defs id="defs9"/>
+  <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="2290" inkscape:window-height="1158" id="namedview7" showgrid="false" inkscape:zoom="9.8333333" inkscape:cx="12.20339" inkscape:cy="12" inkscape:window-x="0" inkscape:window-y="40" inkscape:window-maximized="0" inkscape:current-layer="svg5"/>
+  <g id="Layer_2" data-name="Layer 2" transform="matrix(0.65284235,0,0,0.65284235,0.1658918,4.5119923)">
+    <path d="m 12,4 h 6.29 a 2.12,2.12 0 0 1 1.83,3.2 L 17,12.5 13.83,17.89 a 2.12,2.12 0 0 1 -3.66,0 L 7,12.5 3.88,7.2 A 2.12,2.12 0 0 1 5.71,4 Z" style="fill:#333333" id="path2" inkscape:connector-curvature="0"/>
   </g>
 </svg>

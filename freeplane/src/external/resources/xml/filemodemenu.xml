@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
-	<Entry builder="main_menu">
+	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
@@ -40,7 +40,7 @@
 				<Entry name="MoveSelectedNodeAction.BOTTOM_RIGHT" />
 			</Entry>
 			<Entry name="controls">
-				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
+				<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
 				<Entry name="ToggleScrollbarsAction" />
@@ -67,14 +67,15 @@
 			</Entry>
 		</Entry>
 		<Entry name="navigate">
-			<Entry name="navigate">
-				<Entry name="NavigationPreviousMapAction" />
-				<Entry accelerator="control TAB" name="NavigationNextMapAction" />
-				<Entry name="fold">
-					<Entry accelerator="SPACE" name="ToggleFoldedAction" />
-					<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
-					<Entry accelerator="control SPACE" name="ToggleChildrenFoldedAction" />
-				</Entry>
+			<Entry name="NavigationPreviousMapAction" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
+			<Entry name="fold">
+				<Entry accelerator="SPACE" name="ToggleFoldedAction" />
+				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
+				<Entry accelerator="control SPACE"
+					name="ToggleChildrenFoldedAction" />
 			</Entry>
 			<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 			<Entry name="FreeSelectNodeAction.LEFT" />
@@ -85,30 +86,39 @@
 			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
 		</Entry>
 		<Entry name="filter">
+			<Entry name="SelectFilteredElementAction.NODE" />
+			<Entry name="SelectFilteredElementAction.NODE_AND_CONNECTOR" />
+			<Entry name="SelectFilteredElementAction.CONNECTOR" />
+            <Entry name="ShowAncestorsAction" />
+			<Entry name="ShowDescendantsAction" />
+			<Entry name="HideMatchingNodesAction" />
+			<Entry builder="separator" />
 			<Entry name="UndoFilterAction" />
 			<Entry name="RedoFilterAction" />
+			<Entry name="ApplyToVisibleAction" />
 			<Entry name="ReapplyFilterAction" />
-			<Entry name="QuickFilterAction" />
-            <Entry name="QuickAndFilterAction" />
-            <Entry name="QuickOrFilterAction" />
+			<Entry name="SelectFilteredNodesAction" />
 			<Entry name="ApplySelectedViewConditionAction" />
-			<Entry name="QuickFindAllAction" />
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
 			<Entry builder="separator" />
-            <Entry name="HideMatchingNodesAction" />
-			<Entry name="ShowAncestorsAction" />
-			<Entry name="ShowDescendantsAction" />
-			<Entry name="ApplyToVisibleAction" />
+			<Entry name="QuickFindAction.FORWARD_VISIBLE" />
+			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAction.FORWARD_REMOVE_FILTER" />
+			<Entry name="QuickFindAction.BACK_VISIBLE" />
+			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.BACK_REMOVE_FILTER" />
 			<Entry builder="separator" />
 			<Entry name="QuickHighlightAction" />
-			<Entry name="QuickFindAction.BACK" />
-			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="QuickFilterAction" />
+            <Entry name="QuickAndFilterAction" />
+            <Entry name="QuickOrFilterAction" />
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry builder="separator" />
-			<Entry name="maps" processOnPopup="true">
+			<Entry name="maps" >
 				<Entry builder="navigate_maps,radio_button_group" />
 			</Entry>
 		</Entry>
@@ -127,7 +137,7 @@
 	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
 		<Entry builder="navigate_maps,radio_button_group" />
 		<Entry builder="separator" />
-		<Entry name="ToggleMenubarAction" />
+		<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />

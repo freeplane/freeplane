@@ -28,7 +28,7 @@ import org.freeplane.features.map.NodeModel;
  */
 /** removes html in notes before comparison. */
 class TextHolder implements Comparable<TextHolder> {
-	final private TextAccessor textAccessor;
+	private TextAccessor textAccessor;
 	private String originalNotesText = null;
 	private String untaggedNotesText = null;
 
@@ -37,7 +37,15 @@ class TextHolder implements Comparable<TextHolder> {
 		this.textAccessor = textAccessor;
 	}
 
-	public int compareTo(final TextHolder compareToObject) {
+	TextHolder(){
+	    this(null);
+	}
+
+	public void setTextAccessor(TextAccessor textAccessor) {
+        this.textAccessor = textAccessor;
+    }
+
+    public int compareTo(final TextHolder compareToObject) {
 		return toString().compareTo(compareToObject.toString());
 	}
 

@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import org.freeplane.api.Dash;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class BubblePainter extends RectanglePainter {
@@ -33,9 +34,9 @@ class BubblePainter extends RectanglePainter {
 
 	@Override
 	void paintNodeShape(final Graphics2D g) {
-		final int zoomedEdgeWidth = (int) mainView.getPaintedBorderWidth();
+		final int zoomedBorderWidth = mainView.getPaintedBorderWidth();
 		int arcWidth = getArcWidth();
-        g.drawRoundRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, mainView.getWidth() - zoomedEdgeWidth, mainView.getHeight() - zoomedEdgeWidth, arcWidth, arcWidth);
+        g.drawRoundRect(zoomedBorderWidth / 2, zoomedBorderWidth / 2, mainView.getWidth() - zoomedBorderWidth, mainView.getHeight() - zoomedBorderWidth, arcWidth, arcWidth);
 	}
 
     private int getArcWidth() {
@@ -46,8 +47,13 @@ class BubblePainter extends RectanglePainter {
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		int arcWidth = getArcWidth();
-        graphics.fillRoundRect(0, 0, mainView.getWidth(), mainView.getHeight(), arcWidth, arcWidth);
+		final int borderWidth = mainView.getPaintedBorderWidth();
+		int arcWidth =  getArcWidth() + 1 - borderWidth;
+		final int overlapWidth = mainView.getDash() == Dash.SOLID  ? 1 : 0;
+		if(arcWidth > 0)
+			graphics.fillRoundRect(borderWidth, borderWidth, mainView.getWidth() - 2 * borderWidth + overlapWidth, mainView.getHeight() - 2 * borderWidth + overlapWidth, arcWidth, arcWidth);
+		else
+			graphics.fillRect(borderWidth, borderWidth, mainView.getWidth() - 2 * borderWidth + overlapWidth, mainView.getHeight() - 2 * borderWidth + overlapWidth);
 	}
 
 }

@@ -81,12 +81,18 @@ class NodeTextConditionController implements IElementaryConditionController {
 	private ASelectableCondition createASelectableCondition(final String item, final TranslatedObject simpleCondition, final Object value,
 	                                                   final boolean matchCase, final boolean matchApproximately,
 	                                                   final boolean ignoreDiacritics) {
-		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-			if (value.equals("")) {
-				return null;
-			}
-			return new NodeContainsCondition(item, value.toString(), matchCase, matchApproximately, ignoreDiacritics);
-		}
+        if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+            if (value.equals("")) {
+                return null;
+            }
+            return new NodeContainsCondition(item, value.toString(), matchCase, matchApproximately, false, ignoreDiacritics);
+        }
+        if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)) {
+            if (value.equals("")) {
+                return null;
+            }
+            return new NodeContainsCondition(item, value.toString(), matchCase, matchApproximately, true, ignoreDiacritics);
+        }
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
 				return new NodeMatchesRegexpCondition(item, value.toString(), matchCase);
@@ -120,6 +126,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new TranslatedObject[] {
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS_WORDWISE),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
 		        TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        TranslatedObject.literal(ConditionFactory.FILTER_GT), TranslatedObject.literal(ConditionFactory.FILTER_GE),
@@ -139,6 +146,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)
+		        || selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)
 				|| selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
 			return new FixedBasicComboBoxEditor();
 		return FrameController.getTextDateTimeEditor();
@@ -227,6 +235,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
         if(selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)
+                || selectedCondition.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)
                 || selectedCondition.objectEquals(ConditionFactory.FILTER_REGEXP) )
             return null;
 	    return new TypedListCellRenderer();

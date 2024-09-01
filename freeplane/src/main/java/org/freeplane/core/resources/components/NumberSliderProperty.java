@@ -73,7 +73,7 @@ public class NumberSliderProperty extends PropertyBean implements IPropertyContr
 	}
 
 	public Number getNumberValue() {
-		return (Number)transparencySlider.getValue();
+		return transparencySlider.getValue();
 	}
 
 	public void setValue(int value) {

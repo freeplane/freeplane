@@ -45,14 +45,15 @@ class OvalPainter extends VariableInsetsPainter {
 
 	@Override
 	void paintNodeShape(final Graphics2D g) {
-		final int zoomedEdgeWidth = (int) mainView.getPaintedBorderWidth();
-		g.drawOval(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, mainView.getWidth() - zoomedEdgeWidth, mainView.getHeight() - zoomedEdgeWidth);
+		final int zoomedBorderWidth = mainView.getPaintedBorderWidth();
+		g.drawOval(zoomedBorderWidth / 2, zoomedBorderWidth / 2, mainView.getWidth() - zoomedBorderWidth, mainView.getHeight() - zoomedBorderWidth);
 	}
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
+		final int zoomedBorderWidth = mainView.getPaintedBorderWidth();
 		graphics.setColor(color);
-		graphics.fillOval(1, 1, mainView.getWidth() - 2, mainView.getHeight() - 2);
+		graphics.fillOval(zoomedBorderWidth, zoomedBorderWidth, mainView.getWidth() - 2 * zoomedBorderWidth, mainView.getHeight() - 2 * zoomedBorderWidth);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ class OvalPainter extends VariableInsetsPainter {
 			double w = prefSize.width + getMinimumHorizontalInset();
 			double h = prefSize.height + getMinimumVerticalInset();
 			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h)));
-			prefSize.width = prefSize.height = mainView.limitWidth(diameter);
+			prefSize.width = prefSize.height = mainView.limitWidth(diameter, mainView.getPaintedBorderWidth());
 			return prefSize;
 		}
 		else

@@ -46,6 +46,13 @@ class StylePropertyAdjuster {
                         || propertyName.equals(FontNameControlGroup.NODE_FONT_NAME)
                         || propertyName.equals(FontSizeControlGroup.NODE_FONT_SIZE);
             }
+            else if(style.equals(MapStyleModel.TAG_STYLE)) {
+                enable = propertyName.equals(FontBoldControlGroup.NODE_FONT_BOLD)
+                        || propertyName.equals(FontItalicControlGroup.NODE_FONT_ITALIC)
+                        || propertyName.equals(FontStrikeThroughControlGroup.NODE_FONT_STRIKE_THROUGH)
+                        || propertyName.equals(FontNameControlGroup.NODE_FONT_NAME)
+                        || propertyName.equals(FontSizeControlGroup.NODE_FONT_SIZE);
+            }
             else if(style.equals(MapStyleModel.SELECTION_STYLE)
                     || style.equals(MapStyleModel.FLOATING_STYLE)) {
                 enable = ! (propertyName.equals(NoteContentTypeControlGroup.NAME)
@@ -53,10 +60,10 @@ class StylePropertyAdjuster {
                         || propertyName.equals(FormatControlGroup.NODE_FORMAT)
                         || propertyName.equals(NodeNumberingControlGroup.NODE_NUMBERING));
             }
-            else 
+            else
                 enable = true;
         }
-        else 
+        else
             enable = true;
         control.setEnabled(enable);
     }

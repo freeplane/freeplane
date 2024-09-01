@@ -18,6 +18,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
@@ -27,12 +28,12 @@ public class MindMapPlainTextWriter {
 
     private MindMapPlainTextWriter() {/**/}
 
-    public String getAsPlainText(final Collection<NodeModel> selectedNodes) {
+    public String getAsPlainText(final Collection<NodeModel> selectedNodes, CopiedNodeSet copiedNodeSet) {
         try {
             final StringWriter stringWriter = new StringWriter();
             try (final BufferedWriter fileout = new BufferedWriter(stringWriter)) {
                 for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
-                    writeTXT(it.next(), fileout,/* depth= */0);
+                    writeTXT(it.next(), copiedNodeSet, fileout,/* depth= */0);
                 }
             }
             return stringWriter.toString();
@@ -42,33 +43,33 @@ public class MindMapPlainTextWriter {
             return null;
         }
     }
-    private void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {
+    private void writeTXT(final NodeModel mindMapNodeModel, CopiedNodeSet copiedNodeSet, final Writer fileout, final int depth) throws IOException {
         boolean indentTextOutput = ResourceController.getResourceController().getBooleanProperty("indentTextOutput");
         boolean indentationUsesTabsInTextOutput = ResourceController.getResourceController().getBooleanProperty("indentationUsesTabsInTextOutput");
         String indentation = indentTextOutput ? (indentationUsesTabsInTextOutput ? "\t" : "    ") : "";
-        writeTXT(mindMapNodeModel, fileout, depth, indentation);
+        writeTXT(mindMapNodeModel, copiedNodeSet, fileout, depth, indentation);
     }
 
-    private void writeTXT(final NodeModel node, final Writer fileout, final int depth, String indentation) throws IOException {
-        String core = getTransformedTextForClipboard(node, node, node.getUserObject());
-        writeMultilineTXT(fileout, depth, indentation, core);
-        if (NodeLinks.getValidLink(node) != null) {
-            final String link = NodeLinks.getLinkAsString(node);
-            if (! core.contains(link)) {
-                writeTXT(fileout, depth, indentation, " <" + link + ">");
-            }
-        }
-        String detailText = DetailModel.getDetailText(node);
-        if(detailText != null) {
-            String details = getTransformedTextForClipboard(node, DetailModel.getDetail(node), detailText);
-            writeMultilineTXT(fileout, depth+1, indentation, details);
-        }
-        String noteText = NoteModel.getNoteText(node);
-        if(noteText != null) {
-            String transformedNote = getTransformedTextForClipboard(node, NoteModel.getNote(node), noteText);
-            writeMultilineTXT(fileout, depth+1, indentation, transformedNote);
-        }
-        writeChildrenText(node, fileout, depth, indentation);
+    private void writeTXT(final NodeModel node, CopiedNodeSet copiedNodeSet, final Writer fileout, final int depth, String indentation) throws IOException {
+		String core = getTransformedTextForClipboard(node, node, node.getUserObject());
+		writeMultilineTXT(fileout, depth, indentation, core);
+		if (NodeLinks.getValidLink(node) != null) {
+			final String link = NodeLinks.getLinkAsString(node);
+			if (! core.contains(link)) {
+				writeTXT(fileout, depth, indentation, " <" + link + ">");
+			}
+		}
+		String detailText = DetailModel.getDetailText(node);
+		if(detailText != null) {
+			String details = getTransformedTextForClipboard(node, DetailModel.getDetail(node), detailText);
+			writeMultilineTXT(fileout, depth+1, indentation, details);
+		}
+		String noteText = NoteModel.getNoteText(node);
+		if(noteText != null) {
+			String transformedNote = getTransformedTextForClipboard(node, NoteModel.getNote(node), noteText);
+			writeMultilineTXT(fileout, depth+1, indentation, transformedNote);
+		}
+        writeChildrenText(node, copiedNodeSet, fileout, depth, indentation);
     }
 
     private void writeMultilineTXT(final Writer fileout, final int depth, String indentation,
@@ -97,14 +98,14 @@ public class MindMapPlainTextWriter {
         return plainTextContent;
     }
 
-    private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
+    private void writeChildrenText(final NodeModel node, CopiedNodeSet copiedNodeSet, final Writer fileout, final int depth, String indentation)
             throws IOException {
         for (final NodeModel child : node.getChildren()) {
-            if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
-                writeTXT(child, fileout, depth + 1, indentation);
+            if (copiedNodeSet == CopiedNodeSet.ALL_NODES || child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
+                writeTXT(child, copiedNodeSet, fileout, depth + 1, indentation);
             }
             else {
-                writeChildrenText(child, fileout, depth, indentation);
+                writeChildrenText(child, copiedNodeSet, fileout, depth, indentation);
             }
         }
     }

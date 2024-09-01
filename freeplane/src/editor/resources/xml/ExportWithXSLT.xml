@@ -38,7 +38,7 @@
             create_dir="true"
             files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,
             ${org.freeplane.core.dir.lib}freeplaneapi_viewer.jar,
-            ${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar,
+            ${org.freeplane.core.dir.lib}svgSalamander-1.1.4.jar,
             /html/freeplane_applet.jnlp"
             file_prefix=""
             copy_map="true"
@@ -59,7 +59,7 @@
             create_dir="true"
             files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,
             ${org.freeplane.core.dir.lib}freeplaneapi_viewer.jar,
-            ${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar"
+            ${org.freeplane.core.dir.lib}svgSalamander-1.1.4.jar"
             file_prefix=""
             copy_map="true"
             copymode="FILE"

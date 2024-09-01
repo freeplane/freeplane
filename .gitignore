@@ -23,6 +23,9 @@
 #Ignore everything form theia
 .theia/
 
+# e.g. hs_err_pid*.log
+*.log
+
 # TODO: needs cleanup
 *.diff
 */bin
@@ -235,8 +238,6 @@ $RECYCLE.BIN/
 Session.vim
 # temporary
 .netrwhist
-# auto-generated tag files
-tags
 
 
 ### Gradle ###

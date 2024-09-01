@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 public interface ScalableComponent {
 	/**
@@ -41,4 +42,10 @@ public interface ScalableComponent {
 	void setDraftViewerSize(Dimension size);
 
 	void setMaximumComponentSize(Dimension size);
+
+	void paintComponent(Graphics g);
+
+    int getWidth();
+
+    int getHeight();
 }

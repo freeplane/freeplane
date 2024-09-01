@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <path d="m21.267 13.898a0.64 0.64 0 0 1 0.64 0.64v1.72a0.64 0.64 0 0 1-0.64 0.64h-5.72a0.64 0.64 0 0 1-0.64-0.64v-1.72a0.64 0.64 0 0 1 0.64-0.64h5.72m0-1h-5.72a1.65 1.65 0 0 0-1.64 1.64v1.72a1.64 1.64 0 0 0 1.64 1.64h5.72a1.63 1.63 0 0 0 1.64-1.64v-1.72a1.64 1.64 0 0 0-1.64-1.64z" fill="#0071bc"/>
+ <path d="m8.4532 8.9153a0.64 0.64 0 0 1 0.64 0.64v1.72a0.64 0.64 0 0 1-0.64 0.64h-5.72a0.64 0.64 0 0 1-0.64-0.64v-1.72a0.64 0.64 0 0 1 0.64-0.64h5.72m0-1h-5.72a1.65 1.65 0 0 0-1.64 1.64v1.72a1.64 1.64 0 0 0 1.64 1.64h5.72a1.63 1.63 0 0 0 1.64-1.64v-1.72a1.64 1.64 0 0 0-1.64-1.64z" fill="#0071bc"/>
+ <path d="m8.4532 18.881a0.64 0.64 0 0 1 0.64 0.64v1.72a0.64 0.64 0 0 1-0.64 0.64h-5.72a0.64 0.64 0 0 1-0.64-0.64v-1.72a0.64 0.64 0 0 1 0.64-0.64h5.72m0-1h-5.72a1.65 1.65 0 0 0-1.64 1.64v1.72a1.64 1.64 0 0 0 1.64 1.64h5.72a1.63 1.63 0 0 0 1.64-1.64v-1.72a1.64 1.64 0 0 0-1.64-1.64z" fill="#0071bc"/>
+ <g transform="matrix(.59037 0 0 .77246 7.7391 -.46828)" fill="#333333" stroke="#333333" stroke-width="1.4807" data-name="Layer 2">
+  <g transform="translate(-4.6828 .13788)" stroke-width="1.4807">
+   <polygon points="12 12.62 22 2 2 2"/>
+   <polygon points="10 10 14 10 14 19 10 22"/>
+  </g>
+ </g>
+</svg>

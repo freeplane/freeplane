@@ -179,6 +179,7 @@ public class CommandSearchDialog extends JDialog
         input.setColumns(40);
         input.addKeyListener(handler);
         resultList = new SingleSelectionList();
+        resultList.setModel(new UpdateableListModel<SearchItem>(Collections.emptyList()));
         resultList.setFocusable(false);
         resultList.setCellRenderer(this);
         resultList.addMouseListener(handler);

@@ -260,7 +260,7 @@ public class Launcher {
 			throw new IllegalStateException("Launcher instance already created");
 	}
 
-	static private File getFreeplaneInstallationDirectory() {
+	static File getFreeplaneInstallationDirectory() {
 		final File frameworkDir;
 		if (Utils.isDefineNotSet(BASEDIRECTORY_PROPERTY)) {
 			frameworkDir = Utils.getPathToJar(Launcher.class);

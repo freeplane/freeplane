@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 
 import javax.swing.Icon;
 
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -281,7 +282,9 @@ public class TextController implements IExtension {
 
 	public String getShortPlainText(NodeModel nodeModel, int maximumCharacters, String continuationMark) {
 		String adaptedText = getPlainTransformedTextWithoutNodeNumber(nodeModel);
-		return TextUtils.getShortText(adaptedText, maximumCharacters, continuationMark);
+		String shortText = TextUtils.getShortText(adaptedText, maximumCharacters, continuationMark);
+		TextWritingDirection textWritingDirection = modeController.getExtension(NodeStyleController.class).getTextWritingDirection(nodeModel, StyleOption.FOR_UNSELECTED_NODE);
+		return textWritingDirection == TextWritingDirection.RIGHT_TO_LEFT ? TextWritingDirection.RIGHT_TO_LEFT.embedded(shortText) : shortText;
 	}
 
 	public String getShortPlainText(NodeModel nodeModel) {

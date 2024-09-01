@@ -40,7 +40,25 @@ import org.freeplane.features.map.NodeModel;
 public class NodeAttributeTableModel implements IExtension, IAttributeTableModel {
 	private static final DefaultTableModel DUMMY = new DefaultTableModel();
 	private static final int CAPACITY_INCREMENT = 10;
-	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel();
+	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel() {
+
+        @Override
+        public int silentlyAddRowNoUndo(NodeModel node, Attribute newAttribute) {
+            NodeAttributeTableModel extension = node.getExtension(NodeAttributeTableModel.class);
+            if(extension == null) {
+                extension =new NodeAttributeTableModel();
+                node.addExtension(extension);
+            }
+            return extension.silentlyAddRowNoUndo(node, newAttribute);
+        }
+
+        @Override
+        public void addTableModelListener(TableModelListener listener) {/* ignore */}
+
+        @Override
+        public void removeTableModelListener(TableModelListener listener) {/* ignore */}
+
+	};
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
 		final NodeAttributeTableModel attributes = node
@@ -62,13 +80,20 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public void addRowNoUndo(NodeModel node, final Attribute newAttribute) {
-		allocateAttributes(NodeAttributeTableModel.CAPACITY_INCREMENT);
-		final int index = getRowCount();
-		final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
-		registry.registry(newAttribute);
-		attributes.add(newAttribute);
+		final int index = silentlyAddRowNoUndo(node, newAttribute);
 		fireTableRowsInserted(node, index, index);
 	}
+
+    public int silentlyAddRowNoUndo(NodeModel node, final Attribute newAttribute) {
+        allocateAttributes(NodeAttributeTableModel.CAPACITY_INCREMENT);
+		final int index = getRowCount();
+		AttributeRegistry registry = node.getMap().getExtension(AttributeRegistry.class);
+        if (registry != null) {
+            registry.registry(newAttribute);
+        }
+		attributes.add(newAttribute);
+        return index;
+    }
 
 	public void addTableModelListener(final TableModelListener listener) {
 		if (listeners == null) {

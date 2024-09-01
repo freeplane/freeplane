@@ -1,1 +1,7 @@
-<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.52,11.78,12.13,5.44A1.33,1.33,0,0,0,10,6.5V19.17a1.33,1.33,0,0,0,2.13,1.06l8.39-6.33A1.32,1.32,0,0,0,20.52,11.78Z" style="fill:#333"/><rect x="2" y="10" width="13" height="6" style="fill:#333"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg data-name="Layer 2" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-.43341 -.48416)" fill="#333333" stroke="#333333">
+  <path d="m21.431 13.93-8.39-6.34a1.33 1.33 0 0 0-2.13 1.06v12.67a1.33 1.33 0 0 0 2.13 1.06l8.39-6.33a1.32 1.32 0 0 0 0-2.12z"/>
+  <rect x="2.9107" y="12.15" width="13" height="6"/>
+ </g>
+</svg>

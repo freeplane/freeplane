@@ -11,6 +11,7 @@ import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 
 import org.freeplane.core.ui.components.UITools;
@@ -18,7 +19,7 @@ import org.freeplane.core.util.ColorUtils;
 
 import com.formdev.flatlaf.util.HiDPIUtils;
 
-class JColorButton extends JButton {
+public class JColorButton extends JButton {
 
 	private static final long serialVersionUID = 1L;
 	private static final int COLOR_ICON_BORDER_SIZE = (int) (4 * UITools.FONT_SCALE_FACTOR);
@@ -36,12 +37,20 @@ class JColorButton extends JButton {
 	private String text;
 	int textWidth;
 	int textHeight;
-	public JColorButton() {
+
+	public JColorButton(Action a) {
+        super(a);
+        setText(" ");
+        this.color = null;
+        this.text = " ";
+    }
+
+    public JColorButton() {
 		super(" ");
 		this.color = null;
 		this.text = " ";
 	}
-	void setColor(Color color) {
+	public void setColor(Color color) {
 		this.color = color;
 	    if (color != null) {
 	        this.text = ColorUtils.colorToRGBPercentString(color);
@@ -51,22 +60,27 @@ class JColorButton extends JButton {
 	    }
 
 		this.textWidth = this.textHeight = 0;
+		revalidate();
 		repaint();
 	}
-	
+
+
+
 	@Override
-	public Dimension getPreferredSize() {
-		Dimension preferredSize = super.getPreferredSize();
-		if(isPreferredSizeSet())
-			return preferredSize;
-		Dimension newSize = new Dimension(preferredSize);
-		newSize.width  += COLOR_ICON_BORDER_SIZE * 2;
-		newSize.height += COLOR_ICON_BORDER_SIZE * 2;
-		return newSize;
-	}
-	@Override
+    public String getText() {
+	    return text;
+    }
+
+    @Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+        String textBackup = text;
+        try {
+            text = null;
+            super.paintComponent(g);
+        }
+        finally {
+            text = textBackup;
+        }
 		paintColor(g);
 	}
 	private void paintColor(Graphics g) {
@@ -74,16 +88,16 @@ class JColorButton extends JButton {
 	        Graphics2D g2 = (Graphics2D) g;
 	    	if(color.getAlpha() < 255){
 	    		g2.setPaint(TEXTURE);
-	    		g.fillRect(COLOR_ICON_BORDER_SIZE , 
-	    				COLOR_ICON_BORDER_SIZE, 
-	    				getWidth() - COLOR_ICON_BORDER_SIZE*2, 
+	    		g.fillRect(COLOR_ICON_BORDER_SIZE ,
+	    				COLOR_ICON_BORDER_SIZE,
+	    				getWidth() - COLOR_ICON_BORDER_SIZE*2,
 	    				getHeight() - COLOR_ICON_BORDER_SIZE*2);
 	    	}
     		g.setColor(color);
     		g.setFont(getFont());
-    		g.fillRect(COLOR_ICON_BORDER_SIZE , 
-    				COLOR_ICON_BORDER_SIZE, 
-    				getWidth() - COLOR_ICON_BORDER_SIZE*2, 
+    		g.fillRect(COLOR_ICON_BORDER_SIZE ,
+    				COLOR_ICON_BORDER_SIZE,
+    				getWidth() - COLOR_ICON_BORDER_SIZE*2,
     				getHeight() - COLOR_ICON_BORDER_SIZE*2);
 	        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	    	calculateTextSize();
@@ -93,22 +107,12 @@ class JColorButton extends JButton {
 			final Color backgroundColor = ColorUtils.makeNonTransparent(color);
 			if(color.getAlpha() < 255){
 	    		g.setColor(backgroundColor);
-	    		g.fillRect(xText - COLOR_ICON_BORDER_SIZE/2,  (getHeight() - textHeight - COLOR_ICON_BORDER_SIZE)/2, 
+	    		g.fillRect(xText - COLOR_ICON_BORDER_SIZE/2,  (getHeight() - textHeight - COLOR_ICON_BORDER_SIZE)/2,
 	    				textWidth + COLOR_ICON_BORDER_SIZE, textHeight +  COLOR_ICON_BORDER_SIZE);
 			}
-	        if(! getModel().isEnabled()) {
-	            g.setColor(backgroundColor.brighter());
-	            HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
-	            g.setColor(backgroundColor.darker());
-	            HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText - 1, yText - 1);
-	        } else {
-	            /*** paint the text normally */
-		        final Color textColor = UITools.getTextColorForBackground(backgroundColor);
-		        g.setColor(textColor);
-		        HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
-	        }
-
-	        
+			final Color textColor = getModel().isEnabled() ? UITools.getTextColorForBackground(backgroundColor) : UITools.getDisabledTextColorForBackground(backgroundColor);;
+			g.setColor(textColor);
+			HiDPIUtils.drawStringUnderlineCharAtWithYCorrection( this, g2, text, -1, xText, yText);
 	    }
 	}
 	private void calculateTextSize() {
@@ -117,7 +121,7 @@ class JColorButton extends JButton {
 	        if(g != null) {
 	        	Rectangle2D textBounds = g.getFont().getStringBounds(text, g.getFontRenderContext());
 	        	textWidth = (int) (textBounds.getWidth());
-	        	textHeight = (int) (textBounds.getHeight());	
+	        	textHeight = (int) (textBounds.getHeight());
 	        }
 		}
 	}

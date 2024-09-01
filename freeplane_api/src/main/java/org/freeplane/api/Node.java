@@ -416,5 +416,7 @@ public interface Node extends NodeRO {
 	@Override
     NodeGeometry getGeometry();
 
-
+	/**@since 1.12.1 */
+	@Override
+    Tags getTags();
 }

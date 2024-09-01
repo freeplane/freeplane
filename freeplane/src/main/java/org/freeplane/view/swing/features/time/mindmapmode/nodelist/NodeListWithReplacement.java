@@ -40,9 +40,9 @@ class NodeListWithReplacement extends NodeList{
 
 		private TextHolder[] getNodeHoldersAt(final int row) {
 			return new TextHolder[]{
-					(TextHolder) sorter.getValueAt(row, nodeTextColumn),
-					(TextHolder) sorter.getValueAt(row, nodeDetailsColumn),
-					(TextHolder) sorter.getValueAt(row, nodeNotesColumn)
+			        columnVisibilityChanger.isColumnVisible(nodeTextColumn)  ? (TextHolder) sorter.getValueAt(row, nodeTextColumn) : null,
+			        columnVisibilityChanger.isColumnVisible(nodeDetailsColumn)  ? (TextHolder) sorter.getValueAt(row, nodeDetailsColumn) : null,
+			        columnVisibilityChanger.isColumnVisible(nodeNotesColumn)  ? (TextHolder) sorter.getValueAt(row, nodeNotesColumn) : null,
 			};
 		}
 	}
@@ -100,6 +100,8 @@ class NodeListWithReplacement extends NodeList{
 			if( !selectedOnly || tableView.isRowSelected(i)){
 				TextHolder[] textHolders = holderAccessor.getNodeHoldersAt(i);
 				for(final TextHolder textHolder:textHolders){
+				    if(textHolder == null)
+				        continue;
 					final String text = textHolder.getText();
 					final String replaceResult;
 					final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);

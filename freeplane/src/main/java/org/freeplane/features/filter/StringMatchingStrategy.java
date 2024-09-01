@@ -22,21 +22,23 @@ package org.freeplane.features.filter;
 import org.freeplane.core.resources.ResourceController;
 
 public interface StringMatchingStrategy {
-	
+
+    public enum Type { ALL, SUBSTRING, WORDWISE }
+
 	double APPROXIMATE_MATCHING_MINPROB = ResourceController.getResourceController().getDoubleProperty("approximate_search_threshold");
-	
+
 	static final StringMatchingStrategy DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY = new PseudoDamerauLevenshtein();
 	static final StringMatchingStrategy EXACT_STRING_MATCHING_STRATEGY = new ExactStringMatchingStrategy();
-	
+
 	/**
 	 * Check for a match between a search term and a text.
-	 * 
+	 *
 	 * @param searchTerm the text to search for
 	 * @param searchText the text to search in
 	 * @param subStringMatch whether to for substring instead of equality
 	 * @param caseSensitive whether to honor case
 	 * @return whether the configuration results in a match
 	 */
-	boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch);
-	
+	boolean matches(final String searchTerm, final String searchText, final Type subStringMatch);
+
 }

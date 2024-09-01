@@ -19,17 +19,17 @@ sourceSets {
 
 dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
-	lib ':kitfox-svg-salamander-1.1.1-p1'
+	lib 'com.formdev:svgSalamander:1.1.4'
 	lib 'com.github.robtimus:data-url:2.0.1'
-	lib 'com.formdev:flatlaf:3.1.1'
-	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.9.4'
+	lib 'com.formdev:flatlaf:3.4.1'
+	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.10.1'
 
     lib project(':JOrtho_0.4_freeplane')
     api project(':freeplane_api')
 
     lib 'commons-lang:commons-lang:2.6',
-            'commons-io:commons-io:2.13.0',
-            'commons-codec:commons-codec:1.16.0',
+            'commons-io:commons-io:2.16.1',
+            'commons-codec:commons-codec:1.17.0',
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
@@ -38,10 +38,9 @@ dependencies {
 		exclude module: 'mnemonicsetter'
 	}
 
-    lib ':kitfox-svg-salamander-1.1.1-p1'
     lib ':idw-gpl-1.6.1'
 
-    maclib 'org.violetlib:vaqua:11'
+    maclib 'org.violetlib:vaqua:12'
 
     runtimeOnly files("${project.buildDir}/emoji/xml")
     emoji 'org.freeplane.emoji:twemoji:12.1.4'
@@ -134,6 +133,7 @@ ext.bundleExports = """\
                     org.freeplane.features.filter.condition,
                     org.freeplane.features.format,
                     org.freeplane.features.help,
+                    org.freeplane.features.highlight,
                     org.freeplane.features.icon,
                     org.freeplane.features.icon.factory,
                     org.freeplane.features.icon.mindmapmode,

@@ -47,7 +47,7 @@ import org.freeplane.features.url.UrlManager;
 
 class ImportLinkedBranchAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -70,6 +70,8 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri
 			    .getPath()).getFile());
 			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
+			if(node ==map.getRootNode())
+			    return;
 			PersistentNodeHook.removeMapExtensions(node);
 			node.setSide(MapController.suggestNewChildSide(selected, Side.DEFAULT));
 			((MMapController) modeController.getMapController()).insertNode(node, selected);

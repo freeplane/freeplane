@@ -1,0 +1,5 @@
+This folder contains icons from IntelliJ IDEA Community Edition
+and derived work
+licensed under Apache License
+Copyright (C) JetBrains s.r.o.
+https://www.jetbrains.com/idea/

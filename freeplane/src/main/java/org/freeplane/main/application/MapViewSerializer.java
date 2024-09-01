@@ -53,11 +53,11 @@ class MapViewSerializer implements ViewSerializer {
     		Component component = MapViewDockingWindows.getContainedMapView(view);
     		if (component instanceof MapView) {
     			MapView mapView = (MapView) component;
-    			if(mapView.getModeController().getModeName().equals(MModeController.MODENAME) 
-    					&& ! mapView.getModel().containsExtension(DocuMapAttribute.class)){
+    			if(mapView.getModeController().getModeName().equals(MModeController.MODENAME)
+    					&& ! mapView.getMap().containsExtension(DocuMapAttribute.class)){
     				out.writeBoolean(true);
     				out.writeUTF(mapView.getModeController().getModeName());
-    				out.writeObject(mapView.getModel().getURL());
+    				out.writeObject(mapView.getMap().getURL());
     				return;
     			}
             }
@@ -77,13 +77,16 @@ class MapViewSerializer implements ViewSerializer {
     			ModeController modeController = Controller.getCurrentModeController();
     			MapController mapController = modeController.getMapController();
     			mapController.openMap(mapUrl);
-    			Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
+    			MapView mapViewComponent = (MapView) controller.getMapViewManager().getMapViewComponent();
+    			final Component pNewMap;
     			if(mapViewComponent.getParent() == null) {
-                    final Component pNewMap = mapViewComponent;
-					return newDockedView(pNewMap, pNewMap.getName());
+                    pNewMap = mapViewComponent;
                 }
-                else
-    				return newViewToBeRemoved();
+                else {
+                	mapController.createMapView(mapViewComponent.getMap());
+                	pNewMap = controller.getMapViewManager().getMapViewComponent();
+                }
+    			return newDockedView(pNewMap, pNewMap.getName());
     		}
             return newViewToBeRemoved();
         }
@@ -91,7 +94,7 @@ class MapViewSerializer implements ViewSerializer {
         	return newViewToBeRemoved();
         }
     }
-    
+
 	private View newViewToBeRemoved() {
 	    View view = new View("", null, new JPanel());
 	    viewsToBeRemoved.add(view);
@@ -114,8 +117,8 @@ class MapViewSerializer implements ViewSerializer {
 	    	view.close();
 	    viewsToBeRemoved.clear();
     }
-	
-	
 
-    
+
+
+
 }

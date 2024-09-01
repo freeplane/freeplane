@@ -1546,8 +1546,8 @@ public class Scalr {
 			float requestedHeightScaling = ((float) targetHeight / (float) currentHeight);
 			float requestedWidthScaling = ((float) targetWidth / (float) currentWidth);
 			float actualScaling = Math.min(requestedHeightScaling, requestedWidthScaling);
-			targetHeight = Math.round((float) currentHeight * actualScaling);
-			targetWidth = Math.round((float) currentWidth * actualScaling);
+			targetHeight = Math.round(currentHeight * actualScaling);
+			targetWidth = Math.round(currentWidth * actualScaling);
 			if (targetHeight == currentHeight && targetWidth == currentWidth)
 				return src;
 
@@ -1567,7 +1567,7 @@ public class Scalr {
 				 * re-calculate a proportionally correct value based on the
 				 * targetWidth.
 				 */
-				targetHeight = Math.round((float) targetWidth * ratio);
+				targetHeight = Math.round(targetWidth * ratio);
 
 				if (DEBUG && originalTargetHeight != targetHeight)
 					log(1, "Auto-Corrected targetHeight [from=%d to=%d] to honor image proportions.",
@@ -1585,7 +1585,7 @@ public class Scalr {
 				 * Portrait Orientation: Ignore the given width and re-calculate
 				 * a proportionally correct value based on the targetHeight.
 				 */
-				targetWidth = Math.round((float) targetHeight / ratio);
+				targetWidth = Math.round(targetHeight / ratio);
 
 				if (DEBUG && originalTargetWidth != targetWidth)
 					log(1, "Auto-Corrected targetWidth [from=%d to=%d] to honor image proportions.",

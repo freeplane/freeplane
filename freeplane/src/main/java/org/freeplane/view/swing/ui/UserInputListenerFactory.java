@@ -50,6 +50,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+
+import net.infonode.docking.View;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -449,7 +452,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		for (final Component mapView : sortedMapViewVector) {
 			final String displayName = mapView.getName();
 			Entry actionEntry = new Entry();
-			final MapsMenuAction action = new MapsMenuAction(displayName);
+			View view = (View) SwingUtilities.getAncestorOfClass(View.class, mapView);
+			String viewTitle = view.getTitle();
+			boolean hasCustomTitle = !displayName.equals(viewTitle);
+			String label = displayName + (hasCustomTitle? " : \'" + viewTitle + "\'":"");
+			final MapsMenuAction action = new MapsMenuAction(displayName, label);
 			actionEntry.setName(action.getKey());
 			modeController.addActionIfNotAlreadySet(action);
 			entryAccessor.setAction(actionEntry, action);

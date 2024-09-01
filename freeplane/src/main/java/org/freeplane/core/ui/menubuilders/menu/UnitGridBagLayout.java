@@ -23,8 +23,8 @@ public class UnitGridBagLayout extends GridBagLayout {
 			GridBagConstraints constraints = unitLayout.getConstraints(comp);
 			String className = comp.getClass().getSimpleName();
 			if ((className.equals("JButton") || className.equals("JToggleButton"))
-					&& ((GridBagConstraints)constraints).gridwidth == 1
-					&& ((GridBagConstraints)constraints).gridheight == 1) {
+					&& constraints.gridwidth == 1
+					&& constraints.gridheight == 1) {
 				unitLayout.unit = comp;
 			}
 			else if(comp instanceof Container) {

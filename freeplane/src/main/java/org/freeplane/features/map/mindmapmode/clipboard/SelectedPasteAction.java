@@ -62,8 +62,9 @@ class SelectedPasteAction extends AFreeplaneAction {
 		}
 		final JPanel options = createPane(flavorHandlers);
 		MnemonicSetter.INSTANCE.setComponentMnemonics(options);
-		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), options,
-				(String) getValue(Action.NAME), JOptionPane.OK_CANCEL_OPTION)) {
+		int option = JOptionPane.showConfirmDialog((Component) e.getSource(), options,
+				(String) getValue(Action.NAME), JOptionPane.OK_CANCEL_OPTION);
+        if (JOptionPane.CANCEL_OPTION == option || JOptionPane.CLOSED_OPTION == option) {
 			return;
 		}
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();

@@ -14,8 +14,11 @@ public interface AccessedNodes {
 		@Override
 		public void accessAttribute(final NodeModel accessedNode, Attribute accessedAttribute) {}
 
-		@Override
-		public void accessBranch(NodeModel accessedNode) {}
+        @Override
+        public void accessBranch(NodeModel accessedNode) {}
+
+        @Override
+        public void accessClones(NodeModel accessedNode) {}
 
 		@Override
 		public void accessAll() {}
@@ -27,7 +30,8 @@ public interface AccessedNodes {
 	void accessNode(final NodeModel accessedNode);
 	void accessValue(final NodeModel accessedNode);
 	void accessAttribute(final NodeModel accessedNode, final Attribute accessedAttribute);
-	void accessBranch(final NodeModel accessedNode);
+    void accessBranch(final NodeModel accessedNode);
+    void accessClones(final NodeModel accessedNode);
 	void accessAll();
 	void accessGlobalNode();
 }

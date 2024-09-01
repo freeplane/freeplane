@@ -1,4 +1,103 @@
 ==============================
+1.12.5
+==============================
+Option to display tags with categories
+Bug fixes
+
+==============================
+1.12.4
+==============================
+Bug fixes
+
+==============================
+1.12.3
+==============================
+Bug fixes
+
+==============================
+1.12.2
+==============================
+Better support for qualified tags
+Unfold folded nodes when toggling children folding state
+Scroll unfolded node tree to visible after any unfold action
+Option to scroll unfolded node tree to visible after selecting a node
+Option "Mouse wheel zoom (%)" setting percentage for zoom adjustments using the mouse wheel
+Option "Synchronize selection across all visible views" available in Navigate->Synchronize selection
+Update filtered nodes on unselected views after each map modification
+Option "Preferences…->Behaviour->Link to emails from text"
+Support transparent backgrounds for printing and exports
+Support translucent backgrounds for mind maps
+Allow running under Java 22
+
+==============================
+1.12.1
+==============================
+Node tags
+Configure columns in "Find and replace"...
+Distribution of new child nodes equally to both sides can be disabled
+Use a horizontal rectangle for single clones and a square for branch-clone roots
+Fix for state symbol to no longer be invisible when node border and background are invisible
+New option to prefer node-border color for state-symbol background to make state symbols prominent
+
+==============================
+1.11.14
+==============================
+Filter condition "contains as whole words"
+Code explorer improvements
+
+==============================
+1.11.13
+==============================
+Filter for connectors
+Improvements for the filter hiding matches nodes
+
+==============================
+1.11.12
+==============================
+Add PDF export to code explorer maps
+Group classes in code explorer using AspectJ like expressions
+Bug fixes
+
+==============================
+1.11.11
+==============================
+Save user defined attributes and details on code explorer nodes
+Record and analyze violations found by ArchUnit tests (https://github.com/freeplane/freeplane-archunit-extension)
+Use Operating System Regional Settings by default
+User option "Use Operating System Regional Settings" (Preferences…->Environment->Language)
+Bug fixes
+
+==============================
+1.11.10
+==============================
+Fix launcher configuration
+
+==============================
+1.11.9
+==============================
+Implements JVM code explorer mode based on ArchUnit for visualization of code dependencies and structure
+
+Auto-expand for selected nodes
+Adds a view option to show connector arrows only for selection
+Allows all launchers to use Java up to version 21
+Adds actions "Find next/previous visible" and "Find next/previous removing filter"
+Updates scripting api generator
+Introduces new action to easily add new nodes linked to menu commands
+Introduces new API method to copy user styles from another map
+Improved Windows Launcher supports Java versions from 8 to 21
+
+==============================
+1.11.8
+==============================
+Support text writing direction for nodes and styles
+Custom tab names
+Reopen all map views after restart, not just one per map
+Extend script API to configure node edges and node borders
+Add option Apply filter when copying nodes as map nodes (default: false)
+Add option Apply filter when copying nodes as map text (default: true)
+Flower-like nodes (new node style "Flower" combines non-solid node borders with big border widths)
+Bug fixes
+==============================
 1.11.7
 ==============================
 Indicate jump-in as pin icon shown at the root node

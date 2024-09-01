@@ -23,7 +23,7 @@ package org.freeplane.features.map;
 /** */
 public interface INodeSelectionListener {
 	/**
-	 * Is sent when a node is deselected.
+	 * Is sent when the selected node becomes deselected.
 	 */
 	default void onDeselect(@SuppressWarnings("unused") NodeModel node) {/**/}
 
@@ -31,4 +31,10 @@ public interface INodeSelectionListener {
 	 * Is sent when a node is selected.
 	 */
 	default void onSelect(@SuppressWarnings("unused") NodeModel node) {/**/}
+
+
+    /**
+     * Is sent when selected node set changes.
+     */
+	default void onSelectionSetChange(@SuppressWarnings("unused") IMapSelection selection) {/**/}
 }

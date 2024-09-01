@@ -21,6 +21,7 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
@@ -29,6 +30,10 @@ import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import java.awt.*;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -103,6 +108,60 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 		return new MapConditionalStylesProxy(getDelegate(), getScriptContext());
 	}
 
+	@Override
+	public URI getFollowedMap() {
+		return getTemplate(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY);
+	}
+
+	@Override
+	public URI getAssociatedTemplate() {
+		return getTemplate(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY);
+	}
+
+	private URI getTemplate(String locationProperty) {
+		final String templateLocation = MapStyle.getController().getProperty(getDelegate(), locationProperty);
+		if (templateLocation == null)
+			return null;
+		try {
+			return new URI(templateLocation);
+		} catch (URISyntaxException e) {
+			try {
+				return new URI(null, templateLocation, null);
+			} catch (URISyntaxException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+	}
+
+	@Override
+	public File getFollowedMapFile() {
+		URI uri = getFollowedMap();
+		return uri == null ? null : new File(TemplateManager.INSTANCE.expandTemplateLocation(uri).getPath());
+	}
+
+	@Override
+	public File getAssociatedTemplateFile() {
+		URI uri = getAssociatedTemplate();
+		return uri == null ? null : new File(TemplateManager.INSTANCE.expandTemplateLocation(uri).getPath());
+	}
+
+	@Override
+	public List<String> getUserDefinedStylesNames() {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(getDelegate());
+		final MapModel styleMap = styleModel.getStyleMap();
+		final NodeModel styleNodeGroup = styleModel.getStyleNodeGroup(styleMap, MapStyleModel.STYLES_USER_DEFINED);
+		final List<NodeModel> nodes = styleNodeGroup.getChildren();
+		int size = nodes.size();
+		if (size == 0) {
+			return Collections.emptyList();
+		}
+		final ArrayList<String> list = new ArrayList<String>(size);
+		for (final NodeModel node : nodes) {
+			list.add(node.getText());
+		}
+		return Collections.unmodifiableList(list);
+	}
+
 	// Map: R/W
 	@Override
 	public boolean close(boolean force, boolean allowInteraction) {
@@ -166,7 +225,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	// Map: R/W
 	@Override
 	public void setSaved(final boolean isSaved) {
-		Controller.getCurrentModeController().getMapController().setSaved(getDelegate(), isSaved);
+		Controller.getCurrentModeController().getMapController().mapSaved(getDelegate(), isSaved);
 	}
 
     // Map: R/W
@@ -341,4 +400,92 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
         }
         controller.refreshMapLaterUndoable(getDelegate());
     }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, boolean includeConditionalRules, String... styleNameFilters) {
+        List<String> styleNames = source.getUserDefinedStylesNames();
+        ArrayList<String> styleNamesToImport = new ArrayList<>();
+        for(String name: styleNames) {
+            for (String filter : styleNameFilters){
+                if(name.matches(filter)) {
+                    styleNamesToImport.add(name);
+                    copyStyleFrom(source, name);
+                    if(includeConditionalRules){
+                        copyConditionalStylesFrom(source, name);
+                    }
+                    break;
+                }
+            }
+        }
+        return styleNamesToImport;
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, boolean includeConditionalRules, ArrayList<String> styleNameFilters) {
+        return copyUserStylesFrom( source, includeConditionalRules, styleNameFilters.toArray(new String[0]));
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source) {
+        return copyUserStylesFrom( source, true);
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, String... styleNameFilters) {
+        return copyUserStylesFrom( source, true, styleNameFilters);
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, ArrayList<String> styleNameFilters) {
+        return copyUserStylesFrom( source, styleNameFilters.toArray(new String[0]));
+    }
+
+    @Override
+    public List<String> copyUserStylesFrom(org.freeplane.api.MindMap source, boolean includeConditionalRules) {
+        return copyUserStylesFrom( source, includeConditionalRules, ".*");
+    }
+
+
+	@Override
+	public void setFollowedMap(URI uri) {
+		setTemplate(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY, uri);
+	}
+
+	@Override
+	public void setAssociatedTemplate(URI uri) {
+		setTemplate(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY, uri);
+	}
+
+	private void setTemplate(String locationProperty, URI uri) {
+		final boolean isFollowed = MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY.equals(locationProperty);
+		final MapStyle mapStyleController = MapStyle.getController();
+		final MapModel mapModel = getDelegate();
+		String templateNormalizedLocation;
+		if (uri == null) {
+			templateNormalizedLocation = null;
+			if (isFollowed) {
+				mapStyleController.setProperty(mapModel, MapStyleModel.FOLLOWED_MAP_LAST_TIME, null);
+			}
+		} else {
+			List<String> exceptionReasons = new ArrayList<>(2);
+			if (!uri.isAbsolute()) {
+				exceptionReasons.add("Uri is missing scheme: " + uri);
+			}
+			File file = new File(TemplateManager.INSTANCE.expandTemplateLocation(uri).getPath());
+			if (!file.isAbsolute()) {
+				exceptionReasons.add("Uri location isn't absolute: " + uri);
+			}
+			if (!exceptionReasons.isEmpty()) {
+				throw new RuntimeException(exceptionReasons.toString());
+			}
+			templateNormalizedLocation = TemplateManager.INSTANCE.normalizeTemplateLocation(uri).toString();
+			if (isFollowed) {
+				final String previousFollowedMap = mapStyleController.getProperty(mapModel, locationProperty);
+				if (!templateNormalizedLocation.equals(previousFollowedMap)) {
+					mapStyleController.setProperty(mapModel, MapStyleModel.FOLLOWED_MAP_LAST_TIME, "0");
+				}
+			}
+		}
+		mapStyleController.setProperty(mapModel, locationProperty, templateNormalizedLocation);
+	}
 }

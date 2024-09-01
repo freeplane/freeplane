@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
@@ -34,7 +34,6 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.ui.sounds.SoundClipPlayer;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -229,14 +228,11 @@ public class ReportGenerator extends StreamHandler {
 				}
 			});
 		}
-		if (!isLoggable(record)) {
+		if (! (isLoggable(record) && record.getLoggerName().equals("org.freeplane"))) {
 			return;
 		}
 
 		if (!(isReportGenerationInProgress)) {
-	        if(looksLikeDebugMessagePrintedToSystemStandardErrorStream(record)) {
-	            return;
-	        }
 	        if(isExcluded(record)) {
 	        	return;
 	        }
@@ -276,22 +272,21 @@ public class ReportGenerator extends StreamHandler {
 	}
 
     private boolean isExcluded(LogRecord record) {
-    	String message = record.getMessage();
-		if(message != null && message.contains("\tat org.codehaus.groovy.runtime"))
-    		return true;
     	Throwable thrown = record.getThrown();
     	if(thrown == null)
     		return false;
     	StackTraceElement[] stackTrace = thrown.getStackTrace();
-    	if(stackTrace == null || stackTrace.length == 0)
+    	if(stackTrace == null)
     		return false;
-    	StackTraceElement stackTraceElement = stackTrace[0];
-    	String className = stackTraceElement.getClassName();
-		return className.startsWith("org.codehaus.groovy.runtime");
+        return classNameStartsWith(stackTrace, 0, "org.codehaus.groovy.runtime");
 	}
 
-	private boolean looksLikeDebugMessagePrintedToSystemStandardErrorStream(final LogRecord record) {
-        return Compat.isMacOsX() && ! LogUtils.isLikelyToStartErrorLog(record);
+    private boolean classNameStartsWith(StackTraceElement[] stackTrace, int position, String classNameStart) {
+        if (stackTrace.length <= position)
+            return false;
+    	StackTraceElement stackTraceElement = stackTrace[position];
+    	String className = stackTraceElement.getClassName();
+		return className.startsWith(classNameStart);
     }
 
 	private void runSubmit() {
@@ -420,7 +415,8 @@ public class ReportGenerator extends StreamHandler {
 			}
 			// Send data
 			final URL url = new URL(getBugTrackerUrl());
-			final URLConnection conn = url.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
 			final String report = data.toString();
 			try (final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8)) {

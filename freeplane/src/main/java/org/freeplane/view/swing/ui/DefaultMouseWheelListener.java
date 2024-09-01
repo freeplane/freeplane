@@ -41,7 +41,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		final MapView mapView = (MapView) e.getSource();
 		final ModeController mController = mapView.getModeController();
-		if (mController.isBlocked() || Controller.getCurrentController().getMap() != mapView.getModel())
+		if (mController.isBlocked() || Controller.getCurrentController().getMap() != mapView.getMap())
 			return;
 		final Set<IMouseWheelEventHandler> registeredMouseWheelEventHandler = mController.getUserInputListenerFactory()
 		    .getMouseWheelEventHandlers();
@@ -52,16 +52,8 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			}
 		}
 		if ((e.getModifiers() & DefaultMouseWheelListener.ZOOM_MASK) != 0) {
-			float newZoomFactor = 1f + Math.abs((float) e.getUnitsToScroll()) / 10f;
-			if (e.getUnitsToScroll() < 0) {
-				newZoomFactor = 1 / newZoomFactor;
-			}
-			final float oldZoom = ((MapView) e.getComponent()).getZoom();
-			float newZoom = oldZoom / newZoomFactor;
-			newZoom = (float) Math.rint(newZoom * 1000f) / 1000f;
-			newZoom = Math.max(1f / 32f, newZoom);
-			newZoom = Math.min(32f, newZoom);
-			if (newZoom != oldZoom) {
+			float newZoom = mapView.calculateNewZoom(e);
+			if (newZoom != ((MapView) e.getComponent()).getZoom()) {
 			    if(! ResourceController.getResourceController().getBooleanProperty(ZOOM_AROUND_SELECTED_NODE_PROPERTY))
 			        mapView.setZoom(newZoom, e.getPoint());
 				Controller.getCurrentController().getMapViewManager().setZoom(newZoom);

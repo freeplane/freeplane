@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.freeplane.plugin.script.proxy;
 
@@ -16,6 +16,8 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorShape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -27,7 +29,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
     public String getShape() {
 		return getLinkController().getShape(getConnector()).name();
 	}
-	
+
 	public void setShape(String shapeName) {
 	    ConnectorShape shape = ConnectorShape.valueOf(shapeName);
         setShape(shape);
@@ -40,7 +42,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
     public String getLabelFontFamily() {
 		return getLinkController().getLabelFontFamily(getConnector());
 	}
-	
+
 	public void setLabelFontFamily(String font) {
 	    getLinkController().setLabelFontFamily(getConnector(), Optional.of(font));
 	}
@@ -48,15 +50,15 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
     public int getLabelFontSize() {
 		return getLinkController().getLabelFontSize(getConnector());
 	}
-	
+
 	public void setLabelFontSize(int size) {
 	    getLinkController().setLabelFontSize(getConnector(), Optional.of(size));
 	}
-	
+
 	public Color getColor() {
 	    return getLinkController().getColor(getConnector());
 	}
-	
+
 	public void setColor(final Color color) {
 		getLinkController().setConnectorColor(getConnector(), Optional.of(color));
 	}
@@ -64,7 +66,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	public int getOpacity() {
 	    return getLinkController().getOpacity(getConnector());
 	}
-	
+
 	public void setOpacity(final int opacity) {
 		getLinkController().setOpacity(getConnector(), Optional.of(opacity));
 	}
@@ -72,7 +74,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	public int getWidth() {
 	    return getLinkController().getWidth(getConnector());
 	}
-	
+
 	public void setWidth(final int width) {
 		getLinkController().setWidth(getConnector(), Optional.of(width));
 	}
@@ -80,7 +82,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	public int[] getDashArray() {
 	    return getLinkController().getDashArray(getConnector());
 	}
-	
+
 	public void setDashArray(final int[] dashArray) {
 		getLinkController().setConnectorDashArray(getConnector(), Optional.of(dashArray != null ? dashArray : new int[] {}));
 	}
@@ -107,7 +109,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     private MLinkController getLinkController() {
-		return (MLinkController) LinkController.getController();
+		return (MLinkController) LinkController.getController(MModeController.getMModeController());
 	}
 
 	public String getMiddleLabel() {
@@ -191,7 +193,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public List<Integer> getStartInclination() {
-        Point startInclination = getConnector().getStartInclination();
+        Point startInclination = getLinkController().getStartInclination(getConnector());
         return startInclination != null ? pointToList(startInclination) : null;
     }
 
@@ -202,10 +204,10 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
     }
 
     public List<Integer> getEndInclination() {
-        Point endInclination = getConnector().getEndInclination();
+        Point endInclination = getLinkController().getEndInclination(getConnector());
         return endInclination != null ? pointToList(endInclination) : null;
     }
-    
+
     private Point listToPoint(List<Integer> point) {
         return new Point(point.get(0), point.get(1));
     }

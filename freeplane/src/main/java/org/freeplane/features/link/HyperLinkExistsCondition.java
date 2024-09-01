@@ -32,7 +32,7 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_exists";
 
 	public HyperLinkExistsCondition() {
-		super(null, false, false, false);
+		super(null, false, false, false, false);
 	}
 
 	@Override
@@ -55,6 +55,6 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	@Override
     protected void fillXML(XMLElement element) {
     }
-	
-	
+
+
 }

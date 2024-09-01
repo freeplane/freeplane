@@ -91,7 +91,8 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		}
 		this.rawText = title;
 		this.key = key;
-		setIcon(icon);
+		if(icon != null)
+		    setIcon(icon);
 	}
 
 	@Override

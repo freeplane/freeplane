@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
@@ -80,6 +81,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.api.LengthUnit;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
@@ -278,7 +280,28 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     public void addNotify() {
 	    updateComponentFontAndColors(this);
 	    super.addNotify();
+	    adjustColumnWidthsIfItTableFitsContent();
+
 	}
+
+    private void adjustColumnWidthsIfItTableFitsContent() {
+        final NodeView nodeView = getNodeViewAncestor();
+	    if(nodeView == null)
+	        return;
+	    final MapView mapView = nodeView.getMap();
+	    final boolean attributeTableWidthFitsContent = attributeViewFitsContent(mapView);
+	    if(! attributeTableWidthFitsContent)
+	        return;
+	    adjustColumnWidths();
+    }
+
+    void adjustColumnWidths() {
+        setOptimalColumnWidths(false);
+    }
+
+    private boolean attributeViewFitsContent(final MapView mapView) {
+        return MapStyleModel.getExtension(mapView.getMap()).getBooleanProperty(AttributeController.ATTRIBUTE_TABLE_WIDTH_FITS_CONTENT_PROPERTY);
+    }
 
     @Override
 	protected JTableHeader createDefaultTableHeader() {
@@ -343,12 +366,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
 				if(x < xmax){
+				    ModeController modeController = getModeController();
 				    if(me.isShiftDown())
-				        Controller.getCurrentModeController().getMapController().forceViewChange(() ->
-				        LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link)
+				        modeController.getMapController().forceViewChange(() ->
+				        LinkController.getController(modeController).loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link)
 				                );
 				    else
-				        LinkController.getController().loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
+				        LinkController.getController(modeController).loadURL(attributeView.getNode(), new ActionEvent(me.getSource(), me.getID(), null), link);
 				    return false;
 				}
              }
@@ -378,8 +402,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Hyperlink toHyperlink(final Object value) {
 		NodeModel node = attributeView.getNode();
-		return TextController.getController().toLink(value, node, NodeAttributeTableModel.getModel(node));
+		return getModeController().getExtension(TextController.class)
+		        .toLink(value, node, NodeAttributeTableModel.getModel(node));
 	}
+
+    ModeController getModeController() {
+        return attributeView.getMapView().getModeController();
+    }
 
 	private void startEditing(EventObject e, final JComboBox comboBox) {
 		final ComboBoxEditor editor = comboBox.getEditor();
@@ -408,7 +437,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	Icon getLinkIcon(final Hyperlink link) {
 		NodeModel nodeModel = ((AttributeTableModel)getModel()).getNode();
-	    final Icon linkIcon =  LinkController.getController().getLinkIcon(link, nodeModel);
+	    final Icon linkIcon =  getAttributeView().getMapView().getModeController().getExtension(LinkController.class)
+	            .getLinkIcon(link, nodeModel);
 	    return linkIcon;
     }
 
@@ -465,7 +495,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			if(editBase == null){
 				return;
 			}
-			final JFrame frame = (JFrame) JOptionPane.getFrameForComponent(AttributeTable.this);
+			final Frame frame = JOptionPane.getFrameForComponent(AttributeTable.this);
 			editBase.show(frame);
 		}
 
@@ -497,7 +527,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final String valueForEdit = getValueForEdit(row, col);
 		if(col == 1){
-			final MTextController textController = (MTextController) TextController.getController();
+			final MTextController textController = (MTextController) TextController.getController(getModeController());
 			textController.getEventQueue().setFirstEvent((e instanceof KeyEvent) ? ((KeyEvent) e) : null);
 			final AttributeTableModel model = (AttributeTableModel) getModel();
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
@@ -547,7 +577,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			    }
 
 			};
-			comboBox.setRenderer(new TypedListCellRenderer());
+			TypedListCellRenderer editorValueRenderer = new TypedListCellRenderer();
+			editorValueRenderer.setCanRenderHeader(false);
+            comboBox.setRenderer(editorValueRenderer);
 			Component editorComponent = comboBox.getEditor().getEditorComponent();
 			if(editorComponent instanceof JTextField) {
 			    TextUI textFieldUI = new BasicTextFieldUI();
@@ -591,7 +623,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
 			final NodeStyleController nsc = NodeStyleController.getController(modeController);
-			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getModel(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
+			dimension.width = Math.min(map.getZoomed(nsc.getMaxWidth(nodeView.getNode(), nodeView.getStyleOption()).toBaseUnits()), dimension.width);
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{
@@ -706,6 +738,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		editorComponent.setOpaque(true);
 		final Font font = editorComponent.getFont();
 		editorComponent.setFont(font.deriveFont(font.getSize2D() * getZoom()));
+		final NodeView nodeView = getNodeViewAncestor();
+		if(nodeView != null)
+			editorComponent.setComponentOrientation(nodeView.getMainView().getComponentOrientation());
+		else {
+			final TextWritingDirection textDirection = NodeStyleController
+					.getController(Controller.getCurrentModeController())
+					.getTextWritingDirection(node, StyleOption.FOR_UNSELECTED_NODE);
+			editorComponent.setComponentOrientation(textDirection.componentOrientation);
+		}
 		return super.prepareEditor(tce, row, col);
 	}
 
@@ -738,7 +779,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public JToolTip createToolTip() {
-		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), "text/html");
+		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), "text/html", true);
 
 		final URL url = attributeView.getNode().getMap().getURL();
 		if (url != null) {
@@ -836,7 +877,11 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	 *
 	 */
 	public void setOptimalColumnWidths() {
-		Component comp = null;
+	    setOptimalColumnWidths(true);
+	}
+
+    private void setOptimalColumnWidths(boolean updateModel) {
+        Component comp = null;
 		int minimumCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
 		int rowCount = getRowCount();
 		if(rowCount > 0) {
@@ -849,10 +894,13 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH + 1;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
-				getAttributeTableModel().setColumnWidth(col, LengthUnit.pixelsInPt(maxCellWidth));
+				if(updateModel)
+				    getAttributeTableModel().setColumnWidth(col, LengthUnit.pixelsInPt(maxCellWidth));
+				else
+				    getColumnModel().getColumn(col).setPreferredWidth(maxCellWidth);
 			}
 		}
-	}
+    }
 
 	@Override
 	public void tableChanged(final TableModelEvent e) {
@@ -892,6 +940,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 						changeSelection(getRowCount() - 1 , getSelectedColumn(), false, false);
 					}
 			}
+		adjustColumnWidthsIfItTableFitsContent();
 		getParent().getParent().invalidate();
 	}
 
@@ -899,7 +948,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		updateComponentFontAndColors(this);
 		updateGridColor();
 		updateRowHeights();
-		updateColumnWidths();
+		if(! attributeViewFitsContent(attributeView.getMapView()))
+		    updateColumnWidths();
 	}
 
 	private void updateGridColor() {
@@ -907,7 +957,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(! SwingUtilities.isDescendingFrom(this, nodeView))
 			return;
 		final MapView mapView = nodeView.getMap();
-        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final EdgeModel edge = EdgeModel.getModel(attributeStyleNode);
         if(edge != null){
@@ -940,7 +990,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateColumnWidths() {
+	void updateColumnWidths() {
 		final float zoom = getZoom();
 		for (int i = 0; i < 2; i++) {
 			final int width = (int) (getAttributeTableModel().getColumnWidth(i).toBaseUnitsRounded() * zoom);
@@ -953,7 +1003,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
-        final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
+        final MapStyleModel model = MapStyleModel.getExtension(mapView.getMap());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final Font font = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
         c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));
@@ -1008,9 +1058,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				TableCellEditor editor = getCellEditor();
 				if (editor != null) {
 					final Object value = editor.getCellEditorValue();
-					if (value != null && ! value.equals(getValueForEdit(editingRow, editingColumn))) {
+					if (value != null && ! value.equals(getValueForEdit(editingRow, editingColumn))
+					        && ! Controller.getCurrentModeController().isEditingLocked()) {
 						final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
-				        final MTextController textController = (MTextController) TextController.getController();
+				        final MTextController textController = (MTextController) TextController.getController(getModeController());
 				        final Object object = textController.guessObject(value, pattern);
 						final Object newValue = enforceFormattedObjectForIdentityPattern(object, pattern);
 						setValueAt(newValue, editingRow, editingColumn);

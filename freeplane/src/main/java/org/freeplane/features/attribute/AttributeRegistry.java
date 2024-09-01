@@ -37,6 +37,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -52,8 +53,16 @@ public class AttributeRegistry implements IExtension {
 			registry = new AttributeRegistry(map, attributeController);
 			map.addExtension(AttributeRegistry.class, registry);
 			final NodeModel rootNode = map.getRootNode();
-			if(rootNode != null)
-				registry.registryAttributes(Controller.getCurrentModeController().getMapController(), rootNode);
+			if(rootNode != null) {
+                final MapController mapController = Controller.getCurrentModeController().getMapController();
+                registry.registryAttributes(mapController, rootNode);
+                final MapStyleModel mapStyleModel = rootNode.getExtension(MapStyleModel.class);
+                if(mapStyleModel != null) {
+                    final MapModel styleMap = mapStyleModel.getStyleMap();
+                    styleMap.addExtension(registry);
+                    registry.registryAttributes(mapController, styleMap.getRootNode());
+                }
+            }
 		}
 		return registry;
 	}

@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
@@ -46,6 +47,8 @@ import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.MapView;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
+    private static final String EYE_ICON_KEY = "eye_icon";
+    private static final Icon EYE_ICON = ResourceController.getResourceController().getIcon(EYE_ICON_KEY);
 	public AttributeTableCellRenderer() {
 		super();
 	}
@@ -91,7 +94,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		if (column == 1 && value != null) {
 			try {
 				// evaluate values only
-				final TextController textController = TextController.getController();
+				final TextController textController = TextController.getController(attributeTable.getModeController());
 				Object transformedObject = textController.getTransformedObject(attributeTableModel.getNode(), attributeTableModel.getNodeAttributeModel(), value);
 				text = transformedObject.toString();
 				if (color == null && transformedObject instanceof HighlightedTransformedObject && TextController.isMarkTransformedTextSet()) {
@@ -109,6 +112,9 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			else{
 				icon = null;
 			}
+		}
+		else if(column == 0 && isAttributeManaged(attributeTable, row)) {
+		    icon = EYE_ICON;
 		}
 		else{
 			icon = null;
@@ -150,7 +156,15 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		return rendererComponent;
 	}
 
-	private boolean isAttributeHighlighted(AttributeTable attributeTable, int row) {
+	private boolean isAttributeManaged(AttributeTable attributeTable, int row) {
+	    if(row < 0)
+	        return false;
+	    NodeAttributeTableModel attributes = attributeTable.getAttributeTableModel().getNodeAttributeModel();
+	    return row < attributes.getRowCount() && attributes.getAttribute(row).isManaged();
+
+    }
+
+    private boolean isAttributeHighlighted(AttributeTable attributeTable, int row) {
 		NodeAttributeTableModel attributes = attributeTable.getAttributeTableModel().getNodeAttributeModel();
 		if(attributes.getRowCount() <= row)
 			return false;

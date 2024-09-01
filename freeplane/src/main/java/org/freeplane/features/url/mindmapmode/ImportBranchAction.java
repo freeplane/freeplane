@@ -40,7 +40,7 @@ import org.freeplane.features.url.UrlManager;
 
 class ImportBranchAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -66,7 +66,9 @@ class ImportBranchAction extends AFreeplaneAction {
 			IExtension ownVersion = map.removeExtension(MapVersionInterpreter.class);
 			try {
 				final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, chooser.getSelectedFile());
-				PersistentNodeHook.removeMapExtensions(node);
+		          if(node ==map.getRootNode())
+		                return;
+		          PersistentNodeHook.removeMapExtensions(node);
 				node.setSide(MapController.suggestNewChildSide(parent, Side.DEFAULT));
 				((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, parent);
 			}

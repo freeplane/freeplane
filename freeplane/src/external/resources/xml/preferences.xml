@@ -8,6 +8,7 @@
 			</separator>
 			<separator name="language">
 				<languages name="language" />
+				<boolean name="useSystemLocale" />
 			</separator>
 			<separator name="files">
 				<number name="last_opened_list_length" min="1" max="50" />
@@ -140,6 +141,7 @@
 			<separator name="clones">
 				<boolean name="markClones"/>
 				<boolean name="markSelectedClones"/>
+				<boolean name="preferBorderColorForStateSymbolBackground"/>
 			</separator>
 			<separator name="edit_long_node_window">
 				<boolean name="el__buttons_above" />
@@ -175,9 +177,13 @@
 					<choice value="true" text="OptionPanel.show_connectors.true" />
 					<choice value="false" text="OptionPanel.show_connectors.false" />
 					<choice value="for_selection" text="OptionPanel.show_connectors.for_selection" />
+					<choice value="only_arrows_for_selection" text="OptionPanel.show_connectors.only_arrows_for_selection" />
 					<choice value="never" text="OptionPanel.show_connectors.never" />
 				</combo>
 				<boolean name="paint_connectors_behind" />
+			</separator>
+			<separator name="tags" text="tags">
+				<string name="category_separator" />
 			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />
@@ -203,8 +209,10 @@
 				<boolean name="openLinksOnPlainClicks"/>
 				<length name="grid_size" defaultUnit = "px" min="0" max = "1000" step = "0.01"/>
 				<number name="scrolling_speed" min="1" max="30" />
+				<number name="map_view_zoom_step" min="1" max="100" />
 				<boolean name="zoomAroundSelectedNode"/>
 				<boolean name="keepSelectedNodeVisible"/>
+				<boolean name="scrollOnSelect"/>
 				<boolean name="scrollOnUnfold"/>
 				<boolean name="goto_note_end_on_edit" />
 				<combo name="key_type_action">
@@ -213,13 +221,18 @@
 					<choice value="ADD_SIBLING" />
 					<choice value="ADD_CHILD" />
 				</combo>
+				<boolean name="filtersCopiedNodes"/>
+				<boolean name="filtersCopiedText"/>
 				<boolean name="copyFormatToNewSibling"/>
 				<boolean name="copyFormatToNewChild"/>
 				<boolean name="copyFormatToNewNodeIncludesIcons"/>
 				<boolean name="iconActionRemovesIconIfExists" />
 				<boolean name="shouldCenterSmallMaps"/>
 				<boolean name="pasteImagesFromFiles"/>
+				<boolean name="findEmailsInText"/>
 				<boolean name="enforceModalEditorDialogs" />
+				<boolean name="mouseDrivenNodeShiftsAreDisabled"/>
+				<boolean name="automaticSideDistribution"/>
 			</separator>
 			<separator name="reminderOptions">
 				<maybe_boolean name="reminder.showPastRemindersOnStart" />

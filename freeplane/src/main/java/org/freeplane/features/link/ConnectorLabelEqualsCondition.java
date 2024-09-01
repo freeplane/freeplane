@@ -20,6 +20,7 @@
 package org.freeplane.features.link;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ConditionFactory;
 
 /**
@@ -31,7 +32,7 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 
 	public ConnectorLabelEqualsCondition(final String text, final boolean matchCase,
 			final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(text, matchCase, matchApproximately, ignoreDiacritics);
+		super(text, matchCase, matchApproximately, false, ignoreDiacritics);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 		if (middleLabel == null) {
 			return false;
 		}
-		return getStringMatchingStrategy().matches(normalizedValue(), normalize(middleLabel), false);
+		return getStringMatchingStrategy().matches(normalizedValue(), normalize(middleLabel), Type.ALL);
 	}
 
 	@Override

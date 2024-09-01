@@ -40,7 +40,7 @@ public class ViewerLayoutManager implements LayoutManager {
 	/**
 	 * @param externalResource TODO
 	 * @param originalSize TODO
-	 * 
+	 *
 	 */
 	public ViewerLayoutManager(final float zoom, ExternalResource externalResource, Dimension originalSize) {
 		super();
@@ -69,9 +69,9 @@ public class ViewerLayoutManager implements LayoutManager {
 	}
 
 	public Dimension calculatePreferredSize() {
-		int width = (int) (Math.ceil(originalSize.width * externalResource.getZoom() * zoom));
-		int height = (int) (Math.ceil(originalSize.height * externalResource.getZoom() * zoom));
-		final Dimension preferredSize = new Dimension(width, height);
+		int width = Math.round(originalSize.width * externalResource.getZoom() * zoom);
+		int height = Math.round(originalSize.height * externalResource.getZoom() * zoom);
+		final Dimension preferredSize = new Dimension(Math.max(1, width), Math.max(1,height));
 		return preferredSize;
 	}
 

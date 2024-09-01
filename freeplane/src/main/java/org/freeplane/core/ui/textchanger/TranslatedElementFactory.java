@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
@@ -41,14 +43,32 @@ public class TranslatedElementFactory {
 		return component;
 	}
 
-	public static JCheckBox createCheckBox(String labelKey) {
-		final String text = TextUtils.getRawText(labelKey);
-		final JCheckBox component = new JCheckBox();
-		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
-		TranslatedElement.TEXT.setKey(component, labelKey);
-		createTooltip(component, labelKey + ".tooltip");
-		return component;
-	}
+    public static JCheckBox createCheckBox(String labelKey) {
+        final String text = TextUtils.getRawText(labelKey);
+        final JCheckBox component = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+        TranslatedElement.TEXT.setKey(component, labelKey);
+        createTooltip(component, labelKey + ".tooltip");
+        return component;
+    }
+
+    public static JMenu createMenu(String labelKey) {
+        final String text = TextUtils.getRawText(labelKey);
+        final JMenu component = new JMenu();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+        TranslatedElement.TEXT.setKey(component, labelKey);
+        createTooltip(component, labelKey + ".tooltip");
+        return component;
+    }
+
+    public static JMenuItem createMenuItem(String labelKey) {
+        final String text = TextUtils.getRawText(labelKey);
+        final JMenuItem component = new JMenuItem();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+        TranslatedElement.TEXT.setKey(component, labelKey);
+        createTooltip(component, labelKey + ".tooltip");
+        return component;
+    }
 
 	public static JCheckBox createPropertyCheckbox(String propertyName, String labelKey) {
 		JCheckBox component = createCheckBox(labelKey);
@@ -61,7 +81,7 @@ public class TranslatedElementFactory {
         });
         return component;
 	}
-	
+
 	public static void createTitledBorder(JComponent component, String labelKey) {
 		final String text = TextUtils.getText(labelKey);
 		component.setBorder(BorderFactory.createTitledBorder(text));
@@ -102,7 +122,7 @@ public class TranslatedElementFactory {
 		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
 
-	public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
+    public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
 		JToggleButton button = createToggleButton(labelKey);
 		return addIcon(button, iconKey);
 	}

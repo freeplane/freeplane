@@ -27,12 +27,25 @@ import org.freeplane.features.map.NodeModel;
 
 public class SelectedViewSnapshotCondition extends ASelectableCondition {
 	private static final String NAME = "selected_view_snapshot";
-	private static String description;
+	private static String defaultDescription;
+	private final String description;
 
 	HashSet<NodeModel> selectedNodes;
 
-	public SelectedViewSnapshotCondition(Collection<NodeModel> selectedNodes) {
+    private static String defaultDescription() {
+        if (SelectedViewSnapshotCondition.defaultDescription == null) {
+            SelectedViewSnapshotCondition.defaultDescription = TextUtils.getText("filter_selected_node_view_snapshot");
+        }
+        return SelectedViewSnapshotCondition.defaultDescription;
+    }
+
+    public SelectedViewSnapshotCondition(Collection<? extends NodeModel> selectedNodes) {
+        this(selectedNodes, defaultDescription());
+    }
+
+    public SelectedViewSnapshotCondition(Collection<? extends NodeModel> selectedNodes, String description) {
 		super();
+        this.description = description;
 		this.selectedNodes = new HashSet<NodeModel>();
 		this.selectedNodes.addAll(selectedNodes);
 	}
@@ -43,17 +56,15 @@ public class SelectedViewSnapshotCondition extends ASelectableCondition {
 
 	@Override
     protected String createDescription() {
-		if (SelectedViewSnapshotCondition.description == null) {
-			SelectedViewSnapshotCondition.description = TextUtils.getText("filter_selected_node_view_snapshot");
-		}
-		return SelectedViewSnapshotCondition.description;
+		return description;
     }
+
 
 	@Override
     protected String getName() {
 	    return NAME;
    }
-    
+
     @Override
     public boolean canBePersisted() {
         return false;

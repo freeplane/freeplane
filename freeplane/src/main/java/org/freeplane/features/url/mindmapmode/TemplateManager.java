@@ -70,7 +70,11 @@ public class TemplateManager {
         }
         return new File(defaultUserTemplateDir, filePath);
     }
-    
+
+    /** Change {@code file:} uri to {@code template:} uri, if locationUri points to a file in either user or standard template dir
+     * @param locationUri URI to be template-normalized
+     * @return Normalized {@code template:} uri or the original locationUri if its scheme was different than {@code file:}
+     */
     public URI normalizeTemplateLocation(URI locationUri) {
         if(! "file".equals(locationUri.getScheme()))
             return locationUri;

@@ -214,9 +214,6 @@ public class GroovyScript implements IScript {
     private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
         binding.setVariable("script", script);
-		for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
-			binding.setVariable(entry.getKey(), entry.getValue());
-		}
         return binding;
     }
 
@@ -245,6 +242,7 @@ public class GroovyScript implements IScript {
         }
 		final ImportCustomizer importCustomizer = new ImportCustomizer();
         importCustomizer.addStaticImport(ScriptUtils.class.getName(), "ignoreCycles");
+        importCustomizer.addStaticStars(GroovyStaticImports.class.getName());
 		config.addCompilationCustomizers(importCustomizer);
         return config;
     }

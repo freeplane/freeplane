@@ -22,6 +22,7 @@ package org.freeplane.features.link.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 
@@ -31,12 +32,12 @@ import org.freeplane.features.map.NodeModel;
  */
 public class ExtractLinkFromTextAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public ExtractLinkFromTextAction() {
 		super("ExtractLinkFromTextAction");
@@ -45,7 +46,8 @@ public class ExtractLinkFromTextAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final MLinkController controller = (MLinkController) LinkController.getController();
-		final String link = LinkController.findLink(node.getText());
+		String text = node.getText();
+        final String link = LinkController.findLink(text, HtmlUtils.isHtml(text));
 		if (link != null) {
 			controller.setLink(node, link, LinkController.LINK_ABSOLUTE);
 		}

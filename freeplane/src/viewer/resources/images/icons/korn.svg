@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32.003" width="32.136" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32.136458 32.002563" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" viewBox="0 0 32.136458 32.002563">
 <defs>
 <linearGradient id="a">
 <stop stop-color="#fff" offset="0"/>
@@ -33,7 +33,7 @@
 <path stroke-linejoin="round" d="m461.44 311.29a0.33805 0.40566 0 0 1 -0.33804 0.40566 0.33805 0.40566 0 0 1 -0.33805 -0.40566 0.33805 0.40566 0 0 1 0.33805 -0.40566 0.33805 0.40566 0 0 1 0.33804 0.40566z" transform="matrix(.66 0 0 .76453 118.92 57.397)" stroke="#000" stroke-linecap="round" stroke-width="0.3"/>
 <path stroke-linejoin="round" d="m434.46 306.51v1.7154c-0.24371 0.27387-0.5116 0.52414-0.74355 0.76765 0.0323-0.28167 0.14022-3.6267 0.14022-3.6267l0.60333 1.1436z" fill-rule="evenodd" stroke="#000" stroke-linecap="round" stroke-width=".2131" fill="#212020"/>
 <path stroke-linejoin="round" d="m428.9 307.44c1.1382-0.25462 5.5248-0.98355 5.5248-0.98355l-0.58039-1.112-5.5956 0.93667 0.65116 1.1589z" fill-rule="evenodd" stroke="#000" stroke-linecap="round" stroke-width=".2131" fill="#4d4d4d"/>
-<text font-size="7.8289px" space="preserve" transform="matrix(.91774 .26972 0 1.0896 0 0)" y="172.46812" x="442.96512" font-family="&apos;Bitstream Vera Sans Mono&apos;" fill="#ffffff">
+<text font-size="7.8289px" space="preserve" transform="matrix(.91774 .26972 0 1.0896 0 0)" y="172.46812" x="442.96512" font-family="'Bitstream Vera Sans Mono'" fill="#ffffff">
 <tspan y="172.46812" x="442.96512">MAIL</tspan>
 </text>
 </g>

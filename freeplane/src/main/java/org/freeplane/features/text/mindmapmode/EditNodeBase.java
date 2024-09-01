@@ -23,6 +23,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
@@ -142,8 +144,8 @@ abstract public class EditNodeBase {
 
 		private EditNodeBase base;
 
-		protected EditDialog(final EditNodeBase base, final String title, final RootPaneContainer frame) {
-			dialog = frame instanceof Frame ? new JDialog((Frame)frame, title, /*modal=*/true) : new JDialog((JDialog)frame, title, /*modal=*/true);
+		protected EditDialog(final EditNodeBase base, final String title, final Window window) {
+			dialog = new JDialog(window, title, Dialog.DEFAULT_MODALITY_TYPE);
 			dialog.getContentPane().setLayout(new BorderLayout());
 			dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			final DialogWindowListener dfl = new DialogWindowListener();
@@ -170,7 +172,7 @@ abstract public class EditNodeBase {
 			if (isChanged()) {
 				final int action = JOptionPane.showConfirmDialog(dialog, TextUtils.getText("long_node_changed_submit"), "",
 				    JOptionPane.YES_NO_CANCEL_OPTION);
-				if (action == JOptionPane.CANCEL_OPTION) {
+				if (action == JOptionPane.CANCEL_OPTION || action == JOptionPane.CLOSED_OPTION) {
 					return;
 				}
 				if (action == JOptionPane.YES_OPTION) {
@@ -236,7 +238,7 @@ abstract public class EditNodeBase {
 		}
 		final ActionMap actionMap = ((JTextComponent)component).getActionMap();
 		final Action copyAction = actionMap.get(DefaultEditorKit.copyAction);
-		addAction(menu, copyAction, "CopyAction.text");
+		addAction(menu, copyAction, "menu_copy");
 		final Action cutAction = actionMap.get(DefaultEditorKit.cutAction);
 		addAction(menu, cutAction, "CutAction.text");
 		final Action pasteAction = actionMap.get(DefaultEditorKit.pasteAction);
@@ -350,7 +352,7 @@ abstract public class EditNodeBase {
 		textFieldListener = listener;
 	}
 
-	abstract public void show(RootPaneContainer frame);
+	abstract public void show(Window window);
 	public void setBackground(Color background) {
 	    this.background = background;
     }

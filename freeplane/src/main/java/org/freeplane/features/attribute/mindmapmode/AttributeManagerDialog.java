@@ -253,7 +253,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final MapModel map = Controller.getCurrentController().getMap();
 		modeController.delayedCommit(map);
 		assert(AttributeRegistry.getRegistry(map) == model);
-		mapController.setSaved(map, false);
+		mapController.mapSaved(map, false);
 	}
 
 	private void resetChanges() {

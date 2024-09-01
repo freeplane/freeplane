@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2000-2023 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license. -->
+<svg version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <path d="m8.1058 4.3461 0.1476 0.15387h4.7466c0.8284 0 1.5 0.67157 1.5 1.5v6.1333c0 0.8196-0.568 1.3667-1.1333 1.3667h-10.733c-0.56529 0-1.1333-0.5471-1.1333-1.3667v-8.2666c0-0.8196 0.56804-1.3667 1.1333-1.3667h3.4884c0.13622 0 0.26654 0.05557 0.36083 0.15387z" fill="#ebecf0" stroke="#333333"/>
+ <g transform="translate(-4.2815 -3.3641)" fill="#bc0009" stroke="#bc0009" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1">
+  <path d="m10.149 10.213c4.1719 4.1719 4.265 4.0788 4.265 4.0788" style="paint-order:fill markers stroke"/>
+  <path d="m14.321 10.119c-4.1719 4.1719-4.0788 4.265-4.0788 4.265" style="paint-order:fill markers stroke"/>
+ </g>
+</svg>

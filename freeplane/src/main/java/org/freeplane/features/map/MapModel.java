@@ -33,6 +33,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -58,17 +59,21 @@ public class MapModel {
 		this.nodeDuplicator = nodeDuplicator;
         extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
-		listeners = new LinkedList<IMapChangeListener>();
-		nodes = new HashMap<String, NodeModel>();
+		listeners = new LinkedList<>();
+		nodes = createNodeByIdMap();
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
+
+    protected Map<String, NodeModel> createNodeByIdMap() {
+        return new HashMap<String, NodeModel>();
+    }
 
 	public MapModel(INodeDuplicator nodeDuplicator) {
 		this(nodeDuplicator, null, null);
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
-		iconRegistry = new IconRegistry(mapController, this);
+		iconRegistry = new IconRegistry(new TagCategories());
 		this.nodeChangeAnnouncer = mapController;
 	}
 
@@ -146,7 +151,12 @@ public class MapModel {
 		return iconRegistry;
 	}
 
-	/**
+
+	public void setIconRegistry(IconRegistry iconRegistry) {
+        this.iconRegistry = iconRegistry;
+    }
+
+    /**
 	 * @param nodeID
 	 * @return
 	 */
@@ -275,11 +285,11 @@ public class MapModel {
 	public void setURL(final URL v) {
 		url = v;
 	}
-	
+
 	public boolean hasExternalFileChanged() {
 	    return false;
 	}
-	
+
 	public void updateLastKnownFileModificationTime() {/**/}
 
 	public void unregistryNodes(final NodeModel node) {
@@ -293,14 +303,8 @@ public class MapModel {
 		}
 	}
 
-
 	public NodeChangeAnnouncer getNodeChangeAnnouncer() {
 		return nodeChangeAnnouncer;
-	}
-
-	public boolean close() {
-		Controller.getCurrentModeController().getMapController().closeWithoutSaving(this);
-		return true;
 	}
 
 	public void beforeViewCreated() {
@@ -317,6 +321,6 @@ public class MapModel {
     public INodeDuplicator getNodeDuplicator() {
         return nodeDuplicator;
     }
-	
-	
+
+
 }

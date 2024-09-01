@@ -31,11 +31,11 @@ class IconReplacer {
 				if(iconWidth > 0 && iconHeight > 0) {
 					int preferredHeight = preferredSize.height;
 					int height = actionComponent.getHeight();
-					int preferredWidth = preferredSize.height;
+					int preferredWidth = preferredSize.width;
 					int width = actionComponent.getWidth();
 					if (height > preferredHeight) {
 						int newIconHeight = Math.min(
-								iconHeight + height - preferredHeight, 
+								iconHeight + height - preferredHeight,
 								(iconWidth + width - preferredWidth) * iconHeight / iconWidth);
 						final Quantity<LengthUnit> iconHeightQuantity = new Quantity<LengthUnit>(
 								newIconHeight, LengthUnit.px);

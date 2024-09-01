@@ -41,7 +41,7 @@ public class SetBooleanMapPropertyAction extends AFreeplaneAction{
 
 	private String propertyName;
 	public SetBooleanMapPropertyAction(String propertyName) {
-	    super("SetBooleanMapPropertyAction." + propertyName, 
+	    super("SetBooleanMapPropertyAction." + propertyName,
 	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;
@@ -49,7 +49,8 @@ public class SetBooleanMapPropertyAction extends AFreeplaneAction{
 	    setTooltip(getTooltipKey());
     }
 
-	public void actionPerformed(ActionEvent e) {
+	@Override
+    public void actionPerformed(ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel node = controller.getSelection().getSelected();
 		final ModeController modeController = controller.getModeController();
@@ -70,7 +71,7 @@ public class SetBooleanMapPropertyAction extends AFreeplaneAction{
 	public String getTooltipKey() {
 		return getTextKey() + ".tooltip";
 	}
-	
+
 	@Override
 	public void setSelected() {
 		try {
@@ -86,8 +87,9 @@ public class SetBooleanMapPropertyAction extends AFreeplaneAction{
 			setSelected(false);
 		}
 	}
-	
-	public void setEnabled() {
+
+	@Override
+    public void setEnabled() {
  		final Controller controller = Controller.getCurrentController();
 		setEnabled(controller.getSelection() != null);
 	}

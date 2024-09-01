@@ -31,7 +31,7 @@ public class MNodeDragListener implements DragGestureListener {
 		final MapView mapView = nodeView.getMap();
 		mapView.select();
 		if(! nodeView.isSelected()){
-			nodeView.getMap().getModeController().getController().getSelection().selectAsTheOnlyOneSelected(nodeView.getModel());
+			nodeView.getMap().getModeController().getController().getSelection().selectAsTheOnlyOneSelected(nodeView.getNode());
 		}
 		Rectangle bounds = new Rectangle(0, 0, mainView.getWidth(), mainView.getHeight());
 		if(!bounds.contains(e.getDragOrigin()))

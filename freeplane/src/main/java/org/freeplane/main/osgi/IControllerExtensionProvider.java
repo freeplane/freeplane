@@ -21,11 +21,12 @@ package org.freeplane.main.osgi;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.CommandLineOptions;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 
 /**
  * @author Dimitry Polivaev
  * Feb 22, 2009
  */
 public interface IControllerExtensionProvider {
-	void installExtension(Controller controller, CommandLineOptions options);
+	void installExtension(Controller controller, CommandLineOptions options, ExtensionInstaller.Context context);
 }

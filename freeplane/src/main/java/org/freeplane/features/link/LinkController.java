@@ -22,6 +22,7 @@ package org.freeplane.features.link;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
@@ -59,6 +60,7 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.Configurable;
@@ -79,7 +81,6 @@ import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
@@ -152,7 +153,7 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		return toHyperlink(object);
 	}
-	
+
 	private static Hyperlink toHyperlink(Object object) {
 		if (object instanceof Hyperlink)
 			return (Hyperlink)object;
@@ -284,7 +285,7 @@ public class LinkController extends SelectionController implements IExtension {
 				for (NodeModel clone : node.allClones()) {
 					if (!clone.equals(node)) {
 						final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
-						NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
+						NodeModel subtreeRootParentNode = clone.getSubtreeRootOrContentClone().getParentNode();
 						gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
 						if (firstAction) {
 							target.addChild(new Entry().setBuilders("separator"));
@@ -373,8 +374,8 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		});
 	}
-	
-	private <T> T getProperty(ConnectorModel connector, 
+
+	private <T> T getProperty(ConnectorModel connector,
 	        Function<ConnectorModel, Optional<T>> connectorFunction,
 	        Supplier<T> defaultValue) {
 	    Optional<T> ownValue = connectorFunction.apply(connector);
@@ -397,12 +398,20 @@ public class LinkController extends SelectionController implements IExtension {
 	    return NodeLinks.getSelfConnector(defaultStyleNode)
 	    .flatMap(connectorFunction)
 	    .orElseGet(defaultValue);
-	    
+
 	}
 
-	public Color getColor(final ConnectorModel connector) {
-		return getProperty(connector, ConnectorModel::getColor, this::getStandardConnectorColor);
-	}
+    public Color getColor(final ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getColor, this::getStandardConnectorColor);
+    }
+
+    public Color getLabelColor(@SuppressWarnings("unused") final ConnectorModel connector) {
+        return null;
+    }
+
+    public int getLabelFontStyle(@SuppressWarnings("unused") final ConnectorModel connector) {
+        return 0;
+    }
 
 	public int[] getDashArray(final ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getDash, this::getStandardDashArray);
@@ -427,7 +436,7 @@ public class LinkController extends SelectionController implements IExtension {
     public String getTargetLabel(ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getTargetLabel, () -> "");
     }
-    
+
    public String getLabelFontFamily(ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getLabelFontFamily, this::getStandardLabelFontFamily);
     }
@@ -451,12 +460,11 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final String adaptedText = link.toString();
 		if (adaptedText.startsWith("#")) {
-			ModeController modeController = Controller.getCurrentModeController();
 			final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
 			final String reference = adaptedText.substring(1);
 			final NodeModel dest = explorer.getNodeAt(node, reference);
 			if (dest != null) {
-				return TextController.getController().getShortPlainText(dest);
+				return TextController.getController(modeController).getShortPlainText(dest);
 			}
 			return TextUtils.format(reference.startsWith("ID") ? "link_not_available_any_more" : "invalid_or_ambiguous_reference", reference);
 		}
@@ -814,14 +822,24 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
-	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
+	private static final Pattern FILE_URL_PATTERN = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
+	private static final Pattern EMAIL_PATTERN = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
     private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
 
-	static public String findLink(final String text) {
-		final Matcher urlMatcher = urlPattern.matcher(text);
+    static public String findLink(final String text, boolean isHtml) {
+        return findLink(text, isHtml, true);
+    }
+
+	static public String findLink(final String text, boolean isHtml, boolean includeEmails) {
+		final Matcher urlMatcher = FILE_URL_PATTERN.matcher(text);
 		if (urlMatcher.find()) {
 			String link = urlMatcher.group();
+			int start = urlMatcher.start();
+			if(isHtml && start > 0) {
+			    char charBeforeLink = text.charAt(start - 1);
+			    if(charBeforeLink == '"' || charBeforeLink == '\'')
+			        link = HtmlUtils.toXMLUnescapedText(link);
+			}
 			try {
 				new URL(link).toURI();
 				return link;
@@ -833,7 +851,9 @@ public class LinkController extends SelectionController implements IExtension {
 				return null;
 			}
 		}
-		final Matcher mailMatcher = mailPattern.matcher(text);
+		if(! includeEmails)
+		    return null;
+		final Matcher mailMatcher = EMAIL_PATTERN.matcher(text);
 		if (mailMatcher.find()) {
 			final String link = "mailto:" + mailMatcher.group();
 			return link;
@@ -897,15 +917,15 @@ public class LinkController extends SelectionController implements IExtension {
 		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
 		return arrows;
 	}
-	
-	public DashVariant getStandardDashVariant() {
+
+	public Dash getStandardDash() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
-		final DashVariant variant = DashVariant.valueOf(standard);
+		final Dash variant = Dash.valueOf(standard);
 		return variant;
 	}
-	
+
 	   public int[] getStandardDashArray() {
-	       return getStandardDashVariant().variant;
+	       return getStandardDash().pattern;
 	   }
 
 
@@ -941,10 +961,10 @@ public class LinkController extends SelectionController implements IExtension {
     private static final String DECORATED_LINK_LOCAL_ICON = "decorated_link_local_icon";
 
 	public static enum LinkType{
-		LOCAL(LINK_LOCAL_ICON, DECORATED_LINK_LOCAL_ICON), 
-		MAIL(MAIL_ICON, DECORATED_MAIL_ICON), 
-		EXECUTABLE(EXECUTABLE_ICON ,DECORATED_EXECUTABLE_ICON), 
-		MENU(MENUITEM_ICON, DECORATED_MENUITEM_ICON), 
+		LOCAL(LINK_LOCAL_ICON, DECORATED_LINK_LOCAL_ICON),
+		MAIL(MAIL_ICON, DECORATED_MAIL_ICON),
+		EXECUTABLE(EXECUTABLE_ICON ,DECORATED_EXECUTABLE_ICON),
+		MENU(MENUITEM_ICON, DECORATED_MENUITEM_ICON),
 		DEFAULT(LINK_ICON, DECORATED_LINK_ICON);
         LinkType(String iconKey, String decoratedIconKey){
                 this.icon =  ResourceController.getResourceController().getIcon(iconKey);
@@ -994,7 +1014,7 @@ public class LinkController extends SelectionController implements IExtension {
 	        return false;
 	    }
         return iconsForLink.stream().map(name -> "links/" + name).anyMatch(iconName::equals);
-	    
+
 	}
 	private void addIconsBasedOnLinkType(Hyperlink link, MultipleImageIcon iconImages, NodeModel node, StyleOption option)
 	{
@@ -1008,7 +1028,7 @@ public class LinkController extends SelectionController implements IExtension {
 	        }
 	        else {
 	            final LinkType linkType = getLinkType(link, node);
-	            if(linkType != null && linkType.decoratedIcon != null) 
+	            if(linkType != null && linkType.decoratedIcon != null)
 	                iconImages.addLinkIcon(linkType.decoratedIcon, node, option);
 	            for(String iconName : iconsForLink) {
 	                MindIcon icon = IconStoreFactory.ICON_STORE.getMindIcon("links/" + iconName);
@@ -1093,4 +1113,11 @@ public class LinkController extends SelectionController implements IExtension {
 			loadHyperlink(uri);
 	}
 
+	public Point getStartInclination(ConnectorModel connector) {
+		return getProperty(connector, c -> Optional.ofNullable(c.getStartInclination()), () -> null);
+	}
+
+	public Point getEndInclination(ConnectorModel connector) {
+		return getProperty(connector, c -> Optional.ofNullable(c.getEndInclination()), () -> null);
+	}
 }

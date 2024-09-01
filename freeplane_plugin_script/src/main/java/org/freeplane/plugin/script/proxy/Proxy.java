@@ -186,6 +186,10 @@ public interface Proxy {
 		void setType(EdgeStyle type);
 	}
 
+	interface BorderRO extends org.freeplane.api.BorderRO{}
+
+	interface Border extends BorderRO, org.freeplane.api.Border{}
+
 	interface ExternalObjectRO extends org.freeplane.api.ExternalObjectRO { }
 
 	interface ExternalObject extends ExternalObjectRO, org.freeplane.api.ExternalObject { }
@@ -209,7 +213,7 @@ public interface Proxy {
 
 	/**
 	 * Deprecated mind map interface name.
-	 *  
+	 *
 	 * @deprecated since 1.7.10, use Proxy.MindMapRO
 	 */
 	@Deprecated
@@ -217,7 +221,7 @@ public interface Proxy {
 
 	/**
 	 * Deprecated mind map interface name.
-	 *  
+	 *
 	 * @deprecated since 1.7.10 use Proxy.MindMap
 	 */
 	@Deprecated
@@ -284,14 +288,14 @@ public interface Proxy {
 	     * @since 1.5.6 */
 	    void setMaxNodeWidth(Quantity<LengthUnit> width);
 	}
-	
+
     interface NodeGeometryRO extends org.freeplane.api.NodeGeometryRO { }
 
     interface NodeGeometry extends NodeGeometryRO, org.freeplane.api.NodeGeometry {}
 
 
     public interface Properties extends org.freeplane.api.Properties { }
-    
+
     interface ReminderRO extends org.freeplane.api.ReminderRO { }
 
     interface Reminder extends ReminderRO, org.freeplane.api.Reminder {}
@@ -303,4 +307,8 @@ public interface Proxy {
 	interface ConditionalStyleRO extends org.freeplane.api.ConditionalStyleRO {}
 
 	interface ConditionalStyle extends ConditionalStyleRO, org.freeplane.api.ConditionalStyle {}
+
+    interface TagsRO extends org.freeplane.api.TagsRO {}
+
+    interface Tags extends TagsRO, org.freeplane.api.Tags {}
 }

@@ -9,15 +9,15 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
 abstract public class EditorHolder implements IExtension, HierarchyListener{
-    private final NodeModel node;
-    private final Window window;
+    protected final NodeModel node;
+    protected final Window window;
     public EditorHolder(NodeModel node, Window window) {
         super();
         this.node = node;
         this.window = window;
         window.addHierarchyListener(this);
     }
-    
+
     @Override
     public void hierarchyChanged(HierarchyEvent e) {
         if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)) {
@@ -27,7 +27,7 @@ abstract public class EditorHolder implements IExtension, HierarchyListener{
             }
         }
     }
-    
+
     public void activate() {
         window.toFront();
         Component mostRecentFocusOwner = window.getMostRecentFocusOwner();

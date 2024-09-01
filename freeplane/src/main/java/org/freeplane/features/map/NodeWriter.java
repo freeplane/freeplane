@@ -21,7 +21,10 @@ package org.freeplane.features.map;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -38,6 +41,7 @@ import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.MapWriter.WriterHint;
 import org.freeplane.features.map.NodeModel.Side;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -46,7 +50,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	final private MapController mapController;
 	final private boolean shouldWriteChildren;
 	private final boolean writeFolded;
-	final private boolean writeInvisible;
+	final private CopiedNodeSet copiedNodeSet;
 	private XMLElement xmlNode;
 	final private String nodeTag;
 
@@ -57,17 +61,17 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		return Mode.EXPORT.equals(mode);
 	}
 
-	private final Map<SharedNodeData, NodeModel> alreadyWrittenSharedContent;
+	private final Map<SharedNodeData, List<NodeModel>> alreadyWrittenSharedContent;
 	private final LinkBuilder linkBuilder;
 
 	public NodeWriter(final MapController mapController, LinkBuilder linkBuilder, final String nodeTag, final boolean writeChildren,
-	                  final boolean writeInvisible) {
+	                  final CopiedNodeSet copiedNodeSet) {
 		this.linkBuilder = linkBuilder;
-		alreadyWrittenSharedContent = new HashMap<SharedNodeData, NodeModel>();
+		alreadyWrittenSharedContent = new HashMap<>();
 		this.mapController = mapController;
 		this.shouldWriteChildren = writeChildren;
 		this.mayWriteChildren = true;
-		this.writeInvisible = writeInvisible;
+		this.copiedNodeSet = copiedNodeSet;
 		this.nodeTag = nodeTag;
 		final String saveFolding = ResourceController.getResourceController().getProperty(
 		    NodeBuilder.RESOURCES_SAVE_FOLDING);
@@ -77,7 +81,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
 		for (final NodeModel child: node.getChildren()) {
-		if (writeInvisible || child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
+		if (copiedNodeSet == CopiedNodeSet.ALL_NODES || child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writer.setHint(WriterHint.ALREADY_WRITTEN, isAlreadyWritten(child));
 				writer.addElement(child, nodeTag);
 			}
@@ -116,7 +120,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
         	}
         }
 		if (mayWriteChildren && (writeFolded || !mode(writer).equals(Mode.FILE))) {
-			if(mapController.isFolded(node) && ! isNodeAlreadyWritten){
+			if(mapController.isFolded(node)){
 				writer.addAttribute("FOLDED", "true");
 			}
 			else if(node.isRoot() && ! Mode.STYLE.equals(mode)){
@@ -165,12 +169,15 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private void writeReferenceNodeId(ITreeWriter writer, NodeModel node) {
-	    final NodeModel referenceNode = alreadyWrittenSharedContent.get(node.getSharedData());
-	    if(referenceNode != null){
-	    	if(referenceNode.isSubtreeCloneOf(node))
-	    		writer.addAttribute("TREE_ID", referenceNode.createID());
-	    	else
-	    		writer.addAttribute("CONTENT_ID", referenceNode.createID());
+	    SharedNodeData sharedData = node.getSharedData();
+        final List<NodeModel> referenceNodes = alreadyWrittenSharedContent.get(sharedData);
+	    if(referenceNodes != null){
+	        Optional<NodeModel> referenceTreeNode = referenceNodes.stream().filter(savedNode -> savedNode.isSubtreeCloneOf(node)).findAny();
+	        if(referenceTreeNode.isPresent())
+                writer.addAttribute("TREE_ID", referenceTreeNode.get().createID());
+            else {
+                writer.addAttribute("CONTENT_ID", referenceNodes.get(0).createID());
+            }
 	    }
 
     }
@@ -180,15 +187,14 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
     }
 
 	private void registerWrittenNode(final NodeModel node) {
-	    alreadyWrittenSharedContent.put(node.getSharedData(), node);
+	    alreadyWrittenSharedContent.computeIfAbsent(node.getSharedData(), x -> new LinkedList<>()).add(node);
     }
 
 	public void writeContent(final ITreeWriter writer, final Object content, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) content;
 		writer.addExtensionNodes(node, node.getIndividualExtensionValues());
 		final boolean isNodeContentWrittenFirstTime = ! isAlreadyWritten(node);
-		if(isNodeContentWrittenFirstTime)
-			registerWrittenNode(node);
+		registerWrittenNode(node);
 		linkBuilder.writeContent(writer, node);
 		if(isNodeContentWrittenFirstTime || Mode.EXPORT.equals(mode(writer))){
 			writer.addExtensionNodes(node, node.getSharedExtensions().values());

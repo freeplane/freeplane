@@ -35,7 +35,8 @@ class StyleMapModel extends MapModel {
 
     StyleMapModel(INodeDuplicator nodeDuplicator, IconRegistry iconRegistry, AttributeRegistry attributeRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
         super(nodeDuplicator, iconRegistry, nodeChangeAnnouncer);
-        addExtension(attributeRegistry);
+        if(attributeRegistry != null)
+            addExtension(attributeRegistry);
     }
 
     @Override

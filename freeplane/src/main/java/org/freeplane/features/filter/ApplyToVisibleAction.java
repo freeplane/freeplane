@@ -35,18 +35,18 @@ import org.freeplane.core.ui.SelectableAction;
 class ApplyToVisibleAction extends AFreeplaneAction {
 	final static String NAME = "ApplyToVisibleAction";
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * 
+	 *
 	 */
 	private final FilterController filterController;
 
 	ApplyToVisibleAction(final FilterController filterController) {
-		super("ApplyToVisibleAction");
+		super(NAME);
 		this.filterController = filterController;
-		filterController.getApplyToVisibleNodeOnly().addChangeListener(new ChangeListener() {
+		filterController.getApplyToVisibleElementsOnly().addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent e) {
 				setSelected(isModelSelected());
 			}
@@ -55,10 +55,10 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.getApplyToVisibleNodeOnly().setSelected(!isModelSelected());
+		filterController.getApplyToVisibleElementsOnly().setSelected(!isModelSelected());
 	}
 
 	private boolean isModelSelected() {
-		return filterController.getApplyToVisibleNodeOnly().isSelected();
+		return filterController.getApplyToVisibleElementsOnly().isSelected();
 	}
 }

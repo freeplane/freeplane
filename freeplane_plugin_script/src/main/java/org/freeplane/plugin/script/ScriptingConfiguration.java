@@ -43,6 +43,7 @@ import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnProperties.AddOnType;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
+import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 /**
  * scans for scripts to be registered via {@link ScriptingRegistration}.
@@ -174,6 +175,7 @@ class ScriptingConfiguration {
     	properties.put("htmlUtils", HtmlUtils.getInstance());
     	properties.put("textUtils", new TextUtils());
     	properties.put("menuUtils", new MenuUtils());
+    	properties.put("scriptUtils", new ScriptUtils());
     	properties.put("config", new FreeplaneScriptBaseClass.ConfigProperties());
         return properties;
     }

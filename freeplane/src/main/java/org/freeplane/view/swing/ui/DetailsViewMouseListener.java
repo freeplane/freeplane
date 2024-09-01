@@ -57,7 +57,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
 		if (nodeView == null)
 			return;
-		final NodeModel model = nodeView.getModel();
+		final NodeModel model = nodeView.getNode();
     	TextController controller = TextController.getController();
 		if (eventFromHideDisplayArea(e)){
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
@@ -65,7 +65,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     		controller.setDetailsHidden(model, ! DetailModel.getDetail(model).isHidden());
 		}
 		else {
-			nodeSelector.extendSelection(e);
+			nodeSelector.extendSelection(e, false);
 			if (canEdit(controller) && isEditingStartEvent(e)) {
 				final boolean editLong = e.isAltDown();
 				if(! editLong)

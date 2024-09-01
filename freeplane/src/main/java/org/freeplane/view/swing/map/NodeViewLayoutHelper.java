@@ -44,8 +44,8 @@ class NodeViewLayoutHelper {
 		return view.getMap();
 	}
 
-	NodeModel getModel() {
-		return view.getModel();
+	NodeModel getNode() {
+		return view.getNode();
 	}
 
     int getMinimalDistanceBetweenChildren() {
@@ -105,11 +105,6 @@ class NodeViewLayoutHelper {
 
 	boolean isContentVisible() {
 		return view.isContentVisible();
-
-	}
-
-	boolean isFolded() {
-		return view.isFolded();
 
 	}
 
@@ -217,7 +212,7 @@ class NodeViewLayoutHelper {
 	}
 
 	String getText() {
-	    return view.getModel().getText();
+	    return view.getNode().getText();
 	}
 
 	boolean usesHorizontallayout(Component component) {

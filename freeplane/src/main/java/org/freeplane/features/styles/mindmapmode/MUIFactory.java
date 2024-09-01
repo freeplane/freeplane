@@ -153,7 +153,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	private void changeToolbar(final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
-		final MNodeStyleController styleController = (MNodeStyleController) controller.getModeController()
+		final NodeStyleController styleController = controller.getModeController()
 		    .getExtension(NodeStyleController.class);
 		selectFontSize(Integer.toString(styleController.getFontSize(node, StyleOption.FOR_UNSELECTED_NODE)));
 		selectFontName(styleController.getFontFamilyName(node, StyleOption.FOR_UNSELECTED_NODE));

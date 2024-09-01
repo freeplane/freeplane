@@ -31,7 +31,7 @@ abstract class AliasCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String alias;
 	AliasCondition(final String alias, boolean matchCase, boolean matchAproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchAproximately, ignoreDiacritics);
+		super(matchCase, matchAproximately, false, ignoreDiacritics);
 		this.alias = alias;
 	}
 
@@ -45,13 +45,13 @@ abstract class AliasCondition extends StringConditionAdapter {
 	public String getAlias() {
 		return alias;
 	}
-	
+
     @Override
     protected Object conditionValue() {
         return alias;
     }
 
-	
+
 	protected void fillXML(XMLElement element){
 	    super.fillXML(element);
 		element.setAttribute(TEXT, alias);

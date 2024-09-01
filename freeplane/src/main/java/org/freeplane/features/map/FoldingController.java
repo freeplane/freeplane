@@ -86,9 +86,14 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
         @Override
         public void actionPerformed(final ActionEvent e, final NodeModel node) {
-            NodeModel selectionRoot = Controller.getCurrentController().getSelection().getSelectionRoot();
+            IMapSelection selection = Controller.getCurrentController().getSelection();
+            NodeModel selectionRoot = selection.getSelectionRoot();
             Filter filter = FilterController.getFilter(node.getMap());
             new FoldLevelChanger(selectionRoot, filter).unfoldAll(node);
+            if(selection.size() == 1 ) {
+                final MapController mapController = Controller.getCurrentModeController().getMapController();
+                mapController.scrollNodeTreeAfterUnfold(node);
+            }
         }
     }
 
@@ -101,9 +106,15 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
         @Override
         public void actionPerformed(final ActionEvent e, final NodeModel node) {
-            NodeModel selectionRoot = Controller.getCurrentController().getSelection().getSelectionRoot();
+            IMapSelection selection = Controller.getCurrentController().getSelection();
+            NodeModel selectionRoot = selection.getSelectionRoot();
             Filter filter = FilterController.getFilter(node.getMap());
             new FoldLevelChanger(selectionRoot, filter).unfoldOneStage(node);
+            if(selection.size() == 1 ) {
+                final MapController mapController = Controller.getCurrentModeController().getMapController();
+                mapController.scrollNodeTreeAfterUnfold(node);
+            }
+
         }
     }
 

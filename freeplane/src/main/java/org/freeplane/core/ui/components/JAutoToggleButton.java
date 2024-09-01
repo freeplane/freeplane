@@ -33,13 +33,14 @@ import org.freeplane.core.ui.SelectableAction;
 
 public class JAutoToggleButton extends JToggleButton implements PropertyChangeListener, ChangeListener {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoToggleButton(final IFreeplaneAction a) {
 		super(a);
+		setModel(new ActionToggleButtonModel(a));
 		if (a.isSelected()) {
 			setSelected(true);
 		}

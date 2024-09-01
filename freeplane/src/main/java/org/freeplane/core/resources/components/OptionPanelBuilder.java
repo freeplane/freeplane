@@ -444,7 +444,9 @@ public class OptionPanelBuilder {
 	private class MaybeBooleanCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			return createMaybeBooleanProperty(name);
+		    String text = data.getAttribute("text", "OptionPanel." + name);
+		    String tooltip = data.getAttribute("tooltip", text + ".tooltip");
+			return createMaybeBooleanProperty(name, text, tooltip);
 		}
 	}
 
@@ -703,6 +705,19 @@ public class OptionPanelBuilder {
 		};
 	}
 
+    private IPropertyControlCreator createMaybeBooleanProperty(final String name, final String label, final String tooltip) {
+        return new IPropertyControlCreator() {
+            @Override
+            public IPropertyControl createControl() {
+                return new MaybeBooleanProperty(name, label, tooltip);
+            }
+
+            @Override
+            public String getPropertyName() {
+                return name;
+            }
+        };
+    }
 	private IPropertyControlCreator createSeparatorCreator(final String label) {
 		return new IPropertyControlCreator() {
 			@Override

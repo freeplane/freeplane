@@ -61,8 +61,8 @@ public class EdgeLinkView extends AConnectorView {
 			color = edgeView.getColor().darker();
 		}
 		else {
-			color = linkController.getColor(connectorModel);
-			final int alpha = linkController.getOpacity(connectorModel);
+			color = linkController.getColor(viewedConnector);
+			final int alpha = linkController.getOpacity(viewedConnector);
 			color =  ColorUtils.alphaToColor(alpha, color);
 			final int width = linkController.getWidth(model);
 			edgeView.setWidth(width);
@@ -85,35 +85,35 @@ public class EdgeLinkView extends AConnectorView {
 		return edgeView.detectCollision(p);
 	}
 
-	public ConnectorModel getModel() {
-		return connectorModel;
+	public ConnectorModel getConnector() {
+		return viewedConnector;
 	}
 
 	public void increaseBounds(final Rectangle innerBounds) {
-		//edge link does not increase inner bounds 
+		//edge link does not increase inner bounds
 	}
 
 	public void paint(final Graphics graphics) {
 		edgeView.paint((Graphics2D) graphics);
-		if(ConnectorShape.EDGE_LIKE.equals(linkController.getShape(connectorModel))){
+		if(ConnectorShape.EDGE_LIKE.equals(linkController.getShape(viewedConnector))){
 			return;
 		}
-		if (isSourceVisible() && !linkController.getArrows(connectorModel).start.equals(ArrowType.NONE)) {
+		if (isSourceVisible() && !linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE)) {
 			Point p1 = edgeView.getStart();
 			Point p2 = new Point(p1);
 			p2.translate(5, 0);
 			paintArrow(graphics, p2, p1);
 		}
-		if (isTargetVisible() && !linkController.getArrows(connectorModel).end.equals(ArrowType.NONE)) {
+		if (isTargetVisible() && !linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE)) {
 			Point p1 = edgeView.getEnd();
 			Point p2 = new Point(p1);
 			p2.translate(5, 0);
 			paintArrow(graphics, p2, p1);
 		}
-		
+
 	}
 
 	private void paintArrow(final Graphics graphics, Point from, Point to) {
-	    paintArrow(from, to, (Graphics2D)graphics, getZoom() * 10);
+	    paintArrow(from, to, (Graphics2D)graphics, getZoom() * 10, ArrowDirection.INCOMING);
     }
 }

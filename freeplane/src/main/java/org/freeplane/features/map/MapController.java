@@ -18,7 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.features.map;
-
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.io.FileNotFoundException;
@@ -64,6 +63,7 @@ import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
 import org.freeplane.features.map.NodeModel.Side;
 import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -75,14 +75,26 @@ import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.NodeView;
-
 /**
  * @author Dimitry Polivaev
  */
 public class MapController extends SelectionController
 implements IExtension, NodeChangeAnnouncer{
 	public enum Direction {
-		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
+		BACK, BACK_N_FOLD, BACK_VISIBLE, BACK_REMOVE_FILTER,
+		FORWARD, FORWARD_N_FOLD, FORWARD_VISIBLE, FORWARD_REMOVE_FILTER;
+
+	    public boolean isForward() {
+            return ordinal() >= FORWARD.ordinal();
+        }
+
+        public boolean canUnfold() {
+            return this != BACK_VISIBLE && this != Direction.FORWARD_VISIBLE;
+        }
+
+        public boolean removesFilter() {
+            return this == BACK_REMOVE_FILTER || this == Direction.FORWARD_REMOVE_FILTER;
+        }
 	}
 
 	private static boolean hasValidSelection() {
@@ -374,18 +386,33 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void unfoldAndScroll(final NodeModel node, Filter filter) {
-		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node, filter);
-		unfold(node, filter);
-		if (wasFoldedOnCurrentView && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
-				}
-			});
-
-		}
+	    final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node, filter);
+	    unfold(node, filter);
+	    if (wasFoldedOnCurrentView) {
+	        scrollNodeTreeAfterUnfold(node);
+	    }
 	}
+
+
+	void scrollNodeTreeAfterUnfold(final NodeModel node) {
+	    scrollNodeTree(node, "scrollOnUnfold");
+	}
+
+	public void scrollNodeTreeAfterSelect(final NodeModel node) {
+	    scrollNodeTree(node, "scrollOnSelect");
+	}
+
+	private void scrollNodeTree(final NodeModel node, String propertyName) {
+    if (ResourceController.getResourceController().getBooleanProperty(propertyName)) {
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
+    		}
+    	});
+
+    }
+}
 
 	public void setFolded(final NodeModel node, final boolean fold, Filter filter) {
 		if(!fold || node.isRoot())
@@ -411,6 +438,16 @@ implements IExtension, NodeChangeAnnouncer{
     public void toggleFoldedAndScroll(final NodeModel node){
         Filter filter = Controller.getCurrentController().getSelection().getFilter();
         toggleFoldedAndScroll(node, filter);
+    }
+
+
+
+
+    public void toggleFoldedAndScroll(Filter filter, NodeModel selected,
+            List<NodeModel> childNodes) {
+        boolean unfolded = toggleFolded(filter, childNodes);
+        if(unfolded)
+            scrollNodeTreeAfterUnfold(selected);
     }
 
     public void toggleFoldedAndScroll(final NodeModel node, Filter filter){
@@ -504,14 +541,14 @@ implements IExtension, NodeChangeAnnouncer{
 				null, false, false));
     }
 
-	private void fireFoldingChanged(final NodeModel node) {
+	protected void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
 	    	final MapModel map = node.getMap();
-	    	setSaved(map, false);
+	    	mapSaved(map, false);
 	    }
     }
 
-	private boolean isFoldingPersistentAlways() {
+	protected boolean isFoldingPersistentAlways() {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 		return resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
 	    	NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING);
@@ -604,7 +641,8 @@ implements IExtension, NodeChangeAnnouncer{
 		modeController.addAction(new ShowNextChildAction());
 		modeController.addAction(new GotoNodeAction());
 		modeController.addAction(new CloseAction());
-
+        modeController.addAction(new JumpInAction());
+        modeController.addAction(new JumpOutAction());
 	}
 
 	public void displayNode(final NodeModel node) {
@@ -638,7 +676,7 @@ implements IExtension, NodeChangeAnnouncer{
 	public void fireMapChanged(final MapChangeEvent event) {
 		final MapModel map = event.getMap();
 		if (map != null && event.setsDirtyFlag()) {
-			setSaved(map, false);
+			mapSaved(map, false);
 		}
 		sortMapChangeListeners();
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});
@@ -731,13 +769,13 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
 			throws IOException {
-		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
+		getMapWriter().writeMapAsXml(map, fileout, mode, CopiedNodeSet.FILTERED_NODES, forceFormat);
 	}
 
 	public void getFilteredXml(Collection<NodeModel> nodes, final Writer fileout, final Mode mode, final boolean forceFormat)
 			throws IOException {
 		for(NodeModel node :nodes)
-		getMapWriter().writeNodeAsXml(fileout, node, mode, false, true, forceFormat);
+		getMapWriter().writeNodeAsXml(fileout, node, mode, CopiedNodeSet.FILTERED_NODES, true, forceFormat);
 	}
 
 	public MapReader getMapReader() {
@@ -876,7 +914,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void createMapView(final MapModel mapModel) {
 		mapModel.beforeViewCreated();
-		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
+		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, modeController);
 	}
 
 	public MapModel newMap() {
@@ -891,10 +929,6 @@ implements IExtension, NodeChangeAnnouncer{
 	public  INodeDuplicator duplicator() {
         return modeController.getExtension(MapClipboardController.class);
     }
-
-	public NodeModel newNode(final Object userObject, final MapModel map) {
-		return new NodeModel(userObject, map);
-	}
 
 	@Override
 	public void nodeChanged(final NodeModel node) {
@@ -926,7 +960,7 @@ implements IExtension, NodeChangeAnnouncer{
 		final NodeModel node = nodeChangeEvent.getNode();
 		final MapModel map = node.getMap();
 		if(nodeChangeEvent.setsDirtyFlag())
-			setSaved(map, false);
+			mapSaved(map, false);
 		if (nodeChangeEvent.updatesModificationTime() && !map.isUndoActionRunning()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
@@ -1187,21 +1221,20 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
-	public void setSaved(final MapModel mapModel, final boolean saved) {
-		mapModel.setSaved(saved);
-	}
+	public void mapSaved(@SuppressWarnings("unused") final MapModel mapModel, @SuppressWarnings("unused") final boolean saved) {/**/}
 
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {
 		Collections.sort(collection, new NodesDepthComparator());
 	}
 
-	public void toggleFolded(Filter filter, final Collection<NodeModel> collection) {
-		Boolean shouldBeFolded = ! canBeUnfoldedOnCurrentView(filter, collection);
-		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
+	public boolean toggleFolded(Filter filter, final Collection<NodeModel> collection) {
+		boolean shouldBeUnfolded = canBeUnfoldedOnCurrentView(filter, collection);
+        final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 		for (final NodeModel node:nodes) {
-			setFolded(node, shouldBeFolded, filter);
+			setFolded(node, ! shouldBeUnfolded, filter);
 		}
+		return shouldBeUnfolded;
 	}
 
 	private boolean canBeUnfoldedOnCurrentView(Filter filter, Collection<NodeModel> collection) {

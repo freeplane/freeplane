@@ -95,6 +95,6 @@ public interface IMapSelection {
     default MapModel getMap() {
         return getSelected().getMap();
     }
-
-
+    public boolean isFolded(NodeModel node);
+    public boolean isVisible(NodeModel node);
 }

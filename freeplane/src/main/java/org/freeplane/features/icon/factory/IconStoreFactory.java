@@ -55,7 +55,7 @@ import org.freeplane.features.icon.UserIcon;
  *
  */
 public class IconStoreFactory {
-	class EmojiGroupBuilder implements EntryVisitor {
+    class EmojiGroupBuilder implements EntryVisitor {
         @Override
         public void visit(Entry entry) {
             String emoji = (String) entry.getAttribute("emoji");
@@ -91,7 +91,8 @@ public class IconStoreFactory {
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
 	private static final String EMOJI_ENTRIES_RESOURCE = "/images/emoji/xml/emojientries.xml";
-	public static IconStore ICON_STORE = new IconStoreFactory().createIcons();
+	public static final IconStoreFactory INSTANCE = new IconStoreFactory();
+	public static IconStore ICON_STORE = INSTANCE.createIcons();
 
 	private int order = 0;
     private final IconStore iconStore;
@@ -135,9 +136,14 @@ public class IconStoreFactory {
     private void createStateIcons() {
         final String[] stateIconNames = RESOURCE_CONTROLLER.getProperty(STATE_ICON_NAMES_KEY).split(SEPARATOR);
 		for(String name : stateIconNames) {
-		    UIIcon icon = new UIIcon(name, RESOURCE_CONTROLLER.getProperty("stateIcon." + name, name), order++);
-		    iconStore.addUIIcon(icon);
+		    String file = RESOURCE_CONTROLLER.getProperty("stateIcon." + name, name);
+            createStateIcon(name, file);
 		}
+    }
+
+    public void createStateIcon(String name, String file) {
+        UIIcon icon = new UIIcon(name, file, order++);
+        iconStore.addUIIcon(icon);
     }
 
     private void createClassicIcons() {

@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map.link;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.geom.Point2D;
 
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.view.swing.map.MapView;
@@ -32,7 +33,8 @@ import org.freeplane.view.swing.map.NodeView;
  * Apr 29, 2010
  */
 abstract class AConnectorView  implements ILinkView {
-	protected final ConnectorModel connectorModel;
+    enum ArrowDirection {INCOMING, OUTGOING}
+	protected final ConnectorModel viewedConnector;
 	protected final NodeView source;
 	protected final NodeView target;
 
@@ -47,32 +49,63 @@ abstract class AConnectorView  implements ILinkView {
 		return (source == null) ? target.getMap() : source.getMap();
 	}
 
-	/**
-     * @param from
-     *            is the another point indicating the direction of the arrow.
-	 * @param to
-     *            is the start point
-	 * @param d 
-     */
-    protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size) {
-    	int dx, dy;
+	protected void paintArrow(final Point from, final Point to, final Graphics2D g, final double size, ArrowDirection direction) {
+	    if(from.equals(to))
+	        return;
+	    final Polygon p = createArrowShape(from, to, size, direction);
+        if(p == null)
+            return;
+	    g.fillPolygon(p);
+	    g.drawPolygon(p);
+	}
+
+    private Polygon createArrowShape(final Point from, final Point to, final double size, ArrowDirection direction) {
+        Point2D directionPoint = createArrowDirection(from, to, size);
+        if(directionPoint == null)
+            return null;
+        return direction == ArrowDirection.INCOMING ? incomingArrowShape(to, directionPoint) : outgoingArrowShape(to, directionPoint);
+    }
+
+    private Point2D createArrowDirection(final Point from, final Point to, final double size) {
+        int dx, dy;
     	double dxn, dyn;
     	dx = from.x - to.x;
     	dy = from.y - to.y;
     	final int r2 = dx * dx + dy * dy;
     	if(r2 == 0)
-    		return;
+    		return null;
 		final double length = Math.sqrt(r2);
     	dxn = size * dx / length;
     	dyn = size * dy / length;
-    	final double arrowWidth = .5f;
-    	final Polygon p = new Polygon();
-    	p.addPoint((to.x), (to.y));
-    	p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
-    	p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
-    	p.addPoint((to.x), (to.y));
-    	g.fillPolygon(p);
-    	g.drawPolygon(p);
+    	Point2D direction = new Point2D.Double(dxn, dyn);
+        return direction;
+    }
+
+    private Polygon outgoingArrowShape(final Point from, Point2D direction ) {
+        final double arrowWidth = .33d;
+        double dxn = direction.getX();
+        double dyn = direction.getY();
+        final Polygon p = new Polygon();
+        p.addPoint((int) (from.x + dxn), (int) (from.y + dyn));
+        p.addPoint((int) (from.x + arrowWidth * dyn), (int) (from.y - arrowWidth * dxn));
+        p.addPoint((int) (from.x + dxn*0.7), (int) (from.y + dyn*0.7));
+        p.addPoint((int) (from.x - arrowWidth * dyn), (int) (from.y + arrowWidth * dxn));
+        p.addPoint((int) (from.x + dxn), (int) (from.y + dyn));
+        return p;
+    }
+
+    private Polygon incomingArrowShape(final Point to, Point2D direction ) {
+        final double arrowWidth = .5d;
+        double dxn = direction.getX();
+        double dyn = direction.getY();
+
+        final Polygon p = new Polygon();
+        p.addPoint((to.x), (to.y));
+        p.addPoint((int) (to.x + dxn + arrowWidth * dyn), (int) (to.y + dyn - arrowWidth * dxn));
+        p.addPoint((int) (to.x + dxn * 0.8d), (int) (to.y + dyn * 0.8d));
+        p.addPoint((int) (to.x + dxn - arrowWidth * dyn), (int) (to.y + dyn + arrowWidth * dxn));
+        p.addPoint((to.x), (to.y));
+        return p;
     }
 
 	NodeView getSource() {
@@ -97,7 +130,7 @@ abstract class AConnectorView  implements ILinkView {
 
 	public AConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target) {
 		super();
-		this.connectorModel = connectorModel;
+		this.viewedConnector = connectorModel;
 		this.source = source;
 		this.target = target;
 	}

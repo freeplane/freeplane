@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Optional;
 
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.styles.IStyle;
@@ -30,23 +31,26 @@ import org.freeplane.features.styles.IStyle;
 public class ConnectorModel extends NodeLinkModel {
 
     final private ConnectorProperties connectorProperties;
-	
+
 	public ConnectorModel(NodeModel source, String targetID) {
 	    this(source, targetID, new ConnectorProperties());
 	}
 	public ConnectorModel(final NodeModel source, final String targetID,
-			final ConnectorArrows connectorEnds, int[] dash, 
+			final ConnectorArrows connectorEnds, int[] dash,
 			final Color color,final int alpha, final ConnectorShape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
 		this(source, targetID, new ConnectorProperties(connectorEnds, dash, color, alpha, shape, width, labelFontFamily, labelFontSize));
 	}
 
 	private ConnectorModel(final NodeModel source, final String targetID, final ConnectorProperties connectorProperties) {
-		super(source, targetID);
-		assert source != null;
-		this.connectorProperties = connectorProperties;
+	    super(source, targetID);
+	    assert source != null;
+	    this.connectorProperties = connectorProperties;
 	}
 
+	public boolean isVisible(Filter filter) {
+	    return getTarget() != null && (filter == null || filter.isVisible(this));
+	}
 
     public Optional<ConnectorShape> getShape() {
 	    return connectorProperties.getShape();
@@ -102,8 +106,8 @@ public class ConnectorModel extends NodeLinkModel {
     public void setStyle(IStyle style) {
         connectorProperties.setStyle(style);
     }
-    
-    
+
+
 	public Optional<ConnectorArrows> getArrows() {
 		return connectorProperties.getArrows();
 	}

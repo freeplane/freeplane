@@ -29,9 +29,9 @@ _error() {
 
 findjava() {
 	# We try hard to find the proper 'java' command
-	
+
 	JAVA_SOURCE=
-	
+
 	if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]; then
 		JAVA_SOURCE="\$JAVACMD"
 	elif [ -n "${JAVA_BINDIR}" ] && [ -x "${JAVA_BINDIR}/java" ]; then
@@ -59,11 +59,11 @@ findjava() {
 
 	JAVA_VERSION=$(${JAVACMD} -version |& grep -E "[[:alnum:]]+ version" | awk '{print $3}' | tr -d '"')
 	JAVA_MAJOR_VERSION=$(echo $JAVA_VERSION | sed -e 's/^1\.//' | awk -F. '{print $1}')
-	if [ $JAVA_MAJOR_VERSION -lt 8 ] || [ $JAVA_MAJOR_VERSION -gt 17 ] || [ $JAVA_MAJOR_VERSION -eq 10 ]; then
+	if [ $JAVA_MAJOR_VERSION -lt 8 ] || [ $JAVA_MAJOR_VERSION -gt 22 ] || [ $JAVA_MAJOR_VERSION -eq 10 ]; then
 		if [ -z "${FREEPLANE_USE_UNSUPPORTED_JAVA_VERSION}" ]; then
 			_error "Found $JAVACMD in $JAVA_SOURCE."
 			_error "It has version $JAVA_VERSION"
-			_error "Currently, freeplane requires java version 8 or from 11 to 17"
+			_error "Currently, freeplane requires java version 8 or from 11 to 22"
 			_error ""
 			_error "Select a supported java version"
 			_error "by setting FREEPLANE_JAVA_HOME to a valid java location"
@@ -211,7 +211,7 @@ if [ -d "/usr/share/java" ] ; then
 fi
 
 _debug "Calling: "\
-"${JAVACMD}" -Xmx512m\
+"${JAVACMD}" -XX:MaxRAM=20g -XX:MaxRAMPercentage=15.0\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\
@@ -223,7 +223,7 @@ _debug "Calling: "\
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
 
 # now actually launch Freeplane
-"${JAVACMD}" -Xmx512m\
+"${JAVACMD}" -XX:MaxRAM=20g -XX:MaxRAMPercentage=15.0\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
  "-Dorg.freeplane.old_userfpdir=$old_userfpdir"\
  "-Dorg.freeplane.globalresourcedir=${freedir}/resources"\

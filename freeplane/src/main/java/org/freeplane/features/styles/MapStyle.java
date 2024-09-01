@@ -58,6 +58,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -65,6 +67,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
@@ -75,6 +78,7 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.TemplateManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
+import org.freeplane.view.swing.map.TagLocation;
 
 /**
  * @author Dimitry Polivaev
@@ -82,7 +86,14 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
  */
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
-	public static final String ALLOW_COMPACT_LAYOUT = "allow_compact_layout";
+    private static final String CATEGORIES_ATTRIBUTE = "categories";
+    private static final String TAG_CATEGORY_SEPARATOR_ATTRIBUTE = "category_separator";
+
+    private static final String TAGS_ELEMENT = "tags";
+    public static final String ALLOW_COMPACT_LAYOUT_PROPERTY = "allow_compact_layout";
+    public static final String SHOW_TAG_CATEGORIES_PROPERTY = "showTagCategories";
+
+    public static final String SHOW_TAGS_PROPERTY = "show_tags";
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
@@ -173,7 +184,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					}
 					final MapModel map = node.getMap();
 					mapStyleModel.createStyleMap(map, content);
-					map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
+					map.getIconRegistry().registryMapContent(mapStyleModel.getStyleMap());
 				}
 				private boolean isContentEmpty(final String content) {
 					return content.indexOf('<') == -1;
@@ -204,7 +215,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			final NodeModel rootNode = styleMap.getRootNode();
 			final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 			try {
-				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true, forceFormatting);
+				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, CopiedNodeSet.ALL_NODES, true, forceFormatting);
 			}
 			catch (final IOException e) {
 				e.printStackTrace();
@@ -222,8 +233,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return null;
 	}
 
+	private static final String TAG_COLOR_START = "#";
+    private static final String TAG_COLOR_ATTRIBUTE_PREFIX = "tagcolor";
 	protected class MyXmlReader extends XmlReader{
-		@Override
+
+
+        @Override
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (null == super.createElement(parent, tag, attributes)){
 				return null;
@@ -242,24 +257,48 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			NodeModel node = (NodeModel) userObject;
 			MapStyleModel mapStyleModel = MapStyleModel.getExtensionOrNull(node);
 			Objects.requireNonNull(mapStyleModel);
-			loadMapStyleProperties(mapStyleModel, xml);
-       }
+            loadMapStyleProperties(mapStyleModel.getProperties(), xml);
+            loadTagProperties(node.getMap().getIconRegistry(), xml);
+		}
 
-		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
-			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
-			if(propertyXml != null && propertyXml.size() >= 1){
-				final Map<String, String> properties = model.getProperties();
-				final Properties attributes = propertyXml.get(0).getAttributes();
-				for(Entry<Object, Object> attribute:attributes.entrySet()){
-					final String key = attribute.getKey().toString();
-					// fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
-					if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
-						continue;
-					properties.put(key, attribute.getValue().toString());
-				}
-			}
+		private void loadMapStyleProperties(Map<String, String> properties, XMLElement xml) {
+		    final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");
+		    if(propertyXml != null && propertyXml.size() >= 1){
+		        final Properties attributes = propertyXml.get(0).getAttributes();
+		        for(Entry<Object, Object> attribute:attributes.entrySet()){
+		            final String key = attribute.getKey().toString();
+		            // fix bug introduced in commit f53d3b3691d503958f0c8ab6004076742dd6dd64
+		            if(key.equals(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION))
+		                continue;
+		            String valueAsString = attribute.getValue().toString();
+		            properties.put(key, valueAsString);
+		        }
+		    }
+		}
+
+		private void loadTagProperties(IconRegistry iconRegistry, XMLElement xml) {
+		    final Vector<XMLElement> propertyXml = xml.getChildrenNamed(TAGS_ELEMENT);
+		    if(propertyXml != null && propertyXml.size() >= 1){
+		        final Properties attributes = propertyXml.get(0).getAttributes();
+		        for(Entry<Object, Object> attribute:attributes.entrySet()){
+		            final String key = attribute.getKey().toString();
+		            String valueAsString = attribute.getValue().toString();
+		            final TagCategories tagCategories = iconRegistry.getTagCategories();
+		            String tagCategorySeparator = attributes.getProperty(TAG_CATEGORY_SEPARATOR_ATTRIBUTE, "::");
+		            tagCategories.setTagCategorySeparator(tagCategorySeparator);
+                    if(CATEGORIES_ATTRIBUTE.equals(key)) {
+		                tagCategories.load(valueAsString);
+                    } else if(! TAG_CATEGORY_SEPARATOR_ATTRIBUTE.equals(key)) {
+		                int separatorIndex = valueAsString.lastIndexOf(TAG_COLOR_START);
+		                if(separatorIndex > 0) {
+		                    String name = valueAsString.substring(0, separatorIndex);
+		                    String color = valueAsString.substring(separatorIndex);
+		                    tagCategories.setTagColor(name, color);
+		                }
+		            }
+		        }
+		    }
         }
-
 	}
 
 	@Override
@@ -379,13 +418,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	public boolean allowsCompactLayout(MapModel map) {
-		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT);
+		return getBooleanProperty(map, ALLOW_COMPACT_LAYOUT_PROPERTY);
 	}
 
-	private boolean getBooleanProperty(MapModel map, String name) {
-		MapStyleModel styleModel = MapStyleModel.getExtension(map);
-	    String allowsCompactLayout = styleModel.getProperty(name);
-	    return Boolean.parseBoolean(allowsCompactLayout);
+
+    public TagLocation tagLocation(MapModel map) {
+        return MapStyleModel.getExtension(map).getEnumProperty(SHOW_TAGS_PROPERTY, TagLocation.UNDER_NODES);
+    }
+
+
+	public boolean getBooleanProperty(MapModel map, String name) {
+		return MapStyleModel.getExtension(map).getBooleanProperty(name);
 	}
 
 	@Override
@@ -734,7 +777,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		super.saveExtension(extension, element);
 		final Color backgroundColor = mapStyleModel.getBackgroundColor();
 		if (backgroundColor != null) {
-			element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
+			element.setAttribute("background", ColorUtils.colorToRGBAString(backgroundColor));
 		}
 		final float zoom = mapStyleModel.getZoom();
 		if (zoom != 1f) {
@@ -746,6 +789,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element, true);
 		saveProperties(mapStyleModel.getProperties(), element);
+		saveTagProperties(mapStyleModel.getStyleMap().getIconRegistry().getTagCategories(), element);
 	}
 
 	private void saveProperties(Map<String, String> properties, XMLElement element) {
@@ -754,9 +798,24 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 	    final XMLElement xmlElement = new XMLElement("properties");
 	    for (Entry<String, String>  entry: properties.entrySet()){
-	    	xmlElement.setAttribute(entry.getKey(), entry.getValue());
+	    	String key = entry.getKey();
+	    	xmlElement.setAttribute(key, entry.getValue());
 	    }
 	    element.addChild(xmlElement);
+    }
+
+    private void saveTagProperties(TagCategories tagCategories, XMLElement element) {
+        final XMLElement xmlElement = new XMLElement(TAGS_ELEMENT);
+        int[] tagColorCounter = {0};
+        final String serializedTagCategories = tagCategories.serialize();
+        if(! serializedTagCategories.isEmpty())
+            xmlElement.setAttribute(CATEGORIES_ATTRIBUTE, serializedTagCategories);
+        xmlElement.setAttribute(TAG_CATEGORY_SEPARATOR_ATTRIBUTE, tagCategories.getTagCategorySeparator());
+
+        tagCategories.getUncategorizedTags().stream()
+        .forEach(tag -> xmlElement.setAttribute(TAG_COLOR_ATTRIBUTE_PREFIX + ++tagColorCounter[0],
+                tag.getContent()  + ColorUtils.colorToRGBAString(tag.getColor())));
+        element.addChild(xmlElement);
     }
 
 	public void setZoom(final MapModel map, final float zoom) {
@@ -765,7 +824,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setZoom(zoom);
-		Controller.getCurrentModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 	}
 
 	public float getZoom(final MapModel map) {
@@ -780,22 +839,21 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		mapStyleModel.setMapViewLayout(layout);
-		Controller.getCurrentModeController().getMapController().setSaved(map, false);
+		Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 	}
 
 	public void setBackgroundColor(final MapStyleModel model, final Color color) {
-		final Color actionColor = ColorUtils.makeNonTransparent(color);
 		final Color oldColor = model.getBackgroundColor();
-		if (actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)) {
+		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
-				model.setBackgroundColor(actionColor);
+				model.setBackgroundColor(color);
 				Controller.getCurrentModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
-				        oldColor, actionColor));
+				        oldColor, color));
 			}
 
 			@Override
@@ -808,7 +866,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				model.setBackgroundColor(oldColor);
 				Controller.getCurrentModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(MapStyle.this, Controller.getCurrentController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
-				        actionColor, oldColor));
+				        color, oldColor));
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, Controller.getCurrentController().getMap());
@@ -831,7 +889,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		IActor actor = new  IActor() {
 			@Override
 			public void undo() {
-				setPropertyWithoutUndo(model, key, oldValue);
+				setPropertyWithoutUndo(model, key, newValue, oldValue);
 			}
 
 			@Override
@@ -841,10 +899,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 			@Override
 			public void act() {
-				setPropertyWithoutUndo(model, key, newValue);
+				setPropertyWithoutUndo(model, key, oldValue, newValue);
 			}
 
-			private void setPropertyWithoutUndo(final MapModel model, final String key, final String newValue) {
+			private void setPropertyWithoutUndo(final MapModel model, final String key, final String oldValue, final String newValue) {
 				styleModel.setProperty(key, newValue);
 	    		Controller.getCurrentModeController().getMapController().fireMapChanged(
 	    		    new MapChangeEvent(MapStyle.this, model, key, oldValue, newValue));
@@ -885,6 +943,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         LogicalStyleController.getController().refreshMapLaterUndoable(map);
         if(copyToExternalTemplate)
             undoableCopyStyleToAssociatedExternalTemplate(map, style);
+    }
+
+    public boolean showsTagCategories(MapModel map) {
+        return getBooleanProperty(map, SHOW_TAG_CATEGORIES_PROPERTY);
     }
 
 }

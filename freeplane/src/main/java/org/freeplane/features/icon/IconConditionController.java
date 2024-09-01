@@ -41,7 +41,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class IconConditionController implements IElementaryConditionController {
-	static final String FILTER_ICON = "filter_icon";
+    static final String FILTER_ICON = "filter_icon";
+    static final String FILTER_TAG = "filter_tag";
+    static final String FILTER_EXTENDED_TAG_CATEGORY = "filter_tag_category";
 // // 	final private Controller controller;
 
 	public IconConditionController() {
@@ -49,81 +51,162 @@ class IconConditionController implements IElementaryConditionController {
 //		this.controller = controller;
 	}
 
-	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
-		return false;
+	@Override
+    public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
+		final TranslatedObject o = (TranslatedObject)property;
+        return o.objectEquals(IconConditionController.FILTER_TAG) || o.objectEquals(FILTER_EXTENDED_TAG_CATEGORY);
 	}
 
-	public boolean canHandle(final Object selectedItem) {
+	@Override
+    public boolean canHandle(final Object selectedItem) {
 		if (!(selectedItem instanceof TranslatedObject)) {
 			return false;
 		}
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
-		return namedObject.objectEquals(IconConditionController.FILTER_ICON);
+		return namedObject.objectEquals(IconConditionController.FILTER_ICON)
+		        || namedObject.objectEquals(IconConditionController.FILTER_TAG)
+		        || namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY);
 	}
 
-	public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
+	@Override
+    public boolean canSelectValues(final Object property, final TranslatedObject simpleCond) {
 	    return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
     }
 
-    public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
-                                                final Object value, final boolean matchCase, final boolean approximateMatching,
+    @Override
+    public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCondition,
+                                                final Object value, final boolean matchCase, final boolean matchApproximately,
                                                 final boolean ignoreDiacritics) {
-        if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
-            return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
-        if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))
-            return new IconExistsCondition();
+        final TranslatedObject namedObject = (TranslatedObject) selectedItem;
+        if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS))
+                return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST))
+                return new IconExistsCondition();
+        }
+        boolean searchesAcrossAllCategories = namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY);
+        if (searchesAcrossAllCategories || namedObject.objectEquals(IconConditionController.FILTER_TAG)) {
+            String comparedString=  (value instanceof Tag) ? ((Tag)value).getContent() : value.toString();
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
+                return new TagCompareCondition(comparedString, matchCase, 0, true, matchApproximately, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
+                return new TagCompareCondition(comparedString, matchCase, 0, false, matchApproximately, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
+                return new TagCompareCondition(comparedString, matchCase, 1, true, false, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
+                return new TagCompareCondition(comparedString, matchCase, -1, false, false, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
+                return new TagCompareCondition(comparedString, matchCase, -1, true, false, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
+                return new TagCompareCondition(comparedString, matchCase, 1, false, false, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
+                return new TagMatchesCondition(comparedString.toString(), matchCase, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, false, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+            if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS_WORDWISE)) {
+                return new TagContainsCondition(comparedString, matchCase, matchApproximately, true, ignoreDiacritics, searchesAcrossAllCategories);
+            }
+        }
         return null;
     }
 
-	public ComboBoxModel getConditionsForProperty(final Object property) {
-		return new DefaultComboBoxModel(getIconConditionNames());
-	}
+    @Override
+    public ComboBoxModel getConditionsForProperty(final Object property) {
+        final TranslatedObject namedObject = (TranslatedObject) property;
+        if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
+            return new DefaultComboBoxModel(getIconConditionNames());
+        }
+        if (namedObject.objectEquals(IconConditionController.FILTER_TAG) || namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY)) {
+            return new DefaultComboBoxModel(getTagConditionNames());
+        }
+        throw new IllegalArgumentException(String.valueOf(property));
+    }
 
-	public ListModel getFilteredProperties() {
+	@Override
+    public ListModel getFilteredProperties() {
 		final DefaultListModel list = new DefaultListModel();
-		list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
+        list.addElement(TextUtils.createTranslatedString(FILTER_ICON));
+        list.addElement(TextUtils.createTranslatedString(FILTER_TAG));
+        list.addElement(TextUtils.createTranslatedString(FILTER_EXTENDED_TAG_CATEGORY));
 		return list;
 	}
 
-	public Object[] getIconConditionNames() {
-		return new TranslatedObject[] { 
-	            TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS), 
-	            TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST), 
-		};
-	}
+    public Object[] getIconConditionNames() {
+        return new TranslatedObject[] {
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST),
+        };
+    }
 
-	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
+    public Object[] getTagConditionNames() {
+        return new TranslatedObject[] {
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS_WORDWISE),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_REGEXP),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+                TextUtils.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+                TranslatedObject.literal(ConditionFactory.FILTER_GT), TranslatedObject.literal(ConditionFactory.FILTER_GE),
+                TranslatedObject.literal(ConditionFactory.FILTER_LE), TranslatedObject.literal(ConditionFactory.FILTER_LT)
+        };
+    }
+
+	@Override
+    public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
 		return null;
 	}
 
-	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
-	    final ListModel icons = Controller.getCurrentController().getMap().getIconRegistry().getIconsAsListModel();
+	@Override
+    public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 	    final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
-	    extendedComboBoxModel.setExtensionList(icons);
+	    final TranslatedObject namedObject = (TranslatedObject) property;
+	    IconRegistry iconRegistry = Controller.getCurrentController().getMap().getIconRegistry();
+	    if (namedObject.objectEquals(IconConditionController.FILTER_ICON)) {
+            extendedComboBoxModel.setExtensionList(iconRegistry.getIconsAsListModel());
+	    }
+	    else if (namedObject.objectEquals(IconConditionController.FILTER_TAG)
+	            || namedObject.objectEquals(IconConditionController.FILTER_EXTENDED_TAG_CATEGORY)) {
+	        extendedComboBoxModel.setExtensionList(iconRegistry.getTagCategories().getTagsAsListModel());
+	    }
 	    return extendedComboBoxModel;
 	}
 
-	public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
-		return false;
-	}
-	
-	public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
+	@Override
+    public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
 		return false;
 	}
 
-	public ASelectableCondition loadCondition(final XMLElement element) {
+	@Override
+    public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
+		return false;
+	}
+
+	@Override
+    public ASelectableCondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
 			return IconContainedCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(IconExistsCondition.NAME)) {
-			return IconExistsCondition.load(element);
-		}
+        if (element.getName().equalsIgnoreCase(IconExistsCondition.NAME)) {
+            return IconExistsCondition.load(element);
+        }
+        if (element.getName().equalsIgnoreCase(TagCompareCondition.NAME)) {
+            return TagCompareCondition.load(element);
+        }
+        if (element.getName().equalsIgnoreCase(TagMatchesCondition.NAME)) {
+            return TagMatchesCondition.load(element);
+        }
 		return null;
 	}
 
-	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
-		// don't return null as this would make FilterConditionEditor fall back to filterController.getConditionRenderer()
-		// (and that would put in a default string like "No Filtering (remove)"!)
+	@Override
+    public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
 		return new DefaultConditionRenderer("", true);
     }
 }

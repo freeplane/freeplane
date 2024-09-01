@@ -46,9 +46,9 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  * 01.05.2012
  */
-class SaveAcceleratorPresetsAction extends AFreeplaneAction {
+public class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -95,15 +95,15 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 
         JTextField inputField = new JTextField(40);
         inputField.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         Box dialogComponents = Box.createVerticalBox();
         dialogComponents.add(inputField);
         dialogComponents.add(info);
-        
-        
+
+
         FocusRequestor.requestFocus(inputField);
-        int result = JOptionPane.showConfirmDialog(UITools.getMenuComponent(), dialogComponents, 
-                TextUtils.getText("enter_keyset_name"), 
+        int result = JOptionPane.showConfirmDialog(UITools.getMenuComponent(), dialogComponents,
+                TextUtils.getText("enter_keyset_name"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         String presetName = result == JOptionPane.OK_OPTION ? inputField.getText() : "";
         return presetName;

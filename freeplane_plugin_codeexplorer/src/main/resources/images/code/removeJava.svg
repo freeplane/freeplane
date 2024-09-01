@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license. -->
+<svg fill="none" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <path d="m1.0395 4.0647c0-0.43468 0.34626-0.78706 0.77339-0.78706h8.5073c0.42707 0 0.77339 0.35238 0.77339 0.78706v3.5418c0 2.8254-2.2507 5.1159-5.027 5.1159-2.7764 0-5.027-2.2905-5.027-5.1159z" fill="#e7effd" stroke="#333333"/>
+ <path d="m11.094 3.2776h1.5468c1.2814 0 2.3202 1.0572 2.3202 2.3612s-1.0388 2.3612-2.3202 2.3612h-1.5468z" stroke="#333333"/>
+ <path d="m7.8648 9.8541c-3.9032-3.9032-3.8747-3.9317-3.8747-3.9317" fill="#bc0009" stroke="#bc0009" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+ <path d="m3.9616 9.8256c3.9032-3.9032 3.9317-3.8747 3.9317-3.8747" fill="#bc0009" stroke="#bc0009" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.1" style="paint-order:fill markers stroke"/>
+</svg>

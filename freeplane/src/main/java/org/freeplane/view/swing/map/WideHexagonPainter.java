@@ -25,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 
 import org.freeplane.features.nodestyle.NodeGeometryModel;
+import org.freeplane.view.swing.map.VariableInsetsPainter.PaintOperation;
 
 class WideHexagonPainter extends VariableInsetsPainter {
 	private static final double VERTICAL_MARGIN_FACTOR = Math.sqrt(2);
@@ -54,7 +55,7 @@ class WideHexagonPainter extends VariableInsetsPainter {
 			double w = prefSize.width + getMinimumHorizontalInset();
 			double h = prefSize.height + getMinimumVerticalInset();
 			double diameter = Math.sqrt(w * w + h * h);
-			double width = mainView.limitWidth (diameter/ UNIFORM_HEIGHT_TO_WIDTH_RELATION);
+			double width = mainView.limitWidth (diameter/ UNIFORM_HEIGHT_TO_WIDTH_RELATION, mainView.getPaintedBorderWidth());
 			prefSize.width = (int) Math.ceil(width);
 			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			return prefSize;
@@ -66,11 +67,11 @@ class WideHexagonPainter extends VariableInsetsPainter {
 
 	@Override
 	void paintNodeShape(final Graphics2D g) {
-		Polygon polygon = getPaintedShape();
+		Polygon polygon = getPaintedShape(PaintOperation.DRAW);
 		g.draw(polygon);
 	}
 
-	Polygon getPaintedShape() {
+	Polygon getPaintedShape(PaintOperation operation) {
 		double[] xCoords;
 		double[] yCoords;
 		if(getShapeConfiguration().isUniform()){
@@ -82,12 +83,12 @@ class WideHexagonPainter extends VariableInsetsPainter {
 			xCoords = new double[]{0, zoomedHorizontalInset, 1-zoomedHorizontalInset, 1, 1-zoomedHorizontalInset, zoomedHorizontalInset};
 			yCoords = new double[]{1/2f, 0, 0, 1/2f, 1, 1};
 		}
-		return polygonOf(xCoords, yCoords);
+		return polygonOf(xCoords, yCoords, operation);
 	}
 
 	@Override
 	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fill(getPaintedShape());
+		graphics.fill(getPaintedShape(PaintOperation.FILL));
 	}
 }

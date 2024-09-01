@@ -19,19 +19,23 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
+
+import org.freeplane.core.ui.svgicons.FixSizeIconWrapper;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ButtonPanelProperty extends PropertyBean implements IPropertyControl {
 
     protected final JButton startButton;
-	protected final ButtonSelectorPanel buttons;
+    protected final ButtonSelectorPanel buttons;
 	public ButtonPanelProperty(final String name, ButtonSelectorPanel buttons) {
 	    super(name);
 	    this.buttons = buttons;
@@ -39,6 +43,8 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
         startButton.setName(name);
         startButton.setDefaultCapable(false);
         startButton.addActionListener(this::showButtonPanel);
+        Dimension iconSize = buttons.getMaximumIconSize();
+        startButton.setIcon(new FixSizeIconWrapper(iconSize.width, iconSize.height));
 	}
 
  	@Override
@@ -72,7 +78,8 @@ public class ButtonPanelProperty extends PropertyBean implements IPropertyContro
 	public void setValue(final String value) {
 	    buttons.setValue(value);
 	    JToggleButton selectedButton = buttons.getSelectedButton();
-	    startButton.setIcon(selectedButton.getIcon());
+	    Icon icon = startButton.getIcon();
+        startButton.setIcon(new FixSizeIconWrapper(icon.getIconWidth(), icon.getIconHeight(), selectedButton.getIcon()));
 	    startButton.setToolTipText(selectedButton.getToolTipText());
 	}
 

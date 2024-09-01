@@ -185,11 +185,11 @@ class MapScroller {
 				final boolean outlineLayoutSet = map.isOutlineLayoutSet();
 				if(!outlineLayoutSet && ! root.usesHorizontalLayout()) {
 					boolean scrollToTheLeft = false;
-					final List<NodeModel> children = root.getModel().getChildren();
+					final List<NodeModel> children = root.getNode().getChildren();
 					if(! children.isEmpty()){
 						scrollToTheLeft = true;
 						for(NodeModel node :children) {
-							if(node.isTopOrLeft(root.getModel())){
+							if(node.isTopOrLeft(root.getNode())){
 								scrollToTheLeft = false;
 								break;
 							}
@@ -346,24 +346,24 @@ class MapScroller {
 		int lackingWidth = requiredRectangle.width - visibleRect.width;
 		if(lackingWidth > 0){
 			int leftGap = contentBounds.x - requiredRectangle.x - margin;
-			int rightGap = requiredRectangle.x + requiredRectangle. width  - contentBounds.x - contentBounds.width - margin;
-			requiredRectangle.width  = visibleRect.width;
-			requiredRectangle.x += lackingWidth * leftGap /  (leftGap + rightGap);
+			if(leftGap > 0) {
+			    int rightGap = requiredRectangle.x + requiredRectangle. width  - contentBounds.x - contentBounds.width - margin;
+			    requiredRectangle.width  = visibleRect.width;
+			    requiredRectangle.x += lackingWidth * leftGap /  (leftGap + rightGap);
+			}
 		}
 		int lackingHeight = requiredRectangle.height - visibleRect.height;
 		if(lackingHeight > 0){
 			int topGap = contentBounds.y - requiredRectangle.y - margin;
-			if(topGap != 0) {
+			if(topGap > 0) {
 				int bottomGap = requiredRectangle.y + requiredRectangle. height  - contentBounds.y - contentBounds.height - margin;
 				requiredRectangle.height  = visibleRect.height;
 				requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
 			}
 		}
-		if(! node.getVisibleRect().contains(requiredRectangle)){
-	        keepShowingSelectedAfterScroll();
-			node.scrollRectToVisible(requiredRectangle);
-			showSelectedAfterScroll();
-		}
+		keepShowingSelectedAfterScroll();
+		node.scrollRectToVisible(requiredRectangle);
+		showSelectedAfterScroll();
 	}
 
 	void anchorToRoot() {

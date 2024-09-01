@@ -31,6 +31,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 
 public class EncryptionModel implements IExtension {
 	private final static WeakHashMap<NodeModel, List<NodeModel>> hiddenChildren = new WeakHashMap<>();
@@ -126,7 +127,7 @@ public class EncryptionModel implements IExtension {
 			final StringWriter sWriter = new StringWriter();
 			for (final Iterator<NodeModel> i = childNodes.listIterator(); i.hasNext();) {
 				final NodeModel child = i.next();
-				mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
+				mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, CopiedNodeSet.ALL_NODES, true, false);
 				if (i.hasNext()) {
 					sWriter.write(MapClipboardController.NODESEPARATOR);
 				}

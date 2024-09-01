@@ -25,12 +25,14 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.api.Dash;
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -42,7 +44,6 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleShape;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.LogicalStyleKeys;
@@ -192,7 +193,10 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getHorizontalTextAlignment()) {
 				fromStyle.setHorizontalTextAlignment(null);
 			}
-       }
+			if (null != whichStyle.getTextWritingDirection()) {
+				fromStyle.setTextWritingDirection(null);
+			}
+		}
 
 		private void removeCssData(Object key, NodeModel from, NodeModel which) {
 			if (null != which.getExtension(NodeCss.class)) {
@@ -241,6 +245,8 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new HorizontalTextAlignmentAction(HorizontalTextAlignment.LEFT));
 		modeController.addAction(new HorizontalTextAlignmentAction(HorizontalTextAlignment.CENTER));
 		modeController.addAction(new HorizontalTextAlignmentAction(HorizontalTextAlignment.RIGHT));
+		modeController.addAction(new TextWritingDirectionAction(TextWritingDirection.LEFT_TO_RIGHT));
+		modeController.addAction(new TextWritingDirectionAction(TextWritingDirection.RIGHT_TO_LEFT));
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction") {
 			private static final long serialVersionUID = 1L;
 
@@ -297,6 +303,7 @@ public class MNodeStyleController extends NodeStyleController {
 			setNodeFormat(target, sourceStyleModel.getNodeFormat());
 			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
 			setHorizontalTextAlignment(target, sourceStyleModel.getHorizontalTextAlignment());
+			setTextWritingDirection(target, sourceStyleModel.getTextWritingDirection());
 		}
     }
 
@@ -473,7 +480,7 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.execute(actor, node.getMap());
 	}
 
-	
+
 	public void setStyleSheet(NodeModel node, String css) {
 		if(css != null)
 			css = css.trim();
@@ -489,7 +496,7 @@ public class MNodeStyleController extends NodeStyleController {
 				controller.undoableActivateHook(node, new NodeCss(css));
 		}
 	}
-	
+
 	/**
 	 * @param fontFamily
 	 */
@@ -610,7 +617,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void act() {
 				NodeStyleModel.setNodeNumbering(node, enableNodeNumbering);
 				final MapController mapController = modeController.getMapController();
-				mapController.setSaved(node.getMap(), false);
+				mapController.mapSaved(node.getMap(), false);
 				mapController.delayedNodeRefresh(node, NodeStyleController.NODE_NUMBERING, oldValue, enableNodeNumbering);
 			}
 
@@ -623,7 +630,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				NodeStyleModel.setNodeNumbering(node, oldValue);
 				final MapController mapController = modeController.getMapController();
-				mapController.setSaved(node.getMap(), false);
+				mapController.mapSaved(node.getMap(), false);
 				modeController.getMapController().delayedNodeRefresh(node, NodeStyleController.NODE_NUMBERING, enableNodeNumbering, oldValue);
 			}
 		};
@@ -803,8 +810,35 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		getModeController().execute(actor, node.getMap());
 
-    }
+	}
 
+	public void setTextWritingDirection(final NodeModel node, final TextWritingDirection textDirection) {
+		final TextWritingDirection oldTextDirection = NodeStyleModel.getTextWritingDirection(node);
+		if(textDirection == oldTextDirection)
+			return;
+		final IActor actor = new IActor() {
+			@Override
+			public void act() {
+				NodeStyleModel.setTextWritingDirection(node, textDirection);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node, TextWritingDirection.class, oldTextDirection, textDirection);
+			}
+
+			@Override
+			public String getDescription() {
+				return "setTextWritingDirection";
+			}
+
+			@Override
+			public void undo() {
+				NodeStyleModel.setTextWritingDirection(node, oldTextDirection);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node, TextWritingDirection.class, textDirection, oldTextDirection);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+
+	}
 
 	public void setBorderWidthMatchesEdgeWidth(final NodeModel node, final Boolean borderWidthMatchesEdgeWidth) {
 		final Boolean oldBorderWidthMatchesEdgeWidth = NodeBorderModel.getBorderWidthMatchesEdgeWidth(node);
@@ -908,8 +942,8 @@ public class MNodeStyleController extends NodeStyleController {
 
     }
 
-	public void setBorderDash(final NodeModel node, final DashVariant borderDash) {
-		final DashVariant oldBorderDash = NodeBorderModel.getBorderDash(node);
+	public void setBorderDash(final NodeModel node, final Dash borderDash) {
+		final Dash oldBorderDash = NodeBorderModel.getBorderDash(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -998,7 +1032,8 @@ public class MNodeStyleController extends NodeStyleController {
 				.withCSSFont(getFont(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
 				.withColor(getColor(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
 				.withBackground(getBackgroundColor(selectedNode, StyleOption.FOR_UNSELECTED_NODE))
-				.withAlignment(getHorizontalTextAlignment(selectedNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant));
+				.withAlignment(getHorizontalTextAlignment(selectedNode, StyleOption.FOR_UNSELECTED_NODE).swingConstant)
+				.withDirection(getTextWritingDirection(selectedNode, StyleOption.FOR_UNSELECTED_NODE) ));
 		ruleBuilder.append("}\n");
 		CssEditor cssEditor = new CssEditor(ruleBuilder.toString());
 		if (cssEditor.editCss(css) == JOptionPane.OK_OPTION)

@@ -1,8 +1,10 @@
 package org.freeplane.plugin.bugreport;
 
-import org.freeplane.core.util.logging.LogHandlers;
+import java.util.logging.Logger;
+
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.CommandLineOptions;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -17,10 +19,10 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		handler = new ReportGenerator();
-		LogHandlers.addHandler(handler);
+		getRootLogger().addHandler(handler);
 		context.registerService(IControllerExtensionProvider.class.getName(), new IControllerExtensionProvider() {
 			@Override
-			public void installExtension(Controller controller, CommandLineOptions options) {
+			public void installExtension(Controller controller, CommandLineOptions options, ExtensionInstaller.Context context) {
 				handler.setBugReportListener(new ManualBugReporter());
 			}
 		}, null);
@@ -32,6 +34,11 @@ public class Activator implements BundleActivator {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		LogHandlers.removeHandler(handler);
+	    getRootLogger().removeHandler(handler);
 	}
+
+	private Logger getRootLogger() {
+	    return Logger.getAnonymousLogger().getParent();
+	}
+
 }
