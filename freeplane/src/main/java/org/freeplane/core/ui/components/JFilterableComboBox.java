@@ -122,15 +122,11 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
             final String text = textField.getText();
             final Stream<V> tagStream = itemSupplier.get();
             final Stream<V> addedItems;
-            if(init || acceptAll.test(text)) {
-                addedItems = tagStream.peek(model::addElement);
-             } else {
-                addedItems = tagStream
-                .filter(item -> acceptItem.test(item, text))
-                .peek(model::addElement);
-            }
+            addedItems = init || acceptAll.test(text) ? tagStream
+                    : tagStream.filter(item -> acceptItem.test(item, text));
             AtomicInteger index = new AtomicInteger(-1);
             addedItems.forEach(item -> {
+                model.addElement(item);
                 if (index.get() == -1 && selectItem.test(item, text)) {
                     index.set(model.getSize() - 1);
                 }
