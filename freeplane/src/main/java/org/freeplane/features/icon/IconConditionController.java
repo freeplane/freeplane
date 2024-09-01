@@ -202,6 +202,9 @@ class IconConditionController implements IElementaryConditionController {
         if (element.getName().equalsIgnoreCase(TagMatchesCondition.NAME)) {
             return TagMatchesCondition.load(element);
         }
+        if (element.getName().equalsIgnoreCase(TagContainsCondition.NAME)) {
+            return TagContainsCondition.load(element);
+        }
 		return null;
 	}
 

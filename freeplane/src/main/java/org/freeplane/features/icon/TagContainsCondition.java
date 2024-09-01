@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  */
 public class TagContainsCondition extends TagCondition {
-	private static final String NAME = "tag_contains_condition";
+	static final String NAME = "tag_contains_condition";
     static final String VALUE = "VALUE";
 
 	static ASelectableCondition load(final XMLElement element) {
