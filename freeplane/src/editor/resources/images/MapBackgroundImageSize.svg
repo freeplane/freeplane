@@ -1,75 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   id="Layer_2"
-   data-name="Layer 2"
-   viewBox="0 0 24 24"
-   version="1.1"
-   sodipodi:docname="MapBackgroundImageSize.svg"
-   inkscape:version="1.2-alpha1 (b6a15bbbed, 2022-02-23)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs15" />
-  <sodipodi:namedview
-     id="namedview13"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="true"
-     showguides="true"
-     inkscape:zoom="19.666667"
-     inkscape:cx="23.11017"
-     inkscape:cy="14.491525"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="Layer_2">
-    <inkscape:grid
-       type="xygrid"
-       id="grid121" />
-    <sodipodi:guide
-       position="2,22"
-       orientation="1,0"
-       id="guide331" />
-    <sodipodi:guide
-       position="5,22"
-       orientation="0,-1"
-       id="guide483" />
-    <sodipodi:guide
-       position="22,13"
-       orientation="1,0"
-       id="guide535" />
-    <sodipodi:guide
-       position="6,2"
-       orientation="0,-1"
-       id="guide899" />
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" id="Layer_2" data-name="Layer 2" viewBox="0 0 24 24" version="1.1" sodipodi:docname="MapBackgroundImageSize.svg" inkscape:version="1.2-alpha1 (b6a15bbbed, 2022-02-23)">
+  <defs id="defs15"/>
+  <sodipodi:namedview id="namedview13" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" showgrid="true" showguides="true" inkscape:zoom="19.666667" inkscape:cx="23.11017" inkscape:cy="14.491525" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="Layer_2">
+    <inkscape:grid type="xygrid" id="grid121"/>
+    <sodipodi:guide position="2,22" orientation="1,0" id="guide331"/>
+    <sodipodi:guide position="5,22" orientation="0,-1" id="guide483"/>
+    <sodipodi:guide position="22,13" orientation="1,0" id="guide535"/>
+    <sodipodi:guide position="6,2" orientation="0,-1" id="guide899"/>
   </sodipodi:namedview>
-  <polyline
-     points="22 16.5 18 12.5 22 8.5"
-     style="fill:#333333"
-     id="polyline4"
-     transform="matrix(-1,0,0,1,40,-0.5)" />
-  <polyline
-     points="16 5 12 9 8 5"
-     style="fill:#333333"
-     id="polyline6"
-     transform="matrix(1,0,0,-1,0,11)" />
-  <polyline
-     points="8 20 12 16 16 20"
-     style="fill:#333333"
-     id="polyline8"
-     transform="matrix(1,0,0,-1,0,38)" />
-  <polyline
-     points="2 8.5 6 12.5 2 16.5"
-     style="fill:#333333"
-     id="polyline10"
-     transform="matrix(-1,0,0,1,8,-0.5)" />
+  <polyline points="22 16.5 18 12.5 22 8.5" style="fill:#333333" id="polyline4" transform="matrix(-1,0,0,1,40,-0.5)"/>
+  <polyline points="16 5 12 9 8 5" style="fill:#333333" id="polyline6" transform="matrix(1,0,0,-1,0,11)"/>
+  <polyline points="8 20 12 16 16 20" style="fill:#333333" id="polyline8" transform="matrix(1,0,0,-1,0,38)"/>
+  <polyline points="2 8.5 6 12.5 2 16.5" style="fill:#333333" id="polyline10" transform="matrix(-1,0,0,1,8,-0.5)"/>
 </svg>

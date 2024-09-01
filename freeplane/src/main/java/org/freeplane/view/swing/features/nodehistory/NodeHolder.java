@@ -38,7 +38,7 @@ class NodeHolder {
 	private boolean reachedByLink;
 
 	public NodeHolder(final NodeView pNode) {
-		mNodeId = pNode.getModel().createID();
+		mNodeId = pNode.getNode().createID();
 		final MapView mapView = pNode.getMap();
 		mMapView = new WeakReference<MapView>(mapView);
 		reachedByLink = false;
@@ -82,7 +82,7 @@ class NodeHolder {
 	public NodeModel getNode() {
 		final MapView modeController = mMapView.get();
 		if (modeController != null) {
-			return modeController.getModel().getNodeForID(mNodeId);
+			return modeController.getMap().getNodeForID(mNodeId);
 		}
 		return null;
 	}
@@ -94,8 +94,8 @@ class NodeHolder {
 	}
 
 	boolean isIdentical(final NodeView pNode) {
-		if(pNode == null || pNode.getModel() == null) return false;
-		final String id = pNode.getModel().createID();
+		if(pNode == null || pNode.getNode() == null) return false;
+		final String id = pNode.getNode().createID();
 		final MapView mapView = pNode.getMap();
 		return mapView == mMapView.get() && id.equals(mNodeId);
 	}

@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
+import java.awt.Window;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
@@ -42,7 +43,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 	}
 
 	@Override
-	public void show(RootPaneContainer frame) {
+	public void show(Window window) {
 		new Thread() {
 			@Override
 			public void run() {

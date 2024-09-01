@@ -43,6 +43,7 @@ public class GlassPaneManager implements AncestorListener {
 	    this.rootPane = jframe;
     }
 
+    @Override
     public void ancestorRemoved(AncestorEvent event) {
     	final Component glassPane = rootPane.getRootPane().getGlassPane();
     	glassPane.removeMouseListener(mouseListener);
@@ -55,9 +56,11 @@ public class GlassPaneManager implements AncestorListener {
             mostRecentFocusOwner.requestFocus();
     }
 
+    @Override
     public void ancestorMoved(AncestorEvent event) {
     }
 
+    @Override
     public void ancestorAdded(AncestorEvent event) {
     	final Component glassPane = rootPane.getRootPane().getGlassPane();
     	glassPane.addMouseListener(mouseListener);

@@ -31,7 +31,10 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
+import org.freeplane.core.ui.components.TagIcon;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
+import org.freeplane.features.icon.Tag;
 import org.freeplane.features.icon.UIIcon;
 
 /**
@@ -65,22 +68,33 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
         }
 		return cellRendererComponent;
 	}
-	
+
 	public Component getCellRendererComponent(final Object value, final boolean isSelected) {
 		final JComponent component;
 		if (value == null) {
 			component =  new JLabel(noValueText);
+			component.setOpaque(true);
 		}
-		else if (value instanceof UIIcon) {
-			JLabel label = new JLabel();
-			Font font = label.getFont();
-			final int fontHeight = label.getFontMetrics(font).getHeight();
-			UIIcon uiIcon = (UIIcon) value;
+        else if (value instanceof UIIcon) {
+            JLabel label = new JLabel();
+            Font font = label.getFont();
+            final int fontHeight = label.getFontMetrics(font).getHeight();
+            UIIcon uiIcon = (UIIcon) value;
             Icon icon = FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize());
             label.setIcon(icon);
-			label.setHorizontalAlignment(SwingConstants.CENTER);
-			component = label;
-		}
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setOpaque(false);
+            component = label;
+        }
+        else if (value instanceof Tag) {
+            JLabel label = new JLabel();
+            Tag tag = (Tag) value;
+            Icon icon = new TagIcon(tag, UITools.getUIFont());
+            label.setIcon(icon);
+            label.setHorizontalAlignment(SwingConstants.LEADING);
+            label.setOpaque(false);
+            component = label;
+        }
 		else if (value instanceof ASelectableCondition) {
 			final ASelectableCondition cond = (ASelectableCondition) value;
 			final String userName = cond.getUserName();
@@ -89,11 +103,12 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
             else {
 	            component = new JLabel(userName);
 	            component.setToolTipText(cond.createDescription());
+	            component.setOpaque(true);
             }
-		}
-        else
-	        component = new JLabel(value.toString());
-		component.setOpaque(true);
+		} else {
+            component = new JLabel(value.toString());
+            component.setOpaque(true);
+        }
 		component.setAlignmentX(Component.LEFT_ALIGNMENT);
 		return component;
 	}

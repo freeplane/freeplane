@@ -16,7 +16,7 @@ public class NoteViewMouseListener extends LinkNavigatorMouseListener {
 		if(e.getClickCount() == 2) {
 			TextController controller = TextController.getController();
 			if(controller.canEdit()){
-				NodeModel node = new NodeSelector().getRelatedNodeView(e).getModel();
+				NodeModel node = new NodeSelector().getRelatedNodeView(e).getNode();
 				((MNoteController) NoteController.getController()).editNoteInDialog(node);
 			}
 		}

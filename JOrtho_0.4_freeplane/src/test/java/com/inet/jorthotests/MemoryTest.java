@@ -67,7 +67,7 @@ public class MemoryTest extends TestCase {
 	}
 
 	/**
-	 * Start the gc and caluculate the the current used memory.
+	 * Start the gc and calculate the current used memory.
 	 */
 	private long usedMemory() throws Exception {
 		final Runtime runtime = Runtime.getRuntime();

@@ -53,21 +53,27 @@ public class GrabKeyDialog extends JDialog {
 			if (evt.getSource() == ok) {
 				if (shortcut.keyChar == null) {
 					isOK = false;
-					dispose();
+					closeDialog();
 				}
 				else if (canClose(UITools.getKeyStroke(shortcut.getText()))) {
 					isOK = true;
-					dispose();
+					closeDialog();
 				}
 			}
 			else if (evt.getSource() == cancel) {
-				dispose();
+				closeDialog();
 			}
 			else if (evt.getSource() == clear) {
 				shortcut.keyChar = KeyEvent.CHAR_UNDEFINED;
 				shortcut.setText(null);
 				shortcut.requestFocus();
 			}
+		}
+
+		private void closeDialog() {
+		    dispose();
+		    UITools.resetMenuBarOnMac();
+
 		}
 	}
 

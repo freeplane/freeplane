@@ -234,7 +234,9 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(timeScrollPane);
-		tabs.add(TextUtils.getText("calendar_panel"), timeScrollPane);
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/calendarTab.svg?useAccentColor=true"),
+		        timeScrollPane, TextUtils.getText("calendar_panel"));
+
     }
 
 	@Override
@@ -275,7 +277,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		mapController.removeMapChangeListener(reminderExtension);
 		mapController.removeMapLifeCycleListener(reminderExtension);
-		mapController.setSaved(node.getMap(), false);
+		mapController.mapSaved(node.getMap(), false);
 		super.remove(node, extension);
 		reminderExtension.deactivateTimer();
 	}

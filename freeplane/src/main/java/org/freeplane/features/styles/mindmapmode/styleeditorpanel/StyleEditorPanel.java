@@ -106,12 +106,15 @@ public class StyleEditorPanel extends JPanel {
 
 	private final StyleEditorPanelSize panelConfiguration;
 
+    private final ModeController modeController;
+
 	/**
 	 * @throws HeadlessException
 	 */
 	public StyleEditorPanel(final ModeController modeController, final MUIFactory uiFactory,
 	                        final boolean addStyleBox) throws HeadlessException {
 		super();
+        this.modeController = modeController;
 		setLayout(new BorderLayout());
 		ResourceController resourceController = ResourceController.getResourceController();
 		if("MIDDLE".equals(resourceController.getProperty(STYLE_EDITOR_PANEL_SIZE_PROPERTY, null)))
@@ -145,6 +148,7 @@ public class StyleEditorPanel extends JPanel {
                 new FontStrikeThroughControlGroup(),
                 new FontItalicControlGroup(),
                 new NodeHorizontalTextAlignmentControlGroup(),
+                new NodeTextWritingDirectionControlGroup(),
                 new NodeFontHyperLinkControlGroup(),
                 new NextLineControlGroup(),
                 new CssControlGroup(modeController),
@@ -241,6 +245,8 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private void updatePanel(NodeModel selected) {
+	    if(Controller.getCurrentModeController() != modeController)
+	        return;
 	    if (selected == null) {
 	        setComponentsEnabled(false);
 	    }
@@ -270,7 +276,6 @@ public class StyleEditorPanel extends JPanel {
 	private void addListeners() {
 	    SelectedNodeChangeListener.onSelectedNodeChange(this::updatePanel);
 
-		final ModeController modeController = Controller.getCurrentModeController();
 		Controller controller = modeController.getController();
 
         panelEnabler = new PanelEnabler(controller, modeController);

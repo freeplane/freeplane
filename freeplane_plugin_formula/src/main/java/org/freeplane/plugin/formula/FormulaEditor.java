@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -92,9 +93,10 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
     }
 
 	@Override
-    public void show(RootPaneContainer frame) {
-	    textEditor.addAncestorListener(new GlassPaneManager(frame.getRootPane(), this));
-	    super.show(frame);
+    public void show(Window window) {
+	    if(window instanceof RootPaneContainer)
+	        textEditor.addAncestorListener(new GlassPaneManager(((RootPaneContainer) window).getRootPane(), this));
+	    super.show(window);
     }
 
 	@Override

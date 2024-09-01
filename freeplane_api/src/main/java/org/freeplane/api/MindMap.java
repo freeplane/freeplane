@@ -2,6 +2,8 @@ package org.freeplane.api;
 
 import java.awt.Color;
 import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -142,21 +144,139 @@ public interface MindMap extends MindMapRO {
 	
     /**
      * 
-     * Returns all style names/translation keys active for the node.
-     * 
-     * @see getName()
-     * 
+     * Copies a style from another mind map into this mind map.
+     *
      * @since 1.9.8
      */
 	void copyStyleFrom(MindMap source, String styleName);
 
     /**
-     * 
-     * Returns all style names/translation keys active for the node.
-     * 
-     * @see getName()
+     *
+     * Copies a style and its conditional style rules from another mind map into this mind map.
      * 
      * @since 1.9.8
      */
     void copyConditionalStylesFrom(MindMap source, String styleName);
+
+    /**
+     *
+     * Copies one or more user styles from another mind map into this one.
+     *
+     * @param source mind map containing the desired style(s)
+     * @param includeConditionalRules whether to include conditional style rules or not.
+     * @param styleNameFilters one or more strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules, String... styleNameFilters);
+
+    /**
+     *
+     * Copies one or more user styles from another mind map into this one.
+     *
+     * @param source mind map containing the desired style(s)
+     * @param includeConditionalRules whether to include conditional style rules or not.
+     * @param styleNameFilters ArrayList of strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules, ArrayList<String> styleNameFilters);
+
+    /**
+     *
+     * Copies all user styles and their conditional style rules from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code     copyUserStylesFrom(source, true, ".*")}
+     *
+     * @param source mind map containing the desired style(s)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source);
+
+    /**
+     *
+     * Copies one or more user styles and their conditional style rules from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code     copyUserStylesFrom(source, true, styleNameFilters)}
+     *
+     * @param source mind map containing the desired style(s)
+     * @param styleNameFilters one or more strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, String... styleNameFilters);
+
+    /**
+     *
+     * Copies one or more user styles and their conditional style rules from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code     copyUserStylesFrom(source, true, styleNameFilters)}
+     *
+     * @param source mind map containing the desired style(s)
+     * @param styleNameFilters ArrayList of strings to indicate which styles should be copied (REGEX match)
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, ArrayList<String> styleNameFilters);
+
+    /**
+     *
+     * Copies all user styles from another mind map into this one.
+     * <p>
+     * <b>Note:</b> equivalent to: {@code    copyUserStylesFrom(source, includeConditionalRules, ".*")}
+     *
+     *
+     * @param source mind map containing the desired style(s)
+     * @param includeConditionalRules whether to include conditional style rules or not.
+     * @return list with the names of the copied styles
+     * @see #copyUserStylesFrom(MindMap, boolean, String...)
+     * @since 1.11.9
+     */
+    List<String> copyUserStylesFrom(MindMap source, boolean includeConditionalRules);
+
+	/** <p> Sets {@code uri} as Followed Map, template-normalizing it first
+	 * if the location is in User- or Standard-Templates Directory, e.g.
+	 * <br> from {@code file:/home/macmarrum/.config/freeplane/1.11.x/templates/the-file.mm}
+	 * <br> to &nbsp; &nbsp; &nbsp; {@code template:/the-file.mm}
+	 * </p>
+	 * <pre>
+	 *  // Unfollows a mind map
+	 *  node.mindMap.followedMap = null
+	 *
+	 *  // Follows a mind map, using an absolute path - a standard string is used, therefore backslashes (path separators) must be escaped
+	 *  node.mindMap.followedMap = new File('c:\\Users\\macmarrum\\Documents\\My top-level mind map.mm').toURI()
+	 *
+	 *  // Follows a template, using an absolute path - a slashy string is used, therefore backslashes (path separators) mustn't be escaped
+	 *  node.mindMap.followedMap = new File(/c:\Users\macmarrum\AppData\Roaming\Freeplane\1.11.x\templates\My template.mm/).toURI()
+	 *
+	 *  // Follows a template, using a {@code template:} URI
+	 *  node.mindMap.followedMap = new URI('template:/My%20template.mm')
+	 * </pre>
+	 * @param uri Followed-Map URI or {@code null} to unfollow
+	 * @since 1.11.11 */
+	void setFollowedMap(URI uri);
+
+	/** <p> Sets {@code uri} as Associated Template, template-normalizing it first
+	 * if the location is in User- or Standard-Templates Directory, i.e.
+	 * <br> from {@code file:/home/macmarrum/.config/freeplane/1.11.x/templates/the-file.mm}
+	 * <br> to &nbsp; &nbsp; &nbsp; {@code template:/the-file.mm}
+	 * </p>
+	 * <pre>
+	 *  // Clears the template association
+	 *  node.mindMap.associatedTemplate = null
+	 *
+	 *  // Associates a template with the mind map, using an absolute path - a slashy string is used, therefore backslashes (path separators) mustn't be escaped
+	 *  node.mindMap.associatedTemplate = new File(/c:\Users\macmarrum\AppData\Roaming\Freeplane\1.11.x\templates\My template.mm/).toURI()
+	 *
+	 *  // Associates a template with the mind map, using a {@code template:} URI
+	 *  node.mindMap.associatedTemplate = new URI('template:/My%20template.mm')
+	 * </pre>
+	 * @param uri Associated-Template URI or {@code null} to remove it
+	 * @since 1.11.11 */
+	void setAssociatedTemplate(URI uri);
 }

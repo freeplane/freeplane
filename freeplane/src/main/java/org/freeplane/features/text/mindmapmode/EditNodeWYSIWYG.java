@@ -22,8 +22,10 @@ package org.freeplane.features.text.mindmapmode;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -42,6 +44,8 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
+import org.freeplane.api.HorizontalTextAlignment;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
@@ -53,9 +57,9 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeCss;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.text.TextController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
@@ -69,8 +73,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		private JButton splitButton;
 		private StyleSheet ownStyleSheet = StyleSheetConfigurer.createDefaultStyleSheet();
 
-		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
-			super(base, title, frame);
+		HTMLDialog(final EditNodeBase base, final String title, String purpose, final Window window) throws Exception {
+			super(base, title, window);
 			JDialog dialog = getDialog();
             dialog.setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
 			createEditorPanel(purpose);
@@ -214,10 +218,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private Dimension preferredContentSize = PREFERRED_CONTENT_SIZE;
 
 	private int horizontalAlignment = HorizontalTextAlignment.DEFAULT.swingConstant;
-
-	public String getTitle() {
-    	return title;
-    }
+	private ComponentOrientation componentOrientation = TextWritingDirection.DEFAULT.componentOrientation;
 
 	public void setTitle(String purpose) {
     	this.title = purpose;
@@ -260,12 +261,15 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	}
 
 	@Override
-	public void show(final RootPaneContainer frame) {
+	public void show(final Window window) {
 		try {
-			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
+			HTMLDialog htmlEditorWindow = createHtmlEditor(window);
 			htmlEditorWindow.setBase(this);
 			final String titleText;
-			titleText = TextUtils.getText(title);
+			if(getEditControl().getEditType() == EditedComponent.TEXT)
+			    titleText = TextUtils.getText(title);
+			else
+			    titleText = TextUtils.getText(title) + " (" + TextController.getController().getShortPlainText(node, 30, " ...") + ")";
 			JDialog dialog = htmlEditorWindow.getDialog();
             dialog.setTitle(titleText);
             getEditControl().getEditType().installHolder(node, dialog);
@@ -285,6 +289,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				ruleBuilder.append("p {margin-top:0;}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+			editorPane.setComponentOrientation(componentOrientation);
 			if(textColor != null){
 				editorPane.setForeground(textColor);
 				editorPane.setCaretColor(textColor);
@@ -339,8 +344,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		}
 	}
 
-	public HTMLDialog createHtmlEditor(final RootPaneContainer frame) throws Exception {
-			HTMLDialog htmlEditorWindow = new HTMLDialog(this, "", "", frame);
+	public HTMLDialog createHtmlEditor(final Window window) throws Exception {
+			HTMLDialog htmlEditorWindow = new HTMLDialog(this, "", "", window);
 		   	ResourceController.getResourceController().addPropertyChangeListener(
 	    			new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.window.", htmlEditorWindow.getHtmlEditorPanel()));
 		   	return htmlEditorWindow;
@@ -348,5 +353,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 	public void setTextAlignment(int horizontalAlignment) {
 		this.horizontalAlignment = horizontalAlignment;
+	}
+
+	public void setComponentOrientation(ComponentOrientation componentOrientation) {
+		this.componentOrientation = componentOrientation;
 	}
 }

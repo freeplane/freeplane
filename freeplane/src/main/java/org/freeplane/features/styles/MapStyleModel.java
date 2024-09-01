@@ -44,11 +44,14 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.CloudShape;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -84,7 +87,8 @@ public class MapStyleModel implements IExtension {
     public static final IStyle NEW_STYLE = new StyleTranslatedObject("newStyle");
     public static final IStyle SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.selection");
 	public static final IStyle DETAILS_STYLE = new StyleTranslatedObject("defaultstyle.details");
-	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
+    public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
+    public static final IStyle TAG_STYLE = new StyleTranslatedObject("defaultstyle.tags");
 	public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
 	public static final IStyle FLOATING_STYLE = new StyleTranslatedObject("defaultstyle.floating");
 
@@ -164,7 +168,7 @@ public class MapStyleModel implements IExtension {
 	void createStyleMap(final MapModel parentMap, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
         MapModel styleMap = new StyleMapModel(parentMap.getNodeDuplicator(), parentMap.getIconRegistry(),
-                AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
+                parentMap.getExtension(AttributeRegistry.class), modeController.getMapController());
 		styleMap.createNewRoot();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);
@@ -219,11 +223,23 @@ public class MapStyleModel implements IExtension {
 				predefinedStyleParentNode.insert(newNode, 2);
 				addStyleNode(newNode);
 			}
-			FontSizeExtension fontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
-			if (fontSizeExtension != null) {
+			FontSizeExtension attributefontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+			if (attributefontSizeExtension != null) {
 				NodeStyleModel.createNodeStyleModel(styleNodes.get(ATTRIBUTE_STYLE))
-				    .setFontSize(fontSizeExtension.fontSize);
+				    .setFontSize(attributefontSizeExtension.fontSize);
 			}
+            if (styleNodes.get(TAG_STYLE) == null) {
+                final NodeModel newNode = new NodeModel(TAG_STYLE, styleMap);
+                final int defaultFontSize = 10;
+                NodeStyleModel.createNodeStyleModel(newNode).setFontSize(defaultFontSize);
+                predefinedStyleParentNode.insert(newNode, 2);
+                addStyleNode(newNode);
+            }
+            FontSizeExtension tagFontSizeExtension = parentMap.getExtension(FontSizeExtension.class);
+            if (tagFontSizeExtension != null) {
+                NodeStyleModel.createNodeStyleModel(styleNodes.get(TAG_STYLE))
+                    .setFontSize(tagFontSizeExtension.fontSize);
+            }
 			if (styleNodes.get(NOTE_STYLE) == null) {
 				final NodeModel newNode = new NodeModel(NOTE_STYLE, styleMap);
 				NodeStyleModel.createNodeStyleModel(newNode).setBackgroundColor(Color.WHITE);
@@ -468,6 +484,16 @@ public class MapStyleModel implements IExtension {
 		return properties.get(key);
 	}
 
+    public <T extends Enum<T>> T getEnumProperty(String name, T defaultValue) {
+        String propertyValue = getProperty(name);
+        return propertyValue == null ? defaultValue : (T) Enum.valueOf(defaultValue.getClass(), propertyValue);
+    }
+
+    public boolean getBooleanProperty(String name) {
+        String propertyValue = getProperty(name);
+        return Boolean.parseBoolean(propertyValue);
+    }
+
 	public NodeModel getStyleNodeGroup(NodeModel styleNode) {
 		final int depth = styleNode.depth();
 		if (depth < 1)
@@ -505,6 +531,7 @@ public class MapStyleModel implements IExtension {
     void copyStyle(NodeModel copiedStyleNode, IStyle styleKey) {
         NodeModel targetStyleNode = getStyleNode(styleKey);
         ModeController modeController = Controller.getCurrentModeController();
+        MAttributeController mAttributeController = MAttributeController.getController();
         if(targetStyleNode == null) {
             NodeModel sourceGroupNode = copiedStyleNode.getParentNode();
             String group = (String) ((StyleTranslatedObject)sourceGroupNode.getUserObject()).getObject();
@@ -516,7 +543,7 @@ public class MapStyleModel implements IExtension {
                     targetStyleNode = new NodeModel(styleMap);
                     targetStyleNode.setUserObject(source.getUserObject());
                     targetGroupNode.insert(targetStyleNode);
-                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);         
+                    modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, source, targetStyleNode);
                     addStyleNode(targetStyleNode);
                 }
             }
@@ -526,8 +553,12 @@ public class MapStyleModel implements IExtension {
             addStyleNode(targetStyleNode);
         } else {
             modeController.removeExtensions(LogicalStyleKeys.NODE_STYLE, targetStyleNode, targetStyleNode);
+            modeController.removeExtensions(MIconController.Keys.ICONS, targetStyleNode, targetStyleNode);
+            targetStyleNode.removeExtension(NodeAttributeTableModel.class);
         }
         modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, copiedStyleNode, targetStyleNode);
+        modeController.copyExtensions(MIconController.Keys.ICONS, copiedStyleNode, targetStyleNode);
+        mAttributeController.copyAttributesToNode(copiedStyleNode, targetStyleNode);
     }
 
 }

@@ -1,26 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32.003" width="32.003" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32.002787 32.002788" xmlns:dc="http://purl.org/dc/elements/1.1/">
-<defs>
-<linearGradient id="a" y2="124.52" gradientUnits="userSpaceOnUse" y1="238.03" x2="219.96" x1="268.63">
-<stop stop-color="#fc2814" offset="0"/>
-<stop stop-color="#fff2ff" offset="1"/>
-</linearGradient>
-</defs>
-<metadata>
-<rdf:RDF>
-<cc:Work rdf:about="">
-<dc:format>image/svg+xml</dc:format>
-<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-<dc:title/>
-</cc:Work>
-</rdf:RDF>
-</metadata>
-<g transform="translate(-350.55 -34.322)">
-<g transform="translate(276.51,-395.1)">
-<path font-size="61.543px" d="m308.65 219.91a51.206 51.206 0 0 1 -51.21 51.21 51.206 51.206 0 0 1 -51.21 -51.21 51.206 51.206 0 0 1 51.21 -51.21 51.206 51.206 0 0 1 51.21 51.21z" stroke-opacity=".58333" fill-rule="evenodd" transform="matrix(.29291 0 0 .29291 14.636 381.01)" stroke="#f00" stroke-width="6.8381" fill="url(#a)"/>
-<text font-size="53.775px" font-family="&apos;Bitstream Vera Sans&apos;" space="preserve" transform="scale(1.3532 .73898)" stroke="#ffffff" y="617.48926" x="56.836712" stroke-width=".81343px" fill="#ffffff">
-<tspan y="617.48926" x="56.836712" stroke-width=".81343">-</tspan>
-</text>
-</g>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" version="1.1" viewBox="0 0 32.003 32.003">
+ <defs>
+  <linearGradient id="a" x1="268.63" x2="219.96" y1="238.03" y2="124.52" gradientTransform="matrix(.29291 0 0 .29291 -59.404 -48.412)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#fc2814" offset="0"/>
+   <stop stop-color="#fff2ff" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <path d="m31.003 16.002a14.999 14.999 0 0 1-15 15 14.999 14.999 0 0 1-15-15 14.999 14.999 0 0 1 15-15 14.999 14.999 0 0 1 15 15z" fill="url(#a)" fill-rule="evenodd" font-size="61.543px" stroke="#ff0000" stroke-opacity=".58333" stroke-width="2.003"/>
+ <text transform="scale(1.3532 .73898)" x="-0.38480523" y="38.759769" fill="#ffffff" font-family="'Bitstream Vera Sans'" font-size="53.775px" stroke="#ffffff" stroke-width=".81342px" space="preserve"><tspan x="-0.38480523" y="38.759769" stroke-width=".81342">-</tspan></text>
 </svg>

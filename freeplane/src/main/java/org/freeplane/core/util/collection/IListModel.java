@@ -24,10 +24,10 @@ import javax.swing.ListModel;
 /**
  * @author Dimitry Polivaev
  */
-public interface IListModel extends ListModel {
+public interface IListModel<T> extends ListModel<T> {
 	/**
 	 */
-	void add(Object o);
+	void add(T o);
 
 	/**
 	 *
@@ -36,13 +36,13 @@ public interface IListModel extends ListModel {
 
 	/**
 	 */
-	boolean contains(Object o);
+	boolean contains(T o);
 
 	/**
 	 */
-	int getIndexOf(Object o);
+	int getIndexOf(T o);
 
-	void remove(Object o);
+	void remove(T o);
 
-	void replace(Object oldO, Object newO);
+	void replace(T oldO, T newO);
 }

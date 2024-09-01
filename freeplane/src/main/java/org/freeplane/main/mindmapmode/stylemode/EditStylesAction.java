@@ -132,7 +132,7 @@ public class EditStylesAction extends AFreeplaneAction {
 		    	final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(getKey() + ".dialog");
 		    	windowConfigurationStorage.storeDialogPositions(dialog);
 				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-				final MapModel map = mapViewManager.getModel();
+				final MapModel map = mapViewManager.getMap();
 				final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 				final boolean stylesChanged = modeController.getStatus() == JOptionPane.OK_OPTION && undoHandler.canUndo();
 				Exception loggedException = null;

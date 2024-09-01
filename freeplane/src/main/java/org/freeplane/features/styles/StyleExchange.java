@@ -4,6 +4,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -52,16 +53,17 @@ class StyleExchange {
         source.addConditionalStylesFrom(oldStyleModel);
         source.setNonStyleUserPropertiesFrom(oldStyleModel);
         moveStyle(true);
-        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
+        MapStyleModel styleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
+        styleModel.setProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY,
                 oldStyleModel.getProperty(MapStyleModel.FOLLOWED_TEMPLATE_LOCATION_PROPERTY));
-        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
+        styleModel.setProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY,
                 oldStyleModel.getProperty(MapStyleModel.ASSOCIATED_TEMPLATE_LOCATION_PROPERTY));
-        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME,
+        styleModel.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME,
         		oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME));
 	}
 
     private void makeUndoableAndRefreshView(final MapStyleModel oldStyleModel) {
-        final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
+        final MapStyleModel newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
 		IActor actor = new IActor() {
 			@Override
 			public void undo() {
@@ -76,8 +78,8 @@ class StyleExchange {
 
 			@Override
 			public void act() {
-				targetMap.getRootNode().putExtension(newStyleModel);
-		        LogicalStyleController.getController().refreshMapLaterUndoable(targetMap);
+			    targetMap.getRootNode().putExtension(newStyleModel);
+			    LogicalStyleController.getController().refreshMapLaterUndoable(targetMap);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, targetMap);
@@ -88,7 +90,11 @@ class StyleExchange {
     	if(source == null)
     		return;
     	final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
-    	source.getStyleMap().putExtension(IUndoHandler.class, undoHandler);
+    	MapModel styleMap = source.getStyleMap();
+        styleMap.putExtension(IUndoHandler.class, undoHandler);
+        IconRegistry iconRegistry = targetMap.getIconRegistry();
+        styleMap.setIconRegistry(iconRegistry);
+        iconRegistry.registryMapContent(styleMap);
     	final NodeModel targetRoot = targetMap.getRootNode();
     	final MapStyleModel target = MapStyleModel.getExtensionOrNull(targetRoot);
     	if(target == null){

@@ -63,8 +63,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (nodeView == null)
 		    return;
 
-		final NodeModel node = nodeView.getModel();
-		final ModeController mc = Controller.getCurrentController().getModeController();
+		final NodeModel node = nodeView.getNode();
+		Controller currentController = Controller.getCurrentController();
+        final ModeController mc = currentController.getModeController();
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == MouseEvent.BUTTON1
 		        && Compat.isPlainEvent(e)
@@ -74,6 +75,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		    return;
 		}
 
+		boolean isDelayedFoldingActive = false;
 		final boolean inside = nodeSelector.isInside(e);
 		if(e.getButton() == 1){
 			if(Compat.isCtrlEvent(e) || Compat.isPlainEvent(e) && ResourceController.getResourceController().getBooleanProperty(OPEN_LINKS_ON_PLAIN_CLICKS)){
@@ -126,6 +128,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if(inside && (e.getClickCount() == 1 && foldsOnClickInside()
 				        || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick()))){
 					if (!nodeSelector.shouldSelectOnClick(e)) {
+					    isDelayedFoldingActive = true;
 						doubleClickTimer.start(new Runnable() {
 							@Override
 							public void run() {
@@ -151,8 +154,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 		}
 
-		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
-			nodeSelector.extendSelection(e);
+		if(inside && e.getButton() == 1 &&  ! e.isAltDown()) {
+            nodeSelector.extendSelection(e, ! isDelayedFoldingActive);
+        }
 	}
 
 
@@ -182,7 +186,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if (!nodeSelector.isInside(e))
 			return;
 		nodeSelector.stopTimerForDelayedSelection();
-		nodeSelector.extendSelection(e);
+		nodeSelector.extendSelection(e, false);
 	}
 
 	@Override
@@ -212,7 +216,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
         if(! followLink){
         	followLink = node.isClickableLink(e.getX());
         	if(followLink){
-				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel());
+				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getNode());
         	}
         }
         final Cursor requiredCursor;
@@ -273,7 +277,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(foldingController == null)
 			return;
 		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
-		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getModel());
+		final JPopupMenu popupmenu = foldingController.createFoldingPopupMenu(nodeView.getNode());
 		AutoHide.start(popupmenu);
 		new NodePopupMenuDisplayer().showMenuAndConsumeEvent(popupmenu, e);
     }

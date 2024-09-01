@@ -51,15 +51,17 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	 */
 	final private int[] mNodeTextColumns;
 	final private TableModel mTableModel;
+	private final TableColumnVisibilityChanger columnVisibilityChanger;
 	private boolean matchCase;
 
 	/**
 	 * @param node_text_column
 	 */
-	public FlatNodeTableFilterModel(final TableModel tableModel, final int[] node_text_column) {
+	public FlatNodeTableFilterModel(final TableModel tableModel, final int[] node_text_column, TableColumnVisibilityChanger columnVisibilityChanger) {
 		super();
 		mTableModel = tableModel;
 		mNodeTextColumns = node_text_column;
+        this.columnVisibilityChanger = columnVisibilityChanger;
 		tableModel.addTableModelListener(new TableModelHandler());
 		resetFilter();
 	}
@@ -152,6 +154,8 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 				continue;
 			}
 			for(int nodeTextColumn : mNodeTextColumns){
+			    if(! columnVisibilityChanger.isColumnVisible(nodeTextColumn))
+			        continue;
 				final TextHolder nodeContent = (TextHolder) mTableModel.getValueAt(i, nodeTextColumn);
 				if(mPattern == null && (
 						matchCase && nodeContent.toString().contains(mFilterRegexp)

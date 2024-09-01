@@ -19,15 +19,24 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.Font;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.TagIcon;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
@@ -38,8 +47,10 @@ import org.freeplane.features.mode.CombinedPropertyChain;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleNode;
@@ -48,8 +59,7 @@ import org.freeplane.features.styles.StyleNode;
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
-
-	private static final Quantity<LengthUnit> DEFAULT_ICON_SIZE = new Quantity<LengthUnit>(12, LengthUnit.pt);
+    private static final Quantity<LengthUnit> DEFAULT_ICON_SIZE = new Quantity<LengthUnit>(12, LengthUnit.pt);
 
 	final private CombinedPropertyChain<Collection<NamedIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
@@ -70,11 +80,12 @@ public class IconController implements IExtension {
 		modeController.addExtension(IconController.class, this);
 	}
 
-// 	final private ModeController modeController;
 	final private Collection<IStateIconProvider> stateIconProviders;
-	
+
 	final private List<IconMouseListener> iconMouseListeners;
-	
+
+    private final ModeController modeController;
+
 	public void addIconMouseListener(final IconMouseListener iconMouseListener) {
 		iconMouseListeners.add(iconMouseListener);
 	}
@@ -87,14 +98,17 @@ public class IconController implements IExtension {
     }
 	public IconController(final ModeController modeController) {
 		super();
+        this.modeController = modeController;
 		stateIconProviders = new LinkedList<IStateIconProvider>();
 		iconHandlers = new CombinedPropertyChain<Collection<NamedIcon>, NodeModel>(false);
-//		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.ICON_STORE);
 		textBuilder.registerBy(readManager, writeManager);
+		final TagBuilder tagBuilder = new TagBuilder();
+		tagBuilder.registerBy(readManager, writeManager);
+
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<NamedIcon>, NodeModel>() {
 			public Collection<NamedIcon> getProperty(final NodeModel node, LogicalStyleController.StyleOption option, final Collection<NamedIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
@@ -131,7 +145,7 @@ public class IconController implements IExtension {
 		final Collection<NamedIcon> icons = iconHandlers.getProperty(node, option, new LinkedList<NamedIcon>());
 		return icons;
 	}
-	
+
 	public final Collection<UIIcon> getStateIcons(final NodeModel node){
 		final LinkedList<UIIcon> icons = new LinkedList<UIIcon>();
 		for(IStateIconProvider provider : stateIconProviders){
@@ -184,4 +198,48 @@ public class IconController implements IExtension {
 		return size;
 	}
 
+    public Map<String, AFreeplaneAction> getAllIconActions() {
+        return Collections.emptyMap();
+    }
+    public List<TagIcon> getTagIcons(NodeModel node) {
+        final MapStyle mapStyle = modeController.getExtension(MapStyle.class);
+        boolean showCategories = mapStyle.showsTagCategories(node.getMap());
+        return getTagIcons(node, showCategories);
+
+    }
+    public List<TagIcon> getTagIcons(NodeModel node, boolean showCategories) {
+        final Font font = getTagFont(node);
+        final TagCategories tagCategories = node.getMap().getIconRegistry().getTagCategories();
+        final String tagCategorySeparator = tagCategories.getTagCategorySeparator();
+        return getTags(node).stream()
+                .map(tag -> showCategories ? tag : tag.withoutCategories(tagCategorySeparator))
+                .map(tag -> new TagIcon(tag, font))
+                .collect(Collectors.toList());
+    }
+
+    public Font getTagFont(NodeModel node) {
+        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.TAG_STYLE);
+        final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
+        Font nodeFont = style.getFont(attributeStyleNode, StyleOption.FOR_UNSELECTED_NODE);
+        final Font font = nodeFont.deriveFont(UITools.FONT_SCALE_FACTOR * nodeFont.getSize2D());
+        return font;
+    }
+    public List<TagReference> getTagReferences(NodeModel node) {
+        return Tags.getTagReferences(node);
+    }
+
+    public List<Tag> getTags(NodeModel node) {
+        final Tags tags = node.getExtension(Tags.class);
+        return tags == null ? Collections.emptyList() : tags.getTags();
+    }
+
+    public List<Tag> getTagsWithExtendedCategories(NodeModel node){
+        return extendCategories(getTags(node), node.getMap().getIconRegistry().getTagCategories());
+    }
+
+    @SuppressWarnings("unused")
+    public List<Tag> extendCategories(List<Tag> tags, TagCategories tagCategories){
+        return Collections.emptyList();
+    }
 }

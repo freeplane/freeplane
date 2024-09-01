@@ -46,6 +46,7 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 
 /**
  * @author Dimitry Polivaev
@@ -91,9 +92,9 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
         private Timer timer;
 
-		private JComponent backgroundComponent;
+		private ScalableComponent backgroundComponent;
 
-        public void setBackgroundComponent(JComponent backgroundComponent) {
+        public void setBackgroundComponent(ScalableComponent backgroundComponent) {
             this.backgroundComponent = backgroundComponent;
         }
 
@@ -180,9 +181,16 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 
         @Override
         public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if(backgroundComponent != null)
-                backgroundComponent.paint(g);
+            if(backgroundComponent != null) {
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
+                backgroundComponent.paintComponent(g);
+            }
+        }
+
+        @Override
+        public boolean isOpaque() {
+            return backgroundComponent != null && getBackground().getAlpha() == 255;
         }
 
         @Override

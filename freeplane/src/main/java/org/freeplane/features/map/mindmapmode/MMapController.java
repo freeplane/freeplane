@@ -25,7 +25,6 @@ import static org.freeplane.features.map.SummaryNodeFlag.SUMMARY;
 import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -48,8 +47,6 @@ import java.util.TreeSet;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
@@ -63,7 +60,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
-import org.freeplane.features.commandsearch.CommandSearchAction;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
@@ -104,7 +100,6 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.NodeAndMapReference;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.features.url.mindmapmode.MapLoader;
@@ -379,34 +374,6 @@ public class MMapController extends MapController {
         Controller.getCurrentModeController().execute(actor, map);
     }
 
-    public boolean close(final MapModel map) {
-        if (!(map.isSaved() || map.isReadOnly())) {
-            Controller.getCurrentController().getMapViewManager().changeToMap(map);
-            final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
-            final String title = TextUtils.getText("SaveAction.text");
-            Component dialogParent;
-            final Frame viewFrame = UITools.getCurrentFrame();
-            if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
-                dialogParent = viewFrame;
-            else
-                dialogParent = UITools.getCurrentRootComponent();
-            final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
-                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (returnVal == JOptionPane.YES_OPTION) {
-                final boolean savingNotCancelled = ((MFileManager) getModeController().getExtension(UrlManager.class))
-                        .save(map);
-                if (!savingNotCancelled) {
-                    return false;
-                }
-            }
-            else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
-                return false;
-            }
-        }
-        closeWithoutSaving(map);
-        return true;
-    }
-
     @Override
     synchronized public void closeWithoutSaving(final MapModel map) {
         loadedMaps.remove(map);
@@ -415,8 +382,6 @@ public class MMapController extends MapController {
 
     private void createActions(ModeController modeController) {
         modeController.addAction(new NewMapViewAction());
-        modeController.addAction(new JumpInAction());
-        modeController.addAction(new JumpOutAction());
         modeController.addAction(new NewSiblingAction());
         modeController.addAction(new NewPreviousSiblingAction());
         modeController.addAction(new NewChildAction());
@@ -426,7 +391,6 @@ public class MMapController extends MapController {
         modeController.addAction(new NodeUpAction());
         modeController.addAction(new NodeDownAction());
         modeController.addAction(new ConvertCloneToIndependentNodeAction());
-        modeController.addAction(new CommandSearchAction());
     }
 
     public void deleteNode(NodeModel node) {
@@ -442,7 +406,7 @@ public class MMapController extends MapController {
 
     public void convertClonesToIndependentNodes(final NodeModel node){
         final MLinkController linkController = (MLinkController) MLinkController.getController();
-        if(node.isCloneTreeRoot()){
+        if(node.isCloneTreeRootOrContentClone()){
             linkController.deleteMapLinksForClone(node);
             convertCloneToNode(node);
             linkController.insertMapLinksForClone(node);
@@ -522,7 +486,7 @@ public class MMapController extends MapController {
 
             @Override
             public void undo() {
-                (Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+                insertNodeIntoWithoutUndo(node, parentNode, index);
             }
         };
         Controller.getCurrentModeController().execute(actor, parentNode.getMap());
@@ -533,7 +497,7 @@ public class MMapController extends MapController {
         final NodeDeletionEvent nodeDeletionEvent = new NodeDeletionEvent(parent, child, index);
         firePreNodeDelete(nodeDeletionEvent);
         final MapModel map = parent.getMap();
-        setSaved(map, false);
+        mapSaved(map, false);
         parent.remove(index);
         fireNodeDeleted(nodeDeletionEvent);
         deleteSingleSummaryNode(nodeDeletionEvent.parent);
@@ -569,7 +533,7 @@ public class MMapController extends MapController {
 
     @Override
     public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-        setSaved(parent.getMap(), false);
+        mapSaved(parent.getMap(), false);
         super.insertNodeIntoWithoutUndo(newNode, parent, index);
     }
 
@@ -642,6 +606,10 @@ public class MMapController extends MapController {
             return;
         }
         final NodeModel oldParent = child.getParentNode();
+        if(oldParent == null){
+            UITools.errorMessage("not allowed");
+            return;
+        }
         if(newParent != oldParent && newParent.subtreeClones().contains(oldParent)) {
             moveNodeAndItsClones(child, oldParent, newIndex);
             return;
@@ -866,7 +834,7 @@ public class MMapController extends MapController {
         fireNodeMoved(nodeMoveEvent);
         if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
             deleteSingleSummaryNode(nodeMoveEvent.oldParent);
-       setSaved(newParent.getMap(), false);
+       mapSaved(newParent.getMap(), false);
         return newIndex;
     }
 
@@ -976,7 +944,7 @@ public class MMapController extends MapController {
 
 
     @Override
-    public void setSaved(final MapModel mapModel, final boolean saved) {
+    public void mapSaved(final MapModel mapModel, final boolean saved) {
         final boolean setTitle = saved != mapModel.isSaved() || mapModel.isReadOnly();
         mapModel.setSaved(saved);
         if (setTitle) {
@@ -1237,6 +1205,10 @@ public class MMapController extends MapController {
             };
             getModeController().execute(actor, node.getMap());
         }
+    }
+
+    public NodeModel newNode(final Object userObject, final MapModel map) {
+        return new NodeModel(userObject, map);
     }
 
 }

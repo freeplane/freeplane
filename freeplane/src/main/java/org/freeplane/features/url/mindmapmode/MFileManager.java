@@ -82,6 +82,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController.CopiedNodeSet;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -154,6 +155,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
     private final static FileFilter MINDMAP_FILE_FILTER = new CaseSensitiveFileNameExtensionFilter("mm", TextUtils.getText("mindmaps_desc"));
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
 	private static File singleBackupDirectory;
+    private final MMapController mapController;
 	private File[] findFileRevisions(final File file, final File backupDir, final AlternativeFileMode mode) {
 		final String fileExtensionPattern;
 		if (mode == AlternativeFileMode.ALL)
@@ -260,8 +262,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return MFileManager.createBackupFile(backupDir, file, backupFileNumber, extension);
 	}
 
-	public MFileManager() {
+	public MFileManager(MMapController mapController) {
 		super(new File(getDefaultSaveDirFromPrefs()));
+        this.mapController = mapController;
 	}
 
 	private static String getDefaultSaveDirFromPrefs() {
@@ -275,15 +278,12 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		createActions();
 		createPreferences();
 		if (ResourceController.getResourceController().getBooleanProperty("single_backup_directory")) {
-			String value = ResourceController.getResourceController().getProperty("single_backup_directory_path");
-			String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
-			value = TextUtils.replaceAtBegin(value, "{freeplaneuserdir}", freeplaneUserDirectory);
-			singleBackupDirectory = new File(value);
+			singleBackupDirectory = ResourceController.getResourceController().getFile("single_backup_directory_path");
 		}
 	}
 
     private void createPreferences() {
-		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		final MModeController modeController = mapController.getMModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
 			@Override
@@ -327,7 +327,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	private void createActions() {
 		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = controller.getModeController();
+		final ModeController modeController = mapController.getModeController();
 		controller.addAction(new OpenAction());
 		controller.addAction(new OpenURLMapAction());
 		controller.addAction(new NewMapAction());
@@ -344,7 +344,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new ImportFolderStructureAction());
 		modeController.addAction(new RevertAction());
 		modeController.addAction(new OpenCurrentMapDirAction());
-		modeController.addAction(new OpenUserDirAction());
 	}
 
 	public JFreeplaneCustomizableFileChooser getMindMapFileChooser() {
@@ -426,7 +425,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final File file = map.getFile();
 		if (file == null && LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP) {
 			JOptionPane.showMessageDialog(
-			    Controller.getCurrentController().getViewController().getCurrentRootComponent(),
+			   mapController.getModeController().getController().getViewController().getCurrentRootComponent(),
 			    TextUtils.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -537,8 +536,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final String errorMessage = "Error while parsing file:" + file;
 			LogUtils.warn(errorMessage, ex);
 			final NodeModel result = new NodeModel(map);
-			map.setRoot(result);
 			result.setText(errorMessage);
+			if(map.getRootNode() == null)
+			    map.setRoot(result);
 			return result;
 		}
 	}
@@ -559,7 +559,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
             }
             try (final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
                     Reader reader = openInputStream(f, sequencedInput, versionInterpreter)) {
-                return Controller.getCurrentModeController().getMapController().getMapReader()
+                return mapController.getMapReader()
                     .createNodeTreeFromXml(map, reader, Mode.FILE);
             }
         }
@@ -616,14 +616,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		for (int i = 0; i < selectedFiles.length; i++) {
 			final File theFile = selectedFiles[i];
 			try {
-				Controller.getCurrentModeController().getMapController().openMap(Compat.fileToUrl(theFile));
+			    if(theFile.exists())
+			        mapController.openMap(Compat.fileToUrl(theFile));
 			}
 			catch (final Exception ex) {
 				handleLoadingException(ex);
 				break;
 			}
 		}
-		Controller.getCurrentController().getMapViewManager().setMapTitles();
 	}
 
 	public MapModel newMapFromDefaultTemplate() {
@@ -695,8 +695,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					follow = startFollow;
 				}
 				try {
-					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
-					    .getMapController();
 					final MapModel map = mapController.newMap(Compat.fileToUrl(file), follow);
 					return map;
 				}
@@ -738,6 +736,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		catch (final Exception e) {
+		    LogUtils.severe(e);
 			UITools.informationMessage(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
 			    TextUtils.format("locking_failed_by_save_as", file.getName()));
 			return false;
@@ -759,10 +758,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		map.updateLastKnownFileModificationTime();
 		map.setReadOnly(false);
 		final URL urlAfter = map.getURL();
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		if(! urlAfter.equals(urlBefore))
 			mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter, false));
-		mapController.setSaved(map, true);
+		mapController.mapSaved(map, true);
 		return true;
 	}
 
@@ -793,6 +791,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController()
 			    .getMapViewManager().getMapViewComponent(), TextUtils.getText("map_already_exists"), "Freeplane",
 			    JOptionPane.YES_NO_OPTION);
+			UITools.resetMenuBarOnMac();
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}
@@ -866,8 +865,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out,//
 				StandardCharsets.UTF_8));
-			Controller.getCurrentModeController().getMapController().getMapWriter()
-			    .writeMapAsXml(map, fileout, Mode.FILE, true, false);
+			mapController.getMapWriter()
+			    .writeMapAsXml(map, fileout, Mode.FILE, CopiedNodeSet.ALL_NODES, false);
 		}
 		finally {
 			if (lock != null && lock.isValid())

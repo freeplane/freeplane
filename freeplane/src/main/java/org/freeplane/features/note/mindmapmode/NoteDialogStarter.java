@@ -1,5 +1,6 @@
 package org.freeplane.features.note.mindmapmode;
 
+import java.awt.Window;
 import java.util.regex.Pattern;
 
 import javax.swing.RootPaneContainer;
@@ -57,9 +58,9 @@ class NoteDialogStarter{
 			note = new NoteModel();
 		}
 		final EditNodeBase.IEditControl editControl = new NoteEditor(nodeModel);
-		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
+		final Window window = SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = MTextController.getController().createEditor(nodeModel, note, note.getTextOr(""), editControl, false, true, true);
-		editor.show(frame);
+		editor.show(window);
 
     }
 

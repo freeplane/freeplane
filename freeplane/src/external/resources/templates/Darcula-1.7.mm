@@ -33,6 +33,7 @@
 <stylenode LOCALIZED_TEXT="styles.important">
 <icon BUILTIN="yes"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="styles.flower" STYLE="oval" BORDER_DASH="CLOSE_DOTS" COLOR="#ffffff" BACKGROUND_COLOR="#255aba" TEXT_ALIGN="CENTER" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="22 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#f9d71c" BORDER_DASH_LIKE_EDGE="false"  MIN_WIDTH="3 cm" MAX_WIDTH="6 cm" />
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#dddddd" STYLE="oval" SHAPE_VERTICAL_MARGIN="10.0 pt" SHAPE_HORIZONTAL_MARGIN="10.0 pt" >

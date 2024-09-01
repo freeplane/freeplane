@@ -3,6 +3,7 @@ package org.freeplane.features.note.mindmapmode;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.ui.components.html.StyleSheetConfigurer;
@@ -44,7 +46,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -72,7 +73,7 @@ class NotePanel extends JPanel {
     private final NoteManager noteManager;
     private final StyleSheet ownStyleSheet;
 
-    private FocusListener sourcePanelFocusListener;
+    private FocusListener textPanelFocusListener;
 
     private boolean isEditing = false;
 
@@ -170,15 +171,13 @@ class NotePanel extends JPanel {
 			}
 		});
 
-		sourcePanelFocusListener = new FocusListener() {
+		textPanelFocusListener = new FocusListener() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if(isEditing && ! e.isTemporary()){
-				    noteManager.saveNote();
-				    if(viewerScrollPanel.isVisible())
-				        noteManager.updateEditor();
-
+				if (isEditing && e.getOppositeComponent() != null) {
+					noteManager.saveNote();
+				    noteManager.updateEditor();
 				}
 			}
 
@@ -186,7 +185,6 @@ class NotePanel extends JPanel {
 			public void focusGained(FocusEvent e) {
 			}
 		};
-        htmlEditorPanel.getSourceEditorPane().addFocusListener(sourcePanelFocusListener);
 //		setDefaultFont();
 		htmlEditorPanel.setOpenHyperlinkHandler(new ActionListener() {
 			@Override
@@ -201,6 +199,18 @@ class NotePanel extends JPanel {
 			}
 		});
 		return htmlEditorPanel;
+	}
+
+
+
+	@Override
+	public void setComponentOrientation(ComponentOrientation o) {
+		if(o != super.getComponentOrientation()) {
+			htmlEditorPanel.getEditorPane().setComponentOrientation(o);
+			htmlViewerPanel.setComponentOrientation(o);
+			iconViewerPanel.setComponentOrientation(o);
+			super.setComponentOrientation(o);
+		}
 	}
 
 	@Override
@@ -255,8 +265,9 @@ class NotePanel extends JPanel {
         HtmlProcessor.configureUnknownTags(htmlEditorPanel.getDocument());
 		htmlEditorPanel.setCurrentDocumentContent(note);
 		if(note.isEmpty()) {
-		    htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-            htmlEditorPanel.getEditorPane().putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
+			editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+            editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		}
 	}
 
@@ -358,12 +369,12 @@ class NotePanel extends JPanel {
 			htmlEditorPanel.getDocument().removeDocumentListener(noteDocumentListener);
 	}
 
-	private boolean requestFocusInEditorPane() {
+	private void requestFocusInEditorPane() {
 		if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 			final JEditorPane editorPane = getEditorPane();
 			editorPane.setCaretPosition(editorPane.getDocument().getLength());
 		}
-		return getMostRecentFocusOwner().requestFocusInWindow();
+		 getMostRecentFocusOwner().requestFocus();
 	}
 
 	void installDocumentListener() {
@@ -404,8 +415,8 @@ class NotePanel extends JPanel {
             Component view = viewerScrollPanel.getViewport().getView();
             JEditorPane textPane = MTextController.getController().createEditorPane(() -> viewerScrollPanel, node, note, note.getTextOr(""));
             if(textPane != null) {
-                textPane.requestFocusInWindow();
-                textPane.addFocusListener(sourcePanelFocusListener);
+                textPane.requestFocus();
+                textPane.addFocusListener(textPanelFocusListener);
                 textPane.getDocument().addDocumentListener(noteDocumentListener);
                 textPane.addKeyListener(new KeyListener() {
 

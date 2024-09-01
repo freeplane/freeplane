@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -62,8 +63,8 @@ public class EditNodeDialog extends EditNodeBase {
 
 	private class LongNodeDialog extends EditDialog {
 
-		public LongNodeDialog(final RootPaneContainer frame, final String title, final Color background) {
-			super(EditNodeDialog.this, title, frame);
+		public LongNodeDialog(final Window window, final String title, final Color background) {
+			super(EditNodeDialog.this, title, window);
 			getDialog().setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
 			final JScrollPane editorScrollPane;
 			textComponent.setText(getText());
@@ -259,11 +260,11 @@ public class EditNodeDialog extends EditNodeBase {
 	}
 
 	@Override
-	public void show(final RootPaneContainer frame) {
+	public void show(final Window window) {
 		if (title == null) {
 			title = TextUtils.getText("edit_long_node");
 		}
-		final EditDialog editor = new LongNodeDialog(frame, title, getBackground());
+		final EditDialog editor = new LongNodeDialog(window, title, getBackground());
 		redispatchKeyEvents(textComponent, firstEvent);
         if (firstEvent == null) {
             textComponent.setCaretPosition(textComponent.getDocument().getLength());

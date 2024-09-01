@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.freeplane.plugin.script.proxy;
 
@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.TranslatedObject;
@@ -108,6 +109,10 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 
 	public Proxy.Edge getEdge() {
 		return new EdgeProxy(getDelegate(), getScriptContext());
+	}
+
+	public Proxy.Border getBorder(){
+		return new BorderProxy(getDelegate(), getScriptContext());
 	}
 
 	public Proxy.Font getFont() {
@@ -228,7 +233,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	public void setMinNodeWidth(String width) {
 		getStyleController().setMinNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnit.px));
 	}
-	
+
     public void setMaxNodeWidth(int width) {
         Quantity<LengthUnit> quantity = inPixels(width);
 		setMaxNodeWidth(quantity);
@@ -281,8 +286,23 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 		return NodeSizeModel.getMinNodeWidth(getDelegate()) != null;
 	}
 
-	@Override
-	public boolean isMaxNodeWidthSet() {
-		return NodeSizeModel.getMaxNodeWidth(getDelegate()) != null;
-	}
+    @Override
+    public boolean isMaxNodeWidthSet() {
+        return NodeSizeModel.getMaxNodeWidth(getDelegate()) != null;
+    }
+
+    @Override
+    public boolean isHorizontalTextAlignmentSet() {
+        return NodeStyleModel.getHorizontalTextAlignment(getDelegate()) != null;
+    }
+
+    @Override
+    public HorizontalTextAlignment getHorizontalTextAlignment() {
+        return getStyleController().getHorizontalTextAlignment(getDelegate(), StyleOption.FOR_UNSELECTED_NODE);
+    }
+
+    @Override
+    public void setHorizontalTextAlignment(HorizontalTextAlignment alignment) {
+        getStyleController().setHorizontalTextAlignment(getDelegate(), alignment);
+    }
 }

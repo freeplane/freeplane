@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -70,7 +69,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
 import org.freeplane.features.mode.filemode.FModeController;
-import org.freeplane.features.mode.mindmapmode.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.print.PrintController;
 import org.freeplane.features.styles.LogicalStyleFilterController;
@@ -213,6 +211,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					});
 					frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 					final MMapViewController mapViewController = new MMapViewController(controller);
+					controller.addAction(new CloseAllMapsAction(mapViewController));
+					controller.addAction(new CloseAllOtherMapsAction(mapViewController));
+
+
 					viewController = new ApplicationViewController(controller, mapViewController, frame);
 					splash = new FreeplaneSplashModern(frame);
 					mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
@@ -241,10 +243,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				LinkController.install();
 				IconController.installConditionControllers();
 				HelpController.install();
-				controller.addAction(new NextNodeAction(Direction.FORWARD));
-				controller.addAction(new NextNodeAction(Direction.BACK));
-				controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
-				controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+				Stream.of(Direction.values())
+				    .filter(direction -> ! direction.removesFilter())
+				    .forEach(direction ->controller.addAction(new NextNodeAction(direction)));
 				Arrays.stream(FreeSelectNodeAction.Direction.values())
 						 .forEach(d -> controller.addAction(new FreeSelectNodeAction(d)));
 				controller.addAction(NextPresentationItemAction.createFoldingAction());
@@ -284,10 +285,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 
 	@Override
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
-		LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
-	    ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {
@@ -470,28 +469,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
         	System.err.println("File " + fileArgument + " not loaded");
         }
     }
-
-   @Override
-	public void stop() {
-		try {
-			if (EventQueue.isDispatchThread()) {
-				Controller.getCurrentController().shutdown();
-				return;
-			}
-			EventQueue.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					Controller.getCurrentController().shutdown();
-				}
-			});
-		}
-		catch (final InterruptedException e) {
-			LogUtils.severe(e);
-		}
-		catch (final InvocationTargetException e) {
-			LogUtils.severe(e);
-		}
-	}
+	public void stop() {/**/}
 
 	@Override
 	public ResourceController getResourceController() {

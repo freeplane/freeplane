@@ -134,7 +134,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				final Attribute attribute = new Attribute(ap.attributeName, ap.getValue());
 				attributeController.createAttributeTableModel(node);
 				final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
-				model.addRowNoUndo(node, attribute);
+				model.silentlyAddRowNoUndo(node, attribute);
 				return;
 			}
 			return;

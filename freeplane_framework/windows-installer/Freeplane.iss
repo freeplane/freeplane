@@ -11,20 +11,20 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.11.7"
+#define MyVersion "1.12.5"
 #define MyStatus ""
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
 #define MyAppExeName "freeplane.exe"
-#define ConfigurationDirectory 'Freeplane\1.11.x'
+#define ConfigurationDirectory 'Freeplane\1.12.x'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2023 Freeplane team and others
+AppCopyright=Copyright © 2000-2024 Freeplane team and others
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
@@ -73,7 +73,7 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Name: associate; Description: {cm:AssocFileExtension,Freeplane,.mm}; GroupDescription: {cm:AssocingFileExtension,Freeplane,.mm}
 
 [Files]
-Source: "..\..\BIN\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs; Excludes: "\*.l4j.ini"
+Source: "..\..\BIN\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs; Excludes: "*.l4j.ini"
 Source: "..\..\BIN\*.l4j.ini"; DestDir: "{app}"; Flags: ignoreversion onlyifdoesntexist
 
 #ifdef includeJavaRuntime

@@ -130,10 +130,16 @@ private Timer timer;
 			timer = new Timer(UNFOLD_DELAY_MILLISECONDS, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(mainView.isDisplayable()){
-						NodeView nodeView = mainView.getNodeView();
-						final NodeModel node = nodeView.getModel();
-						Controller.getCurrentModeController().getMapController().unfold(node, nodeView.getMap().getFilter());
+				    if(mainView.isDisplayable()){
+				        NodeView nodeView = mainView.getNodeView();
+				        if(nodeView.isFolded()) {
+				            final NodeModel node = nodeView.getNode();
+				            MapView map = nodeView.getMap();
+				            if(map.isSelected())
+				                map.getModeController().getMapController().unfold(node, map.getFilter());
+				            else
+				                nodeView.setFolded(false);
+				        }
 					}
 				}
 			});
@@ -164,7 +170,7 @@ private Timer timer;
 		catch (Exception e) {
 			return dropAction != DnDConstants.ACTION_LINK;
 		}
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getNode();
 		if (dropAction == DnDConstants.ACTION_LINK) {
 			return isFromSameMap(node, droppedNodes);
 		}
@@ -212,7 +218,7 @@ private Timer timer;
 			final NodeView targetNodeView = mainView.getNodeView();
 			final MapView mapView = targetNodeView.getMap();
 			mapView.select();
-			final NodeModel targetNode = targetNodeView.getModel();
+			final NodeModel targetNode = targetNodeView.getNode();
 			final Controller controller = Controller.getCurrentController();
 			int dropAction = getDropAction(dtde);
 			final Transferable t = dtde.getTransferable();
@@ -266,7 +272,9 @@ private Timer timer;
 			}
 			else {
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(targetNode, selecteds)) {
+				if (DnDConstants.ACTION_MOVE == dropAction
+				        && t.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeObjectsFlavor)
+				        && isFromSameMap(targetNode, selecteds)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					moveNodes(mapController, targetNode, t, dropAsSibling, isTopOrLeft);
 

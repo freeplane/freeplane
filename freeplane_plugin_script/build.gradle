@@ -1,7 +1,7 @@
 dependencies {
     implementation project(':freeplane')
     implementation project(':freeplane_plugin_jsyntaxpane')
-	lib ('org.apache.groovy:groovy-all:4.0.13') {
+	lib ('org.apache.groovy:groovy-all:4.0.21') {
 		exclude group:'org.codehaus.groovy', module:'groovy-test'
 		exclude group:'org.codehaus.groovy', module:'groovy-test-junit5'
 		exclude group:'org.codehaus.groovy', module:'groovy-testng'
@@ -11,8 +11,8 @@ dependencies {
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-commons'
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-picocli'
 	}
-	lib 'org.apache.groovy:groovy-dateutil:4.0.13'
-	lib 'org.apache.ivy:ivy:2.5.1'
+	lib 'org.apache.groovy:groovy-dateutil:4.0.21'
+	lib 'org.apache.ivy:ivy:2.5.2'
 
 }
 
@@ -40,7 +40,7 @@ task copyScripts(type: Copy) {
 
 javadoc {
     enabled = true
-    
+
     title = "Freeplane API ${project.version}"
 
     source = fileTree(dir: 'src/main/java')
@@ -58,7 +58,7 @@ javadoc {
 		  .include('**/LogUtils.java')
 		  .include('**/MenuUtils.java') + fileTree(dir: '../freeplane_framework/src/main/java')
 		  .include('**/Launcher.java')
-  
+
 
     destinationDir = new File(globalBin + '/doc/api/')
 }

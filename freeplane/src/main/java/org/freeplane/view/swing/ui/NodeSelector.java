@@ -19,10 +19,13 @@
  */
 package org.freeplane.view.swing.ui;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -38,6 +41,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -47,10 +51,32 @@ import org.freeplane.view.swing.map.NodeView;
  * 19.06.2013
  */
 public class NodeSelector {
+
+    static {
+        Toolkit.getDefaultToolkit().addAWTEventListener(
+            new AWTEventListener() {
+                int lastX = -1;
+                int lastY = -1;
+                @Override
+                public void eventDispatched(AWTEvent event) {
+                    if (event instanceof MouseEvent) {
+                        MouseEvent mouseEvent = (MouseEvent) event;
+                        int x = mouseEvent.getXOnScreen();
+                        int y = mouseEvent.getYOnScreen();
+                        mouseWasMoved = lastX != x || lastY != y;
+                        lastX = x;
+                        lastY = y;
+                    }
+                }
+            }, AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK
+        );
+    }
+
 	private static final String SELECTION_METHOD_DIRECT = "selection_method_direct";
 	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
 	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";
 	private static final String SELECTION_METHOD = "selection_method";
+	private static boolean mouseWasMoved = false;
 	private final MovedMouseEventFilter windowMouseTracker = new MovedMouseEventFilter();
 
 	protected class TimeDelayedSelection implements ActionListener {
@@ -67,13 +93,16 @@ public class NodeSelector {
 		    }
 		    try {
 		        Controller controller = Controller.getCurrentController();
-		        if (!controller.getModeController().isBlocked() && controller.getSelection().size() <= 1) {
+		        ModeController modeController = controller.getModeController();
+                if (!modeController.isBlocked() && controller.getSelection().size() <= 1) {
 		            final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
 		                    mouseEvent.getComponent());
 		            MapView map = nodeV.getMap();
-		            if (nodeV.isDisplayable() && nodeV.getModel().hasVisibleContent(map.getFilter())) {
+		            if (nodeV.isDisplayable() && nodeV.getNode().hasVisibleContent(map.getFilter())) {
 		                map.select();
-		                controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+		                NodeModel node = nodeV.getNode();
+                        controller.getSelection().selectAsTheOnlyOneSelected(node);
+		                modeController.getMapController().scrollNodeTreeAfterSelect(node);
 		            }
 		        }
 		    }
@@ -86,6 +115,8 @@ public class NodeSelector {
 	private Timer timerForDelayedSelection;
 
 	public void createTimer(final MouseEvent e) {
+	    if(! mouseWasMoved)
+	        return;
 		if (controlRegionForDelayedSelection != null && controlRegionForDelayedSelection.contains(e.getPoint())) {
 			return;
 		}
@@ -142,10 +173,10 @@ public class NodeSelector {
 		return false;
 	}
 
-	public void extendSelection(final MouseEvent e) {
+	public void extendSelection(final MouseEvent e, boolean scrollNodeTree) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeView nodeView = getRelatedNodeView(e);
-		final NodeModel newlySelectedNode = nodeView.getModel();
+		final NodeModel newlySelectedNode = nodeView.getNode();
 		final boolean extend = Compat.isMacOsX() ? e.isMetaDown() : e.isControlDown();
 		final boolean range = e.isShiftDown();
 		final IMapSelection selection = controller.getSelection();
@@ -156,13 +187,16 @@ public class NodeSelector {
 			selection.toggleSelected(newlySelectedNode);
 		}
 		if (extend == range) {
-			if (selection.isSelected(newlySelectedNode) && selection.size() == 1
-			        && FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)
-				return;
-			else {
+			if (!selection.isSelected(newlySelectedNode)
+			        || selection.size() != 1
+			        || !(FocusManager.getCurrentManager().getFocusOwner() instanceof MainView)) {
 				selection.selectAsTheOnlyOneSelected(newlySelectedNode);
+				e.consume();
 			}
-			e.consume();
+			if(! extend && scrollNodeTree && ! newlySelectedNode.isFolded()) {
+                controller.getModeController().getMapController().scrollNodeTreeAfterSelect(newlySelectedNode);
+                e.consume();
+            }
 		}
 	}
 
@@ -170,7 +204,7 @@ public class NodeSelector {
 		final NodeView nodeV = getRelatedNodeView(e);
 		final Controller controller = Controller.getCurrentController();
 		if (!((MapView) controller.getMapViewManager().getMapViewComponent()).isSelected(nodeV)) {
-			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+			controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getNode());
 		}
 	}
 

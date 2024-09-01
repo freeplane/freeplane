@@ -15,11 +15,11 @@
 		<Entry name="FindAction" row="2" weight = "1"/>
 		<Entry name="NodeListAction" row="2" weight = "1"/>
 		<Entry usedBy="EDITOR" >
-			<Entry name="CutAction" row = "1" />
+			<Entry name="CutAction" row = "1" weight = "1"/>
 		</Entry>
-		<Entry name="CopyAction" row = "1" />
+		<Entry name="CopyAction" row = "1" weight = "1"/>
 		<Entry usedBy="EDITOR" >
-			<Entry name="PasteAction" row = "1" />
+			<Entry name="PasteAction" row = "1" weight = "1"/>
 			<Entry builder="dropdownMenu" text = "edit.tooltip" width = "3" row="2">
 				<Entry name="CopySingleAction" />
 				<Entry name="CopyIDAction" />
@@ -55,7 +55,7 @@
 		<Entry builder="separator" />
 		<Entry builder="childNodesLayout" />
 		<Entry builder="separator" />
-		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="9"/>
+		<Entry builder="main_toolbar_style" usedBy="EDITOR" row="1" width="11"/>
 		<Entry usedBy="EDITOR" row="2">
 			<Entry name="CloudAction" />
 			<Entry name="CloudColorAction" />
@@ -65,6 +65,9 @@
 			<Entry name="TextAlignAction.LEFT" />
 			<Entry name="TextAlignAction.CENTER" />
 			<Entry name="TextAlignAction.RIGHT" />
+			<Entry builder="separator" />
+			<Entry name="TextWritingDirectionAction.LEFT_TO_RIGHT" />
+			<Entry name="TextWritingDirectionAction.RIGHT_TO_LEFT" />
 			<Entry builder="panel" />
 		</Entry>
 		<Entry builder="main_toolbar_font_name" usedBy="EDITOR" row="1"  width="6"/>
@@ -143,6 +146,8 @@
 					<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />
 				</Entry>
 				<Entry name="menu_extensions">
+					<Entry name="EditTagsAction" accelerator="alt F8"/>
+					<Entry name="ManageTagCategoriesAction" />
 					<Entry name="EditDetailsAction" accelerator="F3" />
 					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 					<Entry name="CopyStyleExtensionsAction" />
@@ -221,6 +226,7 @@
               <Entry name="NewParentNode" accelerator="shift TAB" />
               <Entry name="NewFreeNodeAction" />
               <Entry name="NewSummaryAction" accelerator="control shift TAB"/>
+              <Entry name="NewNodeLinkedToMenuItemOnNextClickAction" />
               <Entry builder="separator" />
               <Entry name="DeleteAction" accelerator="DELETE" />
             </Entry>
@@ -247,6 +253,8 @@
               <Entry name="AddLocalLinkAction" accelerator="alt shift L" />
               <Entry name="AddMenuItemLinkAction" />
               <Entry name="AddExecutionLinkAction" />
+              <Entry builder="separator" />
+              <Entry name="NewNodeLinkedToMenuItemOnNextClickAction" />
               <Entry builder="separator" />
               <Entry name="SetLinkAnchorAction" />
               <Entry name="MakeLinkFromAnchorAction" />
@@ -325,10 +333,20 @@
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
 				<Entry name="SetBooleanPropertyAction.show_icons" />
+				<Entry name="show_tags" textKey="MapProperty.show_tags">
+					<Entry builder="radio_button_group">
+						<Entry name="SetStringMapPropertyAction.show_tags.BESIDE_NODES" />
+						<Entry name="SetStringMapPropertyAction.show_tags.UNDER_NODES" />
+						<Entry name="SetStringMapPropertyAction.show_tags.NEVER" />
+					</Entry>
+					<Entry builder="separator" />
+					<Entry name="SetBooleanMapPropertyAction.showTagCategories" />
+				</Entry>
 				<Entry builder="radio_button_group" name="show_connectors" textKey="OptionPanel.show_connectors">
 					<Entry name="SetStringPropertyAction.show_connectors.true" />
 					<Entry name="SetStringPropertyAction.show_connectors.false" />
 					<Entry name="SetStringPropertyAction.show_connectors.for_selection" />
+					<Entry name="SetStringPropertyAction.show_connectors.only_arrows_for_selection" />
 					<Entry name="SetStringPropertyAction.show_connectors.never" />
 				</Entry>
 				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
@@ -365,6 +383,7 @@
 				</Entry>
 				<Entry builder="separator" />
 				<Entry name="SetBooleanMapPropertyAction.show_icon_for_attributes" />
+				<Entry name="SetBooleanMapPropertyAction.attribute_table_width_fits_content" />
 			</Entry>
 			<Entry name="menu_noteView">
 				<Entry name="ShowHideNoteAction" accelerator="control GREATER" />
@@ -399,6 +418,9 @@
               <Entry name="TextAlignAction.LEFT" />
               <Entry name="TextAlignAction.CENTER" />
               <Entry name="TextAlignAction.RIGHT" />
+              <Entry builder="separator" />
+              <Entry name="TextWritingDirectionAction.LEFT_TO_RIGHT" />
+              <Entry name="TextWritingDirectionAction.RIGHT_TO_LEFT" />
               <Entry builder="separator" />
               <Entry name="NodeColorAction" accelerator="alt shift F" />
               <Entry name="BlinkingNodeHookAction" />
@@ -473,7 +495,10 @@
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" accelerator="control TAB" />
+			<Entry name="NavigationNextMapAction" />
+			<Entry builder="separator" />
+			<Entry name="SetBooleanPropertyAction.synchronizeSelectionAcrossVisibleViews" />
+			<Entry name="SetBooleanMapViewPropertyAction.folding_follows_selection" />
 			<Entry name="fold">
 				<Entry name="ToggleFoldedAction" accelerator="SPACE" />
 				<Entry name="ShowNextChildAction" accelerator="shift SPACE" />
@@ -528,27 +553,35 @@
 				<Entry builder="filterConditions" />
 				<Entry builder="noActions" />
 			</Entry>
+			<Entry builder="separator" />
+			<Entry name="SelectFilteredElementAction.NODE" />
+			<Entry name="SelectFilteredElementAction.NODE_AND_CONNECTOR" />
+			<Entry name="SelectFilteredElementAction.CONNECTOR" />
+            <Entry name="ShowAncestorsAction" />
+			<Entry name="ShowDescendantsAction" />
+			<Entry name="HideMatchingNodesAction" />
+			<Entry builder="separator" />
 			<Entry name="UndoFilterAction" />
 			<Entry name="RedoFilterAction" />
+			<Entry name="ApplyToVisibleAction" />
 			<Entry name="ReapplyFilterAction" />
 			<Entry name="SelectFilteredNodesAction" />
-			<Entry builder="separator" />
-			<Entry name="QuickFilterAction" />
-            <Entry name="QuickAndFilterAction" />
-            <Entry name="QuickOrFilterAction" />
 			<Entry name="ApplySelectedViewConditionAction" />
-			<Entry name="QuickFindAllAction" />
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
 			<Entry builder="separator" />
-			<Entry name="ApplyToVisibleAction" />
-			<Entry name="HideMatchingNodesAction" />
-            <Entry name="ShowAncestorsAction" />
-			<Entry name="ShowDescendantsAction" />
+			<Entry name="QuickFindAction.FORWARD_VISIBLE" />
+			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAction.FORWARD_REMOVE_FILTER" />
+			<Entry name="QuickFindAction.BACK_VISIBLE" />
+			<Entry name="QuickFindAction.BACK" />
+			<Entry name="QuickFindAction.BACK_REMOVE_FILTER" />
 			<Entry builder="separator" />
 			<Entry name="QuickHighlightAction" />
-			<Entry name="QuickFindAction.BACK" />
-			<Entry name="QuickFindAction.FORWARD" />
+			<Entry name="QuickFindAllAction" />
+			<Entry name="QuickFilterAction" />
+            <Entry name="QuickAndFilterAction" />
+            <Entry name="QuickOrFilterAction" />
 		</Entry>
 		<Entry name="extras">
 			<Entry name="TimeManagementAction" accelerator="control T" />
@@ -565,9 +598,9 @@
 			<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script" />
 			<Entry name="ScriptEditor" />
             <Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
-            <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6" />
-            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F7" />
-            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F8" />
+            <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F5" />
+            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6" />
+            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F7" />
 			<Entry builder="separator" />
 			<Entry name="SetAcceleratorOnNextClickAction" />
 			<Entry name="acceleratorPresets">
@@ -582,6 +615,7 @@
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
+
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
 				actionKey="TextChangeHotKeyAction"
 				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction"
@@ -591,7 +625,7 @@
 			<Entry builder="separator" />
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
 			<Entry builder="separator" />
-			<Entry name="maps" processOnPopup="true">
+			<Entry name="maps">
 				<Entry builder="navigate_maps,radio_button_group" />
 			</Entry>
 		</Entry>
@@ -664,6 +698,7 @@
             </Entry>
 			<Entry name="edit">
 	    		<Entry name="EditLongAction" accelerator="alt ENTER" />
+	    		<Entry name="EditTagsAction" accelerator="alt F8"/>
 	    		<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 	    		<Entry name="EditDetailsAction" accelerator="F3" />
 	            <Entry name="EditNoteInDialogAction" />

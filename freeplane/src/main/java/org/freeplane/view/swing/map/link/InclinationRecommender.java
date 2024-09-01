@@ -20,7 +20,7 @@ public class InclinationRecommender {
 
     public InclinationRecommender(LinkController linkController, ConnectorView connectorView) {
         this.linkController = linkController;
-        connector = connectorView.getModel();
+        connector = connectorView.getConnector();
         NodeView source = connectorView.getSource();
         NodeView target = connectorView.getTarget();
         if (!connectorView.isSourceVisible() || !connectorView.isTargetVisible() || source.equals(target)) {
@@ -34,6 +34,9 @@ public class InclinationRecommender {
     /**
      */
     public Point calcStartInclination() {
+    	final Point startInclinationByStyle = linkController.getStartInclination(connector);
+    	if(startInclinationByStyle != null)
+    		return startInclinationByStyle;
         if(MapStyleModel.isStyleNode(connector.getSource())) {
             boolean hasLineShape = linkController.getShape(connector) == ConnectorShape.LINE;
             int y = hasLineShape ? 0 : -recommendedHeight / 2;
@@ -52,8 +55,11 @@ public class InclinationRecommender {
     }
 
     public Point calcEndInclination() {
-        Point endInclination = calcStartInclination();
-        endInclination.y = -endInclination.y;
+    	final Point endInclinationByStyle = linkController.getEndInclination(connector);
+    	if(endInclinationByStyle != null)
+    		return endInclinationByStyle;
+        Point startInclination = calcStartInclination();
+        Point endInclination = new Point(startInclination.x, -startInclination.y);
         if (selfLink) {
             fixInclineIfLoopNode(endInclination);
         }

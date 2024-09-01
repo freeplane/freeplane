@@ -23,9 +23,21 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Polygon;
 
+import org.freeplane.api.Dash;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 abstract class VariableInsetsPainter extends ShapedPainter {
+	enum PaintOperation {
+		DRAW(1), FILL(2);
+
+		final int borderWidthFactor;
+
+		private PaintOperation(int borderWidthFactor) {
+			this.borderWidthFactor = borderWidthFactor;
+		}
+
+	}
+
 	private double zoomedVerticalInset;
 	private double zoomedHorizontalInset;
 
@@ -47,7 +59,7 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		}
 		final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(mainView.getMaximumWidth());
 		final double widthWithMargin = Math.max(prefSize.width*getHorizontalMarginFactor(), prefSize.width + getMinimumHorizontalInset());
-		prefSize.width =  mainView.limitWidth((int) Math.ceil(widthWithMargin));
+		prefSize.width =  mainView.limitWidth((int) Math.ceil(widthWithMargin), mainView.getPaintedBorderWidth());
 		prefSize.height = (int) Math.ceil(Math.max(prefSize.height *getVerticalMarginFactor(), prefSize.height + getMinimumVerticalInset()));
 		return prefSize;
 	}
@@ -68,25 +80,35 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		int scaledMaximumWidth = maximumWidth != Integer.MAX_VALUE ? (int)(maximumWidth / getHorizontalMarginFactor()) : maximumWidth;
 		final double zoomedHorizontalInsetBackup = zoomedHorizontalInset;
 		final double zoomedVerticalInsetBackup = zoomedVerticalInset;
-		zoomedHorizontalInset  = getMinimumHorizontalInset();
-		zoomedVerticalInset =  getMinimumVerticalInset();
-		final int oldMinimumWidth = mainView.getMinimumWidth();
-		final int oldMaximumWidth = mainView.getMaximumWidth();
-		final Dimension prefSize;
-		try{
-			mainView.setMinimumWidth(0);
-			mainView.setMaximumWidth(scaledMaximumWidth);
-			prefSize = super.getPreferredSize();
-			prefSize.width -= zoomedHorizontalInset;
-			prefSize.height -= zoomedVerticalInset;
+		double minimumHorizontalInset = getMinimumHorizontalInset();
+		double minimumVerticalInset = getMinimumVerticalInset();
+		if(mainView.isPreferredSizeSet()) {
+		    final Dimension prefSize = mainView.getPreferredSize();
+            prefSize.width -= 2 * Math.floor(zoomedHorizontalInset - minimumHorizontalInset);
+            prefSize.height -= 2 * Math.floor(zoomedVerticalInset - minimumVerticalInset);
+		    return prefSize;
 		}
-		finally {
-			zoomedHorizontalInset = zoomedHorizontalInsetBackup;
-			zoomedVerticalInset = zoomedVerticalInsetBackup;
-			mainView.setMaximumWidth(oldMaximumWidth);
-			mainView.setMinimumWidth(oldMinimumWidth);
+		else {
+		    zoomedHorizontalInset = minimumHorizontalInset;
+		    zoomedVerticalInset =  minimumVerticalInset;
+		    final int oldMinimumWidth = mainView.getMinimumWidth();
+		    final int oldMaximumWidth = mainView.getMaximumWidth();
+		    final Dimension prefSize;
+		    try{
+		        mainView.setMinimumWidth(0);
+		        mainView.setMaximumWidth(scaledMaximumWidth);
+		        prefSize = super.getPreferredSize();
+		        prefSize.width -= 2 * Math.floor(zoomedHorizontalInset);
+		        prefSize.height -= 2 * Math.floor(zoomedVerticalInset);
+		    }
+		    finally {
+		        zoomedHorizontalInset = zoomedHorizontalInsetBackup;
+		        zoomedVerticalInset = zoomedVerticalInsetBackup;
+		        mainView.setMaximumWidth(oldMaximumWidth);
+		        mainView.setMinimumWidth(oldMinimumWidth);
+		    }
+		    return prefSize;
 		}
-		return prefSize;
 	}
 
 	@Override
@@ -135,8 +157,8 @@ abstract class VariableInsetsPainter extends ShapedPainter {
 		return y;
 	}
 
-	Polygon polygonOf(double[] xCoords, double[] yCoords) {
-		int edgeWidthOffset = (int) mainView.getPaintedBorderWidth();
+	Polygon polygonOf(double[] xCoords, double[] yCoords, PaintOperation operation) {
+		int edgeWidthOffset = mainView.getDash() != Dash.SOLID ?  mainView.getPaintedBorderWidth() * operation.borderWidthFactor : mainView.getPaintedBorderWidth();
 		final Polygon polygon = new Polygon(toInt(xCoords, edgeWidthOffset/2, mainView.getWidth() - edgeWidthOffset),
 			toInt(yCoords, edgeWidthOffset/2, mainView.getHeight() - edgeWidthOffset), xCoords.length);
 		return polygon;

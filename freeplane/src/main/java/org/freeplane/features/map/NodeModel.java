@@ -60,7 +60,7 @@ public class NodeModel{
 		DEFAULT, TOP_OR_LEFT, BOTTOM_OR_RIGHT, AS_SIBLING
 	}
 
-	public enum NodeProperty{UNKNOWN_PROPERTY};
+	public enum NodeProperty{UNKNOWN_PROPERTY}
 
 	public enum CloneType{TREE, CONTENT}
 	final static int TREE_CLONE_INDEX = CloneType.TREE.ordinal();
@@ -77,6 +77,8 @@ public class NodeModel{
 	private List<NodeModel> children;
 	private NodeModel parent;
 	private String id;
+	private boolean folded;
+
 	private MapModel map = null;
 	private Side side;
 	private Collection<INodeView> views = null;
@@ -105,6 +107,7 @@ public class NodeModel{
 		side = Side.DEFAULT;
 		init(userObject);
 		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
+		folded = false;
 	}
 
 	private NodeModel(NodeModel toBeCloned, CloneType cloneType){
@@ -113,6 +116,7 @@ public class NodeModel{
 		children = new ArrayList<NodeModel>();
 		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
 		side = Side.DEFAULT;
+		folded = toBeCloned.folded;
 	}
 
 	protected void init(final Object userObject) {
@@ -435,7 +439,7 @@ public class NodeModel{
 	}
 
 	public boolean isFolded() {
-		return sharedData.isFolded() && isAccessible();
+		return folded || !isAccessible();
 	}
 
 	/*
@@ -544,11 +548,13 @@ public class NodeModel{
 	}
 
 	public void setFolded(boolean folded) {
+		boolean wasFoldingFlagSet = this.folded;
 		boolean wasFolded = isFolded();
-		if (wasFolded != folded && isAccessible()) {
-			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
+		if (wasFoldingFlagSet != folded && isAccessible()) {
+		    this.folded = (folded && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this));
 		}
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
+		boolean isFoldedNow = isFolded();
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(isFoldedNow), false, false));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
@@ -723,21 +729,29 @@ public class NodeModel{
 		return subtreeClones().contains(ancestorClone);
 	}
 
-	public NodeModel getSubtreeRoot() {
-		if(isSubtreeRoot())
+	public NodeModel getSubtreeRootOrContentClone() {
+		if(isSubtreeRootOrContentClone())
 			return this;
 		else
-			return getParentNode().getSubtreeRoot();
+			return getParentNode().getSubtreeRootOrContentClone();
 
-	}
-
-	private boolean isSubtreeRoot() {
-		return parent == null || isCloneTreeRoot();
 	}
 
 	public boolean isCloneTreeRoot(){
+		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size();
+	}
+
+	public boolean isCloneContentNodeOutsideCloneTree() {
+		return clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
+	}
+
+	private boolean isSubtreeRootOrContentClone() {
+		return parent == null || isCloneTreeRootOrContentClone();
+	}
+
+	public boolean isCloneTreeRootOrContentClone(){
 		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
-				|| clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
+				||  clones[CONTENT_CLONE_INDEX].size() > clones[TREE_CLONE_INDEX].size();
 	}
 
 	public boolean isCloneTreeNode(){
@@ -807,5 +821,9 @@ public class NodeModel{
 	public Side getSide() {
 		return side;
 	}
+
+    public boolean isFoldable() {
+        return ! isLeaf() && ! isRoot() && ! AlwaysUnfoldedNode.isAlwaysUnfolded(this);
+    }
 
 }

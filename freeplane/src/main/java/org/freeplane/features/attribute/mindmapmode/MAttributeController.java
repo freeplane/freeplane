@@ -238,7 +238,7 @@ public class MAttributeController extends AttributeController {
 			registry.getTableModel().fireTableRowsInserted(index, index);
 			if (manual || visible) {
 				final ModeController modeController = Controller.getCurrentModeController();
-				modeController.getMapController().setSaved(map, false);
+				modeController.getMapController().mapSaved(map, false);
 			}
 		}
 
@@ -252,7 +252,7 @@ public class MAttributeController extends AttributeController {
 			registry.unregistry(name);
 			if (manual) {
 				final ModeController modeController = Controller.getCurrentModeController();
-				modeController.getMapController().setSaved(map, false);
+				modeController.getMapController().mapSaved(map, false);
 			}
 		}
 	}
@@ -600,8 +600,9 @@ public class MAttributeController extends AttributeController {
 		ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new AssignAttributesAction());
 		modeController.addAction(new ShowAttributeDialogAction());
-		modeController.addAction(new CopyAttributes());
-		modeController.addAction(new PasteAttributes());
+		final PasteAttributes pasteAttributes = new PasteAttributes();
+        modeController.addAction(pasteAttributes);
+		modeController.addAction(new CopyAttributes(pasteAttributes));
 		modeController.addAction(new AddStyleAttributes());
 	}
 
@@ -615,7 +616,7 @@ public class MAttributeController extends AttributeController {
 					setAttribute(pNode, i, newAttribute);
 				}
 				else {
-					removeAttribute(pNode, i);
+					performRemoveAttribute(pNode, i);
 				}
 				return i;
 			}
@@ -867,7 +868,7 @@ public class MAttributeController extends AttributeController {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public void removeAttribute(final NodeModel node, final int pPosition) {
+	public void performRemoveAttribute(final NodeModel node, final int pPosition) {
 		createAttributeTableModel(node);
 		performRemoveRow(node, NodeAttributeTableModel.getModel(node), pPosition);
 	}

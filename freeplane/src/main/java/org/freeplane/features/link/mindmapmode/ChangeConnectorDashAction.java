@@ -23,32 +23,33 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.freeplane.api.Dash;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.DashVariant;
+import org.freeplane.features.DashIconFactory;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 
 class ChangeConnectorDashAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private ConnectorModel connector;
-	private final DashVariant dash;
+	private final Dash dash;
 
 	public ChangeConnectorDashAction(final MLinkController linkController,
-	                                   final ConnectorModel connector, final DashVariant dash) {
-		super("ChangeConnectorDashAction", "", dash.icon);
+	                                   final ConnectorModel connector, final Dash dash) {
+		super("ChangeConnectorDashAction", "",  DashIconFactory.iconFor(dash));
 		this.connector = connector;
 		this.dash = dash;
 		final int[] dash2 = linkController.getDashArray(connector);
-		final int[] variant = dash.variant;
+		final int[] variant = dash.pattern;
 		final boolean selected = dash2 == variant || variant != null && Arrays.equals(variant, dash2);
 		setSelected(selected);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
-		linkController.setConnectorDashArray(connector, Optional.of(dash.variant));
+		linkController.setConnectorDashArray(connector, Optional.of(dash.pattern));
 	}
 }

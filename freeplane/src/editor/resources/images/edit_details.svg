@@ -1,167 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   viewBox="0 0 24 24"
-   version="1.1"
-   id="svg37635"
-   sodipodi:docname="edit_details.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs37639" />
-  <sodipodi:namedview
-     id="namedview37637"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     showgrid="true"
-     showguides="true"
-     inkscape:guide-bbox="true"
-     inkscape:snap-nodes="true"
-     inkscape:snap-others="true"
-     inkscape:zoom="13.458333"
-     inkscape:cx="-6.130031"
-     inkscape:cy="6.3157895"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg37635">
-    <inkscape:grid
-       type="xygrid"
-       id="grid37698" />
-    <sodipodi:guide
-       position="0,24"
-       orientation="0,-1"
-       id="guide37700" />
-    <sodipodi:guide
-       position="2,22"
-       orientation="0,-1"
-       id="guide37702" />
-    <sodipodi:guide
-       position="2,22"
-       orientation="1,0"
-       id="guide37704" />
-    <sodipodi:guide
-       position="14,2"
-       orientation="0,-1"
-       id="guide37706" />
-    <sodipodi:guide
-       position="22,22"
-       orientation="1,0"
-       id="guide37708" />
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" id="svg37635" sodipodi:docname="edit_details.svg" inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)">
+  <defs id="defs37639"/>
+  <sodipodi:namedview id="namedview37637" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" showgrid="true" showguides="true" inkscape:guide-bbox="true" inkscape:snap-nodes="true" inkscape:snap-others="true" inkscape:zoom="13.458333" inkscape:cx="-6.130031" inkscape:cy="6.3157895" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="svg37635">
+    <inkscape:grid type="xygrid" id="grid37698"/>
+    <sodipodi:guide position="0,24" orientation="0,-1" id="guide37700"/>
+    <sodipodi:guide position="2,22" orientation="0,-1" id="guide37702"/>
+    <sodipodi:guide position="2,22" orientation="1,0" id="guide37704"/>
+    <sodipodi:guide position="14,2" orientation="0,-1" id="guide37706"/>
+    <sodipodi:guide position="22,22" orientation="1,0" id="guide37708"/>
   </sodipodi:namedview>
-  <g
-     id="g41958"
-     transform="translate(0,-1)">
-    <g
-       id="Layer_2"
-       data-name="Layer 2"
-       transform="translate(0,-3)">
-      <rect
-         x="2"
-         y="7"
-         width="20"
-         height="10"
-         rx="2.51"
-         style="fill:#0071bc"
-         id="rect37628" />
+  <g id="g41958" transform="translate(0,-1)">
+    <g id="Layer_2" data-name="Layer 2" transform="translate(0,-3)">
+      <rect x="2" y="7" width="20" height="10" rx="2.51" style="fill:#0071bc" id="rect37628"/>
     </g>
-    <rect
-       style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect38119"
-       width="2"
-       height="2"
-       x="3"
-       y="16"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect38281"
-       width="2"
-       height="2"
-       x="3"
-       y="20"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect38283"
-       width="2"
-       height="2"
-       x="11"
-       y="20"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect38285"
-       width="2"
-       height="2"
-       x="7"
-       y="20"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect41934"
-       width="2"
-       height="2"
-       x="15"
-       y="20"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect41936"
-       width="2"
-       height="2"
-       x="19"
-       y="20"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect41938"
-       width="2"
-       height="2"
-       x="7"
-       y="16"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect41940"
-       width="2"
-       height="2"
-       x="11"
-       y="16"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect41942"
-       width="2"
-       height="2"
-       x="15"
-       y="16"
-       rx="0"
-       ry="0.44582042" />
-    <rect
-       style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000"
-       id="rect41944"
-       width="2"
-       height="2"
-       x="19"
-       y="16"
-       rx="0"
-       ry="0.44582042" />
+    <rect style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect38119" width="2" height="2" x="3" y="16" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect38281" width="2" height="2" x="3" y="20" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect38283" width="2" height="2" x="11" y="20" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect38285" width="2" height="2" x="7" y="20" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect41934" width="2" height="2" x="15" y="20" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;fill-opacity:1;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect41936" width="2" height="2" x="19" y="20" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect41938" width="2" height="2" x="7" y="16" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect41940" width="2" height="2" x="11" y="16" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect41942" width="2" height="2" x="15" y="16" rx="0" ry="0.44582042"/>
+    <rect style="fill:#333333;stroke-width:2;stroke-linecap:square;paint-order:markers stroke fill;stop-color:#000000" id="rect41944" width="2" height="2" x="19" y="16" rx="0" ry="0.44582042"/>
   </g>
 </svg>

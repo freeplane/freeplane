@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -39,6 +40,7 @@ import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
+import org.freeplane.core.ui.commandtonode.NewNodeLinkedToMenuItemOnNextClickAction;
 import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
@@ -94,6 +96,7 @@ import org.freeplane.features.map.mindmapmode.SummaryNodeMapUpdater;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.mode.mindmapmode.SaveAcceleratorPresetsAction;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -119,6 +122,7 @@ import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.features.url.mindmapmode.OpenUserDirAction;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.features.BlinkingNodeHook;
@@ -167,8 +171,10 @@ public class MModeControllerFactory {
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
-		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
-		tabs.add(TextUtils.getText("attributes_attribute"), createAttributesPanel());
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/formatTab.svg?useAccentColor=true"),
+		        styleScrollPane, TextUtils.getText("format_panel"));
+		tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/attributeTab.svg?useAccentColor=true"),
+		        createAttributesPanel(), TextUtils.getText("attributes_attribute"));
         HierarchicalIcons.install(modeController);
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
@@ -222,6 +228,7 @@ public class MModeControllerFactory {
 	private void createStandardControllers() {
 		final Controller controller = Controller.getCurrentController();
 		modeController = new MModeController(controller);
+		modeController.createOptionPanelControls();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 
         final IMouseListener nodeMouseMotionListener = new MNodeMotionListener();
@@ -233,14 +240,13 @@ public class MModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
-		new MMapController(modeController);
-		final MFileManager fileManager = new MFileManager();
+		MMapController mapController = new MMapController(modeController);
+		final MFileManager fileManager = new MFileManager(mapController);
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		new MIconController(modeController).install(modeController);
 		new ProgressFactory().installActions(modeController);
-		final MapController mapController = modeController.getMapController();
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
@@ -292,8 +298,12 @@ public class MModeControllerFactory {
 			}
 		});
 		controller.addAction(new ToggleToolbarAction("ToggleFBarAction", "/fbuttons"));
+		controller.addAction(new SaveAcceleratorPresetsAction());
+		controller.addAction(new OpenUserDirAction());
+
 		SModeControllerFactory.install();
-		modeController.addAction(new SetAcceleratorOnNextClickAction());
+		controller.addAction(new SetAcceleratorOnNextClickAction());
+		modeController.addAction(new NewNodeLinkedToMenuItemOnNextClickAction());
 		modeController.addAction(new ShowNotesInMapAction());
 		//userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		ResourceController.getResourceController().getAcceleratorManager().addAcceleratorChangeListener(modeController, fButtonToolBar);

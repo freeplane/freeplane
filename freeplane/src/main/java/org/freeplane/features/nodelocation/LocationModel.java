@@ -40,28 +40,28 @@ public class LocationModel implements IExtension {
         @Override
         public void setHGap(final Quantity<LengthUnit> gap) {
             if (gap != getHGap()) {
-                throw new NoSuchMethodError();
+                throw new IllegalArgumentException();
             }
         }
 
         @Override
         public void setBaseHGap(final Quantity<LengthUnit> gap) {
             if (gap != getBaseHGap()) {
-                throw new NoSuchMethodError();
+                throw new IllegalArgumentException();
             }
         }
 
 		@Override
 		public void setShiftY(final Quantity<LengthUnit> shiftY) {
 			if (shiftY != getShiftY()) {
-				throw new NoSuchMethodError();
+			    throw new IllegalArgumentException();
 			}
 		}
 
 		@Override
 		public void setVGap(final Quantity<LengthUnit> gap) {
 			if (gap != getVGap()) {
-				throw new NoSuchMethodError();
+				throw new IllegalArgumentException();
 			}
 		}
 	};

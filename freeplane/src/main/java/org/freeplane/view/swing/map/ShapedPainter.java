@@ -27,15 +27,13 @@ abstract class ShapedPainter extends MainViewPainter {
 	}
 
 	@Override
-    public
-	Point getLeftPoint() {
+    public Point getLeftPoint() {
 		final Point in = new Point(0, mainView.getHeight() / 2);
 		return in;
 	}
 
 	@Override
-    public
-	Point getRightPoint() {
+    public Point getRightPoint() {
 		final Point in = getLeftPoint();
 		in.x = mainView.getWidth() - 1;
 		return in;
@@ -45,7 +43,7 @@ abstract class ShapedPainter extends MainViewPainter {
 	void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		final NodeView nodeView = mainView.getNodeView();
-		if (nodeView.getModel() == null) {
+		if (nodeView.getNode() == null) {
 			return;
 		}
 		final ModeController modeController = mainView.getNodeView().getMap().getModeController();
@@ -64,7 +62,7 @@ abstract class ShapedPainter extends MainViewPainter {
 		final Color oldColor = g.getColor();
 		g.setColor(borderColor);
 		final Stroke oldStroke = g.getStroke();
-		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().variant, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().pattern, BasicStroke.JOIN_MITER));
 		paintNodeShape(g);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);

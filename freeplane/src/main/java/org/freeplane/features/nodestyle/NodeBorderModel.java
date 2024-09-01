@@ -21,10 +21,10 @@ package org.freeplane.features.nodestyle;
 
 import java.awt.Color;
 
+import org.freeplane.api.Dash;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -50,7 +50,7 @@ public class NodeBorderModel implements IExtension {
 	private Quantity<LengthUnit> borderWidth = null;
 
 	private Boolean borderDashMatchesEdgeDash = null;
-	private DashVariant borderDash = null;
+	private Dash borderDash = null;
 
 	private Boolean borderColorMatchesEdgeColor = null;
 	private Color borderColor = null;
@@ -99,12 +99,12 @@ public class NodeBorderModel implements IExtension {
 		return extension == null ? null : extension.getBorderDashMatchesEdgeDash();
 	}
 
-	public static DashVariant getBorderDash(final NodeModel node) {
+	public static Dash getBorderDash(final NodeModel node) {
 		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
 		return extension == null ? null : extension.getBorderDash();
 	}
 
-	public DashVariant getBorderDash() {
+	public Dash getBorderDash() {
 		return borderDash;
 	}
 
@@ -112,11 +112,11 @@ public class NodeBorderModel implements IExtension {
 		createNodeBorderModel(node).setBorderDashMatchesEdgeDash(borderDashMatchesEdgeDash);
 	}
 
-	public static void setBorderDash(final NodeModel node, final DashVariant borderDash) {
+	public static void setBorderDash(final NodeModel node, final Dash borderDash) {
 		createNodeBorderModel(node).setBorderDash(borderDash);
 	}
 
-	public void setBorderDash(DashVariant borderDash) {
+	public void setBorderDash(Dash borderDash) {
 		this.borderDash = borderDash;
 		
 	}

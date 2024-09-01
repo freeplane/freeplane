@@ -13,13 +13,13 @@ public interface NodeStyleRO {
 	 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
 	 * @since 1.2.2 */
 	String getName();
-	
+
 	/**
-	 * 
+	 *
 	 * Returns all style names/translation keys active for the node.
-	 * 
+	 *
 	 * @see getName()
-	 * 
+	 *
 	 * @since 1.9.8
 	 */
 	List<String> getAllActiveStyles();
@@ -33,6 +33,8 @@ public interface NodeStyleRO {
 	String getBackgroundColorCode();
 
 	Edge getEdge();
+
+	Border getBorder();
 
 	Font getFont();
 
@@ -56,13 +58,13 @@ public interface NodeStyleRO {
 
     /** @since 1.3.8 */
     boolean isNumberingEnabled();
-    
+
     /** @since 1.9.12 */
     String getCss();
-    
+
     /** @since 1.9.12 */
     boolean isCssSet();
-    
+
     /** @since 1.9.12 */
     boolean isBackgroundColorSet();
     /** @since 1.9.12 */
@@ -71,4 +73,9 @@ public interface NodeStyleRO {
     boolean isMinNodeWidthSet();
     /** @since 1.9.12 */
     boolean isMaxNodeWidthSet();
+    /** @since 1.11.8 */
+    boolean isHorizontalTextAlignmentSet();
+    /** @since 1.11.8 */
+    HorizontalTextAlignment getHorizontalTextAlignment();
+
 }

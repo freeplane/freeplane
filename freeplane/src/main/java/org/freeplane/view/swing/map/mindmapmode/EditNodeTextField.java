@@ -457,7 +457,7 @@ public class EditNodeTextField extends EditNodeBase {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
 				if (linkURL != null) {
 					try {
-						LinkController.getController().loadURI(nodeView.getModel(), LinkController.createHyperlink(linkURL));
+						LinkController.getController().loadURI(nodeView.getNode(), LinkController.createHyperlink(linkURL));
 					} catch (Exception e) {
 						LogUtils.warn(e);
 					}
@@ -595,7 +595,7 @@ public class EditNodeTextField extends EditNodeBase {
 		if (textfield == null) {
 			return;
 		}
-		ModeController modeController = Controller.getCurrentModeController();
+		ModeController modeController = nodeView.getMap().getModeController();
         modeController.setBlocked(false);
 		((MTextController)modeController.getExtension(TextController.class)).unsetCurrentBlockingEditor(EditNodeTextField.this);
 		final JEditorPane textfield = this.textfield;
@@ -693,7 +693,7 @@ public class EditNodeTextField extends EditNodeBase {
 	 */
 	@SuppressWarnings("serial")
     @Override
-	public void show(final RootPaneContainer frame) {
+	public void show(final Window window) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final IMapViewManager viewController = modeController.getController().getMapViewManager();
 		final MTextController textController = (MTextController) TextController.getController(modeController);
@@ -717,6 +717,7 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		};
 		textfield.setEditorKit(kit);
+		textfield.setComponentOrientation(nodeView.getMainView().getComponentOrientation());
 
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
@@ -792,7 +793,8 @@ public class EditNodeTextField extends EditNodeBase {
 		if(! mapView.isValid())
 			mapView.validate();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
-		maxWidth = Math.max(mapView.getZoomed(nsc.getMaxWidth(node, nodeView.getStyleOption()).toBaseUnitsRounded()), parent.getWidth());
+		maxWidth = Math.max(mapView.getLayoutSpecificMaxNodeWidth(),
+		        Math.max(mapView.getZoomed(nsc.getMaxWidth(node, nodeView.getStyleOption()).toBaseUnitsRounded()), parent.getWidth()));
 		final Icon icon = parent.getIcon();
 		if(icon != null){
 			maxWidth -= mapView.getZoomed(icon.getIconWidth());
@@ -820,8 +822,10 @@ public class EditNodeTextField extends EditNodeBase {
 		textFieldMinimumSize.width = 1 + textFieldMinimumSize.width * 21 / 20;
         if(textFieldMinimumSize.width < extraWidth)
             textFieldMinimumSize.width = extraWidth;
-        if(textFieldMinimumSize.width < 10)
-            textFieldMinimumSize.width = 10;
+        int minWidth = mapView.getZoomed(10);
+        maxWidth = Math.max(maxWidth, minWidth);
+        if(textFieldMinimumSize.width < minWidth)
+            textFieldMinimumSize.width = minWidth;
 		if (textFieldMinimumSize.width > maxWidth) {
 			textFieldMinimumSize.width = maxWidth;
 			setLineWrap();
@@ -853,11 +857,12 @@ public class EditNodeTextField extends EditNodeBase {
 
 		textFieldMinimumSize.width = Math.max(textFieldMinimumSize.width, nodeWidth - textFieldX - (parentInsets.right - textFieldBorderWidth));
 		textFieldMinimumSize.height = Math.max(textFieldMinimumSize.height, textR.height);
+		textFieldMinimumSize.height = Math.max(textFieldMinimumSize.height, iconR.height);
 		textfield.setSize(textFieldMinimumSize.width, textFieldMinimumSize.height);
-		final int textY = Math.max(textR.y - (textFieldMinimumSize.height - textR.height) / 2, 0);
-		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right,  2 * textY + textFieldMinimumSize.height);
+        verticalSpace = Math.max(0, parent.getHeight() - textFieldMinimumSize.height);
+        int textY = verticalSpace / 2;
+		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right,  verticalSpace + textFieldMinimumSize.height);
 		horizontalSpace = newParentSize.width - textFieldMinimumSize.width;
-		verticalSpace = 2 * textY;
 		final int widthAddedToParent = newParentSize.width - parent.getWidth();
 		final Point location = new Point(textR.x - textFieldBorderWidth, textY);
 
@@ -901,7 +906,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final int caretPosition;
 			final int textLength = document.getLength();
 			if(mouseEventPoint != null)
-				caretPosition = Math.min(textLength, textfield.viewToModel(mouseEventPoint));
+				caretPosition = Math.max(0, Math.min(textLength, textfield.viewToModel(mouseEventPoint)));
 			else
 				caretPosition = textLength;
 			textfield.setCaretPosition(caretPosition);

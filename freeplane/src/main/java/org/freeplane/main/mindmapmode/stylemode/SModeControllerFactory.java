@@ -31,6 +31,7 @@ import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
@@ -95,6 +96,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller.Context;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
@@ -122,7 +124,15 @@ public class SModeControllerFactory {
 
 	Controller createController(final JDialog dialog) {
 		Controller currentController = Controller.getCurrentController();
-		final Controller controller = new Controller(ResourceController.getResourceController());
+		final Controller controller = new Controller(ResourceController.getResourceController()) {
+
+		    @Override
+            public void quit() {
+		        if(((SModeController) getModeController()).tryToCloseDialog())
+		            SwingUtilities.invokeLater(currentController::quit);
+		    }
+
+		};
 		Controller.setCurrentController(controller);
 		final MapViewController mapViewController = new MMapViewController(controller);
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
@@ -134,6 +144,7 @@ public class SModeControllerFactory {
 		controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
 		controller.addAction(new ShowSelectionAsRectangleAction());
 		modeController = new SModeController(controller);
+		modeController.createOptionPanelControls();
 		controller.selectModeForBuild(modeController);
 		ClipboardControllers.install(new MClipboardControllers());
         modeController.addAction(new NewUserStyleAction(false));
@@ -148,7 +159,7 @@ public class SModeControllerFactory {
 		    new MNodeMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener()));
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
-		new MMapController(modeController);
+		MMapController mapController = new MMapController(modeController);
 		ModelessAttributeController.installConditions();
 		new MTextController(modeController).install(modeController);
 		SpellCheckerController.install(modeController);
@@ -160,7 +171,7 @@ public class SModeControllerFactory {
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
 		LinkController.install(new MLinkController(modeController));
-		MFileManager.install(new MFileManager());
+		MFileManager.install(new MFileManager(mapController));
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		logicalStyleController.initS();
 		LogicalStyleController.install(logicalStyleController);
@@ -195,11 +206,10 @@ public class SModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		if (extentionInstaller != null)
-			extentionInstaller.installExtensions(controller);
+			extentionInstaller.installExtensions(controller, Context.STYLE);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		modeController.addAction(new ShowFormatPanelAction());
-		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
 			@Override
 			public void onSelect(final NodeModel node) {

@@ -25,6 +25,7 @@ import java.net.URI;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
+import javax.swing.JPanel;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -39,37 +40,52 @@ import org.freeplane.features.icon.factory.IconFactory;
  */
 public class TypedListCellRenderer extends DefaultListCellRenderer{
 
-	final private static TypedListCellRenderer instance = new TypedListCellRenderer();
+	private static final JPanel TRANSPARENT_RENDERER = new JPanel();
+	static {
+	    TRANSPARENT_RENDERER.setOpaque(false);
+	}
+    final private static TypedListCellRenderer instance = new TypedListCellRenderer();
 	static TypedListCellRenderer getInstance() {
     	return instance;
     }
 
-	public TypedListCellRenderer() {
-	    super();
+    private static final long serialVersionUID = 1L;
+    private static Icon textIcon;
+    private static Icon numberIcon;
+    private static Icon dateIcon;
+    private static Icon dateTimeIcon;
+    private static Icon linkIcon;
+
+    static {
+        final ResourceController resourceController = ResourceController.getResourceController();
+        textIcon = resourceController.getIcon("text_icon");
+        numberIcon = resourceController.getIcon("number_icon");
+        dateIcon = resourceController.getIcon("date_icon");
+        dateTimeIcon = resourceController.getIcon("date_time_icon");
+        linkIcon = resourceController.getIcon("link_icon");
     }
 
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-	private static Icon textIcon;
-	private static Icon numberIcon;
-	private static Icon dateIcon;
-	private static Icon dateTimeIcon;
-	private static Icon linkIcon;
-	
-	static {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		textIcon = resourceController.getIcon("text_icon");
-		numberIcon = resourceController.getIcon("number_icon");
-		dateIcon = resourceController.getIcon("date_icon");
-		dateTimeIcon = resourceController.getIcon("date_time_icon");
-		linkIcon = resourceController.getIcon("link_icon");
-	}
+    private boolean canRenderHeader;
+
+    public TypedListCellRenderer() {
+	    super();
+	    canRenderHeader = true;
+    }
+
+    public boolean canRenderHeader() {
+        return canRenderHeader;
+    }
+
+    public void setCanRenderHeader(boolean canRenderHeader) {
+        this.canRenderHeader = canRenderHeader;
+    }
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 	                                              boolean cellHasFocus) {
+	    if(index == -1 && ! canRenderHeader) {
+            return TRANSPARENT_RENDERER;
+        }
 		super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		final Icon icon;
 		if (value instanceof String) {
@@ -102,5 +118,5 @@ public class TypedListCellRenderer extends DefaultListCellRenderer{
 			setIcon(icon);
 		return this;
 	}
-	
+
 }

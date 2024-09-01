@@ -21,6 +21,7 @@ package org.freeplane.features.attribute;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
@@ -42,6 +43,7 @@ public class AttributeContainsCondition extends StringConditionAdapter {
             element.getAttribute(VALUE, null),
             Boolean.valueOf(element.getAttribute(MATCH_CASE, null)),
             Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
             Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null))
 		    );
 	}
@@ -54,8 +56,8 @@ public class AttributeContainsCondition extends StringConditionAdapter {
     /**
 	 */
 	public AttributeContainsCondition(final Object attribute,final String value, final boolean matchCase,
-			final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+			final boolean matchApproximately, boolean matchWordwise, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
         this.attribute = attribute;
         this.value = value;
         //this.comparedValue = matchCase ? value : value.toLowerCase();
@@ -77,7 +79,7 @@ public class AttributeContainsCondition extends StringConditionAdapter {
 			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
 				if (checkText(attributes.getValueAt(i, 0).toString()))
 					return true;
-				
+
 			}
 			else if(! attributes.getValueAt(i, 0).equals(attribute)) {
                 continue;
@@ -92,13 +94,12 @@ public class AttributeContainsCondition extends StringConditionAdapter {
 	}
 
 	private boolean checkText(String text) {
-	    return stringMatchingStrategy.matches(normalizedValue(), normalize(text), true);
+	    return stringMatchingStrategy.matches(normalizedValue(), normalize(text), substringMatchType());
     }
 
 	@Override
 	protected String createDescription() {
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return createDescription(attribute.toString(), simpleCondition, value);
+		return createDescription(attribute.toString(), containsDescription(), value);
 	}
 
 	@Override

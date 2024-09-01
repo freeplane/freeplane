@@ -192,11 +192,11 @@ public interface NodeRO {
 	 * current filter are counted. */
 	int getNodeLevel(boolean countHidden);
 
-	/** returns the text of the details as a Convertible. Convertibles behave like Strings in most respects.
+	/** returns the text of the note as a Convertible. Convertibles behave like Strings in most respects.
 	 * Additionally String methods are overridden to handle Convertible arguments as if the argument were the
 	 * result of Convertible.getText().
      * <ul>
-     * <li>node.note.to.plain plain text of the node, possibly after formula evaluation
+     * <li>node.note.to.plain plain text of the note, possibly after formula evaluation
      * <li>node.note.plain the same.
      * <li>node.note.text the same.
      * <li>node.note.html the raw html text. No formula evaluation is applied.
@@ -209,7 +209,7 @@ public interface NodeRO {
 	 */
 	Convertible getNote();
 
-	/** Returns the HTML text of the node. (Notes always contain HTML text.)
+	/** Returns the HTML text of the note. (Notes always contain HTML text.)
 	 * @throws org.freeplane.plugin.script.ExecuteScriptException */
 	String getNoteText();
 
@@ -543,4 +543,7 @@ public interface NodeRO {
 
 	/**@since 1.11.3 */
 	String getBranchAsTextOutline();
+
+	/**@since 1.12.1 */
+	TagsRO getTags();
 }

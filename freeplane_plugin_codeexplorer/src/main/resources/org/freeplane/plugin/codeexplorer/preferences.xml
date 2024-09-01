@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences_structure xmlns="http://freeplane.sf.net/ui/preferences/1.0">
+<tabbed_pane>
+<tab name="plugins">
+    <separator name="code.explorer">
+        <path name="code.explorer_configuration_file"/>
+		<boolean name="code.archunit.server.enabled" />
+        <number name="code.archunit.server.port" min="1024" max="65535" />
+        <maybe_boolean name="code.really_remove_node" text="really_remove_node"/>
+        <maybe_boolean name="code.really_remove_configurations" />
+        <maybe_boolean name="code.really_remove_locations" />
+    </separator>
+</tab>
+</tabbed_pane>
+</preferences_structure>

@@ -22,8 +22,11 @@ package org.freeplane.features.nodestyle;
 import java.awt.Color;
 import java.io.IOException;
 
+import org.freeplane.api.Dash;
+import org.freeplane.api.HorizontalTextAlignment;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.BackwardCompatibleQuantityWriter;
 import org.freeplane.core.io.IAttributeHandler;
@@ -37,12 +40,10 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
-import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -123,7 +124,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_ALPHA", bgAlphaHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BACKGROUND_COLOR", bgHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BACKGROUND_ALPHA", bgAlphaHandler);
-		
+
 		final IAttributeHandler shapeHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -136,7 +137,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", shapeHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "STYLE", shapeHandler);
-		
+
 		final IAttributeHandler shapeHorizontalMarginHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -145,7 +146,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMarginHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMarginHandler);
-		
+
 		final IAttributeHandler shapeVerticalMarginHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -280,6 +281,15 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_ALIGN", textAlignHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEXT_ALIGN", textAlignHandler);
 
+		final IAttributeHandler textDirectionHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeStyleModel.setTextWritingDirection(node, TextWritingDirection.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_WRITING_DIRECTION", textDirectionHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEXT_WRITING_DIRECTION", textDirectionHandler);
+
 		final IAttributeHandler borderWidthMatchesEdgeWidthHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -310,7 +320,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler borderDashHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeBorderModel.setBorderDash(node, DashVariant.valueOf(value));
+				NodeBorderModel.setBorderDash(node, Dash.valueOf(value));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_DASH", borderDashHandler);
@@ -338,7 +348,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			}
 		};
 
-		
+
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR", borderColorHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR_ALPHA", borderColorAlphaHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR", borderColorHandler);
@@ -433,10 +443,15 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (format != null) {
 			writer.addAttribute("FORMAT", format);
 		}
-		final HorizontalTextAlignment textAlignment = forceFormatting ? 
+		final HorizontalTextAlignment textAlignment = forceFormatting ?
 		        nsc.getHorizontalTextAlignment(node, StyleOption.FOR_UNSELECTED_NODE) : style.getHorizontalTextAlignment();
 		if (textAlignment != null) {
 			writer.addAttribute("TEXT_ALIGN", textAlignment.toString());
+		}
+		final TextWritingDirection textDirection = forceFormatting ?
+		        nsc.getTextWritingDirection(node, StyleOption.FOR_UNSELECTED_NODE) : style.getTextWritingDirection();
+		if (textDirection != null) {
+			writer.addAttribute("TEXT_WRITING_DIRECTION", textDirection.toString());
 		}
 
 	}
@@ -453,7 +468,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MIN_WIDTH", minTextWidth);
 		}
 	}
-	
+
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeBorderModel border,
 			final boolean forceFormatting) {
 		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderWidthMatchesEdgeWidth();
@@ -476,12 +491,12 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (borderDashMatchesEdgeDash != null) {
 			writer.addAttribute("BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDash.toString());
 		}
-		DashVariant borderDash = forceFormatting ? nsc.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderDash();
+		Dash borderDash = forceFormatting ? nsc.getBorderDash(node, StyleOption.FOR_UNSELECTED_NODE) : border.getBorderDash();
 		if (borderDash != null) {
 			writer.addAttribute("BORDER_DASH", borderDash.name());
 		}
 	}
-	
+
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {

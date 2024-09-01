@@ -43,7 +43,7 @@ import org.freeplane.view.swing.map.NodeView;
 @NodeHookDescriptor(hookName = "plugins/latex/LatexNodeHook.properties", //
 onceForMap = false)
 class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
-	static final int VIEWER_POSITION = 4;
+	static final int VIEWER_POSITION = NodeView.DETAIL_VIEWER_POSITION + 2;
 
 	/**
 	 */
@@ -109,7 +109,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	public void onViewCreated(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final LatexExtension latexExtension = nodeView.getModel().getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = nodeView.getNode().getExtension(LatexExtension.class);
 		if (latexExtension == null) {
 			return;
 		}
@@ -118,7 +118,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 	public void onViewRemoved(final Container container) {
 		final NodeView nodeView = (NodeView) container;
-		final LatexExtension latexExtension = nodeView.getModel().getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = nodeView.getNode().getExtension(LatexExtension.class);
 		if (latexExtension == null) {
 			return;
 		}
@@ -150,7 +150,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 			public void act() {
 				model.setEquation(newEquation);
 				final MapModel map = Controller.getCurrentModeController().getController().getMap();
-				Controller.getCurrentModeController().getMapController().setSaved(map, false);
+				Controller.getCurrentModeController().getMapController().mapSaved(map, false);
 			}
 
 			public String getDescription() {

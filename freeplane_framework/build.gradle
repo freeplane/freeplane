@@ -25,7 +25,7 @@ task freeplanelauncherJar(type: Jar) {
                      "Main-Class": "org.freeplane.launcher.Launcher",
                      "Class-Path": "framework.jar")
      }
-	 
+
 	 configurations.mergedApiDependency.files.each {
     	from(zipTree(it.path)) {
     		exclude('META-INF/MANIFEST.MF')
@@ -43,12 +43,12 @@ task copyFreeplaneShellScript(type: Copy) {
      }
 	 into(globalBin)
 	 filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
-}	 
+}
 
-ext {launch4jDir = 'C:/Program Files (x86)/Launch4j'}
+ext {launch4jDir = "$System.env.LAUNCH4J_DIR"}
 
 task createExeFiles {
-	onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) && file(launch4jDir).exists()}
+	onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) && launch4jDir !=  null && file(launch4jDir).exists()}
 	inputs.dir('launch4j')
 	outputs.files("${globalBin}/freeplane.exe", "${globalBin}/freeplaneConsole.exe")
 	doLast {
@@ -94,6 +94,12 @@ task copyLauncherStuff(type: Copy) {
      }
      into(globalBin)
      dependsOn jar
+}
+
+eclipse {
+    jdt {
+        javaRuntimeName = 'JavaSE-15'
+    }
 }
 
 eclipseJdt {

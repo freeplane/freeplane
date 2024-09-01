@@ -26,10 +26,11 @@ if (signJarProperties['signjar.cardpass'])
 
 	signJarTask('signViewerApiJar', 'freeplaneapi_viewer.jar')
 
-	signJarTask('signSvgJar', 'kitfox-svg-salamander-1.1.1-p1.jar')
+	signJarTask('signSvgJar', 'svgSalamander-1.1.4.jar')
 
 	build.dependsOn signViewerJar
 	build.dependsOn signViewerApiJar
+	build.dependsOn signSvgJar
 }
 else
 {

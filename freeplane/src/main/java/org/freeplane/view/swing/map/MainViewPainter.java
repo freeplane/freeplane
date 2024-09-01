@@ -94,15 +94,17 @@ abstract class MainViewPainter{
 		mainView.paintDragRectangle(g);
 		paintFoldingMark(nodeView, g);
         boolean isMinimized = mainView.isShortened();
-        boolean shouldPaintCloneMarker = nodeView.getModel().isCloneNode() && mainView.shouldPaintCloneMarker(nodeView);
+        boolean shouldPaintCloneMarker = nodeView.getNode().isCloneNode() && mainView.shouldPaintCloneMarker(nodeView);
 		if (isMinimized) {
         	FoldingMark.SHORTENED.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, shouldPaintCloneMarker ? 0.6 : 0, 7./3, 5./3));
         }
 		if (shouldPaintCloneMarker){
-			if (nodeView.getModel().isCloneTreeRoot())
+			if (nodeView.getNode().isCloneTreeRoot())
 				FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 2, 2.5));
-			else if (nodeView.getModel().isCloneTreeNode())
+			else if (nodeView.getNode().isCloneTreeNode())
 				FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 1.5, 2.5));
+			else if (nodeView.getNode().isCloneContentNodeOutsideCloneTree())
+				FoldingMark.CLONE.draw(g, nodeView, mainView.decorationMarkBounds(nodeView, isMinimized ? -0.6 : 0, 2.4, 1.8));
 		}
 	}
 

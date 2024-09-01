@@ -45,11 +45,14 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -62,9 +65,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.text.JTextComponent;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
+import org.freeplane.api.TextWritingDirection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -88,6 +93,8 @@ import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
@@ -229,13 +236,16 @@ class NodeList implements IExtension {
 			if (object instanceof Date) {
 				return dateRenderer;
 			}
+            if (object instanceof TagsHolder) {
+                return tagsRenderer;
+            }
 			if (object instanceof TextHolder) {
 				return textRenderer;
 			}
-			if (object instanceof IconsHolder) {
-				return iconsRenderer;
-			}
-			return super.getCellRenderer(row, column);
+            if (object instanceof IconsHolder) {
+                return iconsRenderer;
+            }
+ 			return super.getCellRenderer(row, column);
 		}
 
 		@Override
@@ -295,7 +305,9 @@ class NodeList implements IExtension {
 	}
 	private static final String REMINDER_TEXT_CREATED = "reminder.Created";
 	private static final String REMINDER_TEXT_REMINDER = "reminder.Reminder";
-	private static final String REMINDER_TEXT_ICONS = "reminder.Icons";
+    private static final String REMINDER_TEXT_ICONS = "reminder.Icons";
+    private static final String REMINDER_TEXT_TAGS = "tags";
+
 	private static final String REMINDER_TEXT_MODIFIED = "reminder.Modified";
 	private static final String REMINDER_TEXT_NOTES = "reminder.Notes";
 	private static final String REMINDER_TEXT_DETAILS = "reminder.Details";
@@ -308,7 +320,8 @@ class NodeList implements IExtension {
 
 	private static String COLUMN_MODIFIED = TextUtils.getText(REMINDER_TEXT_MODIFIED);
 	private static String COLUMN_CREATED = TextUtils.getText(REMINDER_TEXT_CREATED);
-	private static String COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
+    private static String COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
+    private static String COLUMN_TAGS = TextUtils.getText(REMINDER_TEXT_TAGS);
 	private static String COLUMN_TEXT = TextUtils.getText(REMINDER_TEXT_TEXT);
 	private static String COLUMN_MAP = TextUtils.getText(REMINDER_TEXT_MAP);
 	private static String COLUMN_DETAILS= TextUtils.getText(REMINDER_TEXT_DETAILS);
@@ -320,6 +333,7 @@ class NodeList implements IExtension {
 	private final DateRenderer dateRenderer;
 	private JDialog dialog;
 	private final IconsRenderer iconsRenderer;
+	private final TagsRenderer tagsRenderer;
 	protected final JComboBox<Object> mFilterTextSearchField;
 	private final JCheckBox closeAfterSelection;
 	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
@@ -333,6 +347,7 @@ class NodeList implements IExtension {
 	TableSorter sorter;
 	final protected JTable tableView;
 	private DefaultTableModel tableModel;
+	protected TableColumnVisibilityChanger columnVisibilityChanger;
 	private final boolean searchInAllMaps;
 	protected final JCheckBox useRegexInFind;
 	protected final JCheckBox matchCase;
@@ -345,7 +360,8 @@ class NodeList implements IExtension {
 	private boolean showsStyleIcons = false;
 	private int nodeMapColumn = -1;
 	int nodeTextColumn = -1;
-	private int nodeIconColumn = -1;
+    private int nodeIconColumn = -1;
+    private int nodeTagsColumn = -1;
 	int nodeDetailsColumn = -1;
 	int nodeNotesColumn = -1;
 	int nodeReminderColumn = -1;
@@ -363,7 +379,9 @@ class NodeList implements IExtension {
 		mFilterTextSearchField.setEditable(true);
 		final FilterTextDocumentListener listener = new FilterTextDocumentListener();
 		mFilterTextSearchField.addActionListener(listener);
-		final JTextComponent editorComponent = (JTextComponent) mFilterTextSearchField.getEditor().getEditorComponent();
+		final ComboBoxEditor editor = mFilterTextSearchField.getEditor();
+		editor.addActionListener(e -> selectSelectedRows());
+		final JTextComponent editorComponent = (JTextComponent) editor.getEditorComponent();
 		editorComponent.getDocument().addDocumentListener(listener);
 		useRegexInFind = new JCheckBox(TextUtils.getText("regular_expressions"));
 		useRegexInFind.addActionListener(listener);
@@ -374,9 +392,11 @@ class NodeList implements IExtension {
 		dateRenderer = new DateRenderer();
 		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
+		tagsRenderer = new TagsRenderer();
 		tableView = new FlatNodeTable();
 		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
+		mNodePath.getDocument().putProperty("i18n", Boolean.TRUE);
 		closeAfterSelection = TranslatedElementFactory.createPropertyCheckbox("nodelist_close_after_selection", "close_after_selection");
 	}
 
@@ -396,6 +416,9 @@ class NodeList implements IExtension {
 			storage.addTimeWindowColumnSetting(setting);
 		}
 		storage.storeDialogPositions(dialog, windowPreferenceStorageProperty);
+		final String columnsStateProperty = columnsStateProperty();
+        final String columnState = columnVisibilityChanger.getState();
+        ResourceController.getResourceController().setProperty(columnsStateProperty, columnState);
 		final boolean dialogWasFocused = dialog.isFocused();
 		dialog.setVisible(false);
 		dialog.dispose();
@@ -412,6 +435,10 @@ class NodeList implements IExtension {
 				selectedComponent.requestFocus();
 		}
 	}
+
+    private String columnsStateProperty() {
+        return windowPreferenceStorageProperty + ".columns";
+    }
 
 	private void exportSelectedRowsAndClose() {
 		final int[] selectedRows = tableView.getSelectedRows();
@@ -475,7 +502,11 @@ class NodeList implements IExtension {
 	}
 
 	private void selectSelectedRows() {
-		selectNodes(tableView.getSelectedRow(), tableView.getSelectedRows());
+		final int selectedRow = tableView.getSelectedRow();
+		if(selectedRow >= 0)
+			selectNodes(selectedRow, tableView.getSelectedRows());
+		else if(tableView.getRowCount() >= 1)
+			selectNodes(0, new int[]{0});
 	}
 
 	public void startup(NodeFilter nodeFilter) {
@@ -516,8 +547,9 @@ class NodeList implements IExtension {
 	}
 
 	private void initializeUI(String mapTitle) {
+	    columnVisibilityChanger = new TableColumnVisibilityChanger(tableView.getColumnModel());
 		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
-			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
+			new int[]{nodeTagsColumn, nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}, columnVisibilityChanger
 		);
 
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
@@ -602,6 +634,15 @@ class NodeList implements IExtension {
 		JScrollPane nodePathScrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		UITools.setScrollbarIncrement(nodePathScrollPane);
 		contentPane.add(nodePathScrollPane, treeConstraints);
+		final String columnsStateProperty = columnsStateProperty();
+		final String columnState = ResourceController.getResourceController().getProperty(columnsStateProperty, "");
+		columnVisibilityChanger.applyState(columnState);
+        final JMenuBar menubar = new JMenuBar();
+        final JMenu menu = TranslatedElementFactory.createMenu("visible_columns");
+        columnVisibilityChanger.addMenuItems(menu);
+        MnemonicSetter.INSTANCE.setComponentMnemonics(menubar);
+        dialog.setJMenuBar(menubar);
+        menubar.add(menu);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("reminder.Export")) {
 			/**
 			     *
@@ -666,12 +707,26 @@ class NodeList implements IExtension {
 			}
 		});
 		rowSM.addListSelectionListener(new ListSelectionListener() {
-			String getNodeTextWithAncestorNodes(final NodeModel node) {
+
+            private String getNodeTextWithAncestorNodes(final NodeModel mindMapNode) {
+                NodeModel rootNode = mindMapNode.getMap().getRootNode();
+                TextWritingDirection direction = NodeStyleController.getController()
+                        .getTextWritingDirection(rootNode, StyleOption.FOR_UNSELECTED_NODE);
+                String separator = TextWritingDirection.LEFT_TO_RIGHT.isolated(" " +
+                        (TextWritingDirection.LEFT_TO_RIGHT == direction ? "->" : "<-")
+                        + " ");
+                String nodeTextWithAncestorNodes = getNodeTextWithAncestorNodes(mindMapNode, direction, separator);
+                return nodeTextWithAncestorNodes;
+            }
+
+			private String getNodeTextWithAncestorNodes(final NodeModel node, TextWritingDirection direction, String separator) {
 				final String nodeText = TextController.getController().getShortPlainText(node);
 				if (node.isRoot())
 					return nodeText;
-				else
-					return getNodeTextWithAncestorNodes(node.getParentNode()) + " -> " + nodeText;
+                else {
+                    String ancestorText = getNodeTextWithAncestorNodes(node.getParentNode(), direction, separator);
+                    return direction == TextWritingDirection.LEFT_TO_RIGHT ?  ancestorText + separator + nodeText : nodeText + separator + ancestorText ;
+                }
 			}
 
 			@Override
@@ -700,12 +755,16 @@ class NodeList implements IExtension {
 		if (storage != null) {
 			tableView.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
-			for (final TimeWindowColumnSetting setting : ((TimeWindowConfigurationStorage) storage)
-			    .getListTimeWindowColumnSettingList()) {
-				tableView.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
-				sorter.setSortingStatus(column, setting.getColumnSorting());
-				column++;
-			}
+			List<TimeWindowColumnSetting> settings = ((TimeWindowConfigurationStorage) storage)
+			    .getListTimeWindowColumnSettingList();
+			TableColumnModel columnModel = tableView.getColumnModel();
+			if(columnModel.getColumnCount() == settings.size()) {
+                for (final TimeWindowColumnSetting setting : settings) {
+                    columnModel.getColumn(column).setPreferredWidth(setting.getColumnWidth());
+                	sorter.setSortingStatus(column, setting.getColumnSorting());
+                	column++;
+                }
+            }
 		}
 		mFlatNodeTableFilterModel.setFilter((String)mFilterTextSearchField.getSelectedItem(),
 			matchCase.isSelected(), useRegexInFind.isSelected());
@@ -758,7 +817,8 @@ class NodeList implements IExtension {
 		nodeMapColumn = searchInAllMaps ? 0 : -1;
 		nodeTextColumn = nodeMapColumn + 1;
 		nodeIconColumn = nodeTextColumn + 1;
-		nodeDetailsColumn = nodeIconColumn + 1;
+		nodeTagsColumn = nodeIconColumn + 1;
+		nodeDetailsColumn = nodeTagsColumn + 1;
 		nodeNotesColumn = nodeDetailsColumn + 1;
 		nodeReminderColumn = nodeNotesColumn + 1;
 		nodeCreatedColumn = nodeReminderColumn + 1;
@@ -784,9 +844,12 @@ class NodeList implements IExtension {
 				else if (column == nodeMapColumn) {
 					return String.class;
 				}
-				else if (column == nodeIconColumn) {
-					return IconsHolder.class;
-				}
+                else if (column == nodeIconColumn) {
+                    return IconsHolder.class;
+                }
+                else if (column == nodeTagsColumn) {
+                    return TagsHolder.class;
+                }
 				else {
 					return Object.class;
 				}
@@ -796,6 +859,7 @@ class NodeList implements IExtension {
 			model.addColumn(COLUMN_MAP);
 		model.addColumn(COLUMN_TEXT);
 		model.addColumn(COLUMN_ICONS);
+		model.addColumn(COLUMN_TAGS);
 		model.addColumn(COLUMN_DETAILS);
 		model.addColumn(COLUMN_NOTES);
 		model.addColumn(COLUMN_REMINDER);
@@ -826,6 +890,7 @@ class NodeList implements IExtension {
 			row.add(node.getMap().getTitle());
 		row.add(new TextHolder(new CoreTextAccessor(node)));
 		row.add(new IconsHolder(node, showsStyleIcons));
+		row.add(new TagsHolder(node, false));
 		row.add(new TextHolder(new DetailTextAccessor(node)) );
 		row.add(new TextHolder(new NoteTextAccessor(node)));
 		row.add(date);

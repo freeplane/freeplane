@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="matrix(.73837 0 0 .73757 3.1395 4.5354)" fill="#333333" stroke="#333333" stroke-width="1.355" data-name="Layer 2">
+  <polygon points="22 2 2 2 12 12.62"/>
+  <polygon points="10 10 14 10 14 19 10 22"/>
+ </g>
+ <g transform="matrix(4.8145 0 0 4.8145 -8.7741 -6.8816)" fill="#0071bc" stroke-width=".20771">
+  <rect transform="rotate(44.983)" x="5.6615" y="-1.8585" width=".88146" height="3.7211" rx=".065526" ry=".065526" stop-color="#000000" stroke-width=".041542" style="paint-order:markers stroke fill"/>
+  <rect transform="rotate(134.98)" x="-.4384" y="-7.963" width=".88146" height="3.7211" rx=".065526" ry=".065526" stop-color="#000000" style="paint-order:markers stroke fill"/>
+ </g>
+</svg>

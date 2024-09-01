@@ -16,13 +16,10 @@
   <icon>Freeplane_app.ico</icon>
   <jre>
     <path>runtime;%FREEPLANE_JAVA_HOME%;%JAVA_HOME%</path>
-    <bundledJre64Bit>false</bundledJre64Bit>
-    <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>11</minVersion>
-    <maxVersion>17</maxVersion>
-    <jdkPreference>preferJre</jdkPreference>
-    <runtimeBits>64/32</runtimeBits>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion>22.999</maxVersion>
     <opt>-Dorg.freeplane.userfpdir=&quot;%APPDATA%\\Freeplane&quot;</opt>
+    <opt>-Djava.security.manager=allow</opt>
     <opt>--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED</opt>
     <opt>--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED</opt>
   </jre>

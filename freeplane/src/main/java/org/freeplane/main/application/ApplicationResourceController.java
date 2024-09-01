@@ -32,8 +32,10 @@ import java.security.AccessController;
 import java.security.AllPermission;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Set;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
@@ -50,6 +52,15 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class ApplicationResourceController extends ResourceController {
+    private static final String USE_SYSTEM_LOCALE_PROPERTY = "useSystemLocale";
+
+    public static File getUserPreferencesFile() {
+        final String freeplaneDirectory = Compat.getApplicationUserDirectory();
+        final File userPropertiesFolder = new File(freeplaneDirectory);
+        final File autoPropertiesFile = new File(userPropertiesFolder, "auto.properties");
+        return autoPropertiesFile;
+    }
+
 	private static final AllPermission ALL_PERMISSION = new AllPermission();
     final private File autoPropertiesFile;
 	final private Properties defProps;
@@ -59,7 +70,8 @@ public class ApplicationResourceController extends ResourceController {
 	public static final String FREEPLANE_BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
-	private ArrayList<File> resourceDirectories;
+    private final ArrayList<File> resourceDirectories;
+    private final Set<ClassLoader> resourceLoaders;
 
 	public static void showSysInfo() {
 		final StringBuilder info = new StringBuilder();
@@ -119,7 +131,9 @@ public class ApplicationResourceController extends ResourceController {
 				e.printStackTrace();
 			}
 		}
-		setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE));
+		resourceLoaders = new LinkedHashSet<>();
+		if(! getBooleanProperty(USE_SYSTEM_LOCALE_PROPERTY))
+		    setDefaultLocale(props.getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override
@@ -193,12 +207,14 @@ public class ApplicationResourceController extends ResourceController {
 						}
 					}
 				}
-				URL resource = ApplicationResourceController.super.getResource(resourcePath);
-				if (resource != null) {
-					return resource;
+				{
+				    URL resource = ApplicationResourceController.super.getResource(resourcePath);
+				    if (resource != null) {
+				        return resource;
+				    }
 				}
 				if ("/lib/freeplaneviewer.jar".equals(resourcePath)) {
-					final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
+				    final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
 					try {
 						final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
 						if (try1.exists()) {
@@ -213,6 +229,12 @@ public class ApplicationResourceController extends ResourceController {
 						e.printStackTrace();
 					}
 				}
+				for(ClassLoader loader : resourceLoaders) {
+				    URL resource = loader.getResource(resourcePath);
+				    if(resource  != null)
+				        return resource;
+				}
+
 				return null;
 			}
 		});
@@ -239,11 +261,8 @@ public class ApplicationResourceController extends ResourceController {
 		return INSTALLATION_BASE_DIRECTORY;
     }
 
-	public static File getUserPreferencesFile() {
-		final String freeplaneDirectory = Compat.getApplicationUserDirectory();
-		final File userPropertiesFolder = new File(freeplaneDirectory);
-		final File autoPropertiesFile = new File(userPropertiesFolder, "auto.properties");
-		return autoPropertiesFile;
+	public void registerResourceLoader(ClassLoader loader) {
+	    resourceLoaders.add(loader);
 	}
 
 	@Override

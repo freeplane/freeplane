@@ -28,8 +28,8 @@ public class Compat {
     public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String VERSION_1_6_0 = "1.6.0";
 	public static final String JAVA_VERSION_15 = "15.";
-	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.11.x";
-	final public static String PREVIOUS_VERSION_DIR_NAME = "1.10.x";
+	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.12.x";
+	final public static String PREVIOUS_VERSION_DIR_NAME = "1.11.x";
 
 	private static enum OS {
 		MAC, WINDOWS, OTHER

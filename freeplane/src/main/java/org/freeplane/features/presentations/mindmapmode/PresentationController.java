@@ -51,7 +51,8 @@ public class PresentationController implements IExtension{
 		final PresentationState presentationState = presentationController.presentationState;
 		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
 		final JTabbedPane tabs = UITools.getFreeplaneTabbedPanel();
-		tabs.add(TextUtils.getText("presentation_panel"), presentationController.createPanel());
+        tabs.addTab("", ResourceController.getResourceController().getIcon("/images/panelTabs/presentationTab.svg?useAccentColor=true"),
+                presentationController.createPanel(), TextUtils.getText("presentation_panel"));
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 
 			@Override
@@ -149,7 +150,7 @@ public class PresentationController implements IExtension{
 				@Override
 				public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 					if(event.eventType == COLLECTION_SIZE_CHANGED)
-						modeController.getMapController().setSaved(map, false);
+						modeController.getMapController().mapSaved(map, false);
 				}
 			};
 			mapPresentations.presentations.addCollectionChangeListener(presentationCollectionChangeListener);
@@ -166,7 +167,7 @@ public class PresentationController implements IExtension{
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
 				if(event.eventType == COLLECTION_SIZE_CHANGED)
-					modeController.getMapController().setSaved(map, false);
+					modeController.getMapController().mapSaved(map, false);
 				else if(event.eventType == SELECTION_CHANGED)
 					presentationState.changeSlide();
 			}
@@ -195,7 +196,7 @@ public class PresentationController implements IExtension{
 			final SlideChangeListener slideChangeListener = new SlideChangeListener() {
 				@Override
 				public void onSlideModelChange(SlideChangeEvent changeEvent) {
-					modeController.getMapController().setSaved(map, false);
+					modeController.getMapController().mapSaved(map, false);
 					presentationState.changeSlide();
 				}
 			};

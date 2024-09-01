@@ -35,8 +35,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class HyperLinkCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String hyperlink;
-	public HyperLinkCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+	public HyperLinkCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately,
+	        final boolean matchWordwise, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
 		this.hyperlink = hyperlink;
 	}
 
@@ -65,7 +66,7 @@ public abstract class HyperLinkCondition extends StringConditionAdapter {
 	public String getHyperlink() {
 		return hyperlink;
 	}
-	
+
 	@Override
     protected Object conditionValue() {
 	    return hyperlink;

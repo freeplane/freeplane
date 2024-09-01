@@ -23,52 +23,76 @@ package org.freeplane.features.filter;
  * @author Dimitry Polivaev
  */
 public class FilterInfo {
-	static final int FILTER_SHOW_AS_INITIAL_VALUE = 1;
-	static final int FILTER_SHOW_AS_MATCHED = 2;
-	static final int FILTER_SHOW_AS_ANCESTOR = 4;
-	static final int FILTER_SHOW_AS_DESCENDANT = 8;
-	static final int FILTER_SHOW_AS_HIDDEN = 16;
-	
-	static public final FilterInfo TRANSPARENT = new FilterInfo(FILTER_SHOW_AS_MATCHED);
-	
+    static final int MATCHES =  1 << 1;
+    static final int HAS_MATCHED_DESCENDANT =  1 << 2;
+    static final int HAS_MATCHED_ANCESTOR =  1 << 3;
+    static final int NO_MATCH =  1 << 4;
+    static final int HAS_HIDDEN_DESCENDANT =  1 << 5;
+    static final int HAS_HIDDEN_ANCESTOR =  1 << 6;
+
+    static final int SHOW_AS_INITIAL_VALUE = 1 << 0;
+	static final int SHOW_AS_MATCHED =  MATCHES;
+	static final int SHOW_AS_MATCHED_ANCESTOR =  HAS_MATCHED_DESCENDANT;
+	static final int SHOW_AS_MATCHED_DESCENDANT =  HAS_MATCHED_ANCESTOR;
+	static final int SHOW_AS_HIDDEN =  NO_MATCH;
+    static final int SHOW_AS_HIDDEN_ANCESTOR =  HAS_HIDDEN_DESCENDANT;
+    static final int SHOW_AS_HIDDEN_DESCENDANT =  HAS_HIDDEN_ANCESTOR;
+
+
+    static public final FilterInfo TRANSPARENT = new FilterInfo(SHOW_AS_MATCHED);
+
 	private int info;
 
     public FilterInfo() {
-        this(FILTER_SHOW_AS_INITIAL_VALUE);
+        this(SHOW_AS_INITIAL_VALUE);
     }
-    
+
     private FilterInfo(int info) {
         this.info = info;
     }
 
-	void add(final int flag) {
-		if ((flag & (FILTER_SHOW_AS_MATCHED | FILTER_SHOW_AS_HIDDEN)) != 0) {
-			info &= ~FILTER_SHOW_AS_INITIAL_VALUE;
-		}
-		info |= flag;
-	}
+    boolean set(final int newInfo) {
+        if(info != newInfo) {
+            info = newInfo;
+            return true;
+        }
+        return false;
+    }
+
+    boolean add(final int flag) {
+        int oldInfo = info;
+        if ((flag & (SHOW_AS_MATCHED | SHOW_AS_HIDDEN)) != 0) {
+            info &= ~SHOW_AS_INITIAL_VALUE;
+        }
+        info |= flag;
+        return oldInfo != info;
+    }
 
 	/**
 	 */
 	public boolean canBeAncestor() {
-		return (info & (FILTER_SHOW_AS_ANCESTOR|FILTER_SHOW_AS_INITIAL_VALUE)) != 0;
+		return (info & (SHOW_AS_MATCHED_ANCESTOR|SHOW_AS_INITIAL_VALUE)) != 0;
 	}
 
 	/**
 	 */
 	public boolean isMatched() {
-		return (info & FILTER_SHOW_AS_MATCHED) != 0;
+		return (info & SHOW_AS_MATCHED) != 0;
 	}
 
 	public void reset() {
-		info = FILTER_SHOW_AS_INITIAL_VALUE;
+		info = SHOW_AS_INITIAL_VALUE;
 	}
 
-	boolean matches(final int filterOptions) {
-		return (filterOptions & info) != 0;
-	}
+    boolean matches(final int filterOptions) {
+        return get(filterOptions) != 0;
+    }
+
+    int get(final int filterOptions) {
+        return filterOptions & info;
+    }
 
     boolean isNotChecked() {
-        return matches(FILTER_SHOW_AS_INITIAL_VALUE);
+        return matches(SHOW_AS_INITIAL_VALUE);
     }
 }

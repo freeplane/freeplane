@@ -440,7 +440,7 @@ class ScriptEditorPanel extends JDialog {
 		if (pIsCanceled && mScriptModel.isDirty()) {
 			final int action = JOptionPane.showConfirmDialog(this, TextUtils
 			    .getText("ScriptEditorPanel.changed_cancel"), "Freeplane", JOptionPane.OK_CANCEL_OPTION);
-			if (action == JOptionPane.CANCEL_OPTION) {
+			if (action == JOptionPane.CANCEL_OPTION || action == JOptionPane.CLOSED_OPTION) {
 				return;
 			}
 		}

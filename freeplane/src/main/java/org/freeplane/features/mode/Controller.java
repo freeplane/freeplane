@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +42,7 @@ import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.main.application.ApplicationLifecycleListener;
@@ -74,16 +74,13 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 			currentController = this;
 		}
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
-		this.resourceController = resourceController; 
+		this.resourceController = resourceController;
 		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
-		
+
 		addAction(new MoveToRootAction());
 		Arrays.stream(NodePosition.values()).forEach(p -> addAction(new MoveSelectedNodeAction(p)));
 		Arrays.stream(FreeScrollAction.Direction.values()).forEach(d -> addAction(new FreeScrollAction(d)));
-		
-		addAction(new CloseAllMapsAction());
-		addAction(new CloseAllOtherMapsAction());
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
@@ -97,7 +94,7 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {
 		mapLifeCycleListeners.add(listener);
 	}
-	
+
 	public void removeMapLifeCycleListener(final IMapLifeCycleListener listener) {
 		mapLifeCycleListeners.remove(listener);
 	}
@@ -114,7 +111,7 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	 * @return
 	 */
 	public MapModel getMap() {
-		return getMapViewManager().getModel();
+		return getMapViewManager().getMap();
 	}
 
 	public IMapViewManager getMapViewManager() {
@@ -148,8 +145,8 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	public ViewController getViewController() {
 		return viewController;
 	}
-	
-	
+
+
 
 	public ExecutorService getMainThreadExecutorService() {
 		return viewController.getMainThreadExecutorService();
@@ -193,10 +190,11 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	}
 
 	public boolean shutdown() {
-		getViewController().saveProperties();
-		if (!getViewController().quit()) {
+		viewController.saveProperties();
+		if (!viewController.quit()) {
 			return false;
 		}
+		mapViewManager.getMaps().values().forEach(map -> map.releaseResources());
 		try {
             ResourceController.getResourceController().saveProperties();
             extensionContainer.getExtensions().clear();
@@ -215,32 +213,32 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		if(ext == null) {
 			ext = Controller.getCurrentController().getDefaultExecuter();
 		}
-		
+
 		ext.exec(string, waitFor);
 	}
-	
+
 	public static void exec(final String[] command) throws IOException {
 		exec(command, false);
 	}
-	
+
 	public static void exec(final String[] command, boolean waitFor) throws IOException {
 		IControllerExecuteExtension ext = Controller.getCurrentController().getExtension(IControllerExecuteExtension.class);
 		if(ext == null) {
 			ext = Controller.getCurrentController().getDefaultExecuter();
 		}
-		
+
 		ext.exec(command, waitFor);
 	}
 
 	private IControllerExecuteExtension getDefaultExecuter() {
 		return new IControllerExecuteExtension() {
-			
+
 			public void exec(String[] command, boolean waitFor) throws IOException {
 		LogUtils.info("execute " + Arrays.toString(command));
 				Process proc = Runtime.getRuntime().exec(command);
 				waiting(waitFor, proc);
 			}
-			
+
 			public void exec(String string, boolean waitFor) throws IOException {
 				LogUtils.info("execute " + string);
 				Process proc = Runtime.getRuntime().exec(string);
@@ -265,7 +263,7 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		final Controller controller = threadController.get();
 		return controller != null ? controller : currentController;
 	}
-	
+
 	public static void setCurrentController(final Controller controller){
 		currentController = controller;
 	}
@@ -276,7 +274,7 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 
 	public void selectModeForBuild(ModeController modeController4build) {
 	    this.modeController4build = modeController4build;
-	    
+
     }
 
 	public ResourceController getResourceController() {
@@ -286,11 +284,11 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	public void addOptionValidator(IValidator validator) {
 		optionValidators.add(validator);
     }
-	
+
 	public List<IValidator> getOptionValidators() {
 		return optionValidators;
 	}
-	
+
 	public OptionPanelController getOptionPanelController() {
 		return optionPanelController;
 	}
@@ -299,7 +297,7 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	public void addApplicationLifecycleListener(ApplicationLifecycleListener applicationLifecycleListener) {
 		this.applicationLifecycleListeners.add(applicationLifecycleListener);
 	}
-	
+
 	public void fireMapCreated(final MapModel map) {
 		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
 		for (final IMapLifeCycleListener next : list) {
@@ -322,9 +320,9 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	@Override
 	public void onRemove(MapModel map) {
 		fireMapRemoved(map);
-		
+
 	}
-	
+
 	public void fireStartupFinished() {
 		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
 			listener.onStartupFinished();
@@ -335,25 +333,6 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
 			listener.onApplicationStopped();
 		}
-	}
-
-	public boolean closeAllMaps(){
-		return closeAllMaps(null);
-	}
-	
-	boolean closeAllMaps(MapModel mapToKeepOpen) {
-		boolean closingNotCancelled = true;
-		for (MapModel map = getMap(); map != null && map != mapToKeepOpen && closingNotCancelled; map = getMap()){
-			closingNotCancelled = map.close();
-		}
-		HashSet<MapModel> otherMaps = new HashSet(getMapViewManager().getMaps().values());
-		otherMaps.remove(mapToKeepOpen);
-		otherMaps.remove(getMap());
-		for (MapModel map : otherMaps){
-			closingNotCancelled = map.close() && closingNotCancelled;
-		}
-		
-		return closingNotCancelled;
 	}
 
 }

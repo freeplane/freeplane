@@ -19,19 +19,25 @@
  */
 package org.freeplane.features.icon.mindmapmode;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.AbstractButton;
@@ -42,10 +48,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicIconFactory;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -55,6 +63,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
@@ -62,6 +71,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.EmojiIcon;
@@ -69,17 +79,26 @@ import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconExistsCondition;
 import org.freeplane.features.icon.IconGroup;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
+import org.freeplane.features.icon.TagReference;
+import org.freeplane.features.icon.Tags;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.FastAccessableIcons.ActionPanel;
+import org.freeplane.features.icon.mindmapmode.TagEditor.TagEditorHolder;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleKeys;
@@ -88,8 +107,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.ACTION_KEY_PREFIX
-			+ IconAction.ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY;
+	public static final String ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION = SetBooleanPropertyAction.actionKey(IconAction.ICON_ACTION_REMOVES_ICON_IF_EXISTS_PROPERTY);
 	public static final String REMOVE_FIRST_ICON_ACTION = "RemoveIcon_0_Action";
 	public static final String REMOVE_LAST_ICON_ACTION = "RemoveIconAction";
 	public static final String REMOVE_ALL_ICONS_ACTION = "RemoveAllIconsAction";
@@ -241,21 +259,27 @@ public class MIconController extends IconController {
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
 	private final FastAccessableIcons recentlyUsedIcons;
+    private final MModeController modeController;
 
 	/**
 	 * @param modeController
 	 */
-	public MIconController(final ModeController modeController) {
+	public MIconController(final MModeController modeController) {
 		super(modeController);
+        this.modeController = modeController;
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		iconToolBar = new FreeplaneToolBar("icon_toolbar", SwingConstants.VERTICAL);
 		JAutoScrollBarPane iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
 		iconBox = new CollapseableBoxBuilder("leftToolbarVisible").createBox(iconToolBarScrollPane, Direction.LEFT);
-		createIconActions(modeController);
+		createIconActions();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconMenuBuilder(modeController));
 		recentlyUsedIcons = new FastAccessableIcons(modeController);
+        final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+
+		modeController.addAction(new EditTagsAction(this));
+		modeController.addAction(new ManageTagCategoriesAction());
 	}
 
 	@Override
@@ -351,7 +375,7 @@ public class MIconController extends IconController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	private void createIconActions(final ModeController modeController) {
+	private void createIconActions() {
 		modeController.addAction(new RemoveIconAction(0));
 		modeController.addAction(new RemoveIconAction(-1));
 		modeController.addAction(new RemoveAllIconsAction());
@@ -385,21 +409,22 @@ public class MIconController extends IconController {
 	}
 
 	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
-	private JMenu getSubmenu( final IconGroup group) {
-		final JMenu menu = createToolbarSubmenu(group);
-		fillSubmenuOnSelect(menu, group);
+
+    private JMenu getIconSubmenu( final IconGroup group) {
+		final JMenu menu = createIconToolbarSubmenu(group);
+		fillIconSubmenuOnSelect(menu, group);
 		return menu;
 	}
 
-    private void fillSubmenuOnSelect(final JMenu menu, final IconGroup group) {
+    private void fillIconSubmenuOnSelect(final JMenu menu, final IconGroup group) {
     	menu.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(MenuEvent e) {
 				menu.removeMenuListener(this);
-		        fillSubmenu(menu, group);
+		        fillIconSubmenu(menu, group);
 			}
 
-			private void fillSubmenu(final JMenu menu, final IconGroup group) {
+			private void fillIconSubmenu(final JMenu menu, final IconGroup group) {
 				for (final IconGroup childGroup : group.getGroups()) {
 				    if(childGroup.isLeaf()) {
 				        MindIcon groupIcon = childGroup.getGroupIcon();
@@ -408,7 +433,7 @@ public class MIconController extends IconController {
 				    else {
 				        final JMenu submenu = new JMenu(childGroup.getDescription());
 				        submenu.setIcon(childGroup.getGroupIcon().getIcon());
-				        fillSubmenuOnSelect(submenu, childGroup);
+				        fillIconSubmenuOnSelect(submenu, childGroup);
 				        addGroupToIconSubmenu(menu, submenu);
 				    }
 				}
@@ -424,7 +449,7 @@ public class MIconController extends IconController {
 		});
     }
 
-    private JMenu createToolbarSubmenu(final IconGroup group) {
+    private JMenu createIconToolbarSubmenu(final IconGroup group) {
         final JMenu menu = new JMenu() {
 			private static final long serialVersionUID = 1L;
 
@@ -465,7 +490,7 @@ public class MIconController extends IconController {
 			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
 	}
 
-	private void insertToolbarSubmenus(final JToolBar iconToolBar, boolean isStructured) {
+	private void insertToolbarIconSubmenus(final JToolBar iconToolBar, boolean isStructured) {
 		final JMenuBar iconMenuBar = new JMenuBar() {
 			private static final long serialVersionUID = 1L;
 
@@ -480,7 +505,7 @@ public class MIconController extends IconController {
 		for (final IconGroup iconGroup : STORE.getGroups()) {
 		    if(isStructured && (! iconGroup.getName().equals(IconStore.EMOJI_GROUP) || areEmojisAvailbleOnIconToolbar())
 		            || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojisAvailbleOnIconToolbar())
-			iconMenuBar.add(getSubmenu(iconGroup));
+			iconMenuBar.add(getIconSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
 	}
@@ -565,7 +590,7 @@ public class MIconController extends IconController {
         boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
 		if (! isStructured && areEmojisAvailbleOnIconToolbar())
 		    iconToolBar.addSeparator();
-		insertToolbarSubmenus(iconToolBar, isStructured);
+		insertToolbarIconSubmenus(iconToolBar, isStructured);
 		if (! isStructured) {
 		    iconToolBar.addSeparator();
 		    for (final MindIcon mindIcon : STORE.getMindIcons()) {
@@ -583,11 +608,226 @@ public class MIconController extends IconController {
     }
 
 	public ActionPanel createActionPanelWithControlActions() {
-		final ModeController modeController = Controller.getCurrentModeController();
+
 		return recentlyUsedIcons.createActionPanel(
 				modeController.getAction(ICON_ACTION_REMOVES_ICON_IF_EXISTS_ACTION),
 				modeController.getAction(REMOVE_FIRST_ICON_ACTION),
 				modeController.getAction(REMOVE_LAST_ICON_ACTION),
 				modeController.getAction(REMOVE_ALL_ICONS_ACTION));
 	}
+
+    public void setTags(NodeModel node, List<Tag> newTags, boolean overwriteColors) {
+        TagCategories tagCategories = getTagCategories(node);
+        List<TagReference> registeredTags = newTags.stream()
+                .map(tagCategories::registerTagReference).collect(Collectors.toList());
+        setTagReferences(node, registeredTags);
+        if(overwriteColors) {
+            IntStream.range(0, newTags.size())
+            .filter(tagIndex -> ! newTags.get(tagIndex).getColor().equals(registeredTags.get(tagIndex).getColor()))
+            .forEach(tagIndex -> {
+                Tag newTag = newTags.get(tagIndex);
+                Color newColor = newTag.getColor();
+                setTagColor(node.getMap(), newTag, newColor);
+            });
+        }
+    }
+
+    public void setTagReferences(NodeModel node, List<TagReference> registeredTags) {
+        List<TagReference> oldTags = getTagReferences(node);
+        IActor actor = new IActor() {
+
+            @Override
+            public void undo() {
+                Tags.setTagReferences(node, oldTags);
+                modeController.getMapController().nodeChanged(node, Tags.class, registeredTags, oldTags);
+
+            }
+
+            @Override
+            public String getDescription() {
+                return "setTags";
+
+            }
+
+            @Override
+            public void act() {
+                Tags.setTagReferences(node, registeredTags);
+                modeController.getMapController().nodeChanged(node, Tags.class, oldTags, registeredTags);
+            }
+        };
+        modeController.execute(actor, node.getMap());
+    }
+
+    private TagCategories getTagCategories(NodeModel node) {
+        return node.getMap().getIconRegistry().getTagCategories();
+    }
+
+    private void setTagColor(MapModel map, Tag tag, Color newColor) {
+        TagCategories tagCategories = map.getIconRegistry().getTagCategories();
+        Color oldColor = tagCategories.getTagColor(tag);
+        if(oldColor.equals(newColor)) {
+            return;
+        }
+        IActor actor = new  IActor() {
+            @Override
+            public void undo() {
+                setTagColorWithoutUndo(map, tag, newColor, oldColor);
+            }
+
+            @Override
+            public String getDescription() {
+                return "set tag color";
+            }
+
+            @Override
+            public void act() {
+                setTagColorWithoutUndo(map, tag, oldColor, newColor);
+            }
+
+            private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Color oldColor, Color newColor) {
+                tagCategories.setTagColor(tag.getContent(), newColor);
+                Controller.getCurrentModeController().getMapController().fireMapChanged(
+                    new MapChangeEvent(MIconController.this, map, tag, oldColor, newColor));
+            }
+        };
+        Controller.getCurrentModeController().execute(actor, map);
+    }
+
+    public void editTags(NodeModel node) {
+        TagEditorHolder extension = node.getExtension(TagEditorHolder.class);
+        if(extension != null)
+            extension.activate();
+        else {
+            final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
+            new TagEditor(this, frame, node).show();
+        }
+    }
+
+    public JMenu createTagSubmenu(String name, TagCategories tagCategories, Consumer<Tag> action) {
+        JMenu menu = TranslatedElementFactory.createMenu(name);
+        fillTagSubmenuOnSelect(menu, tagCategories, action, tagCategories.getRootNode());
+        return menu;
+    }
+
+    private void fillTagSubmenuOnSelect(final JMenu menu, TagCategories tagCategories, Consumer<Tag> action, DefaultMutableTreeNode categoryNode) {
+        menu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                fillTagSubmenu(menu, categoryNode);
+            }
+
+            private void fillTagSubmenu(final JMenu menu, DefaultMutableTreeNode categoryNode) {
+                menu.removeAll();
+                for (int i = 0; i < categoryNode.getChildCount(); i++) {
+                    DefaultMutableTreeNode itemNode = (DefaultMutableTreeNode) categoryNode.getChildAt(i);
+                    Object userObject = itemNode.getUserObject();
+                    if(userObject instanceof Tag ) {
+                        Tag tag = (Tag) userObject;
+                        TagIcon icon = new TagIcon(tagCategories.withoutCategories(tag), menu.getFont());
+                        JMenuItem actionItem = new JMenuItem(icon);
+                        actionItem.addActionListener(x -> action.accept(tag));
+                        menu.add(actionItem);
+                        if(!itemNode.isLeaf()) {
+                            final JMenu submenu = new JMenu();
+                            submenu.setIcon(icon);
+                            fillTagSubmenuOnSelect(submenu, tagCategories, action, itemNode);
+                            menu.add(submenu);
+                        }
+                    }
+                    else if(!itemNode.isLeaf()) {
+                        final JMenu submenu = new JMenu(userObject.toString());
+                        fillTagSubmenuOnSelect(submenu, tagCategories, action, itemNode);
+                        menu.add(submenu);
+                    }
+                }
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {
+            }
+            @Override
+            public void menuCanceled(MenuEvent e) {
+            }
+        });
+    }
+
+
+    public void removeSelectedTagsFromSelectedNodes(Set<Tag> selectedTags) {
+        if(selectedTags.isEmpty())
+            return;
+        Controller.getCurrentController().getSelection().getSelection()
+        .forEach(node -> removeTags(node, selectedTags));
+    }
+    public void insertTagsIntoSelectedNodes(List<Tag> selectedTags) {
+        if(selectedTags.isEmpty())
+            return;
+        Controller.getCurrentController().getSelection().getSelection()
+        .forEach(node -> addTags(node, selectedTags));
+    }
+
+    public void removeTags(NodeModel node, Set<Tag> removedTags) {
+        final List<Tag> existingTags = getTags(node);
+        final List<TagReference> newTags = new ArrayList<>(existingTags.size());
+        getTagReferences(node).stream()
+        .filter(ref -> ! removedTags.contains(ref.getTag()))
+        .forEach(newTags::add);
+        setTagReferences(node, newTags);
+    }
+
+    public void addTags(NodeModel node, List<Tag> addedTags) {
+        final List<Tag> existingTags = getTags(node);
+        final Set<Tag> existingTagSet = new HashSet<Tag>(existingTags);
+        final List<TagReference> newTags = new ArrayList<>(existingTags.size() + addedTags.size());
+        newTags.addAll(getTagReferences(node));
+        final TagCategories tagCategories = getTagCategories(node);
+        addedTags.stream()
+        .filter(tag -> ! existingTagSet.contains(tag))
+        .map(tagCategories::registerTagReference)
+        .forEach(newTags::add);
+        setTagReferences(node, newTags);
+    }
+
+    @Override
+    public List<Tag> extendCategories(List<Tag> tags, TagCategories tagCategories){
+        return tagCategories.extendCategories(tags);
+    }
+
+    public void setTagCategories(MapModel map, TagCategories newCategories) {
+        final IconRegistry iconRegistry = map.getIconRegistry();
+        final TagCategories oldCategories = iconRegistry.getTagCategories();
+        IActor actor = new IActor() {
+
+            @Override
+            public void undo() {
+                iconRegistry.setTagCategories(oldCategories);
+                oldCategories.updateTagReferences();
+                Controller.getCurrentModeController().getMapController().fireMapChanged(
+                        new MapChangeEvent(MIconController.this, Controller.getCurrentController().getMap(), TagCategories.class,
+                                newCategories, oldCategories));
+            }
+
+            @Override
+            public String getDescription() {
+                return "setTagCategories";
+            }
+
+            @Override
+            public void act() {
+                iconRegistry.setTagCategories(newCategories);
+                newCategories.updateTagReferences();
+                Controller.getCurrentModeController().getMapController().fireMapChanged(
+                        new MapChangeEvent(MIconController.this, Controller.getCurrentController().getMap(), TagCategories.class,
+                                oldCategories, newCategories));
+            }
+        };
+        modeController.execute(actor, map);
+    }
+
+    public void addTagsFromSpec(NodeModel target, String tagSpec) {
+        String[] tags = tagSpec.split(System.lineSeparator());
+        if(tags == null || tags.length == 0)
+            return;
+        List<Tag> addedTagList = Stream.of(tags).map(TagCategories::readTag).collect(Collectors.toList());
+        addTags(target, addedTagList);
+    }
+
 }

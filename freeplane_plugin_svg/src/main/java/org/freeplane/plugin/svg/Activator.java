@@ -24,7 +24,7 @@ public class Activator implements BundleActivator {
 
 	private void registerMindMapModeExtension(final BundleContext context) {
 		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
-		props.put("mode", new String[] { MModeController.MODENAME });
+		props.put("mode", new String[] { MModeController.MODENAME , "CodeExplorer"});
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController, CommandLineOptions options) {
@@ -33,7 +33,8 @@ public class Activator implements BundleActivator {
 			    	exportController.addMapExportEngine(new CaseSensitiveFileNameExtensionFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());
 				    final ViewerController extension = modeController
 				        .getExtension(ViewerController.class);
-				    extension.addFactory(new SvgViewerFactory());
+				    if(extension != null)
+				        extension.addFactory(new SvgViewerFactory());
 			    }
 		    }, props);
 	}

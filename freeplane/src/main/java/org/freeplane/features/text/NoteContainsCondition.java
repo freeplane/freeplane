@@ -22,6 +22,7 @@ package org.freeplane.features.text;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
@@ -37,20 +38,26 @@ public class NoteContainsCondition extends StringConditionAdapter {
     static ASelectableCondition loadMatchCase(final XMLElement element) {
         return new NoteContainsCondition(element.getAttribute(VALUE, null), true,
                 Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+                Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
                 Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
     }
 
     static ASelectableCondition loadIgnoreCase(final XMLElement element) {
         return new NoteContainsCondition(element.getAttribute(VALUE, null), false,
                 Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+                Boolean.valueOf(element.getAttribute(MATCH_WORDWISE, null)),
                 Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
     }
 
 	final private String value;
 	final StringMatchingStrategy stringMatchingStrategy;
 
-	NoteContainsCondition(final String value, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(matchCase, matchApproximately, ignoreDiacritics);
+	NoteContainsCondition(final String value,
+	        final boolean matchCase,
+	        final boolean matchApproximately,
+	        final boolean matchWordwise,
+	        boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
 		this.value = value;
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
@@ -61,7 +68,7 @@ public class NoteContainsCondition extends StringConditionAdapter {
 		if (text == null) {
 			return false;
 		}
-		return stringMatchingStrategy.matches(normalizedValue(), normalize(text), true);
+		return stringMatchingStrategy.matches(normalizedValue(), normalize(text), substringMatchType());
 	}
 
 	@Override
@@ -71,8 +78,7 @@ public class NoteContainsCondition extends StringConditionAdapter {
 
 	protected String createDescription(final boolean matchCase) {
 		final String nodeCondition = TextUtils.getText(TextController.FILTER_NOTE);
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return createDescription(nodeCondition, simpleCondition, value);
+		return createDescription(nodeCondition, containsDescription(), value);
 	}
 
 	protected String getText(final NodeModel node) {

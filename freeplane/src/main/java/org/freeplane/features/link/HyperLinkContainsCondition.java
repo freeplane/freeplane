@@ -22,7 +22,7 @@ package org.freeplane.features.link;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
-import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.StringMatchingStrategy.Type;
 
 /**
  * @author Dimitry Polivaev
@@ -33,22 +33,22 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 
 	private final StringMatchingStrategy stringMatchingStrategy;
 
-	public HyperLinkContainsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
-		super(hyperlink, matchCase, matchApproximately, ignoreDiacritics);
+	public HyperLinkContainsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately,
+	        final boolean matchWordwise, boolean ignoreDiacritics) {
+		super(hyperlink, matchCase, matchApproximately, matchWordwise, ignoreDiacritics);
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	@Override
 	protected boolean checkLink(final Hyperlink nodeLink) {
-		return stringMatchingStrategy.matches(normalizedValue(), normalize(nodeLink), true);
+		return stringMatchingStrategy.matches(normalizedValue(), normalize(nodeLink), substringMatchType());
 	}
 
-	@Override
+    @Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.FILTER_LINK);
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return createDescription(condition, simpleCondition, getHyperlink());
+		return createDescription(condition, containsDescription(), getHyperlink());
 	}
 
 	@Override

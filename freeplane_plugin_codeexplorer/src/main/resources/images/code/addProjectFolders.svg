@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2000-2022 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license. -->
+<svg fill="none" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <path d="m1.0395 4.0647c0-0.43468 0.34626-0.78706 0.77339-0.78706h8.5073c0.42707 0 0.77339 0.35238 0.77339 0.78706v3.5418c0 2.8254-2.2507 5.1159-5.027 5.1159-2.7764 0-5.027-2.2905-5.027-5.1159z" fill="#e7effd" stroke="#333333"/>
+ <path d="m11.094 3.2776h1.5468c1.2814 0 2.3202 1.0572 2.3202 2.3612s-1.0388 2.3612-2.3202 2.3612h-1.5468z" stroke="#333333"/>
+ <g transform="matrix(.45073 0 0 .45133 2.6706 4.1203)" fill="none" stroke="#0071bc" stroke-linejoin="round" stroke-width="2.2172">
+  <path d="m3.5996 1.5h-2v3.2h2l0.8-0.4h1.2l1 0.8h2.2l1.6-1.2c1.2 0 2 0 4 1.4-1.2-3.8-3.6-3.8-4.8-3.8h-3l-1 0.4h-1.2z"/>
+  <path d="m6 14.5h3.4v-5.0737c0-0.67713-0.13754-1.3472-0.40427-1.9696l-0.19573-0.45671v-2h-2.2v2l-0.19573 0.45671c-0.26673 0.62238-0.40427 1.2924-0.40427 1.9696z"/>
+ </g>
+</svg>

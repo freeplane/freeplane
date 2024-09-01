@@ -62,13 +62,18 @@ public class ZoomableLabel extends JLabel {
 	}
 
 
-	public Dimension getPreferredSize() {
-		if (isPreferredSizeSet()) {
+	@Override
+    public Dimension getPreferredSize() {
+		return getZoomableLabelPreferredZize();
+	}
+
+    private Dimension getZoomableLabelPreferredZize() {
+        if (isPreferredSizeSet()) {
 			Dimension preferredSize = super.getPreferredSize();
 			return preferredSize;
 		}
 		return ((ZoomableLabelUI)getUI()).getPreferredSize(this);
-	}
+    }
 
 	protected float getZoom() {
 		final float zoom = getMap().getZoom();
@@ -129,9 +134,9 @@ public class ZoomableLabel extends JLabel {
 				try{
 					final ModeController modeController = map.getModeController();
 					final NodeStyleController nsc = NodeStyleController.getController(modeController);
-					final double maxNodeWidth = nsc.getMaxWidth(node.getModel(), node.getStyleOption()).toBaseUnits();
+					final double maxNodeWidth = nsc.getMaxWidth(node.getNode(), node.getStyleOption()).toBaseUnits();
 					setMaximumWidth(Integer.MAX_VALUE);
-					widthMustBeRestricted = getPreferredSize().width > map.getZoomed(maxNodeWidth);
+					widthMustBeRestricted = getZoomableLabelPreferredZize().width > map.getZoomed(maxNodeWidth);
 				}
 				finally{
 					setMaximumWidth(oldMaximumWidth);
@@ -141,7 +146,7 @@ public class ZoomableLabel extends JLabel {
 		}
 		if (isHtml) {
 			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
-				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
+				nodeText = "<html><base href=\"" + map.getMap().getURL() + "\">" + nodeText.substring(6);
 			}
 			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty(
 			    "html_long_node_head");
@@ -279,20 +284,24 @@ public class ZoomableLabel extends JLabel {
 		this.minimumWidth = minimumWidth;
 	}
 
-	protected int limitWidth(int width) {
-		if(width < getMinimumWidth())
-			return getMinimumWidth();
-		else if(width > getMaximumWidth())
-			return getMaximumWidth();
+	protected int limitWidth(int width, int borderWidth) {
+		final int minimumWidth = getMinimumWidth() + 2 * borderWidth;
+		final int maximumWidth = getMaximumWidth();
+		if(width < minimumWidth)
+			return Math.min(minimumWidth, maximumWidth);
+		else if(width > maximumWidth)
+			return maximumWidth;
 		else
 			return width;
 	}
 
-	protected double limitWidth(double width) {
-		if(width < getMinimumWidth())
-			return getMinimumWidth();
-		else if(width > getMaximumWidth())
-			return getMaximumWidth();
+	protected double limitWidth(double width, int borderWidth) {
+		final int minimumWidth = getMinimumWidth() + 2 * borderWidth;
+		final int maximumWidth = getMaximumWidth();
+		if(width < minimumWidth)
+			return Math.min(minimumWidth, maximumWidth);
+		else if(width > maximumWidth)
+			return maximumWidth;
 		else
 			return width;
 	}

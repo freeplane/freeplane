@@ -28,7 +28,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +44,8 @@ import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -92,7 +96,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final MapView mapView = ((MapView) controller.getMapViewManager().getMapViewComponent());
 		int distance = usesHorizontalLayout ? dragNextPoint.y - dragStartingPoint.y : dragNextPoint.x - dragStartingPoint.x;
         int hGapChange = (int) (distance / mapView.getZoom());
-		if (getNode().isTopOrLeft(mapView.getRoot().getModel())) {
+		if (getNode().isTopOrLeft(mapView.getRoot().getNode())) {
 			hGapChange = -hGapChange;
 		}
 		return hGapChange;
@@ -125,7 +129,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				    .getController(controller.getModeController());
 				if (e.getModifiersEx() == 0) {
 					final NodeView nodeV = mainView.getNodeView();
-					final NodeModel node = nodeV.getModel();
+					final NodeModel node = nodeV.getNode();
 					Set<NodeModel> currentSelection = controller.getSelection().getSelection();
 					if(currentSelection.size() > 1) {
 					    currentSelection.forEach(n ->
@@ -146,7 +150,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                             });
                     }
                     else {
-                        NodeModel parentNode = nodeV.getParentView().getModel();
+                        NodeModel parentNode = nodeV.getParentView().getNode();
                         locationController.setBaseHGapToChildren(parentNode, LocationModel.DEFAULT_HGAP);
                         locationController.setCommonVGapBetweenChildren(parentNode, LocationModel.DEFAULT_VGAP);
                     }
@@ -154,10 +158,18 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				}
 			}
 			else {
-				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e) && ! mainView.isInDragRegion(e.getPoint())) {
-					final MTextController textController = MTextController.getController();
-					textController.getEventQueue().activate(e);
-					textController.edit(FirstAction.EDIT_CURRENT, false);
+			    if (Compat.isPlainEvent(e) && !isInFoldingRegion(e) && ! mainView.isInDragRegion(e.getPoint())) {
+			        if(mainView.getTagAt(e.getPoint()) != null) {
+			            IconController iconController = IconController.getController();
+			            if(iconController instanceof MIconController) {
+			                ((MIconController)iconController).editTags(mainView.getNodeView().getNode());
+			            }
+			        }
+			        else {
+			            final MTextController textController = MTextController.getController();
+			            textController.getEventQueue().activate(e);
+			            textController.edit(FirstAction.EDIT_CURRENT, false);
+			        }
 				}
 			}
 		}
@@ -172,7 +184,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final NodeView nodeV = mainView.getNodeView();
 		MapView mapView = nodeV.getMap();
 		ModeController modeController = mapView.getModeController();
-		if(modeController.canEdit(mapView.getModel())) {
+		if(modeController.canEdit(mapView.getMap())) {
 			if (mainView.isInDragRegion(e.getPoint())) {
 				mainView.setMouseArea(MouseArea.MOTION);
 				mainView.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -194,7 +206,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		mapView.select();
 		doubleClickTimer.cancel();
 		ModeController modeController = mapView.getModeController();
-		if (modeController.canEdit(mapView.getModel()) && editsOnDoubleClick())
+		if (modeController.canEdit(mapView.getMap()) && editsOnDoubleClick())
             doubleClickTimer.setDelay(DoubleClickTimer.MAX_TIME_BETWEEN_CLICKS);
         else {
         	doubleClickTimer.setDelay(0);
@@ -202,7 +214,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			    NodeView nodeView = getNodeView(e);
-				final NodeModel node = nodeView.getModel();
+				final NodeModel node = nodeView.getNode();
 				if(modeController.canEdit(node.getMap())) {
 					nodeSelector.stopTimerForDelayedSelection();
 					final Point point = e.getPoint();
@@ -215,7 +227,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					    originalAssignedParentVGap = parentLocationMode.getVGap();
 					    originalAssignedBaseHGap = parentLocationMode.getBaseHGap();
 					}
-					NodeModel childDistanceContainer = draggedNodeView.getParentView().getModel();
+					NodeModel childDistanceContainer = draggedNodeView.getParentView().getNode();
 					LocationController extension = modeController.getExtension(LocationController.class);
                     effectiveParentVGap = extension.getCommonVGapBetweenChildren(childDistanceContainer);
                     effectiveBaseHGap = extension.getBaseHGapToChildren(childDistanceContainer);
@@ -227,7 +239,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					    originalAssignedVGaps = new ArrayList<>();
 					    originalHGaps = new ArrayList<>(selectedNodes.size());
 					    selectedNodes.forEach(n -> originalHGaps.add(LocationModel.getModel(n).getHGap()));
-					    Set<NodeModel> parentSelection = new HashSet<>();
+					    Set<NodeModel> parentSelection = new LinkedHashSet<>();
 					    selectedNodes.forEach(n -> {
                             NodeModel parentNode = n.getParentNode();
                             if (parentNode != null && parentSelection.add(parentNode)) {
@@ -240,6 +252,8 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 					    this.selection = new ArrayList<>(selectedNodes);
 					    this.parentSelection = new ArrayList<>(parentSelection);
 					}
+					else
+					    this.parentSelection = Collections.singletonList(node.getParentNode());
 				}
 			}
 		}
@@ -308,7 +322,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                     mapController.nodeRefresh(node);
 			}
 			else {
-				final NodeModel parentNode = draggedNodeView.getParentView().getModel();
+				final NodeModel parentNode = draggedNodeView.getParentView().getNode();
 				int newVGap = Math.max(0, effectiveParentVGap.toBaseUnitsRounded() + (usesHorizontalLayout ?  shiftYChange : -shiftYChange));
                 final LocationModel locationModel = LocationModel.createLocationModel(parentNode);
                 boolean isHgapChanged = originalHGap.toBaseUnitsRounded() + hGapChange != locationModel.getBaseHGap().toBaseUnitsRounded();
@@ -329,13 +343,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
                     }
                 }
                 final MapController mapController = modeController.getMapController();
-                if(movesMultipleNodes()) {
-                    parentSelection.forEach(mapController::nodeRefresh);
-
-                }
-                else
-                    mapController.nodeRefresh(node.getParentNode());
-
+                parentSelection.forEach(mapController::nodeRefresh);
 			}
 			EventQueue.invokeLater(new Runnable() {
 				@Override
@@ -367,7 +375,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
             parentSelection.forEach(n ->
                 LocationModel.createLocationModel(n).setVGap(newVGap));
         } else {
-            LocationModel.createLocationModel(getNode().getParentNode()).setVGap(newVGap);
+            LocationModel.createLocationModel(parentSelection.get(0)).setVGap(newVGap);
         }
     }
 
@@ -376,7 +384,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
             parentSelection.forEach(n ->
                 LocationModel.createLocationModel(n).setBaseHGap(newHGap));
         } else {
-            LocationModel.createLocationModel(getNode().getParentNode()).setBaseHGap(newHGap);
+            LocationModel.createLocationModel(parentSelection.get(0)).setBaseHGap(newHGap);
         }
     }
 
@@ -414,7 +422,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		    stopDrag();
 		    return;
 		}
-		NodeModel parentNode = parentView.getModel();
+		NodeModel parentNode = parentView.getNode();
         MLocationController locationController = (MLocationController) LocationController.getController(controller
                 .getModeController());
         final Quantity<LengthUnit> parentVGap = locationController.getCommonVGapBetweenChildren(parentNode);
@@ -444,7 +452,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	}
 
     private NodeModel getNode() {
-        return draggedNodeView.getModel();
+        return draggedNodeView.getNode();
     }
 
 	private void adjustNodeIndices() {
@@ -471,7 +479,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	}
 
 	private NodeModel[] adjustNodeIndexBackupSelection(final NodeView nodeV, NodeModel[] selectedsBackup) {
-		final NodeModel node = nodeV.getModel();
+		final NodeModel node = nodeV.getNode();
 		final int newIndex = calculateNewFreeNodeIndex(nodeV);
 		if (newIndex != -1) {
 			final ModeController modeController = nodeV.getMap().getModeController();
@@ -490,7 +498,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	}
 
 	private int calculateNewFreeNodeIndex(final NodeView nodeV) {
-		final NodeModel node = nodeV.getModel();
+		final NodeModel node = nodeV.getNode();
 		if (SummaryNode.isHidden(node))
 			return -1;
 		final boolean left = nodeV.isTopOrLeft();
@@ -506,7 +514,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 			if (!(component instanceof NodeView))
 				continue;
 			NodeView siblingV = (NodeView) component;
-			final NodeModel sibling = siblingV.getModel();
+			final NodeModel sibling = siblingV.getNode();
 			if (siblingV.isTopOrLeft() == left && !SummaryNode.isHidden(sibling) && getRefY(siblingV) > nodeY)
 				break;
 			else {
@@ -552,27 +560,25 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
     }
 
     private void resetBaseHGaps() {
-        NodeModel node = getNode();
         if (movesMultipleNodes()) {
             for(int i = 0; i < parentSelection.size(); i++) {
                 LocationModel locationModel = LocationModel.getModel(parentSelection.get(i));
                 locationModel.setBaseHGap(originalAssignedBaseHGaps.get(i));
             }
         } else {
-            final LocationModel locationModel = LocationModel.getModel(node.getParentNode());
+            final LocationModel locationModel = LocationModel.getModel(parentSelection.get(0));
             locationModel.setBaseHGap(originalAssignedBaseHGap);
         }
     }
 
     private void resetVGaps() {
-        NodeModel node = getNode();
         if (movesMultipleNodes()) {
             for(int i = 0; i < parentSelection.size(); i++) {
                 LocationModel locationModel = LocationModel.getModel(parentSelection.get(i));
                 locationModel.setVGap(originalAssignedVGaps.get(i));
             }
         } else {
-            final LocationModel locationModel = LocationModel.getModel(node.getParentNode());
+            final LocationModel locationModel = LocationModel.getModel(parentSelection.get(0));
             locationModel.setVGap(originalAssignedParentVGap);
         }
     }

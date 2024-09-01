@@ -57,7 +57,7 @@ public class JTimeChooser extends Box{
 		hourChooser.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
 				if(e.getPropertyName().equals("value") &&  calendar != null){
-					calendar.set(Calendar.HOUR_OF_DAY, (Integer) hourChooser.getValue());
+					calendar.set(Calendar.HOUR_OF_DAY, hourChooser.getValue());
 				}
 			}
 		});
@@ -67,7 +67,7 @@ public class JTimeChooser extends Box{
 		minuteChooser.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent e) {
 				if(e.getPropertyName().equals("value") &&  calendar != null){
-					calendar.set(Calendar.MINUTE, (Integer) minuteChooser.getValue());
+					calendar.set(Calendar.MINUTE, minuteChooser.getValue());
 				}
 			}
 		});
@@ -86,10 +86,10 @@ public class JTimeChooser extends Box{
 	}
 
 	public int getHour() {
-		return (Integer) hourChooser.getValue();
+		return hourChooser.getValue();
 	}
 
 	public int getMinute() {
-		return (Integer) minuteChooser.getValue();
+		return minuteChooser.getValue();
 	}
 }

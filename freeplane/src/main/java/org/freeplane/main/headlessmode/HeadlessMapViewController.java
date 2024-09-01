@@ -201,12 +201,12 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
-	public MapModel getModel() {
+	public MapModel getMap() {
 		return currentMap;
 	}
 
 	@Override
-	public MapModel getModel(Component mapView) {
+	public MapModel getMap(Component mapView) {
 		throw new RuntimeException("Method not implemented");
 	}
 
@@ -404,5 +404,10 @@ public class HeadlessMapViewController implements IMapViewManager {
     @Override
     public void setLayout(Component map, MapViewLayout newLayoutType) {
         throw new RuntimeException("Method not implemented");
+    }
+
+    @Override
+    public void setMap(Component view, MapModel map) {
+        /* ignore */
     }
 }

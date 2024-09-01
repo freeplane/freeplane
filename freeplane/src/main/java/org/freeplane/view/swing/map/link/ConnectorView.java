@@ -63,30 +63,34 @@ public class ConnectorView extends AConnectorView{
 	private Rectangle sourceTextRectangle;
 	private Rectangle middleTextRectangle;
 	private Rectangle targetTextRectangle;
-	final private Color textColor;
+	final private Color connectorColor;
 	final private Color color;
 	final private BasicStroke stroke;
 	final private Color bgColor;
     private final LinkController linkController;
+    private boolean paintsConnectorLine;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
 		linkController = getLinkController();
-		textColor = linkController.getColor(connectorModel);
+		connectorColor = linkController.getColor(connectorModel);
 		this.bgColor =bgColor;
 		final int alpha = linkController.getOpacity(connectorModel);
-		color =  ColorUtils.alphaToColor(alpha, textColor);
+		color =  ColorUtils.alphaToColor(alpha, connectorColor);
 
-		final int width = linkController.getWidth(connectorModel);
-		if (!isSourceVisible() || !isTargetVisible()) {
+		final MapView map = getMap();
+		paintsConnectorLine = map.showsConnectorLines((source != null && source.isSelected()) || (target != null && target.isSelected()));
+		final int width = paintsConnectorLine ? linkController.getWidth(connectorModel) : 1;
+
+		if (! paintsConnectorLine || !isSourceVisible() || !isTargetVisible()) {
 			stroke = new BasicStroke(width);
 		}
 		else{
-			stroke = UITools.createStroke((float) width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
+			stroke = UITools.createStroke(width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
 		}
 	}
-	
-	
+
+
 //    public void setShowsControlPoints(boolean showsControlPoints) {
 //        this.showsControlPoints = showsControlPoints;
 //    }
@@ -126,10 +130,10 @@ public class ConnectorView extends AConnectorView{
 		else {
 			y = endPoint.y - textHeight - LABEL_GAP;
 		}
-		textPainter.draw(x, y, textColor, bgColor);
+		textPainter.draw(x, y, g.getColor(), bgColor);
 		return new Rectangle(x, y, textWidth, textHeight);
 	}
-	
+
 	private Rectangle drawMiddleLabel(final Graphics2D g, final String text, final Point centerPoint) {
 		if (text == null || text.equals("")) {
 			return null;
@@ -139,7 +143,7 @@ public class ConnectorView extends AConnectorView{
 		final int x = centerPoint.x - textWidth / 2;
 		final int textHeight = textPainter.getTextHeight();
 		int y = centerPoint.y - textHeight/2;
-		textPainter.draw(x, y, textColor, bgColor);
+		textPainter.draw(x, y, g.getColor(), bgColor);
 		return new Rectangle(x, y, textWidth, textHeight);
 	}
 
@@ -148,7 +152,7 @@ public class ConnectorView extends AConnectorView{
 	}
 
 	NodeLinkModel getArrowLinkModel() {
-		return connectorModel;
+		return viewedConnector;
 	}
 
 	private Point getCenterPoint() {
@@ -216,15 +220,15 @@ public class ConnectorView extends AConnectorView{
 	/* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.link.ILinkView#getModel()
 	 */
-	public ConnectorModel getModel() {
-		return connectorModel;
+	public ConnectorModel getConnector() {
+		return viewedConnector;
 	}
 
 
 	/**
-	 * Computes the intersection between two lines. The calculated point is approximate, 
+	 * Computes the intersection between two lines. The calculated point is approximate,
 	 * since integers are used. If you need a more precise result, use doubles
-	 * everywhere. 
+	 * everywhere.
 	 * (c) 2007 Alexander Hristov. Use Freely (LGPL license). http://www.ahristov.com
 	 *
 	 * @param x1 Point 1 of Line 1
@@ -287,14 +291,14 @@ public class ConnectorView extends AConnectorView{
 		g.setColor(color);
 		/* set stroke. */
 		g.setStroke(stroke);
-        Point startInclination = connectorModel.getStartInclination();
-        Point endInclination = connectorModel.getEndInclination();
+        Point startInclination = viewedConnector.getStartInclination();
+        Point endInclination = viewedConnector.getEndInclination();
 		if (startInclination == null || endInclination == null) {
 		    InclinationRecommender recommender = new InclinationRecommender(linkController, this);
 			if (isSourceVisible() && startInclination == null) {
 			    startInclination = recommender.calcStartInclination();
 			}
-			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
+			if (isTargetVisible() && viewedConnector.getEndInclination() == null) {
 			    endInclination = recommender.calcEndInclination();
 			}
 		}
@@ -327,9 +331,8 @@ public class ConnectorView extends AConnectorView{
 			endPoint2.translate(((targetIsLeft) ? -1 : 1) * map.getZoomed(endInclination.x), map
 				.getZoomed(endInclination.y));
 		}
-		final boolean showsConnectors = map.showsConnectorLines();
-		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint, showsConnectors);
-		if(showsConnectors) {
+		paintConnector(g, startPoint, startPoint2, endPoint2, endPoint);
+		if(paintsConnectorLine) {
 			drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
 		}
 		g.setColor(oldColor);
@@ -354,11 +357,12 @@ public class ConnectorView extends AConnectorView{
 		return generalPath;
     }
 
-	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean showsConnectors) {
+	private void paintConnector(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 		final boolean selfLink = getSource() == getTarget();
-		final boolean isLine = ConnectorShape.LINE.equals(linkController.getShape(connectorModel));
+		ConnectorShape shape = linkController.getShape(viewedConnector);
+        final boolean isLine = ConnectorShape.LINE.equals(shape);
 		arrowLinkCurve = null;
-		if (showsConnectors) {
+		if (paintsConnectorLine) {
 		    if (startPoint != null && endPoint != null) {
 		        if(isLine) {
 		            if (selfLink) {
@@ -368,35 +372,43 @@ public class ConnectorView extends AConnectorView{
 		                arrowLinkCurve = createLine(startPoint, endPoint);
 		            }
 		        }
-		        else if (ConnectorShape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
+		        else if (ConnectorShape.LINEAR_PATH.equals(linkController.getShape(viewedConnector)))
 		            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
 		        else
 		            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
-		    } 
+		    }
 		    if (arrowLinkCurve != null) {
 		        g.draw(arrowLinkCurve);
 		    }
-		} 
-		if (isSourceVisible() && !(showsConnectors && linkController.getArrows(connectorModel).start.equals(ArrowType.NONE))) {
-			if(!selfLink && isLine && endPoint != null)
-				paintArrow(g, endPoint, startPoint);
-			else
-				paintArrow(g, startPoint2, startPoint);
 		}
-		if (isTargetVisible() && !(showsConnectors && linkController.getArrows(connectorModel).end.equals(ArrowType.NONE))) {
+		boolean isStartArrowTypeNone = linkController.getArrows(viewedConnector).start.equals(ArrowType.NONE);
+		ArrowDirection startArrowDirection = isStartArrowTypeNone ? ArrowDirection.OUTGOING : ArrowDirection.INCOMING;
+		if (isSourceVisible() && !(paintsConnectorLine && isStartArrowTypeNone)) {
+		    if(isLine && endPoint != null) {
+		        if (selfLink)
+		            paintArrow(g, startPoint2, startPoint, startArrowDirection);
+		        else
+		            paintArrow(g, endPoint, startPoint, startArrowDirection);
+		    }
+		    else
+		        paintArrow(g, startPoint2, startPoint, startArrowDirection);
+		}
+		boolean isEndArrowTypeNone = linkController.getArrows(viewedConnector).end.equals(ArrowType.NONE);
+        ArrowDirection endArrowDirection = isEndArrowTypeNone ? ArrowDirection.OUTGOING : ArrowDirection.INCOMING;
+		if (isTargetVisible() && !(paintsConnectorLine && isEndArrowTypeNone)) {
 			if(isLine && startPoint != null) {
-                            if (selfLink)
-				paintArrow(g, startPoint, startPoint2);
-                            else
-				paintArrow(g, startPoint, endPoint);
-                        }
+				if (selfLink)
+				    paintArrow(g, startPoint, startPoint2, endArrowDirection);
+				else
+				    paintArrow(g, startPoint, endPoint, endArrowDirection);
+			}
 			else
-				paintArrow(g, endPoint2, endPoint);
+			    paintArrow(g, endPoint2, endPoint, endArrowDirection);
 		}
-		if(showsConnectors) {
+		if(paintsConnectorLine) {
 			boolean showsControlPoints = showsControlPoints();
             if (showsControlPoints) {
-				g.setColor(textColor);
+				g.setColor(connectorColor);
 				g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 			}
 			if (showsControlPoints || !isSourceVisible() || !isTargetVisible()) {
@@ -419,20 +431,20 @@ public class ConnectorView extends AConnectorView{
 	}
 
     public void enableControlPoints() {
-        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(connectorModel));  
+        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(viewedConnector));
     }
 
 
     public void disableControlPoints() {
         MapView map = getMap();
         if(showsControlPoints())
-            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);  
+            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);
     }
 
 	private boolean showsControlPoints() {
 	    @SuppressWarnings("unchecked")
 	    WeakReference<ConnectorModel> connectorReference = (WeakReference<ConnectorModel>) getMap().getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS);
-	    boolean showsControlPoints = connectorReference != null && connectorReference.get() == getModel();
+	    boolean showsControlPoints = connectorReference != null && connectorReference.get() == getConnector();
 	    return showsControlPoints;
 	}
 
@@ -441,28 +453,34 @@ public class ConnectorView extends AConnectorView{
 	    g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
-	private void paintArrow(final Graphics2D g, Point from, Point to) {
-	    paintArrow(from, to, g, getZoom() * 10);
+    private void paintArrow(final Graphics2D g, Point from, Point to, ArrowDirection direction) {
+        paintArrow(from, to, g, getZoom() * 10, direction);
     }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
-	    final String sourceLabel = linkController.getSourceLabel(connectorModel);
+	    final String sourceLabel = linkController.getSourceLabel(viewedConnector);
 		final String middleLabel;
-	      if(source != null && MapStyleModel.isDefaultStyleNode(source.getModel())) 
+	      if(source != null && MapStyleModel.isDefaultStyleNode(source.getNode()))
 	          middleLabel = TextUtils.getText("connector");
 	      else
-	          middleLabel = linkController.getMiddleLabel(connectorModel);
+	          middleLabel = linkController.getMiddleLabel(viewedConnector);
 
-		final String targetLabel = linkController.getTargetLabel(connectorModel);
+		final String targetLabel = linkController.getTargetLabel(viewedConnector);
 		if (sourceLabel == null && middleLabel == null && targetLabel == null) {
 			return;
 		}
 
 		final Font oldFont = g.getFont();
-		final String fontFamily = linkController.getLabelFontFamily(connectorModel);
-        final int fontSize = Math.round (linkController.getLabelFontSize(connectorModel) * UITools.FONT_SCALE_FACTOR);
+		final String fontFamily = linkController.getLabelFontFamily(viewedConnector);
+        final int fontSize = Math.round (linkController.getLabelFontSize(viewedConnector) * UITools.FONT_SCALE_FACTOR);
         final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
         g.setFont(linksFont);
+
+        Color labelColor = linkController.getLabelColor(viewedConnector);
+        if(labelColor != null)
+            g.setColor(labelColor);
+        else
+            g.setColor(connectorColor);
 
 		if (startPoint != null) {
 			sourceTextRectangle = drawEndPointText(g, sourceLabel, startPoint, startPoint2);

@@ -32,6 +32,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -256,19 +257,19 @@ public class UITools {
 		return acceleratorText;
 	}
 
-	static public void informationMessage(final String message) {
+	static public void informationMessage(final Object message) {
 		UITools.informationMessage(UITools.getCurrentRootComponent(), message);
 	}
 
-	static public void informationMessage(final Component frame, final String message) {
+	static public void informationMessage(final Component frame, final Object message) {
 		UITools.informationMessage(frame, message, "Freeplane");
 	}
 
-	static public void informationMessage(final Component frame, final String message, final String title) {
+	static public void informationMessage(final Component frame, final Object message, final String title) {
 		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void informationMessage(final Component frame, final String text, final String title, final int type) {
+	public static void informationMessage(final Component frame, final Object text, final String title, final int type) {
 		JOptionPane.showMessageDialog(frame, text, title, type);
 	}
 
@@ -532,12 +533,16 @@ public class UITools {
 		});
 	}
 
-	public static Color getTextColorForBackground(final Color color) {
-		return isLight(color) ? Color.BLACK : Color.WHITE;
-	}
+    public static Color getTextColorForBackground(final Color color) {
+        return isLight(color) ? Color.BLACK : Color.WHITE;
+    }
+
+    public static Color getDisabledTextColorForBackground(final Color color) {
+        return isLight(color) ? Color.DARK_GRAY : Color.LIGHT_GRAY;
+    }
 
 	public static boolean isLight(final Color color) {
-		return isLighter(color, 0x80);
+		return isLighter(color, 160);
 	}
 
 	public static boolean isLighter(final Color color, int minimum) {
@@ -546,7 +551,8 @@ public class UITools {
 		final int red = color.getRed();
 		final int blue = color.getBlue();
 		final int green = color.getGreen();
-		return red*red+blue*blue+green*green >= minimum*minimum*3;
+		double luminance = 0.299 * red + 0.587 * green + 0.114 * blue;
+		return luminance > minimum;
 	}
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
@@ -586,7 +592,7 @@ public class UITools {
     		fdash = new float[dash.length];
     		int i = 0;
     		for(float d : dash){
-    			fdash[i++] = d;
+    			fdash[i++] = d * FONT_SCALE_FACTOR;
     		}
     	}
     	else{
@@ -608,11 +614,16 @@ public class UITools {
 		}
 	}
 
-	public static JDialog createCancelDialog(final Component component, final String titel, final String text) {
-        final String[] options = { TextUtils.getText("cancel") };
+	public static JDialog createCancelDialog(final Component component, final String title, final String text) {
+        return createCancelDialog(component, title, text, TextUtils.getText("cancel"));
+    }
+
+    public static JDialog createCancelDialog(final Component component, final String title,
+            final String text, String buttonText) {
+        final String[] options = { buttonText };
     	final JOptionPane infoPane = new JOptionPane(text, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null,
     	    options);
-    	JDialog dialog = infoPane.createDialog(component, titel);
+    	JDialog dialog = infoPane.createDialog(component, title);
     	dialog.setModal(false);
     	return dialog;
     }
@@ -844,5 +855,18 @@ public class UITools {
 	public static boolean isLightLookAndFeelInstalled() {
 		return isLight(UIManager.getColor("Panel.background"));
 	}
+
+    public static void resetMenuBarOnMac() {
+        if(Compat.isMacOsX()) {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            final Frame frame = getFrame();
+            if(frame != null) {
+                final MenuBar menuBar = frame.getMenuBar();
+                frame.setMenuBar(null);
+                frame.setMenuBar(menuBar);
+                System.setProperty("apple.laf.useScreenMenuBar", "false");
+            }
+        }
+    }
 
 }

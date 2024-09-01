@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg data-name="Layer 2" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <g transform="matrix(1 0 0 -1.0676 -5.0676e-8 29.23)" fill="#333333">
+  <path d="m12.003 15.879h3.1076a0.63421 0.68703 0 0 0 0.52851-1.042l-1.5221-2.7023-1.5855-2.7996a0.62364 0.67558 0 0 0-1.057 0l-1.5855 2.7996-1.5274 2.7023a0.63421 0.68703 0 0 0 0.52851 1.042z" stroke-width=".96782"/>
+  <path d="m12 22.292v-6.2523 0" stroke="#333333" stroke-linecap="round" stroke-miterlimit="0" stroke-width="1.9356" style="paint-order:fill markers stroke"/>
+ </g>
+</svg>
