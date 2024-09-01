@@ -825,8 +825,9 @@ class TagEditor {
 
         @SuppressWarnings("serial")
         JFilterableComboBox<Tag> comboBox = new JFilterableComboBox<>(() -> tagCategories.getTagsAsListModel().stream(),
-                (text) -> text.isEmpty() || tagCategories.contains(text),
-                (item, text) -> item.getContent().toLowerCase().contains(text.toLowerCase()));
+                (text) -> text.isEmpty(),
+                (item, text) -> item.getContent().toLowerCase().contains(text.toLowerCase()),
+                (item, text) -> item.getContent().toLowerCase().equals(text.toLowerCase()));
 
         @SuppressWarnings("serial")
         DefaultListCellRenderer cellRenderer = new DefaultListCellRenderer() {

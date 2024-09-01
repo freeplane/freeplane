@@ -8,6 +8,7 @@ package org.freeplane.core.ui.components;
 import java.awt.EventQueue;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -29,15 +30,18 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
     private boolean filterIsRunning;
     private Predicate<String> acceptAll;
     private BiPredicate<V, String> acceptItem;
+    private BiPredicate<V, String> selectItem;
 
 
     public JFilterableComboBox(Supplier<Stream<V>> itemSupplier,
             Predicate<String> acceptAll,
-            BiPredicate<V, String> acceptItem) {
+            BiPredicate<V, String> acceptItem,
+            BiPredicate<V, String> selectItem) {
         super();
         this.itemSupplier = itemSupplier;
         this.acceptAll = acceptAll;
         this.acceptItem = acceptItem;
+        this.selectItem = selectItem;
         updateListItems(true);
         Timer timer = new Timer(200, x -> updateListItems(false));
         timer.setRepeats(false);
@@ -112,20 +116,39 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
             return;
         filterIsRunning = true;
         try {
-            final DefaultComboBoxModel<V> model = (DefaultComboBoxModel<V>) getModel();
+            final DefaultComboBoxModel<V> model = getModel();
             model.removeAllElements();
             JTextField textField = (JTextField) getEditor().getEditorComponent();
             final String text = textField.getText();
             final Stream<V> tagStream = itemSupplier.get();
+            final Stream<V> addedItems;
             if(init || acceptAll.test(text)) {
-                tagStream.forEach(model::addElement);
-            } else
-                tagStream
+                addedItems = tagStream.peek(model::addElement);
+             } else {
+                addedItems = tagStream
                 .filter(item -> acceptItem.test(item, text))
-                .forEach(model::addElement);
+                .peek(model::addElement);
+            }
+            AtomicInteger index = new AtomicInteger(-1);
+            addedItems.forEach(item -> {
+                if (index.get() == -1 && selectItem.test(item, text)) {
+                    index.set(model.getSize() - 1);
+                }
+            });
+            int firstMatchingIndex = index.get();
+            if(firstMatchingIndex >= 0)
+                setSelectedIndex(firstMatchingIndex);
+
         } finally {
           filterIsRunning = false;
         }
     }
+
+    @Override
+    public DefaultComboBoxModel<V> getModel() {
+         return (DefaultComboBoxModel<V>) super.getModel();
+    }
+
+
 
 }
