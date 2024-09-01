@@ -63,7 +63,7 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
 
             private void updateList() {
                 if(! filterIsRunning) {
-                    clearList();
+                    resetSelectedItem();
                     timer.restart();
                 }
             }
@@ -72,7 +72,7 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
 
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                clearList();
+                resetSelectedItem();
                 updateListItems(false);
                 JTextField textField = (JTextField) getEditor().getEditorComponent();
                 textField.getDocument().addDocumentListener(documentListener);
@@ -117,11 +117,11 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
     }
 
 
-    private void clearList() {
+    private void resetSelectedItem() {
         if(filterIsRunning)
             return;
         filterIsRunning = true;
-        getModel().removeAllElements();
+        setSelectedItem(null);
         filterIsRunning = false;
     }
 
@@ -129,6 +129,7 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
         if(filterIsRunning)
             return;
         filterIsRunning = true;
+        getModel().removeAllElements();
         try {
             final DefaultComboBoxModel<V> model = getModel();
             JTextField textField = (JTextField) getEditor().getEditorComponent();
