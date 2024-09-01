@@ -42,32 +42,37 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
         this.acceptAll = acceptAll;
         this.acceptItem = acceptItem;
         this.selectItem = selectItem;
-        updateListItems(true);
         Timer timer = new Timer(200, x -> updateListItems(false));
         timer.setRepeats(false);
         DocumentListener documentListener = new DocumentListener() {
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if(! filterIsRunning)
-                    timer.restart();
+                updateList();
             }
+
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if(! filterIsRunning)
-                    timer.restart();
+                updateList();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if(! filterIsRunning)
+                updateList();
+            }
+
+            private void updateList() {
+                if(! filterIsRunning) {
+                    clearList();
                     timer.restart();
+                }
             }
         };
         addPopupMenuListener(new PopupMenuListener() {
 
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                clearList();
                 updateListItems(false);
                 JTextField textField = (JTextField) getEditor().getEditorComponent();
                 textField.getDocument().addDocumentListener(documentListener);
@@ -111,13 +116,21 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
         return filterIsRunning;
     }
 
+
+    private void clearList() {
+        if(filterIsRunning)
+            return;
+        filterIsRunning = true;
+        getModel().removeAllElements();
+        filterIsRunning = false;
+    }
+
     private void updateListItems(boolean init) {
         if(filterIsRunning)
             return;
         filterIsRunning = true;
         try {
             final DefaultComboBoxModel<V> model = getModel();
-            model.removeAllElements();
             JTextField textField = (JTextField) getEditor().getEditorComponent();
             final String text = textField.getText();
             final Stream<V> tagStream = itemSupplier.get();
@@ -144,7 +157,5 @@ public class JFilterableComboBox<V> extends JComboBox<V> {
     public DefaultComboBoxModel<V> getModel() {
          return (DefaultComboBoxModel<V>) super.getModel();
     }
-
-
 
 }
