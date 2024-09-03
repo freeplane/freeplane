@@ -720,9 +720,9 @@ public class MIconController extends IconController {
                 menu.removeAll();
                 for (int i = 0; i < categoryNode.getChildCount(); i++) {
                     DefaultMutableTreeNode itemNode = (DefaultMutableTreeNode) categoryNode.getChildAt(i);
-                    Tag tag = tagCategories.tag(itemNode);
+                    Tag tag = tagCategories.tagWithoutCategories(itemNode);
                     if(! tag.isEmpty()) {
-                        TagIcon icon = new TagIcon(tagCategories.withoutCategories(tag), menu.getFont());
+                        TagIcon icon = new TagIcon(tag, menu.getFont());
                         JMenuItem actionItem = new JMenuItem(icon);
                         actionItem.addActionListener(x -> action.accept(tag));
                         menu.add(actionItem);

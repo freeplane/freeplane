@@ -121,10 +121,10 @@ class TagCategoryEditor implements IExtension {
             super.getTreeCellRendererComponent(tree, null, sel, expanded, leaf, row, hasFocus);
             if (value instanceof DefaultMutableTreeNode) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-                Tag tag = tagCategories.tag(node);
+                Tag tag = tagCategories.tagWithoutCategories(node);
                 if (! tag.isEmpty()) {
                     setText(null);
-                    setIcon(new TagIcon(tagCategories.withoutCategories(tag), getFont()));
+                    setIcon(new TagIcon(tag, getFont()));
                 } else if (node.getUserObject() != null) {
                     setText(node.getUserObject().toString());
                 }
@@ -163,8 +163,8 @@ class TagCategoryEditor implements IExtension {
         public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected,
                 boolean expanded, boolean leaf, int row) {
             currentNode = (DefaultMutableTreeNode) value;
-            Tag tag = tagCategories.tag(currentNode);
-            String content = tagCategories.withoutCategories(tag).getContent();
+            Tag tag = tagCategories.tagWithoutCategories(currentNode);
+            String content = tag.getContent();
 			textField.setText(content);
             textField.setColumns(Math.max(30, content.length()));
             JComponent treeCellRendererComponent = (JComponent) tree.getCellRenderer().getTreeCellRendererComponent(tree, value, isSelected, expanded, leaf, row, true);
@@ -182,7 +182,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public Object getCellEditorValue() {
-            Tag tag = tagCategories.tag(currentNode);
+            Tag tag = tagCategories.categorizedTag(currentNode);
             String text = textField.getText();
             if(text.isEmpty())
                 return tag;
@@ -336,7 +336,7 @@ class TagCategoryEditor implements IExtension {
             if(mergeIsRunning)
                 return;
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            final Tag oldTag = tagCategories.tag(node);
+            final Tag oldTag = tagCategories.categorizedTag(node);
             final String oldContent = oldTag.getContent();
             if(oldContent.isEmpty())
                 return;
@@ -365,7 +365,7 @@ class TagCategoryEditor implements IExtension {
                     final String oldParent = lastSelectionParentsNodes.get(i);
                     final int replacementIndex = replacementStartIndex + i * 2;
                     final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) insertedNodes[i];
-                    final Tag newTag = tagCategories.tag(insertedNode).withoutCategories(getTagCategorySeparator());
+                    final Tag newTag = tagCategories.tagWithoutCategories(insertedNode);
                     String replacedContent;
                     if(oldParent.isEmpty())
                         replacedContent = newTag.getContent();
@@ -408,7 +408,7 @@ class TagCategoryEditor implements IExtension {
             for(int i = 0; i < removedNodes.length; i++) {
 
                 final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) removedNodes[i];
-                final Tag removedTag = tagCategories.tag(insertedNode);
+                final Tag removedTag = tagCategories.categorizedTag(insertedNode);
                 String removedQuallifiedTag;
                     removedQuallifiedTag = removedTag.getContent();
                 final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
@@ -569,7 +569,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void cancelEditing() {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) getEditingPath().getLastPathComponent();
-                Tag tag = tagCategories.tag(node);
+                Tag tag = tagCategories.categorizedTag(node);
                 super.cancelEditing();
                 if(tag.isEmpty() && node.isLeaf())
                     tagCategories.removeNodeFromParent(node);
@@ -852,7 +852,7 @@ class TagCategoryEditor implements IExtension {
         final Stream<Tag> selectedTags = Stream.of(selectionPaths)
                 .map(TreePath::getLastPathComponent)
                 .map(DefaultMutableTreeNode.class::cast)
-                .map(node -> tagCategories.tag(node));
+                .map(node -> tagCategories.categorizedTag(node));
         return selectedTags;
     }
 
@@ -993,7 +993,7 @@ class TagCategoryEditor implements IExtension {
         if (!tagCategories.containsTag(selectedNode))
             return null;
 
-        return tagCategories.tag(selectedNode);
+        return tagCategories.categorizedTag(selectedNode);
     }
 
     private DefaultMutableTreeNode getSelectedNode() {
