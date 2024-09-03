@@ -261,7 +261,7 @@ public class TagCategories {
                     if(savedTag == categorizedTag) {
                         tagReferences.computeIfAbsent(categorizedTag.getContent(), x -> new ArrayList<>()).add(new TagReference(categorizedTag));
                     }
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(savedTag);
+                    DefaultMutableTreeNode newNode = createNode(savedTag);
                     parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
                     lastNode = newNode;
                     lastIndentation = indentation;
@@ -302,7 +302,7 @@ public class TagCategories {
     private void insertUncategorizedTagNodeSorted(Tag tag) {
         int index = findUncategorizedTagIndex(tag);
         int insertionPoint = index >= 0 ? index : -index - 1;
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(tag);
+        DefaultMutableTreeNode node = createNode(tag);
         insertNode(uncategorizedTagsNode, insertionPoint, node);
     }
 
@@ -368,7 +368,7 @@ public class TagCategories {
     	DefaultMutableTreeNode rootNode = getRootNode();
         if(parent == null)
 			parent = rootNode;
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        DefaultMutableTreeNode newNode = createNode(Tag.EMPTY_TAG);
         nodes.insertNodeInto(newNode, parent,  parent == rootNode ? parent.getChildCount() - 1 : parent.getChildCount());
         return nodes.getPathToRoot(newNode);
    }
@@ -380,7 +380,7 @@ public class TagCategories {
         MutableTreeNode parent = (MutableTreeNode) node.getParent();
         if(parent == null)
             return nothing;
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        DefaultMutableTreeNode newNode = createNode(Tag.EMPTY_TAG);
         nodes.insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
         return nodes.getPathToRoot(newNode);
    }
@@ -519,7 +519,7 @@ public class TagCategories {
                     }
                 }
                 if(currentNode != uncategorizedTagsNode) {
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(qualifiedTag);
+                    DefaultMutableTreeNode newNode = createNode(qualifiedTag);
                     insertNode(currentNode, currentNode.isRoot() ? currentNode.getChildCount() - 1 : currentNode.getChildCount(), newNode);
                     currentNode = newNode;
                     categoriesChanged = true;
@@ -598,6 +598,10 @@ public class TagCategories {
             newNode.add(copySubtree(child));
         }
         return newNode;
+    }
+
+    private DefaultMutableTreeNode createNode(Tag tag) {
+        return new DefaultMutableTreeNode(tag);
     }
 
     private Object copyTag(DefaultMutableTreeNode node) {
