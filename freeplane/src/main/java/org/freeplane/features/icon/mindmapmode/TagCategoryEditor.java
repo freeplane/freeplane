@@ -182,16 +182,14 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public Object getCellEditorValue() {
-            Tag tag = tagCategories.categorizedTag(currentNode);
+            Tag tag = tagCategories.tagWithoutCategories(currentNode);
             String text = textField.getText();
             if(text.isEmpty())
                 return tag;
-            Tag categorizedTag;
             if(tag.isEmpty())
-                categorizedTag = tagCategories.createTag(currentNode, text);
+                return new Tag(text);
             else
-                categorizedTag = tagCategories.createTag(currentNode, text, tag.getColor());
-            return categorizedTag;
+                return new Tag(text, tag.getColor());
         }
 
         @Override
@@ -569,7 +567,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void cancelEditing() {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) getEditingPath().getLastPathComponent();
-                Tag tag = tagCategories.categorizedTag(node);
+                Tag tag = tagCategories.tagWithoutCategories(node);
                 super.cancelEditing();
                 if(tag.isEmpty() && node.isLeaf())
                     tagCategories.removeNodeFromParent(node);

@@ -409,7 +409,10 @@ class TagEditor {
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final Container contentPane = dialog.getContentPane();
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
-        List<Tag> originalNodeTags = iconController.getTags(node);
+        List<Tag> originalNodeTags = iconController.getTags(node)
+                .stream()
+                .map(tag -> tagCategories.getTag(tag).get())
+                .collect(Collectors.toList());
         tagTable = createTagTable(originalNodeTags);
         getTableModel().addTableModelListener(new TableModelListener() {
             @Override
@@ -734,7 +737,7 @@ class TagEditor {
             iconController.setTagCategories(map, tagCategories);
 
         List<Tag> tags = getCurrentTags();
-        iconController.setTags(node, tags.stream().collect(Collectors.toList()), true);
+        iconController.setTags(node, tags, true);
     }
     private TagCategories getTagCategories() {
         return node.getMap().getIconRegistry().getTagCategories();

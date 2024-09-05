@@ -42,6 +42,8 @@ public class TagReference {
         tag.setColor(color);
     }
 
-
-
+    @Override
+    public String toString() {
+        return "TagReference [tag=" + tag + "]";
+    }
 }

@@ -685,6 +685,7 @@ public class MIconController extends IconController {
             }
 
             private void setTagColorWithoutUndo(final MapModel map, final Tag tag, Color oldColor, Color newColor) {
+                TagCategories tagCategories = map.getIconRegistry().getTagCategories();
                 tagCategories.setTagColor(tag.getContent(), newColor);
                 Controller.getCurrentModeController().getMapController().fireMapChanged(
                     new MapChangeEvent(MIconController.this, map, tag, oldColor, newColor));
