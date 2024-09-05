@@ -742,6 +742,8 @@ public class TagCategories {
     }
 
     public boolean containsTag(DefaultMutableTreeNode node) {
+        if(node == null)
+            return false;
         Object userObject = node.getUserObject();
         return userObject instanceof Tag;
     }

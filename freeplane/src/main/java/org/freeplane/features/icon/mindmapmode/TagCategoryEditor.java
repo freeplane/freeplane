@@ -203,7 +203,7 @@ class TagCategoryEditor implements IExtension {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) editingPath.getParentPath().getLastPathComponent();
             List<String> previousLastSelectionParentsNodes = lastSelectionParentsNodes;
             if(parent == tagCategories.getUncategorizedTagsNode())
-                lastSelectionParentsNodes = Collections.singletonList("");
+                lastSelectionParentsNodes = Collections.singletonList(TagCategories.UNCATEGORIZED_NODE);
             boolean pathSelected = tree.isPathSelected(editingPath);
             fireEditingStopped();
             if(pathSelected && ! tree.isPathSelected(editingPath))
@@ -354,28 +354,30 @@ class TagCategoryEditor implements IExtension {
             if(mergeIsRunning)
                 return;
             Object[] insertedNodes = e.getChildren();
-            if (e.getTreePath().getLastPathComponent() == tagCategories.getUncategorizedTagsNode()) {
+            if (e.getTreePath().getLastPathComponent() == tagCategories.getUncategorizedTagsNode()
+                    && (lastSelectionParentsNodes.size() != 1
+                        || lastSelectionParentsNodes.get(0) != TagCategories.UNCATEGORIZED_NODE)) {
                 uncategorizedNodesMoved();
             }
             else if(lastSelectionParentsNodes.size() == insertedNodes.length) {
                 int replacementStartIndex = replacements.size() - lastSelectionParentsNodes.size() * 2;
                 for(int i = 0; i < lastSelectionParentsNodes.size(); i++) {
-                    final String oldParent = lastSelectionParentsNodes.get(i);
                     final int replacementIndex = replacementStartIndex + i * 2;
-                    final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) insertedNodes[i];
-                    final Tag newTag = tagCategories.tagWithoutCategories(insertedNode);
-                    String replacedContent;
-                    if(oldParent.isEmpty())
-                        replacedContent = newTag.getContent();
-                    else
-                        replacedContent = oldParent + getTagCategorySeparator() + newTag.getContent();
-                    final String newContent = tagCategories.categorizedContent(insertedNode);
-                    if(replacementIndex < 0
-                            || ! replacements.get(replacementIndex).equals(replacedContent)) {
+                    if(replacementIndex < 0)
                         break;
-                    }
-                    else
+                    final String oldParent = lastSelectionParentsNodes.get(i);
+                    final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) insertedNodes[i];
+                    final String newContent = tagCategories.categorizedContent(insertedNode);
+                    if(oldParent == TagCategories.UNCATEGORIZED_NODE) {
                         replacements.set(replacementIndex + 1, newContent);
+                        continue;
+                    }
+                    final Tag newTag = tagCategories.tagWithoutCategories(insertedNode);
+                    String replacedContent = oldParent.isEmpty() ? newTag.getContent() : oldParent + getTagCategorySeparator() + newTag.getContent();
+                    if(replacements.get(replacementIndex).equals(replacedContent))
+                        replacements.set(replacementIndex + 1, newContent);
+                    else
+                        break;
                 }
             }
             SwingUtilities.invokeLater(() -> merge(e));
@@ -405,10 +407,12 @@ class TagCategoryEditor implements IExtension {
             Object[] removedNodes = e.getChildren();
             for(int i = 0; i < removedNodes.length; i++) {
 
-                final DefaultMutableTreeNode insertedNode = (DefaultMutableTreeNode) removedNodes[i];
-                final Tag removedTag = tagCategories.categorizedTag(insertedNode);
-                String removedQuallifiedTag;
-                    removedQuallifiedTag = removedTag.getContent();
+                final DefaultMutableTreeNode removedNode = (DefaultMutableTreeNode) removedNodes[i];
+                final Tag removedTag = tagCategories.tagWithoutCategories(removedNode);
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) e.getTreePath().getLastPathComponent();
+                String categorizedParentContent = tagCategories.categorizedContent(parent);
+                String removedQuallifiedTag = categorizedParentContent.isEmpty() ? removedTag.getContent()
+                        : categorizedParentContent + getTagCategorySeparator() + removedTag.getContent();
                 final int indexBefore = replacements.size() - lastSelectionParentsNodes.size() * 2;
                 if(indexBefore < 0 || lastSelectionParentsNodes.isEmpty() || ! replacements.get(indexBefore).equals(removedQuallifiedTag)) {
                     replacements.add(removedQuallifiedTag);
@@ -1051,7 +1055,6 @@ class TagCategoryEditor implements IExtension {
         if (tag == null || tag.isEmpty()) {
             modifyColorAction.setEnabled(false);
             colorButton.setColor(Tag.EMPTY_TAG.getColor());
-            return;
         }
         else {
             modifyColorAction.setEnabled(true);
