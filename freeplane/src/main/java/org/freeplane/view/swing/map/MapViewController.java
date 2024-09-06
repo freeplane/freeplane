@@ -384,25 +384,25 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	@Override
-	public RenderedImage createImage(int dpi) {
+	public RenderedImage createImage(int dpi, int imageType) {
 		final MapView view = getMapView();
 		if (view == null) {
 			return null;
 		}
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		return createImage(dpi, innerBounds);
+		return createImage(dpi, innerBounds, imageType);
 	}
 
 	@Override
-	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi, int imageType) {
 		final MapView view = getMapView();
 		if (view == null) {
 			return null;
 		}
 		final NodeView placedNodeView = view.getNodeView(placedNode);
 		if (placedNodeView == null) {
-			return createImage(dpi);
+			return createImage(dpi, imageType);
 		}
 
 		view.preparePrinting();
@@ -419,18 +419,18 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		if(placedNodePosition == NodePosition.RIGHT){
 			printedGraphicsBounds.x -= distanceToMargin;
 		}
-		return createImage(dpi, printedGraphicsBounds);
+		return createImage(dpi, printedGraphicsBounds, imageType);
 	}
 
-	public RenderedImage createImage(int dpi, final Rectangle printedArea) {
+	public RenderedImage createImage(int dpi, final Rectangle printedArea, int imageType) {
 		final MapView view = getMapView();
 		view.preparePrinting();
-		final BufferedImage myImage = printToImage(dpi, view, printedArea);
+		final BufferedImage myImage = printToImage(dpi, view, printedArea, imageType);
 		view.endPrinting();
 		return myImage;
 	}
 
-	private BufferedImage printToImage(int dpi, final MapView view, final Rectangle innerBounds) {
+	private BufferedImage printToImage(int dpi, final MapView view, final Rectangle innerBounds, int imageType) {
 		double scaleFactor = (double) dpi / (double) (UITools.FONT_SCALE_FACTOR * 72);
 
 		double scaledWidth = innerBounds.width * scaleFactor;
@@ -442,7 +442,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		int imageWidth = (int) Math.ceil(scaledWidth);
         int imageHeight = (int) Math.ceil(scaledHeight);
 
-		final BufferedImage myImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage myImage = new BufferedImage(imageWidth, imageHeight, imageType);
 		final Graphics2D g = (Graphics2D) myImage.getGraphics();
 		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);

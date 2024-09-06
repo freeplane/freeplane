@@ -1,5 +1,6 @@
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ExportController implements IExtension{
 	public static void install(ExportController exportController) {
 	    Controller.getCurrentModeController().addExtension(ExportController.class, exportController);
     }
-	
+
 	public ExportController(final String xmlDescriptorFile) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new ExportAction());
@@ -54,7 +55,7 @@ public class ExportController implements IExtension{
 		addMapExportEngine(exportToHTML.getFileFilter(), exportToHTML);
 		final ExportBranchesToHTML exportBranchesToHTML = new ExportBranchesToHTML();
 		addBranchExportEngine(exportBranchesToHTML.getFileFilter(), exportBranchesToHTML);
-		
+
 		final ExportToOoWriter exportToOoWriter = new ExportToOoWriter();
 
 		addMapExportEngine(exportToOoWriter.getFileFilter(), exportToOoWriter);
@@ -79,12 +80,12 @@ public class ExportController implements IExtension{
 	}
 
 	public void createImageExporters() {
-		final ExportToImage pngExport = new ExportToImage("png","Portable Network Graphic (PNG)");
+		final ExportToImage pngExport = new ExportToImage("png","Portable Network Graphic (PNG)", BufferedImage.TYPE_INT_ARGB);
 		addMapExportEngine(pngExport.getFileFilter(), pngExport);
-		final ExportToImage jpgExport = new ExportToImage("jpg","Compressed image (JPEG)");
+		final ExportToImage jpgExport = new ExportToImage("jpg","Compressed image (JPEG)", BufferedImage.TYPE_INT_RGB);
 		addMapExportEngine(jpgExport.getFileFilter(), jpgExport);
 	}
-	
+
 	private void createXSLTExportActions( final String xmlDescriptorFile) {
 		final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
 		try (InputStream xmlDescriptorStream = resource.openStream()){

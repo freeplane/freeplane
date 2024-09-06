@@ -141,12 +141,12 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
-	public RenderedImage createImage(int dpi) {
+	public RenderedImage createImage(int dpi, int imageType) {
 		throw new RuntimeException("Method not implemented");
 	}
 
 	@Override
-	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi, int imageType) {
 		throw new RuntimeException("Method not implemented");
 	}
 

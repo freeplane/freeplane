@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -153,7 +154,7 @@ public class ExportWithXSLT implements IExportEngine {
 		if (Controller.getCurrentController().getMapViewManager().getMapViewComponent() == null) {
 			return false;
 		}
-		final RenderedImage image = new ImageCreator(Math.round(UITools.FONT_SCALE_FACTOR * 72)).createBufferedImage(map);
+		final RenderedImage image = new ImageCreator(Math.round(UITools.FONT_SCALE_FACTOR * 72)).createBufferedImage(map, BufferedImage.TYPE_INT_ARGB);
 		if(image == null){
 			return false;
 		}

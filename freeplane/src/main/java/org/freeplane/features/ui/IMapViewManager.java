@@ -73,9 +73,9 @@ public interface IMapViewManager {
 
 	public String createHtmlMap();
 
-	public RenderedImage createImage(int dpi);
+	public RenderedImage createImage(int dpi, int imageType);
 
-	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int imageResolutionInDpi);
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int imageResolutionInDpi, int imageType);
 
 	public Color getBackgroundColor(NodeModel node);
 

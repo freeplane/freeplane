@@ -38,20 +38,20 @@ class ImageCreator{
 	    this.imageResolutionInDpi = imageResolutionInDpi;
     }
 
-	public RenderedImage createBufferedImage(MapModel map) {
+	public RenderedImage createBufferedImage(MapModel map, int imageType) {
 		final Controller controller = Controller.getCurrentController();
 		if(! map.equals(controller.getMap())) {
 			return null;
         }
-        return controller.getMapViewManager().createImage(imageResolutionInDpi);
+        return controller.getMapViewManager().createImage(imageResolutionInDpi, imageType);
 	}
 
-	public RenderedImage createBufferedImage(MapModel map, final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition) {
+	public RenderedImage createBufferedImage(MapModel map, final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int imageType) {
 		final Controller controller = Controller.getCurrentController();
 		if(! map.equals(controller.getMap())) {
 			return null;
         }
-        return controller.getMapViewManager().createImage(slideSize, placedNode, placedNodePosition, imageResolutionInDpi);
+        return controller.getMapViewManager().createImage(slideSize, placedNode, placedNodePosition, imageResolutionInDpi, imageType);
 	}
 
 	public int getImageResolutionDPI() {

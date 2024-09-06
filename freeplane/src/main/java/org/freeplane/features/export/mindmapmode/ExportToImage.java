@@ -55,14 +55,16 @@ import org.freeplane.features.mode.Controller;
 public class ExportToImage implements IExportEngine {
 	private final String imageDescripton;
 	private final String imageType;
+	private final int bitmapType;
 
 	public static ExportToImage toPNG(){
-		return new ExportToImage("png", "to png");
+		return new ExportToImage("png", "to png", BufferedImage.TYPE_INT_ARGB);
 	}
 
-	ExportToImage( final String imageType, final String imageDescripton) {
+	ExportToImage( final String imageType, final String imageDescripton, int bitmapType) {
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
+        this.bitmapType = bitmapType;
 	}
 
 	@Override
@@ -76,7 +78,8 @@ public class ExportToImage implements IExportEngine {
 	public void export(MapModel map, final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, File toFile) {
 		RenderedImage image = null;
 		try {
-			image = placedNode != null ? new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, slideSize, placedNode, placedNodePosition) : new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
+			image = placedNode != null ? new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, slideSize, placedNode, placedNodePosition, bitmapType)
+			        : new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, bitmapType);
 			if (image != null) {
 				exportToImage(image, toFile);
 			}
@@ -93,7 +96,7 @@ public class ExportToImage implements IExportEngine {
 			for(;;){
 				ImageWriter writer = imageWritersByFormatName.next();
 				ImageWriteParam writeParam = writer.getDefaultWriteParam();
-				ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_INT_RGB);
+				ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(bitmapType);
 				IIOMetadata metadata = writer.getDefaultImageMetadata(typeSpecifier, writeParam);
 				if ((metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported()) && imageWritersByFormatName.hasNext()) {
 					continue;
