@@ -28,16 +28,16 @@ public class TagCategoriesTest {
             assertThat(rootNode.getChildCount()).isEqualTo(3);
 
             DefaultMutableTreeNode firstChild = (DefaultMutableTreeNode) rootNode.getChildAt(0);
-            assertThat(((Tag) firstChild.getUserObject()).getContent()).isEqualTo("tag1");
+            assertThat((tagCategories.categorizedTag(firstChild).getContent())).isEqualTo("tag1");
 
             DefaultMutableTreeNode secondChild = (DefaultMutableTreeNode) rootNode.getChildAt(1);
-            assertThat(((Tag) secondChild.getUserObject()).getContent()).isEqualTo("tag4");
+            assertThat((tagCategories.categorizedTag(secondChild).getContent())).isEqualTo("tag4");
 
             DefaultMutableTreeNode grandChild = (DefaultMutableTreeNode) firstChild.getChildAt(0);
-            assertThat(((Tag) grandChild.getUserObject()).getContent()).isEqualTo("tag1::tag2");
+            assertThat((tagCategories.categorizedTag(grandChild).getContent())).isEqualTo("tag1::tag2");
 
             DefaultMutableTreeNode greatGrandChild = (DefaultMutableTreeNode) grandChild.getChildAt(0);
-            assertThat(((Tag) greatGrandChild.getUserObject()).getContent()).isEqualTo("tag1::tag2::tag3");
+            assertThat((tagCategories.categorizedTag(greatGrandChild).getContent())).isEqualTo("tag1::tag2::tag3");
 
             assertThat(tagCategories.serialize()
             		.replaceAll("#.*", "")
