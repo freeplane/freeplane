@@ -51,6 +51,10 @@ public class TagCategoryEditorTest {
         default T that() {return me();}
      }
 
+	private static String serializeNormalizeLineBreaks(TagCategories tc) {
+		return tc.serialize().replace(System.lineSeparator(), "\n");
+	}
+
     class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
         private final List<AutoCloseable> mocks;
 
@@ -174,7 +178,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
                         + " tag22#22334455\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
@@ -200,7 +204,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
                         + " BB#22334455\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
@@ -210,7 +214,6 @@ public class TagCategoryEditorTest {
             });
         }
     }
-
 
     @Test
     public void moveTagsToUncategorized() {
@@ -229,7 +232,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
                         + "DD#44556677\n");
                 assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
                 containsExactly("AA", "BB", "CC", "DD",
@@ -253,7 +256,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
                         + " BB#000000ff\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
