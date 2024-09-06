@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -473,8 +474,6 @@ class TagCategoryEditor implements IExtension {
     }
     private static final String WINDOW_CONFIG_PROPERTY = "tag_category_editor_window_configuration";
 
-    private final String title;
-
     private final JDialog dialog;
 
     private final JColorButton colorButton;
@@ -497,16 +496,22 @@ class TagCategoryEditor implements IExtension {
     private final TagRenamer tagRenamer;
 
 
+    private static JDialog createDialog(RootPaneContainer frame) {
+        return frame instanceof Frame ? new JDialog((Frame) frame, TextUtils.getText("tag_category_manager"), false)
+                : new JDialog((JDialog) frame, TextUtils.getText("tag_category_manager"), false);
+    }
+
     TagCategoryEditor(RootPaneContainer frame, MIconController iconController, MapModel map) {
+        this(createDialog(frame), iconController, map);
+    }
+
+    TagCategoryEditor(JDialog dialog, MIconController iconController, MapModel map) {
+        this.dialog = dialog;
         this.iconController = iconController;
         this.map = map;
         this.lastSelectionParentsNodes = Collections.emptyList();
-        title = TextUtils.getText("tag_category_manager");
         contentWasModified = false;
         lastTransferableId = "";
-        final boolean modal = false;
-        this.dialog = frame instanceof Frame ? new JDialog((Frame) frame, title, modal)
-                : new JDialog((JDialog) frame, title, modal);
 
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
@@ -580,17 +585,18 @@ class TagCategoryEditor implements IExtension {
 
 
         };
-        tree.setEditable(true);
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-        tree.setInvokesStopCellEditing(true);
-        tree.setDragEnabled(true);
-        tree.setDropMode(DropMode.ON_OR_INSERT);
-        tree.setTransferHandler(new TreeTransferHandler());
-        tree.setCellRenderer(new TagCellRenderer());
-        tree.setCellEditor(new TagCellEditor());
-        tree.setToggleClickCount(0);
-
-        configureKeyBindings();
+        if(! GraphicsEnvironment.isHeadless()) {
+            tree.setEditable(true);
+            tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+            tree.setInvokesStopCellEditing(true);
+            tree.setDragEnabled(true);
+            tree.setDropMode(DropMode.ON_OR_INSERT);
+            tree.setTransferHandler(new TreeTransferHandler());
+            tree.setCellRenderer(new TagCellRenderer());
+            tree.setCellEditor(new TagCellEditor());
+            tree.setToggleClickCount(0);
+            configureKeyBindings();
+        }
 
         JRestrictedSizeScrollPane editorScrollPane = createScrollPane();
         editorScrollPane.setViewportView(tree);

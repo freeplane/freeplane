@@ -15,7 +15,8 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -56,6 +57,7 @@ public class TagCategoryEditorTest {
         @Mock ResourceController resourceController;
         @Mock MapModel mapModel;
         @Mock IconRegistry iconRegistry;
+        @Mock JDialog dialog;
 
         private NodeModel mapRootNode;
 
@@ -96,7 +98,8 @@ public class TagCategoryEditorTest {
         public TagTestSteps tagCategoryEditor(TagCategories tagCategories) {
             Mockito.when(iconRegistry.getTagCategories()).thenReturn(tagCategories);
             Mockito.when(iconController.getTagFont(any())).thenReturn(new Font(Font.DIALOG, 0, 10));
-            this.uut = new TagCategoryEditor(new JFrame(), iconController, mapModel);
+            Mockito.when(dialog.getContentPane()).thenReturn(new JPanel());
+            this.uut = new TagCategoryEditor(dialog, iconController, mapModel);
             this.updatedTagCategories = uut.getTagCategories();
             return me();
         }
