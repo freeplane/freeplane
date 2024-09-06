@@ -1150,4 +1150,8 @@ class TagCategoryEditor implements IExtension {
     private String getTagCategorySeparator() {
         return tagCategories.getTagCategorySeparator();
     }
+
+    TagCategories getTagCategories() {
+        return tagCategories;
+    }
 }

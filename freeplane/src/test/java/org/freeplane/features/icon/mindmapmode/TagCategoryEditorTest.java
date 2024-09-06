@@ -1,0 +1,184 @@
+/*
+ * Created on 6 Sept 2024
+ *
+ * author dimitry
+ */
+package org.freeplane.features.icon.mindmapmode;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ObjectAssert;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagCategories;
+import org.freeplane.features.icon.TagCategoriesTest;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+public class TagCategoryEditorTest {
+    public interface TestSteps<T extends TestSteps<T>> {
+        @SuppressWarnings("unchecked")
+        default T me() {return (T) this;}
+        default T given() {return me();}
+        default T when() {return me();}
+        default T then() {return me();}
+        default T and() {return me();}
+        default T that() {return me();}
+    }
+
+    class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
+        private final List<AutoCloseable> mocks;
+
+
+        @Mock MIconController iconController;
+        @Mock ResourceController resourceController;
+        @Mock MapModel mapModel;
+        @Mock IconRegistry iconRegistry;
+
+        private NodeModel mapRootNode;
+
+        private TagCategoryEditor uut;
+
+        private DefaultMutableTreeNode selectedNode;
+
+        private TagCategories updatedTagCategories;
+
+        TagTestSteps(){
+            mocks = new ArrayList<>();
+            mocks.add(MockitoAnnotations.openMocks(this));
+            mapRootNode = new NodeModel(mapModel);
+            Mockito.when(mapModel.getRootNode()).thenReturn(mapRootNode);
+            Mockito.when(mapModel.getIconRegistry()).thenReturn(iconRegistry);
+            MockedStatic<ResourceController> resourceControllerMock = mockStatic(ResourceController.class);
+            mocks.add(resourceControllerMock);
+            resourceControllerMock.when(ResourceController::getResourceController).thenReturn(resourceController);
+            Mockito.when(resourceController.getIntProperty(any(), anyInt()))
+                .then(x -> x.getArguments()[1]);
+            MockedStatic<TextUtils> textUtilsMock = mockStatic(TextUtils.class);
+            mocks.add(textUtilsMock);
+            textUtilsMock.when(() -> TextUtils.getText( any(String.class)))
+                .then(x -> x.getArguments()[0]);
+
+        }
+
+        @Override
+        public void close() {
+            try {
+                for(AutoCloseable mock:mocks)
+                    mock.close();
+            } catch (Exception e) {
+               throw new RuntimeException(e);
+            }
+        }
+
+        public TagTestSteps tagCategoryEditor(TagCategories tagCategories) {
+            Mockito.when(iconRegistry.getTagCategories()).thenReturn(tagCategories);
+            Mockito.when(iconController.getTagFont(any())).thenReturn(new Font(Font.DIALOG, 0, 10));
+            this.uut = new TagCategoryEditor(new JFrame(), iconController, mapModel);
+            this.updatedTagCategories = uut.getTagCategories();
+            return me();
+        }
+
+        public TagTestSteps selectNode(int ... indices) {
+            TreeNode selectedNode = updatedTagCategories.getRootNode();
+            for(int i : indices) {
+                selectedNode = selectedNode.getChildAt(i);
+            }
+            this.selectedNode = (DefaultMutableTreeNode) selectedNode;
+            return me();
+        }
+
+        public TagTestSteps renameSelectedNode(String content) {
+            DefaultTreeModel nodes = updatedTagCategories.getNodes();
+            nodes.valueForPathChanged(new TreePath(nodes.getPathToRoot(selectedNode)),
+                    new Tag(content, updatedTagCategories.tagWithoutCategories(selectedNode).getColor()));
+            return me();
+        }
+
+        public TagTestSteps submit() {
+            uut.submit();
+            verify(iconController).setTagCategories(mapModel, updatedTagCategories);
+            updatedTagCategories.updateTagReferences();
+            return me();
+        }
+
+        public ObjectAssert<TagCategories> assertThatUpdatedTagCategories() {
+            return Assertions.assertThat(updatedTagCategories);
+        }
+    }
+
+    @Test
+    public void renameCategory() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("AA#11223344\n"
+                    + " BB#22334455\n"
+                    + "  CC#33445566\n"
+                    + "DD#44556677\n");
+            tagCategories.registerTag("UU");
+            tagCategories.registerTag("VV");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .renameSelectedNode("tag22")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                        + " tag22#22334455\n"
+                        + "  CC#33445566\n"
+                        + "DD#44556677\n");
+                assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
+                containsExactly("AA", "AA::tag22", "AA::tag22::CC", "DD",
+                        "UU", "VV");
+            });
+        }
+    }
+
+    @Test
+    public void renameUncategorizedTag() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("AA#11223344\n"
+                    + " BB#22334455\n"
+                    + "  CC#33445566\n"
+                    + "DD#44556677\n");
+            tagCategories.registerTag("UU");
+            tagCategories.registerTag("VV");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(2, 0)
+            .renameSelectedNode("uncategorized11")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                        + " BB#22334455\n"
+                        + "  CC#33445566\n"
+                        + "DD#44556677\n");
+                assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
+                containsExactly("AA", "AA::BB", "AA::BB::CC", "DD",
+                        "uncategorized11", "VV");
+            });
+        }
+    }
+
+}
