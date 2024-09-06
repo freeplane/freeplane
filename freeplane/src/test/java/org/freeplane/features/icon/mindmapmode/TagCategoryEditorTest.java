@@ -97,7 +97,7 @@ public class TagCategoryEditorTest {
             }
         }
 
-        public TagTestSteps tagCategoryEditor(TagCategories tagCategories) {
+        TagTestSteps tagCategoryEditor(TagCategories tagCategories) {
             Mockito.when(iconRegistry.getTagCategories()).thenReturn(tagCategories);
             Mockito.when(iconController.getTagFont(any())).thenReturn(new Font(Font.DIALOG, 0, 10));
             Mockito.when(dialog.getContentPane()).thenReturn(new JPanel());
@@ -106,7 +106,7 @@ public class TagCategoryEditorTest {
             return me();
         }
 
-        public TagTestSteps selectNode(int ... indices) {
+        TagTestSteps selectNode(int ... indices) {
             TreeNode selectedNode = updatedTagCategories.getRootNode();
             for(int i : indices) {
                 selectedNode = selectedNode.getChildAt(i);
@@ -115,25 +115,25 @@ public class TagCategoryEditorTest {
             return me();
         }
 
-        public TagTestSteps renameSelectedNode(String content) {
+        TagTestSteps renameSelectedNode(String content) {
             DefaultTreeModel nodes = updatedTagCategories.getNodes();
             nodes.valueForPathChanged(new TreePath(nodes.getPathToRoot(selectedNode)),
                     new Tag(content, updatedTagCategories.tagWithoutCategories(selectedNode).getColor()));
             return me();
         }
 
-        public TagTestSteps submit() {
+        TagTestSteps submit() {
             uut.submit();
             verify(iconController).setTagCategories(mapModel, updatedTagCategories);
             updatedTagCategories.updateTagReferences();
             return me();
         }
 
-        public ObjectAssert<TagCategories> assertThatUpdatedTagCategories() {
+        ObjectAssert<TagCategories> assertThatUpdatedTagCategories() {
             return Assertions.assertThat(updatedTagCategories);
         }
 
-        public TagTestSteps cut() {
+        TagTestSteps cut() {
             selectTreePath();
             uut.cutNodes();
             return me();
@@ -146,13 +146,13 @@ public class TagCategoryEditorTest {
             tree.setSelectionPath(new TreePath(pathToRoot));
         }
 
-        public TagTestSteps paste() {
+        TagTestSteps paste() {
             selectTreePath();
             uut.pasteNodes();
             return me();
         }
 
-        public TagTestSteps setColor(Color color) {
+        TagTestSteps setColor(Color color) {
             selectTreePath();
             uut.setTagColor(color);
             return me();
