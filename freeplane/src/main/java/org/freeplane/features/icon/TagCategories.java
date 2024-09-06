@@ -734,6 +734,8 @@ public class TagCategories {
     }
 
     public Tag tagWithoutCategories(DefaultMutableTreeNode node) {
+        if(node == null)
+            return NOT_A_TAG;
         Object userObject = node.getUserObject();
         if (userObject instanceof Tag)
             return (Tag)userObject;

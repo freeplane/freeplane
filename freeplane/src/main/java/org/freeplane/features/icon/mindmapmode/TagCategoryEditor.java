@@ -1002,30 +1002,23 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void modifyTagColor() {
-        Tag tag = getSelectedTag();
-        if (tag != null && !tag.isEmpty()) {
-            Color defaultColor = new Color(tag.getDefaultColor().getRGB(), true);
-            Color initialColor = tag.getColor();
-            final Color result = ColorTracker.showCommonJColorChooserDialog(tree, tag.getContent(),
+        Tag tag = tagCategories.tagWithoutCategories(getSelectedNode());
+        if (!tag.isEmpty()) {
+            Tag categorizedTag = tagCategories.categorizedTag(getSelectedNode());
+            Color defaultColor = new Color(categorizedTag.getDefaultColor().getRGB(), true);
+            Color initialColor = categorizedTag.getColor();
+            final Color result = ColorTracker.showCommonJColorChooserDialog(tree, categorizedTag.getContent(),
                     initialColor, defaultColor);
             if (result != null && !initialColor.equals(result) || result == defaultColor) {
-                tag.setColor(result);
-                tagCategories.setTagColor(tagCategories.categorizedContent(getSelectedNode()), result);
-                tagCategories.fireNodeChanged(getSelectedNode());
+                setTagColor(result);
                 updateColorButton();
             }
         }
     }
 
-    private Tag getSelectedTag() {
-        DefaultMutableTreeNode selectedNode = getSelectedNode();
-        if (selectedNode == null)
-            return null;
-
-        if (!tagCategories.containsTag(selectedNode))
-            return null;
-
-        return tagCategories.categorizedTag(selectedNode);
+    void setTagColor(final Color result) {
+        tagCategories.setTagColor(tagCategories.categorizedContent(getSelectedNode()), result);
+        tagCategories.fireNodeChanged(getSelectedNode());
     }
 
     private DefaultMutableTreeNode getSelectedNode() {
@@ -1081,15 +1074,9 @@ class TagCategoryEditor implements IExtension {
     }
 
     private void updateColorButton() {
-        Tag tag = getSelectedTag();
-        if (tag == null || tag.isEmpty()) {
-            modifyColorAction.setEnabled(false);
-            colorButton.setColor(Tag.EMPTY_TAG.getColor());
-        }
-        else {
-            modifyColorAction.setEnabled(true);
-            colorButton.setColor(tag.getColor());
-        }
+        Tag tag = tagCategories.tagWithoutCategories(getSelectedNode());
+        modifyColorAction.setEnabled(!tag.isEmpty());
+        colorButton.setColor(tag.getColor());
     }
 
     private TreePath[] getSelectedTagPaths() {

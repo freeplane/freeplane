@@ -11,6 +11,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,12 @@ public class TagCategoryEditorTest {
             uut.pasteNodes();
             return me();
         }
+
+        public TagTestSteps setColor(Color color) {
+            selectTreePath();
+            uut.setTagColor(color);
+            return me();
+        }
     }
 
     @Test
@@ -231,5 +238,32 @@ public class TagCategoryEditorTest {
         }
     }
 
+    @Test
+    public void setCategoryColor() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("AA#11223344\n"
+                    + " BB#22334455\n"
+                    + "  CC#33445566\n"
+                    + "DD#44556677\n");
+            tagCategories.registerTag("UU");
+            tagCategories.registerTag("VV");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .setColor(Color.BLACK)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                        + " BB#000000ff\n"
+                        + "  CC#33445566\n"
+                        + "DD#44556677\n");
+                assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
+                containsExactly("AA", "AA::BB", "AA::BB::CC", "DD",
+                        "UU", "VV");
+                assertThat(tc.getTag(new Tag("AA::BB")).get().getColor())
+                .isEqualTo(Color.BLACK);
+            });
+        }
+    }
 
 }
