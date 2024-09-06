@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -47,7 +48,7 @@ public class TagCategoryEditorTest {
         default T then() {return me();}
         default T and() {return me();}
         default T that() {return me();}
-    }
+     }
 
     class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
         private final List<AutoCloseable> mocks;
@@ -130,6 +131,25 @@ public class TagCategoryEditorTest {
         public ObjectAssert<TagCategories> assertThatUpdatedTagCategories() {
             return Assertions.assertThat(updatedTagCategories);
         }
+
+        public TagTestSteps cut() {
+            selectTreePath();
+            uut.cutNodes();
+            return me();
+        }
+
+        private void selectTreePath() {
+            JTree tree = uut.getTree();
+            DefaultTreeModel nodes = updatedTagCategories.getNodes();
+            TreeNode[] pathToRoot = nodes.getPathToRoot(selectedNode);
+            tree.setSelectionPath(new TreePath(pathToRoot));
+        }
+
+        public TagTestSteps paste() {
+            selectTreePath();
+            uut.pasteNodes();
+            return me();
+        }
     }
 
     @Test
@@ -183,5 +203,33 @@ public class TagCategoryEditorTest {
             });
         }
     }
+
+
+    @Test
+    public void moveTagsToUncategorized() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("AA#11223344\n"
+                    + " BB#22334455\n"
+                    + "  CC#33445566\n"
+                    + "DD#44556677\n");
+            tagCategories.registerTag("UU");
+            tagCategories.registerTag("VV");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .cut()
+            .selectNode(2)
+            .paste()
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(tc.serialize()).isEqualTo("AA#11223344\n"
+                        + "DD#44556677\n");
+                assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
+                containsExactly("AA", "BB", "CC", "DD",
+                        "UU", "VV");
+            });
+        }
+    }
+
 
 }

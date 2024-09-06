@@ -109,6 +109,25 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
 class TagCategoryEditor implements IExtension {
+    private static class Invoker{
+        private static final Clipboard CLIPBOARD = GraphicsEnvironment.isHeadless() ? new Clipboard("") : null;
+
+        public static void invokeLater(Runnable runnable) {
+            if(GraphicsEnvironment.isHeadless())
+                runnable.run();
+            else
+                SwingUtilities.invokeLater(runnable);
+        }
+
+        public static Clipboard getSystemClipboard() {
+            if(GraphicsEnvironment.isHeadless())
+                return CLIPBOARD;
+            else
+                return Toolkit.getDefaultToolkit().getSystemClipboard();
+
+        }
+
+    }
     @SuppressWarnings("serial")
     class TagCellRenderer extends DefaultTreeCellRenderer {
         public TagCellRenderer() {
@@ -322,7 +341,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public void treeNodesChanged(TreeModelEvent e) {
-            SwingUtilities.invokeLater(() -> merge(e));
+            Invoker.invokeLater(() -> merge(e));
         }
 
         private void merge(TreeModelEvent e) {
@@ -381,7 +400,7 @@ class TagCategoryEditor implements IExtension {
                         break;
                 }
             }
-            SwingUtilities.invokeLater(() -> merge(e));
+            Invoker.invokeLater(() -> merge(e));
         }
 
         private void uncategorizedNodesMoved() {
@@ -585,13 +604,13 @@ class TagCategoryEditor implements IExtension {
 
 
         };
+        tree.setTransferHandler(new TreeTransferHandler());
         if(! GraphicsEnvironment.isHeadless()) {
             tree.setEditable(true);
             tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
             tree.setInvokesStopCellEditing(true);
             tree.setDragEnabled(true);
             tree.setDropMode(DropMode.ON_OR_INSERT);
-            tree.setTransferHandler(new TreeTransferHandler());
             tree.setCellRenderer(new TagCellRenderer());
             tree.setCellEditor(new TagCellEditor());
             tree.setToggleClickCount(0);
@@ -667,7 +686,7 @@ class TagCategoryEditor implements IExtension {
             @Override
             public void treeNodesInserted(TreeModelEvent e) {
                 contentWasModified = true;
-                SwingUtilities.invokeLater(() -> tree.expandPath(e.getTreePath()));
+                Invoker.invokeLater(() -> tree.expandPath(e.getTreePath()));
             }
 
             @Override
@@ -764,10 +783,7 @@ class TagCategoryEditor implements IExtension {
         AbstractAction cutNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if( canSelectionBeRemoved() && copyNodes()) {
-                    saveLastSelectionParentsNodes();
-                    removeNodes();
-                }
+                cutNodes();
             }
         };
         am.put(TransferHandler.getCutAction().getValue(Action.NAME), cutNodeAction);
@@ -776,7 +792,7 @@ class TagCategoryEditor implements IExtension {
         AbstractAction pasteNodeAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pasteNode();
+                pasteNodes();
             }
         };
         am.put(TransferHandler.getPasteAction().getValue(Action.NAME), pasteNodeAction);
@@ -941,10 +957,18 @@ class TagCategoryEditor implements IExtension {
                 .forEach(tagCategories::removeNodeFromParent);
     }
 
-    private boolean copyNodes() {
+
+    void cutNodes() {
+        if( canSelectionBeRemoved() && copyNodes()) {
+            saveLastSelectionParentsNodes();
+            removeNodes();
+        }
+    }
+
+    boolean copyNodes() {
         TagCategorySelection t = ((TreeTransferHandler)tree.getTransferHandler()).createTransferable();
         if(t  != null) {
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            Clipboard clipboard = Invoker.getSystemClipboard();
             clipboard.setContents(t, null);
             return true;
         }
@@ -952,8 +976,8 @@ class TagCategoryEditor implements IExtension {
     }
 
 
-    private void pasteNode() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    void pasteNodes() {
+        Clipboard clipboard = Invoker.getSystemClipboard();
         try {
             Transferable t = clipboard.getContents(null);
             if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
@@ -1159,5 +1183,9 @@ class TagCategoryEditor implements IExtension {
 
     TagCategories getTagCategories() {
         return tagCategories;
+    }
+
+    JTree getTree() {
+        return tree;
     }
 }
