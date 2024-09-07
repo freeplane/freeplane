@@ -352,6 +352,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		map.removeMapChangeListener(mapView);
 		remove(mapView);
+		mapView.restoreRootNodeTemporarily();
 		mapView.getRoot().remove();
 		return true;
     }
