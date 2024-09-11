@@ -81,6 +81,18 @@ public class TagCategories {
                 super.valueForPathChanged(path, newValue);
             }
         }
+
+        @Override
+        public void nodeChanged(TreeNode node) {
+            Tag tagWithoutCategories = tagWithoutCategories((DefaultMutableTreeNode) node);
+            String categorizedContent = categorizedContent((DefaultMutableTreeNode) node);
+            Tag categorizedTag = new Tag(categorizedContent, tagWithoutCategories.getColor());
+            if(mapTags.addIfNotExists(categorizedTag) >= 0)
+                addNewTagReference(categorizedTag);
+            super.nodeChanged(node);
+        }
+
+
     }
 
     private final DefaultTreeModel nodes;
@@ -232,7 +244,7 @@ public class TagCategories {
                     Tag savedTag = mapTags.addAndReturn(tag);
                     insertUncategorizedTagNodeSorted(savedTag);
                     if(savedTag == tag) {
-                        tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(new TagReference(tag));
+                        addNewTagReference(tag);
                     }
                 } else {
                     DefaultMutableTreeNode parent;
@@ -261,7 +273,7 @@ public class TagCategories {
                         categorizedTag.setColor(Tag.getDefaultColor(categorizedTagContent));
                     }
                     if(savedTag == categorizedTag) {
-                        tagReferences.computeIfAbsent(categorizedTag.getContent(), x -> new ArrayList<>()).add(new TagReference(categorizedTag));
+                        addNewTagReference(categorizedTag);
                     }
                     DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
                     parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
@@ -273,6 +285,10 @@ public class TagCategories {
         }
         if(target != uncategorizedTagsNode)
             nodes.nodesWereInserted(target, IntStream.range(firstIndex, index).toArray());
+    }
+
+    private boolean addNewTagReference(Tag tag) {
+        return tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(new TagReference(tag));
     }
 
     private void insertNode(DefaultMutableTreeNode parent, int index, DefaultMutableTreeNode newChild) {
@@ -370,7 +386,7 @@ public class TagCategories {
     	DefaultMutableTreeNode rootNode = getRootNode();
         if(parent == null)
 			parent = rootNode;
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(TagCategories.NOT_A_TAG);
         nodes.insertNodeInto(newNode, parent,  parent == rootNode ? parent.getChildCount() - 1 : parent.getChildCount());
         return nodes.getPathToRoot(newNode);
    }
@@ -382,7 +398,7 @@ public class TagCategories {
         MutableTreeNode parent = (MutableTreeNode) node.getParent();
         if(parent == null)
             return nothing;
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(TagCategories.NOT_A_TAG);
         nodes.insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
         return nodes.getPathToRoot(newNode);
    }
@@ -532,8 +548,7 @@ public class TagCategories {
                     currentNode = newNode;
                     categoriesChanged = true;
                 }
-                TagReference tagReference = new TagReference(qualifiedTag);
-                tagReferences.computeIfAbsent(qualifiedContent, x -> new ArrayList<>()).add(tagReference);
+                addNewTagReference(qualifiedTag);
             }
             if(end < 0)
                 break;
@@ -723,7 +738,7 @@ public class TagCategories {
 
     public Tag categorizedTag(DefaultMutableTreeNode node) {
         Tag tagWithoutCategories = tagWithoutCategories(node);
-        if(tagWithoutCategories == NOT_A_TAG)
+        if(tagWithoutCategories.isEmpty())
             return tagWithoutCategories;
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
         if(! containsTag(parent))
