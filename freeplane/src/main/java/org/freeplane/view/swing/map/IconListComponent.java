@@ -8,6 +8,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
@@ -154,6 +155,39 @@ public class IconListComponent extends JComponent {
         height += rowHeight;
         maximumRowWidth = Math.max(rowWidth, maximumRowWidth);
         return new Dimension((int) (maximumRowWidth * zoom + 0.5), (int)(height * zoom + 0.5));
+    }
+
+    public Icon getIcon(Point point) {
+        final float zoom = getZoom();
+        final int width = (int) (getWidth() / zoom);
+        int rowWidth = 0;
+        int rowHeight = 0;
+        int x = 0;
+        int y = 0;
+
+        for (int i = 0; i < icons.size(); i++) {
+            Icon icon = icons.get(i);
+
+            if (rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
+                x = 0;
+                y += rowHeight;
+                rowWidth = 0;
+                rowHeight = 0;
+            }
+
+            int iconWidth = icon.getIconWidth();
+            int iconHeight = icon.getIconHeight();
+
+            if (point.x >= x && point.x < x + iconWidth && point.y >= y && point.y < y + iconHeight) {
+                return icon;
+            }
+
+            x += iconWidth;
+            rowWidth += iconWidth;
+            rowHeight = Math.max(rowHeight, iconHeight);
+        }
+
+        return null;
     }
 
     protected float getZoom() {
