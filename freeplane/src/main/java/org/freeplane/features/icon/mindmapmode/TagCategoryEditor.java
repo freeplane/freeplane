@@ -82,7 +82,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.plaf.TreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -337,7 +336,6 @@ class TagCategoryEditor implements IExtension {
      }
     class TagRenamer implements TreeModelListener, TreeTagChangeListener<Tag>{
         private final List<String> replacements = new ArrayList<>();
-        private boolean mergeIsRunning = false;
 
         @Override
         public void treeNodesChanged(TreeModelEvent e) {
@@ -351,7 +349,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public void valueForPathChanged(TreePath path, Tag newTag) {
-            if(mergeIsRunning)
+            if(tagCategories.isMergeRunning())
                 return;
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
             final Tag oldTag = tagCategories.categorizedTag(node);
@@ -377,7 +375,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public void treeNodesInserted(TreeModelEvent e) {
-            if(mergeIsRunning)
+            if(tagCategories.isMergeRunning())
                 return;
             Object[] insertedNodes = e.getChildren();
             if (e.getTreePath().getLastPathComponent() == tagCategories.getUncategorizedTagsNode()
@@ -428,7 +426,7 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public void treeNodesRemoved(TreeModelEvent e) {
-            if(mergeIsRunning)
+            if(tagCategories.isMergeRunning())
                 return;
             Object[] removedNodes = e.getChildren();
             for(int i = 0; i < removedNodes.length; i++) {
@@ -457,51 +455,11 @@ class TagCategoryEditor implements IExtension {
 
         private void merge(DefaultMutableTreeNode node) {
             boolean nodeWasSelected = tree.getLastSelectedPathComponent() == node;
-            boolean mergeWasRunning = mergeIsRunning;
-            mergeIsRunning = true;
-            try{
-                final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-                final DefaultMutableTreeNode mergeParent = parent == tagCategories.getUncategorizedTagsNode()
-                ? tagCategories.getRootNode() : parent;
-                DefaultMutableTreeNode target = merge(node, null, mergeParent);
-                if(mergeParent.isRoot())
-                    merge(node, target, tagCategories.getUncategorizedTagsNode());
-                if(nodeWasSelected && node.getParent() == null)
-                    tree.setSelectionPath(new TreePath(target));
-            }
-            finally {
-                mergeIsRunning = mergeWasRunning;
-            }
+            DefaultMutableTreeNode target = tagCategories.merge(node);
+            if(nodeWasSelected && node.getParent() == null)
+                tree.setSelectionPath(new TreePath(target));
         }
 
-        private DefaultMutableTreeNode merge(DefaultMutableTreeNode node, DefaultMutableTreeNode target,
-                final DefaultMutableTreeNode parent) {
-            final DefaultTreeModel nodes = tagCategories.getNodes();
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                final DefaultMutableTreeNode sibling = (DefaultMutableTreeNode) parent.getChildAt(i);
-                if (sibling.getUserObject().equals(node.getUserObject())) {
-                    if(target != null) {
-                        while(! sibling.isLeaf()) {
-                            final DefaultMutableTreeNode child = (DefaultMutableTreeNode) sibling.getFirstChild();
-                            nodes.removeNodeFromParent(child);
-                            nodes.insertNodeInto(child, target, target.getChildCount());
-                            merge(child);
-                        }
-                        if(node == target) {
-                            Tag categorizedTag = tagCategories.categorizedTag(node);
-                            Tag tagWithoutCategories = tagCategories.tagWithoutCategories(node);
-                            categorizedTag.setColorChainTag(tagWithoutCategories);
-                            tagWithoutCategories.setColor(categorizedTag.getColor());
-                            tagCategories.fireNodeChanged(node);
-                        }
-                        nodes.removeNodeFromParent(sibling);
-                    }
-                    else
-                        target = sibling;
-                }
-            }
-            return target;
-        }
 
     }
     private static final String WINDOW_CONFIG_PROPERTY = "tag_category_editor_window_configuration";

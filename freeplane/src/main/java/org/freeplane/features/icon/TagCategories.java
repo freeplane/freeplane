@@ -110,6 +110,8 @@ public class TagCategories {
     private String categorySeparator;
     private final DefaultMutableTreeNode uncategorizedTagsNode;
     public static final String UNCATEGORIZED_NODE = " uncategorized node ";
+    private boolean mergeIsRunning;
+
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
@@ -127,6 +129,7 @@ public class TagCategories {
         tagReferences = new TreeMap<>();
         nodesByTags = null;
         categoriesChanged = false;
+        mergeIsRunning = false;
     }
 
     private TagCategories(TagCategories tagCategories) {
@@ -141,6 +144,7 @@ public class TagCategories {
         nodesByTags = null;
         tagCategories.mapTags.forEach(mapTags::addIfNotExists);
         categoriesChanged = false;
+        mergeIsRunning = false;
     }
 
     public String getTagCategorySeparator() {
@@ -792,5 +796,56 @@ public class TagCategories {
                 .flatMap(List::stream)
                 .map(TagReference::getTag)
                 .collect(Collectors.toCollection(TreeSet::new));
+    }
+
+    public DefaultMutableTreeNode merge(DefaultMutableTreeNode node) {
+        boolean mergeWasRunning = mergeIsRunning;
+        DefaultMutableTreeNode target;
+        mergeIsRunning = true;
+        try{
+            final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+            final DefaultMutableTreeNode mergeParent = parent == getUncategorizedTagsNode()
+            ? getRootNode() : parent;
+            target = merge(node, null, mergeParent);
+            if(mergeParent.isRoot())
+                merge(node, target, getUncategorizedTagsNode());
+        }
+        finally {
+            mergeIsRunning = mergeWasRunning;
+        }
+        return target;
+    }
+
+    private DefaultMutableTreeNode merge(DefaultMutableTreeNode node, DefaultMutableTreeNode target,
+            final DefaultMutableTreeNode parent) {
+        final DefaultTreeModel nodes = getNodes();
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            final DefaultMutableTreeNode sibling = (DefaultMutableTreeNode) parent.getChildAt(i);
+            if (sibling.getUserObject().equals(node.getUserObject())) {
+                if(target != null) {
+                    while(! sibling.isLeaf()) {
+                        final DefaultMutableTreeNode child = (DefaultMutableTreeNode) sibling.getFirstChild();
+                        nodes.removeNodeFromParent(child);
+                        nodes.insertNodeInto(child, target, target.getChildCount());
+                        merge(child);
+                    }
+                    if(node == target) {
+                        Tag categorizedTag = categorizedTag(node);
+                        Tag tagWithoutCategories = tagWithoutCategories(node);
+                        categorizedTag.setColorChainTag(tagWithoutCategories);
+                        tagWithoutCategories.setColor(categorizedTag.getColor());
+                        fireNodeChanged(node);
+                    }
+                    nodes.removeNodeFromParent(sibling);
+                }
+                else
+                    target = sibling;
+            }
+        }
+        return target;
+    }
+
+    public boolean isMergeRunning() {
+        return mergeIsRunning;
     }
 }
