@@ -233,6 +233,26 @@ public class TagCategoryEditorTest {
         }
     }
 
+
+    @Test
+    public void renameCategorizedTag() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.registerTag("cat::tag1");
+            tagCategories.registerTag("cat::tag2");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .renameSelectedNode("tag2")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("cat#2072ffff\n"
+                        + " tag2#ffe42dff\n");
+                assertThat(tc.referencedTags().stream().map(Tag::getContent)).
+                containsExactlyInAnyOrder("cat", "cat::tag2");
+            });
+        }
+    }
     @Test
     public void moveTagsToUncategorized() {
         try (TagTestSteps steps = new TagTestSteps()){

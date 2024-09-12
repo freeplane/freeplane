@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.swing.event.TreeModelListener;
@@ -781,5 +784,13 @@ public class TagCategories {
     public void registerTagReferenceIfUnknown(Tag tag) {
         if(! tagReferences.containsKey(tag.getContent()))
             registerTagReference(tag);
+    }
+
+    public SortedSet<Tag> referencedTags(){
+        return tagReferences.values()
+                .stream()
+                .flatMap(List::stream)
+                .map(TagReference::getTag)
+                .collect(Collectors.toCollection(TreeSet::new));
     }
 }
