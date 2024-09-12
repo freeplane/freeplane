@@ -235,11 +235,11 @@ public class TagCategoryEditorTest {
 
 
     @Test
-    public void renameCategorizedTag() {
+    public void renameAndMergeCategorizedTag() {
         try (TagTestSteps steps = new TagTestSteps()){
             TagCategories tagCategories = TagCategoriesTest.tagCategories("");
-            tagCategories.registerTag("cat::tag1");
-            tagCategories.registerTag("cat::tag2");
+            tagCategories.setTagColor("cat::tag1", Color.BLACK);
+            tagCategories.setTagColor("cat::tag2", Color.WHITE);
             steps.given().tagCategoryEditor(tagCategories)
             .when().selectNode(0, 0)
             .renameSelectedNode("tag2")
@@ -247,7 +247,7 @@ public class TagCategoryEditorTest {
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
                 assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("cat#2072ffff\n"
-                        + " tag2#ffe42dff\n");
+                        + " tag2#ffffffff\n");
                 assertThat(tc.referencedTags().stream().map(Tag::getContent)).
                 containsExactlyInAnyOrder("cat", "cat::tag2");
             });
