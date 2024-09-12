@@ -828,8 +828,11 @@ public class TagCategories {
                         Tag categorizedTag = categorizedTag(node);
                         Tag tagWithoutCategories = tagWithoutCategories(node);
                         categorizedTag.setColorChainTag(tagWithoutCategories);
-                        tagWithoutCategories.setColor(categorizedTag.getColor());
-                        fireNodeChanged(node);
+                        Color color = categorizedTag.getColor();
+                        if(! color.equals(tagWithoutCategories.getColor())) {
+                            tagWithoutCategories.setColor(color);
+                            fireNodeChanged(node);
+                        }
                     }
                     nodes.removeNodeFromParent(sibling);
                 }

@@ -339,6 +339,8 @@ class TagCategoryEditor implements IExtension {
 
         @Override
         public void treeNodesChanged(TreeModelEvent e) {
+            if(tagCategories.isMergeRunning())
+                return;
             Invoker.invokeLater(() -> merge(e));
         }
 
