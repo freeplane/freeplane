@@ -67,18 +67,21 @@ public class TagCategories {
         public void valueForPathChanged(TreePath path, Object newValue) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
             Tag oldValue = categorizedTag(node);
+            Tag tag = (Tag) newValue;
             if(node.getParent() == uncategorizedTagsNode) {
                 removeUncategorizedTagNode(oldValue);
-                node.setUserObject(newValue);
+                if(mapTags.addIfNotExists(tag) >= 0)
+                    addNewTagReference(tag);
+                node.setUserObject(tag);
                 insertUncategorizedTagNodeSorted(node);
             }
             else {
                 for (TreeModelListener listener: getTreeModelListeners()) {
                     if(listener instanceof TreeTagChangeListener)
-                        ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)newValue);
+                        ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)tag);
 
                 }
-                super.valueForPathChanged(path, newValue);
+                super.valueForPathChanged(path, tag);
             }
         }
 
