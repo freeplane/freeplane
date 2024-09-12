@@ -161,6 +161,24 @@ public class TagCategoryEditorTest {
             uut.setTagColor(color);
             return me();
         }
+
+
+        public TagTestSteps addChild(String content, Color color) {
+            return addNode(content, color, true);
+        }
+
+        private TagTestSteps addNode(String content, Color color, boolean asChild) {
+            selectTreePath();
+            uut.addNode(asChild);
+            updatedTagCategories.getNodes()
+                .valueForPathChanged(uut.getTree().getSelectionPath(),
+                    new Tag(content, color));
+            return me();
+        }
+
+        public TagTestSteps addSibling(String content, Color color) {
+            return addNode(content, color, false);
+        }
     }
 
     @Test
@@ -269,4 +287,79 @@ public class TagCategoryEditorTest {
         }
     }
 
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeChild() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0)
+            .addChild("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
+
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeSibling() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0)
+            .addSibling("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
+
+
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeChildsSibling() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.registerTag("UU");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .addSibling("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
+
+
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeChildsChild() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.registerTag("UU");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .addChild("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
 }

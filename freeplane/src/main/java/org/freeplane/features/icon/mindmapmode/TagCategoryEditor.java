@@ -880,10 +880,10 @@ class TagCategoryEditor implements IExtension {
         return selectedTags;
     }
 
-    private void addNode(boolean asChild) {
+    void addNode(boolean asChild) {
         DefaultMutableTreeNode selectedNode = getSelectedNode();
         DefaultMutableTreeNode uncategorizedTagsNode = tagCategories.getUncategorizedTagsNode();
-        if(selectedNode == null || selectedNode == uncategorizedTagsNode && asChild || selectedNode.getParent() == uncategorizedTagsNode)
+        if(selectedNode == null || selectedNode == uncategorizedTagsNode || selectedNode.getParent() == uncategorizedTagsNode)
             selectedNode = tagCategories.getRootNode();
         TreeNode[] nodes = (asChild || selectedNode.isRoot() || selectedNode == uncategorizedTagsNode) ? tagCategories.addChildNode(selectedNode) : tagCategories.addSiblingNode(selectedNode);
         if(nodes.length == 0)
