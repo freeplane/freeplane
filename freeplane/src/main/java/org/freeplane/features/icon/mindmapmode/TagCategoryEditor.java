@@ -358,7 +358,13 @@ class TagCategoryEditor implements IExtension {
             final String oldContent = oldTag.getContent();
             if(oldContent.isEmpty())
                 return;
-            final String newContent = newTag.getContent();
+            String tagCategorySeparator = getTagCategorySeparator();
+            int lastIndexOfSeparator = oldContent.lastIndexOf(tagCategorySeparator);
+            final String newContent = lastIndexOfSeparator >= 0
+                    ? oldContent.substring(0,
+                            lastIndexOfSeparator + tagCategorySeparator.length())
+                            + newTag.getContent()
+                    : newTag.getContent();
             if(! newContent.equals(oldContent)) {
                 addReplacement(oldContent, newContent);
             }
