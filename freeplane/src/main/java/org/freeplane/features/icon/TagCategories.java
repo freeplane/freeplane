@@ -564,11 +564,6 @@ public class TagCategories {
                 break;
         }
 
-        if(setColor) {
-            Tag savedTag = mapTags.getElementAt(addedElementIndex >= 0 ? addedElementIndex : - addedElementIndex - 1);
-            savedTag.setColor(tag.getColor());
-        }
-
         List<TagReference> references = tagReferences.get(fullContent);
         return references.get(0);
     }
