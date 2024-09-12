@@ -487,6 +487,13 @@ class TagCategoryEditor implements IExtension {
                             nodes.insertNodeInto(child, target, target.getChildCount());
                             merge(child);
                         }
+                        if(node == target) {
+                            Tag categorizedTag = tagCategories.categorizedTag(node);
+                            Tag tagWithoutCategories = tagCategories.tagWithoutCategories(node);
+                            categorizedTag.setColorChainTag(tagWithoutCategories);
+                            tagWithoutCategories.setColor(categorizedTag.getColor());
+                            tagCategories.fireNodeChanged(node);
+                        }
                         nodes.removeNodeFromParent(sibling);
                     }
                     else
