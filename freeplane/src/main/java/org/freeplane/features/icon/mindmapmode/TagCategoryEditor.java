@@ -108,11 +108,11 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
 class TagCategoryEditor implements IExtension {
+    static boolean FORCE_HEADLESS_GRAPHICS_FOR_TEST = false;
     private static class Invoker{
         private static final Clipboard CLIPBOARD = GraphicsEnvironment.isHeadless() ? new Clipboard("") : null;
-
         public static void invokeLater(Runnable runnable) {
-            if(GraphicsEnvironment.isHeadless())
+            if(FORCE_HEADLESS_GRAPHICS_FOR_TEST || GraphicsEnvironment.isHeadless())
                 runnable.run();
             else
                 SwingUtilities.invokeLater(runnable);

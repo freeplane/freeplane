@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class TagCategoryEditorTest {
             mocks.add(textUtilsMock);
             textUtilsMock.when(() -> TextUtils.getText( any(String.class)))
                 .then(x -> x.getArguments()[0]);
-
+            TagCategoryEditor.FORCE_HEADLESS_GRAPHICS_FOR_TEST = true;
         }
 
         @Override
@@ -97,6 +98,7 @@ public class TagCategoryEditorTest {
             try {
                 for(AutoCloseable mock:mocks)
                     mock.close();
+                TagCategoryEditor.FORCE_HEADLESS_GRAPHICS_FOR_TEST = false;
             } catch (Exception e) {
                throw new RuntimeException(e);
             }
@@ -236,7 +238,7 @@ public class TagCategoryEditorTest {
 
 
     @Test
-    public void renameAndMergeCategorizedTag() {
+    public void renameAndMergeCategorizedLeafTag() {
         try (TagTestSteps steps = new TagTestSteps()){
             TagCategories tagCategories = TagCategoriesTest.tagCategories("");
             tagCategories.setTagColor("cat::tag1", Color.BLACK);
@@ -254,6 +256,30 @@ public class TagCategoryEditorTest {
             });
         }
     }
+
+
+    @Test
+    public void renameAndMergeCategory() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.setTagColor("aaa::tag", Color.BLACK);
+            tagCategories.setTagColor("bbb::tag", Color.WHITE);
+            tagCategories.setTagColor("aaa", Color.BLUE);
+            tagCategories.setTagColor("bbb", Color.GREEN);
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0)
+            .renameSelectedNode("bbb")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("bbb#00ff00ff\n"
+                        + " tag#ffffffff\n");
+                assertThatReferencedTags(tc).map(Tag::getContent)
+                .containsExactlyInAnyOrder("bbb", "bbb::tag");
+            });
+        }
+    }
+
     @Test
     public void moveTagsToUncategorized() {
         try (TagTestSteps steps = new TagTestSteps()){

@@ -816,28 +816,15 @@ public class TagCategories {
         final DefaultTreeModel nodes = getNodes();
         for (int i = 0; i < parent.getChildCount(); i++) {
             final DefaultMutableTreeNode sibling = (DefaultMutableTreeNode) parent.getChildAt(i);
-            if (sibling.getUserObject().equals(node.getUserObject())) {
-                if(target != null) {
-                    while(! sibling.isLeaf()) {
-                        final DefaultMutableTreeNode child = (DefaultMutableTreeNode) sibling.getFirstChild();
-                        nodes.removeNodeFromParent(child);
-                        nodes.insertNodeInto(child, target, target.getChildCount());
-                        merge(child);
-                    }
-                    if(node == target) {
-                        Tag categorizedTag = categorizedTag(node);
-                        Tag tagWithoutCategories = tagWithoutCategories(node);
-                        categorizedTag.setColorChainTag(tagWithoutCategories);
-                        Color color = categorizedTag.getColor();
-                        if(! color.equals(tagWithoutCategories.getColor())) {
-                            tagWithoutCategories.setColor(color);
-                            fireNodeChanged(node);
-                        }
-                    }
-                    nodes.removeNodeFromParent(sibling);
+            if (sibling != node && sibling.getUserObject().equals(node.getUserObject())) {
+                while(! node.isLeaf()) {
+                    final DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getFirstChild();
+                    nodes.removeNodeFromParent(child);
+                    nodes.insertNodeInto(child, sibling, sibling.getChildCount());
+                    merge(child);
                 }
-                else
-                    target = sibling;
+                nodes.removeNodeFromParent(node);
+                return sibling;
             }
         }
         return target;
