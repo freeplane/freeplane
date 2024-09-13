@@ -6,6 +6,7 @@
 package org.freeplane.features.icon.mindmapmode;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.freeplane.features.icon.TagAssertions.assertThatReferencedTags;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mockStatic;
@@ -248,8 +249,8 @@ public class TagCategoryEditorTest {
             .satisfies(tc -> {
                 assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("cat#2072ffff\n"
                         + " tag2#ffffffff\n");
-                assertThat(tc.referencedTags().stream().map(Tag::getContent)).
-                containsExactlyInAnyOrder("cat", "cat::tag2");
+                assertThatReferencedTags(tc).map(Tag::getContent)
+                .containsExactlyInAnyOrder("cat", "cat::tag2");
             });
         }
     }

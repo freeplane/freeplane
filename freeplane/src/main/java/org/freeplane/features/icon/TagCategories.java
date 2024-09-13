@@ -785,7 +785,7 @@ public class TagCategories {
             registerTagReference(tag);
     }
 
-    public SortedSet<Tag> referencedTags(){
+    SortedSet<Tag> referencedTags(){
         return tagReferences.values()
                 .stream()
                 .flatMap(List::stream)
