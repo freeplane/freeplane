@@ -795,39 +795,48 @@ public class TagCategories {
 
     public DefaultMutableTreeNode merge(DefaultMutableTreeNode node) {
         boolean mergeWasRunning = mergeIsRunning;
-        DefaultMutableTreeNode target;
+        DefaultMutableTreeNode keptNode;
         mergeIsRunning = true;
         try{
             final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
             final DefaultMutableTreeNode mergeParent = parent == getUncategorizedTagsNode()
             ? getRootNode() : parent;
-            target = merge(node, null, mergeParent);
+            keptNode = merge(node, null, mergeParent);
             if(mergeParent.isRoot())
-                merge(node, target, getUncategorizedTagsNode());
+                keptNode = merge(node, keptNode, getUncategorizedTagsNode());
         }
         finally {
             mergeIsRunning = mergeWasRunning;
         }
-        return target;
+        return keptNode;
     }
 
-    private DefaultMutableTreeNode merge(DefaultMutableTreeNode node, DefaultMutableTreeNode target,
+    private DefaultMutableTreeNode merge(DefaultMutableTreeNode node, DefaultMutableTreeNode keptNode,
             final DefaultMutableTreeNode parent) {
         final DefaultTreeModel nodes = getNodes();
         for (int i = 0; i < parent.getChildCount(); i++) {
             final DefaultMutableTreeNode sibling = (DefaultMutableTreeNode) parent.getChildAt(i);
             if (sibling != node && sibling.getUserObject().equals(node.getUserObject())) {
-                while(! node.isLeaf()) {
+                final DefaultMutableTreeNode removedNode;
+                if(keptNode != null)
+                    removedNode = sibling;
+                else {
+                    if(node.getParent() != parent)
+                        return sibling;
+                    keptNode = sibling;
+                    removedNode = node;
+                }
+                while(! removedNode.isLeaf()) {
                     final DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getFirstChild();
                     nodes.removeNodeFromParent(child);
-                    nodes.insertNodeInto(child, sibling, sibling.getChildCount());
+                    nodes.insertNodeInto(child, keptNode, keptNode.getChildCount());
                     merge(child);
                 }
-                nodes.removeNodeFromParent(node);
-                return sibling;
+                nodes.removeNodeFromParent(removedNode);
+                break;
             }
         }
-        return target;
+        return keptNode;
     }
 
     public boolean isMergeRunning() {

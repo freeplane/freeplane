@@ -14,7 +14,6 @@ import static org.mockito.Mockito.verify;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +70,6 @@ public class TagCategoryEditorTest {
 
         private TagCategoryEditor uut;
 
-        private DefaultMutableTreeNode selectedNode;
-
         private TagCategories updatedTagCategories;
 
         TagTestSteps(){
@@ -118,14 +115,19 @@ public class TagCategoryEditorTest {
             for(int i : indices) {
                 selectedNode = selectedNode.getChildAt(i);
             }
-            this.selectedNode = (DefaultMutableTreeNode) selectedNode;
+            JTree tree = uut.getTree();
+            DefaultTreeModel nodes = updatedTagCategories.getNodes();
+            TreeNode[] pathToRoot = nodes.getPathToRoot(selectedNode);
+            tree.setSelectionPath(new TreePath(pathToRoot));
             return me();
         }
 
         TagTestSteps renameSelectedNode(String content) {
             DefaultTreeModel nodes = updatedTagCategories.getNodes();
-            nodes.valueForPathChanged(new TreePath(nodes.getPathToRoot(selectedNode)),
-                    new Tag(content, updatedTagCategories.tagWithoutCategories(selectedNode).getColor()));
+            JTree tree = uut.getTree();
+            TreePath selectionPath = tree.getSelectionPath();
+            nodes.valueForPathChanged(selectionPath,
+                    new Tag(content, updatedTagCategories.tagWithoutCategories((DefaultMutableTreeNode) selectionPath.getLastPathComponent()).getColor()));
             return me();
         }
 
@@ -141,26 +143,16 @@ public class TagCategoryEditorTest {
         }
 
         TagTestSteps cut() {
-            selectTreePath();
             uut.cutNodes();
             return me();
         }
 
-        private void selectTreePath() {
-            JTree tree = uut.getTree();
-            DefaultTreeModel nodes = updatedTagCategories.getNodes();
-            TreeNode[] pathToRoot = nodes.getPathToRoot(selectedNode);
-            tree.setSelectionPath(new TreePath(pathToRoot));
-        }
-
         TagTestSteps paste() {
-            selectTreePath();
             uut.pasteNodes();
             return me();
         }
 
         TagTestSteps setColor(Color color) {
-            selectTreePath();
             uut.setTagColor(color);
             return me();
         }
@@ -171,7 +163,6 @@ public class TagCategoryEditorTest {
         }
 
         private TagTestSteps addNode(String content, Color color, boolean asChild) {
-            selectTreePath();
             uut.addNode(asChild);
             updatedTagCategories.getNodes()
                 .valueForPathChanged(uut.getTree().getSelectionPath(),
@@ -236,6 +227,25 @@ public class TagCategoryEditorTest {
         }
     }
 
+
+    @Test
+    public void renameAndMergeUncategorizedTag() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.setTagColor("tag1", Color.BLACK);
+            tagCategories.setTagColor("tag2", Color.WHITE);
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .renameSelectedNode("tag2")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                assertThat(serializeNormalizeLineBreaks(tc)).isEmpty();
+                assertThat(tc.getTagsAsListModel()).map(Tag::getContent)
+                .containsExactlyInAnyOrder("tag2");
+            });
+        }
+    }
 
     @Test
     public void renameAndMergeCategorizedLeafTag() {
