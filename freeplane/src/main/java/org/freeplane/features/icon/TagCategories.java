@@ -280,11 +280,12 @@ public class TagCategories {
                     if(! lineTag.equals(tag.getContent()))
                         savedTag.setColor(tag.getColor());
                     else if(savedTag == categorizedTag) {
-                        categorizedTag.setColor(Tag.getDefaultColor(categorizedTagContent));
+                        savedTag.setColor(Tag.getDefaultColor(categorizedTagContent));
                     }
                     if(savedTag == categorizedTag) {
                         addNewTagReference(categorizedTag);
                     }
+                    savedTag.setColorChainTag(tag);
                     DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
                     parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
                     lastNode = newNode;

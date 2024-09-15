@@ -7,15 +7,11 @@ package org.freeplane.features.icon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.awt.Color;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.features.icon.mindmapmode.MIconController;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 public class TagCategoriesTest {
     public static TagCategories tagCategories(String input) {
@@ -25,13 +21,6 @@ public class TagCategoriesTest {
         tagCategories.load(input);
         return tagCategories;
     }
-
-    public static String serializeWithoutColors(TagCategories tagCategories) {
-        return tagCategories.serialize()
-                .replaceAll("#.*", "")
-                .replace(System.lineSeparator(), "\n");
-    }
-
 
     @Test
     public void testRegisterTagReferenceCategories() {
@@ -55,11 +44,40 @@ public class TagCategoriesTest {
         DefaultMutableTreeNode greatGrandChild = (DefaultMutableTreeNode) grandChild.getChildAt(0);
         assertThat((tagCategories.categorizedTag(greatGrandChild).getContent())).isEqualTo("tag1::tag2::tag3");
 
-        assertThat(serializeWithoutColors(tagCategories))
+        TagAssertions.assertThatSerializedWithoutColors(tagCategories)
         .isEqualTo("tag1\n"
                 + " tag2\n"
                 + "  tag3\n"
                 + "tag4\n");
     }
 
+    @Test
+    public void modifiesColor() {
+        TagCategories uut = new TagCategories(
+                new DefaultMutableTreeNode("tags"),
+                new DefaultMutableTreeNode("uncategorized_tags"), "::");
+        uut.load("AA#11223344\n"
+                + " BB#22334455\n");
+        uut.setTagColor("AA::BB", Color.BLACK);
+        TagAssertions.assertThatSerialized(uut).isEqualTo("AA#11223344\n"
+                + " BB#000000ff\n");
+        assertThat(uut.getTag(new Tag("AA::BB")).get().getColor())
+        .isEqualTo(Color.BLACK);
+    }
+
+
+    @Test
+    public void modifiesColorOfTagExistingBeforeLoading() {
+        TagCategories uut = new TagCategories(
+                new DefaultMutableTreeNode("tags"),
+                new DefaultMutableTreeNode("uncategorized_tags"), "::");
+        uut.createTag("AA::BB");
+        uut.load("AA#11223344\n"
+                + " BB#22334455\n");
+        uut.setTagColor("AA::BB", Color.BLACK);
+        TagAssertions.assertThatSerialized(uut).isEqualTo("AA#11223344\n"
+                + " BB#000000ff\n");
+        assertThat(uut.getTag(new Tag("AA::BB")).get().getColor())
+        .isEqualTo(Color.BLACK);
+    }
 }

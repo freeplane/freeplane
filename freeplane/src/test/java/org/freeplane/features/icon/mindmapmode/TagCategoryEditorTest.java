@@ -31,6 +31,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagAssertions;
 import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.icon.TagCategoriesTest;
 import org.freeplane.features.map.MapModel;
@@ -52,11 +53,7 @@ public class TagCategoryEditorTest {
         default T that() {return me();}
      }
 
-	private static String serializeNormalizeLineBreaks(TagCategories tc) {
-		return tc.serialize().replace(System.lineSeparator(), "\n");
-	}
-
-    class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
+	class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
         private final List<AutoCloseable> mocks;
 
 
@@ -190,7 +187,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + " tag22#22334455\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
@@ -216,7 +213,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + " BB#22334455\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
@@ -240,7 +237,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEmpty();
+                TagAssertions.assertThatSerialized(tc).isEmpty();
                 assertThat(tc.getTagsAsListModel()).map(Tag::getContent)
                 .containsExactlyInAnyOrder("tag2");
             });
@@ -259,7 +256,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("cat#2072ffff\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("cat#2072ffff\n"
                         + " tag2#ffffffff\n");
                 assertThatReferencedTags(tc).map(Tag::getContent)
                 .containsExactlyInAnyOrder("cat", "cat::tag2");
@@ -282,7 +279,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("bbb#00ff00ff\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("bbb#00ff00ff\n"
                         + " tag#ffffffff\n");
                 assertThatReferencedTags(tc).map(Tag::getContent)
                 .containsExactlyInAnyOrder("bbb", "bbb::tag");
@@ -307,7 +304,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + "DD#44556677\n");
                 assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
                 containsExactly("AA", "BB", "CC", "DD",
@@ -331,7 +328,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + " BB#000000ff\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
@@ -354,7 +351,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
                 TagCategories copy = tc.copy();
                 copy.getTagsAsListModel()
                 .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
@@ -372,7 +369,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
                 TagCategories copy = tc.copy();
                 copy.getTagsAsListModel()
                 .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
@@ -392,7 +389,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
                 TagCategories copy = tc.copy();
                 copy.getTagsAsListModel()
                 .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
@@ -412,7 +409,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("tag#ffffffff\n");
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
                 TagCategories copy = tc.copy();
                 copy.getTagsAsListModel()
                 .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
