@@ -197,6 +197,31 @@ public class TagCategoryEditorTest {
             });
         }
     }
+    @Test
+    public void renameCategoryAndSubCategory() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("AA#11223344\n"
+                    + " BB#22334455\n"
+                    + "  CC#33445566\n"
+                    + "DD#44556677\n");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when()
+            .selectNode(0)
+            .renameSelectedNode("EE")
+            .selectNode(0, 0)
+            .renameSelectedNode("FF")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("EE#11223344\n"
+                        + " FF#22334455\n"
+                        + "  CC#33445566\n"
+                        + "DD#44556677\n");
+                assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
+                containsExactly("DD", "EE", "EE::FF", "EE::FF::CC");
+            });
+        }
+    }
 
     @Test
     public void renameUncategorizedTag() {

@@ -524,9 +524,10 @@ public class TagCategories {
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) children.nextElement();
                 if(! containsTag(childNode))
                     break;
-                Tag childTag = categorizedTag(childNode);
-
-                if (childTag.getContent().equals(qualifiedContent)) {
+                String childTagContent = categorizedContent(childNode);
+                if (childTagContent.equals(qualifiedContent)) {
+                    if(tag.getContent().equals(childTagContent))
+                        addNewTagReference(tag);
                     currentNode = childNode;
                     found = true;
                     break;
