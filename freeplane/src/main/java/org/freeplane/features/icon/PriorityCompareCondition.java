@@ -19,19 +19,19 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.FontMetrics;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.Icon;
 
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
-import org.freeplane.features.filter.condition.ConditionFactory;
-import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.LogicalStyleController.StyleOption;
@@ -65,14 +65,9 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	}
 
 	@Override
-    protected JComponent createRendererComponent() {
-		final JCondition renderer = new JCondition();
-		final String string = toString();
-		final JLabel label = ConditionFactory.createConditionLabel(string.substring(0, string.length() - 3));
-		label.setIcon(STORE.getMindIcon(getIconName()).getIcon());
-		label.setHorizontalTextPosition(SwingConstants.LEFT);
-		renderer.add(label);
-		return renderer;
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+		Icon icon = STORE.getMindIcon(getIconName()).getIcon();
+		return Collections.singletonList(new ObjectIcon<>(this, icon));
     }
 
 	public boolean checkNode(final NodeModel node) {

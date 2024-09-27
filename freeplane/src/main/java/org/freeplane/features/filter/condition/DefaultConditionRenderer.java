@@ -21,6 +21,7 @@ package org.freeplane.features.filter.condition;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontMetrics;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -57,7 +58,10 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 	 */
 	public Component getListCellRendererComponent(final JList list, final Object value, final int index,
 	                                              final boolean isSelected, final boolean cellHasFocus) {
-		Component cellRendererComponent = getCellRendererComponent(value, isSelected);
+		JComponent cellRendererComponent = (JComponent) getCellRendererComponent(
+		        list.getFontMetrics(list.getFont()),
+		        value, isSelected);
+		cellRendererComponent.setOpaque(true);
         if (isSelected) {
         	cellRendererComponent.setBackground(list.getSelectionBackground());
         	cellRendererComponent.setForeground(list.getSelectionForeground());
@@ -69,7 +73,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 		return cellRendererComponent;
 	}
 
-	public Component getCellRendererComponent(final Object value, final boolean isSelected) {
+	public Component getCellRendererComponent(FontMetrics fontMetrics, final Object value, final boolean isSelected) {
 		final JComponent component;
 		if (value == null) {
 			component =  new JLabel(noValueText);
@@ -77,7 +81,8 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 		}
         else if (value instanceof UIIcon) {
             JLabel label = new JLabel();
-            Font font = label.getFont();
+            Font font = fontMetrics.getFont();
+            label.setFont(font);
             final int fontHeight = label.getFontMetrics(font).getHeight();
             UIIcon uiIcon = (UIIcon) value;
             Icon icon = FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize());
@@ -89,7 +94,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
         else if (value instanceof Tag) {
             JLabel label = new JLabel();
             Tag tag = (Tag) value;
-            Icon icon = new TagIcon(tag, UITools.getUIFont());
+            Icon icon = new TagIcon(tag, fontMetrics.getFont());
             label.setIcon(icon);
             label.setHorizontalAlignment(SwingConstants.LEADING);
             label.setOpaque(false);
@@ -99,7 +104,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 			final ASelectableCondition cond = (ASelectableCondition) value;
 			final String userName = cond.getUserName();
 			if(renderNamedConditions || userName == null)
-				component = cond.getListCellRendererComponent();
+				component = cond.getListCellRendererComponent(fontMetrics);
             else {
 	            component = new JLabel(userName);
 	            component.setToolTipText(cond.createDescription());
@@ -115,7 +120,9 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
-		Component cellRendererComponent = getCellRendererComponent(value, isSelected);
+		Component cellRendererComponent = getCellRendererComponent(
+		        table.getFontMetrics(table.getFont()),
+		        value, isSelected);
 	       if (isSelected) {
 	    	   cellRendererComponent.setBackground(table.getSelectionBackground());
 	    	   cellRendererComponent.setForeground(table.getSelectionForeground());

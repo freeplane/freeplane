@@ -19,14 +19,17 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.Icon;
 
+import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -36,7 +39,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class ConjunctConditions extends CombinedConditions implements ICombinedCondition{
 	static final String NAME = "conjunct_condition";
-	
+
 	public static ConjunctConditions combine(final ASelectableCondition... conditions) {
 	    return  new ConjunctConditions(CombinedConditions.combine(ConjunctConditions.class, conditions));
 	}
@@ -53,7 +56,7 @@ public class ConjunctConditions extends CombinedConditions implements ICombinedC
 		}
 		return new ConjunctConditions(conditions);
 	}
-    
+
 	final private ASelectableCondition[] conditions;
 
 	ConjunctConditions(final ASelectableCondition... conditions) {
@@ -71,7 +74,8 @@ public class ConjunctConditions extends CombinedConditions implements ICombinedC
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final NodeModel node) {
+	@Override
+    public boolean checkNode(final NodeModel node) {
 		for (final ASelectableCondition condition : conditions) {
 			if (!condition.checkNode(node)) {
 				return false;
@@ -86,22 +90,21 @@ public class ConjunctConditions extends CombinedConditions implements ICombinedC
 	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
 	 * ()
 	 */
-	protected JComponent createRendererComponent() {
-		final JCondition component = new JCondition();
-		component.add(ConditionFactory.createConditionLabel("("));
+	@Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+	    List<Icon> iconList = new ArrayList<Icon>();
+	    iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon("(", fontMetrics)));
 		ASelectableCondition cond = conditions[0];
-		JComponent rendererComponent = cond.createShortRendererComponent();
-		component.add(rendererComponent);
+		List<Icon> rendererComponent = cond.createSmallRendererIcons(fontMetrics);
+		iconList.addAll(rendererComponent);
 		for (int i = 1; i < conditions.length; i++) {
-			final String and = TextUtils.getText("filter_and");
-			final String text = ' ' + and + ' ';
-			component.add(new JLabel(text));
-			cond = conditions[i];
-			rendererComponent = cond.createRendererComponent();
-			component.add(rendererComponent);
+            final String and = TextUtils.getText("filter_and");
+            iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(' ' + and + ' ', fontMetrics)));
+		    cond = conditions[i];
+		    iconList.addAll(cond.createSmallRendererIcons(fontMetrics));
 		}
-		component.add(ConditionFactory.createConditionLabel(")"));
-		return component;
+		iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(")", fontMetrics)));
+		return iconList;
 	}
 
     @Override
@@ -126,7 +129,8 @@ public class ConjunctConditions extends CombinedConditions implements ICombinedC
 	    return NAME;
     }
 
-	public Collection<ASelectableCondition> split() {
+	@Override
+    public Collection<ASelectableCondition> split() {
 	    return Arrays.asList(conditions);
     }
 }

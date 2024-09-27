@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script.filter;
 
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.KeyboardFocusManager;
 
 import javax.swing.JComponent;
@@ -120,8 +121,8 @@ public class ScriptCondition extends ASelectableCondition {
 	}
 
 	@Override
-	protected JComponent createRendererComponent() {
-	    final JComponent renderer = super.createRendererComponent();
+    public JComponent createGraphicComponent(FontMetrics  fontMetrics) {
+	    final JComponent renderer = super.createGraphicComponent(fontMetrics);
 	    final Dimension preferredSize = renderer.getPreferredSize();
 	    if(preferredSize.width > 200) {
 	        renderer.setPreferredSize(new Dimension(200, preferredSize.height));

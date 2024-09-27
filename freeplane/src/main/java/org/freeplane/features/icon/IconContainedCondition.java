@@ -19,16 +19,15 @@
  */
 package org.freeplane.features.icon;
 
-import java.awt.Color;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.Icon;
 
+import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConditionFactory;
-import org.freeplane.features.filter.condition.JCondition;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
@@ -86,15 +85,9 @@ public class IconContainedCondition extends ASelectableCondition {
 	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
 	 * .JList, java.lang.Object, int, boolean, boolean)
 	 */
-	public JComponent createRendererComponent() {
-		final JCondition component = new JCondition();
-		final String text = TextUtils.getText("filter_icon") + ' ' + TextUtils.getText("filter_contains") + ' ';
-		component.add(ConditionFactory.createConditionLabel(text));
-		JLabel icon = ConditionFactory.createConditionLabel(STORE.getUIIcon(getIconName()));
-		component.add(icon);
-		icon.setBackground(Color.WHITE);
-		icon.setOpaque(true);
-		return component;
+	public List<Icon> createRendererComponent() {
+		Icon icon = STORE.getUIIcon(getIconName()).getIcon();
+		return Collections.singletonList(new ObjectIcon<>(this, icon));
 	}
 
 	public void fillXML(final XMLElement child) {

@@ -1,13 +1,21 @@
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.core.ui.components.IconListComponent;
+import org.freeplane.core.ui.components.ObjectIcon;
+import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
@@ -25,14 +33,14 @@ public abstract class ASelectableCondition  implements ICondition{
 			HASH = classLoader.loadClass("org.apache.commons.lang.builder.HashCodeBuilder").getMethod("reflectionHashCode", Object.class);
 		}
 		catch(Exception e){
-			
+
 		}
 	}
 
 	public ASelectableCondition() {
 		super();
 	}
-	
+
 	@Override
     public int hashCode() {
 		if(HASH == null){
@@ -67,27 +75,27 @@ public abstract class ASelectableCondition  implements ICondition{
         }
     }
 	protected abstract String createDescription();
-	
-	final public JComponent getListCellRendererComponent() {
+
+	final public JComponent getListCellRendererComponent(FontMetrics  fontMetrics) {
 		if (renderer == null) {
-			this.renderer = createGraphicComponent();
+			this.renderer = createGraphicComponent(fontMetrics);
 		}
 		return renderer;
 	}
 
-	public JComponent createGraphicComponent() {
-		JComponent renderer = createRendererComponent();
+	public JComponent createGraphicComponent(FontMetrics  fontMetrics) {
+		List<Icon> icons = createRenderedIcons(fontMetrics);
 		if(userName != null){
-			final JCondition jCondition = new JCondition();
-			jCondition.add(new JLabel(userName + " : "));
-			jCondition.add(renderer);
-			renderer = jCondition;
+		    List<Icon> iconsWithName = new ArrayList<Icon>(icons.size() + 1);
+		    iconsWithName.add(new TextIcon(userName + " : ", fontMetrics));
+		    iconsWithName.addAll(icons);
+			return new IconListComponent(iconsWithName);
 		}
-		return renderer;
+		return new IconListComponent(icons);
 	}
 
-	protected JComponent createRendererComponent() {
-	    return ConditionFactory.createCellRendererComponent(toString());
+	protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics) {
+	    return Collections.singletonList(new ObjectIcon<>(this, ConditionFactory.createTextIcon(toString(), fontMetrics)));
     }
 
 	@Override
@@ -97,7 +105,7 @@ public abstract class ASelectableCondition  implements ICondition{
     	}
     	return description;
     }
-	
+
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
@@ -126,12 +134,11 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 
 
-	protected JComponent createShortRendererComponent() {
+	protected List<Icon> createSmallRendererIcons(FontMetrics  fontMetrics) {
 		if(userName == null){
-			return createRendererComponent();
+			return createRenderedIcons(fontMetrics);
 		}
-		final JLabel label = new JLabel('"' + userName + '"');
-		return label;
+		return Collections.singletonList(new ObjectIcon<>(this, new TextIcon('"' + userName + '"', fontMetrics)));
     }
 
     public boolean canBePersisted() {

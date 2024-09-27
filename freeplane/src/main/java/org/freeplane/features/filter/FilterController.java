@@ -712,7 +712,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 JToolTip tip = new JToolTip() {
                     @Override
                     public void setTipText(String tipText) {
-                        JComponent renderer = (JComponent) conditionRenderer.getCellRendererComponent(activeFilterConditionComboBox.getSelectedItem(), false);
+                        JComponent renderer = (JComponent) conditionRenderer.getCellRendererComponent(
+                                getFontMetrics(getFont()),
+                                activeFilterConditionComboBox.getSelectedItem(), false);
                         if(renderer.getPreferredSize().width > activeFilterConditionComboBox.getWidth() * 4 / 5) {
                             renderer.setBorder(BorderFactory.createRaisedBevelBorder());
                             add(renderer);

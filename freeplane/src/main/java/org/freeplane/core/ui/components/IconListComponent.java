@@ -24,6 +24,7 @@ public class IconListComponent extends JComponent {
     private List<? extends Icon> icons;
     private int maximumWidth;
     private int horizontalAlignment;
+    private int verticalAlignment;
 
     public IconListComponent() {
         this(Collections.emptyList());
@@ -34,6 +35,7 @@ public class IconListComponent extends JComponent {
         this.icons = icons;
         maximumWidth = Integer.MAX_VALUE;
         horizontalAlignment = SwingConstants.LEFT;
+        verticalAlignment = SwingConstants.CENTER;
     }
 
     public List<? extends Icon> getIcons() {
@@ -46,6 +48,11 @@ public class IconListComponent extends JComponent {
 
     @Override
     protected void paintComponent(Graphics g) {
+        if (isOpaque()) {
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
+        super.paintComponent(g);
         if (!useFractionalMetrics()) {
             paintIcons(g, 1f);
             return;
@@ -78,6 +85,16 @@ public class IconListComponent extends JComponent {
         repaint();
     }
 
+    public void setVerticalAlignment(int alignment) {
+        if (alignment == verticalAlignment)
+            return;
+        int oldValue = verticalAlignment;
+        verticalAlignment = alignment;
+        firePropertyChange("verticalAlignment",
+                           oldValue, verticalAlignment);
+        repaint();
+    }
+
     private void paintIcons(Graphics g, float zoom) {
         super.paintComponent(g);
         int x = 0;
@@ -91,7 +108,7 @@ public class IconListComponent extends JComponent {
             int iconWidth = icon.getIconWidth();
             if (x > 0 && x + iconWidth > width) {
                 int dx = width - totalRowWidth;
-                drawIconsRow(g, rowIcons, dx, y, width);
+                drawIconsRow(g, rowIcons, dx, y, width, rowHeight);
                 x = 0;
                 y += rowHeight;
                 rowHeight = 0;
@@ -105,11 +122,11 @@ public class IconListComponent extends JComponent {
         }
         if (!rowIcons.isEmpty()) {
             int dx = width - totalRowWidth;
-            drawIconsRow(g, rowIcons, dx, y, width);
+            drawIconsRow(g, rowIcons, dx, y, width, rowHeight);
         }
     }
 
-    private void drawIconsRow(Graphics g, List<Icon> rowIcons, int dx, int y, int width) {
+    private void drawIconsRow(Graphics g, List<Icon> rowIcons, int dx, int y, int width, int height) {
         boolean isLeftToRight = getComponentOrientation().isLeftToRight();
         int x;
         if (horizontalAlignment == SwingConstants.CENTER) {
@@ -121,7 +138,15 @@ public class IconListComponent extends JComponent {
         }
         for (Icon icon : rowIcons) {
             final int paintX = isLeftToRight ?  x  : width - x - icon.getIconWidth();
-            final int paintY = y ;
+            final int paintY;
+            if (verticalAlignment == SwingConstants.CENTER) {
+                paintY = y + (height - icon.getIconHeight()) / 2;
+            } else if (horizontalAlignment == SwingConstants.TOP) {
+                paintY = y;
+            } else {
+                paintY = y + (height - icon.getIconHeight());
+            }
+
             icon.paintIcon(this, g, paintX, paintY);
             x += icon.getIconWidth();
         }
