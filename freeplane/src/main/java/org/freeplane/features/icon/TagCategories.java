@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.swing.event.TreeModelListener;
@@ -67,20 +70,35 @@ public class TagCategories {
         public void valueForPathChanged(TreePath path, Object newValue) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
             Tag oldValue = categorizedTag(node);
+            Tag tag = (Tag) newValue;
             if(node.getParent() == uncategorizedTagsNode) {
                 removeUncategorizedTagNode(oldValue);
-                node.setUserObject(newValue);
+                if(mapTags.addIfNotExists(tag) >= 0)
+                    addNewTagReference(tag);
+                node.setUserObject(tag);
                 insertUncategorizedTagNodeSorted(node);
             }
             else {
                 for (TreeModelListener listener: getTreeModelListeners()) {
                     if(listener instanceof TreeTagChangeListener)
-                        ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)newValue);
+                        ((TreeTagChangeListener<Tag>) listener).valueForPathChanged(path, (Tag)tag);
 
                 }
-                super.valueForPathChanged(path, newValue);
+                super.valueForPathChanged(path, tag);
             }
         }
+
+        @Override
+        public void nodeChanged(TreeNode node) {
+            Tag tagWithoutCategories = tagWithoutCategories((DefaultMutableTreeNode) node);
+            String categorizedContent = categorizedContent((DefaultMutableTreeNode) node);
+            Tag categorizedTag = new Tag(categorizedContent, tagWithoutCategories.getColor());
+            if(mapTags.addIfNotExists(categorizedTag) >= 0)
+                addNewTagReference(categorizedTag);
+            super.nodeChanged(node);
+        }
+
+
     }
 
     private final DefaultTreeModel nodes;
@@ -92,6 +110,8 @@ public class TagCategories {
     private String categorySeparator;
     private final DefaultMutableTreeNode uncategorizedTagsNode;
     public static final String UNCATEGORIZED_NODE = " uncategorized node ";
+    private boolean mergeIsRunning;
+
 
     public TagCategories(){
         this(new DefaultMutableTreeNode(TextUtils.getRawText("tags")),
@@ -109,6 +129,7 @@ public class TagCategories {
         tagReferences = new TreeMap<>();
         nodesByTags = null;
         categoriesChanged = false;
+        mergeIsRunning = false;
     }
 
     private TagCategories(TagCategories tagCategories) {
@@ -123,6 +144,7 @@ public class TagCategories {
         nodesByTags = null;
         tagCategories.mapTags.forEach(mapTags::addIfNotExists);
         categoriesChanged = false;
+        mergeIsRunning = false;
     }
 
     public String getTagCategorySeparator() {
@@ -232,7 +254,7 @@ public class TagCategories {
                     Tag savedTag = mapTags.addAndReturn(tag);
                     insertUncategorizedTagNodeSorted(savedTag);
                     if(savedTag == tag) {
-                        tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(new TagReference(tag));
+                        addNewTagReference(tag);
                     }
                 } else {
                     DefaultMutableTreeNode parent;
@@ -258,11 +280,12 @@ public class TagCategories {
                     if(! lineTag.equals(tag.getContent()))
                         savedTag.setColor(tag.getColor());
                     else if(savedTag == categorizedTag) {
-                        categorizedTag.setColor(Tag.getDefaultColor(categorizedTagContent));
+                        savedTag.setColor(Tag.getDefaultColor(categorizedTagContent));
                     }
                     if(savedTag == categorizedTag) {
-                        tagReferences.computeIfAbsent(categorizedTag.getContent(), x -> new ArrayList<>()).add(new TagReference(categorizedTag));
+                        addNewTagReference(categorizedTag);
                     }
+                    savedTag.setColorChainTag(tag);
                     DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tag);
                     parent.insert(newNode, target == parent ? index++ : parent.getChildCount());
                     lastNode = newNode;
@@ -273,6 +296,10 @@ public class TagCategories {
         }
         if(target != uncategorizedTagsNode)
             nodes.nodesWereInserted(target, IntStream.range(firstIndex, index).toArray());
+    }
+
+    private boolean addNewTagReference(Tag tag) {
+        return tagReferences.computeIfAbsent(tag.getContent(), x -> new ArrayList<>()).add(new TagReference(tag));
     }
 
     private void insertNode(DefaultMutableTreeNode parent, int index, DefaultMutableTreeNode newChild) {
@@ -370,7 +397,7 @@ public class TagCategories {
     	DefaultMutableTreeNode rootNode = getRootNode();
         if(parent == null)
 			parent = rootNode;
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(TagCategories.NOT_A_TAG);
         nodes.insertNodeInto(newNode, parent,  parent == rootNode ? parent.getChildCount() - 1 : parent.getChildCount());
         return nodes.getPathToRoot(newNode);
    }
@@ -382,7 +409,7 @@ public class TagCategories {
         MutableTreeNode parent = (MutableTreeNode) node.getParent();
         if(parent == null)
             return nothing;
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(Tag.EMPTY_TAG);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(TagCategories.NOT_A_TAG);
         nodes.insertNodeInto(newNode, parent, parent.getIndex(node) + 1);
         return nodes.getPathToRoot(newNode);
    }
@@ -497,9 +524,10 @@ public class TagCategories {
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) children.nextElement();
                 if(! containsTag(childNode))
                     break;
-                Tag childTag = categorizedTag(childNode);
-
-                if (childTag.getContent().equals(qualifiedContent)) {
+                String childTagContent = categorizedContent(childNode);
+                if (childTagContent.equals(qualifiedContent)) {
+                    if(tag.getContent().equals(childTagContent))
+                        addNewTagReference(tag);
                     currentNode = childNode;
                     found = true;
                     break;
@@ -532,16 +560,10 @@ public class TagCategories {
                     currentNode = newNode;
                     categoriesChanged = true;
                 }
-                TagReference tagReference = new TagReference(qualifiedTag);
-                tagReferences.computeIfAbsent(qualifiedContent, x -> new ArrayList<>()).add(tagReference);
+                addNewTagReference(qualifiedTag);
             }
             if(end < 0)
                 break;
-        }
-
-        if(setColor) {
-            Tag savedTag = mapTags.getElementAt(addedElementIndex >= 0 ? addedElementIndex : - addedElementIndex - 1);
-            savedTag.setColor(tag.getColor());
         }
 
         List<TagReference> references = tagReferences.get(fullContent);
@@ -723,7 +745,7 @@ public class TagCategories {
 
     public Tag categorizedTag(DefaultMutableTreeNode node) {
         Tag tagWithoutCategories = tagWithoutCategories(node);
-        if(tagWithoutCategories == NOT_A_TAG)
+        if(tagWithoutCategories.isEmpty())
             return tagWithoutCategories;
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
         if(! containsTag(parent))
@@ -763,5 +785,63 @@ public class TagCategories {
     public void registerTagReferenceIfUnknown(Tag tag) {
         if(! tagReferences.containsKey(tag.getContent()))
             registerTagReference(tag);
+    }
+
+    SortedSet<Tag> referencedTags(){
+        return tagReferences.values()
+                .stream()
+                .flatMap(List::stream)
+                .map(TagReference::getTag)
+                .collect(Collectors.toCollection(TreeSet::new));
+    }
+
+    public DefaultMutableTreeNode merge(DefaultMutableTreeNode node) {
+        boolean mergeWasRunning = mergeIsRunning;
+        DefaultMutableTreeNode keptNode;
+        mergeIsRunning = true;
+        try{
+            final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+            final DefaultMutableTreeNode mergeParent = parent == getUncategorizedTagsNode()
+            ? getRootNode() : parent;
+            keptNode = merge(node, null, mergeParent);
+            if(mergeParent.isRoot())
+                keptNode = merge(node, keptNode, getUncategorizedTagsNode());
+        }
+        finally {
+            mergeIsRunning = mergeWasRunning;
+        }
+        return keptNode;
+    }
+
+    private DefaultMutableTreeNode merge(DefaultMutableTreeNode node, DefaultMutableTreeNode keptNode,
+            final DefaultMutableTreeNode parent) {
+        final DefaultTreeModel nodes = getNodes();
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            final DefaultMutableTreeNode sibling = (DefaultMutableTreeNode) parent.getChildAt(i);
+            if (sibling != node && sibling.getUserObject().equals(node.getUserObject())) {
+                final DefaultMutableTreeNode removedNode;
+                if(keptNode != null)
+                    removedNode = sibling;
+                else {
+                    if(node.getParent() != parent)
+                        return sibling;
+                    keptNode = sibling;
+                    removedNode = node;
+                }
+                while(! removedNode.isLeaf()) {
+                    final DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getFirstChild();
+                    nodes.removeNodeFromParent(child);
+                    nodes.insertNodeInto(child, keptNode, keptNode.getChildCount());
+                    merge(child);
+                }
+                nodes.removeNodeFromParent(removedNode);
+                break;
+            }
+        }
+        return keptNode;
+    }
+
+    public boolean isMergeRunning() {
+        return mergeIsRunning;
     }
 }

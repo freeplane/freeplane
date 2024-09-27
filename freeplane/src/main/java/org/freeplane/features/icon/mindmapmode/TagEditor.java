@@ -390,8 +390,7 @@ class TagEditor {
         });
         cancelButton.addActionListener(e -> closeDialog());
         sortButton.addActionListener(e -> sortSelectedTags());
-        final TagCategories sourceCategories = getTagCategories();
-        tagCategories = sourceCategories.copy();
+        tagCategories = getCurrentMapTagCategories().copy();
 
         final JPanel buttonPane = new JPanel(new ResponsiveFlowLayout());
         tagCategorySeparatorField = new JTextField(10);
@@ -515,7 +514,7 @@ class TagEditor {
             JMenu insertMenu = TranslatedElementFactory.createMenu("insert");
             insertMenu.addSeparator();
             insertMenu.add(iconController.createTagSubmenu("menu_tag",
-                    sourceCategories,
+                    getCurrentMapTagCategories(),
                     tag -> getTableModel().insertTag(tagTable.getSelectedRow(), tag)));
             menubar.add(insertMenu);
         }
@@ -699,7 +698,7 @@ class TagEditor {
     }
 
     private boolean wasAnyValueModified() {
-        final TagCategories tagCategories = getTagCategories();
+        final TagCategories tagCategories = getCurrentMapTagCategories();
         if(! tagCategorySeparatorField.getText().equals(tagCategories.getTagCategorySeparator())) {
             return true;
         }
@@ -727,7 +726,7 @@ class TagEditor {
 
     protected void submit() {
         final MapModel map = node.getMap();
-        final TagCategories tagCategories = getTagCategories().copy();
+        final TagCategories tagCategories = getCurrentMapTagCategories().copy();
         final boolean isSeparatorUpdated = ! tagCategorySeparatorField.getText().equals(tagCategories.getTagCategorySeparator());
         if(isSeparatorUpdated) {
             tagCategories.updateTagCategorySeparator(tagCategorySeparatorField.getText());
@@ -739,7 +738,7 @@ class TagEditor {
         List<Tag> tags = getCurrentTags();
         iconController.setTags(node, tags, true);
     }
-    private TagCategories getTagCategories() {
+    private TagCategories getCurrentMapTagCategories() {
         return node.getMap().getIconRegistry().getTagCategories();
     }
 

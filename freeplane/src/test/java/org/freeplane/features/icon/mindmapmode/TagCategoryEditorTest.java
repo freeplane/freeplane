@@ -6,6 +6,7 @@
 package org.freeplane.features.icon.mindmapmode;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.freeplane.features.icon.TagAssertions.assertThatReferencedTags;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mockStatic;
@@ -30,6 +31,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.Tag;
+import org.freeplane.features.icon.TagAssertions;
 import org.freeplane.features.icon.TagCategories;
 import org.freeplane.features.icon.TagCategoriesTest;
 import org.freeplane.features.map.MapModel;
@@ -51,11 +53,7 @@ public class TagCategoryEditorTest {
         default T that() {return me();}
      }
 
-	private static String serializeNormalizeLineBreaks(TagCategories tc) {
-		return tc.serialize().replace(System.lineSeparator(), "\n");
-	}
-
-    class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
+	class TagTestSteps implements TestSteps<TagTestSteps>, AutoCloseable {
         private final List<AutoCloseable> mocks;
 
 
@@ -68,8 +66,6 @@ public class TagCategoryEditorTest {
         private NodeModel mapRootNode;
 
         private TagCategoryEditor uut;
-
-        private DefaultMutableTreeNode selectedNode;
 
         private TagCategories updatedTagCategories;
 
@@ -88,7 +84,7 @@ public class TagCategoryEditorTest {
             mocks.add(textUtilsMock);
             textUtilsMock.when(() -> TextUtils.getText( any(String.class)))
                 .then(x -> x.getArguments()[0]);
-
+            TagCategoryEditor.FORCE_HEADLESS_GRAPHICS_FOR_TEST = true;
         }
 
         @Override
@@ -96,6 +92,7 @@ public class TagCategoryEditorTest {
             try {
                 for(AutoCloseable mock:mocks)
                     mock.close();
+                TagCategoryEditor.FORCE_HEADLESS_GRAPHICS_FOR_TEST = false;
             } catch (Exception e) {
                throw new RuntimeException(e);
             }
@@ -115,14 +112,19 @@ public class TagCategoryEditorTest {
             for(int i : indices) {
                 selectedNode = selectedNode.getChildAt(i);
             }
-            this.selectedNode = (DefaultMutableTreeNode) selectedNode;
+            JTree tree = uut.getTree();
+            DefaultTreeModel nodes = updatedTagCategories.getNodes();
+            TreeNode[] pathToRoot = nodes.getPathToRoot(selectedNode);
+            tree.setSelectionPath(new TreePath(pathToRoot));
             return me();
         }
 
         TagTestSteps renameSelectedNode(String content) {
             DefaultTreeModel nodes = updatedTagCategories.getNodes();
-            nodes.valueForPathChanged(new TreePath(nodes.getPathToRoot(selectedNode)),
-                    new Tag(content, updatedTagCategories.tagWithoutCategories(selectedNode).getColor()));
+            JTree tree = uut.getTree();
+            TreePath selectionPath = tree.getSelectionPath();
+            nodes.valueForPathChanged(selectionPath,
+                    new Tag(content, updatedTagCategories.tagWithoutCategories((DefaultMutableTreeNode) selectionPath.getLastPathComponent()).getColor()));
             return me();
         }
 
@@ -138,28 +140,35 @@ public class TagCategoryEditorTest {
         }
 
         TagTestSteps cut() {
-            selectTreePath();
             uut.cutNodes();
             return me();
         }
 
-        private void selectTreePath() {
-            JTree tree = uut.getTree();
-            DefaultTreeModel nodes = updatedTagCategories.getNodes();
-            TreeNode[] pathToRoot = nodes.getPathToRoot(selectedNode);
-            tree.setSelectionPath(new TreePath(pathToRoot));
-        }
-
         TagTestSteps paste() {
-            selectTreePath();
             uut.pasteNodes();
             return me();
         }
 
         TagTestSteps setColor(Color color) {
-            selectTreePath();
             uut.setTagColor(color);
             return me();
+        }
+
+
+        public TagTestSteps addChild(String content, Color color) {
+            return addNode(content, color, true);
+        }
+
+        private TagTestSteps addNode(String content, Color color, boolean asChild) {
+            uut.addNode(asChild);
+            updatedTagCategories.getNodes()
+                .valueForPathChanged(uut.getTree().getSelectionPath(),
+                    new Tag(content, color));
+            return me();
+        }
+
+        public TagTestSteps addSibling(String content, Color color) {
+            return addNode(content, color, false);
         }
     }
 
@@ -178,13 +187,38 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + " tag22#22334455\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
                 assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
                 containsExactly("AA", "AA::tag22", "AA::tag22::CC", "DD",
                         "UU", "VV");
+            });
+        }
+    }
+    @Test
+    public void renameCategoryAndSubCategory() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("AA#11223344\n"
+                    + " BB#22334455\n"
+                    + "  CC#33445566\n"
+                    + "DD#44556677\n");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when()
+            .selectNode(0)
+            .renameSelectedNode("EE")
+            .selectNode(0, 0)
+            .renameSelectedNode("FF")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("EE#11223344\n"
+                        + " FF#22334455\n"
+                        + "  CC#33445566\n"
+                        + "DD#44556677\n");
+                assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
+                containsExactly("DD", "EE", "EE::FF", "EE::FF::CC");
             });
         }
     }
@@ -204,13 +238,76 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + " BB#22334455\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
                 assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
                 containsExactly("AA", "AA::BB", "AA::BB::CC", "DD",
                         "uncategorized11", "VV");
+            });
+        }
+    }
+
+
+    @Test
+    public void renameAndMergeUncategorizedTag() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.setTagColor("tag1", Color.BLACK);
+            tagCategories.setTagColor("tag2", Color.WHITE);
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .renameSelectedNode("tag2")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEmpty();
+                assertThat(tc.getTagsAsListModel()).map(Tag::getContent)
+                .containsExactlyInAnyOrder("tag2");
+            });
+        }
+    }
+
+    @Test
+    public void renameAndMergeCategorizedLeafTag() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.setTagColor("cat::tag1", Color.BLACK);
+            tagCategories.setTagColor("cat::tag2", Color.WHITE);
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .renameSelectedNode("tag2")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("cat#2072ffff\n"
+                        + " tag2#ffffffff\n");
+                assertThatReferencedTags(tc).map(Tag::getContent)
+                .containsExactlyInAnyOrder("cat", "cat::tag2");
+            });
+        }
+    }
+
+
+    @Test
+    public void renameAndMergeCategory() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.setTagColor("aaa::tag", Color.BLACK);
+            tagCategories.setTagColor("bbb::tag", Color.WHITE);
+            tagCategories.setTagColor("aaa", Color.BLUE);
+            tagCategories.setTagColor("bbb", Color.GREEN);
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0)
+            .renameSelectedNode("bbb")
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("bbb#00ff00ff\n"
+                        + " tag#ffffffff\n");
+                assertThatReferencedTags(tc).map(Tag::getContent)
+                .containsExactlyInAnyOrder("bbb", "bbb::tag");
             });
         }
     }
@@ -232,7 +329,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + "DD#44556677\n");
                 assertThat(tc.getTagsAsListModel().stream().map(Tag::getContent)).
                 containsExactly("AA", "BB", "CC", "DD",
@@ -256,7 +353,7 @@ public class TagCategoryEditorTest {
             .and().submit()
             .then().assertThatUpdatedTagCategories()
             .satisfies(tc -> {
-                assertThat(serializeNormalizeLineBreaks(tc)).isEqualTo("AA#11223344\n"
+                TagAssertions.assertThatSerialized(tc).isEqualTo("AA#11223344\n"
                         + " BB#000000ff\n"
                         + "  CC#33445566\n"
                         + "DD#44556677\n");
@@ -269,4 +366,79 @@ public class TagCategoryEditorTest {
         }
     }
 
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeChild() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0)
+            .addChild("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
+
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeSibling() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0)
+            .addSibling("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
+
+
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeChildsSibling() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.registerTag("UU");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .addSibling("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
+
+
+    @Test
+    public void createsNoUncategorizedTags_creatingUncategorizedNodeChildsChild() {
+        try (TagTestSteps steps = new TagTestSteps()){
+            TagCategories tagCategories = TagCategoriesTest.tagCategories("");
+            tagCategories.registerTag("UU");
+            steps.given().tagCategoryEditor(tagCategories)
+            .when().selectNode(0, 0)
+            .addChild("tag", Color.WHITE)
+            .and().submit()
+            .then().assertThatUpdatedTagCategories()
+            .satisfies(tc -> {
+                TagAssertions.assertThatSerialized(tc).isEqualTo("tag#ffffffff\n");
+                TagCategories copy = tc.copy();
+                copy.getTagsAsListModel()
+                .forEach(tag -> copy.registerTagReferenceIfUnknown(tag));
+            });
+        }
+    }
 }
