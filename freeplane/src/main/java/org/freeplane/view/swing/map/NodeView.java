@@ -55,6 +55,7 @@ import org.freeplane.api.Dash;
 import org.freeplane.api.LayoutOrientation;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.ui.components.TagIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -1832,7 +1833,7 @@ public class NodeView extends JComponent implements INodeView {
             if(component == null && tagIcons.isEmpty())
                 return;
             else if (component == null){
-                component = new IconListComponent(tagIcons);
+                component = new MapViewIconListComponent(tagIcons);
                 if(iconController instanceof MIconController) {
                     component.addMouseListener(new MouseAdapter() {
 

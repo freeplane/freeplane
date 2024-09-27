@@ -3,7 +3,7 @@
  *
  * author dimitry
  */
-package org.freeplane.view.swing.map;
+package org.freeplane.core.ui.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,7 +18,6 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 public class IconListComponent extends JComponent {
     private static final long serialVersionUID = 1L;
@@ -190,31 +189,17 @@ public class IconListComponent extends JComponent {
         return null;
     }
 
-    protected float getZoom() {
-        final float zoom = getMap().getZoom();
-        return zoom;
-    }
-
-    protected MapView getMap() {
-        return getNodeView().getMap();
-    }
-
-    protected NodeView getNodeView() {
-        return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
-    }
-
-    protected boolean useFractionalMetrics() {
-        final MapView map = getMap();
-        if (map.isPrinting()) {
-            return true;
-        }
-        final float zoom = map.getZoom();
-        return 1f != zoom;
-    }
-
     public void setMaximumWidth(int maximumWidth) {
         this.maximumWidth = maximumWidth;
 
+    }
+
+    protected float getZoom() {
+        return 1f;
+    }
+
+    protected boolean useFractionalMetrics() {
+        return false;
     }
 
 }
