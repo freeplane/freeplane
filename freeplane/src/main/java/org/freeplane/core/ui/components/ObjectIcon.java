@@ -19,16 +19,19 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Component;
+import java.awt.Graphics;
+
 import javax.swing.Icon;
 
 /**
  * @author Dimitry Polivaev
  * Mar 17, 2011
  */
-public class ObjectAndIcon {
-	final Object object;
+public class ObjectIcon<T> implements Icon{
+	final T object;
 	final Icon icon;
-	public ObjectAndIcon(Object object, Icon icon) {
+	public ObjectIcon(T object, Icon icon) {
 	    super();
 	    this.object = object;
 	    this.icon = icon;
@@ -37,10 +40,25 @@ public class ObjectAndIcon {
     public String toString() {
 	    return object.toString();
     }
-	public Object getObject() {
+	public T getObject() {
     	return object;
     }
 	public Icon getIcon() {
     	return icon;
     }
+
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        icon.paintIcon(c, g, x, y);
+    }
+    @Override
+    public int getIconWidth() {
+        return icon.getIconWidth();
+    }
+    @Override
+    public int getIconHeight() {
+        return icon.getIconHeight();
+    }
+
+
 }
