@@ -1,11 +1,11 @@
-package org.freeplane.core.ui.svgicons;
+package org.freeplane.core.awt;
 
 import java.awt.RenderingHints;
 
 public class GraphicsHints  extends RenderingHints.Key{
-	
-	final public static GraphicsHints CACHE_ICONS = new GraphicsHints(0); 
-	
+
+    public static final GraphicsHints CACHE_ICONS = new GraphicsHints(0);
+
 	private GraphicsHints(int privateValue) {
 		super(privateValue);
 	}

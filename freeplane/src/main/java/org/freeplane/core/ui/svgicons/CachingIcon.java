@@ -10,6 +10,8 @@ import java.util.function.Supplier;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.awt.GraphicsHints;
+
 class CachingIcon implements Icon {
 
 	private Supplier<ImageIcon> iconSupplier;
