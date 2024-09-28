@@ -65,7 +65,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
 		int insetSize = (widthWithInsets - maxWidth) / 2;
 		icon.setInsets(new Insets(insetSize, insetSize, insetSize, insetSize));
-		return icon;
+		return new LatexRenderIcon(icon);
 	}
 
 	private static enum Target { VIEW, EDITOR };

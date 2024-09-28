@@ -24,12 +24,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.text.AttributedCharacterIterator;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.util.SVGConstants;
+import org.freeplane.core.awt.GraphicsHints;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
@@ -52,7 +54,33 @@ abstract class ExportVectorGraphic implements IExportEngine {
 	    ctx.setGraphicContextDefaults(defaults);
 	    ctx.setExtensionHandler(new GradientExtensionHandler());
 	    ctx.setPrecision(12);
-	    final SVGGraphics2D g2d = new SVGGraphics2D(ctx, false);
+	    final SVGGraphics2D g2d = new SVGGraphics2D(ctx, false) {
+
+            @Override
+            public void drawString(String s, float x, float y) {
+                if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
+                    boolean oldTextAsShapes = textAsShapes;
+                    textAsShapes = true;
+                    super.drawString(s, x, y);
+                    textAsShapes = oldTextAsShapes;
+                }
+                else
+                    super.drawString(s, x, y);
+            }
+
+            @Override
+            public void drawString(AttributedCharacterIterator ati, float x, float y) {
+                if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
+                    boolean oldTextAsShapes = textAsShapes;
+                    textAsShapes = true;
+                    super.drawString(ati, x, y);
+                    textAsShapes = oldTextAsShapes;
+                }
+                else
+                    super.drawString(ati, x, y);
+            }
+	    };
+
 	    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
 	    view.preparePrinting();
