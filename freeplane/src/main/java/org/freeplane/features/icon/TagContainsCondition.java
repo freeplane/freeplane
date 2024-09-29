@@ -78,7 +78,7 @@ public class TagContainsCondition extends TagCondition {
 
 	@Override
 	protected String createDescription() {
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
+		final String simpleCondition = TextUtils.getText(matchWordwise ? ConditionFactory.FILTER_CONTAINS_WORDWISE : ConditionFactory.FILTER_CONTAINS);
 		return createDescription(TextUtils.getText(IconConditionController.FILTER_TAG), simpleCondition, value);
 	}
 

@@ -79,7 +79,8 @@ public class TagCompareCondition extends TagCondition {
         return createDescription(TextUtils.getText(IconConditionController.FILTER_TAG), simpleCondition, conditionContent);
 	}
 
-	public void fillXML(final XMLElement child) {
+	@Override
+    public void fillXML(final XMLElement child) {
 		super.fillXML(child);
         child.setAttribute(VALUE, conditionContent);
         child.setAttribute(COMPARATION_RESULT, Integer.toString(comparationResult));
