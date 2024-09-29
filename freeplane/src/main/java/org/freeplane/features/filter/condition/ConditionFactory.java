@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.filter.condition;
 
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -27,16 +26,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicLabelUI;
 
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.TextIcon;
-import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.UIIcon;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -63,16 +56,6 @@ public class ConditionFactory {
 
 	static public Icon createTextIcon(final String text, FontMetrics fontMetrics) {
 	    return new TextIcon(text, fontMetrics);
-	}
-
-	public static JLabel createConditionLabel(final UIIcon uiIcon) {
-		JLabel label = new JLabel();
-		Font font = label.getFont();
-		final int fontHeight = label.getFontMetrics(font).getHeight();
-		label.setIcon((FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize())));
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setUI((BasicLabelUI)BasicLabelUI.createUI(label));
-		return label;
 	}
 
 	public static String createDescription(final String attribute, final String simpleCondition, final String value) {
@@ -152,10 +135,4 @@ public class ConditionFactory {
 		}
 		return null;
     }
-
-	public IElementaryConditionController removeConditionController(final int position,
-	                                                                final IElementaryConditionController controller) {
-		final IElementaryConditionController old = conditionControllers.remove(new Integer(position));
-		return old;
-	}
 }
