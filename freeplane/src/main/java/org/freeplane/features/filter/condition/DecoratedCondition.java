@@ -64,7 +64,11 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
 
     @Override
     protected String createDescription() {
-        return name;
+        StringBuilder description = new StringBuilder();
+        final String decoratorText = TextUtils.getText(decoratorKey);
+        description.append(decoratorText).append(' ');
+        description.append(originalCondition.createSmallDescription());
+        return description.toString();
     }
 
     @Override

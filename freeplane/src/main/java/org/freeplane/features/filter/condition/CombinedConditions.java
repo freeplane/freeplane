@@ -19,10 +19,35 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.Icon;
+
+import org.freeplane.core.ui.components.ObjectIcon;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.n3.nanoxml.XMLElement;
+
 /**
  * @author Dimitry Polivaev
  */
 abstract class CombinedConditions extends ASelectableCondition implements ICombinedCondition{
+
+    protected static ASelectableCondition[] loadConditions(final ConditionFactory conditionFactory,
+            final XMLElement element) {
+        final Vector<XMLElement> children = element.getChildren();
+        final ASelectableCondition[] conditions = new ASelectableCondition[children.size()];
+        for (int i = 0; i < conditions.length; i++) {
+            final ASelectableCondition condition = conditionFactory.loadCondition(children.get(i));
+            if(condition == null){
+                return null;
+            }
+            conditions[i] = condition;
+        }
+        return conditions;
+    }
 
     static ASelectableCondition[] combine(Class<? extends CombinedConditions> targetClass, final ASelectableCondition... conditions) {
         int conjunctConditionsCounter = 0;
@@ -55,5 +80,38 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
     }
 
     protected abstract ASelectableCondition[] getConditions();
-    
+
+
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics, String operatorTextPropertyName) {
+        List<Icon> iconList = new ArrayList<Icon>();
+        iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon("(", fontMetrics)));
+        ASelectableCondition[] conditions = getConditions();
+        ASelectableCondition cond = conditions[0];
+        List<Icon> rendererComponent = cond.createSmallRendererIcons(fontMetrics);
+        iconList.addAll(rendererComponent);
+        for (int i = 1; i < conditions.length; i++) {
+            final String operator = TextUtils.getText(operatorTextPropertyName);
+            iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(' ' + operator + ' ', fontMetrics)));
+            cond = conditions[i];
+            iconList.addAll(cond.createSmallRendererIcons(fontMetrics));
+        }
+        iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(")", fontMetrics)));
+        return iconList;
+    }
+
+    protected String createDescription(String operatorTextPropertyName) {
+        StringBuilder description = new StringBuilder();
+        description.append("(");
+        ASelectableCondition[] conditions = getConditions();
+        ASelectableCondition cond = conditions[0];
+        description.append(cond.createSmallDescription());
+        for (int i = 1; i < conditions.length; i++) {
+            final String operator = TextUtils.getText(operatorTextPropertyName);
+            description.append(' ' + operator + ' ');
+            cond = conditions[i];
+            description.append(cond.createSmallDescription());
+        }
+        description.append(")");
+        return description.toString();
+    }
 }

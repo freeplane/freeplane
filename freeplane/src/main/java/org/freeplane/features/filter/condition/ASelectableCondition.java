@@ -80,6 +80,7 @@ public abstract class ASelectableCondition  implements ICondition{
 		if (renderer == null) {
 			this.renderer = createGraphicComponent(fontMetrics);
 		}
+		renderer.setToolTipText(description);
 		return renderer;
 	}
 
@@ -134,11 +135,18 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 
 
-	protected List<Icon> createSmallRendererIcons(FontMetrics  fontMetrics) {
-		if(userName == null){
-			return createRenderedIcons(fontMetrics);
-		}
-		return Collections.singletonList(new ObjectIcon<>(this, new TextIcon('"' + userName + '"', fontMetrics)));
+    protected List<Icon> createSmallRendererIcons(FontMetrics  fontMetrics) {
+        if(userName == null){
+            return createRenderedIcons(fontMetrics);
+        }
+        return Collections.singletonList(new ObjectIcon<>(this, new TextIcon('"' + userName + '"', fontMetrics)));
+    }
+
+    protected String createSmallDescription() {
+        if(userName == null){
+            return createDescription();
+        }
+        return '"' + userName + '"';
     }
 
     public boolean canBePersisted() {

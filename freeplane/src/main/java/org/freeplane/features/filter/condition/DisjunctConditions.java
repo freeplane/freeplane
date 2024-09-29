@@ -20,17 +20,13 @@
 package org.freeplane.features.filter.condition;
 
 import java.awt.FontMetrics;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Stream;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.ui.components.ObjectIcon;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -45,15 +41,7 @@ public class DisjunctConditions extends CombinedConditions implements ICombinedC
     }
 
 	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
-		final Vector<XMLElement> children = element.getChildren();
-		final ASelectableCondition[] conditions = new ASelectableCondition[children.size()];
-		for (int i = 0; i < conditions.length; i++) {
-			final ASelectableCondition condition = conditionFactory.loadCondition(children.get(i));
-			if(condition == null){
-				return null;
-			}
-			conditions[i] = condition;
-		}
+	    final ASelectableCondition[] conditions = loadConditions(conditionFactory, element);
 		return new DisjunctConditions(conditions);
 	}
 
@@ -94,19 +82,7 @@ public class DisjunctConditions extends CombinedConditions implements ICombinedC
 	 */
     @Override
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
-        List<Icon> iconList = new ArrayList<Icon>();
-        iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon("(", fontMetrics)));
-        ASelectableCondition cond = conditions[0];
-        List<Icon> rendererComponent = cond.createSmallRendererIcons(fontMetrics);
-        iconList.addAll(rendererComponent);
-        for (int i = 1; i < conditions.length; i++) {
-            final String or = TextUtils.getText("filter_or");
-            iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(' ' + or + ' ', fontMetrics)));
-            cond = conditions[i];
-            iconList.addAll(cond.createSmallRendererIcons(fontMetrics));
-        }
-        iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(")", fontMetrics)));
-        return iconList;
+        return createRenderedIcons(fontMetrics, "filter_or");
     }
 
 
@@ -124,7 +100,7 @@ public class DisjunctConditions extends CombinedConditions implements ICombinedC
 
 	@Override
     protected String createDescription() {
-	    return NAME;
+        return createDescription("filter_or");
     }
 
 	@Override

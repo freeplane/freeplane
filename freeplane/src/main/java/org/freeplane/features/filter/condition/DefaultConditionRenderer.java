@@ -70,10 +70,12 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
         	cellRendererComponent.setBackground(list.getBackground());
         	cellRendererComponent.setForeground(list.getForeground());
         }
+        if(index >= 0)
+            list.setToolTipText(cellRendererComponent.getToolTipText());
 		return cellRendererComponent;
 	}
 
-	public Component getCellRendererComponent(FontMetrics fontMetrics, final Object value, final boolean isSelected) {
+	public JComponent getCellRendererComponent(FontMetrics fontMetrics, final Object value, final boolean isSelected) {
 		final JComponent component;
 		if (value == null) {
 			component =  new JLabel(noValueText);
@@ -107,9 +109,10 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 				component = cond.getListCellRendererComponent(fontMetrics);
             else {
 	            component = new JLabel(userName);
-	            component.setToolTipText(cond.createDescription());
 	            component.setOpaque(true);
             }
+			System.out.println(cond.toString());
+			component.setToolTipText(cond.toString());
 		} else {
             component = new JLabel(value.toString());
             component.setOpaque(true);
