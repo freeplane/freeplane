@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.FontMetrics;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -79,13 +80,8 @@ public class IconContainedCondition extends ASelectableCondition {
 		return iconName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
-	 * .JList, java.lang.Object, int, boolean, boolean)
-	 */
-	public List<Icon> createRendererComponent() {
+	@Override
+    public List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
 		Icon icon = STORE.getUIIcon(getIconName()).getIcon();
 		return Collections.singletonList(new ObjectIcon<>(this, icon));
 	}
