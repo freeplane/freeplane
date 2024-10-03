@@ -112,5 +112,7 @@ public class TextIcon implements Icon {
         this.padding = padding;
     }
 
-
+    public String getText() {
+        return text;
+    }
 }

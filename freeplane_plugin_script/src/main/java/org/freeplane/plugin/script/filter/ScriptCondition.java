@@ -9,6 +9,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -128,8 +129,8 @@ public class ScriptCondition extends ASelectableCondition {
     }
 
     @Override
-    public JComponent createGraphicComponent(FontMetrics  fontMetrics) {
-	    final JComponent renderer = super.createGraphicComponent(fontMetrics);
+    protected IconListComponent createGraphicComponent(FontMetrics  fontMetrics) {
+	    final IconListComponent renderer = super.createGraphicComponent(fontMetrics);
 	    final Dimension preferredSize = renderer.getPreferredSize();
 	    if(preferredSize.width > 200) {
 	        renderer.setPreferredSize(new Dimension(200, preferredSize.height));

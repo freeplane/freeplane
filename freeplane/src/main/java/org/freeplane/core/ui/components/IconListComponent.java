@@ -46,6 +46,14 @@ public class IconListComponent extends JComponent {
         this.icons = icons;
     }
 
+    public int getIconCount() {
+        return icons.size();
+    }
+
+    public Icon removeIcon(int index){
+        return icons.remove(index);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         if (isOpaque()) {

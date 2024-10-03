@@ -28,7 +28,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class ASelectableCondition  implements ICondition{
 	public static final float STRING_MIN_MATCH_PROB = 0.7F;
 	transient private String description;
-	transient private JComponent renderer;
 	private String userName;
 	private static Method EQUALS;
 	private static Method HASH;
@@ -42,6 +41,11 @@ public abstract class ASelectableCondition  implements ICondition{
 
 		}
 	}
+
+    static protected Color operatorBackgroundColor() {
+        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK.brighter() : Color.WHITE.darker();
+        return optionBackgroundColor;
+    }
 
     public ASelectableCondition() {
 		super();
@@ -92,22 +96,33 @@ public abstract class ASelectableCondition  implements ICondition{
         return createRenderedIcons(condition, ConditionOperator.EMPTY, "", false, false, false, fontMetrics);
     }
 
-    protected List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator simpleCondition, final Icon valueIcon,
+    protected List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator conditionOperator, final Icon valueIcon,
             final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
         List<Icon> icons = new ArrayList<>();
         if(! attribute.isEmpty()) {
             icons.add(textIcon(attribute, fontMetrics));
         }
-        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK.brighter() : Color.WHITE.darker();
-        Icon operatorIcon = textIcon(simpleCondition.getOperator(), fontMetrics,
-                icon -> icon.setIconBackgroundColor(optionBackgroundColor));
-        Icon openingValueDelimiterIcon = textIcon(simpleCondition.getOpeningValueDelimiter(), fontMetrics);
-        Icon closingValueDelimiterIcon = textIcon(simpleCondition.getClosingValueDelimiter(), fontMetrics);
-        icons.add(operatorIcon);
+        String operator = conditionOperator.getOperator();
+        Color optionBackgroundColor = operatorBackgroundColor();
+        boolean isOperatorBlank = operator.isEmpty() || operator.equals(" ");
+        Icon operatorIcon = textIcon(operator, fontMetrics,
+                icon -> {
+                    if(! isOperatorBlank)
+                        icon.setIconBackgroundColor(optionBackgroundColor);
+                });
+        Icon openingValueDelimiterIcon = textIcon(conditionOperator.getOpeningValueDelimiter(), fontMetrics);
+        Icon closingValueDelimiterIcon = textIcon(conditionOperator.getClosingValueDelimiter(), fontMetrics);
+        ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics);
+        if(! operator.isEmpty()) {
+            icons.add(gapIcon);
+            if(! isOperatorBlank) {
+                icons.add(operatorIcon);
+                icons.add(gapIcon);
+            }
+        }
         icons.add(openingValueDelimiterIcon);
         icons.add(new ObjectIcon<>(this, valueIcon));
         icons.add(closingValueDelimiterIcon);
-        ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics);
         if(matchCase) {
             icons.add(gapIcon);
             icons.add(textIcon(ConditionOption.FILTER_MATCH_CASE.getDisplayedOption(), fontMetrics,
@@ -137,15 +152,13 @@ public abstract class ASelectableCondition  implements ICondition{
         return new ObjectIcon<>(this, icon);
     }
 
-	final public JComponent getListCellRendererComponent(FontMetrics  fontMetrics) {
-		if (renderer == null) {
-			this.renderer = createGraphicComponent(fontMetrics);
-		}
+	final public JComponent getListCellRendererComponent(FontMetrics fontMetrics) {
+	    IconListComponent renderer = createGraphicComponent(fontMetrics);
 		renderer.setToolTipText(description);
 		return renderer;
 	}
 
-	public JComponent createGraphicComponent(FontMetrics  fontMetrics) {
+	protected IconListComponent createGraphicComponent(FontMetrics fontMetrics) {
 		List<Icon> icons = createRenderedIcons(fontMetrics);
 		if(userName != null){
 		    List<Icon> iconsWithName = new ArrayList<Icon>(icons.size() + 1);
@@ -209,7 +222,6 @@ public abstract class ASelectableCondition  implements ICondition{
 		if(userName == this.userName || userName != null && userName.equals(this.userName))
 			return;
 	    this.userName = userName;
-	    renderer = null;
     }
 
 

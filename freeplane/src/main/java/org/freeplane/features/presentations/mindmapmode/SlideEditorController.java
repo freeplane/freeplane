@@ -468,7 +468,7 @@ class SlideEditorController{
 		removeFilterComponent();
 		final ASelectableCondition filterCondition = slide != null ? slide.getFilterCondition() : null;
 		if(filterCondition != null) {
-			final JComponent component = filterCondition.createGraphicComponent(
+			final JComponent component = filterCondition.getListCellRendererComponent(
 			        lblZoomFactor.getFontMetrics(lblZoomFactor.getFont()));
 			filterConditionComponentBox.add(component);
 		}

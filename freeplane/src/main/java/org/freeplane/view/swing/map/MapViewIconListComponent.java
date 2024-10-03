@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.IconListComponent;
+import org.freeplane.core.ui.components.TagIcon;
 
 public class MapViewIconListComponent extends IconListComponent{
     private static final long serialVersionUID = 1L;
@@ -19,7 +20,7 @@ public class MapViewIconListComponent extends IconListComponent{
         super();
     }
 
-    public MapViewIconListComponent(List<? extends Icon> icons) {
+    public MapViewIconListComponent(List<TagIcon> icons) {
         super(icons);
     }
 

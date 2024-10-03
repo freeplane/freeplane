@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.util.TextUtils;
@@ -83,6 +85,15 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
     protected abstract ASelectableCondition[] getConditions();
 
 
+    @Override
+    public IconListComponent createGraphicComponent(FontMetrics  fontMetrics) {
+        IconListComponent graphicComponent = super.createGraphicComponent(fontMetrics);
+        graphicComponent.removeIcon(0);
+        graphicComponent.removeIcon(graphicComponent.getIconCount() - 1);
+        return graphicComponent;
+    }
+
+    @Override
     protected List<Icon> createRenderedIcons(String operatorTextPropertyName, FontMetrics fontMetrics) {
         List<Icon> iconList = new ArrayList<Icon>();
         iconList.add(new ObjectIcon<>(this, new TextIcon("(", fontMetrics)));
@@ -90,9 +101,16 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
         ASelectableCondition cond = conditions[0];
         List<Icon> rendererComponent = cond.createSmallRendererIcons(fontMetrics);
         iconList.addAll(rendererComponent);
+        Color operatorBackgroundColor = operatorBackgroundColor();
+        final String operator = TextUtils.getText(operatorTextPropertyName);
+        ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics,
+                icon -> {/**/});
+        ObjectIcon<ASelectableCondition> operatorIcon = textIcon(operator, fontMetrics,
+                icon -> icon.setIconBackgroundColor(operatorBackgroundColor));
         for (int i = 1; i < conditions.length; i++) {
-            final String operator = TextUtils.getText(operatorTextPropertyName);
-            iconList.add(new ObjectIcon<>(this, new TextIcon(' ' + operator + ' ', fontMetrics)));
+            iconList.add(gapIcon);
+            iconList.add(operatorIcon);
+            iconList.add(gapIcon);
             cond = conditions[i];
             iconList.addAll(cond.createSmallRendererIcons(fontMetrics));
         }
