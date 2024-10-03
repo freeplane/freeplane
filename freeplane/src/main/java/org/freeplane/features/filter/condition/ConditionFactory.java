@@ -81,20 +81,30 @@ public class ConditionFactory {
     }
 
     public enum ConditionOption {
-        FILTER_MATCH_CASE("filter_match_case"),
-        FILTER_MATCH_APPROX("filter_match_approximately"),
-        FILTER_IGNORE_DIACRITICS("filter_ignore_diacritics");
+        FILTER_MATCH_CASE("filter_match_case", "Aa"),
+        FILTER_IGNORE_DIACRITICS("filter_ignore_diacritics", "Ã"),
+        FILTER_MATCH_APPROX("filter_match_approximately", "≈");
 
 
         private final String persistedValue;
+        private final String displayedOption;
 
-        private ConditionOption(String persistedValue) {
+
+
+        private ConditionOption(String persistedValue, String displayedOption) {
             this.persistedValue = persistedValue;
+            this.displayedOption = displayedOption;
         }
 
         String getPersistedValue() {
             return persistedValue;
         }
+
+        public String getDisplayedOption() {
+            return displayedOption;
+        }
+
+
     }
     public static final String FILTER_CONTAINS = ConditionOperator.FILTER_CONTAINS.getPersistedValue();
     public static final String FILTER_CONTAINS_WORDWISE = ConditionOperator.FILTER_CONTAINS_WORDWISE.getPersistedValue();

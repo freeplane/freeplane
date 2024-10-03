@@ -21,6 +21,7 @@ import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
@@ -109,17 +110,17 @@ public abstract class ASelectableCondition  implements ICondition{
         ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics);
         if(matchCase) {
             icons.add(gapIcon);
-            icons.add(textIcon("Aa", fontMetrics,
+            icons.add(textIcon(ConditionOption.FILTER_MATCH_CASE.getDisplayedOption(), fontMetrics,
                     icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         if(ignoreDiacritics) {
             icons.add(gapIcon);
-            icons.add(textIcon("Ã", fontMetrics,
+            icons.add(textIcon(ConditionOption.FILTER_IGNORE_DIACRITICS.getDisplayedOption(), fontMetrics,
                     icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         if(matchApproximately) {
             icons.add(gapIcon);
-            icons.add(textIcon("≈", fontMetrics,
+            icons.add(textIcon(ConditionOption.FILTER_MATCH_APPROX.getDisplayedOption(), fontMetrics,
                     icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         return icons;
