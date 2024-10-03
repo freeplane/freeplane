@@ -97,26 +97,30 @@ public abstract class ASelectableCondition  implements ICondition{
         if(! attribute.isEmpty()) {
             icons.add(textIcon(attribute, fontMetrics));
         }
-        Icon operatorIcon = textIcon(simpleCondition.getOperator(), fontMetrics);
+        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK.brighter() : Color.WHITE.darker();
+        Icon operatorIcon = textIcon(simpleCondition.getOperator(), fontMetrics,
+                icon -> icon.setIconBackgroundColor(optionBackgroundColor));
         Icon openingValueDelimiterIcon = textIcon(simpleCondition.getOpeningValueDelimiter(), fontMetrics);
         Icon closingValueDelimiterIcon = textIcon(simpleCondition.getClosingValueDelimiter(), fontMetrics);
         icons.add(operatorIcon);
         icons.add(openingValueDelimiterIcon);
         icons.add(new ObjectIcon<>(this, valueIcon));
         icons.add(closingValueDelimiterIcon);
-        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK.brighter() : Color.WHITE.darker();
         ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics);
         if(matchCase) {
             icons.add(gapIcon);
-            icons.add(textIcon("Aa", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
+            icons.add(textIcon("Aa", fontMetrics,
+                    icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         if(ignoreDiacritics) {
             icons.add(gapIcon);
-            icons.add(textIcon("Ã", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
+            icons.add(textIcon("Ã", fontMetrics,
+                    icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         if(matchApproximately) {
             icons.add(gapIcon);
-            icons.add(textIcon("≈", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
+            icons.add(textIcon("≈", fontMetrics,
+                    icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         return icons;
     }

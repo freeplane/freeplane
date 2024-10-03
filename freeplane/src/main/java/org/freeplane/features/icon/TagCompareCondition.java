@@ -87,8 +87,9 @@ public class TagCompareCondition extends TagCondition {
 
     @Override
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
-        ConditionOperator simpleCondition = CompareConditionAdapter.createComparisonOperator(comparationResult, succeed);
-        return createRenderedIcons("", simpleCondition, tagIcon(fontMetrics) , fontMetrics);
+        ConditionOperator operator = CompareConditionAdapter.createComparisonOperator(comparationResult, succeed);
+        ConditionOperator displayedOperator = operator == ConditionOperator.FILTER_IS_EQUAL_TO ? ConditionOperator.EMPTY : operator;
+        return createRenderedIcons("", displayedOperator, tagIcon(fontMetrics) , fontMetrics);
     }
 
 	@Override
