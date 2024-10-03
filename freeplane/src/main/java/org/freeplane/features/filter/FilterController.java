@@ -1027,8 +1027,14 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final DefaultComboBoxModel filterConditions = getFilterConditions();
 		if(condition.equals(filterConditions.getSelectedItem()))
 			applyFilter(true);
-		else
-			filterConditions.setSelectedItem(condition);
+        else {
+            activeFilterConditionComboBox.setEditable(true);
+            if(filterConditions.getSize() > 3)
+                filterConditions.removeElement(condition);
+            filterConditions.setSelectedItem(condition);
+            filterConditions.insertElementAt(condition, 3);
+            activeFilterConditionComboBox.setEditable(false);
+        }
     }
 
 	public EntryVisitor getMenuBuilder() {
