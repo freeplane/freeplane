@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.TextIcon;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
@@ -37,7 +38,7 @@ public abstract class ASelectableCondition  implements ICondition{
 		}
 	}
 
-	public ASelectableCondition() {
+    public ASelectableCondition() {
 		super();
 	}
 
@@ -76,6 +77,52 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 	protected abstract String createDescription();
 
+    public List<Icon> createRenderedIcons(final String attribute, final String simpleCondition, final String value,
+            final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
+        return createRenderedIcons(attribute, simpleCondition, new TextIcon(value, fontMetrics),
+                matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
+    }
+    protected List<Icon> createRenderedIcons(final String attribute, final String simpleCondition, final Icon valueIcon,
+            final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
+        List<Icon> icons = new ArrayList<>();
+        if(! attribute.isEmpty()) {
+            icons.add(textIcon(attribute, fontMetrics));
+        }
+        Icon valueDelimiterIcon = valueDelimiterIcon(simpleCondition, fontMetrics);
+        icons.add(valueDelimiterIcon);
+        icons.add(new ObjectIcon<>(this, valueIcon));
+        icons.add(valueDelimiterIcon);
+        if(matchCase)
+            icons.add(textIcon("↑", fontMetrics));
+        if(ignoreDiacritics)
+            icons.add(textIcon("ã", fontMetrics));
+        if(matchApproximately)
+            icons.add(textIcon("≈", fontMetrics));
+        return icons;
+    }
+
+    private Icon valueDelimiterIcon(String simpleCondition, FontMetrics fontMetrics) {
+        String simpleConditionText;
+        if(ConditionFactory.FILTER_IS_EQUAL_TO.equals(simpleCondition))
+            simpleConditionText = "\"";
+        else if(ConditionFactory.FILTER_CONTAINS.equals(simpleCondition))
+            simpleConditionText = "*";
+        else if(ConditionFactory.FILTER_CONTAINS_WORDWISE.equals(simpleCondition))
+            simpleConditionText = "⋅";
+        else if(ConditionFactory.FILTER_REGEXP.equals(simpleCondition))
+            simpleConditionText = "/";
+        else
+            throw new IllegalArgumentException("Unknown condition " + simpleCondition);
+        return textIcon(simpleConditionText, fontMetrics);
+    }
+
+    protected ObjectIcon<ASelectableCondition> textIcon(final String text,
+            FontMetrics fontMetrics) {
+        return new ObjectIcon<>(this, new TextIcon(text, fontMetrics));
+    }
+
+
+
 	final public JComponent getListCellRendererComponent(FontMetrics  fontMetrics) {
 		if (renderer == null) {
 			this.renderer = createGraphicComponent(fontMetrics);
@@ -96,7 +143,27 @@ public abstract class ASelectableCondition  implements ICondition{
 	}
 
 	protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics) {
-	    return Collections.singletonList(new ObjectIcon<>(this, ConditionFactory.createTextIcon(toString(), fontMetrics)));
+	    return Collections.singletonList(new ObjectIcon<>(this, new TextIcon(toString(), fontMetrics)));
+    }
+
+    protected String createDescription(final String attribute, final String simpleCondition, final String value,
+            final boolean matchCase, final boolean matchApproximately,
+            final boolean ignoreDiacritics) {
+        final String description = createSimpleDescription(attribute, simpleCondition, value)
+                + (matchCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE) : "")
+                + (matchApproximately && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_APPROX) : ""
+                        + (ignoreDiacritics && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_IGNORE_DIACRITICS) : ""));
+        return description;
+    }
+
+    protected String createDescription(final String attribute, final String simpleCondition, final String value) {
+        return createSimpleDescription(attribute, simpleCondition, value);
+    }
+
+    private String createSimpleDescription(final String attribute, final String simpleCondition,
+            final String value) {
+        final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "");
+        return description;
     }
 
 	@Override

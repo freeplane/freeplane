@@ -46,7 +46,7 @@ public class StyleContainsCondition extends ASelectableCondition {
 	protected String createDescription() {
 		final String style = TextUtils.getText(LogicalStyleFilterController.FILTER_STYLE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(style, simpleCondition, value.toString());
+		return createDescription(style, simpleCondition, value.toString());
 	}
 
 	@Override

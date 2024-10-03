@@ -1,7 +1,13 @@
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy.Type;
+import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class StringConditionAdapter extends ASelectableCondition {
@@ -58,9 +64,18 @@ public abstract class StringConditionAdapter extends ASelectableCondition {
             element.setAttribute(IGNORE_DIACRITICS, "true");
     }
 
+    @Override
     protected String createDescription(final String attribute, final String simpleCondition, final String value) {
-        return ConditionFactory.createDescription(attribute, simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics);
+        return createDescription(attribute, simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics);
     }
+//    @Override
+//    abstract protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics);
+
+    protected List<Icon> createRenderedIcons(final String attribute, final String simpleCondition, final String value, FontMetrics  fontMetrics) {
+        return createRenderedIcons(TextController.FILTER_ANYTEXT.equals(attribute) ? "" : attribute , simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
+    }
+
+
 
 
 }

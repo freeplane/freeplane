@@ -19,7 +19,11 @@
  */
 package org.freeplane.features.attribute;
 
+import java.awt.FontMetrics;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -32,7 +36,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * Condition for matching a regexp against an attribute.
  * Approximate matching setting is ignored here.
- * 
+ *
  * @author Dimitry Polivaev
  */
 public class AttributeMatchesCondition extends ASelectableCondition {
@@ -77,7 +81,7 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
 				if (checkText(attributes.getValueAt(i, 0).toString()))
 					return true;
-				
+
 			}
 			else if(! attributes.getValueAt(i, 0).equals(attribute)) {
                 continue;
@@ -97,7 +101,11 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, isMatchCase(), false, false);
+		return createDescription(attribute.toString(), simpleCondition, value, isMatchCase(), false, false);
+	}
+
+	protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics) {
+	    return createRenderedIcons(attribute.toString(), ConditionFactory.FILTER_REGEXP, value, isMatchCase(), false, false, fontMetrics);
 	}
 
 	public void fillXML(final XMLElement child) {

@@ -2,7 +2,6 @@ package org.freeplane.features.link;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.StyleString;
@@ -51,7 +50,7 @@ public class ConnectorStyleCondition extends ASelectableCondition implements Con
     protected String createDescription() {
         final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
         final String simpleCondition = TextUtils.getText(FILTER_STYLE);
-        return ConditionFactory.createDescription(condition, simpleCondition, value.toString());
+        return createDescription(condition, simpleCondition, value.toString());
     }
 
 	@Override

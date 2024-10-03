@@ -27,6 +27,7 @@ import java.util.Vector;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.components.ObjectIcon;
+import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -84,18 +85,18 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
 
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics, String operatorTextPropertyName) {
         List<Icon> iconList = new ArrayList<Icon>();
-        iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon("(", fontMetrics)));
+        iconList.add(new ObjectIcon<>(this, new TextIcon("(", fontMetrics)));
         ASelectableCondition[] conditions = getConditions();
         ASelectableCondition cond = conditions[0];
         List<Icon> rendererComponent = cond.createSmallRendererIcons(fontMetrics);
         iconList.addAll(rendererComponent);
         for (int i = 1; i < conditions.length; i++) {
             final String operator = TextUtils.getText(operatorTextPropertyName);
-            iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(' ' + operator + ' ', fontMetrics)));
+            iconList.add(new ObjectIcon<>(this, new TextIcon(' ' + operator + ' ', fontMetrics)));
             cond = conditions[i];
             iconList.addAll(cond.createSmallRendererIcons(fontMetrics));
         }
-        iconList.add(new ObjectIcon<>(this, ConditionFactory.createTextIcon(")", fontMetrics)));
+        iconList.add(new ObjectIcon<>(this, new TextIcon(")", fontMetrics)));
         return iconList;
     }
 

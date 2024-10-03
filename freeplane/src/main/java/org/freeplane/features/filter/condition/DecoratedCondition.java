@@ -30,6 +30,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.ObjectIcon;
+import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -90,7 +91,7 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
         final String decoratorText = TextUtils.getText(decoratorKey);
 		final String text = decoratorText + ' ';
-		Icon decoratorIcon = ConditionFactory.createTextIcon(text, fontMetrics);
+		Icon decoratorIcon = new TextIcon(text, fontMetrics);
 		List<Icon> originalIcons = originalCondition.createSmallRendererIcons(fontMetrics);
 		ArrayList<Icon> iconList = new ArrayList<>(originalIcons.size() + 1);
 		iconList.add(new ObjectIcon<>(this, decoratorIcon));

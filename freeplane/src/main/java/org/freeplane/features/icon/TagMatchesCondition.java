@@ -67,7 +67,7 @@ public class TagMatchesCondition extends TagCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(TextUtils.getText(IconConditionController.FILTER_TAG),
+		return createDescription(TextUtils.getText(IconConditionController.FILTER_TAG),
 		        simpleCondition, value, isMatchCase(), false, false);
 	}
 

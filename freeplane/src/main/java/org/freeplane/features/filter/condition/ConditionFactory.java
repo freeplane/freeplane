@@ -19,58 +19,101 @@
  */
 package org.freeplane.features.filter.condition;
 
-import java.awt.FontMetrics;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.swing.Icon;
-
 import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.core.ui.components.TextIcon;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
 public class ConditionFactory {
-    public static final String FILTER_CONTAINS = "filter_contains";
-    public static final String FILTER_CONTAINS_WORDWISE = "filter_contains_wordwise";
-	public static final String FILTER_DOES_NOT_EXIST = "filter_does_not_exist";
-	public static final String FILTER_EXIST = "filter_exist";
-	public static final String FILTER_GE = ">=";
-	public static final String FILTER_GT = ">";
-	public static final String FILTER_MATCH_CASE = "filter_match_case";
-    public static final String FILTER_MATCH_APPROX = "filter_match_approximately";
-	public static final String FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
-	public static final String FILTER_IS_EQUAL_TO = "filter_is_equal_to";
-	public static final String FILTER_STARTS_WITH = "filter_starts_with";
-	public static final String FILTER_IS_NOT_EQUAL_TO = "filter_is_not_equal_to";
-	public static final String FILTER_LE = "<=";
-	public static final String FILTER_LT = "<";
-	public static final String FILTER_REGEXP = "filter_regexp_matches";
+    public enum ConditionOperator {
+        FILTER_CONTAINS("filter_contains", "*", "*"),
+        FILTER_CONTAINS_WORDWISE("filter_contains_wordwise", "⋅", "⋅"),
+        FILTER_DOES_NOT_EXIST("filter_does_not_exist", "!"),
+        FILTER_EXIST("filter_exist", ""),
+        FILTER_GE(">=", "≥"),
+        FILTER_GT(">", ">"),
+        FILTER_IS_EQUAL_TO("filter_is_equal_to", "="),
+        FILTER_STARTS_WITH("filter_starts_with", "", "*"),
+        FILTER_IS_NOT_EQUAL_TO("filter_is_not_equal_to", "≠"),
+        FILTER_LE("<=", "≤"),
+        FILTER_LT("<", "<"),
+        FILTER_REGEXP("filter_regexp_matches", "/", "/");
+
+        private final String persistedValue;
+        private final String operator;
+        private final String openingValueDelimiter;
+        private final String closingValueDelimiter;
+
+        private ConditionOperator(String persistedValue, String operator) {
+            this(persistedValue, operator, "\"", "\"");
+        }
+        private ConditionOperator(String persistedValue,
+                String openingValueDelimiter, String closingValueDelimiter) {
+            this(persistedValue, "", openingValueDelimiter, closingValueDelimiter);
+        }
+        private ConditionOperator(String persistedValue, String operator,
+                String openingValueDelimiter, String closingValueDelimiter) {
+            this.persistedValue = persistedValue;
+            this.operator = operator;
+            this.openingValueDelimiter = openingValueDelimiter;
+            this.closingValueDelimiter = closingValueDelimiter;
+        }
+
+        public String getPersistedValue() {
+            return persistedValue;
+        }
+        public String getOperator() {
+            return operator;
+        }
+        public String getOpeningValueDelimiter() {
+            return openingValueDelimiter;
+        }
+        public String getClosingValueDelimiter() {
+            return closingValueDelimiter;
+        }
+    }
+
+    public enum ConditionOption {
+        FILTER_MATCH_CASE("filter_match_case"),
+        FILTER_MATCH_APPROX("filter_match_approximately"),
+        FILTER_IGNORE_DIACRITICS("filter_ignore_diacritics");
+
+
+        private final String persistedValue;
+
+        private ConditionOption(String persistedValue) {
+            this.persistedValue = persistedValue;
+        }
+
+        String getPersistedValue() {
+            return persistedValue;
+        }
+    }
+    public static final String FILTER_CONTAINS = ConditionOperator.FILTER_CONTAINS.getPersistedValue();
+    public static final String FILTER_CONTAINS_WORDWISE = ConditionOperator.FILTER_CONTAINS_WORDWISE.getPersistedValue();
+	public static final String FILTER_DOES_NOT_EXIST = ConditionOperator.FILTER_DOES_NOT_EXIST.getPersistedValue();
+	public static final String FILTER_EXIST = ConditionOperator.FILTER_EXIST.getPersistedValue();
+	public static final String FILTER_GE = ConditionOperator.FILTER_GE.getPersistedValue();
+	public static final String FILTER_GT = ConditionOperator.FILTER_GT.getPersistedValue();
+	public static final String FILTER_IS_EQUAL_TO = ConditionOperator.FILTER_IS_EQUAL_TO.getPersistedValue();
+	public static final String FILTER_STARTS_WITH = ConditionOperator.FILTER_STARTS_WITH.getPersistedValue();
+	public static final String FILTER_IS_NOT_EQUAL_TO = ConditionOperator.FILTER_IS_NOT_EQUAL_TO.getPersistedValue();
+	public static final String FILTER_LE = ConditionOperator.FILTER_LE.getPersistedValue();
+	public static final String FILTER_LT = ConditionOperator.FILTER_LT.getPersistedValue();
+	public static final String FILTER_REGEXP = ConditionOperator.FILTER_REGEXP.getPersistedValue();
+
+	public static final String FILTER_MATCH_CASE = ConditionOption.FILTER_MATCH_CASE.getPersistedValue();
+	public static final String FILTER_MATCH_APPROX = ConditionOption.FILTER_MATCH_APPROX.getPersistedValue();
+	public static final String FILTER_IGNORE_DIACRITICS = ConditionOption.FILTER_IGNORE_DIACRITICS.getPersistedValue();
+
 
 	private static final DecoratedConditionFactory DECORATED_CONDITION_FACTORY = new DecoratedConditionFactory();
-
-	static public Icon createTextIcon(final String text, FontMetrics fontMetrics) {
-	    return new TextIcon(text, fontMetrics);
-	}
-
-	public static String createDescription(final String attribute, final String simpleCondition, final String value) {
-	    return createDescription(attribute, simpleCondition, value, false, false, false);
-	}
-
-	public static String createDescription(final String attribute, final String simpleCondition, final String value,
-	                                       final boolean matchCase, final boolean matchApproximately,
-	                                       final boolean ignoreDiacritics) {
-		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
-		        + (matchCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE) : "")
-		        + (matchApproximately && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_APPROX) : ""
-		        + (ignoreDiacritics && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_IGNORE_DIACRITICS) : ""));
-		return description;
-	}
 
 	final private SortedMap<Integer, IElementaryConditionController> conditionControllers;
 

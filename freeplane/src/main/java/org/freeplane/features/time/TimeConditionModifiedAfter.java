@@ -20,7 +20,7 @@
 package org.freeplane.features.time;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.map.NodeModel;
 
@@ -45,7 +45,7 @@ public class TimeConditionModifiedAfter extends TimeConditionModifiedBefore{
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = getDate().toString();
 		final String after = TextUtils.getText(FILTER_MODIFIED_AFTER);
-		return ConditionFactory.createDescription(filterTime, after, dateAsString);
+		return createDescription(filterTime, after, dateAsString);
 	}
 
 	@Override
