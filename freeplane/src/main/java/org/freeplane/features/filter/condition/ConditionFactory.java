@@ -32,7 +32,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class ConditionFactory {
     public enum ConditionOperator {
-        FILTER_CONTAINS("filter_contains", "*", "*"),
+        FILTER_CONTAINS("filter_contains", "⋯", "⋯"),
         FILTER_CONTAINS_WORDWISE("filter_contains_wordwise", "⋅", "⋅"),
         FILTER_DOES_NOT_EXIST("filter_does_not_exist", "!"),
         FILTER_EXIST("filter_exist", ""),
@@ -43,7 +43,8 @@ public class ConditionFactory {
         FILTER_IS_NOT_EQUAL_TO("filter_is_not_equal_to", "≠"),
         FILTER_LE("<=", "≤"),
         FILTER_LT("<", "<"),
-        FILTER_REGEXP("filter_regexp_matches", "/", "/");
+        FILTER_REGEXP("filter_regexp_matches", "/", "/"),
+        EMPTY("", "", "", "");
 
         private final String persistedValue;
         private final String operator;

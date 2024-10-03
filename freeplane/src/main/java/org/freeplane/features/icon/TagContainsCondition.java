@@ -90,8 +90,8 @@ public class TagContainsCondition extends TagCondition {
 
     @Override
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
-        ConditionOperator simpleCondition = matchWordwise ? ConditionOperator.FILTER_CONTAINS_WORDWISE : ConditionOperator.FILTER_CONTAINS;
-        return createRenderedIcons("", simpleCondition, tagIcon(fontMetrics) , fontMetrics);
+        String operator = (matchWordwise ? ConditionOperator.FILTER_CONTAINS_WORDWISE : ConditionOperator.FILTER_CONTAINS).getOpeningValueDelimiter();
+        return createRenderedIcons("", ConditionOperator.EMPTY, tagIcon(operator + value + operator, fontMetrics) , fontMetrics);
     }
 	@Override
 	public void fillXML(final XMLElement child) {

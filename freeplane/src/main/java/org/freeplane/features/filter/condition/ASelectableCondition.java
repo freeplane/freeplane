@@ -98,13 +98,20 @@ public abstract class ASelectableCondition  implements ICondition{
         icons.add(openingValueDelimiterIcon);
         icons.add(new ObjectIcon<>(this, valueIcon));
         icons.add(closingValueDelimiterIcon);
-        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK : Color.WHITE;
-        if(matchCase)
+        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK.brighter() : Color.WHITE.darker();
+        ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics);
+        if(matchCase) {
+            icons.add(gapIcon);
             icons.add(textIcon("Aa", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
-        if(ignoreDiacritics)
+        }
+        if(ignoreDiacritics) {
+            icons.add(gapIcon);
             icons.add(textIcon("ã", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
-        if(matchApproximately)
+        }
+        if(matchApproximately) {
+            icons.add(gapIcon);
             icons.add(textIcon("≈", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
+        }
         return icons;
     }
 
