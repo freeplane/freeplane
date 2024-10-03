@@ -19,11 +19,19 @@
  */
 package org.freeplane.features.attribute;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -44,7 +52,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 			final String spec = element.getAttribute(CompareConditionAdapter.OBJECT, null);
 			value = TypeReference.create(spec);
 		}
-			
+
 		final boolean matchCase = TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    CompareConditionAdapter.MATCH_CASE, null));
 		final int compResult = Integer.parseInt(element.getAttribute(
@@ -70,9 +78,9 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		this.attribute = attribute;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
-		
+
 	}
-	
+
 	public boolean isEqualityCondition()
 	{
 		return comparationResult == 0;
@@ -92,7 +100,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 			if(attribute.equals(AttributeConditionController.ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT)){
 				if (checkContent(attributes.getValueAt(i, 0)))
 					return true;
-				
+
 			}
 			else if(! attributes.getValueAt(i, 0).equals(attribute)) {
 				continue;
@@ -114,6 +122,11 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	protected String createDescription() {
 		return super.createDescription(attribute.toString(), comparationResult, succeed);
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIcons(attribute.toString(), comparationResult, succeed, fontMetrics);
+    }
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);

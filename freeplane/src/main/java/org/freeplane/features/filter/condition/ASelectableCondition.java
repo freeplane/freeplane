@@ -1,5 +1,6 @@
 package org.freeplane.features.filter.condition;
 
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,6 +9,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.TextIcon;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -77,51 +80,44 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 	protected abstract String createDescription();
 
-    public List<Icon> createRenderedIcons(final String attribute, final String simpleCondition, final String value,
+    public List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator simpleCondition, final String value,
             final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
         return createRenderedIcons(attribute, simpleCondition, new TextIcon(value, fontMetrics),
                 matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
     }
-    protected List<Icon> createRenderedIcons(final String attribute, final String simpleCondition, final Icon valueIcon,
+    protected List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator simpleCondition, final Icon valueIcon,
             final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
         List<Icon> icons = new ArrayList<>();
         if(! attribute.isEmpty()) {
             icons.add(textIcon(attribute, fontMetrics));
         }
-        Icon valueDelimiterIcon = valueDelimiterIcon(simpleCondition, fontMetrics);
-        icons.add(valueDelimiterIcon);
+        Icon operatorIcon = textIcon(simpleCondition.getOperator(), fontMetrics);
+        Icon openingValueDelimiterIcon = textIcon(simpleCondition.getOpeningValueDelimiter(), fontMetrics);
+        Icon closingValueDelimiterIcon = textIcon(simpleCondition.getClosingValueDelimiter(), fontMetrics);
+        icons.add(operatorIcon);
+        icons.add(openingValueDelimiterIcon);
         icons.add(new ObjectIcon<>(this, valueIcon));
-        icons.add(valueDelimiterIcon);
+        icons.add(closingValueDelimiterIcon);
+        Color optionBackgroundColor = UITools.isLightLookAndFeelInstalled() ? Color.BLACK : Color.WHITE;
         if(matchCase)
-            icons.add(textIcon("↑", fontMetrics));
+            icons.add(textIcon("Aa", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         if(ignoreDiacritics)
-            icons.add(textIcon("ã", fontMetrics));
+            icons.add(textIcon("ã", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         if(matchApproximately)
-            icons.add(textIcon("≈", fontMetrics));
+            icons.add(textIcon("≈", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         return icons;
-    }
-
-    private Icon valueDelimiterIcon(String simpleCondition, FontMetrics fontMetrics) {
-        String simpleConditionText;
-        if(ConditionFactory.FILTER_IS_EQUAL_TO.equals(simpleCondition))
-            simpleConditionText = "\"";
-        else if(ConditionFactory.FILTER_CONTAINS.equals(simpleCondition))
-            simpleConditionText = "*";
-        else if(ConditionFactory.FILTER_CONTAINS_WORDWISE.equals(simpleCondition))
-            simpleConditionText = "⋅";
-        else if(ConditionFactory.FILTER_REGEXP.equals(simpleCondition))
-            simpleConditionText = "/";
-        else
-            throw new IllegalArgumentException("Unknown condition " + simpleCondition);
-        return textIcon(simpleConditionText, fontMetrics);
     }
 
     protected ObjectIcon<ASelectableCondition> textIcon(final String text,
             FontMetrics fontMetrics) {
-        return new ObjectIcon<>(this, new TextIcon(text, fontMetrics));
+        return textIcon(text, fontMetrics, x -> {/**/});
     }
-
-
+    protected ObjectIcon<ASelectableCondition> textIcon(final String text,
+            FontMetrics fontMetrics, Consumer<TextIcon> config) {
+        TextIcon icon = new TextIcon(text, fontMetrics);
+        config.accept(icon);
+        return new ObjectIcon<>(this, icon);
+    }
 
 	final public JComponent getListCellRendererComponent(FontMetrics  fontMetrics) {
 		if (renderer == null) {

@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
@@ -50,10 +55,10 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 		final boolean succeed = TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.SUCCEED, null));
 		final boolean matchApproximately = TreeXmlReader.xmlToBoolean(element.getAttribute(NodeTextCompareCondition.MATCH_APPROXIMATELY, null));
 		return new NodeTextCompareCondition(
-			item, 
-			value, 
-			matchCase, 
-			compResult, 
+			item,
+			value,
+			matchCase,
+			compResult,
 			succeed,
 			matchApproximately,
 			Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
@@ -70,7 +75,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 		this.succeed = succeed;
 		this.nodeItem=nodeItem;
 	}
-	
+
 	public boolean isEqualityCondition()
 	{
 		return comparationResult == 0;
@@ -88,7 +93,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 		}
 		return false;
 	}
-	
+
 	private boolean checkContent(final Object content) {
 		try {
 			compareTo(content);
@@ -105,6 +110,12 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String nodeCondition = TextController.FILTER_ANYTEXT.equals(nodeItem) ? "" : TextUtils.getText(nodeItem);
+        return createRenderedIcons(nodeCondition, comparationResult, succeed, fontMetrics);
+    }
+
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(NodeTextCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
@@ -116,7 +127,7 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
     protected String getName() {
 	    return NAME;
     }
-	
+
 	public String getNodeItem() {
 		return nodeItem;
 	}

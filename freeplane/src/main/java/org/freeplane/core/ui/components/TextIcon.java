@@ -60,32 +60,38 @@ public class TextIcon implements Icon {
         return iconTextColor;
     }
 
-    public void setIconTextColor(Color iconTextColor) {
+    public TextIcon setIconTextColor(Color iconTextColor) {
         this.iconTextColor = iconTextColor;
+        return this;
     }
 
     public Color getIconBackgroundColor() {
         return iconBackgroundColor;
     }
 
-    public void setIconBackgroundColor(Color iconBackgroundColor) {
+    public TextIcon setIconBackgroundColor(Color iconBackgroundColor) {
         this.iconBackgroundColor = iconBackgroundColor;
+        if(iconTextColor == null)
+            iconTextColor = UITools.getTextColorForBackground(iconBackgroundColor);
+        return this;
     }
 
     public Color getIconBorderColor() {
         return iconBorderColor;
     }
 
-    public void setIconBorderColor(Color iconBorderColor) {
+    public TextIcon setIconBorderColor(Color iconBorderColor) {
         this.iconBorderColor = iconBorderColor;
+        return this;
     }
 
     public BasicStroke getBorderStroke() {
         return borderStroke;
     }
 
-    public void setBorderStroke(BasicStroke borderStroke) {
+    public TextIcon setBorderStroke(BasicStroke borderStroke) {
         this.borderStroke = borderStroke;
+        return this;
     }
 
     @Override

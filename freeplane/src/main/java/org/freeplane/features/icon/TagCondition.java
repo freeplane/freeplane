@@ -19,8 +19,12 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
 import java.util.List;
 
+import org.freeplane.core.ui.components.TagIcon;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -104,4 +108,8 @@ abstract class TagCondition extends StringConditionAdapter {
     public boolean searchesAcrossAllCategories() {
         return searchesAcrossAllCategories;
     }
+    protected TagIcon tagIcon(FontMetrics fontMetrics) {
+        return new TagIcon(new Tag(comparedValue, UITools.isLightLookAndFeelInstalled() ? Color.BLACK : Color.WHITE), fontMetrics.getFont());
+    }
+
 }

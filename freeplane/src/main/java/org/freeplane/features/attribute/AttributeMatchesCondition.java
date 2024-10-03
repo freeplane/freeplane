@@ -28,6 +28,7 @@ import javax.swing.Icon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
@@ -105,7 +106,7 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 	}
 
 	protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics) {
-	    return createRenderedIcons(attribute.toString(), ConditionFactory.FILTER_REGEXP, value, isMatchCase(), false, false, fontMetrics);
+	    return createRenderedIcons(attribute.toString(), ConditionOperator.FILTER_REGEXP, value, isMatchCase(), false, false, fontMetrics);
 	}
 
 	public void fillXML(final XMLElement child) {

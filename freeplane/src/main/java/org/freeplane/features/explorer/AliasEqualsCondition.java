@@ -19,10 +19,16 @@
  */
 package org.freeplane.features.explorer;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 
 /**
  * @author Dimitry Polivaev
@@ -53,9 +59,16 @@ class AliasEqualsCondition extends AliasCondition {
 		return createDescription(condition, simpleCondition, getAlias());
 	}
 
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String condition = TextUtils.getText(MapExplorerConditionController.FILTER_ALIAS);
+        return createRenderedIcons(condition, ConditionOperator.FILTER_IS_EQUAL_TO, getAlias(), fontMetrics);
+    }
+
 	@Override
 	protected String getName() {
 		return NAME;
 	}
+
 
 }

@@ -7,6 +7,7 @@ import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy.Type;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -43,8 +44,11 @@ public abstract class StringConditionAdapter extends ASelectableCondition {
     }
 
     protected String containsDescription() {
-        return matchWordwise ? TextUtils.getText(ConditionFactory.FILTER_CONTAINS_WORDWISE)
-                :  TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
+        return TextUtils.getText(containsOperator().getPersistedValue());
+    }
+
+    protected ConditionOperator containsOperator() {
+        return matchWordwise ? ConditionOperator.FILTER_CONTAINS_WORDWISE : ConditionOperator.FILTER_CONTAINS;
     }
 
     protected Type substringMatchType() {
@@ -68,13 +72,17 @@ public abstract class StringConditionAdapter extends ASelectableCondition {
     protected String createDescription(final String attribute, final String simpleCondition, final String value) {
         return createDescription(attribute, simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics);
     }
-//    @Override
-//    abstract protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics);
 
-    protected List<Icon> createRenderedIcons(final String attribute, final String simpleCondition, final String value, FontMetrics  fontMetrics) {
-        return createRenderedIcons(TextController.FILTER_ANYTEXT.equals(attribute) ? "" : attribute , simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
+    @Override
+    abstract protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics);
+
+    protected List<Icon> createRenderedIcons(final String attribute, final ConditionOperator simpleCondition, final String value, FontMetrics  fontMetrics) {
+        return createRenderedIcons(attribute , simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
     }
 
+    protected List<Icon> createRenderedIcons(final String attribute, final ConditionOperator simpleCondition, final Icon valueIcon, FontMetrics  fontMetrics) {
+        return createRenderedIcons(attribute , simpleCondition, valueIcon, matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
+    }
 
 
 

@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
@@ -80,6 +85,12 @@ public class NoteContainsCondition extends StringConditionAdapter {
 		final String nodeCondition = TextUtils.getText(TextController.FILTER_NOTE);
 		return createDescription(nodeCondition, containsDescription(), value);
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String nodeCondition = TextUtils.getText(TextController.FILTER_NOTE);
+        return createRenderedIcons(nodeCondition, containsOperator(), value, fontMetrics);
+    }
 
 	protected String getText(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);
