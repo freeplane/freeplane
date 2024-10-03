@@ -106,7 +106,7 @@ public abstract class ASelectableCondition  implements ICondition{
         }
         if(ignoreDiacritics) {
             icons.add(gapIcon);
-            icons.add(textIcon("ã", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
+            icons.add(textIcon("Ã", fontMetrics, icon -> icon.setIconBackgroundColor(optionBackgroundColor)));
         }
         if(matchApproximately) {
             icons.add(gapIcon);

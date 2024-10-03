@@ -56,7 +56,7 @@ public class ConditionFactory {
         }
         private ConditionOperator(String persistedValue,
                 String openingValueDelimiter, String closingValueDelimiter) {
-            this(persistedValue, "", openingValueDelimiter, closingValueDelimiter);
+            this(persistedValue, " ", openingValueDelimiter, closingValueDelimiter);
         }
         private ConditionOperator(String persistedValue, String operator,
                 String openingValueDelimiter, String closingValueDelimiter) {
