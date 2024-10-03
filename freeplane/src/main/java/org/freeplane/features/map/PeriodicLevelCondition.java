@@ -1,5 +1,10 @@
 package org.freeplane.features.map;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -8,8 +13,8 @@ public class PeriodicLevelCondition extends ASelectableCondition {
 	public static final String NAME = "node_periodic_level_condition";
 	private final int period;
 	private final int remainder;
-	
-	
+
+
 	public PeriodicLevelCondition(int period, int remainder) {
 		super();
 		this.period = period;
@@ -31,8 +36,8 @@ public class PeriodicLevelCondition extends ASelectableCondition {
 		int remainder = Integer.valueOf(element.getAttribute("REMAINDER", null));
 	    return new PeriodicLevelCondition(period, remainder);
     }
-	
-	
+
+
 
 	@Override
 	protected void fillXML(XMLElement element) {
@@ -45,7 +50,12 @@ public class PeriodicLevelCondition extends ASelectableCondition {
 	    return TextUtils.format("periodic_formula", period, remainder);
     }
 
-	public static PeriodicLevelCondition[] createConditions(int n) {
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    public static PeriodicLevelCondition[] createConditions(int n) {
 		PeriodicLevelCondition[] conditions = new PeriodicLevelCondition[n * (n + 1) / 2 - 1];
 		int k = 0;
 		for(int i = 2; i <= n; i++)

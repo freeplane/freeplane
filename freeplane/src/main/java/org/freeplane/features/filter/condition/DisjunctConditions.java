@@ -82,7 +82,7 @@ public class DisjunctConditions extends CombinedConditions implements ICombinedC
 	 */
     @Override
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
-        return createRenderedIcons(fontMetrics, "filter_or");
+        return createRenderedIcons("filter_or", fontMetrics);
     }
 
 

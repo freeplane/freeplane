@@ -1,5 +1,10 @@
 package org.freeplane.features.link;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
@@ -24,7 +29,7 @@ public class ConnectorStyleCondition extends ASelectableCondition implements Con
 	public boolean check(final ConnectorModel connector) {
 	    return value.equals(connector.getStyle());
 	}
-	
+
 	public void fillXML(final XMLElement child) {
 		if (value instanceof StyleString) {
 			child.setAttribute("TEXT", value.toString());
@@ -53,7 +58,12 @@ public class ConnectorStyleCondition extends ASelectableCondition implements Con
         return createDescription(condition, simpleCondition, value.toString());
     }
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected String getName() {
 	    return NAME;
     }

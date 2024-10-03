@@ -83,7 +83,7 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
     protected abstract ASelectableCondition[] getConditions();
 
 
-    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics, String operatorTextPropertyName) {
+    protected List<Icon> createRenderedIcons(String operatorTextPropertyName, FontMetrics fontMetrics) {
         List<Icon> iconList = new ArrayList<Icon>();
         iconList.add(new ObjectIcon<>(this, new TextIcon("(", fontMetrics)));
         ASelectableCondition[] conditions = getConditions();

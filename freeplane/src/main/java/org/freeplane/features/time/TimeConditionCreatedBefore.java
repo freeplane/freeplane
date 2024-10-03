@@ -19,7 +19,11 @@
  */
 package org.freeplane.features.time;
 
+import java.awt.FontMetrics;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -52,7 +56,12 @@ public class TimeConditionCreatedBefore extends TimeCondition {
 		return createDescription(filterTime, before, dateAsString);
 	}
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected
 	String getName() {
 		return NAME;

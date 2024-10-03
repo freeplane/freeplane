@@ -80,7 +80,7 @@ public class ConjunctConditions extends CombinedConditions implements ICombinedC
 	 */
 	@Override
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
-	    return createRenderedIcons(fontMetrics, "filter_and");
+	    return createRenderedIcons("filter_and", fontMetrics);
 	}
 
     @Override

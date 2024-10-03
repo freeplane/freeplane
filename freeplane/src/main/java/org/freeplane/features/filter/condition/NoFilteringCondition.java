@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 
@@ -50,11 +55,16 @@ public class NoFilteringCondition extends ASelectableCondition {
 		return NoFilteringCondition.description;
     }
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected String getName() {
 	    return NAME;
     }
-	
+
 	@Override
 	public boolean canBePersisted() {
 	    return false;

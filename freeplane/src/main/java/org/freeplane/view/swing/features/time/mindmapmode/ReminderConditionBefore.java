@@ -19,7 +19,11 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
+import java.awt.FontMetrics;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -55,7 +59,12 @@ class ReminderConditionBefore extends ReminderCondition {
 		return createDescription(filterTime, before, dateAsString);
 	}
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected
 	String getName() {
 		return NAME;

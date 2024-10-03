@@ -19,6 +19,11 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
@@ -48,7 +53,12 @@ class ReminderConditionExecuted extends ASelectableCondition {
 		return createDescription(reminder, executed, null);
 	}
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected
 	String getName() {
 		return NAME;

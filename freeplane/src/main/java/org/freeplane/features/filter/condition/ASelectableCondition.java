@@ -20,6 +20,7 @@ import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
@@ -80,11 +81,16 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 	protected abstract String createDescription();
 
-    public List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator simpleCondition, final String value,
+	protected List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator simpleCondition, final String value,
             final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
         return createRenderedIcons(attribute, simpleCondition, new TextIcon(value, fontMetrics),
                 matchCase, matchApproximately, ignoreDiacritics, fontMetrics);
     }
+
+    protected List<Icon> createRenderedIcons(final String condition, FontMetrics fontMetrics) {
+        return createRenderedIcons(condition, ConditionOperator.EMPTY, "", false, false, false, fontMetrics);
+    }
+
     protected List<Icon> createRenderedIcons(final String attribute, final ConditionFactory.ConditionOperator simpleCondition, final Icon valueIcon,
             final boolean matchCase, final boolean matchApproximately, final boolean ignoreDiacritics, FontMetrics  fontMetrics) {
         List<Icon> icons = new ArrayList<>();
@@ -145,7 +151,9 @@ public abstract class ASelectableCondition  implements ICondition{
 		return new IconListComponent(icons);
 	}
 
-	protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics) {
+	abstract protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics);
+
+	protected List<Icon> createRenderedIconsFromDescription(FontMetrics  fontMetrics) {
 	    return Collections.singletonList(new ObjectIcon<>(this, new TextIcon(toString(), fontMetrics)));
     }
 

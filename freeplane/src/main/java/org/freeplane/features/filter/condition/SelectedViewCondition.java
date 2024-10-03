@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -52,16 +57,21 @@ public class SelectedViewCondition extends ASelectableCondition implements Condi
 		return SelectedViewCondition.description;
     }
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected String getName() {
 	    return NAME;
     }
-	
+
     @Override
     public boolean canBePersisted() {
         return false;
     }
- 
+
 	@Override
     public ASelectableCondition createSnapshotCondition() {
 	    return  new SelectedViewSnapshotCondition(Controller.getCurrentController().getSelection().getSelection());
