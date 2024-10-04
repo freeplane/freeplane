@@ -25,6 +25,7 @@ public class IconListComponent extends JComponent {
     private int maximumWidth;
     private int horizontalAlignment;
     private int verticalAlignment;
+    private boolean wrapsIcons;
 
     public IconListComponent() {
         this(Collections.emptyList());
@@ -36,6 +37,7 @@ public class IconListComponent extends JComponent {
         maximumWidth = Integer.MAX_VALUE;
         horizontalAlignment = SwingConstants.LEFT;
         verticalAlignment = SwingConstants.CENTER;
+        setWrapIcons(false);
     }
 
     public List<? extends Icon> getIcons() {
@@ -114,7 +116,7 @@ public class IconListComponent extends JComponent {
 
         for (Icon icon : icons) {
             int iconWidth = icon.getIconWidth();
-            if (x > 0 && x + iconWidth > width) {
+            if (wrapsIcons && x > 0 && x + iconWidth > width) {
                 int dx = width - totalRowWidth;
                 drawIconsRow(g, rowIcons, dx, y, width, rowHeight);
                 x = 0;
@@ -174,7 +176,7 @@ public class IconListComponent extends JComponent {
         int rowHeight = 0;
 
         for (Icon icon : icons) {
-            if (rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
+            if (wrapsIcons && rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
                 height += rowHeight;
                 maximumRowWidth = Math.max(rowWidth, maximumRowWidth);
                 rowWidth = 0;
@@ -200,7 +202,7 @@ public class IconListComponent extends JComponent {
         for (int i = 0; i < icons.size(); i++) {
             Icon icon = icons.get(i);
 
-            if (rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
+            if (wrapsIcons && rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
                 x = 0;
                 y += rowHeight;
                 rowWidth = 0;
@@ -233,6 +235,14 @@ public class IconListComponent extends JComponent {
 
     protected boolean useFractionalMetrics() {
         return false;
+    }
+
+    public boolean wrapsIcons() {
+        return wrapsIcons;
+    }
+
+    public void setWrapIcons(boolean wrapsIcons) {
+        this.wrapsIcons = wrapsIcons;
     }
 
 }

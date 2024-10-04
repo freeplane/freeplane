@@ -747,8 +747,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
             @Override
             public Point getToolTipLocation(MouseEvent event) {
-                int position = getHeight() / 5;
-                return new Point(position, position);
+                int height = getHeight();
+                return new Point(height / 5, height);
             }
 
 

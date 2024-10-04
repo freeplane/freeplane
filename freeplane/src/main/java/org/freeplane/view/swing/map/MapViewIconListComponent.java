@@ -22,6 +22,7 @@ public class MapViewIconListComponent extends IconListComponent{
 
     public MapViewIconListComponent(List<TagIcon> icons) {
         super(icons);
+        setWrapIcons(true);
     }
 
     @Override
