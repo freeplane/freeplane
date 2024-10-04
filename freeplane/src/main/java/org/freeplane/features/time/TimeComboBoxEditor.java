@@ -36,6 +36,7 @@ import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.calendar.JCalendar;
+import org.freeplane.core.ui.components.calendar.JEditorPopupMenu;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.IFormattedObject;
 
@@ -68,16 +69,17 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 				calendarPopupMenu.setVisible(false);
 			}
 		});
-		calendarPopupMenu = calenderComponent.createPopupMenu();
+		calendarPopupMenu = new JEditorPopupMenu();
+		calendarPopupMenu.add(calenderComponent);
 		calendarPopupMenu.addPopupMenuListener(new PopupMenuListener() {
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 			    calenderComponent.setDate(date);
 			}
-			
+
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 				updateDate();
 			}
-			
+
 			public void popupMenuCanceled(PopupMenuEvent e) {
 			}
 		});
@@ -111,11 +113,11 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	private void updateDate() {
-		final FormattedDate newDate = new FormattedDate(calenderComponent.getDate(), 
+		final FormattedDate newDate = new FormattedDate(calenderComponent.getDate(),
 			calenderComponent.isTimeVisible() ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd");
         final String type = newDate.containsTime() ? IFormattedObject.TYPE_DATETIME : IFormattedObject.TYPE_DATE;
         date = FormattedDate.createDefaultFormattedDate(newDate.getTime(), type);
-		
+
 	    if (actionListeners.size() == 0) {
 	    	return;
 	    }
@@ -129,5 +131,5 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	    updateDate();
     }
 
-	
+
 }
