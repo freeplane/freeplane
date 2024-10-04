@@ -94,7 +94,7 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
 		Icon decoratorIcon = new TextIcon(text, fontMetrics);
 		List<Icon> originalIcons = originalCondition.createSmallRendererIcons(fontMetrics);
 		ArrayList<Icon> iconList = new ArrayList<>(originalIcons.size() + 1);
-		iconList.add(new ObjectIcon<>(this, decoratorIcon));
+		iconList.add(decoratorIcon);
 		iconList.addAll(originalIcons);
 		return iconList;
 	}

@@ -5,6 +5,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,6 +28,9 @@ public class IconListComponent extends JComponent {
     private int horizontalAlignment;
     private int verticalAlignment;
     private boolean wrapsIcons;
+    private Icon removedIcon;
+    private Color removalColor = Color.RED;
+
 
     public IconListComponent() {
         this(Collections.emptyList());
@@ -166,8 +170,17 @@ public class IconListComponent extends JComponent {
                 paintY = y + height - icon.getIconHeight() + insets.top;
             }
 
-            icon.paintIcon(this, g, paintX, paintY);
+            paintIcon(g, icon, paintX, paintY);
             x += icon.getIconWidth();
+        }
+    }
+
+    private void paintIcon(Graphics g, Icon icon, final int paintX, final int paintY) {
+        icon.paintIcon(this, g, paintX, paintY);
+        if(removedIcon == icon) {
+            g.setColor(removalColor);
+            g.drawLine(paintX, paintY, paintX + icon.getIconWidth(), paintY + icon.getIconHeight());
+            g.drawLine(paintX + icon.getIconWidth(), paintY, paintX, paintY + icon.getIconHeight());
         }
     }
 
@@ -257,6 +270,11 @@ public class IconListComponent extends JComponent {
     public void setWrapIcons(boolean wrapsIcons) {
         this.wrapsIcons = wrapsIcons;
         revalidate();
+        repaint();
+    }
+
+    public void highlightRemovedIcon(Icon icon) {
+        removedIcon = icon;
         repaint();
     }
 

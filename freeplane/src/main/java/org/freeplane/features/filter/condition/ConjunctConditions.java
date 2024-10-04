@@ -109,4 +109,9 @@ public class ConjunctConditions extends CombinedConditions implements ICombinedC
     public Collection<ASelectableCondition> split() {
 	    return Arrays.asList(conditions);
     }
+
+    @Override
+    protected ASelectableCondition createConditions(ASelectableCondition[] newConditions) {
+        return new ConjunctConditions(newConditions);
+    }
 }

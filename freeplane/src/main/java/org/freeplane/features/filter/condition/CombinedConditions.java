@@ -22,12 +22,14 @@ package org.freeplane.features.filter.condition;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.components.IconListComponent;
+import org.freeplane.core.ui.components.IconRow;
 import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.util.TextUtils;
@@ -88,9 +90,14 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
     @Override
     public IconListComponent createGraphicComponent(FontMetrics  fontMetrics) {
         IconListComponent graphicComponent = super.createGraphicComponent(fontMetrics);
-        graphicComponent.removeIcon(0);
+        graphicComponent.removeIcon(getUserName() != null ? 1 : 0);
         graphicComponent.removeIcon(graphicComponent.getIconCount() - 1);
         return graphicComponent;
+    }
+
+    @Override
+    protected IconListComponent createIconListComponent(List<Icon> icons) {
+        return new IconListComponent(icons);
     }
 
     @Override
@@ -99,23 +106,27 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
         iconList.add(new ObjectIcon<>(this, new TextIcon("(", fontMetrics)));
         ASelectableCondition[] conditions = getConditions();
         ASelectableCondition cond = conditions[0];
-        List<Icon> rendererComponent = cond.createSmallRendererIcons(fontMetrics);
-        iconList.addAll(rendererComponent);
+        iconList.add(conditionIcons(cond, fontMetrics));
         Color operatorBackgroundColor = operatorBackgroundColor();
         final String operator = TextUtils.getText(operatorTextPropertyName);
-        ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics,
+        TextIcon gapIcon = textIcon(" ", fontMetrics,
                 icon -> {/**/});
-        ObjectIcon<ASelectableCondition> operatorIcon = textIcon(operator, fontMetrics,
+        TextIcon operatorSymbolIcon = textIcon(operator, fontMetrics,
                 icon -> icon.setIconBackgroundColor(operatorBackgroundColor));
+        ObjectIcon<ASelectableCondition> operatorIcon = new ObjectIcon<ASelectableCondition>(this,
+                new IconRow(Arrays.asList(gapIcon, operatorSymbolIcon, gapIcon)));
         for (int i = 1; i < conditions.length; i++) {
-            iconList.add(gapIcon);
             iconList.add(operatorIcon);
-            iconList.add(gapIcon);
             cond = conditions[i];
-            iconList.addAll(cond.createSmallRendererIcons(fontMetrics));
+            iconList.add(conditionIcons(cond, fontMetrics));
         }
         iconList.add(new ObjectIcon<>(this, new TextIcon(")", fontMetrics)));
         return iconList;
+    }
+
+    private ObjectIcon<ASelectableCondition> conditionIcons(ASelectableCondition conditions,
+            FontMetrics fontMetrics) {
+        return new ObjectIcon<>(conditions, new IconRow(conditions.createSmallRendererIcons(fontMetrics)));
     }
 
     protected String createDescription(String operatorTextPropertyName) {
@@ -133,4 +144,41 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
         description.append(")");
         return description.toString();
     }
+
+    @Override
+    public ASelectableCondition removeCondition(ASelectableCondition removedCondition) {
+        if (removedCondition == this)
+            return null;
+        ASelectableCondition[] conditions = getConditions();
+        for (int i = 0; i < conditions.length; i++) {
+            ASelectableCondition condition = conditions[i];
+            ASelectableCondition newCondition = condition.removeCondition(removedCondition);
+            if(newCondition != condition) {
+                return replaceCondition(i, newCondition);
+            }
+        }
+        return this;
+    }
+
+    private ASelectableCondition replaceCondition(int replacedIndex, ASelectableCondition newCondition) {
+        ASelectableCondition[] oldConditions = getConditions();
+        int newLength = oldConditions.length - (newCondition == null ? 1 : 0);
+        if(newLength == 1)
+            return oldConditions[1 - replacedIndex];
+        ASelectableCondition[] newConditions = new ASelectableCondition[newLength];
+        for(int i = 0, j = 0; i < newLength;) {
+            if(i != replacedIndex) {
+                newConditions[j++] = oldConditions[i++];
+            }
+            else if(newCondition != null) {
+                newConditions[j++] = newCondition;
+                i++;
+            }
+        }
+        return createConditions(newConditions);
+    }
+
+    protected abstract ASelectableCondition createConditions(ASelectableCondition[] newConditions);
+
+
 }

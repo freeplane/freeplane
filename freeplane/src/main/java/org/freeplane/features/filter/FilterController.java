@@ -21,6 +21,7 @@ package org.freeplane.features.filter;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics2D;
@@ -29,7 +30,11 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,6 +51,7 @@ import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -54,6 +60,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -67,7 +74,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ButtonModelStateChangeListenerForProperty;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
+import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.ToolbarLayout;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
@@ -111,7 +120,7 @@ import org.freeplane.view.swing.map.NodeTooltipManager;
 public class FilterController implements IExtension, IMapViewChangeListener {
 	public static final Color HIGHLIGHT_COLOR = Color.MAGENTA;
 	public static int TOOLBAR_SIDE = ViewController.TOP;
-	@SuppressWarnings("serial")
+    @SuppressWarnings("serial")
     @SelectableAction(checkOnPopup = true)
 	private class ToggleFilterToolbarAction extends ToggleToolbarAction {
 	    private ToggleFilterToolbarAction(String actionName, String toolbarName) {
@@ -698,7 +707,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		return filterToolbar;
 	}
 
-    JComboBox createActiveFilterConditionBox() {
+   JComboBox createActiveFilterConditionBox() {
         JComboBox box = new JComboBox(getFilterConditions()){
 				{
 					setMaximumRowCount(10);
@@ -713,11 +722,72 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 JToolTip tip = new JToolTip() {
                     @Override
                     public void setTipText(String tipText) {
-                        JComponent renderer = conditionRenderer.getCellRendererComponent(
-                                getFontMetrics(getFont()),
-                                activeFilterConditionComboBox.getSelectedItem(), false);
+                        ASelectableCondition selectedItem = getSelectedFilterCondition();
+                        IconListComponent renderer = selectedItem.getListCellRendererComponent(getFontMetrics(getFont()));
+                        MouseAdapter mouseListener = new MouseAdapter() {
+
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                ASelectableCondition removedCondition = getConditionUnderMouse(e);
+                                if(removedCondition != null && removedCondition != NO_FILTERING) {
+                                    removeCondition(removedCondition);
+                                }
+                            }
+
+                            private ASelectableCondition getConditionUnderMouse(MouseEvent e) {
+                                IconListComponent component = getComponent(e);
+                                Icon icon = component.getIcon(e.getPoint());
+                                if(icon instanceof ObjectIcon<?>) {
+                                    ASelectableCondition condition = ((ObjectIcon<ASelectableCondition>)icon).getObject();
+                                    return condition;
+                                }
+                                else
+                                    return null;
+                            }
+
+                            private IconListComponent getComponent(MouseEvent e) {
+                                return (IconListComponent) e.getComponent();
+                            }
+
+                            private void removeCondition(ASelectableCondition removedCondition) {
+                                ASelectableCondition selectedFilterCondition = getSelectedFilterCondition();
+                                ASelectableCondition newCondition = selectedFilterCondition.removeCondition(removedCondition);
+                                if(newCondition != selectedFilterCondition) {
+                                    apply(newCondition == null ? NO_FILTERING : newCondition);
+                                    SwingUtilities.getWindowAncestor(renderer).setVisible(false);
+                                }
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                                highlightCondition(e);
+                            }
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+                                getComponent(e).highlightRemovedIcon(null);
+                            }
+
+                            private void highlightCondition(MouseEvent e) {
+                                IconListComponent component = getComponent(e);
+                                if(getSelectedCondition() == NO_FILTERING)
+                                    component.highlightRemovedIcon(null);
+                                else {
+                                    Icon icon = component.getIcon(e.getPoint());
+                                    component.highlightRemovedIcon(icon);
+                                }
+                            }
+
+                            @Override
+                            public void mouseMoved(MouseEvent e) {
+                                highlightCondition(e);
+                            }
+
+                        };
+                        renderer.addMouseListener(mouseListener);
+                        renderer.addMouseMotionListener(mouseListener);
                         renderer.setBorder(BorderFactory.createRaisedBevelBorder());
                         add(renderer);
+                        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     }
                     @Override
                     public Dimension getPreferredSize() {
@@ -1047,5 +1117,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection != null && map.equals(selection.getMap()))
             updateUILater();
+    }
+
+    private ASelectableCondition getSelectedFilterCondition() {
+        return getSelectedCondition();
     }
 }

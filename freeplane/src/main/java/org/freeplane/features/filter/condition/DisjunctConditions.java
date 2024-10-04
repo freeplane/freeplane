@@ -65,7 +65,8 @@ public class DisjunctConditions extends CombinedConditions implements ICombinedC
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
-	public boolean checkNode(final NodeModel node) {
+	@Override
+    public boolean checkNode(final NodeModel node) {
 		for (final ASelectableCondition condition : conditions) {
 			if (condition.checkNode(node)) {
 				return true;
@@ -107,7 +108,13 @@ public class DisjunctConditions extends CombinedConditions implements ICombinedC
     protected String getName() {
 	    return NAME;
     }
-	public Collection<ASelectableCondition> split() {
+	@Override
+    public Collection<ASelectableCondition> split() {
 	    return Arrays.asList(conditions);
+    }
+
+    @Override
+    protected ASelectableCondition createConditions(ASelectableCondition[] newConditions) {
+        return new DisjunctConditions(newConditions);
     }
 }

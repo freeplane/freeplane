@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.ui.components.IconListComponent;
+import org.freeplane.core.ui.components.IconRow;
 import org.freeplane.core.ui.components.ObjectIcon;
 import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.ui.components.UITools;
@@ -112,7 +113,7 @@ public abstract class ASelectableCondition  implements ICondition{
                 });
         Icon openingValueDelimiterIcon = textIcon(conditionOperator.getOpeningValueDelimiter(), fontMetrics);
         Icon closingValueDelimiterIcon = textIcon(conditionOperator.getClosingValueDelimiter(), fontMetrics);
-        ObjectIcon<ASelectableCondition> gapIcon = textIcon(" ", fontMetrics);
+        TextIcon gapIcon = textIcon(" ", fontMetrics);
         if(! operator.isEmpty()) {
             icons.add(gapIcon);
             if(! isOperatorBlank) {
@@ -121,7 +122,7 @@ public abstract class ASelectableCondition  implements ICondition{
             }
         }
         icons.add(openingValueDelimiterIcon);
-        icons.add(new ObjectIcon<>(this, valueIcon));
+        icons.add(valueIcon);
         icons.add(closingValueDelimiterIcon);
         if(matchCase) {
             icons.add(gapIcon);
@@ -141,18 +142,18 @@ public abstract class ASelectableCondition  implements ICondition{
         return icons;
     }
 
-    protected ObjectIcon<ASelectableCondition> textIcon(final String text,
+    protected TextIcon textIcon(final String text,
             FontMetrics fontMetrics) {
         return textIcon(text, fontMetrics, x -> {/**/});
     }
-    protected ObjectIcon<ASelectableCondition> textIcon(final String text,
+    protected TextIcon textIcon(final String text,
             FontMetrics fontMetrics, Consumer<TextIcon> config) {
         TextIcon icon = new TextIcon(text, fontMetrics);
         config.accept(icon);
-        return new ObjectIcon<>(this, icon);
+        return icon;
     }
 
-	final public JComponent getListCellRendererComponent(FontMetrics fontMetrics) {
+	final public IconListComponent getListCellRendererComponent(FontMetrics fontMetrics) {
 	    IconListComponent renderer = createGraphicComponent(fontMetrics);
 		renderer.setToolTipText(description);
 		return renderer;
@@ -160,19 +161,27 @@ public abstract class ASelectableCondition  implements ICondition{
 
 	protected IconListComponent createGraphicComponent(FontMetrics fontMetrics) {
 		List<Icon> icons = createRenderedIcons(fontMetrics);
+		List<Icon> iconsWithName;
 		if(userName != null){
-		    List<Icon> iconsWithName = new ArrayList<Icon>(icons.size() + 1);
+		    iconsWithName = new ArrayList<Icon>(icons.size() + 1);
 		    iconsWithName.add(new TextIcon(userName + " : ", fontMetrics));
 		    iconsWithName.addAll(icons);
-			return new IconListComponent(iconsWithName);
+			return createIconListComponent(iconsWithName);
 		}
-		return new IconListComponent(icons);
+		return createIconListComponent(icons);
 	}
+
+    protected IconListComponent createIconListComponent(List<Icon> icons) {
+        IconRow icon = new IconRow(icons);
+        ObjectIcon o = new ObjectIcon(this, icon);
+        List<ObjectIcon> singletonList = Collections.singletonList(o);
+        return new IconListComponent(singletonList);
+    }
 
 	abstract protected List<Icon> createRenderedIcons(FontMetrics  fontMetrics);
 
 	protected List<Icon> createRenderedIconsFromDescription(FontMetrics  fontMetrics) {
-	    return Collections.singletonList(new ObjectIcon<>(this, new TextIcon(toString(), fontMetrics)));
+	    return Collections.singletonList(new TextIcon(toString(), fontMetrics));
     }
 
     protected String createDescription(final String attribute, final String simpleCondition, final String value,
@@ -234,7 +243,7 @@ public abstract class ASelectableCondition  implements ICondition{
         if(userName == null){
             return createRenderedIcons(fontMetrics);
         }
-        return Collections.singletonList(new ObjectIcon<>(this, new TextIcon('"' + userName + '"', fontMetrics)));
+        return Collections.singletonList(new TextIcon('"' + userName + '"', fontMetrics));
     }
 
     protected String createSmallDescription() {
@@ -246,5 +255,9 @@ public abstract class ASelectableCondition  implements ICondition{
 
     public boolean canBePersisted() {
         return true;
+    }
+
+    public ASelectableCondition removeCondition(ASelectableCondition removedCondition) {
+        return removedCondition == this ? null : this;
     }
 }

@@ -67,7 +67,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	@Override
     protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
 		Icon icon = STORE.getMindIcon(getIconName()).getIcon();
-		return Collections.singletonList(new ObjectIcon<>(this, icon));
+		return Collections.singletonList(icon);
     }
 
 	public boolean checkNode(final NodeModel node) {

@@ -83,7 +83,7 @@ public class IconContainedCondition extends ASelectableCondition {
 	@Override
     public List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
 		Icon icon = STORE.getUIIcon(getIconName()).getIcon();
-		return Collections.singletonList(new ObjectIcon<>(this, icon));
+		return Collections.singletonList(icon);
 	}
 
 	public void fillXML(final XMLElement child) {
