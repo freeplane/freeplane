@@ -103,6 +103,7 @@ import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLWriter;
+import org.freeplane.view.swing.map.NodeTooltipManager;
 
 /**
  * @author Dimitry Polivaev
@@ -715,12 +716,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                         JComponent renderer = conditionRenderer.getCellRendererComponent(
                                 getFontMetrics(getFont()),
                                 activeFilterConditionComboBox.getSelectedItem(), false);
-                        if(renderer.getPreferredSize().width > activeFilterConditionComboBox.getWidth() * 4 / 5) {
-                            renderer.setBorder(BorderFactory.createRaisedBevelBorder());
-                            add(renderer);
-                        }
-                        else
-                            super.setTipText(renderer.getToolTipText());
+                        renderer.setBorder(BorderFactory.createRaisedBevelBorder());
+                        add(renderer);
                     }
                     @Override
                     public Dimension getPreferredSize() {
@@ -748,12 +745,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             @Override
             public Point getToolTipLocation(MouseEvent event) {
                 int height = getHeight();
-                return new Point(height / 5, height);
+                return new Point(height / 5, height / 5);
             }
 
 
         };
-        ToolTipManager.sharedInstance().registerComponent(box);
+        NodeTooltipManager.getSharedInstance().registerComponent(box);
         box.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         box.addActionListener(filterChangeListener);
         return box;

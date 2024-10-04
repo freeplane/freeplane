@@ -8,6 +8,7 @@ package org.freeplane.core.ui.components;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -46,6 +47,8 @@ public class IconListComponent extends JComponent {
 
     public void setIcons(List<? extends Icon> icons) {
         this.icons = icons;
+        revalidate();
+        repaint();
     }
 
     public int getIconCount() {
@@ -53,7 +56,10 @@ public class IconListComponent extends JComponent {
     }
 
     public Icon removeIcon(int index){
-        return icons.remove(index);
+        Icon removed = icons.remove(index);
+        revalidate();
+        repaint();
+        return removed;
     }
 
     @Override
@@ -106,20 +112,23 @@ public class IconListComponent extends JComponent {
     }
 
     private void paintIcons(Graphics g, float zoom) {
-        super.paintComponent(g);
-        int x = 0;
-        int y = 0;
+        // Obtain insets
+        Insets insets = getInsets();
+        int x = insets.left; // Start drawing from the left inset
+        int y = insets.top;  // Start drawing from the top inset
         int rowHeight = 0;
         int totalRowWidth = 0;
         List<Icon> rowIcons = new ArrayList<>(icons.size());
-        final int width = (int) (getWidth() / zoom);
+        final int availableWidth = (int) (getWidth() / zoom) - insets.left - insets.right;
 
         for (Icon icon : icons) {
             int iconWidth = icon.getIconWidth();
-            if (wrapsIcons && x > 0 && x + iconWidth > width) {
-                int dx = width - totalRowWidth;
-                drawIconsRow(g, rowIcons, dx, y, width, rowHeight);
-                x = 0;
+            if (wrapsIcons && x > insets.left && x + iconWidth > availableWidth + insets.left) {
+                // Draw the current row
+                int dx = availableWidth - totalRowWidth;
+                drawIconsRow(g, rowIcons, dx, y, availableWidth, rowHeight, insets);
+                // Move to next row
+                x = insets.left;
                 y += rowHeight;
                 rowHeight = 0;
                 rowIcons.clear();
@@ -131,30 +140,30 @@ public class IconListComponent extends JComponent {
             rowHeight = Math.max(rowHeight, icon.getIconHeight());
         }
         if (!rowIcons.isEmpty()) {
-            int dx = width - totalRowWidth;
-            drawIconsRow(g, rowIcons, dx, y, width, rowHeight);
+            int dx = availableWidth - totalRowWidth;
+            drawIconsRow(g, rowIcons, dx, y, availableWidth, rowHeight, insets);
         }
     }
 
-    private void drawIconsRow(Graphics g, List<Icon> rowIcons, int dx, int y, int width, int height) {
+    private void drawIconsRow(Graphics g, List<Icon> rowIcons, int dx, int y, int width, int height, Insets insets) {
         boolean isLeftToRight = getComponentOrientation().isLeftToRight();
         int x;
         if (horizontalAlignment == SwingConstants.CENTER) {
-            x = dx / 2;
+            x = insets.left + dx / 2;
         } else if (horizontalAlignment == SwingConstants.RIGHT) {
-            x = isLeftToRight ? dx : 0;
-        } else {
-            x = isLeftToRight ? 0 : dx;
+            x = isLeftToRight ? insets.left + dx : insets.left;
+        } else { // SwingConstants.LEFT
+            x = isLeftToRight ? insets.left : insets.left + dx;
         }
         for (Icon icon : rowIcons) {
-            final int paintX = isLeftToRight ?  x  : width - x - icon.getIconWidth();
+            final int paintX = isLeftToRight ? x : width + insets.left - x - icon.getIconWidth();
             final int paintY;
             if (verticalAlignment == SwingConstants.CENTER) {
-                paintY = y + (height - icon.getIconHeight()) / 2;
-            } else if (horizontalAlignment == SwingConstants.TOP) {
-                paintY = y;
-            } else {
-                paintY = y + (height - icon.getIconHeight());
+                paintY = y + (height - icon.getIconHeight()) / 2 + insets.top;
+            } else if (verticalAlignment == SwingConstants.TOP) {
+                paintY = y + insets.top;
+            } else { // SwingConstants.BOTTOM
+                paintY = y + height - icon.getIconHeight() + insets.top;
             }
 
             icon.paintIcon(this, g, paintX, paintY);
@@ -169,14 +178,16 @@ public class IconListComponent extends JComponent {
             return preferredSize;
         }
         final float zoom = getZoom();
-        int width = (int) (maximumWidth / zoom + 0.5);
-        int height = 0;
+        Insets insets = getInsets();
+        int availableWidth = (int) (maximumWidth / zoom + 0.5) - insets.left - insets.right;
+        int width = 0;
+        int height = insets.top + insets.bottom;
         int maximumRowWidth = 0;
         int rowWidth = 0;
         int rowHeight = 0;
 
         for (Icon icon : icons) {
-            if (wrapsIcons && rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
+            if (wrapsIcons && rowWidth > 0 && rowWidth + icon.getIconWidth() > availableWidth) {
                 height += rowHeight;
                 maximumRowWidth = Math.max(rowWidth, maximumRowWidth);
                 rowWidth = 0;
@@ -188,22 +199,23 @@ public class IconListComponent extends JComponent {
 
         height += rowHeight;
         maximumRowWidth = Math.max(rowWidth, maximumRowWidth);
-        return new Dimension((int) (maximumRowWidth * zoom + 0.5), (int)(height * zoom + 0.5));
+        width = maximumRowWidth + insets.left + insets.right;
+
+        return new Dimension((int) (width * zoom + 0.5), (int)(height * zoom + 0.5));
     }
 
     public Icon getIcon(Point point) {
         final float zoom = getZoom();
-        final int width = (int) (getWidth() / zoom);
+        final Insets insets = getInsets();
+        final int availableWidth = (int) (getWidth() / zoom) - insets.left - insets.right;
         int rowWidth = 0;
         int rowHeight = 0;
-        int x = 0;
-        int y = 0;
+        int x = insets.left;
+        int y = insets.top;
 
-        for (int i = 0; i < icons.size(); i++) {
-            Icon icon = icons.get(i);
-
-            if (wrapsIcons && rowWidth > 0 && rowWidth + icon.getIconWidth() > width) {
-                x = 0;
+        for (Icon icon : icons) {
+            if (wrapsIcons && rowWidth > 0 && rowWidth + icon.getIconWidth() > availableWidth) {
+                x = insets.left;
                 y += rowHeight;
                 rowWidth = 0;
                 rowHeight = 0;
@@ -226,7 +238,8 @@ public class IconListComponent extends JComponent {
 
     public void setMaximumWidth(int maximumWidth) {
         this.maximumWidth = maximumWidth;
-
+        revalidate();
+        repaint();
     }
 
     protected float getZoom() {
@@ -243,6 +256,8 @@ public class IconListComponent extends JComponent {
 
     public void setWrapIcons(boolean wrapsIcons) {
         this.wrapsIcons = wrapsIcons;
+        revalidate();
+        repaint();
     }
 
 }
