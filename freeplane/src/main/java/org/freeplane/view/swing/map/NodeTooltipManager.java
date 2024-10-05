@@ -130,9 +130,9 @@ public class NodeTooltipManager implements IExtension{
 		instance.setInitialDelay(initialDelay);
     }
 	private NodeTooltipManager() {
-		enterTimer = new Timer(750, new insideTimerAction());
+		enterTimer = new Timer(750, new InsideTimerAction());
 		enterTimer.setRepeats(false);
-		exitTimer = new Timer(150, new exitTimerAction());
+		exitTimer = new Timer(150, new ExitTimerAction());
 		exitTimer.setRepeats(false);
 		componentMouseListener = new ComponentMouseListener();
 		mouseOverComponent = false;
@@ -190,7 +190,7 @@ public class NodeTooltipManager implements IExtension{
 		}
 	}
 
-	private void hideTipWindow() {
+	public void hideTipWindow() {
 		insideComponent = null;
 		preferredToolTipLocation = null;
 		toolTipText = null;
@@ -285,11 +285,13 @@ public class NodeTooltipManager implements IExtension{
 			return;
 		}
 		hideTipWindow();
-		insideComponent = component;
-		preferredToolTipLocation = component.getToolTipLocation(event);
-		mouseEvent = event;
-		if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS))
-			enterTimer.restart();
+		if(ResourceController.getResourceController().getBooleanProperty(RESOURCES_SHOW_NODE_TOOLTIPS)
+		        || null == SwingUtilities.getAncestorOfClass(NodeView.class, component)) {
+		    insideComponent = component;
+		    preferredToolTipLocation = component.getToolTipLocation(event);
+		    mouseEvent = event;
+            enterTimer.restart();
+        }
 	}
 
 	protected boolean isMouseOverComponent() {
@@ -297,7 +299,7 @@ public class NodeTooltipManager implements IExtension{
 	}
 
 
-	private class insideTimerAction implements ActionListener {
+	private class InsideTimerAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (insideComponent != null){
@@ -316,11 +318,12 @@ public class NodeTooltipManager implements IExtension{
 		}
 
 		private boolean editorActive() {
-			return KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner() instanceof JTextComponent;
+			Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+            return focusOwner instanceof JTextComponent && SwingUtilities.getAncestorOfClass(NodeView.class, focusOwner) != null;
 		}
 	}
 
-	private class exitTimerAction implements ActionListener {
+	private class ExitTimerAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(tip == null || insideComponent == null){

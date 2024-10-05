@@ -166,12 +166,13 @@ abstract class CombinedConditions extends ASelectableCondition implements ICombi
         if(newLength == 1)
             return oldConditions[1 - replacedIndex];
         ASelectableCondition[] newConditions = new ASelectableCondition[newLength];
-        for(int i = 0, j = 0; i < newLength;) {
+        for(int i = 0, j = 0; j < newLength;) {
             if(i != replacedIndex) {
                 newConditions[j++] = oldConditions[i++];
             }
-            else if(newCondition != null) {
-                newConditions[j++] = newCondition;
+            else {
+                if(newCondition != null)
+                    newConditions[j++] = newCondition;
                 i++;
             }
         }

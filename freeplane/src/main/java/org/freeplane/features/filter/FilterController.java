@@ -736,7 +736,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
                             private ASelectableCondition getConditionUnderMouse(MouseEvent e) {
                                 IconListComponent component = getComponent(e);
-                                Icon icon = component.getIcon(e.getPoint());
+                                Icon icon = component.getIconAt(e.getPoint());
                                 if(icon instanceof ObjectIcon<?>) {
                                     ASelectableCondition condition = ((ObjectIcon<ASelectableCondition>)icon).getObject();
                                     return condition;
@@ -754,7 +754,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                                 ASelectableCondition newCondition = selectedFilterCondition.removeCondition(removedCondition);
                                 if(newCondition != selectedFilterCondition) {
                                     apply(newCondition == null ? NO_FILTERING : newCondition);
-                                    SwingUtilities.getWindowAncestor(renderer).setVisible(false);
+                                    NodeTooltipManager.getSharedInstance().hideTipWindow();
                                 }
                             }
 
@@ -772,7 +772,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                                 if(getSelectedCondition() == NO_FILTERING)
                                     component.highlightRemovedIcon(null);
                                 else {
-                                    Icon icon = component.getIcon(e.getPoint());
+                                    Icon icon = component.getIconAt(e.getPoint());
                                     component.highlightRemovedIcon(icon);
                                 }
                             }
