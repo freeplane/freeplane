@@ -21,6 +21,7 @@ import org.osgi.framework.BundleContext;
 import de.sciss.syntaxpane.DefaultSyntaxKit;
 import de.sciss.syntaxpane.syntaxkits.GroovySyntaxKit;
 import de.sciss.syntaxpane.syntaxkits.JavaSyntaxKit;
+import de.sciss.syntaxpane.syntaxkits.LaTeXSyntaxKit;
 import de.sciss.syntaxpane.util.Configuration;
 import de.sciss.syntaxpane.util.JarServiceProvider;
 
@@ -47,6 +48,7 @@ public class Activator implements BundleActivator {
 		try {
 			Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
 			DefaultSyntaxKit.initKit();
+			DefaultSyntaxKit.registerContentType("text/latex", LaTeXSyntaxKit.class.getName());
 			Configuration defaultConfig = DefaultSyntaxKit.getConfig(DefaultSyntaxKit.class);
 			defaultConfig.put(DefaultSyntaxKit.CONFIG_ENABLE_WORD_WRAP, "true");
 			if(hasDarkBackground()) {
@@ -76,7 +78,7 @@ public class Activator implements BundleActivator {
         Properties p = JarServiceProvider.readProperties(url);
         p.forEach((x, y) -> config.put((String)x, (String)y));
 	}
-	
+
     private boolean hasDarkBackground() {
 		Color background = new JEditorPane().getBackground();
 		return ! UITools.isLight(background);
