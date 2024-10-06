@@ -22,6 +22,7 @@ package org.freeplane.plugin.svg;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.text.AttributedCharacterIterator;
@@ -42,6 +43,45 @@ import org.w3c.dom.Document;
  */
 abstract class ExportVectorGraphic implements IExportEngine {
 
+	private static class SVGExportGraphics2D extends SVGGraphics2D {
+		private SVGExportGraphics2D(SVGGraphics2D g) {
+			super(g);
+		}
+
+		private SVGExportGraphics2D(SVGGeneratorContext generatorCtx, boolean textAsShapes) {
+			super(generatorCtx, textAsShapes);
+		}
+		
+		@Override
+		public Graphics create() {
+			return new SVGExportGraphics2D(this);
+		}
+
+		@Override
+		public void drawString(String s, float x, float y) {
+		    if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
+		        boolean oldTextAsShapes = textAsShapes;
+		        textAsShapes = true;
+		        super.drawString(s, x, y);
+		        textAsShapes = oldTextAsShapes;
+		    }
+		    else
+		        super.drawString(s, x, y);
+		}
+
+		@Override
+		public void drawString(AttributedCharacterIterator ati, float x, float y) {
+		    if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
+		        boolean oldTextAsShapes = textAsShapes;
+		        textAsShapes = true;
+		        super.drawString(ati, x, y);
+		        textAsShapes = oldTextAsShapes;
+		    }
+		    else
+		        super.drawString(ati, x, y);
+		}
+	}
+
 	/**
 	 */
 	protected SVGGraphics2D createSVGGraphics2D(final MapView view) {
@@ -54,32 +94,7 @@ abstract class ExportVectorGraphic implements IExportEngine {
 	    ctx.setGraphicContextDefaults(defaults);
 	    ctx.setExtensionHandler(new GradientExtensionHandler());
 	    ctx.setPrecision(12);
-	    final SVGGraphics2D g2d = new SVGGraphics2D(ctx, false) {
-
-            @Override
-            public void drawString(String s, float x, float y) {
-                if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
-                    boolean oldTextAsShapes = textAsShapes;
-                    textAsShapes = true;
-                    super.drawString(s, x, y);
-                    textAsShapes = oldTextAsShapes;
-                }
-                else
-                    super.drawString(s, x, y);
-            }
-
-            @Override
-            public void drawString(AttributedCharacterIterator ati, float x, float y) {
-                if(getRenderingHint(GraphicsHints.FORCE_TEXT_TO_SHAPE) == Boolean.TRUE) {
-                    boolean oldTextAsShapes = textAsShapes;
-                    textAsShapes = true;
-                    super.drawString(ati, x, y);
-                    textAsShapes = oldTextAsShapes;
-                }
-                else
-                    super.drawString(ati, x, y);
-            }
-	    };
+	    final SVGGraphics2D g2d = new SVGExportGraphics2D(ctx, false);
 
 	    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
