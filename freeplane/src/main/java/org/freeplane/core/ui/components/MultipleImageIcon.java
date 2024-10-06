@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.swing.Icon;
-import javax.swing.JComponent;
 
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
@@ -41,7 +40,7 @@ import org.freeplane.features.styles.LogicalStyleController.StyleOption;
 
 public class MultipleImageIcon implements Icon {
     final private int TAG_GAP = new Quantity(2, LengthUnit.pt).toBaseUnitsRounded();
-	final private List<Icon> mIcons = new ArrayList<>();
+    final private IconRow iconRow = new IconRow();
 	final private List<NamedIcon> mUIIcons = new ArrayList<>();
 	final private List<TagIcon> mTags = new ArrayList<>();
 
@@ -51,14 +50,14 @@ public class MultipleImageIcon implements Icon {
 	public void addIcon(final NamedIcon uiIcon) {
 		Icon icon = uiIcon.getIcon();
 		Objects.requireNonNull(icon);
-        mIcons.add(icon);
+		iconRow.addIcon(icon);
 		mUIIcons.add(uiIcon);
 	}
 
 	public void addIcon(final NamedIcon uiIcon, Quantity<LengthUnit> iconHeight) {
         Icon icon = uiIcon.getIcon(iconHeight);
         Objects.requireNonNull(icon);
-        mIcons.add(icon);
+        iconRow.addIcon(icon);
 		mUIIcons.add(uiIcon);
 	}
 
@@ -67,13 +66,13 @@ public class MultipleImageIcon implements Icon {
         final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node, option);
         final IconFactory iconFactory = IconFactory.getInstance();
         final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
-        mIcons.add(scaledIcon);
+        iconRow.addIcon(scaledIcon);
         mUIIcons.add(null);
     }
 
     public void addIcon(Icon icon) {
         Objects.requireNonNull(icon);
-        mIcons.add(icon);
+        iconRow.addIcon(icon);
         mUIIcons.add(null);
     }
 
@@ -91,14 +90,7 @@ public class MultipleImageIcon implements Icon {
 	}
 
     private int getGraphicalIconHeight() {
-        int myY = 0;
-		for (final Icon icon : mIcons) {
-			final int otherHeight = icon.getIconHeight();
-			if (otherHeight > myY) {
-				myY = otherHeight;
-			}
-		}
-		return myY;
+        return iconRow.getIconHeight();
     }
 
 	@Override
@@ -110,15 +102,11 @@ public class MultipleImageIcon implements Icon {
 	}
 
     private int getGraphicalIconWidth() {
-        int myX = 0;
-		for (final Icon icon : mIcons) {
-			myX += icon.getIconWidth();
-		}
-		return myX;
+        return iconRow.getIconWidth();
     }
 
 	public int getImageCount() {
-		return mIcons.size();
+		return iconRow.getImageCount();
 	}
 
 	@Override
@@ -128,10 +116,7 @@ public class MultipleImageIcon implements Icon {
 	    final int iconWidth = isLeftToRight ? getIconWidth() : 0;
 	    {
 	        int myX = isLeftToRight ? x + iconWidth - graphicalIconWidth : x;
-	        for (final Icon icon : mIcons) {
-	            icon.paintIcon(c, g, myX, y);
-	            myX += icon.getIconWidth();
-	        }
+	        iconRow.paintIcon(c, g, myX, y);
 	    }
 	    int graphicalIconHeight = getGraphicalIconHeight();
 	    int myY = graphicalIconHeight == 0 ? y : y + TAG_GAP + graphicalIconHeight;
@@ -143,12 +128,12 @@ public class MultipleImageIcon implements Icon {
 	}
 
 	public NamedIcon getUIIconAt(Point coordinate){
-		if(mIcons.isEmpty() || coordinate.x < 0 || coordinate.y < 0 || coordinate.y >= getGraphicalIconHeight())
+		if(! iconRow.containsIcons() || coordinate.x < 0 || coordinate.y < 0 || coordinate.y >= getGraphicalIconHeight())
 			return null;
 		int iconX = 0;
-		for (int iconIndex = 0; iconIndex < mIcons.size(); iconIndex++)
+		for (int iconIndex = 0; iconIndex < iconRow.getImageCount(); iconIndex++)
 		{
-			iconX += mIcons.get(iconIndex).getIconWidth();
+			iconX += iconRow.getIcon(iconIndex).getIconWidth();
 			if(coordinate.x <= iconX){
 				return mUIIcons.get(iconIndex);
 			}
@@ -171,18 +156,11 @@ public class MultipleImageIcon implements Icon {
 
 	//DOCEAR - get a rect relative to this image for a specific icon
 	public Rectangle getIconR(Icon icon) {
-		int myX = 0;
-		for (final Icon ico : mIcons) {
-			if(ico.equals(icon)) {
-				return new Rectangle(myX, 0, ico.getIconWidth(), ico.getIconHeight());
-			}
-			myX += ico.getIconWidth();
-		}
-		return null;
+		return iconRow.getIconR(icon);
 	}
 
     public boolean containsIcons() {
-        return ! (mIcons.isEmpty() && mTags.isEmpty());
+        return iconRow.containsIcons() || ! mTags.isEmpty();
     }
 
 }

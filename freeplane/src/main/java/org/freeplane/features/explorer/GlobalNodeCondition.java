@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.explorer;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
@@ -44,6 +49,11 @@ class GlobalNodeCondition extends ASelectableCondition {
 		final String condition = TextUtils.getText(NAME);
 		return condition;
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
 
 	@Override
 	protected String getName() {

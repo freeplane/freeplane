@@ -19,8 +19,14 @@
  */
 package org.freeplane.features.link;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -45,6 +51,12 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
 		return createDescription(condition, simpleCondition, getText());
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String condition = TextUtils.getText(LinkConditionController.CONNECTOR);
+        return createRenderedIcons(condition, ConditionOperator.FILTER_EXIST, getText(), fontMetrics);
+    }
 
 	@Override
 	protected String getName() {

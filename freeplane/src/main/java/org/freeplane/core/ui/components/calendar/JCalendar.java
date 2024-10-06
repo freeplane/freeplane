@@ -13,15 +13,9 @@
  */
 package org.freeplane.core.ui.components.calendar;
 
-import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -33,10 +27,6 @@ import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.MenuElement;
-import javax.swing.MenuSelectionManager;
-import javax.swing.SwingUtilities;
 
 /**
  * JCalendar is a bean for entering a date by choosing the year, month and day.
@@ -46,55 +36,6 @@ import javax.swing.SwingUtilities;
  * @version $LastChangedDate: 2006-05-05 18:43:15 +0200 (Fr, 05 Mai 2006) $
  */
 public class JCalendar extends JPanel implements PropertyChangeListener, MouseListener {
-	private static final class JCalendarPopupMenu extends JPopupMenu {
-	    private static final long serialVersionUID = 1L;
-	    private AWTEventListener mouseListener;
-
-	    public JCalendarPopupMenu() {
-	        // Initialize the mouse listener
-	        mouseListener = new AWTEventListener() {
-	            @Override
-	            public void eventDispatched(AWTEvent event) {
-	                if (event instanceof MouseEvent) {
-	                    MouseEvent mouseEvent = (MouseEvent) event;
-
-	                    if (isVisible()
-	                            && mouseEvent.getID() == MouseEvent.MOUSE_CLICKED
-	                            && getInvoker() != mouseEvent.getComponent()
-	                            && !SwingUtilities.isDescendingFrom(mouseEvent.getComponent(), JCalendarPopupMenu.this)) {
-                            setVisible(false);
-                        }
-	                }
-	            }
-	        };
-	    }
-
-	    @Override
-	    public void setVisible(boolean b) {
-	        if (b) {
-	            Toolkit.getDefaultToolkit().addAWTEventListener(mouseListener, AWTEvent.MOUSE_EVENT_MASK);
-	        } else {
-	            Toolkit.getDefaultToolkit().removeAWTEventListener(mouseListener);
-	        }
-	        super.setVisible(b);
-	    }
-
-        @Override
-        public void menuSelectionChanged(boolean isIncluded) {
-            if (!isIncluded) {
-                AWTEvent currentEvent = EventQueue.getCurrentEvent();
-                if(currentEvent != null) {
-                    final Object source = currentEvent.getSource();
-                    if (source instanceof Component) {
-                        final Component c = (Component) source;
-                        isIncluded = SwingUtilities.isDescendingFrom(c, this);
-                    }
-                }
-            }
-            super.menuSelectionChanged(isIncluded);
-        }
-	}
-
 	public static final String DATE_PROPERTY = "date";
 	/**
 	 *
@@ -116,7 +57,6 @@ public class JCalendar extends JPanel implements PropertyChangeListener, MouseLi
 	}
 
 	private Calendar calendar;
-	private JPopupMenu calendarPopupMenu;
 	final private JTimeChooser timeChooser;
 	/** the day chooser */
 	final private JDayChooser dayChooser;
@@ -269,14 +209,6 @@ public class JCalendar extends JPanel implements PropertyChangeListener, MouseLi
 		this(null, locale, monthSpinner, true, false);
 	}
 
-	public JPopupMenu createPopupMenu() {
-		if (calendarPopupMenu != null) {
-			return calendarPopupMenu;
-		}
-		calendarPopupMenu = new JCalendarPopupMenu();
-		calendarPopupMenu.add(this);
-		return calendarPopupMenu;
-	}
 
 	/**
 	 * Returns the calendar property.

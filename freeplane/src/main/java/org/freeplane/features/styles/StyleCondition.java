@@ -1,5 +1,10 @@
 package org.freeplane.features.styles;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
@@ -39,7 +44,12 @@ public class StyleCondition extends ASelectableCondition {
 		return null;
 	}
 
-	protected String createDescription() {
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    protected String createDescription() {
 		final String filterStyle = TextUtils.getText(LogicalStyleFilterController.FILTER_STYLE);
 		return filterStyle + " '" + value.toString() + '\'';
 	}

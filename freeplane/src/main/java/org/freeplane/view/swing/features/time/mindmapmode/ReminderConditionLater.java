@@ -19,9 +19,13 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -46,10 +50,15 @@ class ReminderConditionLater extends ASelectableCondition {
 	protected String createDescription() {
 		final String reminder = TextUtils.getText(ReminderConditionController.FILTER_REMINDER);
 		final String before = TextUtils.getText(FILTER_REMINDER_LATER);
-		return ConditionFactory.createDescription(reminder, before, null);
+		return createDescription(reminder, before, null);
 	}
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected
 	String getName() {
 		return NAME;

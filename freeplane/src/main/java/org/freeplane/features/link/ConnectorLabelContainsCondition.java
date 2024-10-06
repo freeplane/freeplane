@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.link;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy.Type;
 
@@ -66,6 +71,12 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		return createDescription(condition, containsDescription(), getText());
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
+        return createRenderedIcons(condition, containsOperator(), getText(), fontMetrics);
+    }
 
 	@Override
 	protected String getName() {

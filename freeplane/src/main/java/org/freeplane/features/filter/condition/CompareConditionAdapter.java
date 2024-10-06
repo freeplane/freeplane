@@ -19,13 +19,19 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
+import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.StringMatchingStrategy.Type;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
@@ -175,28 +181,36 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 		return new Date(value.getYear(), value.getMonth(), value.getDate()).compareTo((Date) conditionValue);
 	}
 
-	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
+	protected String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
 		String simpleCondition = createComparisonDescription(comparationResult, succeed);
 		return createDescription(attribute, simpleCondition, valueDescription());
 	}
 
-    public static String createComparisonDescription(final int comparationResult, final boolean succeed) {
-        String simpleCondition;
-		switch (comparationResult) {
-			case -1:
-				simpleCondition = succeed ? ConditionFactory.FILTER_LT : ConditionFactory.FILTER_GE;
-				break;
-			case 0:
-				simpleCondition = TextUtils.getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
-				        : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
-				break;
-			case 1:
-				simpleCondition = succeed ? ConditionFactory.FILTER_GT : ConditionFactory.FILTER_LE;
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
+    protected List<Icon> createRenderedIcons(final String attribute, final int comparationResult, final boolean succeed, FontMetrics fontMetrics) {
+        ConditionOperator simpleCondition = createComparisonOperator(comparationResult, succeed);
+        return createRenderedIcons(attribute, simpleCondition, valueDescription(), fontMetrics);
+    }
+
+    public static ConditionOperator createComparisonOperator(final int comparationResult, final boolean succeed) {
+        ConditionOperator simpleCondition;
+        switch (comparationResult) {
+            case -1:
+                simpleCondition = succeed ? ConditionOperator.FILTER_LT : ConditionOperator.FILTER_GE;
+                break;
+            case 0:
+                simpleCondition = succeed ? ConditionOperator.FILTER_IS_EQUAL_TO : ConditionOperator.FILTER_IS_NOT_EQUAL_TO;
+                break;
+            case 1:
+                simpleCondition = succeed ? ConditionOperator.FILTER_GT : ConditionOperator.FILTER_LE;
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
         return simpleCondition;
+    }
+
+    public static String createComparisonDescription(final int comparationResult, final boolean succeed) {
+        return createComparisonOperator(comparationResult, succeed).getOperator();
     }
 
 	private String valueDescription() {

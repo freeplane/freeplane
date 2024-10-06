@@ -79,10 +79,10 @@ public class FreeplaneTooltip extends JToolTip {
     }
 
 	@Override
-    public void layout() {
+    public void doLayout() {
 		final Component renderer = getComponent(0);
 		renderer.setSize(getSize());
-	    super.layout();
+	    super.doLayout();
     }
 
 	public void setBase(URL url) {

@@ -19,10 +19,14 @@
  */
 package org.freeplane.features.time;
 
+import java.awt.FontMetrics;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.map.NodeModel;
 
@@ -49,10 +53,15 @@ public class TimeConditionModifiedBefore extends TimeCondition {
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = getDate().toString();
 		final String before = TextUtils.getText(FILTER_MODIFIED_BEFORE);
-		return ConditionFactory.createDescription(filterTime, before, dateAsString);
+		return createDescription(filterTime, before, dateAsString);
 	}
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected
 	String getName() {
 		return NAME;

@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.attribute;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -69,10 +74,15 @@ public class AttributeExistsCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, null);
+		return createDescription(attribute.toString(), simpleCondition, null);
 	}
 
-	public void fillXML(final XMLElement child) {
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
 	}

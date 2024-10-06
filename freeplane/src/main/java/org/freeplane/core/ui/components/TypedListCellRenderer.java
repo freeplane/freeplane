@@ -104,8 +104,8 @@ public class TypedListCellRenderer extends DefaultListCellRenderer{
 		else if (value instanceof Number) {
 			icon = numberIcon;
 		}
-		else if (value instanceof ObjectAndIcon) {
-			icon = ((ObjectAndIcon) value).getIcon();
+		else if (value instanceof ObjectIcon) {
+			icon = ((ObjectIcon<?>) value).getIcon();
 		}
 		else
 			icon = null;

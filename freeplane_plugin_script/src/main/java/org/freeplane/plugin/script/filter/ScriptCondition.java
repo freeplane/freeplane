@@ -1,11 +1,15 @@
 package org.freeplane.plugin.script.filter;
 
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.KeyboardFocusManager;
+import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.ui.components.IconListComponent;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -119,9 +123,14 @@ public class ScriptCondition extends ASelectableCondition {
 		return TextUtils.format(SCRIPT_FILTER_DESCRIPTION_RESOURCE, source);
 	}
 
-	@Override
-	protected JComponent createRendererComponent() {
-	    final JComponent renderer = super.createRendererComponent();
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
+    protected IconListComponent createGraphicComponent(FontMetrics  fontMetrics) {
+	    final IconListComponent renderer = super.createGraphicComponent(fontMetrics);
 	    final Dimension preferredSize = renderer.getPreferredSize();
 	    if(preferredSize.width > 200) {
 	        renderer.setPreferredSize(new Dimension(200, preferredSize.height));

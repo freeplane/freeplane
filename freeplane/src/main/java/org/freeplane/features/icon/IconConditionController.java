@@ -180,13 +180,18 @@ class IconConditionController implements IElementaryConditionController {
 
 	@Override
     public boolean isCaseDependent(final Object property, final TranslatedObject simpleCond) {
-		return false;
+	    return checksTag(property);
 	}
 
 	@Override
     public boolean supportsApproximateMatching(final Object property, final TranslatedObject simpleCond) {
-		return false;
+	    return checksTag(property);
 	}
+
+    private boolean checksTag(final Object property) {
+        final TranslatedObject namedObject = (TranslatedObject) property;
+        return ! namedObject.objectEquals(IconConditionController.FILTER_ICON);
+    }
 
 	@Override
     public ASelectableCondition loadCondition(final XMLElement element) {

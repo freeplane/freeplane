@@ -19,12 +19,18 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 
+import org.freeplane.core.ui.components.ObjectIcon;
+import org.freeplane.core.ui.components.TextIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -53,13 +59,17 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
 		assert originalCondition != null;
 		this.originalCondition = originalCondition;
 	}
-	
+
 
     private final String name;
 
     @Override
     protected String createDescription() {
-        return name;
+        StringBuilder description = new StringBuilder();
+        final String decoratorText = TextUtils.getText(decoratorKey);
+        description.append(decoratorText).append(' ');
+        description.append(originalCondition.createSmallDescription());
+        return description.toString();
     }
 
     @Override
@@ -68,7 +78,8 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
     }
 
 
-	abstract public boolean checkNode(final NodeModel node);
+	@Override
+    abstract public boolean checkNode(final NodeModel node);
 
 	/*
 	 * (non-Javadoc)
@@ -76,14 +87,16 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
 	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
 	 * ()
 	 */
-	protected JComponent createRendererComponent() {
-		final JCondition component = new JCondition();
+	@Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
         final String decoratorText = TextUtils.getText(decoratorKey);
 		final String text = decoratorText + ' ';
-		component.add(ConditionFactory.createConditionLabel(text));
-		final JComponent renderer = originalCondition.createShortRendererComponent();
-		component.add(renderer);
-		return component;
+		Icon decoratorIcon = new TextIcon(text, fontMetrics);
+		List<Icon> originalIcons = originalCondition.createSmallRendererIcons(fontMetrics);
+		ArrayList<Icon> iconList = new ArrayList<>(originalIcons.size() + 1);
+		iconList.add(decoratorIcon);
+		iconList.addAll(originalIcons);
+		return iconList;
 	}
 
 	@Override
@@ -91,30 +104,36 @@ abstract public class DecoratedCondition extends ASelectableCondition implements
         return originalCondition.canBePersisted();
     }
 
+    @Override
     public void fillXML(final XMLElement child) {
 		originalCondition.toXml(child);
 	}
-	
-	public Collection<ASelectableCondition> split() {
+
+	@Override
+    public Collection<ASelectableCondition> split() {
 	    return Arrays.asList(new ASelectableCondition[]{originalCondition});
     }
 
+    @Override
     public boolean checksParent() {
         return originalCondition.checksParent();
     }
 
+    @Override
     public boolean checksAncestors() {
         return originalCondition.checksAncestors();
     }
 
+    @Override
     public boolean checksChildren() {
         return originalCondition.checksChildren();
     }
 
+    @Override
     public boolean checksDescendants() {
         return originalCondition.checksDescendants();
     }
-	
-	
+
+
 
 }

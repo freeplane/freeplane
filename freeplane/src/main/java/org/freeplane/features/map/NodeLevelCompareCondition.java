@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
@@ -69,6 +74,12 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 		final String nodeCondition = TextUtils.getText(NodeLevelConditionController.FILTER_LEVEL);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String nodeCondition = TextUtils.getText(NodeLevelConditionController.FILTER_LEVEL);
+        return createRenderedIcons(nodeCondition, comparationResult, succeed, fontMetrics);
+    }
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);

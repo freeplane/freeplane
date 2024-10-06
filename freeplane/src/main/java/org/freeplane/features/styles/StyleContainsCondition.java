@@ -1,6 +1,10 @@
 package org.freeplane.features.styles;
 
+import java.awt.FontMetrics;
 import java.util.Collection;
+import java.util.List;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -17,12 +21,14 @@ public class StyleContainsCondition extends ASelectableCondition {
 		this.value = value;
 	}
 
-	public boolean checkNode(final NodeModel node) {
+	@Override
+    public boolean checkNode(final NodeModel node) {
 		final Collection<IStyle> styles = LogicalStyleController.getController().getStyles(node, StyleOption.FOR_UNSELECTED_NODE);
 		return styles.contains(value);
 	}
 
-	public void fillXML(final XMLElement child) {
+	@Override
+    public void fillXML(final XMLElement child) {
 		if (value instanceof StyleString) {
 			child.setAttribute("TEXT", value.toString());
 		}
@@ -43,12 +49,17 @@ public class StyleContainsCondition extends ASelectableCondition {
 		return null;
 	}
 
-	protected String createDescription() {
+	@Override
+    protected String createDescription() {
 		final String style = TextUtils.getText(LogicalStyleFilterController.FILTER_STYLE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(style, simpleCondition, value.toString());
+		return createDescription(style, simpleCondition, value.toString());
 	}
 
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
 	@Override
     protected String getName() {
 	    return NAME;

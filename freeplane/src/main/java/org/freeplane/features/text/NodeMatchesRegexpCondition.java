@@ -19,13 +19,18 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.FontMetrics;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -70,7 +75,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition implements 
 		}
 		return false;
 	}
-	
+
 	private boolean checkText(final String text) {
 		return searchPattern.matcher(text).find();
 	}
@@ -79,9 +84,15 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition implements 
 	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
+		return createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
 		    isMatchCase(), false, false);
 	}
+
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String nodeCondition = TextUtils.getText(nodeItem);
+        return createRenderedIcons(nodeCondition, ConditionOperator.FILTER_REGEXP, searchPattern.pattern(), isMatchCase(), false, false, fontMetrics);
+    }
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
@@ -98,7 +109,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition implements 
     protected String getName() {
 	    return NAME;
     }
-	
+
 	public String getNodeItem() {
 		return nodeItem;
 	}

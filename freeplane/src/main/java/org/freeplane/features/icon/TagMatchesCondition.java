@@ -19,11 +19,16 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.FontMetrics;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -67,11 +72,16 @@ public class TagMatchesCondition extends TagCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(TextUtils.getText(IconConditionController.FILTER_TAG),
+		return createDescription(TextUtils.getText(IconConditionController.FILTER_TAG),
 		        simpleCondition, value, isMatchCase(), false, false);
 	}
 
 	@Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+	    return createRenderedIcons("", ConditionOperator.FILTER_REGEXP, tagIcon(fontMetrics) , fontMetrics);
+    }
+
+    @Override
     public void fillXML(final XMLElement child) {
 		super.fillXML(child);
         child.setAttribute(VALUE, value);

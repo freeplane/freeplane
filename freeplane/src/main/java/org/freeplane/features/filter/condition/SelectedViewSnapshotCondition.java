@@ -19,8 +19,12 @@
  */
 package org.freeplane.features.filter.condition;
 
+import java.awt.FontMetrics;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -59,6 +63,10 @@ public class SelectedViewSnapshotCondition extends ASelectableCondition {
 		return description;
     }
 
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
 
 	@Override
     protected String getName() {

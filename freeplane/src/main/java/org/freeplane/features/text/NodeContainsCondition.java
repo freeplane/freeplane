@@ -19,11 +19,17 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.StringMatchingStrategy.Type;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
+import org.freeplane.features.link.LinkConditionController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -90,7 +96,13 @@ public class NodeContainsCondition extends StringConditionAdapter implements Nod
 		return createDescription(nodeCondition, containsDescription(), value);
 	}
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        final String nodeCondition = TextController.FILTER_ANYTEXT.equals(nodeItem) ? "" : TextUtils.getText(nodeItem);
+        return createRenderedIcons(nodeCondition, containsOperator(), value, fontMetrics);
+    }
+
+    @Override
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		child.setAttribute(NodeContainsCondition.VALUE, value);

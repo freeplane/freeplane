@@ -19,12 +19,18 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.LineComparator;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
+import org.freeplane.features.filter.condition.ConditionFactory.ConditionOperator;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -79,7 +85,15 @@ public class TagCompareCondition extends TagCondition {
         return createDescription(TextUtils.getText(IconConditionController.FILTER_TAG), simpleCondition, conditionContent);
 	}
 
-	public void fillXML(final XMLElement child) {
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        ConditionOperator operator = CompareConditionAdapter.createComparisonOperator(comparationResult, succeed);
+        ConditionOperator displayedOperator = operator == ConditionOperator.FILTER_IS_EQUAL_TO ? ConditionOperator.EMPTY : operator;
+        return createRenderedIcons("", displayedOperator, tagIcon(fontMetrics) , fontMetrics);
+    }
+
+	@Override
+    public void fillXML(final XMLElement child) {
 		super.fillXML(child);
         child.setAttribute(VALUE, conditionContent);
         child.setAttribute(COMPARATION_RESULT, Integer.toString(comparationResult));

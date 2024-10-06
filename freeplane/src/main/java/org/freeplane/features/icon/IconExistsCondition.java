@@ -19,6 +19,11 @@
  */
 package org.freeplane.features.icon;
 
+import java.awt.FontMetrics;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -43,11 +48,16 @@ public class IconExistsCondition extends ASelectableCondition {
 
 	@Override
     protected String createDescription() {
-        return ConditionFactory.createDescription(TextUtils.getText("filter_icon"), TextUtils.getText(ConditionFactory.FILTER_EXIST),
+        return createDescription(TextUtils.getText("filter_icon"), TextUtils.getText(ConditionFactory.FILTER_EXIST),
                 null);
     }
 
-	@Override
+    @Override
+    protected List<Icon> createRenderedIcons(FontMetrics fontMetrics) {
+        return createRenderedIconsFromDescription(fontMetrics);
+    }
+
+    @Override
     protected String getName() {
 	    return NAME;
     }
