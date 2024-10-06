@@ -3,18 +3,18 @@
 
 	<!--
 		MINDMAPEXPORTFILTER tex  Latex input
-		
-		: This code	released under the GPL. 
-		: (http://www.gnu.org/copyleft/gpl.html) 
-		Document : mm2latexarticl.xsl 
+
+		: This code	released under the GPL.
+		: (http://www.gnu.org/copyleft/gpl.html)
+		Document : mm2latexarticl.xsl
 		Created on : 01 February 2004, 17:17
-		Author : joerg feuerhake joerg.feuerhake@free-penguin.org 
-		Description: transforms freeplane mm format to latex scrartcl, 
-		handles crossrefs ignores the rest. 
+		Author : joerg feuerhake joerg.feuerhake@free-penguin.org
+		Description: transforms freeplane mm format to latex scrartcl,
+		handles crossrefs ignores the rest.
 		feel free to customize it while leaving the ancient
-		authors mentioned. thank you 
-		Thanks to: Tayeb.Lemlouma@inrialpes.fr	for writing the LaTeX escape scripts and giving inspiration 
-		
+		authors mentioned. thank you
+		Thanks to: Tayeb.Lemlouma@inrialpes.fr	for writing the LaTeX escape scripts and giving inspiration
+
 		ChangeLog:	See: http://freeplane.sourceforge.net/
 	-->
 
@@ -45,35 +45,44 @@
 <xsl:value-of select="substring-before(hook/@URI, '.png')"/>
 <xsl:text>}
 \caption{</xsl:text>
-<xsl:apply-templates select="@TEXT|richcontent" />
+<xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']" />
 <xsl:text>}
 \end{center}
 \end{figure}
 </xsl:text>
 </xsl:when>
 <xsl:when test="count(ancestor::node())-2&lt;=1">
-<xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel1"/>
+<xsl:text>
+\</xsl:text>
+<xsl:value-of select="$sectionLevel1"/>
 <xsl:text>{</xsl:text>
-<xsl:apply-templates select="@TEXT|richcontent" /><xsl:text>}
+<xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']" /><xsl:text>}
 </xsl:text></xsl:when>
-<xsl:when test="node and not(@LOCALIZED_STYLE_REF) and count(ancestor::node())-2=2">
-<xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel2"/>
+<xsl:when test="(node or richcontent[@TYPE != 'NODE']) and not(@LOCALIZED_STYLE_REF) and count(ancestor::node())-2=2">
+<xsl:text>
+\</xsl:text>
+<xsl:value-of select="$sectionLevel2"/>
 <xsl:text>{</xsl:text>
-<xsl:apply-templates select="@TEXT|richcontent" /><xsl:text>}
+<xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']" /><xsl:text>}
 </xsl:text></xsl:when>
-<xsl:when test="node and not(@LOCALIZED_STYLE_REF) and count(ancestor::node())-2=3">
-<xsl:text>\</xsl:text><xsl:value-of select="$sectionLevel3"/>
+<xsl:when test="(node or richcontent[@TYPE != 'NODE']) and not(@LOCALIZED_STYLE_REF) and count(ancestor::node())-2=3">
+<xsl:text>
+\</xsl:text>
+<xsl:value-of select="$sectionLevel3"/>
 <xsl:text>{</xsl:text>
-<xsl:apply-templates select="@TEXT|richcontent" /><xsl:text>}
+<xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']" /><xsl:text>}
 </xsl:text></xsl:when>
-<xsl:when test="node and not(@LOCALIZED_STYLE_REF)">
-<xsl:text>\par \textbf</xsl:text>
+<xsl:when test="(node or richcontent[@TYPE != 'NODE']) and not(@LOCALIZED_STYLE_REF)">
+<xsl:text>
+\par \textbf</xsl:text>
 <xsl:text>{</xsl:text>
-<xsl:apply-templates select="@TEXT|richcontent"/>
+<xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']"/>
 <xsl:text>}
 </xsl:text>
 </xsl:when>
-<xsl:when test="@TEXT=''"></xsl:when>
+<xsl:when test="@TEXT=''">
+<xsl:apply-templates select="richcontent[@TYPE='NODE']" mode="addEol"/>
+</xsl:when>
 <xsl:otherwise>
 
 <xsl:choose>
@@ -93,10 +102,10 @@
 		  <xsl:value-of select="substring-after(richcontent/text, '\latex')"/>
 	  </xsl:otherwise>
   </xsl:choose>
-  
+
   <xsl:text>
 
-</xsl:text>    
+</xsl:text>
 </xsl:when>
 
 <!-- treat a node as latex when '\unparsedlatex[ \n]' prefix is present (export only) -->
@@ -105,13 +114,13 @@
   <xsl:value-of select="substring-after(@TEXT, '\unparsedlatex')"/>
   <xsl:text>
 
-</xsl:text>    
+</xsl:text>
 </xsl:when>
 
 <!-- treat a node as latex with format=(LaTeX|Unparsed LaTeX) -->
 <xsl:when test="@FORMAT='latexPatternFormat' or @FORMAT='unparsedLatexPatternFormat'">
-  <!--<xsl:apply-templates select="@TEXT|richcontent"  mode="rawLatex"/>-->
-  
+  <!--<xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']"  mode="rawLatex"/>-->
+
   <xsl:choose>
 	  <xsl:when test="@TEXT">
 		  <xsl:value-of select="@TEXT"/>
@@ -120,19 +129,21 @@
 		  <xsl:value-of select="richcontent/text"/>
 	  </xsl:otherwise>
   </xsl:choose>
-  
+
   <!--<xsl:value-of select="@TEXT"/>-->
   <xsl:text>
 
-  </xsl:text>    
+  </xsl:text>
 </xsl:when>
 <!-- non-latex content: escape! -->
 <xsl:otherwise>
-  <xsl:apply-templates select="@TEXT|richcontent"  mode="addEol"/>
+  <xsl:apply-templates select="@TEXT | richcontent[@TYPE='NODE']"  mode="addEol"/>
 </xsl:otherwise>
 </xsl:choose>
 </xsl:otherwise>
 </xsl:choose>
+
+<xsl:apply-templates select="richcontent[@TYPE != 'NODE']" mode="addEol"/>
 
 <xsl:apply-templates select="node" />
 </xsl:template>
@@ -163,7 +174,7 @@
 <xsl:template match = "@*|text()" mode="rawLatex">
 	<xsl:value-of select="."/>
 </xsl:template>
-<xsl:template match = "@*|text()">	
+<xsl:template match = "@*|text()">
   <xsl:call-template name="esc">
     <xsl:with-param name="c" select='"&#160;"'/>
     <xsl:with-param name="s">
