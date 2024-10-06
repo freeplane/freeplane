@@ -16,6 +16,7 @@ import java.awt.event.MouseMotionListener;
 import java.lang.ref.WeakReference;
 
 import javax.swing.FocusManager;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
@@ -164,7 +165,9 @@ public class NodeTooltipManager implements IExtension{
 
 	private void showTipWindow() {
 		Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-		if (insideComponent == null || !insideComponent.isShowing() || focusOwner == null)
+		if (insideComponent == null || !insideComponent.isShowing()
+				|| ((insideComponent instanceof JComboBox && ((JComboBox)insideComponent).isPopupVisible()))
+				|| focusOwner == null)
 			return;
 		tip = insideComponent.createToolTip();
 		tip.setTipText(toolTipText);
