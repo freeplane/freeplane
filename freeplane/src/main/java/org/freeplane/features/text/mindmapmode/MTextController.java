@@ -1020,6 +1020,9 @@ public class MTextController extends TextController {
 		        return false;
 		    }
 			uninstall();
+			Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
+			if(e.getComponent() != selectedComponent)
+			    return false;
 			if (isMenuEvent(e)) {
 				return false;
 			}
