@@ -20,15 +20,19 @@
    <screenshots>
     <screenshot type="default">
      <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-2.png</image>
+     <caption>Basic freeplane node types</caption>
     </screenshot>
     <screenshot type="default">
      <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-1.png</image>
+     <caption>Freeplane tutorial</caption>
     </screenshot>
     <screenshot type="default">
      <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-4.png</image>
+     <caption>Freeplane example of node grouping</caption>
     </screenshot>
     <screenshot type="default">
      <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-3.png</image>
+     <caption>Freeplane example with mathematical formulas</caption>
     </screenshot>
    </screenshots>
 
@@ -37,10 +41,10 @@
       <category>Java</category>
    </categories>
 
-   <mimetypes>
+   <provides>
       <mimetype>application/x-freeplane</mimetype>
       <mimetype>application/x-freemind</mimetype>
-   </mimetypes>
+   </provides>
    
    <url type="homepage">https://www.freeplane.org</url>
    <url type="bugtracker">https://github.com/freeplane/freeplane/issues</url>
