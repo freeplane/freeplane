@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.AWTKeyStroke;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -160,6 +161,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private static final int ROOT_NODE_COMPONENT_INDEX = 0;
 	private static final String UNFOLD_ON_NAVIGATION = "unfold_on_navigation";
 	private static final String SYNCHRONIZE_SELECTION_ACROSS_VISIBLE_VIEWS_PROPERTY = "synchronizeSelectionAcrossVisibleViews";
+    private static final BasicStroke SELECTION_RECTANGLE_STROKE = new BasicStroke(2.0f * UITools.FONT_SCALE_FACTOR, BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_MITER, 10.0f * UITools.FONT_SCALE_FACTOR,
+            new float[] {5.0f * UITools.FONT_SCALE_FACTOR, 5.0f * UITools.FONT_SCALE_FACTOR}, 0.0f);
 
 	private final MapScroller mapScroller;
 	private MapViewLayout layoutType;
@@ -742,6 +746,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static int outlineHGap;
 	private static boolean outlineViewFitsWindowWidth;
 	private static int draggingAreaWidth;
+	private Rectangle selectionRectangle = null;
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
@@ -2099,9 +2104,31 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
 		highlightEditor(g2);
+		paintSelectionRectangle(g);
     }
 
-	public boolean isSpotlightEnabled() {
+    private void paintSelectionRectangle(Graphics g) {
+        if (selectionRectangle == null)
+            return;
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(SELECTION_RECTANGLE_STROKE);
+        g2d.setColor(getSelectionRectangleColor());
+        g2d.draw(selectionRectangle);
+    }
+
+	public void setSelectionRectangle(Rectangle newRectangle) {
+        Rectangle oldRectangle = selectionRectangle;
+        selectionRectangle = newRectangle;
+        Rectangle repaintedRectangle = oldRectangle == null ? newRectangle
+                : newRectangle == null ? oldRectangle
+                : oldRectangle.union(newRectangle);
+        if(repaintedRectangle != null) {
+            int lineWidth = 1 + (int)SELECTION_RECTANGLE_STROKE.getLineWidth() / 2;
+            repaint(repaintedRectangle.x - lineWidth, repaintedRectangle.y - lineWidth, repaintedRectangle.width + 2 * lineWidth, repaintedRectangle.height + 2 * lineWidth);
+        }
+    }
+
+    public boolean isSpotlightEnabled() {
 		return isClientPropertyTrue(MapView.SPOTLIGHT_ENABLED);
 	}
 
@@ -3119,5 +3146,34 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         zoom = (float) Math.pow(zoomFactor, x);
         zoom = Math.max(Math.min(zoom, 32f), 0.03f);
     	return zoom;
+    }
+
+    public void selectNodeViewBySelectionRectangle() {
+        List<NodeView> intersectingNodes = getIntersectingNodes();
+        if(! intersectingNodes.isEmpty())
+            selection.replace(intersectingNodes);
+    }
+    private List<NodeView> getIntersectingNodes() {
+        List<NodeView> intersectingComponents = new ArrayList<>();
+        if (selectionRectangle != null) {
+            findNodesInSelectingRectangle(this, selectionRectangle, intersectingComponents);
+        }
+        return intersectingComponents;
+    }
+
+    private void findNodesInSelectingRectangle(Component comp, Rectangle rect, List<NodeView> results) {
+        Rectangle compBounds = new Rectangle(0, 0, comp.getWidth(), comp.getHeight());
+
+        if (compBounds.intersects(rect)) {
+            Container parent = comp.getParent();
+            if (parent instanceof NodeView && comp == ((NodeView)parent).getContent()) {
+                results.add((NodeView) parent);
+            } else {
+                for (Component child : ((Container) comp).getComponents()) {
+                    Rectangle childRect = SwingUtilities.convertRectangle(comp, rect, child);
+                    findNodesInSelectingRectangle(child, childRect, results);
+                }
+            }
+        }
     }
 }
