@@ -4,6 +4,7 @@
 Improve filter condition representation
 Multiple nodes selection using the mouse (CTRL+Click and drag)
 Ignore whitespace between CJK characters if "ignore accents" is enabled
+Ignore whitespace between CJK characters in node list
 
 ==============================
 1.12.6

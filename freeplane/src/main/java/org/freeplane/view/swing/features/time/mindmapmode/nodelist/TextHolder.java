@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.filter.condition.CJKNormalizer;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -50,13 +51,14 @@ class TextHolder implements Comparable<TextHolder> {
 	}
 
 	public String getTextAsSingleLine() {
-		final String notesText = textAccessor.getText();
+		final String notesText = getText();
 		if (notesText == null) {
 			return "";
 		}
 		if (untaggedNotesText == null || (originalNotesText != null && !originalNotesText.equals(notesText))) {
 			originalNotesText = notesText;
-			untaggedNotesText = HtmlUtils.htmlToPlain(notesText).replaceAll("\\s+\\n", " ");
+			String plainText = HtmlUtils.htmlToPlain(notesText).replaceAll("\\s+\\n", " ");
+            untaggedNotesText = CJKNormalizer.removeSpacesBetweenCJKCharacters(plainText);
 		}
 		return untaggedNotesText;
 	}

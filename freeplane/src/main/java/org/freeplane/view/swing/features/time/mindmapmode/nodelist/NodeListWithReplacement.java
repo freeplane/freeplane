@@ -23,6 +23,7 @@ import org.freeplane.core.ui.components.JComboBoxFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.condition.CJKNormalizer;
 
 class NodeListWithReplacement extends NodeList{
 	private class HolderAccessor{
@@ -102,7 +103,7 @@ class NodeListWithReplacement extends NodeList{
 				for(final TextHolder textHolder:textHolders){
 				    if(textHolder == null)
 				        continue;
-					final String text = textHolder.getText();
+					String text = textHolder.getText();
 					final String replaceResult;
 					final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
 					try {
@@ -110,6 +111,7 @@ class NodeListWithReplacement extends NodeList{
 							replaceResult = replace(p, text,literalReplacement);
 						}
 						else {
+						    text = CJKNormalizer.removeSpacesBetweenCJKCharacters(text);
 							replaceResult = p.matcher(text).replaceAll(literalReplacement);
 						}
 					}
