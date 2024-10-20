@@ -2,6 +2,7 @@
 1.12.7
 ==============================
 Improve filter condition representation
+Multiple nodes selection using the mouse (CTRL+Click and drag)
 
 ==============================
 1.12.6
