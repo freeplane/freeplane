@@ -498,7 +498,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 				if (!canonicalPath.endsWith(suffix)) {
 					canonicalPath = canonicalPath + suffix;
 				}
-				filterController.saveConditions(internalConditionsModel, canonicalPath);
+				filterController.saveConditions(internalConditionsModel, canonicalPath, Integer.MAX_VALUE);
 			}
 			catch (final Exception ex) {
 				LogUtils.severe(ex);

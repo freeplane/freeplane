@@ -49,6 +49,7 @@
 				<number name="number_of_different_files_for_automatic_save"
 					min="0" max="25" />
 				<number name="backup_file_number" min="0" max="25" />
+				<number name="savedConditionLimit" min="0" max="1000"/>
 			</separator>
 			<separator name="export">
 				<number name="exported_image_resolution_dpi" min="72" max="2400" />

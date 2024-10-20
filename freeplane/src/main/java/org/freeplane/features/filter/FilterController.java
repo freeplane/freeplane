@@ -948,18 +948,20 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 
 	public void saveConditions() {
 		try {
-			saveConditions(getFilterConditions(), pathToFilterFile);
+	        int savedConditionLimit = ResourceController.getResourceController().getIntProperty("savedConditionLimit");
+			saveConditions(getFilterConditions(), pathToFilterFile, savedConditionLimit);
 		}
 		catch (final Exception e) {
 			LogUtils.warn(e);
 		}
 	}
 
-	void saveConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
+	void saveConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile, int savedConditionLimit)
 	        throws IOException {
 		final XMLElement saver = new XMLElement();
 		saver.setName("filter_conditions");
-        for (int i = 0; i < filterConditionModel.getSize(); i++) {
+        int savedConditionNumber = Math.min(savedConditionLimit, filterConditionModel.getSize());
+        for (int i = 0; i < savedConditionNumber; i++) {
             final ASelectableCondition cond = (ASelectableCondition) filterConditionModel.getElementAt(i);
             if (cond != null && cond.canBePersisted()) {
                 cond.toXml(saver);
