@@ -33,6 +33,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -41,10 +42,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.KeystrokeDescriber;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterConditionEditor.Variant;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -63,6 +66,7 @@ class FindAction extends AFreeplaneAction {
 	final private AFreeplaneAction findPreviousAction;
 	private NodeModel searchStart;
 	private NodeModel subtreeRoot;
+    private boolean searchesInSubtree;
 
 	public FindAction() {
 		super(KEY);
@@ -95,6 +99,15 @@ class FindAction extends AFreeplaneAction {
 			constraints.gridy = 0;
 			editorPanel.add(applyFindPreviousBtn, constraints);
 			editorPanel.add(applyFindNextBtn, constraints);
+			constraints.anchor = GridBagConstraints.EAST;
+			constraints.gridy = 1;
+			constraints.gridwidth = 2;
+			JCheckBox searchInSubtreeCheckBox = TranslatedElementFactory.createCheckBox("searchInSubtree");
+			searchesInSubtree = ResourceController.getResourceController().getBooleanProperty("searchInSubtree");
+            searchInSubtreeCheckBox.setSelected(searchesInSubtree);
+			searchInSubtreeCheckBox.addActionListener(x ->
+			    ResourceController.getResourceController().setProperty("searchInSubtree", searchesInSubtree = searchInSubtreeCheckBox.isSelected()));
+            editorPanel.add(searchInSubtreeCheckBox, constraints);
 		}
 		else {
 			editor.filterChanged(selection.getFilter());
@@ -161,8 +174,8 @@ class FindAction extends AFreeplaneAction {
 		if (condition == null) {
 			return;
 		}
-		final NodeModel next = filterController.findNextInSubtree(start, subtreeRoot, direction, condition, filter);
-		if (next == null) {
+		final NodeModel next = filterController.findNextInSubtree(start, searchesInSubtree ? searchStart : subtreeRoot, direction, condition, filter);
+		if (next == null || next == start) {
 		    if(searchStart != null)
 		        displayNotFoundMessage(searchStart, condition);
 			return;
