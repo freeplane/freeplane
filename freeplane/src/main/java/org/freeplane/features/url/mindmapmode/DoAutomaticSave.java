@@ -89,12 +89,13 @@ public class DoAutomaticSave implements ActionListener {
             if (filesShouldBeDeletedAfterShutdown) {
                 tempFile.deleteOnExit();
             }
-            if(tempFile.isFile() && tempFile.canWrite()
-                    || ! tempFile.exists() && tempFile.getParentFile().canWrite()) {
-                ((MFileManager) fileManager)
-                .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
+            if(tempFile.isFile() && tempFile.canWrite()) {
+                tempFile.delete();
+            }
+            if (file.renameTo(tempFile)) {
+                ((MFileManager) fileManager).save(model);
                 modeController.getController().getViewController()
-                .out(TextUtils.format("automatically_save_message", tempFile));
+                .out(TextUtils.format("automatically_save_message", model.getFile()));
             }
         }
         catch (final Exception ex) {
