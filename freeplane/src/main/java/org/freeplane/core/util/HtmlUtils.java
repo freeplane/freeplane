@@ -134,6 +134,13 @@ public class HtmlUtils {
 	 * @param strictHTMLOnly if true does nothing unless the text starts with &lt;html&gt;
 	 * @param removeNewLines set to false to keep all blank lines. */
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly, final boolean removeNewLines) {
+        String bulletPoint = "   * ";
+        return htmlToPlain(text, strictHTMLOnly, removeNewLines, bulletPoint);
+	}
+
+	public static String htmlToPlain(final String text, final boolean strictHTMLOnly, final boolean removeNewLines,
+	        String bulletPointReplacement) {
+
 		if (strictHTMLOnly && !HtmlUtils.isHtml(text)) {
 			return text;
 		}
@@ -176,7 +183,7 @@ public class HtmlUtils {
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n   ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll(" ");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n");
-		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n   * ");
+        intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("\n" + bulletPointReplacement);
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		intermediate = PATTERNS[i++].matcher(intermediate).replaceAll("");
 		if (removeNewLines)

@@ -322,6 +322,18 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 	}
 
+    private class StructuredTextFromHtmlFlavorHandler extends StructuredHtmlFlavorHandler implements IDataFlavorHandler {
+
+        public StructuredTextFromHtmlFlavorHandler(String textFromClipboard) {
+            super(textFromClipboard);
+        }
+        protected TextFragment createNodeTextFragment(final int depth, final String string,
+                final String link) {
+            return new TextFragment(HtmlUtils.htmlToPlain(string, true, true, ""), link, depth);
+        }
+
+
+    }
 	private class StructuredHtmlFlavorHandler implements IDataFlavorHandler {
 		private final String textFromClipboard;
 
@@ -339,11 +351,16 @@ public class MMapClipboardController extends MapClipboardController implements M
 				final String string = out.toString();
 				if (!string.equals("")) {
 					final String link = findLink(string, true);
-					final TextFragment htmlFragment = new TextFragment(string, link, depth);
+					final TextFragment htmlFragment = createNodeTextFragment(depth, string, link);
 					htmlFragments.add(htmlFragment);
 				}
 			}
 		}
+
+        protected TextFragment createNodeTextFragment(final int depth, final String string,
+                final String link) {
+            return new TextFragment(string, link, depth);
+        }
 
 		private Element getParentElement(final HTMLDocument doc) {
 			final Element htmlRoot = doc.getDefaultRootElement();
@@ -739,6 +756,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 				if (textFromClipboard.length() > 0 && textFromClipboard.charAt(0) != 65533) {
 					if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						handlerList.add(new StructuredHtmlFlavorHandler(textFromClipboard));
+						handlerList.add(new StructuredTextFromHtmlFlavorHandler(textFromClipboard));
 						handlerList.add(new DirectHtmlFlavorHandler(textFromClipboard));
 					}
 				}
