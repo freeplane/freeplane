@@ -20,7 +20,7 @@ public class StringTransformer {
         if(toLowerCase)
             t.toLowerCase();
         if(removeAccents)
-            t.removeAccents();
+            t.removeAccents().removeSpacesBetweenCJKCharacters();
         return t.value();
     }
 
@@ -34,6 +34,12 @@ public class StringTransformer {
         .replaceAll("");
         return this;
     }
+
+    public StringTransformer removeSpacesBetweenCJKCharacters() {
+        value = CJKNormalizer.removeSpacesBetweenCJKCharacters(value);
+        return this;
+    }
+
 
     public String value() {
         return value;
