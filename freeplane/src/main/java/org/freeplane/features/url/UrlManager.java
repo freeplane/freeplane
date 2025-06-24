@@ -66,6 +66,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
+@SuppressWarnings("removal")
 public class UrlManager implements IExtension {
 	public static final String SMB_SCHEME = "smb";
 	public static final String FREEPLANE_SCHEME = "freeplane";

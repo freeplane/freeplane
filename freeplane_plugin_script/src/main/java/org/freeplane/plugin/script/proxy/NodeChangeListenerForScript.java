@@ -10,6 +10,7 @@ import org.freeplane.api.NodeChanged.ChangedElement;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
 
+@SuppressWarnings("removal")
 class NodeChangeListenerForScript {
 	static Predicate<? super NodeChangeListenerForScript> contains(NodeChangeListener listener) {
 		return e -> e.scriptListener.equals(listener);

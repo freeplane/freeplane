@@ -34,6 +34,7 @@ import org.freeplane.core.util.logging.ErrorLogButton;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 
+@SuppressWarnings("removal")
 public class ReportGenerator extends StreamHandler {
 	private static final String BUGREPORT_USER_ID = "org.freeplane.plugin.bugreport.userid";
 	private static final String REMOTE_LOG = "RemoteLog";

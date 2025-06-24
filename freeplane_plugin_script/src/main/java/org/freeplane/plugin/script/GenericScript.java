@@ -48,6 +48,7 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
  * Implements scripting via JSR233 implementation for all other languages except
  * Groovy.
  */
+@SuppressWarnings("removal")
 public class GenericScript implements IScript {
     public static final class ScriptSource {
         private final File file;

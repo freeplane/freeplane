@@ -55,6 +55,7 @@ import groovy.lang.Script;
  * @author Paul King
  * @version $Revision$
  */
+@SuppressWarnings("removal")
 class GroovyShell extends GroovyObjectSupport {
     static {
         DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);

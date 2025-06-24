@@ -51,6 +51,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 /**
  * @author Dimitry Polivaev
  */
+@SuppressWarnings("removal")
 public class ApplicationResourceController extends ResourceController {
     private static final String USE_SYSTEM_LOCALE_PROPERTY = "useSystemLocale";
 

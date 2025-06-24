@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 
 /** utility methods to access Freeplane's (builtin and user) icons. */
+@SuppressWarnings("removal")
 public class FreeplaneIconFactory {
 	private static final String ANTIALIAS_SVG = "antialias_svg";
 

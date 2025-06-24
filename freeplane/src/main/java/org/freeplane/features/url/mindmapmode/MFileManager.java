@@ -101,6 +101,7 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 /**
  * @author Dimitry Polivaev
  */
+@SuppressWarnings("removal")
 public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public static final String STANDARD_TEMPLATE = "standard_template";
 	private static final String DEFAULT_SAVE_DIR_PROPERTY = "default_save_dir";

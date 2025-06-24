@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+@SuppressWarnings("removal")
 public class GrapeMetaClass extends DelegatingMetaClass {
 	static final private Collection<String> EXTRA_IGNORED_PACKAGES = Arrays.asList(
 			GrapeMetaClass.class.getPackage().getName(),

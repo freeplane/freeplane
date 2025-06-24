@@ -26,6 +26,7 @@ import javax.swing.JTextPane;
 
 import com.inet.jortho.SpellChecker;
 
+@SuppressWarnings("removal")
 public class SampleApplet extends JApplet {
 	/**
 	 * 

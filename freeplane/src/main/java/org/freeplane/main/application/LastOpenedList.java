@@ -77,6 +77,7 @@ import org.freeplane.view.swing.map.NodeView;
  * Maps should be shown in the format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 
+@SuppressWarnings("removal")
 public class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
     static class RecentFile {
         public RecentFile(String restorable) {

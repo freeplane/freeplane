@@ -60,6 +60,7 @@ import com.thebuzzmedia.imgscalr.Scalr;
  * @author Dimitry Polivaev
  * 22.08.2009
  */
+@SuppressWarnings("removal")
 public class BitmapViewerComponent extends JComponent implements ScalableComponent {
 
 	private static class AsyncScalrService extends AsyncScalr{

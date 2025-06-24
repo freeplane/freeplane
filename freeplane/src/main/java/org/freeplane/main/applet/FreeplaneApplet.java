@@ -70,6 +70,7 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
+@SuppressWarnings("removal")
 public class FreeplaneApplet extends JApplet {
 
 	@SuppressWarnings("serial")

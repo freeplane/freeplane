@@ -17,6 +17,7 @@ import groovy.lang.GroovyClassLoader;
 import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
 
+@SuppressWarnings("removal")
 public final class ScriptClassLoader extends GroovyClassLoader {
 	private static final Permission ALL_PERMISSION = new AllPermission();
 	private ScriptingSecurityManager securityManager = null;

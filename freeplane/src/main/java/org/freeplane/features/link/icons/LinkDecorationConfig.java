@@ -22,6 +22,7 @@ import org.freeplane.core.util.LogUtils;
  * 
  * @author Stuart Robertson <stuartro@gmail.com>
  */
+@SuppressWarnings("removal")
 class LinkDecorationConfig {
 	private static final int MODIFICATION_CHECK_INTERVAL = 10*1000;
 

@@ -23,6 +23,7 @@ import org.freeplane.features.filter.condition.ConditionFactory.ConditionOption;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
+@SuppressWarnings("removal")
 public abstract class ASelectableCondition  implements ICondition{
 	public static final float STRING_MIN_MATCH_PROB = 0.7F;
 	transient private String description;

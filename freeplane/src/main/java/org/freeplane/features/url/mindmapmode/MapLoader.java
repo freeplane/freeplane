@@ -32,6 +32,7 @@ import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
+@SuppressWarnings("removal")
 public class MapLoader{
 
 	private final ModeController modeController;

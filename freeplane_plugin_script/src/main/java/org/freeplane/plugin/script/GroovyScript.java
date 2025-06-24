@@ -42,6 +42,7 @@ import groovy.lang.Script;
 /**
  * Special scripting implementation for Groovy.
  */
+@SuppressWarnings("removal")
 public class GroovyScript implements IScript {
     final private Object script;
 

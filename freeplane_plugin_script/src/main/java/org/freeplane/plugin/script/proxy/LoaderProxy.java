@@ -13,6 +13,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.mindmapmode.MapLoader;
 import org.freeplane.plugin.script.ScriptContext;
 
+@SuppressWarnings("removal")
 class LoaderProxy implements Proxy.Loader {
 
 	static Proxy.Loader of(ScriptContext scriptContext) {

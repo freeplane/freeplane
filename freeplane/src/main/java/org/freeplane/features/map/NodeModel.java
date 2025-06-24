@@ -51,6 +51,7 @@ import org.freeplane.features.ui.INodeViewVisitor;
  * Extension methods that add functionality to nodes are in the extension packages
  * and get NodeModel as an argument.
  */
+@SuppressWarnings("removal")
 public class NodeModel{
 	public enum NodeChangeType {
 		FOLDING, REFRESH
