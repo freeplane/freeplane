@@ -58,7 +58,7 @@ import org.freeplane.core.util.LogUtils
 import org.freeplane.core.util.TextUtils
 import org.freeplane.launcher.Launcher
 import org.freeplane.plugin.script.FreeplaneScriptBaseClass
-import org.freeplane.plugin.script.GroovyStaticImports
+import org.freeplane.plugin.script.classpath.ScriptGlobalsImport
 import org.freeplane.plugin.script.proxy.Convertible
 import org.freeplane.plugin.script.proxy.Proxy
 import org.freeplane.plugin.script.proxy.ScriptUtils
@@ -333,6 +333,7 @@ this.freeplaneApiBase = new File(ResourceController.resourceController.installat
 def MAP_NAME = textUtils.getText('scripting_api_generator_title')
 def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
+def CLASSPATH_NODE = textUtils.getText('scripting_api_generator_classpath')
 def WEB_NODE = textUtils.getText('scripting_api_generator_web')
 def LEGEND_NODE = textUtils.getText('scripting_api_generator_legend')
 def ICONS_NODE = textUtils.getText('icons')
@@ -426,7 +427,6 @@ makeApi(utils, UITools.InsertEolAction.class)
 makeApi(utils, JFileChooser.class)
 //org.freeplane.core.util
 makeApi(utils, LogUtils.class)
-makeApi(utils, GroovyStaticImports.class)
 makeApi(utils, HtmlUtils.class)
 makeApi(utils, HtmlUtils.IndexPair.class)
 makeApi(utils, TextUtils.class)
@@ -460,11 +460,11 @@ bundle.getKeys().toList()
         }
 icons.folded = true
 
-def web = createChild(newMap.root, WEB_NODE, 'https://docs.freeplane.org/scripting/Scripting.html')
-initHeading(web)
-createChild(web, 'Groovy - learn', 'https://groovy-lang.org/learn.html')
-createChild(web, 'Groovy - learn X in Y minutes', 'https://learnxinyminutes.com/docs/groovy/')
-createChild(web, 'Example scripts', 'https://docs.freeplane.org/scripting/Scripts_collection.html')
+// Script Classpath Development
+def classpath = newMap.root.createChild(CLASSPATH_NODE)
+initHeading(classpath)
+// org.freeplane.plugin.script.classpath
+makeApi(classpath, ScriptGlobalsImport.class)
 
 def legend = newMap.root.createChild(LEGEND_NODE)
 initHeading(legend)
@@ -488,6 +488,12 @@ def deprecatedLegend = legend.createChild("Deprecated methods have a 'closed' ic
 deprecatedLegend.createChild("Follow the class' link to the detailed API description to find out what to use instead.")
 deprecatedLegend.icons.add('closed')
 deprecatedLegend.folded = true
+
+def web = createChild(newMap.root, WEB_NODE, 'https://docs.freeplane.org/scripting/Scripting.html')
+initHeading(web)
+createChild(web, 'Groovy - learn', 'https://groovy-lang.org/learn.html')
+createChild(web, 'Groovy - learn X in Y minutes', 'https://learnxinyminutes.com/docs/groovy/')
+createChild(web, 'Example scripts', 'https://docs.freeplane.org/scripting/Scripts_collection.html')
 
 c.deactivateUndo()
 newMap.saved = true

@@ -25,6 +25,7 @@ import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -33,11 +34,14 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.script.classpath.ScriptGlobalsImport;
 import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
+
+import static org.freeplane.plugin.script.classpath.ScriptGlobalsImport.logger;
 
 /**
  * Special scripting implementation for Groovy.
@@ -203,6 +207,9 @@ public class GroovyScript implements IScript {
     private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
         binding.setVariable("script", script);
+        for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
+            binding.setVariable(entry.getKey(), entry.getValue());
+        }
         return binding;
     }
 
@@ -228,7 +235,16 @@ public class GroovyScript implements IScript {
         }
         final ImportCustomizer importCustomizer = new ImportCustomizer();
         importCustomizer.addStaticImport(ScriptUtils.class.getName(), "ignoreCycles");
-        importCustomizer.addStaticStars(GroovyStaticImports.class.getName());
+        /*
+         * TODO: Reapply changes commit a30ddc4c03fbeffcb6adb6403862efd2287e9369 and uncomment next 6 lines to replace
+         * injection of GroovyStaticImports or remove same 6 lines depending on user feedback from preview or v1.12.12
+         */
+//        importCustomizer.addStaticImport(ScriptGlobalsImport.class.getName(), "logger");
+//        importCustomizer.addStaticImport(ScriptGlobalsImport.class.getName(), "ui");
+//        importCustomizer.addStaticImport(ScriptGlobalsImport.class.getName(), "htmlUtils");
+//        importCustomizer.addStaticImport(ScriptGlobalsImport.class.getName(), "textUtils");
+//        importCustomizer.addStaticImport(ScriptGlobalsImport.class.getName(), "menuUtils");
+//        importCustomizer.addStaticImport(ScriptGlobalsImport.class.getName(), "config");
         config.addCompilationCustomizers(importCustomizer);
         return config;
     }
