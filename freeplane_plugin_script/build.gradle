@@ -26,6 +26,7 @@ ext.bundleImports = 'de.sciss.syntaxpane.*'
 ext.bundleExports = """\
              org.freeplane.plugin.script,
              org.freeplane.plugin.script.addons,
+             org.freeplane.plugin.script.classpath,
              org.freeplane.plugin.script.dependencies,
              org.freeplane.plugin.script.filter,
              org.freeplane.plugin.script.proxy
@@ -48,7 +49,7 @@ javadoc {
       .include('**/Convertible.java')
       .include('**/FreeplaneScriptBaseClass.java')
       .include('**/ScriptUtils.java')
-      .include('**/GroovyStaticImports.java') +
+      .include('**/ScriptGlobalsImport.java') +
 		fileTree(dir: '../freeplane_api/src/main/java')
 		  .include('**/api/*.java') +
 		fileTree(dir: '../freeplane/src/main/java')
