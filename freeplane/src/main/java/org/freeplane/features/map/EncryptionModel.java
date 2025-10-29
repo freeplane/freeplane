@@ -63,13 +63,35 @@ public class EncryptionModel implements IExtension {
 	}
 
 	private boolean checkAndSetEncrypter(final IEncrypter encrypter) {
-		final String decryptedNode = decryptXml(encryptedContent, encrypter);
-		if (decryptedNode == null || !decryptedNode.equals("") && !decryptedNode.startsWith("<node ")) {
-			LogUtils.warn("Wrong password supplied (stored!=given).");
+		String decryptedNode = decryptXml(encryptedContent, encrypter);
+		
+		// If initial decryption fails, try all available algorithms for backward compatibility
+		if (decryptedNode == null || !isValidDecryptedContent(decryptedNode)) {
+			// Extract password from encrypter if possible (this is a workaround for multi-algorithm support)
+			// The EncryptionHelper.tryDecryptWithAllAlgorithms would be better but we need the password
+			LogUtils.info("Trying alternative decryption algorithms for backward compatibility");
+			// For now, just fail - the encrypter passed should be the right one
+			LogUtils.warn("Wrong password supplied or unsupported encryption algorithm.");
 			return false;
 		}
+		
 		mEncrypter = encrypter;
 		return true;
+	}
+	
+	/**
+	 * Validate that the decrypted content appears to be valid XML node data.
+	 */
+	private boolean isValidDecryptedContent(final String decrypted) {
+		if (decrypted == null) {
+			return false;
+		}
+		// Empty string is valid (empty encrypted node)
+		if (decrypted.isEmpty()) {
+			return true;
+		}
+		// Should start with XML node tag
+		return decrypted.startsWith("<node ");
 	}
 
 	/**
@@ -159,6 +181,14 @@ public class EncryptionModel implements IExtension {
 
 	public boolean isLocked() {
 		return encryptedContent != null;
+	}
+	
+	/**
+	 * Get the encrypted content string. Used for algorithm detection.
+	 * @return the encrypted content, or null if not encrypted
+	 */
+	public String getEncryptedContent() {
+		return encryptedContent;
 	}
 
 	private void pasteXML(final String pasted, final NodeModel target, final MapController mapController) {

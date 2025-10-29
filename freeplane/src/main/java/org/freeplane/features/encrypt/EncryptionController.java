@@ -149,7 +149,10 @@ public class EncryptionController implements IExtension {
 
     private boolean decrypt(final EncryptionModel encryptionModel, final StringBuilder password) {
         final MapController mapController = Controller.getCurrentModeController().getMapController();
-        return encryptionModel.decrypt(mapController, new SingleDesEncrypter(password));
+        // Use EncryptionHelper for automatic algorithm detection and backward compatibility
+        // Pass the encrypted content to allow algorithm detection
+        final String encryptedContent = encryptionModel.getEncryptedContent();
+        return encryptionModel.decrypt(mapController, EncryptionHelper.createDecrypter(password, encryptedContent));
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
@@ -162,7 +165,8 @@ public class EncryptionController implements IExtension {
 		if (passwordStrategy.isCancelled()) {
 			return;
 		}
-		final EncryptionModel encryptionModel = new EncryptionModel(node, new SingleDesEncrypter(password));
+		// Use AES-256 encryption for all new encryptions
+		final EncryptionModel encryptionModel = new EncryptionModel(node, EncryptionHelper.createEncrypter(password));
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {

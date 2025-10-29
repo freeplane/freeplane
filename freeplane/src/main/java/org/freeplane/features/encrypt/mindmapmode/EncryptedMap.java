@@ -23,7 +23,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
-import org.freeplane.features.encrypt.SingleDesEncrypter;
+import org.freeplane.features.encrypt.EncryptionHelper;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -72,7 +72,8 @@ class EncryptedMap extends AFreeplaneAction {
 		MapModel newMap = MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		if(newMap != null) {
 		    NodeModel node = newMap.getRootNode();
-		    final EncryptionModel encryptedMindMapNode = new EncryptionModel(node, new SingleDesEncrypter(password));
+		    // Use AES-256 encryption for new encrypted maps
+		    final EncryptionModel encryptedMindMapNode = new EncryptionModel(node, EncryptionHelper.createEncrypter(password));
 		    node.addExtension(encryptedMindMapNode);
 		    Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
