@@ -122,19 +122,48 @@ public class EncryptionHelper {
 	}
 	
 	/**
-	 * Validate that the decrypted content appears to be valid.
+	 * Validate that the decrypted content appears to be valid XML node data.
 	 * This helps prevent false positives when trying multiple algorithms.
+	 * 
+	 * Performs lightweight validation without full XML parsing:
+	 * - Empty content is valid (empty encrypted nodes are allowed)
+	 * - Must start with "<node " tag
+	 * - Must have closing tag or be self-closing
+	 * - Basic bracket balance check
 	 */
 	private static boolean isValidDecryption(final String decrypted) {
 		if (decrypted == null) {
 			return false;
 		}
+		
 		// Empty string is valid (empty encrypted node)
 		if (decrypted.isEmpty()) {
 			return true;
 		}
+		
 		// Should start with XML node tag
-		return decrypted.startsWith("<node ");
+		if (!decrypted.startsWith("<node ")) {
+			return false;
+		}
+		
+		// Additional validation: check for closing tag or self-closing tag
+		if (!decrypted.contains("</node>") && !decrypted.contains("/>")) {
+			return false;
+		}
+		
+		// Basic sanity check: ensure balanced angle brackets
+		// This catches obvious garbage while being fast
+		int openCount = 0;
+		int closeCount = 0;
+		for (char c : decrypted.toCharArray()) {
+			if (c == '<') openCount++;
+			if (c == '>') closeCount++;
+		}
+		if (openCount != closeCount) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
