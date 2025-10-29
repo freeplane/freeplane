@@ -52,8 +52,14 @@ public class Aes256Encrypter implements IEncrypter {
 	private static final String ALGORITHM = "PBEWithHmacSHA256AndAES_256";
 	private static final int ITERATION_COUNT = 100000;  // OWASP recommended minimum
 	
-	// Version marker to distinguish from DES encryption
-	private static final String VERSION_MARKER = "AES256:";
+	/**
+	 * Version marker format: FP-AES256-V1:
+	 * - FP: Freeplane identifier
+	 * - AES256: Algorithm identifier
+	 * - V1: Version number for future compatibility
+	 * - Chosen to be highly unlikely to appear in base64-encoded legacy data
+	 */
+	private static final String VERSION_MARKER = "FP-AES256-V1:";
 	
 	private Cipher dcipher;
 	private Cipher ecipher;
