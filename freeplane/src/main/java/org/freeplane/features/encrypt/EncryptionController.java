@@ -153,8 +153,18 @@ public class EncryptionController implements IExtension {
         // Pass the encrypted content to allow algorithm detection
         final String encryptedContent = encryptionModel.getEncryptedContent();
         final org.freeplane.features.map.IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
+        
+        boolean decrypted = false;
         try {
-            return encryptionModel.decrypt(mapController, tempEncrypter);
+            // Try with the detected algorithm first
+            decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
+            
+            // If that fails and this isn't already a fallback attempt, try all algorithms
+            if (!decrypted) {
+                decrypted = encryptionModel.decryptWithFallback(mapController, password);
+            }
+            
+            return decrypted;
         } finally {
             // Clean up the temporary encrypter used for password checking
             // The actual encrypter stored in EncryptionModel will be cleaned up on unlock()

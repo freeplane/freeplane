@@ -65,17 +65,66 @@ public class EncryptionModel implements IExtension {
 	private boolean checkAndSetEncrypter(final IEncrypter encrypter) {
 		String decryptedNode = decryptXml(encryptedContent, encrypter);
 		
-		// If initial decryption fails, try all available algorithms for backward compatibility
-		if (decryptedNode == null || !isValidDecryptedContent(decryptedNode)) {
-			// Extract password from encrypter if possible (this is a workaround for multi-algorithm support)
-			// The EncryptionHelper.tryDecryptWithAllAlgorithms would be better but we need the password
-			LogUtils.info("Trying alternative decryption algorithms for backward compatibility");
-			// For now, just fail - the encrypter passed should be the right one
-			LogUtils.warn("Wrong password supplied or unsupported encryption algorithm.");
+		// If initial decryption succeeds, use the provided encrypter
+		if (decryptedNode != null && isValidDecryptedContent(decryptedNode)) {
+			mEncrypter = encrypter;
+			return true;
+		}
+		
+		// If decryption failed, the caller should try decryptWithFallback() with the password
+		LogUtils.info("Initial decryption failed - wrong password or algorithm mismatch");
+		return false;
+	}
+	
+	/**
+	 * Attempt to decrypt using all available algorithms for backward compatibility.
+	 * This method should be called when decrypt() fails with the detected algorithm.
+	 * 
+	 * @param mapController the map controller
+	 * @param password the password to try
+	 * @return true if decryption succeeded with any algorithm, false otherwise
+	 */
+	public boolean decryptWithFallback(final MapController mapController, final StringBuilder password) {
+		if (encryptedContent == null) {
+			throw new IllegalStateException("No encrypted content");
+		}
+		
+		LogUtils.info("Trying all available algorithms for backward compatibility");
+		
+		// Try to decrypt with all available algorithms
+		final String decryptedContent = org.freeplane.features.encrypt.EncryptionHelper
+				.tryDecryptWithAllAlgorithms(password, encryptedContent);
+		
+		if (decryptedContent == null || !isValidDecryptedContent(decryptedContent)) {
+			LogUtils.warn("Failed to decrypt with any available algorithm - wrong password or corrupt data");
 			return false;
 		}
 		
-		mEncrypter = encrypter;
+		// Decryption succeeded - now we need to parse and load the content
+		// and create an appropriate encrypter for future operations
+		
+		// Create a new encrypter for future operations (will use AES-256)
+		// This upgrades legacy content to AES-256 on next save
+		mEncrypter = org.freeplane.features.encrypt.EncryptionHelper.createEncrypter(password);
+		
+		// Parse and load the decrypted content
+		if (!hiddenChildren.containsKey(node)) {
+			try {
+				final String[] childs = decryptedContent.split(MapClipboardController.NODESEPARATOR);
+				for (int i = 0; i < childs.length; i++) {
+					final String string = childs[i];
+					if (string.length() == 0) {
+						continue;
+					}
+					pasteXML(string, node, mapController);
+					hiddenChildren.put(node, node.getChildrenInternal());
+				}
+			} catch (final Exception e) {
+				LogUtils.severe(e);
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	
