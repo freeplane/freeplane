@@ -192,4 +192,28 @@ public class DesEncrypter implements IEncrypter {
 			}
 		}
 	}
+	
+	/**
+	 * Clean up sensitive data from memory.
+	 * This is a critical security measure to prevent passwords from remaining
+	 * in memory longer than necessary.
+	 */
+	@Override
+	public void destroy() {
+		// Zero out the password
+		if (passPhrase != null) {
+			Arrays.fill(passPhrase, '\0');
+			passPhrase = null;
+		}
+		
+		// Zero out the salt
+		if (mSalt != null) {
+			Arrays.fill(mSalt, (byte) 0);
+			mSalt = null;
+		}
+		
+		// Clear cipher references to allow garbage collection
+		ecipher = null;
+		dcipher = null;
+	}
 }
