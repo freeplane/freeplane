@@ -18,6 +18,7 @@
 package org.freeplane.features.encrypt;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -104,7 +105,7 @@ public class Aes256Encrypter implements IEncrypter {
 				return null;
 			}
 			final byte[] utf8 = dcipher.doFinal(dec);
-			return new String(utf8, "UTF-8");
+			return new String(utf8, StandardCharsets.UTF_8);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 			LogUtils.warn("Decryption failed: bad padding", e);
@@ -128,7 +129,7 @@ public class Aes256Encrypter implements IEncrypter {
 			if (ecipher == null || encryptParams == null) {
 				return null;
 			}
-			final byte[] utf8 = str.getBytes("UTF-8");
+			final byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 			final byte[] enc = ecipher.doFinal(utf8);
 			final byte[] encodedParams = encryptParams.getEncoded();
 			// Include version marker, salt, algorithm parameters (including IV), and ciphertext

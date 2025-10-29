@@ -21,6 +21,7 @@ package org.freeplane.features.encrypt;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
@@ -88,7 +89,7 @@ public class DesEncrypter implements IEncrypter {
 				return null;
 			}
 			final byte[] utf8 = dcipher.doFinal(dec);
-			return new String(utf8, "UTF8");
+			return new String(utf8, StandardCharsets.UTF_8);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 		}
@@ -106,7 +107,7 @@ public class DesEncrypter implements IEncrypter {
 			initWithNewSalt();
 			if(ecipher == null)
 				return null;
-			final byte[] utf8 = str.getBytes("UTF8");
+			final byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 			final byte[] enc = ecipher.doFinal(utf8);
 			return DesEncrypter.toBase64(mSalt) + DesEncrypter.SALT_PRESENT_INDICATOR + DesEncrypter.toBase64(enc);
 		}
