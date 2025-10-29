@@ -87,15 +87,20 @@ public class EncryptionHelper {
 		// Try AES-256 first if marker is present
 		if (Aes256Encrypter.isAes256Encrypted(encryptedContent)) {
 			final IEncrypter aesEncrypter = new Aes256Encrypter(password);
-			final String decrypted = aesEncrypter.decrypt(encryptedContent);
-			if (decrypted != null) {
-				return decrypted;
+			try {
+				final String decrypted = aesEncrypter.decrypt(encryptedContent);
+				if (decrypted != null) {
+					return decrypted;
+				}
+			} finally {
+				aesEncrypter.destroy();
 			}
 		}
 		
 		// Try TripleDES (stronger legacy algorithm)
+		IEncrypter tripleDesEncrypter = null;
 		try {
-			final IEncrypter tripleDesEncrypter = new TripleDesEncrypter(password);
+			tripleDesEncrypter = new TripleDesEncrypter(password);
 			final String decrypted = tripleDesEncrypter.decrypt(encryptedContent);
 			if (decrypted != null && isValidDecryption(decrypted)) {
 				LogUtils.info("Successfully decrypted with TripleDES (legacy). Content will be upgraded to AES-256 on next save.");
@@ -103,11 +108,16 @@ public class EncryptionHelper {
 			}
 		} catch (final Exception e) {
 			// TripleDES failed, will try next algorithm
+		} finally {
+			if (tripleDesEncrypter != null) {
+				tripleDesEncrypter.destroy();
+			}
 		}
 		
 		// Try SingleDES (most common legacy algorithm)
+		IEncrypter singleDesEncrypter = null;
 		try {
-			final IEncrypter singleDesEncrypter = new SingleDesEncrypter(password);
+			singleDesEncrypter = new SingleDesEncrypter(password);
 			final String decrypted = singleDesEncrypter.decrypt(encryptedContent);
 			if (decrypted != null && isValidDecryption(decrypted)) {
 				LogUtils.info("Successfully decrypted with SingleDES (legacy). Content will be upgraded to AES-256 on next save.");
@@ -115,6 +125,10 @@ public class EncryptionHelper {
 			}
 		} catch (final Exception e) {
 			// SingleDES failed
+		} finally {
+			if (singleDesEncrypter != null) {
+				singleDesEncrypter.destroy();
+			}
 		}
 		
 		LogUtils.warn("Failed to decrypt content with any available algorithm");

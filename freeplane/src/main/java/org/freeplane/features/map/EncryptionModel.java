@@ -205,6 +205,11 @@ public class EncryptionModel implements IExtension {
 	synchronized public void unlock() {
 		node.setChildrenInternal(hiddenChildren.remove(node));
 		encryptedContent = null;
+		// Clean up sensitive data from memory
+		if (mEncrypter != null) {
+			mEncrypter.destroy();
+			mEncrypter = null;
+		}
 	}
 
 	synchronized public void lock(MapWriter mapWriter) {

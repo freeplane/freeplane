@@ -152,7 +152,14 @@ public class EncryptionController implements IExtension {
         // Use EncryptionHelper for automatic algorithm detection and backward compatibility
         // Pass the encrypted content to allow algorithm detection
         final String encryptedContent = encryptionModel.getEncryptedContent();
-        return encryptionModel.decrypt(mapController, EncryptionHelper.createDecrypter(password, encryptedContent));
+        final org.freeplane.features.map.IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
+        try {
+            return encryptionModel.decrypt(mapController, tempEncrypter);
+        } finally {
+            // Clean up the temporary encrypter used for password checking
+            // The actual encrypter stored in EncryptionModel will be cleaned up on unlock()
+            tempEncrypter.destroy();
+        }
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
