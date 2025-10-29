@@ -92,23 +92,14 @@ public class DesEncrypter implements IEncrypter {
 			return new String(utf8, StandardCharsets.UTF_8);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
-			// Use debug level since we expect failures when trying wrong algorithms during fallback
-			if (LogUtils.isDebugEnabled()) {
-				LogUtils.debug("DES Decryption failed: bad padding (likely wrong password or algorithm)", e);
-			}
+			// Expected failures during algorithm fallback - silently return null
+			// BadPaddingException is normal when trying wrong algorithm or wrong password
 		}
 		catch (final IllegalBlockSizeException e) {
-			if (LogUtils.isDebugEnabled()) {
-				LogUtils.debug("DES Decryption failed: illegal block size", e);
-			}
-		}
-		catch (final UnsupportedEncodingException e) {
-			LogUtils.warn("DES Decryption failed: unsupported encoding", e);
+			// Expected failures during algorithm fallback - silently return null
 		}
 		catch (final IllegalArgumentException e) {
-			if (LogUtils.isDebugEnabled()) {
-				LogUtils.debug("DES Decryption failed: illegal argument (possibly corrupt data)", e);
-			}
+			// Expected failures during algorithm fallback - silently return null
 		}
 		return null;
 	}
@@ -127,9 +118,6 @@ public class DesEncrypter implements IEncrypter {
 		}
 		catch (final IllegalBlockSizeException e) {
 			LogUtils.severe("DES Encryption failed: illegal block size", e);
-		}
-		catch (final UnsupportedEncodingException e) {
-			LogUtils.severe("DES Encryption failed: unsupported encoding", e);
 		}
 		return null;
 	}

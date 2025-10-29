@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.encrypt;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.SecureRandom;
@@ -119,9 +118,6 @@ public class Aes256Encrypter implements IEncrypter {
 		catch (final IllegalBlockSizeException e) {
 			LogUtils.warn("Decryption failed: illegal block size", e);
 		}
-		catch (final UnsupportedEncodingException e) {
-			LogUtils.warn("Decryption failed: unsupported encoding", e);
-		}
 		catch (final IllegalArgumentException e) {
 			LogUtils.warn("Decryption failed: illegal argument", e);
 		}
@@ -148,9 +144,6 @@ public class Aes256Encrypter implements IEncrypter {
 		}
 		catch (final IllegalBlockSizeException e) {
 			LogUtils.severe("Encryption failed: illegal block size", e);
-		}
-		catch (final UnsupportedEncodingException e) {
-			LogUtils.severe("Encryption failed: unsupported encoding", e);
 		}
 		catch (final java.io.IOException e) {
 			LogUtils.severe("Encryption failed: could not encode parameters", e);
