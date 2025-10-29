@@ -18,8 +18,8 @@
 package org.freeplane.features.encrypt;
 
 import java.io.UnsupportedEncodingException;
+import java.security.AlgorithmParameters;
 import java.security.SecureRandom;
-import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 
@@ -57,6 +57,7 @@ public class Aes256Encrypter implements IEncrypter {
 	private Cipher dcipher;
 	private Cipher ecipher;
 	private byte[] mSalt;
+	private AlgorithmParameters encryptParams;  // Store parameters including IV for PBES2
 	private char[] passPhrase;
 	private final SecureRandom secureRandom;
 
@@ -79,6 +80,7 @@ public class Aes256Encrypter implements IEncrypter {
 				str = str.substring(VERSION_MARKER.length());
 			}
 			
+			// Extract salt
 			byte[] salt = null;
 			final int indexOfSaltIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
 			if (indexOfSaltIndicator >= 0) {
@@ -86,8 +88,18 @@ public class Aes256Encrypter implements IEncrypter {
 				str = str.substring(indexOfSaltIndicator + 1);
 				salt = DesEncrypter.fromBase64(saltString);
 			}
+			
+			// Extract algorithm parameters (IV, etc.)
+			byte[] encodedParams = null;
+			final int indexOfParamsIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
+			if (indexOfParamsIndicator >= 0) {
+				final String paramsString = str.substring(0, indexOfParamsIndicator);
+				str = str.substring(indexOfParamsIndicator + 1);
+				encodedParams = DesEncrypter.fromBase64(paramsString);
+			}
+			
 			final byte[] dec = DesEncrypter.fromBase64(str);
-			init(salt);
+			init(salt, encodedParams);
 			if (dcipher == null) {
 				return null;
 			}
@@ -113,13 +125,16 @@ public class Aes256Encrypter implements IEncrypter {
 	public String encrypt(final String str) {
 		try {
 			initWithNewSalt();
-			if (ecipher == null) {
+			if (ecipher == null || encryptParams == null) {
 				return null;
 			}
 			final byte[] utf8 = str.getBytes("UTF-8");
 			final byte[] enc = ecipher.doFinal(utf8);
-			// Include version marker to identify AES-256 encrypted content
-			return VERSION_MARKER + DesEncrypter.toBase64(mSalt) + SALT_PRESENT_INDICATOR + DesEncrypter.toBase64(enc);
+			final byte[] encodedParams = encryptParams.getEncoded();
+			// Include version marker, salt, algorithm parameters (including IV), and ciphertext
+			return VERSION_MARKER + DesEncrypter.toBase64(mSalt) + SALT_PRESENT_INDICATOR + 
+				   DesEncrypter.toBase64(encodedParams) + SALT_PRESENT_INDICATOR + 
+				   DesEncrypter.toBase64(enc);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 			LogUtils.severe("Encryption failed: bad padding", e);
@@ -130,16 +145,19 @@ public class Aes256Encrypter implements IEncrypter {
 		catch (final UnsupportedEncodingException e) {
 			LogUtils.severe("Encryption failed: unsupported encoding", e);
 		}
+		catch (final java.io.IOException e) {
+			LogUtils.severe("Encryption failed: could not encode parameters", e);
+		}
 		return null;
 	}
 
 	private void initWithNewSalt() {
 		final byte[] newSalt = new byte[SALT_LENGTH];
 		secureRandom.nextBytes(newSalt);
-		init(newSalt);
+		init(newSalt, null);
 	}
 
-	private void init(final byte[] salt) {
+	private void init(final byte[] salt, final byte[] encodedParams) {
 		if (ecipher != null && mSalt != null && !Arrays.equals(mSalt, salt)) {
 			ecipher = null;
 			dcipher = null;
@@ -149,15 +167,26 @@ public class Aes256Encrypter implements IEncrypter {
 		}
 		if (ecipher == null) {
 			try {
-				final KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, ITERATION_COUNT);
+				final KeySpec keySpec = new PBEKeySpec(passPhrase);
 				final SecretKey key = SecretKeyFactory.getInstance(ALGORITHM).generateSecret(keySpec);
 				
-				ecipher = Cipher.getInstance(ALGORITHM);
-				dcipher = Cipher.getInstance(ALGORITHM);
+				// For PBE algorithms, use PBEParameterSpec with salt and iteration count
+				final PBEParameterSpec paramSpec = new PBEParameterSpec(mSalt, ITERATION_COUNT);
 				
-				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(mSalt, ITERATION_COUNT);
-				ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-				dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
+				ecipher = Cipher.getInstance(ALGORITHM);
+				
+				if (encodedParams == null) {
+					// Encryption mode: initialize with PBEParameterSpec
+					ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
+					// Store the generated parameters for later use
+					encryptParams = ecipher.getParameters();
+				} else {
+					// Decryption mode: use the stored parameters
+					final AlgorithmParameters params = AlgorithmParameters.getInstance(ALGORITHM);
+					params.init(encodedParams);
+					dcipher = Cipher.getInstance(ALGORITHM);
+					dcipher.init(Cipher.DECRYPT_MODE, key, params);
+				}
 			}
 			catch (final java.security.InvalidAlgorithmParameterException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: invalid algorithm parameter", e);
@@ -174,6 +203,9 @@ public class Aes256Encrypter implements IEncrypter {
 			}
 			catch (final java.security.InvalidKeyException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: invalid key", e);
+			}
+			catch (final java.io.IOException e) {
+				LogUtils.severe("Failed to initialize AES-256 cipher: could not decode parameters", e);
 			}
 		}
 	}
