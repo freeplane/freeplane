@@ -68,11 +68,12 @@ public class EncryptionModel implements IExtension {
 		// If initial decryption succeeds, use the provided encrypter
 		if (decryptedNode != null && isValidDecryptedContent(decryptedNode)) {
 			mEncrypter = encrypter;
+			LogUtils.info("checkAndSetEncrypter: Successfully set mEncrypter (algorithm: " + encrypter.getClass().getSimpleName() + ")");
 			return true;
 		}
 		
 		// If decryption failed, the caller should try decryptWithFallback() with the password
-		LogUtils.info("Initial decryption failed - wrong password or algorithm mismatch");
+		LogUtils.info("checkAndSetEncrypter: Decryption failed - wrong password or algorithm mismatch");
 		return false;
 	}
 	
@@ -184,6 +185,12 @@ public class EncryptionModel implements IExtension {
 	/**
 	 */
 	private String encryptXml(final StringBuffer childXml) {
+		if (mEncrypter == null) {
+			LogUtils.severe("BUG: mEncrypter is null in encryptXml! This should never happen.");
+			LogUtils.severe("  encryptedContent = " + (encryptedContent != null ? "NOT NULL" : "NULL"));
+			LogUtils.severe("  This usually means the node was unlocked but the encrypter wasn't preserved.");
+			throw new IllegalStateException("Cannot encrypt: encrypter is null. The node may have been decrypted without preserving the encryption key.");
+		}
 		try {
 			final String encrypted = mEncrypter.encrypt(childXml.toString());
 			return encrypted;
@@ -254,11 +261,9 @@ public class EncryptionModel implements IExtension {
 	synchronized public void unlock() {
 		node.setChildrenInternal(hiddenChildren.remove(node));
 		encryptedContent = null;
-		// Clean up sensitive data from memory
-		if (mEncrypter != null) {
-			mEncrypter.destroy();
-			mEncrypter = null;
-		}
+		// NOTE: Do NOT destroy mEncrypter here - it's needed for re-encryption when lock() is called
+		// The encrypter will be cleaned up when the EncryptionModel is removed or garbage collected
+		LogUtils.info("EncryptionModel.unlock(): mEncrypter is " + (mEncrypter != null ? "NOT NULL" : "NULL"));
 	}
 
 	synchronized public void lock(MapWriter mapWriter) {
@@ -274,6 +279,17 @@ public class EncryptionModel implements IExtension {
 		}
 		else {
 
+		}
+	}
+	
+	/**
+	 * Clean up sensitive data from memory.
+	 * Should be called when encryption is removed or the node is deleted.
+	 */
+	public void destroy() {
+		if (mEncrypter != null) {
+			mEncrypter.destroy();
+			mEncrypter = null;
 		}
 	}
 }

@@ -261,3 +261,7 @@ gradle-app.setting
 *.backup
 *.temp
 .!*
+
+# Local testing scripts
+test_encryption_quick.sh
+.classpath_cache

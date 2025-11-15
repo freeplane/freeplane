@@ -155,21 +155,21 @@ public class EncryptionController implements IExtension {
         final org.freeplane.features.map.IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
         
         boolean decrypted = false;
-        try {
-            // Try with the detected algorithm first
-            decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
-            
-            // If that fails and this isn't already a fallback attempt, try all algorithms
-            if (!decrypted) {
-                decrypted = encryptionModel.decryptWithFallback(mapController, password);
-            }
-            
-            return decrypted;
-        } finally {
-            // Clean up the temporary encrypter used for password checking
-            // The actual encrypter stored in EncryptionModel will be cleaned up on unlock()
+        // Try with the detected algorithm first
+        decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
+        
+        // If that fails and this isn't already a fallback attempt, try all algorithms
+        if (!decrypted) {
+            // If first attempt failed, clean up the failed encrypter
             tempEncrypter.destroy();
+            decrypted = encryptionModel.decryptWithFallback(mapController, password);
         }
+        
+        // NOTE: Do NOT destroy tempEncrypter here if decryption succeeded!
+        // It's now stored in EncryptionModel.mEncrypter and will be used for re-encryption.
+        // It will be cleaned up when the EncryptionModel is destroyed or encryption is removed.
+        
+        return decrypted;
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
