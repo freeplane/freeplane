@@ -149,26 +149,17 @@ public class EncryptionController implements IExtension {
 
     private boolean decrypt(final EncryptionModel encryptionModel, final StringBuilder password) {
         final MapController mapController = Controller.getCurrentModeController().getMapController();
-        // Use EncryptionHelper for automatic algorithm detection and backward compatibility
-        // Pass the encrypted content to allow algorithm detection
         final String encryptedContent = encryptionModel.getEncryptedContent();
         final org.freeplane.features.map.IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
         
-        boolean decrypted = false;
-        // Try with the detected algorithm first
-        decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
+        boolean decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
         
-        // If that fails and this isn't already a fallback attempt, try all algorithms
         if (!decrypted) {
-            // If first attempt failed, clean up the failed encrypter
             tempEncrypter.destroy();
             decrypted = encryptionModel.decryptWithFallback(mapController, password);
         }
         
-        // NOTE: Do NOT destroy tempEncrypter here if decryption succeeded!
-        // It's now stored in EncryptionModel.mEncrypter and will be used for re-encryption.
-        // It will be cleaned up when the EncryptionModel is destroyed or encryption is removed.
-        
+        // Do NOT destroy tempEncrypter if successful - now owned by EncryptionModel for re-encryption
         return decrypted;
     }
 
@@ -182,18 +173,15 @@ public class EncryptionController implements IExtension {
 		if (passwordStrategy.isCancelled()) {
 			return;
 		}
-		// Use AES-256 encryption for all new encryptions
 		final org.freeplane.features.map.IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
 		final EncryptionModel encryptionModel;
 		try {
 			encryptionModel = new EncryptionModel(node, encrypter);
 		} catch (Exception e) {
-			// If EncryptionModel creation fails, clean up the encrypter
 			encrypter.destroy();
 			throw e;
 		}
-		// Note: The encrypter is now owned by EncryptionModel and will be cleaned up
-		// when the node is unlocked (EncryptionModel.unlock() calls destroy())
+		// Encrypter now owned by EncryptionModel - destroyed on unlock
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
