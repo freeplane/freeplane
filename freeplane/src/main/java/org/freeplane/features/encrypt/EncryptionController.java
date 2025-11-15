@@ -183,7 +183,17 @@ public class EncryptionController implements IExtension {
 			return;
 		}
 		// Use AES-256 encryption for all new encryptions
-		final EncryptionModel encryptionModel = new EncryptionModel(node, EncryptionHelper.createEncrypter(password));
+		final org.freeplane.features.map.IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
+		final EncryptionModel encryptionModel;
+		try {
+			encryptionModel = new EncryptionModel(node, encrypter);
+		} catch (Exception e) {
+			// If EncryptionModel creation fails, clean up the encrypter
+			encrypter.destroy();
+			throw e;
+		}
+		// Note: The encrypter is now owned by EncryptionModel and will be cleaned up
+		// when the node is unlocked (EncryptionModel.unlock() calls destroy())
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
