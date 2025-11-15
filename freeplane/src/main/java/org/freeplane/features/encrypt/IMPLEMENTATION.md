@@ -112,6 +112,33 @@ if (startsWith("FP-AES256-V1:")) {
 }
 ```
 
+## Fallback Mechanism
+
+**Important:** The implementation includes a robust fallback mechanism for maximum data recovery:
+
+1. **When AES-256 markers are detected:**
+   - First, attempt decryption with AES-256
+   - If AES-256 decryption fails (returns null), automatically fall back to trying legacy algorithms
+   - This handles edge cases like corrupted magic numbers or version mismatches
+
+2. **Fallback sequence in `EncryptionHelper.tryDecryptWithAllAlgorithms()`:**
+   ```
+   If AES-256 markers present:
+       Try AES-256 → If success, return
+       ↓ (if failed)
+   Try TripleDES → If success, return  
+       ↓ (if failed)
+   Try SingleDES → If success, return
+       ↓ (if failed)
+   Return null (all algorithms failed)
+   ```
+
+3. **Why this is important:**
+   - Protects against data loss from corrupted headers
+   - Handles legacy data that might have misleading markers
+   - Ensures backward compatibility in all scenarios
+   - Logs when fallback occurs for debugging
+
 ## Benefits
 
 1. **Trivial Detection**: Algorithm can be determined by reading first 8 bytes

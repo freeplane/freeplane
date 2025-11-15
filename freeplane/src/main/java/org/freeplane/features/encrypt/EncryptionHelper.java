@@ -74,10 +74,21 @@ public class EncryptionHelper {
 	 * Try to decrypt content with multiple algorithms for maximum compatibility.
 	 * Returns the decrypted content or null if decryption fails with all algorithms.
 	 * 
-	 * Algorithm priority:
-	 * 1. AES-256 (if marker present)
-	 * 2. TripleDES (stronger legacy algorithm)
-	 * 3. SingleDES (weakest, most common legacy)
+	 * <p><b>Fallback Strategy:</b></p>
+	 * <p>If AES-256 magic numbers are detected but decryption fails (e.g., wrong password,
+	 * corruption, or version mismatch), this method automatically falls back to trying
+	 * legacy DES/TripleDES algorithms. This ensures maximum compatibility and data recovery.</p>
+	 * 
+	 * <p>Algorithm priority:</p>
+	 * <ol>
+	 * <li>AES-256 (if marker present) - ALWAYS falls back to legacy if this fails</li>
+	 * <li>TripleDES (stronger legacy algorithm)</li>
+	 * <li>SingleDES (weakest, most common legacy)</li>
+	 * </ol>
+	 * 
+	 * @param password the password to try for decryption
+	 * @param encryptedContent the encrypted content to decrypt
+	 * @return the decrypted content, or null if all algorithms fail
 	 */
 	public static String tryDecryptWithAllAlgorithms(final StringBuilder password, final String encryptedContent) {
 		if (encryptedContent == null) {
@@ -85,6 +96,11 @@ public class EncryptionHelper {
 		}
 		
 		// Try AES-256 first if marker is present
+		// IMPORTANT: Even if AES-256 markers are detected, we still fall back to legacy
+		// algorithms if decryption fails. This handles edge cases like:
+		// - Wrong password (will fail with all algorithms)
+		// - Data corruption
+		// - Misleading or corrupted magic numbers
 		if (Aes256Encrypter.isAes256Encrypted(encryptedContent)) {
 			final IEncrypter aesEncrypter = new Aes256Encrypter(password);
 			try {
@@ -92,6 +108,8 @@ public class EncryptionHelper {
 				if (decrypted != null) {
 					return decrypted;
 				}
+				// AES-256 failed - fall through to try legacy algorithms
+				LogUtils.info("AES-256 decryption failed despite markers being present - trying legacy algorithms as fallback");
 			} finally {
 				aesEncrypter.destroy();
 			}

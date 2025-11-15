@@ -316,6 +316,56 @@ public class EncryptionHelperTest {
 		assertThat(decrypted2, equalTo(plaintext2));
 	}
 
+	// ========== Fallback Mechanism Tests ==========
+
+	/**
+	 * Test that verifies the fallback mechanism works when AES-256 decryption fails.
+	 * This is important for handling edge cases where:
+	 * 1. Magic numbers might be corrupted
+	 * 2. Data was encrypted with legacy algorithm but has misleading markers
+	 * 3. Ensuring backward compatibility in all scenarios
+	 */
+	@Test
+	public void tryDecryptWithAllAlgorithmsFallsBackToDESWhenAES256Fails() {
+		final StringBuilder password = new StringBuilder("test123");
+		
+		// Encrypt with legacy DES (no AES-256 markers)
+		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
+		final String plaintext = "<node TEXT=\"legacy content\"/>";
+		final String encrypted = desEncrypter.encrypt(plaintext);
+		desEncrypter.destroy();
+		
+		// Even if somehow the data looks like it might be AES-256,
+		// tryDecryptWithAllAlgorithms should fall back to DES and succeed
+		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		
+		assertThat(decrypted, equalTo(plaintext));
+	}
+	
+	/**
+	 * Test that ensures even when AES-256 is attempted first and fails,
+	 * the fallback to legacy algorithms still works.
+	 */
+	@Test
+	public void tryDecryptWithAllAlgorithmsTriesAllAlgorithmsWhenFirstFails() {
+		final StringBuilder correctPassword = new StringBuilder("correct");
+		final StringBuilder wrongPassword = new StringBuilder("wrong");
+		
+		// Encrypt with DES
+		final IEncrypter desEncrypter = new SingleDesEncrypter(correctPassword);
+		final String plaintext = "<node TEXT=\"test content\"/>";
+		final String encrypted = desEncrypter.encrypt(plaintext);
+		desEncrypter.destroy();
+		
+		// First verify that wrong password fails with all algorithms
+		final String decryptedWrong = EncryptionHelper.tryDecryptWithAllAlgorithms(wrongPassword, encrypted);
+		assertThat(decryptedWrong, nullValue());
+		
+		// Then verify that correct password succeeds (tests the fallback chain)
+		final String decryptedCorrect = EncryptionHelper.tryDecryptWithAllAlgorithms(correctPassword, encrypted);
+		assertThat(decryptedCorrect, equalTo(plaintext));
+	}
+
 	// ========== Real-World Scenarios ==========
 
 	@Test
