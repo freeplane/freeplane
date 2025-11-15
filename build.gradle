@@ -171,6 +171,11 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
        delete "$buildDir/libs"
    }
    
+   // Gradle 9.0 is stricter about test discovery - many subprojects have non-JUnit test files
+   test {
+       failOnNoDiscoveredTests = false
+   }
+   
    jar.dependsOn cleanBUILD
 }
 

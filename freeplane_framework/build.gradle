@@ -10,6 +10,11 @@ dependencies {
 	mergedApiDependency project(':freeplane_api')
 }
 
+test {
+	// TestApp is not a JUnit test, just a debugging app
+	failOnNoDiscoveredTests = false
+}
+
 task freeplanelauncherJar(type: Jar) {
      archiveFileName = 'freeplanelauncher.jar'
      destinationDirectory = new File(globalBin)
