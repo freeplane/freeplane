@@ -167,7 +167,8 @@ public class Aes256Encrypter implements IEncrypter {
 		}
 		if (ecipher == null) {
 			try {
-				final KeySpec keySpec = new PBEKeySpec(passPhrase);
+				// Pass salt and iteration count directly to PBEKeySpec for explicit key derivation
+				final KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, ITERATION_COUNT);
 				final SecretKey key = SecretKeyFactory.getInstance(ALGORITHM).generateSecret(keySpec);
 				
 				// For PBE algorithms, use PBEParameterSpec with salt and iteration count
