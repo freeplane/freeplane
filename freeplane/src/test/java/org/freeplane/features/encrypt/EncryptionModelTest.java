@@ -209,8 +209,9 @@ public class EncryptionModelTest {
 		final String plaintext = "<node TEXT=\"test\"/>";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
+		// New binary header format: check that algorithm is detected as AES256
 		assertTrue("New encryption should use AES-256", 
-			encrypted.startsWith("FP-AES256-V1:"));
+			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
 	}
 
 	@Test

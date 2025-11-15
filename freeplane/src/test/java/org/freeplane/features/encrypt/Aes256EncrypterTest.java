@@ -56,8 +56,9 @@ public class Aes256EncrypterTest {
 		final String encrypted = encrypter.encrypt("test");
 		
 		assertThat(encrypted, notNullValue());
-		assertTrue("Encrypted content should start with version marker", 
-			encrypted.startsWith("FP-AES256-V1:"));
+		// New binary header format: check that algorithm is detected as AES256
+		assertTrue("Encrypted content should have AES256 binary header", 
+			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
 	}
 
 	@Test
@@ -461,12 +462,17 @@ public class Aes256EncrypterTest {
 		final String plaintext = "test";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		// Remove version marker
-		final String withoutMarker = encrypted.substring("FP-AES256-V1:".length());
+		// New binary format: decode and check structure
+		// Format: 8-byte header + 16-byte salt + 16-byte IV + ciphertext
+		final byte[] decoded = DesEncrypter.fromBase64(encrypted);
 		
-		// Should have at least 2 spaces (salt, params, ciphertext)
-		final int spaceCount = withoutMarker.length() - withoutMarker.replace(" ", "").length();
-		assertTrue("Encrypted content should have at least 2 separators", spaceCount >= 2);
+		// Minimum size: 8 (header) + 16 (salt) + 16 (IV) + 16 (min ciphertext) = 56 bytes
+		assertTrue("Encrypted content should have header + salt + IV + ciphertext", 
+			decoded.length >= 56);
+		
+		// Verify header is present
+		assertTrue("Should have valid AES256 header",
+			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
 	}
 }
 
