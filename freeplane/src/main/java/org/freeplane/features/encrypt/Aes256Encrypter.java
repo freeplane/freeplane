@@ -18,7 +18,6 @@
 package org.freeplane.features.encrypt;
 
 import java.nio.charset.StandardCharsets;
-import java.security.AlgorithmParameters;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
@@ -38,18 +37,37 @@ import org.freeplane.features.map.IEncrypter;
  * AES-256 encryption implementation using PBKDF2 with HMAC-SHA256.
  * This provides significantly stronger encryption than the legacy DES implementation.
  * 
- * Key Derivation: PBKDF2 with HMAC-SHA256 (supports Unicode passwords)
- * Encryption: AES-256 in CBC mode (does NOT provide authenticated encryption)
- * - Salt length: 16 bytes (128 bits)
- * - IV length: 16 bytes (128 bits)
- * - Iterations: 100,000 (significantly stronger than legacy 19 iterations)
+ * <h3>Cryptographic Parameters:</h3>
+ * <ul>
+ * <li>Key Derivation: PBKDF2-HMAC-SHA256 (supports Unicode passwords)</li>
+ * <li>Encryption: AES-256 in CBC mode with PKCS5 padding</li>
+ * <li>Salt length: 16 bytes (128 bits)</li>
+ * <li>IV length: 16 bytes (128 bits)</li>
+ * <li>Iterations: 100,000 (OWASP recommended minimum)</li>
+ * </ul>
  * 
- * Note: This implementation uses CBC mode and does not provide authenticated encryption
- * or tamper detection. Data integrity/authenticity is NOT cryptographically guaranteed.
- * The primary security improvement over legacy DES is the much stronger 256-bit key size
- * and modern key derivation function (PBKDF2-HMAC-SHA256) that supports Unicode passwords.
+ * <h3>Encrypted Data Format:</h3>
+ * <pre>
+ * [8 bytes: Binary header - magic "FPM\x01" + algorithm "AES2"]
+ * [16 bytes: Salt]
+ * [16 bytes: IV]
+ * [N bytes: Ciphertext]
+ * → Base64 encoded
+ * </pre>
+ * 
+ * <p><b>Security Note:</b> This implementation uses CBC mode and does not provide
+ * authenticated encryption or tamper detection. Data integrity/authenticity is NOT
+ * cryptographically guaranteed. The primary security improvement over legacy DES is
+ * the much stronger 256-bit key size and modern key derivation function that supports
+ * Unicode passwords.</p>
+ * 
+ * <p><b>Backward Compatibility:</b> Can decrypt data encrypted with the old text marker
+ * format ("FP-AES256-V1:"). All new encryptions use the binary header format.</p>
  * 
  * @author Freeplane team
+ * @since 1.12.x
+ * @see EncryptionHeader
+ * @see EncryptionHelper
  */
 public class Aes256Encrypter implements IEncrypter {
 	private static final int SALT_LENGTH = 16;  // 128 bits
@@ -61,13 +79,10 @@ public class Aes256Encrypter implements IEncrypter {
 	private static final int ITERATION_COUNT = 100000;  // OWASP recommended minimum
 	
 	/**
-	 * Version marker format: FP-AES256-V1:
-	 * - FP: Freeplane identifier
-	 * - AES256: Algorithm identifier
-	 * - V1: Version number for future compatibility
-	 * - Chosen to be highly unlikely to appear in base64-encoded legacy data
+	 * Old version marker format for backward compatibility: FP-AES256-V1:
+	 * This is kept to allow decryption of files created before the binary header format.
 	 */
-	private static final String VERSION_MARKER = "FP-AES256-V1:";
+	private static final String OLD_VERSION_MARKER = "FP-AES256-V1:";
 	
 	private Cipher dcipher;
 	private Cipher ecipher;
@@ -90,36 +105,74 @@ public class Aes256Encrypter implements IEncrypter {
 			return null;
 		}
 		try {
-			// Remove version marker if present
-			if (str.startsWith(VERSION_MARKER)) {
-				str = str.substring(VERSION_MARKER.length());
-			}
-			
-			// Extract salt
 			byte[] salt = null;
-			final int indexOfSaltIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
-			if (indexOfSaltIndicator >= 0) {
-				final String saltString = str.substring(0, indexOfSaltIndicator);
-				str = str.substring(indexOfSaltIndicator + 1);
-				salt = DesEncrypter.fromBase64(saltString);
-			}
-			
-			// Extract IV
 			byte[] iv = null;
-			final int indexOfIvIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
-			if (indexOfIvIndicator >= 0) {
-				final String ivString = str.substring(0, indexOfIvIndicator);
-				str = str.substring(indexOfIvIndicator + 1);
-				iv = DesEncrypter.fromBase64(ivString);
+			byte[] ciphertext = null;
+			
+			// Check for old text-based version marker (backward compatibility)
+			if (str.startsWith(OLD_VERSION_MARKER)) {
+				// Old format: "FP-AES256-V1:<base64_salt> <base64_iv> <base64_ciphertext>"
+				str = str.substring(OLD_VERSION_MARKER.length());
+				
+				// Extract salt
+				final int indexOfSaltIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
+				if (indexOfSaltIndicator >= 0) {
+					final String saltString = str.substring(0, indexOfSaltIndicator);
+					str = str.substring(indexOfSaltIndicator + 1);
+					salt = DesEncrypter.fromBase64(saltString);
+				}
+				
+				// Extract IV
+				final int indexOfIvIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
+				if (indexOfIvIndicator >= 0) {
+					final String ivString = str.substring(0, indexOfIvIndicator);
+					str = str.substring(indexOfIvIndicator + 1);
+					iv = DesEncrypter.fromBase64(ivString);
+				}
+				
+				ciphertext = DesEncrypter.fromBase64(str);
+			} else {
+				// Try to decode as base64 first
+				byte[] allData = DesEncrypter.fromBase64(str);
+				
+				// Check for new binary header format
+				if (allData != null && allData.length >= EncryptionHeader.HEADER_LENGTH) {
+					EncryptionHeader header = EncryptionHeader.fromBytes(allData);
+					if (header != null && header.getAlgorithm() == EncryptionHeader.Algorithm.AES256) {
+						// New binary format: header (8 bytes) + salt (16 bytes) + IV (16 bytes) + ciphertext
+						int offset = EncryptionHeader.HEADER_LENGTH;
+						
+						// Extract salt
+						if (allData.length >= offset + SALT_LENGTH) {
+							salt = Arrays.copyOfRange(allData, offset, offset + SALT_LENGTH);
+							offset += SALT_LENGTH;
+						}
+						
+						// Extract IV
+						if (allData.length >= offset + IV_LENGTH) {
+							iv = Arrays.copyOfRange(allData, offset, offset + IV_LENGTH);
+							offset += IV_LENGTH;
+						}
+						
+						// Extract ciphertext (remaining data)
+						if (allData.length > offset) {
+							ciphertext = Arrays.copyOfRange(allData, offset, allData.length);
+						}
+					}
+				}
 			}
 			
-			final byte[] dec = DesEncrypter.fromBase64(str);
-			init(salt, iv);
-			if (dcipher == null) {
-				return null;
+			// Decrypt
+			if (salt != null && iv != null && ciphertext != null) {
+				init(salt, iv);
+				if (dcipher == null) {
+					return null;
+				}
+				final byte[] utf8 = dcipher.doFinal(ciphertext);
+				return new String(utf8, StandardCharsets.UTF_8);
 			}
-			final byte[] utf8 = dcipher.doFinal(dec);
-			return new String(utf8, StandardCharsets.UTF_8);
+			
+			return null;
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 			LogUtils.warn("Decryption failed: bad padding", e);
@@ -142,10 +195,24 @@ public class Aes256Encrypter implements IEncrypter {
 			}
 			final byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 			final byte[] enc = ecipher.doFinal(utf8);
-			// Include version marker, salt, IV, and ciphertext
-			return VERSION_MARKER + DesEncrypter.toBase64(mSalt) + SALT_PRESENT_INDICATOR + 
-				   DesEncrypter.toBase64(currentIV) + SALT_PRESENT_INDICATOR + 
-				   DesEncrypter.toBase64(enc);
+			
+			// Create binary header
+			EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
+			byte[] headerBytes = header.toBytes();
+			
+			// Combine raw binary data: header + salt + IV + ciphertext
+			byte[] fullData = new byte[headerBytes.length + mSalt.length + currentIV.length + enc.length];
+			int offset = 0;
+			System.arraycopy(headerBytes, 0, fullData, offset, headerBytes.length);
+			offset += headerBytes.length;
+			System.arraycopy(mSalt, 0, fullData, offset, mSalt.length);
+			offset += mSalt.length;
+			System.arraycopy(currentIV, 0, fullData, offset, currentIV.length);
+			offset += currentIV.length;
+			System.arraycopy(enc, 0, fullData, offset, enc.length);
+			
+			// Encode the full data (header + salt + IV + ciphertext) to base64
+			return DesEncrypter.toBase64(fullData);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 			LogUtils.severe("Encryption failed: bad padding", e);
@@ -221,9 +288,21 @@ public class Aes256Encrypter implements IEncrypter {
 	
 	/**
 	 * Check if the encrypted string was created with AES-256 encryption.
+	 * Supports both old text-based marker and new binary header format.
 	 */
 	public static boolean isAes256Encrypted(String encryptedString) {
-		return encryptedString != null && encryptedString.startsWith(VERSION_MARKER);
+		if (encryptedString == null) {
+			return false;
+		}
+		
+		// Check old text-based marker (backward compatibility)
+		if (encryptedString.startsWith(OLD_VERSION_MARKER)) {
+			return true;
+		}
+		
+		// Check new binary header format
+		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedString);
+		return algorithm == EncryptionHeader.Algorithm.AES256;
 	}
 	
 	/**

@@ -36,6 +36,16 @@ AES-256 specific implementation tests covering:
 - Multiple encryption instances
 - Edge cases and error handling
 
+### EncryptionHeaderTest.java
+Binary encryption header format tests covering:
+- 8-byte header structure (magic number + algorithm ID)
+- Header creation and parsing for all algorithms (AES-256, DES, Triple-DES)
+- Algorithm detection from encrypted content
+- Backward compatibility with old text marker format ("FP-AES256-V1:")
+- Round-trip encryption/decryption with binary headers
+- Invalid header handling
+- Base64 encoding/decoding with headers
+
 ### EncryptionModelTest.java
 High-level EncryptionModel tests covering:
 - EncryptionModel creation and state management
@@ -61,6 +71,7 @@ gradle test --tests "org.freeplane.features.encrypt.EncryptionTest"
 gradle test --tests "org.freeplane.features.encrypt.EncryptionHelperTest"
 gradle test --tests "org.freeplane.features.encrypt.Aes256EncrypterTest"
 gradle test --tests "org.freeplane.features.encrypt.EncryptionModelTest"
+gradle test --tests "org.freeplane.features.encrypt.EncryptionHeaderTest"
 ```
 
 To run tests with verbose output:
@@ -85,10 +96,11 @@ The test suite covers:
 ## Key Features Tested
 
 ### AES-256 Encryption (New)
-- Uses PBEWithHmacSHA256AndAES_256 algorithm
+- Uses PBKDF2-HMAC-SHA256 key derivation with AES-256-CBC encryption
 - 100,000 PBKDF2 iterations (OWASP recommended)
-- 16-byte salt (128 bits)
-- Version marker: "FP-AES256-V1:"
+- 16-byte salt (128 bits) + 16-byte IV (128 bits)
+- Binary header format: 8 bytes (magic number "FPM\x01" + algorithm ID "AES2")
+- Backward compatible with old text marker format: "FP-AES256-V1:"
 - Each encryption produces unique ciphertext (random salt/IV)
 
 ### Legacy Support
@@ -105,10 +117,11 @@ The test suite covers:
 
 ## Test Statistics
 
-- **Total Test Methods**: 130+
-- **Test Classes**: 4
+- **Total Test Methods**: 155+
+- **Test Classes**: 5
 - **Algorithms Tested**: 3 (AES-256, TripleDES, SingleDES)
-- **Edge Cases**: 20+ (null, empty, unicode, special chars, etc.)
+- **Format Versions**: 2 (binary header format, legacy text marker)
+- **Edge Cases**: 25+ (null, empty, unicode, special chars, invalid headers, etc.)
 - **Integration Scenarios**: 15+
 
 ## Notes for Developers

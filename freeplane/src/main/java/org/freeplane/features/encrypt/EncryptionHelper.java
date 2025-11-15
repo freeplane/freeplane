@@ -188,12 +188,20 @@ public class EncryptionHelper {
 			return "Unknown";
 		}
 		
-		if (Aes256Encrypter.isAes256Encrypted(encryptedContent)) {
-			return "AES-256 (Strong)";
+		// Use the new header detection
+		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
+		switch (algorithm) {
+			case AES256:
+				return "AES-256 (Strong)";
+			case DES:
+				return "Legacy DES (Weak - will be upgraded)";
+			case TRIPLE_DES:
+				return "Legacy Triple-DES (Medium - will be upgraded)";
+			case UNKNOWN:
+			default:
+				// Legacy algorithms - we can't definitively tell which without trying to decrypt
+				return "Legacy DES/TripleDES (will be upgraded)";
 		}
-		
-		// Legacy algorithms - we can't definitively tell which without trying to decrypt
-		return "Legacy DES (Weak - will be upgraded)";
 	}
 }
 
