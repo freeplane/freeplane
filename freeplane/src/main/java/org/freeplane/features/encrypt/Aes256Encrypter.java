@@ -27,8 +27,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IEncrypter;
@@ -37,23 +38,26 @@ import org.freeplane.features.map.IEncrypter;
  * AES-256 encryption implementation using PBKDF2 with HMAC-SHA256.
  * This provides significantly stronger encryption than the legacy DES implementation.
  * 
- * Algorithm: PBEWithHmacSHA256AndAES_256
- * - Key derivation: PBKDF2 with HMAC-SHA256
- * - Encryption: AES-256 in CBC mode (does NOT provide authenticated encryption)
+ * Key Derivation: PBKDF2 with HMAC-SHA256 (supports Unicode passwords)
+ * Encryption: AES-256 in CBC mode (does NOT provide authenticated encryption)
  * - Salt length: 16 bytes (128 bits)
+ * - IV length: 16 bytes (128 bits)
  * - Iterations: 100,000 (significantly stronger than legacy 19 iterations)
  * 
  * Note: This implementation uses CBC mode and does not provide authenticated encryption
  * or tamper detection. Data integrity/authenticity is NOT cryptographically guaranteed.
  * The primary security improvement over legacy DES is the much stronger 256-bit key size
- * and modern key derivation function (PBKDF2-HMAC-SHA256).
+ * and modern key derivation function (PBKDF2-HMAC-SHA256) that supports Unicode passwords.
  * 
  * @author Freeplane team
  */
 public class Aes256Encrypter implements IEncrypter {
-	private static final int SALT_LENGTH = 16;  // 128 bits for AES
+	private static final int SALT_LENGTH = 16;  // 128 bits
+	private static final int IV_LENGTH = 16;  // 128 bits for AES block size
+	private static final int KEY_LENGTH = 256;  // 256 bits for AES-256
 	private static final String SALT_PRESENT_INDICATOR = " ";
-	private static final String ALGORITHM = "PBEWithHmacSHA256AndAES_256";
+	private static final String KEY_DERIVATION_ALGORITHM = "PBKDF2WithHmacSHA256";
+	private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 	private static final int ITERATION_COUNT = 100000;  // OWASP recommended minimum
 	
 	/**
@@ -68,7 +72,7 @@ public class Aes256Encrypter implements IEncrypter {
 	private Cipher dcipher;
 	private Cipher ecipher;
 	private byte[] mSalt;
-	private AlgorithmParameters encryptParams;  // Store parameters including IV for PBES2
+	private byte[] currentIV;  // Store IV for current encryption/decryption
 	private char[] passPhrase;
 	private final SecureRandom secureRandom;
 
@@ -100,17 +104,17 @@ public class Aes256Encrypter implements IEncrypter {
 				salt = DesEncrypter.fromBase64(saltString);
 			}
 			
-			// Extract algorithm parameters (IV, etc.)
-			byte[] encodedParams = null;
-			final int indexOfParamsIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
-			if (indexOfParamsIndicator >= 0) {
-				final String paramsString = str.substring(0, indexOfParamsIndicator);
-				str = str.substring(indexOfParamsIndicator + 1);
-				encodedParams = DesEncrypter.fromBase64(paramsString);
+			// Extract IV
+			byte[] iv = null;
+			final int indexOfIvIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
+			if (indexOfIvIndicator >= 0) {
+				final String ivString = str.substring(0, indexOfIvIndicator);
+				str = str.substring(indexOfIvIndicator + 1);
+				iv = DesEncrypter.fromBase64(ivString);
 			}
 			
 			final byte[] dec = DesEncrypter.fromBase64(str);
-			init(salt, encodedParams);
+			init(salt, iv);
 			if (dcipher == null) {
 				return null;
 			}
@@ -133,15 +137,14 @@ public class Aes256Encrypter implements IEncrypter {
 	public String encrypt(final String str) {
 		try {
 			initWithNewSalt();
-			if (ecipher == null || encryptParams == null) {
+			if (ecipher == null || currentIV == null) {
 				return null;
 			}
 			final byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 			final byte[] enc = ecipher.doFinal(utf8);
-			final byte[] encodedParams = encryptParams.getEncoded();
-			// Include version marker, salt, algorithm parameters (including IV), and ciphertext
+			// Include version marker, salt, IV, and ciphertext
 			return VERSION_MARKER + DesEncrypter.toBase64(mSalt) + SALT_PRESENT_INDICATOR + 
-				   DesEncrypter.toBase64(encodedParams) + SALT_PRESENT_INDICATOR + 
+				   DesEncrypter.toBase64(currentIV) + SALT_PRESENT_INDICATOR + 
 				   DesEncrypter.toBase64(enc);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
@@ -149,9 +152,6 @@ public class Aes256Encrypter implements IEncrypter {
 		}
 		catch (final IllegalBlockSizeException e) {
 			LogUtils.severe("Encryption failed: illegal block size", e);
-		}
-		catch (final java.io.IOException e) {
-			LogUtils.severe("Encryption failed: could not encode parameters", e);
 		}
 		return null;
 	}
@@ -162,36 +162,42 @@ public class Aes256Encrypter implements IEncrypter {
 		init(newSalt, null);
 	}
 
-	private void init(final byte[] salt, final byte[] encodedParams) {
-		if (ecipher != null && mSalt != null && !Arrays.equals(mSalt, salt)) {
+	private void init(final byte[] salt, final byte[] iv) {
+		// Reset ciphers if salt has changed
+		if (mSalt != null && salt != null && !Arrays.equals(mSalt, salt)) {
 			ecipher = null;
 			dcipher = null;
 		}
 		if (salt != null) {
 			mSalt = salt;
 		}
-		if (ecipher == null) {
+		
+		// Check if we need to initialize based on the mode
+		final boolean needsEncryptionInit = (iv == null && ecipher == null);
+		final boolean needsDecryptionInit = (iv != null && dcipher == null);
+		
+		if (needsEncryptionInit || needsDecryptionInit) {
 			try {
-				// Pass salt and iteration count directly to PBEKeySpec for explicit key derivation
-				final KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, ITERATION_COUNT);
-				final SecretKey key = SecretKeyFactory.getInstance(ALGORITHM).generateSecret(keySpec);
+				// Use PBKDF2 to derive a 256-bit key from the password
+				// This supports Unicode passwords unlike PBE algorithms
+				final KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, ITERATION_COUNT, KEY_LENGTH);
+				final SecretKeyFactory factory = SecretKeyFactory.getInstance(KEY_DERIVATION_ALGORITHM);
+				final SecretKey tmpKey = factory.generateSecret(keySpec);
+				final SecretKey key = new SecretKeySpec(tmpKey.getEncoded(), "AES");
 				
-				// For PBE algorithms, use PBEParameterSpec with salt and iteration count
-				final PBEParameterSpec paramSpec = new PBEParameterSpec(mSalt, ITERATION_COUNT);
-				
-				ecipher = Cipher.getInstance(ALGORITHM);
-				
-				if (encodedParams == null) {
-					// Encryption mode: initialize with PBEParameterSpec
-					ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-					// Store the generated parameters for later use
-					encryptParams = ecipher.getParameters();
+				if (iv == null) {
+					// Encryption mode: generate a new random IV
+					currentIV = new byte[IV_LENGTH];
+					secureRandom.nextBytes(currentIV);
+					final IvParameterSpec ivSpec = new IvParameterSpec(currentIV);
+					ecipher = Cipher.getInstance(CIPHER_ALGORITHM);
+					ecipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
 				} else {
-					// Decryption mode: use the stored parameters
-					final AlgorithmParameters params = AlgorithmParameters.getInstance(ALGORITHM);
-					params.init(encodedParams);
-					dcipher = Cipher.getInstance(ALGORITHM);
-					dcipher.init(Cipher.DECRYPT_MODE, key, params);
+					// Decryption mode: use the provided IV
+					currentIV = iv;
+					final IvParameterSpec ivSpec = new IvParameterSpec(currentIV);
+					dcipher = Cipher.getInstance(CIPHER_ALGORITHM);
+					dcipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
 				}
 			}
 			catch (final java.security.InvalidAlgorithmParameterException e) {
@@ -209,9 +215,6 @@ public class Aes256Encrypter implements IEncrypter {
 			}
 			catch (final java.security.InvalidKeyException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: invalid key", e);
-			}
-			catch (final java.io.IOException e) {
-				LogUtils.severe("Failed to initialize AES-256 cipher: could not decode parameters", e);
 			}
 		}
 	}
@@ -242,10 +245,15 @@ public class Aes256Encrypter implements IEncrypter {
 			mSalt = null;
 		}
 		
+		// Zero out the IV
+		if (currentIV != null) {
+			Arrays.fill(currentIV, (byte) 0);
+			currentIV = null;
+		}
+		
 		// Clear cipher references to allow garbage collection
 		ecipher = null;
 		dcipher = null;
-		encryptParams = null;
 	}
 }
 
