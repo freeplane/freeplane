@@ -39,9 +39,14 @@ import org.freeplane.features.map.IEncrypter;
  * 
  * Algorithm: PBEWithHmacSHA256AndAES_256
  * - Key derivation: PBKDF2 with HMAC-SHA256
- * - Encryption: AES-256 in CBC mode
+ * - Encryption: AES-256 in CBC mode (does NOT provide authenticated encryption)
  * - Salt length: 16 bytes (128 bits)
  * - Iterations: 100,000 (significantly stronger than legacy 19 iterations)
+ * 
+ * Note: This implementation uses CBC mode and does not provide authenticated encryption
+ * or tamper detection. Data integrity/authenticity is NOT cryptographically guaranteed.
+ * The primary security improvement over legacy DES is the much stronger 256-bit key size
+ * and modern key derivation function (PBKDF2-HMAC-SHA256).
  * 
  * @author Freeplane team
  */
