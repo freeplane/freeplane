@@ -25,9 +25,93 @@ import static org.hamcrest.Matchers.nullValue;
 import org.junit.Test;
 
 /**
- * Tests for the binary encryption header format.
+ * Tests for the encryption header format (plain text prefixes and legacy binary headers).
  */
 public class EncryptionHeaderTest {
+
+	// ========== Plain Text Prefix Tests ==========
+
+	@Test
+	public void aes256PrefixIsCorrect() {
+		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
+		String prefix = header.toPrefix();
+		
+		assertThat(prefix, equalTo("FP-AES256-V1:"));
+	}
+
+	@Test
+	public void desPrefixIsCorrect() {
+		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.DES);
+		String prefix = header.toPrefix();
+		
+		assertThat(prefix, equalTo("FP-DES-V1:"));
+	}
+
+	@Test
+	public void tripleDesPrefixIsCorrect() {
+		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.TRIPLE_DES);
+		String prefix = header.toPrefix();
+		
+		assertThat(prefix, equalTo("FP-3DES-V1:"));
+	}
+
+	@Test
+	public void detectsAes256Prefix() {
+		String encrypted = "FP-AES256-V1:c29tZWJhc2U2NGRhdGE=";
+		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
+		
+		assertThat(detected, equalTo(EncryptionHeader.Algorithm.AES256));
+	}
+
+	@Test
+	public void detectsDesPrefix() {
+		String encrypted = "FP-DES-V1:c29tZWJhc2U2NGRhdGE=";
+		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
+		
+		assertThat(detected, equalTo(EncryptionHeader.Algorithm.DES));
+	}
+
+	@Test
+	public void detectsTripleDesPrefix() {
+		String encrypted = "FP-3DES-V1:c29tZWJhc2U2NGRhdGE=";
+		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
+		
+		assertThat(detected, equalTo(EncryptionHeader.Algorithm.TRIPLE_DES));
+	}
+
+	@Test
+	public void stripsPrefixCorrectly() {
+		String encrypted = "FP-AES256-V1:c29tZWJhc2U2NGRhdGE=";
+		String stripped = EncryptionHeader.stripPrefix(encrypted);
+		
+		assertThat(stripped, equalTo("c29tZWJhc2U2NGRhdGE="));
+	}
+
+	@Test
+	public void stripPrefixReturnsNullForNonPrefixedString() {
+		String encrypted = "c29tZWJhc2U2NGRhdGE=";
+		String stripped = EncryptionHeader.stripPrefix(encrypted);
+		
+		assertThat(stripped, nullValue());
+	}
+
+	@Test
+	public void hasHeaderReturnsTrueForPlainTextPrefix() {
+		String encrypted = "FP-AES256-V1:c29tZWJhc2U2NGRhdGE=";
+		
+		assertThat(EncryptionHeader.hasHeader(encrypted), equalTo(true));
+	}
+
+	@Test
+	public void fromEncryptedStringParsesPlainTextPrefix() {
+		String encrypted = "FP-AES256-V1:c29tZWJhc2U2NGRhdGE=";
+		EncryptionHeader header = EncryptionHeader.fromEncryptedString(encrypted);
+		
+		assertThat(header, notNullValue());
+		assertThat(header.getAlgorithm(), equalTo(EncryptionHeader.Algorithm.AES256));
+	}
+
+	// ========== Legacy Binary Header Tests ==========
 
 	@Test
 	public void headerIsExactly8Bytes() {
@@ -171,11 +255,11 @@ public class EncryptionHeaderTest {
 	}
 
 	@Test
-	public void detectsOldAes256TextMarker() {
-		// Old format with text marker
-		String oldFormat = "FP-AES256-V1:c29tZWVuY3J5cHRlZGRhdGE=";
+	public void detectsPlainTextPrefixFormat() {
+		// Current format with plain text prefix
+		String currentFormat = "FP-AES256-V1:c29tZWVuY3J5cHRlZGRhdGE=";
 		
-		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(oldFormat);
+		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(currentFormat);
 		
 		assertThat(detected, equalTo(EncryptionHeader.Algorithm.AES256));
 	}
@@ -197,6 +281,9 @@ public class EncryptionHeaderTest {
 		
 		final String plaintext = "Hello World";
 		final String encrypted = encrypter.encrypt(plaintext);
+		
+		// Check that the encrypted content starts with plain text prefix
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256), equalTo(true));
 		
 		// Check that the encrypted content has a valid header
 		assertThat(EncryptionHeader.hasHeader(encrypted), equalTo(true));
@@ -227,13 +314,23 @@ public class EncryptionHeaderTest {
 	}
 
 	@Test
-	public void aes256CanStillDecryptOldTextMarkerFormat() {
-		// This test verifies backward compatibility with the old "FP-AES256-V1:" text marker
-		// We'll need to create old-format encrypted content manually or use a known sample
+	public void aes256DetectsPlainTextPrefixFormat() {
+		// Verify that plain text prefix format is detected correctly
+		String plainTextFormat = "FP-AES256-V1:c29tZWRhdGE=";
+		assertThat(Aes256Encrypter.isAes256Encrypted(plainTextFormat), equalTo(true));
+	}
+	
+	@Test
+	public void newEncryptedContentUsesPlainTextPrefix() {
+		final StringBuilder password = new StringBuilder("test123");
+		Aes256Encrypter encrypter = new Aes256Encrypter(password);
 		
-		// For now, just verify that the detection works
-		String oldFormat = "FP-AES256-V1:c29tZWRhdGE=";
-		assertThat(Aes256Encrypter.isAes256Encrypted(oldFormat), equalTo(true));
+		final String encrypted = encrypter.encrypt("test");
+		
+		// Verify it uses the new plain text prefix format
+		assertThat(encrypted.startsWith("FP-AES256-V1:"), equalTo(true));
+		
+		encrypter.destroy();
 	}
 }
 

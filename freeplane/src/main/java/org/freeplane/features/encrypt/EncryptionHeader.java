@@ -21,10 +21,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
- * Binary header for encrypted Freeplane data: 8 bytes = "FPM\x01" + 4-byte algorithm ID.
+ * Header for encrypted Freeplane data using plain text prefixes.
+ * Format: "FP-{ALGORITHM}-V1:" followed by base64-encoded encrypted data.
  * See IMPLEMENTATION.md for format details.
  */
 public class EncryptionHeader {
+	// Plain text prefixes for current format
+	public static final String PREFIX_AES256 = "FP-AES256-V1:";
+	public static final String PREFIX_DES = "FP-DES-V1:";
+	public static final String PREFIX_3DES = "FP-3DES-V1:";
+	
+	// Legacy binary header support (for backward compatibility)
 	private static final byte[] MAGIC_NUMBER = new byte[] { 0x46, 0x50, 0x4D, 0x01 };
 	public static final int HEADER_LENGTH = 8;
 	public static final byte[] ALGORITHM_AES256 = "AES2".getBytes(StandardCharsets.US_ASCII);
@@ -32,17 +39,19 @@ public class EncryptionHeader {
 	public static final byte[] ALGORITHM_3DES = "3DES".getBytes(StandardCharsets.US_ASCII);
 	
 	public enum Algorithm {
-		AES256(ALGORITHM_AES256, "AES-256-CBC with PBKDF2-HMAC-SHA256"),
-		DES(ALGORITHM_DES, "Legacy DES (weak)"),
-		TRIPLE_DES(ALGORITHM_3DES, "Legacy Triple-DES (medium)"),
-		UNKNOWN(null, "Unknown algorithm");
+		AES256(ALGORITHM_AES256, "AES-256-CBC with PBKDF2-HMAC-SHA256", PREFIX_AES256),
+		DES(ALGORITHM_DES, "Legacy DES (weak)", PREFIX_DES),
+		TRIPLE_DES(ALGORITHM_3DES, "Legacy Triple-DES (medium)", PREFIX_3DES),
+		UNKNOWN(null, "Unknown algorithm", null);
 		
 		private final byte[] id;
 		private final String description;
+		private final String prefix;
 		
-		Algorithm(byte[] id, String description) {
+		Algorithm(byte[] id, String description, String prefix) {
 			this.id = id;
 			this.description = description;
+			this.prefix = prefix;
 		}
 		
 		public byte[] getId() {
@@ -53,12 +62,28 @@ public class EncryptionHeader {
 			return description;
 		}
 		
+		public String getPrefix() {
+			return prefix;
+		}
+		
 		public static Algorithm fromId(byte[] idBytes) {
 			if (idBytes == null || idBytes.length != 4) {
 				return UNKNOWN;
 			}
 			for (Algorithm algo : values()) {
 				if (algo != UNKNOWN && Arrays.equals(algo.id, idBytes)) {
+					return algo;
+				}
+			}
+			return UNKNOWN;
+		}
+		
+		public static Algorithm fromPrefix(String encryptedString) {
+			if (encryptedString == null) {
+				return UNKNOWN;
+			}
+			for (Algorithm algo : values()) {
+				if (algo != UNKNOWN && algo.prefix != null && encryptedString.startsWith(algo.prefix)) {
 					return algo;
 				}
 			}
@@ -79,6 +104,18 @@ public class EncryptionHeader {
 		return algorithm;
 	}
 	
+	/**
+	 * Returns the plain text prefix for this header (e.g., "FP-AES256-V1:").
+	 */
+	public String toPrefix() {
+		return algorithm.getPrefix();
+	}
+	
+	/**
+	 * Legacy method: Returns binary header bytes for backward compatibility.
+	 * New code should use toPrefix() instead.
+	 */
+	@Deprecated
 	public byte[] toBytes() {
 		byte[] header = new byte[HEADER_LENGTH];
 		System.arraycopy(MAGIC_NUMBER, 0, header, 0, 4);
@@ -102,12 +139,23 @@ public class EncryptionHeader {
 		return new EncryptionHeader(algorithm);
 	}
 	
-	public static boolean hasHeader(String base64String) {
-		if (base64String == null || base64String.length() < 12) {
+	/**
+	 * Checks if the encrypted string has a valid header (plain text prefix or legacy binary header).
+	 */
+	public static boolean hasHeader(String encryptedString) {
+		if (encryptedString == null || encryptedString.isEmpty()) {
+			return false;
+		}
+		// Check for plain text prefix
+		if (Algorithm.fromPrefix(encryptedString) != Algorithm.UNKNOWN) {
+			return true;
+		}
+		// Check for legacy binary header
+		if (encryptedString.length() < 12) {
 			return false;
 		}
 		try {
-			String headerPart = base64String.substring(0, Math.min(12, base64String.length()));
+			String headerPart = encryptedString.substring(0, Math.min(12, encryptedString.length()));
 			byte[] decoded = DesEncrypter.fromBase64(headerPart);
 			if (decoded != null && decoded.length >= HEADER_LENGTH) {
 				byte[] headerBytes = Arrays.copyOfRange(decoded, 0, HEADER_LENGTH);
@@ -119,6 +167,33 @@ public class EncryptionHeader {
 		return false;
 	}
 	
+	/**
+	 * Parses encryption header from an encrypted string.
+	 * Supports both plain text prefixes and legacy binary headers.
+	 */
+	public static EncryptionHeader fromEncryptedString(String encryptedString) {
+		if (encryptedString == null || encryptedString.isEmpty()) {
+			return null;
+		}
+		// Check for plain text prefix first
+		Algorithm algo = Algorithm.fromPrefix(encryptedString);
+		if (algo != Algorithm.UNKNOWN) {
+			return new EncryptionHeader(algo);
+		}
+		// Fall back to legacy binary header
+		try {
+			byte[] decoded = DesEncrypter.fromBase64(encryptedString);
+			return fromBytes(decoded);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Legacy method: parses binary header from base64 string.
+	 * New code should use fromEncryptedString() instead.
+	 */
+	@Deprecated
 	public static EncryptionHeader fromBase64String(String base64String) {
 		if (base64String == null || base64String.isEmpty()) {
 			return null;
@@ -131,18 +206,42 @@ public class EncryptionHeader {
 		}
 	}
 	
+	/**
+	 * Detects the encryption algorithm from an encrypted string.
+	 * Supports both plain text prefixes and legacy binary headers.
+	 */
 	public static Algorithm detectAlgorithm(String encryptedString) {
 		if (encryptedString == null || encryptedString.isEmpty()) {
 			return Algorithm.UNKNOWN;
 		}
-		if (encryptedString.startsWith("FP-AES256-V1:")) {
-			return Algorithm.AES256;
+		// Check for plain text prefix
+		Algorithm algo = Algorithm.fromPrefix(encryptedString);
+		if (algo != Algorithm.UNKNOWN) {
+			return algo;
 		}
+		// Fall back to legacy binary header
 		EncryptionHeader header = fromBase64String(encryptedString);
 		if (header != null) {
 			return header.getAlgorithm();
 		}
 		return Algorithm.UNKNOWN;
+	}
+	
+	/**
+	 * Strips the header prefix from an encrypted string and returns the base64 payload.
+	 * Returns null if no valid header is found.
+	 */
+	public static String stripPrefix(String encryptedString) {
+		if (encryptedString == null || encryptedString.isEmpty()) {
+			return null;
+		}
+		// Try to strip plain text prefix
+		Algorithm algo = Algorithm.fromPrefix(encryptedString);
+		if (algo != Algorithm.UNKNOWN) {
+			return encryptedString.substring(algo.getPrefix().length());
+		}
+		// No plain text prefix found - might be legacy binary header format
+		return null;
 	}
 	
 	@Override

@@ -76,7 +76,23 @@ public class Aes256Encrypter implements IEncrypter {
 			byte[] iv = null;
 			byte[] ciphertext = null;
 			
-			if (str.startsWith(OLD_VERSION_MARKER)) {
+			// Check for new plain text prefix format
+			String strippedPrefix = EncryptionHeader.stripPrefix(str);
+			if (strippedPrefix != null) {
+				// New format: FP-AES256-V1:{base64(salt + IV + ciphertext)}
+				byte[] allData = DesEncrypter.fromBase64(strippedPrefix);
+				if (allData != null && allData.length >= SALT_LENGTH + IV_LENGTH) {
+					int offset = 0;
+					salt = Arrays.copyOfRange(allData, offset, offset + SALT_LENGTH);
+					offset += SALT_LENGTH;
+					iv = Arrays.copyOfRange(allData, offset, offset + IV_LENGTH);
+					offset += IV_LENGTH;
+					if (allData.length > offset) {
+						ciphertext = Arrays.copyOfRange(allData, offset, allData.length);
+					}
+				}
+			} else if (str.startsWith(OLD_VERSION_MARKER)) {
+				// Legacy format 1: FP-AES256-V1:{base64(salt)} {base64(IV)} {base64(ciphertext)}
 				str = str.substring(OLD_VERSION_MARKER.length());
 				
 				final int indexOfSaltIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
@@ -95,6 +111,7 @@ public class Aes256Encrypter implements IEncrypter {
 				
 				ciphertext = DesEncrypter.fromBase64(str);
 			} else {
+				// Legacy format 2: Binary header inside base64
 				byte[] allData = DesEncrypter.fromBase64(str);
 				
 				if (allData != null && allData.length >= EncryptionHeader.HEADER_LENGTH) {
@@ -152,20 +169,19 @@ public class Aes256Encrypter implements IEncrypter {
 			final byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 			final byte[] enc = ecipher.doFinal(utf8);
 			
-			EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
-			byte[] headerBytes = header.toBytes();
-			
-			byte[] fullData = new byte[headerBytes.length + mSalt.length + currentIV.length + enc.length];
+			// Combine salt + IV + encrypted data
+			byte[] fullData = new byte[mSalt.length + currentIV.length + enc.length];
 			int offset = 0;
-			System.arraycopy(headerBytes, 0, fullData, offset, headerBytes.length);
-			offset += headerBytes.length;
 			System.arraycopy(mSalt, 0, fullData, offset, mSalt.length);
 			offset += mSalt.length;
 			System.arraycopy(currentIV, 0, fullData, offset, currentIV.length);
 			offset += currentIV.length;
 			System.arraycopy(enc, 0, fullData, offset, enc.length);
 			
-			return DesEncrypter.toBase64(fullData);
+			// Base64 encode the data, then prepend plain text prefix
+			String base64Data = DesEncrypter.toBase64(fullData);
+			EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
+			return header.toPrefix() + base64Data;
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 			LogUtils.severe("Encryption failed: bad padding", e);
@@ -237,8 +253,7 @@ public class Aes256Encrypter implements IEncrypter {
 		if (encryptedString == null) {
 			return false;
 		}
-		return encryptedString.startsWith(OLD_VERSION_MARKER) 
-			|| EncryptionHeader.detectAlgorithm(encryptedString) == EncryptionHeader.Algorithm.AES256;
+		return EncryptionHeader.detectAlgorithm(encryptedString) == EncryptionHeader.Algorithm.AES256;
 	}
 	
 	/**

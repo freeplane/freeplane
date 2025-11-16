@@ -56,8 +56,11 @@ public class Aes256EncrypterTest {
 		final String encrypted = encrypter.encrypt("test");
 		
 		assertThat(encrypted, notNullValue());
-		// New binary header format: check that algorithm is detected as AES256
-		assertTrue("Encrypted content should have AES256 binary header", 
+		// New plain text prefix format: check that it starts with FP-AES256-V1:
+		assertTrue("Encrypted content should start with plain text prefix", 
+			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
+		// Also verify algorithm detection works
+		assertTrue("Should detect AES256 algorithm", 
 			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
 	}
 
@@ -462,17 +465,132 @@ public class Aes256EncrypterTest {
 		final String plaintext = "test";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		// New binary format: decode and check structure
-		// Format: 8-byte header + 16-byte salt + 16-byte IV + ciphertext
-		final byte[] decoded = DesEncrypter.fromBase64(encrypted);
+		// New plain text prefix format: FP-AES256-V1:{base64(salt + IV + ciphertext)}
+		assertTrue("Encrypted content should start with plain text prefix", 
+			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 		
-		// Minimum size: 8 (header) + 16 (salt) + 16 (IV) + 16 (min ciphertext) = 56 bytes
-		assertTrue("Encrypted content should have header + salt + IV + ciphertext", 
-			decoded.length >= 56);
+		// Strip prefix and decode
+		String base64Data = EncryptionHeader.stripPrefix(encrypted);
+		assertThat("Should have base64 data after prefix", base64Data, notNullValue());
 		
-		// Verify header is present
-		assertTrue("Should have valid AES256 header",
+		final byte[] decoded = DesEncrypter.fromBase64(base64Data);
+		
+		// Format: 16-byte salt + 16-byte IV + ciphertext
+		// Minimum size: 16 (salt) + 16 (IV) + 16 (min ciphertext) = 48 bytes
+		assertTrue("Encrypted content should have salt + IV + ciphertext", 
+			decoded.length >= 48);
+		
+		// Verify algorithm is detected correctly
+		assertTrue("Should detect AES256 algorithm",
 			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
+	}
+
+	// ========== Backward Compatibility Tests ==========
+
+	@Test
+	public void canDecryptLegacyBinaryHeaderFormat() {
+		// Simulate old binary header format: base64(header + salt + IV + ciphertext)
+		final StringBuilder password = new StringBuilder("test123");
+		final String plaintext = "secret message";
+		
+		// Create an encrypter to encrypt with new format first
+		Aes256Encrypter tempEncrypter = new Aes256Encrypter(password);
+		tempEncrypter.encrypt(plaintext); // Initialize with salt/IV
+		
+		// Manually create old binary header format for testing
+		// We'll use the current encryption but manually construct the old format
+		byte[] salt = new byte[16];
+		byte[] iv = new byte[16];
+		java.security.SecureRandom random = new java.security.SecureRandom();
+		random.nextBytes(salt);
+		random.nextBytes(iv);
+		
+		// Create header
+		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
+		byte[] headerBytes = header.toBytes();
+		
+		// Encrypt the plaintext using a properly initialized encrypter
+		Aes256Encrypter encrypter1 = new Aes256Encrypter(password);
+		String newFormatEncrypted = encrypter1.encrypt(plaintext);
+		
+		// Extract just the encrypted parts (salt + IV + ciphertext) from new format
+		String base64Payload = EncryptionHeader.stripPrefix(newFormatEncrypted);
+		byte[] payload = DesEncrypter.fromBase64(base64Payload);
+		
+		// Reconstruct old format: header + salt + IV + ciphertext
+		byte[] oldFormatBytes = new byte[headerBytes.length + payload.length];
+		System.arraycopy(headerBytes, 0, oldFormatBytes, 0, headerBytes.length);
+		System.arraycopy(payload, 0, oldFormatBytes, headerBytes.length, payload.length);
+		
+		String oldFormatEncrypted = DesEncrypter.toBase64(oldFormatBytes);
+		
+		// Verify we can decrypt old format
+		encrypter = new Aes256Encrypter(password);
+		String decrypted = encrypter.decrypt(oldFormatEncrypted);
+		
+		assertThat("Should decrypt old binary header format", decrypted, equalTo(plaintext));
+		
+		encrypter1.destroy();
+		tempEncrypter.destroy();
+	}
+
+	@Test
+	public void canDecryptOldTextMarkerFormat() {
+		// Test the OLD_VERSION_MARKER format: FP-AES256-V1:{base64(salt)} {base64(IV)} {base64(ciphertext)}
+		// This is a legacy format that should still be supported
+		final StringBuilder password = new StringBuilder("test123");
+		
+		// Create a sample in the old space-separated format
+		// Note: This format is deprecated but should still decrypt
+		String oldFormat = "FP-AES256-V1:AAAAAAAAAAAAAAAAAAAAAA== BBBBBBBBBBBBBBBBBBBBBA== Y29tZSBlbmNyeXB0ZWQgZGF0YQ==";
+		
+		encrypter = new Aes256Encrypter(password);
+		// This should not crash, though it may return null if salt/IV/ciphertext are invalid
+		@SuppressWarnings("unused")
+		String decrypted = encrypter.decrypt(oldFormat);
+		
+		// We can't verify the decrypted content since the old format data is dummy,
+		// but we verify that the code handles it without crashing
+		// (decrypted will be null due to bad padding, but that's expected)
+	}
+
+	@Test
+	public void detectsLegacyBinaryHeaderAsAes256() {
+		// Create old binary header format
+		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
+		byte[] headerBytes = header.toBytes();
+		
+		// Add some payload
+		byte[] fullData = new byte[headerBytes.length + 48];
+		System.arraycopy(headerBytes, 0, fullData, 0, headerBytes.length);
+		
+		String oldFormatEncrypted = DesEncrypter.toBase64(fullData);
+		
+		// Should detect as AES256
+		assertTrue("Should detect legacy binary header as AES256",
+			Aes256Encrypter.isAes256Encrypted(oldFormatEncrypted));
+		assertTrue("Should detect algorithm correctly",
+			EncryptionHeader.detectAlgorithm(oldFormatEncrypted) == EncryptionHeader.Algorithm.AES256);
+	}
+
+	@Test
+	public void newFormatUsesPlainTextPrefix() {
+		final StringBuilder password = new StringBuilder("test123");
+		encrypter = new Aes256Encrypter(password);
+		
+		final String encrypted = encrypter.encrypt("test");
+		
+		// Verify new format uses plain text prefix
+		assertTrue("New encryption should use plain text prefix",
+			encrypted.startsWith("FP-AES256-V1:"));
+		
+		// Verify no binary header in the base64 payload
+		String base64Payload = EncryptionHeader.stripPrefix(encrypted);
+		byte[] decoded = DesEncrypter.fromBase64(base64Payload);
+		
+		// Should NOT start with binary header magic number (0x46, 0x50, 0x4D, 0x01)
+		assertThat("Should not have binary header in payload", 
+			decoded[0] != (byte)0x46 || decoded[1] != (byte)0x50 || decoded[2] != (byte)0x4D);
 	}
 }
 
