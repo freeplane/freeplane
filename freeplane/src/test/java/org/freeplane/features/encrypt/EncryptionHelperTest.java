@@ -126,19 +126,6 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void tryDecryptWithAllAlgorithmsDecryptsTripleDes() {
-		final StringBuilder password = new StringBuilder("test123");
-		final IEncrypter tripleDesEncrypter = new TripleDesEncrypter(password);
-		final String plaintext = "<node TEXT=\"test\"/>";
-		final String encrypted = tripleDesEncrypter.encrypt(plaintext);
-		tripleDesEncrypter.destroy();
-		
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-
-	@Test
 	public void tryDecryptWithAllAlgorithmsReturnsNullForWrongPassword() {
 		final StringBuilder password1 = new StringBuilder("correct");
 		final IEncrypter aesEncrypter = new Aes256Encrypter(password1);

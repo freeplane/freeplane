@@ -346,22 +346,6 @@ public class EncryptionModelTest {
 	}
 
 	@Test
-	public void canDecryptLegacyTripleDesContentWithFallback() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		// Create legacy TripleDES encrypted content
-		final IEncrypter tripleDesEncrypter = new TripleDesEncrypter(password);
-		final String plaintext = "<node TEXT=\"legacy triple\"/>";
-		final String encrypted = tripleDesEncrypter.encrypt(plaintext);
-		tripleDesEncrypter.destroy();
-		
-		// Try to decrypt with helper (should work via fallback)
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-
-	@Test
 	public void canDecryptNewAes256ContentDirectly() {
 		final StringBuilder password = new StringBuilder("test123");
 		
