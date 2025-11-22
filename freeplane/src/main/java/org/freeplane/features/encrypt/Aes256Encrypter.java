@@ -39,10 +39,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IEncrypter;
 
-/**
- * @author Freeplane team
- * 2025
- */
 public class Aes256Encrypter implements IEncrypter {
 	private static final int SALT_LENGTH = 16;
 	private static final int IV_LENGTH = 16;

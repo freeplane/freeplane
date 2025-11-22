@@ -19,10 +19,6 @@ package org.freeplane.features.encrypt;
 
 import org.freeplane.features.map.IEncrypter;
 
-/**
- * @author Freeplane team
- * 2025
- */
 public class EncryptionHelper {
 	
 	public static IEncrypter createEncrypter(final StringBuilder password) {

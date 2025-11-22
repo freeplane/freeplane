@@ -17,10 +17,6 @@
  */
 package org.freeplane.features.encrypt;
 
-/**
- * @author Freeplane team
- * 2025
- */
 public class EncryptionHeader {
 	public static final String PREFIX_AES256 = "FP-AES256-V1:";
 	public static final String PREFIX_DES = "FP-DES-V1:";
