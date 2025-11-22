@@ -316,7 +316,7 @@ public class EncryptionModelTest {
 		aesEncrypter.destroy();
 		
 		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
-		assertThat(description, equalTo("AES-256 (Strong)"));
+		assertThat(description, equalTo("AES-256"));
 	}
 
 	@Test
@@ -327,8 +327,7 @@ public class EncryptionModelTest {
 		desEncrypter.destroy();
 		
 		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
-		assertTrue("Description should mention legacy", 
-			description.contains("Legacy DES"));
+		assertThat(description, equalTo("DES"));
 	}
 
 	@Test

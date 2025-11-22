@@ -18,7 +18,6 @@
 package org.freeplane.features.encrypt;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -227,7 +226,7 @@ public class EncryptionHelperTest {
 		
 		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
 		
-		assertThat(description, equalTo("AES-256 (Strong)"));
+		assertThat(description, equalTo("AES-256"));
 	}
 
 	@Test
@@ -239,7 +238,7 @@ public class EncryptionHelperTest {
 		
 		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
 		
-		assertThat(description, containsString("Legacy DES"));
+		assertThat(description, equalTo("DES"));
 	}
 
 	@Test

@@ -50,14 +50,14 @@ public class EncryptionHelper {
 		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
 		switch (algorithm) {
 			case AES256:
-				return "AES-256 (Strong)";
+				return "AES-256";
 			case DES:
-				return "Legacy DES (Weak - will be upgraded)";
+				return "DES";
 			case TRIPLE_DES:
-				return "Legacy Triple-DES (Medium - will be upgraded)";
+				return "Triple-DES";
 			case UNKNOWN:
 			default:
-				return "Legacy DES (will be upgraded)";
+				return "DES";
 		}
 	}
 	

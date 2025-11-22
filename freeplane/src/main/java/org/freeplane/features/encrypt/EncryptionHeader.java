@@ -23,10 +23,10 @@ public class EncryptionHeader {
 	public static final String PREFIX_3DES = "FP-3DES-V1:";
 	
 	public enum Algorithm {
-		AES256("AES-256-CBC with PBKDF2-HMAC-SHA256", PREFIX_AES256),
-		DES("Legacy DES (weak)", PREFIX_DES),
-		TRIPLE_DES("Legacy Triple-DES (medium)", PREFIX_3DES),
-		UNKNOWN("Unknown algorithm", null);
+		AES256("AES-256", PREFIX_AES256),
+		DES("DES", PREFIX_DES),
+		TRIPLE_DES("Triple-DES", PREFIX_3DES),
+		UNKNOWN("Unknown", null);
 		
 		private final String description;
 		private final String prefix;

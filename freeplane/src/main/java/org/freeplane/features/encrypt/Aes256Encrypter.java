@@ -96,13 +96,10 @@ public class Aes256Encrypter implements IEncrypter {
 			return new String(utf8, StandardCharsets.UTF_8);
 		}
 		catch (final BadPaddingException e) {
-			LogUtils.warn("Decryption failed: bad padding", e);
 		}
 		catch (final IllegalBlockSizeException e) {
-			LogUtils.warn("Decryption failed: illegal block size", e);
 		}
 		catch (final IllegalArgumentException e) {
-			LogUtils.warn("Decryption failed: illegal argument", e);
 		}
 		return null;
 	}
@@ -130,10 +127,10 @@ public class Aes256Encrypter implements IEncrypter {
 			return header.toPrefix() + base64Data;
 		}
 		catch (final BadPaddingException e) {
-			LogUtils.severe("Encryption failed: bad padding", e);
+			LogUtils.severe("AES-256 Encryption failed: bad padding", e);
 		}
 		catch (final IllegalBlockSizeException e) {
-			LogUtils.severe("Encryption failed: illegal block size", e);
+			LogUtils.severe("AES-256 Encryption failed: illegal block size", e);
 		}
 		return null;
 	}
@@ -177,20 +174,19 @@ public class Aes256Encrypter implements IEncrypter {
 				}
 			}
 			catch (final InvalidAlgorithmParameterException e) {
-				LogUtils.severe("Failed to initialize AES-256 cipher: invalid algorithm parameter", e);
+				LogUtils.severe(e);
 			}
 			catch (final InvalidKeySpecException e) {
-				LogUtils.severe("Failed to initialize AES-256 cipher: invalid key spec", e);
+				LogUtils.severe(e);
 			}
 			catch (final NoSuchPaddingException e) {
-				LogUtils.severe("Failed to initialize AES-256 cipher: no such padding", e);
+				LogUtils.severe(e);
 			}
 			catch (final NoSuchAlgorithmException e) {
-				LogUtils.severe("Failed to initialize AES-256 cipher: algorithm not available. " +
-						"This may require Java Cryptography Extension (JCE) Unlimited Strength.", e);
+				LogUtils.severe(e);
 			}
 			catch (final InvalidKeyException e) {
-				LogUtils.severe("Failed to initialize AES-256 cipher: invalid key", e);
+				LogUtils.severe(e);
 			}
 		}
 	}
