@@ -54,11 +54,7 @@ public class Aes256EncrypterTest {
 		final String encrypted = encrypter.encrypt("test");
 		
 		assertThat(encrypted, notNullValue());
-		// New plain text prefix format: check that it starts with FP-AES256-V1:
-		assertTrue("Encrypted content should start with plain text prefix", 
-			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
-		// Also verify algorithm detection works
-		assertTrue("Should detect AES256 algorithm", 
+		assertTrue("Encrypted content should start with prefix", 
 			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 	}
 
@@ -417,23 +413,17 @@ public class Aes256EncrypterTest {
 		final String plaintext = "test";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		// New plain text prefix format: FP-AES256-V1:{base64(salt + IV + ciphertext)}
-		assertTrue("Encrypted content should start with plain text prefix", 
+		assertTrue("Encrypted content should start with prefix", 
 			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 		
-		// Strip prefix and decode
 		String base64Data = EncryptionHeader.stripPrefix(encrypted);
 		assertThat("Should have base64 data after prefix", base64Data, notNullValue());
 		
 		final byte[] decoded = DesEncrypter.fromBase64(base64Data);
 		
 		// Format: 16-byte salt + 16-byte IV + ciphertext
-		// Minimum size: 16 (salt) + 16 (IV) + 16 (min ciphertext) = 48 bytes
 		assertTrue("Encrypted content should have salt + IV + ciphertext", 
 			decoded.length >= 48);
-		
-		assertTrue("Should detect AES256 algorithm",
-			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 	}
 
 	@Test
@@ -443,7 +433,7 @@ public class Aes256EncrypterTest {
 		
 		final String encrypted = encrypter.encrypt("test");
 		
-		assertTrue("New encryption should use plain text prefix",
+		assertTrue("Encryption should use prefix",
 			encrypted.startsWith("FP-AES256-V1:"));
 	}
 }
