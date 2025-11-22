@@ -29,6 +29,7 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.IEncrypter;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
@@ -150,14 +151,14 @@ public class EncryptionController implements IExtension {
     private boolean decrypt(final EncryptionModel encryptionModel, final StringBuilder password) {
         final MapController mapController = Controller.getCurrentModeController().getMapController();
         final String encryptedContent = encryptionModel.getEncryptedContent();
-        final org.freeplane.features.map.IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
-        
+        final IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
+
         boolean decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
-        
+
         if (!decrypted) {
             tempEncrypter.destroy();
         }
-        
+
         return decrypted;
     }
 
@@ -171,7 +172,7 @@ public class EncryptionController implements IExtension {
 		if (passwordStrategy.isCancelled()) {
 			return;
 		}
-		final org.freeplane.features.map.IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
+		final IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
 		final EncryptionModel encryptionModel;
 		try {
 			encryptionModel = new EncryptionModel(node, encrypter);
