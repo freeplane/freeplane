@@ -179,7 +179,6 @@ public class EncryptionController implements IExtension {
 			encrypter.destroy();
 			throw e;
 		}
-		// Encrypter now owned by EncryptionModel - destroyed on unlock
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {

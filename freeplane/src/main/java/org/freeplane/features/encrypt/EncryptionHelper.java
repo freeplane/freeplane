@@ -72,7 +72,6 @@ public class EncryptionHelper {
 		
 		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
 		
-		// If algorithm is detected (has header), use it directly
 		if (algorithm != EncryptionHeader.Algorithm.UNKNOWN) {
 			IEncrypter decrypter = createDecrypter(password, encryptedContent);
 			try {
@@ -82,8 +81,6 @@ public class EncryptionHelper {
 			}
 		}
 		
-		// For legacy content without headers, try all algorithms
-		// Try Triple DES first (stronger), then Single DES
 		IEncrypter tripleDesEncrypter = new TripleDesEncrypter(password);
 		try {
 			String result = tripleDesEncrypter.decrypt(encryptedContent);

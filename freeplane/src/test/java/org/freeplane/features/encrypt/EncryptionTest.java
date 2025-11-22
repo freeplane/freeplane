@@ -45,8 +45,6 @@ public class EncryptionTest {
 		}
 	}
 
-	// ========== AES-256 Tests ==========
-
 	@Test
 	public void aes256EncryptAndDecrypt() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -190,8 +188,6 @@ public class EncryptionTest {
 		assertThat(decrypted, nullValue());
 	}
 
-	// ========== SingleDES Tests ==========
-
 	@Test
 	public void singleDesEncryptAndDecrypt() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -232,8 +228,6 @@ public class EncryptionTest {
 		assertThat(decrypted, nullValue());
 	}
 
-	// ========== TripleDES Tests ==========
-
 	@Test
 	public void tripleDesEncryptAndDecrypt() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -273,8 +267,6 @@ public class EncryptionTest {
 		
 		assertThat(decrypted, nullValue());
 	}
-
-	// ========== Cross-Algorithm Tests ==========
 
 	@Test
 	public void aes256CannotDecryptSingleDesContent() {
@@ -323,8 +315,6 @@ public class EncryptionTest {
 		// TripleDES cannot decrypt SingleDES content (returns null)
 		assertThat(decrypted, nullValue());
 	}
-
-	// ========== Password Edge Cases ==========
 
 	@Test
 	public void encryptWithEmptyPassword() {

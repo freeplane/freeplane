@@ -46,8 +46,6 @@ public class Aes256EncrypterTest {
 		}
 	}
 
-	// ========== Version Marker Tests ==========
-
 	@Test
 	public void encryptedContentHasVersionMarker() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -64,8 +62,6 @@ public class Aes256EncrypterTest {
 			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
 	}
 
-
-	// ========== Salt and IV Tests ==========
 
 	@Test
 	public void eachEncryptionUsesDifferentSalt() {
@@ -101,8 +97,6 @@ public class Aes256EncrypterTest {
 		assertThat(encrypter.decrypt(encrypted2), equalTo(plaintext));
 		assertThat(encrypter.decrypt(encrypted3), equalTo(plaintext));
 	}
-
-	// ========== Encryption/Decryption Round-trip Tests ==========
 
 	@Test
 	public void encryptAndDecryptSimpleText() {
@@ -197,8 +191,6 @@ public class Aes256EncrypterTest {
 		assertThat(decrypted, equalTo(plaintext));
 	}
 
-	// ========== Password Variations ==========
-
 	@Test
 	public void shortPasswordWorks() {
 		final StringBuilder password = new StringBuilder("x");
@@ -262,8 +254,6 @@ public class Aes256EncrypterTest {
 		assertThat(decrypted, equalTo(plaintext));
 	}
 
-	// ========== Wrong Password Tests ==========
-
 	@Test
 	public void wrongPasswordReturnsNull() {
 		final StringBuilder password1 = new StringBuilder("correct");
@@ -306,8 +296,6 @@ public class Aes256EncrypterTest {
 		assertThat(decrypted, nullValue());
 	}
 
-	// ========== Destroy Method Tests ==========
-
 	@Test
 	public void destroyMethodCanBeCalled() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -329,8 +317,6 @@ public class Aes256EncrypterTest {
 		encrypter.destroy();
 		encrypter = null;  // Avoid double-destroy in cleanup
 	}
-
-	// ========== Null and Edge Cases ==========
 
 	@Test
 	public void decryptNullReturnsNull() {
@@ -372,8 +358,6 @@ public class Aes256EncrypterTest {
 		assertThat(decrypted, nullValue());
 	}
 
-	// ========== Different Encrypter Instances ==========
-
 	@Test
 	public void differentEncrypterInstancesWithSamePasswordWork() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -402,8 +386,6 @@ public class Aes256EncrypterTest {
 		}
 	}
 
-	// ========== Encrypted Content Format Tests ==========
-
 	@Test
 	public void encryptedContentIsNotPlaintext() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -424,7 +406,6 @@ public class Aes256EncrypterTest {
 		final String plaintext = "Hi";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		// Encrypted content includes version marker, salt, IV, and ciphertext
 		assertTrue("Encrypted content should be longer", encrypted.length() > plaintext.length());
 	}
 

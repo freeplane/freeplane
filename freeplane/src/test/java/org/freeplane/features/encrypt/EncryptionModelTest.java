@@ -46,8 +46,6 @@ public class EncryptionModelTest {
 		}
 	}
 
-	// ========== EncryptionModel Creation Tests ==========
-
 	@Test
 	public void createEncryptionModelWithEncrypter() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -93,8 +91,6 @@ public class EncryptionModelTest {
 		assertThat(retrieved, equalTo(model));
 	}
 
-	// ========== isAccessible and isLocked Tests ==========
-
 	@Test
 	public void newModelWithEncrypterIsAccessible() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -116,8 +112,6 @@ public class EncryptionModelTest {
 		assertTrue(model.isLocked());
 	}
 
-	// ========== getEncryptedContent Tests ==========
-
 	@Test
 	public void getEncryptedContentReturnsNullForAccessibleModel() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -137,8 +131,6 @@ public class EncryptionModelTest {
 		
 		assertThat(model.getEncryptedContent(), equalTo(encryptedContent));
 	}
-
-	// ========== destroy Tests ==========
 
 	@Test
 	public void destroyMethodCanBeCalled() {
@@ -175,8 +167,6 @@ public class EncryptionModelTest {
 		model.destroy();
 	}
 
-	// ========== AES-256 Detection Tests ==========
-
 	@Test
 	public void aes256EncryptedContentIsDetectable() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -198,8 +188,6 @@ public class EncryptionModelTest {
 		assertFalse("Legacy DES content should not be detected as AES-256", 
 			Aes256Encrypter.isAes256Encrypted(encrypted));
 	}
-
-	// ========== Integration Tests with Different Algorithms ==========
 
 	@Test
 	public void aes256EncryptionProducesCorrectFormat() {
@@ -227,8 +215,6 @@ public class EncryptionModelTest {
 			encrypted.startsWith("FP-AES256-V1:"));
 	}
 
-	// ========== Empty Content Tests ==========
-
 	@Test
 	public void encryptEmptyXmlContent() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -240,8 +226,6 @@ public class EncryptionModelTest {
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
-
-	// ========== Multiple Node Tests ==========
 
 	@Test
 	public void multipleNodesCanBeEncryptedIndependently() {
@@ -262,8 +246,6 @@ public class EncryptionModelTest {
 		assertThat(EncryptionModel.getModel(node1), equalTo(model1));
 		assertThat(EncryptionModel.getModel(node2), equalTo(model2));
 	}
-
-	// ========== Realistic XML Content Tests ==========
 
 	@Test
 	public void encryptSimpleNodeXml() {
@@ -326,8 +308,6 @@ public class EncryptionModelTest {
 		assertThat(decrypted, equalTo(plaintext));
 	}
 
-	// ========== Algorithm Description Tests ==========
-
 	@Test
 	public void aes256AlgorithmDescriptionIsCorrect() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -350,8 +330,6 @@ public class EncryptionModelTest {
 		assertTrue("Description should mention legacy", 
 			description.contains("Legacy DES"));
 	}
-
-	// ========== Backward Compatibility Scenario Tests ==========
 
 	@Test
 	public void canDecryptLegacyDesContentWithFallback() {

@@ -92,14 +92,10 @@ public class DesEncrypter implements IEncrypter {
 			return new String(utf8, StandardCharsets.UTF_8);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
-			// Expected failures during algorithm fallback - silently return null
-			// BadPaddingException is normal when trying wrong algorithm or wrong password
 		}
 		catch (final IllegalBlockSizeException e) {
-			// Expected failures during algorithm fallback - silently return null
 		}
 		catch (final IllegalArgumentException e) {
-			// Expected failures during algorithm fallback - silently return null
 		}
 		return null;
 	}

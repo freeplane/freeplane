@@ -43,8 +43,6 @@ public class EncryptionHelperTest {
 		}
 	}
 
-	// ========== createEncrypter Tests ==========
-
 	@Test
 	public void createEncrypterReturnsAes256() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -65,8 +63,6 @@ public class EncryptionHelperTest {
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
-
-	// ========== createDecrypter Tests - Algorithm Detection ==========
 
 	@Test
 	public void createDecrypterDetectsAes256() {
@@ -103,8 +99,6 @@ public class EncryptionHelperTest {
 		assertThat(encrypter, notNullValue());
 		assertThat(encrypter.getClass().getSimpleName(), equalTo("Aes256Encrypter"));
 	}
-
-	// ========== tryDecryptWithAllAlgorithms Tests ==========
 
 	@Test
 	public void tryDecryptWithAllAlgorithmsDecryptsAes256() {
@@ -186,8 +180,6 @@ public class EncryptionHelperTest {
 		assertThat(decrypted, equalTo(""));
 	}
 
-	// ========== Validation Tests ==========
-
 	@Test
 	public void tryDecryptWithAllAlgorithmsRejectsInvalidXml() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -226,8 +218,6 @@ public class EncryptionHelperTest {
 		assertThat(decrypted, equalTo(validXml));
 	}
 
-	// ========== getEncryptionAlgorithmDescription Tests ==========
-
 	@Test
 	public void getEncryptionAlgorithmDescriptionForAes256() {
 		final StringBuilder password = new StringBuilder("test123");
@@ -258,8 +248,6 @@ public class EncryptionHelperTest {
 		
 		assertThat(description, equalTo("Unknown"));
 	}
-
-	// ========== Backward Compatibility Integration Tests ==========
 
 	@Test
 	public void legacyContentCanBeDecryptedWithHelper() {
@@ -316,27 +304,15 @@ public class EncryptionHelperTest {
 		assertThat(decrypted2, equalTo(plaintext2));
 	}
 
-	// ========== Fallback Mechanism Tests ==========
-
-	/**
-	 * Test that verifies the fallback mechanism works when AES-256 decryption fails.
-	 * This is important for handling edge cases where:
-	 * 1. Magic numbers might be corrupted
-	 * 2. Data was encrypted with legacy algorithm but has misleading markers
-	 * 3. Ensuring backward compatibility in all scenarios
-	 */
 	@Test
 	public void tryDecryptWithAllAlgorithmsFallsBackToDESWhenAES256Fails() {
 		final StringBuilder password = new StringBuilder("test123");
 		
-		// Encrypt with legacy DES (no AES-256 markers)
 		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
 		final String plaintext = "<node TEXT=\"legacy content\"/>";
 		final String encrypted = desEncrypter.encrypt(plaintext);
 		desEncrypter.destroy();
 		
-		// Even if somehow the data looks like it might be AES-256,
-		// tryDecryptWithAllAlgorithms should fall back to DES and succeed
 		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
@@ -365,8 +341,6 @@ public class EncryptionHelperTest {
 		final String decryptedCorrect = EncryptionHelper.tryDecryptWithAllAlgorithms(correctPassword, encrypted);
 		assertThat(decryptedCorrect, equalTo(plaintext));
 	}
-
-	// ========== Real-World Scenarios ==========
 
 	@Test
 	public void complexXmlWithMultipleNodesCanBeEncryptedAndDecrypted() {
