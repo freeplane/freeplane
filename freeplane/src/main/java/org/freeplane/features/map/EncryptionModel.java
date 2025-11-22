@@ -195,9 +195,6 @@ public class EncryptionModel implements IExtension {
 				LogUtils.severe("Hidden children replaced");
 			}
 		}
-		else {
-
-		}
 	}
 	
 	/**

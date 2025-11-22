@@ -65,15 +65,6 @@ public class EncryptionHelper {
 		}
 	}
 	
-	/**
-	 * Attempts to decrypt the content using automatic algorithm detection.
-	 * Tries to detect the encryption algorithm and decrypt with the appropriate encrypter.
-	 * For legacy content without headers, tries all algorithms until one succeeds.
-	 * 
-	 * @param password the password to use for decryption
-	 * @param encryptedContent the encrypted content to decrypt
-	 * @return the decrypted content, or null if decryption fails
-	 */
 	public static String tryDecryptWithAllAlgorithms(final StringBuilder password, final String encryptedContent) {
 		if (encryptedContent == null || password == null) {
 			return null;
