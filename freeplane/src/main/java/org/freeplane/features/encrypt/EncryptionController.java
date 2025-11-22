@@ -156,10 +156,8 @@ public class EncryptionController implements IExtension {
         
         if (!decrypted) {
             tempEncrypter.destroy();
-            decrypted = encryptionModel.decryptWithFallback(mapController, password);
         }
         
-        // Do NOT destroy tempEncrypter if successful - now owned by EncryptionModel for re-encryption
         return decrypted;
     }
 

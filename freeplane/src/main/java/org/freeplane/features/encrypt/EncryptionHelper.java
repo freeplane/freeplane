@@ -17,12 +17,11 @@
  */
 package org.freeplane.features.encrypt;
 
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IEncrypter;
 
 /**
  * Manages encryption/decryption with automatic algorithm detection.
- * All new encryptions use AES-256; legacy DES/TripleDES is auto-upgraded on re-encryption.
+ * All new encryptions use AES-256; legacy DES is auto-upgraded on re-encryption.
  */
 public class EncryptionHelper {
 	
@@ -34,89 +33,18 @@ public class EncryptionHelper {
 		if (encryptedContent == null) {
 			return new Aes256Encrypter(password);
 		}
-		if (Aes256Encrypter.isAes256Encrypted(encryptedContent)) {
-			return new Aes256Encrypter(password);
-		}
-		return new SingleDesEncrypter(password);
-	}
-	
-	/**
-	 * Attempts decryption with AES-256, TripleDES, and SingleDES in sequence.
-	 * Fallback ensures maximum data recovery even with corrupted headers.
-	 * @return decrypted content or null if all algorithms fail
-	 */
-	public static String tryDecryptWithAllAlgorithms(final StringBuilder password, final String encryptedContent) {
-		if (encryptedContent == null) {
-			return null;
-		}
 		
-		if (Aes256Encrypter.isAes256Encrypted(encryptedContent)) {
-			final IEncrypter aesEncrypter = new Aes256Encrypter(password);
-			try {
-				final String decrypted = aesEncrypter.decrypt(encryptedContent);
-				if (decrypted != null) {
-					return decrypted;
-				}
-				LogUtils.info("AES-256 decryption failed despite markers being present - trying legacy algorithms as fallback");
-			} finally {
-				aesEncrypter.destroy();
-			}
+		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
+		switch (algorithm) {
+			case AES256:
+				return new Aes256Encrypter(password);
+			case TRIPLE_DES:
+				return new TripleDesEncrypter(password);
+			case DES:
+			case UNKNOWN:
+			default:
+				return new SingleDesEncrypter(password);
 		}
-		
-		IEncrypter tripleDesEncrypter = null;
-		try {
-			tripleDesEncrypter = new TripleDesEncrypter(password);
-			final String decrypted = tripleDesEncrypter.decrypt(encryptedContent);
-			if (decrypted != null && isValidDecryption(decrypted)) {
-				LogUtils.info("Successfully decrypted with TripleDES (legacy). Content will be upgraded to AES-256 on next save.");
-				return decrypted;
-			}
-		} catch (final Exception e) {
-		} finally {
-			if (tripleDesEncrypter != null) {
-				tripleDesEncrypter.destroy();
-			}
-		}
-		
-		IEncrypter singleDesEncrypter = null;
-		try {
-			singleDesEncrypter = new SingleDesEncrypter(password);
-			final String decrypted = singleDesEncrypter.decrypt(encryptedContent);
-			if (decrypted != null && isValidDecryption(decrypted)) {
-				LogUtils.info("Successfully decrypted with SingleDES (legacy). Content will be upgraded to AES-256 on next save.");
-				return decrypted;
-			}
-		} catch (final Exception e) {
-		} finally {
-			if (singleDesEncrypter != null) {
-				singleDesEncrypter.destroy();
-			}
-		}
-		
-		LogUtils.warn("Failed to decrypt content with any available algorithm");
-		return null;
-	}
-	
-	private static boolean isValidDecryption(final String decrypted) {
-		if (decrypted == null) {
-			return false;
-		}
-		if (decrypted.isEmpty()) {
-			return true;
-		}
-		if (!decrypted.startsWith("<node ")) {
-			return false;
-		}
-		if (!decrypted.contains("</node>") && !decrypted.contains("/>")) {
-			return false;
-		}
-		int openCount = 0;
-		int closeCount = 0;
-		for (char c : decrypted.toCharArray()) {
-			if (c == '<') openCount++;
-			if (c == '>') closeCount++;
-		}
-		return openCount == closeCount;
 	}
 	
 	public static String getEncryptionAlgorithmDescription(final String encryptedContent) {
@@ -133,8 +61,53 @@ public class EncryptionHelper {
 				return "Legacy Triple-DES (Medium - will be upgraded)";
 			case UNKNOWN:
 			default:
-				return "Legacy DES/TripleDES (will be upgraded)";
+				return "Legacy DES (will be upgraded)";
+		}
+	}
+	
+	/**
+	 * Attempts to decrypt the content using automatic algorithm detection.
+	 * Tries to detect the encryption algorithm and decrypt with the appropriate encrypter.
+	 * For legacy content without headers, tries all algorithms until one succeeds.
+	 * 
+	 * @param password the password to use for decryption
+	 * @param encryptedContent the encrypted content to decrypt
+	 * @return the decrypted content, or null if decryption fails
+	 */
+	public static String tryDecryptWithAllAlgorithms(final StringBuilder password, final String encryptedContent) {
+		if (encryptedContent == null || password == null) {
+			return null;
+		}
+		
+		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
+		
+		// If algorithm is detected (has header), use it directly
+		if (algorithm != EncryptionHeader.Algorithm.UNKNOWN) {
+			IEncrypter decrypter = createDecrypter(password, encryptedContent);
+			try {
+				return decrypter.decrypt(encryptedContent);
+			} finally {
+				decrypter.destroy();
+			}
+		}
+		
+		// For legacy content without headers, try all algorithms
+		// Try Triple DES first (stronger), then Single DES
+		IEncrypter tripleDesEncrypter = new TripleDesEncrypter(password);
+		try {
+			String result = tripleDesEncrypter.decrypt(encryptedContent);
+			if (result != null) {
+				return result;
+			}
+		} finally {
+			tripleDesEncrypter.destroy();
+		}
+		
+		IEncrypter singleDesEncrypter = new SingleDesEncrypter(password);
+		try {
+			return singleDesEncrypter.decrypt(encryptedContent);
+		} finally {
+			singleDesEncrypter.destroy();
 		}
 	}
 }
-

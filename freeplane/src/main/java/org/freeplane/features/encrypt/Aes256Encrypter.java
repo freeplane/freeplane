@@ -18,12 +18,18 @@
 package org.freeplane.features.encrypt;
 
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
@@ -46,11 +52,9 @@ public class Aes256Encrypter implements IEncrypter {
 	private static final int SALT_LENGTH = 16;
 	private static final int IV_LENGTH = 16;
 	private static final int KEY_LENGTH = 256;
-	private static final String SALT_PRESENT_INDICATOR = " ";
 	private static final String KEY_DERIVATION_ALGORITHM = "PBKDF2WithHmacSHA256";
 	private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 	private static final int ITERATION_COUNT = 100000;
-	private static final String OLD_VERSION_MARKER = "FP-AES256-V1:"; // Pre-binary-header format
 	
 	private Cipher dcipher;
 	private Cipher ecipher;
@@ -72,82 +76,35 @@ public class Aes256Encrypter implements IEncrypter {
 			return null;
 		}
 		try {
-			byte[] salt = null;
-			byte[] iv = null;
-			byte[] ciphertext = null;
-			
-			// Check for new plain text prefix format
 			String strippedPrefix = EncryptionHeader.stripPrefix(str);
-			if (strippedPrefix != null) {
-				// New format: FP-AES256-V1:{base64(salt + IV + ciphertext)}
-				byte[] allData = DesEncrypter.fromBase64(strippedPrefix);
-				if (allData != null && allData.length >= SALT_LENGTH + IV_LENGTH) {
-					int offset = 0;
-					salt = Arrays.copyOfRange(allData, offset, offset + SALT_LENGTH);
-					offset += SALT_LENGTH;
-					iv = Arrays.copyOfRange(allData, offset, offset + IV_LENGTH);
-					offset += IV_LENGTH;
-					if (allData.length > offset) {
-						ciphertext = Arrays.copyOfRange(allData, offset, allData.length);
-					}
-				}
-			} else if (str.startsWith(OLD_VERSION_MARKER)) {
-				// Legacy format 1: FP-AES256-V1:{base64(salt)} {base64(IV)} {base64(ciphertext)}
-				str = str.substring(OLD_VERSION_MARKER.length());
-				
-				final int indexOfSaltIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
-				if (indexOfSaltIndicator >= 0) {
-					final String saltString = str.substring(0, indexOfSaltIndicator);
-					str = str.substring(indexOfSaltIndicator + 1);
-					salt = DesEncrypter.fromBase64(saltString);
-				}
-				
-				final int indexOfIvIndicator = str.indexOf(SALT_PRESENT_INDICATOR);
-				if (indexOfIvIndicator >= 0) {
-					final String ivString = str.substring(0, indexOfIvIndicator);
-					str = str.substring(indexOfIvIndicator + 1);
-					iv = DesEncrypter.fromBase64(ivString);
-				}
-				
-				ciphertext = DesEncrypter.fromBase64(str);
-			} else {
-				// Legacy format 2: Binary header inside base64
-				byte[] allData = DesEncrypter.fromBase64(str);
-				
-				if (allData != null && allData.length >= EncryptionHeader.HEADER_LENGTH) {
-					EncryptionHeader header = EncryptionHeader.fromBytes(allData);
-					if (header != null && header.getAlgorithm() == EncryptionHeader.Algorithm.AES256) {
-						int offset = EncryptionHeader.HEADER_LENGTH;
-						
-						if (allData.length >= offset + SALT_LENGTH) {
-							salt = Arrays.copyOfRange(allData, offset, offset + SALT_LENGTH);
-							offset += SALT_LENGTH;
-						}
-						
-						if (allData.length >= offset + IV_LENGTH) {
-							iv = Arrays.copyOfRange(allData, offset, offset + IV_LENGTH);
-							offset += IV_LENGTH;
-						}
-						
-						if (allData.length > offset) {
-							ciphertext = Arrays.copyOfRange(allData, offset, allData.length);
-						}
-					}
-				}
+			if (strippedPrefix == null) {
+				return null;
 			}
 			
-			if (salt != null && iv != null && ciphertext != null) {
-				init(salt, iv);
-				if (dcipher == null) {
-					return null;
-				}
-				final byte[] utf8 = dcipher.doFinal(ciphertext);
-				return new String(utf8, StandardCharsets.UTF_8);
+			byte[] allData = DesEncrypter.fromBase64(strippedPrefix);
+			if (allData == null || allData.length < SALT_LENGTH + IV_LENGTH) {
+				return null;
 			}
 			
-			return null;
+			int offset = 0;
+			byte[] salt = Arrays.copyOfRange(allData, offset, offset + SALT_LENGTH);
+			offset += SALT_LENGTH;
+			byte[] iv = Arrays.copyOfRange(allData, offset, offset + IV_LENGTH);
+			offset += IV_LENGTH;
+			
+			if (allData.length <= offset) {
+				return null;
+			}
+			byte[] ciphertext = Arrays.copyOfRange(allData, offset, allData.length);
+			
+			init(salt, iv);
+			if (dcipher == null) {
+				return null;
+			}
+			final byte[] utf8 = dcipher.doFinal(ciphertext);
+			return new String(utf8, StandardCharsets.UTF_8);
 		}
-		catch (final javax.crypto.BadPaddingException e) {
+		catch (final BadPaddingException e) {
 			LogUtils.warn("Decryption failed: bad padding", e);
 		}
 		catch (final IllegalBlockSizeException e) {
@@ -169,7 +126,6 @@ public class Aes256Encrypter implements IEncrypter {
 			final byte[] utf8 = str.getBytes(StandardCharsets.UTF_8);
 			final byte[] enc = ecipher.doFinal(utf8);
 			
-			// Combine salt + IV + encrypted data
 			byte[] fullData = new byte[mSalt.length + currentIV.length + enc.length];
 			int offset = 0;
 			System.arraycopy(mSalt, 0, fullData, offset, mSalt.length);
@@ -178,12 +134,11 @@ public class Aes256Encrypter implements IEncrypter {
 			offset += currentIV.length;
 			System.arraycopy(enc, 0, fullData, offset, enc.length);
 			
-			// Base64 encode the data, then prepend plain text prefix
 			String base64Data = DesEncrypter.toBase64(fullData);
 			EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
 			return header.toPrefix() + base64Data;
 		}
-		catch (final javax.crypto.BadPaddingException e) {
+		catch (final BadPaddingException e) {
 			LogUtils.severe("Encryption failed: bad padding", e);
 		}
 		catch (final IllegalBlockSizeException e) {
@@ -230,30 +185,23 @@ public class Aes256Encrypter implements IEncrypter {
 					dcipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
 				}
 			}
-			catch (final java.security.InvalidAlgorithmParameterException e) {
+			catch (final InvalidAlgorithmParameterException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: invalid algorithm parameter", e);
 			}
-			catch (final java.security.spec.InvalidKeySpecException e) {
+			catch (final InvalidKeySpecException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: invalid key spec", e);
 			}
-			catch (final javax.crypto.NoSuchPaddingException e) {
+			catch (final NoSuchPaddingException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: no such padding", e);
 			}
-			catch (final java.security.NoSuchAlgorithmException e) {
+			catch (final NoSuchAlgorithmException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: algorithm not available. " +
 						"This may require Java Cryptography Extension (JCE) Unlimited Strength.", e);
 			}
-			catch (final java.security.InvalidKeyException e) {
+			catch (final InvalidKeyException e) {
 				LogUtils.severe("Failed to initialize AES-256 cipher: invalid key", e);
 			}
 		}
-	}
-	
-	public static boolean isAes256Encrypted(String encryptedString) {
-		if (encryptedString == null) {
-			return false;
-		}
-		return EncryptionHeader.detectAlgorithm(encryptedString) == EncryptionHeader.Algorithm.AES256;
 	}
 	
 	/**
@@ -275,6 +223,16 @@ public class Aes256Encrypter implements IEncrypter {
 		}
 		ecipher = null;
 		dcipher = null;
+	}
+	
+	/**
+	 * Checks if the given encrypted content uses AES-256 encryption.
+	 * 
+	 * @param encryptedContent the encrypted content to check
+	 * @return true if the content is encrypted with AES-256, false otherwise
+	 */
+	public static boolean isAes256Encrypted(final String encryptedContent) {
+		return EncryptionHeader.detectAlgorithm(encryptedContent) == EncryptionHeader.Algorithm.AES256;
 	}
 }
 

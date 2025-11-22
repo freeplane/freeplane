@@ -64,84 +64,11 @@ public class EncryptionModel implements IExtension {
 
 	private boolean checkAndSetEncrypter(final IEncrypter encrypter) {
 		String decryptedNode = decryptXml(encryptedContent, encrypter);
-		
-		// If initial decryption succeeds, use the provided encrypter
-		if (decryptedNode != null && isValidDecryptedContent(decryptedNode)) {
+		if (decryptedNode != null) {
 			mEncrypter = encrypter;
-			LogUtils.info("checkAndSetEncrypter: Successfully set mEncrypter (algorithm: " + encrypter.getClass().getSimpleName() + ")");
 			return true;
 		}
-		
-		// If decryption failed, the caller should try decryptWithFallback() with the password
-		LogUtils.info("checkAndSetEncrypter: Decryption failed - wrong password or algorithm mismatch");
 		return false;
-	}
-	
-	/**
-	 * Attempt to decrypt using all available algorithms for backward compatibility.
-	 * This method should be called when decrypt() fails with the detected algorithm.
-	 * 
-	 * @param mapController the map controller
-	 * @param password the password to try
-	 * @return true if decryption succeeded with any algorithm, false otherwise
-	 */
-	public boolean decryptWithFallback(final MapController mapController, final StringBuilder password) {
-		if (encryptedContent == null) {
-			throw new IllegalStateException("No encrypted content");
-		}
-		
-		LogUtils.info("Trying all available algorithms for backward compatibility");
-		
-		// Try to decrypt with all available algorithms
-		final String decryptedContent = org.freeplane.features.encrypt.EncryptionHelper
-				.tryDecryptWithAllAlgorithms(password, encryptedContent);
-		
-		if (decryptedContent == null || !isValidDecryptedContent(decryptedContent)) {
-			LogUtils.warn("Failed to decrypt with any available algorithm - wrong password or corrupt data");
-			return false;
-		}
-		
-		// Decryption succeeded - now we need to parse and load the content
-		// and create an appropriate encrypter for future operations
-		
-		// Create a new encrypter for future operations (will use AES-256)
-		// This upgrades legacy content to AES-256 on next save
-		mEncrypter = org.freeplane.features.encrypt.EncryptionHelper.createEncrypter(password);
-		
-		// Parse and load the decrypted content
-		if (!hiddenChildren.containsKey(node)) {
-			try {
-				final String[] childs = decryptedContent.split(MapClipboardController.NODESEPARATOR);
-				for (int i = 0; i < childs.length; i++) {
-					final String string = childs[i];
-					if (string.length() == 0) {
-						continue;
-					}
-					pasteXML(string, node, mapController);
-					hiddenChildren.put(node, node.getChildrenInternal());
-				}
-			} catch (final Exception e) {
-				LogUtils.severe(e);
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	/**
-	 * Validate that the decrypted content appears to be valid XML node data.
-	 */
-	private boolean isValidDecryptedContent(final String decrypted) {
-		if (decrypted == null) {
-			return false;
-		}
-		// Empty string is valid (empty encrypted node)
-		if (decrypted.isEmpty()) {
-			return true;
-		}
-		// Should start with XML node tag
-		return decrypted.startsWith("<node ");
 	}
 
 	/**
@@ -182,21 +109,15 @@ public class EncryptionModel implements IExtension {
 		return decrypted;
 	}
 
-	/**
-	 */
 	private String encryptXml(final StringBuffer childXml) {
 		if (mEncrypter == null) {
-			LogUtils.severe("BUG: mEncrypter is null in encryptXml! This should never happen.");
-			LogUtils.severe("  encryptedContent = " + (encryptedContent != null ? "NOT NULL" : "NULL"));
-			LogUtils.severe("  This usually means the node was unlocked but the encrypter wasn't preserved.");
-			throw new IllegalStateException("Cannot encrypt: encrypter is null. The node may have been decrypted without preserving the encryption key.");
+			throw new IllegalStateException("Cannot encrypt: encrypter is null");
 		}
 		try {
-			final String encrypted = mEncrypter.encrypt(childXml.toString());
-			return encrypted;
+			return mEncrypter.encrypt(childXml.toString());
 		}
 		catch (final Exception e) {
-			throw new IllegalArgumentException("Can't encrypt the node.", e);
+			throw new IllegalArgumentException("Can't encrypt the node", e);
 		}
 	}
 
@@ -261,9 +182,6 @@ public class EncryptionModel implements IExtension {
 	synchronized public void unlock() {
 		node.setChildrenInternal(hiddenChildren.remove(node));
 		encryptedContent = null;
-		// NOTE: Do NOT destroy mEncrypter here - it's needed for re-encryption when lock() is called
-		// The encrypter will be cleaned up when the EncryptionModel is removed or garbage collected
-		LogUtils.info("EncryptionModel.unlock(): mEncrypter is " + (mEncrypter != null ? "NOT NULL" : "NULL"));
 	}
 
 	synchronized public void lock(MapWriter mapWriter) {
