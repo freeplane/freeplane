@@ -126,8 +126,6 @@ public class DesEncrypter implements IEncrypter {
 	    init(newSalt);
     }
 
-	/**
-	 */
 	private void init(final byte[] salt) {
 		if (ecipher != null && mSalt != null && !Arrays.equals(mSalt, salt)) {
 			ecipher = null;
