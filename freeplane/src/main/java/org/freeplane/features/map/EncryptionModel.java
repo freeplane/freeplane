@@ -197,10 +197,6 @@ public class EncryptionModel implements IExtension {
 		}
 	}
 	
-	/**
-	 * Clean up sensitive data from memory.
-	 * Should be called when encryption is removed or the node is deleted.
-	 */
 	public void destroy() {
 		if (mEncrypter != null) {
 			mEncrypter.destroy();
