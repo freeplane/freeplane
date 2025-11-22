@@ -22,96 +22,19 @@ public class EncryptionHeader {
 	public static final String PREFIX_DES = "FP-DES-V1:";
 	public static final String PREFIX_3DES = "FP-3DES-V1:";
 	
-	public enum Algorithm {
-		AES256("AES-256", PREFIX_AES256),
-		DES("DES", PREFIX_DES),
-		TRIPLE_DES("Triple-DES", PREFIX_3DES),
-		UNKNOWN("Unknown", null);
-		
-		private final String description;
-		private final String prefix;
-		
-		Algorithm(String description, String prefix) {
-			this.description = description;
-			this.prefix = prefix;
-		}
-		
-		public String getDescription() {
-			return description;
-		}
-		
-		public String getPrefix() {
-			return prefix;
-		}
-		
-		public static Algorithm fromPrefix(String encryptedString) {
-			if (encryptedString == null) {
-				return UNKNOWN;
-			}
-			for (Algorithm algo : values()) {
-				if (algo != UNKNOWN && algo.prefix != null && encryptedString.startsWith(algo.prefix)) {
-					return algo;
-				}
-			}
-			return UNKNOWN;
-		}
-	}
-	
-	private final Algorithm algorithm;
-	
-	public EncryptionHeader(Algorithm algorithm) {
-		if (algorithm == null || algorithm == Algorithm.UNKNOWN) {
-			throw new IllegalArgumentException("Invalid algorithm");
-		}
-		this.algorithm = algorithm;
-	}
-	
-	public Algorithm getAlgorithm() {
-		return algorithm;
-	}
-	
-	public String toPrefix() {
-		return algorithm.getPrefix();
-	}
-	
-	public static boolean hasHeader(String encryptedString) {
-		if (encryptedString == null || encryptedString.isEmpty()) {
-			return false;
-		}
-		return Algorithm.fromPrefix(encryptedString) != Algorithm.UNKNOWN;
-	}
-	
-	public static EncryptionHeader fromEncryptedString(String encryptedString) {
-		if (encryptedString == null || encryptedString.isEmpty()) {
-			return null;
-		}
-		Algorithm algo = Algorithm.fromPrefix(encryptedString);
-		if (algo != Algorithm.UNKNOWN) {
-			return new EncryptionHeader(algo);
-		}
-		return null;
-	}
-	
-	public static Algorithm detectAlgorithm(String encryptedString) {
-		if (encryptedString == null || encryptedString.isEmpty()) {
-			return Algorithm.UNKNOWN;
-		}
-		return Algorithm.fromPrefix(encryptedString);
-	}
-	
 	public static String stripPrefix(String encryptedString) {
-		if (encryptedString == null || encryptedString.isEmpty()) {
+		if (encryptedString == null) {
 			return null;
 		}
-		Algorithm algo = Algorithm.fromPrefix(encryptedString);
-		if (algo != Algorithm.UNKNOWN) {
-			return encryptedString.substring(algo.getPrefix().length());
+		if (encryptedString.startsWith(PREFIX_AES256)) {
+			return encryptedString.substring(PREFIX_AES256.length());
+		}
+		if (encryptedString.startsWith(PREFIX_3DES)) {
+			return encryptedString.substring(PREFIX_3DES.length());
+		}
+		if (encryptedString.startsWith(PREFIX_DES)) {
+			return encryptedString.substring(PREFIX_DES.length());
 		}
 		return null;
-	}
-	
-	@Override
-	public String toString() {
-		return "EncryptionHeader{algorithm=" + algorithm + "}";
 	}
 }

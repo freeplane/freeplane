@@ -59,7 +59,7 @@ public class Aes256EncrypterTest {
 			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 		// Also verify algorithm detection works
 		assertTrue("Should detect AES256 algorithm", 
-			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
+			Aes256Encrypter.isAes256Encrypted(encrypted));
 	}
 
 
@@ -432,9 +432,8 @@ public class Aes256EncrypterTest {
 		assertTrue("Encrypted content should have salt + IV + ciphertext", 
 			decoded.length >= 48);
 		
-		// Verify algorithm is detected correctly
 		assertTrue("Should detect AES256 algorithm",
-			EncryptionHeader.detectAlgorithm(encrypted) == EncryptionHeader.Algorithm.AES256);
+			Aes256Encrypter.isAes256Encrypted(encrypted));
 	}
 
 	@Test

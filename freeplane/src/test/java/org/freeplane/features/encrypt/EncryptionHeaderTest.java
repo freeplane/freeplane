@@ -29,51 +29,24 @@ import org.junit.Test;
 public class EncryptionHeaderTest {
 
 	@Test
-	public void aes256PrefixIsCorrect() {
-		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
-		String prefix = header.toPrefix();
-		
-		assertThat(prefix, equalTo("FP-AES256-V1:"));
-	}
-
-	@Test
-	public void desPrefixIsCorrect() {
-		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.DES);
-		String prefix = header.toPrefix();
-		
-		assertThat(prefix, equalTo("FP-DES-V1:"));
-	}
-
-	@Test
-	public void tripleDesPrefixIsCorrect() {
-		EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.TRIPLE_DES);
-		String prefix = header.toPrefix();
-		
-		assertThat(prefix, equalTo("FP-3DES-V1:"));
-	}
-
-	@Test
 	public void detectsAes256Prefix() {
 		String encrypted = "FP-AES256-V1:c29tZWJhc2U2NGRhdGE=";
-		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
 		
-		assertThat(detected, equalTo(EncryptionHeader.Algorithm.AES256));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256), equalTo(true));
 	}
 
 	@Test
 	public void detectsDesPrefix() {
 		String encrypted = "FP-DES-V1:c29tZWJhc2U2NGRhdGE=";
-		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
 		
-		assertThat(detected, equalTo(EncryptionHeader.Algorithm.DES));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_DES), equalTo(true));
 	}
 
 	@Test
 	public void detectsTripleDesPrefix() {
 		String encrypted = "FP-3DES-V1:c29tZWJhc2U2NGRhdGE=";
-		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
 		
-		assertThat(detected, equalTo(EncryptionHeader.Algorithm.TRIPLE_DES));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_3DES), equalTo(true));
 	}
 
 	@Test
@@ -93,19 +66,12 @@ public class EncryptionHeaderTest {
 	}
 
 	@Test
-	public void hasHeaderReturnsTrueForPlainTextPrefix() {
-		String encrypted = "FP-AES256-V1:c29tZWJhc2U2NGRhdGE=";
-		
-		assertThat(EncryptionHeader.hasHeader(encrypted), equalTo(true));
-	}
-
-	@Test
-	public void returnsUnknownForLegacyDes() {
+	public void legacyDesHasNoPrefix() {
 		String legacyFormat = "qZvIMlY14wM c29tZWVuY3J5cHRlZGRhdGE=";
 		
-		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(legacyFormat);
-		
-		assertThat(detected, equalTo(EncryptionHeader.Algorithm.UNKNOWN));
+		assertThat(legacyFormat.startsWith(EncryptionHeader.PREFIX_AES256), equalTo(false));
+		assertThat(legacyFormat.startsWith(EncryptionHeader.PREFIX_DES), equalTo(false));
+		assertThat(legacyFormat.startsWith(EncryptionHeader.PREFIX_3DES), equalTo(false));
 	}
 
 	@Test
@@ -117,10 +83,6 @@ public class EncryptionHeaderTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		
 		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256), equalTo(true));
-		assertThat(EncryptionHeader.hasHeader(encrypted), equalTo(true));
-		
-		EncryptionHeader.Algorithm detected = EncryptionHeader.detectAlgorithm(encrypted);
-		assertThat(detected, equalTo(EncryptionHeader.Algorithm.AES256));
 		
 		encrypter.destroy();
 	}
@@ -132,8 +94,6 @@ public class EncryptionHeaderTest {
 		
 		final String plaintext = "<node TEXT=\"test\" ID=\"ID_123\"/>";
 		final String encrypted = encrypter.encrypt(plaintext);
-		
-		assertThat(EncryptionHeader.hasHeader(encrypted), equalTo(true));
 		
 		final String decrypted = encrypter.decrypt(encrypted);
 		assertThat(decrypted, equalTo(plaintext));

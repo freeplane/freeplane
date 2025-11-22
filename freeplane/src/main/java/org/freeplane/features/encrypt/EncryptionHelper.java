@@ -29,36 +29,26 @@ public class EncryptionHelper {
 		if (encryptedContent == null) {
 			return new Aes256Encrypter(password);
 		}
-		
-		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
-		switch (algorithm) {
-			case AES256:
-				return new Aes256Encrypter(password);
-			case TRIPLE_DES:
-				return new TripleDesEncrypter(password);
-			case DES:
-			case UNKNOWN:
-			default:
-				return new SingleDesEncrypter(password);
+		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256)) {
+			return new Aes256Encrypter(password);
 		}
+		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_3DES)) {
+			return new TripleDesEncrypter(password);
+		}
+		return new SingleDesEncrypter(password);
 	}
 	
 	public static String getEncryptionAlgorithmDescription(final String encryptedContent) {
 		if (encryptedContent == null) {
 			return "Unknown";
 		}
-		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
-		switch (algorithm) {
-			case AES256:
-				return "AES-256";
-			case DES:
-				return "DES";
-			case TRIPLE_DES:
-				return "Triple-DES";
-			case UNKNOWN:
-			default:
-				return "DES";
+		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256)) {
+			return "AES-256";
 		}
+		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_3DES)) {
+			return "Triple-DES";
+		}
+		return "DES";
 	}
 	
 	public static String tryDecryptWithAllAlgorithms(final StringBuilder password, final String encryptedContent) {
@@ -66,9 +56,9 @@ public class EncryptionHelper {
 			return null;
 		}
 		
-		EncryptionHeader.Algorithm algorithm = EncryptionHeader.detectAlgorithm(encryptedContent);
-		
-		if (algorithm != EncryptionHeader.Algorithm.UNKNOWN) {
+		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256) ||
+		    encryptedContent.startsWith(EncryptionHeader.PREFIX_3DES) ||
+		    encryptedContent.startsWith(EncryptionHeader.PREFIX_DES)) {
 			IEncrypter decrypter = createDecrypter(password, encryptedContent);
 			try {
 				return decrypter.decrypt(encryptedContent);

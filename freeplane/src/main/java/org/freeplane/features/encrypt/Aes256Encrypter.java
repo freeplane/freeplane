@@ -122,9 +122,8 @@ public class Aes256Encrypter implements IEncrypter {
 			offset += currentIV.length;
 			System.arraycopy(enc, 0, fullData, offset, enc.length);
 			
-			String base64Data = DesEncrypter.toBase64(fullData);
-			EncryptionHeader header = new EncryptionHeader(EncryptionHeader.Algorithm.AES256);
-			return header.toPrefix() + base64Data;
+		String base64Data = DesEncrypter.toBase64(fullData);
+		return EncryptionHeader.PREFIX_AES256 + base64Data;
 		}
 		catch (final BadPaddingException e) {
 			LogUtils.severe("AES-256 Encryption failed: bad padding", e);
@@ -210,7 +209,7 @@ public class Aes256Encrypter implements IEncrypter {
 	}
 	
 	public static boolean isAes256Encrypted(final String encryptedContent) {
-		return EncryptionHeader.detectAlgorithm(encryptedContent) == EncryptionHeader.Algorithm.AES256;
+		return encryptedContent != null && encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256);
 	}
 }
 
