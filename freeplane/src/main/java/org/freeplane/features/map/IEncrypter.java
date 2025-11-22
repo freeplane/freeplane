@@ -44,14 +44,8 @@ public interface IEncrypter {
 	public String encrypt(final String str);
 	
 	/**
-	 * Clean up sensitive data from memory.
-	 * This method should:
-	 * - Zero out password arrays
-	 * - Clear salt arrays
-	 * - Null cipher references
-	 * 
-	 * Call this method when the encrypter is no longer needed to prevent
-	 * passwords from remaining in memory longer than necessary.
+	 * Zeroes sensitive data from memory.
+	 * Must be called when the encrypter is no longer needed.
 	 */
 	public void destroy();
 }

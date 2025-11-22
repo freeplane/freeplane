@@ -204,9 +204,6 @@ public class Aes256Encrypter implements IEncrypter {
 		}
 	}
 	
-	/**
-	 * Zeroes sensitive data from memory to prevent password/key exposure.
-	 */
 	@Override
 	public void destroy() {
 		if (passPhrase != null) {

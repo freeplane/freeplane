@@ -71,20 +71,16 @@ class EncryptedMap extends AFreeplaneAction {
 		final ModeController modeController = Controller.getCurrentModeController();
 		MapModel newMap = MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		if(newMap != null) {
-		    NodeModel node = newMap.getRootNode();
-		    // Use AES-256 encryption for new encrypted maps
-		    final org.freeplane.features.map.IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
-		    final EncryptionModel encryptedMindMapNode;
-		    try {
-		        encryptedMindMapNode = new EncryptionModel(node, encrypter);
-		    } catch (Exception e) {
-		        // If EncryptionModel creation fails, clean up the encrypter
-		        encrypter.destroy();
-		        throw e;
-		    }
-		    // Note: The encrypter is now owned by EncryptionModel and will be cleaned up
-		    // when the node is unlocked (EncryptionModel.unlock() calls destroy())
-		    node.addExtension(encryptedMindMapNode);
+	    NodeModel node = newMap.getRootNode();
+	    final org.freeplane.features.map.IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
+	    final EncryptionModel encryptedMindMapNode;
+	    try {
+	        encryptedMindMapNode = new EncryptionModel(node, encrypter);
+	    } catch (Exception e) {
+	        encrypter.destroy();
+	        throw e;
+	    }
+	    node.addExtension(encryptedMindMapNode);
 		    Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 	}
