@@ -18,8 +18,8 @@
 package org.freeplane.features.encrypt;
 
 /**
- * Header for encrypted Freeplane data using plain text prefixes.
- * Format: "FP-{ALGORITHM}-V1:" followed by base64-encoded encrypted data.
+ * @author Freeplane team
+ * 2025
  */
 public class EncryptionHeader {
 	public static final String PREFIX_AES256 = "FP-AES256-V1:";

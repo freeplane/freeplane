@@ -20,32 +20,11 @@
 package org.freeplane.features.map;
 
 /**
- * Interface for encryption/decryption implementations.
- * 
- * Security note: Implementations must properly clean up sensitive data
- * (passwords, keys, salts) when destroy() is called.
- * 
  * @author Dimitry Polivaev
  * 02.01.2009
  */
 public interface IEncrypter {
-	/**
-	 * Decrypt an encrypted string.
-	 * @param str the encrypted string
-	 * @return the decrypted content, or null if decryption fails
-	 */
 	public String decrypt(String str);
-
-	/**
-	 * Encrypt a string.
-	 * @param str the plaintext string
-	 * @return the encrypted content, or null if encryption fails
-	 */
 	public String encrypt(final String str);
-	
-	/**
-	 * Zeroes sensitive data from memory.
-	 * Must be called when the encrypter is no longer needed.
-	 */
 	public void destroy();
 }

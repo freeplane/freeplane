@@ -20,8 +20,8 @@ package org.freeplane.features.encrypt;
 import org.freeplane.features.map.IEncrypter;
 
 /**
- * Manages encryption/decryption with automatic algorithm detection.
- * All new encryptions use AES-256; legacy DES is auto-upgraded on re-encryption.
+ * @author Freeplane team
+ * 2025
  */
 public class EncryptionHelper {
 	

@@ -40,13 +40,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IEncrypter;
 
 /**
- * AES-256-CBC encryption with PBKDF2-HMAC-SHA256 key derivation.
- * 
- * <p><b>Security Note:</b> Uses CBC mode without authenticated encryption.
- * Data integrity is NOT cryptographically guaranteed.</p>
- * 
- * @see EncryptionHeader for binary format details
- * @see EncryptionHelper
+ * @author Freeplane team
+ * 2025
  */
 public class Aes256Encrypter implements IEncrypter {
 	private static final int SALT_LENGTH = 16;
@@ -222,12 +217,6 @@ public class Aes256Encrypter implements IEncrypter {
 		dcipher = null;
 	}
 	
-	/**
-	 * Checks if the given encrypted content uses AES-256 encryption.
-	 * 
-	 * @param encryptedContent the encrypted content to check
-	 * @return true if the content is encrypted with AES-256, false otherwise
-	 */
 	public static boolean isAes256Encrypted(final String encryptedContent) {
 		return EncryptionHeader.detectAlgorithm(encryptedContent) == EncryptionHeader.Algorithm.AES256;
 	}
