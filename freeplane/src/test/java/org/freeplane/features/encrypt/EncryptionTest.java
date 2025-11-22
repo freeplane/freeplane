@@ -158,7 +158,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		
 		// New binary header format: check that algorithm is detected as AES256
-		assertThat(Aes256Encrypter.isAes256Encrypted(encrypted), equalTo(true));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256), equalTo(true));
 	}
 
 	@Test

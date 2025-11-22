@@ -107,7 +107,7 @@ public class EncryptionHelperTest {
 		final String encrypted = aesEncrypter.encrypt(plaintext);
 		aesEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -120,7 +120,7 @@ public class EncryptionHelperTest {
 		final String encrypted = desEncrypter.encrypt(plaintext);
 		desEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -133,7 +133,7 @@ public class EncryptionHelperTest {
 		final String encrypted = tripleDesEncrypter.encrypt(plaintext);
 		tripleDesEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -146,7 +146,7 @@ public class EncryptionHelperTest {
 		aesEncrypter.destroy();
 		
 		final StringBuilder password2 = new StringBuilder("wrong");
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password2, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password2, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, nullValue());
 	}
@@ -154,7 +154,7 @@ public class EncryptionHelperTest {
 	@Test
 	public void tryDecryptWithAllAlgorithmsReturnsNullForNull() {
 		final StringBuilder password = new StringBuilder("test123");
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, null);
+		final String decrypted = EncryptionHelper.createDecrypter(password, null).decrypt(null);
 		
 		assertThat(decrypted, nullValue());
 	}
@@ -162,7 +162,7 @@ public class EncryptionHelperTest {
 	@Test
 	public void tryDecryptWithAllAlgorithmsReturnsNullForInvalidData() {
 		final StringBuilder password = new StringBuilder("test123");
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, "not-encrypted-data");
+		final String decrypted = EncryptionHelper.createDecrypter(password, "not-encrypted-data").decrypt("not-encrypted-data");
 		
 		assertThat(decrypted, nullValue());
 	}
@@ -174,7 +174,7 @@ public class EncryptionHelperTest {
 		final String encrypted = aesEncrypter.encrypt("");
 		aesEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(""));
 	}
@@ -185,7 +185,7 @@ public class EncryptionHelperTest {
 		
 		// Create a DES-encrypted content that's not valid XML
 		// (This simulates what might happen with wrong password producing garbage)
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, "invalid");
+		final String decrypted = EncryptionHelper.createDecrypter(password, "invalid").decrypt("invalid");
 		
 		// Should return null because validation fails
 		assertThat(decrypted, nullValue());
@@ -199,7 +199,7 @@ public class EncryptionHelperTest {
 		final String encrypted = desEncrypter.encrypt(validXml);
 		desEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(validXml));
 	}
@@ -212,7 +212,7 @@ public class EncryptionHelperTest {
 		final String encrypted = desEncrypter.encrypt(validXml);
 		desEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(validXml));
 	}
@@ -259,7 +259,7 @@ public class EncryptionHelperTest {
 		desEncrypter.destroy();
 		
 		// Use helper to decrypt (should work with fallback)
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -275,7 +275,7 @@ public class EncryptionHelperTest {
 		aesEncrypter.destroy();
 		
 		// Use helper to decrypt (should work directly)
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -296,8 +296,8 @@ public class EncryptionHelperTest {
 		desEncrypter.destroy();
 		
 		// Decrypt both with helper
-		final String decrypted1 = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted1);
-		final String decrypted2 = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted2);
+		final String decrypted1 = EncryptionHelper.createDecrypter(password, encrypted1).decrypt(encrypted1);
+		final String decrypted2 = EncryptionHelper.createDecrypter(password, encrypted2).decrypt(encrypted2);
 		
 		assertThat(decrypted1, equalTo(plaintext1));
 		assertThat(decrypted2, equalTo(plaintext2));
@@ -312,7 +312,7 @@ public class EncryptionHelperTest {
 		final String encrypted = desEncrypter.encrypt(plaintext);
 		desEncrypter.destroy();
 		
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -333,11 +333,11 @@ public class EncryptionHelperTest {
 		desEncrypter.destroy();
 		
 		// First verify that wrong password fails with all algorithms
-		final String decryptedWrong = EncryptionHelper.tryDecryptWithAllAlgorithms(wrongPassword, encrypted);
+		final String decryptedWrong = EncryptionHelper.createDecrypter(wrongPassword, encrypted).decrypt(encrypted);
 		assertThat(decryptedWrong, nullValue());
 		
 		// Then verify that correct password succeeds (tests the fallback chain)
-		final String decryptedCorrect = EncryptionHelper.tryDecryptWithAllAlgorithms(correctPassword, encrypted);
+		final String decryptedCorrect = EncryptionHelper.createDecrypter(correctPassword, encrypted).decrypt(encrypted);
 		assertThat(decryptedCorrect, equalTo(plaintext));
 	}
 
@@ -354,7 +354,7 @@ public class EncryptionHelperTest {
 			"</node>";
 		
 		final String encrypted = encrypter.encrypt(complexXml);
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(complexXml));
 	}
@@ -372,7 +372,7 @@ public class EncryptionHelperTest {
 			"STYLE_REF=\"default\"/>";
 		
 		final String encrypted = encrypter.encrypt(xmlWithAttributes);
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(xmlWithAttributes));
 	}
@@ -385,7 +385,7 @@ public class EncryptionHelperTest {
 		final String xmlWithSpecialChars = "<node TEXT=\"Test &lt;&gt;&amp;&quot; special\"/>";
 		
 		final String encrypted = encrypter.encrypt(xmlWithSpecialChars);
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(xmlWithSpecialChars));
 	}

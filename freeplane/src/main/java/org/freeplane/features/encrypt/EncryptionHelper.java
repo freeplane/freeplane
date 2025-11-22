@@ -51,37 +51,4 @@ public class EncryptionHelper {
 		return "DES";
 	}
 	
-	public static String tryDecryptWithAllAlgorithms(final StringBuilder password, final String encryptedContent) {
-		if (encryptedContent == null || password == null) {
-			return null;
-		}
-		
-		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256) ||
-		    encryptedContent.startsWith(EncryptionHeader.PREFIX_3DES) ||
-		    encryptedContent.startsWith(EncryptionHeader.PREFIX_DES)) {
-			IEncrypter decrypter = createDecrypter(password, encryptedContent);
-			try {
-				return decrypter.decrypt(encryptedContent);
-			} finally {
-				decrypter.destroy();
-			}
-		}
-		
-		IEncrypter tripleDesEncrypter = new TripleDesEncrypter(password);
-		try {
-			String result = tripleDesEncrypter.decrypt(encryptedContent);
-			if (result != null) {
-				return result;
-			}
-		} finally {
-			tripleDesEncrypter.destroy();
-		}
-		
-		IEncrypter singleDesEncrypter = new SingleDesEncrypter(password);
-		try {
-			return singleDesEncrypter.decrypt(encryptedContent);
-		} finally {
-			singleDesEncrypter.destroy();
-		}
-	}
 }

@@ -175,7 +175,7 @@ public class EncryptionModelTest {
 		aesEncrypter.destroy();
 		
 		assertTrue("AES-256 content should be detectable", 
-			Aes256Encrypter.isAes256Encrypted(encrypted));
+			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class EncryptionModelTest {
 		desEncrypter.destroy();
 		
 		assertFalse("Legacy DES content should not be detected as AES-256", 
-			Aes256Encrypter.isAes256Encrypted(encrypted));
+			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class EncryptionModelTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		
 		assertTrue("New encryption should use AES-256", 
-			Aes256Encrypter.isAes256Encrypted(encrypted));
+			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
 	}
 
 	@Test
@@ -340,7 +340,7 @@ public class EncryptionModelTest {
 		desEncrypter.destroy();
 		
 		// Try to decrypt with helper (should work via fallback)
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -356,7 +356,7 @@ public class EncryptionModelTest {
 		tripleDesEncrypter.destroy();
 		
 		// Try to decrypt with helper (should work via fallback)
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}
@@ -372,7 +372,7 @@ public class EncryptionModelTest {
 		aesEncrypter.destroy();
 		
 		// Try to decrypt with helper (should work directly)
-		final String decrypted = EncryptionHelper.tryDecryptWithAllAlgorithms(password, encrypted);
+		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
 		assertThat(decrypted, equalTo(plaintext));
 	}

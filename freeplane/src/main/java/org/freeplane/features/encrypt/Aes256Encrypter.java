@@ -207,9 +207,5 @@ public class Aes256Encrypter implements IEncrypter {
 		ecipher = null;
 		dcipher = null;
 	}
-	
-	public static boolean isAes256Encrypted(final String encryptedContent) {
-		return encryptedContent != null && encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256);
-	}
 }
 
