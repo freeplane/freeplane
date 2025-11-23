@@ -29,6 +29,7 @@ import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.IEncrypter;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
@@ -149,7 +150,16 @@ public class EncryptionController implements IExtension {
 
     private boolean decrypt(final EncryptionModel encryptionModel, final StringBuilder password) {
         final MapController mapController = Controller.getCurrentModeController().getMapController();
-        return encryptionModel.decrypt(mapController, new SingleDesEncrypter(password));
+        final String encryptedContent = encryptionModel.getEncryptedContent();
+        final IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
+
+        boolean decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
+
+        if (!decrypted) {
+            tempEncrypter.destroy();
+        }
+
+        return decrypted;
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
@@ -162,7 +172,14 @@ public class EncryptionController implements IExtension {
 		if (passwordStrategy.isCancelled()) {
 			return;
 		}
-		final EncryptionModel encryptionModel = new EncryptionModel(node, new SingleDesEncrypter(password));
+		final IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
+		final EncryptionModel encryptionModel;
+		try {
+			encryptionModel = new EncryptionModel(node, encrypter);
+		} catch (Exception e) {
+			encrypter.destroy();
+			throw e;
+		}
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {

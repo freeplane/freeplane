@@ -23,8 +23,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
-import org.freeplane.features.encrypt.SingleDesEncrypter;
+import org.freeplane.features.encrypt.EncryptionHelper;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.IEncrypter;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -33,7 +34,7 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 
 class EncryptedMap extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +47,7 @@ class EncryptedMap extends AFreeplaneAction {
 	}
 
 	/**
-	 * @param e 
+	 * @param e
 	 */
 	private StringBuilder getUsersPassword() {
 		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(UITools.getCurrentFrame(), true);
@@ -60,7 +61,7 @@ class EncryptedMap extends AFreeplaneAction {
 	}
 
 	/**
-	 * @param e 
+	 * @param e
 	 *
 	 */
 	private void newEncryptedMap() {
@@ -71,13 +72,20 @@ class EncryptedMap extends AFreeplaneAction {
 		final ModeController modeController = Controller.getCurrentModeController();
 		MapModel newMap = MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		if(newMap != null) {
-		    NodeModel node = newMap.getRootNode();
-		    final EncryptionModel encryptedMindMapNode = new EncryptionModel(node, new SingleDesEncrypter(password));
-		    node.addExtension(encryptedMindMapNode);
+	    NodeModel node = newMap.getRootNode();
+	    final IEncrypter encrypter = EncryptionHelper.createEncrypter(password);
+	    final EncryptionModel encryptedMindMapNode;
+	    try {
+	        encryptedMindMapNode = new EncryptionModel(node, encrypter);
+	    } catch (Exception e) {
+	        encrypter.destroy();
+	        throw e;
+	    }
+	    node.addExtension(encryptedMindMapNode);
 		    Controller.getCurrentModeController().getMapController().nodeChanged(node);
 		}
 	}
-	
+
 	@Override
 	public void afterMapChange(UserRole userRole) {
 	}

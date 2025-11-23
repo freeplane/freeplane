@@ -25,6 +25,6 @@ package org.freeplane.features.map;
  */
 public interface IEncrypter {
 	public String decrypt(String str);
-
 	public String encrypt(final String str);
+	public void destroy();
 }

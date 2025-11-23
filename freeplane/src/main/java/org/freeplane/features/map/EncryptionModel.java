@@ -63,13 +63,12 @@ public class EncryptionModel implements IExtension {
 	}
 
 	private boolean checkAndSetEncrypter(final IEncrypter encrypter) {
-		final String decryptedNode = decryptXml(encryptedContent, encrypter);
-		if (decryptedNode == null || !decryptedNode.equals("") && !decryptedNode.startsWith("<node ")) {
-			LogUtils.warn("Wrong password supplied (stored!=given).");
-			return false;
+		String decryptedNode = decryptXml(encryptedContent, encrypter);
+		if (decryptedNode != null) {
+			mEncrypter = encrypter;
+			return true;
 		}
-		mEncrypter = encrypter;
-		return true;
+		return false;
 	}
 
 	/**
@@ -110,15 +109,15 @@ public class EncryptionModel implements IExtension {
 		return decrypted;
 	}
 
-	/**
-	 */
 	private String encryptXml(final StringBuffer childXml) {
+		if (mEncrypter == null) {
+			throw new IllegalStateException("Cannot encrypt: encrypter is null");
+		}
 		try {
-			final String encrypted = mEncrypter.encrypt(childXml.toString());
-			return encrypted;
+			return mEncrypter.encrypt(childXml.toString());
 		}
 		catch (final Exception e) {
-			throw new IllegalArgumentException("Can't encrypt the node.", e);
+			throw new IllegalArgumentException("Can't encrypt the node", e);
 		}
 	}
 
@@ -160,6 +159,14 @@ public class EncryptionModel implements IExtension {
 	public boolean isLocked() {
 		return encryptedContent != null;
 	}
+	
+	/**
+	 * Get the encrypted content string. Used for algorithm detection.
+	 * @return the encrypted content, or null if not encrypted
+	 */
+	public String getEncryptedContent() {
+		return encryptedContent;
+	}
 
 	private void pasteXML(final String pasted, final NodeModel target, final MapController mapController) {
 		try {
@@ -188,8 +195,12 @@ public class EncryptionModel implements IExtension {
 				LogUtils.severe("Hidden children replaced");
 			}
 		}
-		else {
-
+	}
+	
+	public void destroy() {
+		if (mEncrypter != null) {
+			mEncrypter.destroy();
+			mEncrypter = null;
 		}
 	}
 }
