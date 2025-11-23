@@ -179,6 +179,13 @@ public class EncryptionModel implements IExtension {
 		}
 	}
 
+	public void setEncrypter(IEncrypter encrypter) {
+		if (mEncrypter != null) {
+			mEncrypter.destroy();
+		}
+		mEncrypter = encrypter;
+	}
+
 	synchronized public void unlock() {
 		node.setChildrenInternal(hiddenChildren.remove(node));
 		encryptedContent = null;

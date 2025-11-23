@@ -155,7 +155,11 @@ public class EncryptionController implements IExtension {
 
         boolean decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
 
-        if (!decrypted) {
+        if (decrypted) {
+            final IEncrypter aesEncrypter = EncryptionHelper.createEncrypter(password);
+            encryptionModel.setEncrypter(aesEncrypter);
+            tempEncrypter.destroy();
+        } else {
             tempEncrypter.destroy();
         }
 
