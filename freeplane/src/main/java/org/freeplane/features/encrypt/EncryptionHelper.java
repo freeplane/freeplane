@@ -32,9 +32,6 @@ public class EncryptionHelper {
 		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256)) {
 			return new Aes256Encrypter(password);
 		}
-		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_3DES)) {
-			return new TripleDesEncrypter(password);
-		}
 		return new SingleDesEncrypter(password);
 	}
 	
@@ -44,9 +41,6 @@ public class EncryptionHelper {
 		}
 		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_AES256)) {
 			return "AES-256";
-		}
-		if (encryptedContent.startsWith(EncryptionHeader.PREFIX_3DES)) {
-			return "Triple-DES";
 		}
 		return "DES";
 	}
