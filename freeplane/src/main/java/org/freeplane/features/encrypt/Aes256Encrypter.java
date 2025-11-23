@@ -26,13 +26,14 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 
+import javax.crypto.AEADBadTagException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -41,10 +42,10 @@ import org.freeplane.features.map.IEncrypter;
 
 public class Aes256Encrypter implements IEncrypter {
 	private static final int SALT_LENGTH = 16;
-	private static final int IV_LENGTH = 16;
+	private static final int IV_LENGTH = 12;
 	private static final int KEY_LENGTH = 256;
 	private static final String KEY_DERIVATION_ALGORITHM = "PBKDF2WithHmacSHA256";
-	private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
+	private static final String CIPHER_ALGORITHM = "AES/GCM/NoPadding";
 	private static final int ITERATION_COUNT = 100000;
 	
 	private Cipher dcipher;
@@ -94,6 +95,8 @@ public class Aes256Encrypter implements IEncrypter {
 			}
 			final byte[] utf8 = dcipher.doFinal(ciphertext);
 			return new String(utf8, StandardCharsets.UTF_8);
+		}
+		catch (final AEADBadTagException e) {
 		}
 		catch (final BadPaddingException e) {
 		}
@@ -162,14 +165,14 @@ public class Aes256Encrypter implements IEncrypter {
 				if (iv == null) {
 					currentIV = new byte[IV_LENGTH];
 					secureRandom.nextBytes(currentIV);
-					final IvParameterSpec ivSpec = new IvParameterSpec(currentIV);
+					final GCMParameterSpec gcmSpec = new GCMParameterSpec(128, currentIV);
 					ecipher = Cipher.getInstance(CIPHER_ALGORITHM);
-					ecipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+					ecipher.init(Cipher.ENCRYPT_MODE, key, gcmSpec);
 				} else {
 					currentIV = iv;
-					final IvParameterSpec ivSpec = new IvParameterSpec(currentIV);
+					final GCMParameterSpec gcmSpec = new GCMParameterSpec(128, currentIV);
 					dcipher = Cipher.getInstance(CIPHER_ALGORITHM);
-					dcipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
+					dcipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
 				}
 			}
 			catch (final InvalidAlgorithmParameterException e) {
