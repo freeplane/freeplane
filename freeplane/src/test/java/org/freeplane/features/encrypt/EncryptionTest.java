@@ -227,46 +227,6 @@ public class EncryptionTest {
 	}
 
 	@Test
-	public void tripleDesEncryptAndDecrypt() {
-		final StringBuilder password = new StringBuilder("test123");
-		encrypter = new TripleDesEncrypter(password);
-		
-		final String plaintext = "Hello World";
-		final String encrypted = encrypter.encrypt(plaintext);
-		final String decrypted = encrypter.decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-
-	@Test
-	public void tripleDesEncryptEmptyString() {
-		final StringBuilder password = new StringBuilder("test123");
-		encrypter = new TripleDesEncrypter(password);
-		
-		final String plaintext = "";
-		final String encrypted = encrypter.encrypt(plaintext);
-		final String decrypted = encrypter.decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-
-	@Test
-	public void tripleDesDecryptWithWrongPassword() {
-		final StringBuilder password1 = new StringBuilder("correct");
-		final IEncrypter encrypter1 = new TripleDesEncrypter(password1);
-		
-		final String plaintext = "Secret message";
-		final String encrypted = encrypter1.encrypt(plaintext);
-		encrypter1.destroy();
-		
-		final StringBuilder password2 = new StringBuilder("wrong");
-		encrypter = new TripleDesEncrypter(password2);
-		final String decrypted = encrypter.decrypt(encrypted);
-		
-		assertThat(decrypted, nullValue());
-	}
-
-	@Test
 	public void aes256CannotDecryptSingleDesContent() {
 		final StringBuilder password = new StringBuilder("test123");
 		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
@@ -295,22 +255,6 @@ public class EncryptionTest {
 		final String decrypted = encrypter.decrypt(encrypted);
 		
 		// SingleDES cannot decrypt AES-256 content (returns null)
-		assertThat(decrypted, nullValue());
-	}
-
-	@Test
-	public void tripleDesCannotDecryptSingleDesContent() {
-		final StringBuilder password = new StringBuilder("test123");
-		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
-		
-		final String plaintext = "Hello World";
-		final String encrypted = desEncrypter.encrypt(plaintext);
-		desEncrypter.destroy();
-		
-		encrypter = new TripleDesEncrypter(password);
-		final String decrypted = encrypter.decrypt(encrypted);
-		
-		// TripleDES cannot decrypt SingleDES content (returns null)
 		assertThat(decrypted, nullValue());
 	}
 
