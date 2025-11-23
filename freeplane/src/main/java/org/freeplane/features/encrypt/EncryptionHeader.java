@@ -19,8 +19,6 @@ package org.freeplane.features.encrypt;
 
 public class EncryptionHeader {
 	public static final String PREFIX_AES256 = "FP-AES256-V1:";
-	public static final String PREFIX_DES = "FP-DES-V1:";
-	public static final String PREFIX_3DES = "FP-3DES-V1:";
 	
 	public static String stripPrefix(String encryptedString) {
 		if (encryptedString == null) {
@@ -28,12 +26,6 @@ public class EncryptionHeader {
 		}
 		if (encryptedString.startsWith(PREFIX_AES256)) {
 			return encryptedString.substring(PREFIX_AES256.length());
-		}
-		if (encryptedString.startsWith(PREFIX_3DES)) {
-			return encryptedString.substring(PREFIX_3DES.length());
-		}
-		if (encryptedString.startsWith(PREFIX_DES)) {
-			return encryptedString.substring(PREFIX_DES.length());
 		}
 		return null;
 	}
