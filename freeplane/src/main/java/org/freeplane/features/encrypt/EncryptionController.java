@@ -151,19 +151,25 @@ public class EncryptionController implements IExtension {
     private boolean decrypt(final EncryptionModel encryptionModel, final StringBuilder password) {
         final MapController mapController = Controller.getCurrentModeController().getMapController();
         final String encryptedContent = encryptionModel.getEncryptedContent();
-        final IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
+        final IEncrypter encrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
 
-        boolean decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
+        try {
+            boolean decrypted = encryptionModel.decrypt(mapController, encrypter);
 
-        if (decrypted) {
-            final IEncrypter aesEncrypter = EncryptionHelper.createEncrypter(password);
-            encryptionModel.setEncrypter(aesEncrypter);
-            tempEncrypter.destroy();
-        } else {
-            tempEncrypter.destroy();
+            if (decrypted) {
+                final IEncrypter freshEncrypter = EncryptionHelper.createEncrypter(password);
+                try {
+                    encryptionModel.setEncrypter(freshEncrypter);
+                } catch (Exception e) {
+                    freshEncrypter.destroy();
+                    throw e;
+                }
+            }
+
+            return decrypted;
+        } finally {
+            encrypter.destroy();
         }
-
-        return decrypted;
     }
 
 	private void encrypt(final NodeModel node, PasswordStrategy passwordStrategy) {
