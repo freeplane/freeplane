@@ -17,12 +17,7 @@
  */
 package org.freeplane.features.encrypt;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.features.map.IEncrypter;
 import org.junit.After;
@@ -55,7 +50,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -67,7 +62,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -79,7 +74,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -91,7 +86,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -107,7 +102,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -119,7 +114,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -136,7 +131,7 @@ public class EncryptionTest {
 		encrypter = new Aes256Encrypter(password2);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, nullValue());
+		assertThat(decrypted).isNull();
 	}
 
 	@Test
@@ -147,8 +142,8 @@ public class EncryptionTest {
 		final String plaintext = "Hello World";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		assertThat(encrypted, notNullValue());
-		assertThat(encrypted, not(equalTo(plaintext)));
+		assertThat(encrypted).isNotNull();
+		assertThat(encrypted).isNotEqualTo(plaintext);
 	}
 
 	@Test
@@ -159,7 +154,7 @@ public class EncryptionTest {
 		final String plaintext = "Hello World";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256), equalTo(true));
+		assertThat(encrypted).startsWith(EncryptionHeader.PREFIX_AES256);
 	}
 
 	@Test
@@ -172,11 +167,11 @@ public class EncryptionTest {
 		final String encrypted2 = encrypter.encrypt(plaintext);
 		
 		// Different because of different salts/IVs
-		assertNotEquals(encrypted1, encrypted2);
+		assertThat(encrypted1).isNotEqualTo(encrypted2);
 		
 		// But both decrypt to the same plaintext
-		assertThat(encrypter.decrypt(encrypted1), equalTo(plaintext));
-		assertThat(encrypter.decrypt(encrypted2), equalTo(plaintext));
+		assertThat(encrypter.decrypt(encrypted1)).isEqualTo(plaintext);
+		assertThat(encrypter.decrypt(encrypted2)).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -185,7 +180,7 @@ public class EncryptionTest {
 		encrypter = new Aes256Encrypter(password);
 		
 		final String decrypted = encrypter.decrypt(null);
-		assertThat(decrypted, nullValue());
+		assertThat(decrypted).isNull();
 	}
 
 	@Test
@@ -197,7 +192,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -209,7 +204,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -226,7 +221,7 @@ public class EncryptionTest {
 		encrypter = new SingleDesEncrypter(password2);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, nullValue());
+		assertThat(decrypted).isNull();
 	}
 
 	@Test
@@ -242,7 +237,7 @@ public class EncryptionTest {
 		final String decrypted = encrypter.decrypt(encrypted);
 		
 		// AES-256 cannot directly decrypt DES content (returns null)
-		assertThat(decrypted, nullValue());
+		assertThat(decrypted).isNull();
 	}
 
 	@Test
@@ -258,7 +253,7 @@ public class EncryptionTest {
 		final String decrypted = encrypter.decrypt(encrypted);
 		
 		// SingleDES cannot decrypt AES-256 content (returns null)
-		assertThat(decrypted, nullValue());
+		assertThat(decrypted).isNull();
 	}
 
 	@Test
@@ -270,7 +265,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -285,7 +280,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -297,7 +292,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -309,7 +304,7 @@ public class EncryptionTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 }
 

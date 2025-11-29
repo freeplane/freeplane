@@ -17,12 +17,7 @@
  */
 package org.freeplane.features.encrypt;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.IEncrypter;
@@ -54,9 +49,9 @@ public class EncryptionModelTest {
 		final NodeModel node = new NodeModel("test", null);
 		final EncryptionModel model = new EncryptionModel(node, encrypter);
 		
-		assertThat(model, notNullValue());
-		assertTrue("Model should be accessible when created with encrypter", model.isAccessible());
-		assertFalse("Model should not be locked when created with encrypter", model.isLocked());
+		assertThat(model).isNotNull();
+		assertThat(model.isAccessible()).as("Model should be accessible when created with encrypter").isTrue();
+		assertThat(model.isLocked()).as("Model should not be locked when created with encrypter").isFalse();
 	}
 
 	@Test
@@ -65,9 +60,9 @@ public class EncryptionModelTest {
 		final String encryptedContent = "encrypted-data";
 		final EncryptionModel model = new EncryptionModel(node, encryptedContent);
 		
-		assertThat(model, notNullValue());
-		assertFalse("Model should not be accessible when created with encrypted content", model.isAccessible());
-		assertTrue("Model should be locked when created with encrypted content", model.isLocked());
+		assertThat(model).isNotNull();
+		assertThat(model.isAccessible()).as("Model should not be accessible when created with encrypted content").isFalse();
+		assertThat(model.isLocked()).as("Model should be locked when created with encrypted content").isTrue();
 	}
 
 	@Test
@@ -75,7 +70,7 @@ public class EncryptionModelTest {
 		final NodeModel node = new NodeModel("test", null);
 		final EncryptionModel model = EncryptionModel.getModel(node);
 		
-		assertThat(model, nullValue());
+		assertThat(model).isNull();
 	}
 
 	@Test
@@ -87,8 +82,8 @@ public class EncryptionModelTest {
 		
 		final EncryptionModel retrieved = EncryptionModel.getModel(node);
 		
-		assertThat(retrieved, notNullValue());
-		assertThat(retrieved, equalTo(model));
+		assertThat(retrieved).isNotNull();
+		assertThat(retrieved).isEqualTo(model);
 	}
 
 	@Test
@@ -99,8 +94,8 @@ public class EncryptionModelTest {
 		final NodeModel node = new NodeModel("test", null);
 		final EncryptionModel model = new EncryptionModel(node, encrypter);
 		
-		assertTrue(model.isAccessible());
-		assertFalse(model.isLocked());
+		assertThat(model.isAccessible()).isTrue();
+		assertThat(model.isLocked()).isFalse();
 	}
 
 	@Test
@@ -108,8 +103,8 @@ public class EncryptionModelTest {
 		final NodeModel node = new NodeModel("test", null);
 		final EncryptionModel model = new EncryptionModel(node, "encrypted");
 		
-		assertFalse(model.isAccessible());
-		assertTrue(model.isLocked());
+		assertThat(model.isAccessible()).isFalse();
+		assertThat(model.isLocked()).isTrue();
 	}
 
 	@Test
@@ -120,7 +115,7 @@ public class EncryptionModelTest {
 		final NodeModel node = new NodeModel("test", null);
 		final EncryptionModel model = new EncryptionModel(node, encrypter);
 		
-		assertThat(model.getEncryptedContent(), nullValue());
+		assertThat(model.getEncryptedContent()).isNull();
 	}
 
 	@Test
@@ -129,7 +124,7 @@ public class EncryptionModelTest {
 		final String encryptedContent = "encrypted-data";
 		final EncryptionModel model = new EncryptionModel(node, encryptedContent);
 		
-		assertThat(model.getEncryptedContent(), equalTo(encryptedContent));
+		assertThat(model.getEncryptedContent()).isEqualTo(encryptedContent);
 	}
 
 	@Test
@@ -174,8 +169,9 @@ public class EncryptionModelTest {
 		final String encrypted = aesEncrypter.encrypt("<node TEXT=\"test\"/>");
 		aesEncrypter.destroy();
 		
-		assertTrue("AES-256 content should be detectable", 
-			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256))
+			.as("AES-256 content should be detectable")
+			.isTrue();
 	}
 
 	@Test
@@ -185,8 +181,9 @@ public class EncryptionModelTest {
 		final String encrypted = desEncrypter.encrypt("<node TEXT=\"test\"/>");
 		desEncrypter.destroy();
 		
-		assertFalse("Legacy DES content should not be detected as AES-256", 
-			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256))
+			.as("Legacy DES content should not be detected as AES-256")
+			.isFalse();
 	}
 
 	@Test
@@ -197,8 +194,9 @@ public class EncryptionModelTest {
 		final String plaintext = "<node TEXT=\"test\"/>";
 		final String encrypted = encrypter.encrypt(plaintext);
 		
-		assertTrue("New encryption should use AES-256", 
-			encrypted.startsWith(EncryptionHeader.PREFIX_AES256));
+		assertThat(encrypted.startsWith(EncryptionHeader.PREFIX_AES256))
+			.as("New encryption should use AES-256")
+			.isTrue();
 	}
 
 	@Test
@@ -210,8 +208,9 @@ public class EncryptionModelTest {
 		final String encrypted = desEncrypter.encrypt(plaintext);
 		desEncrypter.destroy();
 		
-		assertFalse("Legacy DES content should not have AES-256 marker", 
-			encrypted.startsWith("FP-AES256-V1:"));
+		assertThat(encrypted.startsWith("FP-AES256-V1:"))
+			.as("Legacy DES content should not have AES-256 marker")
+			.isFalse();
 	}
 
 	@Test
@@ -223,7 +222,7 @@ public class EncryptionModelTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -240,10 +239,10 @@ public class EncryptionModelTest {
 		final EncryptionModel model2 = new EncryptionModel(node2, encrypter2);
 		node2.addExtension(model2);
 		
-		assertThat(EncryptionModel.getModel(node1), notNullValue());
-		assertThat(EncryptionModel.getModel(node2), notNullValue());
-		assertThat(EncryptionModel.getModel(node1), equalTo(model1));
-		assertThat(EncryptionModel.getModel(node2), equalTo(model2));
+		assertThat(EncryptionModel.getModel(node1)).isNotNull();
+		assertThat(EncryptionModel.getModel(node2)).isNotNull();
+		assertThat(EncryptionModel.getModel(node1)).isEqualTo(model1);
+		assertThat(EncryptionModel.getModel(node2)).isEqualTo(model2);
 	}
 
 	@Test
@@ -255,7 +254,7 @@ public class EncryptionModelTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -269,7 +268,7 @@ public class EncryptionModelTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -292,7 +291,7 @@ public class EncryptionModelTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -304,7 +303,7 @@ public class EncryptionModelTest {
 		final String encrypted = encrypter.encrypt(plaintext);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -315,7 +314,7 @@ public class EncryptionModelTest {
 		aesEncrypter.destroy();
 		
 		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
-		assertThat(description, equalTo("AES-256"));
+		assertThat(description).isEqualTo("AES-256");
 	}
 
 	@Test
@@ -326,7 +325,7 @@ public class EncryptionModelTest {
 		desEncrypter.destroy();
 		
 		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
-		assertThat(description, equalTo("DES"));
+		assertThat(description).isEqualTo("DES");
 	}
 
 	@Test
@@ -342,7 +341,7 @@ public class EncryptionModelTest {
 		// Try to decrypt with helper (should work via fallback)
 		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
 	@Test
@@ -358,7 +357,7 @@ public class EncryptionModelTest {
 		// Try to decrypt with helper (should work directly)
 		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
 		
-		assertThat(decrypted, equalTo(plaintext));
+		assertThat(decrypted).isEqualTo(plaintext);
 	}
 }
 
