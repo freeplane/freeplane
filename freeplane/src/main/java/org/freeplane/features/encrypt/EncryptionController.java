@@ -151,19 +151,40 @@ public class EncryptionController implements IExtension {
     private boolean decrypt(final EncryptionModel encryptionModel, final StringBuilder password) {
         final MapController mapController = Controller.getCurrentModeController().getMapController();
         final String encryptedContent = encryptionModel.getEncryptedContent();
-        final IEncrypter tempEncrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
+        final IEncrypter encrypter = EncryptionHelper.createDecrypter(password, encryptedContent);
 
+        boolean encrypterOwnershipTransferred = false;
         try {
-            boolean decrypted = encryptionModel.decrypt(mapController, tempEncrypter);
+            boolean decrypted = encryptionModel.decrypt(mapController, encrypter);
 
             if (decrypted) {
-                final IEncrypter aesEncrypter = EncryptionHelper.createEncrypter(password);
-                encryptionModel.setEncrypter(aesEncrypter);
+                if (encrypter instanceof Aes256Encrypter) {
+                    transferEncrypterOwnership(encryptionModel, encrypter);
+                    encrypterOwnershipTransferred = true;
+                } else {
+                    upgradeFromLegacyDesToAes256(encryptionModel, password);
+                }
             }
 
             return decrypted;
         } finally {
-            tempEncrypter.destroy();
+            if (!encrypterOwnershipTransferred) {
+                encrypter.destroy();
+            }
+        }
+    }
+
+    private void transferEncrypterOwnership(final EncryptionModel encryptionModel, final IEncrypter encrypter) {
+        encryptionModel.setEncrypter(encrypter);
+    }
+
+    private void upgradeFromLegacyDesToAes256(final EncryptionModel encryptionModel, final StringBuilder password) {
+        final IEncrypter aes256Encrypter = EncryptionHelper.createEncrypter(password);
+        try {
+            encryptionModel.setEncrypter(aes256Encrypter);
+        } catch (Exception e) {
+            aes256Encrypter.destroy();
+            throw e;
         }
     }
 
