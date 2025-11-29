@@ -118,7 +118,6 @@ public class EncryptionTest {
 	}
 
 	@Test
-	@Ignore
 	public void aes256DecryptWithWrongPassword() {
 		final StringBuilder password1 = new StringBuilder("correct");
 		final IEncrypter encrypter1 = new Aes256Encrypter(password1);
@@ -208,7 +207,6 @@ public class EncryptionTest {
 	}
 
 	@Test
-	@Ignore
 	public void singleDesDecryptWithWrongPassword() {
 		final StringBuilder password1 = new StringBuilder("correct");
 		final IEncrypter encrypter1 = new SingleDesEncrypter(password1);

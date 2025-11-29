@@ -127,7 +127,6 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	@Ignore
 	public void tryDecryptWithAllAlgorithmsReturnsNullForWrongPassword() {
 		final StringBuilder password1 = new StringBuilder("correct");
 		final IEncrypter aesEncrypter = new Aes256Encrypter(password1);

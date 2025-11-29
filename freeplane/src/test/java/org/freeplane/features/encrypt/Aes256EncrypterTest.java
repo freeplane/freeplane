@@ -248,7 +248,6 @@ public class Aes256EncrypterTest {
 	}
 
 	@Test
-	@Ignore
 	public void slightlyWrongPasswordReturnsNull() {
 		final StringBuilder password1 = new StringBuilder("password");
 		final IEncrypter encrypter1 = new Aes256Encrypter(password1);
