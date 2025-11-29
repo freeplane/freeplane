@@ -157,6 +157,13 @@ public class EncryptionController implements IExtension {
             boolean decrypted = encryptionModel.decrypt(mapController, encrypter);
 
             if (decrypted) {
+                /* Always create a fresh encrypter for future encryption, even if content is already AES-256.
+                 * Why? Three reasons:
+                 * 1. The decrypter above is in "decrypt mode" - cipher objects can't switch modes
+                 * 2. We can't reuse crypto state (IV, salt) - each encryption MUST use fresh random values
+                 * 3. When user later locks the node, content may have changed and needs re-encryption
+                 * Bottom line: A decrypter is read-only. For writing, we always need a fresh encrypter.
+                 */
                 final IEncrypter freshEncrypter = EncryptionHelper.createEncrypter(password);
                 try {
                     encryptionModel.setEncrypter(freshEncrypter);
