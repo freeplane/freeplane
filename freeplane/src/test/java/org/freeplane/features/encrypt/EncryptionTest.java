@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.features.map.IEncrypter;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

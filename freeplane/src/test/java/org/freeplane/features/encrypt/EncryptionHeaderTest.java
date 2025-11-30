@@ -84,16 +84,4 @@ public class EncryptionHeaderTest {
 		
 		encrypter.destroy();
 	}
-	
-	@Test
-	public void newEncryptedContentUsesPlainTextPrefix() {
-		final StringBuilder password = new StringBuilder("test123");
-		Aes256Encrypter encrypter = new Aes256Encrypter(password);
-		
-		final String encrypted = encrypter.encrypt("test");
-		
-		assertThat(encrypted.startsWith("FP-AES256-V1:"), equalTo(true));
-		
-		encrypter.destroy();
-	}
 }

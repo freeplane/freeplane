@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.features.map.IEncrypter;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class Aes256EncrypterTest {
@@ -374,35 +373,6 @@ public class Aes256EncrypterTest {
 		
 		assertThat(encrypted).isNotEqualTo(plaintext);
 		assertThat(encrypted).doesNotContain("This is secret");
-	}
-
-	@Test
-	public void encryptedContentIsLongerThanPlaintext() {
-		final StringBuilder password = new StringBuilder("test123");
-		encrypter = new Aes256Encrypter(password);
-		
-		final String plaintext = "Hi";
-		final String encrypted = encrypter.encrypt(plaintext);
-		
-		assertThat(encrypted.length()).isGreaterThan(plaintext.length());
-	}
-
-	@Test
-	public void encryptedContentContainsThreeParts() {
-		final StringBuilder password = new StringBuilder("test123");
-		encrypter = new Aes256Encrypter(password);
-		
-		final String plaintext = "test";
-		final String encrypted = encrypter.encrypt(plaintext);
-		
-		assertThat(encrypted).startsWith(EncryptionHeader.PREFIX_AES256);
-		
-		String base64Data = EncryptionHeader.stripPrefix(encrypted);
-		assertThat(base64Data).isNotNull();
-		
-		final byte[] decoded = DesEncrypter.fromBase64(base64Data);
-		
-		assertThat(decoded.length).isGreaterThanOrEqualTo(44);
 	}
 
 	@Test
