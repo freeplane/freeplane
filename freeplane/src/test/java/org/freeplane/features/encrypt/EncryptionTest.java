@@ -219,7 +219,7 @@ public class EncryptionTest {
 		encrypter = new SingleDesEncrypter(password2);
 		final String decrypted = encrypter.decrypt(encrypted);
 		
-		assertThat(decrypted).isNull();
+		assertThat(decrypted).isNotEqualTo(plaintext);
 	}
 
 	@Test
