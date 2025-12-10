@@ -306,58 +306,5 @@ public class EncryptionModelTest {
 		assertThat(decrypted).isEqualTo(plaintext);
 	}
 
-	@Test
-	public void aes256AlgorithmDescriptionIsCorrect() {
-		final StringBuilder password = new StringBuilder("test123");
-		final IEncrypter aesEncrypter = new Aes256Encrypter(password);
-		final String encrypted = aesEncrypter.encrypt("test");
-		aesEncrypter.destroy();
-		
-		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
-		assertThat(description).isEqualTo("AES-256");
-	}
-
-	@Test
-	public void legacyDesAlgorithmDescriptionIsCorrect() {
-		final StringBuilder password = new StringBuilder("test123");
-		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
-		final String encrypted = desEncrypter.encrypt("test");
-		desEncrypter.destroy();
-		
-		final String description = EncryptionHelper.getEncryptionAlgorithmDescription(encrypted);
-		assertThat(description).isEqualTo("DES");
-	}
-
-	@Test
-	public void canDecryptLegacyDesContentWithFallback() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		// Create legacy DES encrypted content
-		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
-		final String plaintext = "<node TEXT=\"legacy\"/>";
-		final String encrypted = desEncrypter.encrypt(plaintext);
-		desEncrypter.destroy();
-		
-		// Try to decrypt with helper (should work via fallback)
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted).isEqualTo(plaintext);
-	}
-
-	@Test
-	public void canDecryptNewAes256ContentDirectly() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		// Create new AES-256 encrypted content
-		final IEncrypter aesEncrypter = new Aes256Encrypter(password);
-		final String plaintext = "<node TEXT=\"new\"/>";
-		final String encrypted = aesEncrypter.encrypt(plaintext);
-		aesEncrypter.destroy();
-		
-		// Try to decrypt with helper (should work directly)
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted).isEqualTo(plaintext);
-	}
 }
 

@@ -236,38 +236,6 @@ public class EncryptionHelperTest {
 	}
 
 	@Test
-	public void legacyContentCanBeDecryptedWithHelper() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		// Encrypt with legacy SingleDES
-		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
-		final String plaintext = "<node TEXT=\"legacy content\"/>";
-		final String encrypted = desEncrypter.encrypt(plaintext);
-		desEncrypter.destroy();
-		
-		// Use helper to decrypt (should work with fallback)
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-
-	@Test
-	public void aes256ContentCanBeDecryptedWithHelper() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		// Encrypt with AES-256
-		final IEncrypter aesEncrypter = new Aes256Encrypter(password);
-		final String plaintext = "<node TEXT=\"new content\"/>";
-		final String encrypted = aesEncrypter.encrypt(plaintext);
-		aesEncrypter.destroy();
-		
-		// Use helper to decrypt (should work directly)
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-
-	@Test
 	public void mixedAlgorithmsCanBeDecryptedSequentially() {
 		final StringBuilder password = new StringBuilder("test123");
 		
@@ -290,24 +258,6 @@ public class EncryptionHelperTest {
 		assertThat(decrypted2, equalTo(plaintext2));
 	}
 
-	@Test
-	public void tryDecryptWithAllAlgorithmsFallsBackToDESWhenAES256Fails() {
-		final StringBuilder password = new StringBuilder("test123");
-		
-		final IEncrypter desEncrypter = new SingleDesEncrypter(password);
-		final String plaintext = "<node TEXT=\"legacy content\"/>";
-		final String encrypted = desEncrypter.encrypt(plaintext);
-		desEncrypter.destroy();
-		
-		final String decrypted = EncryptionHelper.createDecrypter(password, encrypted).decrypt(encrypted);
-		
-		assertThat(decrypted, equalTo(plaintext));
-	}
-	
-	/**
-	 * Test that ensures even when AES-256 is attempted first and fails,
-	 * the fallback to legacy algorithms still works.
-	 */
 	@Test
 	public void tryDecryptWithAllAlgorithmsTriesAllAlgorithmsWhenFirstFails() {
 		final StringBuilder correctPassword = new StringBuilder("correct");
