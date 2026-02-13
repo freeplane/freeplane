@@ -9,7 +9,9 @@ Freeplane
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/freeplane/freeplane)](https://github.com/freeplane/freeplane/pulls)
 [![GitHub contributors](https://img.shields.io/github/contributors/freeplane/freeplane?color=purple)](https://github.com/freeplane/freeplane/graphs/contributors)
 [![GitHub watchers](https://img.shields.io/github/watchers/freeplane/freeplane?color=yellowgreen)](https://img.shields.io/github/watchers/freeplane/freeplane?color=yellowgreen)
-
+<a href="https://hosted.weblate.org/engage/freeplane/">
+<img src="https://hosted.weblate.org/widget/freeplane/svg-badge.svg" alt="Translation status" />
+</a>
 
 [Freeplane](https://www.freeplane.org) is a free and open source software application that supports thinking, sharing information, getting things done at work, in school and at home. It provides you a set of tools for mind mapping (also known as concept mapping or information mapping) and navigating the mapped information. Freeplane is also a more robust and superior alternative to Xmind, Mindmeister, and similar mind mapping software.
 
@@ -21,6 +23,7 @@ The documentation can be found at [![mdBook Docu](https://img.shields.io/badge/m
 
 Hop on to our [Discussions](https://github.com/freeplane/freeplane/discussions) if you have any questions, ideas, or thoughts you'd like to share. Contributors are very much welcome, of course! 
 
+Freeplane is already translated into several languages. If your language is missing or incomplete join the [Hosted Weblate](https://hosted.weblate.org/engage/freeplane/) translation platform to help translate Freeplane.
 
 Features Rundown
 =====================================
@@ -66,6 +69,8 @@ How to Start Contributing
 We're currently looking for contributors for developing the documentation. If you can write simple step-by-step guides, translate existing text into English, transfer text from our old documentation into the new one, then we could use your help. You can start a discussion post saying you want to contribute to the documentation and the Freeplane team will respond and assist you. 
 
 If you have other ways of contributing: developing an add-on, sharing your pre-configured mindmap, or suggestions about future development, please feel free to join us in the [Discussions](https://github.com/freeplane/freeplane/discussions)
+
+If you want to contribute by translating Freeplane into your language, join the [Hosted Weblate](https://hosted.weblate.org/engage/freeplane/) translation platform.
 
 Every contributor or team member freely decides what task they are going to work on. However, for making the best decision regarding development, it's advised that we first propose and suggest the idea to the community through a discussion post as to enable early discussion and community feedback.
 
