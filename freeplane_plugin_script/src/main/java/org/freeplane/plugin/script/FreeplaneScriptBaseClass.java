@@ -27,10 +27,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.Hyperlink;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.format.FormatController;
-import org.freeplane.features.format.ScannerController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.script.classpath.ScriptGlobalsImport;
 import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
@@ -55,7 +55,7 @@ import groovy.lang.Script;
  * <p>In case you compile groovy source code for packaging it as a jar with a Freeplane add-on, these global objects
  * are not available. To make them available, add the following import to your source code:</p>
  * <pre>
- * import static org.freeplane.plugin.script.GroovyStaticImports.*
+ * import static org.freeplane.plugin.script.classpath.GroovyStaticImports.*
  * </pre>
  * The following classes may also be useful in scripting:
  * <ul>
@@ -68,7 +68,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      * <p>In case you compile groovy source code for packaging it as a jar with a Freeplane add-on, global variable
      * {@code config} is not available. To make it available, add the following import:</p>
      * <pre>
-     * import static org.freeplane.plugin.script.GroovyStaticImports.*
+     * import static org.freeplane.plugin.script.classpath.GroovyStaticImports.*
      * </pre>
 	 */
 	public static class ConfigProperties {
@@ -388,17 +388,17 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 
 	/** returns valueIfNull if value is null and value otherwise. */
 	public Object ifNull(Object value, Object valueIfNull) {
-		return GroovyStaticImports.ifNull(value, valueIfNull);
+		return ScriptGlobalsImport.ifNull(value, valueIfNull);
 	}
 
 	/** rounds a number to integral type. */
     public Long round(final Double d) {
-    	return GroovyStaticImports.round(d);
+    	return ScriptGlobalsImport.round(d);
     }
 
     /** round to the given number of decimal places: <code>round(0.1234, 2) &rarr; 0.12</code> */
     public Double round(final Double d, final int precision) {
-    	return GroovyStaticImports.round(d, precision);
+    	return ScriptGlobalsImport.round(d, precision);
     }
 
     /** parses text to the proper data type, if possible, setting format to the standard. Parsing is configured via
@@ -413,7 +413,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      * c.statusInfo = "${d} is ${new Date() - d} days ago"
      * </pre> */
     public Object parse(final String text) {
-    	return GroovyStaticImports.parse(text);
+    	return ScriptGlobalsImport.parse(text);
     }
 
     /** uses formatString to return a FormattedObject.
@@ -424,26 +424,26 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      * </pre>
      * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object format(final Object object, final String formatString) {
-    	return GroovyStaticImports.format(object, formatString);
+    	return ScriptGlobalsImport.format(object, formatString);
     }
 
     /** Applies default date-time format for dates or default number format for numbers. All other objects are left unchanged.
      * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object format(final Object object) {
-    	return GroovyStaticImports.format(object);
+    	return ScriptGlobalsImport.format(object);
     }
 
     /** Applies default date format (instead of standard date-time) format on the given date.
      * @return {@link IFormattedObject} if object is formattable and the unchanged object otherwise. */
     public Object formatDate(final Date date) {
-        return GroovyStaticImports.format(date);
+        return ScriptGlobalsImport.format(date);
     }
 
     /** formats according to the internal standard, that is the conversion will be reversible
      * for types that are handled special by the scripting api namely Dates and Numbers.
      * @see Convertible#toString(Object) */
     public String toString(final Object o) {
-        return GroovyStaticImports.toString(o);
+        return ScriptGlobalsImport.toString(o);
     }
 
     /** opens a {@link URI} */

@@ -1,41 +1,61 @@
 /*
- * Created on 30 Jan 2024
+ * Created on 30 Jan 2024 as GroovyStaticImports
  *
  * author dimitry
  */
-package org.freeplane.plugin.script;
+package org.freeplane.plugin.script.classpath;
 
 import java.util.Date;
-import java.util.function.Supplier;
+// Enable or remove when ignoreCycles method is enabled or removed
+//import java.util.function.Supplier;
 
+import org.freeplane.api.NodeRO;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.ScannerController;
+import org.freeplane.plugin.script.ExecuteScriptException;
+import org.freeplane.plugin.script.FreeplaneScriptBaseClass;
 import org.freeplane.plugin.script.proxy.Convertible;
+import org.freeplane.plugin.script.proxy.Proxy;
 import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 /**
- * Provides static imports for Freeplane scripting utilities to enable easy access to common functionality
- * when compiling Groovy source code outside of Freeplane's script environment.
+ * Optionally provides access to Freeplane scripting conventions, like {@code node} and {@code ui}, in {@code
+ * .groovy} files that are stored in the script classpath directories. They are automatically compiled when Freeplane
+ * starts and the resulting classes and their methods are available to scripts, and their methods are available as
+ * functions in formula.
  * 
- * <p>This class is particularly useful when creating utility scripts or add-on classes that need to be
- * compiled as JAR files. In regular Freeplane scripts, these utilities are available as global variables,
- * but when compiling outside Freeplane, you need to import them explicitly.</p>
+ * <p>This class needs to be explicitly imported into a script classpath {@code .groovy} file. It then provides all
+ * global objects, variables and methods that are automatically available to regular Freeplane scripts.</p>
  * 
  * <p><strong>Usage:</strong></p>
  * <pre>
- * import static org.freeplane.plugin.script.GroovyStaticImports.*
+ * import static org.freeplane.plugin.script.classpath.ScriptGlobalsImport.*
  * 
  * // Now you can use:
- * logger.info("Hello from my utility script")
+ * String nodeID = node.id
+ * String nodeText = T(nodID)
  * ui.informationMessage("This is a message")
- * String plainText = htmlUtils.htmlToPlain("&lt;b&gt;Bold text&lt;/b&gt;")
  * </pre>
- * 
+ *
+ * <p>If you only need a few of the global objects, you can make specific imports, for example:</p>
+ *
+ * <pre>
+ * import static org.freeplane.plugin.script.classpath.ScriptGlobalsImport.node
+ * import static org.freeplane.plugin.script.classpath.ScriptGlobalsImport.ui
+ * </pre>
+ *
+ * <p>As an alternative to static import of {@code ScriptGlobalsImport}, you can also import a script utility class
+ * directly.</p>
+ *
+ * <p>Since it is a static import, you can use the methods without prefix, just like in a Freeplane script. In addition
+ * </p>
+ *
  * <p>The following utilities are made available through static imports:</p>
  * <ul>
  * <li>{@link #logger} - for logging messages (see {@link LogUtils})</li>
@@ -43,17 +63,17 @@ import org.freeplane.plugin.script.proxy.ScriptUtils;
  * <li>{@link #htmlUtils} - for HTML/XML processing (see {@link HtmlUtils})</li>
  * <li>{@link #textUtils} - for text processing and translations (see {@link TextUtils})</li>
  * <li>{@link #menuUtils} - for menu operations (see {@link MenuUtils})</li>
- * <li>{@link #scriptUtils} - for script-specific utilities (see {@link ScriptUtils})</li>
- * <li>{@link #config} - for accessing Freeplane configuration (see {@link org.freeplane.plugin.script.FreeplaneScriptBaseClass.ConfigProperties})</li>
+ * <li>{@link #config} - for accessing Freeplane configuration (see {@link FreeplaneScriptBaseClass.ConfigProperties})</li>
  * </ul>
  * 
  * <p>Additionally, this class provides utility methods for common operations like null checking,
- * number rounding, text parsing, and formatting.</p>
+ * number rounding, text parsing, and formatting. You can also use the well-known global variables {@link #c} and
+ * {@link #node}.</p>
  * 
  * @see org.freeplane.plugin.script.FreeplaneScriptBaseClass
  * @since 1.12.x (created on 30 Jan 2024)
  */
-public class GroovyStaticImports {
+public class ScriptGlobalsImport {
     /** 
      * Utilities for logging messages to Freeplane's log file. Use for debugging and error reporting.
      * @see LogUtils
@@ -84,32 +104,61 @@ public class GroovyStaticImports {
      */
     public final static MenuUtils menuUtils = new MenuUtils();
     
-    /** 
-     * Utilities for script-specific operations, particularly useful in utility scripts and add-ons.
-     * @see ScriptUtils
-     */
-    public final static ScriptUtils scriptUtils = new ScriptUtils();
-    
-    /** 
+    /**
      * Accessor for Freeplane's configuration properties. Provides access to all configuration settings.
      * <p>Note: In utility scripts and add-on classes, this static instance is the recommended way to access
      * configuration, as the global {@code config} variable is not available when compiling outside Freeplane.</p>
      */
     public final static FreeplaneScriptBaseClass.ConfigProperties config = new FreeplaneScriptBaseClass.ConfigProperties();
-    
+
     /**
-     * Executes the given closure while ignoring any cyclic dependencies in formulas.
-     * If there are cyclic dependencies, formulas are skipped without warnings or exceptions.
-     * 
-     * @param <T> the return type of the closure
-     * @param closure the operation to execute
-     * @return the result of the closure execution
+     * Makes {@code ScriptUtils.c()} available  as {@code c}
+     * @see ScriptUtils
      */
-    public static <T> T ignoreCycles(final Supplier<T> closure) {
-        return ScriptUtils.ignoreCycles(closure);
+    public final static Proxy.Controller c = ScriptUtils.c();
+
+    /**
+     * Makes {@code ScriptUtils.node()} available as {@code node}
+     * @see ScriptUtils
+     */
+    public final static Proxy.Node node = ScriptUtils.node();
+
+//    /**
+//     * Executes the given closure while ignoring any cyclic dependencies in formulas.
+//     * If there are cyclic dependencies, formulas are skipped without warnings or exceptions.
+//     *
+//     * @param <T> the return type of the closure
+//     * @param closure the operation to execute
+//     * @return the result of the closure execution
+//     */
+//    public static <T> T ignoreCycles(final Supplier<T> closure) {
+//        return ScriptUtils.ignoreCycles(closure);
+//    }
+
+    /** Shortcut for node.map.node(id). */
+    public NodeRO N(String id) {
+        final NodeRO node = ScriptUtils.node();
+        return node.getMindMap().node(id);
     }
 
-	/** returns valueIfNull if value is null and value otherwise. */
+    /** Shortcut for node.map.node(id).text. */
+    public String T(String id) {
+        final NodeRO n = N(id);
+        return n == null ? null : n.getText();
+    }
+
+    /** Shortcut for node.map.node(id).value. */
+    public Object V(String id) {
+        final NodeRO n = N(id);
+        try {
+            return n == null ? null : n.getValue();
+        }
+        catch (ExecuteScriptException e) {
+            return null;
+        }
+    }
+
+    /** returns valueIfNull if value is null and value otherwise. */
 	public static Object ifNull(Object value, Object valueIfNull) {
 		return value == null ? valueIfNull : value;
 	}
