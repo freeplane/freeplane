@@ -21,6 +21,9 @@
         <string name="ai_openrouter_service_address"/>
         <secret name="ai_openrouter_key"/>
         <textbox name="ai_openrouter_model_allowlist" lines="5"/>
+        <string name="ai_vendor_service_address"/>
+        <secret name="ai_vendor_key"/>
+        <textbox name="ai_vendor_model_list" lines="5"/>
         <string name="ai_gemini_service_address"/>
         <secret name="ai_gemini_key"/>
         <textbox name="ai_gemini_model_list" lines="5"/>

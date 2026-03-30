@@ -573,12 +573,16 @@ public class AIChatPanel extends JPanel {
             || "ai_gemini_key".equals(propertyName)
             || "ai_gemini_service_address".equals(propertyName)
             || "ai_ollama_api_key".equals(propertyName)
-            || "ai_ollama_service_address".equals(propertyName);
+            || "ai_ollama_service_address".equals(propertyName)
+            || "ai_vendor_key".equals(propertyName)
+            || "ai_vendor_model_list".equals(propertyName)
+            || "ai_vendor_service_address".equals(propertyName);
     }
 
     private boolean isProviderConfigurationProperty(String propertyName) {
         return "ai_openrouter_key".equals(propertyName)
             || "ai_gemini_key".equals(propertyName)
+            || "ai_vendor_key".equals(propertyName)
             || "ai_ollama_service_address".equals(propertyName);
     }
 
@@ -678,6 +682,7 @@ public class AIChatPanel extends JPanel {
     private boolean isProviderConfigured() {
         return isNonEmptyText(configuration.getOpenRouterKey())
             || isNonEmptyText(configuration.getGeminiKey())
+            || configuration.hasVendorKey()
             || configuration.hasOllamaServiceAddress();
     }
 
@@ -708,6 +713,11 @@ public class AIChatPanel extends JPanel {
         } else if (AIChatModelFactory.PROVIDER_NAME_OLLAMA.equalsIgnoreCase(providerName)) {
             if (!configuration.hasOllamaServiceAddress()) {
                 appendChatMessage("Missing Ollama service address setting.", ChatMessageCategory.ASSISTANT);
+                return;
+            }
+        } else if (AIChatModelFactory.PROVIDER_NAME_VENDOR.equalsIgnoreCase(providerName)) {
+            if (!configuration.hasVendorKey()) {
+                appendChatMessage("Missing vendor API key setting.", ChatMessageCategory.ASSISTANT);
                 return;
             }
         } else {

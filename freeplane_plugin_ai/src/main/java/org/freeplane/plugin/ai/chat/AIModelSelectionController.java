@@ -125,7 +125,8 @@ class AIModelSelectionController {
     private boolean hasAnyProviderEnabled() {
         boolean hasOpenrouterKey = configuration.getOpenRouterKey() != null && !configuration.getOpenRouterKey().isEmpty();
         boolean hasGeminiKey = configuration.getGeminiKey() != null && !configuration.getGeminiKey().isEmpty();
-        return hasOpenrouterKey || hasGeminiKey || configuration.hasOllamaServiceAddress();
+        boolean hasVendorKey = configuration.hasVendorKey();
+        return hasOpenrouterKey || hasGeminiKey || hasVendorKey || configuration.hasOllamaServiceAddress();
     }
 
     private void notifyModelSelectionChange(AIModelDescriptor modelDescriptor) {

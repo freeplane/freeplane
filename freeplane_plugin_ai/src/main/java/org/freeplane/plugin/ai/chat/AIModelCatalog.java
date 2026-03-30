@@ -54,6 +54,9 @@ class AIModelCatalog {
         if (hasGeminiKey()) {
             modelDescriptors.addAll(getGeminiModelsFromList());
         }
+        if (hasVendorKey()) {
+            modelDescriptors.addAll(getVendorModelsFromList());
+        }
         if (configuration.hasOllamaServiceAddress()) {
             List<AIModelDescriptor> ollamaModels = getOllamaModels(allowsRefresh);
             if (ollamaModels.isEmpty()) {
@@ -76,6 +79,11 @@ class AIModelCatalog {
     private boolean hasGeminiKey() {
         String geminiKey = configuration.getGeminiKey();
         return geminiKey != null && !geminiKey.isEmpty();
+    }
+
+    private boolean hasVendorKey() {
+        String vendorKey = configuration.getVendorKey();
+        return vendorKey != null && !vendorKey.isEmpty();
     }
 
     private List<AIModelDescriptor> getOpenrouterModels(boolean allowsRefresh) {
@@ -338,6 +346,8 @@ class AIModelCatalog {
             providerDisplayName = "Gemini";
         } else if (AIChatModelFactory.PROVIDER_NAME_OLLAMA.equals(providerName)) {
             providerDisplayName = "Ollama";
+        } else if (AIChatModelFactory.PROVIDER_NAME_VENDOR.equals(providerName)) {
+            providerDisplayName = "Vendor";
         } else {
             providerDisplayName = providerName;
         }
@@ -445,5 +455,12 @@ class AIModelCatalog {
 
     private List<AIModelDescriptor> getGeminiModelsFromList() {
         return parseGeminiModelList(configuration.getGeminiModelListValue());
+    }
+
+    private List<AIModelDescriptor> getVendorModelsFromList() {
+        return parseLiteralProviderModelList(
+            AIChatModelFactory.PROVIDER_NAME_VENDOR,
+            configuration.getVendorModelListValue()
+        );
     }
 }

@@ -17,6 +17,9 @@ public class AIProviderConfiguration {
     private static final String AI_OLLAMA_SERVICE_ADDRESS_PROPERTY = "ai_ollama_service_address";
     private static final String AI_OLLAMA_API_KEY_PROPERTY = "ai_ollama_api_key";
     private static final String AI_OLLAMA_MODEL_ALLOWLIST_PROPERTY = "ai_ollama_model_allowlist";
+    private static final String AI_VENDOR_SERVICE_ADDRESS_PROPERTY = "ai_vendor_service_address";
+    private static final String AI_VENDOR_KEY_PROPERTY = "ai_vendor_key";
+    private static final String AI_VENDOR_MODEL_LIST_PROPERTY = "ai_vendor_model_list";
 
     private final ResourceController resourceController;
 
@@ -95,6 +98,22 @@ public class AIProviderConfiguration {
 
     public String getOllamaModelAllowlistValue() {
         return resourceController.getProperty(AI_OLLAMA_MODEL_ALLOWLIST_PROPERTY);
+    }
+
+    public String getVendorServiceAddress() {
+        return resourceController.getProperty(AI_VENDOR_SERVICE_ADDRESS_PROPERTY);
+    }
+
+    public String getVendorKey() {
+        return resourceController.getProperty(AI_VENDOR_KEY_PROPERTY);
+    }
+
+    public String getVendorModelListValue() {
+        return resourceController.getProperty(AI_VENDOR_MODEL_LIST_PROPERTY);
+    }
+
+    public boolean hasVendorKey() {
+        return hasNonBlankText(getVendorKey());
     }
 
     private boolean hasNonBlankText(String value) {
