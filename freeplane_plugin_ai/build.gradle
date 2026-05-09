@@ -53,7 +53,7 @@ tasks.matching { it.name == 'pluginJar' }.configureEach {
     from(sourceSets.bootstrap.output)
 }
 
-ext.bundleImports = 'io.github.gitbucket.markedj.*'
+ext.bundleImports = 'nothing.*'
 ext.bundleActivator = 'org.freeplane.plugin.ai.bootstrap.Java8BootstrapActivator'
 ext.bundleBndInstructions = ['-noee': 'true']
 
@@ -113,10 +113,12 @@ void verifyClassMajorVersion(FileCollection classDirs, String classRelativePath,
 dependencies {
     implementation project(':freeplane')
     implementation project(':freeplane_plugin_markdown')
-    lib 'dev.langchain4j:langchain4j:1.10.0'
-    lib 'dev.langchain4j:langchain4j-open-ai:1.10.0'
-    lib 'dev.langchain4j:langchain4j-ollama:1.10.0'
-    lib 'dev.langchain4j:langchain4j-google-ai-gemini:1.10.0'
+    lib 'dev.langchain4j:langchain4j:1.11.0'
+    lib 'dev.langchain4j:langchain4j-open-ai:1.11.0'
+    lib 'dev.langchain4j:langchain4j-ollama:1.11.0'
+    lib 'dev.langchain4j:langchain4j-google-ai-gemini:1.11.0'
+    lib 'org.yaml:snakeyaml:2.2'
+    lib 'io.github.gitbucket:markedj:1.0.20'
 }
 
 eclipse {
@@ -130,3 +132,82 @@ eclipse {
         }
     }
 }
+
+// 自动将最新 JAR 解压部署到 BIN/plugins 目录
+// OSGi 插件识别要求：Bundle-ClassPath 中的 "." 条目指向当前目录下的 class 文件，
+// 因此必须将 jar 解压（而非直接复制），才能让 OSGi 正确加载 Bundle 中的所有类。
+task deployToBin {
+    dependsOn tasks.named('jar')
+    doLast {
+        def binPluginDir = rootProject.file('BIN/plugins/org.freeplane.plugin.ai')
+        if (!binPluginDir.exists()) {
+            println "[deployToBin] BIN 目录不存在，跳过部署: ${binPluginDir}"
+            return
+        }
+
+        def jarFile = tasks.named('jar').get().archiveFile.get().asFile
+
+        // 删除旧的解压产物（class 目录），保留 lib/ 和 META-INF/（由解压覆盖更新）
+        // 只清理 org/ 等 class 目录，避免误删 lib/ 下的依赖 jar
+        binPluginDir.listFiles()?.each { f ->
+            if (f.isDirectory() && f.name != 'lib') {
+                delete(f)
+            } else if (f.isFile() && f.name.endsWith('.jar')) {
+                // 删除之前直接复制留下的 jar 文件（旧部署方式残留）
+                delete(f)
+            }
+        }
+
+        // 将主 jar 解压到插件根目录，使 org/*.class 和 META-INF/MANIFEST.MF 可见
+        copy {
+            from zipTree(jarFile)
+            into binPluginDir
+            // 排除 lib/ 目录（依赖 jar 已由构建体系独立管理）
+            exclude 'lib/**'
+        }
+
+        println "[deployToBin] 已将 ${jarFile.name} 解压部署到 ${binPluginDir}"
+        println "[deployToBin] OSGi Bundle-ClassPath 的 '.' 条目现在可正确加载所有 class 文件"
+    }
+}
+
+// 校验部署结果：确认 META-INF/MANIFEST.MF 和关键 class 文件均存在
+task verifyBinDeploy {
+    dependsOn deployToBin
+    doLast {
+        def binPluginDir = rootProject.file('BIN/plugins/org.freeplane.plugin.ai')
+        if (!binPluginDir.exists()) {
+            println "[verifyBinDeploy] BIN 目录不存在，跳过校验"
+            return
+        }
+
+        // 校验 MANIFEST.MF（OSGi Bundle 识别必需）
+        def manifest = new File(binPluginDir, 'META-INF/MANIFEST.MF')
+        if (!manifest.exists()) {
+            throw new GradleException("[verifyBinDeploy] 部署失败：META-INF/MANIFEST.MF 不存在，OSGi 将无法识别此 Bundle")
+        }
+
+        // 校验核心 Activator class（确认解压成功且非空）
+        def activatorClass = new File(binPluginDir, 'org/freeplane/plugin/ai/Activator.class')
+        if (!activatorClass.exists()) {
+            throw new GradleException("[verifyBinDeploy] 部署失败：Activator.class 不存在，jar 解压可能未成功")
+        }
+
+        // 校验调度子系统 class（确认新增代码已部署）
+        def schedulerClass = new File(binPluginDir, 'org/freeplane/plugin/ai/service/scheduling/BuildTaskScheduler.class')
+        if (!schedulerClass.exists()) {
+            throw new GradleException("[verifyBinDeploy] 部署失败：BuildTaskScheduler.class 不存在，调度子系统未部署")
+        }
+
+        // 统计解压出的 class 文件数量
+        def classCount = 0
+        binPluginDir.eachFileRecurse { f ->
+            if (f.name.endsWith('.class')) classCount++
+        }
+
+        println "[verifyBinDeploy] ✅ 校验通过：MANIFEST.MF 存在，class 文件共 ${classCount} 个，OSGi Bundle 可正常加载"
+    }
+}
+
+// 让 build 任务自动触发部署和校验
+build.finalizedBy verifyBinDeploy

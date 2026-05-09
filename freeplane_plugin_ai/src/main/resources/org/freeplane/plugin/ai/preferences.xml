@@ -27,6 +27,13 @@
         <string name="ai_ollama_service_address"/>
         <secret name="ai_ollama_api_key"/>
         <textbox name="ai_ollama_model_allowlist" lines="5"/>
+        <separator name="ai_domestic_providers"/>
+        <string name="ai_dashscope_service_address"/>
+        <secret name="ai_dashscope_key"/>
+        <textbox name="ai_dashscope_model_list" lines="3"/>
+        <string name="ai_ernie_service_address"/>
+        <secret name="ai_ernie_key"/>
+        <textbox name="ai_ernie_model_list" lines="3"/>
     </separator>
 </tab>
 </tabbed_pane>

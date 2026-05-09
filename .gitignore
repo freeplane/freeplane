@@ -176,6 +176,9 @@ apt_generated
 .AppleDouble
 .LSOverride
 
+# Icon must end with two \r (macOS specific)
+# Only ignore files named exactly "Icon" followed by carriage return
+Icon\r\r
 # Thumbnails
 ._*
 # Files that might appear in the root of a volume
@@ -263,3 +266,6 @@ gradle-app.setting
 # Local testing scripts
 test_encryption_quick.sh
 .classpath_cache
+
+# Build artifacts
+freeplane_plugin_ai/*.zip
