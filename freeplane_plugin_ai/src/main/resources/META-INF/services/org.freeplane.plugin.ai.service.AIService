@@ -1,0 +1,2 @@
+org.freeplane.plugin.ai.service.impl.DefaultChatService
+org.freeplane.plugin.ai.service.impl.DefaultAgentService
