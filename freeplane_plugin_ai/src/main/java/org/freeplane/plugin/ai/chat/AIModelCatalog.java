@@ -65,6 +65,12 @@ class AIModelCatalog {
             modelDescriptors.addAll(filterModelDescriptors(ollamaModels,
                 configuration.getOllamaModelAllowlistValue()));
         }
+        if (configuration.hasDashScopeKey()) {
+            modelDescriptors.addAll(getDashScopeModelsFromList());
+        }
+        if (configuration.hasErnieKey()) {
+            modelDescriptors.addAll(getErnieModelsFromList());
+        }
         return modelDescriptors;
     }
 
@@ -338,6 +344,10 @@ class AIModelCatalog {
             providerDisplayName = "Gemini";
         } else if (AIChatModelFactory.PROVIDER_NAME_OLLAMA.equals(providerName)) {
             providerDisplayName = "Ollama";
+        } else if (AIChatModelFactory.PROVIDER_NAME_DASHSCOPE.equals(providerName)) {
+            providerDisplayName = "DashScope (Qwen)";
+        } else if (AIChatModelFactory.PROVIDER_NAME_ERNIE.equals(providerName)) {
+            providerDisplayName = "ERNIE (Baidu)";
         } else {
             providerDisplayName = providerName;
         }
@@ -445,5 +455,55 @@ class AIModelCatalog {
 
     private List<AIModelDescriptor> getGeminiModelsFromList() {
         return parseGeminiModelList(configuration.getGeminiModelListValue());
+    }
+
+    private List<AIModelDescriptor> getDashScopeModelsFromList() {
+        return parseDashScopeModelList(configuration.getDashScopeModelListValue());
+    }
+
+    private List<AIModelDescriptor> getErnieModelsFromList() {
+        return parseErnieModelList(configuration.getErnieModelListValue());
+    }
+
+    List<AIModelDescriptor> parseDashScopeModelList(String modelListValue) {
+        if (modelListValue == null || modelListValue.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<AIModelDescriptor> modelDescriptors = new ArrayList<>();
+        String[] entries = modelListValue.split("[,\\r\\n]+");
+        for (String entry : entries) {
+            String trimmedEntry = entry.trim();
+            if (trimmedEntry.isEmpty()) {
+                continue;
+            }
+            modelDescriptors.add(new AIModelDescriptor(
+                AIChatModelFactory.PROVIDER_NAME_DASHSCOPE,
+                trimmedEntry,
+                buildDisplayName(AIChatModelFactory.PROVIDER_NAME_DASHSCOPE, trimmedEntry, false),
+                false
+            ));
+        }
+        return modelDescriptors;
+    }
+
+    List<AIModelDescriptor> parseErnieModelList(String modelListValue) {
+        if (modelListValue == null || modelListValue.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<AIModelDescriptor> modelDescriptors = new ArrayList<>();
+        String[] entries = modelListValue.split("[,\\r\\n]+");
+        for (String entry : entries) {
+            String trimmedEntry = entry.trim();
+            if (trimmedEntry.isEmpty()) {
+                continue;
+            }
+            modelDescriptors.add(new AIModelDescriptor(
+                AIChatModelFactory.PROVIDER_NAME_ERNIE,
+                trimmedEntry,
+                buildDisplayName(AIChatModelFactory.PROVIDER_NAME_ERNIE, trimmedEntry, false),
+                false
+            ));
+        }
+        return modelDescriptors;
     }
 }

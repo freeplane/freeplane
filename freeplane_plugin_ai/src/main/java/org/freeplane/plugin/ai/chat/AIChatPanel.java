@@ -26,6 +26,8 @@ import org.freeplane.plugin.ai.tools.utilities.ToolCallSummaryHandler;
 
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.model.chat.StreamingChatModel;
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -150,7 +152,6 @@ public class AIChatPanel extends JPanel {
         redoButton.setMinimumSize(sideButtonSize);
         redoButton.setMaximumSize(sideButtonSize);
         menuPopup = buildMenuPopup();
-        messageHistoryPane.setComponentPopupMenu(menuPopup);
         configuration = new AIProviderConfiguration();
         chatDisplaySettings = new ChatDisplaySettings();
         modelSelectionController = new AIModelSelectionController(configuration, new AIModelCatalog(configuration));
@@ -440,11 +441,6 @@ public class AIChatPanel extends JPanel {
             AssistantProfilePaneBuilder.MANAGE_PROFILES_TEXT_KEY);
         manageProfilesMenuItem.setIcon(assistantProfileIcon);
         menuPopup.add(manageProfilesMenuItem);
-        Action copyMarkdownAction = new ChatMarkdownCopyAction(messageHistoryPane, messageHistory);
-        JMenuItem copyMarkdownMenuItem = TranslatedElementFactory.createMenuItem(
-            copyMarkdownAction,
-            "ai_chat_copy_markdown");
-        menuPopup.add(copyMarkdownMenuItem);
         addAiEditsMenuItems(menuPopup);
         return menuPopup;
     }
@@ -602,6 +598,20 @@ public class AIChatPanel extends JPanel {
         chatRequestFlow.submitRequest(chatService);
     }
 
+    /**
+     * Initiates a streaming chat request for the web SSE endpoint.
+     * Calls {@link AIChatService#chatStream} if the current chat service supports streaming;
+     * otherwise reports an error to the handler immediately.
+     */
+    public void chatStream(String userMessage, StreamingChatResponseHandler handler) {
+        ensureChatService();
+        if (chatService == null) {
+            handler.onError(new IllegalStateException("Chat service not available"));
+            return;
+        }
+        chatService.chatStream(userMessage, handler);
+    }
+
     private boolean isRequestActive() {
         return chatRequestFlow.isRequestActive();
     }
@@ -678,7 +688,9 @@ public class AIChatPanel extends JPanel {
     private boolean isProviderConfigured() {
         return isNonEmptyText(configuration.getOpenRouterKey())
             || isNonEmptyText(configuration.getGeminiKey())
-            || configuration.hasOllamaServiceAddress();
+            || configuration.hasOllamaServiceAddress()
+            || configuration.hasErnieKey()
+            || configuration.hasDashScopeKey();
     }
 
     private boolean isNonEmptyText(String value) {
@@ -724,6 +736,10 @@ public class AIChatPanel extends JPanel {
             chatRequestFlow::onToolCallSummary,
             chatRequestFlow.cancellationSupplier(),
             chatRequestFlow::onProviderUsage);
+        StreamingChatModel streamingChatModel = AIChatModelFactory.createStreamingChatModel(configuration);
+        if (streamingChatModel != null) {
+            chatService.setStreamingChatModel(streamingChatModel);
+        }
     }
 
     private void appendChatMessage(String text, ChatMessageCategory category) {

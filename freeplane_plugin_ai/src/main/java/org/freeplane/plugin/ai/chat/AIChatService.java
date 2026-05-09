@@ -2,6 +2,7 @@ package org.freeplane.plugin.ai.chat;
 
 import static dev.langchain4j.internal.Utils.isNullOrBlank;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -12,8 +13,11 @@ import org.freeplane.plugin.ai.tools.utilities.ToolCaller;
 import org.freeplane.plugin.ai.tools.utilities.ToolExecutorFactory;
 import org.freeplane.plugin.ai.tools.utilities.ToolExecutorRegistry;
 
+import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.output.TokenUsage;
 import dev.langchain4j.observability.api.event.AiServiceErrorEvent;
 import dev.langchain4j.observability.api.event.AiServiceResponseReceivedEvent;
@@ -24,57 +28,27 @@ import dev.langchain4j.service.tool.ToolArgumentsErrorHandler;
 import dev.langchain4j.service.tool.ToolErrorHandlerResult;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.resources.ResourceController;
 import java.util.function.Supplier;
 
 public class AIChatService {
     private static final int MAXIMUM_SUMMARY_TEXT_LENGTH = 160;
-    public static final String ANNOUNCES_TOOLS_PROPERTY = "ai_announces_tools";
 
-    private AIAssistant assistant;
+    private final AIAssistant assistant;
     private final ToolCallSummaryHandler toolCallSummaryHandler;
     private final ToolArgumentsErrorHandler toolArgumentsErrorHandler;
-    private final ChatModel chatLanguageModel;
-    private final AIToolSet toolSet;
-    private final ChatMemory chatMemory;
-    private final ChatTokenUsageTracker chatTokenUsageTracker;
-    private final Supplier<Boolean> cancellationSupplier;
-    private final Consumer<TokenUsage> tokenUsageConsumer;
-    private final ToolExecutorRegistry toolExecutorRegistry;
-    private boolean lastAnnouncesTools;
+    private StreamingChatModel streamingChatModel;
 
     public AIChatService(ChatModel chatLanguageModel, AIToolSet toolSet, ChatMemory chatMemory,
                          ChatTokenUsageTracker chatTokenUsageTracker, ToolCallSummaryHandler toolCallSummaryHandler,
                          Supplier<Boolean> cancellationSupplier, Consumer<TokenUsage> tokenUsageConsumer) {
         Objects.requireNonNull(chatTokenUsageTracker, "chatTokenUsageTracker");
-        this.chatLanguageModel = chatLanguageModel;
-        this.toolSet = toolSet;
-        this.chatMemory = chatMemory;
-        this.chatTokenUsageTracker = chatTokenUsageTracker;
         this.toolCallSummaryHandler = toolCallSummaryHandler;
         this.toolArgumentsErrorHandler = buildToolArgumentsErrorHandler();
-        this.cancellationSupplier = cancellationSupplier;
-        this.tokenUsageConsumer = tokenUsageConsumer;
-        ToolExecutorFactory toolExecutorFactory = new ToolExecutorFactory(true, true, cancellationSupplier);
-        this.toolExecutorRegistry = toolExecutorFactory.createRegistry(toolSet);
-        this.lastAnnouncesTools = announcesTools();
-        this.assistant = buildAssistant(lastAnnouncesTools);
-    }
-
-    public String chat(String message) {
-        boolean announcesTools = this.announcesTools();
-        if (announcesTools != lastAnnouncesTools) {
-            assistant = buildAssistant(announcesTools);
-            lastAnnouncesTools = announcesTools;
-        }
-        return assistant.chat(message);
-    }
-
-    private AIAssistant buildAssistant(boolean announcesTools) {
         AiServices<AIAssistant> builder = AiServices.builder(AIAssistant.class)
             .toolArgumentsErrorHandler(toolArgumentsErrorHandler)
             .chatModel(chatLanguageModel)
             .systemMessageProvider(toolSet::systemMessageForChat)
+            .tools(toolSet)
             .registerListener(new AiServiceListener<AiServiceErrorEvent>() {
 
                 @Override
@@ -115,26 +89,39 @@ public class AIChatService {
                     chatTokenUsageTracker.logToolExecuted(event);
                 }
             });
-        if (announcesTools) {
-            builder.tools(toolExecutorRegistry.getExecutorsBySpecification());
-        }
         if (chatMemory != null) {
             builder.chatMemory(chatMemory);
         }
-        return builder.build();
+        this.assistant = builder.build();
     }
 
-    private boolean announcesTools() {
-        try {
-            ResourceController rc = ResourceController.getResourceController();
-            if (rc != null) {
-                String value = rc.getProperty(ANNOUNCES_TOOLS_PROPERTY, "true");
-                return "true".equalsIgnoreCase(value);
-            }
-        } catch (Exception ignored) {
-            // In test or non-UI environments, ResourceController may not be available
+    public String chat(String message) {
+        return assistant.chat(message);
+    }
+
+    public void setStreamingChatModel(StreamingChatModel streamingChatModel) {
+        this.streamingChatModel = streamingChatModel;
+    }
+
+    public boolean supportsStreaming() {
+        return streamingChatModel != null;
+    }
+
+    /**
+     * Initiates a streaming chat request. The handler receives tokens via
+     * {@code onPartialResponse}, completion via {@code onCompleteResponse},
+     * and errors via {@code onError}.
+     * The chatMemory messages are retrieved from the assistant's backing memory.
+     * For the web SSE endpoint we call the StreamingChatModel directly with
+     * a single user message, bypassing the AiServices proxy.
+     */
+    public void chatStream(String userMessage, StreamingChatResponseHandler handler) {
+        if (streamingChatModel == null) {
+            handler.onError(new UnsupportedOperationException("Streaming not configured for current model"));
+            return;
         }
-        return true;
+        List<ChatMessage> messages = List.of(dev.langchain4j.data.message.UserMessage.from(userMessage));
+        streamingChatModel.chat(messages, handler);
     }
 
     public interface AIAssistant {
