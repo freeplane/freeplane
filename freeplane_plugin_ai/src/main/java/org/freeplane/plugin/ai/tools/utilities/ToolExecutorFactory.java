@@ -19,17 +19,33 @@ public class ToolExecutorFactory {
     private final boolean wrapToolArgumentsExceptions;
     private final boolean propagateToolExecutionExceptions;
     private final Supplier<Boolean> cancellationSupplier;
+    private final List<ToolExecutionObserver> observers;
+    private final ToolCaller toolCaller;
 
     public ToolExecutorFactory(boolean wrapToolArgumentsExceptions, boolean propagateToolExecutionExceptions) {
-        this(wrapToolArgumentsExceptions, propagateToolExecutionExceptions, null);
+        this(wrapToolArgumentsExceptions, propagateToolExecutionExceptions, null, Collections.emptyList(), ToolCaller.CHAT);
     }
 
     public ToolExecutorFactory(boolean wrapToolArgumentsExceptions,
                                boolean propagateToolExecutionExceptions,
                                Supplier<Boolean> cancellationSupplier) {
+        this(wrapToolArgumentsExceptions, propagateToolExecutionExceptions, cancellationSupplier,
+            Collections.emptyList(), ToolCaller.CHAT);
+    }
+
+    /**
+     * 完整构造函数，支持注入观察者和自定义调用来源。
+     */
+    public ToolExecutorFactory(boolean wrapToolArgumentsExceptions,
+                               boolean propagateToolExecutionExceptions,
+                               Supplier<Boolean> cancellationSupplier,
+                               List<ToolExecutionObserver> observers,
+                               ToolCaller toolCaller) {
         this.wrapToolArgumentsExceptions = wrapToolArgumentsExceptions;
         this.propagateToolExecutionExceptions = propagateToolExecutionExceptions;
         this.cancellationSupplier = cancellationSupplier;
+        this.observers = observers != null ? Collections.unmodifiableList(new ArrayList<>(observers)) : Collections.emptyList();
+        this.toolCaller = toolCaller != null ? toolCaller : ToolCaller.CHAT;
     }
 
     public ToolExecutorRegistry createRegistry(Object toolSet) {
@@ -52,6 +68,10 @@ public class ToolExecutorFactory {
             ToolExecutor toolExecutor = new EventDispatchToolExecutor(executor);
             if (cancellationSupplier != null) {
                 toolExecutor = new CancellationToolExecutor(toolExecutor, cancellationSupplier);
+            }
+            if (!observers.isEmpty()) {
+                toolExecutor = new ObservableToolExecutor(
+                    toolExecutor, specification.name(), toolCaller, observers);
             }
             executorsByName.put(specification.name(), toolExecutor);
             executorsBySpecification.put(specification, toolExecutor);
