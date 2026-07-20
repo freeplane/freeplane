@@ -3205,6 +3205,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		NodeModel currentRootNode = currentRootView.getNode();
 		if(currentRootNode == node)
 			return;
+		modeController.getMapController().setFolded(node, false, getFilter());
         NodeView nodeView = getNodeView(node);
         RootChange rootChange;
         if(nodeView == null) {
