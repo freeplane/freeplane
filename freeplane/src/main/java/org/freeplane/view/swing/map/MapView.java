@@ -3206,6 +3206,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(currentRootNode == node)
 			return;
 		modeController.getMapController().setFolded(node, false, getFilter());
+		for(NodeModel ancestor = node.getParentNode(); ancestor != null; ancestor = ancestor.getParentNode()) {
+			if(ancestor.isFolded())
+				modeController.getMapController().setFolded(ancestor, false, getFilter());
+		}
         NodeView nodeView = getNodeView(node);
         RootChange rootChange;
         if(nodeView == null) {

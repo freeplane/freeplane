@@ -61,6 +61,22 @@ public class MapViewRootChangeTest {
         });
     }
 
+    @Test
+    public void setRootNodeUnfoldsFoldedAncestors() {
+        withMapView((view, target) -> {
+            final NodeModel bbb = target.getParentNode();
+            final NodeModel aaa = bbb.getParentNode();
+            target.setFolded(true);
+            bbb.setFolded(true);
+            aaa.setFolded(true);
+
+            view.setRootNode(target);
+
+            assertThat(bbb.isFolded(), equalTo(false));
+            assertThat(aaa.isFolded(), equalTo(false));
+        });
+    }
+
     private interface MapViewScenario {
         void run(MapView view, NodeModel target);
     }
@@ -123,8 +139,12 @@ public class MapViewRootChangeTest {
             }).when(mapController).setFolded(any(), anyBoolean(), any());
 
             MapFake mapFake = new MapFake();
+            NodeModel aaa = mapFake.createNode("aaa");
+            NodeModel bbb = mapFake.createNode("bbb");
             NodeModel target = mapFake.createNode("target");
-            mapFake.getRoot().insert(target);
+            mapFake.getRoot().insert(aaa);
+            aaa.insert(bbb);
+            bbb.insert(target);
             MapModel map = mapFake.getRoot().getMap();
             MapStyleModel mapStyleModel = mock(MapStyleModel.class, RETURNS_DEEP_STUBS);
             when(mapStyleModel.getZoom()).thenReturn(1f);
