@@ -3348,6 +3348,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		else
 		    rootsHistory.clear();
+		if(! newRootView.getNode().getViewers().contains(newRootView))
+		    newRootView.getNode().addViewer(newRootView);
 		if(nextSelectedNode.getParent() == null || ! nextSelectedNode.isContentVisible())
 		    nextSelectedNode = newRootView;
 		if(newRootView.getComponentCount() == 1) {
