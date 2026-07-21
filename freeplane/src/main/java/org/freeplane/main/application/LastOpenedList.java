@@ -183,8 +183,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 			if (selection.isSelected(map.getRootNode())) {
 				if(recentFile.lastRootNodeId !=  null) {
 					final NodeModel root = map.getNodeForID(recentFile.lastRootNodeId);
-					if(root != null)
+					if(root != null) {
+						final MapController mapController = controller.getModeController().getMapController();
+						for(NodeModel ancestor = root.getParentNode(); ancestor != null; ancestor = ancestor.getParentNode())
+							if(mapController.isFolded(ancestor))
+								mapController.setFolded(ancestor, false, selection.getFilter());
 						controller.getMapViewManager().setViewRoot(root);
+					}
 				}
 				final NodeModel node = map.getNodeForID(recentFile.lastVisitedNodeId);
 				if (node != null && node.hasVisibleContent(selection.getFilter())) {
