@@ -124,8 +124,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
             }
 
 			if(Compat.isPlainEvent(e)){
-				if(inside && (e.getClickCount() == 1 && foldsOnClickInside()
-				        || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick()))){
+				if(inside && foldsOnClickInside()
+				        && (e.getClickCount() == 1 || ! (mc.canEdit(node.getMap()) && editsOnDoubleClick()))){
 					if (!nodeSelector.shouldSelectOnClick(e) && !nodeFolder.isPreviewUnfolded(node)) {
 					    isDelayedFoldingActive = true;
 						doubleClickTimer.start(new Runnable() {
