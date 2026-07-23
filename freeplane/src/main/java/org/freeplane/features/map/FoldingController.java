@@ -300,9 +300,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
                 if (selection.isFolded(node)) {
                     return depth(node);
                 }
-                if (AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
-                    return Integer.MAX_VALUE;
-                }
             }
             int minDepth = Integer.MAX_VALUE;
             for (final NodeModel child : node.getChildren()) {
