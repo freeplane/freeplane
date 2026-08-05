@@ -225,22 +225,33 @@ public class MNoteController extends NoteController {
 	}
 
 	public void setNoteText(final NodeModel node, final String newText) {
-        if("".equals(newText)) {
-            setNoteText(node, null);
+		setNoteText(node, NoteModel.DEFAULT_TAB_NAME, newText);
+	}
+
+    public void setNoteText(final NodeModel node, final String tabName, final String newText) {
+		final String text = "".equals(newText) ? null : newText;
+		final NoteModel oldNote = NoteModel.getNote(node);
+		final NoteModel.Tab oldTab = oldNote == null ? null : oldNote.getTab(tabName);
+		final String oldText = oldTab == null ? null : oldTab.getText();
+        if (oldText == text || null != oldText && oldText.equals(text)) {
             return;
         }
 
-        final String oldText = NoteModel.getNoteText(node);
-        if (oldText == newText || null != oldText && oldText.equals(newText)) {
-            return;
-        }
-
-        NoteModel oldNote = NoteModel.getNote(node);
         NoteModel newNote= oldNote == null ? new NoteModel() :  oldNote.copy();
-        newNote.setText(newText);
+		if (NoteModel.DEFAULT_TAB_NAME.equals(tabName) && !newNote.hasTabs())
+			newNote.setText(text);
+		else {
+			newNote.ensureTabs();
+			NoteModel.Tab newTab = newNote.getTab(tabName);
+			if (newTab == null) newTab = newNote.addTab(tabName);
+			newTab.setText(text);
+		}
 
-        if(oldNote == null || ! Objects.equals(oldNote.getXml(), newNote.getXml()))
-            setNote(node, oldNote, newNote, "setNoteText");
+		setNote(node, oldNote, newNote, "setNoteText");
+	}
+
+	public void setNoteTabs(final NodeModel node, final NoteModel note, final String description) {
+		setNote(node, NoteModel.getNote(node), note, description);
 	}
 
 

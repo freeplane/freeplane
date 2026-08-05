@@ -53,6 +53,15 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	 */
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension) throws IOException {
 	    NoteModel note = (NoteModel) extension;
+	    if (note.hasTabs()) {
+			for (NoteModel.Tab tab : note.getTabs()) {
+				final XMLElement element = new XMLElement();
+				element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE);
+				element.setAttribute("TAB", tab.getName());
+				NodeTextBuilder.writeRichContent(writer, node, tab, element);
+			}
+			return;
+	    }
 		final XMLElement element = new XMLElement();
 		if(extension instanceof NoteModel){
 		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE);

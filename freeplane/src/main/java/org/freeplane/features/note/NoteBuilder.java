@@ -55,14 +55,23 @@ class NoteBuilder implements IElementContentHandler {
 	        final String text = content != null ? content.trim() : null;
 	        final Object typeAttribute = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 			if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE.equals(typeAttribute)) {
-				final NoteModel note = new NoteModel();
-				note.setXml(text);
-	            final String contentType = element.getAttribute(
-	                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE,
-	                    ContentSyntax.XML.prefix);
-	            note.setContentType(ContentSyntax.specificType(contentType));
-
-				((NodeModel) node).addExtension(note);
+				final NodeModel nodeModel = (NodeModel) node;
+				final String tabName = element.getAttribute("TAB", null);
+				final NoteModel note = NoteModel.getNote(nodeModel) == null ? new NoteModel() : NoteModel.getNote(nodeModel);
+				if (tabName != null) {
+					note.ensureTabs();
+					NoteModel.Tab tab = note.getTab(tabName);
+					if (tab == null) tab = note.addTab(tabName);
+					tab.setXml(text);
+					tab.setContentType(ContentSyntax.specificType(element.getAttribute(
+							NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, ContentSyntax.XML.prefix)));
+				}
+				else {
+					note.setXml(text);
+					note.setContentType(ContentSyntax.specificType(element.getAttribute(
+							NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, ContentSyntax.XML.prefix)));
+				}
+				nodeModel.putExtension(note);
 			}
 		}
 	}

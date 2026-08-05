@@ -1,10 +1,12 @@
 package org.freeplane.features.note.mindmapmode;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +30,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -74,32 +82,69 @@ class NotePanel extends JPanel {
 	private final NoteDocumentListener noteDocumentListener;
 
     private final NoteManager noteManager;
-    private final StyleSheet ownStyleSheet;
+	private final StyleSheet ownStyleSheet;
+	private final JPanel contentPanel;
+	private final JTabbedPane tabs;
+	private boolean updatingTabs;
 
     private FocusListener textPanelFocusListener;
 
     private boolean isEditing = false;
 
 	NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
-		super(new CardLayout());
+		super(new BorderLayout());
         this.noteManager = noteManager;
 		this.noteDocumentListener = noteDocumentListener;
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		this.contentPanel = new JPanel(new CardLayout());
+		this.tabs = new JTabbedPane();
+		tabs.addChangeListener(e -> {
+			if (!updatingTabs && tabs.getSelectedIndex() >= 0)
+				noteManager.selectTab(tabs.getTitleAt(tabs.getSelectedIndex()));
+		});
+		tabs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) { showTabMenu(e); }
+			@Override
+			public void mouseReleased(MouseEvent e) { showTabMenu(e); }
+			private void showTabMenu(MouseEvent e) {
+				if (!e.isPopupTrigger()) return;
+				int index = tabs.indexAtLocation(e.getX(), e.getY());
+				if (index < 0) return;
+				tabs.setSelectedIndex(index);
+				JPopupMenu menu = new JPopupMenu();
+				JMenuItem rename = new JMenuItem("Rename tab");
+				rename.addActionListener(event -> renameSelectedTab());
+				menu.add(rename);
+				menu.show(tabs, e.getX(), e.getY());
+			}
+		});
+		tabs.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("F2"), "renameNoteTab");
+		tabs.getActionMap().put("renameNoteTab", new javax.swing.AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				renameSelectedTab();
+			}
+		});
+		JPanel tabBar = new JPanel(new BorderLayout());
+		tabBar.add(tabs, BorderLayout.CENTER);
+		add(tabBar, BorderLayout.NORTH);
+		add(contentPanel, BorderLayout.CENTER);
 		this.htmlEditorPanel = createHtmlEditorComponent(noteManager);
 		this.ownStyleSheet = StyleSheetConfigurer.createDefaultStyleSheet();
 		this.defaultCaretColor = htmlEditorPanel.getEditorPane().getCaretColor();
 		htmlEditorPanel.setVisible(false);
-		add(htmlEditorPanel);
+		contentPanel.add(htmlEditorPanel, "editor");
 
 		this.viewerScrollPanel = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		viewerScrollPanel.setVisible(false);
-		add(viewerScrollPanel);
+		contentPanel.add(viewerScrollPanel, "viewer");
 		htmlViewerPanel = new JEditorPane();
 		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 		htmlViewerPanel.setOpaque(true);
 		htmlViewerPanel.setEditable(false);
 		htmlViewerPanel.setEditorKitForContentType(CONTENT_TYPE_TEXT_HTML, ScaledEditorKit.create());
-		final LinkOpener linkOpener = new LinkOpener(noteManager::getNode);
+		final LinkOpener linkOpener = new LinkOpener(noteManager::getNode, noteManager::openNoteLink);
 		htmlViewerPanel.addMouseListener(linkOpener);
 		htmlViewerPanel.addMouseMotionListener(linkOpener);
 		iconViewerPanel = new JLabel();
@@ -121,6 +166,66 @@ class NotePanel extends JPanel {
 
 	}
 
+	private void renameSelectedTab() {
+		int index = tabs.getSelectedIndex();
+		if (index < 0) return;
+		String oldName = tabs.getTitleAt(index);
+		String newName = JOptionPane.showInputDialog(this, "Tab name", oldName);
+		if (newName != null) noteManager.renameTab(oldName, newName);
+	}
+
+	void setTabs(java.util.List<NoteModel.Tab> noteTabs, String selectedTabName) {
+		updatingTabs = true;
+		try {
+			tabs.removeAll();
+			if (noteTabs.isEmpty()) {
+				addClosableTab(NoteModel.DEFAULT_TAB_NAME);
+			}
+			else {
+				for (NoteModel.Tab tab : noteTabs)
+					addClosableTab(tab.getName());
+			}
+			addAddTab();
+			for (int i = 0; i < tabs.getTabCount(); i++) {
+				if (tabs.getTitleAt(i).equals(selectedTabName)) {
+					tabs.setSelectedIndex(i);
+					break;
+				}
+			}
+		}
+		finally {
+			updatingTabs = false;
+		}
+	}
+
+	private void addClosableTab(String title) {
+		int index = tabs.getTabCount();
+		tabs.addTab(title, new JPanel());
+		JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+		header.setOpaque(false);
+		header.add(new JLabel(title));
+		JButton close = new JButton("×");
+		close.setBorderPainted(false);
+		close.setContentAreaFilled(false);
+		close.setFocusable(false);
+		close.setToolTipText("Close note tab");
+		close.addActionListener(e -> noteManager.closeTab(title));
+		header.add(close);
+		tabs.setTabComponentAt(index, header);
+	}
+
+	private void addAddTab() {
+		int index = tabs.getTabCount();
+		tabs.addTab("+", new JPanel());
+		JButton add = new JButton("+");
+		add.setBorderPainted(false);
+		add.setContentAreaFilled(false);
+		add.setFocusable(false);
+		add.setToolTipText("Add note tab");
+		add.addActionListener(e -> noteManager.addTab());
+		tabs.setTabComponentAt(index, add);
+	}
+
 	private SHTMLPanel createHtmlEditorComponent(NoteManager noteManager) {
 		SHTMLPanel htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
         htmlEditorPanel.shtmlPrefChanged("show_toolbars",
@@ -139,6 +244,7 @@ class NotePanel extends JPanel {
 
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+		addLinkMenu(editorPane);
 
 		for (InputMap inputMap = editorPane.getInputMap(); inputMap != null; inputMap = inputMap.getParent()){
 			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed T"));
@@ -204,6 +310,7 @@ class NotePanel extends JPanel {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
 					String uriText = pE.getActionCommand();
+					if (noteManager.openNoteLink(uriText)) return;
 					LinkController.getController().loadURI(noteManager.getNode(), LinkController.createHyperlink(uriText));
 				}
 				catch (final Exception e) {
@@ -212,6 +319,21 @@ class NotePanel extends JPanel {
 			}
 		});
 		return htmlEditorPanel;
+	}
+
+	private void addLinkMenu(SHTMLEditorPane editorPane) {
+		JMenu linkTo = new JMenu("Link to");
+		JMenuItem node = new JMenuItem("Node");
+		node.addActionListener(e -> noteManager.insertLink(editorPane, false));
+		JMenuItem note = new JMenuItem("Note tab");
+		note.addActionListener(e -> noteManager.insertLink(editorPane, true));
+		linkTo.add(node);
+		linkTo.add(note);
+		JMenuItem removeLink = new JMenuItem("Remove link");
+		removeLink.addActionListener(e -> noteManager.removeLink(editorPane));
+		editorPane.getPopup().addSeparator();
+		editorPane.getPopup().add(linkTo);
+		editorPane.getPopup().add(removeLink);
 	}
 
 

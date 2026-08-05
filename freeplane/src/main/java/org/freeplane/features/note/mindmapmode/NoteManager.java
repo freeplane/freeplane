@@ -23,8 +23,11 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.StyleSheet;
 
@@ -54,7 +57,21 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.main.application.ApplicationResourceController;
 
+import com.lightdev.app.shtm.SHTMLEditorPane;
+
 class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMapLifeCycleListener {
+	private static final class NodeLinkTarget {
+		private final NodeModel node;
+		private final String path;
+
+		private NodeLinkTarget(NodeModel node, String path) {
+			this.node = node;
+			this.path = path;
+		}
+
+		@Override
+		public String toString() { return path + node.getText(); }
+	}
     private static final String NOTE_FOLLOWS_SELECTION_PROPERTY = "noteFollowsSelection";
     private static final String LAST_NOTE_URL_PROPERTY = "lastNoteUrl";
     private static final String LAST_NOTE_NODE_PROPERTY = "lastNoteNode";
@@ -65,6 +82,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 	 *
 	 */
 	final MNoteController noteController;
+	private String selectedTabName = NoteModel.DEFAULT_TAB_NAME;
     private boolean noteFollowsSelection;
 
 	public NoteManager(final MNoteController noteController) {
@@ -171,11 +189,16 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         if (ignoreEditorUpdate) {
             return;
         }
-		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
+		final NoteModel noteModel = this.node != null ? NoteModel.getNote(this.node) : null;
+		if (noteModel != null && noteModel.getTab(selectedTabName) == null)
+			selectedTabName = NoteModel.DEFAULT_TAB_NAME;
+		final NoteModel.Tab selectedTab = noteModel != null ? noteModel.getTab(selectedTabName) : null;
+		final String note = selectedTab != null ? selectedTab.getText() : null;
+		notePanel.setTabs(noteModel == null ? java.util.Collections.emptyList() : noteModel.getTabs(), selectedTabName);
 		if (note != null) {
 			try {
 			    TextController textController = TextController.getController();
-				final Object transformedContent = textController.getTransformedObject(node, NoteModel.getNote(node), note, notePanel);
+				final Object transformedContent = textController.getTransformedObject(node, selectedTab != null ? selectedTab : noteModel, note, notePanel);
 				Icon icon = textController.getIcon(transformedContent);
 				if(icon != null)
 					notePanel.setViewedImage(icon, noteStyleAccessor.getHorizontalAlignment(), noteBackground);
@@ -258,7 +281,7 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         saveFrozenNoteTarget(resolveShutdownNoteTarget(noteFollowsSelection, lastShownNoteNode));
     }
 
-    void saveNote(String text) {
+	void saveNote(String text) {
         boolean isHtml = HtmlUtils.isHtml(text);
         boolean editorContentEmpty = isHtml && HtmlUtils.isEmpty(text)
                 || ! isHtml && text.trim().isEmpty();
@@ -266,19 +289,21 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
         try {
             ignoreEditorUpdate = true;
             if (editorContentEmpty) {
-                noteController.setNoteText(node, null);
+				noteController.setNoteText(node, selectedTabName, null);
             }
             else {
-                final String oldText = noteController.getNoteText(node);
-                if (null == oldText)
-                    noteController.setNoteText(node, text);
+				final NoteModel currentNote = NoteModel.getNote(node);
+				final NoteModel.Tab currentTab = currentNote == null ? null : currentNote.getTab(selectedTabName);
+				final String oldText = currentTab == null ? null : currentTab.getText();
+				if (null == oldText)
+					noteController.setNoteText(node, selectedTabName, text);
                 else if(isHtml){
                     final String oldTextWithoutHead = NotePanel.HEAD.matcher(oldText).replaceFirst("");
                     if (!oldTextWithoutHead.trim().equals(text.trim()))
-                        noteController.setNoteText(node, text);
+						noteController.setNoteText(node, selectedTabName, text);
                 }
                 else
-                    noteController.setNoteText(node, text);
+					noteController.setNoteText(node, selectedTabName, text);
             }
         }
         finally {
@@ -385,5 +410,103 @@ class NoteManager implements INodeSelectionListener, IMapSelectionListener, IMap
 			return Controller.getCurrentModeController()
 					.getExtension(NodeStyleController.class)
 					.getTextWritingDirection(node);
+	}
+
+	void selectTab(String tabName) {
+		if (tabName.equals(selectedTabName)) return;
+		saveNote();
+		selectedTabName = tabName;
+		updateEditor();
+	}
+
+	void addTab() {
+		if (node == null) return;
+		saveNote();
+		NoteModel note = NoteModel.getNote(node);
+		NoteModel updated = note == null ? new NoteModel() : note.copy();
+		updated.ensureTabs();
+		int index = updated.getTabs().size() + 1;
+		String name = "note" + index;
+		while (updated.getTab(name) != null) name = "note" + (++index);
+		updated.addTab(name);
+		noteController.setNoteTabs(node, updated, "addNoteTab");
+		selectedTabName = name;
+		updateEditor();
+	}
+
+	void renameTab(String oldName, String newName) {
+		if (node == null || newName == null || newName.trim().isEmpty()) return;
+		newName = newName.trim();
+		NoteModel note = NoteModel.getNote(node);
+		if (note == null || note.getTab(newName) != null) return;
+		NoteModel updated = note.copy();
+		NoteModel.Tab tab = updated.getTab(oldName);
+		if (tab == null) return;
+		tab.setName(newName);
+		noteController.setNoteTabs(node, updated, "renameNoteTab");
+		selectedTabName = newName;
+		updateEditor();
+	}
+
+	void closeTab(String tabName) {
+		if (node == null) return;
+		saveNote();
+		NoteModel note = NoteModel.getNote(node);
+		if (note == null) return;
+		NoteModel updated = note.copy();
+		updated.ensureTabs();
+		updated.removeTab(tabName);
+		noteController.setNoteTabs(node, updated, "removeNoteTab");
+		selectedTabName = NoteModel.DEFAULT_TAB_NAME;
+		updateEditor();
+	}
+
+	void insertLink(SHTMLEditorPane editorPane, boolean linkToNoteTab) {
+		if (node == null || editorPane.getSelectionStart() == editorPane.getSelectionEnd()) return;
+		List<NodeLinkTarget> nodes = new ArrayList<>();
+		collectNodes(node.getMap().getRootNode(), "", nodes);
+		NodeLinkTarget selectedTarget = (NodeLinkTarget) JOptionPane.showInputDialog(noteController.getNotePanel(),
+				"Link selected text to", "Insert note link", JOptionPane.PLAIN_MESSAGE, null,
+				nodes.toArray(), nodes.get(0));
+		if (selectedTarget == null) return;
+		NodeModel target = selectedTarget.node;
+		if (!linkToNoteTab) {
+			editorPane.setLink(null, "#" + target.getID(), null);
+			return;
+		}
+		NoteModel targetNote = NoteModel.getNote(target);
+		List<String> destinations = new ArrayList<>();
+		if (targetNote == null || !targetNote.hasTabs()) destinations.add(NoteModel.DEFAULT_TAB_NAME);
+		else for (NoteModel.Tab tab : targetNote.getTabs()) destinations.add(tab.getName());
+		String destination = (String) JOptionPane.showInputDialog(noteController.getNotePanel(),
+				"Link to note tab", "Insert note link", JOptionPane.PLAIN_MESSAGE, null,
+				destinations.toArray(), destinations.get(0));
+		if (destination == null) return;
+		String href = "note:#" + target.getID() + "/" + destination;
+		editorPane.setLink(null, href, null);
+	}
+
+	void removeLink(SHTMLEditorPane editorPane) {
+		editorPane.setLink(null, null, null);
+	}
+
+	private void collectNodes(NodeModel current, String path, List<NodeLinkTarget> nodes) {
+		nodes.add(new NodeLinkTarget(current, path));
+		for (NodeModel child : current.getChildren()) collectNodes(child, path + "  ", nodes);
+	}
+
+	boolean openNoteLink(String link) {
+		if (!link.startsWith("note:#")) return false;
+		int slash = link.indexOf('/', "note:#".length());
+		String nodeId = slash < 0 ? link.substring("note:#".length()) : link.substring("note:#".length(), slash);
+		String tabName = slash < 0 ? NoteModel.DEFAULT_TAB_NAME : link.substring(slash + 1);
+		NodeModel target = node == null ? null : node.getMap().getNodeForID(nodeId);
+		if (target == null) return false;
+		saveNote();
+		selectedTabName = tabName;
+		Controller.getCurrentModeController().getMapController().select(target);
+		node = target;
+		updateEditor();
+		return true;
 	}
 }

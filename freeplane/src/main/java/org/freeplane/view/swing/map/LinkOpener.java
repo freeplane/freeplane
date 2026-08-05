@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.function.Supplier;
+import java.util.function.Predicate;
 
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -24,10 +25,16 @@ import org.freeplane.features.mode.Controller;
 
 public class LinkOpener extends MouseAdapter implements MouseMotionListener{
 	private final Supplier<NodeModel> nodeSupplier;
+	private final Predicate<String> customLinkOpener;
 
     public LinkOpener(Supplier<NodeModel> nodeSupplier) {
+		this(nodeSupplier, link -> false);
+	}
+
+    public LinkOpener(Supplier<NodeModel> nodeSupplier, Predicate<String> customLinkOpener) {
 		super();
 		this.nodeSupplier = nodeSupplier;
+		this.customLinkOpener = customLinkOpener;
 	}
 
 	@Override
@@ -60,8 +67,9 @@ public class LinkOpener extends MouseAdapter implements MouseMotionListener{
         	if(!(document instanceof HTMLDocument) || nodeSupplier.get() == null)
         		return;
 			final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) document, textComponent.viewToModel(ev.getPoint()));
-    		if (linkURL != null) {
-    			try {
+			if (linkURL != null) {
+				try {
+					if (customLinkOpener.test(linkURL)) return;
 					final NodeModel node = nodeSupplier.get();
 					LinkController.getController().loadURI(node, LinkController.createHyperlink(linkURL));
     			} catch (Exception e) {
