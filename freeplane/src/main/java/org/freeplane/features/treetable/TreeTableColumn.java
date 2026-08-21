@@ -4,8 +4,14 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 
 public class TreeTableColumn {
+	public static final Quantity<LengthUnit> DEFAULT_WIDTH = new Quantity<LengthUnit>(60, LengthUnit.pt);
+
 	private final String attributeKey;
 	private final Quantity<LengthUnit> width;
+
+	public TreeTableColumn(final String attributeKey) {
+		this(attributeKey, DEFAULT_WIDTH);
+	}
 
 	public TreeTableColumn(final String attributeKey, final Quantity<LengthUnit> width) {
 		if (attributeKey == null || attributeKey.trim().isEmpty())
