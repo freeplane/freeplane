@@ -117,6 +117,7 @@ import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.treetable.TreeTableController;
+import org.freeplane.features.treetable.mindmapmode.AddTreeTableColumnAction;
 import org.freeplane.features.treetable.mindmapmode.ToggleTreeTableAction;
 import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPanel;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -302,6 +303,7 @@ public class MModeControllerFactory {
 		LayoutController.install(new MLayoutController());
 		TreeTableController.install(new TreeTableController());
 		modeController.addAction(new ToggleTreeTableAction());
+		modeController.addAction(new AddTreeTableColumnAction());
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();

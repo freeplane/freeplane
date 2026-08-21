@@ -802,6 +802,7 @@
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
 		<Entry name="ToggleTreeTableAction" usedBy = "EDITOR" />
+		<Entry name="AddTreeTableColumnAction" usedBy = "EDITOR" />
 		<Entry builder="separator" />
 		        <Entry name="BookmarkNodeAction" />
 				<Entry name="goto" processOnPopup="true">

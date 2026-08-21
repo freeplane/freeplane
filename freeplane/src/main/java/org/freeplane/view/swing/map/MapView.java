@@ -2557,6 +2557,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    final Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
+	    new TreeTableCellPainter(this).paintTreeTables(g2);
 	    if(isSpotlightEnabled())
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
