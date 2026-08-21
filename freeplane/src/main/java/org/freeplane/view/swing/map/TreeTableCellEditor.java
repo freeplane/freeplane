@@ -1,0 +1,139 @@
+package org.freeplane.view.swing.map;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.features.map.NodeModel;
+
+class TreeTableCellEditor extends MouseAdapter {
+	private static final String CANCEL_EDITING = "treeTableCancelEditing";
+
+	private final MapView mapView;
+
+	private JTextField editor;
+	private TreeTableCell editedCell;
+
+	TreeTableCellEditor(final MapView mapView) {
+		this.mapView = mapView;
+	}
+
+	@Override
+	public void mousePressed(final MouseEvent event) {
+		if (event.getButton() != MouseEvent.BUTTON1)
+			return;
+		final TreeTableCell cell = cellAt(event.getX(), event.getY());
+		if (cell == null) {
+			stopEditing(true);
+			return;
+		}
+		event.consume();
+		startEditing(cell);
+	}
+
+	private TreeTableCell cellAt(final int x, final int y) {
+		final NodeView rootView = mapView.getRoot();
+		if (rootView == null)
+			return null;
+		for (final NodeView treeTableRoot : TreeTableView.findTreeTableRoots(rootView, new ArrayList<NodeView>())) {
+			final TreeTableView treeTable = TreeTableView.of(mapView, treeTableRoot);
+			if (treeTable == null)
+				continue;
+			final TreeTableCell cell = treeTable.cellAt(x, y);
+			if (cell != null)
+				return cell;
+		}
+		return null;
+	}
+
+	boolean isEditing(final NodeModel row, final String attributeKey) {
+		return editedCell != null && editedCell.getRow() == row
+			&& editedCell.getAttributeKey().equals(attributeKey);
+	}
+
+	private void startEditing(final TreeTableCell cell) {
+		stopEditing(true);
+		editedCell = cell;
+		editor = new JTextField(currentValue(cell));
+		editor.setBounds(cell.getBounds());
+		editor.setOpaque(true);
+		editor.setBackground(UIManager.getColor("TextField.background"));
+		editor.selectAll();
+		editor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				stopEditing(true);
+			}
+		});
+		editor.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(final FocusEvent e) {
+				stopEditing(true);
+			}
+		});
+		editor.getInputMap(JComponent.WHEN_FOCUSED)
+			.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL_EDITING);
+		editor.getActionMap().put(CANCEL_EDITING, new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				stopEditing(false);
+			}
+		});
+		mapView.add(editor);
+		editor.requestFocusInWindow();
+		mapView.repaint(cell.getBounds());
+	}
+
+	private void stopEditing(final boolean commit) {
+		if (editor == null)
+			return;
+		final JTextField stopped = editor;
+		final TreeTableCell cell = editedCell;
+		editor = null;
+		editedCell = null;
+		if (commit)
+			commitValue(cell, stopped.getText());
+		mapView.remove(stopped);
+		mapView.repaint(cell.getBounds());
+	}
+
+	private String currentValue(final TreeTableCell cell) {
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(cell.getRow());
+		final int index = attributes.getAttributeIndex(cell.getAttributeKey());
+		if (index < 0)
+			return "";
+		final Object value = attributes.getValue(index);
+		return value != null ? value.toString() : "";
+	}
+
+	private void commitValue(final TreeTableCell cell, final String value) {
+		if (currentValue(cell).equals(value))
+			return;
+		final NodeModel row = cell.getRow();
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
+		final MAttributeController attributeController = (MAttributeController) AttributeController
+			.getController(mapView.getModeController());
+		final int index = attributes.getAttributeIndex(cell.getAttributeKey());
+		if (index < 0)
+			attributeController.performInsertRow(row, attributes, attributes.getRowCount(),
+				cell.getAttributeKey(), value);
+		else
+			attributeController.performSetValueAt(row, attributes, value, index, 1);
+	}
+}
