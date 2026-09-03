@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -283,5 +284,22 @@ public class Compat {
 		}
 		else
 			Compat.isApplet = isApplet;
+	}
+
+	/**
+	 * Detects whether the current Java Virtual Machine is JetBrains Runtime (JBR).
+	 *
+	 * Checks java.vendor, java.vm.vendor, and java.vendor.version for presence of
+	 * "jetbrains" or "jbr" (case-insensitive).
+	 *
+	 * @return true if running under JetBrains Runtime, false otherwise
+	 */
+	public static boolean isJetBrainsRuntime() {
+		String vendor = System.getProperty("java.vendor", "");
+		String vmVendor = System.getProperty("java.vm.vendor", "");
+		String vendorVersion = System.getProperty("java.vendor.version", "");
+		return vendor.toLowerCase(Locale.ROOT).contains("jetbrains")
+			|| vmVendor.toLowerCase(Locale.ROOT).contains("jetbrains")
+			|| vendorVersion.toLowerCase(Locale.ROOT).contains("jbr");
 	}
 }
