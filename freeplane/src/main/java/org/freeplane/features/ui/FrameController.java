@@ -702,7 +702,7 @@ abstract public class FrameController implements ViewController {
     private static void fixLookAndFeelUI(){
     	OSKeyBindingManager.applyToCurrentLookAndFeel();
     	configureFlatLookAndFeel();
-    	configurePopupFactory();
+		configurePopupFactory();
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();

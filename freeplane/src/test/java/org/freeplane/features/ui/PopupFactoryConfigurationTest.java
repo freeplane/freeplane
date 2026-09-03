@@ -149,4 +149,39 @@ public class PopupFactoryConfigurationTest {
         assertThat(PopupFactory.getSharedInstance().getClass().getName())
             .isEqualTo("com.formdev.flatlaf.ui.FlatPopupFactory");
     }
+
+    @Test
+    public void configurePopupFactory_withInvalidPreference_fallsBackToAuto() throws Exception {
+        when(resourceControllerMock.getProperty(eq(FrameController.POPUP_FACTORY_PROPERTY), anyString()))
+            .thenReturn("invalid_value");
+        UIManager.setLookAndFeel(new FlatLightLaf());
+
+        FrameController.configurePopupFactory();
+
+        assertThat(PopupFactory.getSharedInstance().getClass().getName())
+            .isEqualTo("com.formdev.flatlaf.ui.FlatPopupFactory");
+    }
+
+    @Test
+    public void configurePopupFactory_withCaseInsensitiveAndWhitespacePreference_handlesCorrectly() throws Exception {
+        when(resourceControllerMock.getProperty(eq(FrameController.POPUP_FACTORY_PROPERTY), anyString()))
+            .thenReturn("  BASIC  ");
+        UIManager.setLookAndFeel(new FlatLightLaf());
+
+        FrameController.configurePopupFactory();
+
+        assertThat(PopupFactory.getSharedInstance().getClass().getName())
+            .doesNotContain("FlatPopupFactory");
+    }
+
+    @Test
+    public void configurePopupFactory_withNullResourceController_defaultsToAuto() throws Exception {
+        UIManager.setLookAndFeel(new FlatLightLaf());
+        mockedResourceControllerStatic.when(ResourceController::getResourceController).thenReturn(null);
+
+        FrameController.configurePopupFactory();
+
+        assertThat(PopupFactory.getSharedInstance().getClass().getName())
+            .isEqualTo("com.formdev.flatlaf.ui.FlatPopupFactory");
+    }
 }
