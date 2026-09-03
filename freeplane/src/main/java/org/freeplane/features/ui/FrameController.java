@@ -102,6 +102,12 @@ import com.formdev.flatlaf.FlatLaf;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
+	public static final String POPUP_FACTORY_PROPERTY = "freeplane.popup_factory";
+	public static final String POPUP_FACTORY_AUTO = "auto";
+	public static final String POPUP_FACTORY_FLATLAF = "flatlaf";
+	public static final String POPUP_FACTORY_BASIC = "basic";
+	public static final String FLAT_POPUP_FACTORY_CLASS = "com.formdev.flatlaf.ui.FlatPopupFactory";
+
 	public static final String VAQUA_LAF_NAME = "VAqua";
 	public static final String VAQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
     private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
@@ -665,8 +671,6 @@ abstract public class FrameController implements ViewController {
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
-						if(PopupFactory.getSharedInstance().getClass().getName().equals("com.formdev.flatlaf.ui.FlatPopupFactory"))
-							PopupFactory.setSharedInstance(basicPopupFactory);
 					}
 					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
 						LogUtils.warn("Error while setting Look&Feel " + lookAndFeel + ", reverted to default");
@@ -698,6 +702,7 @@ abstract public class FrameController implements ViewController {
     private static void fixLookAndFeelUI(){
     	OSKeyBindingManager.applyToCurrentLookAndFeel();
     	configureFlatLookAndFeel();
+    	configurePopupFactory();
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -732,6 +737,68 @@ abstract public class FrameController implements ViewController {
 		final Color color = UIManager.getColor("control");
 		if (color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
+	}
+
+	public static void configurePopupFactory() {
+		try {
+			if (Compat.isApplet()) {
+				return;
+			}
+		}
+		catch (IllegalStateException ex) {
+			// Compat.isApplet() throws IllegalStateException if not set (e.g. in standalone unit tests)
+		}
+
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String pref = (resourceController != null)
+			? resourceController.getProperty(POPUP_FACTORY_PROPERTY, POPUP_FACTORY_AUTO).trim().toLowerCase(java.util.Locale.ROOT)
+			: POPUP_FACTORY_AUTO;
+
+		final boolean isFlatLaf = UIManager.getLookAndFeel() instanceof FlatLaf;
+
+		if (POPUP_FACTORY_BASIC.equals(pref)) {
+			if (FLAT_POPUP_FACTORY_CLASS.equals(PopupFactory.getSharedInstance().getClass().getName())) {
+				PopupFactory.setSharedInstance(basicPopupFactory);
+			}
+		}
+		else if (POPUP_FACTORY_FLATLAF.equals(pref)) {
+			if (isFlatLaf) {
+				ensureFlatPopupFactoryInstalled();
+			}
+			else {
+				if (FLAT_POPUP_FACTORY_CLASS.equals(PopupFactory.getSharedInstance().getClass().getName())) {
+					PopupFactory.setSharedInstance(basicPopupFactory);
+				}
+			}
+		}
+		else {
+			// "auto" (default)
+			if (isFlatLaf) {
+				if (Compat.isJetBrainsRuntime()) {
+					UIManager.put("Popup.dropShadowPainted", Boolean.FALSE);
+				}
+				ensureFlatPopupFactoryInstalled();
+			}
+			else {
+				if (FLAT_POPUP_FACTORY_CLASS.equals(PopupFactory.getSharedInstance().getClass().getName())) {
+					PopupFactory.setSharedInstance(basicPopupFactory);
+				}
+			}
+		}
+	}
+
+	private static void ensureFlatPopupFactoryInstalled() {
+		if (!FLAT_POPUP_FACTORY_CLASS.equals(PopupFactory.getSharedInstance().getClass().getName())) {
+			try {
+				Class<?> factoryClass = FrameController.class.getClassLoader().loadClass(FLAT_POPUP_FACTORY_CLASS);
+				PopupFactory flatFactory = (PopupFactory) factoryClass.getDeclaredConstructor().newInstance();
+				PopupFactory.setSharedInstance(flatFactory);
+			}
+			catch (Throwable t) {
+				LogUtils.warn("Could not instantiate FlatPopupFactory, falling back to basicPopupFactory: " + t.getMessage());
+				PopupFactory.setSharedInstance(basicPopupFactory);
+			}
+		}
 	}
 
 	private static int obtainLookAndFeelDefaultMenuItemFontSize() {
