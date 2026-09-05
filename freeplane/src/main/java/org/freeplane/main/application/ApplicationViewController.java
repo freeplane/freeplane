@@ -30,6 +30,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -65,6 +66,31 @@ class ApplicationViewController extends FrameController {
 	private static final String APPWINDOW_X = "appwindow_x";
 	private static final String APPWINDOW_Y = "appwindow_y";
 	private static final String APPWINDOW_STATE = "appwindow_state";
+	private static final String X11_TOOLKIT_CLASS_NAME = "sun.awt.X11.XToolkit";
+
+	static boolean needsMaximizedFrameResynchronization(final boolean isX11Toolkit, final int windowState,
+			final Rectangle frameBounds, final Rectangle screenBounds) {
+		return isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
+				&& (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+				&& frameBounds != null && screenBounds != null
+				&& (frameBounds.x != screenBounds.x || frameBounds.y != screenBounds.y);
+	}
+
+	private static boolean isX11Toolkit() {
+		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
+	}
+
+	private static void resynchronizeMaximizedFrame(final JFrame frame, final int windowState) {
+		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
+		if (graphicsConfiguration == null) {
+			return;
+		}
+		final Rectangle screenBounds = graphicsConfiguration.getBounds();
+		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), screenBounds)) {
+			frame.setBounds(screenBounds);
+			frame.validate();
+		}
+	}
 
 	private static Image frameIcon(String size) {
         return new ImageIcon(ResourceController.getResourceController().getResource(
@@ -349,6 +375,7 @@ class ApplicationViewController extends FrameController {
 			 */
 		});
 		frame.setFocusTraversalKeysEnabled(false);
+		installMaximizedFrameResynchronization(frame);
         frame.setBounds(getStoredFrameBounds(frame));
 		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
@@ -362,6 +389,25 @@ class ApplicationViewController extends FrameController {
 
 		// Register full screen listener for macOS
 		Compat.registerFullScreenListener(frame);
+	}
+
+	private void installMaximizedFrameResynchronization(final JFrame frame) {
+		final WindowAdapter frameResynchronizer = new WindowAdapter() {
+			@Override
+			public void windowOpened(final WindowEvent event) {
+				resynchronizeMaximizedFrame(frame, frame.getExtendedState());
+			}
+
+			@Override
+			public void windowStateChanged(final WindowEvent event) {
+				if ((event.getOldState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH
+						&& (event.getNewState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
+					resynchronizeMaximizedFrame(frame, event.getNewState());
+				}
+			}
+		};
+		frame.addWindowListener(frameResynchronizer);
+		frame.addWindowStateListener(frameResynchronizer);
 	}
 
 
