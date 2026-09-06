@@ -32,6 +32,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -68,12 +70,24 @@ class ApplicationViewController extends FrameController {
 	private static final String APPWINDOW_STATE = "appwindow_state";
 	private static final String X11_TOOLKIT_CLASS_NAME = "sun.awt.X11.XToolkit";
 
+	static boolean needsFrameResynchronization(final boolean isX11Toolkit, final int windowState,
+			final Rectangle frameBounds, final Rectangle targetBounds) {
+		return isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
+				&& frameBounds != null && targetBounds != null
+				&& (frameBounds.x != targetBounds.x || frameBounds.y != targetBounds.y);
+	}
+
 	static boolean needsMaximizedFrameResynchronization(final boolean isX11Toolkit, final int windowState,
 			final Rectangle frameBounds, final Rectangle screenBounds) {
-		return isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
-				&& (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				&& frameBounds != null && screenBounds != null
-				&& (frameBounds.x != screenBounds.x || frameBounds.y != screenBounds.y);
+		return (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+				&& needsFrameResynchronization(isX11Toolkit, windowState, frameBounds, screenBounds);
+	}
+
+	static boolean needsNormalFrameResynchronization(final boolean isX11Toolkit, final int oldState,
+			final int newState, final Rectangle frameBounds, final Rectangle normalBounds) {
+		return (oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH
+				&& needsFrameResynchronization(isX11Toolkit, newState, frameBounds, normalBounds);
 	}
 
 	private static boolean isX11Toolkit() {
@@ -85,9 +99,13 @@ class ApplicationViewController extends FrameController {
 		if (graphicsConfiguration == null) {
 			return;
 		}
-		final Rectangle screenBounds = graphicsConfiguration.getBounds();
-		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), screenBounds)) {
-			frame.setBounds(screenBounds);
+		resynchronizeFrame(frame, windowState, graphicsConfiguration.getBounds());
+	}
+
+	private static void resynchronizeFrame(final JFrame frame, final int windowState,
+			final Rectangle targetBounds) {
+		if (needsFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
+			frame.setBounds(targetBounds);
 			frame.validate();
 		}
 	}
@@ -375,8 +393,8 @@ class ApplicationViewController extends FrameController {
 			 */
 		});
 		frame.setFocusTraversalKeysEnabled(false);
-		installMaximizedFrameResynchronization(frame);
         frame.setBounds(getStoredFrameBounds(frame));
+		installMaximizedFrameResynchronization(frame);
 		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
 
@@ -391,23 +409,78 @@ class ApplicationViewController extends FrameController {
 		Compat.registerFullScreenListener(frame);
 	}
 
-	private void installMaximizedFrameResynchronization(final JFrame frame) {
-		final WindowAdapter frameResynchronizer = new WindowAdapter() {
-			@Override
-			public void windowOpened(final WindowEvent event) {
-				resynchronizeMaximizedFrame(frame, frame.getExtendedState());
-			}
-
-			@Override
-			public void windowStateChanged(final WindowEvent event) {
-				if ((event.getOldState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH
-						&& (event.getNewState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
-					resynchronizeMaximizedFrame(frame, event.getNewState());
-				}
-			}
-		};
+	private static void installMaximizedFrameResynchronization(final JFrame frame) {
+		final FrameResynchronizer frameResynchronizer = new FrameResynchronizer(frame);
 		frame.addWindowListener(frameResynchronizer);
 		frame.addWindowStateListener(frameResynchronizer);
+		frame.addComponentListener(frameResynchronizer);
+	}
+
+	private static final class FrameResynchronizer extends WindowAdapter implements ComponentListener {
+		private final JFrame frame;
+		private Rectangle normalBounds;
+		private int lastKnownWindowState;
+
+		private FrameResynchronizer(final JFrame frame) {
+			this.frame = frame;
+			normalBounds = new Rectangle(frame.getBounds());
+			lastKnownWindowState = frame.getExtendedState();
+		}
+
+		@Override
+		public void windowOpened(final WindowEvent event) {
+			final int windowState = frame.getExtendedState();
+			lastKnownWindowState = windowState;
+			if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
+				resynchronizeMaximizedFrame(frame, windowState);
+			}
+			else {
+				rememberNormalBounds();
+			}
+		}
+
+		@Override
+		public void windowStateChanged(final WindowEvent event) {
+			final int oldState = event.getOldState();
+			final int newState = event.getNewState();
+			lastKnownWindowState = newState;
+			if ((oldState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH
+					&& (newState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
+				resynchronizeMaximizedFrame(frame, newState);
+			}
+			else if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
+					frame.getBounds(), normalBounds)) {
+				resynchronizeFrame(frame, newState, normalBounds);
+			}
+		}
+
+		@Override
+		public void componentMoved(final ComponentEvent event) {
+			rememberNormalBounds();
+		}
+
+		@Override
+		public void componentResized(final ComponentEvent event) {
+			rememberNormalBounds();
+		}
+
+		@Override
+		public void componentShown(final ComponentEvent event) {
+		}
+
+		@Override
+		public void componentHidden(final ComponentEvent event) {
+		}
+
+		private void rememberNormalBounds() {
+			if (isNormalWindowState(lastKnownWindowState) && isNormalWindowState(frame.getExtendedState())) {
+				normalBounds = new Rectangle(frame.getBounds());
+			}
+		}
+	}
+
+	private static boolean isNormalWindowState(final int windowState) {
+		return (windowState & (Frame.MAXIMIZED_BOTH | Frame.ICONIFIED)) == 0;
 	}
 
 
