@@ -22,7 +22,9 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 
 public class ErrorLogButton {
-    private static class LogOpener implements ActionListener {
+    private static final String SHOW_STATUS_BAR_ON_ERROR_PROPERTY = "showStatusBarOnError";
+
+	private static class LogOpener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             final String freeplaneLogDirectoryPath = LogUtils.getLogDirectory();
@@ -69,8 +71,11 @@ public class ErrorLogButton {
             }
             logButton.setText(TextUtils.format("errornumber", errorCounter));
             final JComponent statusBar = viewController.getStatusBar();
-            if (!statusBar.isVisible())
-                UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
+            if (!statusBar.isVisible()) {
+            	if(!ResourceController.getResourceController().getBooleanProperty(SHOW_STATUS_BAR_ON_ERROR_PROPERTY, true))
+					return;
+            	UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
+			}
             SoundClipPlayer.playSound("error");
         }
         catch (Exception e) {

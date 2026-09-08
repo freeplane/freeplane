@@ -5,6 +5,7 @@ Automatically unfold branches on filtering
 Automatically unfold branches on selecting matching nodes
 Improve logging and messages for scripts / formulas
 Added writeAndRunCode AI tool
+Option to keep hidden status bar hidden on errors
 Bug fixes
 
 ==============================

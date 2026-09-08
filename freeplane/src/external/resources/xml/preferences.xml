@@ -110,6 +110,7 @@
 				<number name="mapDisplayNameMaxLength" min="1" max="500"/>
 			</separator>
 			<separator name="status">
+				<boolean name="showStatusBarOnError" />
 				<boolean name="display_node_id" />
 			</separator>
 			<separator name="default_colors">
