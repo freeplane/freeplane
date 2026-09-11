@@ -21,7 +21,7 @@ dependencies {
 	mergedViewerDependencies 'org.freeplane.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	lib 'com.formdev:svgSalamander:1.1.4'
 	lib 'com.github.robtimus:data-url:2.0.1'
-	lib 'com.formdev:flatlaf:3.6'
+	lib 'com.formdev:flatlaf:3.7.2'
 	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.12.0'
 	lib 'net.java.dev.jna:jna-platform:5.19.1'
 
