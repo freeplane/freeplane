@@ -187,6 +187,8 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		Rectangle getNativeWindowBounds(Component component);
 
 		Rectangle[] getScreenWorkAreas();
+
+		Insets getScreenInsets(GraphicsConfiguration graphicsConfiguration);
 	}
 
 	private static final FrameGeometry DEFAULT_FRAME_GEOMETRY = new FrameGeometry() {
@@ -204,6 +206,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		public Rectangle[] getScreenWorkAreas() {
 			return FrameResynchronizer.getScreenWorkAreas();
 		}
+
+		@Override
+		public Insets getScreenInsets(final GraphicsConfiguration graphicsConfiguration) {
+			return FrameResynchronizer.getScreenInsets(graphicsConfiguration);
+		}
 	};
 
 	private boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
@@ -211,7 +218,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		final Rectangle[] workAreaBounds = frameGeometry.getScreenWorkAreas();
 		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
 		final Rectangle fallbackWorkArea = graphicsConfiguration == null ? null
-				: getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
+				: getScreenWorkAreaBounds(graphicsConfiguration, frameGeometry);
 		final Rectangle targetBounds = findTargetMaximizedBounds(nativeBounds, normalBounds, workAreaBounds,
 				fallbackWorkArea);
 		if (targetBounds == null) {
@@ -380,16 +387,35 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 
 	private static Rectangle[] getScreenWorkAreas() {
 		final GraphicsDevice[] screenDevices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-		final Rectangle[] workAreaBounds = new Rectangle[screenDevices.length];
+		final GraphicsConfiguration[] graphicsConfigurations = new GraphicsConfiguration[screenDevices.length];
 		for (int i = 0; i < screenDevices.length; i++) {
-			final GraphicsConfiguration graphicsConfiguration = screenDevices[i].getDefaultConfiguration();
-			if (graphicsConfiguration == null) {
-				workAreaBounds[i] = null;
-				continue;
-			}
-			workAreaBounds[i] = getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
+			graphicsConfigurations[i] = screenDevices[i].getDefaultConfiguration();
+		}
+		return getScreenWorkAreas(graphicsConfigurations, DEFAULT_FRAME_GEOMETRY);
+	}
+
+	static Rectangle[] getScreenWorkAreas(final GraphicsConfiguration[] graphicsConfigurations,
+			final FrameGeometry frameGeometry) {
+		final Rectangle[] workAreaBounds = new Rectangle[graphicsConfigurations.length];
+		for (int i = 0; i < graphicsConfigurations.length; i++) {
+			final GraphicsConfiguration graphicsConfiguration = graphicsConfigurations[i];
+			workAreaBounds[i] = graphicsConfiguration == null ? null
+					: getScreenWorkAreaBounds(graphicsConfiguration, frameGeometry);
 		}
 		return workAreaBounds;
+	}
+
+	private static Rectangle getScreenWorkAreaBounds(final GraphicsConfiguration graphicsConfiguration,
+			final FrameGeometry frameGeometry) {
+		final Rectangle screenBounds = graphicsConfiguration.getBounds();
+		final Insets screenInsets;
+		try {
+			screenInsets = frameGeometry.getScreenInsets(graphicsConfiguration);
+		}
+		catch (RuntimeException runtimeException) {
+			return null;
+		}
+		return getWorkAreaBounds(screenBounds, screenInsets);
 	}
 
 	/**

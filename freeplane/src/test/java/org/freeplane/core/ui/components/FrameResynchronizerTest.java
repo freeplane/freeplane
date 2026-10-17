@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,44 @@ public class FrameResynchronizerTest {
     public void getWorkAreaBounds_withZeroInsets_preservesFullScreen() {
         assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(0, 0, 0, 0)))
             .isEqualTo(FULL_SCREEN);
+    }
+
+    @Test
+    public void getWorkAreaBounds_withMissingBoundsOrInsets_returnsNull() {
+        assertThat(FrameResynchronizer.getWorkAreaBounds(null, new Insets(0, 0, 0, 0))).isNull();
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, null)).isNull();
+    }
+
+    @Test
+    public void getWorkAreaBounds_withNonPositiveDerivedDimensions_returnsNull() {
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(0, 1920, 0, 0))).isNull();
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(1080, 0, 0, 0))).isNull();
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(0, 1921, 0, 0))).isNull();
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(1081, 0, 0, 0))).isNull();
+    }
+
+    @Test
+    public void getScreenWorkAreas_withTopInset_usesShrunkConfigurationBounds() {
+        final GraphicsConfiguration graphicsConfiguration = mock(GraphicsConfiguration.class);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(graphicsConfiguration.getBounds()).thenReturn(FULL_SCREEN);
+        when(geometry.getScreenInsets(graphicsConfiguration)).thenReturn(new Insets(32, 0, 0, 0));
+
+        assertThat(FrameResynchronizer.getScreenWorkAreas(
+            new GraphicsConfiguration[] { graphicsConfiguration }, geometry))
+            .containsExactly(TOP_PANEL_WORK_AREA);
+    }
+
+    @Test
+    public void getScreenWorkAreas_withFailedInsetLookup_marksAreaUnavailable() {
+        final GraphicsConfiguration graphicsConfiguration = mock(GraphicsConfiguration.class);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(graphicsConfiguration.getBounds()).thenReturn(FULL_SCREEN);
+        when(geometry.getScreenInsets(graphicsConfiguration)).thenThrow(new IllegalStateException("insets unavailable"));
+
+        assertThat(FrameResynchronizer.getScreenWorkAreas(
+            new GraphicsConfiguration[] { graphicsConfiguration }, geometry))
+            .containsExactly((Rectangle) null);
     }
 
     @Test
@@ -508,6 +547,54 @@ public class FrameResynchronizerTest {
             timer.stop();
         }
         assertThat(timer).isNull();
+    }
+
+    @Test
+    public void maximizedComponentEvent_withUnavailableWorkAreasAndInsets_doesNotCorrectOrRetry() throws Exception {
+        final Rectangle disjointBounds = new Rectangle(4000, 0, 100, 100);
+        final JFrame frame = resynchronizerFrame(disjointBounds, Frame.MAXIMIZED_BOTH);
+        final GraphicsConfiguration graphicsConfiguration = mock(GraphicsConfiguration.class);
+        when(graphicsConfiguration.getBounds()).thenReturn(FULL_SCREEN);
+        when(frame.getGraphicsConfiguration()).thenReturn(graphicsConfiguration);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(disjointBounds);
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { null, null });
+        when(geometry.getScreenInsets(graphicsConfiguration)).thenReturn(null);
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void maximizedListener_usesInsetShrunkFrameConfigurationFallback() {
+        final Rectangle disjointBounds = new Rectangle(4000, 0, 100, 100);
+        final JFrame frame = resynchronizerFrame(disjointBounds, Frame.MAXIMIZED_BOTH);
+        final GraphicsConfiguration graphicsConfiguration = mock(GraphicsConfiguration.class);
+        when(graphicsConfiguration.getBounds()).thenReturn(FULL_SCREEN);
+        when(frame.getGraphicsConfiguration()).thenReturn(graphicsConfiguration);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(disjointBounds);
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { null });
+        when(geometry.getScreenInsets(graphicsConfiguration)).thenReturn(new Insets(32, 0, 0, 0));
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+
+        resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.NORMAL, Frame.MAXIMIZED_BOTH));
+
+        verify(frame).setBounds(TOP_PANEL_WORK_AREA);
+        verify(frame).validate();
     }
 
     @Test
