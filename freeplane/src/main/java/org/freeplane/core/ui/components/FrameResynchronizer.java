@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
@@ -69,9 +70,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	}
 
 	static boolean needsMaximizedFrameResynchronization(final boolean isX11Toolkit, final int windowState,
-			final Rectangle frameBounds, final Rectangle screenBounds) {
+			final Rectangle frameBounds, final Rectangle targetBounds) {
 		return (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				&& needsFrameResynchronization(isX11Toolkit, windowState, frameBounds, screenBounds);
+				&& isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
+				&& frameBounds != null && targetBounds != null
+				&& !frameBounds.equals(targetBounds);
 	}
 
 	static boolean needsNormalFrameResynchronization(final boolean isX11Toolkit, final int oldState,
@@ -102,35 +105,130 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return targetBounds == null ? null : new Rectangle(targetBounds);
 	}
 
+	/**
+	 * Returns the usable work area of a screen, derived by shrinking the screen
+	 * rectangle by the given screen insets. Zero insets mean the complete screen
+	 * rectangle is usable. Returns {@code null} when the inputs are missing or the
+	 * derived rectangle has no area.
+	 */
+	static Rectangle getWorkAreaBounds(final Rectangle screenBounds, final Insets insets) {
+		if (screenBounds == null || insets == null) {
+			return null;
+		}
+		final int width = screenBounds.width - insets.left - insets.right;
+		final int height = screenBounds.height - insets.top - insets.bottom;
+		if (width <= 0 || height <= 0) {
+			return null;
+		}
+		return new Rectangle(screenBounds.x + insets.left, screenBounds.y + insets.top, width, height);
+	}
+
+	/**
+	 * Resolves the work area a maximized frame belongs to: the work area matching the
+	 * native window geometry first, the one matching the remembered normal bounds
+	 * second, and a copy of the given fallback work area last. Returns {@code null}
+	 * when no work area can be determined, so that callers keep the frame stable
+	 * instead of falling back to the full screen.
+	 */
+	static Rectangle findTargetMaximizedBounds(final Rectangle nativeBounds, final Rectangle normalBounds,
+			final Rectangle[] workAreaBounds, final Rectangle fallbackWorkArea) {
+		Rectangle targetBounds = findTargetScreenBounds(nativeBounds, workAreaBounds);
+		if (targetBounds == null) {
+			targetBounds = findTargetScreenBounds(normalBounds, workAreaBounds);
+		}
+		if (targetBounds != null) {
+			return targetBounds;
+		}
+		return fallbackWorkArea == null ? null : new Rectangle(fallbackWorkArea);
+	}
+
 	private static boolean isX11Toolkit() {
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
 	}
 
-	private static boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
-			final Rectangle nativeBounds, final Rectangle normalBounds) {
-		Rectangle targetBounds = null;
-		if (nativeBounds != null) {
-			targetBounds = findTargetScreenBounds(nativeBounds, getScreenBounds());
-		}
-		if (targetBounds == null) {
-			targetBounds = findTargetScreenBounds(normalBounds, getScreenBounds());
-		}
-		if (targetBounds != null) {
-			if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
-				resynchronizeFrame(frame, windowState, targetBounds);
+	static final class MaximizedResynchronizationGuard {
+		private static final int MAX_ATTEMPTS = 10;
+		private Rectangle targetBounds;
+		private int attempts;
+
+		boolean shouldRequest(final Rectangle currentBounds, final Rectangle targetBounds) {
+			if (currentBounds == null || targetBounds == null || currentBounds.equals(targetBounds)) {
+				reset();
 				return false;
 			}
+			if (!targetBounds.equals(this.targetBounds)) {
+				this.targetBounds = new Rectangle(targetBounds);
+				attempts = 0;
+			}
+			if (attempts >= MAX_ATTEMPTS) {
+				return false;
+			}
+			attempts++;
 			return true;
 		}
+
+		boolean isExhausted() {
+			return attempts >= MAX_ATTEMPTS;
+		}
+
+		void reset() {
+			targetBounds = null;
+			attempts = 0;
+		}
+	}
+
+	static boolean shouldScheduleDeferredResynchronization(final boolean maximized, final boolean stable) {
+		return !maximized || !stable;
+	}
+
+	interface FrameGeometry {
+		boolean isX11Toolkit();
+
+		Rectangle getNativeWindowBounds(Component component);
+
+		Rectangle[] getScreenWorkAreas();
+	}
+
+	private static final FrameGeometry DEFAULT_FRAME_GEOMETRY = new FrameGeometry() {
+		@Override
+		public boolean isX11Toolkit() {
+			return FrameResynchronizer.isX11Toolkit();
+		}
+
+		@Override
+		public Rectangle getNativeWindowBounds(final Component component) {
+			return FrameResynchronizer.getNativeWindowBounds(component);
+		}
+
+		@Override
+		public Rectangle[] getScreenWorkAreas() {
+			return FrameResynchronizer.getScreenWorkAreas();
+		}
+	};
+
+	private boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
+			final Rectangle nativeBounds, final Rectangle normalBounds) {
+		final Rectangle[] workAreaBounds = frameGeometry.getScreenWorkAreas();
 		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
-		if (graphicsConfiguration == null) {
+		final Rectangle fallbackWorkArea = graphicsConfiguration == null ? null
+				: getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
+		final Rectangle targetBounds = findTargetMaximizedBounds(nativeBounds, normalBounds, workAreaBounds,
+				fallbackWorkArea);
+		if (targetBounds == null) {
 			return true;
 		}
-		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), graphicsConfiguration.getBounds())) {
-			resynchronizeFrame(frame, windowState, graphicsConfiguration.getBounds());
-			return false;
+		final Rectangle currentBounds = frame.getBounds();
+		if (currentBounds == null || currentBounds.equals(targetBounds)) {
+			maximizedResynchronizationGuard.reset();
+			return true;
 		}
-		return true;
+		if (!needsMaximizedFrameResynchronization(frameGeometry.isX11Toolkit(), windowState, currentBounds, targetBounds)
+				|| !maximizedResynchronizationGuard.shouldRequest(currentBounds, targetBounds)) {
+			return true;
+		}
+		frame.setBounds(targetBounds);
+		frame.validate();
+		return false;
 	}
 
 	private static void resynchronizeNormalFrame(final JFrame frame, final int windowState,
@@ -280,14 +378,32 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return result;
 	}
 
-	private static Rectangle[] getScreenBounds() {
+	private static Rectangle[] getScreenWorkAreas() {
 		final GraphicsDevice[] screenDevices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-		final Rectangle[] screenBounds = new Rectangle[screenDevices.length];
+		final Rectangle[] workAreaBounds = new Rectangle[screenDevices.length];
 		for (int i = 0; i < screenDevices.length; i++) {
 			final GraphicsConfiguration graphicsConfiguration = screenDevices[i].getDefaultConfiguration();
-			screenBounds[i] = graphicsConfiguration == null ? null : graphicsConfiguration.getBounds();
+			if (graphicsConfiguration == null) {
+				workAreaBounds[i] = null;
+				continue;
+			}
+			workAreaBounds[i] = getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
 		}
-		return screenBounds;
+		return workAreaBounds;
+	}
+
+	/**
+	 * Returns the screen insets of the given configuration, or {@code null} when they
+	 * cannot be determined. A missing result makes the screen's work area
+	 * unavailable instead of silently treating the full screen as usable.
+	 */
+	private static Insets getScreenInsets(final GraphicsConfiguration graphicsConfiguration) {
+		try {
+			return Toolkit.getDefaultToolkit().getScreenInsets(graphicsConfiguration);
+		}
+		catch (RuntimeException runtimeException) {
+			return null;
+		}
 	}
 
 	private static void resynchronizeFrame(final JFrame frame, final int windowState,
@@ -299,7 +415,10 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	}
 
 	private final JFrame frame;
+	private final FrameGeometry frameGeometry;
 	private Rectangle normalBounds;
+	private final MaximizedResynchronizationGuard maximizedResynchronizationGuard =
+			new MaximizedResynchronizationGuard();
 	private int lastKnownWindowState;
 	private boolean isResynchronizing;
 	private javax.swing.Timer deferredResynchronizationTimer;
@@ -307,7 +426,12 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	private static final int MAX_DEFERRED_RESYNCHRONIZATION_ATTEMPTS = 10;
 
 	private FrameResynchronizer(final JFrame frame) {
+		this(frame, DEFAULT_FRAME_GEOMETRY);
+	}
+
+	FrameResynchronizer(final JFrame frame, final FrameGeometry frameGeometry) {
 		this.frame = frame;
+		this.frameGeometry = frameGeometry;
 		normalBounds = new Rectangle(frame.getBounds());
 		lastKnownWindowState = frame.getExtendedState();
 	}
@@ -315,8 +439,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	@Override
 	public void windowOpened(final WindowEvent event) {
 		lastKnownWindowState = frame.getExtendedState();
-		resynchronizeOnStableState();
-		scheduleDeferredResynchronization();
+		final boolean maximized = (lastKnownWindowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		final boolean stable = resynchronizeOnStableState();
+		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
+			scheduleDeferredResynchronization();
+		}
 	}
 
 	@Override
@@ -328,15 +455,19 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 				&& (newState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 			resynchronizeOnStableState();
 		}
-		else if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
-				frame.getBounds(), normalBounds)) {
-			runGuardedResynchronization(new Runnable() {
-				@Override
-				public void run() {
-					resynchronizeFrame(frame, newState, normalBounds);
-					rememberNormalBounds();
-				}
-			});
+		else if ((oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
+			maximizedResynchronizationGuard.reset();
+			if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
+					frame.getBounds(), normalBounds)) {
+				runGuardedResynchronization(new Runnable() {
+					@Override
+					public void run() {
+						resynchronizeFrame(frame, newState, normalBounds);
+						rememberNormalBounds();
+					}
+				});
+			}
 		}
 	}
 
@@ -363,16 +494,21 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			return;
 		}
 		final int windowState = frame.getExtendedState();
-		if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
-			resynchronizeOnStableState();
+		final boolean maximized = (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		final boolean stable;
+		if (maximized) {
+			stable = resynchronizeOnStableState();
 		}
 		else if (isNormalWindowState(windowState)) {
-			resynchronizeOnStableState();
+			stable = resynchronizeOnStableState();
 		}
 		else {
 			rememberNormalBounds();
+			stable = true;
 		}
-		scheduleDeferredResynchronization();
+		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
+			scheduleDeferredResynchronization();
+		}
 	}
 
 	private void scheduleDeferredResynchronization() {
@@ -410,7 +546,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			public void run() {
 				final int windowState = frame.getExtendedState();
 				lastKnownWindowState = windowState;
-				final Rectangle nativeBounds = getNativeWindowBounds(frame);
+				final Rectangle nativeBounds = frameGeometry.getNativeWindowBounds(frame);
 				if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 					stable[0] = resynchronizeMaximizedFrame(frame, windowState, nativeBounds, normalBounds);
 				}
