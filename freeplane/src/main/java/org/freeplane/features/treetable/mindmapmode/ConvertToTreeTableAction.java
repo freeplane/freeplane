@@ -26,9 +26,7 @@ public class ConvertToTreeTableAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
-		if (selected == null || TreeTableModel.isTreeTableRoot(selected))
-			return;
-		TreeTableAppearance.ensureRowStyleExistsIn(selected.getMap());
-		Controller.getCurrentModeController().execute(new ToggleTreeTableActor(selected), selected.getMap());
+		if (selected != null)
+			TreeTableEditing.convertToTable(selected);
 	}
 }

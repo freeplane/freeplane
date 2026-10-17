@@ -1,6 +1,4 @@
-package org.freeplane.view.swing.map;
-
-import java.awt.Component;
+package org.freeplane.features.treetable.mindmapmode;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,12 +9,13 @@ import org.freeplane.core.util.TextUtils;
 
 class TreeTableDeletionConfirmation {
 
-	static boolean isConfirmed(final Component parent, final String message) {
+	static boolean isConfirmed(final String message) {
 		final JButton deleteButton = new JButton(TextUtils.getText("delete"));
 		final JButton cancelButton = new JButton(TextUtils.getText("cancel"));
 		final JOptionPane optionPane = new JOptionPane(message, JOptionPane.QUESTION_MESSAGE,
 			JOptionPane.DEFAULT_OPTION, null, new Object[] { deleteButton, cancelButton }, cancelButton);
-		final JDialog dialog = optionPane.createDialog(parent, TextUtils.getText("treetable.confirm_title"));
+		final JDialog dialog = optionPane.createDialog(UITools.getCurrentRootComponent(),
+			TextUtils.getText("treetable.confirm_title"));
 		deleteButton.addActionListener(event -> {
 			optionPane.setValue(JOptionPane.YES_OPTION);
 			dialog.dispose();

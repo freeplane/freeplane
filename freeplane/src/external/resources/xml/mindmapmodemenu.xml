@@ -803,6 +803,7 @@
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
 		<Entry name="treetable" textKey="menu_treetable" usedBy = "EDITOR">
 			<Entry name="ConvertToTreeTableAction" />
+			<Entry name="DeleteTreeTableAction" />
 		</Entry>
 		<Entry builder="separator" />
 		        <Entry name="BookmarkNodeAction" />

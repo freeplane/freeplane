@@ -30,7 +30,13 @@ class TreeTableCellEditor extends MouseAdapter {
 
 	TreeTableCellEditor(final MapView mapView) {
 		this.mapView = mapView;
-		this.headerMenu = new TreeTableHeaderMenu(mapView);
+		this.headerMenu = new TreeTableHeaderMenu(mapView, this);
+	}
+
+	void startEditingHeader(final TreeTableView treeTable, final int columnIndex) {
+		final String attributeKey = treeTable.getColumns().get(columnIndex).getAttributeKey();
+		startEditing(TreeTableCell.header(treeTable.getTreeTableRoot(), attributeKey,
+			treeTable.getHeaderTextBounds(columnIndex)));
 	}
 
 	@Override

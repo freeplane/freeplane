@@ -124,6 +124,40 @@ public class TreeTableNodesTest {
 	}
 
 	@Test
+	public void findsTreeTableRootItselfAsEnclosingRoot() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+
+		assertThat(TreeTableNodes.enclosingTreeTableRoot(projects)).isSameAs(projects);
+	}
+
+	@Test
+	public void findsTreeTableRootAboveRowAsEnclosingRoot() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+		final NodeModel subTask = childOf(childOf(projects, "Projet A"), "Sous-tache");
+
+		assertThat(TreeTableNodes.enclosingTreeTableRoot(subTask)).isSameAs(projects);
+	}
+
+	@Test
+	public void findsNoEnclosingRootOutsideTreeTable() {
+		final NodeModel unrelated = childOf(mapFake.getRoot(), "Autre");
+
+		assertThat(TreeTableNodes.enclosingTreeTableRoot(unrelated)).isNull();
+	}
+
+	@Test
+	public void prefersNearestTreeTableRootAsEnclosingRoot() {
+		final NodeModel outer = childOf(mapFake.getRoot(), "Externe");
+		TreeTableModel.createFor(outer);
+		final NodeModel inner = childOf(outer, "Interne");
+		TreeTableModel.createFor(inner);
+
+		assertThat(TreeTableNodes.enclosingTreeTableRoot(inner)).isSameAs(inner);
+	}
+
+	@Test
 	public void listsAllDescendantsAsRows() {
 		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
 		TreeTableModel.createFor(projects);

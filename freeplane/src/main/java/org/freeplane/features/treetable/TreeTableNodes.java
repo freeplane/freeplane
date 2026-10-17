@@ -15,6 +15,10 @@ public class TreeTableNodes {
 		return null;
 	}
 
+	public static NodeModel enclosingTreeTableRoot(final NodeModel node) {
+		return TreeTableModel.isTreeTableRoot(node) ? node : treeTableRootOf(node);
+	}
+
 	public static boolean isRow(final NodeModel node) {
 		return treeTableRootOf(node) != null;
 	}

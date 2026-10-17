@@ -4,8 +4,10 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.treetable.TreeTableColumn;
 import org.freeplane.features.treetable.TreeTableColumnNames;
 import org.freeplane.features.treetable.TreeTableColumns;
@@ -54,12 +56,26 @@ public class TreeTableEditing {
 		setColumns(treeTableRoot, columns.insertedRightOf(index, newColumn(columns)), "addTreeTableColumn");
 	}
 
-	public static void deleteColumn(final NodeModel treeTableRoot, final String attributeKey) {
+	public static void confirmAndDeleteColumn(final NodeModel treeTableRoot, final String attributeKey) {
 		final TreeTableColumns columns = TreeTableModel.columnsOf(treeTableRoot);
-		final int index = columns.indexOfAttributeKey(attributeKey);
-		if (index < 0 || !columns.canRemove())
+		if (!columns.containsAttributeKey(attributeKey) || !columns.canRemove())
 			return;
-		setColumns(treeTableRoot, columns.removedAt(index), "deleteTreeTableColumn");
+		final String message = TextUtils.format("treetable.confirm_delete_column", attributeKey);
+		if (TreeTableDeletionConfirmation.isConfirmed(message))
+			deleteColumn(treeTableRoot, attributeKey);
+	}
+
+	public static void confirmAndDeleteTable(final NodeModel treeTableRoot) {
+		if (!TreeTableModel.isTreeTableRoot(treeTableRoot))
+			return;
+		if (TreeTableDeletionConfirmation.isConfirmed(TextUtils.getText("treetable.confirm_delete_table")))
+			deleteTable(treeTableRoot);
+	}
+
+	private static void deleteColumn(final NodeModel treeTableRoot, final String attributeKey) {
+		final TreeTableColumns columns = TreeTableModel.columnsOf(treeTableRoot);
+		setColumns(treeTableRoot, columns.removedAt(columns.indexOfAttributeKey(attributeKey)),
+			"deleteTreeTableColumn");
 		for (final NodeModel row : TreeTableNodes.rowsOf(treeTableRoot))
 			removeAttribute(row, attributeKey);
 	}
@@ -80,11 +96,21 @@ public class TreeTableEditing {
 		setColumns(treeTableRoot, columns.movedFromTo(index, index + 1), "moveTreeTableColumnRight");
 	}
 
-	public static void deleteTable(final NodeModel treeTableRoot) {
-		if (!TreeTableModel.isTreeTableRoot(treeTableRoot))
+	public static void convertToTable(final NodeModel node) {
+		if (TreeTableModel.isTreeTableRoot(node))
 			return;
-		Controller.getCurrentModeController().execute(new ToggleTreeTableActor(treeTableRoot),
-			treeTableRoot.getMap());
+		TreeTableAppearance.ensureRowStyleExistsIn(node.getMap());
+		toggleTable(node);
+	}
+
+	private static void deleteTable(final NodeModel treeTableRoot) {
+		toggleTable(treeTableRoot);
+	}
+
+	private static void toggleTable(final NodeModel node) {
+		final MapModel map = node.getMap();
+		Controller.getCurrentModeController().execute(new ToggleTreeTableActor(node), map);
+		LogicalStyleController.getController().refreshMapLaterUndoable(map);
 	}
 
 	private static void setColumns(final NodeModel treeTableRoot, final TreeTableColumns columns,
