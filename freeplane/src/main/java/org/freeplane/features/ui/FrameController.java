@@ -61,7 +61,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.LookAndFeel;
-import javax.swing.PopupFactory;
 import javax.swing.RootPaneContainer;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
@@ -665,8 +664,6 @@ abstract public class FrameController implements ViewController {
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
-						if(PopupFactory.getSharedInstance().getClass().getName().equals("com.formdev.flatlaf.ui.FlatPopupFactory"))
-							PopupFactory.setSharedInstance(basicPopupFactory);
 					}
 					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
 						LogUtils.warn("Error while setting Look&Feel " + lookAndFeel + ", reverted to default");
@@ -681,7 +678,6 @@ abstract public class FrameController implements ViewController {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 	}
-	private static final PopupFactory basicPopupFactory;
 	static {
 		UIManager.getInstalledLookAndFeels();
 		OSKeyBindingManager.initialize();
@@ -693,7 +689,6 @@ abstract public class FrameController implements ViewController {
 	          }
 	        }
 	      });
-	    basicPopupFactory = new PopupFactory();
 	}
     private static void fixLookAndFeelUI(){
     	OSKeyBindingManager.applyToCurrentLookAndFeel();

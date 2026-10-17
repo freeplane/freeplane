@@ -49,6 +49,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.FrameResynchronizer;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -350,6 +351,7 @@ class ApplicationViewController extends FrameController {
 		});
 		frame.setFocusTraversalKeysEnabled(false);
         frame.setBounds(getStoredFrameBounds(frame));
+		FrameResynchronizer.install(frame);
 		frame.applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
 
