@@ -146,6 +146,22 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
 	}
 
+	/**
+	 * Applies the resolved work area to a maximized frame. The maximized predicate
+	 * owns the full-rectangle comparison, so a stale width or height is corrected
+	 * even when the frame origin already matches. Returns {@code true} when the
+	 * bounds were corrected.
+	 */
+	static boolean correctMaximizedFrameBounds(final boolean isX11Toolkit, final int windowState,
+			final JFrame frame, final Rectangle targetBounds) {
+		if (!needsMaximizedFrameResynchronization(isX11Toolkit, windowState, frame.getBounds(), targetBounds)) {
+			return false;
+		}
+		frame.setBounds(targetBounds);
+		frame.validate();
+		return true;
+	}
+
 	private static boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
 			final Rectangle nativeBounds, final Rectangle normalBounds) {
 		final Rectangle[] workAreaBounds = getScreenWorkAreas();
@@ -157,11 +173,8 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		if (targetBounds == null) {
 			return true;
 		}
-		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
-			resynchronizeFrame(frame, windowState, targetBounds);
-			return false;
-		}
-		return true;
+		final boolean corrected = correctMaximizedFrameBounds(isX11Toolkit(), windowState, frame, targetBounds);
+		return !corrected;
 	}
 
 	private static void resynchronizeNormalFrame(final JFrame frame, final int windowState,

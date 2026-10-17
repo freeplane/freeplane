@@ -1,10 +1,17 @@
 package org.freeplane.core.ui.components;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Rectangle;
+
+import javax.swing.JFrame;
 
 import org.junit.Test;
 
@@ -69,6 +76,47 @@ public class FrameResynchronizerTest {
         assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
             true, Frame.MAXIMIZED_BOTH,
             new Rectangle(0, 32, 1920, 1047), TOP_PANEL_WORK_AREA)).isTrue();
+    }
+
+    @Test
+    public void correctMaximizedFrameBounds_withSizeOnlyDifference_appliesTargetBounds() {
+        // The shared origin-only guard skips this correction, so a maximized frame
+        // whose origin is already correct would keep a stale size.
+        final JFrame frame = maximizedFrame(new Rectangle(0, 32, 1920, 1047));
+
+        final boolean corrected = FrameResynchronizer.correctMaximizedFrameBounds(
+            true, Frame.MAXIMIZED_BOTH, frame, TOP_PANEL_WORK_AREA);
+
+        assertThat(corrected).isTrue();
+        verify(frame).setBounds(TOP_PANEL_WORK_AREA);
+    }
+
+    @Test
+    public void correctMaximizedFrameBounds_withMatchingBounds_appliesNothing() {
+        final JFrame frame = maximizedFrame(TOP_PANEL_WORK_AREA);
+
+        final boolean corrected = FrameResynchronizer.correctMaximizedFrameBounds(
+            true, Frame.MAXIMIZED_BOTH, frame, TOP_PANEL_WORK_AREA);
+
+        assertThat(corrected).isFalse();
+        verify(frame, never()).setBounds(any(Rectangle.class));
+    }
+
+    @Test
+    public void correctMaximizedFrameBounds_withNonX11Toolkit_appliesNothing() {
+        final JFrame frame = maximizedFrame(new Rectangle(0, 32, 1920, 1047));
+
+        final boolean corrected = FrameResynchronizer.correctMaximizedFrameBounds(
+            false, Frame.MAXIMIZED_BOTH, frame, TOP_PANEL_WORK_AREA);
+
+        assertThat(corrected).isFalse();
+        verify(frame, never()).setBounds(any(Rectangle.class));
+    }
+
+    private static JFrame maximizedFrame(final Rectangle frameBounds) {
+        final JFrame frame = mock(JFrame.class);
+        when(frame.getBounds()).thenReturn(frameBounds);
+        return frame;
     }
 
     @Test
