@@ -162,7 +162,42 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return true;
 	}
 
-	private static boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
+	static final class MaximizedResynchronizationGuard {
+		private static final int MAX_ATTEMPTS = 10;
+		private Rectangle targetBounds;
+		private int attempts;
+
+		boolean shouldRequest(final Rectangle currentBounds, final Rectangle targetBounds) {
+			if (currentBounds == null || targetBounds == null || currentBounds.equals(targetBounds)) {
+				reset();
+				return false;
+			}
+			if (!targetBounds.equals(this.targetBounds)) {
+				this.targetBounds = new Rectangle(targetBounds);
+				attempts = 0;
+			}
+			if (attempts >= MAX_ATTEMPTS) {
+				return false;
+			}
+			attempts++;
+			return true;
+		}
+
+		boolean isExhausted() {
+			return attempts >= MAX_ATTEMPTS;
+		}
+
+		void reset() {
+			targetBounds = null;
+			attempts = 0;
+		}
+	}
+
+	static boolean shouldScheduleDeferredResynchronization(final boolean maximized, final boolean stable) {
+		return !maximized || !stable;
+	}
+
+	private boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
 			final Rectangle nativeBounds, final Rectangle normalBounds) {
 		final Rectangle[] workAreaBounds = getScreenWorkAreas();
 		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
@@ -173,8 +208,18 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		if (targetBounds == null) {
 			return true;
 		}
-		final boolean corrected = correctMaximizedFrameBounds(isX11Toolkit(), windowState, frame, targetBounds);
-		return !corrected;
+		final Rectangle currentBounds = frame.getBounds();
+		if (currentBounds == null || currentBounds.equals(targetBounds)) {
+			maximizedResynchronizationGuard.reset();
+			return true;
+		}
+		if (!needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, currentBounds, targetBounds)
+				|| !maximizedResynchronizationGuard.shouldRequest(currentBounds, targetBounds)) {
+			return true;
+		}
+		frame.setBounds(targetBounds);
+		frame.validate();
+		return false;
 	}
 
 	private static void resynchronizeNormalFrame(final JFrame frame, final int windowState,
@@ -362,6 +407,8 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 
 	private final JFrame frame;
 	private Rectangle normalBounds;
+	private final MaximizedResynchronizationGuard maximizedResynchronizationGuard =
+			new MaximizedResynchronizationGuard();
 	private int lastKnownWindowState;
 	private boolean isResynchronizing;
 	private javax.swing.Timer deferredResynchronizationTimer;
@@ -377,8 +424,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	@Override
 	public void windowOpened(final WindowEvent event) {
 		lastKnownWindowState = frame.getExtendedState();
-		resynchronizeOnStableState();
-		scheduleDeferredResynchronization();
+		final boolean maximized = (lastKnownWindowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		final boolean stable = resynchronizeOnStableState();
+		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
+			scheduleDeferredResynchronization();
+		}
 	}
 
 	@Override
@@ -390,15 +440,19 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 				&& (newState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 			resynchronizeOnStableState();
 		}
-		else if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
-				frame.getBounds(), normalBounds)) {
-			runGuardedResynchronization(new Runnable() {
-				@Override
-				public void run() {
-					resynchronizeFrame(frame, newState, normalBounds);
-					rememberNormalBounds();
-				}
-			});
+		else if ((oldState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+				&& (newState & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH) {
+			maximizedResynchronizationGuard.reset();
+			if (needsNormalFrameResynchronization(isX11Toolkit(), oldState, newState,
+					frame.getBounds(), normalBounds)) {
+				runGuardedResynchronization(new Runnable() {
+					@Override
+					public void run() {
+						resynchronizeFrame(frame, newState, normalBounds);
+						rememberNormalBounds();
+					}
+				});
+			}
 		}
 	}
 
@@ -425,16 +479,21 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			return;
 		}
 		final int windowState = frame.getExtendedState();
-		if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
-			resynchronizeOnStableState();
+		final boolean maximized = (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		final boolean stable;
+		if (maximized) {
+			stable = resynchronizeOnStableState();
 		}
 		else if (isNormalWindowState(windowState)) {
-			resynchronizeOnStableState();
+			stable = resynchronizeOnStableState();
 		}
 		else {
 			rememberNormalBounds();
+			stable = true;
 		}
-		scheduleDeferredResynchronization();
+		if (shouldScheduleDeferredResynchronization(maximized, stable)) {
+			scheduleDeferredResynchronization();
+		}
 	}
 
 	private void scheduleDeferredResynchronization() {

@@ -367,4 +367,51 @@ public class FrameResynchronizerTest {
         assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
             true, Frame.MAXIMIZED_BOTH, new Rectangle(0, 0, 2560, 1440), PRIMARY_SCREEN)).isFalse();
     }
+
+    @Test
+    public void maximizedGuard_allowsExactlyTenRequestsForOneTarget() {
+        final FrameResynchronizer.MaximizedResynchronizationGuard guard =
+            new FrameResynchronizer.MaximizedResynchronizationGuard();
+        final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle target = new Rectangle(0, 32, 1920, 1048);
+
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            assertThat(guard.shouldRequest(current, target)).isTrue();
+        }
+        assertThat(guard.isExhausted()).isTrue();
+        assertThat(guard.shouldRequest(current, target)).isFalse();
+    }
+
+    @Test
+    public void maximizedGuard_reachingTarget_resetsSameTargetBudget() {
+        final FrameResynchronizer.MaximizedResynchronizationGuard guard =
+            new FrameResynchronizer.MaximizedResynchronizationGuard();
+        final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle target = new Rectangle(0, 32, 1920, 1048);
+
+        assertThat(guard.shouldRequest(current, target)).isTrue();
+        assertThat(guard.shouldRequest(target, target)).isFalse();
+        assertThat(guard.shouldRequest(current, target)).isTrue();
+    }
+
+    @Test
+    public void maximizedGuard_reset_allowsARequestAfterLeavingAndReenteringMaximized() {
+        final FrameResynchronizer.MaximizedResynchronizationGuard guard =
+            new FrameResynchronizer.MaximizedResynchronizationGuard();
+        final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle target = new Rectangle(0, 32, 1920, 1048);
+
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            guard.shouldRequest(current, target);
+        }
+        guard.reset();
+        assertThat(guard.shouldRequest(current, target)).isTrue();
+    }
+
+    @Test
+    public void shouldScheduleDeferredResynchronization_stopsOnlyStableMaximizedRetries() {
+        assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(true, false)).isTrue();
+        assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(true, true)).isFalse();
+        assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(false, true)).isTrue();
+    }
 }
