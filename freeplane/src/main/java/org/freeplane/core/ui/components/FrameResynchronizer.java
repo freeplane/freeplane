@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
@@ -69,9 +70,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	}
 
 	static boolean needsMaximizedFrameResynchronization(final boolean isX11Toolkit, final int windowState,
-			final Rectangle frameBounds, final Rectangle screenBounds) {
+			final Rectangle frameBounds, final Rectangle targetBounds) {
 		return (windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				&& needsFrameResynchronization(isX11Toolkit, windowState, frameBounds, screenBounds);
+				&& isX11Toolkit && (windowState & Frame.ICONIFIED) == 0
+				&& frameBounds != null && targetBounds != null
+				&& !frameBounds.equals(targetBounds);
 	}
 
 	static boolean needsNormalFrameResynchronization(final boolean isX11Toolkit, final int oldState,
@@ -102,32 +105,60 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return targetBounds == null ? null : new Rectangle(targetBounds);
 	}
 
+	/**
+	 * Returns the usable work area of a screen, derived by shrinking the screen
+	 * rectangle by the given screen insets. Zero insets mean the complete screen
+	 * rectangle is usable. Returns {@code null} when the inputs are missing or the
+	 * derived rectangle has no area.
+	 */
+	static Rectangle getWorkAreaBounds(final Rectangle screenBounds, final Insets insets) {
+		if (screenBounds == null || insets == null) {
+			return null;
+		}
+		final int width = screenBounds.width - insets.left - insets.right;
+		final int height = screenBounds.height - insets.top - insets.bottom;
+		if (width <= 0 || height <= 0) {
+			return null;
+		}
+		return new Rectangle(screenBounds.x + insets.left, screenBounds.y + insets.top, width, height);
+	}
+
+	/**
+	 * Resolves the work area a maximized frame belongs to: the work area matching the
+	 * native window geometry first, the one matching the remembered normal bounds
+	 * second, and a copy of the given fallback work area last. Returns {@code null}
+	 * when no work area can be determined, so that callers keep the frame stable
+	 * instead of falling back to the full screen.
+	 */
+	static Rectangle findTargetMaximizedBounds(final Rectangle nativeBounds, final Rectangle normalBounds,
+			final Rectangle[] workAreaBounds, final Rectangle fallbackWorkArea) {
+		Rectangle targetBounds = findTargetScreenBounds(nativeBounds, workAreaBounds);
+		if (targetBounds == null) {
+			targetBounds = findTargetScreenBounds(normalBounds, workAreaBounds);
+		}
+		if (targetBounds != null) {
+			return targetBounds;
+		}
+		return fallbackWorkArea == null ? null : new Rectangle(fallbackWorkArea);
+	}
+
 	private static boolean isX11Toolkit() {
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
 	}
 
 	private static boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
 			final Rectangle nativeBounds, final Rectangle normalBounds) {
-		Rectangle targetBounds = null;
-		if (nativeBounds != null) {
-			targetBounds = findTargetScreenBounds(nativeBounds, getScreenBounds());
-		}
-		if (targetBounds == null) {
-			targetBounds = findTargetScreenBounds(normalBounds, getScreenBounds());
-		}
-		if (targetBounds != null) {
-			if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
-				resynchronizeFrame(frame, windowState, targetBounds);
-				return false;
-			}
-			return true;
-		}
+		final Rectangle[] workAreaBounds = getScreenWorkAreas();
 		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
-		if (graphicsConfiguration == null) {
+		final Rectangle fallbackWorkArea = graphicsConfiguration == null ? null
+				: getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
+		final Rectangle targetBounds = findTargetMaximizedBounds(nativeBounds, normalBounds, workAreaBounds,
+				fallbackWorkArea);
+		if (targetBounds == null) {
 			return true;
 		}
-		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), graphicsConfiguration.getBounds())) {
-			resynchronizeFrame(frame, windowState, graphicsConfiguration.getBounds());
+		if (needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, frame.getBounds(), targetBounds)) {
+			resynchronizeFrame(frame, windowState, targetBounds);
 			return false;
 		}
 		return true;
@@ -280,14 +311,32 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return result;
 	}
 
-	private static Rectangle[] getScreenBounds() {
+	private static Rectangle[] getScreenWorkAreas() {
 		final GraphicsDevice[] screenDevices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-		final Rectangle[] screenBounds = new Rectangle[screenDevices.length];
+		final Rectangle[] workAreaBounds = new Rectangle[screenDevices.length];
 		for (int i = 0; i < screenDevices.length; i++) {
 			final GraphicsConfiguration graphicsConfiguration = screenDevices[i].getDefaultConfiguration();
-			screenBounds[i] = graphicsConfiguration == null ? null : graphicsConfiguration.getBounds();
+			if (graphicsConfiguration == null) {
+				workAreaBounds[i] = null;
+				continue;
+			}
+			workAreaBounds[i] = getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
 		}
-		return screenBounds;
+		return workAreaBounds;
+	}
+
+	/**
+	 * Returns the screen insets of the given configuration, or {@code null} when they
+	 * cannot be determined. A missing result makes the screen's work area
+	 * unavailable instead of silently treating the full screen as usable.
+	 */
+	private static Insets getScreenInsets(final GraphicsConfiguration graphicsConfiguration) {
+		try {
+			return Toolkit.getDefaultToolkit().getScreenInsets(graphicsConfiguration);
+		}
+		catch (RuntimeException runtimeException) {
+			return null;
+		}
 	}
 
 	private static void resynchronizeFrame(final JFrame frame, final int windowState,

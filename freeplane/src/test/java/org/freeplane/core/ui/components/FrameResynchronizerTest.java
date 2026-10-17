@@ -3,6 +3,7 @@ package org.freeplane.core.ui.components;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.Rectangle;
 
 import org.junit.Test;
@@ -11,6 +12,64 @@ public class FrameResynchronizerTest {
     private static final Rectangle PRIMARY_SCREEN = new Rectangle(0, 0, 2560, 1440);
     private static final Rectangle LEFT_SCREEN = new Rectangle(0, 0, 1920, 1080);
     private static final Rectangle RIGHT_SCREEN = new Rectangle(5120, 0, 1920, 1080);
+    private static final Rectangle FULL_SCREEN = new Rectangle(0, 0, 1920, 1080);
+    private static final Rectangle TOP_PANEL_WORK_AREA = new Rectangle(0, 32, 1920, 1048);
+
+    @Test
+    public void getWorkAreaBounds_withTopInset_returnsUsableArea() {
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(32, 0, 0, 0)))
+            .isEqualTo(TOP_PANEL_WORK_AREA);
+    }
+
+    @Test
+    public void getWorkAreaBounds_withZeroInsets_preservesFullScreen() {
+        assertThat(FrameResynchronizer.getWorkAreaBounds(FULL_SCREEN, new Insets(0, 0, 0, 0)))
+            .isEqualTo(FULL_SCREEN);
+    }
+
+    @Test
+    public void findTargetMaximizedBounds_withNativeGeometry_selectsInsetWorkArea() {
+        assertThat(FrameResynchronizer.findTargetMaximizedBounds(
+            new Rectangle(0, 32, 1920, 1048), null,
+            new Rectangle[] { TOP_PANEL_WORK_AREA }, null))
+            .isEqualTo(TOP_PANEL_WORK_AREA);
+    }
+
+    @Test
+    public void findTargetMaximizedBounds_withDisjointNativeGeometry_usesNormalBoundsThenFallback() {
+        final Rectangle normalBounds = new Rectangle(0, 32, 1920, 1048);
+        final Rectangle fallback = new Rectangle(1920, 0, 1920, 1080);
+
+        assertThat(FrameResynchronizer.findTargetMaximizedBounds(
+            new Rectangle(4000, 0, 100, 100), normalBounds,
+            new Rectangle[] { TOP_PANEL_WORK_AREA }, fallback))
+            .isEqualTo(TOP_PANEL_WORK_AREA);
+        assertThat(FrameResynchronizer.findTargetMaximizedBounds(
+            new Rectangle(4000, 0, 100, 100), null,
+            new Rectangle[] { TOP_PANEL_WORK_AREA }, fallback))
+            .isEqualTo(fallback);
+    }
+
+    @Test
+    public void findTargetMaximizedBounds_withoutAnyWorkArea_returnsNull() {
+        assertThat(FrameResynchronizer.findTargetMaximizedBounds(
+            null, null, new Rectangle[] { null }, null)).isNull();
+    }
+
+    @Test
+    public void needsMaximizedFrameResynchronization_withTopInsetFrame_isStable() {
+        assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
+            true, Frame.MAXIMIZED_BOTH, TOP_PANEL_WORK_AREA, TOP_PANEL_WORK_AREA)).isFalse();
+        assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
+            true, Frame.MAXIMIZED_BOTH, FULL_SCREEN, TOP_PANEL_WORK_AREA)).isTrue();
+    }
+
+    @Test
+    public void needsMaximizedFrameResynchronization_withSizeOnlyDifference_returnsTrue() {
+        assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
+            true, Frame.MAXIMIZED_BOTH,
+            new Rectangle(0, 32, 1920, 1047), TOP_PANEL_WORK_AREA)).isTrue();
+    }
 
     @Test
     public void findTargetScreenBounds_withNativeGeometry_matchesContainingScreen() {
