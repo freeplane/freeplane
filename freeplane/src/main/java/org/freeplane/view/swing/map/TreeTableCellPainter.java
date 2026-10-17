@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -30,15 +29,8 @@ class TreeTableCellPainter {
 	}
 
 	void paintTreeTables(final Graphics2D graphics) {
-		final NodeView rootView = mapView.getRoot();
-		if (rootView == null)
-			return;
-		final List<NodeView> treeTableRoots = TreeTableView.findTreeTableRoots(rootView, new ArrayList<NodeView>());
-		for (final NodeView treeTableRoot : treeTableRoots) {
-			final TreeTableView treeTable = TreeTableView.of(mapView, treeTableRoot);
-			if (treeTable != null)
-				paintTreeTable(graphics, treeTable);
-		}
+		for (final TreeTableView treeTable : TreeTableView.allIn(mapView))
+			paintTreeTable(graphics, treeTable);
 	}
 
 	private void paintTreeTable(final Graphics2D graphics, final TreeTableView treeTable) {
@@ -75,8 +67,16 @@ class TreeTableCellPainter {
 		for (int i = 0; i < columns.size(); i++) {
 			final String attributeKey = columns.get(i).getAttributeKey();
 			if (!cellEditor.isEditing(treeTable.getTreeTableRoot(), attributeKey))
-				paintTextInCell(graphics, attributeKey, treeTable.getHeaderBounds(i));
+				paintTextInCell(graphics, attributeKey, treeTable.getHeaderTextBounds(i));
+			paintHeaderMenuButton(graphics, treeTable.getHeaderMenuButtonBounds(i));
 		}
+	}
+
+	private void paintHeaderMenuButton(final Graphics2D graphics, final Rectangle bounds) {
+		final FontMetrics metrics = graphics.getFontMetrics();
+		final int textX = bounds.x + (bounds.width - metrics.stringWidth(TreeTableHeaderButton.LABEL)) / 2;
+		final int baseline = bounds.y + (bounds.height + metrics.getAscent() - metrics.getDescent()) / 2;
+		graphics.drawString(TreeTableHeaderButton.LABEL, textX, baseline);
 	}
 
 	private void paintRows(final Graphics2D graphics, final TreeTableView treeTable) {

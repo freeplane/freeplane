@@ -7,7 +7,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -23,19 +23,26 @@ class TreeTableCellEditor extends MouseAdapter {
 	private static final String CANCEL_EDITING = "treeTableCancelEditing";
 
 	private final MapView mapView;
+	private final TreeTableHeaderMenu headerMenu;
 
 	private JTextField editor;
 	private TreeTableCell editedCell;
 
 	TreeTableCellEditor(final MapView mapView) {
 		this.mapView = mapView;
+		this.headerMenu = new TreeTableHeaderMenu(mapView);
 	}
 
 	@Override
 	public void mousePressed(final MouseEvent event) {
 		if (event.getButton() != MouseEvent.BUTTON1)
 			return;
-		final TreeTableCell cell = cellAt(event.getX(), event.getY());
+		final List<TreeTableView> treeTables = TreeTableView.allIn(mapView);
+		if (showHeaderMenuAt(treeTables, event.getX(), event.getY())) {
+			event.consume();
+			return;
+		}
+		final TreeTableCell cell = cellAt(treeTables, event.getX(), event.getY());
 		if (cell == null) {
 			stopEditing(true);
 			return;
@@ -44,14 +51,20 @@ class TreeTableCellEditor extends MouseAdapter {
 		startEditing(cell);
 	}
 
-	private TreeTableCell cellAt(final int x, final int y) {
-		final NodeView rootView = mapView.getRoot();
-		if (rootView == null)
-			return null;
-		for (final NodeView treeTableRoot : TreeTableView.findTreeTableRoots(rootView, new ArrayList<NodeView>())) {
-			final TreeTableView treeTable = TreeTableView.of(mapView, treeTableRoot);
-			if (treeTable == null)
-				continue;
+	private boolean showHeaderMenuAt(final List<TreeTableView> treeTables, final int x, final int y) {
+		for (final TreeTableView treeTable : treeTables) {
+			final int columnIndex = treeTable.headerMenuColumnAt(x, y);
+			if (columnIndex >= 0) {
+				stopEditing(true);
+				headerMenu.show(treeTable, columnIndex);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private TreeTableCell cellAt(final List<TreeTableView> treeTables, final int x, final int y) {
+		for (final TreeTableView treeTable : treeTables) {
 			final TreeTableCell cell = treeTable.cellAt(x, y);
 			if (cell != null)
 				return cell;

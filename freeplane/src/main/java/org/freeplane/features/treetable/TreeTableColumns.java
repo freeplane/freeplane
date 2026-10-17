@@ -109,6 +109,18 @@ public class TreeTableColumns {
 		return replacedAt(index, columns.get(index).withAttributeKey(newAttributeKey));
 	}
 
+	public boolean canRemove() {
+		return columns.size() > 1;
+	}
+
+	public boolean canMoveLeft(final int index) {
+		return index > 0 && index < columns.size();
+	}
+
+	public boolean canMoveRight(final int index) {
+		return index >= 0 && index < columns.size() - 1;
+	}
+
 	public TreeTableColumns movedFromTo(final int fromIndex, final int toIndex) {
 		if (toIndex < 0 || toIndex >= columns.size())
 			throw new IndexOutOfBoundsException("can not move tree table column to " + toIndex);

@@ -178,6 +178,41 @@ public class TreeTableColumnsTest {
 	}
 
 	@Test
+	public void keepsAtLeastOneColumn() {
+		assertThat(TreeTableColumns.of(column("Pour"), column("Contre")).canRemove()).isTrue();
+		assertThat(TreeTableColumns.of(column("Pour")).canRemove()).isFalse();
+		assertThat(TreeTableColumns.empty().canRemove()).isFalse();
+	}
+
+	@Test
+	public void cannotMoveFirstColumnLeft() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Neutre"), column("Contre"));
+
+		assertThat(columns.canMoveLeft(0)).isFalse();
+		assertThat(columns.canMoveLeft(1)).isTrue();
+		assertThat(columns.canMoveLeft(2)).isTrue();
+	}
+
+	@Test
+	public void cannotMoveLastColumnRight() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Neutre"), column("Contre"));
+
+		assertThat(columns.canMoveRight(0)).isTrue();
+		assertThat(columns.canMoveRight(1)).isTrue();
+		assertThat(columns.canMoveRight(2)).isFalse();
+	}
+
+	@Test
+	public void cannotMoveColumnOutsideRange() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Contre"));
+
+		assertThat(columns.canMoveLeft(5)).isFalse();
+		assertThat(columns.canMoveRight(-1)).isFalse();
+		assertThat(TreeTableColumns.of(column("Pour")).canMoveLeft(0)).isFalse();
+		assertThat(TreeTableColumns.of(column("Pour")).canMoveRight(0)).isFalse();
+	}
+
+	@Test
 	public void replacesColumnAtGivenIndex() {
 		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Contre"));
 

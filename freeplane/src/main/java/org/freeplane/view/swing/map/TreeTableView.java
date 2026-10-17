@@ -25,9 +25,23 @@ class TreeTableView {
 	private final TreeTableColumns columns;
 	private final TreeTableGeometry geometry;
 	private final TreeTableGrid grid;
+	private final int buttonSize;
 	private final Rectangle tableBounds;
 	private final List<NodeView> rows;
 	private final List<Rectangle> rowBounds;
+
+	static List<TreeTableView> allIn(final MapView mapView) {
+		final List<TreeTableView> treeTables = new ArrayList<TreeTableView>();
+		final NodeView rootView = mapView.getRoot();
+		if (rootView == null)
+			return treeTables;
+		for (final NodeView treeTableRoot : findTreeTableRoots(rootView, new ArrayList<NodeView>())) {
+			final TreeTableView treeTable = of(mapView, treeTableRoot);
+			if (treeTable != null)
+				treeTables.add(treeTable);
+		}
+		return treeTables;
+	}
 
 	static List<NodeView> findTreeTableRoots(final NodeView view, final List<NodeView> treeTableRoots) {
 		if (TreeTableModel.isTreeTableRoot(view.getNode()))
@@ -74,6 +88,7 @@ class TreeTableView {
 		this.geometry = new TreeTableGeometry(treeColumnWidth.getWidth(), zoomedColumnWidths(mapView, columns),
 			mapView.getZoomed(COLUMN_GAP));
 		this.grid = createGrid(mapView);
+		this.buttonSize = mapView.getZoomed(TreeTableHeaderButton.SIZE);
 	}
 
 	private TreeTableGrid createGrid(final MapView mapView) {
@@ -126,6 +141,21 @@ class TreeTableView {
 			geometry.getColumnWidth(columnIndex), tableBounds.height);
 	}
 
+	Rectangle getHeaderTextBounds(final int columnIndex) {
+		return TreeTableHeaderButton.textBoundsIn(getHeaderBounds(columnIndex), buttonSize);
+	}
+
+	Rectangle getHeaderMenuButtonBounds(final int columnIndex) {
+		return TreeTableHeaderButton.boundsIn(getHeaderBounds(columnIndex), buttonSize);
+	}
+
+	int headerMenuColumnAt(final int x, final int y) {
+		final int columnIndex = geometry.getColumnIndexAt(x - tableBounds.x);
+		if (columnIndex < 0 || !isWithin(y, tableBounds))
+			return -1;
+		return getHeaderMenuButtonBounds(columnIndex).contains(x, y) ? columnIndex : -1;
+	}
+
 	Rectangle getCellBounds(final int rowIndex, final int columnIndex) {
 		final Rectangle row = rowBounds.get(rowIndex);
 		return new Rectangle(tableBounds.x + geometry.getColumnPosition(columnIndex), row.y,
@@ -138,7 +168,9 @@ class TreeTableView {
 			return null;
 		final String attributeKey = columns.get(columnIndex).getAttributeKey();
 		if (isWithin(y, tableBounds))
-			return TreeTableCell.header(treeTableRoot, attributeKey, getHeaderBounds(columnIndex));
+			return getHeaderTextBounds(columnIndex).contains(x, y)
+					? TreeTableCell.header(treeTableRoot, attributeKey, getHeaderTextBounds(columnIndex))
+					: null;
 		for (int rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
 			if (isWithin(y, rowBounds.get(rowIndex)))
 				return TreeTableCell.value(rows.get(rowIndex).getNode(), attributeKey,

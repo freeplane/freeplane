@@ -117,8 +117,7 @@ import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.treetable.TreeTableController;
-import org.freeplane.features.treetable.mindmapmode.AddTreeTableColumnAction;
-import org.freeplane.features.treetable.mindmapmode.ToggleTreeTableAction;
+import org.freeplane.features.treetable.mindmapmode.ConvertToTreeTableAction;
 import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPanel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.SortNodes;
@@ -305,8 +304,7 @@ public class MModeControllerFactory {
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();
 		TreeTableController.install(new TreeTableController());
-		modeController.addAction(new ToggleTreeTableAction());
-		modeController.addAction(new AddTreeTableColumnAction());
+		modeController.addAction(new ConvertToTreeTableAction());
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			@Override

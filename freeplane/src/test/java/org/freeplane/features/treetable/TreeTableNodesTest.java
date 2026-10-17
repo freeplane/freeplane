@@ -124,6 +124,36 @@ public class TreeTableNodesTest {
 	}
 
 	@Test
+	public void listsAllDescendantsAsRows() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+		final NodeModel projectA = childOf(projects, "Projet A");
+		final NodeModel subTask = childOf(projectA, "Sous-tache");
+		final NodeModel projectB = childOf(projects, "Projet B");
+
+		assertThat(TreeTableNodes.rowsOf(projects)).containsExactly(projectA, subTask, projectB);
+	}
+
+	@Test
+	public void listsNoRowsForTreeTableWithoutChildren() {
+		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
+		TreeTableModel.createFor(projects);
+
+		assertThat(TreeTableNodes.rowsOf(projects)).isEmpty();
+	}
+
+	@Test
+	public void doesNotListRowsOfNestedTreeTable() {
+		final NodeModel outer = childOf(mapFake.getRoot(), "Externe");
+		TreeTableModel.createFor(outer);
+		final NodeModel inner = childOf(outer, "Interne");
+		TreeTableModel.createFor(inner);
+		childOf(inner, "Ligne interne");
+
+		assertThat(TreeTableNodes.rowsOf(outer)).containsExactly(inner);
+	}
+
+	@Test
 	public void readsColumnsOfEnclosingTreeTable() {
 		final NodeModel projects = childOf(mapFake.getRoot(), "Projets");
 		TreeTableModel.createFor(projects).setColumns(TreeTableColumns.of(column("Pour"), column("Contre")));

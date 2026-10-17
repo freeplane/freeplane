@@ -1,5 +1,8 @@
 package org.freeplane.features.treetable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.freeplane.features.map.NodeModel;
 
 public class TreeTableNodes {
@@ -24,6 +27,20 @@ public class TreeTableNodes {
 				return depth;
 		}
 		return -1;
+	}
+
+	public static List<NodeModel> rowsOf(final NodeModel treeTableRoot) {
+		final List<NodeModel> rows = new ArrayList<NodeModel>();
+		collectRows(treeTableRoot, rows);
+		return rows;
+	}
+
+	private static void collectRows(final NodeModel parent, final List<NodeModel> rows) {
+		for (final NodeModel child : parent.getChildren()) {
+			rows.add(child);
+			if (!TreeTableModel.isTreeTableRoot(child))
+				collectRows(child, rows);
+		}
 	}
 
 	public static TreeTableColumns columnsFor(final NodeModel node) {

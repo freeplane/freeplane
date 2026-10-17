@@ -801,8 +801,9 @@
 		<Entry builder="separator" />
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
-		<Entry name="ToggleTreeTableAction" usedBy = "EDITOR" />
-		<Entry name="AddTreeTableColumnAction" usedBy = "EDITOR" />
+		<Entry name="treetable" textKey="menu_treetable" usedBy = "EDITOR">
+			<Entry name="ConvertToTreeTableAction" />
+		</Entry>
 		<Entry builder="separator" />
 		        <Entry name="BookmarkNodeAction" />
 				<Entry name="goto" processOnPopup="true">
