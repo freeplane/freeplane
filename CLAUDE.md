@@ -234,7 +234,7 @@ git diff | head -20  # Verify only expected changes, no deletions
 ## Git Workflow
 
 ### Branches
-- **`1.13.x`**: Main branch of the fork (tracks `upstream/1.13.x`). Never commit or push to it directly.
+- **`1.13.x`**: Main branch of the fork (tracks `upstream/1.13.x`). Never push to it unless asked.
 - **`feature/xxx`**: Feature branches, started from `1.13.x`. `origin/1.13.x` can be merged into a feature branch to avoid diverging.
 - Feature branches must always be prefixed with `feature/` and named **by subject** rather than by precise change (e.g. `feature/treeviewer`, not `feature/treetable-borders-and-rename`), so that follow-ups naturally attach to it.
 - **Never delete a Git branch** without being explicitly asked.
