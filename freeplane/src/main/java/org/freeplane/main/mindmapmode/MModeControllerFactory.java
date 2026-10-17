@@ -301,12 +301,12 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setNodeDropTargetListener(nodeDragListener.createDropListener());
 		LocationController.install(new MLocationController());
 		LayoutController.install(new MLayoutController());
-		TreeTableController.install(new TreeTableController());
-		modeController.addAction(new ToggleTreeTableAction());
-		modeController.addAction(new AddTreeTableColumnAction());
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();
+		TreeTableController.install(new TreeTableController());
+		modeController.addAction(new ToggleTreeTableAction());
+		modeController.addAction(new AddTreeTableColumnAction());
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			@Override

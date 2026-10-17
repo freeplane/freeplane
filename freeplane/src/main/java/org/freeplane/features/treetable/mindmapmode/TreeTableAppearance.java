@@ -4,7 +4,11 @@ import org.freeplane.api.ChildNodesLayout;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.layout.LayoutModel;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
+import org.freeplane.features.treetable.TreeTableRowStyle;
 
 class TreeTableAppearance {
 	static final ChildNodesLayout CHILD_NODES_LAYOUT = ChildNodesLayout.TOPTOBOTTOM_RIGHT_BOTTOM;
@@ -26,6 +30,13 @@ class TreeTableAppearance {
 			LayoutModel.createLayoutModel(node).setChildNodesLayout(childNodesLayout);
 			EdgeModel.createEdgeModel(node).setStyle(edgeStyle);
 		}
+	}
+
+	static void ensureRowStyleExistsIn(final MapModel map) {
+		final MLogicalStyleController styleController = (MLogicalStyleController) LogicalStyleController
+			.getController();
+		styleController.addUserStyleIfAbsent(map, TreeTableRowStyle.NAME,
+			styleNode -> EdgeModel.createEdgeModel(styleNode).setStyle(EDGE_STYLE));
 	}
 
 	static NodeAppearance applyTo(final NodeModel treeTableRoot) {

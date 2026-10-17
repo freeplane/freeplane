@@ -82,8 +82,8 @@ public class FModeControllerFactory {
 		CloudController.install(new CloudController(modeController));
 		LocationController.install(new LocationController());
 		LayoutController.install(new LayoutController());
-		TreeTableController.install(new TreeTableController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
+		TreeTableController.install(new TreeTableController());
 		MapStyle.install(true);
 		NodeStyleController.getController().shapeHandlers.addGetter(new Integer(0), new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 		    @Override

@@ -11,6 +11,7 @@ class ToggleTreeTableActor implements IActor {
 	private final NodeModel node;
 	private final boolean wasTreeTableRoot;
 	private final TreeTableColumns previousColumns;
+	private final TreeTableColumns enabledColumns;
 
 	private NodeAppearance replacedAppearance;
 
@@ -18,6 +19,8 @@ class ToggleTreeTableActor implements IActor {
 		this.node = node;
 		this.wasTreeTableRoot = TreeTableModel.isTreeTableRoot(node);
 		this.previousColumns = TreeTableModel.columnsOf(node);
+		this.enabledColumns = previousColumns.isEmpty() ? TreeTableEditing.withNewColumn(previousColumns)
+				: previousColumns;
 	}
 
 	@Override
@@ -25,7 +28,7 @@ class ToggleTreeTableActor implements IActor {
 		if (wasTreeTableRoot)
 			TreeTableModel.removeFrom(node);
 		else {
-			TreeTableModel.createFor(node).setColumns(previousColumns);
+			TreeTableModel.createFor(node).setColumns(enabledColumns);
 			replacedAppearance = TreeTableAppearance.applyTo(node);
 		}
 		fireNodeChanged();

@@ -137,10 +137,10 @@ public class HeadlessMModeControllerFactory {
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		LocationController.install(new MLocationController());
 		LayoutController.install(new MLayoutController());
-		TreeTableController.install(new TreeTableController());
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);
 		logicalStyleController.initM();
+		TreeTableController.install(new TreeTableController());
 		AttributeController.install(new MAttributeController(modeController));
 		modeController.addAction(new EditAttributesAction());
 		SpellCheckerController.install(modeController);

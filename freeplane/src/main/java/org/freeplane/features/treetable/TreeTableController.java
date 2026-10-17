@@ -4,6 +4,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.LogicalStyleController;
 
 public class TreeTableController implements IExtension {
 
@@ -19,5 +20,6 @@ public class TreeTableController implements IExtension {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		new TreeTableBuilder().registerBy(mapController.getReadManager(), mapController.getWriteManager());
+		TreeTableRowStyle.registerIn(LogicalStyleController.getController());
 	}
 }

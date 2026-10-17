@@ -3,14 +3,22 @@ package org.freeplane.features.treetable.mindmapmode;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.treetable.TreeTableColumn;
+import org.freeplane.features.treetable.TreeTableColumnNames;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableModel;
 
 public class TreeTableEditing {
 	private static final int ATTRIBUTE_NAME_COLUMN = 0;
 	private static final int ATTRIBUTE_VALUE_COLUMN = 1;
+
+	public static TreeTableColumns withNewColumn(final TreeTableColumns columns) {
+		final String prefix = TextUtils.getText("treetable.new_column");
+		return columns.appended(new TreeTableColumn(TreeTableColumnNames.unusedName(prefix, columns)));
+	}
 
 	public static void setCellValue(final NodeModel row, final String attributeKey, final String value) {
 		final MAttributeController attributeController = attributeController();
