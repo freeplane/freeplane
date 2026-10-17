@@ -1,0 +1,76 @@
+schema_version: 1
+topic: maximized-frame-resynchronization
+source_plan:
+  path: docs/superpowers/plans/2026-10-17-maximized-frame-resynchronization.md
+  sha256: c0da4399fd05ec0e55590582e5d1961f96ce03549008e8f1ccf7b30a3ee8203c
+  commit_oid: 5a79d0a46fa899c2d542ef0037a6ce491df85d83
+  tasks: [1, 2]
+validation_env:
+  JAVA_HOME: ~/.sdkman/candidates/java/21.0.8-zulu
+  note: Prefix every Gradle validation command with JAVA_HOME and PATH so the planned Java toolchain is used.
+lanes:
+  - id: frame-resynchronization
+    name: Maximized Frame Resynchronization Lane
+    task_ids: [T-001, T-002]
+    owns:
+      - freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java
+      - freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java
+    resources: [swing-frame-geometry]
+tasks:
+  - id: T-001
+    plan_task: 1
+    title: Add Work-Area Target Resolution
+    implementer_tier: advanced
+    lane: frame-resynchronization
+    sequence: 1
+    depends_on: []
+    ownership:
+      paths:
+        - freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java
+        - freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java
+    resources: [swing-frame-geometry]
+    interfaces:
+      produces:
+        - id: I-001
+          digest: dce8514bb28aaf73e2e2909de14fef9fed34e69da83204992e81438140e32e7e
+      consumes: []
+    validation:
+      - argv: ["gradle", ":freeplane:test", "--tests", "org.freeplane.core.ui.components.FrameResynchronizerTest"]
+        cwd: .
+        timeout_seconds: 1200
+  - id: T-002
+    plan_task: 2
+    title: Bound Maximized Feedback and Preserve Lifecycle Behavior
+    implementer_tier: capable
+    lane: frame-resynchronization
+    sequence: 2
+    depends_on: [T-001]
+    ownership:
+      paths:
+        - freeplane/src/main/java/org/freeplane/core/ui/components/FrameResynchronizer.java
+        - freeplane/src/test/java/org/freeplane/core/ui/components/FrameResynchronizerTest.java
+    resources: [swing-frame-geometry]
+    interfaces:
+      produces: []
+      consumes:
+        - id: I-001
+          digest: dce8514bb28aaf73e2e2909de14fef9fed34e69da83204992e81438140e32e7e
+    validation:
+      - argv: ["gradle", ":freeplane:test", "--tests", "org.freeplane.core.ui.components.FrameResynchronizerTest"]
+        cwd: .
+        timeout_seconds: 1200
+      - argv: ["gradle", ":freeplane:test"]
+        cwd: .
+        timeout_seconds: 1800
+produces:
+  - id: I-001
+    name: MaximizedWorkAreaTargetResolution
+    signature: "Task 1 exposes work-area target resolution through package-visible getWorkAreaBounds(Rectangle, Insets) and findTargetMaximizedBounds(Rectangle, Rectangle, Rectangle[], Rectangle), with exact maximized Rectangle.equals comparison."
+    sha256: dce8514bb28aaf73e2e2909de14fef9fed34e69da83204992e81438140e32e7e
+    producer: T-001
+consumes:
+  - id: I-001
+    name: MaximizedWorkAreaTargetResolution
+    signature: "Task 1 exposes work-area target resolution through package-visible getWorkAreaBounds(Rectangle, Insets) and findTargetMaximizedBounds(Rectangle, Rectangle, Rectangle[], Rectangle), with exact maximized Rectangle.equals comparison."
+    sha256: dce8514bb28aaf73e2e2909de14fef9fed34e69da83204992e81438140e32e7e
+    producer: T-001
