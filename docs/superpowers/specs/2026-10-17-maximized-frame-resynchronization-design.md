@@ -55,7 +55,8 @@ The maximized path will use an instance-local guard separate from the normal-win
 - The key is the exact `(x, y, width, height)` of the current maximized work-area target.
 - `MAX_MAXIMIZED_RESYNCHRONIZATION_ATTEMPTS` is `10`.
 - The first `setBounds` request for a target counts as attempt `1`.
-- Before every maximized `setBounds` request, immediate or deferred, the guard compares the current frame bounds and target with exact `Rectangle.equals` semantics.
+- Before every maximized `setBounds` request, immediate or deferred, the maximized predicate and guard compare the current frame and target with exact `Rectangle.equals` semantics, including width and height.
+- The maximized predicate does not broaden the shared normal-window `needsFrameResynchronization` behavior; the full-rectangle comparison is confined to `needsMaximizedFrameResynchronization`.
 - If the frame already equals the target, the guard resets and reports stable.
 - If the target differs from the previous target, the guard replaces the stored target and resets its count to zero before evaluating the request.
 - If the unchanged target has fewer than ten requests, the guard increments the count and permits one request.
