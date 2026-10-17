@@ -4,14 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.lang.reflect.Field;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import org.junit.Test;
 
@@ -413,5 +418,116 @@ public class FrameResynchronizerTest {
         assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(true, false)).isTrue();
         assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(true, true)).isFalse();
         assertThat(FrameResynchronizer.shouldScheduleDeferredResynchronization(false, true)).isTrue();
+    }
+
+    @Test
+    public void maximizedListener_stopsAfterTenSameTargetCorrections() {
+        final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+        final JFrame frame = resynchronizerFrame(current, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, current, TOP_PANEL_WORK_AREA);
+
+        for (int attempt = 1; attempt <= 11; attempt++) {
+            resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.NORMAL, Frame.MAXIMIZED_BOTH));
+        }
+
+        verify(frame, times(10)).setBounds(TOP_PANEL_WORK_AREA);
+    }
+
+    @Test
+    public void maximizedListener_leavingAndReenteringMaximizedResetsGuard() {
+        final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+        final JFrame frame = resynchronizerFrame(current, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, current, TOP_PANEL_WORK_AREA);
+
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.NORMAL, Frame.MAXIMIZED_BOTH));
+        }
+        when(frame.getExtendedState()).thenReturn(Frame.NORMAL);
+        resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.MAXIMIZED_BOTH, Frame.NORMAL));
+        when(frame.getExtendedState()).thenReturn(Frame.MAXIMIZED_BOTH);
+        resynchronizer.windowStateChanged(windowStateChangedEvent(Frame.NORMAL, Frame.MAXIMIZED_BOTH));
+
+        verify(frame, times(11)).setBounds(TOP_PANEL_WORK_AREA);
+    }
+
+    @Test
+    public void maximizedComponentEvent_doesNotScheduleTimerWhenStable() throws Exception {
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(TOP_PANEL_WORK_AREA, TOP_PANEL_WORK_AREA);
+
+        resynchronizer.componentMoved(mock(ComponentEvent.class));
+
+        final Timer timer = deferredResynchronizationTimer(resynchronizer);
+        if (timer != null) {
+            timer.stop();
+        }
+        assertThat(timer).isNull();
+    }
+
+    @Test
+    public void maximizedWindowOpened_doesNotScheduleTimerWhenStable() throws Exception {
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(TOP_PANEL_WORK_AREA, TOP_PANEL_WORK_AREA);
+
+        resynchronizer.windowOpened(mock(WindowEvent.class));
+
+        final Timer timer = deferredResynchronizationTimer(resynchronizer);
+        if (timer != null) {
+            timer.stop();
+        }
+        assertThat(timer).isNull();
+    }
+
+    @Test
+    public void maximizedComponentEvent_correctsSizeOnlyMismatchThroughActivePath() throws Exception {
+        final Rectangle current = new Rectangle(0, 32, 1920, 1047);
+        final JFrame frame = resynchronizerFrame(current, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, current, TOP_PANEL_WORK_AREA);
+
+        resynchronizer.componentResized(mock(ComponentEvent.class));
+
+        verify(frame).setBounds(TOP_PANEL_WORK_AREA);
+        stopDeferredResynchronizationTimer(resynchronizer);
+    }
+
+    private static FrameResynchronizer maximizedResynchronizer(final Rectangle current,
+            final Rectangle target) {
+        return maximizedResynchronizer(resynchronizerFrame(current, Frame.MAXIMIZED_BOTH), current, target);
+    }
+
+    private static FrameResynchronizer maximizedResynchronizer(final JFrame frame, final Rectangle nativeBounds,
+            final Rectangle target) {
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(true);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(nativeBounds);
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { target });
+        return new FrameResynchronizer(frame, geometry);
+    }
+
+    private static JFrame resynchronizerFrame(final Rectangle bounds, final int windowState) {
+        final JFrame frame = mock(JFrame.class);
+        when(frame.getBounds()).thenReturn(bounds);
+        when(frame.getExtendedState()).thenReturn(windowState);
+        return frame;
+    }
+
+    private static WindowEvent windowStateChangedEvent(final int oldState, final int newState) {
+        final WindowEvent event = mock(WindowEvent.class);
+        when(event.getOldState()).thenReturn(oldState);
+        when(event.getNewState()).thenReturn(newState);
+        return event;
+    }
+
+    private static Timer deferredResynchronizationTimer(final FrameResynchronizer resynchronizer)
+            throws ReflectiveOperationException {
+        final Field timerField = FrameResynchronizer.class.getDeclaredField("deferredResynchronizationTimer");
+        timerField.setAccessible(true);
+        return (Timer) timerField.get(resynchronizer);
+    }
+
+    private static void stopDeferredResynchronizationTimer(final FrameResynchronizer resynchronizer)
+            throws ReflectiveOperationException {
+        final Timer timer = deferredResynchronizationTimer(resynchronizer);
+        if (timer != null) {
+            timer.stop();
+        }
     }
 }

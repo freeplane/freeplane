@@ -197,9 +197,34 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return !maximized || !stable;
 	}
 
+	interface FrameGeometry {
+		boolean isX11Toolkit();
+
+		Rectangle getNativeWindowBounds(Component component);
+
+		Rectangle[] getScreenWorkAreas();
+	}
+
+	private static final FrameGeometry DEFAULT_FRAME_GEOMETRY = new FrameGeometry() {
+		@Override
+		public boolean isX11Toolkit() {
+			return FrameResynchronizer.isX11Toolkit();
+		}
+
+		@Override
+		public Rectangle getNativeWindowBounds(final Component component) {
+			return FrameResynchronizer.getNativeWindowBounds(component);
+		}
+
+		@Override
+		public Rectangle[] getScreenWorkAreas() {
+			return FrameResynchronizer.getScreenWorkAreas();
+		}
+	};
+
 	private boolean resynchronizeMaximizedFrame(final JFrame frame, final int windowState,
 			final Rectangle nativeBounds, final Rectangle normalBounds) {
-		final Rectangle[] workAreaBounds = getScreenWorkAreas();
+		final Rectangle[] workAreaBounds = frameGeometry.getScreenWorkAreas();
 		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
 		final Rectangle fallbackWorkArea = graphicsConfiguration == null ? null
 				: getWorkAreaBounds(graphicsConfiguration.getBounds(), getScreenInsets(graphicsConfiguration));
@@ -213,7 +238,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			maximizedResynchronizationGuard.reset();
 			return true;
 		}
-		if (!needsMaximizedFrameResynchronization(isX11Toolkit(), windowState, currentBounds, targetBounds)
+		if (!needsMaximizedFrameResynchronization(frameGeometry.isX11Toolkit(), windowState, currentBounds, targetBounds)
 				|| !maximizedResynchronizationGuard.shouldRequest(currentBounds, targetBounds)) {
 			return true;
 		}
@@ -406,6 +431,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	}
 
 	private final JFrame frame;
+	private final FrameGeometry frameGeometry;
 	private Rectangle normalBounds;
 	private final MaximizedResynchronizationGuard maximizedResynchronizationGuard =
 			new MaximizedResynchronizationGuard();
@@ -416,7 +442,12 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 	private static final int MAX_DEFERRED_RESYNCHRONIZATION_ATTEMPTS = 10;
 
 	private FrameResynchronizer(final JFrame frame) {
+		this(frame, DEFAULT_FRAME_GEOMETRY);
+	}
+
+	FrameResynchronizer(final JFrame frame, final FrameGeometry frameGeometry) {
 		this.frame = frame;
+		this.frameGeometry = frameGeometry;
 		normalBounds = new Rectangle(frame.getBounds());
 		lastKnownWindowState = frame.getExtendedState();
 	}
@@ -531,7 +562,7 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			public void run() {
 				final int windowState = frame.getExtendedState();
 				lastKnownWindowState = windowState;
-				final Rectangle nativeBounds = getNativeWindowBounds(frame);
+				final Rectangle nativeBounds = frameGeometry.getNativeWindowBounds(frame);
 				if ((windowState & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
 					stable[0] = resynchronizeMaximizedFrame(frame, windowState, nativeBounds, normalBounds);
 				}
