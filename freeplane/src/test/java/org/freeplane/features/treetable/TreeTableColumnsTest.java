@@ -40,6 +40,49 @@ public class TreeTableColumnsTest {
 	}
 
 	@Test
+	public void renamesColumnKeepingItsPositionAndWidth() {
+		final TreeTableColumn contre = new TreeTableColumn("Contre", new Quantity<LengthUnit>(80, LengthUnit.pt));
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), contre, column("Neutre"));
+
+		final TreeTableColumns changed = columns.renamed("Contre", "Oppose");
+
+		assertThat(attributeKeysOf(changed)).containsExactly("Pour", "Oppose", "Neutre");
+		assertThat(changed.get(1).getWidth()).isEqualTo(contre.getWidth());
+	}
+
+	@Test
+	public void rejectsRenamingOfUnknownColumn() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"));
+
+		assertThatThrownBy(() -> columns.renamed("Contre", "Oppose"))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void acceptsRenamingToUnusedNonBlankKey() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Contre"));
+
+		assertThat(columns.acceptsRenaming("Contre", "Oppose")).isTrue();
+	}
+
+	@Test
+	public void refusesRenamingToBlankOrUsedKey() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Contre"));
+
+		assertThat(columns.acceptsRenaming("Contre", " ")).isFalse();
+		assertThat(columns.acceptsRenaming("Contre", null)).isFalse();
+		assertThat(columns.acceptsRenaming("Contre", "Pour")).isFalse();
+		assertThat(columns.acceptsRenaming("Contre", "Contre")).isFalse();
+	}
+
+	@Test
+	public void refusesRenamingOfUnknownColumn() {
+		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"));
+
+		assertThat(columns.acceptsRenaming("Contre", "Oppose")).isFalse();
+	}
+
+	@Test
 	public void insertsColumnLeftOfGivenIndex() {
 		final TreeTableColumns columns = TreeTableColumns.of(column("Pour"), column("Contre"));
 

@@ -1,31 +1,23 @@
 package org.freeplane.features.treetable.mindmapmode;
 
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.treetable.TreeTableColumn;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableModel;
 
-class AddTreeTableColumnActor implements IActor {
+class SetTreeTableColumnsActor implements IActor {
 	private final NodeModel treeTableRoot;
 	private final TreeTableColumns previousColumns;
 	private final TreeTableColumns newColumns;
+	private final String description;
 
-	AddTreeTableColumnActor(final NodeModel treeTableRoot) {
+	SetTreeTableColumnsActor(final NodeModel treeTableRoot, final TreeTableColumns newColumns,
+			final String description) {
 		this.treeTableRoot = treeTableRoot;
 		this.previousColumns = TreeTableModel.columnsOf(treeTableRoot);
-		this.newColumns = previousColumns.appended(new TreeTableColumn(unusedColumnName(previousColumns)));
-	}
-
-	private static String unusedColumnName(final TreeTableColumns columns) {
-		final String prefix = TextUtils.getText("treetable.new_column");
-		for (int index = columns.size() + 1;; index++) {
-			final String name = prefix + " " + index;
-			if (!columns.containsAttributeKey(name))
-				return name;
-		}
+		this.newColumns = newColumns;
+		this.description = description;
 	}
 
 	@Override
@@ -46,6 +38,6 @@ class AddTreeTableColumnActor implements IActor {
 
 	@Override
 	public String getDescription() {
-		return "addTreeTableColumn";
+		return description;
 	}
 }

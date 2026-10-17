@@ -15,10 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.treetable.mindmapmode.TreeTableEditing;
 
 class TreeTableCellEditor extends MouseAdapter {
 	private static final String CANCEL_EDITING = "treeTableCancelEditing";
@@ -60,8 +59,8 @@ class TreeTableCellEditor extends MouseAdapter {
 		return null;
 	}
 
-	boolean isEditing(final NodeModel row, final String attributeKey) {
-		return editedCell != null && editedCell.getRow() == row
+	boolean isEditing(final NodeModel node, final String attributeKey) {
+		return editedCell != null && editedCell.getNode() == node
 			&& editedCell.getAttributeKey().equals(attributeKey);
 	}
 
@@ -114,7 +113,9 @@ class TreeTableCellEditor extends MouseAdapter {
 	}
 
 	private String currentValue(final TreeTableCell cell) {
-		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(cell.getRow());
+		if (cell.isHeader())
+			return cell.getAttributeKey();
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(cell.getNode());
 		final int index = attributes.getAttributeIndex(cell.getAttributeKey());
 		if (index < 0)
 			return "";
@@ -125,15 +126,9 @@ class TreeTableCellEditor extends MouseAdapter {
 	private void commitValue(final TreeTableCell cell, final String value) {
 		if (currentValue(cell).equals(value))
 			return;
-		final NodeModel row = cell.getRow();
-		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
-		final MAttributeController attributeController = (MAttributeController) AttributeController
-			.getController(mapView.getModeController());
-		final int index = attributes.getAttributeIndex(cell.getAttributeKey());
-		if (index < 0)
-			attributeController.performInsertRow(row, attributes, attributes.getRowCount(),
-				cell.getAttributeKey(), value);
+		if (cell.isHeader())
+			TreeTableEditing.renameColumn(cell.getNode(), cell.getAttributeKey(), value);
 		else
-			attributeController.performSetValueAt(row, attributes, value, index, 1);
+			TreeTableEditing.setCellValue(cell.getNode(), cell.getAttributeKey(), value);
 	}
 }

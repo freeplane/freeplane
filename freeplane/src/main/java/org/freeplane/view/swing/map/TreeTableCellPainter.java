@@ -1,18 +1,25 @@
 package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.treetable.TreeTableColumns;
+import org.freeplane.features.treetable.TreeTableGrid;
 
 class TreeTableCellPainter {
 	private static final int TEXT_PADDING = 4;
+	private static final float THICK_LINE_WIDTH = 2f;
+	private static final float THIN_LINE_WIDTH = 1f;
+	private static final int THIN_LINE_ALPHA = 96;
 
 	private final MapView mapView;
 	private final TreeTableCellEditor cellEditor;
@@ -38,12 +45,38 @@ class TreeTableCellPainter {
 		graphics.setColor(mapView.getForeground());
 		paintHeaders(graphics, treeTable);
 		paintRows(graphics, treeTable);
+		paintGrid(graphics, treeTable.getGrid());
+	}
+
+	private void paintGrid(final Graphics2D graphics, final TreeTableGrid grid) {
+		final Stroke previousStroke = graphics.getStroke();
+		final Color previousColor = graphics.getColor();
+		graphics.setStroke(new BasicStroke(mapView.getZoom() * THIN_LINE_WIDTH));
+		graphics.setColor(translucent(previousColor));
+		for (int i = 0; i < grid.getRowSeparatorCount(); i++)
+			graphics.drawLine(grid.getLeft(), grid.getRowSeparatorY(i), grid.getRight(), grid.getRowSeparatorY(i));
+		graphics.setColor(previousColor);
+		graphics.setStroke(new BasicStroke(mapView.getZoom() * THICK_LINE_WIDTH));
+		graphics.drawRect(grid.getLeft(), grid.getTop(), grid.getRight() - grid.getLeft(),
+			grid.getBottom() - grid.getTop());
+		if (grid.hasHeaderSeparator())
+			graphics.drawLine(grid.getLeft(), grid.getHeaderSeparatorY(), grid.getRight(), grid.getHeaderSeparatorY());
+		for (int i = 0; i < grid.getColumnSeparatorCount(); i++)
+			graphics.drawLine(grid.getColumnSeparatorX(i), grid.getTop(), grid.getColumnSeparatorX(i), grid.getBottom());
+		graphics.setStroke(previousStroke);
+	}
+
+	private static Color translucent(final Color color) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), THIN_LINE_ALPHA);
 	}
 
 	private void paintHeaders(final Graphics2D graphics, final TreeTableView treeTable) {
 		final TreeTableColumns columns = treeTable.getColumns();
-		for (int i = 0; i < columns.size(); i++)
-			paintTextInCell(graphics, columns.get(i).getAttributeKey(), treeTable.getHeaderBounds(i));
+		for (int i = 0; i < columns.size(); i++) {
+			final String attributeKey = columns.get(i).getAttributeKey();
+			if (!cellEditor.isEditing(treeTable.getTreeTableRoot(), attributeKey))
+				paintTextInCell(graphics, attributeKey, treeTable.getHeaderBounds(i));
+		}
 	}
 
 	private void paintRows(final Graphics2D graphics, final TreeTableView treeTable) {

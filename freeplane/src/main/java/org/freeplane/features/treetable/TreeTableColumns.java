@@ -97,6 +97,18 @@ public class TreeTableColumns {
 		return new TreeTableColumns(changed);
 	}
 
+	public boolean acceptsRenaming(final String oldAttributeKey, final String newAttributeKey) {
+		return containsAttributeKey(oldAttributeKey) && newAttributeKey != null
+			&& !newAttributeKey.trim().isEmpty() && !containsAttributeKey(newAttributeKey);
+	}
+
+	public TreeTableColumns renamed(final String oldAttributeKey, final String newAttributeKey) {
+		final int index = indexOfAttributeKey(oldAttributeKey);
+		if (index < 0)
+			throw new IllegalArgumentException("unknown tree table column key " + oldAttributeKey);
+		return replacedAt(index, columns.get(index).withAttributeKey(newAttributeKey));
+	}
+
 	public TreeTableColumns movedFromTo(final int fromIndex, final int toIndex) {
 		if (toIndex < 0 || toIndex >= columns.size())
 			throw new IndexOutOfBoundsException("can not move tree table column to " + toIndex);

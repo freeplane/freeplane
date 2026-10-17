@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.treetable.TreeTableColumn;
+import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableModel;
 import org.freeplane.features.treetable.TreeTableNodes;
 
@@ -32,8 +35,19 @@ public class AddTreeTableColumnAction extends AFreeplaneAction {
 		final NodeModel treeTableRoot = enclosingTreeTableRoot(selected);
 		if (treeTableRoot == null)
 			return;
-		Controller.getCurrentModeController()
-			.execute(new AddTreeTableColumnActor(treeTableRoot), treeTableRoot.getMap());
+		final TreeTableColumns columns = TreeTableModel.columnsOf(treeTableRoot);
+		final TreeTableColumns newColumns = columns.appended(new TreeTableColumn(unusedColumnName(columns)));
+		Controller.getCurrentModeController().execute(
+			new SetTreeTableColumnsActor(treeTableRoot, newColumns, "addTreeTableColumn"), treeTableRoot.getMap());
+	}
+
+	private static String unusedColumnName(final TreeTableColumns columns) {
+		final String prefix = TextUtils.getText("treetable.new_column");
+		for (int index = columns.size() + 1;; index++) {
+			final String name = prefix + " " + index;
+			if (!columns.containsAttributeKey(name))
+				return name;
+		}
 	}
 
 	private NodeModel enclosingTreeTableRoot(final NodeModel node) {

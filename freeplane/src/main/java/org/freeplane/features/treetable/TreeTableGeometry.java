@@ -36,6 +36,10 @@ public class TreeTableGeometry {
 		return treeColumnWidth;
 	}
 
+	public int getGap() {
+		return gap;
+	}
+
 	public int getColumnCount() {
 		return columnWidths.length;
 	}
