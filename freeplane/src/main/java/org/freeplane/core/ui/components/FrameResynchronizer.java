@@ -146,22 +146,6 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		return X11_TOOLKIT_CLASS_NAME.equals(Toolkit.getDefaultToolkit().getClass().getName());
 	}
 
-	/**
-	 * Applies the resolved work area to a maximized frame. The maximized predicate
-	 * owns the full-rectangle comparison, so a stale width or height is corrected
-	 * even when the frame origin already matches. Returns {@code true} when the
-	 * bounds were corrected.
-	 */
-	static boolean correctMaximizedFrameBounds(final boolean isX11Toolkit, final int windowState,
-			final JFrame frame, final Rectangle targetBounds) {
-		if (!needsMaximizedFrameResynchronization(isX11Toolkit, windowState, frame.getBounds(), targetBounds)) {
-			return false;
-		}
-		frame.setBounds(targetBounds);
-		frame.validate();
-		return true;
-	}
-
 	static final class MaximizedResynchronizationGuard {
 		private static final int MAX_ATTEMPTS = 10;
 		private Rectangle targetBounds;

@@ -11,11 +11,14 @@ import static org.mockito.Mockito.when;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Field;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.junit.Test;
@@ -81,47 +84,6 @@ public class FrameResynchronizerTest {
         assertThat(FrameResynchronizer.needsMaximizedFrameResynchronization(
             true, Frame.MAXIMIZED_BOTH,
             new Rectangle(0, 32, 1920, 1047), TOP_PANEL_WORK_AREA)).isTrue();
-    }
-
-    @Test
-    public void correctMaximizedFrameBounds_withSizeOnlyDifference_appliesTargetBounds() {
-        // The shared origin-only guard skips this correction, so a maximized frame
-        // whose origin is already correct would keep a stale size.
-        final JFrame frame = maximizedFrame(new Rectangle(0, 32, 1920, 1047));
-
-        final boolean corrected = FrameResynchronizer.correctMaximizedFrameBounds(
-            true, Frame.MAXIMIZED_BOTH, frame, TOP_PANEL_WORK_AREA);
-
-        assertThat(corrected).isTrue();
-        verify(frame).setBounds(TOP_PANEL_WORK_AREA);
-    }
-
-    @Test
-    public void correctMaximizedFrameBounds_withMatchingBounds_appliesNothing() {
-        final JFrame frame = maximizedFrame(TOP_PANEL_WORK_AREA);
-
-        final boolean corrected = FrameResynchronizer.correctMaximizedFrameBounds(
-            true, Frame.MAXIMIZED_BOTH, frame, TOP_PANEL_WORK_AREA);
-
-        assertThat(corrected).isFalse();
-        verify(frame, never()).setBounds(any(Rectangle.class));
-    }
-
-    @Test
-    public void correctMaximizedFrameBounds_withNonX11Toolkit_appliesNothing() {
-        final JFrame frame = maximizedFrame(new Rectangle(0, 32, 1920, 1047));
-
-        final boolean corrected = FrameResynchronizer.correctMaximizedFrameBounds(
-            false, Frame.MAXIMIZED_BOTH, frame, TOP_PANEL_WORK_AREA);
-
-        assertThat(corrected).isFalse();
-        verify(frame, never()).setBounds(any(Rectangle.class));
-    }
-
-    private static JFrame maximizedFrame(final Rectangle frameBounds) {
-        final JFrame frame = mock(JFrame.class);
-        when(frame.getBounds()).thenReturn(frameBounds);
-        return frame;
     }
 
     @Test
@@ -451,16 +413,88 @@ public class FrameResynchronizerTest {
     }
 
     @Test
+    public void maximizedComponentEvents_andDeferredRetries_shareTenRequestBudget() throws Exception {
+        final JFrame frame = resynchronizerFrame(FULL_SCREEN, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, FULL_SCREEN, TOP_PANEL_WORK_AREA);
+        final ComponentEvent event = mock(ComponentEvent.class);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                // Keep reporting the same stale bounds, as if the WM ignored each request.
+                for (int cycle = 1; cycle <= 5; cycle++) {
+                    resynchronizer.componentMoved(event);
+                    verify(frame, times(2 * cycle - 1)).setBounds(TOP_PANEL_WORK_AREA);
+                    fireDeferredResynchronizationTimer(resynchronizer);
+                    verify(frame, times(2 * cycle)).setBounds(TOP_PANEL_WORK_AREA);
+                }
+
+                final Timer pendingTimer = deferredResynchronizationTimer(resynchronizer);
+                assertThat(pendingTimer).isNotNull();
+                for (int eventCount = 0; eventCount < 3; eventCount++) {
+                    resynchronizer.componentMoved(event);
+                    verify(frame, times(10)).setBounds(any(Rectangle.class));
+                    assertThat(deferredResynchronizationTimer(resynchronizer)).isSameAs(pendingTimer);
+                }
+                fireDeferredResynchronizationTimer(resynchronizer);
+                verify(frame, times(10)).setBounds(any(Rectangle.class));
+                verify(frame, times(10)).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void maximizedComponentEvents_afterDeferredExhaustion_doNotRestartTimer() throws Exception {
+        final JFrame frame = resynchronizerFrame(FULL_SCREEN, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, FULL_SCREEN, TOP_PANEL_WORK_AREA);
+        final ComponentEvent event = mock(ComponentEvent.class);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(event);
+                for (int attempt = 2; attempt <= 10; attempt++) {
+                    fireDeferredResynchronizationTimer(resynchronizer);
+                }
+                verify(frame, times(10)).setBounds(TOP_PANEL_WORK_AREA);
+
+                // The next deferred check must stop without making an eleventh request.
+                fireDeferredResynchronizationTimer(resynchronizer);
+                verify(frame, times(10)).setBounds(any(Rectangle.class));
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                for (int eventCount = 0; eventCount < 3; eventCount++) {
+                    resynchronizer.componentMoved(event);
+                    verify(frame, times(10)).setBounds(any(Rectangle.class));
+                    assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+                }
+                verify(frame, times(10)).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
     public void maximizedComponentEvent_doesNotScheduleTimerWhenStable() throws Exception {
-        final FrameResynchronizer resynchronizer = maximizedResynchronizer(TOP_PANEL_WORK_AREA, TOP_PANEL_WORK_AREA);
+        final JFrame frame = resynchronizerFrame(TOP_PANEL_WORK_AREA, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, TOP_PANEL_WORK_AREA,
+            TOP_PANEL_WORK_AREA);
 
-        resynchronizer.componentMoved(mock(ComponentEvent.class));
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
 
-        final Timer timer = deferredResynchronizationTimer(resynchronizer);
-        if (timer != null) {
-            timer.stop();
-        }
-        assertThat(timer).isNull();
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
     }
 
     @Test
@@ -482,10 +516,41 @@ public class FrameResynchronizerTest {
         final JFrame frame = resynchronizerFrame(current, Frame.MAXIMIZED_BOTH);
         final FrameResynchronizer resynchronizer = maximizedResynchronizer(frame, current, TOP_PANEL_WORK_AREA);
 
-        resynchronizer.componentResized(mock(ComponentEvent.class));
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentResized(mock(ComponentEvent.class));
 
-        verify(frame).setBounds(TOP_PANEL_WORK_AREA);
-        stopDeferredResynchronizationTimer(resynchronizer);
+                verify(frame).setBounds(TOP_PANEL_WORK_AREA);
+                verify(frame).validate();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
+    }
+
+    @Test
+    public void maximizedComponentEvent_withNonX11Toolkit_appliesNothing() throws Exception {
+        final Rectangle current = new Rectangle(0, 32, 1920, 1047);
+        final JFrame frame = resynchronizerFrame(current, Frame.MAXIMIZED_BOTH);
+        final FrameResynchronizer.FrameGeometry geometry = mock(FrameResynchronizer.FrameGeometry.class);
+        when(geometry.isX11Toolkit()).thenReturn(false);
+        when(geometry.getNativeWindowBounds(frame)).thenReturn(current);
+        when(geometry.getScreenWorkAreas()).thenReturn(new Rectangle[] { TOP_PANEL_WORK_AREA });
+        final FrameResynchronizer resynchronizer = new FrameResynchronizer(frame, geometry);
+
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                resynchronizer.componentMoved(mock(ComponentEvent.class));
+
+                verify(frame, never()).setBounds(any(Rectangle.class));
+                verify(frame, never()).validate();
+                assertThat(deferredResynchronizationTimer(resynchronizer)).isNull();
+            }
+            finally {
+                stopDeferredResynchronizationTimer(resynchronizer);
+            }
+        });
     }
 
     private static FrameResynchronizer maximizedResynchronizer(final Rectangle current,
@@ -516,15 +581,27 @@ public class FrameResynchronizerTest {
         return event;
     }
 
-    private static Timer deferredResynchronizationTimer(final FrameResynchronizer resynchronizer)
-            throws ReflectiveOperationException {
-        final Field timerField = FrameResynchronizer.class.getDeclaredField("deferredResynchronizationTimer");
-        timerField.setAccessible(true);
-        return (Timer) timerField.get(resynchronizer);
+    private static Timer deferredResynchronizationTimer(final FrameResynchronizer resynchronizer) {
+        try {
+            final Field timerField = FrameResynchronizer.class.getDeclaredField("deferredResynchronizationTimer");
+            timerField.setAccessible(true);
+            return (Timer) timerField.get(resynchronizer);
+        }
+        catch (ReflectiveOperationException exception) {
+            throw new AssertionError(exception);
+        }
     }
 
-    private static void stopDeferredResynchronizationTimer(final FrameResynchronizer resynchronizer)
-            throws ReflectiveOperationException {
+    private static void fireDeferredResynchronizationTimer(final FrameResynchronizer resynchronizer) {
+        final Timer timer = deferredResynchronizationTimer(resynchronizer);
+        assertThat(timer).isNotNull();
+        timer.stop();
+        for (final ActionListener listener : timer.getActionListeners()) {
+            listener.actionPerformed(new ActionEvent(timer, ActionEvent.ACTION_PERFORMED, "test"));
+        }
+    }
+
+    private static void stopDeferredResynchronizationTimer(final FrameResynchronizer resynchronizer) {
         final Timer timer = deferredResynchronizationTimer(resynchronizer);
         if (timer != null) {
             timer.stop();
