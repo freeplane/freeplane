@@ -204,11 +204,11 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 		final X11PopupFactory.PopupOwnerResolver ownerResolver = new X11PopupFactory.PopupOwnerResolver() {
 			@Override
 			public JFrame findFrame(final Component owner) {
-				if (owner instanceof JFrame && registeredFrames.contains(owner)) {
-					return (JFrame) owner;
-				}
 				if (owner == null) {
 					return null;
+				}
+				if (owner instanceof Window) {
+					return registeredFrames.contains(owner) ? (JFrame) owner : null;
 				}
 				final Window ancestor = SwingUtilities.getWindowAncestor(owner);
 				return ancestor instanceof JFrame && registeredFrames.contains(ancestor) ? (JFrame) ancestor : null;

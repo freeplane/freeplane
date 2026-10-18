@@ -644,7 +644,7 @@ abstract public class FrameController implements ViewController {
             if (lookAndFeel.equals("default")) {
             	String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
             	UIManager.setLookAndFeel(lookAndFeelClassName);
-            FrameResynchronizer.refreshPopupFactory();
+                FrameResynchronizer.refreshPopupFactory();
             }
             else {
             	LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
