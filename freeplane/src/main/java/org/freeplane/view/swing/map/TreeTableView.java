@@ -21,6 +21,7 @@ class TreeTableView {
 	static final int COLUMN_GAP = 6;
 	static final int GRID_PADDING = 3;
 
+	private final NodeView treeTableRootView;
 	private final NodeModel treeTableRoot;
 	private final TreeTableColumns columns;
 	private final TreeTableGeometry geometry;
@@ -72,6 +73,7 @@ class TreeTableView {
 
 	private TreeTableView(final MapView mapView, final NodeView treeTableRoot, final TreeTableColumns columns,
 			final List<NodeView> rows) {
+		this.treeTableRootView = treeTableRoot;
 		this.treeTableRoot = treeTableRoot.getNode();
 		this.columns = columns;
 		this.rows = Collections.unmodifiableList(rows);
@@ -118,6 +120,10 @@ class TreeTableView {
 		final JComponent content = view.getContent();
 		final Rectangle bounds = new Rectangle(0, 0, content.getWidth(), content.getHeight());
 		return SwingUtilities.convertRectangle(content, bounds, mapView);
+	}
+
+	NodeView getTreeTableRootView() {
+		return treeTableRootView;
 	}
 
 	NodeModel getTreeTableRoot() {

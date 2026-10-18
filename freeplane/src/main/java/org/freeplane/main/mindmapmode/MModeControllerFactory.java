@@ -119,6 +119,7 @@ import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
 import org.freeplane.features.treetable.TreeTableController;
 import org.freeplane.features.treetable.mindmapmode.ConvertToTreeTableAction;
 import org.freeplane.features.treetable.mindmapmode.DeleteTreeTableAction;
+import org.freeplane.features.treetable.mindmapmode.TreeTablePropertiesAction;
 import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPanel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.SortNodes;
@@ -307,6 +308,7 @@ public class MModeControllerFactory {
 		TreeTableController.install(new TreeTableController());
 		modeController.addAction(new ConvertToTreeTableAction());
 		modeController.addAction(new DeleteTreeTableAction());
+		modeController.addAction(new TreeTablePropertiesAction());
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
 			@Override

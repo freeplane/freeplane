@@ -1,5 +1,7 @@
 package org.freeplane.features.treetable.mindmapmode;
 
+import java.awt.event.ActionEvent;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -8,11 +10,13 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.treetable.TreeTableColumn;
 import org.freeplane.features.treetable.TreeTableColumnNames;
 import org.freeplane.features.treetable.TreeTableColumns;
 import org.freeplane.features.treetable.TreeTableModel;
 import org.freeplane.features.treetable.TreeTableNodes;
+import org.freeplane.main.mindmapmode.stylemode.EditStylesAction;
 
 public class TreeTableEditing {
 	private static final int ATTRIBUTE_NAME_COLUMN = 0;
@@ -99,8 +103,14 @@ public class TreeTableEditing {
 	public static void convertToTable(final NodeModel node) {
 		if (TreeTableModel.isTreeTableRoot(node))
 			return;
-		TreeTableAppearance.ensureRowStyleExistsIn(node.getMap());
+		TreeTableAppearance.ensureStylesExistIn(node.getMap());
 		toggleTable(node);
+	}
+
+	public static void editTableStyle(final ActionEvent event, final MapModel map, final IStyle style,
+			final EditStylesAction editStylesAction) {
+		TreeTableAppearance.ensureStylesExistIn(map);
+		editStylesAction.editStyle(event, style);
 	}
 
 	private static void deleteTable(final NodeModel treeTableRoot) {

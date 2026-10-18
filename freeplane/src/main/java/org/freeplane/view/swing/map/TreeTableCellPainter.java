@@ -1,7 +1,7 @@
 package org.freeplane.view.swing.map;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -16,9 +16,6 @@ import org.freeplane.features.treetable.TreeTableGrid;
 
 class TreeTableCellPainter {
 	private static final int TEXT_PADDING = 4;
-	private static final float THICK_LINE_WIDTH = 2f;
-	private static final float THIN_LINE_WIDTH = 1f;
-	private static final int THIN_LINE_ALPHA = 96;
 
 	private final MapView mapView;
 	private final TreeTableCellEditor cellEditor;
@@ -34,21 +31,24 @@ class TreeTableCellPainter {
 	}
 
 	private void paintTreeTable(final Graphics2D graphics, final TreeTableView treeTable) {
-		graphics.setColor(mapView.getForeground());
+		final Font previousFont = graphics.getFont();
+		final Color previousColor = graphics.getColor();
 		paintHeaders(graphics, treeTable);
 		paintRows(graphics, treeTable);
-		paintGrid(graphics, treeTable.getGrid());
+		graphics.setFont(previousFont);
+		graphics.setColor(previousColor);
+		paintGrid(graphics, treeTable);
 	}
 
-	private void paintGrid(final Graphics2D graphics, final TreeTableGrid grid) {
+	private void paintGrid(final Graphics2D graphics, final TreeTableView treeTable) {
+		final TreeTableGrid grid = treeTable.getGrid();
 		final Stroke previousStroke = graphics.getStroke();
 		final Color previousColor = graphics.getColor();
-		graphics.setStroke(new BasicStroke(mapView.getZoom() * THIN_LINE_WIDTH));
-		graphics.setColor(translucent(previousColor));
+		final TreeTableLineStyle rowLines = TreeTableLineStyle.ofEdge(treeTable.getRows().get(0));
+		useLineStyle(graphics, rowLines);
 		for (int i = 0; i < grid.getRowSeparatorCount(); i++)
 			graphics.drawLine(grid.getLeft(), grid.getRowSeparatorY(i), grid.getRight(), grid.getRowSeparatorY(i));
-		graphics.setColor(previousColor);
-		graphics.setStroke(new BasicStroke(mapView.getZoom() * THICK_LINE_WIDTH));
+		useLineStyle(graphics, TreeTableLineStyle.ofBorder(treeTable.getTreeTableRootView().getMainView()));
 		graphics.drawRect(grid.getLeft(), grid.getTop(), grid.getRight() - grid.getLeft(),
 			grid.getBottom() - grid.getTop());
 		if (grid.hasHeaderSeparator())
@@ -56,14 +56,22 @@ class TreeTableCellPainter {
 		for (int i = 0; i < grid.getColumnSeparatorCount(); i++)
 			graphics.drawLine(grid.getColumnSeparatorX(i), grid.getTop(), grid.getColumnSeparatorX(i), grid.getBottom());
 		graphics.setStroke(previousStroke);
+		graphics.setColor(previousColor);
 	}
 
-	private static Color translucent(final Color color) {
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(), THIN_LINE_ALPHA);
+	private void useLineStyle(final Graphics2D graphics, final TreeTableLineStyle lineStyle) {
+		graphics.setColor(lineStyle.getColor());
+		graphics.setStroke(lineStyle.stroke(mapView.getZoom()));
+	}
+
+	private void useTextStyle(final Graphics2D graphics, final NodeView view) {
+		graphics.setFont(view.getMainView().getFont());
+		graphics.setColor(view.getTextColor(view.getStyleOption()));
 	}
 
 	private void paintHeaders(final Graphics2D graphics, final TreeTableView treeTable) {
 		final TreeTableColumns columns = treeTable.getColumns();
+		useTextStyle(graphics, treeTable.getTreeTableRootView());
 		for (int i = 0; i < columns.size(); i++) {
 			final String attributeKey = columns.get(i).getAttributeKey();
 			if (!cellEditor.isEditing(treeTable.getTreeTableRoot(), attributeKey))
@@ -85,6 +93,7 @@ class TreeTableCellPainter {
 		for (int rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
 			final NodeModel row = rows.get(rowIndex).getNode();
 			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(row);
+			useTextStyle(graphics, rows.get(rowIndex));
 			for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
 				final String attributeKey = columns.get(columnIndex).getAttributeKey();
 				if (cellEditor.isEditing(row, attributeKey))

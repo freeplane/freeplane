@@ -804,6 +804,7 @@
 		<Entry name="treetable" textKey="menu_treetable" usedBy = "EDITOR">
 			<Entry name="ConvertToTreeTableAction" />
 			<Entry name="DeleteTreeTableAction" />
+			<Entry name="TreeTablePropertiesAction" />
 		</Entry>
 		<Entry builder="separator" />
 		        <Entry name="BookmarkNodeAction" />

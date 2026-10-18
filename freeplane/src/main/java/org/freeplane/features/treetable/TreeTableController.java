@@ -20,6 +20,6 @@ public class TreeTableController implements IExtension {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		new TreeTableBuilder().registerBy(mapController.getReadManager(), mapController.getWriteManager());
-		TreeTableRowStyle.registerIn(LogicalStyleController.getController());
+		TreeTableAutoStyle.registerAllIn(LogicalStyleController.getController());
 	}
 }
