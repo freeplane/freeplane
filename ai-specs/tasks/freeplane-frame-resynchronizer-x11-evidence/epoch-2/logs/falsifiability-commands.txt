@@ -1,0 +1,21 @@
+The mutants were generated outside the repository from the final epoch-2 probe source by replacing the single scenario call:
+
+                menu.show(owner, evidence.popupLocal.x, evidence.popupLocal.y);
+
+with:
+
+                menu.show(owner, evidence.popupLocal.x + 240, evidence.popupLocal.y + 180);
+
+or:
+
+                menu.show(owner, evidence.popupLocal.x + 3, evidence.popupLocal.y + 3);
+
+Each mutant was compiled with:
+
+JAVA_HOME=/home/henry/.sdkman/candidates/java/21.0.8-zulu PATH=/home/henry/.sdkman/candidates/java/21.0.8-zulu/bin:$PATH javac --release 8 -encoding UTF-8 -cp /data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/freeplane/build/classes/java/main:/home/henry/.gradle/caches/modules-2/files-2.1/com.formdev/flatlaf/3.7.2/fcf9f3f276b11c7f5fc525838073ddcd80abda6a/flatlaf-3.7.2.jar:/home/henry/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.19.1/ca303052cd617c1af2e2c8d344c98a706fb63143/jna-5.19.1.jar:/home/henry/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.19.1/d1e54d9231da5ca3fa730d52960deaa555475468/jna-platform-5.19.1.jar -d <mutant>/classes <mutant>/src/org/freeplane/core/ui/components/PopupCoordinateAcceptanceProbe.java
+
+Each mutant was run sequentially on DISPLAY=:1 with:
+
+DISPLAY=:1 JAVA_HOME=/home/henry/.sdkman/candidates/java/21.0.8-zulu PATH=/home/henry/.sdkman/candidates/java/21.0.8-zulu/bin:$PATH timeout --kill-after=5s 90s java --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED -cp <mutant>/classes:/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/freeplane/build/classes/java/main:<flatlaf-3.7.2.jar>:<jna.jar>:<jna-platform.jar> org.freeplane.core.ui.components.PopupCoordinateAcceptanceProbe
+
+The complete mutant stdout, stderr, and exit records are preserved in falsifiability-shift-240-180.* and falsifiability-shift-3-3.*. The two GUI runs were intentionally sequential because they share DISPLAY=:1.

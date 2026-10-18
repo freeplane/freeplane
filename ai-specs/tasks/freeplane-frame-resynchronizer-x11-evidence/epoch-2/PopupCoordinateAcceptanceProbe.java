@@ -9,10 +9,12 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.NativeLong;
 import com.sun.jna.platform.unix.X11;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.NativeLongByReference;
@@ -44,6 +49,8 @@ public final class PopupCoordinateAcceptanceProbe {
     private static final String EXPECTED_HEAVYWEIGHT_POPUP = "javax.swing.Popup$HeavyWeightWindow";
     private static final long POPUP_PERSISTENCE_MILLIS = 800L;
     private static final long STATE_SETTLE_MILLIS = 1200L;
+    private static final long POINTER_EVENT_TIMEOUT_MILLIS = 2000L;
+    private static final int X11_SCREEN_NUMBER = 0;
     private static final int MAX_PLACEMENT_ERROR = 1;
 
     private final List<String> failures = new ArrayList<String>();
@@ -77,6 +84,7 @@ public final class PopupCoordinateAcceptanceProbe {
     private JButton owner;
     private PopupFactory adapter;
     private PopupFactory delegate;
+    private Robot robot;
 
     public static void main(final String[] args) {
         final PopupCoordinateAcceptanceProbe probe = new PopupCoordinateAcceptanceProbe();
@@ -112,6 +120,8 @@ public final class PopupCoordinateAcceptanceProbe {
             "toolkit-class-mismatch expected=" + EXPECTED_TOOLKIT);
 
         createAndShowFrame();
+        robot = new Robot();
+        robot.setAutoDelay(30);
         logSharedPopupFactory();
         runCorrectionAssertions();
         if (adapter == null || delegate == null) {
@@ -144,6 +154,9 @@ public final class PopupCoordinateAcceptanceProbe {
                 // This is the production lifecycle: install before the peer is shown.
                 FrameResynchronizer.install(frame);
                 frame.setVisible(true);
+                frame.toFront();
+                frame.requestFocus();
+                owner.requestFocusInWindow();
                 frame.setTracking(true);
             }
         });
@@ -151,6 +164,12 @@ public final class PopupCoordinateAcceptanceProbe {
             @Override
             public boolean isSatisfied() {
                 return frame != null && frame.isShowing() && owner != null && owner.isShowing();
+            }
+        }, 5000L);
+        waitFor("frame-active", new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return frame != null && frame.isActive();
             }
         }, 5000L);
         waitFor("frame-native-bounds", new Condition() {
@@ -463,6 +482,7 @@ public final class PopupCoordinateAcceptanceProbe {
         final JMenuItem[] itemHolder = new JMenuItem[1];
         evidence.frameCorrectionCountBefore = frame.getRectangleSetBoundsCalls();
 
+        activateFrame(scenario);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
@@ -489,9 +509,16 @@ public final class PopupCoordinateAcceptanceProbe {
                 item.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(final ActionEvent event) {
-                        selection.selected = true;
-                        selection.text = item.getText();
-                        log("popup-item-selected=" + item.getText());
+                        if (selection.pointerPhase) {
+                            selection.pointerSelected = true;
+                            selection.pointerText = item.getText();
+                            log("popup-pointer-selected=" + item.getText());
+                        }
+                        else {
+                            selection.doClickFallbackSelected = true;
+                            selection.doClickFallbackText = item.getText();
+                            log("popup-doClick-fallback-selected=" + item.getText());
+                        }
                     }
                 });
                 menu.add(item);
@@ -522,6 +549,9 @@ public final class PopupCoordinateAcceptanceProbe {
                         evidence.popupNativeBounds = getNativePopupBounds(evidence.popupWindow);
                         evidence.popupWindowClass = evidence.popupWindow.getClass().getName();
                     }
+                    evidence.menuScreenBounds = getScreenBounds(menu);
+                    evidence.itemScreenBounds = getScreenBounds(item);
+                    evidence.itemLocationWithinMenu = item.getLocation();
                 }
             });
             evidence.persistenceMillis = (System.nanoTime() - evidence.shownNanos) / 1000000L;
@@ -530,21 +560,23 @@ public final class PopupCoordinateAcceptanceProbe {
             require(evidence.menuShowingBeforeSelection,
                 scenario + " menu-not-showing-after-800ms");
 
+            selectWithPointer(scenario, item, selection, evidence);
+
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     item.doClick();
                 }
             });
-            evidence.selected = selection.selected;
-            evidence.selectedText = selection.text;
+            evidence.doClickFallbackSelected = selection.doClickFallbackSelected;
+            evidence.doClickFallbackText = selection.doClickFallbackText;
+            require(evidence.doClickFallbackSelected, scenario + " doClick-fallback-selection-missing");
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     evidence.menuShowingAfterSelection = menu.isShowing();
                 }
             });
-            require(evidence.selected, scenario + " popup-item-selection-missing");
 
             if (evidence.expectedPopup == null || evidence.popupNativeBounds == null) {
                 require(false, scenario + " native-placement-evidence-unavailable");
@@ -580,16 +612,126 @@ public final class PopupCoordinateAcceptanceProbe {
             + " popup-window-class=" + evidence.popupWindowClass
             + " popup-awt-bounds=" + formatRectangle(evidence.popupAwtBounds)
             + " popup-native-bounds=" + formatRectangle(evidence.popupNativeBounds)
+            + " popup-menu-screen-bounds=" + formatRectangle(evidence.menuScreenBounds)
+            + " popup-item-screen-bounds=" + formatRectangle(evidence.itemScreenBounds)
+            + " pointer-click-screen-point=" + formatPoint(evidence.pointerClickScreen)
             + " placement-error=(" + evidence.placementErrorX + "," + evidence.placementErrorY + ")"
             + " placement-error-max=" + evidence.placementError
             + " persistence-ms=" + evidence.persistenceMillis
             + " menu-showing-before-selection=" + evidence.menuShowingBeforeSelection
             + " menu-showing-after-selection=" + evidence.menuShowingAfterSelection
-            + " selection=" + evidence.selected
-            + " selected-text=" + evidence.selectedText
+            + " pointer-selection=" + evidence.pointerSelected
+            + " pointer-selected-text=" + evidence.pointerSelectedText
+            + " doClick-fallback-selection=" + evidence.doClickFallbackSelected
+            + " doClick-fallback-text=" + evidence.doClickFallbackText
             + " frame-correction-setBounds-delta=" + evidence.frameCorrectionCount);
     }
 
+    private void activateFrame(final String scenario) throws Exception {
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                frame.toFront();
+                frame.requestFocus();
+                owner.requestFocusInWindow();
+            }
+        });
+        waitFor(scenario + "-frame-active", new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return frame.isActive();
+            }
+        }, 5000L);
+    }
+
+    private void selectWithPointer(final String scenario, final JMenuItem item,
+            final SelectionCapture selection, final ScenarioEvidence evidence) throws Exception {
+        evidence.pointerClickScreen = calculateExpectedPointerClick(evidence);
+        log("popup-pointer-target=" + scenario
+            + " clicked-screen-point=" + formatPoint(evidence.pointerClickScreen)
+            + " menu-screen-bounds=" + formatRectangle(evidence.menuScreenBounds)
+            + " item-screen-bounds=" + formatRectangle(evidence.itemScreenBounds));
+        require(evidence.menuScreenBounds != null, scenario + " menu-screen-bounds-unavailable");
+        require(evidence.itemScreenBounds != null, scenario + " item-screen-bounds-unavailable");
+        require(evidence.pointerClickScreen != null, scenario + " pointer-click-point-unavailable");
+        if (evidence.pointerClickScreen == null) {
+            return;
+        }
+
+        selection.pointerPhase = true;
+        selection.pointerEventQueueDrained = false;
+        try {
+            robot.mouseMove(evidence.pointerClickScreen.x, evidence.pointerClickScreen.y);
+            // On this XWayland runtime, Java's XWarpPointer does not update the compositor pointer.
+            // XTest motion synchronizes that pointer; the button press/release below remain Robot events.
+            synchronizeXWaylandPointer(evidence.pointerClickScreen);
+            Thread.sleep(100L);
+            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            robot.waitForIdle();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    selection.pointerEventQueueDrained = true;
+                }
+            });
+            waitFor(scenario + "-pointer-event-dispatch", new Condition() {
+                @Override
+                public boolean isSatisfied() {
+                    return selection.pointerEventQueueDrained && selection.pointerSelected;
+                }
+            }, POINTER_EVENT_TIMEOUT_MILLIS);
+        }
+        finally {
+            selection.pointerPhase = false;
+        }
+        evidence.pointerSelected = selection.pointerSelected;
+        evidence.pointerSelectedText = selection.pointerText;
+        require(evidence.pointerSelected, scenario + " popup-pointer-selection-missing");
+    }
+
+    private void synchronizeXWaylandPointer(final Point point) {
+        X11.Display display = null;
+        try {
+            display = X11.INSTANCE.XOpenDisplay(null);
+            require(display != null, "xwayland-pointer-sync-display-unavailable");
+            if (display != null) {
+                final boolean moved = XTestLibrary.INSTANCE.XTestFakeMotionEvent(display, X11_SCREEN_NUMBER,
+                    point.x, point.y, new NativeLong(0));
+                require(moved, "xwayland-pointer-sync-failed");
+                X11.INSTANCE.XFlush(display);
+            }
+        }
+        finally {
+            if (display != null) {
+                X11.INSTANCE.XCloseDisplay(display);
+            }
+        }
+    }
+
+    private Point calculateExpectedPointerClick(final ScenarioEvidence evidence) {
+        // The actual first-item screen bounds are recorded above. Derive the click from the
+        // expected calibrated popup origin so a displaced-popup mutant cannot click itself.
+        if (evidence.expectedPopup == null || evidence.itemLocationWithinMenu == null
+                || evidence.itemScreenBounds == null) {
+            return null;
+        }
+        return new Point(
+            evidence.expectedPopup.x + evidence.itemLocationWithinMenu.x + evidence.itemScreenBounds.width / 2,
+            evidence.expectedPopup.y + evidence.itemLocationWithinMenu.y + evidence.itemScreenBounds.height / 2);
+    }
+
+    private Rectangle getScreenBounds(final Component component) {
+        if (component == null || !component.isShowing()) {
+            return null;
+        }
+        try {
+            return new Rectangle(component.getLocationOnScreen(), component.getSize());
+        }
+        catch (RuntimeException unavailableLocation) {
+            return null;
+        }
+    }
     private void setSharedFactory(final PopupFactory factory) {
         PopupFactory.setSharedInstance(factory);
     }
@@ -658,9 +800,19 @@ public final class PopupCoordinateAcceptanceProbe {
         boolean isSatisfied() throws Exception;
     }
 
+    private interface XTestLibrary extends Library {
+        XTestLibrary INSTANCE = Native.load("Xtst", XTestLibrary.class);
+
+        boolean XTestFakeMotionEvent(X11.Display display, int screenNumber, int x, int y, NativeLong delay);
+    }
+
     private static final class SelectionCapture {
-        private volatile boolean selected;
-        private volatile String text;
+        private volatile boolean pointerPhase;
+        private volatile boolean pointerEventQueueDrained;
+        private volatile boolean pointerSelected;
+        private volatile String pointerText;
+        private volatile boolean doClickFallbackSelected;
+        private volatile String doClickFallbackText;
     }
 
     private static final class ScenarioEvidence {
@@ -677,6 +829,10 @@ public final class PopupCoordinateAcceptanceProbe {
         private String popupWindowClass;
         private Rectangle popupAwtBounds;
         private Rectangle popupNativeBounds;
+        private Rectangle menuScreenBounds;
+        private Rectangle itemScreenBounds;
+        private Point itemLocationWithinMenu;
+        private Point pointerClickScreen;
         private int placementErrorX;
         private int placementErrorY;
         private int placementError = Integer.MAX_VALUE;
@@ -684,8 +840,10 @@ public final class PopupCoordinateAcceptanceProbe {
         private long persistenceMillis;
         private boolean menuShowingBeforeSelection;
         private boolean menuShowingAfterSelection;
-        private boolean selected;
-        private String selectedText;
+        private boolean pointerSelected;
+        private String pointerSelectedText;
+        private boolean doClickFallbackSelected;
+        private String doClickFallbackText;
         private int frameCorrectionCountBefore;
         private int frameCorrectionCountAfter;
         private int frameCorrectionCount;
