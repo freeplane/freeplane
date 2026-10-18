@@ -102,6 +102,30 @@ public class X11PopupFactoryTest {
     }
 
     @Test
+    public void getPopup_withNonPositiveNativeWidth_delegatesOriginalCoordinates() {
+        final PopupFixture fixture = new PopupFixture();
+        fixture.geometryReturns(new Rectangle(240, 180, 0, 600), new Point(10, 20), new Point(1000, 400));
+
+        final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
+
+        assertThat(popup).isSameAs(fixture.delegatePopup);
+        verify(fixture.delegate, times(1)).getPopup(fixture.owner, fixture.contents, 1000, 400);
+        verifyNoMoreInteractions(fixture.delegate);
+    }
+
+    @Test
+    public void getPopup_withMissingOwnerLocationWithinFrame_delegatesOriginalCoordinates() {
+        final PopupFixture fixture = new PopupFixture();
+        fixture.geometryReturns(new Rectangle(0, 0, 2240, 1400), null, new Point(1035, 5));
+
+        final Popup popup = fixture.factory.getPopup(fixture.owner, fixture.contents, 1000, 400);
+
+        assertThat(popup).isSameAs(fixture.delegatePopup);
+        verify(fixture.delegate, times(1)).getPopup(fixture.owner, fixture.contents, 1000, 400);
+        verifyNoMoreInteractions(fixture.delegate);
+    }
+
+    @Test
     public void getPopup_whenGeometryProviderThrows_passesRequestedCoordinatesAndDelegates() {
         final PopupFixture fixture = new PopupFixture();
         when(fixture.geometry.getNativeFrameBounds(fixture.frame))
