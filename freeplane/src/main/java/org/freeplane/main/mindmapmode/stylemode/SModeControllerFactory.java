@@ -165,7 +165,6 @@ public class SModeControllerFactory {
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		LocationController.install(new MLocationController());
 		LayoutController.install(new MLayoutController());
-		TreeTableController.install(new TreeTableController());
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
@@ -174,6 +173,7 @@ public class SModeControllerFactory {
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		logicalStyleController.initS();
 		LogicalStyleController.install(logicalStyleController);
+		TreeTableController.install(new TreeTableController());
 		AttributeController.install(new MAttributeController(modeController));
 		FormatController.install(new FormatController());
 		IconController.installConditionControllers();
