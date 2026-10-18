@@ -5,29 +5,18 @@ import java.awt.Rectangle;
 import org.freeplane.features.map.NodeModel;
 
 class TreeTableCell {
-	private final NodeModel node;
+	private final NodeModel row;
 	private final String attributeKey;
 	private final Rectangle bounds;
-	private final boolean header;
 
-	static TreeTableCell header(final NodeModel treeTableRoot, final String attributeKey, final Rectangle bounds) {
-		return new TreeTableCell(treeTableRoot, attributeKey, bounds, true);
-	}
-
-	static TreeTableCell value(final NodeModel row, final String attributeKey, final Rectangle bounds) {
-		return new TreeTableCell(row, attributeKey, bounds, false);
-	}
-
-	private TreeTableCell(final NodeModel node, final String attributeKey, final Rectangle bounds,
-			final boolean header) {
-		this.node = node;
+	TreeTableCell(final NodeModel row, final String attributeKey, final Rectangle bounds) {
+		this.row = row;
 		this.attributeKey = attributeKey;
 		this.bounds = bounds;
-		this.header = header;
 	}
 
-	NodeModel getNode() {
-		return node;
+	NodeModel getRow() {
+		return row;
 	}
 
 	String getAttributeKey() {
@@ -36,9 +25,5 @@ class TreeTableCell {
 
 	Rectangle getBounds() {
 		return new Rectangle(bounds);
-	}
-
-	boolean isHeader() {
-		return header;
 	}
 }

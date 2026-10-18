@@ -8,7 +8,7 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.treetable.TreeTableColumn;
-import org.freeplane.features.treetable.TreeTableColumns;
+import org.freeplane.features.treetable.TreeTableHeaderPlacement;
 import org.freeplane.features.treetable.mindmapmode.TreeTableEditing;
 
 class TreeTableColumnResizer extends MouseAdapter {
@@ -17,10 +17,8 @@ class TreeTableColumnResizer extends MouseAdapter {
 
 	private final MapView mapView;
 
-	private NodeModel resizedTableRoot;
-	private TreeTableColumns columnsBeforeResize;
-	private String resizedAttributeKey;
-	private int resizedColumnX;
+	private NodeModel resizedColumnNode;
+	private int resizedColumnNodeLeft;
 	private boolean showsResizeCursor;
 
 	TreeTableColumnResizer(final MapView mapView) {
@@ -45,10 +43,8 @@ class TreeTableColumnResizer extends MouseAdapter {
 		final ResizeEdge edge = resizeEdgeAt(event.getX(), event.getY());
 		if (edge == null)
 			return;
-		resizedTableRoot = edge.treeTable.getTreeTableRoot();
-		columnsBeforeResize = edge.treeTable.getColumns();
-		resizedAttributeKey = columnsBeforeResize.get(edge.columnIndex).getAttributeKey();
-		resizedColumnX = edge.treeTable.getColumnX(edge.columnIndex);
+		resizedColumnNode = edge.treeTable.getColumnNode(edge.columnIndex);
+		resizedColumnNodeLeft = edge.treeTable.getColumnNodeLeft(edge.columnIndex);
 		event.consume();
 	}
 
@@ -57,9 +53,6 @@ class TreeTableColumnResizer extends MouseAdapter {
 		if (!isResizing())
 			return;
 		mapView.setCursor(RESIZE_CURSOR);
-		TreeTableEditing.previewColumnWidth(resizedTableRoot, columnsBeforeResize, resizedAttributeKey,
-			widthAt(event.getX()));
-		mapView.repaint();
 		event.consume();
 	}
 
@@ -67,21 +60,20 @@ class TreeTableColumnResizer extends MouseAdapter {
 	public void mouseReleased(final MouseEvent event) {
 		if (!isResizing())
 			return;
-		TreeTableEditing.resizeColumn(resizedTableRoot, columnsBeforeResize, resizedAttributeKey,
-			widthAt(event.getX()));
-		resizedTableRoot = null;
-		columnsBeforeResize = null;
-		resizedAttributeKey = null;
+		final NodeModel columnNode = resizedColumnNode;
+		resizedColumnNode = null;
+		TreeTableEditing.resizeColumn(columnNode, widthAt(event.getX()));
 		showsResizeCursor = false;
 		mapView.repaint();
 	}
 
 	private boolean isResizing() {
-		return resizedTableRoot != null;
+		return resizedColumnNode != null;
 	}
 
 	private Quantity<LengthUnit> widthAt(final int x) {
-		return TreeTableColumn.widthFromZoomedPixels(x - resizedColumnX, mapView.getZoom());
+		final int halfGap = mapView.getZoomed(TreeTableHeaderPlacement.GAP) / 2;
+		return TreeTableColumn.widthFromZoomedPixels(x - halfGap - resizedColumnNodeLeft, mapView.getZoom());
 	}
 
 	private ResizeEdge resizeEdgeAt(final int x, final int y) {

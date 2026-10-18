@@ -3,10 +3,10 @@ package org.freeplane.features.treetable;
 public class TreeTableGrid {
 	private final int left;
 	private final int top;
-	private final int right;
-	private final int bottom;
-	private final int[] lineBottoms;
-	private final int[] columnSeparatorXs;
+	private final int[] columnBounds;
+	private final int headerBottom;
+	private final int[] rowBottoms;
+	private final int[] innerSeparatorTops;
 
 	public static int borderLineStart(final int position, final int borderWidth) {
 		return position + borderWidth / 2;
@@ -20,27 +20,31 @@ public class TreeTableGrid {
 		return position + size - borderWidth + borderWidth / 2;
 	}
 
-	public static int leftOfContent(final int contentX, final TreeTableGeometry geometry, final int textPadding) {
-		return contentX - geometry.getGap() / 2 - textPadding;
+	public static int leftOfContent(final int contentX, final int halfGap, final int textPadding) {
+		return contentX - halfGap - textPadding;
 	}
 
-	public TreeTableGrid(final int left, final int tableX, final TreeTableGeometry geometry, final int top,
-			final int[] lineBottoms) {
-		if (lineBottoms.length == 0)
-			throw new IllegalArgumentException("tree table grid requires at least the header line");
+	public static int[] columnBounds(final int[] lefts, final int[] rights, final int halfGap) {
+		if (lefts.length == 0 || lefts.length != rights.length)
+			throw new IllegalArgumentException("tree table columns require matching non empty extents");
+		final int[] bounds = new int[lefts.length + 1];
+		bounds[0] = lefts[0] - halfGap;
+		for (int index = 1; index < lefts.length; index++)
+			bounds[index] = (rights[index - 1] + lefts[index]) / 2;
+		bounds[lefts.length] = rights[rights.length - 1] + halfGap;
+		return bounds;
+	}
+
+	public TreeTableGrid(final int left, final int top, final int[] columnBounds, final int headerBottom,
+			final int[] rowBottoms, final int[] innerSeparatorTops) {
+		if (columnBounds.length < 2 || innerSeparatorTops.length != columnBounds.length - 2)
+			throw new IllegalArgumentException("tree table grid requires consistent column bounds");
 		this.left = left;
-		this.right = tableX + geometry.getTotalWidth();
 		this.top = top;
-		this.bottom = lineBottoms[lineBottoms.length - 1];
-		this.lineBottoms = lineBottoms.clone();
-		this.columnSeparatorXs = calculateColumnSeparators(tableX, geometry);
-	}
-
-	private static int[] calculateColumnSeparators(final int tableX, final TreeTableGeometry geometry) {
-		final int[] separators = new int[geometry.getColumnCount()];
-		for (int index = 0; index < separators.length; index++)
-			separators[index] = tableX + geometry.getColumnPosition(index) - geometry.getGap() / 2;
-		return separators;
+		this.columnBounds = columnBounds.clone();
+		this.headerBottom = headerBottom;
+		this.rowBottoms = rowBottoms.clone();
+		this.innerSeparatorTops = innerSeparatorTops.clone();
 	}
 
 	public int getLeft() {
@@ -52,34 +56,62 @@ public class TreeTableGrid {
 	}
 
 	public int getRight() {
-		return right;
+		return columnBounds[columnBounds.length - 1];
 	}
 
 	public int getBottom() {
-		return bottom;
+		return rowBottoms.length > 0 ? rowBottoms[rowBottoms.length - 1] : headerBottom;
 	}
 
-	public boolean hasHeaderSeparator() {
-		return lineBottoms.length > 1;
+	public int getHeaderBottom() {
+		return headerBottom;
 	}
 
-	public int getHeaderSeparatorY() {
-		return lineBottoms[0];
+	public int getColumnCount() {
+		return columnBounds.length - 1;
+	}
+
+	public int getColumnLeft(final int columnIndex) {
+		return columnBounds[columnIndex];
+	}
+
+	public int getColumnRight(final int columnIndex) {
+		return columnBounds[columnIndex + 1];
+	}
+
+	public int getColumnIndexAt(final int x) {
+		for (int index = 0; index < getColumnCount(); index++) {
+			if (x >= getColumnLeft(index) && x < getColumnRight(index))
+				return index;
+		}
+		return -1;
+	}
+
+	public int getColumnIndexWithResizeEdgeNear(final int x, final int tolerance) {
+		for (int index = 0; index < getColumnCount(); index++) {
+			if (Math.abs(x - getColumnRight(index)) <= tolerance)
+				return index;
+		}
+		return -1;
 	}
 
 	public int getRowCount() {
-		return lineBottoms.length - 1;
+		return rowBottoms.length;
 	}
 
 	public int getRowBottomY(final int rowIndex) {
-		return lineBottoms[rowIndex + 1];
+		return rowBottoms[rowIndex];
 	}
 
 	public int getColumnSeparatorCount() {
-		return columnSeparatorXs.length;
+		return getColumnCount();
 	}
 
 	public int getColumnSeparatorX(final int index) {
-		return columnSeparatorXs[index];
+		return columnBounds[index];
+	}
+
+	public int getColumnSeparatorTop(final int index) {
+		return index == 0 ? top : innerSeparatorTops[index - 1];
 	}
 }

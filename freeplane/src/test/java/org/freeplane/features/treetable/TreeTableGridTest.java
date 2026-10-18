@@ -6,54 +6,74 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.Test;
 
 public class TreeTableGridTest {
-	private static final TreeTableGeometry GEOMETRY = new TreeTableGeometry(100, new int[] { 50, 60 }, 10);
+	private static final int[] COLUMN_BOUNDS = { 200, 260, 330, 400 };
 
-	private static TreeTableGrid gridWithLines(final int top, final int[] bottoms) {
-		return new TreeTableGrid(990, 1000, GEOMETRY, top, bottoms);
+	private static TreeTableGrid grid(final int[] rowBottoms) {
+		return new TreeTableGrid(90, 20, COLUMN_BOUNDS, 80, rowBottoms, new int[] { 50, 35 });
 	}
 
 	@Test
-	public void framesTableOnHeaderTopAndLastRowBottom() {
-		final TreeTableGrid grid = gridWithLines(20, new int[] { 40, 70, 100 });
+	public void placesColumnBoundsBetweenNeighbourColumns() {
+		final int[] bounds = TreeTableGrid.columnBounds(new int[] { 210, 270 }, new int[] { 250, 330 }, 3);
 
-		assertThat(grid.getLeft()).isEqualTo(990);
-		assertThat(grid.getRight()).isEqualTo(1230);
+		assertThat(bounds).containsExactly(207, 260, 333);
+	}
+
+	@Test
+	public void rejectsMissingColumns() {
+		assertThatThrownBy(() -> TreeTableGrid.columnBounds(new int[] {}, new int[] {}, 3))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void framesTableFromRootTopToLastRow() {
+		final TreeTableGrid grid = grid(new int[] { 110, 140 });
+
+		assertThat(grid.getLeft()).isEqualTo(90);
 		assertThat(grid.getTop()).isEqualTo(20);
-		assertThat(grid.getBottom()).isEqualTo(100);
+		assertThat(grid.getRight()).isEqualTo(400);
+		assertThat(grid.getBottom()).isEqualTo(140);
 	}
 
 	@Test
-	public void separatesHeaderOnItsBottomLine() {
-		final TreeTableGrid grid = gridWithLines(20, new int[] { 40, 70, 100 });
-
-		assertThat(grid.hasHeaderSeparator()).isTrue();
-		assertThat(grid.getHeaderSeparatorY()).isEqualTo(40);
+	public void endsTableUnderHeaderWithoutRows() {
+		assertThat(grid(new int[] {}).getBottom()).isEqualTo(80);
 	}
 
 	@Test
-	public void separatesRowsOnTheirBottomLines() {
-		final TreeTableGrid grid = gridWithLines(20, new int[] { 40, 70, 100 });
+	public void findsColumnContainingPosition() {
+		final TreeTableGrid grid = grid(new int[] { 110 });
 
-		assertThat(grid.getRowCount()).isEqualTo(2);
-		assertThat(grid.getRowBottomY(0)).isEqualTo(70);
-		assertThat(grid.getRowBottomY(1)).isEqualTo(100);
+		assertThat(grid.getColumnIndexAt(200)).isEqualTo(0);
+		assertThat(grid.getColumnIndexAt(329)).isEqualTo(1);
+		assertThat(grid.getColumnIndexAt(199)).isEqualTo(-1);
+		assertThat(grid.getColumnIndexAt(400)).isEqualTo(-1);
 	}
 
 	@Test
-	public void hasNoSeparatorsForHeaderAlone() {
-		final TreeTableGrid grid = gridWithLines(20, new int[] { 40 });
+	public void findsResizeEdgeOnColumnRightBound() {
+		final TreeTableGrid grid = grid(new int[] { 110 });
 
-		assertThat(grid.hasHeaderSeparator()).isFalse();
-		assertThat(grid.getRowCount()).isZero();
+		assertThat(grid.getColumnIndexWithResizeEdgeNear(262, 3)).isEqualTo(0);
+		assertThat(grid.getColumnIndexWithResizeEdgeNear(398, 3)).isEqualTo(2);
+		assertThat(grid.getColumnIndexWithResizeEdgeNear(230, 3)).isEqualTo(-1);
 	}
 
 	@Test
-	public void placesColumnSeparatorsInTheMiddleOfTheGapBeforeEachColumn() {
-		final TreeTableGrid grid = gridWithLines(20, new int[] { 40 });
+	public void startsFirstSeparatorAtTableTopAndOthersUnderCommonAncestor() {
+		final TreeTableGrid grid = grid(new int[] { 110 });
 
-		assertThat(grid.getColumnSeparatorCount()).isEqualTo(2);
-		assertThat(grid.getColumnSeparatorX(0)).isEqualTo(1105);
-		assertThat(grid.getColumnSeparatorX(1)).isEqualTo(1165);
+		assertThat(grid.getColumnSeparatorCount()).isEqualTo(3);
+		assertThat(grid.getColumnSeparatorX(1)).isEqualTo(260);
+		assertThat(grid.getColumnSeparatorTop(0)).isEqualTo(20);
+		assertThat(grid.getColumnSeparatorTop(1)).isEqualTo(50);
+		assertThat(grid.getColumnSeparatorTop(2)).isEqualTo(35);
+	}
+
+	@Test
+	public void rejectsInconsistentSeparators() {
+		assertThatThrownBy(() -> new TreeTableGrid(0, 0, COLUMN_BOUNDS, 80, new int[] {}, new int[] { 50 }))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
@@ -63,25 +83,13 @@ public class TreeTableGridTest {
 	}
 
 	@Test
-	public void placesThinBorderLinesOnOuterPixels() {
-		assertThat(TreeTableGrid.borderLineStart(20, 1)).isEqualTo(20);
-		assertThat(TreeTableGrid.borderLineEnd(20, 30, 1)).isEqualTo(49);
-	}
-
-	@Test
 	public void placesUnderlineLikeForkNodeBorder() {
 		assertThat(TreeTableGrid.underlineY(20, 30, 2)).isEqualTo(48);
 		assertThat(TreeTableGrid.underlineY(20, 30, 1)).isEqualTo(49);
 	}
 
 	@Test
-	public void leavesSameSpaceBeforeContentAsBeforeHeaderText() {
-		assertThat(TreeTableGrid.leftOfContent(1000, GEOMETRY, 4)).isEqualTo(991);
-	}
-
-	@Test
-	public void rejectsMissingHeaderLine() {
-		assertThatThrownBy(() -> gridWithLines(20, new int[] {}))
-			.isInstanceOf(IllegalArgumentException.class);
+	public void leavesSameSpaceBeforeContentAsBeforeColumnText() {
+		assertThat(TreeTableGrid.leftOfContent(1000, 3, 4)).isEqualTo(993);
 	}
 }
