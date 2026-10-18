@@ -166,12 +166,7 @@ public final class PopupCoordinateAcceptanceProbe {
                 return frame != null && frame.isShowing() && owner != null && owner.isShowing();
             }
         }, 5000L);
-        waitFor("frame-active", new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return frame != null && frame.isActive();
-            }
-        }, 5000L);
+        activateFrame("initial");
         waitFor("frame-native-bounds", new Condition() {
             @Override
             public boolean isSatisfied() {
@@ -482,7 +477,7 @@ public final class PopupCoordinateAcceptanceProbe {
         final JMenuItem[] itemHolder = new JMenuItem[1];
         evidence.frameCorrectionCountBefore = frame.getRectangleSetBoundsCalls();
 
-        activateFrame(scenario);
+        evidence.frameActive = activateFrame(scenario);
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
@@ -594,7 +589,8 @@ public final class PopupCoordinateAcceptanceProbe {
                 evidence.placementError = Math.max(Math.abs(evidence.placementErrorX),
                     Math.abs(evidence.placementErrorY));
                 require(evidence.placementError <= MAX_PLACEMENT_ERROR,
-                    scenario + " placement-error-exceeds-1px");
+                    "PRODUCT: popup misplaced scenario=" + scenario
+                        + " placement-error=(" + evidence.placementErrorX + "," + evidence.placementErrorY + ")");
             }
         }
         finally {
@@ -635,25 +631,37 @@ public final class PopupCoordinateAcceptanceProbe {
             + " frame-correction-setBounds-delta=" + evidence.frameCorrectionCount);
     }
 
-    private void activateFrame(final String scenario) throws Exception {
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                frame.toFront();
-                frame.requestFocus();
-                owner.requestFocusInWindow();
+    private boolean activateFrame(final String scenario) throws Exception {
+        for (int attempt = 1; attempt <= 5; attempt++) {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    frame.toFront();
+                    frame.requestFocus();
+                    owner.requestFocusInWindow();
+                }
+            });
+            if (waitUntil(new Condition() {
+                @Override
+                public boolean isSatisfied() {
+                    return frame.isActive();
+                }
+            }, 1000L)) {
+                log("frame-active scenario=" + scenario + " value=true attempt=" + attempt);
+                return true;
             }
-        });
-        waitFor(scenario + "-frame-active", new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return frame.isActive();
-            }
-        }, 5000L);
+        }
+        log("frame-active scenario=" + scenario + " value=false");
+        fail("ENVIRONMENT: frame could not be activated scenario=" + scenario + " timeout-ms=5000");
+        return false;
     }
 
     private void selectWithPointer(final String scenario, final JPopupMenu menu, final JMenuItem item,
             final SelectionCapture selection, final ScenarioEvidence evidence) throws Exception {
+        if (!evidence.frameActive) {
+            fail("ENVIRONMENT: pointer path skipped because frame could not be activated scenario=" + scenario);
+            return;
+        }
         evidence.pointerClickScreen = calculateExpectedPointerClick(evidence);
         log("popup-pointer-target=" + scenario
             + " clicked-screen-point=" + formatPoint(evidence.pointerClickScreen)
@@ -665,13 +673,15 @@ public final class PopupCoordinateAcceptanceProbe {
         if (evidence.pointerClickScreen == null) {
             return;
         }
+        final boolean pointerClickInsideItem = evidence.itemScreenBounds.contains(evidence.pointerClickScreen);
+        log("pointer-click-inside-item-bounds scenario=" + scenario + " value=" + pointerClickInsideItem);
+        require(pointerClickInsideItem, scenario + " pointer-click-outside-item-bounds");
 
         selection.pointerPhase = true;
         selection.pointerEventQueueDrained = false;
         try {
             robot.mouseMove(evidence.pointerClickScreen.x, evidence.pointerClickScreen.y);
-            // On this XWayland runtime, Java's XWarpPointer does not update the compositor pointer.
-            // XTest motion synchronizes that pointer; the button press/release below remain Robot events.
+            // XTest motion synchronizes the server pointer on both isolated X11 and XWayland.
             synchronizeXWaylandPointer(evidence.pointerClickScreen);
             Thread.sleep(100L);
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -692,12 +702,16 @@ public final class PopupCoordinateAcceptanceProbe {
                     selection.pointerEventQueueDrained = true;
                 }
             });
-            waitFor(scenario + "-pointer-event-dispatch", new Condition() {
+            waitUntil(new Condition() {
                 @Override
                 public boolean isSatisfied() {
                     return selection.pointerEventQueueDrained && selection.pointerSelected;
                 }
             }, POINTER_EVENT_TIMEOUT_MILLIS);
+            if (!selection.pointerSelected) {
+                fail("ENVIRONMENT: pointer event dispatch or selection failed scenario=" + scenario
+                    + " timeout-ms=" + POINTER_EVENT_TIMEOUT_MILLIS);
+            }
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
@@ -712,7 +726,9 @@ public final class PopupCoordinateAcceptanceProbe {
         }
         evidence.pointerSelected = selection.pointerSelected;
         evidence.pointerSelectedText = selection.pointerText;
-        require(evidence.pointerSelected, scenario + " popup-pointer-selection-missing");
+        if (!evidence.pointerSelected) {
+            fail("ENVIRONMENT: pointer selection missing scenario=" + scenario);
+        }
     }
 
     private void synchronizeXWaylandPointer(final Point point) {
@@ -761,15 +777,21 @@ public final class PopupCoordinateAcceptanceProbe {
         PopupFactory.setSharedInstance(factory);
     }
 
-    private void waitFor(final String label, final Condition condition, final long timeoutMillis) throws Exception {
+    private boolean waitUntil(final Condition condition, final long timeoutMillis) throws Exception {
         final long deadline = System.nanoTime() + timeoutMillis * 1000000L;
         while (System.nanoTime() < deadline) {
             if (condition.isSatisfied()) {
-                return;
+                return true;
             }
             Thread.sleep(50L);
         }
-        fail(label + " timeout-ms=" + timeoutMillis);
+        return false;
+    }
+
+    private void waitFor(final String label, final Condition condition, final long timeoutMillis) throws Exception {
+        if (!waitUntil(condition, timeoutMillis)) {
+            fail(label + " timeout-ms=" + timeoutMillis);
+        }
     }
 
     private void require(final boolean condition, final String description) {
@@ -842,6 +864,7 @@ public final class PopupCoordinateAcceptanceProbe {
 
     private static final class ScenarioEvidence {
         private final String name;
+        private boolean frameActive;
         private Point ownerScreen;
         private Point ownerWithinFrame;
         private Rectangle nativeFrameBounds;

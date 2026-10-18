@@ -1,165 +1,144 @@
 # X11 Popup Calibration Acceptance Evidence
 
-This update addresses the frontier-audit finding that the former `menu-showing-after-selection` sample was taken after `JMenuItem.doClick()` and could not attribute dismissal to the Robot pointer click. The probe now records visibility before the pointer click, after pointer dispatch and before fallback, and after fallback. The measurement defect is corrected, but the latest canonical run on `DISPLAY=:1` still fails pointer selection in all four scenarios; this run is not an acceptance pass. Native X11 KWin runtime acceptance remains UNVERIFIED; see [LIMITATIONS](#limitations).
+## Status
 
-## Commands and Run Status
+The canonical four-scenario pointer acceptance **passes on the isolated Xvfb/Openbox display described below**. The probe compiled with `javac --release 8`, exited `0`, and recorded active-frame, persistence, in-bounds pointer-click, pointer-selection, dismissal, correction, and placement checkpoints for every scenario.
 
-The full regression suite was previously run with the required Java runtime:
+This is not a native KWin runtime claim. The host session is Wayland with XWayland available on `DISPLAY=:1` and `:2`; the isolated acceptance display is Xvfb. **XWayland-only runtime acceptance and native X11 KWin runtime acceptance remain UNVERIFIED.**
 
-```bash
-JAVA_HOME=/home/henry/.sdkman/candidates/java/21.0.8-zulu PATH="$JAVA_HOME/bin:$PATH" gradle :freeplane:test --rerun-tasks
-```
+## Command and Artifacts
 
-The canonical evidence runner was rerun for this update:
+The canonical run and the `(240,180)` falsifiability mutant were run sequentially by the same runner invocation:
 
 ```bash
-JAVA_HOME=/home/henry/.sdkman/candidates/java/21.0.8-zulu PATH="$JAVA_HOME/bin:$PATH" DISPLAY=:1 python3 ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/run-acceptance.py
+JAVA_HOME=/home/henry/.sdkman/candidates/java/21.0.8-zulu \
+PATH="$JAVA_HOME/bin:$PATH" \
+python3 ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/run-acceptance.py \
+  --mutant-offset 240,180
 ```
 
-It compiled successfully, completed before the 90-second process bound, and returned exit code 1 because pointer-event dispatch timed out and pointer selection was missing in every scenario. The exit summary is preserved in [`logs/probe.result.txt`](logs/probe.result.txt). The exact compile and Java commands are in [`logs/commands.txt`](logs/commands.txt); complete output is in [`logs/probe.stdout`](logs/probe.stdout) and [`logs/probe.stderr`](logs/probe.stderr). Toolkit, factory/delegate, popup-class parity, correction, and canonical placement checks passed in this run. The pointer-selection gate remains active and failed.
+The runner reported:
 
-The `(240,180)` and `+3/+3` mutants were generated outside the repository from this checkpointed probe source and run sequentially on `DISPLAY=:1`. Both compiled with `javac --release 8`, completed before the process bound, and exited 1 on the intentionally active gates. The mutation and command templates are recorded in [`logs/falsifiability-commands.txt`](logs/falsifiability-commands.txt). Their output and compiler records are in [`logs/falsifiability-shift-240-180.stdout`](logs/falsifiability-shift-240-180.stdout), [`logs/falsifiability-shift-240-180.stderr`](logs/falsifiability-shift-240-180.stderr), [`logs/falsifiability-shift-240-180.javac.stderr`](logs/falsifiability-shift-240-180.javac.stderr), [`logs/falsifiability-shift-240-180.result.txt`](logs/falsifiability-shift-240-180.result.txt), [`logs/falsifiability-shift-3-3.stdout`](logs/falsifiability-shift-3-3.stdout), [`logs/falsifiability-shift-3-3.stderr`](logs/falsifiability-shift-3-3.stderr), [`logs/falsifiability-shift-3-3.javac.stderr`](logs/falsifiability-shift-3-3.javac.stderr), and [`logs/falsifiability-shift-3-3.result.txt`](logs/falsifiability-shift-3-3.result.txt).
+```text
+probe-exit-code=0
+probe-timeout=False
+mutant-offset=240,180
+mutant-exit-code=1
+mutant-timeout=False
+mutant-validation=True
+```
 
-## Runtime Identity
+The complete canonical output is in [`logs/probe.stdout`](logs/probe.stdout), with the result summary in [`logs/probe.result.txt`](logs/probe.result.txt). The complete mutant output is in [`logs/falsifiability-shift-240-180.stdout`](logs/falsifiability-shift-240-180.stdout), with its result summary in [`logs/falsifiability-shift-240-180.result.txt`](logs/falsifiability-shift-240-180.result.txt). Exact compile and probe commands are in [`logs/commands.txt`](logs/commands.txt); compiler diagnostics are in [`logs/javac.stderr`](logs/javac.stderr) and [`logs/falsifiability-shift-240-180.javac.stderr`](logs/falsifiability-shift-240-180.javac.stderr).
 
-The runner captured the complete environment identity in [`logs/runtime-identity.txt`](logs/runtime-identity.txt). This run used `DISPLAY=:1`, `XDG_SESSION_TYPE=wayland`, Java 21.0.8 Zulu, and a 5760x1080 XWayland display. The recorded Git HEAD was `18f82b23f1c4264f03192de5d5feab7424800b14`. Production source hashes are recorded in the identity log and were not changed for this evidence update.
+## Display Choice and Rationale
 
-The probe reported `sun.awt.X11.XToolkit`, `org.freeplane.core.ui.components.X11PopupFactory`, and the `com.formdev.flatlaf.ui.FlatPopupFactory` delegate. All three popup-class parity checks passed.
+The first attempt used the shared `DISPLAY=:1`, which is XWayland under `kwin_wayland`. That environment did not provide an active Java frame to the probe: the earlier run reported `frame-active timeout-ms=5000`, `xdotool getactivewindow` returned no active window, and Robot pointer events did not reach the popup. This was an **environmental** failure, not evidence of popup misplacement. The earlier shared-display run therefore remained unverified for pointer acceptance.
 
-## Checkpoint Semantics
+Plain Xvfb was also tested. It allowed pointer selection, but it had no window manager, so the `maximize` and `remaximize` scenarios could not be exercised. The runner therefore now selects the first free display in `:77` through `:99`, starts Xvfb and Openbox together, and terminates both process groups in `finally` cleanup.
 
-For each scenario, persistence is sampled separately after at least 800 ms and before the pointer click. `menu-showing-before-pointer` is sampled immediately before Robot presses the button. `menu-showing-after-pointer` is sampled after the bounded pointer-dispatch wait and before any fallback. The existing `item.doClick()` runs only after that checkpoint; its output is labeled `diagnostic-only`, and its result cannot satisfy the pointer-selection assertion. `menu-showing-after-fallback` is the separate late sample.
+The successful run used:
 
-The interaction remains a `java.awt.Robot` pointer press/release. XTest is used only for XWayland pointer-motion synchronization. The placement threshold remains greater than 1 px, and the toolkit, factory/delegate, popup-class parity, and missing-pointer-selection failure gates were not weakened.
+```text
+DISPLAY=:77
+XDG_SESSION_TYPE=wayland
+selected display kind=private Xvfb with Openbox window manager
+screen=2240x1400x24
+screen-bounds=(0,0,2240,1400)
+window-manager=Openbox
+```
+
+This isolated display provides a deterministic active frame and a window manager capable of the maximize and restore transitions while keeping the pointer test independent of unrelated windows on the shared XWayland display. The selected display identity, host display inventory, Java identity, Git HEAD, and production source hashes are recorded in [`logs/runtime-identity.txt`](logs/runtime-identity.txt). The runner-owned `Xvfb :77` and Openbox processes were cleaned up after the run.
+
+## Probe Gates and Failure Classification
+
+The probe now:
+
+- retries frame activation for a bounded five-second interval and logs `frame-active` for the initial frame and every scenario;
+- reports `ENVIRONMENT: frame could not be activated ...` when the frame cannot become active;
+- requires the computed Robot click to be inside the recorded item screen bounds and logs `pointer-click-inside-item-bounds`;
+- keeps pointer selection separate from the later diagnostic `JMenuItem.doClick()` fallback;
+- reports pointer dispatch or selection failures as `ENVIRONMENT:` failures; and
+- reports placement-gate failures as `PRODUCT: popup misplaced ... placement-error=(X,Y)`.
+
+The actual button press and release remain `java.awt.Robot` events. XTest is used only to synchronize pointer motion before the Robot click, so the test does not replace pointer selection with `doClick()`.
 
 ## Canonical Run
 
-Placement error was `(0,0)` in all four scenarios, and each popup remained visible at the persistence checkpoint for 903-913 ms. The raw persistence and visibility checkpoint lines are:
+Every scenario became active on the first activation attempt. Each popup stayed visible for more than the required 800 ms before the pointer phase. The click was inside the item bounds, the item action listener recorded pointer selection, the popup was dismissed by the pointer click, and the native placement error was exactly `(0,0)`.
+
+| Scenario | Frame active | Persistence | Click inside item bounds | Pointer selection | Placement error | Before pointer | After pointer | After fallback |
+| --- | --- | ---: | --- | --- | --- | --- | --- |
+| `startup-normal` | true, attempt 1 | 908 ms | true | `selected-startup-normal` | `(0,0)` | showing | hidden | hidden |
+| `maximize` | true, attempt 1 | 903 ms | true | `selected-maximize` | `(0,0)` | showing | hidden | hidden |
+| `restore` | true, attempt 1 | 903 ms | true | `selected-restore` | `(0,0)` | showing | hidden | hidden |
+| `remaximize` | true, attempt 1 | 904 ms | true | `selected-remaximize` | `(0,0)` | showing | hidden | hidden |
+
+Representative raw checkpoints, including all four active-frame and pointer-bound assertions, are preserved in the canonical log:
 
 ```text
-popup-persistence scenario=startup-normal duration-ms=913 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=startup-normal value=true
-menu-showing-after-pointer scenario=startup-normal value=true
-menu-showing-after-fallback scenario=startup-normal value=true
-popup-persistence scenario=maximize duration-ms=903 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=maximize value=true
-menu-showing-after-pointer scenario=maximize value=true
-menu-showing-after-fallback scenario=maximize value=true
-popup-persistence scenario=restore duration-ms=903 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=restore value=true
-menu-showing-after-pointer scenario=restore value=true
-menu-showing-after-fallback scenario=restore value=true
-popup-persistence scenario=remaximize duration-ms=903 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=remaximize value=true
-menu-showing-after-pointer scenario=remaximize value=true
-menu-showing-after-fallback scenario=remaximize value=true
+frame-active scenario=initial value=true attempt=1
+frame-active scenario=startup-normal value=true attempt=1
+pointer-click-inside-item-bounds scenario=startup-normal value=true
+frame-active scenario=maximize value=true attempt=1
+pointer-click-inside-item-bounds scenario=maximize value=true
+frame-active scenario=restore value=true attempt=1
+pointer-click-inside-item-bounds scenario=restore value=true
+frame-active scenario=remaximize value=true attempt=1
+pointer-click-inside-item-bounds scenario=remaximize value=true
 ```
 
-The click target was inside the correctly placed item bounds in every scenario, but no `popup-pointer-selected=...` event was recorded. The runner logged `pointer-event-dispatch timeout` and `popup-pointer-selection-missing` for all four. The later diagnostic fallback selected each item, but did not change the already-recorded after-pointer values. Therefore this run establishes persistence and the new phase separation, but does not establish successful canonical pointer selection or pointer-triggered dismissal.
+The per-scenario records also contain `pointer-selection=true`, `pointer-selected-text=selected-<scenario>`, `menu-showing-before-pointer=true`, `menu-showing-after-pointer=false`, `persistence-ms` at or above 800, and `placement-error=(0,0)`. The diagnostic fallback ran only after those pointer checkpoints and was not needed to satisfy pointer selection.
 
-| Scenario | Placement error | Persistence | After pointer | Pointer selection | Diagnostic fallback |
-| --- | --- | --- | --- | --- | --- |
-| startup-normal | `(0,0)` | `913ms`, showing | showing | missing | selected |
-| maximize | `(0,0)` | `903ms`, showing | showing | missing | selected |
-| restore | `(0,0)` | `903ms`, showing | showing | missing | selected |
-| remaximize | `(0,0)` | `903ms`, showing | showing | missing | selected |
+Popup factory and correction gates also passed. The adapter and delegate both produced `javax.swing.Popup$HeavyWeightWindow` for heavyweight menus, lightweight-enabled menus, and tooltips. The split-cache correction assertion was `(-240,-180)` as expected, and the matched-geometry correction assertion was `(0,0)`.
 
 ## `(240,180)` Mutant
 
-The raw persistence and visibility checkpoint lines are:
+The mutant changed the single production-style call from the correct local popup coordinates to:
 
-```text
-popup-persistence scenario=startup-normal duration-ms=911 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=startup-normal value=true
-menu-showing-after-pointer scenario=startup-normal value=false
-menu-showing-after-fallback scenario=startup-normal value=false
-popup-persistence scenario=maximize duration-ms=903 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=maximize value=true
-menu-showing-after-pointer scenario=maximize value=false
-menu-showing-after-fallback scenario=maximize value=false
-popup-persistence scenario=restore duration-ms=901 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=restore value=true
-menu-showing-after-pointer scenario=restore value=true
-menu-showing-after-fallback scenario=restore value=true
-popup-persistence scenario=remaximize duration-ms=903 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=remaximize value=true
-menu-showing-after-pointer scenario=remaximize value=true
-menu-showing-after-fallback scenario=remaximize value=true
+```java
+menu.show(owner, evidence.popupLocal.x + 240, evidence.popupLocal.y + 180);
 ```
 
-The per-scenario geometry and outcome from the mutant's raw `scenario=` records:
+It was compiled and run on the same isolated display, with no production source or test changes. Frame activation still passed in all four scenarios and persistence remained above 800 ms, but the popup was displaced by exactly `(240,180)`. The intended click was therefore outside the actual item bounds in every scenario.
 
-| Scenario | Intended click | Shifted item bounds | Placement error | Pointer selection | After pointer | After fallback |
-| --- | --- | --- | --- | --- | --- | --- |
-| startup-normal | `(241,214)` | `(385,382,192,24)` | `(240,180)` | no | hidden | hidden |
-| maximize | `(104,126)` | `(265,294,158,24)` | `(240,180)` | no | hidden | hidden |
-| restore | `(217,214)` | `(385,382,144,24)` | `(240,180)` | no | showing | showing |
-| remaximize | `(110,126)` | `(265,294,170,24)` | `(240,180)` | no | showing | showing |
+| Scenario | Persistence | Intended click | Actual item bounds | Click inside item | Pointer selection | Placement error | Before pointer | After pointer | After fallback |
+| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
+| `startup-normal` | 905 ms | `(238,202)` | `(382,370,192,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
+| `maximize` | 902 ms | `(101,82)` | `(262,250,158,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
+| `restore` | 903 ms | `(214,202)` | `(382,370,144,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
+| `remaximize` | 903 ms | `(107,82)` | `(262,250,170,24)` | false | missing | `(240,180)` | showing | hidden | hidden |
 
-The intended click missed the shifted item in all four scenarios, and the placement gate correctly failed at 240 px. In startup-normal and maximize, the popup was already hidden at the pre-fallback checkpoint, so those runs show pointer-phase dismissal without selection. In restore and remaximize, it remained visible; those runs show a miss without dismissal. The fallback selected each item diagnostically, but it occurred after the checkpoint and did not determine either visibility result.
-
-A second, in-menu control shifts the popup by `(3,3)`. Its raw persistence and visibility checkpoint lines are:
+The raw mutant log records, for every scenario:
 
 ```text
-popup-persistence scenario=startup-normal duration-ms=911 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=startup-normal value=true
-menu-showing-after-pointer scenario=startup-normal value=true
-menu-showing-after-fallback scenario=startup-normal value=true
-popup-persistence scenario=maximize duration-ms=903 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=maximize value=true
-menu-showing-after-pointer scenario=maximize value=true
-menu-showing-after-fallback scenario=maximize value=true
-popup-persistence scenario=restore duration-ms=902 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=restore value=true
-menu-showing-after-pointer scenario=restore value=true
-menu-showing-after-fallback scenario=restore value=true
-popup-persistence scenario=remaximize duration-ms=902 minimum-ms=800 menu-showing=true
-menu-showing-before-pointer scenario=remaximize value=true
-menu-showing-after-pointer scenario=remaximize value=true
-menu-showing-after-fallback scenario=remaximize value=true
+pointer-click-inside-item-bounds ... value=false
+assertion-failure=PRODUCT: popup misplaced ... placement-error=(240,180)
+menu-showing-before-pointer ... value=true
+menu-showing-after-pointer ... value=false
+menu-showing-after-fallback ... value=false
 ```
 
-| Scenario | Intended click | Shifted item bounds | Placement error | Pointer selection | After pointer | Other gate failure |
-| --- | --- | --- | --- | --- | --- | --- |
-| startup-normal | `(241,214)` | `(148,205,192,24)` | `(3,3)` | no | showing | frame-active timeout |
-| maximize | `(104,126)` | `(28,117,158,24)` | `(3,3)` | no | showing | frame-active timeout |
-| restore | `(97,126)` | `(28,117,144,24)` | `(3,3)` | no | showing | frame-active timeout |
-| remaximize | `(230,214)` | `(148,205,170,24)` | `(3,3)` | no | showing | frame-active timeout |
+Thus the misplaced popup was **dismissed by the outside Robot click in all four mutant scenarios**, and this statement is based on the explicit `menu-showing-after-pointer ... value=false` checkpoints. It is not inferred from the later fallback. The mutant also records pointer-selection-missing and pointer-dispatch/selection environment-labelled failures, which are expected downstream consequences of deliberately clicking the correct-location point while the popup has been shifted away. Frame activation itself passed, so those mutant `ENVIRONMENT:` lines do not indicate the earlier shared-display focus problem.
 
-Each intended click coordinate lies within the recorded shifted item bounds, but the probe emitted no pointer selection and every scenario also failed its frame-active gate. The popup stayed visible before and after the diagnostic fallback in all four. This control establishes geometric overlap, not that the pointer event was actually delivered to the item; it cannot prove an in-menu click-and-dismiss outcome in this runtime.
+The mutant proves that a large coordinate displacement is detected by the product placement gate and cannot silently pass through the acceptance runner. It also proves that the click target is checked against the actual item bounds rather than being adjusted to follow the displaced popup. It does not prove pointer selection on a misplaced item, because the intended point is intentionally outside that item, and it does not extend the result to XWayland or native X11 KWin behavior.
 
-The `(240,180)` mutant proves that the intended click misses the shifted item in all four scenarios and records the actual, scenario-dependent visibility outcome before fallback. In startup-normal and maximize, the popup was already hidden at the pre-fallback checkpoint, so those runs show pointer-phase dismissal without selection. In restore and remaximize, it remained visible; those runs show a miss without dismissal. The fallback selected each item diagnostically, but it occurred after the checkpoint and did not determine either visibility result.
+## Regression and Source Boundaries
 
-Together the mutants distinguish an outside-menu geometry from an intended point that geometrically overlaps the item, but the fresh runs do not establish whether the `+3/+3` input reached the item, nor do they establish canonical selection: the canonical run also lacked pointer selection. A claim that canonical clicks select while mutant clicks do not is not supported by this capture. The prior audit's confounding measurement is resolved; end-to-end canonical pointer acceptance remains blocked by the observed missing selection.
-
-## Popup-Class Parity and Correction
-
-| Popup case | Adapter class | Delegate class | Equal | Required class |
-| --- | --- | --- | --- | --- |
-| heavyweight menu | `javax.swing.Popup$HeavyWeightWindow` | `javax.swing.Popup$HeavyWeightWindow` | `true` | `javax.swing.Popup$HeavyWeightWindow` |
-| lightweight-enabled menu | `javax.swing.Popup$HeavyWeightWindow` | `javax.swing.Popup$HeavyWeightWindow` | `true` | `javax.swing.Popup$HeavyWeightWindow` |
-| `JToolTip` | `javax.swing.Popup$HeavyWeightWindow` | `javax.swing.Popup$HeavyWeightWindow` | `true` | `javax.swing.Popup$HeavyWeightWindow` |
-
-| Correction assertion | Expected | Actual | Result |
-| --- | --- | --- | --- |
-| Synthetic split-cache stale owner screen location | `(-240,-180)` | `(-240,-180)` | `true` |
-| Matched native/AWT geometry | `(0,0)` | `(0,0)` | `true` |
-
-The synthetic split-cache case exercises `PopupCoordinateCalibrator.calculateCorrection(...)` through the same geometry-provider contract used by production. Maximized owner correction was `(4,34)`; the normal geometry correction was `(0,0)`.
-
-## Regression Suite
-
-The previously captured `gradle :freeplane:test --rerun-tasks` result was `BUILD SUCCESSFUL`. Counting 104 XML result files produced:
+The previously captured full regression run completed successfully:
 
 ```text
-xml_files 104
-{'tests': 741, 'failures': 0, 'errors': 0, 'skipped': 3}
+BUILD SUCCESSFUL
+XML results: 741 tests, 0 failures, 0 errors, 3 skipped
 ```
 
-This update reran the acceptance runner and mutant, not the full Gradle suite.
+This update reran the acceptance probe and mutant; it did not rerun the full Gradle suite. Production source hashes are recorded in `logs/runtime-identity.txt`, and no production source or production test file was modified by this evidence update.
 
-## LIMITATIONS
+## Limitations
 
-Available X displays are XWayland under `kwin_wayland` (`DISPLAY=:1` and `:2`). `_NET_WORKAREA` on `:1` is `0, 32, 5760, 1048`, including the 32 px top-panel strut. There is no native X11 KWin session in this environment (`kwin_x11=NONE`). Only XWayland was exercised, so native-X11 runtime acceptance remains **UNVERIFIED** and this evidence must not be read as a native-X11 KWin pass.
+The host has `kwin_wayland` with XWayland displays `:1` and `:2`; `kwin_x11=NONE`. The canonical pass was obtained on isolated Xvfb with Openbox, not on the shared XWayland compositor and not on a native X11 KWin session. Therefore:
 
-The current XWayland canonical run also failed the Robot pointer-selection gate. The measurement correction and mutant records are valid for their logged observations, but the requested canonical four-scenario pointer-selection acceptance must be rerun in an environment where the probe can produce the pointer selection events.
+- XWayland-only runtime acceptance: **UNVERIFIED**.
+- Native X11 KWin runtime acceptance: **UNVERIFIED**.
+- Isolated Xvfb/Openbox canonical acceptance: **PASS**, as documented above.
+
+The earlier `frame-active` timeout is resolved for the isolated acceptance environment by display isolation, window-manager support, bounded activation retries, and explicit environment/product failure labels. It remains a limitation of the shared XWayland environment rather than a passing product result there.
