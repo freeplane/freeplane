@@ -30,6 +30,21 @@ Exact compile and Java commands are in [`logs/commands.txt`](logs/commands.txt).
 
 The committed probe modes are selected with `-Dfreeplane.acceptance.mode=frame-writes-11` and `-Dfreeplane.acceptance.mode=consuming-item`; the default is `canonical`. The displacement control still recompiles a disposable probe copy with only its scenario `menu.show(...)` offset changed. Production classes are shared unchanged by all variants.
 
+### Retry and failure diagnosis
+
+The runner records one JSON object per probe attempt and diagnosis in [`logs/attempts.jsonl`](logs/attempts.jsonl), including the attempt number, phase, exit code, timeout flag, classification presence, outcome, reason, display, and the last eight stdout/stderr lines for failures. A probe or display-acquisition attempt is retried at most three times only while no scenario classification has been produced. The backoff is linear: one second after attempt 1 and two seconds after attempt 2. Any `failure-class=PRODUCT`, `failure-class=ENVIRONMENT`, or `failure-class=NONE` record ends retrying immediately; PRODUCT controls therefore cannot be masked by a retry. Each retry closes the runner-owned Xvfb/Openbox pair and acquires a fresh private display. The deterministic retry-boundary check is recorded in [`logs/retry-policy-check.result.txt`](logs/retry-policy-check.result.txt): a PRODUCT-classified failure made one probe call with zero display closes, while a pre-classification failure waited one second, closed the display once, and succeeded on attempt 2.
+### Reproducibility runs
+
+Three fresh canonical invocations completed with a classification record on every run. Each completed on attempt 1, so no retry was needed in this sample. The per-run stdout, stderr, and result records are [`logs/repro-run-1.*`](logs/repro-run-1.stdout), [`logs/repro-run-2.*`](logs/repro-run-2.stdout), and [`logs/repro-run-3.*`](logs/repro-run-3.stdout); the combined attempt ledger is [`logs/attempts.jsonl`](logs/attempts.jsonl).
+
+| Invocation | Runner exit | Canonical probe exit | Classification record | Attempts |
+| --- | ---: | ---: | --- | ---: |
+| Repro run 1 | 0 | 0 | yes (`NONE` x4) | 1 |
+| Repro run 2 | 0 | 0 | yes (`NONE` x4) | 1 |
+| Repro run 3 | 0 | 0 | yes (`NONE` x4) | 1 |
+
+The one required frame-write negative-control invocation reused the isolated runner with `--negative-controls`. Its runner exit was `0` after validating the expected controls; the frame-write probe itself exited `1`, produced `PRODUCT` classification records for all four scenarios, and had one terminal classified attempt. The result is in [`logs/runner.result.txt`](logs/runner.result.txt), with runner output in [`logs/repro-negative-controls.stdout`](logs/repro-negative-controls.stdout) and the frame-write probe output in [`logs/falsifiability-frame-writes-11.stdout`](logs/falsifiability-frame-writes-11.stdout). The diagnosis ledger records the frame-write and consuming-item PRODUCT failures with `retry disabled`.
+
 ## Display isolation and cleanup
 
 The successful runs used:
@@ -158,9 +173,9 @@ These original failing checks are retained in `logs/pre-enforcement-frame-writes
 
 ## Regression and source boundaries
 
-All modifications are confined to `ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/`. No production source or test was modified. Java probe compilation, the four required GUI runs, the independent budget control, source/hash checks, log consistency checks, and process cleanup were verified for this update.
+All modifications for the F2 harness fix are confined to `ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/`. The F1 production seam and focused tests are the only changes outside that directory. Java probe compilation, the canonical GUI runs, the frame-write negative control, source/hash checks, log consistency checks, and process cleanup were verified for this update.
 
-The previously captured full regression result was `741 tests, 0 failures, 0 errors, 3 skipped`. The Gradle suite was not rerun for this acceptance-harness-only update. Current production source hashes are recorded in `logs/runtime-identity.txt` and checked against the source tree during evidence verification.
+The required full regression command was run with `gradle :freeplane:test --rerun-tasks` and exited `0`. Aggregating `freeplane/build/test-results/test/*.xml` produced `742 tests, 0 failures, 0 errors, 2 skipped`. The focused `FrameResynchronizerPopupFactoryTest` suite also passed after the mutation was restored. Current production source hashes are recorded in `logs/runtime-identity.txt` and checked against the source tree during evidence verification.
 
 ## Limitations
 

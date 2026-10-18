@@ -1,1 +1,8 @@
+run-id=1792347731726694762
 runner-exit-code=0
+canonical-probe-exit-code=0
+canonical-classification-present=true
+frame-writes-11-probe-exit-code=1
+frame-writes-11-classification-present=true
+frame-writes-11-validation=true
+negative-control-runner-validation=true

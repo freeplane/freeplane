@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 from pathlib import Path
 import re
@@ -31,6 +32,19 @@ PRIVATE_DISPLAY_START = 77
 PRIVATE_DISPLAY_END = 100
 PRIVATE_SCREEN = "2240x1400x24"
 SCENARIOS = ("startup-normal", "maximize", "restore", "remaximize")
+MAX_PROBE_ATTEMPTS = 3
+# Linear backoff: after failed attempt N, wait N seconds before the next attempt.
+PROBE_RETRY_BACKOFF_SECONDS = 1.0
+DIAGNOSIS_TAIL_LINES = 8
+
+
+def classification_produced(*outputs: str) -> bool:
+    return any(line.startswith("failure-class=")
+               for output in outputs for line in output.splitlines())
+
+
+def retryable_pre_classification_failure(stdout: str, stderr: str) -> bool:
+    return not classification_produced(stdout, stderr)
 
 
 def classifications_match(stdout: str, expected_class: str) -> bool:
@@ -101,6 +115,12 @@ def command_output(command: Sequence[str], env: Dict[str, str]) -> str:
     if result.stderr:
         output += result.stderr
     return output.strip()
+
+
+def text_output(output: object) -> str:
+    if isinstance(output, bytes):
+        return output.decode("utf-8", errors="replace")
+    return str(output)
 
 
 def terminate_process_group(process: Optional[subprocess.Popen]) -> None:
@@ -198,6 +218,7 @@ class IsolatedDisplay:
         for stream in self.log_streams:
             stream.close()
         self.window_manager = None
+        self.display = None
         self.xvfb = None
         self.log_streams = []
 
@@ -218,11 +239,11 @@ def bounded_run(command: Sequence[str], env: Dict[str, str], timeout_seconds: in
         stdout, stderr = process.communicate(timeout=timeout_seconds)
         return process.returncode, stdout, stderr, False
     except subprocess.TimeoutExpired as timeout:
-        partial_stdout = timeout.stdout or ""
-        partial_stderr = timeout.stderr or ""
+        partial_stdout = text_output(timeout.stdout or "")
+        partial_stderr = text_output(timeout.stderr or "")
         terminate_process_group(process)
         stdout, stderr = process.communicate()
-        return 124, partial_stdout + stdout, partial_stderr + stderr, True
+        return 124, partial_stdout + text_output(stdout), partial_stderr + text_output(stderr), True
 
 
 def sha256(path: Path) -> str:
@@ -312,6 +333,160 @@ def write_probe_result(path: Path, display: str, compile_result: int, probe_exit
     write_log(path, "\n".join(lines) + "\n")
 
 
+def append_json_log(path: Path, record: Dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as log:
+        log.write(json.dumps(record, sort_keys=True) + "\n")
+
+
+def output_tail(output: str) -> List[str]:
+    return output.splitlines()[-DIAGNOSIS_TAIL_LINES:]
+
+
+def emit_probe_diagnosis(attempt_log: Path, run_id: str, variant: str, attempt: int,
+                         phase: str, exit_code: Optional[int], timed_out: bool,
+                         stdout: str, stderr: str, reason: str,
+                         display: Optional[str]) -> None:
+    record = {
+        "run_id": run_id,
+        "variant": variant,
+        "attempt": attempt,
+        "phase": phase,
+        "exit_code": exit_code,
+        "timeout": timed_out,
+        "classification_produced": classification_produced(stdout, stderr),
+        "stdout_tail": output_tail(stdout),
+        "stderr_tail": output_tail(stderr),
+        "reason": reason,
+        "display": display or "UNAVAILABLE",
+    }
+    append_json_log(attempt_log, {"type": "probe-diagnosis", **record})
+    print("probe-diagnosis=" + json.dumps(record, sort_keys=True), file=sys.stderr, flush=True)
+
+
+def record_probe_attempt(attempt_log: Path, run_id: str, variant: str, attempt: int,
+                         phase: str, outcome: str, reason: str, exit_code: Optional[int],
+                         timed_out: bool, stdout: str, stderr: str,
+                         display: Optional[str]) -> None:
+    record = {
+        "run_id": run_id,
+        "variant": variant,
+        "attempt": attempt,
+        "phase": phase,
+        "outcome": outcome,
+        "reason": reason,
+        "exit_code": exit_code,
+        "timeout": timed_out,
+        "classification_produced": classification_produced(stdout, stderr),
+        "display": display or "UNAVAILABLE",
+    }
+    append_json_log(attempt_log, {"type": "probe-attempt", **record})
+    print("probe-attempt=" + json.dumps(record, sort_keys=True), flush=True)
+
+
+def run_probe_with_retries(label: str, probe_command: Sequence[str], base_env: Dict[str, str],
+                           java: Path, display_session: IsolatedDisplay, log_prefix: str,
+                           compile_code: int, expected_mutant_failure: bool, run_id: str,
+                           attempt_log: Path, commands: List[str],
+                           timeout_seconds: int = 90) -> Tuple[Optional[int], str, str, bool, Optional[str], int]:
+    last_exit_code: Optional[int] = None
+    last_stdout = ""
+    last_stderr = ""
+    last_timed_out = False
+    last_display: Optional[str] = None
+    for attempt in range(1, MAX_PROBE_ATTEMPTS + 1):
+        selected_display = display_session.display
+        if selected_display is None:
+            try:
+                selected_display = display_session.start()
+            except Exception as exception:
+                reason = "display acquisition failed: " + exception.__class__.__name__ + ": " + str(exception)
+                emit_probe_diagnosis(attempt_log, run_id, label, attempt, "display-acquisition", None, False,
+                                     "", "", reason, None)
+                outcome = "retry" if attempt < MAX_PROBE_ATTEMPTS else "failed"
+                record_probe_attempt(attempt_log, run_id, label, attempt, "display-acquisition", outcome,
+                                     reason, None, False, "", "", None)
+                if attempt < MAX_PROBE_ATTEMPTS:
+                    time.sleep(PROBE_RETRY_BACKOFF_SECONDS * attempt)
+                    continue
+                return last_exit_code, last_stdout, last_stderr, last_timed_out, last_display, attempt
+
+        run_env = dict(base_env)
+        run_env["DISPLAY"] = selected_display
+        last_display = selected_display
+        try:
+            runtime_identity = build_runtime_identity(run_env, java, selected_display)
+        except Exception as exception:
+            reason = "runtime identity collection failed: " + exception.__class__.__name__ + ": " + str(exception)
+            emit_probe_diagnosis(attempt_log, run_id, label, attempt, "runtime-identity", None, False,
+                                 "", "", reason, selected_display)
+            outcome = "retry" if attempt < MAX_PROBE_ATTEMPTS else "failed"
+            record_probe_attempt(attempt_log, run_id, label, attempt, "runtime-identity", outcome,
+                                 reason, None, False, "", "", selected_display)
+            if attempt < MAX_PROBE_ATTEMPTS:
+                display_session.close()
+                time.sleep(PROBE_RETRY_BACKOFF_SECONDS * attempt)
+                continue
+            return last_exit_code, last_stdout, last_stderr, last_timed_out, last_display, attempt
+        write_log(LOG_DIR / (log_prefix + ".attempt-" + str(attempt) + ".runtime-identity.txt"),
+                  "\n".join(runtime_identity) + "\n")
+        write_log(LOG_DIR / "runtime-identity.txt", "\n".join(runtime_identity) + "\n")
+        commands.append(label + "-attempt-" + str(attempt) + "-selected-display=" + selected_display)
+        commands.append(label + "-attempt-" + str(attempt) + "-probe-command=" + shell_command(probe_command))
+
+        try:
+            exit_code, stdout, stderr, timed_out = bounded_run(probe_command, run_env, timeout_seconds)
+        except Exception as exception:
+            exit_code = None
+            stdout = ""
+            stderr = ""
+            timed_out = False
+            invocation_reason = "probe invocation failed: " + exception.__class__.__name__ + ": " + str(exception)
+        else:
+            invocation_reason = ""
+
+        last_exit_code = exit_code
+        last_stdout = stdout
+        last_stderr = stderr
+        last_timed_out = timed_out
+        attempt_prefix = log_prefix + ".attempt-" + str(attempt)
+        write_log(LOG_DIR / (attempt_prefix + ".stdout"), stdout)
+        write_log(LOG_DIR / (attempt_prefix + ".stderr"), stderr)
+        write_probe_result(LOG_DIR / (attempt_prefix + ".result.txt"), selected_display,
+                           compile_code, exit_code, timed_out, expected_mutant_failure)
+        write_log(LOG_DIR / (log_prefix + ".stdout"), stdout)
+        write_log(LOG_DIR / (log_prefix + ".stderr"), stderr)
+        write_probe_result(LOG_DIR / (log_prefix + ".result.txt"), selected_display,
+                           compile_code, exit_code, timed_out, expected_mutant_failure)
+
+        has_classification = classification_produced(stdout, stderr)
+        probe_failed = exit_code is None or exit_code != 0 or timed_out or not has_classification
+        if probe_failed:
+            reason = invocation_reason or (
+                "classified probe failure; retry disabled" if has_classification
+                else "pre-classification harness failure"
+            )
+            emit_probe_diagnosis(attempt_log, run_id, label, attempt, label + "-probe", exit_code,
+                                 timed_out, stdout, stderr, reason, selected_display)
+        if has_classification:
+            reason = "classification produced; retry disabled"
+            outcome = "classified-failure" if probe_failed else "classified-success"
+            record_probe_attempt(attempt_log, run_id, label, attempt, label + "-probe", outcome, reason,
+                                 exit_code, timed_out, stdout, stderr, selected_display)
+            return exit_code, stdout, stderr, timed_out, selected_display, attempt
+
+        reason = invocation_reason or "pre-classification harness failure"
+        outcome = "retry" if attempt < MAX_PROBE_ATTEMPTS else "failed"
+        record_probe_attempt(attempt_log, run_id, label, attempt, label + "-probe", outcome, reason,
+                             exit_code, timed_out, stdout, stderr, selected_display)
+        if attempt == MAX_PROBE_ATTEMPTS:
+            return exit_code, stdout, stderr, timed_out, selected_display, attempt
+        display_session.close()
+        time.sleep(PROBE_RETRY_BACKOFF_SECONDS * attempt)
+
+    return last_exit_code, last_stdout, last_stderr, last_timed_out, last_display, MAX_PROBE_ATTEMPTS
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -357,39 +532,45 @@ def main() -> int:
     if not probe_source.is_file():
         raise RuntimeError("probe source is missing: " + str(probe_source))
 
+    run_id = str(time.time_ns())
+    attempt_log = LOG_DIR / "attempts.jsonl"
+    write_log(LOG_DIR / "runtime-identity.txt", "run-id=" + run_id + "\n")
+    classpath = os.pathsep.join(str(path) for path in (build_classes, flatlaf, jna, jna_platform))
+    commands: List[str] = [
+        "run-id=" + run_id,
+        "repository-root=" + str(REPOSITORY_ROOT),
+        "probe-source=" + str(probe_source),
+        "host-display=" + base_env.get("DISPLAY", ""),
+        "display-selection=private Xvfb with Openbox window manager",
+        "retry-policy=pre-classification-harness-failures-only",
+        "retry-max-attempts=" + str(MAX_PROBE_ATTEMPTS),
+        "retry-backoff=linear seconds=attempt*" + str(PROBE_RETRY_BACKOFF_SECONDS),
+        "xvfb-command=" + shell_command(
+            ["Xvfb", "<selected-display>", "-screen", "0", PRIVATE_SCREEN, "-nolisten", "tcp", "-ac"]
+        ),
+        "window-manager-command=" + shell_command(["openbox", "--sm-disable"]),
+        "flatlaf-jar=" + str(flatlaf),
+        "jna-jar=" + str(jna),
+        "jna-platform-jar=" + str(jna_platform),
+        "compile-classpath=" + classpath,
+    ]
+
     display_session = IsolatedDisplay(LOG_DIR, base_env)
-    selected_display = display_session.start()
-    run_env = dict(base_env)
-    run_env["DISPLAY"] = selected_display
     try:
-        runtime_identity = build_runtime_identity(run_env, java, selected_display)
-        write_log(LOG_DIR / "runtime-identity.txt", "\n".join(runtime_identity) + "\n")
-
-        classpath = os.pathsep.join(str(path) for path in (build_classes, flatlaf, jna, jna_platform))
-        commands: List[str] = [
-            "repository-root=" + str(REPOSITORY_ROOT),
-            "probe-source=" + str(probe_source),
-            "host-display=" + base_env.get("DISPLAY", ""),
-            "selected-display=" + selected_display,
-            "display-selection=private Xvfb with Openbox window manager",
-            "xvfb-command=" + shell_command(
-                ["Xvfb", selected_display, "-screen", "0", PRIVATE_SCREEN, "-nolisten", "tcp", "-ac"]
-            ),
-            "window-manager-command=" + shell_command(["openbox", "--sm-disable"]),
-            "flatlaf-jar=" + str(flatlaf),
-            "jna-jar=" + str(jna),
-            "jna-platform-jar=" + str(jna_platform),
-            "compile-classpath=" + classpath,
-        ]
-
+        canonical_compile_code: Optional[int] = None
         canonical_exit_code: Optional[int] = None
         canonical_timed_out = False
         canonical_stdout = ""
+        canonical_stderr = ""
+        canonical_attempts = 0
         mutant_exit_code: Optional[int] = None
         mutant_timed_out = False
         mutant_stdout = ""
+        mutant_stderr = ""
         mutant_compile_code: Optional[int] = None
+        mutant_attempts = 0
         negative_results = {}
+        negative_attempts = {}
 
         with tempfile.TemporaryDirectory(prefix="freeplane-popup-acceptance-") as temporary_directory:
             temporary_root = Path(temporary_directory)
@@ -428,7 +609,7 @@ def main() -> int:
                     source,
                 ]
                 commands.append(label + "-compile-command=" + shell_command(compile_command))
-                compile_result = completed(compile_command, run_env)
+                compile_result = completed(compile_command, base_env)
                 mutant_suffix = "-shift-" + str(mutant_offset[0]) + "-" + str(mutant_offset[1]) if mutant_offset else ""
                 log_prefix = ("probe" if label == "canonical" else
                               "falsifiability" + mutant_suffix if label == "mutant" else
@@ -444,7 +625,9 @@ def main() -> int:
                     mutant_compile_code = compile_result.returncode
                 else:
                     negative_results[label] = (compile_result.returncode, None, "", "", False)
+                    negative_attempts[label] = 1
                 if compile_result.returncode != 0:
+                    selected_display = display_session.display or "UNAVAILABLE"
                     write_probe_result(
                         result_path,
                         selected_display,
@@ -453,6 +636,24 @@ def main() -> int:
                         False,
                         expected_mutant_failure=label != "canonical",
                     )
+                    emit_probe_diagnosis(
+                        attempt_log, run_id, label, 1, label + "-compile", compile_result.returncode, False,
+                        compile_result.stdout, compile_result.stderr,
+                        "probe compilation failed; no classification produced", display_session.display,
+                    )
+                    record_probe_attempt(
+                        attempt_log, run_id, label, 1, label + "-compile", "failed",
+                        "probe compilation failed; no retry", compile_result.returncode, False,
+                        compile_result.stdout, compile_result.stderr, display_session.display,
+                    )
+                    if label == "canonical":
+                        canonical_attempts = 1
+                        canonical_stdout = compile_result.stdout
+                        canonical_stderr = compile_result.stderr
+                    elif label == "mutant":
+                        mutant_attempts = 1
+                        mutant_stdout = compile_result.stdout
+                        mutant_stderr = compile_result.stderr
                     continue
 
                 runtime_classpath = os.pathsep.join((str(class_directory), classpath))
@@ -466,39 +667,39 @@ def main() -> int:
                 ]
                 if label not in ("canonical", "mutant"):
                     probe_command.insert(1, "-Dfreeplane.acceptance.mode=" + label)
-                commands.append(label + "-probe-command=" + shell_command(probe_command))
-                exit_code, stdout, stderr, timed_out = bounded_run(probe_command, run_env, 90)
+                exit_code, stdout, stderr, timed_out, selected_display, attempts_used = run_probe_with_retries(
+                    label, probe_command, base_env, java, display_session, log_prefix,
+                    compile_result.returncode, label != "canonical", run_id, attempt_log, commands,
+                )
                 if label == "canonical":
                     canonical_exit_code = exit_code
                     canonical_timed_out = timed_out
                     canonical_stdout = stdout
+                    canonical_stderr = stderr
+                    canonical_attempts = attempts_used
                 elif label == "mutant":
                     mutant_exit_code = exit_code
                     mutant_timed_out = timed_out
                     mutant_stdout = stdout
+                    mutant_stderr = stderr
+                    mutant_attempts = attempts_used
                 else:
                     negative_results[label] = (compile_result.returncode, exit_code, stdout, stderr, timed_out)
-                stdout_path = LOG_DIR / (log_prefix + ".stdout")
-                stderr_path = LOG_DIR / (log_prefix + ".stderr")
-                write_log(stdout_path, stdout)
-                write_log(stderr_path, stderr)
-                write_probe_result(
-                    result_path,
-                    selected_display,
-                    compile_result.returncode,
-                    exit_code,
-                    timed_out,
-                    expected_mutant_failure=label != "canonical",
-                )
+                    negative_attempts[label] = attempts_used
 
-        write_log(LOG_DIR / "commands.txt", "\n".join(commands) + "\n")
         print("runtime-identity=" + str(LOG_DIR / "runtime-identity.txt"))
         print("probe-stdout=" + str(LOG_DIR / "probe.stdout"))
         print("probe-stderr=" + str(LOG_DIR / "probe.stderr"))
         print("probe-exit-code=" + str(canonical_exit_code))
         print("probe-timeout=" + str(canonical_timed_out))
+        print("canonical-classification-present=" + str(classification_produced(canonical_stdout, canonical_stderr)))
         if canonical_exit_code != 0:
-            print("probe failed", file=sys.stderr)
+            emit_probe_diagnosis(
+                attempt_log, run_id, "canonical", canonical_attempts or 1, "canonical-validation",
+                canonical_exit_code, canonical_timed_out, canonical_stdout, canonical_stderr,
+                "canonical probe did not complete successfully", display_session.display,
+            )
+            print("canonical-probe-validation=False")
             return 1 if canonical_exit_code is None else canonical_exit_code
         canonical_classifications_valid = (
             not canonical_timed_out
@@ -510,6 +711,11 @@ def main() -> int:
         )
         print("canonical-classification-validation=" + str(canonical_classifications_valid))
         if not canonical_classifications_valid:
+            emit_probe_diagnosis(
+                attempt_log, run_id, "canonical", canonical_attempts, "canonical-validation",
+                canonical_exit_code, canonical_timed_out, canonical_stdout, canonical_stderr,
+                "canonical classification validation failed", display_session.display,
+            )
             print("canonical classification validation failed", file=sys.stderr)
             return 1
         if mutant_offset is not None:
@@ -526,8 +732,14 @@ def main() -> int:
             print("mutant-offset=" + str(offset_x) + "," + str(offset_y))
             print("mutant-exit-code=" + str(mutant_exit_code))
             print("mutant-timeout=" + str(mutant_timed_out))
+            print("mutant-classification-present=" + str(classification_produced(mutant_stdout, mutant_stderr)))
             print("mutant-validation=" + str(mutant_valid))
             if not mutant_valid:
+                emit_probe_diagnosis(
+                    attempt_log, run_id, "mutant", mutant_attempts or 1, "mutant-validation",
+                    mutant_exit_code, mutant_timed_out, mutant_stdout, mutant_stderr,
+                    "mutant validation failed", display_session.display,
+                )
                 print("mutant validation failed", file=sys.stderr)
                 return 1
         negative_controls_valid = True
@@ -555,10 +767,17 @@ def main() -> int:
                 )) == 2 * len(SCENARIOS)
             print(mode + "-exit-code=" + str(exit_code))
             print(mode + "-timeout=" + str(timed_out))
+            print(mode + "-classification-present=" + str(classification_produced(stdout, stderr)))
             print(mode + "-validation=" + str(valid))
+            if not valid:
+                emit_probe_diagnosis(
+                    attempt_log, run_id, mode, negative_attempts.get(mode, 1), mode + "-validation",
+                    exit_code, timed_out, stdout, stderr, mode + " validation failed", display_session.display,
+                )
             negative_controls_valid = negative_controls_valid and valid
         return 0 if negative_controls_valid else 1
     finally:
+        write_log(LOG_DIR / "commands.txt", "\n".join(commands) + "\n")
         display_session.close()
 
 

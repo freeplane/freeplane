@@ -1,0 +1,8 @@
+probe-attempt={"attempt": 1, "classification_produced": true, "display": ":77", "exit_code": 0, "outcome": "classified-success", "phase": "canonical-probe", "reason": "classification produced; retry disabled", "run_id": "1792347718735732466", "timeout": false, "variant": "canonical"}
+runtime-identity=/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/logs/runtime-identity.txt
+probe-stdout=/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/logs/probe.stdout
+probe-stderr=/data/home/henry-arch/.local/state/pi/project-manager/worktrees/0233ff88d3cc54bbd61550c61fa917d6e2a5717f8a03be4e9aa63dcd47dd1cfa/pm-run-20261017-122451-1d0829ed/integration/ai-specs/tasks/freeplane-frame-resynchronizer-x11-evidence/epoch-2/logs/probe.stderr
+probe-exit-code=0
+probe-timeout=False
+canonical-classification-present=True
+canonical-classification-validation=True
