@@ -6,10 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.Component;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -19,10 +17,32 @@ import javax.swing.JWindow;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
-import org.junit.Assume;
 import org.junit.Test;
 
 public class FrameResynchronizerPopupFactoryTest {
+    @Test
+    public void refreshPopupFactory_outsideX11ReturnsTheRegisteredCurrentFactoryUnchanged() {
+        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
+        frames.add(mock(JFrame.class));
+        final PopupFactory currentFactory = mock(PopupFactory.class);
+
+        assertThat(FrameResynchronizer.refreshPopupFactory(false, currentFactory, frames,
+            mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(currentFactory);
+    }
+
+    @Test
+    public void refreshPopupFactory_onX11WrapsTheRegisteredCurrentFactory() {
+        final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
+        frames.add(mock(JFrame.class));
+        final PopupFactory currentFactory = mock(PopupFactory.class);
+
+        final PopupFactory result = FrameResynchronizer.refreshPopupFactory(true, currentFactory, frames,
+            mock(PopupCoordinateCalibrator.GeometryProvider.class));
+
+        assertThat(result).isInstanceOf(X11PopupFactory.class);
+        assertThat(((X11PopupFactory) result).getDelegate()).isSameAs(currentFactory);
+    }
+
     @Test
     public void ensurePopupFactory_onX11WrapsCurrentFactoryWhenAFrameIsRegistered() {
         final Set<JFrame> frames = Collections.newSetFromMap(new WeakHashMap<JFrame, Boolean>());
@@ -46,29 +66,6 @@ public class FrameResynchronizerPopupFactoryTest {
 
         assertThat(FrameResynchronizer.ensurePopupFactory(false, delegate, frames,
             mock(PopupCoordinateCalibrator.GeometryProvider.class))).isSameAs(delegate);
-    }
-
-    @Test
-    public void refreshPopupFactory_outsideX11LeavesTheSharedFactoryUnchanged() {
-        Assume.assumeTrue("requires a headless toolkit", GraphicsEnvironment.isHeadless());
-        Assume.assumeFalse("does not run on X11",
-            "sun.awt.X11.XToolkit".equals(Toolkit.getDefaultToolkit().getClass().getName()));
-        final JFrame frame = mock(JFrame.class);
-        when(frame.getBounds()).thenReturn(new Rectangle());
-        when(frame.getExtendedState()).thenReturn(0);
-        final PopupFactory originalFactory = PopupFactory.getSharedInstance();
-        try {
-            FrameResynchronizer.install(frame);
-            PopupFactory.setSharedInstance(originalFactory);
-            final PopupFactory sentinel = PopupFactory.getSharedInstance();
-
-            FrameResynchronizer.refreshPopupFactory();
-
-            assertThat(PopupFactory.getSharedInstance()).isSameAs(sentinel);
-        }
-        finally {
-            PopupFactory.setSharedInstance(originalFactory);
-        }
     }
 
     @Test

@@ -183,15 +183,18 @@ public final class FrameResynchronizer extends WindowAdapter implements Componen
 			};
 
 	public static void refreshPopupFactory() {
-		if (!isX11Toolkit()) {
-			return;
-		}
 		final PopupFactory currentFactory = PopupFactory.getSharedInstance();
-		final PopupFactory refreshedFactory = ensurePopupFactory(true, currentFactory, REGISTERED_FRAMES,
+		final PopupFactory refreshedFactory = refreshPopupFactory(isX11Toolkit(), currentFactory, REGISTERED_FRAMES,
 				DEFAULT_POPUP_GEOMETRY_PROVIDER);
 		if (refreshedFactory != currentFactory) {
 			PopupFactory.setSharedInstance(refreshedFactory);
 		}
+	}
+
+	static PopupFactory refreshPopupFactory(final boolean isX11Toolkit, final PopupFactory currentFactory,
+			final Set<JFrame> registeredFrames,
+			final PopupCoordinateCalibrator.GeometryProvider geometryProvider) {
+		return ensurePopupFactory(isX11Toolkit, currentFactory, registeredFrames, geometryProvider);
 	}
 
 	static PopupFactory ensurePopupFactory(final boolean isX11Toolkit, final PopupFactory currentFactory,
