@@ -236,6 +236,19 @@ public class FrameResynchronizerTest {
     }
 
     @Test
+    public void findTargetMaximizedBounds_withFallback_returnsIndependentRectangle() {
+        final Rectangle fallback = new Rectangle(1920, 0, 1920, 1080);
+
+        final Rectangle target = FrameResynchronizer.findTargetMaximizedBounds(
+            new Rectangle(4000, 0, 100, 100), null,
+            new Rectangle[] { null }, fallback);
+
+        assertThat(target).isEqualTo(fallback).isNotSameAs(fallback);
+        target.x = 0;
+        assertThat(fallback).isEqualTo(new Rectangle(1920, 0, 1920, 1080));
+    }
+
+    @Test
     public void needsFrameResynchronization_withStaleNormalX11FrameLocation_returnsTrue() {
         final Rectangle restoredBounds = new Rectangle(2616, 363, 1912, 1008);
 
@@ -386,6 +399,22 @@ public class FrameResynchronizerTest {
         }
         assertThat(guard.isExhausted()).isTrue();
         assertThat(guard.shouldRequest(current, target)).isFalse();
+    }
+
+    @Test
+    public void maximizedGuard_targetChange_resetsTheTenRequestBudget() {
+        final FrameResynchronizer.MaximizedResynchronizationGuard guard =
+            new FrameResynchronizer.MaximizedResynchronizationGuard();
+        final Rectangle current = new Rectangle(0, 0, 1920, 1080);
+        final Rectangle firstTarget = new Rectangle(0, 32, 1920, 1048);
+        final Rectangle secondTarget = new Rectangle(1920, 32, 1920, 1048);
+
+        for (int attempt = 1; attempt <= 10; attempt++) {
+            assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
+        }
+        assertThat(guard.shouldRequest(current, firstTarget)).isFalse();
+        assertThat(guard.shouldRequest(current, secondTarget)).isTrue();
+        assertThat(guard.shouldRequest(current, firstTarget)).isTrue();
     }
 
     @Test
